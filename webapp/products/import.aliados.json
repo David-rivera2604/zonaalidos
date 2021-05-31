@@ -1,0 +1,214 @@
+{
+  "Skip": 2,
+  "AssemblyName": "Architect.API.Insurance.Contracts",
+  "Setters": [
+    {
+      "Summary": "Póliza",
+      "ObjectType": "Architect.API.Insurance.Contracts.Policy.Risk",
+      "IsCollection": true,
+      "Setters": [
+        {
+          "Summary": "Moneda",
+          "PropertyName": "Currency",
+          "ObjectType": "int",
+          "Locate": "A"
+        },
+        {
+          "Summary": "Plan",
+          "PropertyName": "ModuleCode",
+          "ObjectType": "int",
+          "Locate": "B"
+        },
+        {
+          "Summary": "Frecuencia de pago",
+          "PropertyName": "PaymentFrequency",
+          "ObjectType": "int",
+          "Locate": "C"
+        },
+        {
+          "Summary": "Fecha de alta",
+          "PropertyName": "IssueDate",
+          "ObjectType": "date",
+          "Locate": "D"
+        },
+        {
+          "Summary": "Suma asegurada",
+          "PropertyName": "InsuredAmount",
+          "ObjectType": "double",
+          "Locate": "E"
+        },
+        {
+          "Summary": "Asegurado principal",
+          "ObjectType": "Architect.API.Insurance.Contracts.Policy.RiskRoles",
+          "PropertyName": "PrimaryInsured",
+          "Setters": [
+            {
+              "ObjectType": "Architect.API.Insurance.Contracts.Policy.RiskRoles",
+              "Setters": [
+                {
+                  "Summary": "Tipo de identificación",
+                  "PropertyName": "DocumentType",
+                  "ObjectType": "int",
+                  "Locate": "F"
+                },
+                {
+                  "Summary": "Identificación",
+                  "PropertyName": "DocumentNumber",
+                  "ObjectType": "String",
+                  "Locate": "G"
+                },
+                {
+                  "Summary": "Primer nombre",
+                  "PropertyName": "FirstName",
+                  "ObjectType": "String",
+                  "Locate": "H"
+                },
+                {
+                  "Summary": "Segundo nombre",
+                  "PropertyName": "MiddleName",
+                  "ObjectType": "String",
+                  "Locate": "I"
+                },
+                {
+                  "Summary": "Apellido paterno",
+                  "PropertyName": "LastName",
+                  "ObjectType": "String",
+                  "Locate": "J"
+                },
+                {
+                  "Summary": "Apellido materno",
+                  "PropertyName": "SecondLastName",
+                  "ObjectType": "String",
+                  "Locate": "K"
+                },
+                {
+                  "Summary": "Fecha de nacimiento",
+                  "PropertyName": "BirthDate",
+                  "ObjectType": "date",
+                  "Locate": "L"
+                },
+                {
+                  "Summary": "Correo electrónico",
+                  "PropertyName": "PrimaryEmailAddress",
+                  "ObjectType": "String",
+                  "Locate": "X"
+                },
+                {
+                  "Summary": "Dirección",
+                  "PropertyName": "AddressDetail",
+                  "ObjectType": "String",
+                  "Locate": "AB"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Summary": "Prestamo",
+          "ObjectType": "Architect.API.Insurance.Contracts.Policy.RiskOverdraft",
+          "PropertyName": "Overdraft",
+          "Setters": [
+            {
+              "ObjectType": "Architect.API.Insurance.Contracts.Policy.RiskOverdraft",
+              "Setters": [
+                {
+                  "Summary": "Inicio del plazo",
+                  "PropertyName": "StartTerm",
+                  "ObjectType": "date",
+                  "Locate": "AC"
+                },
+                {
+                  "Summary": "Vencimiento del plazo",
+                  "PropertyName": "EndTerm",
+                  "ObjectType": "date",
+                  "Locate": "AD"
+                },
+                {
+                  "Summary": "Monto #1",
+                  "PropertyName": "Amount1",
+                  "ObjectType": "double",
+                  "Locate": "AE"
+                },
+                {
+                  "Summary": "Vencimiento del plazo #1",
+                  "PropertyName": "EndTermOnAmount1",
+                  "ObjectType": "date",
+                  "Locate": "AF"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Summary": "Beneficiarios",
+          "ObjectType": "Architect.API.Insurance.Contracts.Policy.RiskRoles",
+          "PropertyName": "Beneficiaries",
+          "ForDifferentItems": true,
+          "IsCollection": true,
+          "Setters": [
+            {
+              "Summary": "Beneficiario #1",
+              "ObjectType": "Architect.API.Insurance.Contracts.Policy.RiskRoles",
+              "Setters": [
+                {
+                  "Summary": "Tipo de identificación",
+                  "PropertyName": "DocumentType",
+                  "ObjectType": "int",
+                  "Locate": "AO"
+                },
+                {
+                  "Summary": "Identificación",
+                  "PropertyName": "DocumentNumber",
+                  "ObjectType": "String",
+                  "Locate": "AP"
+                },
+                {
+                  "Summary": "Primer nombre",
+                  "PropertyName": "FirstName",
+                  "ObjectType": "String",
+                  "Locate": "AQ"
+                },
+                {
+                  "Summary": "Apellido paterno",
+                  "PropertyName": "LastName",
+                  "ObjectType": "String",
+                  "Locate": "AS"
+                }
+              ]
+            },
+            {
+              "Summary": "Beneficiario #2",
+              "ObjectType": "Architect.API.Insurance.Contracts.Policy.RiskRoles",
+              "Setters": [
+                {
+                  "Summary": "Tipo de identificación",
+                  "PropertyName": "DocumentType",
+                  "ObjectType": "int",
+                  "Locate": "BN"
+                },
+                {
+                  "Summary": "Identificación",
+                  "PropertyName": "DocumentNumber",
+                  "ObjectType": "String",
+                  "Locate": "BO"
+                },
+                {
+                  "Summary": "Primer nombre",
+                  "PropertyName": "FirstName",
+                  "ObjectType": "String",
+                  "Locate": "BP"
+                },
+                {
+                  "Summary": "Apellido paterno",
+                  "PropertyName": "LastName",
+                  "ObjectType": "String",
+                  "Locate": "BR"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

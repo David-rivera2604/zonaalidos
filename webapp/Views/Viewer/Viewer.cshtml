@@ -1,0 +1,97 @@
+﻿@*Esta opción muestra con master-page*@
+@if (ViewBag.ViewType == true)
+{
+    Layout = null;
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+        <title></title>
+
+        @Styles.Render("~/Content/cssView")
+    </head>
+
+    <body style="background-color: white;">
+        <!-- Grid -->
+        <div id="toolbar">
+        </div>
+        @{Html.RenderPartial("_ViewControl");}
+    </body>
+
+    @Scripts.Render("~/bundles/jsView")
+</html>
+<script src="@Url.Content("~/assets/apexcharts/apexcharts.min.js")"></script>
+<script src="@Url.Content("~/assets/tableExport.jquery.plugin/tableExport.min.js")"></script>
+<script src="@Url.Content("~/assets/bootstrap-table/extensions/export/bootstrap-table-export.js")"></script>
+<script src="@Url.Content("~/assets/template7/template7.min.js")"></script>
+<script src="@Url.Content("~/Scripts/ViewerManager.Render.js")"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        app.ViewerQuery.Init();
+    });
+</script>
+
+}
+@*Esta opción muestra sin master-page*@
+else
+{
+    Layout = "~/Views/_Layout.cshtml";
+
+    @Styles.Render("~/Content/cssCRUD")
+    <!-- RoleMember -->
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5><span id="QueryTitle"></span></h5>
+            <!-- Opciones -->
+            <div class="ibox-tools">
+                <a class="fullscreen-link">
+                    <i class="fa fa-expand"></i>
+                </a>
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-wrench"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li>
+                        <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar la información</a>
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <!-- Filtro -->
+            <div class='form-row filter-row'>
+                <div class='form-group col-md-12'>
+                    <div class="input-group placeholder-small">
+                    </div>
+                </div>
+            </div>
+            <!-- Filtro avanzado -->
+            <div class='form-row d-none advancefilter-row animated fadeInDown'>
+                <div class="form-group col-md-6">
+                </div>
+            </div>
+            @{
+                Html.RenderPartial("_ViewControl");
+            }
+        </div>
+    </div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jsCRUD")
+        <script src="@Url.Content("~/assets/apexcharts/apexcharts.min.js")"></script>
+        <script src="@Url.Content("~/assets/tableExport.jquery.plugin/tableExport.min.js")"></script>
+        <script src="@Url.Content("~/assets/bootstrap-table/extensions/export/bootstrap-table-export.js")"></script>
+        <script src="@Url.Content("~/assets/template7/template7.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/ViewerManager.Render.js")"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                app.ViewerQuery.Init();
+            });
+        </script>
+    }
+}

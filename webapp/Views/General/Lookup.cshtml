@@ -1,0 +1,199 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<!-- Lookup -->
+<div class="ibox">
+    <div class="ibox-title">
+        <h5>Mantenimiento de detalle de una lista</h5>
+        <!-- Opciones -->
+        <div class="ibox-tools">
+            <a class="tool-filter">
+                <i class="fa fa-filter" title="Visualiza el filtro avanzado..."></i>
+            </a>
+            <a class="tool-new">
+                <i class="fa fa-plus" title="Crear un nuevo lookup"></i>
+            </a>
+            <a class="fullscreen-link">
+                <i class="fa fa-expand" title="Expande la zona de trabajo"></i>
+            </a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="Opciones adicionales...">
+                <i class="fa fa-wrench"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                <li>
+                    <a href="#" class="dropdown-item tool-new"><i class="fa fa-plus"></i> Crear un nuevo lookup</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-filter"></i> Despliega el filtro avanzado...</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar los lookups</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-audit" data-toggle="modal" data-target="#myModal5"><i class="fa fa-clock-o"></i> Historial...</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+            <div class="sk-rect4"></div>
+            <div class="sk-rect5"></div>
+        </div>
+        <div id="generalNotify">
+        </div>
+        <!-- Filtro -->
+        <div class='form-row filter-row'>
+            <div class='form-group col-md-12'>
+                <div class="input-group placeholder-small">
+                    <input id="LookupSearch" type="text" placeholder="Permite filtrar por nombre del rol o descripción" title="Permite filtrar por nombre del rol o descripción" class="form-control form-control-sm" maxlength="40">
+                    <span class="input-group-append">
+                        <button type="button" class="btn btn btn-primary btn-xs" id="ApplyFilter"> <i class="fa fa-search"></i> Filtrar</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- Filtro avanzado -->
+        <div class='form-row d-none advancefilter-row animated fadeInDown'>
+            <div class="form-group col-md-6">
+                <label class="control-label" for="RecordStatusFlt">Estado</label>
+                <select id="RecordStatusFlt" name="RecordStatusFlt" title="" multiple class="form-control form-control-sm">
+                </select>
+            </div>
+        </div>
+        <!-- Grid -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div class="table-responsive animated bounceInRight">
+                    <table id="LookupGridTbl" style="font-size: 11px;"></table>
+                </div>
+            </div>
+        </div>
+        <!-- Edit Form -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div id="LookupEdt" class="animated fadeInRight d-none">
+                    <form id='LookupEdtForm' class='form-horizontal' data-toggle='validator'>
+                        <fieldset>
+                            <div class="form-row">
+                                <!-- LookupId -->
+                                <input id='LookupId' name='LookupId' type='hidden' value=''>
+                                <!-- Language -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Language'>Lenguaje<span class='required-mark'>*</span></label>
+                                        <select id='Language' name='Language' class='form-control'></select>
+                                    </div>
+                                </div>
+                                <!-- ParentLookupId -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='ParentLookupId'>Parent Lookup Id<span class='required-mark'>*</span></label>
+                                        <input id='ParentLookupId' name='ParentLookupId' type='text' class='form-control text-right' size='9' maxlength='9'>
+                                    </div>
+                                </div>
+                                <!-- SubParentLookupId -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='SubParentLookupId'>Sub Parent Lookup Id<span class='required-mark'>*</span></label>
+                                        <input id='SubParentLookupId' name='SubParentLookupId' type='text' class='form-control text-right' size='9' maxlength='9'>
+                                    </div>
+                                </div>
+                                <!-- Code -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Code'>Código<span class='required-mark'>*</span></label>
+                                        <input id='Code' name='Code' type='text' class='form-control text-right' size='9' maxlength='9'>
+                                    </div>
+                                </div>
+                                <!-- Description -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Description'>Descripción<span class='required-mark'>*</span></label>
+                                        <input id='Description' name='Description' type='text' class='form-control' size='255' maxlength='255'>
+                                    </div>
+                                </div>
+                                <!-- QueryOrder -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='QueryOrder'>Orden</label>
+                                        <input id='QueryOrder' name='QueryOrder' type='text' class='form-control text-right' size='5' maxlength='5'>
+                                    </div>
+                                </div>
+                                <!-- HomologousCode -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='HomologousCode'>Homologous Code</label>
+                                        <input id='HomologousCode' name='HomologousCode' type='text' class='form-control' size='12' maxlength='12'>
+                                    </div>
+                                </div>
+                                <!-- ExtendNumberValue1 -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='ExtendNumberValue1'>Extend Number Value 1</label>
+                                        <input id='ExtendNumberValue1' name='ExtendNumberValue1' type='text' class='form-control text-right' size='11' maxlength='11'>
+                                    </div>
+                                </div>
+                                <!-- ExtendNumberValue2 -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='ExtendNumberValue2'>Extend Number Value 2</label>
+                                        <input id='ExtendNumberValue2' name='ExtendNumberValue2' type='text' class='form-control text-right' size='11' maxlength='11'>
+                                    </div>
+                                </div>
+                                <!-- ExtendStringValue1 -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='ExtendStringValue1'>Extend String Value 1</label>
+                                        <input id='ExtendStringValue1' name='ExtendStringValue1' type='text' class='form-control' size='30' maxlength='30'>
+                                    </div>
+                                </div>
+                                <!-- ExtendStringValue2 -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='ExtendStringValue2'>Extend String Value 2</label>
+                                        <input id='ExtendStringValue2' name='ExtendStringValue2' type='text' class='form-control' size='30' maxlength='30'>
+                                    </div>
+                                </div>
+                                <!-- RecordStatus -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='RecordStatus'>Estado del Registro<span class='required-mark'>*</span></label>
+                                        <select id='RecordStatus' name='RecordStatus' class='form-control'></select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-row">
+                                <div class='col-md-12'>
+									<button id="LookupEdtFormSave" type="button" class="btn btn-primary btn-sm" data-doing="Guardando cambios..." title="Guardar cambios">Guardar</button>
+									<button id="LookupEdtFormSaveContinue" type="button" class="btn btn-primary btn-sm d-none" data-doing="Guardando cambios..." title="Guardar cambios y continuar">Guardar y continuar</button>
+									<button id="LookupEdtFormSaveCopy" type="button" class="btn btn-primary btn-sm d-none" data-doing="Guardando cambios..." title="Guardar cambios y continuar">Guardar y copiar</button>
+									<button id="LookupEdtFormDuplicate" type="button" class="btn btn-info btn-sm d-none" data-doing="Duplicando..." title="Duplica la información actual">Duplicar</button>
+									<button id="LookupEdtFormDelete" type="button" class="btn btn-danger btn-sm d-none" data-doing="Eliminando..." title="Elimina la información actual">Eliminar</button>
+									<button id="LookupEdtFormCancel" type="button" class="btn btn-white btn-sm">Cancelar</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/General.Lookup.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.GeneralLookup.Init();
+        });
+    </script>
+}

@@ -1,0 +1,56 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<!-- ProcessSpecFlow -->
+
+<div class="row">
+    <div class="col-lg-5">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>Detalle del proceso</h5>
+                <div class="ibox-tools">
+                    <a class="fullscreen-link">
+                        <i class="fa fa-expand" title="Expande la zona de trabajo"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ibox-content">
+
+                <p class="m-b-lg">
+                    Visualización completa de las etapas y tareas de un proceso.
+                </p>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="nestable-menu">
+                            <button type="button" data-action="expand-all" class="btn btn-white btn-sm">Expandir todo</button>
+                            <button type="button" data-action="collapse-all" class="btn btn-white btn-sm">Contraer todo</button>
+                        </div>
+                    </div>
+                </div>
+                @*<div style="height:500px">
+                    <div class="full-height-scroll">*@
+                        <div class="dd" id="nestable2">
+                            <ol class="dd-list">
+                            </ol>
+                        </div>
+
+                    @*</div>
+                </div>*@
+            </div>
+
+        </div>
+    </div>
+
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/assets/js/plugins/nestable/jquery.nestable.js")"></script>
+    <script src="@Url.Content("~/Scripts/General.ProcessEditor.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            app.GeneralProcessEditor.Init();
+        });
+    </script>
+}

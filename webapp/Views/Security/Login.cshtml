@@ -1,0 +1,179 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Zona de Aliados | Acceso</title>
+
+    @Styles.Render("~/Content/cssBase")
+    <link rel="shortcut icon" href="~/images/favicon.png" />
+</head>
+<body class="gray-bg @ViewBag.theme">
+    <div class="loginBackground">
+        <!-- Toast notification -->
+        @*<div class="toast toast toast-bootstrap hide" role="alert" aria-live="assertive" aria-atomic="true" style="position: absolute; top:20px; right:20px">
+            <div class="toast-header">
+                <i class="fa fa-square text-navy"> </i>
+                <strong class="mr-auto m-l-sm">Notification</strong>
+                <small>1 min ago</small>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body">
+                Welcome to <strong>INSPINIA</strong> - Responsive Admin Theme.
+            </div>
+        </div>*@
+        <div class="middle-box text-center loginscreen animated fadeInDown">
+            <div>
+
+                <div>
+                    <h1 class="logo-name"></h1>
+                </div>
+                <div id="login">
+                    <div class="wellcome-info">
+                        <h3>Bienvenido a la Zona de Aliados MAPFRE COSTA RICA</h3>
+                        <p>
+                            Con el compromiso de siempre por brindar herramientas que apoyen en la gestión de venta y el cumplimiento de objetivos ponemos a su disposición nuestra zona de aliados, la cual permitirá reducir los tiempos de respuesta en los procesos de cotización y emisión con mayor accesibilidad y comodidad.
+                            @*Buscamos informar a nuestros Aliados acerca de innovaciones, campañas comerciales y demás información, que sin duda les ayudará a mejorar su gestión comercial.*@
+                            <!--Continually expanded and constantly improved Inspinia Admin Them (IN+)-->
+                        </p>
+                    </div>
+                    <div class="alert alert-info alert-dismissable fade show text-left d-none">
+                        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                        Usted ha sido redireccionado a esta página debido a que su sesión de usuario ha superado el tiempo máximo de inactividad.
+                    </div>
+                    @*<p>Login in. To see it in action.</p>*@
+                    <form id="LoginEdtForm" class="m-t" role="form" action="index.html" data-toggle='validator'>
+                        <fieldset>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon" title="Nombre o código del aliado"><i class="glyphicon glyphicon-book"></i></span>
+                                    <input id="Tenant" name="Tenant" type="text" class="form-control" placeholder="Nombre del aliado" maxlength="60" required="" autocomplete="off" value="" title="Nombre o código del aliado">
+                                </div>
+                                <div id='Tenant_validate'></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon" title="Usuario o correo"><i class="glyphicon glyphicon-user"></i></span>
+                                    <input id="Username" name="Username" type="text" class="form-control" placeholder="Usuario o correo" maxlength="60" required="" autocomplete="off" title="Usuario o correo">
+                                </div>
+                                <div id='Username_validate'></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon" title="Clave de acceso"><i class="glyphicon glyphicon-lock"></i></span>
+                                    <input id="Password" name="Password" type="password" class="form-control" placeholder="Clave de acceso" maxlength="60" required="" autocomplete="off" title="Clave de acceso">
+                                </div>
+                                <div id='Password_validate'></div>
+                            </div>
+
+                            <button id="Send" type="submit" class="btn btn-primary block full-width m-b" title="Verifica las credenciales de acceso">Iniciar</button>
+
+
+                            <a href="#" id="forgotlink" title="Permite establecer una nueva clave de acceso"><small>Olvidó su clave de acceso?</small></a>
+                            @*<p class="text-muted text-center"><small>Do not have an account?</small></p>
+                            <a class="btn btn-sm btn-white btn-block" href="register.html">Create an account</a>*@
+                        </fieldset>
+                    </form>
+                </div>
+
+                <div id="forgo" class="animated fadeInDown d-none">
+                    <div>
+                        <h3>Olvidó su clave de acceso</h3>
+                        <p>
+                            Ingrese la dirección de correo electrónico asociada a su cuenta, a continuación, le será enviado un código temporal, el cual le permitirá establecer una clave de acceso.
+                        </p>
+                    </div>
+                    <form id="ForgotEdtForm" class="m-t" role="form" action="index.html" data-toggle='validator'>
+                        <fieldset>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon" title="Usuario o correo"><i class="glyphicon glyphicon-envelope"></i></span>
+                                    <input id="ForgotMail" name="ForgotMail" type="text" class="form-control" placeholder="Correo" maxlength="60" required="" autocomplete="off" title="Correo registrado">
+                                </div>
+                                <div id='ForgotMail_validate'></div>
+                            </div>
+
+
+                            <button id="ForgotSend" type="submit" class="btn btn-primary block full-width m-b" title="Envia el código temporal" >Continuar</button>
+                            <button id="ForgotCancel" type="button" class="btn btn-default block full-width m-b" title="Regresa a la página de inicio">Cancelar</button>
+
+
+                        </fieldset>
+                    </form>
+                </div>
+
+                <div id="forgoCode" class="animated fadeInDown d-none">
+                    <div>
+                        <h3>Ingrese código de verificación</h3>
+                        <p>
+                            Hemos enviado a su correo electrónico registrado, un código de verificación el cual permitirá continuar con el proceso.
+                        </p>
+                    </div>
+                    <form id="forgoCodeEdtForm" class="m-t" role="form" action="index.html" data-toggle='validator'>
+                        <fieldset>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon" title="Usuario o correo"><i class="glyphicon glyphicon-equalizer"></i></span>
+                                    <input id="forgoCodeMail" name="forgoCodeMail" type="text" class="form-control" placeholder="Código de verificación" maxlength="6" required="" autocomplete="off" title="Código de verificación">
+                                </div>
+                                <div id='forgoCodeMail_validate'></div>
+                            </div>
+
+                            <button id="forgoCodeSend" type="submit" class="btn btn-primary block full-width m-b" title="Verifica el código ingresado">Continuar</button>
+                            <button id="forgoCodeCancel" type="button" class="btn btn-default block full-width m-b" title="Regresa a la página de inicio">Cancelar</button>
+                        </fieldset>
+                    </form>
+                </div>
+
+                <div id="SetPassword" class="animated fadeInDown d-none">
+                    <div>
+                        <h3>Indique su nueva clave de acceso</h3>
+                        <p>
+                            Ingrese la nueva clave de acceso que quedará asociada a su cuenta.
+                        </p>
+                    </div>
+                    <form id="SetPasswordEdtForm" class="m-t" role="form" action="index.html" data-toggle='validator'>
+                        <fieldset>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon" title="Usuario o correo"><i class="glyphicon glyphicon-lock"></i></span>
+                                    <input id="SetPasswordMail" name="SetPasswordMail" type="password" class="form-control" placeholder="Clave de acceso" maxlength="60" required="" autocomplete="off" title="Nueva clave de acceso">
+                                </div>
+                                <div id='SetPasswordMail_validate'></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon" title="Usuario o correo"><i class="glyphicon glyphicon-ok"></i></span>
+                                    <input id="SetPasswordMail2" name="SetPasswordMail2" type="password" class="form-control" placeholder="Repita la clave de acceso" maxlength="60" required="" autocomplete="off" title="Verifica la nueva clave de acceso">
+                                </div>
+                                <div id='SetPasswordMail2_validate'></div>
+                            </div>
+
+                            <button id="SetPasswordSend" type="submit" class="btn btn-primary block full-width m-b" title="Actualiza la nueva clave de acceso">Cambiar clave de acceso</button>
+                            <button id="SetPasswordCancel" type="button" class="btn btn-default block full-width m-b" title="Regresa a la página de inicio">Cancelar</button>
+                        </fieldset>
+                    </form>
+                </div>
+                <p class="m-t">
+                    <small>
+                        &copy; 2020 MAPFRE. Todos los derechos reservados.
+                    </small>
+                </p>
+            </div>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jsBase")
+
+    <script src="@Url.Content("~/Scripts/Security.Login.js")"></script>
+</body>
+
+</html>

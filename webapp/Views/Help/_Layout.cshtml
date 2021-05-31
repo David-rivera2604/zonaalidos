@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+    <title>Ayuda</title>
+
+    @Styles.Render("~/Content/cssHelp")
+</head>
+<body class="no-skin-config white-bg">
+    <nav class="navbar navbar-expand-sm navbar-light bg-light fixed-top">
+        <a class="navbar-brand" href="index" title="Contenido"><i class="fa fa-bookmark"></i></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="menuGeneral" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        General
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="menuGeneral">
+                        <a class="dropdown-item" href="general_inicio_sesion">Inicio de sesión</a>
+                        <a class="dropdown-item" href="general_cerrar_sesion">Cerrar una sesión</a>
+                        <a class="dropdown-item" href="general_termino_sesion">Término de la sesión</a>
+                        <a class="dropdown-item" href="general_cambio_clave">Cambio de de clave</a>
+                        <a class="dropdown-item" href="general_restaurar_clave">Restaurar una clave</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="menuPolicy" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Póliza
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="menuPolicy">
+                        <a class="dropdown-item" href="poliza_opciones">Opciones para el manejo de las pólizas</a>
+                        <a class="dropdown-item" href="poliza_busqueda">Búsqueda de pólizas</a>
+                        <a class="dropdown-item" href="poliza_emitir">Emitir un póliza</a>
+                        <a class="dropdown-item" href="poliza_refundicion">Refundición de prestamos</a>
+                        <a class="dropdown-item" href="poliza_borrador">Borrador de una póliza</a>
+                        <a class="dropdown-item" href="poliza_revision">Revisión de una póliza sujeta a suscripción</a>
+                        <a class="dropdown-item" href="poliza_aceptar">Aceptación de una póliza condicionada</a>
+                        <a class="dropdown-item" href="poliza_impresion">Impresión de una póliza</a>
+                        <a class="dropdown-item" href="poliza_modificar">Modificar una póliza existente</a>
+                        <a class="dropdown-item" href="poliza_anular">Anular o cancelar una póliza existente</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="menuSecurity" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Seguridad
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="menuSecurity">
+                        <a class="dropdown-item" href="seguridad_usuarios">Usuarios</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="element-detail-box white-bg" style="padding-top: 1px;">
+        @RenderBody()
+    </div>
+    @Scripts.Render("~/bundles/jsHelp")
+</body>
+</html>

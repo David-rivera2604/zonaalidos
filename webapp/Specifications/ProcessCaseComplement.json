@@ -1,0 +1,241 @@
+{
+  "Name": "ProcessCaseComplement",
+  "ConnectionString": "Research",
+  "Columns": [
+    {
+      "Name": "CaseId",
+      "Alias": "Caso",
+      "IsNullable": false,
+      "Type": "number",
+      "Length": 22,
+      "PrimaryKey": true,
+      "AutoIncrement": false,
+      "Precision": 9,
+      "Comments": "",
+      "Domain": ""
+    },
+    {
+      "Name": "CompanyId",
+      "IsNullable": false,
+      "Type": "number",
+      "Length": 22,
+      "PrimaryKey": false,
+      "AutoIncrement": false,
+      "Precision": 5,
+      "Comments": "",
+      "Domain": "Company"
+    },
+    {
+      "Name": "Fee",
+      "IsNullable": true,
+      "Type": "number",
+      "Length": 22,
+      "PrimaryKey": false,
+      "AutoIncrement": false,
+      "Precision": 18,
+      "Comments": "",
+      "Domain": ""
+    },
+    {
+      "Name": "Compensation",
+      "IsNullable": true,
+      "Type": "number",
+      "Length": 22,
+      "PrimaryKey": false,
+      "AutoIncrement": false,
+      "Precision": 18,
+      "Comments": "",
+      "Domain": ""
+    },
+    {
+      "Name": "Deductible",
+      "IsNullable": true,
+      "Type": "number",
+      "Length": 22,
+      "PrimaryKey": false,
+      "AutoIncrement": false,
+      "Precision": 18,
+      "Comments": "",
+      "Domain": ""
+    },
+    {
+      "Name": "SpareParts",
+      "IsNullable": true,
+      "Type": "number",
+      "Length": 22,
+      "PrimaryKey": false,
+      "AutoIncrement": false,
+      "Precision": 18,
+      "Comments": "",
+      "Domain": ""
+    },
+    {
+      "Name": "ManPower",
+      "IsNullable": true,
+      "Type": "number",
+      "Length": 22,
+      "PrimaryKey": false,
+      "AutoIncrement": false,
+      "Precision": 18,
+      "Comments": "",
+      "Domain": ""
+    },
+    {
+      "Name": "Workshop",
+      "IsNullable": true,
+      "Type": "number",
+      "Length": 22,
+      "PrimaryKey": false,
+      "AutoIncrement": false,
+      "Precision": 5,
+      "Comments": "",
+      "Domain": ""
+    },
+    {
+      "Name": "ManPowerInvoice",
+      "IsNullable": true,
+      "Type": "varchar2",
+      "Length": 18,
+      "PrimaryKey": false,
+      "AutoIncrement": false,
+      "Precision": 0,
+      "Comments": "",
+      "Domain": ""
+    },
+    {
+      "Name": "SparePartsInvoice",
+      "IsNullable": true,
+      "Type": "varchar2",
+      "Length": 18,
+      "PrimaryKey": false,
+      "AutoIncrement": false,
+      "Precision": 0,
+      "Comments": "",
+      "Domain": ""
+    },
+    {
+      "Name": "SettlementDate",
+      "IsNullable": true,
+      "Type": "date",
+      "Length": 7,
+      "PrimaryKey": false,
+      "AutoIncrement": false,
+      "Precision": 0,
+      "Comments": "",
+      "Domain": ""
+    },
+    {
+      "Name": "AppointmentDate",
+      "IsNullable": true,
+      "Type": "date",
+      "Length": 7,
+      "PrimaryKey": false,
+      "AutoIncrement": false,
+      "Precision": 0,
+      "Comments": "",
+      "Domain": ""
+    },
+    {
+      "Name": "AppointmentTime",
+      "IsNullable": true,
+      "Type": "char",
+      "Length": 5,
+      "PrimaryKey": false,
+      "AutoIncrement": false,
+      "Precision": 0,
+      "Comments": "",
+      "Domain": ""
+    },
+    {
+      "Name": "AssignedAdvisor",
+      "IsNullable": true,
+      "Type": "varchar2",
+      "Length": 120,
+      "PrimaryKey": false,
+      "AutoIncrement": false,
+      "Precision": 0,
+      "Comments": "",
+      "Domain": ""
+    },
+    {
+      "Name": "ReportDate",
+      "IsNullable": true,
+      "Type": "date",
+      "Length": 7,
+      "PrimaryKey": false,
+      "AutoIncrement": false,
+      "Precision": 0,
+      "Comments": "",
+      "Domain": ""
+    },
+    {
+      "Name": "RepairTotalAmount",
+      "IsNullable": true,
+      "Type": "number",
+      "Length": 22,
+      "PrimaryKey": false,
+      "AutoIncrement": false,
+      "Precision": 18,
+      "Comments": "",
+      "Domain": ""
+    },
+    {
+      "Name": "RepairManPower",
+      "IsNullable": true,
+      "Type": "number",
+      "Length": 22,
+      "PrimaryKey": false,
+      "AutoIncrement": false,
+      "Precision": 18,
+      "Comments": "",
+      "Domain": ""
+    },
+    {
+      "Name": "RepairSpareParts",
+      "IsNullable": true,
+      "Type": "number",
+      "Length": 22,
+      "PrimaryKey": false,
+      "AutoIncrement": false,
+      "Precision": 18,
+      "Comments": "",
+      "Domain": ""
+    },
+    {
+      "Name": "UpdateUserCode",
+      "IsNullable": false,
+      "Type": "number",
+      "Length": 22,
+      "PrimaryKey": false,
+      "AutoIncrement": false,
+      "Precision": 9,
+      "Comments": "",
+      "Domain": "AuthorOrUpdate"
+    },
+    {
+      "Name": "UpdateDate",
+      "IsNullable": false,
+      "Type": "date",
+      "Length": 7,
+      "PrimaryKey": false,
+      "AutoIncrement": false,
+      "Precision": 0,
+      "Comments": "",
+      "Domain": "DateCreatedOrUpdated"
+    }
+  ],
+  "PrimaryKey": [
+    {
+      "Name": "CaseId",
+      "IsNullable": false,
+      "Type": "number",
+      "Length": 22,
+      "PrimaryKey": true,
+      "AutoIncrement": false,
+      "Precision": 9,
+      "Comments": "",
+      "Domain": ""
+    }
+  ],
+  "Identify": "CaseId"
+}

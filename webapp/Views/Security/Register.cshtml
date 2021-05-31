@@ -1,0 +1,165 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Zona de Aliados | Registro de usuarios</title>
+
+    @Styles.Render("~/Content/cssBase")
+    @Styles.Render("~/Content/cssCRUD")
+    <link rel="shortcut icon" href="~/images/favicon.png" />
+</head>
+<body class="gray-bg @ViewBag.theme">
+    <div class="loginBackground">
+
+        <div class="middle-box animated fadeInDown" style="padding-top: 70px;">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5><span id="PageTitle">Registro de usuarios</span><small class="m-l-sm"><span id="PageSubTitle"></span></small> </h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="sk-spinner sk-spinner-wave">
+                        <div class="sk-rect1"></div>
+                        <div class="sk-rect2"></div>
+                        <div class="sk-rect3"></div>
+                        <div class="sk-rect4"></div>
+                        <div class="sk-rect5"></div>
+                    </div>
+                    <div id="generalNotify">
+                    </div>
+                    <!-- Edit Form -->
+                    <div class='form-row' id="register">
+                        <div class='col-md-12'>
+                            <div id="RegisterEdt" class="animated fadeInRight">
+                                <form id='RegisterEdtForm' class='form-horizontal' data-toggle='validator'>
+                                    <fieldset>
+                                        <!-- datosgenerales Zone -->
+                                        <div class="form-row">
+                                            <div class="col-lg-12">
+                                                <h4>Datos generales</h4>
+                                                <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                                <div class="form-row">
+
+                                                    <!-- identificacion Text -->
+                                                    <div class='col-lg-12'>
+                                                        <div class='form-group'>
+                                                            <label class='control-label' for='identificacion'>Identificación<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                            <div class='input-group'>
+                                                                <span class='input-group-addon'>
+                                                                    <span class='glyphicon glyphicon-barcode'></span>
+                                                                </span>
+                                                                <div class="input-group-prepend">
+                                                                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-value='1' id="identificacionType">
+                                                                        Cédula
+                                                                    </button>
+                                                                    <div class="dropdown-menu" id="identificacionTypeMenu">
+                                                                        <a class="dropdown-item active" href="#" data-value='1'>Cédula</a>
+                                                                        <a class="dropdown-item" href="#" data-value='2'> Residencia</a>
+                                                                        <a class="dropdown-item" href="#" data-value='3'>Pasaporte</a>
+                                                                        <a class="dropdown-item" href="#" data-value='4'>Cédula jurídica</a>
+                                                                    </div>
+                                                                </div>
+                                                                <input id='identificacion' name='identificacion'
+                                                                       type='text' class='form-control' size='20'
+                                                                       maxlength='20' placeholder="0X-XXXX-XXXX">
+
+                                                            </div>
+                                                            <div id='identificacion_validate'></div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- FirstName Text -->
+                                                    <div class='col-lg-12'>
+                                                        <div class='form-group'>
+                                                            <label class='control-label' for='FirstName'>Nombres<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                            <input type='text' id='FirstName' name='FirstName' class='form-control' size='60' maxlength='60' />
+                                                        </div>
+                                                    </div>
+                                                    <!-- LastName Text -->
+                                                    <div class='col-lg-12'>
+                                                        <div class='form-group'>
+                                                            <label class='control-label' for='LastName'>Apellidos<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                            <input type='text' id='LastName' name='LastName' class='form-control' size='60' maxlength='60' />
+                                                        </div>
+                                                    </div>
+                                                    <!-- BirthDate DatePicker -->
+                                                    <div class='col-lg-12'>
+                                                        <div class='form-group'>
+                                                            <label class='control-label' for='BirthDate'>Fecha de nacimiento</label>
+                                                            <div class='input-group date' id='BirthDate_group'>
+                                                                <input type='text' id='BirthDate' name='BirthDate' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                                <span class='input-group-addon'>
+                                                                    <span class='glyphicon glyphicon-calendar'></span>
+                                                                </span>
+                                                            </div>
+                                                            <div id='BirthDate_validate'></div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- EMail Text -->
+                                                    <div class='col-lg-12'>
+                                                        <div class='form-group'>
+                                                            <label class='control-label' for='EMail'>Correo electrónico<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                            <div class='input-group'>
+                                                                <span class='input-group-addon'>
+                                                                    <span class='glyphicon glyphicon-envelope'></span>
+                                                                </span>
+                                                                <input id='EMail' name='EMail' type='text' class='form-control' size='80' maxlength='80'>
+                                                            </div>
+                                                            <div id='EMail_validate'></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class='col-lg-12'>
+                                                        <div class="form-group">
+                                                            <label class='control-label' for='Password'>Clave de acceso<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon" title="Clave de acceso"><i class="glyphicon glyphicon-lock"></i></span>
+                                                                <input id="Password" name="Password" type="password" class="form-control" maxlength="60" required="" autocomplete="off" title="Clave de acceso">
+                                                            </div>
+                                                            <div id='Password_validate'></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class='col-md-12'>
+                                                <div class="modal-footer">
+                                                    <button id="RegisterEdtFormSave" type="button" class="btn btn-primary" data-doing="Registrando el usuario...">Registrarse</button>
+                                                    <button id="RegisterEdtFormCancel" type="button" class="btn btn-white" data-doing="Redireccionando...">Cancelar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='form-row justify-content-center d-none' id="continue">
+                        <button id="RegisterEdtFormContinue" type="button" class="btn btn-primary" data-doing="Redireccionando...">Continuar</button>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+
+    @Scripts.Render("~/bundles/jsBase")
+    @Scripts.Render("~/bundles/jsCRUD")
+
+    <script src="@Url.Content("~/Scripts/Security.Register.js")"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.SecurityRegister.Init();
+        });
+    </script>
+
+</body>
+
+</html>

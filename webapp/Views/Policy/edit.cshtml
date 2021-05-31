@@ -1,0 +1,1889 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssPolicyEdit")
+
+<!-- Cotizador -->
+<div class="ibox">
+    <div class="ibox-title">
+        <h5><span id="ProductTitle"></span><small class="m-l-sm"><span id="ProductSubTitle"></span></small> <span id="PolicyStatus" class="label d-none"></span></h5>
+        <div class="ibox-tools">
+            @*<a href="#" class="btn btn-white btn-xs float-right">Aceptar</a>*@
+            @*<div data-toggle="buttons" class="btn-group btn-group-toggle">
+                    <label class="btn btn-sm btn-white active"> <input type="radio" id="option1" name="options"> Day </label>
+                    <label class="btn btn-sm btn-white"> <input type="radio" id="option2" name="options"> Week </label>
+                    <label class="btn btn-sm btn-white"> <input type="radio" id="option3" name="options"> Month </label>
+                </div>
+
+                <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-comments"></i> </button>
+                <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-user"></i> </button>
+                <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-list"></i> </button>
+                <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-cogs"></i> </button>
+                    //<button id="save" type="button" class="btn btn-sm btn-white d-none"> <i class="fa fa-pencil"></i> </button>
+                    <button id="print" type="button" class="btn btn-sm btn-white d-none"> <i class="fa fa-print"></i> </button>
+            *@
+            <a id="applyChange" href="" class="btn btn-primary btn-xs d-none" title="Permite guardar los cambios de la póliza">Aplicar cambios</a>
+            <a id="print" href="" class="btn btn-primary btn-xs d-none" title="Permite imprimir la póliza">Imprimir</a>
+            <a id="save" href="" class="btn btn-primary btn-xs d-none" title="Permite guardar un borrador de la póliza">Guardar</a>
+            <a id="accept" href="" class="btn btn-primary btn-xs d-none" title="Permite emitir la póliza">Emitir</a>
+            <a class="collapse-link">
+                <i class="fa fa-chevron-up"></i>
+            </a>
+            <a class="fullscreen-link">
+                <i class="fa fa-expand"></i>
+            </a>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div id="generalNotify">
+        </div>
+
+        <!-- Cabecera de las pestañas -->
+        <ul class="nav nav-tabs">
+            <li>
+                <a class="nav-link active show" data-toggle="tab" href="#aseguradoTab" id="aseguradoHTab">
+                    <i class="fa fa-user-o"></i> Asegurado <span id="PrimaryInsuredFullName"></span> <span class="badge badge-danger"></span>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" data-toggle="tab" href="#cuestionarioTab" id="cuestionarioHTab">
+                    <i class="fa fa-list-ol"></i> Cuestionario <span class="badge badge-danger"></span>
+                </a>
+            </li>
+            <li id="beneficiariosHTabHeader" class="d-none">
+                <a class="nav-link" data-toggle="tab" href="#beneficiariosTab" id="beneficiariosHTab">
+                    <i class="fa fa-handshake-o"></i> Beneficiarios <span class="badge badge-danger"></span>
+                </a>
+            </li>
+            <li id="prestamosHTabHeader" class="d-none">
+                <a class="nav-link" data-toggle="tab" href="#prestamosTab" id="prestamosHTab">
+                    <i class="fa fa-credit-card"></i> Prestamos <span class="badge badge-danger"></span>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" data-toggle="tab" href="#polizaTab" id="polizaHTab">
+                    <i class="fa fa-th"></i> Póliza <span id="PolicyPolicyId"></span> <span class="badge badge-danger"></span>
+                </a>
+            </li>
+
+            <li>
+                <a class="nav-link" data-toggle="tab" href="#adjuntosTab" id="adjuntosHTab">
+                    <i class="fa fa-file-o"></i>
+                    Adjuntos <span class="badge badge-danger"></span>
+                </a>
+            </li>
+            <li id="historialTabHeader" class="d-none">
+                <a class="nav-link" data-toggle="tab" href="#historialTab">
+                    <i class="fa fa-clock-o"></i> Historial
+                </a>
+            </li>
+        </ul>
+
+        <!-- Contenido de las pestañas  -->
+        <div class="tab-content" style="padding-top: 10px">
+
+            <!-- Asegurado -->
+            <div id="aseguradoTab" class="tab-pane active show fade">
+                <form id='PrimaryInsuredEdtFrm' data-toggle='validator'>
+                    <fieldset disabled>
+
+                        <!-- Datos generales -->
+                        <div class="form-row">
+                            <!-- DocumentNumber -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='DocumentNumber'>
+                                        Identificación<span class='required-mark'
+                                                            title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                    </label>
+                                    <div class='input-group'>
+                                        <span class='input-group-addon'>
+                                            <span class='glyphicon glyphicon-barcode'></span>
+                                        </span>
+
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-default dropdown-toggle"
+                                                    type="button" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false" data-value='1' id="DocumentType">
+                                                Cédula
+                                            </button>
+                                            <div class="dropdown-menu" id="DocumentTypeMenu">
+                                                <a class="dropdown-item active"
+                                                   href="#" data-value='1'>Cédula</a>
+                                                <a class="dropdown-item" href="#" data-value='2'>
+                                                    Residencia
+                                                </a>
+                                                <a class="dropdown-item" href="#" data-value='3'>Pasaporte</a>
+                                                <a class="dropdown-item" href="#" data-value='4'>
+                                                    Cédula
+                                                    jurídica
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <input id='DocumentNumber' name='DocumentNumber'
+                                               type='text' class='form-control' size='20'
+                                               maxlength='20' placeholder="0X-XXXX-XXXX">
+
+                                    </div>
+                                    <div id='DocumentNumber_validate'></div>
+                                </div>
+                            </div>
+                            <!-- FirstName -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='FirstName'>
+                                        Nombres<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                    </label>
+                                    <div class='input-group'>
+                                        <span class='input-group-addon'>
+                                            <span class='glyphicon glyphicon-user'></span>
+                                        </span>
+                                        <input id='FirstName' name='FirstName' type='text'
+                                               class='form-control' size='40' maxlength='40'>
+                                        <input id='MiddleName' name='MiddleName' type='text'
+                                               class='form-control' size='40' maxlength='40'>
+                                    </div>
+                                    <div id='FirstName_validate'></div>
+                                </div>
+                            </div>
+                            <!-- LastName -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='LastName'>
+                                        Apellidos<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                    </label>
+                                    <div class='input-group'>
+                                        <span class='input-group-addon'>
+                                            <span class='glyphicon glyphicon-user'></span>
+                                        </span>
+                                        <input id='LastName' name='LastName' type='text'
+                                               class='form-control' size='40' maxlength='40'>
+                                        <input id='SecondLastName' name='SecondLastName'
+                                               type='text' class='form-control' size='40'
+                                               maxlength='40'>
+                                    </div>
+                                    <div id='LastName_validate'></div>
+                                </div>
+                            </div>
+                            <!-- BirthDate -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='BirthDate'>
+                                        Fecha de
+                                        nacimiento<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                    </label>
+                                    <div class='input-group date' id='BirthDate_group'>
+                                        <input id='BirthDate' name='BirthDate' type='text'
+                                               class='form-control' size='10' maxlength='10'
+                                               placeholder='día/mes/año'>
+                                        <span class='input-group-addon'>
+                                            <span class='glyphicon glyphicon-calendar'></span>
+                                        </span>
+                                    </div>
+                                    <div id='BirthDate_validate'></div>
+                                </div>
+                            </div>
+                            <!-- Gender -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='Gender'>
+                                        Sexo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                    </label>
+                                    <select id='Gender' name='Gender'
+                                            class='form-control'></select>
+                                    <div id='Gender_validate'></div>
+                                </div>
+                            </div>
+                            <!-- CivilStatus -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='CivilStatus'>
+                                        Estado civil<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                    </label>
+                                    <select id='CivilStatus' name='CivilStatus'
+                                            class='form-control'></select>
+                                </div>
+                            </div>
+                            <!-- Height -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='Height'>Estatura</label>
+                                    <div class='input-group'>
+                                        <input id='Height' name='Height' type='text'
+                                               class='form-control text-right' size='5'
+                                               maxlength='5'>
+                                        <span class='input-group-addon'>
+                                            <small class="text-muted" title="Metros">mts</small>
+                                        </span>
+                                    </div>
+                                    <div id='Height_validate'></div>
+                                </div>
+                            </div>
+                            <!-- Weight -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='Weight'>Peso</label>
+                                    <div class='input-group'>
+                                        <input id='Weight' name='Weight' type='text'
+                                               class='form-control text-right' size='5'
+                                               maxlength='5'>
+                                        <span class='input-group-addon'>
+                                            <small class="text-muted" title="Libras">lbs</small>
+                                        </span>
+                                    </div>
+                                    <div id='Weight_validate'></div>
+                                </div>
+                            </div>
+                            <!-- BloodPressureSystolic / BloodPressureDiastolic -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='Weight'>Presión arterial</label>
+                                    <div class='input-group'>
+                                        <input id='BloodPressureSystolic' name='BloodPressureSystolic' type='text' class='form-control text-right' size='3' maxlength='3'>
+                                        <span class='input-group-addon'>
+                                            /
+                                        </span>
+                                        <input id='BloodPressureDiastolic' name='BloodPressureDiastolic' type='text' class='form-control text-left' size='3' maxlength='3'>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- PhoneNumber -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label'
+                                           for='PhoneNumber'>Teléfono</label>
+                                    <div class='input-group'>
+
+                                        <span class='input-group-addon'>
+                                            <span class='glyphicon glyphicon-earphone'></span>
+                                        </span>
+
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-default dropdown-toggle"
+                                                    type="button" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false" id="PhoneType" data-value='1'>
+                                                Celular
+                                            </button>
+                                            <div class="dropdown-menu" id="PhoneTypeMenu">
+                                                <a class="dropdown-item active" data-value='1'
+                                                   href="#">Celular</a>
+                                                <a class="dropdown-item" data-value='2' href="#">Habitación</a>
+                                                <a class="dropdown-item" data-value='3' href="#">Oficina</a>
+                                                <a class="dropdown-item" data-value='4' href="#">Fax</a>
+                                            </div>
+                                        </div>
+
+                                        <input id='PhoneNumber' name='PhoneNumber' type='text'
+                                               class='form-control' size='9' maxlength='9'>
+
+                                    </div>
+                                    <div id='PhoneNumber_validate'></div>
+                                </div>
+                            </div>
+                            <!-- PrimaryEmailAddress -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='PrimaryEmailAddress'>
+                                        Correo
+                                        electrónico<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                    </label>
+                                    <div class='input-group'>
+                                        <span class='input-group-addon'>
+                                            <span class='glyphicon glyphicon-envelope'></span>
+                                        </span>
+                                        <input id='PrimaryEmailAddress'
+                                               name='PrimaryEmailAddress' type='text'
+                                               class='form-control' size='80' maxlength='80'>
+                                    </div>
+                                    <div id='PrimaryEmailAddress_validate'></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dirección -->
+                        <div class="form-row">
+
+
+                            <div class="col-lg-12">
+
+                                <h4><i class="fa fa-map-marker"></i> Dirección</h4>
+                                <div class="hr-line-dashed"
+                                     style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+
+                                <div class="form-row">
+
+                                    <!-- Sequence -->
+                                    <input id='Sequence' name='Sequence' type='hidden' value=''>
+
+                                    <!-- Province -->
+                                    <div class='col-sm-2 col-md-2'>
+                                        <div class='form-group'>
+                                            <label class='control-label'
+                                                   for='Province'>
+                                                Provincia<span class='required-mark'
+                                                               title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                            </label>
+                                            <select id='Province' name='Province'
+                                                    class='form-control'></select>
+                                        </div>
+                                    </div>
+                                    <!-- Canton -->
+                                    <div class='col-sm-2 col-md-2'>
+                                        <div class='form-group'>
+                                            <label class='control-label'
+                                                   for='Canton'>
+                                                Cantón<span class='required-mark'
+                                                            title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                            </label>
+                                            <select id='Canton' name='Canton'
+                                                    class='form-control'></select>
+                                        </div>
+                                    </div>
+                                    <!-- District -->
+                                    <div class='col-sm-2 col-md-2'>
+                                        <div class='form-group'>
+                                            <label class='control-label'
+                                                   for='District'>
+                                                Distrito<span class='required-mark'
+                                                              title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                            </label>
+                                            <select id='District' name='District'
+                                                    class='form-control'></select>
+                                        </div>
+                                    </div>
+
+                                    <!-- AddressDetail -->
+                                    <div class='col-sm-6 col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label'
+                                                   for='AddressDetail'>
+                                                Dirección<span class='required-mark'
+                                                               title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                            </label>
+                                            <input id='AddressDetail' name='AddressDetail'
+                                                   type='text' class='form-control' size='120'
+                                                   maxlength='120'>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Otros datos -->
+                        <div class="form-row">
+
+
+                            <div class="col-lg-12">
+
+                                <h4>Otros datos</h4>
+                                <div class="hr-line-dashed"
+                                     style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+
+                                <div class="form-row">
+
+                                    <!-- Occupation -->
+                                    <div class='col-sm-4 col-md-3'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Occupation'>Ocupación</label>
+                                            <input id='Occupation' name='Occupation' type='text' class='form-control' size='40' maxlength='40'>
+                                        </div>
+                                    </div>
+                                    <!-- RetirementModality -->
+                                    <div class='col-sm-4 col-md-3'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='RetirementModality'>Condición</label>
+                                            <select id='RetirementModality' name='RetirementModality' class='form-control'>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- RetirementCause -->
+                                    <div class='col-sm-4 col-md-3'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='RetirementCause'>Causa de pensión</label>
+                                            <input id='RetirementCause' name='RetirementCause' type='text' class='form-control' size='40' maxlength='40' disabled="disabled">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
+            </div>
+
+            <!-- Beneficiarios -->
+            <div id="beneficiariosTab" class="tab-pane">
+                <div id="beneficiaryNotify">
+                </div>
+                <table id="beneficiarios" class="footable table table-stripped toggle-arrow-tiny d-none"
+                       data-sorting="true" data-page-size="15"
+                       data-paging-container="#beneficiarios-paging">
+                    <thead>
+                        <tr>
+                            <th data-toggle="true">Nombre</th>
+                            <th>%Participación</th>
+                            <th>Parentesco</th>
+                            <th>Estado</th>
+                            <th data-breakpoints="xs">Fecha de alta</th>
+                            <th data-breakpoints="xs">Fecha de baja</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>
+                                <a id="NewBeneficiary" href="" class="btn btn-primary btn-xs">Nuevo</a>
+                            </td>
+                            <td colspan="5">
+                                <div id="beneficiarios-paging" class="float-right"></div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <div id="beneficiariosEdt" class="animated fadeInRight">
+                    @*<h4>Información del beneficiario</h4>
+                        <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>*@
+                    <form id='beneficiaryEdtFrm' class='form-horizontal' data-toggle='validator'>
+                        <fieldset disabled>
+
+                            <!-- Datos generales -->
+                            <div class="form-row">
+                                <input id='BRoleId' name='Id' type='hidden' value=''>
+                                <!-- BDocumentNumber -->
+                                <div class='col-sm-4 col-md-3'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='BDocumentNumber'>
+                                            Identificación<span class='required-mark'
+                                                                title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                        </label>
+                                        <div class='input-group'>
+                                            <span class='input-group-addon'>
+                                                <span class='glyphicon glyphicon-barcode'></span>
+                                            </span>
+
+                                            <div class="input-group-prepend">
+                                                <button class="btn btn-default dropdown-toggle"
+                                                        type="button" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false" data-value='1' id='BDocumentType'>
+                                                    Cédula
+                                                </button>
+                                                <div class="dropdown-menu" id="BDocumentTypeMenu">
+                                                    <a class="dropdown-item active"
+                                                       href="#" data-value='1'>Cédula</a>
+                                                    <a class="dropdown-item" href="#" data-value='2'>
+                                                        Cédula de
+                                                        residencia
+                                                    </a>
+                                                    <a class="dropdown-item" href="#" data-value='3'>Pasaporte</a>
+                                                    <a class="dropdown-item" href="#" data-value='4'>
+                                                        Cédula
+                                                        jurídica
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            <input id='BDocumentNumber' name='BDocumentNumber'
+                                                   type='text' class='form-control' size='20'
+                                                   maxlength='20' placeholder="0X-XXXX-XXXX">
+
+                                        </div>
+                                        <div id='BDocumentNumber_validate'></div>
+                                    </div>
+                                </div>
+                                <!-- BFirstName -->
+                                <div class='col-sm-4 col-md-3'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='BFirstName'>
+                                            Nombres<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                        </label>
+                                        <div class='input-group'>
+                                            <span class='input-group-addon'>
+                                                <span class='glyphicon glyphicon-user'></span>
+                                            </span>
+                                            <input id='BFirstName' name='BFirstName' type='text'
+                                                   class='form-control' size='40' maxlength='40'>
+                                            <input id='BMiddleName' name='BMiddleName' type='text'
+                                                   class='form-control' size='40' maxlength='40'>
+                                        </div>
+                                        <div id='BFirstName_validate'></div>
+                                    </div>
+                                </div>
+                                <!-- BLastName -->
+                                <div class='col-sm-4 col-md-3'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='BLastName'>
+                                            Apellidos<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                        </label>
+                                        <div class='input-group'>
+                                            <span class='input-group-addon'>
+                                                <span class='glyphicon glyphicon-user'></span>
+                                            </span>
+                                            <input id='BLastName' name='BLastName' type='text'
+                                                   class='form-control' size='40' maxlength='40'>
+                                            <input id='BSecondLastName' name='BSecondLastName'
+                                                   type='text' class='form-control' size='40'
+                                                   maxlength='40'>
+                                        </div>
+                                        <div id='BLastName_validate'></div>
+                                    </div>
+                                </div>
+                                <!-- BBirthDate -->
+                                <div class='col-sm-4 col-md-3'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='BBirthDate'>
+                                            Fecha de
+                                            nacimiento<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                        </label>
+                                        <div class='input-group date' id='BBirthDate_group'>
+                                            <input id='BBirthDate' name='BBirthDate' type='text'
+                                                   class='form-control' size='10' maxlength='10'
+                                                   placeholder='día/mes/año'>
+                                            <span class='input-group-addon'>
+                                                <span class='glyphicon glyphicon-calendar'></span>
+                                            </span>
+                                        </div>
+                                        <div id='BBirthDate_validate'></div>
+
+                                    </div>
+                                </div>
+                                <!-- BGender -->
+                                <div class='col-sm-4 col-md-3'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='BGender'>
+                                            Sexo
+                                        </label>
+                                        <select id='BGender' name='BGender'
+                                                class='form-control'></select>
+                                        <div id='BGender_validate'></div>
+                                    </div>
+                                </div>
+                                <!-- BCivilStatus -->
+                                <div class='col-sm-4 col-md-3'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='BCivilStatus'>
+                                            Estado civil
+                                        </label>
+                                        <select id='BCivilStatus' name='BCivilStatus'
+                                                class='form-control'></select>
+                                    </div>
+                                </div>
+
+                                <!-- BPhoneNumber -->
+                                <div class='col-sm-4 col-md-3'>
+                                    <div class='form-group'>
+                                        <label class='control-label'
+                                               for='BPhoneNumber'>Teléfono</label>
+                                        <div class='input-group'>
+
+                                            <span class='input-group-addon'>
+                                                <span class='glyphicon glyphicon-earphone'></span>
+                                            </span>
+
+                                            <div class="input-group-prepend">
+                                                <button class="btn btn-default dropdown-toggle"
+                                                        type="button" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false" id="BPhoneType" data-value='1'>
+                                                    Celular
+                                                </button>
+                                                <div class="dropdown-menu" id="BPhoneTypeMenu">
+                                                    <a class="dropdown-item active" data-value='1'
+                                                       href="#">Celular</a>
+                                                    <a class="dropdown-item" data-value='2' href="#">Habitación</a>
+                                                    <a class="dropdown-item" data-value='3' href="#">Oficina</a>
+                                                    <a class="dropdown-item" data-value='4' href="#">Fax</a>
+                                                </div>
+                                            </div>
+
+                                            <input id='BPhoneNumber' name='BPhoneNumber' type='text'
+                                                   class='form-control' size='9' maxlength='9'>
+
+                                        </div>
+                                        <div id='BPhoneNumber_validate'></div>
+                                    </div>
+                                </div>
+                                <!-- BPrimaryEmailAddress -->
+                                <div class='col-sm-4 col-md-3'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='BPrimaryEmailAddress'>
+                                            Correo
+                                            electrónico
+                                        </label>
+                                        <div class='input-group'>
+                                            <span class='input-group-addon'>
+                                                <span class='glyphicon glyphicon-envelope'></span>
+                                            </span>
+                                            <input id='BPrimaryEmailAddress'
+                                                   name='BPrimaryEmailAddress' type='text'
+                                                   class='form-control' size='80' maxlength='80'>
+                                        </div>
+                                        <div id='BPrimaryEmailAddress_validate'></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Dirección -->
+                            <div class="form-row">
+
+
+                                <div class="col-lg-12">
+
+                                    <h4><i class="fa fa-map-marker"></i> Dirección</h4>
+                                    <div class="hr-line-dashed"
+                                         style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+
+                                    <div class="form-row">
+
+                                        <!-- BSequence -->
+                                        <input id='BSequence' name='BSequence' type='hidden' value=''>
+
+                                        <!-- BProvince -->
+                                        <div class='col-sm-2 col-md-2'>
+                                            <div class='form-group'>
+                                                <label class='control-label'
+                                                       for='BProvince'>Provincia</label>
+                                                <select id='BProvince' name='BProvince'
+                                                        class='form-control'></select>
+                                            </div>
+                                        </div>
+                                        <!-- BCanton -->
+                                        <div class='col-sm-2 col-md-2'>
+                                            <div class='form-group'>
+                                                <label class='control-label'
+                                                       for='BCanton'>Cantón</label>
+                                                <select id='BCanton' name='BCanton'
+                                                        class='form-control'></select>
+                                            </div>
+                                        </div>
+                                        <!-- BDistrict -->
+                                        <div class='col-sm-2 col-md-2'>
+                                            <div class='form-group'>
+                                                <label class='control-label'
+                                                       for='BDistrict'>Distrito</label>
+                                                <select id='BDistrict' name='BDistrict'
+                                                        class='form-control'></select>
+                                            </div>
+                                        </div>
+
+                                        <!-- BAddressDetail -->
+                                        <div class='col-sm-6 col-md-6'>
+                                            <div class='form-group'>
+                                                <label class='control-label'
+                                                       for='BAddressDetail'>Dirección</label>
+                                                <input id='BAddressDetail' name='BAddressDetail'
+                                                       type='text' class='form-control' size='120'
+                                                       maxlength='120'>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Otros datos -->
+                            <div class="form-row">
+                                <div class="col-lg-12">
+
+                                    <h4>Otros datos</h4>
+                                    <div class="hr-line-dashed"
+                                         style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+
+                                    <div class="form-row">
+                                        <!-- BRelationship -->
+                                        <div class='col-sm-4 col-md-2'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='BRelationship'>Parentesco<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <select id='BRelationship' name='BRelationship' class='form-control'>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- BParticipationRate -->
+                                        <div class='col-sm-4 col-md-2'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='BParticipationRate'>Participación<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <div class='input-group'>
+                                                    <input id='BParticipationRate' name='BParticipationRate' type='text' class='form-control text-right' size='3' maxlength='3'>
+                                                    <span class='input-group-addon'>
+                                                        <small class="text-muted" title="Porcentaje">%</small>
+                                                    </span>
+                                                </div>
+                                                <div id='BParticipationRate_validate'></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class='col-md-12'>
+                                    <a id="AddBeneficiary" href="" class="btn btn-primary btn-xs">Agregar</a>
+                                    <a id="CancelBeneficiary" href="" class="btn btn-primary btn-xs">Cancelar</a>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Cuestionario -->
+            <div id="cuestionarioTab" class="tab-pane fade">
+                <form id='QuestionaryEdtFrm'>
+                    <fieldset>
+                        <div class="form-row">
+                            <!-- Pregunta_1 -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_1'>1. ¿Padecimientos cerebro vasculares, del sistema nervioso, cardiovasculares, respiratorios, urinarios, músculo esquelético, de la columna vertebral, sistema digestivo o de los órganos reproductivos?</label>
+                                            <br /><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_1a" name="Confirmation_1" value="1">
+                                                <label class="custom-control-label" for="Confirmation_1a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_1b" name="Confirmation_1" value="2">
+                                                <label class="custom-control-label" for="Confirmation_1b">No</label>
+                                            </div>
+                                            <div id='Confirmation_1_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_1" class="form-row d-none">
+                                    <!-- Diagnosis 1 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Diagnosis_1'>Diagnóstico<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                            <input id='Diagnosis_1' name='Diagnosis_1' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Treatment 1 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Treatment_1'>Tratamiento<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                            <input id='Treatment_1' name='Treatment_1' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Doctor 1 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Doctor_1'>Médico<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                            <input id='Doctor_1' name='Doctor_1' type='text' class='form-control' size='120' maxlength='120' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- When 1 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='When_1'>Fecha<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                            <div class='input-group date' id='When_1_group'>
+                                                <input id='When_1' name='When_1' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                            </div>
+                                            <div id='When_1_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Pregunta_2 -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_2'>2. ¿Padecimientos de tiroides, de la piel, de la vista u oído, trastornos sanguíneos y/o coagulación, diabetes?</label>
+                                            <br /><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_2a" name="Confirmation_2" value="1">
+                                                <label class="custom-control-label" for="Confirmation_2a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_2b" name="Confirmation_2" value="2">
+                                                <label class="custom-control-label" for="Confirmation_2b">No</label>
+                                            </div>
+                                            <div id='Confirmation_2_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_2" class="form-row d-none">
+                                    <!-- Diagnosis 2 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Diagnosis_2'>Diagnóstico</label>
+                                            <input id='Diagnosis_2' name='Diagnosis_2' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Treatment 2 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Treatment_2'>Tratamiento</label>
+                                            <input id='Treatment_2' name='Treatment_2' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Doctor 2 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Doctor_2'>Médico</label>
+                                            <input id='Doctor_2' name='Doctor_2' type='text' class='form-control' size='120' maxlength='120' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- When 2 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='When_2'>Fecha</label>
+                                            <div class='input-group date' id='When_2_group'>
+                                                <input id='When_2' name='When_2' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                            </div>
+                                            <div id='When_2_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Pregunta_3 -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_3'>3. ¿Cualquier tipo de quistes, nódulos, tumores y/o cáncer?</label>
+                                            <br /><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_3a" name="Confirmation_3" value="1">
+                                                <label class="custom-control-label" for="Confirmation_3a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_3b" name="Confirmation_3" value="2">
+                                                <label class="custom-control-label" for="Confirmation_3b">No</label>
+                                            </div>
+                                            <div id='Confirmation_3_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_3" class="form-row d-none">
+                                    <!-- Diagnosis_3 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Diagnosis_3'>Diagnóstico</label>
+                                            <input id='Diagnosis_3' name='Diagnosis_3' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Treatment_3 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Treatment_3'>Tratamiento</label>
+                                            <input id='Treatment_3' name='Treatment_3' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Doctor_3 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Doctor_3'>Médico</label>
+                                            <input id='Doctor_3' name='Doctor_3' type='text' class='form-control' size='120' maxlength='120' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- When_3 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='When_3'>Fecha</label>
+                                            <div class='input-group date' id='When_3_group'>
+                                                <input id='When_3' name='When_3' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                            </div>
+                                            <div id='When_3_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Pregunta_4 -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_4'>4. ¿Problemas alcohólicos o problemas de drogas?</label>
+                                            <br /><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_4a" name="Confirmation_4" value="1">
+                                                <label class="custom-control-label" for="Confirmation_4a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_4b" name="Confirmation_4" value="2">
+                                                <label class="custom-control-label" for="Confirmation_4b">No</label>
+                                            </div>
+                                            <div id='Confirmation_4_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_4" class="form-row d-none">
+                                    <!-- Diagnosis_4 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Diagnosis_4'>Diagnóstico</label>
+                                            <input id='Diagnosis_4' name='Diagnosis_4' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Treatment_4 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Treatment_4'>Tratamiento</label>
+                                            <input id='Treatment_4' name='Treatment_4' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Doctor_4 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Doctor_4'>Médico</label>
+                                            <input id='Doctor_4' name='Doctor_4' type='text' class='form-control' size='120' maxlength='120' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- When_4 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='When_4'>Fecha</label>
+                                            <div class='input-group date' id='When_4_group'>
+                                                <input id='When_4' name='When_4' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                            </div>
+                                            <div id='When_4_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Pregunta_5 -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_5'>5. ¿Ha estado usted recluido en un hospital o institución similar o recibido transfusiones de sangre?</label>
+                                            <br />
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_5a" name="Confirmation_5" value="1">
+                                                <label class="custom-control-label" for="Confirmation_5a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_5b" name="Confirmation_5" value="2">
+                                                <label class="custom-control-label" for="Confirmation_5b">No</label>
+                                            </div>
+                                            <div id='Confirmation_5_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_5" class="form-row d-none">
+                                    <!-- Diagnosis_5 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Diagnosis_5'>Diagnóstico</label>
+                                            <input id='Diagnosis_5' name='Diagnosis_5' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Treatment_5 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Treatment_5'>Tratamiento</label>
+                                            <input id='Treatment_5' name='Treatment_5' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Doctor_5 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Doctor_5'>Médico</label>
+                                            <input id='Doctor_5' name='Doctor_5' type='text' class='form-control' size='120' maxlength='120' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- When_5 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='When_5'>Fecha</label>
+                                            <div class='input-group date' id='When_5_group'>
+                                                <input id='When_5' name='When_5' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                            </div>
+                                            <div id='When_5_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Pregunta_6 -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_6'>6. ¿Está usted embarazada actualmente?</label>
+                                            <br /><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_6a" name="Confirmation_6" value="1">
+                                                <label class="custom-control-label" for="Confirmation_6a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_6b" name="Confirmation_6" value="2">
+                                                <label class="custom-control-label" for="Confirmation_6b">No</label>
+                                            </div>
+                                            <div id='Confirmation_6_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_6" class="form-row d-none">
+                                    <!-- Diagnosis 1 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Diagnosis_6'>Diagnóstico</label>
+                                            <input id='Diagnosis_6' name='Diagnosis_6' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Treatment 1 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Treatment_6'>Tratamiento</label>
+                                            <input id='Treatment_6' name='Treatment_6' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Doctor 1 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Doctor_6'>Médico</label>
+                                            <input id='Doctor_6' name='Doctor_6' type='text' class='form-control' size='120' maxlength='120' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- When 1 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='When_6'>Fecha</label>
+                                            <div class='input-group date' id='When_6_group'>
+                                                <input id='When_6' name='When_6' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                            </div>
+                                            <div id='When_6_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Pregunta_7 -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_7'>7. ¿Padece usted alguna condición médica, signo, síntoma, accidente, examen o diagnóstico que no se haya mencionado en este cuestionario?</label>
+                                            <br /><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_7a" name="Confirmation_7" value="1">
+                                                <label class="custom-control-label" for="Confirmation_7a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_7b" name="Confirmation_7" value="2">
+                                                <label class="custom-control-label" for="Confirmation_7b">No</label>
+                                            </div>
+                                            <div id='Confirmation_7_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_7" class="form-row d-none">
+                                    <!-- Diagnosis 2 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Diagnosis_7'>Amplíe</label>
+                                            <input id='Diagnosis_7' name='Diagnosis_7' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Treatment 2 -->
+                                    <div class='col-md-12 d-none'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Treatment_7'>Tratamiento</label>
+                                            <input id='Treatment_7' name='Treatment_7' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Doctor 2 -->
+                                    <div class='col-md-6 d-none'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Doctor_7'>Médico</label>
+                                            <input id='Doctor_7' name='Doctor_7' type='text' class='form-control' size='120' maxlength='120' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- When 2 -->
+                                    <div class='col-md-6 d-none'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='When_7'>Fecha</label>
+                                            <div class='input-group date' id='When_7_group'>
+                                                <input id='When_7' name='When_7' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                            </div>
+                                            <div id='When_7_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Pregunta_8 -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_8'>8. ¿Se ha realizado la prueba de SIDA?</label>
+                                            <br /><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_8a" name="Confirmation_8" value="1">
+                                                <label class="custom-control-label" for="Confirmation_8a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_8b" name="Confirmation_8" value="2">
+                                                <label class="custom-control-label" for="Confirmation_8b">No</label>
+                                            </div>
+                                            <div id='Confirmation_8_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_8" class="form-row d-none">
+                                    <!-- Diagnosis_8 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Diagnosis_8'>Resultado</label>
+
+                                            <select id='Diagnosis_8' name='Diagnosis_8' class='form-control' disabled>
+                                                <option value="Negativo">Negativo</option>
+                                                <option value="Positivo">Positivo</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- Treatment_8 -->
+                                    <div class='col-md-12 d-none'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Treatment_8'>Tratamiento</label>
+                                            <input id='Treatment_8' name='Treatment_8' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Doctor_8 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Doctor_8'>Motivo</label>
+                                            <input id='Doctor_8' name='Doctor_8' type='text' class='form-control' size='120' maxlength='120' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- When_8 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='When_8'>Fecha</label>
+                                            <div class='input-group date' id='When_8_group'>
+                                                <input id='When_8' name='When_8' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                            </div>
+                                            <div id='When_8_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Pregunta_9 -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_9'>9. ¿Se ha realizado examen de Papanicolau?</label>
+                                            <br /><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_9a" name="Confirmation_9" value="1">
+                                                <label class="custom-control-label" for="Confirmation_9a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_9b" name="Confirmation_9" value="2">
+                                                <label class="custom-control-label" for="Confirmation_9b">No</label>
+                                            </div>
+                                            <div id='Confirmation_9_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_9" class="form-row d-none">
+                                    <!-- Diagnosis_9 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Diagnosis_9'>Resultado</label>
+                                            <select id='Diagnosis_9' name='Diagnosis_9' class='form-control' disabled>
+                                                <option value="Normal">Normal</option>
+                                                <option value="Anormal">Anormal</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- Treatment_9 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Treatment_9'>Lugar de atención</label>
+                                            <input id='Treatment_9' name='Treatment_9' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Doctor_9 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Doctor_9'>Médico</label>
+                                            <input id='Doctor_9' name='Doctor_9' type='text' class='form-control' size='120' maxlength='120' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- When_9 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='When_9'>Fecha</label>
+                                            <div class='input-group date' id='When_9_group'>
+                                                <input id='When_9' name='When_9' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                            </div>
+                                            <div id='When_9_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Pregunta_10 -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_10'>10. ¿Se ha realizado prueba del PSA (para hombres mayores de 40 años)?</label>
+                                            <br /><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_10a" name="Confirmation_10" value="1">
+                                                <label class="custom-control-label" for="Confirmation_10a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_10b" name="Confirmation_10" value="2">
+                                                <label class="custom-control-label" for="Confirmation_10b">No</label>
+                                            </div>
+                                            <div id='Confirmation_10_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_10" class="form-row d-none">
+                                    <!-- Diagnosis_10 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Diagnosis_10'>Resultado</label>
+                                            <select id='Diagnosis_10' name='Diagnosis_10' class='form-control' disabled>
+                                                <option value="Normal">Normal</option>
+                                                <option value="Anormal">Anormal</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- Treatment_10 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Treatment_10'>Lugar de atención</label>
+                                            <input id='Treatment_10' name='Treatment_10' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Doctor_10 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Doctor_10'>Médico</label>
+                                            <input id='Doctor_10' name='Doctor_10' type='text' class='form-control' size='120' maxlength='120' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- When_10 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='When_10'>Fecha</label>
+                                            <div class='input-group date' id='When_10_group'>
+                                                <input id='When_10' name='When_10' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                            </div>
+                                            <div id='When_10_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </fieldset>
+                </form>
+            </div>
+
+            <!-- Póliza -->
+            <div id="polizaTab" class="tab-pane fade">
+                <form id='RiskEdtFrm' data-toggle='validator'>
+                    <fieldset>
+                        <!-- Datos generales de la póliza -->
+                        <div class="form-row">
+                            <!-- Id -->
+                            <input id='Id' name='Id' type='hidden' value=''>
+                            <!-- Currency -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='Currency'>Moneda<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                    <select id='Currency' name='Currency'
+                                            class='form-control'></select>
+                                </div>
+                            </div>
+                            <!-- ModuleCode -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='ModuleCode'>Plan<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                    <select id='ModuleCode' name='ModuleCode'
+                                            class='form-control'></select>
+                                </div>
+                            </div>
+                            <!-- PaymentFrequency -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='PaymentFrequency'>
+                                        Frecuencia de
+                                        pago<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                    </label>
+                                    <select id='PaymentFrequency' name='PaymentFrequency'
+                                            class='form-control'></select>
+                                </div>
+                            </div>
+                            <!-- IssueDate -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='IssueDate'>
+                                        Fecha de
+                                        alta<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                    </label>
+                                    <div class='input-group date' id='IssueDate_group'>
+                                        <input id='IssueDate' name='IssueDate' type='text'
+                                               class='form-control' size='10' maxlength='10'
+                                               placeholder='día/mes/año' disabled>
+                                        <span class='input-group-addon'>
+                                            <span class='glyphicon glyphicon-calendar'></span>
+                                        </span>
+                                    </div>
+                                    <div id='IssueDate_validate'></div>
+
+                                </div>
+                            </div>
+                            <!-- EffectiveDate -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='EffectiveDate'>
+                                        Inicio de
+                                        vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                    </label>
+                                    <div class='input-group date' id='EffectiveDate_group'>
+                                        <input id='EffectiveDate' name='EffectiveDate'
+                                               type='text' class='form-control' size='10'
+                                               maxlength='10' placeholder='día/mes/año'>
+                                        <span class='input-group-addon'>
+                                            <span class='glyphicon glyphicon-calendar'></span>
+                                        </span>
+                                    </div>
+                                    <div id='EffectiveDate_validate'></div>
+
+                                </div>
+                            </div>
+                            <!-- EndingDate -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='EndingDate'>
+                                        Fin de
+                                        vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                    </label>
+                                    <div class='input-group date' id='EndingDate_group'>
+                                        <input id='EndingDate' name='EndingDate' type='text'
+                                               class='form-control' size='10' maxlength='10'
+                                               placeholder='día/mes/año'>
+                                        <span class='input-group-addon'>
+                                            <span class='glyphicon glyphicon-calendar'></span>
+                                        </span>
+                                    </div>
+                                    <div id='EndingDate_validate'></div>
+
+                                </div>
+                            </div>
+
+                            <!-- InsuredAmountBase -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='InsuredAmountBase'>
+                                        Suma
+                                        asegurada<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                    </label>
+                                    <input id='InsuredAmountBase' name='InsuredAmountBase' type='text'
+                                           class='form-control text-right' size='18'
+                                           maxlength='18'>
+                                </div>
+                            </div>
+                            <!-- InsuredAmountComplement -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='InsuredAmountComplement'>
+                                        Suma
+                                        asegurada a refundir<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                    </label>
+                                    <input id='InsuredAmountComplement' name='InsuredAmountComplement' type='text'
+                                           class='form-control text-right' size='18'
+                                           maxlength='18' disabled>
+                                </div>
+                            </div>
+
+
+                            <!-- AnnualPremium -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='AnnualPremium'>
+                                        Prima
+                                        anual
+                                    </label>
+                                    <input id='AnnualPremium' name='AnnualPremium' type='text'
+                                           class='form-control text-right' size='18'
+                                           maxlength='18'>
+                                </div>
+                            </div>
+                            <!-- MonthlyPremium -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='MonthlyPremium'>
+                                        Prima
+                                        mensual
+                                    </label>
+                                    <input id='MonthlyPremium' name='MonthlyPremium' type='text'
+                                           class='form-control text-right' size='18'
+                                           maxlength='18'>
+                                </div>
+                            </div>
+                            <!-- Surcharge -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group d-none'>
+                                    <label class='control-label' for='Surcharge'>
+                                        Recargo
+                                    </label>
+                                    <div class='input-group'>
+                                        <input id='Surcharge' name='Surcharge' type='text'
+                                               class='form-control text-right' size='8'
+                                               maxlength='8' disabled>
+                                        <span class='input-group-addon'>
+                                            <small class="text-muted" title="Porcentaje">%</small>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <!-- InsuredAmount -->
+                            <div class='col-sm-4 offset-sm-8 col-md-3 offset-md-6'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='InsuredAmount'>
+                                        <b>Total de suma asegurada </b>
+                                    </label>
+                                    <input id='InsuredAmount' name='InsuredAmount' type='text'
+                                           class='form-control text-right' size='18'
+                                           maxlength='18' style="font-weight: bold;" disabled>
+                                </div>
+                            </div>
+                            <!-- MonthlyPremium col-sm-4 offset-sm-4 col-md-3 offset-md-3-->
+                            <div class='col-sm-4 offset-sm-8 col-md-3 offset-md-0'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='TotalPremium'>
+                                        <b>Total de prima</b>
+                                    </label>
+                                    <input id='TotalPremium' name='TotalPremium' type='text'
+                                           class='form-control text-right' size='18'
+                                           maxlength='18' style="font-weight: bold;" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <!-- Annotation -->
+                            <div class='col-sm-4 col-md-12'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='Surcharge'>
+                                        Anotaciones
+                                    </label>
+
+
+                                    <div class='form-group'>
+                                        <textarea id='Annotation' name='Annotation' class='form-control' size='350' maxlength='350' rows="2"></textarea>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Estado de la póliza -->
+                        <div id="policyStatusZone" class="form-row d-none">
+                            <div class="col-lg-12">
+                                <h4>Estado de la póliza</h4>
+                                <div class="hr-line-dashed"
+                                     style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                <div class="form-row">
+                                    <!-- Status -->
+                                    <div class='col-sm-4 col-md-3'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Status'>
+                                                Estado
+                                            </label>
+                                            <select id='Status' name='Status'
+                                                    class='form-control'></select>
+                                        </div>
+                                    </div>
+                                    <!-- CancellationDate -->
+                                    <div class='col-sm-4 col-md-3 offset-md-3'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='CancellationDate'>
+                                                Fecha de baja<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                            </label>
+                                            <div class='input-group date' id='CancellationDate_group'>
+                                                <input id='CancellationDate' name='CancellationDate' type='text'
+                                                       class='form-control' size='10' maxlength='10'
+                                                       placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'>
+                                                    <span class='glyphicon glyphicon-calendar'></span>
+                                                </span>
+                                            </div>
+                                            <div id='CancellationDate_validate'></div>
+
+                                        </div>
+                                    </div>
+                                    <!-- ReasonForStatus -->
+                                    <div class='col-sm-4 col-md-3'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='ReasonForStatus'>
+                                                Causa de la baja<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                            </label>
+                                            <select id='ReasonForStatus' name='ReasonForStatus'
+                                                    class='form-control' disabled></select>
+                                        </div>
+                                    </div>
+                                    <div class='col-md-12 text-right'>
+                                        <a id="AcceptCancellation" href="" class="btn btn-danger btn-xs d-none" title="Cancela la póliza"><i class="fa fa-times"></i> Cancelar la póliza</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Comentarios -->
+                        <div id="policyComment" class="form-row d-none">
+                            <div class="col-lg-12">
+                                <h4>Observaciones</h4>
+                                <div class="hr-line-dashed"
+                                     style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+
+                                <div class="form-row">
+                                    <!-- Comments -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <textarea id='Comments' name='Comments' class='form-control' size='350' maxlength='350' rows="3" disabled></textarea>
+                                        </div>
+                                    </div>
+                                    <div class='col-md-12 text-right'>
+                                        <a id="ReviewAccept" href="" class="btn btn-primary btn-xs d-none" title="Aceptar la solicitud"><i class="fa fa-thumbs-up"></i> Aceptar</a>
+                                        <a id="ReviewCondition" href="" class="btn btn-primary btn-xs d-none" title="Define condiciones para ser aceptadas por el aliado"><i class="fa fa-comments"></i> Condicionar</a>
+                                        <a id="ReviewDecline" href="" class="btn btn-danger btn-xs d-none" title="Declinar la solicitud"><i class="fa fa-times"></i> Declinar</a>
+
+                                        <a id="AcceptCondition" href="" class="btn btn-primary btn-xs d-none" title="Aceptar las condiciones definidas"><i class="fa fa-thumbs-up"></i> Aceptar</a>
+                                        <a id="AcceptDecline" href="" class="btn btn-danger btn-xs d-none" title="Declinar la solicitud"><i class="fa fa-times"></i> Declinar</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+
+            <!-- Prestamos -->
+            <div id="prestamosTab" class="tab-pane ">
+                <form id='OverdraftEdtFrm' data-toggle='validator'>
+                    <fieldset>
+                        <div class="form-row">
+
+                            <!-- StartTerm -->
+                            <div class='col-sm-6 col-md-4'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='StartTerm'>Inicio del plazo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                    <div class='input-group date' id='StartTerm_group'>
+                                        <input id='StartTerm' name='StartTerm' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año'>
+                                        <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                    </div>
+                                    <div id='StartTerm_validate'></div>
+
+                                </div>
+                            </div>
+                            <!-- EndTerm -->
+                            <div class='col-sm-6 col-md-4'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='EndTerm'>Vencimiento del plazo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                    <div class='input-group date' id='EndTerm_group'>
+                                        <input id='EndTerm' name='EndTerm' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año'>
+                                        <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                    </div>
+                                    <div id='EndTerm_validate'></div>
+
+                                </div>
+                            </div>
+
+                            <!-- RecastTotal -->
+                            <div class='offset-sm-6 col-sm-6 col-md-4 offset-md-0 d-none'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='RecastTotal'>
+                                        Monto total para refundición
+                                    </label>
+                                    <input id='RecastTotal' name='RecastTotal' type='text'
+                                           class='form-control text-right' size='18'
+                                           maxlength='18' disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row d-none recastplace">
+                            <div class="col-lg-12">
+
+                                <h4>Detalle de préstamos vigentes</h4>
+                                <div class="hr-line-dashed"
+                                     style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+
+                                <div class="form-row">
+
+                                    <!-- Amount1 -->
+                                    <div class='col-sm-5 col-md-3 d-none recastplace1'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Amount1'>Monto</label>
+                                            <input id='Amount1' name='Amount1' type='text' class='form-control text-right' size='18' maxlength='18' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- EndTermOnAmount1 -->
+                                    <div class='col-sm-5 col-md-2 d-none recastplace1'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='EndTermOnAmount1'>Vencimiento del plazo</label>
+                                            <div class='input-group date' id='EndTermOnAmount1_group'>
+                                                <input id='EndTermOnAmount1' name='EndTermOnAmount1' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                            </div>
+                                            <div id='EndTermOnAmount1_validate'></div>
+
+                                        </div>
+                                    </div>
+                                    <!-- Recast1 -->
+                                    <div class='col-sm-2 col-md-1 d-none recastplace1'>
+                                        <div class='form-group'>
+                                            <div class="custom-control custom-checkbox" style="padding-top: 24px;">
+                                                <input type="checkbox" class="custom-control-input" id="Recast1">
+                                                <label class="custom-control-label control-label" for="Recast1" style="padding-top: 4px;" title="Suma el monto del préstamo al monto total, el cual se usará para efectos de refundición.">Refundir</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Amount2 -->
+                                    <div class='col-sm-5 col-md-3 d-none recastplace2'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Amount2'>Monto</label>
+                                            <input id='Amount2' name='Amount2' type='text' class='form-control text-right' size='18' maxlength='18' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- EndTermOnAmount2 -->
+                                    <div class='col-sm-5 col-md-2 d-none recastplace2'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='EndTermOnAmount2'>Vencimiento del plazo</label>
+                                            <div class='input-group date' id='EndTermOnAmount2_group'>
+                                                <input id='EndTermOnAmount2' name='EndTermOnAmount2' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                            </div>
+                                            <div id='EndTermOnAmount2_validate'></div>
+
+                                        </div>
+                                    </div>
+                                    <!-- Recast2 -->
+                                    <div class='col-sm-2 col-md-1 d-none recastplace2'>
+                                        <div class='form-group'>
+                                            <div class="custom-control custom-checkbox" style="padding-top: 24px;">
+                                                <input type="checkbox" class="custom-control-input" id="Recast2">
+                                                <label class="custom-control-label control-label" for="Recast2" style="padding-top: 4px;" title="Suma el monto del préstamo al monto total, el cual se usará para efectos de refundición.">Refundir</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Amount3 -->
+                                    <div class='col-sm-5 col-md-3 d-none recastplace3'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Amount3'>Monto</label>
+                                            <input id='Amount3' name='Amount3' type='text' class='form-control text-right' size='18' maxlength='18' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- EndTermOnAmount3 -->
+                                    <div class='col-sm-5 col-md-2 d-none recastplace3'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='EndTermOnAmount3'>Vencimiento del plazo</label>
+                                            <div class='input-group date' id='EndTermOnAmount3_group'>
+                                                <input id='EndTermOnAmount3' name='EndTermOnAmount3' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                            </div>
+                                            <div id='EndTermOnAmount3_validate'></div>
+
+                                        </div>
+                                    </div>
+                                    <!-- Recast3 -->
+                                    <div class='col-sm-2 col-md-1 d-none recastplace3'>
+                                        <div class='form-group'>
+                                            <div class="custom-control custom-checkbox" style="padding-top: 24px;">
+                                                <input type="checkbox" class="custom-control-input" id="Recast3">
+                                                <label class="custom-control-label control-label" for="Recast3" style="padding-top: 4px;" title="Suma el monto del préstamo al monto total, el cual se usará para efectos de refundición.">Refundir</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Amount4 -->
+                                    <div class='col-sm-5 col-md-3 d-none recastplace4'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Amount4'>Monto</label>
+                                            <input id='Amount4' name='Amount4' type='text' class='form-control text-right' size='18' maxlength='18' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- EndTermOnAmount4 -->
+                                    <div class='col-sm-5 col-md-2 d-none recastplace4'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='EndTermOnAmount4'>Vencimiento del plazo</label>
+                                            <div class='input-group date' id='EndTermOnAmount4_group'>
+                                                <input id='EndTermOnAmount4' name='EndTermOnAmount4' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                            </div>
+                                            <div id='EndTermOnAmount4_validate'></div>
+                                        </div>
+                                    </div>
+                                    <!-- Recast4 -->
+                                    <div class='col-sm-2 col-md-1 d-none recastplace4'>
+                                        <div class='form-group'>
+                                            <div class="custom-control custom-checkbox" style="padding-top: 24px;">
+                                                <input type="checkbox" class="custom-control-input" id="Recast4">
+                                                <label class="custom-control-label control-label" for="Recast4" style="padding-top: 4px;" title="Suma el monto del préstamo al monto total, el cual se usará para efectos de refundición.">Refundir</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Amount5 -->
+                                    <div class='col-sm-5 col-md-3 d-none recastplace5'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Amount5'>Monto</label>
+                                            <input id='Amount5' name='Amount5' type='text' class='form-control text-right' size='18' maxlength='18' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- EndTermOnAmount5 -->
+                                    <div class='col-sm-5 col-md-2 d-none recastplace5'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='EndTermOnAmount5'>Vencimiento del plazo</label>
+                                            <div class='input-group date' id='EndTermOnAmount5_group'>
+
+                                                <input id='EndTermOnAmount5' name='EndTermOnAmount5' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                            </div>
+                                            <div id='EndTermOnAmount5_validate'></div>
+
+                                        </div>
+                                    </div>
+                                    <!-- Recast5 -->
+                                    <div class='col-sm-2 col-md-1 d-none recastplace5'>
+                                        <div class='form-group'>
+                                            <div class="custom-control custom-checkbox" style="padding-top: 24px;">
+                                                <input type="checkbox" class="custom-control-input" id="Recast5">
+                                                <label class="custom-control-label control-label" for="Recast5" style="padding-top: 4px;" title="Suma el monto del préstamo al monto total, el cual se usará para efectos de refundición.">Refundir</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </fieldset>
+                </form>
+            </div>
+
+            <!-- Adjuntos -->
+            <div id="adjuntosTab" class="tab-pane">
+                <table id="adjuntos" class="footable table table-stripped toggle-arrow-tiny d-none"
+                       data-sorting="true" data-page-size="15"
+                       data-paging-container="#paging-ui-container">
+                    <thead>
+                        <tr>
+                            <th data-toggle="true">Tipo</th>
+                            <th>Descripción</th>
+                            <th>Archivo</th>
+                            <th>Tamaño</th>
+                            <th data-breakpoints="xs" data-title="Realizado por">Usuario</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>
+                                <a id="NewAttachment" href="" class="btn btn-primary btn-xs">Nuevo</a>
+                            </td>
+                            <td colspan="5">
+                                <div id="paging-ui-container" class="float-right"></div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <div id="AttachmentsEdt" class="animated fadeInRight">
+                    @*<h4>Información del adjunto</h4>
+                        <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>*@
+                    <form id='AttachmentsEdtForm' class='form-horizontal' data-toggle='validator'>
+                        <fieldset>
+                            <div class="form-row">
+                                <!-- Id -->
+                                <input id='AttachmentsId' name='AttachmentsId' type='hidden' value=''>
+                                <!-- Description -->
+                                <div class='col-sm-8 col-md-12'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Description'>Descripción<span class='required-mark'>*</span></label>
+                                        <input id='Description' name='Description' type='text' class='form-control' size='120' maxlength='120'>
+                                    </div>
+                                </div>
+                                <!-- DocumentType -->
+                                <div class='col-sm-4 col-md-3'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='AttachmentType'>Tipo de documento<span class='required-mark'>*</span></label>
+                                        <select id='AttachmentType' name='AttachmentType' class='form-control'>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- FileName -->
+                                <div class='col-sm-4 col-md-9'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='FileName'>Archivo<span class='required-mark'>*</span></label>
+                                        <div class="input-group">
+                                            <input id='FileName' name='FileName' type='text' class='form-control' size='80' maxlength='80' placeholder="Indique el archivo a procesar..." readonly>
+                                            <input id="Stored" type="hidden" value="" />
+                                            <input id="FileSize" type="hidden" value="" />
+                                            <div class="input-group-append">
+                                                <span class="btn btn-default fileinput-button" title="Permite seleccionar el archivo a ser procesado">
+                                                    <span>Examinar...</span>
+                                                    <input id="fileUpload" type="file" />
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div id='FileName_validate'></div>
+                                    </div>
+                                </div>
+                                <div class='col-md-12'>
+                                    <a id="AddAttachment" href="" class="btn btn-primary btn-xs">Agregar</a>
+                                    <a id="CancelAttachment" href="" class="btn btn-primary btn-xs">Cancelar</a>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Historial -->
+            <div id="historialTab" class="tab-pane ">
+                <table id="Historial" class="footable table table-stripped toggle-arrow-tiny"
+                       data-sorting="true" data-page-size="15"
+                       data-paging-container="#paging-ui-container">
+                    <thead>
+                        <tr>
+
+                            <th data-toggle="true">Cuando</th>
+                            <th>Acción</th>
+                            <th data-breakpoints="xs" data-title="Realizado por">Usuario</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="6">
+                                <div id="paging-ui-container" class="float-right"></div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+        </div>
+    </div>
+    <div class="ibox-footer">
+        <span id="lastChange" class="text-muted small float-right" title="Último cambio">
+        </span>
+        <br />
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jsPolicyEdit")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.PolicyEdit.Init();
+        });
+    </script>
+}

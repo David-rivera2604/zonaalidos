@@ -1,0 +1,238 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<!-- ProcessCase -->
+<div class="ibox">
+    <div class="ibox-title">
+        <h5></h5>
+        <!-- Opciones -->
+        <div class="ibox-tools">
+            <a class="tool-filter">
+                <i class="fa fa-filter" title="Visualiza el filtro avanzado..."></i>
+            </a>
+            <a class="tool-new">
+                <i class="fa fa-plus" title="Crear un nuevo processcase"></i>
+            </a>
+            <a class="fullscreen-link">
+                <i class="fa fa-expand" title="Expande la zona de trabajo"></i>
+            </a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="Opciones adicionales...">
+                <i class="fa fa-wrench"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                <li>
+                    <a href="#" class="dropdown-item tool-new"><i class="fa fa-plus"></i> Crear un nuevo processcase</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-filter"></i> Despliega el filtro avanzado...</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar los table0s</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-audit" data-toggle="modal" data-target="#myModal5"><i class="fa fa-clock-o"></i> Historial...</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+            <div class="sk-rect4"></div>
+            <div class="sk-rect5"></div>
+        </div>
+        <div id="generalNotify">
+        </div>
+        <!-- Filtro -->
+        <div class='form-row filter-row'>
+            <div class='form-group col-md-12'>
+                <div class="input-group placeholder-small">
+                    <input id="ProcessCaseSearch" type="text" placeholder="Permite filtrar por nombre del rol o descripción" title="Permite filtrar por nombre del rol o descripción" class="form-control form-control-sm" maxlength="40">
+                    <span class="input-group-append">
+                        <button type="button" class="btn btn btn-primary btn-xs" id="ApplyFilter"> <i class="fa fa-search"></i> Filtrar</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- Filtro avanzado -->
+        <div class='form-row d-none advancefilter-row animated fadeInDown'>
+            <div class="form-group col-md-6">
+                <label class="control-label" for="RecordStatusFlt">Estado</label>
+                <select id="RecordStatusFlt" name="RecordStatusFlt" title="" multiple class="form-control form-control-sm">
+                </select>
+            </div>
+        </div>
+        <!-- Grid -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div class="table-responsive animated bounceInRight">
+                    <table id="ProcessCaseGridTbl" style="font-size: 11px;"></table>
+                </div>
+            </div>
+        </div>
+        <!-- Edit Form -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div id="ProcessCaseEdt" class="animated fadeInRight d-none">
+                    <form id='ProcessCaseEdtForm' class='form-horizontal' data-toggle='validator'>
+                        <fieldset>
+                            <div class="form-row">
+                                <!-- Id -->
+                                <input id='Id' name='Id' type='hidden' value=''>
+                                <!-- Title -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Title'>Title</label>
+                                        <input id='Title' name='Title' type='text' class='form-control' size='120' maxlength='120'>
+                                    </div>
+                                </div>
+                                <!-- Description -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Description'>Descripción</label>
+                                        <input id='Description' name='Description' type='text' class='form-control' size='300' maxlength='300'>
+                                    </div>
+                                </div>
+                                <!-- Priority -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Priority'>Prioridad</label>
+                                        <select id='Priority' name='Priority' class='form-control'></select>
+                                    </div>
+                                </div>
+                                <!-- InstanceId -->
+                                <input id='InstanceId' name='InstanceId' type='hidden' value=''>
+                                <!-- CurrentStepId -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='CurrentStepId'>Current Step Id</label>
+                                        <input id='CurrentStepId' name='CurrentStepId' type='text' class='form-control text-right' size='9' maxlength='9'>
+                                    </div>
+                                </div>
+                                <!-- Reference1 -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Reference1'>Referencia 1</label>
+                                        <input id='Reference1' name='Reference1' type='text' class='form-control' size='36' maxlength='36'>
+                                    </div>
+                                </div>
+                                <!-- Reference2 -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Reference2'>Referencia 2</label>
+                                        <input id='Reference2' name='Reference2' type='text' class='form-control' size='36' maxlength='36'>
+                                    </div>
+                                </div>
+                                <!-- Reference3 -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Reference3'>Referencia 3</label>
+                                        <input id='Reference3' name='Reference3' type='text' class='form-control' size='36' maxlength='36'>
+                                    </div>
+                                </div>
+                                <!-- Reference4 -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Reference4'>Reference 4</label>
+                                        <input id='Reference4' name='Reference4' type='text' class='form-control' size='36' maxlength='36'>
+                                    </div>
+                                </div>
+                                <!-- Reference5 -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Reference5'>Referencia 5</label>
+                                        <input id='Reference5' name='Reference5' type='text' class='form-control' size='36' maxlength='36'>
+                                    </div>
+                                </div>
+                                <!-- ContactMainName -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='ContactMainName'>Contact Main Name</label>
+                                        <input id='ContactMainName' name='ContactMainName' type='text' class='form-control' size='256' maxlength='256'>
+                                    </div>
+                                </div>
+                                <!-- ContactMainEmail -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='ContactMainEmail'>Contact Main Email</label>
+                                        <input id='ContactMainEmail' name='ContactMainEmail' type='text' class='form-control' size='256' maxlength='256'>
+                                    </div>
+                                </div>
+                                <!-- Status -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Status'>Estado</label>
+                                        <select id='Status' name='Status' class='form-control'></select>
+                                    </div>
+                                </div>
+                                <!-- Label -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Label'>Etiqueta</label>
+                                        <input id='Label' name='Label' type='text' class='form-control' size='80' maxlength='80'>
+                                    </div>
+                                </div>
+                                <!-- SubStatus -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='SubStatus'>Estado</label>
+                                        <input id='SubStatus' name='SubStatus' type='text' class='form-control text-right' size='3' maxlength='3'>
+                                    </div>
+                                </div>
+                                <!-- SubLabel -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='SubLabel'>Etiqueta</label>
+                                        <input id='SubLabel' name='SubLabel' type='text' class='form-control' size='80' maxlength='80'>
+                                    </div>
+                                </div>
+                                <!-- FlowId -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='FlowId'>Proceso<span class='required-mark'>*</span></label>
+                                        <select id='FlowId' name='FlowId' class='form-control'></select>
+                                    </div>
+                                </div>
+                                <!-- UserId -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='UserId'>Usuario</label>
+                                        <select id='UserId' name='UserId' class='form-control'></select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-row">
+                                <div class='col-md-12'>
+                                    <div class="modal-footer">
+                                        <button id="ProcessCaseEdtFormSave" type="button" class="btn btn-primary btn-sm" data-doing="Guardando cambios..." title="Guardar cambios">Guardar</button>
+                                        <button id="ProcessCaseEdtFormSaveContinue" type="button" class="btn btn-primary btn-sm d-none" data-doing="Guardando cambios..." title="Guardar cambios y continuar">Guardar y continuar</button>
+                                        <button id="ProcessCaseEdtFormSaveCopy" type="button" class="btn btn-primary btn-sm d-none" data-doing="Guardando cambios..." title="Guardar cambios y continuar">Guardar y copiar</button>
+                                        <button id="ProcessCaseEdtFormDuplicate" type="button" class="btn btn-info btn-sm d-none" data-doing="Duplicando..." title="Duplica la información actual">Duplicar</button>
+                                        <button id="ProcessCaseEdtFormDelete" type="button" class="btn btn-danger btn-sm d-none" data-doing="Eliminando..." title="Elimina la información actual">Eliminar</button>
+                                        <button id="ProcessCaseEdtFormCancel" type="button" class="btn btn-white btn-sm">Cancelar</button>										
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/General.ProcessCase.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.GeneralProcessCase.Init();
+        });
+    </script>
+}

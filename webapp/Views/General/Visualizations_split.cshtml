@@ -1,0 +1,87 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<!-- Visualizations -->
+<div class="ibox">
+    <div class="ibox-title">
+        <h5>Roles por usuario</h5>
+        <!-- Opciones -->
+        <div class="ibox-tools">
+            <a class="tool-filter">
+                <i class="fa fa-filter" title="Visualiza el filtro avanzado..."></i>
+            </a>
+            <a class="tool-new">
+                <i class="fa fa-plus" title="Crear un nuevo visualizations"></i>
+            </a>
+            <a class="fullscreen-link">
+                <i class="fa fa-expand" title="Expande la zona de trabajo"></i>
+            </a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="Opciones adicionales...">
+                <i class="fa fa-wrench"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                <li>
+                    <a href="#" class="dropdown-item tool-new"><i class="fa fa-plus"></i> Crear un nuevo visualizations</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-filter"></i> Despliega el filtro avanzado...</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar los table0s</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-audit" data-toggle="modal" data-target="#myModal5"><i class="fa fa-clock-o"></i> Historial...</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <!-- Filtro -->
+        <div class='form-row filter-row'>
+            <div class='form-group col-md-12'>
+                <div class="input-group placeholder-small">
+                    <input id="VisualizationsSearch" type="text" placeholder="Permite filtrar por nombre del rol o descripción" title="Permite filtrar por nombre del rol o descripción" class="form-control form-control-sm" maxlength="40">
+                    <span class="input-group-append">
+                        <button type="button" class="btn btn btn-primary btn-xs" id="ApplyFilter"> <i class="fa fa-search"></i> Filtrar</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- Filtro avanzado -->
+        <div class='form-row d-none advancefilter-row animated fadeInDown'>
+            <div class="form-group col-md-6">
+                <label class="control-label" for="RecordStatusFlt">Estado</label>
+                <select id="RecordStatusFlt" name="RecordStatusFlt" title="" multiple class="form-control form-control-sm">
+                </select>
+            </div>
+        </div>
+        <!-- Grid -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div class="table-responsive animated bounceInRight">
+                    <table id="VisualizationsGridTbl" style="font-size: 11px;"></table>
+                </div>
+            </div>
+        </div>
+        <!-- Edit Form -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div id="VisualizationsEdt" class="animated fadeInRight d-none">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/General.Visualizations.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.GeneralVisualizations.Init();
+        });
+    </script>
+}

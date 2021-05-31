@@ -1,0 +1,34 @@
+﻿<!-- Grid -->
+@*<div class='form-row'>
+    <div class='col-md-12'>
+        <div class="table-responsive animated bounceInRight" style="padding: 0px 2px 0px 2px;">
+            <table id="RoleMemberGridTbl" style="font-size: 11px"></table>
+        </div>
+        <div id="chart" class="d-none">
+        </div>
+        <div id="tmpl">
+        </div>
+    </div>
+</div>*@
+
+<div id="container" class="@ViewBag.theme" style="background-color: white;">
+    <div class="@ViewBag.inboxClass">
+        <div class="@ViewBag.iboxContentClass">
+            <div id="generalNotify">
+            </div>
+
+            @*Cabecera de las pestañas*@
+            <ul id="queryTab" class="nav nav-tabs" role="tablist">
+            </ul>
+
+            @*Contenido de las pestañas*@
+            <div id="queryTabContent" class="tab-content" style="padding-top: 10px">
+            </div>
+        </div>
+        @*<div class="ibox-footer">
+            <span id="lastChange" class="text-muted small float-right" title="Último cambio">
+            </span>
+            <br />
+        </div>*@
+    </div>
+</div>

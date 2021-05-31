@@ -1,0 +1,45 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+<div class="ibox">
+    <div class="ibox-title">
+        <h5>Emisión de pólizas</h5>
+    </div>
+    <div class="ibox-content">
+        <p>La siguiente lista representa los productos disponible para la emisión de pólizas.</p>
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+            <div class="sk-rect4"></div>
+            <div class="sk-rect5"></div>
+        </div>
+    </div>
+</div>
+@*fa-tasks*@
+<div class="row">
+    <div class="col-lg-12" id="panel">
+    </div>
+</div>
+<div class="file-box animated bounceInRight d-none" id="tmpl">
+    <div class="file">
+        <a href="Edit?alias=tenant_saldo_deudor" class="tmpllink">
+            <span class="corner"></span>
+            <div class="icon">
+                <i class="fa"></i>
+            </div>
+            <div class="file-name">
+                Seguro colectivo de vida saldo deudor<br><small>Ramo: Colectivo de vida</small>
+            </div>
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="@Url.Content("~/Scripts/policy.products.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.PolicyProducts.Init();
+        });
+    </script>
+}

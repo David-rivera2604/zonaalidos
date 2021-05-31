@@ -1,0 +1,94 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<div id="extend">contenido</div>
+
+<div class='form-row'>
+    <div class='col-md-12'>
+        <form id='VisualizationsEdtForm' class='form-horizontal' data-toggle='validator'>
+            <fieldset>
+                <div class="form-row">
+                    <div class='col-md-10'>
+                        <div class='form-group'>
+                            <textarea id='specification' class='form-control' size='4096' maxlength='4096' rows="10">
+Solicitud de inclusión. Seguro colectivo y gastos medicos|título
+Datos de la póliza|zona|4
+ N° de póliza+
+ Nombre del contratante
+ Fecha de ingreso a póliza|fecha
+ Clase|radio|Vida,Salud
+Datos del asegurado|zona|4 
+ Identificación+|cedula
+ Nombres+
+ Apellidos+
+ Sexo|lista
+ Fecha de nacimiento|Nacimiento
+ Nacionalidad|lista
+ Seguro Social
+ Miembro dominante|radio|Izquierdo,Derecho
+ Teléfono|Teléfono
+ Fecha de Ingreso a trabajar|fecha
+ Estado civil|lista
+ Salario mensual
+ Correo electrónico|Correo
+ Ocupación|lista
+ Estatura:mts::|número
+ Peso:lbs::|número
+ Suma asegurada|número
+ Médico de cabecera
+Dirección de residencia|zona|icon=fa-map-marker
+ Provincia+|lista
+ Cantón+|lista
+ Provincia+|lista
+ Dirección+
+Cuenta para reembolso|zona|2
+ Nombre del banco
+ N° cuenta SINPE
+ Tipo de cuenta|radio|Ahorro,Corriente
+ Moneda de cuenta|radio|Colones,Dólares
+Beneficiarios|tabla
+ Identificación+|cedula
+ Nombres+
+ Apellidos+
+ Fecha de nacimiento+|Nacimiento
+ Parentesco|lista
+ Porcentaje+|Porcentaje
+Dependientes|tabla
+ Identificación+|cedula
+ Nombres+
+ Apellidos+
+ Fecha de nacimiento|Nacimiento
+ Parentesco|lista
+Modo de pago|zona|4
+ Cargo automático a tarjeta de crédito o debito|marca
+ Deducción de cuenta bancaria del cliente|marca
+ Directo en caja y/o cobro en línea|marca
+ Deposito en cuentas bancarias de mapfre|marca
+ Tarjeta de crédito o cuenta de cargo n°
+ Vencimiento|fecha
+ Tarjetahabiente
+ Banco|lista
+</textarea>
+                        </div>
+                    </div>
+                    <div class='col-md-2'>
+                        <div class='form-group'>
+                            <button id="specificationApply" type="button" class="btn btn-danger">Aplicar</button>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/Prototype.Index.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.Prototype.Init();
+        });
+    </script>
+}

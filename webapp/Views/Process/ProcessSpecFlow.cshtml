@@ -1,0 +1,185 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<!-- ProcessSpecFlow -->
+<div class="ibox">
+    <div class="ibox-title">
+        <h5></h5>
+        <!-- Opciones -->
+        <div class="ibox-tools">
+            <a class="tool-filter">
+                <i class="fa fa-filter" title="Visualiza el filtro avanzado..."></i>
+            </a>
+            <a class="tool-new">
+                <i class="fa fa-plus" title="Crear un nuevo process spec flow"></i>
+            </a>
+            <a class="fullscreen-link">
+                <i class="fa fa-expand" title="Expande la zona de trabajo"></i>
+            </a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="Opciones adicionales...">
+                <i class="fa fa-wrench"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                <li>
+                    <a href="#" class="dropdown-item tool-new"><i class="fa fa-plus"></i> Crear un nuevo process spec flow</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-filter"></i> Despliega el filtro avanzado...</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar los table0s</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-audit" data-toggle="modal" data-target="#myModal5"><i class="fa fa-clock-o"></i> Historial...</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+            <div class="sk-rect4"></div>
+            <div class="sk-rect5"></div>
+        </div>
+        <div id="generalNotify">
+        </div>
+        <!-- Filtro -->
+        <div class='form-row filter-row'>
+            <div class='form-group col-md-12'>
+                <div class="input-group placeholder-small">
+                    <input id="ProcessSpecFlowSearch" type="text" placeholder="Permite filtrar por nombre del rol o descripción" title="Permite filtrar por nombre del rol o descripción" class="form-control form-control-sm" maxlength="40">
+                    <span class="input-group-append">
+                        <button type="button" class="btn btn btn-primary btn-xs" id="ApplyFilter"> <i class="fa fa-search"></i> Filtrar</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- Filtro avanzado -->
+        <div class='form-row d-none advancefilter-row animated fadeInDown'>
+            <div class="form-group col-md-6">
+                <label class="control-label" for="StatusFlt">Estado</label>
+                <select id="StatusFlt" name="StatusFlt" title="" multiple class="form-control form-control-sm">
+                </select>
+            </div>
+        </div>
+        <!-- Grid -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div class="table-responsive animated bounceInRight">
+                    <table id="ProcessSpecFlowGridTbl" style="font-size: 11px;"></table>
+                </div>
+            </div>
+        </div>
+        <!-- Edit Form -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div id="ProcessSpecFlowEdt" class="animated fadeInRight d-none">
+                    <form id='ProcessSpecFlowEdtForm' class='form-horizontal' data-toggle='validator'>
+                        <fieldset>
+                            <div class="form-row">
+                                <!-- Id -->
+                                <input id='Id' name='Id' type='hidden' value=''>
+                                <!-- Name -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Name'>Nombre<span class='required-mark'>*</span></label>
+                                        <input id='Name' name='Name' type='text' class='form-control' size='80' maxlength='80'>
+                                    </div>
+                                </div>
+                                <!-- Description -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Description'>Descripción</label>
+                                        <input id='Description' name='Description' type='text' class='form-control' size='256' maxlength='256'>
+                                    </div>
+                                </div>
+                                <!-- Alias -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Alias'>Alias</label>
+                                        <input id='Alias' name='Alias' type='text' class='form-control' size='30' maxlength='30'>
+                                    </div>
+                                </div>
+                                <!-- MailServer -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='MailServer'>Servidor de correo<span class='required-mark'>*</span></label>
+                                        <select id='MailServer' name='MailServer' class='form-control'></select>
+                                    </div>
+                                </div>
+                                <!-- ReferenceCaption1 -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='ReferenceCaption1'>Reference Caption 1</label>
+                                        <input id='ReferenceCaption1' name='ReferenceCaption1' type='text' class='form-control' size='80' maxlength='80'>
+                                    </div>
+                                </div>
+                                <!-- ReferenceCaption2 -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='ReferenceCaption2'>Reference Caption 2</label>
+                                        <input id='ReferenceCaption2' name='ReferenceCaption2' type='text' class='form-control' size='80' maxlength='80'>
+                                    </div>
+                                </div>
+                                <!-- ReferenceCaption3 -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='ReferenceCaption3'>Reference Caption 3</label>
+                                        <input id='ReferenceCaption3' name='ReferenceCaption3' type='text' class='form-control' size='80' maxlength='80'>
+                                    </div>
+                                </div>
+                                <!-- ReferenceCaption4 -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='ReferenceCaption4'>Reference Caption 4</label>
+                                        <input id='ReferenceCaption4' name='ReferenceCaption4' type='text' class='form-control' size='80' maxlength='80'>
+                                    </div>
+                                </div>
+                                <!-- ReferenceCaption5 -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='ReferenceCaption5'>Reference Caption 5</label>
+                                        <input id='ReferenceCaption5' name='ReferenceCaption5' type='text' class='form-control' size='80' maxlength='80'>
+                                    </div>
+                                </div>
+                                <!-- Status -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Status'>Estado<span class='required-mark'>*</span></label>
+                                        <select id='Status' name='Status' class='form-control'></select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-row">
+                                <div class='col-md-12'>
+                                    <button id="ProcessSpecFlowEdtFormSave" type="button" class="btn btn-primary btn-sm d-none formbtn" data-doing="Guardando cambios..." title="Guardar cambios">Guardar</button>
+                                    <button id="ProcessSpecFlowEdtFormSaveContinue" type="button" class="btn btn-primary btn-sm d-none formbtn" data-doing="Guardando cambios..." title="Guardar cambios y continuar">Guardar y continuar</button>
+                                    <button id="ProcessSpecFlowEdtFormSaveCopy" type="button" class="btn btn-primary btn-sm d-none formbtn" data-doing="Guardando cambios..." title="Guardar cambios y continuar">Guardar y copiar</button>
+                                    <button id="ProcessSpecFlowEdtFormDuplicate" type="button" class="btn btn-info btn-sm d-none formbtn" data-doing="Duplicando..." title="Duplica la información actual">Duplicar</button>
+                                    <button id="ProcessSpecFlowEdtFormDelete" type="button" class="btn btn-danger btn-sm d-none formbtn" data-doing="Eliminando..." title="Elimina la información actual">Eliminar</button>
+                                    <button id="ProcessSpecFlowEdtFormCancel" type="button" class="btn btn-white btn-sm d-none formbtn">Cancelar</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/General.ProcessSpecFlow.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.GeneralProcessSpecFlow.Init();
+        });
+    </script>
+}

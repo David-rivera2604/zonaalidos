@@ -1,0 +1,358 @@
+/*
+ *
+ *   SKIN - INSPINIA - Responsive Admin Theme
+ *   NAME - Mapfre
+ *
+*/
+.Mapfre .minimalize-styl-2 {
+    margin: 14px 5px 5px 30px;
+}
+
+.Mapfre .navbar-top-links li:last-child {
+    margin-right: 30px;
+}
+
+.Mapfre.fixed-nav .minimalize-styl-2 {
+    margin: 14px 5px 5px 15px;
+}
+
+.Mapfre .spin-icon {
+    background: #E7E3E3 !important;
+}
+
+body.boxed-layout.Mapfre #wrapper {
+    background: #E7E3E3;
+}
+
+.Mapfre .nav-header {
+    background-color: #F4F6FA;
+    background-image: none;
+    color: #F2F3F4;
+    border: 1px solid white;
+    border-radius: 10px;
+}
+
+    .Mapfre .nav-header a {
+        color: #F2F3F4;
+    }
+
+.Mapfre.mini-navbar .nav-second-level {
+    background: #F2F3F4;
+}
+
+.Mapfre .breadcrumb {
+    background: transparent;
+}
+
+.Mapfre .page-heading {
+    border: none;
+}
+
+.Mapfre ul.nav-second-level {
+    background-color: inherit;
+}
+
+.Mapfre .nav > li.active {
+    background: #F2F3F4;
+}
+
+.Mapfre .nav > li > a {
+    background: #F2F3F4;
+    color: #494949;
+}
+
+.Mapfre .nav > li.active > a {
+    color: #F2F3F4;
+}
+
+.Mapfre .navbar-minimalize {
+    background: #ecba52;
+    border-color: #ecba52;
+}
+
+body.Mapfre {
+    background-color: #F2F3F4;
+}
+
+.Mapfre .navbar-static-top {
+    background: #ffffff;
+}
+
+.Mapfre .dashboard-header {
+    background: transparent;
+    border-bottom: none !important;
+    border-top: none;
+    padding: 20px 30px 10px 30px;
+}
+
+.Mapfre .wrapper-content {
+    padding: 30px 15px;
+}
+
+.Mapfre #page-wrapper {
+    background: #f4f6fa;
+}
+
+.Mapfre .ibox-title,
+.Mapfre .ibox-content {
+    border-width: 1px;
+}
+
+    .Mapfre .ibox-content:last-child {
+        border-style: solid solid solid solid;
+    }
+
+.Mapfre .nav > li.active {
+    border: none;
+}
+
+.Mapfre .nav-header {
+    padding: 35px 25px 25px 25px;
+}
+
+    .Mapfre .nav-header a.dropdown-toggle {
+        color: #F2F3F4;
+        margin-top: 10px;
+    }
+
+        .Mapfre .nav-header a.dropdown-toggle .text-muted {
+            color: #F2F3F4;
+            opacity: 0.8;
+        }
+
+.Mapfre .profile-element {
+    /*text-align: center;*/
+}
+
+.Mapfre .rounded-circle {
+    border-radius: 0px;
+}
+
+.Mapfre .navbar-default {
+    background: #F4F6FA;
+    color: gray;
+}
+
+    .Mapfre .navbar-default .nav > li > a:hover,
+    .Mapfre .navbar-default .nav > li > a:focus {
+        background: #d81e05;
+        color: #fff;
+    }
+
+.Mapfre .nav.nav-tabs > li.active > a {
+    color: #F2F3F4;
+}
+
+.Mapfre .nav.nav-tabs > li.active {
+    background: transparent;
+}
+
+.Mapfre .btn-primary {
+    color: #fff !important;
+    background-color: #c31f09;
+    border-color: #c31f09;
+    font-weight: bold;
+}
+
+    .Mapfre .btn-primary:hover,
+    .Mapfre .btn-primary:focus,
+    .Mapfre .btn-primary.focus {
+        background-color: #c31f09;
+        border-color: #c31f09;
+        color: #FFFFFF;
+    }
+
+/* //Nuevo */
+/*body {
+    background-color: #F2F3F4;
+}*/
+
+.Mapfre .loginBackground {
+    background-image: url('/aliados/logos/velero3.jpg');
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.Mapfre .wellcome-info > p {
+    color: black;
+}
+
+.Mapfre .wellcome-info > h3 {
+    color: #c31f09;
+    font-weight: bold;
+}
+
+.Mapfre #forgotlink > small {
+    color: black;
+}
+
+.Mapfre .m-t > small {
+    color: black;
+}
+
+/*Cambios 5-1-2020 Royner*/
+.Mapfre .nav > li > a {
+    background: content-box;
+    color: currentColor;
+}
+
+
+/*Color nav vertical*/
+.Mapfre .nav > li.active > a {
+    color: currentColor;
+}
+
+/*Colores Titulos*/
+.Mapfre h1, .Mapfre h2, .Mapfre h3, .Mapfre h4, .Mapfre h5, .Mapfre h6 {
+    font-weight: 100;
+    color: firebrick;
+    font-weight: bold;
+}
+
+/*Colores letras etiquetas*/
+.Mapfre .control-label {
+    margin-bottom: .2rem;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+/*Color nav horizontal*/
+.Mapfre .fixed-nav.Mapfre .navbar-fixed-top {
+    background: #d81e05;
+    color: #f8f9fa;
+}
+
+/*Nombre del usuario logueado*/
+.Mapfre body.mini-navbar.fixed-sidebar .profile-element, .Mapfre .block {
+    display: block !important;
+    color: firebrick;
+    font-weight: bold;
+}
+
+
+.Mapfre a {
+    color: firebrick;
+    text-decoration: none;
+    background-color: transparent;
+    font-style: normal;
+    font-weight: 600;
+}
+/*Menu cambio de clave*/
+.Mapfre .nav.metismenu .dropdown-menu > li > a {
+    padding: 3px 20px;
+    display: block;
+    background: #d81e05;
+}
+
+.Mapfre .navbar-top-links > li > a {
+    text-align: right;
+    color: beige;
+}
+
+/*Estilo a la tabla*/
+.Mapfre .bootstrap-table .fixed-table-container .table {
+    width: 100%;
+    margin-bottom: 0 !important;
+    background: local;
+}
+
+/*Clase boton default*/
+.Mapfre .btn-default {
+    color: black;
+    background: ghostwhite;
+    border: 1px solid #e7eaec;
+}
+
+    .Mapfre .btn-default:hover {
+        color: black;
+        background: ghostwhite;
+        border: 1px solid #e7eaec;
+    }
+
+/*Menu de logo y nombre usuario cuando se ajusta la pantalla*/
+.Mapfre body.mini-navbar.fixed-sidebar .nav-header {
+    padding: 33px 25px;
+    background: currentColor;
+}
+
+/*Estilo para los tab activos*/
+.Mapfre .nav-tabs .nav-link.active, .Mapfre .nav-tabs .nav-item.show .nav-link {
+    color: firebrick;
+    background-color: #fff;
+    border-color: #dee2e6 #dee2e6 #fff;
+}
+
+/*Paginacion activa en el grid*/
+.Mapfre .page-item.active .page-link {
+    background-color: firebrick;
+    border-color: #1ab394;
+}
+
+/*Desconectar*/
+.Mapfre .navbar-top-links > li > a {
+    text-align: right;
+    color: inherit;
+}
+
+/*Logo del aliado pantalla ajustada*/
+body.mini-navbar .nav-header {
+    padding: 0;
+    background-color: inherit;
+}
+
+/*Texto olvido contraseña*/
+.Mapfre #forgotlink > small {
+    color: black;
+    color: white;
+    background: repeating-linear-gradient( 45deg, black, transparent 100px);
+}
+
+.Mapfre .m-t > small {
+    color: black;
+    color: white;
+    background: repeating-linear-gradient( 45deg, black, transparent 100px);
+}
+
+/*NAV Horizontal*/
+.Mapfre body.fixed-nav.fixed-nav-basic .navbar-fixed-top {
+    left: 220px;
+    background-color: #d81e05;
+}
+
+.Mapfre .navbar-fixed-top {
+    left: 220px;
+    background-color: #d81e05;
+}
+
+/*Enlaces Desconectar y ayuda*/
+.Mapfre .navbar-top-links > li > a {
+    text-align: right;
+    color: inherit;
+    color: aliceblue;
+}
+
+/*Iconos*/
+.Mapfre .fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: currentColor;
+    font-weight: bold;
+}
+
+@media only screen and (max-width: 600px) {
+    .Mapfre .wrapper-content {
+        padding: 0 0 0;
+    }
+
+    .Mapfre #page-wrapper {
+        padding: 0 0;
+    }
+}

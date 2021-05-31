@@ -1,0 +1,320 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<!-- ProcessSpecStep -->
+<div class="ibox">
+    <div class="ibox-title">
+        <h5>Etapas de un proceso</h5>
+        <!-- Opciones -->
+        <div class="ibox-tools">
+            <a class="tool-new">
+                <i class="fa fa-plus" title="Crear un nuevo process spec step"></i>
+            </a>
+            <a class="fullscreen-link">
+                <i class="fa fa-expand" title="Expande la zona de trabajo"></i>
+            </a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="Opciones adicionales...">
+                <i class="fa fa-wrench"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                <li>
+                    <a href="#" class="dropdown-item tool-new"><i class="fa fa-plus"></i> Crear un nuevo process spec step</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-filter"></i> Despliega el filtro avanzado...</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar los table1s</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-audit" data-toggle="modal" data-target="#myModal5"><i class="fa fa-clock-o"></i> Historial...</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+            <div class="sk-rect4"></div>
+            <div class="sk-rect5"></div>
+        </div>
+        <div id="generalNotify">
+        </div>
+        <!-- Filtro avanzado -->
+        <div class='form-row advancefilter-row animated fadeInDown'>
+            <div class="form-group col-md-4">
+                <label class="control-label" for="FlowIdFlt">Proceso<span class='required-mark'>*</span></label>
+                <select id="FlowIdFlt" name="FlowIdFlt" title="" multiple class="form-control form-control-sm">
+                </select>
+            </div>
+        </div>
+        <!-- Grid -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div class="table-responsive animated bounceInRight">
+                    <table id="ProcessSpecStepGridTbl" style="font-size: 11px;"></table>
+                </div>
+            </div>
+        </div>
+        <!-- Edit Form -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div id="ProcessSpecStepEdt" class="animated fadeInRight d-none">
+                    <form id='ProcessSpecStepEdtForm' class='form-horizontal' data-toggle='validator'>
+                        <fieldset>
+                            <div class="form-row">
+                                <!-- Id -->
+                                <input id='Id' name='Id' type='hidden' value=''>
+                                <!-- FlowId -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='FlowId'>Proceso<span class='required-mark'>*</span></label>
+                                        <select id='FlowId' name='FlowId' class='form-control'></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+
+                                <!-- Name -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Name'>Nombre<span class='required-mark'>*</span></label>
+                                        <input id='Name' name='Name' type='text' class='form-control' size='80' maxlength='80'>
+                                    </div>
+                                </div>
+                                <!-- Description -->
+                                <div class='col-sm-8 col-md-8'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Description'>Descripción</label>
+                                        <input id='Description' name='Description' type='text' class='form-control' size='256' maxlength='256'>
+                                    </div>
+                                </div>
+                                <!-- StepOrder -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='StepOrder'>Orden<span class='required-mark'>*</span></label>
+                                        <input id='StepOrder' name='StepOrder' type='text' class='form-control text-right' size='5' maxlength='5'>
+                                    </div>
+                                </div>
+                                <!-- Roles -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Roles'>Roles</label>
+                                        <select id='Roles' name='Roles' class='form-control' multiple></select>
+                                        <div id='Roles_validate'></div>
+                                    </div>
+                                </div>
+                                <!-- ProgressMode -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='ProgressMode'>Tipo<span class='required-mark'>*</span></label>
+                                        <select id='ProgressMode' name='ProgressMode' class='form-control'></select>
+                                    </div>
+                                </div>
+
+
+                                <!-- ProcessStatus -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='ProcessStatus'>Estado</label>
+                                        <select id='ProcessStatus' name='ProcessStatus' class='form-control'></select>
+                                    </div>
+                                </div>
+                                <!-- ProcessLabel -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='ProcessLabel'>Etiqueta</label>
+                                        <input id='ProcessLabel' name='ProcessLabel' type='text' class='form-control' size='80' maxlength='80'>
+                                    </div>
+                                </div>
+                                <!-- EnableComment -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='EnableComment'>Enable Comment</label>
+                                        <div style="padding-top: 6px;">
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="EnableComment_1" name="EnableComment" value="true">
+                                                <label class="custom-control-label" for="EnableComment_1">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="EnableComment_0" name="EnableComment" value="false">
+                                                <label class="custom-control-label" for="EnableComment_0">No</label>
+                                            </div>
+                                            <div id='EnableComment_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- SLA -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='SLA'>SLA</label>
+                                        <input id='SLA' name='SLA' type='text' class='form-control text-right' size='5' maxlength='5'>
+                                    </div>
+                                </div>
+                                <!-- SLATimeOut -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='SLATimeOut'>SLA Time Out</label>
+                                        <input id='SLATimeOut' name='SLATimeOut' type='text' class='form-control text-right' size='9' maxlength='9'>
+                                    </div>
+                                </div>
+                                <!-- MailServer -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='MailServer'>Servidor de correo<span class='required-mark'>*</span></label>
+                                        <select id='MailServer' name='MailServer' class='form-control'></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-lg-12">
+                                    <h4> Notificación al contacto principal</h4>
+                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                    <div class="form-row">
+                                        <!-- MailToContact -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='MailToContact'>Notificar</label>
+                                                <select id='MailToContact' name='MailToContact' class='form-control'></select>
+                                            </div>
+                                        </div>
+                                        <!-- MailToContactCustom -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='MailToContactCustom'>Personalización</label>
+                                                <input id='MailToContactCustom' name='MailToContactCustom' type='text' class='form-control' size='256' maxlength='256' disabled>
+                                            </div>
+                                        </div>
+                                        <!-- MailToContactTmpl -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='MailToContactTmpl'>Plantilla de correo</label>
+                                                <select id='MailToContactTmpl' name='MailToContactTmpl' class='form-control' disabled></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col-lg-12">
+                                    <h4> Notificación a los usuario de los roles responsables de la etapa</h4>
+                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                    <div class="form-row">
+                                        <!-- MailToStepResponsible -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='MailToStepResponsible'>Notificar</label>
+                                                <select id='MailToStepResponsible' name='MailToStepResponsible' class='form-control'></select>
+                                            </div>
+                                        </div>
+                                        <!-- MailToStepResponsibleCustom -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='MailToStepResponsibleCustom'>Personalización</label>
+                                                <input id='MailToStepResponsibleCustom' name='MailToStepResponsibleCustom' type='text' class='form-control' size='256' maxlength='256' disabled>
+                                            </div>
+                                        </div>
+                                        <!-- MailToStepResponsibleTmpl -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='MailToStepResponsibleTmpl'>Plantilla de correo</label>
+                                                <select id='MailToStepResponsibleTmpl' name='MailToStepResponsibleTmpl' class='form-control' disabled></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col-lg-12">
+                                    <h4> Notificación por vencimiento de SLA</h4>
+                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                    <div class="form-row">
+                                        <!-- MailForSLAExpiration -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='MailForSLAExpiration'>Notificar</label>
+                                                <select id='MailForSLAExpiration' name='MailForSLAExpiration' class='form-control'></select>
+                                            </div>
+                                        </div>
+                                        <!-- MailForSLAExpirationCustom -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='MailForSLAExpirationCustom'>Personalización</label>
+                                                <input id='MailForSLAExpirationCustom' name='MailForSLAExpirationCustom' type='text' class='form-control' size='256' maxlength='256' disabled>
+                                            </div>
+                                        </div>
+                                        <!-- MailForSLAExpirationTmpl -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='MailForSLAExpirationTmpl'>Plantilla de correo</label>
+                                                <select id='MailForSLAExpirationTmpl' name='MailForSLAExpirationTmpl' class='form-control' disabled></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Scripts -->
+                            <div class="form-row">
+                                <div class="col-lg-12">
+                                    <h4> Scripts</h4>
+                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                    <div class="form-row">
+                                        <!-- PreScript -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='PreScript'>Pre</label>
+                                                <input id='PreScript' name='PreScript' type='text' class='form-control' size='9' maxlength='9'>
+                                            </div>
+                                        </div>
+                                        <!-- PostScript -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='PostScript'>Post</label>
+                                                <input id='PostScript' name='PostScript' type='text' class='form-control' size='9' maxlength='9'>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="form-row">
+                                <div class='col-md-12'>
+
+                                    <button id="ProcessSpecStepEdtFormSave" type="button" class="btn btn-primary btn-sm d-none formbtn" data-doing="Guardando cambios..." title="Guardar cambios">Guardar</button>
+                                    <button id="ProcessSpecStepEdtFormSaveContinue" type="button" class="btn btn-primary btn-sm d-none formbtn" data-doing="Guardando cambios..." title="Guardar cambios y continuar">Guardar y continuar</button>
+                                    <button id="ProcessSpecStepEdtFormSaveCopy" type="button" class="btn btn-primary btn-sm d-none formbtn" data-doing="Guardando cambios..." title="Guardar cambios y continuar">Guardar y copiar</button>
+                                    <button id="ProcessSpecStepEdtFormDuplicate" type="button" class="btn btn-info btn-sm d-none formbtn" data-doing="Duplicando..." title="Duplica la información actual">Duplicar</button>
+                                    <button id="ProcessSpecStepEdtFormDelete" type="button" class="btn btn-danger btn-sm d-none formbtn" data-doing="Eliminando..." title="Elimina la información actual">Eliminar</button>
+                                    <button id="ProcessSpecStepEdtFormCancel" type="button" class="btn btn-white btn-sm d-none formbtn">Cancelar</button>
+
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/General.ProcessSpecStep.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.GeneralProcessSpecStep.Init();
+        });
+    </script>
+}

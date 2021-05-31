@@ -1,0 +1,42 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+
+<div class="ibox">
+    <div class="ibox-title">
+        <h5><span id="QueryMainTitle"></span></h5>
+        <!-- Opciones -->
+        <div class="ibox-tools">
+            <a class="fullscreen-link">
+                <i class="fa fa-expand"></i>
+            </a>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div id="generalNotify">
+        </div>
+
+        @*Cabecera de las pestañas*@
+        <ul id="queryTab" class="nav nav-tabs" role="tablist">
+        </ul>
+
+        @*Contenido de las pestañas*@
+        <div id="queryTabContent" class="tab-content" style="padding-top: 10px">
+        </div>
+    </div>
+
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/assets/apexcharts/apexcharts.min.js")"></script>
+    <script src="@Url.Content("~/assets/tableExport.jquery.plugin/tableExport.min.js")"></script>
+    <script src="@Url.Content("~/assets/bootstrap-table/extensions/export/bootstrap-table-export.js")"></script>
+    <script src="@Url.Content("~/assets/template7/template7.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/ViewerTab.Render.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.ViewerQuery.Init();
+        });
+    </script>
+}

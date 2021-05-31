@@ -1,0 +1,66 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<!-- RoleMember -->
+<div class="ibox">
+    <div class="ibox-title">
+        <h5><span id="QueryTitle"></span></h5>
+        <!-- Opciones -->
+        <div class="ibox-tools">
+            <a class="fullscreen-link">
+                <i class="fa fa-expand"></i>
+            </a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <i class="fa fa-wrench"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                <li>
+                    <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar la información</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <!-- Filtro -->
+        <div class='form-row filter-row'>
+            <div class='form-group col-md-12'>
+                <div class="input-group placeholder-small">
+                </div>
+            </div>
+        </div>
+        <!-- Filtro avanzado -->
+        <div class='form-row d-none advancefilter-row animated fadeInDown'>
+            <div class="form-group col-md-6">
+            </div>
+        </div>
+        <!-- Grid -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div class="table-responsive animated bounceInRight">
+                    <table id="RoleMemberGridTbl" style="font-size: 11px;"></table>
+                </div>
+                <div id="chart" class="d-none">
+                </div>
+                <div id="tmpl">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/assets/apexcharts/apexcharts.min.js")"></script>
+    <script src="@Url.Content("~/assets/tableExport.jquery.plugin/tableExport.min.js")"></script>
+    <script src="@Url.Content("~/assets/bootstrap-table/extensions/export/bootstrap-table-export.js")"></script>
+    <script src="@Url.Content("~/assets/template7/template7.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/Viewer.Render.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.ViewerQuery.Init();
+        });
+    </script>
+}

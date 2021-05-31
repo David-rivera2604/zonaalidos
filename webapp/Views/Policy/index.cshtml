@@ -1,0 +1,87 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssPolicyIndex")
+
+<div class="ibox">
+    <div class="ibox-title">
+        <h5>Consulta de pólizas</h5>
+        <!-- Opciones del mantenimiento -->
+        <div class="ibox-tools">
+            <a class="tool-filter">
+                <i class="fa fa-filter" title="Visualiza el filtro avanzado..."></i>
+            </a>
+            <a class="tool-new">
+                <i class="fa fa-plus" title="Permite emitir una póliza nueva"></i>
+            </a>
+            <a class="fullscreen-link">
+                <i class="fa fa-expand" title="Expande la zona de trabajo"></i>
+            </a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="Opciones adicionales...">
+                <i class="fa fa-wrench"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                <li>
+                    <a href="#" class="dropdown-item tool-new"><i class="fa fa-plus"></i> Permite emitir una póliza nueva</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-filter"></i> Visualiza el filtro avanzado...</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar las pólizas</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <!-- Filtro -->
+        <div class='form-row filter-row'>
+            <div class='form-group col-md-12'>
+                <div class="input-group placeholder-small">
+                    <input id="PolicySearch" type="text" placeholder="Permite filtrar por póliza o por la identificación, nombre, apellido, teléfono o correo electrónico del asegurado" title="Permite filtrar por póliza o por la identificación, nombre, apellido, teléfono o correo electrónico del asegurado" class="form-control form-control-sm" maxlength="40">
+                    <span class="input-group-append">
+                        <button type="button" class="btn btn btn-primary btn-xs" id="PolicyApplyFilter" title="Aplica el filtro"> <i class="fa fa-search"></i> Filtrar</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- Filtro avanzado -->
+        <div class='form-row d-none advancefilter-row animated fadeInDown'>
+            <div class="form-group col-md-4">
+                <label class="control-label" for="LineOfBusiness">Ramo</label>
+                <select name="LineOfBusiness" id="LineOfBusiness" class="form-control form-control-sm">
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <label class="control-label" for="ProductByLineOfBusiness">Producto</label>
+                <select name="ProductByLineOfBusiness" id="ProductByLineOfBusiness" class="form-control form-control-sm">
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <label class="control-label" for="StatusFlt">Estado</label>
+                <select id="StatusFlt" name="StatusFlt" title="" multiple class="form-control form-control-sm">
+                </select>
+            </div>
+        </div>
+        <!-- Grid -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div class="table-responsive-sm animated bounceInRight">
+                    <table id="TABLE10_GridTbl" style="font-size: 11px;"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jsPolicyIndex")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.policyview.Init();
+        });
+    </script>
+}

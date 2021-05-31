@@ -1,0 +1,90 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title></title>
+
+    @Styles.Render("~/Content/cssView")
+</head>
+
+<body style="background-color: white;">
+
+    <!-- Grid -->
+    @*<div id="toolbar">
+        </div>*@
+    <!-- Grid -->
+    <div class='form-row'>
+        <div class='col-md-12'>
+            <div class="table-responsive animated bounceInRight" style="padding: 0px 2px 0px 2px;">
+                <table id="ProcessGridTbl" style="font-size: 12px" class="table table-bordered table-hover table-index clearTable"></table>
+            </div>
+        </div>
+    </div>
+    <div class="ibox">
+        <div class="ibox-content">
+            <div class="sk-spinner sk-spinner-wave">
+                <div class="sk-rect1"></div>
+                <div class="sk-rect2"></div>
+                <div class="sk-rect3"></div>
+                <div class="sk-rect4"></div>
+                <div class="sk-rect5"></div>
+            </div>
+            <div class='form-row'>
+                <div class='col-md-12'>
+                    <form id='VisualizationsEdtForm' class='form-horizontal d-none' data-toggle='validator'>
+                        <fieldset>
+                            <div class="form-row">
+                                <!-- Tasks -->
+                                <div class='col-sm-4 col-md-12'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='tasks'>
+                                            Opciones
+                                        </label>
+                                        <div class='form-group'>
+                                            <div id='tasks'></div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!-- Annotation -->
+                                <div class='col-sm-4 col-md-12'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Surcharge'>
+                                            Comentario
+                                        </label>
+                                        <div class='form-group'>
+                                            <textarea id='Annotation' name='Annotation' class='form-control' size='350' maxlength='350' rows="2"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-row">
+                                <div class='col-md-12'>
+                                    <div class="modal-footer">
+                                        <button id="VisualizationsEdtFormSave" type="button" class="btn btn-primary" data-doing="Procesando...">Procesar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+@Scripts.Render("~/bundles/jsView")
+</html>
+<script src="@Url.Content("~/Scripts/Process.Instance.js")"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        app.ProcessInstance.Init();
+        app.ProcessInstance.Load();
+    });
+</script>
+

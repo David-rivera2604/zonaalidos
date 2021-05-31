@@ -1,0 +1,30 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title></title>
+
+    @Styles.Render("~/Content/cssView")
+</head>
+
+<body style="background-color: white;">
+
+    <div id="extend">contenido</div>
+
+</body>
+@Scripts.Render("~/bundles/jsView")
+</html>
+<script src="@Url.Content("~/assets/apexcharts/apexcharts.min.js")"></script>
+<script src="@Url.Content("~/assets/tableExport.jquery.plugin/tableExport.min.js")"></script>
+<script src="@Url.Content("~/assets/bootstrap-table/extensions/export/bootstrap-table-export.js")"></script>
+<script src="@Url.Content("~/assets/template7/template7.min.js")"></script>
+<script src="@Url.Content("~/Scripts/Prototype.Index.js")"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        app.Prototype.Init();
+    });
+</script>

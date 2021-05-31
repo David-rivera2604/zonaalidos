@@ -1,0 +1,92 @@
+﻿<form id='VisualizationsEdtForm' class='form-horizontal' data-toggle='validator'>
+    <fieldset>
+        <div class="form-row">
+            <!-- Id -->
+            <input id='Id' name='Id' type='hidden' value=''>
+            <!-- Sequence -->
+            <input id='Sequence' name='Sequence' type='hidden' value=''>
+            <!-- Caption -->
+            <div class='col-sm-4 col-md-4'>
+                <div class='form-group'>
+                    <label class='control-label' for='Caption'>Caption</label>
+                    <input id='Caption' name='Caption' type='text' class='form-control' size='120' maxlength='120'>
+                </div>
+            </div>
+            <!-- Description -->
+            <div class='col-sm-4 col-md-4'>
+                <div class='form-group'>
+                    <label class='control-label' for='Description'>Description</label>
+                    <input id='Description' name='Description' type='text' class='form-control' size='120' maxlength='120'>
+                </div>
+            </div>
+            <!-- Type -->
+            <div class='col-sm-4 col-md-4'>
+                <div class='form-group'>
+                    <label class='control-label' for='Type'>Type</label>
+                    <input id='Type' name='Type' type='text' class='form-control text-right' size='5' maxlength='5'>
+                </div>
+            </div>
+            <!-- EntityType -->
+            <div class='col-sm-4 col-md-4'>
+                <div class='form-group'>
+                    <label class='control-label' for='EntityType'>Tipo de entidad</label>
+                    <input id='EntityType' name='EntityType' type='text' class='form-control text-right' size='5' maxlength='5'>
+                </div>
+            </div>
+            <!-- Icon -->
+            <div class='col-sm-4 col-md-4'>
+                <div class='form-group'>
+                    <label class='control-label' for='Icon'>Icon</label>
+                    <input id='Icon' name='Icon' type='text' class='form-control' size='80' maxlength='80'>
+                </div>
+            </div>
+            <!-- IconClass -->
+            <div class='col-sm-4 col-md-4'>
+                <div class='form-group'>
+                    <label class='control-label' for='IconClass'>Icon Class</label>
+                    <input id='IconClass' name='IconClass' type='text' class='form-control' size='80' maxlength='80'>
+                </div>
+            </div>
+            <!-- ValueFormat -->
+            <div class='col-sm-4 col-md-4'>
+                <div class='form-group'>
+                    <label class='control-label' for='ValueFormat'>Value Format</label>
+                    <input id='ValueFormat' name='ValueFormat' type='text' class='form-control' size='80' maxlength='80'>
+                </div>
+            </div>
+            <!-- RecordStatus -->
+            <div class='col-sm-4 col-md-4'>
+                <div class='form-group'>
+                    <label class='control-label' for='RecordStatus'>Estado del Registro<span class='required-mark'>*</span></label>
+                    <select id='RecordStatus' name='RecordStatus' class='form-control'></select>
+                </div>
+            </div>
+
+        </div>
+        <div class="form-row">
+            <!-- Statement -->
+            <div class='col-sm-12 col-md-12'>
+                <div class='form-group'>
+                    <label class='control-label' for='Statement'>Statement</label>
+                    <textarea id='Statement' name='Statement' class='form-control' size='2048' maxlength='2048' rows="10"></textarea>
+                </div>
+            </div>
+            <!-- Specification -->
+            <div class='col-sm-12 col-md-12'>
+                <div class='form-group'>
+                    <label class='control-label' for='Specification'>Especificación</label>
+                    <textarea id='Specification' name='Specification' class='form-control' size='2048' maxlength='2048' rows="12"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class='col-md-12'>
+                <div class="modal-footer">
+                    <button id="VisualizationsEdtFormSave" type="button" class="btn btn-primary">Guardar cambios</button>
+                    <button id="VisualizationsEdtFormCancel" type="button" class="btn btn-white">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</form>

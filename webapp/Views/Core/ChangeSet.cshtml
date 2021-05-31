@@ -1,0 +1,71 @@
+﻿<div class="modal inmodal fade" id="ChangeSetModal" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h2 class="modal-title">Historial</h2>
+            </div>
+            <div class="modal-body">
+                <div class='form-row filter-row'>
+                    <div class='form-group col-md-12'>
+                        <div class="input-group placeholder-small">
+                            <input id="ChangeSetSearch" type="text" placeholder="Permite filtrar por descripción" title="Permite filtrar por descripción" class="form-control form-control-sm" maxlength="40">
+                            <span class="input-group-append">
+                                <button type="button" class="btn btn btn-primary btn-xs" id="ChangeSetApplyFilter"> <i class="fa fa-search"></i> Filtrar</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class='form-row'>
+                    <div class='col-md-12'>
+                        <div class="table-responsive">
+                            <table id="ChangeSetGridTbl" style="font-size: 11px;" class="animated fadeInDown"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#ChangeSetGridTbl').bootstrapTable({
+            uniqueId: 'Id',
+            classes: 'table table-hover table-index',
+            pagination: true,
+            smartDisplay: true,
+            formatShowingRows: function () { { return '' } },
+            formatRecordsPerPage: function () { { return '' } },
+            columns: [{
+                field: 'UpdateDate',
+                title: 'Cuando',
+                visible: false,
+                class: 'd-none d-sm-table-cell',
+                sortable: true,
+                halign: 'center',
+                formatter: 'app.ui.DateAndTimeFormatter'
+            }, {
+                field: 'Summary',
+                title: 'Descripción',
+                class: 'd-none d-sm-table-cell',
+                sortable: true,
+                halign: 'center',
+                width: 60,
+                widthUnit: "%"
+            }, {
+                field: 'UpdateDate',
+                title: 'Realizado por',
+                class: 'd-none d-sm-table-cell',
+                sortable: true,
+                halign: 'center',
+                width: 40,
+                widthUnit: "%",
+                formatter: 'app.ui.UpdateDateAndUserFormatter'
+            }]
+        });
+    });
+</script>

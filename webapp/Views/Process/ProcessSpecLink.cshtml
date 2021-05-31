@@ -1,0 +1,152 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<!-- ProcessSpecLink -->
+<div class="ibox">
+    <div class="ibox-title">
+        <h5></h5>
+        <!-- Opciones -->
+        <div class="ibox-tools">
+            <a class="tool-new">
+                <i class="fa fa-plus" title="Crear un nuevo processspeclink"></i>
+            </a>
+            <a class="fullscreen-link">
+                <i class="fa fa-expand" title="Expande la zona de trabajo"></i>
+            </a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="Opciones adicionales...">
+                <i class="fa fa-wrench"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                <li>
+                    <a href="#" class="dropdown-item tool-new"><i class="fa fa-plus"></i> Crear un nuevo processspeclink</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-filter"></i> Despliega el filtro avanzado...</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar los table0s</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-audit" data-toggle="modal" data-target="#myModal5"><i class="fa fa-clock-o"></i> Historial...</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+            <div class="sk-rect4"></div>
+            <div class="sk-rect5"></div>
+        </div>
+        <div id="generalNotify">
+        </div>
+        <!-- Filtro avanzado -->
+        <div class='form-row advancefilter-row animated fadeInDown'>
+            <div class="form-group col-md-4">
+                <label class="control-label" for="FlowIdFlt">Proceso<span class='required-mark'>*</span></label>
+                <select id="FlowIdFlt" name="FlowIdFlt" title="" multiple class="form-control form-control-sm">
+                </select>
+            </div>
+        </div>
+        <!-- Grid -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div class="table-responsive animated bounceInRight">
+                    <table id="ProcessSpecLinkGridTbl" style="font-size: 11px;"></table>
+                </div>
+            </div>
+        </div>
+        <!-- Edit Form -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div id="ProcessSpecLinkEdt" class="animated fadeInRight d-none">
+                    <form id='ProcessSpecLinkEdtForm' class='form-horizontal' data-toggle='validator'>
+                        <fieldset>
+                            <div class="form-row">
+                                <!-- Id -->
+                                <input id='Id' name='Id' type='hidden' value=''>
+                                <!-- FlowId -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='FlowId'>Proceso<span class='required-mark'>*</span></label>
+                                        <select id='FlowId' name='FlowId' class='form-control'></select>
+                                    </div>
+                                </div>
+                                <!-- Name -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Name'>Nombre<span class='required-mark'>*</span></label>
+                                        <input id='Name' name='Name' type='text' class='form-control' size='80' maxlength='80'>
+                                    </div>
+                                </div>
+                                <!-- Description -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Description'>Descripción</label>
+                                        <input id='Description' name='Description' type='text' class='form-control' size='256' maxlength='256'>
+                                    </div>
+                                </div>
+                                <!-- Icon -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Icon'>Icon</label>
+                                        <input id='Icon' name='Icon' type='text' class='form-control' size='40' maxlength='40'>
+                                    </div>
+                                </div>
+                                <!-- Type -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Type'>Tipo<span class='required-mark'>*</span></label>
+                                        <select id='Type' name='Type' class='form-control'></select>
+                                    </div>
+                                </div>
+                                <!-- LinkOrder -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='LinkOrder'>Orden</label>
+                                        <input id='LinkOrder' name='LinkOrder' type='text' class='form-control text-right' size='9' maxlength='9'>
+                                    </div>
+                                </div>
+                                <!-- URL -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='URL'>URL</label>
+                                        <input id='URL' name='URL' type='text' class='form-control' size='512' maxlength='512'>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-row">
+                                <div class='col-md-12'>
+
+                                    <button id="ProcessSpecLinkEdtFormSave" type="button" class="btn btn-primary btn-sm d-none formbtn" data-doing="Guardando cambios..." title="Guardar cambios">Guardar</button>
+                                    <button id="ProcessSpecLinkEdtFormSaveContinue" type="button" class="btn btn-primary btn-sm d-none formbtn" data-doing="Guardando cambios..." title="Guardar cambios y continuar">Guardar y continuar</button>
+                                    <button id="ProcessSpecLinkEdtFormSaveCopy" type="button" class="btn btn-primary btn-sm d-none formbtn" data-doing="Guardando cambios..." title="Guardar cambios y continuar">Guardar y copiar</button>
+                                    <button id="ProcessSpecLinkEdtFormDuplicate" type="button" class="btn btn-info btn-sm d-none formbtn" data-doing="Duplicando..." title="Duplica la información actual">Duplicar</button>
+                                    <button id="ProcessSpecLinkEdtFormDelete" type="button" class="btn btn-danger btn-sm d-none formbtn" data-doing="Eliminando..." title="Elimina la información actual">Eliminar</button>
+                                    <button id="ProcessSpecLinkEdtFormCancel" type="button" class="btn btn-white btn-sm d-none formbtn">Cancelar</button>
+
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/General.ProcessSpecLink.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.GeneralProcessSpecLink.Init();
+        });
+    </script>
+}

@@ -1,0 +1,107 @@
+﻿1.0.0  01/07/2020 Emisión de pólizas para Coopeservidores.
+1.1.0  17/08/2020 Emisión de pólizas para Carrofácil.
+1.2.0  13/10/2020 Inclusiones para Bayer.
+1.3.0  21/10/2020 Coope: Refundición de créditos.
+                  Coope: Nuevo campo anotaciones.
+                  Coope: Integración con web service de cliente de coope.
+                  CarroFácil: Se habilita validaciones y manejo de carga para prestamos.
+1.4.0  02/11/2020 Aliados: Consultas por agente
+                  Aliados: Cotizador Hogar total
+1.5.0  09/11/2020 Coope: Correción en la fecha de nacimiento retornada por el web service de cliente de coope.
+                  Aliados: Cotizador Multirriesgo
+                  Aliados: Cotizador Poliza Lider
+                  Aliados: Cotizador Mapfre Mas
+                  Clientes: Integración
+                  All: Fecha en dropdown de multiple selección.
+1.5.1  10/11/2020 Bug: Color de los tab en la ventana sub-consultas
+                  Bug: Falla con ruta no existente.
+                  Bug: Impresión.
+1.5.2  11/11/2020 Aliados: Mapfre Mas.Recarga por tipo de producto, plan y moneda
+1.5.3  16/11/2020 Aliados: Ajuste en tamaños de campos de capital.
+                  Aliados: Poliza Lider. Ajuste de dependencias.
+1.5.4  24/11/2020 Aliados: Complemento en la ayuda en linea para refundición de prestamos.
+                  CarroFácil: Se cambia para que los beneficiarios sean opcionales.
+                  Viewer: Cambio para poder manejar package con mas de un refcursor.
+1.5.5  25/11/2020 Clientes: Se habilitan tres consultas para clientes.
+1.5.6  07/12/2020 Ajustes menores.
+1.5.7  15/12/2020 Clientes: Se habilita el registro.
+                  General: Se agregar tipo de identificación, identificación y fecha de nacimineto al mantenimeinto de usuarios.
+1.5.8  21/12/2020 Aliados: Emisión Hogar total.
+1.5.8a 22/12/2020 Aliados: Emisión MapfreMas.
+1.5.8b 23/12/2020 Aliados: Emisión Multirriesgo.
+1.5.9  24/12/2020 Aliados: Generacion de certificado para las tres emisiones.
+1.5.10 30/12/2020 Clientes: Impresión de póliza, recibos y consulta de coberturas de una póliza.
+1.5.11 22/01/2021 Aliados: Versión inicial para el manejo de proceso.
+1.5.12 25/01/2021 Aliados: Versión beta para el manejo de proceso.
+1.5.13 26/01/2021 Aliados: Liberado el manejo de proceso.
+1.5.14 02/02/2021 Aliados: Ajustes solictados por carla para la trazabilidad de siniestros.
+1.5.15 15/02/2021 Aliados: Liberado el manejo de proceso, con manejo de multiples roles, asi como la notificación a las personas vinculadas a dicho rol.
+1.5.16 17/02/2021 Trazabilidad de siniestros: ajuste en el alto del panel detro del iframe.
+1.5.17 18/02/2021 Aliados: Correcciones varias a los cotizadores.
+1.5.18 21/02/2021 Aliados: Correcciones varias a los cotizadores.
+1.5.19 26/02/2021 Aliados: Correcciones varias a los cotizadores.
+1.5.20 08/03/2021 Aliados: Correcciones varias a los cotizadores.
+1.5.21 09/03/2021 Bayer: Integración EviSign. Ajustes según la etapa en que se encuentra la inclusión.
+                  Trazabilidad de siniestros: V3 de flujo para Purdy, nuevos campos para el número de factura MO y RE.
+1.5.22 16/03/2021 Bayer. Procesado de eventos en EviSing para Rechado y TimeOut.
+                  Trazabilidad. Versión alpha de mantenimientos para procesos.
+                  Aliados: Corrección para usar el campo correcto para tema de recargo.
+                  Aliados: MapfreMAS. Se agregan todas las validaciones del lado del cliente.
+                  Aliados: Mejora. Se permite filtrar o excluir valores de lista según el rol del usuario.
+1.5.23 17/03/2021 Aliados: MapfreMAS. Se agregan todas las validaciones del lado del servidores.
+                  Aliados: MapfreMAS. Se agregan seccion de fraccionamiento de pago en el reporte.
+1.5.24 18/03/2021 Aliados: MapfreMAS. Lista de valores para Tipo, marca y modelo de vehiculo
+                  Aliados: Reportes. los reportes de tron son decargado al servidor y enviado desde alli para evitar tema de seguridad de red mapfre.
+                  Aliados: Poliza Lider. Se agregan seccion de fraccionamiento de pago en el reporte.
+                  Aliados: Multirrieso. Se agregan seccion de fraccionamiento de pago en el reporte.
+                  Aliados: HogarTotal. Se agregan seccion de fraccionamiento de pago en el reporte.
+1.5.25 22/03/2021 Aliados: Envio de certificado por correo.
+                  Aliados: Validaciones para los cotizadores Poliza Lider, Multirrieso y HogarTotal.
+1.5.26 23/03/2021 Aliados: Se habilita el manejo de otro documento requeridos.
+1.5.27 24/03/2021 Aliados: Correcciones reportadas de hoy.
+1.5.28 30/03/2021 Bayer. Entrega final.
+1.5.29 31/03/2021 Aliados. Manejo de nivel de seguridad para usuarios y roles.
+1.5.30 05/04/2021 Trazabilidad de siniestros: 
+                        a) Ajustes al proceso de purdy.
+                        b) Manejo de diferentes servidores de correo, anivel del proceso y/o la etapa.
+                        c) Manejo de plantillas diferentes por etapa.
+                        d) Se agregar el manejo de firma de correo como imagen anexa.
+                        e) Posibilidad de personalizar el envio de correo para enviar al contacto y a otros cuenta.
+1.5.31 06/04/2021 Trazabilidad de siniestros: Uso de la placa en asunto del correo.
+1.5.32 08/04/2021 Trazabilidad de siniestros: Se habilita la opción para que el envío de la notificación al asegurado sea decisión del usuario.
+1.5.33 12/04/2021 Aliados. Manteniemiento de usuarios, Manejo generico de las notas, despliegue de productos disponible basado en la bd.
+                  Bayer. Solicitud de razón de rechazo, verificación de firma digital para nacionales, carga del documento solo si es valido.
+1.5.34 12/04/2021 Bayer. Busqueda de contratante.
+                  Aliados. Nueva ruta para reportes, Fecha de vigencia para pólizas.
+1.5.35 12/04/2021 Trazabilidad. Corrección de envio de notificación según la opción seleccionada, creación de nuevos casos de la página para tal fin.
+1.5.36 18/04/2021 Bayer. Cambiar a finalizdo una vez que la solictud llegue a medical.
+                  Trazabilidad. NewCase, Edit case.
+1.5.37 20/04/2021 Trazabilidad. Se agregan 4 campos nuevos para usarse en la etapa de "informe de reparación".
+1.5.38 21/04/2021 Aliados. Tron. Corrección de falla al cotizar póliza lider por parte de empleado.
+                           Tron. Se habilita traza para las cotizaciones y emisiones en tron.
+                           Tron. Se agrega el número de presupuesto en los reportes.
+1.5.39 27/04/2021 Trazabilidad. Se quita la visibilidad de campos en la etapa de "Cierre de proceso".
+                  Aliados. Se elimina el condicionado para el manejo de refundición de deudas.
+                  Aliados. Se agrega la posibilidad de agregar de forma dinámica las condiciones para determinar si se debe hacer suscripción a una póliza.
+                  Aliados. Tron. Ajuste a campos varios en los reportes y solo desplegar las coberturas seleccionadas.                  
+                  Aliados. Tron. Se agregar parámetro al procedimiento almacenado para cotizar MapfreMas.
+                  Aliados. Cliente. Se corrige problema a conectarse y no poseer información del documento de identidad.
+1.5.40 30/04/2021 Aliados. Se bloquea los campos para refundición de forma se puede ver y seleccionar solo cuando exista información de los préstamos.
+                           Se agregar el nombre el tomador y su identificador como settings del xml de producto para poder ser usando en los reportes.
+                           Se personaliza el anexo de asistencia y el listado de exclusiones para los 2 reportes de TotalLeasing.
+1.5.41 11/05/2021 Trazabilidad de siniestros. Manejo de anexos en las notificaciones del cliente.
+                                              8 campos asociados a la etapa "repuestos no indispensables".
+                  Bayer. Manejo de fecha de continuidad.
+                         Cambios para el manejo de Clases por medio de RRHH.
+                         Cambio para manejar cuenta IBAN.
+                  Trazabilidad. Etiquetas para referencias.
+                                Campos prioridad de los casos.
+                                Mantenimiento de enlaces asociados a procesado.
+                                Mejoras en mantenimiento de Procesos y Pasos para visualizar la jerarquia completa.
+                  Aliados. Mantenimiento de navegación.
+                           Mantenimiento de visualizaciones.
+1.5.42 11/05/2021 Aliados. Mantenimiento de navegación. Se agrega el manejo de roles.
+1.5.43 17/05/2021 Bayer. Corrección de servicios para acceso a la inclusiones.
+                  Aliados. Corrección en acceso a los datos para las reglas dinamicas.
+                  Aliados. Manejo de errores para los reportes de tron.
+1.5.44 19/05/2021 Trazabilidad. Ajuste en los mantenimientos.

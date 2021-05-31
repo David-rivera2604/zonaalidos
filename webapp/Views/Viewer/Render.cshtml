@@ -1,0 +1,45 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title></title>
+
+    @Styles.Render("~/Content/cssView")
+</head>
+
+<body style="background-color: white;">
+
+    <!-- Grid -->
+    <div id="toolbar">
+    </div>
+    <!-- Grid -->
+    <div class='form-row'>
+        <div class='col-md-12'>
+            <div class="table-responsive animated bounceInRight" style="padding: 0px 2px 0px 2px;">
+                <table id="RoleMemberGridTbl" style="font-size: 11px"></table>
+            </div>
+            <div id="chart" class="d-none">
+            </div>
+            <div id="tmpl">
+            </div>
+        </div>
+    </div>
+
+</body>
+@Scripts.Render("~/bundles/jsView")
+</html>
+<script src="@Url.Content("~/assets/apexcharts/apexcharts.min.js")"></script>
+<script src="@Url.Content("~/assets/tableExport.jquery.plugin/tableExport.min.js")"></script>
+<script src="@Url.Content("~/assets/bootstrap-table/extensions/export/bootstrap-table-export.js")"></script>
+<script src="@Url.Content("~/assets/template7/template7.min.js")"></script>
+<script src="@Url.Content("~/Scripts/Viewer.Render.js")"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        app.ViewerQuery.Init();
+    });
+</script>
+

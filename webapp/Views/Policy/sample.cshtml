@@ -1,0 +1,893 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssPolicyEdit")
+
+<!-- Cotizador -->
+<div class="ibox">
+    <div class="ibox-title">
+        <h5>Seguro colectivo de vida<small class="m-l-sm">Saldo deudores colones</small></h5>
+        <div class="ibox-tools">
+            <a class="collapse-link">
+                <i class="fa fa-chevron-up"></i>
+            </a>
+            <a class="fullscreen-link">
+                <i class="fa fa-expand"></i>
+            </a>
+
+        </div>
+    </div>
+    <div class="ibox-content ibox-heading">
+        <div class="row">
+            <div class="col-sm-6">
+                <h4>
+                    <i class="fa fa-user"></i> Nelson Enrique Soler Paz
+                </h4>
+                <div class="m-t-xs btn-group">
+                    <a href="tel:8934-8525" class="btn btn-xs btn-white">
+                        <i class="fa fa-phone"></i> 8934-8525
+                    </a>
+                    <a href="mailto:nsoler@grupoinmotion.com" class="btn btn-xs btn-white">
+                        <i class="fa fa-envelope"></i> nsoler@grupoinmotion.com
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-6 text-right">
+                <h4>Póliza N° <span class="text-navy">INV-000567F7-00</span></h4>
+
+                <span><strong>Inclusión:</strong> 01/09/2019</span><br>
+                <span class="label label-warning-light float-right">Pendiente</span>
+            </div>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <ul class="nav nav-tabs">
+            <li>
+                <a class="nav-link active show" data-toggle="tab" href="#aseguradoTab">
+                    <i class="fa fa-user-o"></i> Asegurado
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" data-toggle="tab" href="#beneficiarioTab">
+                    <i class="fa fa-users"></i>
+                    Beneficiarios
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" data-toggle="tab" href="#polizaTab">
+                    <i class="fa fa-bookmark"></i> Póliza
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" data-toggle="tab" href="#prestamosTab">
+                    <i class="fa fa-credit-card"></i> Prestamos
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" data-toggle="tab" href="#adjuntosTab">
+                    <i class="fa fa-file-o"></i>
+                    Adjuntos
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" data-toggle="tab" href="#notasTab">
+                    <i class="fa fa-comments-o"></i> Notas
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" data-toggle="tab" href="#historialTab">
+                    <i class="fa fa-clock-o"></i> Historial
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" data-toggle="tab" href="#listachequeoTab">
+                    <i class="fa fa-tasks"></i> Lista de chequeo
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" data-toggle="tab" href="#enlacesTab">
+                    <i class="fa fa-external-link"></i> Enlaces
+                </a>
+            </li>
+        </ul>
+
+        <div class="tab-content" style="padding-top: 10px">
+            <!-- Asegurado -->
+            <div id="aseguradoTab" class="tab-pane active show fade">
+
+                <form id='MainForm'>
+                    <fieldset>
+                        <div class="row">
+
+                            <!-- DocumentNumber -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='DocumentNumber'>
+                                        Identificación<span class='required-mark'
+                                                            title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                    </label>
+                                    <div class='input-group'>
+                                        <span class='input-group-addon'>
+                                            <span class='glyphicon glyphicon-barcode'></span>
+                                        </span>
+
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-default dropdown-toggle"
+                                                    type="button" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                Cédula
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item active"
+                                                   href="#">Cédula</a>
+                                                <a class="dropdown-item" href="#">
+                                                    Cédula de
+                                                    residencia
+                                                </a>
+                                                <a class="dropdown-item" href="#">Pasaporte</a>
+                                                <a class="dropdown-item" href="#">
+                                                    Cédula
+                                                    jurídica
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <input id='DocumentNumber' name='DocumentNumber'
+                                               type='text' class='form-control' size='20'
+                                               maxlength='20'>
+
+                                    </div>
+                                    <div id='DocumentNumber_validate'></div>
+                                </div>
+                            </div>
+                            <!-- FirstName -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='FirstName'>
+                                        Nombres<span class='required-mark'>*</span>
+                                    </label>
+                                    <div class='input-group'>
+                                        <span class='input-group-addon'>
+                                            <span class='glyphicon glyphicon-user'></span>
+                                        </span>
+                                        <input id='FirstName' name='FirstName' type='text'
+                                               class='form-control' size='40' maxlength='40'>
+                                        <input id='MiddleName' name='MiddleName' type='text'
+                                               class='form-control' size='40' maxlength='40'>
+                                    </div>
+                                    <div id='FirstName_validate'></div>
+                                </div>
+                            </div>
+                            <!-- LastName -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='LastName'>
+                                        Apellidos<span class='required-mark'>*</span>
+                                    </label>
+                                    <div class='input-group'>
+                                        <span class='input-group-addon'>
+                                            <span class='glyphicon glyphicon-user'></span>
+                                        </span>
+                                        <input id='LastName' name='LastName' type='text'
+                                               class='form-control' size='40' maxlength='40'>
+                                        <input id='SecondLastName' name='SecondLastName'
+                                               type='text' class='form-control' size='40'
+                                               maxlength='40'>
+                                    </div>
+                                    <div id='LastName_validate'></div>
+                                </div>
+                            </div>
+                            <!-- BirthDate -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='BirthDate'>
+                                        Fecha de
+                                        nacimiento<span class='required-mark'>*</span>
+                                    </label>
+                                    <div class='input-group date' id='BirthDate_group'>
+                                        <input id='BirthDate' name='BirthDate' type='text'
+                                               class='form-control' size='10' maxlength='10'
+                                               placeholder='día/mes/año'>
+                                        <span class='input-group-addon'>
+                                            <span class='glyphicon glyphicon-calendar'></span>
+                                        </span>
+                                    </div>
+                                    <div id='BirthDate_validate'></div>
+
+                                </div>
+                            </div>
+                            <!-- Gender -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='Gender'>
+                                        Sexo<span class='required-mark'>*</span>
+                                    </label>
+                                    <select id='Gender' name='Gender'
+                                            class='form-control'></select>
+                                </div>
+                            </div>
+                            <!-- CivilStatus -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='CivilStatus'>
+                                        Estado civil<span class='required-mark'>*</span>
+                                    </label>
+                                    <select id='CivilStatus' name='CivilStatus'
+                                            class='form-control'></select>
+                                </div>
+                            </div>
+                            <!-- Height -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='Height'>Estatura</label>
+                                    <div class='input-group'>
+                                        <input id='Height' name='Height' type='text'
+                                               class='form-control text-right' size='5'
+                                               maxlength='5'>
+                                        <span class='input-group-addon'>
+                                            <small class="text-muted" title="Metros">mts</small>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Weight -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='Weight'>Peso</label>
+                                    <div class='input-group'>
+                                        <input id='Weight' name='Weight' type='text'
+                                               class='form-control text-right' size='5'
+                                               maxlength='5'>
+                                        <span class='input-group-addon'>
+                                            <small class="text-muted" title="Libras">lbs</small>
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- PhoneNumber -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label'
+                                           for='PhoneNumber'>Teléfono</label>
+                                    <div class='input-group'>
+
+                                        <span class='input-group-addon'>
+                                            <span class='glyphicon glyphicon-earphone'></span>
+                                        </span>
+
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-default dropdown-toggle"
+                                                    type="button" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                Celular
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item active"
+                                                   href="#">Celular</a>
+                                                <a class="dropdown-item" href="#">Habitación</a>
+                                                <a class="dropdown-item" href="#">Oficina</a>
+                                                <a class="dropdown-item" href="#">Fax</a>
+                                            </div>
+                                        </div>
+
+                                        <input id='PhoneNumber' name='PhoneNumber' type='text'
+                                               class='form-control' size='20' maxlength='20'>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- PrimaryEmailAddress -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='PrimaryEmailAddress'>
+                                        Correo
+                                        electrónico<span class='required-mark'>*</span>
+                                    </label>
+                                    <div class='input-group'>
+                                        <span class='input-group-addon'>
+                                            <span class='glyphicon glyphicon-envelope'></span>
+                                        </span>
+                                        <input id='PrimaryEmailAddress'
+                                               name='PrimaryEmailAddress' type='text'
+                                               class='form-control' size='80' maxlength='80'>
+                                    </div>
+                                    <div id='PrimaryEmailAddress_validate'></div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+                <div class="row">
+
+
+                    <div class="col-lg-12">
+
+                        <h4><i class="fa fa-map-marker"></i> Dirección</h4>
+                        <div class="hr-line-dashed"
+                             style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                        <form id='direccionForm'>
+                            <fieldset>
+                                <div class="row">
+
+                                    <!-- Sequence -->
+                                    <input id='Sequence' name='Sequence' type='hidden' value=''>
+
+                                    <!-- Province -->
+                                    <div class='col-sm-2 col-md-2'>
+                                        <div class='form-group'>
+                                            <label class='control-label'
+                                                   for='Province'>Provincia</label>
+                                            <select id='Province' name='Province'
+                                                    class='form-control'></select>
+                                        </div>
+                                    </div>
+                                    <!-- Canton -->
+                                    <div class='col-sm-2 col-md-2'>
+                                        <div class='form-group'>
+                                            <label class='control-label'
+                                                   for='Canton'>Cantón</label>
+                                            <select id='Canton' name='Canton'
+                                                    class='form-control'></select>
+                                        </div>
+                                    </div>
+                                    <!-- District -->
+                                    <div class='col-sm-2 col-md-2'>
+                                        <div class='form-group'>
+                                            <label class='control-label'
+                                                   for='District'>Distrito</label>
+                                            <select id='District' name='District'
+                                                    class='form-control'></select>
+                                        </div>
+                                    </div>
+
+                                    <!-- AddressDetail -->
+                                    <div class='col-sm-6 col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label'
+                                                   for='AddressDetail'>Dirección</label>
+                                            <input id='AddressDetail' name='AddressDetail'
+                                                   type='text' class='form-control' size='120'
+                                                   maxlength='120'>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- Beneficiarios -->
+            <div id="beneficiarioTab" class="tab-pane fade">
+                <table id="xxx" class="table table-stripped table-hover" data-paging="true"
+                       data-sorting="true" data-paging-position="right">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Participación</th>
+                            <th>Parentesco</th>
+                            <th data-breakpoints="xs">Estado</th>
+                            <th data-breakpoints="xs sm" data-title="Fecha de alta">Alta</th>
+                            <th data-breakpoints="xs sm md" data-title="Fecha de baja">Baja</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Lisbeth Gallardo</td>
+                            <td>40%</td>
+                            <td>Esposa</td>
+                            <td>Alta</td>
+                            <td>27/09/2019</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Barbara Soler</td>
+                            <td>20%</td>
+                            <td>Hijo(a)</td>
+                            <td>Alta</td>
+                            <td>27/09/2019</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Aaron Soler</td>
+                            <td>20%</td>
+                            <td>Hijo(a)</td>
+                            <td>Alta</td>
+                            <td>27/09/2019</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Jeron Soler</td>
+                            <td>20%</td>
+                            <td>Hijo(a)</td>
+                            <td>Alta</td>
+                            <td>27/09/2019</td>
+                            <td></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <!-- Póliza -->
+            <div id="polizaTab" class="tab-pane fade">
+                <form id='PolizaForm'>
+                    <fieldset>
+                        <div class="row">
+                            <!-- Id -->
+                            <input id='Id' name='Id' type='hidden' value=''>
+                            <!-- Currency -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='Currency'>Moneda</label>
+                                    <select id='Currency' name='Currency'
+                                            class='form-control'></select>
+                                </div>
+                            </div>
+                            <!-- ModuleCode -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='ModuleCode'>Plan</label>
+                                    <select id='ModuleCode' name='ModuleCode'
+                                            class='form-control'></select>
+                                </div>
+                            </div>
+                            <!-- PaymentFrequency -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='PaymentFrequency'>
+                                        Forma de
+                                        pago
+                                    </label>
+                                    <select id='PaymentFrequency' name='PaymentFrequency'
+                                            class='form-control'></select>
+                                </div>
+                            </div>
+                            <!-- IssueDate -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='IssueDate'>
+                                        Fecha de
+                                        alta
+                                    </label>
+                                    <div class='input-group date' id='IssueDate_group'>
+                                        <input id='IssueDate' name='IssueDate' type='text'
+                                               class='form-control' size='10' maxlength='10'
+                                               placeholder='día/mes/año'>
+                                        <span class='input-group-addon'>
+                                            <span class='glyphicon glyphicon-calendar'></span>
+                                        </span>
+                                    </div>
+                                    <div id='IssueDate_validate'></div>
+
+                                </div>
+                            </div>
+                            <!-- EffectiveDate -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='EffectiveDate'>
+                                        Inicio de
+                                        vigencia
+                                    </label>
+                                    <div class='input-group date' id='EffectiveDate_group'>
+                                        <input id='EffectiveDate' name='EffectiveDate'
+                                               type='text' class='form-control' size='10'
+                                               maxlength='10' placeholder='día/mes/año'>
+                                        <span class='input-group-addon'>
+                                            <span class='glyphicon glyphicon-calendar'></span>
+                                        </span>
+                                    </div>
+                                    <div id='EffectiveDate_validate'></div>
+
+                                </div>
+                            </div>
+                            <!-- EndingDate -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='EndingDate'>
+                                        Fin de
+                                        vigencia
+                                    </label>
+                                    <div class='input-group date' id='EndingDate_group'>
+                                        <input id='EndingDate' name='EndingDate' type='text'
+                                               class='form-control' size='10' maxlength='10'
+                                               placeholder='día/mes/año'>
+                                        <span class='input-group-addon'>
+                                            <span class='glyphicon glyphicon-calendar'></span>
+                                        </span>
+                                    </div>
+                                    <div id='EndingDate_validate'></div>
+
+                                </div>
+                            </div>
+                            <!-- InsuredAmount -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='InsuredAmount'>
+                                        Suma
+                                        asegurada
+                                    </label>
+                                    <input id='InsuredAmount' name='InsuredAmount' type='text'
+                                           class='form-control text-right' size='18'
+                                           maxlength='18'>
+                                </div>
+                            </div>
+                            <!-- AnnualPremium -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='AnnualPremium'>
+                                        Prima
+                                        anual
+                                    </label>
+                                    <input id='AnnualPremium' name='AnnualPremium' type='text'
+                                           class='form-control text-right' size='18'
+                                           maxlength='18'>
+                                </div>
+                            </div>
+                            <!-- MonthlyPremium -->
+                            <div class='col-sm-4 col-md-3'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='MonthlyPremium'>
+                                        Prima
+                                        mensual
+                                    </label>
+                                    <input id='MonthlyPremium' name='MonthlyPremium' type='text'
+                                           class='form-control text-right' size='18'
+                                           maxlength='18'>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <!-- Prestamos -->
+            <div id="prestamosTab" class="tab-pane ">
+                <form id='prestamosForm'>
+                    <fieldset>
+                        <div class="row">
+
+                            <!-- InicioPlazo -->
+                            <div class='col-sm-4 col-md-4'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='InicioPlazo'>
+                                        Inicio del
+                                        plazo
+                                    </label>
+                                    <div class='input-group date' id='InicioPlazo_group'>
+                                        <input id='InicioPlazo' name='InicioPlazo' type='text'
+                                               class='form-control' size='10' maxlength='10'
+                                               placeholder='día/mes/año'>
+                                        <span class='input-group-addon'>
+                                            <span class='glyphicon glyphicon-calendar'></span>
+                                        </span>
+                                    </div>
+                                    <div id='InicioPlazo_validate'></div>
+
+                                </div>
+                            </div>
+                            <!-- FinPlazo -->
+                            <div class='col-sm-4 col-md-4'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='FinPlazo'>
+                                        Fin del
+                                        plazo
+                                    </label>
+                                    <div class='input-group date' id='FinPlazo_group'>
+                                        <input id='FinPlazo' name='FinPlazo' type='text'
+                                               class='form-control' size='10' maxlength='10'
+                                               placeholder='día/mes/año'>
+                                        <span class='input-group-addon'>
+                                            <span class='glyphicon glyphicon-calendar'></span>
+                                        </span>
+                                    </div>
+                                    <div id='FinPlazo_validate'></div>
+
+                                </div>
+                            </div>
+                            <!-- Monto Prestamo -->
+                            <div class='col-sm-4 col-md-4'>
+                                <div class='form-group'>
+                                    <label class='control-label'
+                                           for='MontoPrestamo'>Monto</label>
+                                    <input id='MontoPrestamo' name='MontoPrestamo' type='text'
+                                           class='form-control text-right' size='18'
+                                           maxlength='18'>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <!-- Adjuntos -->
+            <div id="adjuntosTab" class="tab-pane ">
+                <table id="adjuntos" class="footable table table-stripped toggle-arrow-tiny"
+                       data-sorting="true" data-page-size="15"
+                       data-paging-container="#paging-ui-container">
+                    <thead>
+                        <tr>
+                            <th data-toggle="true">Description</th>
+                            <th>Archivo</th>
+                            <th>Tamaño</th>
+                            <th data-breakpoints="xs" data-title="Realizado por">Usuario</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                Foto de la cédula
+                            </td>
+                            <td>
+                                <a href="#"><i class="fa fa-paperclip"></i> cedula.png</a>
+                            </td>
+                            <td>
+                                10kb
+                            </td>
+                            <td>
+                                Nelson Soler <small class="text-muted">
+                                    Hoy 2:10 pm -
+                                    12/06/2014
+                                </small>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Póliza firmada
+                            </td>
+                            <td>
+                                <a href="#"><i class="fa fa-paperclip"></i> poliza.pdf</a>
+                            </td>
+                            <td>
+                                24kb
+                            </td>
+
+                            <td>
+                                Nelson Soler
+                                <small class="text-muted">Hoy 2:10 pm - 12/06/2014</small>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="6">
+                                <div id="paging-ui-container" class="float-right"></div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- Notas -->
+            <div id="notasTab" class="tab-pane ">
+                <div class="chat-activity-list">
+
+                    <div class="chat-element">
+                        <a href="#" class="float-left">
+                            <span class="label label-success">NS</span>
+                        </a>
+                        <div class="media-body ">
+                            <small class="float-right text-navy">1m ago</small>
+
+                            <p class="m-b-xs">
+                                Lorem Ipsum is simply dummy text of the printing and typesetting
+                                industry. Lorem Ipsum has been
+                            </p>
+                            <strong>Nelson Soler</strong><small class="text-muted">
+                                <i class="fa fa-clock-o"></i> Today 4:21 pm -
+                                12/06/2014
+                            </small>
+                        </div>
+                    </div>
+
+
+                    <div class="chat-element right">
+                        <a href="#" class="float-left">
+                            <span class="label label-info">MS</span>
+                        </a>
+                        <div class="media-body ">
+                            <small class="float-right">2h ago</small>
+
+                            <p class="m-b-xs">
+                                Lorem Ipsum is simply dummy text of the printing and typesetting
+                                industry. Lorem Ipsum has been
+                            </p>
+                            <strong>Mike Smith</strong><small class="text-muted">
+                                <i class="fa fa-clock-o"></i> Today 4:21 pm -
+                                12/06/2014
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-form">
+                    <form role="form">
+                        <div class="form-group">
+                            <textarea class="form-control"
+                                      placeholder="Escriba aquí el texto de la nota"
+                                      style="    font-size: 12px;"></textarea>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit"
+                                    class="btn btn-sm btn-primary m-t-n-xs">
+                                <strong>Enviar nota</strong>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Historial -->
+            <div id="historialTab" class="tab-pane ">
+                <table id="Historial" class="footable table table-stripped toggle-arrow-tiny"
+                       data-sorting="true" data-page-size="15"
+                       data-paging-container="#paging-ui-container">
+                    <thead>
+                        <tr>
+
+                            <th data-toggle="true">Cuando</th>
+                            <th>Description</th>
+                            <th data-breakpoints="xs" data-title="Realizado por">Usuario</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                11/02/2019 09:00am
+                            </td>
+                            <td>
+                                Creación
+                            </td>
+                            <td>
+                                Nelson Soler
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                17/02/2019 03:00pm
+                            </td>
+                            <td>
+                                Modificación, cambios de beneficiarios
+                            </td>
+                            <td>
+                                Nelson Soler
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                22/04/2019 08:30pm
+                            </td>
+                            <td>
+                                Modificación, se agrega nuevo adjunto
+                            </td>
+                            <td>
+                                Carla Mata
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="6">
+                                <div id="paging-ui-container" class="float-right"></div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- Lista de chequeo -->
+            <div id="listachequeoTab" class="tab-pane ">
+
+                <div>
+
+                    <div class="input-group">
+                        <input type="text" class="form-control"
+                               placeholder="Título de la tarea ">
+                        <span class="input-group-append">
+                            <button type="button"
+                                    class="btn btn-primary">
+                                <i class="fa fa-plus"></i> Agregar
+                            </button>
+                        </span>
+                    </div>
+
+                    <ul class="sortable-list connectList agile-list ui-sortable" id="todo">
+                        <li class="warning-element ui-sortable-handle" id="task1">
+                            <a href="#" class="check-link"><i class="fa fa-square-o"></i> </a>
+                            <span class="m-l-xs">
+                                Simply dummy text of the
+                                printing and typesetting industry.
+                            </span>
+
+                            <div class="agile-detail">
+                                <i class="fa fa-clock-o"></i> 12.10.2015
+                            </div>
+                        </li>
+                        <li class="success-element ui-sortable-handle" id="task2">
+                            <a href="#" class="check-link">
+                                <i class="fa fa-check-square"></i>
+                            </a>
+                            <span class="m-l-xs todo-completed">
+                                Many desktop publishing packages
+                                and web page editors now use Lorem Ipsum as their
+                                default.
+                            </span>
+
+                            <div class="agile-detail">
+                                <i class="fa fa-clock-o"></i> 05.04.2015
+                            </div>
+                        </li>
+                        <li class="info-element ui-sortable-handle" id="task3">
+                            <a href="#" class="check-link">
+                                <i class="fa fa-check-square"></i>
+                            </a>
+                            <span class="m-l-xs todo-completed">
+                                Sometimes by accident, sometimes
+                                on purpose (injected humour and the like).
+                            </span>
+                            <div class="agile-detail">
+                                <i class="fa fa-clock-o"></i> 16.11.2015
+                            </div>
+                        </li>
+                        <li class="danger-element ui-sortable-handle" id="task4">
+                            <a href="#" class="check-link">
+                                <i class="fa fa-check-square"></i>
+                            </a>
+                            <span class="m-l-xs todo-completed">
+                                All the Lorem Ipsum
+                                generators.
+                            </span>
+                            <div class="agile-detail">
+                                <i class="fa fa-clock-o"></i> 06.10.2015
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+
+            </div>
+            <!-- Enlaces -->
+            <div id="enlacesTab" class="tab-pane ">
+                <ul class="tag-list" style="padding: 0; margin-top: -25px">
+                    <li><a href=""><i class="fa fa-link"></i> Family</a></li>
+                    <li><a href=""><i class="fa fa-link"></i> Work</a></li>
+                    <li><a href=""><i class="fa fa-link"></i> Home</a></li>
+                    <li><a href=""><i class="fa fa-external-link"></i> Photography</a></li>
+                    <li><a href=""><i class="fa fa-external-link"></i> Film</a></li>
+                </ul>
+                <div class="clearfix"></div>
+
+                <ul class="nav nav-tabs" style="margin-top: 6px">
+                    <li>
+                        <a class="nav-link active show" data-toggle="tab" href="#enlace1Tab">
+                            <i class="fa fa-bookmark-o"></i> Enlace 1
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" data-toggle="tab" href="#enlace2Tab">
+                            <i class="fa fa-bookmark-o"></i>
+                            Enlace 2
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content" style="padding-top: 10px">
+                    <div id="enlace1Tab" class="tab-pane fade active">1</div>
+                    <div id="enlace2Tab" class="tab-pane fade">2</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ibox-footer">
+        <span class="text-muted small float-right" title="Último cambio">
+            Nelson Soler <i class="fa fa-clock-o"></i>
+            2:10 pm - 12/06/2014
+        </span>
+        <br />
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jsPolicyEdit")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.PolicyEdit.Init();
+        });
+    </script>
+}

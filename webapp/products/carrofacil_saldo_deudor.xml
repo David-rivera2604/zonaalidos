@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProductMaster xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" description="Seguro colectivo saldo deudor" title="Seguro colectivo de vida" subtitle="Saldo deudor">
+  <CurrenciesAllowed>
+    <CurrencyAllowed currencycode="1" description="Dolares" />
+  </CurrenciesAllowed>
+  <Modules>
+    <Module modulecode="1" description="Plan 1 - Máx. $300.000.00">
+      <Coverages>
+        <Coverage coveragecode="1" description="Cobertura A - Muerte por cualquier causa" insuredamountcalculationtype="10" fixedrate="2.4" premiumcalculationtype="3" billingcode="1" maximuminsuredamount="300000" maximumage="99" minimumage="18" />
+        <Coverage coveragecode="2" description="Cobertura B - Incapacidad total y permanente" insuredamountcalculationtype="10" coveragecodecontainspremium="1" billingcode="1" />
+        <Coverage coveragecode="3" description="Cobertura E - Servicios complementarios" insuredamountcalculationtype="10" coveragecodecontainspremium="1" billingcode="1" />
+      </Coverages>
+    </Module>
+  </Modules>
+  <PaymentFrequenciesAllowed>
+    <PaymentFrequencyAllowed paymentfrequencycode="1" description="Mensual" />
+  </PaymentFrequenciesAllowed>
+  <BillingConcepts>
+    <BillingConcept billingcode="1" description="Prima" />
+    <BillingConcept billingcode="2" description="Impuestos">
+      <Details>
+        <BillingDetail code="1" description="IVA" type="3" percentage="2">
+          <Conditions>
+            <BillingDetailCondition applieson="1" applyoncode="1" />
+          </Conditions>
+        </BillingDetail>
+      </Details>
+    </BillingConcept>
+  </BillingConcepts>
+  <DataEntrySectionsAllowed>
+    <DataEntrySection code="Insured" description="Asegurado" required="true" />
+    <DataEntrySection code="Questionnaires" description="Cuestionario" />
+    <DataEntrySection code="Beneficiaries" description="Beneficiarios" />
+    <DataEntrySection code="Policy" description="Póliza" required="true" />
+    <DataEntrySection code="Overdraft" description="Prestamos" required="true" />
+    <DataEntrySection code="Attachments" description="Adjuntos" />
+  </DataEntrySectionsAllowed>
+  <Underwriting>
+    <Rule description="La edad del asegurado es mayor a 64 años" condition="data.PrimaryInsured.BirthDate.Age() > 64" />
+    <Rule description="La suma asegurada es mayor a 140.000 colones" condition="data.InsuredAmount > 140000" />
+  </Underwriting>
+  <Settings>
+    <Setting name="Parent.Policy.Effective" description="Fecha de efecto de la póliza matriz" value="2020-09-01T00:00:00"/>
+  </Settings>
+</ProductMaster>

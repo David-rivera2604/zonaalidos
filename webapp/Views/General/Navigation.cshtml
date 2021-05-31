@@ -1,0 +1,208 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<!-- Navigation -->
+<div class="ibox">
+    <div class="ibox-title">
+        <h5>Mantenimiento de navegación</h5>
+        <!-- Opciones -->
+        <div class="ibox-tools">
+            <a class="tool-filter">
+                <i class="fa fa-filter" title="Visualiza el filtro avanzado..."></i>
+            </a>
+            <a class="tool-new">
+                <i class="fa fa-plus" title="Crear un nuevo navegación"></i>
+            </a>
+            <a class="fullscreen-link">
+                <i class="fa fa-expand" title="Expande la zona de trabajo"></i>
+            </a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="Opciones adicionales...">
+                <i class="fa fa-wrench"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                <li>
+                    <a href="#" class="dropdown-item tool-new"><i class="fa fa-plus"></i> Crear un nuevo navegación</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-filter"></i> Despliega el filtro avanzado...</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar los navegación</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-audit" data-toggle="modal" data-target="#myModal5"><i class="fa fa-clock-o"></i> Historial...</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+            <div class="sk-rect4"></div>
+            <div class="sk-rect5"></div>
+        </div>
+        <div id="generalNotify">
+        </div>
+        <!-- Filtro -->
+        <div class='form-row filter-row'>
+            <div class='form-group col-md-12'>
+                <div class="input-group placeholder-small">
+                    <input id="NavigationSearch" type="text" placeholder="Permite filtrar por nombre del rol o descripción" title="Permite filtrar por nombre del rol o descripción" class="form-control form-control-sm" maxlength="40">
+                    <span class="input-group-append">
+                        <button type="button" class="btn btn btn-primary btn-xs" id="ApplyFilter"> <i class="fa fa-search"></i> Filtrar</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- Filtro avanzado -->
+        <div class='form-row d-none advancefilter-row animated fadeInDown'>
+            <div class="form-group col-md-6">
+                <label class="control-label" for="RecordStatusFlt">Estado</label>
+                <select id="RecordStatusFlt" name="RecordStatusFlt" title="" multiple class="form-control form-control-sm">
+                </select>
+            </div>
+        </div>
+        <!-- Grid -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div class="table-responsive animated bounceInRight">
+                    <table id="NavigationGridTbl" style="font-size: 11px;"></table>
+                </div>
+            </div>
+        </div>
+        <!-- Edit Form -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div id="NavigationEdt" class="animated fadeInRight d-none">
+                    <form id='NavigationEdtForm' class='form-horizontal' data-toggle='validator'>
+                        <fieldset>
+                            <div class="form-row">
+                                <!-- NavigationId -->
+                                <input id='NavigationId' name='NavigationId' type='hidden' value=''>
+                                <!-- ParentCode -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='ParentCode'>Menú</label>
+                                        <select id='ParentCode' name='ParentCode' class='form-control'></select>
+                                    </div>
+                                </div>
+                                <!-- Code -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Code'>Código<span class='required-mark'>*</span></label>
+                                        <input id='Code' name='Code' type='text' class='form-control' size='8' maxlength='8'>
+                                    </div>
+                                </div>
+                                <!-- Type -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Type'>Tipo</label>
+                                        <select id='Type' name='Type' class='form-control'></select>
+                                    </div>
+                                </div>
+                                <!-- Title -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Title'>Título<span class='required-mark'>*</span></label>
+                                        <input id='Title' name='Title' type='text' class='form-control' size='120' maxlength='120'>
+                                    </div>
+                                </div>
+                                <!-- Description -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Description'>Descripción</label>
+                                        <input id='Description' name='Description' type='text' class='form-control' size='255' maxlength='255'>
+                                    </div>
+                                </div>
+                                <!-- MenuTitle -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='MenuTitle'>Título del menú</label>
+                                        <input id='MenuTitle' name='MenuTitle' type='text' class='form-control' size='40' maxlength='40'>
+                                    </div>
+                                </div>
+                                <!-- URLPath -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='URLPath'>Ruta<span class='required-mark'>*</span></label>
+                                        <input id='URLPath' name='URLPath' type='text' class='form-control' size='255' maxlength='255'>
+                                    </div>
+                                </div>
+                                <!-- URLHelp -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='URLHelp'>Ayuda</label>
+                                        <input id='URLHelp' name='URLHelp' type='text' class='form-control' size='255' maxlength='255'>
+                                    </div>
+                                </div>
+                                <!-- SmallImage -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='SmallImage'>Imagen pequeña</label>
+                                        <input id='SmallImage' name='SmallImage' type='text' class='form-control' size='80' maxlength='80'>
+                                    </div>
+                                </div>
+                                <!-- BigImage -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='BigImage'>Imagen grande</label>
+                                        <input id='BigImage' name='BigImage' type='text' class='form-control' size='80' maxlength='80'>
+                                    </div>
+                                </div>
+                                <!-- Sequence -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Sequence'>Orden<span class='required-mark'>*</span></label>
+                                        <input id='Sequence' name='Sequence' type='text' class='form-control text-right' size='5' maxlength='5'>
+                                    </div>
+                                </div>
+                                <!-- Roles -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Roles'>Roles<span class='required-mark'>*</span></label>
+                                        <select id='Roles' name='Roles' class='form-control' multiple></select>
+                                        <div id='Roles_validate'></div>
+                                    </div>
+                                </div>
+
+                                <!-- RecordStatus -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='RecordStatus'>Estado del Registro<span class='required-mark'>*</span></label>
+                                        <select id='RecordStatus' name='RecordStatus' class='form-control'></select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-row">
+                                <div class='col-md-12'>
+                                    <button id="NavigationEdtFormSave" type="button" class="btn btn-primary btn-sm d-none formbtn" data-doing="Guardando cambios..." title="Guardar cambios">Guardar</button>
+                                    <button id="NavigationEdtFormSaveContinue" type="button" class="btn btn-primary btn-sm  d-none formbtn" data-doing="Guardando cambios..." title="Guardar cambios y continuar">Guardar y continuar</button>
+                                    <button id="NavigationEdtFormSaveCopy" type="button" class="btn btn-primary btn-sm d-none formbtn" data-doing="Guardando cambios..." title="Guardar cambios y continuar">Guardar y copiar</button>
+                                    <button id="NavigationEdtFormDuplicate" type="button" class="btn btn-info btn-sm d-none formbtn" data-doing="Duplicando..." title="Duplica la información actual">Duplicar</button>
+                                    <button id="NavigationEdtFormDelete" type="button" class="btn btn-danger btn-sm d-none formbtn" data-doing="Eliminando..." title="Elimina la información actual">Eliminar</button>
+                                    <button id="NavigationEdtFormCancel" type="button" class="btn btn-white btn-sm d-none formbtn">Cancelar</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/General.Navigation.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.GeneralNavigation.Init();
+        });
+    </script>
+}

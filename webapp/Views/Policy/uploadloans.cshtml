@@ -1,0 +1,83 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<!-- RoleMember -->
+<div class="ibox">
+    <div class="ibox-title">
+        <h5>Carga masiva de préstamos</h5>
+        <!-- Opciones -->
+        <div class="ibox-tools">
+            <a class="fullscreen-link">
+                <i class="fa fa-expand"></i>
+            </a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <i class="fa fa-wrench"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                <li>
+                    <a href="#" class="dropdown-item tool-audit" data-toggle="modal" data-target="#myModal5"><i class="fa fa-clock-o"></i> Historial...</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+            <div class="sk-rect4"></div>
+            <div class="sk-rect5"></div>
+        </div>
+        <div id="generalNotify">
+        </div>
+        <!-- Edit Form -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div id="RoleMemberEdt" class="animated fadeInRight ">
+
+                    <form id='RoleMemberEdtForm' class='form-horizontal' data-toggle='validator'>
+
+                        <fieldset>
+
+                            <div class="form-row">
+                                <!-- FileName -->
+                                <div class='col-sm-8 col-md-12'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='FileName'>Archivo excel<span class='required-mark'>*</span></label>
+                                        <div class="input-group">
+                                            <input id='FileName' name='FileName' type='text' class='form-control' size='80' maxlength='80' placeholder="Indique el archivo a procesar..." readonly>
+                                            <input id="Stored" type="hidden" value="" />
+                                            <input id="FileSize" type="hidden" value="" />
+                                            <div class="input-group-append">
+                                                <span class="btn btn-default fileinput-button" title="Permite seleccionar el archivo a ser procesado">
+                                                    <span>Examinar...</span>
+                                                    <input id="fileUpload" type="file" accept=".xlsx" />
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div id='FileName_validate'></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ibox-footer">
+        <span id="lastChange" class="text-muted small " title="Último cambio">
+        </span>
+        <button id="RoleMemberEdtFormSave" type="button" class="btn btn-primary float-right" data-doing="Procesando...">Procesar</button>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/policy.uploadloans.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.PolicyUpLoadLoans.Init();
+        });
+    </script>
+}

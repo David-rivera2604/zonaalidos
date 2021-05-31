@@ -1,0 +1,37 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<!-- RoleMember -->
+<div class="ibox">
+    <div class="ibox-title">
+        <h5>Mis pólizas</h5>
+        <!-- Opciones -->
+        <div class="ibox-tools">
+            <a class="fullscreen-link">
+                <i class="fa fa-expand"></i>
+            </a>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+            <div class="sk-rect4"></div>
+            <div class="sk-rect5"></div>
+        </div>
+        <iframe id="external" frameborder="0" style="height: 100%; width: 100%;">
+            ....
+        </iframe>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/Clientes.Index.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.ClientesIndex.Init();
+        });
+    </script>
+}

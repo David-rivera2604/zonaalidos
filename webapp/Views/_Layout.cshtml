@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Zona de Aliados</title>
+
+    @Styles.Render("~/Content/cssMaster")
+    <link rel="shortcut icon" href="~/images/favicon.png" />
+</head>
+
+<body class="fixed-sidebar fixed-nav fixed-nav-basic @ViewBag.theme">
+
+    <div id="wrapper">
+        <nav class="navbar-default navbar-static-side " role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav metismenu" id="side-menu">
+                    <li class="nav-header">
+                        <div class="dropdown profile-element">
+                            <img alt="image" src="~/logos/logo-core-alt.svg" id="tenantLogo">
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                <span class="block m-t-xs font-bold" id="UserNameMaster"></span>
+                                <span class="text-muted text-xs block"><span id="TenantMaster">menu</span> <b class="caret"></b></span>
+                            </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li><a class="dropdown-item" href="~/Security/ChangePassword" title="Permite el cambio de la clave de acceso del usuario conectado">Cambio de clave de acceso</a></li>
+                                <li><a class="dropdown-item" href="~/Security/Login" title="Permite terminar la sesión del usuario">Desconectar</a></li>
+                            </ul>
+                        </div>
+                        <div class="logo-element">
+                            IN+
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="gray-bg">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-fixed-top white-bg" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header">
+                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#">
+                            <i class="fa fa-bars"></i>
+                        </a>
+                    </div>
+
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <span id="GenericToolBar">
+                            </span>
+                        </li>
+                        <li>
+                            <a href="#" id="showHelp" title="Despliga la ayuda de la aplicación">
+                                <i class="fa fa-question"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="~/Security/Login" title="Permite terminar la sesión del usuario">
+                                <i class="fa fa-sign-out"></i> <span class="d-none d-sm-inline">Desconectar </span>
+                            </a>
+                        </li>
+                    </ul>
+
+                </nav>
+            </div>
+            <div class="wrapper wrapper-content animated fadeInRight">
+                <div class="row">
+                    <div class="col-lg-12">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <div>
+                    <strong>
+                        &copy;
+                    </strong> 2020 MAPFRE. Todos los derechos reservados.
+                </div>
+            </div>
+            <div id="right-sidebar" class="animated slideInRight ">
+                <div class="sidebar-container">
+                    <div class="ibox">
+                        <div class="ibox-title sidebar-title">
+                            <div id="sidebarTitle">
+                            </div>
+                            <div class="ibox-tools">
+                                <a class="close-link-sidebar" href="">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content sidebar-content">
+                            <div class="sk-spinner sk-spinner-wave">
+                                <div class="sk-rect1"></div>
+                                <div class="sk-rect2"></div>
+                                <div class="sk-rect3"></div>
+                                <div class="sk-rect4"></div>
+                                <div class="sk-rect5"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jsMaster")
+    <!-- Handler for local scripts -->
+    @RenderSection("scripts", required: false)
+</body>
+
+</html>

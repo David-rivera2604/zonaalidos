@@ -1,0 +1,185 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<!-- LookupMaster -->
+<div class="ibox">
+    <div class="ibox-title">
+        <h5>Mantenimiento de listas</h5>
+        <!-- Opciones -->
+        <div class="ibox-tools">
+            <a class="tool-filter">
+                <i class="fa fa-filter" title="Visualiza el filtro avanzado..."></i>
+            </a>
+            <a class="tool-new">
+                <i class="fa fa-plus" title="Crear un nuevo lookup master"></i>
+            </a>
+            <a class="fullscreen-link">
+                <i class="fa fa-expand" title="Expande la zona de trabajo"></i>
+            </a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="Opciones adicionales...">
+                <i class="fa fa-wrench"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                <li>
+                    <a href="#" class="dropdown-item tool-new"><i class="fa fa-plus"></i> Crear un nuevo lookup master</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-filter"></i> Despliega el filtro avanzado...</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar los lookupmasters</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-audit" data-toggle="modal" data-target="#myModal5"><i class="fa fa-clock-o"></i> Historial...</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+            <div class="sk-rect4"></div>
+            <div class="sk-rect5"></div>
+        </div>
+        <div id="generalNotify">
+        </div>
+        <!-- Filtro -->
+        <div class='form-row filter-row'>
+            <div class='form-group col-md-12'>
+                <div class="input-group placeholder-small">
+                    <input id="LookupMasterSearch" type="text" placeholder="Permite filtrar por nombre del rol o descripción" title="Permite filtrar por nombre del rol o descripción" class="form-control form-control-sm" maxlength="40">
+                    <span class="input-group-append">
+                        <button type="button" class="btn btn btn-primary btn-xs" id="ApplyFilter"> <i class="fa fa-search"></i> Filtrar</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- Filtro avanzado -->
+        <div class='form-row d-none advancefilter-row animated fadeInDown'>
+            <div class="form-group col-md-6">
+                <label class="control-label" for="RecordStatusFlt">Estado</label>
+                <select id="RecordStatusFlt" name="RecordStatusFlt" title="" multiple class="form-control form-control-sm">
+                </select>
+            </div>
+        </div>
+        <!-- Grid -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div class="table-responsive animated bounceInRight">
+                    <table id="LookupMasterGridTbl" style="font-size: 11px;"></table>
+                </div>
+            </div>
+        </div>
+        <!-- Edit Form -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div id="LookupMasterEdt" class="animated fadeInRight d-none">
+                    <form id='LookupMasterEdtForm' class='form-horizontal' data-toggle='validator'>
+                        <fieldset>
+                            <div class="form-row">
+                                <!-- LookupId -->
+                                <input id='LookupId' name='LookupId' type='hidden' value=''>
+                                <!-- Type -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Type'>Tipo<span class='required-mark'>*</span></label>
+                                        <select id='Type' name='Type' class='form-control'></select>
+                                    </div>
+                                </div>
+                                <!-- Description -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Description'>Descripción<span class='required-mark'>*</span></label>
+                                        <input id='Description' name='Description' type='text' class='form-control' size='50' maxlength='50'>
+                                    </div>
+                                </div>
+                                <!-- Key -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Key'>Clave<span class='required-mark'>*</span></label>
+                                        <input id='Key' name='Key' type='text' class='form-control' size='30' maxlength='30'>
+                                    </div>
+                                </div>
+                                <!-- Tenant -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Tenant'>Compañia</label>
+                                        <input id='Tenant' name='Tenant' type='text' class='form-control' size='1' maxlength='1'>
+                                    </div>
+                                </div>
+                                <!-- Statement -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Statement'>Instrucción</label>
+                                        <input id='Statement' name='Statement' type='text' class='form-control' size='2048' maxlength='2048'>
+                                    </div>
+                                </div>
+                                <!-- IsCached -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='IsCached'>Is Cached</label>
+                                        <input id='IsCached' name='IsCached' type='text' class='form-control' size='1' maxlength='1'>
+                                    </div>
+                                </div>
+                                <!-- ConnectionName -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='ConnectionName'>Conexión</label>
+                                        <input id='ConnectionName' name='ConnectionName' type='text' class='form-control' size='80' maxlength='80'>
+                                    </div>
+                                </div>
+                                <!-- IncludeByRole -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='IncludeByRole'>Include by Role</label>
+                                        <input id='IncludeByRole' name='IncludeByRole' type='text' class='form-control' size='512' maxlength='512'>
+                                    </div>
+                                </div>
+                                <!-- ExcludeByRole -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='ExcludeByRole'>Exclude by Role</label>
+                                        <input id='ExcludeByRole' name='ExcludeByRole' type='text' class='form-control' size='512' maxlength='512'>
+                                    </div>
+                                </div>
+                                <!-- RecordStatus -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='RecordStatus'>Estado del Registro<span class='required-mark'>*</span></label>
+                                        <select id='RecordStatus' name='RecordStatus' class='form-control'></select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-row">
+                                <div class='col-md-12'>
+									<button id="LookupMasterEdtFormSave" type="button" class="btn btn-primary btn-sm" data-doing="Guardando cambios..." title="Guardar cambios">Guardar</button>
+									<button id="LookupMasterEdtFormSaveContinue" type="button" class="btn btn-primary btn-sm d-none" data-doing="Guardando cambios..." title="Guardar cambios y continuar">Guardar y continuar</button>
+									<button id="LookupMasterEdtFormSaveCopy" type="button" class="btn btn-primary btn-sm d-none" data-doing="Guardando cambios..." title="Guardar cambios y continuar">Guardar y copiar</button>
+									<button id="LookupMasterEdtFormDuplicate" type="button" class="btn btn-info btn-sm d-none" data-doing="Duplicando..." title="Duplica la información actual">Duplicar</button>
+									<button id="LookupMasterEdtFormDelete" type="button" class="btn btn-danger btn-sm d-none" data-doing="Eliminando..." title="Elimina la información actual">Eliminar</button>
+									<button id="LookupMasterEdtFormCancel" type="button" class="btn btn-white btn-sm">Cancelar</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/General.LookupMaster.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.GeneralLookupMaster.Init();
+        });
+    </script>
+}

@@ -1,0 +1,44 @@
+﻿
+@{
+    Layout = "~/Views/Help/_Layout.cshtml";
+}
+
+<h1>
+    Emitir un póliza
+</h1>
+
+
+<p>En el menú póliza, haga clic en la opción “emisión”, deberá seleccionar el producto requerido o deseado.</p>
+<img alt="image" src="~/images/help/poliza_emitir_1.png" class="img-fluid mx-auto block" style=" padding-top: 10px;padding-bottom: 14px">
+<p>Luego de esta selección, se abre una pantalla con diferentes pestañas, estas pestañas varían de acuerdo con el producto elegido, dichas pestañas pueden ser: Asegurado, Cuestionario, Póliza, Prestamos, Beneficiario, Adjuntos.</p>
+<h3>Asegurado</h3>
+<p>Es la pestaña principal para la emisión de la póliza, ya que en ella se debe colocar todos los datos de identificación y ubicación del futuro asegurado.</p>
+<img alt="image" src="~/images/help/poliza_emitir_asegurado_1.png" class="img-fluid mx-auto d-block" style=" padding-top: 10px;padding-bottom: 14px">
+<h3>Cuestionario</h3>
+<p>En esta pestaña encontrara una seria de preguntas, dirigidas al asegurado a fin de conocer el historial medico del mismo. Cabe señalar que este cuestionario es de llenado obligatorio cuando la persona que se quiere asegurar tiene 65 años o más.</p>
+<img alt="image" src="~/images/help/poliza_emitir_cuestionario_1.png" class="img-fluid mx-auto d-block" style=" padding-top: 10px;padding-bottom: 14px">
+<h3>Prestamos</h3>
+<p>Acá se verán reflejados todos datos referentes a los prestamos y deudas que haya adquirido el asegurado.</p>
+<img alt="image" src="~/images/help/poliza_emitir_prestamo_1.png" class="img-fluid mx-auto d-block" style=" padding-top: 10px;padding-bottom: 14px">
+
+<h3>Póliza</h3>
+<p>Como su título lo indica acá se establecerán los datos principales de la póliza, tales como: Monedas, planes a implementar, fechas (alta, Inicio de vigencia, fin de vigencia) y la suma asegurada.</p>
+<img alt="image" src="~/images/help/poliza_emitir_poliza_1.png" class="img-fluid mx-auto d-block" style=" padding-top: 10px;padding-bottom: 14px">
+
+<h3>Beneficiarios</h3>
+<p>Todo asegurado, en el caso de póliza de vida, debe de tener un beneficiario, por lo que la empresa aseguradora debe tener estos datos bien determinados, esta pestaña permite el almacenaje de información de los datos de el o los beneficiarios del asegurado.</p>
+<img alt="image" src="~/images/help/poliza_emitir_beneficiarios_1.png" class="img-fluid mx-auto d-block" style=" padding-top: 10px;padding-bottom: 14px">
+
+<p>Todos los campos deberán ser llenados con la información suministrada por el interesado, tomando siempre en cuenta que algunos de los campos son de llenado obligatorio (*).</p>
+<img alt="image" src="~/images/help/poliza_emitir_validaciones_1.png" class="img-fluid mx-auto d-block" style=" padding-top: 10px;padding-bottom: 14px">
+<p>Es importante resaltar que el programa reconoce el llenado incorrecto o incompleto de los campos, si fuese este el caso, al tratar de emitir la póliza mostrara una alarma indicando cual es el error o errores en la emisión.</p>
+<img alt="image" src="~/images/help/poliza_emitir_validaciones_2.png" class="img-fluid mx-auto d-block" style=" padding-top: 10px;padding-bottom: 14px">
+
+<p>Realizado el llenado correcto de los datos y mediante el uso del botón emitir, se realiza la emisión de la póliza. De acuerdo con la verificación de la información suministrada y si cumple con los parámetros establecidos por la empresa aseguradora, la emisión se hará de forma inmediata.</p>
+<img alt="image" src="~/images/help/poliza_emitir_emitida_1.png" class="img-fluid mx-auto d-block" style=" padding-top: 10px;padding-bottom: 14px">
+<p>En el caso que la edad del asegurado sea mayor o igual a 65 años, la información será almacenada, quedando la póliza con un estatus de "En revisón", asignándole un numero temporal el cual cambiará a una numeración fija en el momento que la póliza sea aceptada. De igual forma en estos casos los usuarios de la aplicación con el rol "<b>Suscriptor</b>" serán notificados mediante correo electrónico.</p>
+<img alt="image" src="~/images/help/poliza_emitir_para_revision_1.png" class="img-fluid mx-auto d-block" style=" padding-top: 10px;padding-bottom: 14px">
+
+<p>La siguiente animación muestra el flujo de la emisión:</p>
+<img alt="image" src="~/images/help/policy_1.gif" class="img-fluid mx-auto block animated pulse" style=" padding-top: 10px;padding-bottom: 14px">
+

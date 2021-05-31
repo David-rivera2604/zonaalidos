@@ -1,0 +1,363 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title></title>
+
+    @Styles.Render("~/Content/cssView")
+    <style>
+        h4 {
+            margin-top: 12px !important;
+        }
+
+        div.form-group {
+            margin-bottom: 0px;
+        }
+
+        fieldset {
+            margin-left: 15px;
+        }
+
+        button#VisualizationsEdtFormSave {
+            margin-top: 31px;
+        }
+    </style>
+</head>
+
+<body class="gray-bg">
+    <div class="gray-bg">
+        <div class="row  border-bottom white-bg dashboard-header">
+            <div class="col-lg-12">
+
+                <div class='form-row'>
+                    <div class='col-md-12'>
+                        <div id="toolbar">
+                            <div class="m-b-xs" style=" margin-left: 2px;">
+                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                    <label class="btn btn-default active">
+                                        <input id="fltEstado1a" type="checkbox" checked autocomplete="off"> Pendientes
+                                    </label>
+                                    <label class="btn btn-default">
+                                        <input id="fltEstado2a" type="checkbox" autocomplete="off"> Terminados
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive animated bounceInRight" style="padding: 0px 2px 0px 2px;">
+                            <table id="SiniestrosGridTbl" style="font-size: 11px"></table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="wrapper wrapper-content">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-md-5 d-none" id="Expedientes">
+                            <div class="ibox">
+                                <div class="ibox-title">
+                                    <h5>Expedientes del siniestro #<span id="exnum_sin"></span></h5>
+                                    <div class="ibox-tools">
+                                        <a class="close-link" href="">
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="ibox-content" style="padding: 4px 4px 8px 4px;">
+                                    <div class='row'>
+                                        <div class='col-md-12'>
+                                            <div class="table-responsive animated bounceInRight" style="padding: 0px 2px 0px 2px;">
+                                                <table id="ExpedientesGridTbl" style="font-size: 12px" class="table table-bordered table-hover table-index"></table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7 d-none" id="flow">
+                            <div class="ibox">
+                                <div class="ibox-title">
+                                    <h5>Visualización de etapas para el expediente #<span id="exp_num"></span></h5>
+                                    <div class="ibox-tools">
+                                        <a class="close-link" href="">
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="ibox-content" style="padding: 4px 4px 8px 4px;">
+                                    <div class="progress progress-mini" style="margin: 0px 2px 3px 2px;">
+                                        <div style="width: 0%;" class="progress-bar progress-bar-danger"></div>
+                                    </div>
+                                    <div class='row'>
+                                        <div id="Stages" class='col-md-12'>
+                                            <div class="table-responsive animated bounceInRight" style="padding: 0px 2px 0px 2px;">
+                                                <table id="ProcessGridTbl" style="font-size: 12px" class="table table-bordered table-hover table-index"></table>
+                                            </div>
+                                        </div>
+                                        <div id="ChangeStage" class='col-md-12 d-none'>
+                                            <div class='col-md-12'>
+                                                <h4>Opciones posibles para avanzar a la siguiente etapa</h4>
+                                                <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            </div>
+                                            <form id='VisualizationsEdtForm' class='form-horizontal' data-toggle='validator' style=" margin-left: 10px; margin-right: 10px;margin-top: 6px;">
+                                                <fieldset>
+                                                    <div class="form-row" id="entry">
+
+                                                        <!-- Tasks -->
+                                                        <div class='col-md-6'>
+                                                            <div class='form-group'>
+                                                                <div class='form-group'>
+                                                                    <div id='tasks'></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class='col-md-6'>
+                                                            <div class="form-row">
+                                                                <div class='col-md-6 liquidado d-none'>
+                                                                    <div class='form-group'>
+                                                                        <label class='control-label' for='Fee'>Honorarios</label>
+                                                                        <input type='text' id='Fee' name='Fee' class='form-control form-control-sm text-right' size='21' maxlength='21' />
+                                                                    </div>
+                                                                </div>
+                                                                <div class='col-md-6 liquidado d-none'>
+                                                                    <div class='form-group'>
+                                                                        <label class='control-label' for='Compensation'>Indemnización</label>
+                                                                        <input type='text' id='Compensation' name='Compensation' class='form-control form-control-sm text-right' size='21' maxlength='21' />
+                                                                    </div>
+                                                                </div>
+                                                                <div class='col-md-6 liquidado t93 d-none'>
+                                                                    <div class='form-group'>
+                                                                        <label class='control-label' for='Deductible'>Deducible</label>
+                                                                        <input type='text' id='Deductible' name='Deductible' class='form-control form-control-sm text-right' size='21' maxlength='21' />
+                                                                    </div>
+                                                                </div>
+                                                                <div class='col-md-6 liquidado d-none'>
+                                                                    <div class='form-group'>
+                                                                        <label class='control-label' for='SpareParts'>Repuestos</label>
+                                                                        <input type='text' id='SpareParts' name='SpareParts' class='form-control form-control-sm text-right' size='21' maxlength='21' />
+                                                                    </div>
+                                                                </div>
+                                                                <div class='col-md-6 liquidado d-none'>
+                                                                    <div class='form-group'>
+                                                                        <label class='control-label' for='ManPower'>Mano de obra</label>
+                                                                        <input type='text' id='ManPower' name='ManPower' class='form-control form-control-sm text-right' size='21' maxlength='21' />
+                                                                    </div>
+                                                                </div>
+                                                                <div class='col-md-12 liquidado d-none'>
+                                                                    <div class='form-group'>
+                                                                        <label class='control-label' for='ManPowerInvoice'>Número de factura por mano de obra</label>
+                                                                        <input type='text' id='ManPowerInvoice' name='ManPowerInvoice' class='form-control form-control-sm text-right' size='18' maxlength='18' />
+                                                                    </div>
+                                                                </div>
+                                                                <div class='col-md-6 liquidado d-none'>
+                                                                    <div class='form-group'>
+                                                                        <label class='control-label' for='SparePartsInvoice'>Número de factura por repuestos</label>
+                                                                        <input type='text' id='SparePartsInvoice' name='SparePartsInvoice' class='form-control form-control-sm text-right' size='18' maxlength='18' />
+                                                                    </div>
+                                                                </div>
+                                                                <div class='col-md-12 t38 d-none'>
+                                                                    <div class='form-group'>
+                                                                        <label class='control-label' for='Workshop'>Taller</label>
+                                                                        <select id='Workshop' name='Workshop' class='form-control form-control-sm'></select>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- SettlementDate -->
+                                                                <div class='col-md-6 liquidado t93 d-none'>
+                                                                    <div class='form-group'>
+                                                                        <label class='control-label' for='SettlementDate'>Fecha de la liquidación</label>
+                                                                        <div class='input-group date' id='SettlementDate_group'>
+                                                                            <input id='SettlementDate' name='SettlementDate' type='text'
+                                                                                   class='form-control' size='10' maxlength='10'
+                                                                                   placeholder='día/mes/año'>
+                                                                            <span class='input-group-addon'>
+                                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                                            </span>
+                                                                        </div>
+                                                                        <div id='SettlementDate_validate'></div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- AppointmentDate -->
+                                                                <div class='col-md-6 t38 d-none'>
+                                                                    <div class='form-group'>
+                                                                        <label class='control-label' for='AppointmentDate'>Fecha de la cita</label>
+                                                                        <div class='input-group date' id='AppointmentDate_group'>
+                                                                            <input id='AppointmentDate' name='AppointmentDate' type='text'
+                                                                                   class='form-control' size='10' maxlength='10'
+                                                                                   placeholder='día/mes/año'>
+                                                                            <span class='input-group-addon'>
+                                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                                            </span>
+                                                                        </div>
+                                                                        <div id='AppointmentDate_validate'></div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- AppointmentTime -->
+                                                                <div class='col-md-6 t38 d-none'>
+                                                                    <div class='form-group'>
+                                                                        <label class='control-label' for='AppointmentTime'>Hora de la cita</label>
+                                                                        <input id='AppointmentTime' name='AppointmentTime' type='text' class='form-control' size='5' maxlength='5'>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- AssignedAdvisor -->
+                                                                <div class='col-md-6 t38 d-none'>
+                                                                    <div class='form-group'>
+                                                                        <label class='control-label' for='AssignedAdvisor'>Asesor asignado</label>
+                                                                        <select id='AssignedAdvisor' name='AssignedAdvisor' class='form-control'></select>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- ReportDate -->
+                                                                <div class='col-sm-6 col-md-6 t72 d-none'>
+                                                                    <div class='form-group'>
+                                                                        <label class='control-label' for='ReportDate'>Fecha</label>
+                                                                        <div class='input-group date' id='ReportDate_group'>
+                                                                            <input id='ReportDate' name='ReportDate' type='text'
+                                                                                   class='form-control' size='10' maxlength='10'
+                                                                                   placeholder='día/mes/año'>
+                                                                            <span class='input-group-addon'>
+                                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                                            </span>
+                                                                        </div>
+                                                                        <div id='ReportDate_validate'></div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- RepairTotalAmount -->
+                                                                <div class='col-sm-6 col-md-6 t72 d-none'>
+                                                                    <div class='form-group'>
+                                                                        <label class='control-label' for='RepairTotalAmount'>Monto total</label>
+                                                                        <input id='RepairTotalAmount' name='RepairTotalAmount' type='text' class='form-control text-right' size='18' maxlength='18'>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- RepairManPower -->
+                                                                <div class='col-sm-6 col-md-6 t72 d-none'>
+                                                                    <div class='form-group'>
+                                                                        <label class='control-label' for='RepairManPower'>Mano de obra</label>
+                                                                        <input id='RepairManPower' name='RepairManPower' type='text' class='form-control text-right' size='18' maxlength='18'>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- RepairSpareParts -->
+                                                                <div class='col-sm-6 col-md-6 t72 d-none'>
+                                                                    <div class='form-group'>
+                                                                        <label class='control-label' for='RepairSpareParts'>Repuestos</label>
+                                                                        <input id='RepairSpareParts' name='RepairSpareParts' type='text' class='form-control text-right' size='18' maxlength='18'>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class='col-md-6 t58 d-none' title='Repuestos no indispensables'>
+                                                                    <div class='form-group'>
+                                                                        <label class='control-label' for='SetSpaFee'>Honorarios</label>
+                                                                        <input type='text' id='SetSpaFee' name='SetSpaFee' class='form-control form-control-sm text-right' size='21' maxlength='21' />
+                                                                    </div>
+                                                                </div>
+                                                                <div class='col-md-6 t58 d-none' title='Repuestos no indispensables'>
+                                                                    <div class='form-group'>
+                                                                        <label class='control-label' for='SetSpaCompensation'>Indemnización</label>
+                                                                        <input type='text' id='SetSpaCompensation' name='SetSpaCompensation' class='form-control form-control-sm text-right' size='21' maxlength='21' />
+                                                                    </div>
+                                                                </div>
+                                                                <div class='col-md-6 t58 d-none' title='Repuestos no indispensables'>
+                                                                    <div class='form-group'>
+                                                                        <label class='control-label' for='SetSpaDeductible'>Deducible</label>
+                                                                        <input type='text' id='SetSpaDeductible' name='SetSpaDeductible' class='form-control form-control-sm text-right' size='21' maxlength='21' />
+                                                                    </div>
+                                                                </div>
+                                                                <div class='col-md-6 t58 d-none' title='Repuestos no indispensables'>
+                                                                    <div class='form-group'>
+                                                                        <label class='control-label' for='SetSpaSpareParts'>Repuestos</label>
+                                                                        <input type='text' id='SetSpaSpareParts' name='SetSpaSpareParts' class='form-control form-control-sm text-right' size='21' maxlength='21' />
+                                                                    </div>
+                                                                </div>
+                                                                <div class='col-md-6 t58 d-none' title='Repuestos no indispensables'>
+                                                                    <div class='form-group'>
+                                                                        <label class='control-label' for='SetSpaManPower'>Mano de obra</label>
+                                                                        <input type='text' id='SetSpaManPower' name='SetSpaManPower' class='form-control form-control-sm text-right' size='21' maxlength='21' />
+                                                                    </div>
+                                                                </div>
+                                                                <div class='col-md-12 t58 d-none' title='Repuestos no indispensables'>
+                                                                    <div class='form-group'>
+                                                                        <label class='control-label' for='SetSpaManPowerInvoice'>Número de factura por mano de obra</label>
+                                                                        <input type='text' id='SetSpaManPowerInvoice' name='SetSpaManPowerInvoice' class='form-control form-control-sm text-right' size='18' maxlength='18' />
+                                                                    </div>
+                                                                </div>
+                                                                <div class='col-md-12 t58 d-none' title='Repuestos no indispensables'>
+                                                                    <div class='form-group'>
+                                                                        <label class='control-label' for='SetSpaSparePartsInvoice'>Número de factura por repuestos</label>
+                                                                        <input type='text' id='SetSpaSparePartsInvoice' name='SetSpaSparePartsInvoice' class='form-control form-control-sm text-right' size='18' maxlength='18' />
+                                                                    </div>
+                                                                </div>
+                                                                <!-- SetSpaSettlementDate -->
+                                                                <div class='col-md-6 t58 d-none' title='Repuestos no indispensables'>
+                                                                    <div class='form-group'>
+                                                                        <label class='control-label' for='SetSpaSettlementDate'>Fecha de la liquidación</label>
+                                                                        <div class='input-group date' id='SetSpaSettlementDate_group'>
+                                                                            <input id='SetSpaSettlementDate' name='SetSpaSettlementDate' type='text'
+                                                                                   class='form-control' size='10' maxlength='10'
+                                                                                   placeholder='día/mes/año'>
+                                                                            <span class='input-group-addon'>
+                                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                                            </span>
+                                                                        </div>
+                                                                        <div id='SetSpaSettlementDate_validate'></div>
+                                                                    </div>
+                                                                </div>
+
+
+
+
+
+                                                            </div>
+                                                        </div>
+                                                        <!-- Annotation -->
+                                                        <div class='col-md-10'>
+                                                            <div class='form-group'>
+                                                                <label class='control-label' for='Surcharge' style="margin-top: 10px;">
+                                                                    Comentario:
+                                                                </label>
+                                                                <div class='form-group'>
+                                                                    <textarea id='Annotation' name='Annotation' class='form-control' size='350' maxlength='350' rows="2"></textarea>
+                                                                </div>
+                                                                <div class='form-group tnotify d-none'>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="CustomNotify" checked>
+                                                                        <label class="custom-control-label control-label" for="CustomNotify" style="padding-top: 4px;">Enviar notificación al asegurado por correo electrónico</label>
+                                                                        <button id="attach" type="button" class="btn btn-xs btn-info pattach d-none" data-doing="Procesando..." style="float: right;margin-top: 3px;">Adjuntar archivo</button>
+                                                                    </div>
+                                                                    <h5 class="pattach d-none" style="margin-bottom: 2px;">Archivos adjuntos</h5>
+                                                                    <ul class="tag-list pattach d-none" style="padding: 0">
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class='col-md-2'>
+                                                            <button id="VisualizationsEdtFormSave" type="button" class="btn btn-primary mx-auto d-block" data-doing="Procesando..." disabled>Procesar</button>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                                <input id="fileUpload" type="file" class="d-none" />
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+@Scripts.Render("~/bundles/jsView")
+</html>
+<script src="@Url.Content("~/Scripts/Siniestros.Panel.js")"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        app.SiniestrosPanel.Init();
+    });
+</script>
+

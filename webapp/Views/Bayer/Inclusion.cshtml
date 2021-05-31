@@ -1,0 +1,839 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<!-- RoleMember -->
+<div class="ibox">
+    <div class="ibox-title">
+        <h5><span id="PageTitle">Solicitud de inclusión</span><small class="m-l-sm"><span id="PageSubTitle"> Seguro colectivo y gastos medicos</span></small> </h5>
+        <!-- Opciones -->
+        <div class="ibox-tools">
+            <a id="print" href="" class="btn btn-primary btn-xs d-none" title="Permite imprimir la solicitud">Imprimir</a>
+            <a class="fullscreen-link">
+                <i class="fa fa-expand"></i>
+            </a>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+            <div class="sk-rect4"></div>
+            <div class="sk-rect5"></div>
+        </div>
+        <div id="generalNotify">
+        </div>
+        <!-- Edit Form -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div id="VisualizationsEdt" class="animated fadeInRight">
+                    <form id='VisualizationsEdtForm' class='form-horizontal' data-toggle='validator'>
+                        <fieldset disabled>
+
+                            <!-- Notificaciones  -->
+                            <div id="quoteNotify">
+                            </div>
+
+                            <div id="acceptedNotify" class="alert alert-dismissable animated fadeInDown alert-info d-none" role="alert">
+                                <p>Su solicitud ya fue aceptada por el personal de RRHH, la misma fue enviada a su correo en forma de un archivo PDF para su respectiva firma digital, según la preferencia indicado por usted al momento de enviar la solicitud a RRHH.</p>
+                                <p>Una vez que reciba el correo mencionado, por favor procesada a firma digitalmente el archivo anexo, para luego cargar a este sistema el documento firmado usando el botón de nombre “Cargar la solicitud firmada” que se encuentra en la parte superior de la solicitud.</p>
+                            </div>
+
+                            <div class="form-row">
+                                <!-- datosdelapoliza Zone -->
+                                <div class="col-md">
+                                    <h4>Datos de la póliza</h4>
+                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                    <div class="form-row">
+                                        <!-- ContractorName DropDownList -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='ContractorName'>Filial de Bayer<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <select id='ContractorName' name='ContractorName' class='form-control'></select>
+                                            </div>
+                                        </div>
+                                        <!-- MainPolicyId Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='MainPolicyId'>N° de póliza</label>
+                                                <select id='MainPolicyId' name='MainPolicyId' class='form-control' disabled></select>
+                                            </div>
+                                        </div>
+                                        <!-- IssueDate DatePicker -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='IssueDate'>Fecha de ingreso a la póliza</label>
+                                                <div class='input-group date' id='IssueDate_group'>
+                                                    <input type='text' id='IssueDate' name='IssueDate' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-calendar'></span>
+                                                    </span>
+                                                </div>
+                                                <div id='IssueDate_validate'></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Clase Zone -->
+                                <div class="col-md-3 role-Revisor-visible d-none">
+                                    <h4>Clase</h4>
+                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                    <div class="form-row">
+                                        <!-- IsLife DropDownList -->
+                                        <div class='col-sm-6 col-md-6'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='IsLife'>Vida<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <select id='IsLife' name='IsLife' class='form-control role-Revisor-enabled'>
+                                                    <option value=""></option>
+                                                    <option value="A">A</option>
+                                                    <option value="B">B</option>
+                                                    <option value="C">C</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- IsHealth DropDownList -->
+                                        <div class='col-sm-6 col-md-6'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='IsHealth'>Salud<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <select id='IsHealth' name='IsHealth' class='form-control role-Revisor-enabled'>
+                                                    <option value=""></option>
+                                                    <option value="A">A</option>
+                                                    <option value="B">B</option>
+                                                    <option value="C">C</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- datosdelasegurado Zone -->
+                            <div class="form-row">
+                                <div class="col-lg-12">
+                                    <h4><i class="fa fa-user-o"></i> Datos del asegurado</h4>
+                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                    <div class="form-row">
+
+                                        <!-- DocumentNumber Text -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='DocumentNumber'>Identificación<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <div class='input-group'>
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-barcode'></span>
+                                                    </span>
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-value='1' id="DocumentNumberType">
+                                                            Cédula
+                                                        </button>
+                                                        <div class="dropdown-menu" id="DocumentNumberTypeMenu">
+                                                            <a class="dropdown-item active" href="#" data-value='1'>Cédula</a>
+                                                            <a class="dropdown-item" href="#" data-value='2'> Residencia</a>
+                                                            <a class="dropdown-item" href="#" data-value='3'>Pasaporte</a>
+                                                            <a class="dropdown-item" href="#" data-value='4'>Cédula jurídica</a>
+                                                        </div>
+                                                    </div>
+                                                    <input id='DocumentNumber' name='DocumentNumber'
+                                                           type='text' class='form-control' size='20'
+                                                           maxlength='20' placeholder="0X-XXXX-XXXX">
+
+                                                </div>
+                                                <div id='DocumentNumber_validate'></div>
+                                            </div>
+                                        </div>
+                                        <!-- FirstName Text -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='FirstName'>Nombres<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <input type='text' id='FirstName' name='FirstName' class='form-control' size='60' maxlength='60' />
+                                            </div>
+                                        </div>
+                                        <!-- LastName Text -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='LastName'>Apellidos<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <input type='text' id='LastName' name='LastName' class='form-control' size='60' maxlength='60' />
+                                            </div>
+                                        </div>
+                                        <!-- BirthDate DatePicker -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='BirthDate'>Fecha de nacimiento<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <div class='input-group date' id='BirthDate_group'>
+                                                    <input type='text' id='BirthDate' name='BirthDate' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-calendar'></span>
+                                                    </span>
+                                                </div>
+                                                <div id='BirthDate_validate'></div>
+                                            </div>
+                                        </div>
+                                        <!-- Gender DropDownList -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='Gender'>Sexo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <select id='Gender' name='Gender' class='form-control'></select>
+                                            </div>
+                                        </div>
+                                        <!-- Height Numeric -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='Height'>Estatura</label>
+                                                <div class='input-group'>
+                                                    <input type='text' id='Height' name='Height' class='form-control text-right' size='9' maxlength='9' />
+                                                    <span class='input-group-addon'>
+                                                        <small class="text-muted">mts</small>
+                                                    </span>
+                                                </div>
+                                                <div id='Height_validate'></div>
+                                            </div>
+                                        </div>
+                                        <!-- Weight Numeric -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='Weight'>Peso</label>
+                                                <div class='input-group'>
+                                                    <input type='text' id='Weight' name='Weight' class='form-control text-right' size='9' maxlength='9' />
+                                                    <span class='input-group-addon'>
+                                                        <small class="text-muted">lbs</small>
+                                                    </span>
+                                                </div>
+                                                <div id='Weight_validate'></div>
+                                            </div>
+                                        </div>
+                                        <!-- CivilStatus DropDownList -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='CivilStatus'>Estado civil</label>
+                                                <select id='CivilStatus' name='CivilStatus' class='form-control'></select>
+                                            </div>
+                                        </div>
+
+                                        <!-- CountryOfNationality DropDownList -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='CountryOfNationality'>Nacionalidad<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <select id='CountryOfNationality' name='CountryOfNationality' class='form-control'></select>
+                                            </div>
+                                        </div>
+
+                                        <!-- SocialSecurity Text -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='SocialSecurity'>Seguro Social</label>
+                                                <input type='text' id='SocialSecurity' name='SocialSecurity' class='form-control' size='60' maxlength='60' />
+                                            </div>
+                                        </div>
+                                        <!-- DominantMember RadioButtonList -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='DominantMember'>Miembro dominante<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <div style="padding-top: 6px;">
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" class="custom-control-input" id="DominantMember_1" name="DominantMember" value="1">
+                                                        <label class="custom-control-label" for="DominantMember_1">Izquierdo</label>
+                                                    </div><div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" class="custom-control-input" id="DominantMember_2" name="DominantMember" value="2">
+                                                        <label class="custom-control-label" for="DominantMember_2">Derecho</label>
+                                                    </div>
+                                                </div>
+                                                <div id='DominantMember_validate'></div>
+                                            </div>
+                                        </div>
+                                        <!-- Doctor Text -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='Doctor'>Médico de cabecera</label>
+                                                <input type='text' id='Doctor' name='Doctor' class='form-control' size='60' maxlength='60' />
+                                            </div>
+                                        </div>
+                                        <!-- Occupation Text -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='Occupation'>Ocupación</label>
+                                                <input type='text' id='Occupation' name='Occupation' class='form-control' size='60' maxlength='60' />
+                                            </div>
+                                        </div>
+                                        <!-- DateEntryWork DatePicker -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='DateEntryWork'>Fecha de Ingreso a trabajar<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <div class='input-group date' id='DateEntryWork_group'>
+                                                    <input type='text' id='DateEntryWork' name='DateEntryWork' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-calendar'></span>
+                                                    </span>
+                                                </div>
+                                                <div id='DateEntryWork_validate'></div>
+                                            </div>
+                                        </div>
+
+                                        <!-- ContinuityDate DatePicker -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='ContinuityDate' title="Continuidad de cobertura">Fecha de continuidad</label>
+                                                <div class='input-group date' id='ContinuityDate_group'>
+                                                    <input type='text' id='ContinuityDate' name='ContinuityDate' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-calendar'></span>
+                                                    </span>
+                                                </div>
+                                                <div id='ContinuityDate_validate'></div>
+                                            </div>
+                                        </div>
+
+                                        <!-- MonthlySalary Numeric -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='MonthlySalary'>Salario mensual<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <input type='text' id='MonthlySalary' name='MonthlySalary' class='form-control text-right' size='21' maxlength='21' />
+                                            </div>
+                                        </div>
+
+
+
+                                        <!-- InsuredAmount Numeric -->
+                                        <div class='col-sm-3 col-md-3 role-Revisor-visible d-none'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='InsuredAmount'>Suma asegurada<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <input type='text' id='InsuredAmount' name='InsuredAmount' class='form-control text-right' size='21' maxlength='21' disabled />
+                                            </div>
+                                        </div>
+
+
+                                        <!-- PhoneNumber Text -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='PhoneNumber'>Teléfono<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <div class='input-group'>
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-earphone'></span>
+                                                    </span>
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="PhoneNumberType" data-value='1'>
+                                                            Celular
+                                                        </button>
+                                                        <div class="dropdown-menu" id="PhoneNumberTypeMenu">
+                                                            <a class="dropdown-item active" data-value='1' href="#">Celular</a>
+                                                            <a class="dropdown-item" data-value='2' href="#">Habitación</a>
+                                                            <a class="dropdown-item" data-value='3' href="#">Oficina</a>
+                                                            <a class="dropdown-item" data-value='4' href="#">Fax</a>
+                                                        </div>
+                                                    </div>
+                                                    <input id='PhoneNumber' name='PhoneNumber' type='text' class='form-control' size='9' maxlength='9'>
+                                                </div>
+                                                <div id='PhoneNumber_validate'></div>
+                                            </div>
+                                        </div>
+                                        <!-- PrimaryEmailAddress Text -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='PrimaryEmailAddress'>Correo electrónico<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <div class='input-group'>
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-envelope'></span>
+                                                    </span>
+                                                    <input id='PrimaryEmailAddress' name='PrimaryEmailAddress' type='text' class='form-control' size='80' maxlength='80'>
+                                                </div>
+                                                <div id='PrimaryEmailAddress_validate'></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- direccionderesidencia Zone -->
+                            <div class="form-row">
+                                <div class="col-lg-12">
+                                    <h4><i class='fa fa-map-marker'></i> Dirección de residencia</h4>
+                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                    <div class="form-row">
+
+                                        <!-- Province DropDownList -->
+                                        <div class='col-sm-2 col-md-2'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='Province'>Provincia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <select id='Province' name='Province' class='form-control'></select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Canton DropDownList -->
+                                        <div class='col-sm-2 col-md-2'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='Canton'>Cantón<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <select id='Canton' name='Canton' class='form-control'></select>
+                                            </div>
+                                        </div>
+
+                                        <!-- District DropDownList -->
+                                        <div class='col-sm-2 col-md-2'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='District'>Distrito<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <select id='District' name='District' class='form-control'></select>
+                                            </div>
+                                        </div>
+
+                                        <!-- AddressDetail Text -->
+                                        <div class='col-sm-6 col-md-6'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='AddressDetail'>Dirección<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <input type='text' id='AddressDetail' name='AddressDetail' class='form-control' size='60' maxlength='60' />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- cuentaparareembolso Zone -->
+                            <div class="form-row">
+                                <div class="col-lg-12">
+                                    <h4>Cuenta para reembolso</h4>
+                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                    <div class="form-row">
+
+                                        <!-- RefundBankCode DropDownList -->
+                                        <div class='col-sm-2 col-md-2'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='RefundBankCode'>Banco<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <select id='RefundBankCode' name='RefundBankCode' class='form-control'></select>
+                                            </div>
+                                        </div>
+
+                                        <!-- RefundBankAccount Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='RefundBankAccount'>N° cuenta IBAN<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <input type='text' id='RefundBankAccount' name='RefundBankAccount' class='form-control' size='22' maxlength='22' />
+                                            </div>
+                                        </div>
+
+                                        <!-- RefundBankAccountType RadioButtonList -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='RefundBankAccountType'>Tipo de cuenta<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <div style="padding-top: 6px;">
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" class="custom-control-input" id="RefundBankAccountType_1" name="RefundBankAccountType" value="1">
+                                                        <label class="custom-control-label" for="RefundBankAccountType_1">Ahorro</label>
+                                                    </div><div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" class="custom-control-input" id="RefundBankAccountType_2" name="RefundBankAccountType" value="2">
+                                                        <label class="custom-control-label" for="RefundBankAccountType_2">Corriente</label>
+                                                    </div>
+                                                </div>
+                                                <div id='RefundBankAccountType_validate'></div>
+                                            </div>
+                                        </div>
+
+                                        <!-- RefundBankAccountCurrency RadioButtonList -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='RefundBankAccountCurrency'>Moneda de cuenta<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <div style="padding-top: 6px;">
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" class="custom-control-input" id="RefundBankAccountCurrency_1" name="RefundBankAccountCurrency" value="1">
+                                                        <label class="custom-control-label" for="RefundBankAccountCurrency_1">Colones</label>
+                                                    </div><div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" class="custom-control-input" id="RefundBankAccountCurrency_2" name="RefundBankAccountCurrency" value="2">
+                                                        <label class="custom-control-label" for="RefundBankAccountCurrency_2">Dólares</label>
+                                                    </div>
+                                                </div>
+                                                <div id='RefundBankAccountCurrency_validate'></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- beneficiarios Grid -->
+                            <div class="form-row">
+                                <div class="col-lg-12">
+                                    <div class="form-row">
+                                        <div class='col'>
+                                            <h4>
+                                                Beneficiarios<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span><label id="beneficiariosTbl-error" class="float-right d-none" style="color: #cc5965;
+        display: inline-block;
+        font-size: 11px;
+        font-weight: normal;
+"></label>
+                                            </h4>
+                                        </div>
+                                        <div class='col-auto'>
+                                            <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo Beneficiarios" data-toggle="modal" id="beneficiariosNew"> <i class="fa fa-plus"></i> </button>
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                    <div class="form-row">
+                                        <div class='col-md-12' style="padding-bottom: 20px">
+                                            <div class="table-responsive">
+                                                <table id="beneficiariosTbl" style="font-size: 11px;">
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- dependientes Grid -->
+                            <div class="form-row">
+                                <div class="col-lg-12">
+                                    <div class="form-row">
+                                        <div class='col'>
+                                            <h4>Dependientes</h4>
+                                        </div>
+                                        <div class='col-auto'>
+                                            <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo Dependientes" data-toggle="modal" id="dependientesNew"> <i class="fa fa-plus"></i> </button>
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                    <div class="form-row">
+                                        <div class='col-md-12' style="padding-bottom: 20px">
+                                            <div class="table-responsive">
+                                                <table id="dependientesTbl" style="font-size: 11px;">
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- HasDigitalSignature Zone -->
+                            <div class="form-row">
+                                <div class="col-lg-12">
+                                    <h4><i class='fa fa-certificate'></i> Información para firma digital</h4>
+                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                    <div class="form-row">
+                                        <div class='col-sm-12 col-md-12'>
+                                            <p class="text-muted">Como parte del proceso para aceptar esta solicitud por parte de MAPFRE Costa Rica, es necesario firmar esta planilla, para tal acción se utilizan dos opciones, la primera es el aceptado y firma de la solución por medio de una página especializada y la segunda es la posibilidad de firmar digitalmente usando los dispositivos apropiados para tal fin en costa rica.</p>
+                                        </div>
+                                        <!-- HasDigitalSignature RadioButtonList -->
+                                        <div class='col-sm-12 col-md-12'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='HasDigitalSignature'>¿Desea usted firma digitalmente la solicitud actual en el momento en que el proceso así lo requiera?</label>
+                                                <p class="text-muted small">Por favor tome en cuenta que para poder firmar digitalmente se necesita contar con el dispositivo apropiado para realizar dicha firma.</p>
+                                                <div style="padding-top: 6px;">
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" class="custom-control-input" id="HasDigitalSignature_1" name="HasDigitalSignature" value="1">
+                                                        <label class="custom-control-label" for="HasDigitalSignature_1">Si, prefiero firmar digitalmente</label>
+                                                    </div><div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" class="custom-control-input" id="HasDigitalSignature_2" name="HasDigitalSignature" value="2">
+                                                        <label class="custom-control-label" for="HasDigitalSignature_2">No, prefiero usar la página especializada</label>
+                                                    </div>
+                                                </div>
+                                                <div id='HasDigitalSignature_validate'></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Botonera -->
+                            <div class="form-row">
+                                <div class='col-md-12'>
+                                    <button id="VisualizationsEdtFormDraft" type="button" class="btn btn-outline-warning d-none" data-doing="Guardando cambios...">Guardar sin enviar</button>
+                                    <button id="VisualizationsEdtFormSave" type="button" class="btn btn-primary d-none" data-doing="Enviando a RRHH...">Enviar a RRHH</button>
+                                    <button id="VisualizationsEdtFormBack" type="button" class="btn btn-outline-danger d-none" data-doing="Rechazando la solicitud...">Rechazar</button>
+                                    <button id="VisualizationsEdtFormRevised" type="button" class="btn btn-primary d-none" data-doing="Aceptando la solicitud...">Aceptar</button>
+                                    <button id="VisualizationsEdtFormUpLoad" type="button" class="btn btn-primary d-none" data-doing="Cargando la solicitud firmada...">Cargar la solicitud firmada</button>
+                                </div>
+                            </div>
+
+
+                            <!-- Adjuntos Zone -->
+                            <div class="form-row attachment d-none">
+                                <div class="col-lg-12">
+                                    <h4><i class="fa fa-paperclip"></i> Archivos adjuntos</h4>
+                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                    <div class="form-row">
+                                        <div class='col-md-12' style="padding-bottom: 20px">
+                                            <div class="attachment">
+                                                <div class="file-box">
+                                                    <div class="file">
+                                                        <a href="#">
+                                                            <span class="corner"></span>
+
+                                                            <div class="icon">
+                                                                <i class="fa fa-file"></i>
+                                                            </div>
+                                                            <div class="file-name">
+                                                                ejemplo.con.firma.pdf
+                                                                <br>
+                                                                <small>Creado: Mar 30, 2021</small>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </fieldset>
+                        <input id="fileUpload" type="file" class="d-none" />
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- beneficiarios Grid Modal -->
+        <div class="modal inmodal" id="beneficiariosModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content animated bounceInRight">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                        <h4 class="modal-title">Beneficiarios</h4>
+                        <small class="font-bold">Permite agregar un nuevo Beneficiarios o editar uno ya existente</small>
+                    </div>
+                    <div class="modal-body">
+                        <!-- beneficiarios Grid Edit Form -->
+                        <div class='form-row'>
+                            <div class='col-md-12'>
+                                <div id="beneficiariosEdt" class="animated fadeInRight">
+                                    <form id='beneficiariosEdtForm' class='form-horizontal' data-toggle='validator'>
+                                        <fieldset>
+                                            <div class='form-row'>
+                                                <!-- BDocumentNumber Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='BDocumentNumber'>Identificación<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group'>
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-barcode'></span>
+                                                            </span>
+                                                            <div class="input-group-prepend">
+                                                                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-value='1' id="BDocumentNumberType">
+                                                                    Cédula
+                                                                </button>
+                                                                <div class="dropdown-menu" id="BDocumentNumberTypeMenu">
+                                                                    <a class="dropdown-item active" href="#" data-value='1'>Cédula</a>
+                                                                    <a class="dropdown-item" href="#" data-value='2'> Residencia</a>
+                                                                    <a class="dropdown-item" href="#" data-value='3'>Pasaporte</a>
+                                                                    <a class="dropdown-item" href="#" data-value='4'>Cédula jurídica</a>
+                                                                </div>
+                                                            </div>
+                                                            <input id='BDocumentNumber' name='BDocumentNumber'
+                                                                   type='text' class='form-control' size='20'
+                                                                   maxlength='20' placeholder="0X-XXXX-XXXX">
+
+                                                        </div>
+                                                        <div id='BDocumentNumber_validate'></div>
+                                                    </div>
+                                                </div><!-- BFirstName Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='BFirstName'>Nombres<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='BFirstName' name='BFirstName' class='form-control' size='60' maxlength='60' />
+                                                    </div>
+                                                </div><!-- BLastName Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='BLastName'>Apellidos<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='BLastName' name='BLastName' class='form-control' size='60' maxlength='60' />
+                                                    </div>
+                                                </div><!-- BBirthDate DatePicker -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='BBirthDate'>Fecha de nacimiento<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='BBirthDate_group'>
+                                                            <input type='text' id='BBirthDate' name='BBirthDate' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='BBirthDate_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- BRelationship DropDownList -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='BRelationship'>Parentesco<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='BRelationship' name='BRelationship' class='form-control'></select>
+                                                    </div>
+                                                </div>
+                                                <!-- BParticipationRate Numeric -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='BParticipationRate'>Porcentaje<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group'>
+                                                            <input type='text' id='BParticipationRate' name='BParticipationRate' class='form-control text-right' size='3' maxlength='3' />
+                                                            <span class='input-group-addon'>
+                                                                <small class="text-muted">%</small>
+                                                            </span>
+                                                        </div>
+                                                        <div id='BParticipationRate_validate'></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="beneficiariosEdtFormSave" data-doing="Guardando...">Guardar cambios</button>
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- dependientes Grid Modal -->
+        <div class="modal inmodal" id="dependientesModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content animated bounceInRight">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                        <h4 class="modal-title">Dependientes</h4>
+                        <small class="font-bold">Permite agregar un nuevo Dependientes o editar uno ya existente</small>
+                    </div>
+                    <div class="modal-body">
+                        <!-- dependientes Grid Edit Form -->
+                        <div class='form-row'>
+                            <div class='col-md-12'>
+                                <div id="dependientesEdt" class="animated fadeInRight">
+                                    <form id='dependientesEdtForm' class='form-horizontal' data-toggle='validator'>
+                                        <fieldset>
+                                            <div class='form-row'>
+                                                <!-- DDocumentNumber Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='DDocumentNumber'>Identificación<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group'>
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-barcode'></span>
+                                                            </span>
+                                                            <div class="input-group-prepend">
+                                                                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-value='1' id="DDocumentNumberType">
+                                                                    Cédula
+                                                                </button>
+                                                                <div class="dropdown-menu" id="DDocumentNumberTypeMenu">
+                                                                    <a class="dropdown-item active" href="#" data-value='1'>Cédula</a>
+                                                                    <a class="dropdown-item" href="#" data-value='2'>Residencia</a>
+                                                                    <a class="dropdown-item" href="#" data-value='3'>Pasaporte</a>
+                                                                    <a class="dropdown-item" href="#" data-value='4'>Cédula jurídica</a>
+                                                                </div>
+                                                            </div>
+                                                            <input id='DDocumentNumber' name='DDocumentNumber'
+                                                                   type='text' class='form-control' size='20'
+                                                                   maxlength='20' placeholder="0X-XXXX-XXXX">
+
+                                                        </div>
+                                                        <div id='DDocumentNumber_validate'></div>
+                                                    </div>
+                                                </div><!-- DFirstName Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='DFirstName'>Nombres<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='DFirstName' name='DFirstName' class='form-control' size='60' maxlength='60' />
+                                                    </div>
+                                                </div><!-- DLastName Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='DLastName'>Apellidos<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='DLastName' name='DLastName' class='form-control' size='60' maxlength='60' />
+                                                    </div>
+                                                </div><!-- DBirthDate DatePicker -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='DBirthDate'>Fecha de nacimiento<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='DBirthDate_group'>
+                                                            <input type='text' id='DBirthDate' name='DBirthDate' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='DBirthDate_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- DRelationship DropDownList -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='DRelationship'>Parentesco<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='DRelationship' name='DRelationship' class='form-control'></select>
+                                                    </div>
+                                                </div>
+                                                <!-- DInclusionDate DatePicker -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='DInclusionDate'>Fecha de inclusión<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='DInclusionDate_group'>
+                                                            <input type='text' id='DInclusionDate' name='DInclusionDate' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='DInclusionDate_validate'></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="dependientesEdtFormSave" data-doing="Guardando...">Guardar cambios</button>
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="XXX d-none">
+            <div id="generalNotify">
+            </div>
+            <!-- Edit Form -->
+            <div class="form-row">
+                <div class="col-md-12">
+                    <div id="XVisualizationsEdt" class="">
+                        <form id="XVisualizationsEdtForm" class="form-horizontal" data-toggle="validator" novalidate="novalidate">
+                            <fieldset>
+                                <!-- ctrol1 Zone -->
+                                <div class="form-row">
+                                    <div class="col-lg-12">
+
+
+                                        <div class="form-row">
+
+                                            <!-- principal Text -->
+                                            <div class="col-sm-12 col-md-12">
+                                                <div class="form-group">
+                                                    <textarea class="form-control"
+                                                              placeholder="Escriba aquí el motivo del rechazo"
+                                                              style="font-size: 12px;" rows="5" id="motivo"></textarea>
+                                                </div>
+                                            </div>
+
+                                            <!-- enviar Button -->
+                                            <div class="col-sm-12 col-md-12 text-right">
+                                                <button id="VisualizationsEdtFormBackConfirm" type="button" class="btn btn-danger" data-doing="Rechazando la solicitud..." disabled>Rechazar</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/Bayer.Inclusion.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.BayerInclusion.Init();
+        });
+    </script>
+}
