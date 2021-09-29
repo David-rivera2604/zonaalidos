@@ -64,6 +64,8 @@ app.SecurityUserMember = (function () {
 
         $('#RecordStatusFlt').select2({ width: '100%', theme: 'bootstrap4' });
         $('#Roles').select2({ width: '100%', theme: 'bootstrap4' });
+
+        $(".formbtn").appendTo("#GenericToolBar");
     };
 
     function Init_List() {
@@ -499,6 +501,8 @@ app.SecurityUserMember = (function () {
                     $('#UserMemberEdtFormSaveCopy').addClass('d-none');
                     $('#UserMemberEdtFormDuplicate').removeClass('d-none');
                     $('#UserMemberEdtFormDelete').removeClass('d-none');
+                    $('#UserMemberEdtFormSave').removeClass('d-none');
+                    $('#UserMemberEdtFormCancel').removeClass('d-none');
                 });
         else {
             MapObjectToInput(row);
@@ -507,6 +511,8 @@ app.SecurityUserMember = (function () {
             $('#UserMemberEdtFormSaveCopy').removeClass('d-none');
             $('#UserMemberEdtFormDuplicate').addClass('d-none');
             $('#UserMemberEdtFormDelete').addClass('d-none');
+            $('#UserMemberEdtFormSave').removeClass('d-none');
+            $('#UserMemberEdtFormCancel').removeClass('d-none');
         }
     };
 
@@ -515,6 +521,7 @@ app.SecurityUserMember = (function () {
         $('.advancefilter-row').addClass('d-none');
         $('#UserMemberGridTbl').parents().find('.table-responsive').removeClass('d-none');
         $('#UserMemberEdt').addClass('d-none');
+        $('.formbtn').addClass('d-none');
     };
 
     function DocumentNumberCallBack(data) {

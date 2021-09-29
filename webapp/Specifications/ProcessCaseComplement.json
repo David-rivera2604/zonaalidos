@@ -223,19 +223,5 @@
       "Comments": "",
       "Domain": "DateCreatedOrUpdated"
     }
-  ],
-  "PrimaryKey": [
-    {
-      "Name": "CaseId",
-      "IsNullable": false,
-      "Type": "number",
-      "Length": 22,
-      "PrimaryKey": true,
-      "AutoIncrement": false,
-      "Precision": 9,
-      "Comments": "",
-      "Domain": ""
-    }
-  ],
-  "Identify": "CaseId"
+  ]
 }

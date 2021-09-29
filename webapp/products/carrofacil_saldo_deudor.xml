@@ -6,7 +6,7 @@
   <Modules>
     <Module modulecode="1" description="Plan 1 - Máx. $300.000.00">
       <Coverages>
-        <Coverage coveragecode="1" description="Cobertura A - Muerte por cualquier causa" insuredamountcalculationtype="10" fixedrate="2.4" premiumcalculationtype="3" billingcode="1" maximuminsuredamount="300000" maximumage="99" minimumage="18" />
+        <Coverage coveragecode="1" description="Cobertura A - Muerte por cualquier causa" insuredamountcalculationtype="10" fixedrate="2.52" premiumcalculationtype="3" billingcode="1" maximuminsuredamount="300000" maximumage="99" minimumage="18" />
         <Coverage coveragecode="2" description="Cobertura B - Incapacidad total y permanente" insuredamountcalculationtype="10" coveragecodecontainspremium="1" billingcode="1" />
         <Coverage coveragecode="3" description="Cobertura E - Servicios complementarios" insuredamountcalculationtype="10" coveragecodecontainspremium="1" billingcode="1" />
       </Coverages>
@@ -40,6 +40,6 @@
     <Rule description="La suma asegurada es mayor a 140.000 colones" condition="data.InsuredAmount > 140000" />
   </Underwriting>
   <Settings>
-    <Setting name="Parent.Policy.Effective" description="Fecha de efecto de la póliza matriz" value="2020-09-01T00:00:00"/>
+    <Setting name="Parent.Policy.Effective" description="Fecha de efecto de la póliza matriz" value="2021-09-01T00:00:00"/>
   </Settings>
 </ProductMaster>

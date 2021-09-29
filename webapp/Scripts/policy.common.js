@@ -23,7 +23,10 @@ app.policy_common = (function () {
         app.core.Get(app.setting.apipath + 'v1/Policy/Information?id=' + id)
             .done(function (data, textStatus, jqXHR) {
                 var urlServer = app.setting.apibase + '/AliadoServReports/api/Report/Build';
-                urlServer = 'https://www.inmotiontools.com:8083/Report.Services/api/Report/Build';
+                //urlServer = 'https://www.inmotiontools.com:8083/Report.Services/api/Report/Build';
+                //urlServer = 'http://localhost:5870/api/Report/Build';
+                
+                //urlServer = 'http://216.177.200.23' + '/AliadoServReports/api/Report/Build';
                 var data2 = {
                     Source: JSON.stringify(data),
                     Type: 'pdf',

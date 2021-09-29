@@ -4,12 +4,15 @@ app.GeneralCase = (function () {
 
     let _data = null;
     let _managerLinks = null;
+    let _instance = null;
 
     function Event_Controls() {
 
-        $(".historyPanel").appendTo('.sidebar-content');
-        $(".historyPanel").removeClass('d-none');
-        $('#sidebarTitle').html("<h3>Historial</h3>");
+        //$(".historyPanel").appendTo('.sidebar-content');
+        //$('#right-sidebar').attr('style', 'width: 300px !important; right: -300px');
+
+        //$(".historyPanel").removeClass('d-none');
+        //$('#sidebarTitle').html("<h3>Historial</h3>");
 
         $('#ProcessStepAccept').click(function () {
             event.preventDefault();
@@ -308,31 +311,53 @@ app.GeneralCase = (function () {
             //    align: 'left',
             //}]
         });
-
     }
 
     async function RefreshProcess(instanceId) {
 
         app.core.Get(app.setting.apipath + 'v1/Process/Instance/' + instanceId + '/3')
             .done(function (data, textStatus, jqXHR) {
+                _instance = data;
                 if (data.Steps) {
                     caseId = data.CaseId;
 
                     $('#ProcessGridTbl').bootstrapTable('load', data.Steps);
                     $('.tnotify').addClass('d-none');
+                    let current = data.Steps.filter(i => i.ActivityId === data.ActivityId);
 
+                    if (current.length > 0) {
+                        $('#StepDescription').html(current[0].Name);
+                        $('#CurrentStep').html(current[0].Name);
+                    }
+                    console.log(current);
                     if (data.Tasks.length > 0) {
                         $('#tasks').empty();
                         $('#Annotation').val('');
                         $('#ProcessStepAccept').prop("disabled", true);
                         selectedOptions = $('#tasks');
-                        $.each(data.Tasks, function () {
-                            selectedOptions.append(
-                                '<div class="custom-control custom-radio" title="' + this['Description'] + '">' +
-                                '<input type="radio" class="custom-control-input" id="task_' + this['ActivityId'] + '" name="task" value="' + this['ActivityId'] + '" onchange="app.GeneralCase.Enable();">' +
-                                '<label class="custom-control-label" for="task_' + this['ActivityId'] + '">' + this['Name'] + '</label>' +
-                                '</div>');
-                        });
+                        switch (current[0].ProgressMode) {
+                            case 1:
+                                $('.mode-simple').removeClass('d-none');
+                                $.each(data.Tasks, function () {
+                                    selectedOptions.append(
+                                        '<div class="custom-control custom-radio" title="' + this['Description'] + '">' +
+                                        '<input type="radio" class="custom-control-input" id="task_' + this['ActivityId'] + '" name="task" value="' + this['ActivityId'] + '" onchange="app.GeneralCase.Enable();">' +
+                                        '<label class="custom-control-label" for="task_' + this['ActivityId'] + '">' + this['Name'] + '</label>' +
+                                        '</div>');
+                                });
+                                break;
+                            case 2:
+                                $('.mode-simple').addClass('d-none');
+                                $.each(data.Tasks, function () {
+                                    selectedOptions.append(
+                                        '<div class="custom-control custom-checkbox" title="' + this['Description'] + '">' +
+                                        '<input type="checkbox" class="custom-control-input" id="task_' + this['ActivityId'] + '" name="task" value="' + this['ActivityId'] + '" ' + (this['FinishDate'] === null ? '' : 'checked') + ' onchange="app.GeneralCase.Checked(' + this['ActivityId'] + ');">' +
+                                        '<label class="custom-control-label" for="task_' + this['ActivityId'] + '">' + this['Name'] + '</label>' +
+                                        '</div>');
+                                });
+                                break;
+                        }
+
                         $('#ChangeStage').removeClass('d-none');
                         //$('#entry').removeClass('d-none');
                         $('fieldset').prop("disabled", false);
@@ -340,10 +365,16 @@ app.GeneralCase = (function () {
                     }
                     else {
                         $('#ChangeStage').addClass('d-none');
+                        $('#tabs li:nth-child(2) a').tab('show');
+                        $('#tabs li:nth-child(1) a').addClass('d-none');
+                        if (current.length == 0) {
+                            $('#CurrentStep').html(data.Steps[data.Steps.length - 1].Name);
+                        }
                     }
 
                     $(".progress-bar").width(data.Progress + '%');
                     $(".progress-bar").prop('title', data.Progress + '%');
+                    $(".progress-bar").html(data.Progress + '%');
                 } else {
                     $('#ProcessGridTbl').bootstrapTable('load', []);
                 }
@@ -370,7 +401,6 @@ app.GeneralCase = (function () {
             });
     }
 
-
     function Attachment_List_Setup() {
 
         $('#AttachmentGridTbl').bootstrapTable({
@@ -394,7 +424,10 @@ app.GeneralCase = (function () {
                 }, {
                     field: 'FileName',
                     title: 'Archivo',
-                    halign: 'left'
+                    halign: 'left',
+                    formatter: function (value, row, index, field) {
+                        return `<a href=# onclick="app.ui.Download('${row.FileName}', ${row.Id}); return false;" title="Descargar adjunto">${value}</a>`;
+                    }
                 }, {
                     field: 'FileSize',
                     title: 'Tamaño',
@@ -547,11 +580,16 @@ app.GeneralCase = (function () {
         EditRow: function (row) {
             EditMode(row);
         },
+        Checked: function (activityId) {
+            console.log(activityId);
+            //$('#task_142').is(':checked')
+            TaskChecked(_data.InstanceId, activityId, '', true);
+        },
         Enable: function (params, $el, xid, url) {
             OptionSelected();
         },
         Data: function () {
-            return _data;
+            return { case: _data, instance: _instance, links: _managerLinks };
         },
         ButtonClick: function (tbl, e, name, row, index) {
             switch (name) {

@@ -8,6 +8,10 @@ app.BayerInclusion = (function () {
     function Setup(internalId) {
         id = internalId;
 
+        if (localStorage.getItem('Tenant') === 'Bayer') {
+            $('.tenant-bayer-visible').removeClass('d-none');
+        }
+
         app.core.Lookups([
             'BayerPolizas.ContractorName',
             'BayerNumeroPoliza.MainPolicyId',
@@ -79,6 +83,7 @@ app.BayerInclusion = (function () {
             Weight: app.ui.GetNumericValue('#Weight'),
             InsuredAmount: app.ui.GetNumericValue('#InsuredAmount'),
             Doctor: $('#Doctor').val(),
+            EmployeeNumber: $('#EmployeeNumber').val(),
             Province: app.ui.GetDropDownNumericValue('#Province'),
             ProvinceDesc: $("#Province option:selected").text(),
             Canton: app.ui.GetDropDownNumericValue('#Canton'),
@@ -103,7 +108,9 @@ app.BayerInclusion = (function () {
         mode = data.Mode;
 
         $('#MainPolicyId').val(data.ContractorName);
-        $('#ContractorName').val(data.ContractorName);
+
+        app.ui.SetDropDownNumericValue('#ContractorName', data.ContractorName, true);
+
         app.ui.SetDateValue('#IssueDate', data.IssueDate);
         $('#IsLife').val(data.IsLife);
         $('#IsHealth').val(data.IsHealth);
@@ -129,6 +136,7 @@ app.BayerInclusion = (function () {
         app.ui.SetNumericValue('#Weight', data.Weight);
         app.ui.SetNumericValue('#InsuredAmount', data.InsuredAmount);
         $('#Doctor').val(data.Doctor);
+        $('#EmployeeNumber').val(data.EmployeeNumber);        
         $('#Province').val(data.Province);
         app.core.LookupDependency(data.Province, 'Canton', 'CR_Canton', '', data.Canton, false);
         app.core.LookupDependency(data.Canton, 'District', 'CR_Distritos', '', data.District, false);
@@ -162,6 +170,7 @@ app.BayerInclusion = (function () {
                 if (statusmode === 'Review') {
                     $('.role-Revisor-visible').removeClass('d-none');
                     $('.role-Revisor-enabled').prop("disabled", false);
+                    $('.role-Revisor-enabled-bayer').prop("disabled", false);
                     $('#VisualizationsEdtFormBack').removeClass('d-none');
                     $('#VisualizationsEdtFormRevised').removeClass('d-none');
                 }
@@ -838,21 +847,25 @@ app.BayerInclusion = (function () {
     }
 
     function beneficiarios_table_OtherValidations() {
-        var beneficiarios = $('#beneficiariosTbl').bootstrapTable('getData');
         var result = true;
-        if (beneficiarios.length === 0) {
-            result = false;
-            $('#beneficiariosTbl-error').text('Debe existir al menos un beneficiario');
-            $('#beneficiariosTbl-error').removeClass('d-none');
+        if (localStorage.getItem('Tenant') === 'Bayer') {
+            var beneficiarios = $('#beneficiariosTbl').bootstrapTable('getData');
+
+            if (beneficiarios.length === 0) {
+                result = false;
+                $('#beneficiariosTbl-error').text('Debe existir al menos un beneficiario');
+                $('#beneficiariosTbl-error').removeClass('d-none');
+            }
+            else if (beneficiarios.reduce((total, item) => total + item.BParticipationRate, 0) != 100) {
+                $('#beneficiariosTbl-error').text('El total del porcentaje de particupación debe ser el 100%');
+                $('#beneficiariosTbl-error').removeClass('d-none');
+            }
+            else {
+                $('#beneficiariosTbl-error').text('');
+                $('#beneficiariosTbl-error').addClass('d-none');
+            }
         }
-        else if (beneficiarios.reduce((total, item) => total + item.BParticipationRate, 0) != 100) {
-            $('#beneficiariosTbl-error').text('El total del porcentaje de particupación debe ser el 100%');
-            $('#beneficiariosTbl-error').removeClass('d-none');
-        }
-        else {
-            $('#beneficiariosTbl-error').text('');
-            $('#beneficiariosTbl-error').addClass('d-none');
-        }
+
         return result;
     }
 

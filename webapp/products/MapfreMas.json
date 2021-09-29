@@ -1,0 +1,321 @@
+{
+  "Terceros": [
+    {
+      "Role": "Davivienda_Prendarios",
+      "Detalles": [
+        {
+          "tip_benef": "0",
+          "tip_docum": "CJU",
+          "cod_docum": "3101046008",
+          "nom_tercero": "BANCO DAVIVIENDA (COSTA RICA) SOCIEDAD ANONIMA",
+          "email": "IRIAKNA.HERNANDEZ@DAVIVIENDA.CR",
+          "cod_pais": "CRI",
+          "cod_estado": 1,
+          "cod_prov": 101,
+          "cod_localidad": 10101,
+          "nom_domicilio1": "SAN JOSE"
+        },
+        {
+          "tip_benef": "8",
+          "tip_docum": "CJU",
+          "cod_docum": "3101046008",
+          "nom_tercero": "BANCO DAVIVIENDA (COSTA RICA) SOCIEDAD ANONIMA",
+          "email": "IRIAKNA.HERNANDEZ@DAVIVIENDA.CR",
+          "cod_pais": "CRI",
+          "cod_estado": 1,
+          "cod_prov": 101,
+          "cod_localidad": 10101,
+          "nom_domicilio1": "SAN JOSE"
+        }
+      ]
+    },
+    {
+      "Role": "Davivienda_Leasing",
+      "Detalles": [
+        {
+          "tip_benef": "0",
+          "tip_docum": "CJU",
+          "cod_docum": "3101692430",
+          "nom_tercero": "DAVIVIENDA LEASING (COSTA RICA) S.A.",
+          "email": "LEASING_SEGUROS@DAVIVIENDA.CR",
+          "tlf_numero": "2588-9477",
+          "cod_pais": "CRI",
+          "cod_estado": 1,
+          "cod_prov": 102,
+          "cod_localidad": 10203,
+          "nom_domicilio1": "125 SUR MULTIPLAZA ESCAZÚ, EDIFICIO MERIDIANO, PISO 9"
+        },
+        {
+          "tip_benef": "2",
+          "tip_docum": "CJU",
+          "cod_docum": "3101692430",
+          "nom_tercero": "DAVIVIENDA LEASING (COSTA RICA) S.A.",
+          "email": "LEASING_SEGUROS@DAVIVIENDA.CR",
+          "tlf_numero": "2588-9477",
+          "cod_pais": "CRI",
+          "cod_estado": 1,
+          "cod_prov": 102,
+          "cod_localidad": 10203,
+          "nom_domicilio1": "125 SUR MULTIPLAZA ESCAZÚ, EDIFICIO MERIDIANO, PISO 9"
+        }
+      ]
+    },
+    {
+      "Role": "Purdy",
+      "Condicion": "Fuente_Tomador=CAFSA",
+      "Detalles": [
+        {
+          "tip_benef": "0",
+          "tip_docum": "CJU",
+          "cod_docum": "3101052431",
+          "nom_tercero": "FINANCIERA CAFSA",
+          "email": "INFO@CAFSA.FI.CR",
+          "tlf_numero": "2884-1000",
+          "cod_pais": "CRI",
+          "cod_estado": 1,
+          "cod_prov": 101,
+          "cod_localidad": 10102,
+          "nom_domicilio1": "DETRAS DE PURDY MOTOR EN PASEO COLON"
+        }
+      ]
+    },
+    {
+      "Role": "Purdy",
+      "Condicion": "Fuente_Tomador=PURDY",
+      "Detalles": [
+        {
+          "tip_benef": "0",
+          "tip_docum": "CJU",
+          "cod_docum": "3101005744",
+          "nom_tercero": "PURDY MOTOR SOCIEDAD ANONIMA",
+          "cod_pais": "CRI",
+          "cod_estado": 1,
+          "cod_prov": 101,
+          "cod_localidad": 10102,
+          "nom_domicilio1": "EDIFICIO PURDY MOTOR PASEO COLON"
+        }
+      ]
+    },
+    {
+      "Role": "Purdy",
+      "Condicion": "Fuente_Tomador=SCOTIABANK",
+      "Detalles": [
+        {
+          "tip_benef": "0",
+          "tip_docum": "CJU",
+          "cod_docum": "3101046536",
+          "nom_tercero": "SCOTIABANK DE COSTA RICA SOCIEDAD ANONIMA",
+          "email": "Marianela.arias@scotiabank.com",
+          "tlf_numero": "2210-4000",
+          "cod_pais": "CRI",
+          "cod_estado": 1,
+          "cod_prov": 101,
+          "cod_localidad": 10108,
+          "nom_domicilio1": "FINAL AVENIDA LAS AMERICAS, COSTADO N ESTADIO NACIONAL"
+        }
+      ]
+    }
+  ],
+  "DocumentosRequeridos": [
+    {
+      "Role": "_default_asegurado_fisico",
+      "Detalles": [
+        {
+          "descripcion": "Copia de la cédula de identidad",
+          "archivo": "CEDULA.docx",
+          "requerido": true
+        },
+        {
+          "descripcion": "Comprobante de entrega de condiciones generales",
+          "archivo": "CONDICIONES.pdf",
+          "requerido": true
+        },
+        {
+          "descripcion": "Consentimiento para uso de datos personales",
+          "archivo": "CONSENTIMIENTO.pdf",
+          "requerido": true
+        },
+        {
+          "descripcion": "Formato de validación de domicilio",
+          "archivo": "DOMICILIO.pdf",
+          "requerido": true
+        },
+        {
+          "descripcion": "Conozca a su cliente (KYC)",
+          "archivo": "KYC.pdf",
+          "requerido": true
+        },
+        {
+          "descripcion": "Solicitud de seguro firmada",
+          "archivo": "SOLICITUD.pdf",
+          "requerido": true
+        }
+      ]
+    },
+    {
+      "Role": "_default_asegurado_juridico",
+      "Detalles": [
+        {
+          "descripcion": "Copia de la cédula de identidad",
+          "archivo": "CEDULA.docx",
+          "requerido": true
+        },
+        {
+          "descripcion": "Represéntate legal",
+          "archivo": "REPRESENTANTE LEGAL.docx",
+          "requerido": true
+        },
+        {
+          "descripcion": "Participación accionaria",
+          "archivo": "PARTICIPACION ACCIONARIA.docx",
+          "requerido": true
+        },
+        {
+          "descripcion": "Certificado de participación",
+          "archivo": "CERTIFICADO PARTICIPACION.docx",
+          "requerido": true
+        },
+        {
+          "descripcion": "Comprobante de entrega de condiciones generales",
+          "archivo": "CONDICIONES.pdf",
+          "requerido": true
+        },
+        {
+          "descripcion": "Consentimiento para uso de datos personales",
+          "archivo": "CONSENTIMIENTO.pdf",
+          "requerido": true
+        },
+        {
+          "descripcion": "Formato de validación de domicilio",
+          "archivo": "DOMICILIO.pdf",
+          "requerido": true
+        },
+        {
+          "descripcion": "Conozca a su cliente (KYC)",
+          "archivo": "KYC.pdf",
+          "requerido": true
+        },
+        {
+          "descripcion": "Solicitud de seguro firmada",
+          "archivo": "SOLICITUD.pdf",
+          "requerido": true
+        }
+      ]
+    },
+    {
+      "Role": "Davivienda_Prendarios",
+      "Detalles": [
+        {
+          "descripcion": "Documentación digitalizada",
+          "archivo": "Documentos.docx",
+          "requerido": true
+        }
+      ]
+    },
+    {
+      "Role": "Davivienda_Leasing",
+      "Detalles": [
+        {
+          "descripcion": "Documentación digitalizada",
+          "archivo": "Documentos.docx",
+          "requerido": true
+        }
+      ]
+    },
+    {
+      "Role": "Purdy",
+      "Condicion": "MCA_CERO_KM=2",
+      "Detalles": [
+        {
+          "descripcion": "Formulario de inspección",
+          "archivo": "inspección.pdf",
+          "requerido": true
+        },
+        {
+          "descripcion": "Fotos o facturas",
+          "archivo": "fotos.pdf,facturas.pdf",
+          "requerido": true
+        },
+        {
+          "descripcion": "Solicitud de inscripción",
+          "archivo": "inscripción.pdf",
+          "requerido": false
+        },
+        {
+          "descripcion": "Solicitud de seguro firmada",
+          "archivo": "SolicitudFirmada.pdf",
+          "requerido": true
+        }
+      ]
+    },
+    {
+      "Role": "Purdy",
+      "Condicion": "MCA_CERO_KM=1",
+      "Detalles": [
+        {
+          "descripcion": "Factura proforma",
+          "archivo": "proforma.pdf",
+          "requerido": false
+        },
+        {
+          "descripcion": "Solicitud de seguro firmada",
+          "archivo": "SolicitudFirmada.pdf",
+          "requerido": true
+        }
+      ]
+    }
+  ],
+  "Rules": [
+    {
+      "Role": "default",
+      "Detalles": [
+        {
+          "Message": "El valor del vehículo debe ser menor o igual a 28.650.000 colones",
+          "Group": "MapfreMas",
+          "Key": "IMP_VR",
+          "Condicion": "cod_mon == 1 && IMP_VR > 28650000"
+        },
+        {
+          "Message": "El valor del vehículo debe ser menor o igual a 50.000 dólares",
+          "Group": "MapfreMas",
+          "Key": "IMP_VR",
+          "Condicion": "cod_mon == 2 && IMP_VR > 50000"
+        }
+      ]
+    },
+    {
+      "Role": "Privilegios",
+      "Detalles": [
+        {
+          "Message": "El valor del vehículo debe ser menor o igual a 45.000.000 colones",
+          "Group": "MapfreMas",
+          "Key": "IMP_VR",
+          "Condicion": "cod_mon == 1 && IMP_VR > 45000000"
+        },
+        {
+          "Message": "El valor del vehículo debe ser menor o igual a 75.000 dólares",
+          "Group": "MapfreMas",
+          "Key": "IMP_VR",
+          "Condicion": "cod_mon == 2 && IMP_VR > 75000"
+        }
+      ]
+    },
+    {
+      "Role": "Davivienda_Prendarios",
+      "Detalles": [
+        {
+          "Message": "El valor del vehículo debe ser menor o igual a 80.000.000 colones",
+          "Group": "MapfreMas",
+          "Key": "IMP_VR",
+          "Condicion": "cod_mon == 1 && IMP_VR > 80000000"
+        },
+        {
+          "Message": "El valor del vehículo debe ser menor o igual a 125.000 dólares",
+          "Group": "MapfreMas",
+          "Key": "IMP_VR",
+          "Condicion": "cod_mon == 2 && IMP_VR > 125000"
+        }
+      ]
+    }
+  ]
+}

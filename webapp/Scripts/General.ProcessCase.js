@@ -31,8 +31,6 @@ app.GeneralProcessCase = (function () {
             decimalPlaces: 0,
             emptyInputBehavior: 'null'
         });
-
-
     };
 
     function Init_List() {
@@ -115,7 +113,7 @@ app.GeneralProcessCase = (function () {
                 }, {
                     field: 'SubStatus',
                     title: 'Estado',
-                    titleTooltip: '.',					
+                    titleTooltip: '.',
                     sortable: true,
                     halign: 'center',
                     align: 'right',

@@ -284,6 +284,7 @@ body.Mapfre {
     color: firebrick;
     background-color: #fff;
     border-color: #dee2e6 #dee2e6 #fff;
+    background: white;
 }
 
 /*Paginacion activa en el grid*/
@@ -355,4 +356,11 @@ body.mini-navbar .nav-header {
     .Mapfre #page-wrapper {
         padding: 0 0;
     }
+}
+
+/*Tipo de Fuente en las Tablas*/
+.bootstrap-table .fixed-table-container .table td, .bootstrap-table .fixed-table-container .table td:first-child {
+    text-align: left;
+    font-style: normal;
+    font: menu;
 }

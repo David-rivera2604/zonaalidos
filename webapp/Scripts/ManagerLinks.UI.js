@@ -61,10 +61,11 @@ app.ManagerLinks = (function () {
     }
 
     function Url(url) {
-        var querystrings = url.match(/\%.+?\%/g);
+        var querystrings = url.match(/\{.+?\}/g);
         if (querystrings != undefined) {
             querystrings.forEach((item, index, array) => {
-                var name = item.replaceAll("%", "");
+                var name = item.replaceAll("{", "");
+                name = name.replaceAll("}", "");
                 if (item.toLowerCase().includes("data.")) {
                     name = name.replaceAll("Data.", "");
                     name = name.replaceAll("data.", "");
@@ -167,7 +168,6 @@ app.ManagerLinks = (function () {
     }
 
     function Build(element, index, array) {
-        console.log("a[" + index + "] = " + element);
         switch (element.Type) {
             case 1:
                 BuildEmbedded(element);
@@ -183,7 +183,6 @@ app.ManagerLinks = (function () {
         _options.DataInput = data;
         app.core.Get(app.setting.apipath + 'v1/ProcessSpecLink?filter=:flowId=' + data.FlowId)
             .done(function (dataLinks) {
-                console.log(dataLinks);
                 dataLinks.forEach(Build);
             });
     }

@@ -34,6 +34,22 @@
                                 <input id='Id' name='Id' type='hidden' value=''>
                                 <!-- InstanceId -->
                                 <input id='InstanceId' name='InstanceId' type='hidden' value=''>
+
+
+                                <!-- FlowId -->
+                                <div class='col-sm-10 col-md-10'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='FlowId'>Proceso<span class='required-mark'>*</span></label>
+                                        <select id='FlowId' name='FlowId' class='form-control'></select>
+                                    </div>
+                                </div>
+                                <!-- Priority -->
+                                <div class='col-sm-2 col-md-2'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Priority'>Prioridad<span class='required-mark'>*</span></label>
+                                        <select id='Priority' name='Priority' class='form-control'></select>
+                                    </div>
+                                </div>
                                 <!-- Title -->
                                 <div class='col-sm-12 col-md-12'>
                                     <div class='form-group'>
@@ -49,22 +65,6 @@
                                         <textarea id='Description' name='Description' class='form-control' rows="2"></textarea>
                                     </div>
                                 </div>
-                                <!-- Priority -->
-                                <div class='col-sm-2 col-md-2'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='Priority'>Prioridad<span class='required-mark'>*</span></label>
-                                        <select id='Priority' name='Priority' class='form-control'></select>
-                                    </div>
-                                </div>
-
-                                <!-- FlowId -->
-                                <div class='col-sm-10 col-md-10'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='FlowId'>Proceso<span class='required-mark'>*</span></label>
-                                        <select id='FlowId' name='FlowId' class='form-control'></select>
-                                    </div>
-                                </div>
-
 
                                 <!-- Status -->
                                 <div class='col-sm-4 col-md-4 d-none'>
@@ -118,7 +118,7 @@
                                         <!-- ContactMainName -->
                                         <div class='col-sm-12 col-md-12'>
                                             <div class='form-group'>
-                                                <label class='control-label' for='ContactMainName'>Nombre completo del contacto externo</label>
+                                                <label class='control-label' for='ContactMainName'>Nombre completo<span class='required-mark'>*</span></label>
 
                                                 <div class='input-group'>
                                                     <span class='input-group-addon'>
@@ -132,7 +132,7 @@
                                         <!-- ContactMainEmail -->
                                         <div class='col-sm-12 col-md-12'>
                                             <div class='form-group'>
-                                                <label class='control-label' for='ContactMainEmail'>Correo electrónico del contacto externo</label>
+                                                <label class='control-label' for='ContactMainEmail'>Correo electrónico<span class='required-mark'>*</span></label>
                                                 <div class='input-group'>
                                                     <span class='input-group-addon'>
                                                         <span class='glyphicon glyphicon-envelope'></span>

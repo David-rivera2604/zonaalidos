@@ -1370,6 +1370,10 @@ app.HogarTotal = (function () {
             else {
                 app.ui.ButtonDoing('#fileUploadModal');
                 var data = new FormData();
+                data.append('EntityType', 3000);
+                data.append('EntityId', setupData.presupuesto);
+                data.append('DocumentType', 99);
+                data.append('Description', arr[0]);
                 for (index = 0; index < arr.length; index++) {
                     data.append('files', arr[index]);
                 }
@@ -1419,6 +1423,10 @@ app.HogarTotal = (function () {
             else {
                 app.ui.ButtonDoing('#fileUpload');
                 var data = new FormData();
+                data.append('EntityType', 3000);
+                data.append('EntityId', setupData.presupuesto);
+                data.append('DocumentType', rowDocumentosrequeridos.documentosrequeridosId);
+                data.append('Description', rowDocumentosrequeridos.tipo);
                 for (index = 0; index < arr.length; index++) {
                     data.append('files', arr[index]);
                 }

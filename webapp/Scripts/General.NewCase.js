@@ -144,20 +144,44 @@ app.GeneralNewCase = (function () {
                 }
             },
             rules: {
-                FlowId: {
+                Title: {
+                    required: true
+                },
+                Description: {
                     required: true
                 },
                 Priority: {
+                    required: true
+                },
+                ContactMainName: {
+                    required: true
+                },
+                ContactMainEmail: {
+                    required: true
+                },
+                FlowId: {
                     required: true
                 }
             },
             messages: {
-                FlowId: {
-                    required: 'Debe indicar el proceso'
+                Title: {
+                    required: 'Debe indicar el asunto'
+                },
+                Description: {
+                    required: 'Debe indicar la descripción'
                 },
                 Priority: {
                     required: 'Debe indicar la prioridad'
                 },
+                ContactMainName: {
+                    required: 'Debe indicar el nombre completo'
+                },
+                ContactMainEmail: {
+                    required: 'Debe indicar el correo electrónico'
+                },
+                FlowId: {
+                    required: 'Debe indicar el proceso'
+                }
             }
 
         });
@@ -165,7 +189,7 @@ app.GeneralNewCase = (function () {
 
     function EditMode(row) {
         MapObjectToInput(row);
-        $('#Title').focus();
+        $('#FlowId').focus();
     }
 
     return {

@@ -500,7 +500,6 @@ span.page-list button.btn.btn-outline.btn-default.dropdown-toggle {
     overflow: hidden;
     position: fixed;
     top: 60px;
-    width: 260px !important;
     z-index: 1009;
     bottom: 0;
     right: -260px;
@@ -579,3 +578,29 @@ select.right-align {
     select.right-align option {
         direction: rtl;
     }
+
+.btn-form {
+    margin-top: 21px;
+}
+
+select option[disabled] {
+    color: lightgray;
+    font-style: italic;
+}
+
+.widgetHome {
+    padding: 10px;
+}
+span.columnBtn {
+    white-space: nowrap;
+}
+
+.side-half {
+    width: 40% !important;
+}
+
+@media only screen and (max-width: 768px) {
+    .side-half {
+        width: 100% !important;
+    }
+}

@@ -32,12 +32,35 @@
                             <form id='VisualizationsEdtForm' class='form-horizontal' data-toggle='validator'>
                                 <fieldset>
 
-                                    <!-- datosgenerales Zone -->
                                     <div class="form-row">
-                                        <div class="col-lg-12">
-                                            <h4>Datos generales</h4>
+                                        <!-- datosgenerales Zone -->
+                                        <div class="col-md-12 datosgeneralesZone">
+                                            <h4><i class="fa fa-list"></i> Datos generales</h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
+                                                <!-- Fuente_Tomador DropDownList -->
+                                                <div class='col-sm-5 col-md-5 Purdy d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='Fuente_Tomador'>Tomador<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='Fuente_Tomador' name='Fuente_Tomador' class='form-control' disabled>
+                                                            <option value="CAFSA">FINANCIERA CAFSA</option>
+                                                            <option value="PURDY">PURDY MOTOR</option>
+                                                            <option value="SCOTIABANK">SCOTIABANK</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!-- Modalidad_Pago DropDownList -->
+                                                <div class='col-sm-7 col-md-7 Purdy d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='Modalidad_Pago'>Modalidad de pago<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='Modalidad_Pago' name='Modalidad_Pago' class='form-control' disabled>
+                                                            <option value="CAT">CARGO AUTOMÁTICO A TARJETA DE DEBITO/CRÉDITO</option>
+                                                            <option value="DCBC">DEDUCCIÓN DE CUENTA BANCARIA DEL CLIENTE</option>
+                                                            <option value="DICL">DIRECTO EN CAJA Y/O COBRO EN LÍNEA</option>
+                                                            <option value="DEPCM">DEPÓSITO EN CUENTAS DE MAPFRE</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
 
                                                 <!-- tipo_prod RadioButtonList -->
                                                 <div class='col-sm-2 col-md-2'>
@@ -67,9 +90,8 @@
                                                     </div>
                                                 </div>
 
-
                                                 <!-- cod_mon DropDownList -->
-                                                <div class='col-sm-3 col-md-3'>
+                                                <div class='col-sm-2 col-md-2'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='cod_mon'>Moneda<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                         <select id='cod_mon' name='cod_mon' class='form-control'></select>
@@ -77,7 +99,7 @@
                                                 </div>
 
                                                 <!-- cod_fracc_pago DropDownList -->
-                                                <div class='col-sm-3 col-md-3'>
+                                                <div class='col-sm-2 col-md-2'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='cod_fracc_pago'>Fraccionamiento de pago<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                         <select id='cod_fracc_pago' name='cod_fracc_pago' class='form-control'></select>
@@ -85,7 +107,7 @@
                                                 </div>
 
                                                 <!-- fec_efec_poliza DatePicker -->
-                                                <div class='col-sm-2 col-md-2'>
+                                                <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='fec_efec_poliza'>Inicio de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                         <div class='input-group date' id='fec_efec_poliza_group'>
@@ -99,11 +121,11 @@
                                                 </div>
 
                                                 <!-- fec_vcto_poliza DatePicker -->
-                                                <div class='col-sm-2 col-md-2'>
+                                                <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='fec_vcto_poliza'>Fin de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                         <div class='input-group date' id='fec_vcto_poliza_group'>
-                                                            <input type='text' id='fec_vcto_poliza' name='fec_vcto_poliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <input type='text' id='fec_vcto_poliza' name='fec_vcto_poliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled />
                                                             <span class='input-group-addon'>
                                                                 <span class='glyphicon glyphicon-calendar'></span>
                                                             </span>
@@ -111,6 +133,31 @@
                                                         <div id='fec_vcto_poliza_validate'></div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <!-- enviosolicitud Zone -->
+                                        <div class="col-md-5 d-none enviosolicitudZone">
+                                            <h4><i class="fa fa-envelope-o"></i> Destinatario para envío de solicitud</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- tipoenvio DropDownList -->
+                                                <div class='col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='tip_firma'>Tipo de envío<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='tip_firma' name='tip_firma' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- correoenvio Text -->
+                                                <div class='col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='correoenvio'>Correo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input id='correoenvio' name='correoenvio' type='text' class='form-control' size='80' maxlength='80'>
+                                                    </div>
+                                                </div>
+
 
                                             </div>
                                         </div>
@@ -122,8 +169,6 @@
                                             <h4><i class="fa fa-car"></i> Datos del vehículo</h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
-
-
 
                                                 <!-- COD_PLAN_AUTO DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
@@ -164,6 +209,15 @@
                                                         <input type='text' id='ANIO_SUB_MODELO' name='ANIO_SUB_MODELO' class='form-control text-right' size='4' maxlength='4' />
                                                     </div>
                                                 </div>
+
+                                                <!-- IMP_VR Numeric -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='IMP_VR'>Valor del vehículo asegurado<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='IMP_VR' name='IMP_VR' class='form-control text-right' size='21' maxlength='21' />
+                                                    </div>
+                                                </div>
+
                                                 <!-- cod_tip_vehi DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
@@ -180,6 +234,20 @@
                                                     </div>
                                                 </div>
 
+                                                <!-- PCT_AJUSTE_GEN Numeric -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='PCT_AJUSTE_GEN'>Porcentaje de ajuste comercial</label>
+                                                        <div class='input-group'>
+                                                            <input type='text' id='PCT_AJUSTE_GEN' name='PCT_AJUSTE_GEN' class='form-control text-right' size='3' maxlength='3' />
+                                                            <span class='input-group-addon'>
+                                                                <small class="text-muted">%</small>
+                                                            </span>
+                                                        </div>
+                                                        <div id='PCT_AJUSTE_GEN_validate'></div>
+                                                    </div>
+                                                </div>
+
                                                 <!-- NUM_MATRICULA Text -->
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
@@ -190,8 +258,15 @@
                                                 <!-- COD_CHASSIS Text -->
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='COD_CHASSIS'>Número de Chasis<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <label class='control-label' for='COD_CHASSIS'>Número de chasis<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                         <input type='text' id='COD_CHASSIS' name='COD_CHASSIS' class='form-control' size='30' maxlength='30' />
+                                                    </div>
+                                                </div>
+                                                <!-- NUM_MOTOR Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='NUM_MOTOR'>Número de motor<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='NUM_MOTOR' name='NUM_MOTOR' class='form-control' size='20' maxlength='20' />
                                                     </div>
                                                 </div>
                                                 <!-- DES_TIP_CILINDRAJE Text -->
@@ -222,18 +297,27 @@
                                                     </div>
                                                 </div>
 
-                                                <!-- NUM_MOTOR Text -->
-                                                <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='NUM_MOTOR'>Motor del vehiculo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <input type='text' id='NUM_MOTOR' name='NUM_MOTOR' class='form-control' size='20' maxlength='20' />
-                                                    </div>
-                                                </div>
                                                 <!-- VAL_CAPACIDAD Numeric -->
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='VAL_CAPACIDAD'>Capacidad del vehiculo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                         <input type='text' id='VAL_CAPACIDAD' name='VAL_CAPACIDAD' class='form-control text-right' size='10' maxlength='10' />
+                                                    </div>
+                                                </div>
+
+                                                <!-- Vehiculo_Otra_Poliza RadioButtonList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='Vehiculo_Otra_Poliza'>¿El vehiculo esta asegurado en otra póliza?</label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="Vehiculo_Otra_Poliza_S" name="Vehiculo_Otra_Poliza" value="S">
+                                                                <label class="custom-control-label" for="MCA_VR_1">Si</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="Vehiculo_Otra_Poliza_N" name="Vehiculo_Otra_Poliza" value="N">
+                                                                <label class="custom-control-label" for="Vehiculo_Otra_Poliza_2">No</label>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
 
@@ -333,13 +417,6 @@
                                                     </div>
                                                 </div>
 
-                                                <!-- IMP_VR Numeric -->
-                                                <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='IMP_VR'>Valor del vehículo asegurado<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <input type='text' id='IMP_VR' name='IMP_VR' class='form-control text-right' size='21' maxlength='21' />
-                                                    </div>
-                                                </div>
                                                 <!-- MCA_DESC_CLIENTE_NUEVO RadioButtonList -->
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
@@ -356,19 +433,7 @@
                                                     </div>
                                                 </div>
 
-                                                <!-- PCT_AJUSTE_GEN Numeric -->
-                                                <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='PCT_AJUSTE_GEN'>Porcentaje de ajuste comercial</label>
-                                                        <div class='input-group'>
-                                                            <input type='text' id='PCT_AJUSTE_GEN' name='PCT_AJUSTE_GEN' class='form-control text-right' size='3' maxlength='3' />
-                                                            <span class='input-group-addon'>
-                                                                <small class="text-muted">%</small>
-                                                            </span>
-                                                        </div>
-                                                        <div id='PCT_AJUSTE_GEN_validate'></div>
-                                                    </div>
-                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -538,7 +603,7 @@
                                     </div>
 
                                     <!-- documentosrequeridos Grid -->
-                                    <div class="form-row">
+                                    <div class="form-row documentosrequeridosGrid">
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
@@ -610,7 +675,10 @@
                                     <div class="form-row">
                                         <div class='col-md-12'>
                                             <div class="modal-footer">
-                                                <button id="cotizar" type="button" class="btn btn-primary" data-doing="Emitiendo...">
+                                                <button id="guardarenviar" type="button" class="btn btn-primary d-none" data-doing="Enviado solictud...">
+                                                    Guardar y enviar solicitud
+                                                </button>
+                                                <button id="cotizar" type="button" class="btn btn-primary d-none" data-doing="Emitiendo...">
                                                     Emitir
                                                 </button>
                                                 <input id="fileUpload" type="file" class="d-none" />
@@ -689,7 +757,7 @@
                                                 <div class='form-group'>
                                                     <label class='control-label' for='tipodetercero'>Tipo de tercero<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                     <select id='tipodetercero' name='tipodetercero' class='form-control'>
-                                                        <option value="0" selected>Tomador(a)</option>
+                                                        <option value="0">Tomador(a)</option>
                                                         <option value="2">Asegurado(a)</option>
                                                         <option value="3">Conductor habitual</option>
                                                         <option value="6">Beneficiario(a)</option>
@@ -832,7 +900,7 @@
                                             <div class='col-sm-4 col-md-4'>
                                                 <div class='form-group'>
                                                     <label class='control-label' for='otrasenas'>Otra señas<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                    <input type='text' id='otrasenas' name='otrasenas' class='form-control' size='100' maxlength='100' />
+                                                    <input type='text' id='otrasenas' name='otrasenas' class='form-control' size='120' maxlength='120' />
                                                 </div>
                                             </div><!-- eltomadoreselmismoasegurado RadioButtonList -->
                                             <div class='col-sm-4 col-md-4'>
@@ -873,11 +941,11 @@
                                                 <h4>Información del beneficiario</h4>
                                                 <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 2px 0px 6px 0px;"></div>
                                                 <div class="form-row">
-                                                    <!-- Parentesco DropDownList -->
+                                                    <!-- parentesco DropDownList -->
                                                     <div class='col-sm-4 col-md-4'>
                                                         <div class='form-group'>
-                                                            <label class='control-label' for='Parentesco'>Parentesco<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                            <select id='Parentesco' name='Parentesco' class='form-control'>
+                                                            <label class='control-label' for='parentesco'>Parentesco<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                            <select id='parentesco' name='parentesco' class='form-control'>
                                                                 <option value="1">Padre</option>
                                                                 <option value="10">Asegurado principal</option>
                                                                 <option value="2">Madre</option>

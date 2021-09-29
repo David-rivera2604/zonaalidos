@@ -29,6 +29,20 @@ app.ViewerQuery = (function () {
                 Chart_Render(data.chart, data.table.data);
             }
             else {
+
+                if (data.dialog != undefined && data.dialog.html != null) {
+                    let html = '<div class="col-md-12">' + data.dialog.html.replace('ibox-content', 'ibox-content2') + '</div>';
+                    html = html.replace(/@_/g, '\'');
+                    $('.advancefilter-row').html(html).removeClass('d-none');
+
+
+                    eval(data.dialog.code);
+
+                    app.Prototype.Changed(function (data) {
+                        app.ViewerQuery.Refresh(undefined, $('#RoleMemberGridTbl'), _id, '');
+                    });
+                }
+
                 Table_Render(data.table, data.index);
             }
         }
@@ -42,9 +56,6 @@ app.ViewerQuery = (function () {
         var result = compiledTemplate({ data: data });
         $('#tmpl').html(result);
     }
-
-
-
 
     function Table_Render(spec, index) {
         gridControlName = "#" + index + "GridTbl";
@@ -67,7 +78,13 @@ app.ViewerQuery = (function () {
         spec.clickToSelect = true;
         spec.showColumnsToggleAll = true;
         spec.searchAlign = 'left';
-
+        spec.rowStyle = function (row, index) {
+            return {
+                css: {
+                    'vertical-align': 'top'
+                }
+            }
+        }
         //spec.detailFilter = function (index, row) {
         //    var result = true;
         //    //var columns = $("#RoleMemberGridTbl").bootstrapTable('getOptions').columns[0];
@@ -135,7 +152,7 @@ app.ViewerQuery = (function () {
             spec.columns.forEach(function (group, gindex, garray) {
                 group.forEach(function (column, index, array) {
                     if (column.formatter != undefined && column.formatter.startsWith('function ')) {
-                        column.formatter = column.formatter.parseFunction();
+                        column.formatter = column.formatter.replace(/@_/g, '\\\'').parseFunction();
                     }
                     if (column.format != undefined) {
                         column.formatter = function (value, row, index, field) {
@@ -148,7 +165,7 @@ app.ViewerQuery = (function () {
         else {
             spec.columns.forEach(function (column, index, array) {
                 if (column.formatter != undefined && column.formatter.startsWith('function ')) {
-                    column.formatter = column.formatter.parseFunction();
+                    column.formatter = column.formatter.replace(/@_/g, '\\\'').parseFunction();
                 }
                 if (column.format != undefined) {
                     column.formatter = function (value, row, index, field) {
@@ -172,6 +189,10 @@ app.ViewerQuery = (function () {
             export: 'fa-download'
         };
         $('#RoleMemberGridTbl').bootstrapTable(spec);
+
+        if (spec.searchStyle != undefined) {
+            $('.search').width(spec.searchStyle);
+        }
     }
 
     function Chart_Render(chartSpec, data) {
@@ -315,7 +336,7 @@ app.ViewerQuery = (function () {
 
                 $.each(spec.columns, function (key, column) {
                     if (column.formatter != undefined && column.formatter.startsWith('function ')) {
-                        column.formatter = column.formatter.parseFunction();
+                        column.formatter = column.formatter.replace(/@_/g, '\\\'').parseFunction();
                     }
                 });
 
@@ -331,7 +352,6 @@ app.ViewerQuery = (function () {
             _id = app.core.URLStringValue('id');
             Event_Controls();
             if (_id != '')
-
                 app.core.Get(app.setting.apipath + 'v1/Viewer/QuerySpecification?id=' + _id + '&url=' + window.location.search.slice(1).replace(/&/g, ':'))
                     .done(function (data, textStatus, jqXHR) {
                         Render(data);
@@ -345,6 +365,7 @@ app.ViewerQuery = (function () {
             var element = $('#RoleMemberGridTbl');
             var id = _id;
             var index = 1;
+            var doing = true;
 
             if ($el != undefined) {
                 element = $el;
@@ -356,23 +377,43 @@ app.ViewerQuery = (function () {
                 index = this.options.index;
             }
 
-            element.bootstrapTable('showLoading');
-            app.core.Get(app.setting.apipath + 'v1/datasource/json?id=' + id + '&sequence=1&url=' + window.location.search.slice(1).replace(/&/g, ':') + url)
-                .done(function (data, textStatus, jqXHR) {
+            if (app.Prototype != undefined && app.Prototype != null) {
+                if (app.Prototype.IsValid(false)) {
+                    let dialogData = app.Prototype.Data();
+                    for (var p in dialogData) {
+                        if (dialogData.hasOwnProperty(p)) {
+                            url += ':' + p + '=' + dialogData[p];
+                        }
+                    }
+                    url = url.replace(/T00:00:00/g, '');
+                } else {
+                    doing = false;
                     if (params === undefined)
-                        element.bootstrapTable('load', data !== null ? data : []);
+                        element.bootstrapTable('load', []);
                     else
-                        params.success(data !== null ? data : [])
-                }).always(function () {
-                    element.bootstrapTable('hideLoading');
-                });
+                        params.success([]);
+                }
+            }
+
+            if (doing) {
+                element.bootstrapTable('showLoading');
+                app.core.Get(app.setting.apipath + 'v1/datasource/json?id=' + id + '&sequence=1&url=' + window.location.search.slice(1).replace(/&/g, ':') + url)
+                    .done(function (data, textStatus, jqXHR) {
+                        if (params === undefined)
+                            element.bootstrapTable('load', data !== null ? data : []);
+                        else
+                            params.success(data !== null ? data : [])
+                    }).always(function () {
+                        element.bootstrapTable('hideLoading');
+                    });
+            }
         },
         TabRender: function (me) {
             event.preventDefault();
 
             window.open(me.href, "vdetail", "toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes, top=100, height=450, left=400, width=900");
 
-        },        
+        },
         Data: function () {
             return _data;
         }

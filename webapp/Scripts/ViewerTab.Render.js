@@ -9,6 +9,8 @@ app.ViewerQuery = (function () {
     var _itemBody = '<div class="tab-pane fade {show}" id="tab_{index}">{Body}</div>';
 
     var _itemTable = '<!-- Grid -->  ' +
+        '<div id="header{index}" class="d-none"> ' +
+        '</div> ' +
         '<div id="{index}toolbar"> ' +
         '</div> ' +
         '<!-- Grid --> ' +
@@ -71,6 +73,15 @@ app.ViewerQuery = (function () {
             Chart_Render(data.chart, data.table.data, data.index);
         }
         else {
+            if (data.dialog != undefined && data.dialog.html != null) {
+                let html = '<div class="col-md-12">' + data.dialog.html.replace('ibox-content', 'ibox-content2') + '</div>';
+                html = html.replace(/@_/g, '\'');
+                $('#header' + data.index).html(html).removeClass('d-none');
+
+                eval(data.dialog.code);
+
+                eval("app.Prototype.Changed(function (data) { app.ViewerQuery.Refresh(undefined, $('" + gridControlName + "'), " + _id + ", ''); });");
+            }
             Table_Render(data.table, data.index);
         }
     }
@@ -97,6 +108,13 @@ app.ViewerQuery = (function () {
         spec.clickToSelect = true;
         spec.showColumnsToggleAll = true;
         spec.searchAlign = 'left';
+        spec.rowStyle = function (row, index) {
+            return {
+                css: {
+                    'vertical-align': 'top'
+                }
+            }
+        }
 
         //spec.detailFilter = function (index, row) {
         //    var result = true;
@@ -194,7 +212,7 @@ app.ViewerQuery = (function () {
 
         $.each(spec.columns, function (key, column) {
             if (column.formatter != undefined && column.formatter.startsWith('function ')) {
-                column.formatter = column.formatter.parseFunction();
+                column.formatter = column.formatter.replace(/@_/g, '\\\'').parseFunction();
             }
             if (column.format != undefined) {
                 column.formatter = function (value, row, index, field) {
@@ -230,7 +248,9 @@ app.ViewerQuery = (function () {
         //};
 
         $(gridControlName).bootstrapTable(spec);
-
+        if (spec.searchStyle != undefined) {
+            $('.search').width(spec.searchStyle);
+        }
     }
 
     function Chart_Render(chartSpec, data, renderIndex) {
@@ -373,7 +393,7 @@ app.ViewerQuery = (function () {
 
                 $.each(spec.columns, function (key, column) {
                     if (column.formatter != undefined && column.formatter.startsWith('function ')) {
-                        column.formatter = column.formatter.parseFunction();
+                        column.formatter = column.formatter.replace(/@_/g, '\\\'').parseFunction();
                     }
                     if (column.format != undefined) {
                         column.formatter = function (value, row, index, field) {
@@ -433,6 +453,7 @@ app.ViewerQuery = (function () {
             var element = $('#RoleMemberGridTbl');
             var id = _id;
             var index = 1;
+            var doing = true;
 
             if ($el != undefined) {
                 element = $el;
@@ -444,16 +465,36 @@ app.ViewerQuery = (function () {
                 index = this.options.index;
             }
 
-            element.bootstrapTable('showLoading');
-            app.core.Get(app.setting.apipath + 'v1/datasource/json?id=' + id + '&sequence=' + index + '&url=' + window.location.search.slice(1).replace(/&/g, ':') + url)
-                .done(function (data, textStatus, jqXHR) {
+            if (app.Prototype != undefined && app.Prototype != null) {
+                if (app.Prototype.IsValid(false)) {
+                    let dialogData = app.Prototype.Data();
+                    for (var p in dialogData) {
+                        if (dialogData.hasOwnProperty(p)) {
+                            url += ':' + p + '=' + dialogData[p];
+                        }
+                    }
+                    url = url.replace(/T00:00:00/g, '');
+                } else {
+                    doing = false;
                     if (params === undefined)
-                        element.bootstrapTable('load', data !== null ? data : []);
+                        element.bootstrapTable('load', []);
                     else
-                        params.success(data !== null ? data : [])
-                }).always(function () {
-                    element.bootstrapTable('hideLoading');
-                });
+                        params.success([]);
+                }
+            }
+
+            if (doing) {
+                element.bootstrapTable('showLoading');
+                app.core.Get(app.setting.apipath + 'v1/datasource/json?id=' + id + '&sequence=' + index + '&url=' + window.location.search.slice(1).replace(/&/g, ':') + url)
+                    .done(function (data, textStatus, jqXHR) {
+                        if (params === undefined)
+                            element.bootstrapTable('load', data !== null ? data : []);
+                        else
+                            params.success(data !== null ? data : [])
+                    }).always(function () {
+                        element.bootstrapTable('hideLoading');
+                    });
+            }
         },
         TabRender: function (me) {
             event.preventDefault();
@@ -477,7 +518,7 @@ app.ViewerQuery = (function () {
                 default:
                     $.each(tbl.columns, function (key, column) {
                         if (typeof column['action_' + name] != "undefined") {
-                            eval(column['action_' + name].supplant(row));                            
+                            eval(column['action_' + name].supplant(row));
                         }
                     })
                     break;

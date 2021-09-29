@@ -29,7 +29,8 @@ app.SecurityRoleMember = (function () {
 
         $('#RecordStatusFlt').select2({ width: '100%', theme: 'bootstrap4' });
 
-    };
+        $(".formbtn").appendTo("#GenericToolBar");
+    }
 
     function Init_List() {
         $('#RoleMemberGridTbl').bootstrapTable({
@@ -97,7 +98,7 @@ app.SecurityRoleMember = (function () {
                     }
                 }]
         });
-    };
+    }
 
     function Event_Controls() {
 
@@ -184,7 +185,7 @@ app.SecurityRoleMember = (function () {
             event.preventDefault();
         });
 
-    };
+    }
 
     function Create(uidata, mode) {
         app.core.Post(app.setting.apipath + 'v1/RoleMember/Post', JSON.stringify(uidata))
@@ -216,7 +217,7 @@ app.SecurityRoleMember = (function () {
                         break;
                 }
             });
-    };
+    }
 
     function Update(uidata) {
         app.core.Put(app.setting.apipath + 'v1/RoleMember/Put?id=' + uidata.RoleId, JSON.stringify(uidata))
@@ -227,7 +228,7 @@ app.SecurityRoleMember = (function () {
             }).always(function () {
                 app.ui.ButtonDone('#RoleMemberEdtFormSave');
             });
-    };
+    }
 
     function Delete(uidata) {
         toastr.warning("Si está seguro de querer eliminar el rol '" + uidata.RoleName + "' haga clic aquí", null,
@@ -245,17 +246,17 @@ app.SecurityRoleMember = (function () {
                         });
                 }
             });
-    };
+    }
 
     function Init_Lookups() {
         app.core.Lookups(['EstadoRegistro.RecordStatus', 'EstadoRegistro.RecordStatusFlt'], Dynamic_Event_Controls);
         // Dependencies
-    };
+    }
 
     function Dynamic_Event_Controls() {
         $('#RecordStatusFlt').select2({ width: '100%', theme: 'bootstrap4' });
 
-    };
+    }
 
     function MapInputToObject() {
         var data = {
@@ -266,7 +267,7 @@ app.SecurityRoleMember = (function () {
             RecordStatus: $('#RecordStatus').val()
         };
         return data;
-    };
+    }
 
     function MapObjectToInput(data) {
         $('#RoleId').val(data.RoleId);
@@ -274,7 +275,7 @@ app.SecurityRoleMember = (function () {
         $('#Description').val(data.Description);
         app.ui.SetNumericValue('#SecurityLevel', data.SecurityLevel);
         $('#RecordStatus').val(data.RecordStatus);
-    };
+    }
 
     function Setup_Validations() {
 
@@ -298,7 +299,7 @@ app.SecurityRoleMember = (function () {
             rules: {
                 RoleName: {
                     required: true,
-                    regex: /^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9' .-]+$/
+                    regex: /^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9'_ .-]+$/
                 },
                 Description: {
                     regex: /^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9' .-]+$/
@@ -321,7 +322,7 @@ app.SecurityRoleMember = (function () {
             }
 
         });
-    };
+    }
 
     function EditMode(row) {
         $('.filter-row').addClass('d-none');
@@ -335,20 +336,25 @@ app.SecurityRoleMember = (function () {
             $('#RoleMemberEdtFormSaveCopy').removeClass('d-none');
             $('#RoleMemberEdtFormDuplicate').addClass('d-none');
             $('#RoleMemberEdtFormDelete').addClass('d-none');
+            $('#RoleMemberEdtFormSave').removeClass('d-none');
+            $('#RoleMemberEdtFormCancel').removeClass('d-none');
         } else {
             $('#RoleMemberEdtFormSaveContinue').addClass('d-none');
             $('#RoleMemberEdtFormSaveCopy').addClass('d-none');
             $('#RoleMemberEdtFormDuplicate').removeClass('d-none');
             $('#RoleMemberEdtFormDelete').removeClass('d-none');
+            $('#RoleMemberEdtFormSave').removeClass('d-none');
+            $('#RoleMemberEdtFormCancel').removeClass('d-none');
         }
-    };
+    }
 
     function ViewMode() {
         $('.filter-row').removeClass('d-none');
         $('.advancefilter-row').addClass('d-none');
         $('#RoleMemberGridTbl').parents().find('.table-responsive').removeClass('d-none');
         $('#RoleMemberEdt').addClass('d-none');
-    };
+        $('.formbtn').addClass('d-none');
+    }
 
     return {
         Init: function () {
@@ -360,7 +366,7 @@ app.SecurityRoleMember = (function () {
             Setup_Validations();
         },
         New: function (row) {
-            let newRow = { RoleId: 0, RoleName: null, Description: null, SecurityLevel: 0, RecordStatus: null }
+            let newRow = { RoleId: 0, RoleName: null, Description: null, SecurityLevel: 50, RecordStatus: 1 }
             if (row !== undefined) {
                 row.Roleid = 0;
                 newRow = row;

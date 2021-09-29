@@ -5,7 +5,7 @@
 <!-- Template -->
 <div class="ibox">
     <div class="ibox-title">
-        <h5>Mantenimiento de reglas</h5>
+        <h5>Mantenimiento de plantillas</h5>
         <!-- Opciones -->
         <div class="ibox-tools">
             <a class="tool-filter">
@@ -104,6 +104,7 @@
                                     <div class='form-group'>
                                         <label class='control-label' for='EmailTo'>Receptor</label>
                                         <input id='EmailTo' name='EmailTo' type='text' class='form-control' size='256' maxlength='256'>
+                                        <small class="form-text text-muted">Se puede predefinir quien será el receptor del correo indicando de forma directa la dirección de correo o se puede establece la lista de usuario asociados a un rol {UserRoleList.Revisor}, otros ejemplos {Owner}, {UserRoleList.App.Mapfre.Notify.Subscription.RoleName}.</small>
                                     </div>
                                 </div>
                                 <!-- Subject -->
@@ -111,19 +112,21 @@
                                     <div class='form-group'>
                                         <label class='control-label' for='Subject'>Asunto<span class='required-mark'>*</span></label>
                                         <input id='Subject' name='Subject' type='text' class='form-control' size='256' maxlength='256'>
+                                        <small class="form-text text-muted">El uso de variable en el asunto del correo se hace por medio de llaves, por ejemplo {Data.Case.Id}. {Data.*}, {Company.*} , {CurrentUser.*}, {Owner.*}.</small>
                                     </div>
                                 </div>
                                 <!-- Body -->
                                 <div class='col-sm-4 col-md-12'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='Body'>Body<span class='required-mark'>*</span></label>
+                                        <label class='control-label' for='Body'>Texto del correo<span class='required-mark'>*</span></label>
                                         <textarea id='Body' name='Body' class='form-control' rows="10"></textarea>
+                                        <small class="form-text text-muted">El uso de variable en el texto del correo se hace por medio de llaves, por ejemplo {Data.Case.Id}. {Data.*}, {Company.*} , {CurrentUser.*}, {Owner.*}.</small>
                                     </div>
                                 </div>
                                 <!-- MasterTemplateId -->
                                 <div class='col-sm-4 col-md-4'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='MasterTemplateId'>Master Template Id</label>
+                                        <label class='control-label' for='MasterTemplateId'>Plantilla maestra</label>
                                         <select id='MasterTemplateId' name='MasterTemplateId' class='form-control'></select>
                                     </div>
                                 </div>

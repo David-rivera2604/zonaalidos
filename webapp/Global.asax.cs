@@ -52,6 +52,9 @@ namespace aliados
                 RecurringJob.AddOrUpdate(() =>
                     Architect.API.Insurance.Business.Bayer.Inclusion.EvicertiaSigned(),
                     Cron.MinuteInterval(interval));
+                RecurringJob.AddOrUpdate(() =>
+                    Architect.API.Tron.Business.Emision.MapfreMas.EvicertiaSigned(),
+                    Cron.MinuteInterval(interval));
             }
 
         }

@@ -55,6 +55,14 @@ app.GeneralNavigation = (function () {
                     sortable: true,
                     halign: 'center'
                 }, {
+                    field: 'Sequence',
+                    title: 'Orden',
+                    titleTooltip: 'Orden de aparición.',
+                    sortable: true,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.IntegerFormatter'
+                }, {
                     field: 'Title',
                     title: 'Título',
                     sortable: true,
@@ -72,7 +80,8 @@ app.GeneralNavigation = (function () {
                     field: 'MenuTitle',
                     title: 'Título del menú',
                     sortable: true,
-                    halign: 'center'
+                    halign: 'center',
+                    visible: false
                 }, {
                     field: 'URLPath',
                     title: 'Ruta',
@@ -82,7 +91,8 @@ app.GeneralNavigation = (function () {
                     field: 'URLHelp',
                     title: 'Ayuda',
                     sortable: true,
-                    halign: 'center'
+                    halign: 'center',
+                    visible: false
                 }, {
                     field: 'SmallImage',
                     title: 'Imagen pequeña',
@@ -92,15 +102,8 @@ app.GeneralNavigation = (function () {
                     field: 'BigImage',
                     title: 'Imagen grande',
                     sortable: true,
-                    halign: 'center'
-                }, {
-                    field: 'Sequence',
-                    title: 'Orden',
-                    titleTooltip: 'Orden de aparición.',					
-                    sortable: true,
                     halign: 'center',
-                    align: 'right',
-                    formatter: 'app.ui.IntegerFormatter'
+                    visible: false
                 }, {
                     field: 'RecordStatusDesc',
                     title: 'Estado del Registro',
@@ -441,7 +444,7 @@ app.GeneralNavigation = (function () {
             Setup_Validations();
         },
         New: function (row) {
-            let newRow = { NavigationId: 0, ParentCode: null, Code: null, Type: null, Title: null, Description: null, MenuTitle: null, URLPath: null, URLHelp: null, SmallImage: null, BigImage: null, Sequence: 1, RecordStatus: null }
+            let newRow = { NavigationId: 0, ParentCode: null, Code: null, Type: null, Title: null, Description: null, MenuTitle: null, URLPath: null, URLHelp: null, SmallImage: null, BigImage: null, Sequence: 1, RecordStatus: 1 }
             if (row !== undefined) {
                 row.NavigationId = 0;
                 newRow = row;

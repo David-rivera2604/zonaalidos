@@ -118,7 +118,6 @@
                                     </div>
                                 </div>
 
-
                                 <!-- ProcessStatus -->
                                 <div class='col-sm-4 col-md-4'>
                                     <div class='form-group'>
@@ -152,7 +151,7 @@
                                 </div>
 
                                 <!-- SLA -->
-                                <div class='col-sm-4 col-md-4'>
+                                <div class='col-sm-4 col-md-4 advanced d-none'>
                                     <div class='form-group'>
                                         <label class='control-label' for='SLA'>SLA</label>
                                         <input id='SLA' name='SLA' type='text' class='form-control text-right' size='5' maxlength='5'>
@@ -190,6 +189,7 @@
                                             <div class='form-group'>
                                                 <label class='control-label' for='MailToContactCustom'>Personalización</label>
                                                 <input id='MailToContactCustom' name='MailToContactCustom' type='text' class='form-control' size='256' maxlength='256' disabled>
+                                                <small class="form-text text-muted">Se puede indicar una lista de correo separado por coma, también se pueden usar las variables especiales {contact} y {user} para hacer referencia a la dirección de correo del contacto, así como la del usuario que está realizando el cambio.</small>
                                             </div>
                                         </div>
                                         <!-- MailToContactTmpl -->
@@ -203,7 +203,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-row">
+                            <div class="form-row role-notify-visible d-none">
                                 <div class="col-lg-12">
                                     <h4> Notificación a los usuario de los roles responsables de la etapa</h4>
                                     <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
@@ -220,6 +220,7 @@
                                             <div class='form-group'>
                                                 <label class='control-label' for='MailToStepResponsibleCustom'>Personalización</label>
                                                 <input id='MailToStepResponsibleCustom' name='MailToStepResponsibleCustom' type='text' class='form-control' size='256' maxlength='256' disabled>
+                                                <small class="form-text text-muted">Se puede indicar una lista de correo separado por coma, también se pueden usar las variables especiales {contact} y {user} para hacer referencia a la dirección de correo del contacto, así como la del usuario que está realizando el cambio.</small>
                                             </div>
                                         </div>
                                         <!-- MailToStepResponsibleTmpl -->
@@ -233,7 +234,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-row">
+                            <div class="form-row sla-notify-visible d-none">
                                 <div class="col-lg-12">
                                     <h4> Notificación por vencimiento de SLA</h4>
                                     <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
@@ -250,6 +251,7 @@
                                             <div class='form-group'>
                                                 <label class='control-label' for='MailForSLAExpirationCustom'>Personalización</label>
                                                 <input id='MailForSLAExpirationCustom' name='MailForSLAExpirationCustom' type='text' class='form-control' size='256' maxlength='256' disabled>
+                                                <small class="form-text text-muted">Se puede indicar una lista de correo separado por coma, también se pueden usar las variables especiales {contact} y {user} para hacer referencia a la dirección de correo del contacto, así como la del usuario que está realizando el cambio.</small>
                                             </div>
                                         </div>
                                         <!-- MailForSLAExpirationTmpl -->
@@ -264,7 +266,7 @@
                             </div>
 
                             <!-- Scripts -->
-                            <div class="form-row">
+                            <div class="form-row advanced d-none">
                                 <div class="col-lg-12">
                                     <h4> Scripts</h4>
                                     <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>

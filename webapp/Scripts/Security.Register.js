@@ -42,9 +42,11 @@ app.SecurityRegister = (function () {
                     $('#identificacion').addClass('loading');
                     app.core.Get(app.setting.apipath + 'v1/Insured/' + value)
                         .done(function (data, textStatus, jqXHR) {
-                            if (data.Nombre !== null) {
-                                $('#FirstName').val(data.Nombre);
-                                $('#LastName').val(`${data.ApellidoPaterno} ${data.ApellidoMaterno}`);
+                            if (data.FirstName !== null) {
+                                $('#FirstName').val(data.FirstName);
+                                $('#LastName').val(`${data.LastName} ${data.SecondLastName}`);
+                                app.ui.SetDateValue('#BirthDate', data.BirthDate);
+                                $('#EMail').val(data.PrimaryEmailAddress);                                
                             }
                         }).always(function () {
                             $('#identificacion').removeClass('loading');

@@ -409,7 +409,7 @@ app.GeneralProcessSpecTask = (function () {
         $('#IsRequired').prop('checked', data.IsRequired);
         $('#IsSelected').prop('checked', data.IsSelected);
         app.ui.SetNumericValue('#TaskOrder', data.TaskOrder);
-        $('#Type').val(data.Type);
+        app.ui.SetDropDownNumericValue('#Type', data.Type, true);
         $('#Action').val(data.Action);
         app.ui.SetNumericValue('#SubStatus', data.SubStatus);
         $('#SubLabel').val(data.SubLabel);

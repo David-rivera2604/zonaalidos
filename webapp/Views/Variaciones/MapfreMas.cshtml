@@ -1,0 +1,154 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title></title>
+
+    @Styles.Render("~/Content/cssView")
+</head>
+
+<body style="background-color: white;">
+    <!-- RoleMember -->
+    <div class="ibox">
+        <div class="ibox-content sidebar-content">
+            <div class="sk-spinner sk-spinner-wave">
+                <div class="sk-rect1"></div>
+                <div class="sk-rect2"></div>
+                <div class="sk-rect3"></div>
+                <div class="sk-rect4"></div>
+                <div class="sk-rect5"></div>
+            </div>
+            <div id="generalNotify">
+            </div>
+            <!-- Edit Form -->
+            <div class='form-row'>
+                <div class='col-md-12'>
+                    <div id="VariacionesEdt" class="animated fadeInRight">
+                        <form id='VariacionesEdtForm' class='form-horizontal' data-toggle='validator'>
+                            <fieldset>
+                                <!-- datosdelapoliza Zone -->
+                                <div class="form-row">
+                                    <div class="col-lg-12">
+                                        <h4>Datos de la póliza</h4>
+                                        <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                        <div class="form-row">
+
+                                            <!-- ramo DropDownList -->
+                                            <div class='col-sm-6 col-md-6'>
+                                                <div class='form-group'>
+                                                    <label class='control-label' for='cod_ramo'>Ramo</label>
+                                                    <select id='cod_ramo' name='cod_ramo' class='form-control' disabled>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <!-- num_poliza Text -->
+                                            <div class='col-sm-6 col-md-6'>
+                                                <div class='form-group'>
+                                                    <label class='control-label' for='num_poliza'>N° de póliza<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <input type='text' id='num_poliza' name='num_poliza' class='form-control' size='40' maxlength='40' disabled />
+                                                </div>
+                                            </div>
+                                            <!-- num_riesgo Text -->
+                                            <div class='col-sm-6 col-md-6'>
+                                                <div class='form-group'>
+                                                    <label class='control-label' for='num_riesgo'>Número riesgo</label>
+                                                    <input type='text' id='num_riesgo' name='num_riesgo' class='form-control' size='40' maxlength='40' disabled />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- informaciondelriesgo Zone -->
+                                <div class="form-row">
+                                    <div class="col-lg-12">
+                                        <h4>Información del riesgo</h4>
+                                        <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                        <div class="form-row">
+
+                                            <!-- num_matricula Text -->
+                                            <div class='col-sm-6 col-md-6'>
+                                                <div class='form-group'>
+                                                    <label class='control-label' for='num_matricula'>N° de matricula<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <input type='text' id='num_matricula' name='num_matricula' class='form-control' size='30' maxlength='30' />
+                                                </div>
+                                            </div>
+                                            <!-- num_motor Text -->
+                                            <div class='col-sm-6 col-md-6'>
+                                                <div class='form-group'>
+                                                    <label class='control-label' for='num_motor'>N° de motor<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <input type='text' id='num_motor' name='num_motor' class='form-control' size='20' maxlength='20' />
+                                                </div>
+                                            </div>
+                                            <!-- cod_chassis Text -->
+                                            <div class='col-sm-6 col-md-6'>
+                                                <div class='form-group'>
+                                                    <label class='control-label' for='cod_chassis'>cod_chassis<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <input type='text' id='cod_chassis' name='cod_chassis' class='form-control' size='30' maxlength='30' />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- variacion Zone -->
+                                <div class="form-row">
+                                    <div class="col-lg-12">
+                                        <h4>Variación</h4>
+                                        <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                        <div class="form-row">
+
+                                            <!-- fec_validez DatePicker -->
+                                            <div class='col-sm-12 col-md-12'>
+                                                <div class='form-group'>
+                                                    <label class='control-label' for='fec_validez'>Fecha de validez</label>
+                                                    <div class='input-group date' id='fec_validez_group'>
+                                                        <input type='text' id='fec_validez' name='fec_validez' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                        <span class='input-group-addon'>
+                                                            <span class='glyphicon glyphicon-calendar'></span>
+                                                        </span>
+                                                    </div>
+                                                    <div id='fec_validez_validate'></div>
+                                                </div>
+                                            </div>
+
+                                            <!-- txt_obs Notes -->
+                                            <div class='col-sm-12 col-md-12'>
+                                                <div class='form-group'>
+                                                    <label class='control-label' for='txt_obs'>Observación</label>
+                                                    <textarea id='txt_obs' name='txt_obs' class='form-control' rows="2"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class="modal-footer">
+                                            <button id="VariacionesEdtFormSave" type="button" class="btn btn-primary" data-doing="Aplicando variaciones..." disabled>Aplicar variaciones</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+@Scripts.Render("~/bundles/jsView")
+</html>
+<script src="@Url.Content("~/Scripts/Variaciones.MapfreMas.js")"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        app.VariacionesMapfreMas.Init();
+    });
+</script>
+

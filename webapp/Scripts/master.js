@@ -42,30 +42,49 @@ app.master = (function () {
         });
         var path = window.location.pathname + window.location.search;
         var isActiveClass = '';
-
+        let href;
         $.each(mainMenuItems, function (index, itemParent) {
-            if (path.startsWith(app.setting.basepath + itemParent.URLPath))
-                isActiveClass = ' class="active"';
-            else
-                isActiveClass = '';
-            sideMenu.append('<li id="' + itemParent.Code + '"' + isActiveClass + '><a href="#" aria-expanded="false"><i class="' + itemParent.SmallImage + '"></i><span class="nav-label">' + itemParent.Title + '</span><span class="fa arrow"></span></a><ul class="nav nav-second-level collapse" aria-expanded="false"></ul></li>');
+            isActiveClass = '';
 
-            var itemObj = sideMenu.find('#' + itemParent.Code + ' ul');
 
             var menuItems = data.filter(function (subitem) {
                 return subitem.ParentCode == itemParent.Code;
             });
-            let href;
-            $.each(menuItems, function (index, item) {
-                if (item.URLPath.startsWith("viewer/index")) {
-                    $('#side-menu').find("#" + itemParent.Code).addClass("active");
-                }
-                if (path === app.setting.basepath + item.URLPath)
+
+            if (menuItems.length > 0) {
+                sideMenu.append('<li id="' + itemParent.Code + '"' + isActiveClass + '><a href="#" aria-expanded="false"><i class="' + itemParent.SmallImage + '"></i><span class="nav-label">' + itemParent.Title + '</span><span class="fa arrow"></span></a><ul class="nav nav-second-level collapse" aria-expanded="false"></ul></li>');
+            }
+            else {
+                if (path === app.setting.basepath + itemParent.URLPath)
                     isActiveClass = ' class="active"';
                 else
                     isActiveClass = '';
+                if (itemParent.URLPath.startsWith('SideBar:')) {
+                    href = "javascript:app.master.ShowSide('" + itemParent.Title + "', '" + itemParent.URLPath.substring(8) + "');";
+                } else if (itemParent.URLPath.startsWith('SideBarExternal:')) {
+                    href = "javascript:app.master.ShowSideBarExternal('" + itemParent.Title + "', '" + itemParent.URLPath.substring(16) + "');";
+                } else {
+                    href = app.setting.basepath + itemParent.URLPath;
+                }
+                sideMenu.append('<li id="' + itemParent.Code + '"' + isActiveClass + '><a href="' + href + '" title="' + itemParent.Description + '">' + '<i class="' + itemParent.SmallImage + '"></i>' + (itemParent.MenuTitle === '' ? itemParent.Title : itemParent.MenuTitle) + '</a></li>');
+            }
+            var itemObj = sideMenu.find('#' + itemParent.Code + ' ul');
+
+            $.each(menuItems, function (index, item) {
+
+                if (path === app.setting.basepath + item.URLPath) {
+                    isActiveClass = ' class="active"';
+                    sideMenu.find('#' + itemParent.Code + ' ul').attr("aria-expanded", "false");
+                    sideMenu.find('#' + itemParent.Code + ' ul').addClass("in");
+                    sideMenu.find('#' + itemParent.Code).addClass("active");
+                }
+
+                else
+                    isActiveClass = '';
                 if (item.Type == 9) {
-                    href = "javascript:app.master.ShowSideBar('" + item.Description + "', " + item.URLPath + ");";
+                    href = "javascript:app.master.ShowSideBar('" + item.Title + "', " + item.URLPath + ");";
+                } else if (item.Type == 8) {
+                    href = "javascript:app.master.ShowSideBarExternal('" + item.Title + "', " + item.URLPath + ");";
                 } else {
                     href = app.setting.basepath + item.URLPath;
                 }
@@ -109,13 +128,13 @@ app.master = (function () {
                     token_timeout(iinterval);
                 }
                 else {
-                    console.log("extender");
-                    console.log(data);
+                    //console.log("extender");
+                    //console.log(data);
                     var dt = new Date();
                     var iinterval = (data + 10) * 1000;
-                    console.log(dt);
+                    //console.log(dt);
                     dt = new Date(dt.getTime() + iinterval);
-                    console.log(dt);
+                    //console.log(dt);
                     localStorage.setItem('Expires', dt);
                     token_timeout(10000);
                 }
@@ -141,6 +160,7 @@ app.master = (function () {
                 event.preventDefault();
                 $('#right-sidebar').toggleClass('sidebar-open');
                 $('.sidebar-content').replaceWith('<div class="ibox-content sidebar-content"><div class="sk-spinner sk-spinner-wave"><div class="sk-rect1"></div><div class="sk-rect2"></div><div class="sk-rect3"></div><div class="sk-rect4"></div><div class="sk-rect5"></div></div></div>');
+                $('#right-sidebar').addClass('d-none');
             });
 
             $('#showHelp').click(function () {
@@ -150,6 +170,10 @@ app.master = (function () {
         },
         ShowSideBar: function (title, id) {
             app.ui.ShowSideBar({ title: title, subtitle: '', id: id, data: null })
+        },
+        ShowSideBarExternal: function (title, url) {
+            let width = app.core.URLValue('wd', url);
+            app.ui.ShowSideBar({ title: title, subtitle: '', url: url, width: width, isExternal: true })
         }
     };
 })();

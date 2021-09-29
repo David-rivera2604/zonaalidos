@@ -109,7 +109,6 @@ app.asegurado = (function () {
                     app.core.Get(app.setting.apipath + 'v1/Insured/' + parseInt(0 + value, 10))
                         .done(function (data, textStatus, jqXHR) {
                             if (data != null && data.FirstName !== null) {
-                                //data.DocumentType
                                 $('#FirstName').val(data.FirstName);
                                 $('#MiddleName').val(data.MiddleName);
                                 $('#LastName').val(data.LastName);
@@ -120,7 +119,6 @@ app.asegurado = (function () {
                                 else
                                     $($('input:radio[name=Gender][value=' + data.Gender + ']')).prop('checked', true);
                                 $('#CivilStatus').val(data.CivilStatus);
-                                //data.PhoneType
                                 $('#PhoneNumber').val(data.PhoneNumber);
                                 $('#PrimaryEmailAddress').val(data.PrimaryEmailAddress);
                                 $('#Province').val(data.Province);

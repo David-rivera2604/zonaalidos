@@ -3,6 +3,7 @@ using WebActivatorEx;
 using aliados;
 using Swashbuckle.Application;
 using System.Configuration;
+using Swashbuckle.Swagger;
 
 [assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 
@@ -39,10 +40,12 @@ namespace aliados
                             .Description("API de la zona de aliados.")
                             .TermsOfService("Términos de servicio.")
                             .Contact(x => x
-                                .Name("Nelson Soler")
-                                .Email("solernelson@hotmail.com"))
+                                .Name("Gerencia de Tecnología y Procesos")
+                                .Email("solernelson@hotmail.com")
+                                .Url("https://www.mapfrecr.com/"))
                             .License(x => x
-                                .Name("Licencia"));
+                                .Name("Licencia")
+                                .Url("https://www.mapfrecr.com/license"));
 
                             // If you want the output Swagger docs to be indented properly, enable the "PrettyPrint" option.
                             //
@@ -115,11 +118,12 @@ namespace aliados
                             c.IncludeXmlComments(System.AppDomain.CurrentDomain.BaseDirectory + @"\bin\Architect.API.Core.Contracts.xml");
                             c.IncludeXmlComments(System.AppDomain.CurrentDomain.BaseDirectory + @"\bin\Architect.API.Insurance.xml");
                             c.IncludeXmlComments(System.AppDomain.CurrentDomain.BaseDirectory + @"\bin\Architect.API.Insurance.Contracts.xml");
-                            c.IncludeXmlComments(System.AppDomain.CurrentDomain.BaseDirectory + @"\bin\Architect.API.Product.xml");
-                            c.IncludeXmlComments(System.AppDomain.CurrentDomain.BaseDirectory + @"\bin\Architect.API.Product.Contracts.xml");
+                            //c.IncludeXmlComments(System.AppDomain.CurrentDomain.BaseDirectory + @"\bin\Architect.API.Product.xml");
+                            //c.IncludeXmlComments(System.AppDomain.CurrentDomain.BaseDirectory + @"\bin\Architect.API.Product.Contracts.xml");
                             c.IncludeXmlComments(System.AppDomain.CurrentDomain.BaseDirectory + @"\bin\Architect.API.TRON.xml");
                             c.IncludeXmlComments(System.AppDomain.CurrentDomain.BaseDirectory + @"\bin\Architect.API.Tron.Contracts.xml");
-                            
+                            c.IncludeXmlComments(System.AppDomain.CurrentDomain.BaseDirectory + @"\bin\Architect.Data.Source.xml");
+
                             //c.IncludeXmlComments(System.AppDomain.CurrentDomain.BaseDirectory + @"\bin\Architect.Data.Source.xml");
 
                             // Swashbuckle makes a best attempt at generating Swagger compliant JSON schemas for the various types

@@ -2,6 +2,9 @@
 app.ui = (function () {
 
     return {
+        DropDownValueWithOption: function (selector, value, display) {
+            $(selector).append(`<option value=${value} selected>${display}</option>`);
+        },
         SetDropDownMultiValues: function (selector, values) {
             var control = $('select#' + selector);
             var valueSelect = [];
@@ -79,6 +82,17 @@ app.ui = (function () {
                 value = 0;
             return parseInt(value, 10);
         },
+        SetDropDownNumericValue: function (selector, value, autoSelect) {
+
+
+            $(selector).val(value);
+
+            if (autoSelect && (value === null || value === '')) {
+                $(selector).val($(selector + ' option:first').val());
+                $(selector).change();
+            }
+
+        },
         GetNumericValue: function (selector) {
             var value = AutoNumeric.getNumber(selector)
             if (value === null)
@@ -97,8 +111,11 @@ app.ui = (function () {
         SetRadioNumericValue: function (name, value) {
             $('input:radio[name=' + name + '][value=' + value + ']').prop('checked', true);
         },
+        SetRadioStringValue: function (name, value) {
+            $('input:radio[name=' + name + '][value=' + value + ']').prop('checked', true);
+        },
         GetRadioNumericValue: function (name) {
-            return $('input:radio[name=' + name + ']:checked').val();
+            return parseInt($('input:radio[name=' + name + ']:checked').val(), 10);
         },
         SetRadioStringValue: function (name, value) {
             $('input:radio[name=' + name + '][value=' + value + ']').prop('checked', true);
@@ -113,14 +130,17 @@ app.ui = (function () {
             $(name).data('value', value);
             $(name).text($(name).parent().find(name + 'Menu a[data-value=' + value + ']').text());
         },
-        IsValid: function (formId, ignore) {
+        IsValid: function (formId, ignore, showResume) {
             if (ignore)
                 return true;
             else {
                 var instance = $(formId);
                 var validate = instance.validate();
                 var result = instance.valid();
-                if (!result) {
+                if (showResume === undefined || showResume == null) {
+                    showResume = true;
+                }
+                if (!result && showResume) {
                     var title = '';
                     var count = validate.errorList.length;
                     if (count > 1)
@@ -219,7 +239,11 @@ app.ui = (function () {
             return value;
         },
         UpdateDateAndUserFormatter: function (value, row, index, field) {
-            return '<span title="' + moment(value).format('DD/MM/YYYY hh:mma') + '">' + row.UpdateUserName + ' <small class="text-muted"> ' + moment(value).from() + '</small></span>';
+            let userName = '';
+            if (row.UpdateUserName != undefined) {
+                userName = row.UpdateUserName;
+            }
+            return '<span title="' + moment(value).format('DD/MM/YYYY hh:mm:ssa') + '">' + userName + ' <small class="text-muted"> ' + moment(value).from() + '</small></span>';
         },
         EditLinkFormatter: function (value, row, index, field) {
             return '<a class="edit" href="javascript:void(0)" title="Al hacer click permite la edición de la fila">' + value + '</a>';
@@ -645,11 +669,26 @@ app.ui = (function () {
             $newModal.modal("show");
             $newModal.on('hidden.bs.modal', function () { $newModal.remove() });
         },
+        CloseSideBar: function () {
+            if ($('#right-sidebar').hasClass('sidebar-open')) {
+                $('#right-sidebar').removeClass('d-none');
+                $('#right-sidebar').toggleClass('sidebar-open');
+                $('#right-sidebar').attr('style', 'width: 0px !important');
+            }
+        },
         ShowSideBar: function (options) {
             if (options.isExternal === undefined) {
                 options.isExternal = false;
             }
-            localStorage.setItem('current', JSON.stringify(options.data));
+            if (options.class === undefined || options.class === null) {
+                options.class = '';
+            }
+            if (options.width === undefined || options.width === null) {
+                options.width = "260px";
+            }
+            if (options.data != undefined && options.data != null) {
+                localStorage.setItem('current', JSON.stringify(options.data));
+            }
             $('#sidebarTitle').html('');
             if (typeof options.title != "undefined") {
                 $('#sidebarTitle').append('<h3>' + options.title + '</h3>');
@@ -658,13 +697,31 @@ app.ui = (function () {
                 $('#sidebarTitle').append('<small>' + options.subtitle + '</small>');
             }
             $('.sidebar-content').toggleClass('sk-loading');
-            $('#right-sidebar').toggleClass('sidebar-open');
+            if (options.class === '') {
+                $('#right-sidebar').attr('style', 'width:' + options.width + ' !important');
+            } else {
+                $('#right-sidebar').addClass(options.class);
+            }
+            if (!$('#right-sidebar').hasClass('sidebar-open')) {
+                $('#right-sidebar').removeClass('d-none');
+                $('#right-sidebar').toggleClass('sidebar-open');
+            }
+
             if (!options.isExternal) {
                 app.core.Get(app.setting.apipath + `v1/Viewer/Dialog?id=${options.id}`)
                     .done(function (data, textStatus, jqXHR) {
-                        $('.sidebar-content').replaceWith(data.HTML.replace('ibox-content', 'ibox-content sidebar-content'));
+                        data = data.HTML.supplant(options.data);
+                        data = app.core.ReplaceAll(data, '@_eq', '=');
+                        data = app.core.ReplaceAll(data, '@_qt', '\'');
+                        $('.sidebar-content').replaceWith(data.replace('ibox-content', 'ibox-content sidebar-content'));
                         eval(data.Code);
                     });
+            }
+            else {
+                $('.sidebar-content').replaceWith($("<iframe id='sidebarFrame' class='sidebar-content'/>").attr({ frameBorder: 0, width: '100%', height: 60 + $('#right-sidebar').height() + 'px', src: options.url, scrolling: 'no' }));
+                $('#sidebarFrame').on('load', function (e) {
+                    $('.sidebar-content').attr({ height: document.getElementById("sidebarFrame").contentWindow.document.body.scrollHeight + 'px' });
+                });
             }
         },
         DataEntryBehavior: function (formName, behavior) {
@@ -682,6 +739,44 @@ app.ui = (function () {
                         break;
                 }
             });
-        }
+        },
+        LookupLoad: function (ctrl, lkpData) {
+            let selectedOptions = $('select#' + ctrl);
+            selectedOptions.children().remove();
+            $.each(lkpData, function () {
+                selectedOptions.append($('<option />').val(this['Code']).text(this['Description']));
+            });
+            if (lkpData.length == 1 && !selectedOptions.is(':disabled')) {
+                selectedOptions.val(lkpData[0]['Code']);
+            } else {
+                selectedOptions.val(-1);
+            }
+        },
+        DropDownDisabled: function (element, disabled, clean) {
+            let current = $(element).is(':disabled');
+            $(element).prop("disabled", disabled);
+            if (current && !disabled && $(element + ' option').length == 1) {
+                $(element).prop("selectedIndex", 0);
+            }
+            if (clean != undefined && clean) {
+                $(element).prop("selectedIndex", -1);
+            }
+        },
+        Download: function (fileName, id) {
+            fileName = fileName.toLowerCase();
+            if (fileName.endsWith("jpg") || fileName.endsWith("pdf"))
+                window.open(app.setting.apipath + 'v1/Common/Download2?id=' + id, "Adjunto", "width=500, height=450, titlebar=no, location=NO");
+            else
+                window.location.href = app.setting.apipath + 'v1/Common/Download2?id=' + id;
+        },
+        GetApi: function (url) {
+            $('.sidebar-content').toggleClass('sk-loading');
+            return app.core.Get(app.setting.apipath + url)
+                .done(function (data, textStatus, jqXHR) {
+                    toastr.info(data, '', { timeOut: 7000, closeButton: true, progressBar: true });
+                }).always(function () {
+                    app.ui.CloseSideBar()
+                });
+        },
     };
 })();

@@ -310,7 +310,7 @@ app.GeneralTemplate = (function () {
                     required: 'Debe indicar el asunto'
                 },
                 Body: {
-                    required: 'Debe indicar el body'
+                    required: 'Debe indicar el texto del correo'
                 }
             }
 

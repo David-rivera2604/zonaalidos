@@ -7,9 +7,12 @@ app.ViewerQuery = (function () {
         '    <a class="nav-link {show}" id="{index}_htab" data-type="{type}" data-tablename="{tablename}" data-toggle="tab" href="#tab_{index}" >{title}</a> ' +
         '  </li> ';
 
-    var _itemBody = '<div class="tab-pane fade {show}" id="tab_{index}">{Body}</div>';
+    var _itemBody = '<div class="tab-pane fade {show}" id="tab_{index}">' +
+        ' {Body} ' +
+        '</div>';
 
     var _itemTable = '<!-- Grid -->  ' +
+        '{BodyFilter} ' +
         '<div id="{index}toolbar"> ' +
         '</div> ' +
         '<!-- Grid --> ' +
@@ -23,30 +26,43 @@ app.ViewerQuery = (function () {
         '	</div>  ' +
         '</div>  ';
 
-    function ReplaceAll(string, search, replace) {
-        return string.split(search).join(replace);
-    }
+    var _itemAvanceFilter = '						<div class="col-sm-12 col-md-12"> ' +
+        '							<div class="form-group"> ' +
+        '							<label class="control-label" for="BirthDate">Fecha de nacimiento</label> ' +
+        '							<div class="input-group date" id="BirthDate_group"> ' +
+        '									<input type="text" id="BirthDate" name="BirthDate" class="form-control" size="10" maxlength="10" placeholder="día/mes/año" /> ' +
+        '									<span class="input-group-addon"> ' +
+        '										<span class="glyphicon glyphicon-calendar"></span> ' +
+        '									</span> ' +
+        '								</div> ' +
+        '								<div id="BirthDate_validate"></div> ' +
+        '							</div> ' +
+        '						</div> ';
+
+    _itemAvanceFilter = '<div class="ibox"> ' +
+        ' {Body} ' +
+        '</div>';
 
     function RenderTabHeader(item) {
-        body = ReplaceAll(_itemHeader, "{index}", item.index);
-        body = ReplaceAll(body, "{title}", item.title);
-        body = ReplaceAll(body, "{type}", item.type);
-        body = ReplaceAll(body, "{tablename}", "#" + item.index + "GridTbl");
+        body = app.core.ReplaceAll(_itemHeader, "{index}", item.index);
+        body = app.core.ReplaceAll(body, "{title}", item.title);
+        body = app.core.ReplaceAll(body, "{type}", item.type);
+        body = app.core.ReplaceAll(body, "{tablename}", "#" + item.index + "GridTbl");
 
         var show = "";
         if (item.index === 1)
             show = "active";
-        body = ReplaceAll(body, "{show}", show);
+        body = app.core.ReplaceAll(body, "{show}", show);
         return body;
     }
 
     function RenderTabBody(item) {
-        body = ReplaceAll(_itemBody, "{index}", item.index);
+        body = app.core.ReplaceAll(_itemBody, "{index}", item.index);
         show = ""
         if (item.index === 1)
             show = "active show";
-        body = ReplaceAll(body, "{show}", show);
-        body = ReplaceAll(body, "{Body}", RenderTabContentUI(item));
+        body = app.core.ReplaceAll(body, "{show}", show);
+        body = app.core.ReplaceAll(body, "{Body}", RenderTabContentUI(item));
         return body;
     }
 
@@ -56,7 +72,17 @@ app.ViewerQuery = (function () {
             body = Template_Render(item.template, item.data);
         }
         else {
-            body = ReplaceAll(_itemTable, "{index}", item.index);
+            body = app.core.ReplaceAll(_itemTable, "{index}", item.index);
+        }
+        if (item.dialog != undefined && item.dialog.html != null) {
+            var itemTemplate = app.core.GetFromBetween(item.dialog.html, '<!-- Edit Form -->', '<!-- Edit Form End -->');
+            var itemName = app.core.GetFromBetween(itemTemplate, '@_#', '@_');
+            var controlGrid = "'#" + item.index + "GridTbl'";
+            itemTemplate = app.core.ReplaceAll(itemTemplate, '@_#' + itemName + '@_', controlGrid);
+            itemTemplate = app.core.ReplaceAll(itemTemplate, '@_@_', "''");
+            body = app.core.ReplaceAll(body, "{BodyFilter}", app.core.ReplaceAll(_itemAvanceFilter, "{Body}", itemTemplate));
+        } else {
+            body = app.core.ReplaceAll(body, "{BodyFilter}", "")
         }
         return body;
     }
@@ -74,6 +100,21 @@ app.ViewerQuery = (function () {
             $('html head').find('title').text(data.maintitle);
         }
 
+
+        if (data.dialog != undefined && data.dialog.html != null) {
+            var code = app.core.ReplaceAll(data.dialog.code, ".Prototype", ".Prototype" + data.index);
+            code = app.core.ReplaceAll(code, 'Init"', 'Init' + data.index + '"');
+            eval(code);
+
+            var nameClass = "Prototype" + data.index;
+            if (nameClass in app) {
+                app[nameClass]['Changed'](function (data) {
+                    var gridControlName = "#" + index + "GridTbl";
+                    app.ViewerQuery.Refresh(undefined, $(gridControlName), _id, '');
+                });
+            }
+        }
+
         if (data.chart != undefined) {
             var spec = data.table;
             if (data.chart != undefined) {
@@ -86,6 +127,8 @@ app.ViewerQuery = (function () {
                 data.table.Direct = data.Direct;
             Table_Render(data.table, data.index);
         }
+
+       
     }
 
     function Template_Render(template, data) {
@@ -191,12 +234,15 @@ app.ViewerQuery = (function () {
             spec.columns.forEach(function (group, gindex, garray) {
                 group.forEach(function (column, index, array) {
                     if (column.formatter != undefined && column.formatter.startsWith('function ')) {
-                        column.formatter = column.formatter.parseFunction();
+                        column.formatter = column.formatter.replace(/@_/g, '\\\'').parseFunction();
                     }
                     if (column.format != undefined) {
                         column.formatter = function (value, row, index, field) {
                             return column.format.supplant(row);
                         }
+                    }
+                    if (column.events != undefined) {
+                        column.events = 'Local_Events';
                     }
                 });
             });
@@ -204,12 +250,15 @@ app.ViewerQuery = (function () {
         else {
             spec.columns.forEach(function (column, index, array) {
                 if (column.formatter != undefined && column.formatter.startsWith('function ')) {
-                    column.formatter = column.formatter.parseFunction();
+                    column.formatter = column.formatter.replace(/@_/g, '\\\'').parseFunction();
                 }
                 if (column.format != undefined) {
                     column.formatter = function (value, row, index, field) {
                         return column.format.supplant(row);
                     }
+                }
+                if (column.events != undefined) {
+                    column.events = 'Local_Events';
                 }
             });
         }
@@ -368,7 +417,7 @@ app.ViewerQuery = (function () {
 
                 $.each(spec.columns, function (key, column) {
                     if (column.formatter != undefined && column.formatter.startsWith('function ')) {
-                        column.formatter = column.formatter.parseFunction();
+                        column.formatter = column.formatter.replace(/@_/g, '\\\'').parseFunction();
                     }
                     if (column.format != undefined) {
                         column.formatter = function (value, row, index, field) {
@@ -387,7 +436,7 @@ app.ViewerQuery = (function () {
     };
 
     function EventDirect(item) {
-        var name = ReplaceAll("#{index}_htab", "{index}", item.index);
+        var name = app.core.ReplaceAll("#{index}_htab", "{index}", item.index);
         $(name).on('shown.bs.tab', function (e) {
             var type = this.getAttribute('data-type');
             if (type != 'template' && type != undefined) {
@@ -435,7 +484,6 @@ app.ViewerQuery = (function () {
                                 Render(item);
                             });
                         }
-                    }).always(function () {
                     });
             else
                 $("#QueryTitle").html('Consulta no indicada');
@@ -444,6 +492,7 @@ app.ViewerQuery = (function () {
             var element = $('#RoleMemberGridTbl');
             var id = _id;
             var index = 1;
+            var doing = true;
 
             if ($el != undefined) {
                 element = $el;
@@ -455,16 +504,50 @@ app.ViewerQuery = (function () {
                 index = this.options.index;
             }
 
-            element.bootstrapTable('showLoading');
-            app.core.Get(app.setting.apipath + 'v1/datasource/json?id=' + id + '&sequence=' + index + '&url=' + window.location.search.slice(1).replace(/&/g, ':') + url)
-                .done(function (data, textStatus, jqXHR) {
+            var nameClass = "Prototype" + index;
+            if (nameClass in app) {
+                if (app[nameClass]['IsValid'](false)) {
+                    let dialogData = app[nameClass]["Data"]();
+                    for (var p in dialogData) {
+                        if (dialogData.hasOwnProperty(p)) {
+                            url += ':' + p + '=' + dialogData[p];
+                        }
+                    }
+                    url = url.replace(/T00:00:00/g, '');
+                } else {
+                    doing = false;
                     if (params === undefined)
-                        element.bootstrapTable('load', data !== null ? data : []);
+                        element.bootstrapTable('load', []);
                     else
-                        params.success(data !== null ? data : [])
-                }).always(function () {
-                    element.bootstrapTable('hideLoading');
-                });
+                        params.success([]);
+                }
+            }
+
+            if (doing) {
+                element.bootstrapTable('showLoading');
+                if (this.options?.URL != undefined) {
+                    app.core.GetExt(app.setting.apipath + this.options.URL)
+                        .done(function (data, textStatus, jqXHR) {
+                            if (params === undefined)
+                                element.bootstrapTable('load', data !== null ? data : []);
+                            else
+                                params.success(data !== null ? data : [])
+                        }).always(function () {
+                            element.bootstrapTable('hideLoading');
+                        });
+                }
+                else {
+                    app.core.Get(app.setting.apipath + 'v1/datasource/json?id=' + id + '&sequence=' + index + '&url=' + window.location.search.slice(1).replace(/&/g, ':') + url)
+                        .done(function (data, textStatus, jqXHR) {
+                            if (params === undefined)
+                                element.bootstrapTable('load', data !== null ? data : []);
+                            else
+                                params.success(data !== null ? data : [])
+                        }).always(function () {
+                            element.bootstrapTable('hideLoading');
+                        });
+                }
+            }
         },
         TabRender: function (me) {
             event.preventDefault();
@@ -500,7 +583,7 @@ app.ViewerQuery = (function () {
 })();
 
 window.Local_Events = {
-    'click.event': function (e, value, row, index) {
+    'click .event': function (e, value, row, index) {
         e.stopPropagation();
         app.ViewerQuery.ButtonClick(this, e, e.currentTarget.name, row, index)
     }

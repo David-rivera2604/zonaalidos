@@ -44,7 +44,7 @@
                                 <fieldset>
                                     <!-- tipodeproducto Zone -->
                                     <div class="form-row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-4 tipodeproductoZone">
                                             <h4>Tipo de producto</h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
@@ -57,22 +57,30 @@
                                                             <div class="custom-control custom-radio custom-control-inline">
                                                                 <input type="radio" class="custom-control-input" id="tipo_prod_1" name="tipo_prod" value="basico">
                                                                 <label class="custom-control-label" for="tipo_prod_1">Básico</label>
-                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                            </div>
+                                                            <div class="custom-control custom-radio custom-control-inline">
                                                                 <input type="radio" class="custom-control-input" id="tipo_prod_2" name="tipo_prod" value="amplio">
                                                                 <label class="custom-control-label" for="tipo_prod_2">Amplio</label>
-                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                            </div>
+                                                            <div class="custom-control custom-radio custom-control-inline">
                                                                 <input type="radio" class="custom-control-input" id="tipo_prod_3" name="tipo_prod" value="plus">
                                                                 <label class="custom-control-label" for="tipo_prod_3">Plus</label>
-                                                            </div><div class="custom-control custom-radio custom-control-inline d-none">
+                                                            </div>
+                                                            <div class="custom-control custom-radio custom-control-inline">
                                                                 <input type="radio" class="custom-control-input" id="tipo_prod_4" name="tipo_prod" value="oro">
                                                                 <label class="custom-control-label" for="tipo_prod_4">Oro</label>
-                                                            </div><div class="custom-control custom-radio custom-control-inline d-none">
+                                                            </div>
+                                                            <div class="custom-control custom-radio custom-control-inline">
                                                                 <input type="radio" class="custom-control-input" id="tipo_prod_5" name="tipo_prod" value="plata">
                                                                 <label class="custom-control-label" for="tipo_prod_5">Plata</label>
                                                             </div>
-                                                            <div class="custom-control custom-radio custom-control-inline d-none">
+                                                            <div class="custom-control custom-radio custom-control-inline">
                                                                 <input type="radio" class="custom-control-input" id="tipo_prod_6" name="tipo_prod" value="trebol">
-                                                                <label class="custom-control-label" for="tipo_prod_6">Trebol</label>
+                                                                <label class="custom-control-label" for="tipo_prod_6">Trébol</label>
+                                                            </div>
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="tipo_prod_7" name="tipo_prod" value="trebolrc">
+                                                                <label class="custom-control-label" for="tipo_prod_7">Trébol RC</label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -81,10 +89,8 @@
                                             </div>
                                         </div>
 
-
                                         <!-- datosdelcontratante Zone -->
-
-                                        <div class="col-md-8">
+                                        <div class="col-md-8 contratanteZone">
                                             <h4><i class="fa fa-user-o"></i> Datos del contratante</h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
@@ -119,7 +125,7 @@
                                     <!-- datosgenerales Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4> Datos generales</h4>
+                                            <h4><i class="fa fa-list"></i> Datos generales</h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -158,7 +164,7 @@
                                                     <div class='form-group'>
                                                         <label class='control-label' for='fec_vcto_poliza'>Fin de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                         <div class='input-group date' id='fec_vcto_poliza_group'>
-                                                            <input type='text' id='fec_vcto_poliza' name='fec_vcto_poliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <input type='text' id='fec_vcto_poliza' name='fec_vcto_poliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled />
                                                             <span class='input-group-addon'>
                                                                 <span class='glyphicon glyphicon-calendar'></span>
                                                             </span>
@@ -190,7 +196,7 @@
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='subcontrato'>Sub contrato<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <select id='subcontrato' name='subcontrato' class='form-control'></select>
+                                                        <select id='subcontrato' name='subcontrato' class='form-control' disabled></select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -245,6 +251,37 @@
                                                         <input type='text' id='ANIO_SUB_MODELO' name='ANIO_SUB_MODELO' class='form-control text-right' size='4' maxlength='4' />
                                                     </div>
                                                 </div>
+
+                                                <!-- IMP_VR Numeric -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='IMP_VR'>Valor del vehículo asegurado<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='IMP_VR' name='IMP_VR' class='form-control text-right' size='21' maxlength='21' />
+                                                    </div>
+                                                </div>
+
+                                                <!-- NUM_MATRICULA Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='NUM_MATRICULA'>Número de placa</label>
+                                                        <input type='text' id='NUM_MATRICULA' name='NUM_MATRICULA' class='form-control' size='20' maxlength='20' />
+                                                    </div>
+                                                </div>
+                                                <!-- COD_CHASSIS Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='COD_CHASSIS'>Número de chasis</label>
+                                                        <input type='text' id='COD_CHASSIS' name='COD_CHASSIS' class='form-control' size='20' maxlength='20' />
+                                                    </div>
+                                                </div>
+                                                <!-- NUM_MOTOR Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='NUM_MOTOR'>Número de motor</label>
+                                                        <input type='text' id='NUM_MOTOR' name='NUM_MOTOR' class='form-control' size='20' maxlength='20' />
+                                                    </div>
+                                                </div>
+
                                                 <!-- cod_tip_vehi DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
@@ -258,6 +295,22 @@
                                                     <div class='form-group'>
                                                         <label class='control-label' for='cod_uso_vehi'>Uso del vehículo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                         <select id='cod_uso_vehi' name='cod_uso_vehi' class='form-control'></select>
+                                                    </div>
+                                                </div>
+
+
+
+                                                <!-- PCT_AJUSTE_GEN Numeric -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='PCT_AJUSTE_GEN' title="Valor entre -25 y 0%">Porcentaje de ajuste comercial</label>
+                                                        <div class='input-group'>
+                                                            <input type='text' id='PCT_AJUSTE_GEN' name='PCT_AJUSTE_GEN' class='form-control text-right' size='3' maxlength='3' title="Valor entre -25 y 0%" />
+                                                            <span class='input-group-addon'>
+                                                                <small class="text-muted">%</small>
+                                                            </span>
+                                                        </div>
+                                                        <div id='PCT_AJUSTE_GEN_validate'></div>
                                                     </div>
                                                 </div>
 
@@ -357,13 +410,7 @@
                                                     </div>
                                                 </div>
 
-                                                <!-- IMP_VR Numeric -->
-                                                <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='IMP_VR'>Valor del vehículo asegurado<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <input type='text' id='IMP_VR' name='IMP_VR' class='form-control text-right' size='21' maxlength='21' />
-                                                    </div>
-                                                </div>
+
                                                 <!-- MCA_DESC_CLIENTE_NUEVO RadioButtonList -->
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
@@ -380,19 +427,7 @@
                                                     </div>
                                                 </div>
 
-                                                <!-- PCT_AJUSTE_GEN Numeric -->
-                                                <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='PCT_AJUSTE_GEN' title="Valor entre -25 y 0%">Porcentaje de ajuste comercial</label>
-                                                        <div class='input-group'>
-                                                            <input type='text' id='PCT_AJUSTE_GEN' name='PCT_AJUSTE_GEN' class='form-control text-right' size='3' maxlength='3' title="Valor entre -25 y 0%" />
-                                                            <span class='input-group-addon'>
-                                                                <small class="text-muted">%</small>
-                                                            </span>
-                                                        </div>
-                                                        <div id='PCT_AJUSTE_GEN_validate'></div>
-                                                    </div>
-                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -408,7 +443,7 @@
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='IMP_AUTO_RC'>Responsabilidad civil<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <select id='IMP_AUTO_RC' name='IMP_AUTO_RC' class='form-control'></select>
+                                                        <select id='IMP_AUTO_RC' name='IMP_AUTO_RC' class='form-control right-align'></select>
                                                     </div>
                                                 </div>
 
@@ -424,7 +459,7 @@
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='IMP_AUTO_GMO'>Gastos médicos de ocupantes<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <select id='IMP_AUTO_GMO' name='IMP_AUTO_GMO' class='form-control'></select>
+                                                        <select id='IMP_AUTO_GMO' name='IMP_AUTO_GMO' class='form-control right-align'></select>
                                                     </div>
                                                 </div>
 
@@ -432,7 +467,7 @@
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='IMP_AUTO_ACO'>Accidentes al conductor<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <select id='IMP_AUTO_ACO' name='IMP_AUTO_ACO' class='form-control'></select>
+                                                        <select id='IMP_AUTO_ACO' name='IMP_AUTO_ACO' class='form-control right-align'></select>
                                                     </div>
                                                 </div>
 
@@ -500,7 +535,7 @@
                                                 <div class='col-sm-3 col-md-3 d-none'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='IMP_AUTO_NEUM'>Garantia de neumáticos<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <select id='IMP_AUTO_NEUM' name='IMP_AUTO_NEUM' class='form-control' disabled></select>
+                                                        <select id='IMP_AUTO_NEUM' name='IMP_AUTO_NEUM' class='form-control right-align' disabled></select>
                                                     </div>
                                                 </div>
 
@@ -508,7 +543,7 @@
                                                 <div class='col-sm-3 col-md-3 d-none'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='IMP_AUTO_MECA'>Avería mecánica<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <select id='IMP_AUTO_MECA' name='IMP_AUTO_MECA' class='form-control' disabled></select>
+                                                        <select id='IMP_AUTO_MECA' name='IMP_AUTO_MECA' class='form-control right-align' disabled></select>
                                                     </div>
                                                 </div>
 
@@ -516,7 +551,7 @@
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='IMP_AUTO_CRI'>Rotura de cristales<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <select id='IMP_AUTO_CRI' name='IMP_AUTO_CRI' class='form-control' disabled></select>
+                                                        <select id='IMP_AUTO_CRI' name='IMP_AUTO_CRI' class='form-control right-align' disabled></select>
                                                     </div>
                                                 </div>
 
@@ -532,7 +567,7 @@
                                                 <div class='col-sm-3 col-md-3 d-none'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='AutoSust'>Auto Sustituto<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <select id='AutoSust' name='AutoSust' class='form-control' disabled></select>
+                                                        <select id='AutoSust' name='AutoSust' class='form-control right-align' disabled></select>
                                                     </div>
                                                 </div>
 

@@ -105,3 +105,69 @@
                   Aliados. Corrección en acceso a los datos para las reglas dinamicas.
                   Aliados. Manejo de errores para los reportes de tron.
 1.5.44 19/05/2021 Trazabilidad. Ajuste en los mantenimientos.
+1.5.45 28/05/2021 Trazabilidad. Panel para casos.
+1.5.46 31/05/2021 Trazabilidad. Consulta de casos en curso.
+                                Mejoras en la página para casos nuevos.
+1.5.47 08/06/2021 Aliados. Cambio para el manejo de JWT.
+                           Manejo de lista blanca cuando se usa accesskey.
+                  Aliados. Emisión. Cambio para que en caso de existir solo un producto se haga el redirecionamiento automatico.
+                                    Corrección el cargar los datos de beneficiario por medio de la identificación.
+                  Aliados. Total Leasing. Ajustes varios en los dos reportes.
+                  Aliados. Corrección en el manejo de adjuntos en la emisión de MapfreMAS, Poliza Lider y Hogar total.
+                  Aliados. MapfreMAS. Manejo de pólizas de grupo sumas asegurada, deducibles y fecha de vencimiento.
+                  Aliados. Consulta de documentos cargados.
+1.5.48 14/06/2021 Aliados. Se agrega en el token el codigo del sub agente.
+                           Plantillas. se agrega texto de ayuda para explicar el uso de variables.
+                  Aliados. MapfreMAS. Manejo de pólizas de grupo con filtro por sub agente.
+                  Aliados. Consultas. Nuevas. Documentación, Otros enlaces, Pólizas por agente para empleados.
+                  Aliados. Consultas. Ajustes. Recibos cobrados, Gestion de cobros. Uso de parametros.                                     
+                  Trazabilidad. Ajustes para ocultar campos no implementados.
+                                Se agregar texto de ayuda para opciones de personalizacion de correo.
+                                Link. Se agregar texto de ayuda para el pase de parametros.
+                  Bayer. Se agrega campo número de empleado tanto en la planilla como en medical.
+                  Aliados. Emisión. Se habilita la carga de campos no coniderados para beneficiarios.
+                  Aliados. Total Leasing. Ajustes varios en los dos reportes.
+1.5.49 23/06/2021 Aliados. Emisión. Se habilita la eliminacion de beneficiario.                                    
+                  Aliados. Total Leasing. Ajustes varios en los dos reportes.
+                  Aliados. Se modifica el formato del telefono para que no dispare validación incial.
+                  Aliados. MapfreMAS. Lista de valores para el deducibles de cristales.
+1.5.50 24/06/2021 Aliados. MapfreMAS. Se condiciona nuevo parametro al procedure de cotización según el ambiente.
+                  Trazabilidad Purdy. Ajuste al reporte 2, para eliminar filtro por expediente.
+                  Aliados. Consultas. Ajustes. Pólizas activas para que se despligue el tomado tal como la zona de aliados anterior.. 
+1.5.51 30/06/2021 Davivienda. MapfreMAS. Se permite la opción de actualizar el telefono, correo, direccion y fecha de nacimineto del tercero al emitir.
+                  Davivienda. MapfreMAS. Para davivienda solo se debe solicitar de forma requerida un documento unificado.
+                  Consulta. Recibos pendientes de cobro. se agregan columnas.
+                  Consulta. Mis clientes/Pólizas activas. Cambio de posicion de la columna acción.
+                  Consulta. Pólizas activas por agente. Se habilita la opcion de filtro.
+                  Aliados-Emisión. Se corrige falla al validar los beneficiarios.
+1.5.52 03/07/2021 Aliados. Se actualiza lectura de póliza emitida.
+1.5.53 31/07/2021 Davivienda. MapfreMAS. Permitir actualizar datos del tercero al emitir.		
+                  Bayer: Se configura  y ajusta la solicitud para nuevo emisor Caturix		
+                  Sugese: Canales se incorpora nuevas corredoras		
+                  Coopesparta: Ajustes solicitado por roy a 2 reportes.		
+                  Medical: Impresión de carnet digital debe filtrar solo los dependientes		
+                  Davivienda. Permitir que se realice la cotización  hoy y hacer la emisión dentro de una semana, emitir con fecha del día. 		
+                  Davivienda. No colocar la fecha de inclusión en la solicitud, para que permita modificarlo si se reprograma, luego en la emisión, emitir con la fecha que se está procesando.Agregar un dato variable con fecha de firma.		
+                  Davivienda. Colocar opción de reenvío de solicitud cuando ya se venció el tiempo de solicitud de firma		
+                  Davivienda. Tomador y Acreencia en automático Davivienda.		
+                  Davivienda. Ajustar el proceso de carga de documento para que solo valide que exista un  documentos . Poner en copia a emisión que se ingreso póliza de Davivienda.		
+                  Davivienda. Habilitar variaciones de pólizas (datos del riesgo)		
+                  Trazabilidad. Despliegue del titulo de la etapa actual en las tareas.		
+                  Trazabilidad. Posibilidad de descarga de archivo adjuntos.		
+                  Aliados. Consulta de presupuestos		
+                  Aliados. Continuar la emisión desde la consulta de cotización para Mapfre mas
+1.5.54 05/08/2021 Aliados. Se agregar la placa, motor y serial al PDF de la cotización MapfreMas.
+                  Davivienda prendarios. Se agrega validación  que permita cotizar máximo 125 mil dolares o 80 millones
+                  Davivienda prendarios. Se colocar por default Davivienda como acreedor
+                  Davivienda prendarios. Se condiciona imagen de purdy en el reporte MapfreMas
+                  Davivienda prendarios. Cuando es firma digital que traiga el documento firmado en los documentos de la póliza.
+                  Aliados. Limpieza y documentación de API principal visualizables en Swagger
+                  Fix. Terceros con documento de tipo jurídico.
+                  Aliados. MapfreMas. Manejo dinámico de terceros por defecto
+                                      Manejo dinámico de documentos requeridos
+                  Fix. Valor máximo del vehículo por defecto.
+                  Aliados. MapfreMas. validación para vehículos Peugeout con un máximo de 3 años de antigüedad.
+                  CarroFácil. Ajustes en la tabla de asistencia en 2 reportes. Cambio de tasa.
+1.5.55 07/09/2021 Fix. Manejo de cambio de fechas en la cotización y en la emisión.
+                  MapfreMas. Se deshabilita el cambo de fin de vigencia y de calcula de forma automática.
+1.5.56 27/09/2021 Aliados. HogarTotal. Se habilita el manejo de pólizas de grupos.

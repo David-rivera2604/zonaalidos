@@ -57,7 +57,8 @@ app.GeneralProcessSpecFlow = (function () {
                     field: 'Alias',
                     title: 'Alias',
                     sortable: true,
-                    halign: 'center'
+                    halign: 'center',
+                    visible: false
                 }, {
                     field: 'MailServerDesc',
                     title: 'Servidor de correo',

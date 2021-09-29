@@ -703,7 +703,7 @@
 	    return 'next page';
 	  },
 	  formatDetailPagination: function formatDetailPagination(totalRows) {
-	    return "Showing ".concat(totalRows, " rows");
+		  return "".concat(totalRows, " registros en total");
 	  },
 	  formatClearSearch: function formatClearSearch() {
 	    return 'Limpiar búsqueda';

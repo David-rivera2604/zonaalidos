@@ -228,8 +228,8 @@ app.CotizacionPolizaLider = (function () {
             event.preventDefault();
             let data = MapInputToObject();
             data.plandepagoporfrecuencia = quoteData.plandepagoporfrecuencia;
-            quoteData.Agente = setupData.Agente;
-            app.Cotizacion.Imprimir('PolizaLider', quoteData);
+            data.Agente = setupData.Agente;
+            app.Cotizacion.Imprimir('PolizaLider', data);
         });
 
     };
@@ -333,7 +333,7 @@ app.CotizacionPolizaLider = (function () {
                     visible: true
                 }, {
                     field: 'decucible',
-                    title: 'Decucible',
+                    title: 'Deducible',
                     titleTooltip: '',
                     sortable: false,
                     halign: 'center',

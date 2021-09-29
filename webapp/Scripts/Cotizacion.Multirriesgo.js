@@ -557,7 +557,7 @@ app.CotizacionMultirriesgo = (function () {
                     visible: true
                 }, {
                     field: 'decucible',
-                    title: 'Decucible',
+                    title: 'Deducible',
                     titleTooltip: '',
                     sortable: false,
                     halign: 'center',

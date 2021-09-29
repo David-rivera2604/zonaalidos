@@ -40,7 +40,7 @@
                         <small class="stats-label">Descripción</small>
                         <p id="Description" class="fw-600"></p>
                     </div>
-                    <div class="col-md-10">
+                    <div class="col-md-7">
                         <div class="row">
                             <div class="col-md-2">
                                 <small class="stats-label">Prioridad</small>
@@ -77,9 +77,21 @@
                                 <p id="Reference5" class="fw-600"></p>
                             </div>
                         </div>
+
+                    </div>
+                    <div class="col-md-3">
+                        <div class="col">
+                            <small class="stats-label">Progreso</small>
+                            <div class="progress" style="margin: 0px 2px 3px 2px;">
+                                <div style="width: 0%;" class="progress-bar progress-bar-danger"></div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <small class="stats-label">Etapa actual</small>
+                            <p id="CurrentStep" class="fw-600"></p>
+                        </div>
                     </div>
                 </div>
-
 
 
             </div>
@@ -103,7 +115,7 @@
             <div class="col-lg-12">
                 <div id="tabs" class="tabs-container">
                     <ul class="nav nav-tabs" role="tablist">
-                        <li><a class="nav-link active" data-toggle="tab" href="#Tareas"><i class="fa fa-tasks"></i> Tareas</a></li>
+                        <li><a class="nav-link active" data-toggle="tab" href="#Tareas"><i class="fa fa-tasks"></i> Etapa : <span id="StepDescription"></span></a></li>
                         <li><a class="nav-link" data-toggle="tab" href="#Seguimiento"><i class="fa fa-sitemap"></i> Seguimiento</a></li>
                         <li><a class="nav-link" data-toggle="tab" href="#Notas"><i class="fa fa-edit"></i> Notas</a></li>
                         <li><a class="nav-link" data-toggle="tab" href="#Adjuntos"><i class="fa fa-paperclip"></i> Adjuntos</a></li>
@@ -115,7 +127,7 @@
                                 <div class='row'>
                                     <div id="ChangeStage" class='col-md-12 d-none'>
                                         <div class='col-md-12'>
-                                            <h4>Opciones posibles para avanzar a la siguiente etapa</h4>
+                                            <h4>Opciones disponibles para avanzar</h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                         </div>
                                         <form id='VisualizationsEdtForm' class='form-horizontal' data-toggle='validator' style=" margin-left: 10px; margin-right: 10px;margin-top: 6px;">
@@ -131,7 +143,7 @@
                                                         </div>
                                                     </div>
                                                     <!-- Annotation -->
-                                                    <div class='col-md-10'>
+                                                    <div class='col-md-10 mode-simple'>
                                                         <div class='form-group'>
                                                             <label class='control-label' for='Surcharge' style="margin-top: 10px;">
                                                                 Comentario:
@@ -147,7 +159,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class='col-md-2'>
+                                                    <div class='col-md-2 mode-simple'>
                                                         <button id="ProcessStepAccept" type="button" class="btn btn-primary mx-auto d-block" data-doing="Procesando..." disabled>Procesar</button>
                                                     </div>
                                                 </div>
@@ -160,9 +172,6 @@
                         <!-- Seguimiento -->
                         <div role="tabpanel" id="Seguimiento" class="tab-pane ">
                             <div class="panel-body">
-                                <div class="progress progress-mini" style="margin: 0px 2px 3px 2px;">
-                                    <div style="width: 0%;" class="progress-bar progress-bar-danger"></div>
-                                </div>
                                 <div class='row'>
                                     <div id="Stages" class='col-md-12'>
                                         <div class="table-responsive" style="padding: 0px 2px 0px 2px;">
@@ -319,7 +328,7 @@
 
             </div>
         </div>*@
-    <div class="historyPanel d-none">
+    @*<div class="historyPanel d-none">
         <div class="client-detail">
 
             <div class="full-height-scroll">
@@ -393,7 +402,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>*@
 
     <!-- Attachment Grid Modal -->
     <div class="modal inmodal" id="AttachmentModal" tabindex="-1" role="dialog" aria-hidden="true">

@@ -155,7 +155,6 @@ app.core = (function () {
         }
     }
 
-
     function ajaxCall(type, url, data, success, token, contentType) {
         var dataType = 'json';
 
@@ -186,12 +185,16 @@ app.core = (function () {
                 }
             }
         }).done(function (data, textStatus, jqXHR) {
-            //if (data.d !== undefined && data.d.Success !== undefined) {
-            //    if (data.d.Success === false && data.d.Reason !== undefined && data.d.Reason !== '')
-            //        app.core.NotifyFail(data.d.Reason);
-            //    success(data);
-            //}
-            //else
+            if (data != null && data.Success !== undefined) {
+                if (data.Success) {
+                    toastr.success(data.Reason, '', { timeOut: 7000, closeButton: true, progressBar: true });
+                } else {
+                    toastr.error(data.Reason, '', { timeOut: 7000, closeButton: true, progressBar: true });
+                }
+            }
+            if (data != null && data.Mensaje !== undefined && data.Mensaje !== null) {
+                toastr.info(data.Mensaje, '', { timeOut: 7000, closeButton: true, progressBar: true });
+            }
             if (success !== undefined)
                 success(data);
         }).fail(function (jqXHR, textStatus, errorThrown) {
@@ -213,7 +216,8 @@ app.core = (function () {
                             options[key.split('.')[1]] = value;
                             $('#' + key.split('.')[0] + 'EdtForm').validate().showErrors(options);
                         } else {
-                            app.ui.ShowAlert(key + 'Notify', 'alert-danger', value);
+                            //app.ui.ShowAlert(key + 'Notify', 'alert-danger', value);
+                            app.ui.ShowAlert('generalNotify', 'alert-danger', value);
                         }
                     });
 
@@ -223,7 +227,7 @@ app.core = (function () {
                 }
                 break;
             case 401:
-                window.location.replace("/aliados/Security/Login");
+                window.location.replace(app.setting.basepath + "Security/Login");
                 break;
             case 404:
                 if (jqXHR.responseText !== undefined && jqXHR.responseText.indexOf('- 404.0 -') > -1) {
@@ -236,7 +240,7 @@ app.core = (function () {
             case 500:
                 toastr.error("Por favor intente nuevamente y en caso de persistir el problema contacte el personal de soporte", "Ha ocurrido un error no controlado", { timeOut: 10000, closeButton: true, progressBar: true });
 
-                console.info('%c Error ', 'color: white; background-color: #D33F49', error.statusText);
+                console.info('%c Error ', 'color: white; background-color: #D33F49', jqXHR.statusText);
                 console.groupCollapsed('%c Detalle ', 'color: white; background-color: #2274A5');
                 console.info(jqXHR.responseJSON.Message);
                 console.info(jqXHR.responseJSON.ExceptionType);
@@ -379,7 +383,7 @@ app.core = (function () {
     };
 
     function URLNumericValue(key) {
-        var value = URLValue(key);
+        var value = URLValue(key, decodeURIComponent(window.location.href));
         if (value === null)
             value = 0;
         else
@@ -391,7 +395,7 @@ app.core = (function () {
     }
 
     function URLStringValue(key) {
-        var value = URLValue(key);
+        var value = URLValue(key, decodeURIComponent(window.location.href));
         if (value === null)
             value = '';
         return value;
@@ -462,12 +466,11 @@ app.core = (function () {
         return obj;
     }
 
-    function URLValue(key) {
+    function URLValue(key, url) {
         key = key.replace(/[\[]/, '\\[');
         key = key.replace(/[\]]/, '\\]');
         var pattern = "[\\?&]" + key + "=([^&#]*)";
         var regex = new RegExp(pattern);
-        var url = decodeURIComponent(window.location.href);
         var results = regex.exec(url);
         if (results === null) {
             return null;
@@ -489,7 +492,26 @@ app.core = (function () {
             });
     }
 
+    function GetFromBetween(body, sub1, sub2) {
+        if (body.indexOf(sub1) < 0 || body.indexOf(sub2) < 0) return false;
+        var SP = body.indexOf(sub1) + sub1.length;
+        var string1 = body.substr(0, SP);
+        var string2 = body.substr(SP);
+        var TP = string1.length + string2.indexOf(sub2);
+        return body.substring(SP, TP);
+    }
+
+    function ReplaceAll(string, search, replace) {
+        return string.split(search).join(replace);
+    }
+
     return {
+        ReplaceAll(string, search, replace) {
+            return ReplaceAll(string, search, replace);
+        },
+        GetFromBetween(body, sub1, sub2) {
+            return GetFromBetween(body, sub1, sub2);
+        },
         LoadLookup: function (url, key) {
             return LoadLookup(url, key);
         },
@@ -505,8 +527,8 @@ app.core = (function () {
         URLStringValue: function (key) {
             return URLStringValue(key);
         },
-        URLValues: function (url) {
-            return URLValues(url);
+        URLValue: function (key, url) {
+            return URLValue(key, url);
         },
         Get: function (url, data, success) {
             return ajaxCall('GET', url, data, success, true);
@@ -580,7 +602,7 @@ app.core = (function () {
             code = code.replace(/@_/g, '\'');
             if (typeof prefix == "undefined") {
                 $.ajax({
-                    url: '/aliados/Scripts/' + jsFile, dataType: 'script', async: true
+                    url: app.setting.basepath + 'Scripts/' + jsFile, dataType: 'script', async: true
                 }).done(function () {
                     let data = JSON.parse(localStorage.getItem('current'));
                     code = code.supplant(data);
@@ -593,14 +615,6 @@ app.core = (function () {
                 console.log(code);
                 eval(code);
             }
-        },
-        LookupLoad: function (ctrl, lkpData) {
-            let selectedOptions = $('select#' + ctrl);
-            selectedOptions.children().remove();
-            $.each(lkpData, function () {
-                selectedOptions.append($('<option />').val(this['Code']).text(this['Description']));
-            });
-            selectedOptions.val(-1);
         },
         Data: function () {
             return { lookups: lookupData };

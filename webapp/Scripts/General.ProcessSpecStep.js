@@ -404,7 +404,20 @@ app.GeneralProcessSpecStep = (function () {
         $('#FlowIdFlt').on('select2:select', function (e) {
             Refresh();
         });
-
+        $('#SLATimeOut').change(function () {
+            if (app.ui.GetNumericValue('#SLATimeOut') > 0)
+                $('.sla-notify-visible').removeClass('d-none');
+            else {
+                $('.sla-notify-visible').addClass('d-none');
+            }
+        });
+        $('#Roles').change(function () {
+            if (app.ui.GetDropDownMultiValues('Roles').length > 0)
+                $('.role-notify-visible').removeClass('d-none');
+            else {
+                $('.role-notify-visible').addClass('d-none');
+            }
+        });
     };
 
     function Create(uidata, mode) {
@@ -515,6 +528,7 @@ app.GeneralProcessSpecStep = (function () {
         $('#Name').val(data.Name);
         $('#Description').val(data.Description);
         app.ui.SetDropDownMultiValues('Roles', data.Roles);
+        $('#Roles').change();
         app.ui.SetNumericValue('#SLATimeOut', data.SLATimeOut);
         app.ui.SetNumericValue('#StepOrder', data.StepOrder);
         $('#ProcessStatus').val(data.ProcessStatus);
@@ -523,6 +537,7 @@ app.GeneralProcessSpecStep = (function () {
         app.ui.SetRadioNumericValue('EnableComment', data.EnableComment);
         $('#ProgressMode').val(data.ProgressMode);
         app.ui.SetNumericValue('#SLA', data.SLA);
+        $('#SLA').change();
         $('#MailServer').val(data.MailServer);
 
         $('#MailToContactCustom').val(data.MailToContactCustom);
@@ -765,7 +780,7 @@ app.GeneralProcessSpecStep = (function () {
             }
         },
         New: function (row) {
-            let newRow = { Id: 0, FlowId: 0, Name: null, Description: null, SLATimeOut: 0, StepOrder: 10, ProcessStatus: 0, ProcessLabel: null, EnableComment: false, ProgressMode: null, SLA: 0, MailServer: 1, MailToContact: 1, MailToContactCustom: null, MailToContactTmpl: 1, MailToStepResponsible: 1, MailToStepResponsibleCustom: null, MailToStepResponsibleTmpl: 1, MailForSLAExpiration: 1, MailForSLAExpirationCustom: null, MailForSLAExpirationTmpl: 1, PreScript: null, PostScript: null }
+            let newRow = { Id: 0, FlowId: 0, Name: null, Description: null, SLATimeOut: 0, StepOrder: 10, ProcessStatus: 0, ProcessLabel: null, EnableComment: false, ProgressMode: 1, SLA: 0, MailServer: 1, MailToContact: 1, MailToContactCustom: null, MailToContactTmpl: 1, MailToStepResponsible: 1, MailToStepResponsibleCustom: null, MailToStepResponsibleTmpl: 1, MailForSLAExpiration: 1, MailForSLAExpirationCustom: null, MailForSLAExpirationTmpl: 1, PreScript: null, PostScript: null }
             if (row !== undefined) {
                 row.Id = 0;
                 newRow = row;

@@ -5,17 +5,6 @@ app.beneficiarios = (function () {
     var beneficiaryRows = [];
     var beneficiaryRequired = true;
 
-    var _edit = function (id) {
-        var row = beneficiaryRows.filter(function (item) {
-            return item.RoleId === id;
-        });
-        if (row.length > 0) {
-            $('#beneficiarios').addClass('d-none');
-            $('#beneficiariosEdt').removeClass('d-none');
-            rowToInput(row[0]);
-        }
-    };
-
     function Init_Controls() {
         var today = new Date();
         documentNumber = $('#BDocumentNumber').formatter({
@@ -44,10 +33,10 @@ app.beneficiarios = (function () {
             decimalPlaces: 0,
             emptyInputBehavior: 'null'
         });
-    };
+    }
 
     function Init_Lookups() {
-        app.core.Lookups(['@Gender.BGender', 'CivilStatus.BCivilStatus', 'CR_Provincia.BProvince.', 'Relationship.BRelationship'], Dynamic_Event_Controls);
+        app.core.Lookups(['@Gender.BGender', 'CivilStatus.BCivilStatus', 'CR_Provincia.BProvince.', 'Relationship.BRelationship'], null);
 
         // Dependencies
         $('#BProvince').on('change', function () {
@@ -56,7 +45,7 @@ app.beneficiarios = (function () {
         $('#BCanton').on('change', function () {
             app.core.LookupDependency($('select#BCanton').val(), 'BDistrict', 'CR_Distritos', '', null, false);
         });
-    };
+    }
 
     function Event_Controls() {
 
@@ -92,24 +81,27 @@ app.beneficiarios = (function () {
                 var value = $('#BDocumentNumber').val().replace(/-/g, '');
                 if (value !== null && parseInt(0 + value, 10) !== 0 && parseInt(0 + value, 10) <= 999999999) {
                     $('#BDocumentNumber').addClass('loading');
-                    app.core.Get(app.setting.apipath + 'v1/Insured/' + value)
+                    app.core.Get(app.setting.apipath + 'v1/Insured/' + parseInt(0 + value, 10))
                         .done(function (data, textStatus, jqXHR) {
-                            if (data.Nombre !== null) {
-                                $('#BFirstName').val(data.Nombre);
-                                $('#BMiddleName').val('');
-                                $('#BLastName').val(data.ApellidoPaterno);
-                                $('#BSecondLastName').val(data.ApellidoMaterno);
-
-                                if ($('input:radio[name=BGender][value=' + data.CodigoSexo + ']').length === 0)
+                            if (data != null && data.FirstName !== null) {
+                                $('#BFirstName').val(data.FirstName);
+                                $('#BMiddleName').val(data.MiddleName);
+                                $('#BLastName').val(data.LastName);
+                                $('#BSecondLastName').val(data.SecondLastName);
+                                app.ui.SetDateValue('#BBirthDate', data.BirthDate);
+                                if ($('input:radio[name=BGender][value=' + data.Gender + ']').length === 0)
                                     $('input:radio[name=BGender]').prop('checked', false);
                                 else
-                                    $($('input:radio[name=BGender][value=' + data.CodigoSexo + ']')).prop('checked', true);
-
-                                $('#BProvince').val(data.CodigoProvincia);
-                                app.core.LookupDependency($('select#BProvince').val(), 'BCanton', 'CR_Canton', '', data.CodigoCanton, false,
+                                    $($('input:radio[name=BGender][value=' + data.Gender + ']')).prop('checked', true);
+                                $('#BCivilStatus').val(data.CivilStatus);
+                                $('#BPhoneNumber').val(data.PhoneNumber);
+                                $('#BPrimaryEmailAddress').val(data.PrimaryEmailAddress);
+                                $('#BProvince').val(data.Province);
+                                app.core.LookupDependency($('select#BProvince').val(), 'BCanton', 'CR_Canton', '', data.Canton, false,
                                     function () {
-                                        app.core.LookupDependency($('select#BCanton').val(), 'BDistrict', 'CR_Distritos', '', data.CodigoDistrito, false);
+                                        app.core.LookupDependency($('select#BCanton').val(), 'BDistrict', 'CR_Distritos', '', data.District, false);
                                     });
+                                $('#BAddressDetail').val(data.AddressDetail);
                             }
                         }).always(function () {
                             $('#BDocumentNumber').removeClass('loading');
@@ -133,13 +125,32 @@ app.beneficiarios = (function () {
             event.preventDefault();
         });
 
+
+        $('#DeleteBeneficiary').click(function () {
+
+            event.preventDefault();
+            let row = _inputToObject();
+            let newRows = [];
+            $.each(beneficiaryRows, function (index, current) {
+                if (current.RoleId != row.RoleId) {
+                    newRows.push(current);
+                }
+            });
+
+            beneficiaryRows = newRows;
+            TableRefresh(beneficiaryRows);
+            $('#beneficiarios').removeClass('d-none');
+            $('#beneficiariosEdt').addClass('d-none');
+            CleanInput();
+        })
+
         $('#AddBeneficiary').click(function () {
             event.preventDefault();
             if (app.ui.IsValid('#beneficiaryEdtFrm', false)) {
                 var row = _inputToObject();
 
                 if (row.RoleId === 0) {
-                    row.RoleId = beneficiaryRows.length + 1 * -1;
+                    row.RoleId = (beneficiaryRows.length + 1) * -1;
                     beneficiaryRows.push(row);
                 }
                 else {
@@ -153,6 +164,7 @@ app.beneficiarios = (function () {
 
                 $('#beneficiarios').removeClass('d-none');
                 $('#beneficiariosEdt').addClass('d-none');
+                $('#DeleteBeneficiary').addClass('d-none');
 
                 CleanInput();
             }
@@ -160,24 +172,24 @@ app.beneficiarios = (function () {
         });
 
         $('#CancelBeneficiary').click(function () {
+            event.preventDefault();
             $('#beneficiarios').removeClass('d-none');
             $('#beneficiariosEdt').addClass('d-none');
-            event.preventDefault();
+            CleanInput();
         });
 
-    };
-
-    function Dynamic_Event_Controls() {
-    };
-    app.ui.DateValidators();
-
-    $.validator.addMethod("BDocumentNumberLength",
-        function (value, element, params) {
-            return app.policy_common.IsDocumentNumberValida($("#BDocumentType").data("value"), value);
-        }
-    );
+    }
 
     function Setup_Validations() {
+
+        app.ui.DateValidators();
+
+        $.validator.addMethod("BDocumentNumberLength",
+            function (value, element, params) {
+                return app.policy_common.IsDocumentNumberValida($("#BDocumentType").data("value"), value);
+            }
+        );
+
         $("#beneficiaryEdtFrm").validate({
             errorPlacement: function (error, element) {
                 var name = $(element).attr("name");
@@ -252,7 +264,7 @@ app.beneficiarios = (function () {
                 }
             }
         });
-    };
+    }
 
     function Validations() {
         var count = 0
@@ -287,44 +299,7 @@ app.beneficiarios = (function () {
             $('#beneficiarios tbody').append('<tr><td><a href="javascript:app.beneficiarios.Edit(' + row.RoleId + ');">' + row.FirstName + ' ' + row.MiddleName + ' ' + row.LastName + ' ' + row.SecondLastName + '</a></td><td>' + row.ParticipationRate + '</td><td>' + row.RelationshipDesc + '</td><td>' + EstadoFormatter(row.ExclusionDate) + '</td><td>' + DateFormatter(row.InclusionDate, 'DD/MM/YYYY hh:mma') + '</td><td>' + DateFormatter(row.ExclusionDate, 'DD/MM/YYYY hh:mma') + '</td></tr>');
         });
         $('#beneficiarios').footable();
-    };
-
-    var _inputToObject = function () {
-        var data = {
-            RoleId: app.ui.GetHiddenNumericValue('#BRoleId'),
-            DocumentType: $("#BDocumentType").data("value"),
-            DocumentNumber: $('#BDocumentNumber').val(),
-            FirstName: $('#BFirstName').val(),
-            MiddleName: $('#BMiddleName').val(),
-            LastName: $('#BLastName').val(),
-            SecondLastName: $('#BSecondLastName').val(),
-            BirthDate: app.ui.GetDateValue('#BBirthDate'),
-            Gender: $('input:radio[name=BGender]:checked').val(),
-            CivilStatus: $('#BCivilStatus').val(),
-            PhoneType: $("#BPhoneType").data("value"),
-            PhoneNumber: $('#BPhoneNumber').val(),
-            PrimaryEmailAddress: $('#BPrimaryEmailAddress').val(),
-            Province: $('#BProvince').val(),
-            Canton: $('#BCanton').val(),
-            District: $('#BDistrict').val(),
-            AddressDetail: $('#BAddressDetail').val(),
-            Relationship: $('#BRelationship').val(),
-            RelationshipDesc: $('#BRelationship option:selected').text(),
-            ParticipationRate: app.ui.GetNumericValue('#BParticipationRate'),
-            InclusionDate: null,
-            ExclusionDate: null
-        };
-        return data;
-    };
-
-    var _objectToInput = function (data) {
-        if (data !== null && data.length > 0) {
-            beneficiaryRows = data;
-            $('#beneficiarios').removeClass('d-none');
-            $('#beneficiariosEdt').addClass('d-none');
-            TableRefresh(data);
-        }
-    };
+    }
 
     function rowToInput(data) {
         if (data !== null) {
@@ -350,7 +325,7 @@ app.beneficiarios = (function () {
             $('#BRelationship').val(data.Relationship);
             app.ui.SetNumericValue('#BParticipationRate', data.ParticipationRate);
         }
-    };
+    }
 
     function CleanInput() {
         rowToInput({
@@ -377,6 +352,56 @@ app.beneficiarios = (function () {
             InclusionDate: null,
             ExclusionDate: null
         })
+    }
+
+    var _edit = function (id) {
+        var row = beneficiaryRows.filter(function (item) {
+            return item.RoleId === id;
+        });
+        if (row.length > 0) {
+            $('#beneficiarios').addClass('d-none');
+            $('#beneficiariosEdt').removeClass('d-none');
+            if (row[0].DocumentNumber != null) {
+                $('#DeleteBeneficiary').removeClass('d-none');
+            }
+            rowToInput(row[0]);
+        }
+    };
+
+    var _inputToObject = function () {
+        return {
+            RoleId: app.ui.GetHiddenNumericValue('#BRoleId'),
+            DocumentType: $("#BDocumentType").data("value"),
+            DocumentNumber: $('#BDocumentNumber').val(),
+            FirstName: $('#BFirstName').val(),
+            MiddleName: $('#BMiddleName').val(),
+            LastName: $('#BLastName').val(),
+            SecondLastName: $('#BSecondLastName').val(),
+            BirthDate: app.ui.GetDateValue('#BBirthDate'),
+            Gender: $('input:radio[name=BGender]:checked').val(),
+            CivilStatus: $('#BCivilStatus').val(),
+            PhoneType: $("#BPhoneType").data("value"),
+            PhoneNumber: $('#BPhoneNumber').val(),
+            PrimaryEmailAddress: $('#BPrimaryEmailAddress').val(),
+            Province: $('#BProvince').val(),
+            Canton: $('#BCanton').val(),
+            District: $('#BDistrict').val(),
+            AddressDetail: $('#BAddressDetail').val(),
+            Relationship: $('#BRelationship').val(),
+            RelationshipDesc: $('#BRelationship option:selected').text(),
+            ParticipationRate: app.ui.GetNumericValue('#BParticipationRate'),
+            InclusionDate: null,
+            ExclusionDate: null
+        };
+    };
+
+    var _objectToInput = function (data) {
+        if (data !== null && data.length > 0) {
+            beneficiaryRows = data;
+            $('#beneficiarios').removeClass('d-none');
+            $('#beneficiariosEdt').addClass('d-none');
+            TableRefresh(data);
+        }
     };
 
     return {
@@ -384,7 +409,6 @@ app.beneficiarios = (function () {
             Init_Controls();
             Init_Lookups();
             Event_Controls();
-            Dynamic_Event_Controls();
             Setup_Validations();
             CleanInput();
         },

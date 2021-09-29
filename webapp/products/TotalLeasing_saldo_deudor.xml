@@ -1,61 +1,61 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ProductMaster xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" description="Seguro colectivo saldo deudor" title="Seguro colectivo de vida" subtitle="Saldo deudor">
-  <CurrenciesAllowed>
-    <CurrencyAllowed currencycode="1" description="Dolares" />
-  </CurrenciesAllowed>
-  <Modules>
-    <Module modulecode="1" description="Hasta 64 años">
-      <Coverages>
-        <Coverage coveragecode="1" description="Cobertura A - Muerte por cualquier causa" insuredamountcalculationtype="10" fixedrate="3" premiumcalculationtype="3" billingcode="1" maximuminsuredamount="250000" maximumage="64" minimumage="18" />
-        <Coverage coveragecode="2" description="Cobertura B - Incapacidad total y permanente" insuredamountcalculationtype="10" coveragecodecontainspremium="1" billingcode="1" />
-        <Coverage coveragecode="3" description="Cobertura E - Servicios complementarios" insuredamountcalculationtype="10" coveragecodecontainspremium="1" billingcode="1" />
-      </Coverages>
-    </Module>
-    <Module modulecode="2" description="De 65 años hasta 69 años">
-      <Coverages>
-        <Coverage coveragecode="1" description="Cobertura A - Muerte por cualquier causa" insuredamountcalculationtype="10" fixedrate="4.5" premiumcalculationtype="3" billingcode="1" maximuminsuredamount="250000" maximumage="69" minimumage="65" />
-        <Coverage coveragecode="2" description="Cobertura B - Incapacidad total y permanente" insuredamountcalculationtype="10" coveragecodecontainspremium="1" billingcode="1" />
-        <Coverage coveragecode="3" description="Cobertura E - Servicios complementarios" insuredamountcalculationtype="10" coveragecodecontainspremium="1" billingcode="1" />
-      </Coverages>
-    </Module>
-    <Module modulecode="3" description="Mayores de 70 años">
-      <Coverages>
-        <Coverage coveragecode="1" description="Cobertura A - Muerte por cualquier causa" insuredamountcalculationtype="10" fixedrate="6" premiumcalculationtype="3" billingcode="1" maximuminsuredamount="250000" maximumage="99" minimumage="70" />
-        <Coverage coveragecode="2" description="Cobertura B - Incapacidad total y permanente" insuredamountcalculationtype="10" coveragecodecontainspremium="1" billingcode="1" />
-        <Coverage coveragecode="3" description="Cobertura E - Servicios complementarios" insuredamountcalculationtype="10" coveragecodecontainspremium="1" billingcode="1" />
-      </Coverages>
-    </Module>
-  </Modules>
-  <PaymentFrequenciesAllowed>
-    <PaymentFrequencyAllowed paymentfrequencycode="1" description="Mensual" />
-  </PaymentFrequenciesAllowed>
-  <BillingConcepts>
-    <BillingConcept billingcode="1" description="Prima" />
-    <BillingConcept billingcode="2" description="Impuestos">
-      <Details>
-        <BillingDetail code="1" description="IVA" type="3" percentage="2">
-          <Conditions>
-            <BillingDetailCondition applieson="1" applyoncode="1" />
-          </Conditions>
-        </BillingDetail>
-      </Details>
-    </BillingConcept>
-  </BillingConcepts>
-  <DataEntrySectionsAllowed>
-    <DataEntrySection code="Insured" description="Asegurado" required="true" />
-    <DataEntrySection code="Questionnaires" description="Cuestionario" />
-    <DataEntrySection code="Beneficiaries" description="Beneficiarios" />
-    <DataEntrySection code="Policy" description="Póliza" required="true" />
-    <DataEntrySection code="Overdraft" description="Prestamos" required="true" />
-    <DataEntrySection code="Attachments" description="Adjuntos" />
-  </DataEntrySectionsAllowed>
-  <Underwriting>
-    <Rule description="La edad del asegurado es mayor a 64 años" condition="data.PrimaryInsured.BirthDate.Age() > 64" />
-    <Rule description="La suma asegurada es mayor a 150.000 colones" condition="data.InsuredAmount > 150000" />
-  </Underwriting>
-  <Settings>
-    <Setting name="Parent.Policy.Effective"  description="Fecha de efecto de la póliza matriz" value="2020-09-01T00:00:00"/>
-    <Setting name="Parent.Policy.Owner.Name" description="Nombre del tomador de la póliza matriz" value="TOTAL LEASING FINCO S.A."/>
-    <Setting name="Parent.Policy.Owner.Id"   description="Identificador del tomador de la póliza matriz" value="X-X01-X67292"/>
-  </Settings>
+	<CurrenciesAllowed>
+		<CurrencyAllowed currencycode="1" description="Dolares" />
+	</CurrenciesAllowed>
+	<Modules>
+		<Module modulecode="1" description="Hasta 64 años">
+			<Coverages>
+				<Coverage coveragecode="1" description="Cobertura A - Muerte por cualquier causa" insuredamountcalculationtype="10" fixedrate="3" premiumcalculationtype="3" billingcode="1" maximuminsuredamount="250000" maximumage="64" minimumage="18" />
+				<Coverage coveragecode="2" description="Cobertura B - Incapacidad total y permanente" insuredamountcalculationtype="10" coveragecodecontainspremium="1" billingcode="1" />
+				<Coverage coveragecode="3" description="Cobertura E - Servicios complementarios" insuredamountcalculationtype="10" coveragecodecontainspremium="1" billingcode="1" />
+			</Coverages>
+		</Module>
+		<Module modulecode="2" description="De 65 años hasta 69 años">
+			<Coverages>
+				<Coverage coveragecode="1" description="Cobertura A - Muerte por cualquier causa" insuredamountcalculationtype="10" fixedrate="4.5" premiumcalculationtype="3" billingcode="1" maximuminsuredamount="250000" maximumage="69" minimumage="65" />
+				<Coverage coveragecode="2" description="Cobertura B - Incapacidad total y permanente" insuredamountcalculationtype="10" coveragecodecontainspremium="1" billingcode="1" />
+				<Coverage coveragecode="3" description="Cobertura E - Servicios complementarios" insuredamountcalculationtype="10" coveragecodecontainspremium="1" billingcode="1" />
+			</Coverages>
+		</Module>
+		<Module modulecode="3" description="Mayores de 70 años">
+			<Coverages>
+				<Coverage coveragecode="1" description="Cobertura A - Muerte por cualquier causa" insuredamountcalculationtype="10" fixedrate="6" premiumcalculationtype="3" billingcode="1" maximuminsuredamount="250000" maximumage="99" minimumage="70" />
+				<Coverage coveragecode="2" description="Cobertura B - Incapacidad total y permanente" insuredamountcalculationtype="10" coveragecodecontainspremium="1" billingcode="1" />
+				<Coverage coveragecode="3" description="Cobertura E - Servicios complementarios" insuredamountcalculationtype="10" coveragecodecontainspremium="1" billingcode="1" />
+			</Coverages>
+		</Module>
+	</Modules>
+	<PaymentFrequenciesAllowed>
+		<PaymentFrequencyAllowed paymentfrequencycode="1" description="Mensual" />
+	</PaymentFrequenciesAllowed>
+	<BillingConcepts>
+		<BillingConcept billingcode="1" description="Prima" />
+		<BillingConcept billingcode="2" description="Impuestos">
+			<Details>
+				<BillingDetail code="1" description="IVA" type="3" percentage="2">
+					<Conditions>
+						<BillingDetailCondition applieson="1" applyoncode="1" />
+					</Conditions>
+				</BillingDetail>
+			</Details>
+		</BillingConcept>
+	</BillingConcepts>
+	<DataEntrySectionsAllowed>
+		<DataEntrySection code="Insured" description="Asegurado" required="true" />
+		<DataEntrySection code="Questionnaires" description="Cuestionario" />
+		<DataEntrySection code="Beneficiaries" description="Beneficiarios" />
+		<DataEntrySection code="Policy" description="Póliza" required="true" />
+		<DataEntrySection code="Overdraft" description="Prestamos" required="true" />
+		<DataEntrySection code="Attachments" description="Adjuntos" />
+	</DataEntrySectionsAllowed>
+	<Underwriting>
+		<Rule description="La edad del asegurado es mayor a 64 años" condition="data.PrimaryInsured.BirthDate.Age() > 64" />
+		<Rule description="La suma asegurada es mayor a 150.000 colones" condition="data.InsuredAmount > 150000" />
+	</Underwriting>
+	<Settings>
+		<Setting name="Parent.Policy.Effective" description="Fecha de efecto de la póliza matriz" value="2021-04-15T00:00:00"/>
+		<Setting name="Parent.Policy.Owner.Name" description="Nombre del tomador de la póliza matriz" value="TOTAL LEASING FINCO S.R.L"/>
+		<Setting name="Parent.Policy.Owner.Id"   description="Identificador del tomador de la póliza matriz" value="3-102-790532"/>
+	</Settings>
 </ProductMaster>
