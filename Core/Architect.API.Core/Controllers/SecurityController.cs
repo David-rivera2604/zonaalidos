@@ -1,0 +1,302 @@
+﻿using Architect.Utilities.Extensions;
+using Microsoft.Web.Http;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Web.Http;
+using System.Web.Http.Description;
+
+namespace Architect.API.Core.Controllers
+{
+    /// <summary>
+    /// Acciones relacionas con la seguridad de la aplicación.
+    /// </summary>
+    [ApiVersion("1.0")]
+    [Authorize]
+    [RoutePrefix("api/v{version:apiVersion}/Security")]
+    public class SecurityController : ApiController
+    {
+        /// <summary>
+        /// Permite autenticar un usuario por medio de sus credenciales.
+        /// </summary>
+        /// <param name="authenticationRequest">Credenciales de uso.</param>
+        /// <returns>Contexto de autenticación incluyendo el token que identifica la sesión del usuario.</returns>
+        /// <response code="200">OK. Contexto de autenticación incluyendo el token que identifica la sesión del usuario.</response>
+        /// <response code="400">BadRequest. Debe indicar los datos de forma correcta.</response>
+        /// <response code="401">Unauthorized. Acceso no permitido.</response>
+        [HttpPost]
+        [Route("Authentication")]
+        [AllowAnonymous]
+        [ResponseType(typeof(Contracts.Security.AuthenticationResponse))]
+        public async Task<IHttpActionResult> Authentication([FromBody] Contracts.Security.AuthenticationRequest authenticationRequest)
+        {
+            IHttpActionResult result = null;
+
+            if (authenticationRequest.IsEmpty())
+            {
+                result = BadRequest("Debe indicar los datos");
+            }
+            else
+            {
+                Contracts.Security.AuthenticationResponse responseItem = null;
+                authenticationRequest.IPAddress = Architect.Common.Helpers.Connection.UserHostAddress();
+                authenticationRequest.UserAgent = Request.Headers.UserAgent.ToString();
+
+                await Task.Run(() => responseItem = Business.Security.Accounts.Authentication(authenticationRequest)).ConfigureAwait(false);
+
+                if (responseItem.Reason.IsNotEmpty())
+                {
+                    if (responseItem.Reason.Equals("No autorizado", StringComparison.CurrentCultureIgnoreCase))
+                        result = Unauthorized();
+                    else
+                        result = BadRequest(responseItem.Reason);
+                }
+                else
+                {
+                    result = Ok(responseItem);
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Permite autenticar un usuario por medio de una clave de acceso (integraciones).
+        /// </summary>
+        /// <param name="accessKey">Clave de acceso.</param>
+        /// <returns>Contexto de autenticación incluyendo el token que identifica la sesión del usuario.</returns>
+        [HttpGet]
+        [Route("Access/{accessKey}")]
+        [AllowAnonymous]
+        [ResponseType(typeof(Contracts.Security.AuthenticationResponse))]
+        public async Task<IHttpActionResult> AuthenticationAccessKey([FromUri] string accessKey)
+        {
+            IHttpActionResult result = null;
+
+            if (accessKey.IsEmpty())
+            {
+                result = BadRequest("Debe indicar los datos");
+            }
+            else
+            {
+                string responseItem = null;
+                string ipAddress = Architect.Common.Helpers.Connection.UserHostAddress();
+
+                await Task.Run(() => responseItem = Business.Security.Token.AccessKeyInfo2(accessKey, ipAddress)).ConfigureAwait(false);
+
+                if (responseItem.IsEmpty())
+                {
+                    result = Unauthorized();
+                }
+                else
+                {
+                    result = Ok(responseItem);
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Navegación permitida según los roles asociados al usuario del token
+        /// </summary>
+        /// <returns></returns>
+        /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token acceso.</response>
+        [HttpGet]
+        [Route("NavegationAllowed")]
+        [Authorize]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public IHttpActionResult NavegationAllowed()
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+
+            List<Architect.API.Core.Contracts.Security.NavAllowed> result = Business.Security.Navigation.RetrieveNavigationAllowed(tokenInfo.Roles, tokenInfo.CompanyId);
+
+            if (result.IsEmpty())
+                return NotFound();
+            else
+                return Ok(result);
+        }
+
+        /// <summary>
+        /// Verifica la vigencia de token en uso.
+        /// </summary>
+        /// <param name="force">Forza a que el token sea refrescado.</param>
+        /// <returns>Tiempo para la expiración.</returns>
+        /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token acceso.</response>
+        [HttpGet]
+        [Route("IsLive")]
+        [Authorize]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public IHttpActionResult IsLive(bool force = false)
+        {
+            string token = Core.Business.Security.Token.Value();
+
+            if (force)
+                Business.Security.Session.Refresh(token, Request.Headers.Referrer.AbsoluteUri);
+
+            int result = Business.Security.Navigation.IsLive(token);
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Enviado de un código temporal, el cual le permitirá establecer una clave de acceso.
+        /// </summary>
+        /// <param name="resetRequest">Datos de la solicitud.</param>
+        /// <returns>Confirmación del envio.</returns>
+        [HttpPost]
+        [Route("SendOTP")]
+        [AllowAnonymous]
+        [ResponseType(typeof(Core.Contracts.General.GenericResponse))]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public async Task<IHttpActionResult> SendOTP(Contracts.Security.ResetPasswordRequest resetRequest)
+        {
+            resetRequest.IPAddress = Architect.Common.Helpers.Connection.UserHostAddress();
+            Core.Contracts.General.GenericResponse result = null;
+
+            await Task.Run(() => result = Architect.API.Core.Business.Security.Accounts.SendOTP(resetRequest)).ConfigureAwait(false);
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Verifica que un código temporal sea valido.
+        /// </summary>
+        /// <param name="resetRequest">Datos de la solicitud.</param>
+        /// <returns>Indicador si el codigo es valido o no.</returns>
+        [HttpPost]
+        [Route("IsOTPValid")]
+        [AllowAnonymous]
+        [ResponseType(typeof(Core.Contracts.General.GenericResponse))]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public async Task<IHttpActionResult> IsOTPValid(Contracts.Security.ResetPasswordRequest resetRequest)
+        {
+            resetRequest.IPAddress = Architect.Common.Helpers.Connection.UserHostAddress();
+            Core.Contracts.General.GenericResponse result = null;
+
+            await Task.Run(() => result = Architect.API.Core.Business.Security.Accounts.IsOTPValid(resetRequest)).ConfigureAwait(false);
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Permite restablecer una clave de acceso.
+        /// </summary>
+        /// <param name="resetRequest">Datos de la solicitud.</param>
+        /// <returns>Indicador si la clave de acceso fue cambiada de forma exitosa o no.</returns>
+        [HttpPost]
+        [Route("ResetPassword")]
+        [AllowAnonymous]
+        [ResponseType(typeof(Core.Contracts.General.GenericResponse))]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public async Task<IHttpActionResult> ResetPassword(Contracts.Security.ResetPasswordRequest resetRequest)
+        {
+            resetRequest.IPAddress = Architect.Common.Helpers.Connection.UserHostAddress();
+            Core.Contracts.General.GenericResponse result = null;
+
+            await Task.Run(() => result = Architect.API.Core.Business.Security.Accounts.ResetPassword(resetRequest)).ConfigureAwait(false);
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Permite el cambio de clave de acceso de un usuario conectado.
+        /// </summary>
+        /// <param name="resetRequest">Datos de la solicitud.</param>
+        /// <returns>Confirmación del cambio.</returns>
+        [HttpPut]
+        [Route("ChangePassword")]
+        [Authorize]
+        [ResponseType(typeof(Core.Contracts.General.GenericResponse))]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public async Task<IHttpActionResult> ChangePassword(Contracts.Security.ResetPasswordRequest resetRequest)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            resetRequest.IPAddress = Architect.Common.Helpers.Connection.UserHostAddress();
+            Core.Contracts.General.GenericResponse result = null;
+
+            await Task.Run(() => result = Architect.API.Core.Business.Security.Accounts.ChangePassword(tokenInfo.CompanyId, tokenInfo.UserId, resetRequest)).ConfigureAwait(false);
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Permite el auto registro de un usuarios al sistema.
+        /// </summary>
+        /// <param name="registerRequest">Datos de la solicitud.</param>
+        /// <returns>Confirmación del registro.</returns>
+        [HttpPost]
+        [Route("Register")]
+        [AllowAnonymous]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public async Task<IHttpActionResult> Register([FromBody] Contracts.Security.Register registerRequest)
+        {
+            IHttpActionResult result = null;
+            Core.Contracts.Security.UserMemberResult reponse = null;
+
+            if (registerRequest.IsEmpty())
+            {
+                result = BadRequest("Debe indicar los datos");
+            }
+            else
+            {
+                await Task.Run(() => reponse = Architect.API.Core.Business.Security.Accounts.Register(registerRequest)).ConfigureAwait(false);
+
+                if (reponse.Errors == null || reponse.Errors.Count == 0)
+                {
+                    result = Ok(new { Successful = true, Message = "" });
+                }
+                else
+                {
+                    ModelState.Clear();
+                    foreach (Contracts.General.Error errorItem in reponse.Errors)
+                    {
+                        ModelState.AddModelError(string.Format("{0}.{1}", "Register", errorItem.Key), errorItem.Message);
+                    }
+                    result = BadRequest(ModelState);
+                }
+
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Lista de sesiones de usuarios.
+        /// </summary>
+        /// <returns>Lista de sesiones de usuarios.</returns>
+        [HttpGet]
+        [Route("Sessions")]
+        [AllowAnonymous]
+        [ResponseType(typeof(List<Contracts.Security.Activity>))]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public async Task<IHttpActionResult> Sessions([FromUri] string filter = "")
+        {
+            List<Contracts.Security.Activity> result = null;
+
+            await Task.Run(() => result = Architect.API.Core.Business.Security.Session.Sessions(filter)).ConfigureAwait(false);
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Lista de sesiones de usuarios.
+        /// </summary>
+        /// <returns>Lista de sesiones de usuarios.</returns>
+        [HttpGet]
+        [Route("Sessions/{id}")]
+        [AllowAnonymous]
+        [ResponseType(typeof(Contracts.Security.Activity))]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public async Task<IHttpActionResult> SessionById(int id)
+        {
+            Contracts.Security.Activity result = null;
+
+            await Task.Run(() => result = Architect.API.Core.Business.Security.Session.SessionById(id)).ConfigureAwait(false);
+
+            return Ok(result);
+        }
+
+    }
+}

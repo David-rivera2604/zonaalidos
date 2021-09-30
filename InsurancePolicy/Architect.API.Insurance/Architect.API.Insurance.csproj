@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CA87FDF9-B58D-4DA1-800E-4DDFB37245BB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Architect.API.Insurance</RootNamespace>
+    <AssemblyName>Architect.API.Insurance</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Architect.API.Insurance.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNet.WebApi.Versioning, Version=4.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Versioning.4.1.1\lib\net45\Microsoft.AspNet.WebApi.Versioning.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Cors.5.2.7\lib\net45\System.Web.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Cors.5.2.7\lib\net45\System.Web.Http.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controllers\InsuredController.cs" />
+    <Compile Include="Controllers\InclusionController.cs" />
+    <Compile Include="Controllers\RatingController.cs" />
+    <Compile Include="Controllers\PolicyController.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Architect.API.Core.Business\Architect.API.Core.Business.csproj">
+      <Project>{579105b3-776b-4094-a301-87a9c42962c5}</Project>
+      <Name>Architect.API.Core.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Architect.API.Core.Contracts\Architect.API.Core.Contracts.csproj">
+      <Project>{29b21bef-8c87-4a9d-8b37-fecc57cd03c7}</Project>
+      <Name>Architect.API.Core.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Kernel\Architect.DataFactory\Architect.DataFactory.csproj">
+      <Project>{011157f4-8e96-46fe-8ff6-2b36ae9f20c9}</Project>
+      <Name>Architect.DataFactory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Kernel\Architect.Utilities\Architect.Utilities.csproj">
+      <Project>{e8317ab3-7807-4fcf-8520-b80340b4eb7d}</Project>
+      <Name>Architect.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Architect.API.Insurance.Business\Architect.API.Insurance.Business.csproj">
+      <Project>{09a0943e-ce17-433e-ab5b-9f6e3af78e50}</Project>
+      <Name>Architect.API.Insurance.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Architect.API.Insurance.Contracts\Architect.API.Insurance.Contracts.csproj">
+      <Project>{3da1398d-ccc0-4f4b-a099-72cc3bbd2a9a}</Project>
+      <Name>Architect.API.Insurance.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\InsuranceRating\Architect.Insurance.Contracts\Architect.Insurance.Contracts.csproj">
+      <Project>{92937331-3ec2-45c0-879e-de7186cca4ae}</Project>
+      <Name>Architect.Insurance.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\InsuranceRating\Architect.Insurance.Services\Architect.Insurance.Services.csproj">
+      <Project>{6ef8ca1d-1853-4875-b953-8264f985c110}</Project>
+      <Name>Architect.Insurance.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Architect.Extend.Integrations\Architect.Extend.Integrations.csproj">
+      <Project>{4a384364-b935-4fe8-a0d0-35b4033c6a91}</Project>
+      <Name>Architect.Extend.Integrations</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

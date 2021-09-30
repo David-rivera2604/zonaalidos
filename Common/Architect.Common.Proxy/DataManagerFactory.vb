@@ -1742,7 +1742,7 @@ Public NotInheritable Class DataManagerFactory
             For i = 0 To data.Length - 1
                 sBuilder.Append(data(i).ToString("x2"))
             Next i
-            Return sBuilder.ToString()
+            Return "Common." & sBuilder.ToString()
         End Using
     End Function
 
@@ -2064,7 +2064,7 @@ Public NotInheritable Class DataManagerFactory
             local = True
         End If
         If local Then
-            Return Common.Helpers.ConnectionStrings.ConnectionStringGetAll(CodeValidator, CompanyId)
+            Return Nothing ' Common.Helpers.ConnectionStrings.ConnectionStringGetAll(CodeValidator, CompanyId)
             'Else
             '    Using dataService As DataManager.DataManagerClient = DataServiceInstance()
             '        Dim companyId As Integer = CompanyIdSelect()
@@ -2092,7 +2092,7 @@ Public NotInheritable Class DataManagerFactory
             local = True
         End If
         If local Then
-            Return Common.Helpers.ConnectionStrings.ConnectionStringGet(ConnectionStrinName, companyId)
+            Return Nothing 'Common.Helpers.ConnectionStrings.ConnectionStringGet(ConnectionStrinName, companyId)
             'Else
             '    Using dataService As DataManager.DataManagerClient = DataServiceInstance()
             '        Return dataService.ConnectionStringGet(ConnectionStrinName, companyId)
@@ -2117,7 +2117,7 @@ Public NotInheritable Class DataManagerFactory
             local = True
         End If
         If local Then
-            Return Common.Helpers.ConnectionStrings.ConnectionStringUserAndPassword(ConecctionStringName, CompanyId)
+            Return Nothing 'Common.Helpers.ConnectionStrings.ConnectionStringUserAndPassword(ConecctionStringName, CompanyId)
             'Else
             '    Using dataService As DataManager.DataManagerClient = DataServiceInstance()
             '        Dim companyId As Integer = CompanyIdSelect()

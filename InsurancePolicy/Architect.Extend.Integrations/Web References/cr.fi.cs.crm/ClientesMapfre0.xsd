@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns="http://www.coopeservidores.fi.cr/soa/ServiciosMAPFRE/ConsultarCliente_sn" xmlns:mbus="http://www.coopeservidores.fi.cr/soa/mbus" elementFormDefault="qualified" targetNamespace="http://www.coopeservidores.fi.cr/soa/ServiciosMAPFRE/ConsultarCliente_sn" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:complexType name="entradaServicio">
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="PE_IDENTIFICACION" nillable="true" type="xsd:string" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="salidaServicio">
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="PS_CODIGO_TIPO_IDENTIFICACION" nillable="true" type="xsd:decimal" />
+      <xsd:element minOccurs="0" name="PS_NUMERO_IDENTIFICACION" nillable="true" type="xsd:string" />
+      <xsd:element minOccurs="0" name="PS_NOMBRES" nillable="true" type="xsd:string" />
+      <xsd:element minOccurs="0" name="PS_PRIMER_APELLIDO" nillable="true" type="xsd:string" />
+      <xsd:element minOccurs="0" name="PS_SEGUNDO_APELLIDO" nillable="true" type="xsd:string" />
+      <xsd:element minOccurs="0" name="PS_FECHA_NACIMIENTO" nillable="true" type="xsd:string" />
+      <xsd:element minOccurs="0" name="PS_SEXO" nillable="true" type="xsd:string" />
+      <xsd:element minOccurs="0" name="PS_ESTADO_CIVIL" nillable="true" type="xsd:string" />
+      <xsd:element minOccurs="0" name="PS_PROVINCIA" nillable="true" type="xsd:string" />
+      <xsd:element minOccurs="0" name="PS_CANTON" nillable="true" type="xsd:string" />
+      <xsd:element minOccurs="0" name="PS_DISTRITO" nillable="true" type="xsd:string" />
+      <xsd:element minOccurs="0" name="PS_DIRECCION" nillable="true" type="xsd:string" />
+      <xsd:element minOccurs="0" name="PS_TIPO_TELEFONO" nillable="true" type="xsd:string" />
+      <xsd:element minOccurs="0" name="PS_TELEFONO" nillable="true" type="xsd:string" />
+      <xsd:element minOccurs="0" name="PS_EMAIL" nillable="true" type="xsd:string" />
+      <xsd:element minOccurs="0" name="PS_CODIGO_MENSAJE" nillable="true" type="xsd:decimal" />
+      <xsd:element minOccurs="0" name="PS_DESCRIPCION_MENSAJE" nillable="true" type="xsd:string" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="entradaServicio" nillable="true" type="entradaServicio" />
+  <xsd:element name="salidaServicio" nillable="true" type="salidaServicio" />
+</xsd:schema>

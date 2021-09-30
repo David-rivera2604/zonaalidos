@@ -1,0 +1,58 @@
+﻿using Microsoft.Web.Http;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web.Http;
+
+namespace Architect.API.Tron.Controllers
+{
+    /// <summary>
+    /// Permite ejecutar las acciones vinculadas a las pólizas de tron.
+    /// </summary>
+    [ApiVersion("1.0")]
+    [Authorize]
+    [RoutePrefix("api/v{version:apiVersion}/Poliza")]
+    public class PolizaController : ApiController
+    {
+
+        /// <summary>
+        /// Recupera los datos variables de una póliza
+        /// </summary>
+        [HttpGet]
+        [Route("{num_poliza}/DatosVariables")]
+        public async Task<IHttpActionResult> DatosVariables([FromUri] string num_poliza)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            List<Contracts.Poliza.DatoVariacion> result = null;
+            await Task.Run(() =>
+            {
+                result = Business.Backoffice.Poliza.DatosVariables(num_poliza);
+            }).ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Aplica variaciones a una póliza
+        /// </summary>
+        [HttpPut]
+        [Route("{num_poliza}/Variaciones")]
+        public async Task<IHttpActionResult> Variaciones([FromUri] string num_poliza, [FromBody] Contracts.Poliza.Variacion variacion)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            bool result = false;
+            await Task.Run(() =>
+            {
+                result = Business.Backoffice.Poliza.Variaciones(num_poliza, variacion);
+            }).ConfigureAwait(false);
+
+            return Ok(new
+            {
+                Success = result,
+                Reason = result ? "Las variaciones fueron procesadas de forma correcta" : "Ha ocurrido un error tratando de procesar las variaciones"
+            });
+        }
+
+    }
+}

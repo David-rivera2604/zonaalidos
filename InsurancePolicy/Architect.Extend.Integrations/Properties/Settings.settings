@@ -1,0 +1,9 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Architect.Extend.Integrations.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Architect_Extend_Integrations_cr_fi_cs_crm_ServiciosMAPFREDigitalBindingQSService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://crm.cs.fi.cr:443/PROXY/ServiciosMAPFRE/ProxyServices/ClientesMapfre</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

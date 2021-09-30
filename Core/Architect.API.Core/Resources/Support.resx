@@ -1,0 +1,504 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FileManager" xml:space="preserve">
+    <value>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;title&gt;Architect - Support&lt;/title&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"&gt;
+    &lt;link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"&gt;
+    &lt;style type="text/css"&gt;
+
+        body {
+            margin-top: 20px;
+            background: #eee;
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+            font-size: 14px;
+        }
+
+        .file-box {
+            float: left;
+            width: 220px;
+        }
+
+        .file-manager h5 {
+            text-transform: uppercase;
+             font-size: 14px;
+        }
+
+        .file-manager {
+            list-style: none outside none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .folder-list li a {
+            color: #666666;
+            display: block;
+            padding: 5px 0;
+        }
+
+        .folder-list li {
+            border-bottom: 1px solid #e7eaec;
+            display: block;
+        }
+
+            .folder-list li i {
+                margin-right: 8px;
+                color: #3d4d5d;
+            }
+
+        .category-list li a {
+            color: #666666;
+            display: block;
+            padding: 5px 0;
+        }
+
+        .category-list li {
+            display: block;
+        }
+
+            .category-list li i {
+                margin-right: 8px;
+                color: #3d4d5d;
+            }
+
+            .category-list li a .text-navy {
+                color: #1ab394;
+            }
+
+            .category-list li a .text-primary {
+                color: #1c84c6;
+            }
+
+            .category-list li a .text-info {
+                color: #23c6c8;
+            }
+
+            .category-list li a .text-danger {
+                color: #EF5352;
+            }
+
+            .category-list li a .text-warning {
+                color: #F8AC59;
+            }
+
+        .file-manager h5.tag-title {
+            margin-top: 20px;
+        }
+
+        .tag-list li {
+            float: left;
+        }
+
+            .tag-list li a {
+                font-size: 10px;
+                background-color: #f3f3f4;
+                padding: 5px 12px;
+                color: inherit;
+                border-radius: 2px;
+                border: 1px solid #e7eaec;
+                margin-right: 5px;
+                margin-top: 5px;
+                display: block;
+            }
+
+        .file {
+            border: 1px solid #e7eaec;
+            padding: 0;
+            background-color: #ffffff;
+            position: relative;
+            margin-bottom: 20px;
+            margin-right: 20px;
+        }
+
+        .file-manager .hr-line-dashed {
+            margin: 15px 0;
+        }
+
+        .file .icon,
+        .file .image {
+            height: 100px;
+            overflow: hidden;
+        }
+
+        .file .icon {
+            padding: 15px 10px;
+            text-align: center;
+        }
+
+        .file-control {
+            color: inherit;
+            font-size: 11px;
+            margin-right: 10px;
+        }
+
+            .file-control.active {
+                text-decoration: underline;
+            }
+
+        .file .icon i {
+            font-size: 70px;
+            color: #dadada;
+        }
+
+        .file .file-name {
+            padding: 10px;
+            background-color: #f8f8f8;
+            border-top: 1px solid #e7eaec;
+        }
+
+        .file-name small {
+            color: #676a6c;
+        }
+
+        ul.tag-list li {
+            list-style: none;
+        }
+
+        .corner {
+            position: absolute;
+            display: inline-block;
+            width: 0;
+            height: 0;
+            line-height: 0;
+            border: 0.6em solid transparent;
+            border-right: 0.6em solid #f1f1f1;
+            border-bottom: 0.6em solid #f1f1f1;
+            right: 0em;
+            bottom: 0em;
+        }
+
+        a.compose-mail {
+            padding: 8px 10px;
+        }
+
+        .mail-search {
+            max-width: 300px;
+        }
+
+        .ibox {
+            clear: both;
+            margin-bottom: 25px;
+            margin-top: 0;
+            padding: 0;
+        }
+
+            .ibox.collapsed .ibox-content {
+                display: none;
+            }
+
+            .ibox.collapsed .fa.fa-chevron-up:before {
+                content: "\f078";
+            }
+
+            .ibox.collapsed .fa.fa-chevron-down:before {
+                content: "\f077";
+            }
+
+            .ibox:after,
+            .ibox:before {
+                display: table;
+            }
+
+        .ibox-title {
+            -moz-border-bottom-colors: none;
+            -moz-border-left-colors: none;
+            -moz-border-right-colors: none;
+            -moz-border-top-colors: none;
+            background-color: #ffffff;
+            border-color: #e7eaec;
+            border-image: none;
+            border-style: solid solid none;
+            border-width: 3px 0 0;
+            color: inherit;
+            margin-bottom: 0;
+            padding: 14px 15px 7px;
+            min-height: 48px;
+        }
+
+        .ibox-content {
+            background-color: #ffffff;
+            color: inherit;
+            padding: 15px 20px 20px 20px;
+            border-color: #e7eaec;
+            border-image: none;
+            border-style: solid solid none;
+            border-width: 1px 0;
+        }
+
+        .ibox-footer {
+            color: inherit;
+            border-top: 1px solid #e7eaec;
+            font-size: 90%;
+            background: #ffffff;
+            padding: 10px 15px;
+        }
+
+        a:hover {
+            text-decoration: none;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"&gt;
+    &lt;div class="container"&gt;
+        &lt;div class="row"&gt;
+            &lt;div class="col-md-3"&gt;
+                &lt;div class="ibox float-e-margins"&gt;
+                    &lt;div class="ibox-content"&gt;
+                        &lt;div class="file-manager"&gt;
+                            &lt;h5&gt;Show:&lt;/h5&gt;
+                            &lt;a href="#" class="file-control active"&gt;All&lt;/a&gt;
+                            &lt;a href="#" class="file-control"&gt;Documents&lt;/a&gt;
+                            &lt;a href="#" class="file-control"&gt;Audio&lt;/a&gt;
+                            &lt;a href="#" class="file-control"&gt;Images&lt;/a&gt;
+                            &lt;div class="hr-line-dashed"&gt;&lt;/div&gt;
+                            &lt;button class="btn btn-primary btn-block"&gt;Upload Files&lt;/button&gt;
+                            &lt;div class="hr-line-dashed"&gt;&lt;/div&gt;
+                            &lt;h5&gt;Folders&lt;/h5&gt;
+                            &lt;ul class="folder-list" style="padding: 0" id="folder-list"&gt;
+                                &lt;!--&lt;li&gt;
+                                    &lt;a href=""&gt;&lt;i class="fa fa-folder"&gt;&lt;/i&gt; Files&lt;/a&gt;
+                                    &lt;ul&gt;
+                                        &lt;li&gt;&lt;a href=""&gt;&lt;i class="fa fa-folder"&gt;&lt;/i&gt; Files&lt;/a&gt;&lt;/li&gt;
+                                        &lt;li&gt;&lt;a href=""&gt;&lt;i class="fa fa-folder"&gt;&lt;/i&gt; Pictures&lt;/a&gt;&lt;/li&gt;
+                                    &lt;/ul&gt;
+                                &lt;/li&gt;
+                                &lt;li&gt;&lt;a href=""&gt;&lt;i class="fa fa-folder"&gt;&lt;/i&gt; Pictures&lt;/a&gt;&lt;/li&gt;--&gt;
+                            &lt;/ul&gt;
+                            &lt;h5 class="tag-title"&gt;Tags&lt;/h5&gt;
+                            &lt;ul class="tag-list" style="padding: 0"&gt;
+                                &lt;li&gt;&lt;a href=""&gt;Family&lt;/a&gt;&lt;/li&gt;
+                                &lt;li&gt;&lt;a href=""&gt;Work&lt;/a&gt;&lt;/li&gt;
+                                &lt;li&gt;&lt;a href=""&gt;Home&lt;/a&gt;&lt;/li&gt;
+                                &lt;li&gt;&lt;a href=""&gt;Children&lt;/a&gt;&lt;/li&gt;
+                                &lt;li&gt;&lt;a href=""&gt;Holidays&lt;/a&gt;&lt;/li&gt;
+                                &lt;li&gt;&lt;a href=""&gt;Music&lt;/a&gt;&lt;/li&gt;
+                                &lt;li&gt;&lt;a href=""&gt;Photography&lt;/a&gt;&lt;/li&gt;
+                                &lt;li&gt;&lt;a href=""&gt;Film&lt;/a&gt;&lt;/li&gt;
+                            &lt;/ul&gt;
+                            &lt;div class="clearfix"&gt;&lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="col-md-9 animated fadeInRight"&gt;
+                &lt;div class="row"&gt;
+                    &lt;div class="col-lg-12" id="file-list"&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"&gt;&lt;/script&gt;
+    &lt;script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"&gt;&lt;/script&gt;
+    &lt;script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"&gt;&lt;/script&gt;
+    &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js" crossorigin="anonymous"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript"&gt;
+        $(document).ready(function () {
+
+            $.ajax({
+                url: '%PATH%/content',
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+            }).done(function (data) {
+                console.log(data);
+                var folderList = $('#folder-list');
+                var fileList = $('#file-list');
+                var icon = 'file';
+				var path = data.path;
+                var filename = '';
+                $.each(data.content, function (index, item) {
+                    if (item.Folder == true)
+                        folderList.append('&lt;li id="' + item.Name + '"&gt;&lt;a href="#" class="folder"&gt;&lt;i class="fa fa-folder"&gt;&lt;/i&gt; ' + item.Name + '&lt;/a&gt;&lt;/li&gt;');
+                    else {
+                        if (item.Name.toLowerCase().endsWith('.ico'))
+                            icon = 'file-image-o';
+                        else if (item.Name.toLowerCase().endsWith('.config'))
+                            icon = 'cog';
+                        else
+                            icon = 'file';
+						filename = btoa(path + '\\' + item.Name);
+                        fileList.append('&lt;div class="file-box"&gt;&lt;div class="file"&gt;' +
+                            '&lt;a href="%PATH%/Download?id=' + filename + '"&gt;&lt;span class="corner"&gt;&lt;/span&gt;' +
+                            '&lt;div class="icon"&gt;&lt;i class="fa fa-' + icon + '"&gt;&lt;/i&gt;&lt;/div&gt;' +
+                            '&lt;div class="file-name"&gt;' + item.Name + '&lt;br&gt;' +
+                            '&lt;small title="' + moment(item.LastWrite).format('DD/MM/YYYY hh:mma') +'" &gt;Added: ' + moment(item.LastWrite).from() + '&lt;/small&gt;' +
+                            '&lt;/div&gt;&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;');
+                    }
+                });
+            });
+
+            $('#folder-list').on('click', "a.folder", function (event) {
+                event.preventDefault();
+                var parentId = event.target.parentElement.id;
+                var parent = $('#' + parentId);
+                var folderList = $('#' + parentId + ' ul');
+                if ($('#' + parentId + ' ul').length == 0) {
+                    parent.append('&lt;ul&gt;&lt;/ul&gt;');
+                    folderList = $('#' + parentId + ' ul');
+                }
+                else
+                    folderList = null;
+                $.ajax({
+                    url: '%PATH%/content?path=' + parentId.replace("-", "/"),
+                    type: 'GET',
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                }).done(function (data) {
+                    var fileList = $('#file-list');
+                    fileList.empty();
+                    var icon = 'file';
+					var icon = 'file';
+					var path = data.path;					
+                    $.each(data.content, function (index, item) {
+                        if (item.Folder == true) {
+                            if (folderList != null)
+                                folderList.append('&lt;li id="' + parentId + '-' + item.Name + '"&gt;&lt;a href="#" class="folder"&gt;&lt;i class="fa fa-folder"&gt;&lt;/i&gt; ' + item.Name + '&lt;/a&gt;&lt;/li&gt;');
+                        }
+                        else {
+                            if (item.Name.toLowerCase().endsWith('.ico'))
+                                icon = 'file-image-o';
+                            else if (item.Name.toLowerCase().endsWith('.config'))
+                                icon = 'cog';
+                            else
+                                icon = 'file';
+							filename = btoa(path + '\\' + item.Name);
+                            fileList.append('&lt;div class="file-box"&gt;&lt;div class="file"&gt;' +
+                                '&lt;a href="/aliados/api/v1/Support/Download?id=' + filename + '"&gt;&lt;span class="corner"&gt;&lt;/span&gt;' +
+                                '&lt;div class="icon"&gt;&lt;i class="fa fa-' + icon + '"&gt;&lt;/i&gt;&lt;/div&gt;' +
+                                '&lt;div class="file-name"&gt;' + item.Name + '&lt;br&gt;' +
+                                '&lt;small title="' + moment(item.LastWrite).format('DD/MM/YYYY hh:mma') +'" &gt;Added: ' + moment(item.LastWrite).from() + '&lt;/small&gt;' +
+                                '&lt;/div&gt;&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;');
+                        }
+                    });
+                });
+            });
+        });
+
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</value>
+  </data>
+</root>

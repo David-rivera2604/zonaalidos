@@ -635,15 +635,15 @@ Namespace Services
 #Region "Tools"
 
         Function ConnectionStringGet(ConnectionStrinName As String, companyId As Integer) As ConnectionString Implements IDataManager.ConnectionStringGet
-            Return ConnectionStrings.ConnectionStringGet(ConnectionStrinName, companyId)
+            Return Nothing 'ConnectionStrings.ConnectionStringGet(ConnectionStrinName, companyId)
         End Function
 
         Function ConnectionStringGetAll(ConnectionStrinName As String, companyId As Integer) As List(Of ConnectionString) Implements IDataManager.ConnectionStringGetAll
-            Return ConnectionStrings.ConnectionStringGetAll(ConnectionStrinName, companyId)
+            Return Nothing 'ConnectionStrings.ConnectionStringGetAll(ConnectionStrinName, companyId)
         End Function
 
         Function ConnectionStringUserAndPassword(ConectionStringName As String, companyId As Integer) As Credential Implements IDataManager.ConnectionStringUserAndPassword
-            Return ConnectionStrings.ConnectionStringUserAndPassword(ConectionStringName, companyId)
+            Return Nothing 'ConnectionStrings.ConnectionStringUserAndPassword(ConectionStringName, companyId)
         End Function
 
 #End Region
@@ -654,31 +654,7 @@ Namespace Services
         ''' <param name="repositoryName">Nombre del ConnectionString</param>
         ''' <returns></returns>
         Public Function GetDataBaseProvider(repositoryName As String) As String Implements IDataManager.GetDataBaseProvider
-            Dim result As String = String.Empty
-            Try
-                Dim companyDefault As Integer = Integer.MinValue
-                If ConfigurationManager.AppSettings("BackOffice.CompanyDefault").IsNotEmpty Then
-                    companyDefault = ConfigurationManager.AppSettings("BackOffice.CompanyDefault")
-                Else
-                    companyDefault = 1
-                End If
-
-                Dim resultConnectionString = ConnectionStrings.ConnectionStringGet(repositoryName, companyDefault)
-                If resultConnectionString.IsNotEmpty Then
-                    If resultConnectionString.ProviderName.ToLower.Contains("ora") Then
-                        result = "ORACLE"
-                    Else
-                        result = resultConnectionString.ProviderName
-                    End If
-                Else
-                    Throw Exceptions.ServiceFaultException.Factory(String.Format("ConnectionString '{0}', It's not found", repositoryName))
-                End If
-            Catch exServices As FaultException
-                Throw exServices
-            Catch ex As Exception
-                Throw Exceptions.ServiceFaultException.Factory(String.Format("An error occurred while looking up the '{0}' connectionstring", repositoryName), ex)
-            End Try
-            Return result
+            Return String.Empty
         End Function
 
         ''' <summary>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:ConsultarCliente_sn="http://www.coopeservidores.fi.cr/soa/ServiciosMAPFRE/ConsultarCliente_sn" xmlns:encRes="http://www.coopeservidores.fi.cr/soa/UtilitariosCS/EncabezadoRespuesta" xmlns:ConsultarCliente_sp="http://www.coopeservidores.fi.cr/soa/ServiciosMAPFRE/ConsultarCliente_sp" xmlns:encSol="http://www.coopeservidores.fi.cr/soa/UtilitariosCS/EncabezadoSolicitud" elementFormDefault="qualified" targetNamespace="http://www.coopeservidores.fi.cr/soa/ServiciosMAPFRE/ConsultarCliente_sp" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:import schemaLocation="https://crm.cs.fi.cr:443/PROXY/ServiciosMAPFRE/ProxyServices/ClientesMapfre?SCHEMA%2FServiciosMAPFRE%2FXSD%2FConsultarCliente_sn" namespace="http://www.coopeservidores.fi.cr/soa/ServiciosMAPFRE/ConsultarCliente_sn" />
+  <xsd:import schemaLocation="https://crm.cs.fi.cr:443/PROXY/ServiciosMAPFRE/ProxyServices/ClientesMapfre?SCHEMA%2FUtilitariosCS%2FXSD%2FEncabezadoSolicitud" namespace="http://www.coopeservidores.fi.cr/soa/UtilitariosCS/EncabezadoSolicitud" />
+  <xsd:import schemaLocation="https://crm.cs.fi.cr:443/PROXY/ServiciosMAPFRE/ProxyServices/ClientesMapfre?SCHEMA%2FUtilitariosCS%2FXSD%2FEncabezadoRespuesta" namespace="http://www.coopeservidores.fi.cr/soa/UtilitariosCS/EncabezadoRespuesta" />
+  <xsd:complexType name="Solicitud">
+    <xsd:sequence>
+      <xsd:element ref="encSol:encabezado" />
+      <xsd:element maxOccurs="1" name="cuerpo">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element ref="ConsultarCliente_sn:entradaServicio" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Respuesta">
+    <xsd:sequence>
+      <xsd:element ref="encRes:encabezado" />
+      <xsd:element maxOccurs="1" name="cuerpo" nillable="true">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element ref="ConsultarCliente_sn:salidaServicio" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="solicitud" type="ConsultarCliente_sp:Solicitud" />
+  <xsd:element name="respuesta" type="ConsultarCliente_sp:Respuesta" />
+</xsd:schema>

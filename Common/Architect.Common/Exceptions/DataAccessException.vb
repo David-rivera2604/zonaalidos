@@ -15,11 +15,11 @@ Namespace Exceptions
         End Sub
         Public Sub New(ByVal message As String)
             MyBase.New(message)
-            Helpers.LogHandler.ErrorLog("DataAccessException", message)
+            'Helpers.LogHandler.ErrorLog("DataAccessException", message)
         End Sub
         Public Sub New(ByVal message As String, ByVal innerException As Exception)
             MyBase.New(message, innerException)
-            Helpers.LogHandler.ErrorLog("DataAccessException", message, innerException)
+            'Helpers.LogHandler.ErrorLog("DataAccessException", message, innerException)
         End Sub
 
 
@@ -27,7 +27,7 @@ Namespace Exceptions
             MyBase.New(message)
             If isSaveLog Then
                 MessageDetail(InnerException, message, command, nameObject, commandKind)
-                Helpers.LogHandler.ErrorLog("DataAccessException", message, InnerException)
+                'Helpers.LogHandler.ErrorLog("DataAccessException", message, InnerException)
             End If
         End Sub
 

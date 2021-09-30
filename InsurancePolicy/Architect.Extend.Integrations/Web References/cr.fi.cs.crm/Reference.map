@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DiscoveryClientResultsFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Results>
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="https://crm.cs.fi.cr/PROXY/ServiciosMAPFRE/ProxyServices/ClientesMapfre?SCHEMA%2FUtilitariosCS%2FXSD%2FEncabezadoRespuesta" filename="ClientesMapfre.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="https://crm.cs.fi.cr/PROXY/ServiciosMAPFRE/ProxyServices/ClientesMapfre?SCHEMA%2FServiciosMAPFRE%2FXSD%2FConsultarCliente_sn" filename="ClientesMapfre0.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="https://crm.cs.fi.cr/PROXY/ServiciosMAPFRE/ProxyServices/ClientesMapfre?SCHEMA%2FServiciosMAPFRE%2FXSD%2FConsultarCliente_sp" filename="ClientesMapfre1.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="https://crm.cs.fi.cr/PROXY/ServiciosMAPFRE/ProxyServices/ClientesMapfre?SCHEMA%2FUtilitariosCS%2FXSD%2FEncabezadoSolicitud" filename="ClientesMapfre2.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="https://crm.cs.fi.cr/PROXY/ServiciosMAPFRE/ProxyServices/ClientesMapfre?WSDL" filename="SN_Proxy.wsdl" />
+  </Results>
+</DiscoveryClientResultsFile>

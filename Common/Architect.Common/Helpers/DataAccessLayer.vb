@@ -1337,16 +1337,16 @@ Namespace Helpers
                                 exist = conectionVecto.Contains(String.Format("Linked.{0}", stringConectionName))
                             End If
                         End If
-                        Dim arrResult As Object() = MultiCompany.GetUserInfo(companyId)
+                        Dim arrResult As Object() '= MultiCompany.GetUserInfo(companyId)
                         If Not IsNothing(arrResult) Then
                             _User = arrResult(1).ToString
                             _PassWord = arrResult(2).ToString
                         End If
-                        If exist Then
-                            If _User <> String.Empty AndAlso _PassWord <> String.Empty Then
-                                _Resul = String.Format("{0};User ID={1};Password={2}", _Resul, BackOffice.CryptSupport.HexDecryptString(_User), BackOffice.CryptSupport.HexDecryptString(_PassWord))
-                            End If
-                        End If
+                        'If exist Then
+                        '    If _User <> String.Empty AndAlso _PassWord <> String.Empty Then
+                        '        _Resul = String.Format("{0};User ID={1};Password={2}", _Resul, BackOffice.CryptSupport.HexDecryptString(_User), BackOffice.CryptSupport.HexDecryptString(_PassWord))
+                        '    End If
+                        'End If
                     End If
                 End If
             End If

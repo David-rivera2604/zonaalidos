@@ -1606,22 +1606,6 @@
       <Project>{ca87fdf9-b58d-4da1-800e-4ddfb37245bb}</Project>
       <Name>Architect.API.Insurance</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InsuranceProduct\Architect.API.Product\Architect.API.Product.csproj">
-      <Project>{2f3c59bb-1dc6-42fc-ab0d-48e87f0e129f}</Project>
-      <Name>Architect.API.Product</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Kernel\Architect.Data.Source\Architect.Data.Source.csproj">
-      <Project>{7427ec41-ee41-4dc5-9bb6-d7fdecdf451b}</Project>
-      <Name>Architect.Data.Source</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Kernel\Architect.Data.Viewer\Architect.Data.Viewer.csproj">
-      <Project>{99043b82-47ec-47da-a240-2dc715afe9b5}</Project>
-      <Name>Architect.Data.Viewer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Kernel\Architect.Entity\Architect.Entity.csproj">
-      <Project>{72428c82-aef8-4d55-955c-2278b15a1afc}</Project>
-      <Name>Architect.Entity</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Kernel\Architect.Utilities\Architect.Utilities.csproj">
       <Project>{e8317ab3-7807-4fcf-8520-b80340b4eb7d}</Project>
       <Name>Architect.Utilities</Name>
