@@ -82,14 +82,23 @@ app.ui = (function () {
                 value = 0;
             return parseInt(value, 10);
         },
-        SetDropDownNumericValue: function (selector, value, autoSelect) {
+        SetDropDownNumericValue: function (selector, value, autoSelect, defaultValue) {
 
 
             $(selector).val(value);
 
-            if (autoSelect && (value === null || value === '')) {
+            if ($(selector).val() === null && (defaultValue != undefined && defaultValue != null)) {
+                $(selector).val(defaultValue);
+            }
+
+            if (autoSelect && (value === null || value === '') && (defaultValue === undefined || defaultValue == null)) {
                 $(selector).val($(selector + ' option:first').val());
                 $(selector).change();
+            } else {
+                if (autoSelect && ($(selector).val() === null)) {
+                    $(selector).val($(selector + ' option:first').val());
+                    $(selector).change();
+                }
             }
 
         },

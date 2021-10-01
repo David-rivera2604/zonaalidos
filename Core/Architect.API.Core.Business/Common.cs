@@ -126,7 +126,7 @@ namespace Architect.API.Core.Business
 
                 values.Add(new Contracts.General.LookupValues()
                 {
-                    Key = keyValue,
+                    Key = keyItem,
                     Lkp = customValues
                 });
 
