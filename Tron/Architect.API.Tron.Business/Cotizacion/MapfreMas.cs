@@ -92,9 +92,9 @@ namespace Architect.API.Tron.Business.Cotizacion
             return result;
         }
 
-        public static List<Contracts.Cotizacion.MapfreMasCoberturas> CoverageByDefault(int cod_mon, int cod_marca, int cod_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int num_contrato, int num_subcontrato, string num_poliza_grupo, Core.Contracts.Security.Token tokenInfo)
+        public static List<Contracts.Comun.Cobertura> CoverageByDefault(int cod_mon, int cod_marca, int cod_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int num_contrato, int num_subcontrato, string num_poliza_grupo, Core.Contracts.Security.Token tokenInfo)
         {
-            List<Contracts.Cotizacion.MapfreMasCoberturas> coberturas = new List<Contracts.Cotizacion.MapfreMasCoberturas>();
+            List<Contracts.Comun.Cobertura> coberturas = new List<Contracts.Comun.Cobertura>();
             string cod_cobExcludeFilter = string.Empty;
             string cod_cobIncludeFilter = string.Empty;
             string selected = string.Empty;
@@ -125,7 +125,7 @@ namespace Architect.API.Tron.Business.Cotizacion
 
                         foreach (Architect.API.Tron.Contracts.Tables.a1002150 item in Architect.API.Tron.DataAccess.PorRamo.Coberturas(cod_cia, COD_RAMO, cod_modalidad, fec_validez, cod_cobExcludeFilter, cod_cobIncludeFilter))
                         {
-                            coberturas.Add(new Contracts.Cotizacion.MapfreMasCoberturas()
+                            coberturas.Add(new Contracts.Comun.Cobertura()
                             {
                                 seleccionado = string.Format(",{0},", cod_cobIncludeFilter).IndexOf(string.Format(",{0},", item.COD_COB)) > -1,
                                 requerida = item.MCA_OBLIGATORIO == "S",
@@ -148,15 +148,34 @@ namespace Architect.API.Tron.Business.Cotizacion
                     case 2: //Si el vehículo es de uso comercial
                         switch (cod_plan_auto)
                         {
-                            case 31:
+                            case 31: // Básico
                                 selected = "3002,3003";
                                 cod_cobExcludeFilter = "3002,3003,3016,3018,3014,3015,3008,3017";
                                 break;
-                            case 32:
+                            case 32: // Amplio
                                 selected = "3002,3003";
                                 cod_cobExcludeFilter = "3015,3008,3016,3018,3017";
                                 break;
-                            default:
+
+                            case 34: // Oro
+                                selected = "3001,3002,3003,3004,3005,3006,3009,3010";
+                                cod_cobExcludeFilter = "1060,3016,3018,3017,3094,1061";
+                                break;
+                            case 35: //Plata
+                                selected = "3001,3004,3005,3010";
+                                cod_cobExcludeFilter = "1060,3016,3018,3017,3094,1061,3002,3003,3007,3014,3015,3008";
+                                //cod_cobExcludeFilter = "3002,3003,3007,3014,3015,3008,1060,3016,3018,3017";
+                                break;
+                            case 36: //Trebol
+                                selected = "3001,3004,3010";
+                                cod_cobExcludeFilter = "1060,3016,3018,3017,3094,1061";
+                                break;
+                            case 37: //Trebol RC
+                                selected = "3001,3004,3010";
+                                cod_cobExcludeFilter = "1060,3016,3018,3017,3094,1061";
+                                break;
+
+                            default: // 33 Plus
                                 selected = "3002,3003";
                                 cod_cobExcludeFilter = "3016,3018,3017";
                                 break;
@@ -165,19 +184,34 @@ namespace Architect.API.Tron.Business.Cotizacion
                     default: //Si el vehículo no es de uso comercial
                         switch (cod_plan_auto)
                         {
-                            case 31:
+                            case 31: // Básico
                                 selected = "";
                                 cod_cobExcludeFilter = "3002,3003,3016,3018,3014,3015,3008,3017";
                                 break;
-                            case 32:
+                            case 32: // Amplio
                                 selected = "";
                                 cod_cobExcludeFilter = "3015,3008,3016,3018,3017";
                                 break;
-                            case 35:
-                                selected = "";
-                                cod_cobExcludeFilter = "3002,3003,3007,3014,3015,3008,1060,3016,3018,3017";
+
+                            case 34: // Oro
+                                selected = "3001,3002,3003,3004,3005,3006,3009,3010";
+                                cod_cobExcludeFilter = "1060,3016,3018,3017,3094,1061";
                                 break;
-                            default:
+                            case 35: //Plata
+                                selected = "3001,3004,3005,3010";
+                                cod_cobExcludeFilter = "1060,3016,3018,3017,3094,1061,3002,3003,3007,3014,3015,3008";
+                                //cod_cobExcludeFilter = "3002,3003,3007,3014,3015,3008,1060,3016,3018,3017";
+                                break;
+                            case 36: //Trebol
+                                selected = "3001,3004,3010";
+                                cod_cobExcludeFilter = "1060,3016,3018,3017,3094,1061";
+                                break;
+                            case 37: //Trebol RC
+                                selected = "3001,3004,3010";
+                                cod_cobExcludeFilter = "1060,3016,3018,3017,3094,1061";
+                                break;
+
+                            default: // 33 Plus
                                 selected = "";
                                 cod_cobExcludeFilter = "3016,3018,3017";
                                 break;
@@ -188,7 +222,7 @@ namespace Architect.API.Tron.Business.Cotizacion
 
                 foreach (Architect.API.Tron.Contracts.Tables.a1002150 item in Architect.API.Tron.DataAccess.PorRamo.Coberturas(cod_cia, COD_RAMO, cod_modalidad, fec_validez, cod_cobExcludeFilter, cod_cobIncludeFilter))
                 {
-                    coberturas.Add(new Contracts.Cotizacion.MapfreMasCoberturas()
+                    coberturas.Add(new Contracts.Comun.Cobertura()
                     {
                         seleccionado = coverageSelection.Any(r => r.cod_cob == item.COD_COB && r.mca_obligatoria == "S"),
                         requerida = item.MCA_OBLIGATORIO == "S",
@@ -386,7 +420,7 @@ namespace Architect.API.Tron.Business.Cotizacion
         private static bool Rule_AtLeastOneCoverageSelected(Contracts.Cotizacion.MapfreMas source)
         {
             bool finded = false;
-            foreach (Contracts.Cotizacion.MapfreMasCoberturas item in source.coberturas)
+            foreach (Contracts.Comun.Cobertura item in source.coberturas)
             {
                 if (item.seleccionado)
                 {

@@ -316,7 +316,7 @@ namespace Architect.API.Core.Business
         /// </summary>
         /// <param name="key">Clave de la lista de valores posibles.</param>
         /// <param name="parentId">Clave que identifica el agrupado de la lista dependiente.</param>
-        /// <param name="companyId">Identificación de lacompañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <returns>Lista de valores disponibles</returns>
         public static List<Architect.API.Core.Contracts.General.Lookup> LkpChildFull(string key, int parentId, int companyId)
         {
@@ -329,7 +329,7 @@ namespace Architect.API.Core.Business
         /// </summary>
         /// <param name="key">Clave de la lista de valores posibles.</param>
         /// <param name="extendStringValue1"></param>
-        /// <param name="companyId">Identificación de lacompañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <returns>Lista de valores disponibles</returns>
         public static List<Architect.API.Core.Contracts.General.Lookup> LkpChildFullByExtendStringValue1(string key, string extendStringValue1, int companyId)
         {

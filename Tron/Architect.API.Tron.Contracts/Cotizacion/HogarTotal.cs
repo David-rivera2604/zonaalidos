@@ -99,7 +99,7 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// </summary>
         [DataMember(), JsonProperty()] public int sAPerdidaderentas { get; set; }
         /// <summary>
-        /// S.A. Resp. civil.
+        /// S.A. Responsabilidad civil
         /// </summary>
         [DataMember(), JsonProperty()] public int sARespcivil { get; set; }
         /// <summary>
@@ -109,11 +109,11 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// <summary>
         /// Coberturas
         /// </summary>
-        [DataMember(), JsonProperty()] public List<coberturas> coberturas { get; set; }
+        [DataMember(), JsonProperty()] public List<Comun.Cobertura> coberturas { get; set; }
         /// <summary>
         /// Plan de pago
         /// </summary>
-        [DataMember(), JsonProperty()] public List<plandepago> plandepago { get; set; }
+        [DataMember(), JsonProperty()] public List<Comun.PlanDePago> plandepago { get; set; }
 
         [DataMember(), JsonProperty()] public int contrato { get; set; }
         [DataMember(), JsonProperty()] public int subcontrato { get; set; }
@@ -131,125 +131,10 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// ¿Las instalaciones eléctricas se encuentran entubadas?
         /// </summary>
         [DataMember(), JsonProperty()] public int INS_ELECT_ENTUB { get; set; }
-
-    }
-
-    public class coberturas
-    {
         /// <summary>
-        /// Seleccionada
+        /// Otras señas.
         /// </summary>
-        [DataMember(), JsonProperty()] public bool seleccionado { get; set; }
-
-        /// <summary>
-        /// Requerida.
-        /// </summary>
-        [DataMember(), JsonProperty()] public bool requerida { get; set; }
-
-        /// <summary>
-        /// Código.
-        /// </summary>
-        [DataMember(), JsonProperty()] public int codigo { get; set; }
-        /// <summary>
-        /// Nombre.
-        /// </summary>
-        [DataMember(), JsonProperty()] public string nombre { get; set; }
-        /// <summary>
-        /// Capital.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double capital { get; set; }
-        /// <summary>
-        /// Prima total.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double primatotal { get; set; }
-        /// <summary>
-        /// Deducible.
-        /// </summary>
-        [DataMember(), JsonProperty()] public string decucible { get; set; }
-        /// <summary>
-        /// Error.
-        /// </summary>
-        [DataMember(), JsonProperty()] public string error { get; set; }
-
-
-    }
-
-    public class plandepagobase
-    {
-        /// <summary>
-        /// Prima neta.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double primaneta { get; set; }
-        /// <summary>
-        /// IVA.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double iVA { get; set; }
-        /// <summary>
-        /// Recargo por fraccionamiento.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double recardoporfraccionamiento { get; set; }
-        /// <summary>
-        /// Importe total.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double importetotal { get; set; }
-
-    }
-
-    public class plandepago : plandepagobase
-    {
-        /// <summary>
-        /// Cuota.
-        /// </summary>
-        [DataMember(), JsonProperty()] public int cuota { get; set; }
-        /// <summary>
-        /// Fecha desde.
-        /// </summary>
-        [DataMember(), JsonProperty()] public DateTime fechadesde { get; set; }
-        /// <summary>
-        /// Fecha hasta.
-        /// </summary>
-        [DataMember(), JsonProperty()] public DateTime fechahasta { get; set; }
-
-    }
-
-    public class plandepagoporfrecuencia
-    {
-        /// <summary>
-        /// Código
-        /// </summary>
-        [DataMember(), JsonProperty()] public int codigo { get; set; }
-        /// <summary>
-        /// Frecuencia
-        /// </summary>
-        [DataMember(), JsonProperty()] public string frecuencia { get; set; }
-        /// <summary>
-        /// Recargo por fraccionamiento.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double recardoporfraccionamiento { get; set; }
-        /// <summary>
-        /// Importe total.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double importetotal { get; set; }
-    }
-
-
-    public class HogarTotalSettings
-    {
-
-        /// <summary>
-        /// Fin de vigencia.
-        /// </summary>
-        [DataMember(), JsonProperty()] public DateTime fec_vcto_poliza { get; set; }
-
-        /// <summary>
-        /// Suma asegurada de Responsabilidad Civil
-        /// </summary>
-        [DataMember(), JsonProperty()] public List<Architect.API.Core.Contracts.General.LookupValue> SumasAseguradasRC { get; set; }
-
-        /// <summary>
-        /// Coberturas
-        /// </summary>
-        [DataMember(), JsonProperty()] public List<coberturas> coberturas { get; set; }
+        [DataMember(), JsonProperty()] public string otrassenas { get; set; }
 
     }
 

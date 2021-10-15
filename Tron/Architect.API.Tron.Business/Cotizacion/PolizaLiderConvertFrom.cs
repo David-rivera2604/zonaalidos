@@ -136,7 +136,7 @@ namespace Architect.API.Tron.Business.Cotizacion
 
                 foreach (Architect.API.Tron.Contracts.Presupuesto.Cobertura item in tronQuoteInfo.Coberturas)
                 {
-                    foreach (Architect.API.Tron.Contracts.Cotizacion.PolizaLiderCoberturas itemQuote in quoteInfo.coberturas)
+                    foreach (Contracts.Comun.Cobertura itemQuote in quoteInfo.coberturas)
                     {
                         if (item.cod_cob == itemQuote.codigo)
                         {
@@ -170,18 +170,18 @@ namespace Architect.API.Tron.Business.Cotizacion
             {
                 double importeAnual = 0;
                 bool setvalues = true;
-                quoteInfo.plandepago = new List<Contracts.Cotizacion.PolizaLiderPlandepago>();
+                quoteInfo.plandepago = new List<Contracts.Comun.PlanDePago>();
                 foreach (Architect.API.Tron.Contracts.Presupuesto.Recibo item in tronQuoteInfo.Recibos)
                 {
                     importeAnual = item.imp_recibo;
-                    quoteInfo.plandepago.Add(new Contracts.Cotizacion.PolizaLiderPlandepago()
+                    quoteInfo.plandepago.Add(new Contracts.Comun.PlanDePago()
                     {
                         cuota = item.num_cuota,
                         fechadesde = item.fec_efec_recibo,
                         fechahasta = item.fec_vcto_recibo,
                         primaneta = item.imp_neta + item.imp_recargo,
                         iVA = item.imp_imptos,
-                        recardoporfraccionamiento = item.imp_interes,
+                        recargoporfraccionamiento = item.imp_interes,
                         importetotal = item.imp_recibo
                     });
                     if (setvalues)
@@ -191,7 +191,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                             cuotas = tronQuoteInfo.Recibos.Count,
                             primaneta = item.imp_neta + item.imp_recargo,
                             iVA = item.imp_imptos,
-                            recardoporfraccionamiento = item.imp_interes,
+                            recargoporfraccionamiento = item.imp_interes,
                             importetotal = item.imp_recibo
                         };
                         setvalues = false;

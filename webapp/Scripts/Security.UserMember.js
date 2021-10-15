@@ -125,6 +125,12 @@ app.SecurityUserMember = (function () {
                     align: 'center',
                     formatter: 'app.ui.DateAndTimeFormatter'
                 }, {
+                    field: 'RoleList',
+                    title: 'Roles',
+                    titleTooltip: 'Lista de roles asignados',
+                    sortable: true,
+                    halign: 'center'
+                }, {
                     field: 'RecordStatusDesc',
                     title: 'Estado',
                     titleTooltip: 'Estado general del registro.',

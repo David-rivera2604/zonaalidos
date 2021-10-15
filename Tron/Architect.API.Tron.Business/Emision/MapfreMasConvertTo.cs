@@ -109,7 +109,7 @@ namespace Architect.API.Tron.Business.Emision
             datosFijos.Terceros = new List<Architect.API.Tron.Contracts.Presupuesto.Tercero>();
             datosFijos.DetalleDeTerceros = new List<Architect.API.Tron.Contracts.Presupuesto.DetalleDeTercero>();
 
-            foreach (Contracts.Emision.MapfreMasterceros item in quoteInfo.terceros)
+            foreach (Contracts.Comun.tercero item in quoteInfo.terceros)
             {
                 if (item.tipodetercero != 0)
                 {
@@ -134,7 +134,7 @@ namespace Architect.API.Tron.Business.Emision
 
             return datosFijos.Terceros;
         }
-        internal static Architect.API.Tron.Contracts.Presupuesto.Tercero TerceroPresupuesto(Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos, Contracts.Emision.MapfreMasterceros item, int tipodetercero)
+        internal static Architect.API.Tron.Contracts.Presupuesto.Tercero TerceroPresupuesto(Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos, Contracts.Comun.tercero item, int tipodetercero)
         {
             Architect.API.Tron.Contracts.Presupuesto.Tercero result = new Architect.API.Tron.Contracts.Presupuesto.Tercero()
             {
@@ -165,7 +165,7 @@ namespace Architect.API.Tron.Business.Emision
                 case 3: //Conductor Habitual.
                     result.mca_principal = "S";
                     break;
-                case 6: //Beneficiario pero esta opcion no esta disponible al dia de hoy.
+                case 6: //Beneficiario pero esta opción no esta disponible al día de hoy.
                     result.tip_relac = item.parentesco.ToString();
                     result.pct_participacion = item.porcentaje;
                     break;
@@ -180,7 +180,7 @@ namespace Architect.API.Tron.Business.Emision
 
             return result;
         }
-        internal static Architect.API.Tron.Contracts.Presupuesto.DetalleDeTercero CambioTerceroPresupuesto(Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos, Contracts.Emision.MapfreMasterceros item)
+        internal static Architect.API.Tron.Contracts.Presupuesto.DetalleDeTercero CambioTerceroPresupuesto(Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos, Contracts.Comun.tercero item)
         {
             Architect.API.Tron.Contracts.Presupuesto.DetalleDeTercero result = new Architect.API.Tron.Contracts.Presupuesto.DetalleDeTercero()
             {

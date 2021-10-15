@@ -44,16 +44,16 @@ namespace Architect.API.Tron.Business.Cotizacion
             return result;
         }
 
-        internal static List<Contracts.Cotizacion.PolizaLiderCoberturas> CoverageByDefault(bool isCoope, int cod_cia, int cod_ramo, DateTime fec_validez)
+        internal static List<Contracts.Comun.Cobertura> CoverageByDefault(bool isCoope, int cod_cia, int cod_ramo, DateTime fec_validez)
         {
             string cod_cobExcludeFilter = "3016,3017";
             string selected = "";
             int cod_modalidad = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_modalidad"]);
 
-            List<Contracts.Cotizacion.PolizaLiderCoberturas> coberturas = new System.Collections.Generic.List<Contracts.Cotizacion.PolizaLiderCoberturas>();
+            List<Contracts.Comun.Cobertura> coberturas = new List<Contracts.Comun.Cobertura>();
             foreach (Architect.API.Tron.Contracts.Tables.a1002150 item in Architect.API.Tron.DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, cod_cobExcludeFilter, string.Empty))
             {
-                coberturas.Add(new Contracts.Cotizacion.PolizaLiderCoberturas()
+                coberturas.Add(new Contracts.Comun.Cobertura()
                 {
                     seleccionado = selected.Contains(item.COD_COB.ToString()) || item.MCA_OBLIGATORIO == "S",
                     requerida = item.MCA_OBLIGATORIO == "S",
@@ -118,7 +118,7 @@ namespace Architect.API.Tron.Business.Cotizacion
         private static bool Rule_AtLeastOneCoverageSelected(Contracts.Cotizacion.PolizaLider source)
         {
             bool finded = false;
-            foreach (Contracts.Cotizacion.PolizaLiderCoberturas item in source.coberturas)
+            foreach (Contracts.Comun.Cobertura item in source.coberturas)
             {
                 if (item.seleccionado)
                 {

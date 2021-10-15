@@ -55,12 +55,13 @@ Namespace Architect.API.Core.DataAccess.Security
         ''' Recupera un registro en la tabla UserMember por medio de su clave primaria.
         ''' </summary>
         ''' <param name="userid">Identificación del usuario.</param>
-        ''' <param name="companyId">Identificación de la compañia propietaria.</param>
+        ''' <param name="companyId">Identificación de la compañía propietaria.</param>
         ''' <returns>Instancia de UserMember</returns>
         Public Shared Function Retrieve(userid As Integer, companyId As Integer) As Architect.API.Core.Contracts.Security.UserMember
             Dim rows As Data.DataTable = Nothing
             Dim result As Architect.API.Core.Contracts.Security.UserMember = Nothing
-            With New DataManagerFactory("SELECT UserMember.UserId, UserMember.CompanyId, UserMember.UserName, UserMember.EMail, UserMember.Password, UserMember.OldPassword, UserMember.IdentificationType, UserMember.Identification, UserMember.FirstName, UserMember.LastName, UserMember.BirthDate, UserMember.FailedPasswordCount, UserMember.SecurityLevel, UserMember.IsLockedOut, UserMember.LockedOutDate, UserMember.PasswordChangedDate, UserMember.OneTimePassword, UserMember.LoginDate, UserMember.ManagerId, UserMember.AccessKey, UserMember.BranchOffice, UserMember.Reference, UserMember.Position, UserMember.PhoneNumber, UserMember.SalesChannel, UserMember.CustomData, UserMember.RecordStatus, UserMember.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, UserMember.UpdateDate " &
+            With New DataManagerFactory("SELECT UserMember.UserId, UserMember.CompanyId, UserMember.UserName, UserMember.EMail, UserMember.Password, UserMember.OldPassword, UserMember.IdentificationType, UserMember.Identification, UserMember.FirstName, UserMember.LastName, UserMember.BirthDate, UserMember.FailedPasswordCount, UserMember.SecurityLevel, UserMember.IsLockedOut, UserMember.LockedOutDate, UserMember.PasswordChangedDate, UserMember.OneTimePassword, UserMember.LoginDate, UserMember.ManagerId, UserMember.AccessKey, UserMember.BranchOffice, UserMember.Reference, UserMember.Position, UserMember.PhoneNumber, UserMember.SalesChannel, UserMember.CustomData, UserMember.RecordStatus, UserMember.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, UserMember.UpdateDate, " &
+                                               "(SELECT LISTAGG(RM.ROLENAME , ', ') WITHIN GROUP (ORDER BY RM.ROLENAME ) FROM USERROLEMEMBER urm LEFT JOIN ROLEMEMBER rm ON rm.RoleId = urm.RoleId WHERE urm.UserId = UserMember.UserId) Roles " &
                                           "FROM UserMember LEFT JOIN UserMember um ON um.UserId = UserMember.UpdateUserCode " &
                                          "WHERE UserMember.UserId=@:UserId AND UserMember.CompanyId=@:CompanyId", "UserMember", "Research")
                 .AddParameter("UserId", DbType.Decimal, 9, False, userid)
@@ -76,14 +77,15 @@ Namespace Architect.API.Core.DataAccess.Security
         ''' <summary>
         ''' Recupera una lista de registros en la tabla UserMember.
         ''' </summary>
-        ''' <param name="companyId">Identificación de la compañia propietaria.</param>
+        ''' <param name="companyId">Identificación de la compañía propietaria.</param>
         ''' <param name="filter">Filtro personalizado.</param>
         ''' <param name="recordStatus"></param>
         ''' <returns>Lista de instancias de UserMember</returns>
         Public Shared Function RetrieveAll(companyId As Integer, securityLevel As Integer, filter As String, recordStatus As String) As List(Of Architect.API.Core.Contracts.Security.UserMember)
             Dim rows As Data.DataTable = Nothing
             Dim result As New List(Of Architect.API.Core.Contracts.Security.UserMember)
-            With New DataManagerFactory("SELECT UserMember.UserId, UserMember.CompanyId, UserMember.UserName, UserMember.EMail, UserMember.Password, UserMember.OldPassword, UserMember.IdentificationType, UserMember.Identification, UserMember.FirstName, UserMember.LastName, UserMember.BirthDate, UserMember.FailedPasswordCount, UserMember.SecurityLevel, UserMember.IsLockedOut, UserMember.LockedOutDate, UserMember.PasswordChangedDate, UserMember.OneTimePassword, UserMember.LoginDate, UserMember.ManagerId, UserMember.AccessKey, UserMember.BranchOffice, UserMember.Reference, UserMember.Position, UserMember.PhoneNumber, UserMember.SalesChannel, UserMember.CustomData, UserMember.RecordStatus, UserMember.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, UserMember.UpdateDate " &
+            With New DataManagerFactory("SELECT UserMember.UserId, UserMember.CompanyId, UserMember.UserName, UserMember.EMail, UserMember.Password, UserMember.OldPassword, UserMember.IdentificationType, UserMember.Identification, UserMember.FirstName, UserMember.LastName, UserMember.BirthDate, UserMember.FailedPasswordCount, UserMember.SecurityLevel, UserMember.IsLockedOut, UserMember.LockedOutDate, UserMember.PasswordChangedDate, UserMember.OneTimePassword, UserMember.LoginDate, UserMember.ManagerId, UserMember.AccessKey, UserMember.BranchOffice, UserMember.Reference, UserMember.Position, UserMember.PhoneNumber, UserMember.SalesChannel, UserMember.CustomData, UserMember.RecordStatus, UserMember.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, UserMember.UpdateDate, " &
+                                               "(SELECT LISTAGG(RM.ROLENAME , ', ') WITHIN GROUP (ORDER BY RM.ROLENAME ) FROM USERROLEMEMBER urm LEFT JOIN ROLEMEMBER rm ON rm.RoleId = urm.RoleId WHERE urm.UserId = UserMember.UserId) Roles " &
                                           "FROM UserMember LEFT JOIN UserMember um ON um.UserId = UserMember.UpdateUserCode " &
                                          "WHERE UserMember.CompanyId=@:CompanyId AND UserMember.SecurityLevel<=@:SecurityLevel" & BuildFilter(filter, recordStatus), "UserMember", "Research")
                 .AddParameter("CompanyId", DbType.Decimal, 5, False, companyId)
@@ -117,7 +119,7 @@ Namespace Architect.API.Core.DataAccess.Security
         End Function
 
         ''' <summary>
-        ''' Último valor asignado a clave unica de la tabla UserMember.
+        ''' Último valor asignado a clave única de la tabla UserMember.
         ''' </summary>
         ''' <returns>Último valor asignado.</returns>
         Public Shared Function RetrieveLastKey() As Integer
@@ -238,7 +240,7 @@ Namespace Architect.API.Core.DataAccess.Security
         ''' </summary>
         ''' <returns>Instancia de UserMember</returns>
         Private Shared Function DataRowMapper(itemRow As DataRow) As Architect.API.Core.Contracts.Security.UserMember
-            Return New Architect.API.Core.Contracts.Security.UserMember With {.UserId = itemRow.NumericValue("UserId"), .CompanyId = itemRow.NumericValue("CompanyId"), .UserName = itemRow.StringValue("UserName"), .EMail = itemRow.StringValue("EMail"), .Password = itemRow.StringValue("Password"), .OldPassword = itemRow.StringValue("OldPassword"), .IdentificationType = itemRow.NumericValue("IdentificationType"), .Identification = itemRow.StringValue("Identification"), .FirstName = itemRow.StringValue("FirstName"), .LastName = itemRow.StringValue("LastName"), .BirthDate = itemRow.DateTimeValue("BirthDate"), .FailedPasswordCount = itemRow.NumericValue("FailedPasswordCount"), .SecurityLevel = itemRow.NumericValue("SecurityLevel"), .IsLockedOut = (itemRow.NumericValue("IsLockedOut") = 1), .LockedOutDate = itemRow.DateTimeValue("LockedOutDate"), .PasswordChangedDate = itemRow.DateTimeValue("PasswordChangedDate"), .OneTimePassword = itemRow.StringValue("OneTimePassword"), .LoginDate = itemRow.DateTimeValue("LoginDate"), .ManagerId = itemRow.NumericValue("ManagerId"), .AccessKey = itemRow.StringValue("AccessKey"), .BranchOffice = itemRow.NumericValue("BranchOffice"), .Reference = itemRow.StringValue("Reference"), .Position = itemRow.NumericValue("Position"), .PhoneNumber = itemRow.StringValue("PhoneNumber"), .SalesChannel = itemRow.NumericValue("SalesChannel"), .CustomData = itemRow.StringValue("CustomData"), .RecordStatus = itemRow.NumericValue("RecordStatus"), .UpdateUserCode = itemRow.NumericValue("UpdateUserCode"), .UpdateUserName = itemRow.StringValue("UpdateUserName"), .UpdateDate = itemRow.DateTimeValue("UpdateDate")}
+            Return New Architect.API.Core.Contracts.Security.UserMember With {.UserId = itemRow.NumericValue("UserId"), .CompanyId = itemRow.NumericValue("CompanyId"), .UserName = itemRow.StringValue("UserName"), .EMail = itemRow.StringValue("EMail"), .Password = itemRow.StringValue("Password"), .OldPassword = itemRow.StringValue("OldPassword"), .IdentificationType = itemRow.NumericValue("IdentificationType"), .Identification = itemRow.StringValue("Identification"), .FirstName = itemRow.StringValue("FirstName"), .LastName = itemRow.StringValue("LastName"), .BirthDate = itemRow.DateTimeValue("BirthDate"), .FailedPasswordCount = itemRow.NumericValue("FailedPasswordCount"), .SecurityLevel = itemRow.NumericValue("SecurityLevel"), .IsLockedOut = (itemRow.NumericValue("IsLockedOut") = 1), .LockedOutDate = itemRow.DateTimeValue("LockedOutDate"), .PasswordChangedDate = itemRow.DateTimeValue("PasswordChangedDate"), .OneTimePassword = itemRow.StringValue("OneTimePassword"), .LoginDate = itemRow.DateTimeValue("LoginDate"), .ManagerId = itemRow.NumericValue("ManagerId"), .AccessKey = itemRow.StringValue("AccessKey"), .BranchOffice = itemRow.NumericValue("BranchOffice"), .Reference = itemRow.StringValue("Reference"), .Position = itemRow.NumericValue("Position"), .PhoneNumber = itemRow.StringValue("PhoneNumber"), .SalesChannel = itemRow.NumericValue("SalesChannel"), .CustomData = itemRow.StringValue("CustomData"), .RecordStatus = itemRow.NumericValue("RecordStatus"), .UpdateUserCode = itemRow.NumericValue("UpdateUserCode"), .UpdateUserName = itemRow.StringValue("UpdateUserName"), .UpdateDate = itemRow.DateTimeValue("UpdateDate"), .RoleList = itemRow.StringValue("Roles")}
         End Function
 
 #End Region

@@ -18,7 +18,7 @@ namespace Architect.API.Tron.Business.Emision
                 }
                 foreach (Architect.API.Tron.Contracts.Poliza.CoberturaCalculada item in tronQuoteInfo.Calculado.Coberturas)
                 {
-                    foreach (Architect.API.Tron.Contracts.Cotizacion.MultirriesgoCoberturas itemQuote in quoteInfo.coberturas)
+                    foreach (Contracts.Comun.Cobertura itemQuote in quoteInfo.coberturas)
                     {
                         if (item.COD_COB == itemQuote.codigo)
                         {
@@ -52,11 +52,11 @@ namespace Architect.API.Tron.Business.Emision
             {
                 double importeAnual = 0;
                 bool setvalues = true;
-                quoteInfo.plandepago = new List<Contracts.Cotizacion.MultirriesgoPlandepago>();
+                quoteInfo.plandepago = new List<Contracts.Comun.PlanDePago>();
                 foreach (Architect.API.Tron.Contracts.Poliza.ReciboCalculado item in tronQuoteInfo.Calculado.Recibos)
                 {
                     importeAnual = item.IMP_RECIBO;
-                    quoteInfo.plandepago.Add(new Contracts.Cotizacion.MultirriesgoPlandepago()
+                    quoteInfo.plandepago.Add(new Contracts.Comun.PlanDePago()
                     {
                         cuota = item.NUM_CUOTA,
                         fechadesde = item.FEC_EFEC_RECIBO,
@@ -73,7 +73,7 @@ namespace Architect.API.Tron.Business.Emision
                             cuotas = tronQuoteInfo.Calculado.Recibos.Count,
                             primaneta = item.IMP_NETA,
                             iVA = item.IMP_IMPTOS,
-                            recardoporfraccionamiento = item.IMP_INTERES,
+                            recargoporfraccionamiento = item.IMP_INTERES,
                             importetotal = item.IMP_RECIBO
                         };
                         setvalues = false;

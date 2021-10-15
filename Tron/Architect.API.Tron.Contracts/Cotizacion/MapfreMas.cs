@@ -189,145 +189,18 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// </summary>
         [DataMember(), JsonProperty()] public int DED_AUTO_CRI { get; set; }
         /// <summary>
-        /// @Control.Caption@.
+        /// Coberturas
         /// </summary>
-        [DataMember(), JsonProperty()] public List<MapfreMasCoberturas> coberturas { get; set; }
+        [DataMember(), JsonProperty()] public List<Comun.Cobertura> coberturas { get; set; }
         /// <summary>
-        /// @Control.Caption@.
+        /// plan de pago
         /// </summary>
-        [DataMember(), JsonProperty()] public List<MapfreMasPlandepago> plandepago { get; set; }
+        [DataMember(), JsonProperty()] public List<Comun.PlanDePago> plandepago { get; set; }
 
         [DataMember(), JsonProperty()] public int contrato { get; set; }
         [DataMember(), JsonProperty()] public int subcontrato { get; set; }
         [DataMember(), JsonProperty()] public string polizagrupo { get; set; }
 
     }
-    public class MapfreMasCoberturas
-    {
 
-        /// <summary>
-        /// Seleccionada.
-        /// </summary>
-        [DataMember(), JsonProperty()] public bool seleccionado { get; set; }
-        /// <summary>
-        /// Requerida.
-        /// </summary>
-        [DataMember(), JsonProperty()] public bool requerida { get; set; }
-        /// <summary>
-        /// Código.
-        /// </summary>
-        [DataMember(), JsonProperty()] public int codigo { get; set; }
-        /// <summary>
-        /// Nombre.
-        /// </summary>
-        [DataMember(), JsonProperty()] public string nombre { get; set; }
-        /// <summary>
-        /// Capital.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double capital { get; set; }
-        /// <summary>
-        /// Prima total.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double primatotal { get; set; }
-        /// <summary>
-        /// Deducible.
-        /// </summary>
-        [DataMember(), JsonProperty()] public string decucible { get; set; }
-        /// <summary>
-        /// Error.
-        /// </summary>
-        [DataMember(), JsonProperty()] public string error { get; set; }
-
-
-    }
-    public class MapfreMasPlandepago
-    {
-
-        /// <summary>
-        /// Cuota.
-        /// </summary>
-        [DataMember(), JsonProperty()] public int cuota { get; set; }
-        /// <summary>
-        /// Fecha desde.
-        /// </summary>
-        [DataMember(), JsonProperty()] public DateTime fechadesde { get; set; }
-        /// <summary>
-        /// Fecha hasta.
-        /// </summary>
-        [DataMember(), JsonProperty()] public DateTime fechahasta { get; set; }
-        /// <summary>
-        /// Prima neta.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double primaneta { get; set; }
-        /// <summary>
-        /// IVA.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double iVA { get; set; }
-        /// <summary>
-        /// Recargo por fraccionamiento.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double recardoporfraccionamiento { get; set; }
-        /// <summary>
-        /// Importe total.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double importetotal { get; set; }
-
-
-    }
-
-    public class MapfreMasSettings
-    {
-
-        /// <summary>
-        /// Fin de vigencia.
-        /// </summary>
-        [DataMember(), JsonProperty()] public DateTime fec_vcto_poliza { get; set; }
-
-        [DataMember(), JsonProperty()] public List<Architect.API.Core.Contracts.General.LookupValue> PLAN_AUTO { get; set; }
-
-        /// <summary>
-        /// Suma asegurada de Responsabilidad Civil
-        /// </summary>
-        [DataMember(), JsonProperty()] public List<Architect.API.Core.Contracts.General.LookupValue> IMP_AUTO_RC { get; set; }
-        /// <summary>
-        /// Suma asegurada de Gastos Médicos
-        /// </summary>
-        [DataMember(), JsonProperty()] public List<Architect.API.Core.Contracts.General.LookupValue> IMP_AUTO_GMO { get; set; }
-        /// <summary>
-        /// Suma asegurada de Accidentes al conductor
-        /// </summary>
-        [DataMember(), JsonProperty()] public List<Architect.API.Core.Contracts.General.LookupValue> IMP_AUTO_ACO { get; set; }
-        [DataMember(), JsonProperty()] public List<Architect.API.Core.Contracts.General.LookupValue> IMP_AUTO_NEUM { get; set; }
-        [DataMember(), JsonProperty()] public List<Architect.API.Core.Contracts.General.LookupValue> IMP_AUTO_MECA { get; set; }
-        /// <summary>
-        /// Suma asegurada de Rotura de Cristales
-        /// </summary>
-        [DataMember(), JsonProperty()] public List<Architect.API.Core.Contracts.General.LookupValue> IMP_AUTO_CRI { get; set; }
-
-        /// <summary>
-        /// Deducible DEDUC_3001
-        /// </summary>
-        [DataMember(), JsonProperty()] public List<Architect.API.Core.Contracts.General.LookupValue> DED_AUTO_RC { get; set; }
-        /// <summary>
-        /// Deducible PLAN_3004
-        /// </summary>
-        [DataMember(), JsonProperty()] public List<Architect.API.Core.Contracts.General.LookupValue> DED_AUTO_CYV { get; set; }
-        /// <summary>
-        /// Deducible PLAN_3007
-        /// </summary>
-        [DataMember(), JsonProperty()] public List<Architect.API.Core.Contracts.General.LookupValue> DED_AUTO_EQESP { get; set; }
-        /// <summary>
-        /// Deducible PLAN_3005
-        /// </summary>
-        [DataMember(), JsonProperty()] public List<Architect.API.Core.Contracts.General.LookupValue> DED_AUTO_RAD { get; set; }
-        /// <summary>
-        /// Deducible PLAN_3006
-        /// </summary>
-        [DataMember(), JsonProperty()] public List<Architect.API.Core.Contracts.General.LookupValue> DED_AUTO_ROB { get; set; }
-        /// <summary>
-        /// Deducible PLAN_3009
-        /// </summary>
-        [DataMember(), JsonProperty()] public List<Architect.API.Core.Contracts.General.LookupValue> DED_AUTO_CRI { get; set; }
-
-    }
 }

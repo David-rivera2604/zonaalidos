@@ -122,8 +122,8 @@ Namespace Architect.API.Insurance.DataAccess.Others
         Private Shared Function Create(inclusionesItem As Contracts.Others.Inclusiones) As Integer
             Dim rows As Integer = 0
             With New DataManagerFactory("INSERT INTO Inclusiones " &
-                                              "(Id, Empresa, TieneDependientes, CantidadDeDependientes, Finalizado, CodigoDeImpresion, CantidadDeCanets, CantidadDeCertificados, FechaDeRecibido, FechaDeEnvioAPanama, FechaDeEnvioACorredor, Tramite, FechaEfectiva, Clase, Nombre, Apellido, Cedula, Observacines, FechaDeEnvioDeLaObservacion, FechaNacimiento, Sexo, Estatus, TipoDeIdentificacion, CorreoElectronico, NroCuenta, Plan, Certificado, DeducibleConsumido, DeducibleMaximoVitalicio, StopLost, EmployeeNumber) " &
-                                        "VALUES(@:Id, @:Empresa, @:TieneDependientes, @:CantidadDeDependientes, @:Finalizado, @:CodigoDeImpresion, @:CantidadDeCanets, @:CantidadDeCertificados, @:FechaDeRecibido, @:FechaDeEnvioAPanama, @:FechaDeEnvioACorredor, @:Tramite, @:FechaEfectiva, @:Clase, @:Nombre, @:Apellido, @:Cedula, @:Observacines, @:FechaDeEnvioDeLaObservacion, @:FechaNacimiento, @:Sexo, @:Estatus, @:TipoDeIdentificacion, @:CorreoElectronico, @:NroCuenta, @:Plan, @:Certificado, @:DeducibleConsumido, @:DeducibleMaximoVitalicio, @:StopLost, @:EmployeeNumber)", "Inclusiones", "Tron")
+                                              "(Id, Empresa, TieneDependientes, CantidadDeDependientes, Finalizado, CodigoDeImpresion, CantidadDeCanets, CantidadDeCertificados, FechaDeRecibido, FechaDeEnvioAPanama, FechaDeEnvioACorredor, Tramite, FechaEfectiva, Clase, Nombre, Apellido, Cedula, Observacines, FechaDeEnvioDeLaObservacion, FechaNacimiento, Sexo, Estatus, TipoDeIdentificacion, CorreoElectronico, NroCuenta, Plan, Certificado, DeducibleConsumido, DeducibleMaximoVitalicio, StopLost, NumeroEmpleado) " &
+                                        "VALUES(@:Id, @:Empresa, @:TieneDependientes, @:CantidadDeDependientes, @:Finalizado, @:CodigoDeImpresion, @:CantidadDeCanets, @:CantidadDeCertificados, @:FechaDeRecibido, @:FechaDeEnvioAPanama, @:FechaDeEnvioACorredor, @:Tramite, @:FechaEfectiva, @:Clase, @:Nombre, @:Apellido, @:Cedula, @:Observacines, @:FechaDeEnvioDeLaObservacion, @:FechaNacimiento, @:Sexo, @:Estatus, @:TipoDeIdentificacion, @:CorreoElectronico, @:NroCuenta, @:Plan, @:Certificado, @:DeducibleConsumido, @:DeducibleMaximoVitalicio, @:StopLost, @:NumeroEmpleado)", "Inclusiones", "Tron")
                 .AddParameter("Id", DbType.Decimal, 9, inclusionesItem.Id.IsEmpty(), inclusionesItem.Id)
                 .AddParameter("Empresa", DbType.Decimal, 9, inclusionesItem.Empresa.IsEmpty(), inclusionesItem.Empresa)
                 .AddParameter("TieneDependientes", DbType.Decimal, 1, False, IIf(inclusionesItem.TieneDependientes, 1, 0))
@@ -154,7 +154,7 @@ Namespace Architect.API.Insurance.DataAccess.Others
                 .AddParameter("DeducibleConsumido", DbType.Decimal, 18, inclusionesItem.DeducibleConsumido.IsEmpty(), inclusionesItem.DeducibleConsumido)
                 .AddParameter("DeducibleMaximoVitalicio", DbType.Decimal, 18, inclusionesItem.DeducibleMaximoVitalicio.IsEmpty(), inclusionesItem.DeducibleMaximoVitalicio)
                 .AddParameter("StopLost", DbType.Decimal, 18, inclusionesItem.StopLost.IsEmpty(), inclusionesItem.StopLost)
-                .AddParameter("EmployeeNumber", DbType.AnsiString, 30, inclusionesItem.EmployeeNumber.IsEmpty(), inclusionesItem.EmployeeNumber)
+                .AddParameter("NumeroEmpleado", DbType.AnsiString, 30, inclusionesItem.EmployeeNumber.IsEmpty(), inclusionesItem.EmployeeNumber)
 
                 rows = .CommandExecute()
             End With

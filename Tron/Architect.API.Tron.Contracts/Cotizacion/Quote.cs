@@ -12,17 +12,14 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// Ramo.
         /// </summary>
         [DataMember(), JsonProperty()] public int cod_ramo { get; set; }
-        /// <summary>
-        /// Moneda.
-        /// </summary>
 
         /// <summary>
-        /// Mansajes o notificaciones.
+        /// Mensajes o notificaciones.
         /// </summary>
         [DataMember(), JsonProperty()] public string Mensaje { get; set; }
 
         /// <summary>
-        /// Mansajes o notificaciones.
+        /// Detalle de un error.
         /// </summary>
         [DataMember(), JsonProperty()] public string Error { get; set; }
 
@@ -46,27 +43,4 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         [DataMember(), JsonProperty()] public List<Core.Contracts.General.Error> Errors { get; set; }
     }
 
-    public class resumen
-    {
-        /// <summary>
-        /// Prima neta.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double primaneta { get; set; }
-        /// <summary>
-        /// IVA.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double iVA { get; set; }
-        /// <summary>
-        /// Recardo por fraccionamiento.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double recardoporfraccionamiento { get; set; }
-        /// <summary>
-        /// Importe total.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double importetotal { get; set; }
-        /// <summary>
-        /// Cuota.
-        /// </summary>
-        [DataMember(), JsonProperty()] public int cuotas { get; set; }
-    }
 }

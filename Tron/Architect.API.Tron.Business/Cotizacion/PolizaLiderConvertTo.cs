@@ -54,7 +54,7 @@ namespace Architect.API.Tron.Business.Cotizacion
 
             string selected = string.Empty;
 
-            foreach (Architect.API.Tron.Contracts.Cotizacion.PolizaLiderCoberturas item in from c in quoteInfo.coberturas where c.seleccionado select c)
+            foreach (Contracts.Comun.Cobertura item in from c in quoteInfo.coberturas where c.seleccionado select c)
             {
                 if (selected.IsNotEmpty())
                 {

@@ -10,7 +10,7 @@ namespace Architect.API.Tron.Business.Emision
     public static class HogarTotal
     {
 
-        public static Contracts.Emision.HogarTotal Setup(string presupuesto)
+        public static Contracts.Emision.HogarTotal Setup(string presupuesto, Core.Contracts.Security.Token tokenInfo)
         {
 
             Contracts.Emision.HogarTotal result = null;
@@ -20,19 +20,10 @@ namespace Architect.API.Tron.Business.Emision
             {
                 result = Newtonsoft.Json.JsonConvert.DeserializeObject<Contracts.Emision.HogarTotal>(Architect.Utilities.Cache.GetItem(key).ToString());
 
-                result.documentosrequeridos = new System.Collections.Generic.List<Contracts.Emision.documentosrequeridos>
-                {
-                    new Contracts.Emision.documentosrequeridos() { documentosrequeridosId=1, tipo = "Copia de la cédula de identidad", DArchivoEsperado="CEDULA.docx", Grupo="F"  },
-                    new Contracts.Emision.documentosrequeridos() { documentosrequeridosId=2, tipo = "Comprobante de entrega de condiciones generales" , DArchivoEsperado="CONDICIONES.pdf", Grupo="F" },
-                    new Contracts.Emision.documentosrequeridos() { documentosrequeridosId=3, tipo = "Consentimiento para uso de datos personales", DArchivoEsperado="CONSENTIMIENTO.pdf" , Grupo="F" },
-                    new Contracts.Emision.documentosrequeridos() { documentosrequeridosId=4, tipo = "Formato de validación de domicilio", DArchivoEsperado="DOMICILIO.pdf" , Grupo="F" },
-                    new Contracts.Emision.documentosrequeridos() { documentosrequeridosId=5, tipo = "Conozca a su cliente (KYC)", DArchivoEsperado="KYC.pdf", Grupo="F"  },
-                    new Contracts.Emision.documentosrequeridos() { documentosrequeridosId=6, tipo = "Solicitud de seguro firmada", DArchivoEsperado="SOLICITUD.pdf", Grupo="F"  },
+                result.terceros = Reglas.research.Apply_Terceros("HogarTotal", result.terceros, string.Empty, tokenInfo);
 
-                    new Contracts.Emision.documentosrequeridos() { documentosrequeridosId=7, tipo = "Represéntate legal", DArchivoEsperado="REPRESENTANTE LEGAL.docx", Grupo="J" },
-                    new Contracts.Emision.documentosrequeridos() { documentosrequeridosId=8, tipo = "Participación accionaria", DArchivoEsperado="PARTICIPACION ACCIONARIA.docx", Grupo="J" },
-                    new Contracts.Emision.documentosrequeridos() { documentosrequeridosId=9, tipo = "Certificado de participación", DArchivoEsperado="CERTIFICADO PARTICIPACION.docx", Grupo="J" }
-                };
+                result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("HogarTotal", null, 0, tokenInfo);
+
             }
 
             return result;

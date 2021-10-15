@@ -5,35 +5,24 @@ app.Prototype = (function () {
         Init: function () {
             _id = app.core.URLStringValue('id');
             if (_id != '') {
-
-                var html = [];
-                html.push('Solicitud de inclusión. Seguro colectivo y gastos medicos|título');
-                html.push('Datos de la póliza|zona|12');
-                html.push(' Correo electrónico|Correo');
-                html.push(' Copia 1|Correo');
-                html.push(' Copia 2|Correo');
-                html.push(' Enviar certificado|Boton');
-   
+                $('#VisualizationsEdtForm').addClass('d-none');
                 app.core.Post(app.setting.apipath + 'v1/Viewer/Prototype1',
                     JSON.stringify({
-                        Subject: "",
+                        Subject: _id,
                         Partial: true,
-                        Body: html.join('\r\n')
+                        Body: ''
                     }))
                     .done(function (data, textStatus, jqXHR) {
-                        $("#extend").replaceWith(data);
+                        $("#extend").html(data);
 
                         app.core.Post(app.setting.apipath + 'v1/Viewer/Prototype2',
                             JSON.stringify({
-                                Subject: "",
+                                Subject: _id,
                                 Partial: true,
-                                Body: html.join('\r\n')
+                                Body: ''
                             }))
                             .done(function (data, textStatus, jqXHR) {
                                 eval(data);
-
-                                //var tmpFunc = new Function(data);
-                                //tmpFunc();
                             });
                     });
             }
@@ -41,7 +30,7 @@ app.Prototype = (function () {
                 $('#specificationApply').click(function () {
                     app.core.Post(app.setting.apipath + 'v1/Viewer/Prototype1',
                         JSON.stringify({
-                            Subject: "",
+                            Subject: $('#key').val(),
                             Partial: false,
                             Body: $('#specification').val()
                         }))
@@ -50,15 +39,12 @@ app.Prototype = (function () {
 
                             app.core.Post(app.setting.apipath + 'v1/Viewer/Prototype2',
                                 JSON.stringify({
-                                    Subject: "",
+                                    Subject: $('#key').val(),
                                     Partial: false,
                                     Body: $('#specification').val()
                                 }))
                                 .done(function (data, textStatus, jqXHR) {
                                     eval(data);
-
-                                    //var tmpFunc = new Function(data);
-                                    //tmpFunc();
                                 });
                         });
                 });

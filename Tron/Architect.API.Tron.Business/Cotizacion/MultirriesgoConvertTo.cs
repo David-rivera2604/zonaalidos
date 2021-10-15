@@ -134,7 +134,7 @@ namespace Architect.API.Tron.Business.Cotizacion
 
             List<Architect.API.Tron.Contracts.Presupuesto.Cobertura> coberturas = new List<Architect.API.Tron.Contracts.Presupuesto.Cobertura>();
 
-            foreach (Architect.API.Tron.Contracts.Cotizacion.MultirriesgoCoberturas item in from c in quoteInfo.coberturas where c.seleccionado select c)
+            foreach (Contracts.Comun.Cobertura item in from c in quoteInfo.coberturas where c.seleccionado select c)
             {
                 coberturas.Add(Util.Cobertura(datosFijos, item.codigo));
             }

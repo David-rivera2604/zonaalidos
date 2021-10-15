@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<XtraReportsLayoutSerializer SerializerVersion="20.1.3.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="ReportV3" DisplayName="cope_vida.repx" ScriptsSource="&#xD;&#xA;private void ReportV1_DataSourceDemanded(object sender, System.EventArgs e) {&#xD;&#xA;&#xD;&#xA;}&#xD;&#xA;" Margins="17, 29, 109, 35" PageWidth="850" PageHeight="1100" Version="20.1" DataSource="#Ref-0" Font="Arial, 9.75pt">
+<XtraReportsLayoutSerializer SerializerVersion="20.1.6.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v20.1, Version=20.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="ReportV3" DisplayName="cope_vida.repx" ScriptsSource="&#xD;&#xA;private void ReportV1_DataSourceDemanded(object sender, System.EventArgs e) {&#xD;&#xA;&#xD;&#xA;}&#xD;&#xA;" Margins="17, 29, 109, 35" PageWidth="850" PageHeight="1100" Version="20.1" DataSource="#Ref-0" Font="Arial, 9.75pt">
   <Extensions>
     <Item1 Ref="2" Key="DataSerializationExtension" Value="DevExpress.XtraReports.Web.ReportDesigner.DefaultDataSerializer" />
   </Extensions>
@@ -294,7 +294,7 @@
         </Item69>
         <Item70 Ref="176" ControlType="XRLabel" Name="label41" TextFormatString="{0:dd/MM/yyyy}" Multiline="true" Text="label41" TextAlignment="MiddleLeft" SizeF="84.2344,23" LocationFloat="254.401,782.1621" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100">
           <ExpressionBindings>
-            <Item1 Ref="177" EventName="BeforePrint" PropertyName="Text" Expression="[EndingDate]" />
+            <Item1 Ref="177" EventName="BeforePrint" PropertyName="Text" Expression="[EffectiveDate]" />
           </ExpressionBindings>
           <StylePriority Ref="178" UseFont="false" UseTextAlignment="false" />
         </Item70>

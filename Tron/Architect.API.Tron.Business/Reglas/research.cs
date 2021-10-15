@@ -14,18 +14,15 @@ namespace Architect.API.Tron.Business.Reglas
     public static class research
     {
 
-        const string C_RULE_FILENAME = "MapfreMas";
-
-
-        public static List<Contracts.Emision.MapfreMasdocumentosrequeridos> Apply_DocumentosRequeridos(List<Contracts.Emision.MapfreMasdocumentosrequeridos> documentos, int mca_cero_km, Core.Contracts.Security.Token tokenInfo)
+        public static List<Contracts.Comun.DocumentoRequerido> Apply_DocumentosRequeridos(string ruleFile, List<Contracts.Comun.DocumentoRequerido> documentos, int mca_cero_km, Core.Contracts.Security.Token tokenInfo)
         {
             bool allowAdd = false;
-            Contracts.Emision.MapfreMasdocumentosrequeridos newdocumento;
-            Contracts.Especificacion.Producto rules = Utilities.SerializeHandler<Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.json", ConfigurationManager.AppSettings["Product.Definition.Path"], C_RULE_FILENAME));
+            Contracts.Comun.DocumentoRequerido newdocumento;
+            Contracts.Especificacion.Producto rules = Utilities.SerializeHandler<Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
 
             if (documentos.IsEmpty())
             {
-                documentos = new List<Contracts.Emision.MapfreMasdocumentosrequeridos>();
+                documentos = new List<Contracts.Comun.DocumentoRequerido>();
             }
 
             foreach (Contracts.Especificacion.DocumentCondicion requerido in rules.DocumentosRequeridos)
@@ -58,12 +55,12 @@ namespace Architect.API.Tron.Business.Reglas
             return documentos;
         }
 
-        private static List<MapfreMasdocumentosrequeridos> NewMethod(List<MapfreMasdocumentosrequeridos> documentos, DocumentCondicion requerido)
+        private static List<Contracts.Comun.DocumentoRequerido> NewMethod(List<Contracts.Comun.DocumentoRequerido> documentos, DocumentCondicion requerido)
         {
-            MapfreMasdocumentosrequeridos newdocumento;
+            Contracts.Comun.DocumentoRequerido newdocumento;
             foreach (Contracts.Especificacion.Documento documento in requerido.Detalles)
             {
-                newdocumento = new Contracts.Emision.MapfreMasdocumentosrequeridos()
+                newdocumento = new Contracts.Comun.DocumentoRequerido()
                 {
                     documentosrequeridosId = documentos.Count + 1,
                     tipo = documento.descripcion,
@@ -76,10 +73,34 @@ namespace Architect.API.Tron.Business.Reglas
             return documentos;
         }
 
-        public static List<Contracts.Emision.MapfreMasterceros> Apply_Terceros(List<Contracts.Emision.MapfreMasterceros> terceros, string fuente_Tomador, Core.Contracts.Security.Token tokenInfo)
+
+
+        public static List<Contracts.Comun.tercero> Apply_Terceros(string ruleFile, List<Contracts.Comun.tercero> terceros, string fuente_Tomador, Core.Contracts.Security.Token tokenInfo)
         {
-            Contracts.Especificacion.Producto rules = Utilities.SerializeHandler<Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.json", ConfigurationManager.AppSettings["Product.Definition.Path"], C_RULE_FILENAME));
-            Contracts.Emision.MapfreMasterceros newTercero;
+            List<Contracts.Comun.tercero> result = Apply_Terceros_int(ruleFile, terceros, fuente_Tomador, tokenInfo);
+
+            if (result?.Count > 0 && terceros?.Count > 0)
+            {
+                foreach (Contracts.Comun.tercero item in terceros)
+                {
+                    if (result.Find(x => x.tipodetercero == item.tipodetercero).IsEmpty())
+                    {
+                        item.tercerosId = result.Count + 1;
+                        result.Add(item);
+                    }
+                }
+            }
+            else if (terceros?.Count > 0)
+            {
+                result = terceros;
+            }
+            return result;
+        }
+
+        internal static List<Contracts.Comun.tercero> Apply_Terceros_int(string ruleFile,  List<Contracts.Comun.tercero> terceros, string fuente_Tomador, Core.Contracts.Security.Token tokenInfo)
+        {
+            Contracts.Especificacion.Producto rules = Utilities.SerializeHandler<Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
+            Contracts.Comun.tercero newTercero;
             bool addTercero = false;
             foreach (Contracts.Especificacion.TerceroCondicion condition in rules.Terceros)
             {
@@ -99,9 +120,9 @@ namespace Architect.API.Tron.Business.Reglas
                         {
                             if (terceros.IsEmpty())
                             {
-                                terceros = new List<Contracts.Emision.MapfreMasterceros>();
+                                terceros = new List<Contracts.Comun.tercero>();
                             }
-                            newTercero = new Contracts.Emision.MapfreMasterceros()
+                            newTercero = new Contracts.Comun.tercero()
                             {
                                 tercerosId = terceros.Count + 1,
                                 tipodetercero = Convert.ToInt32(detail.tip_benef),

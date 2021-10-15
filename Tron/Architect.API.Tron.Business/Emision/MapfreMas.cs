@@ -37,10 +37,10 @@ namespace Architect.API.Tron.Business.Emision
 
                 if (mode == "draft")
                 {
-                    result.terceros = Tercero_Complement(result.terceros, result.Fuente_Tomador, tokenInfo);
+                    result.terceros = Reglas.research.Apply_Terceros("MapfreMas", result.terceros, result.Fuente_Tomador, tokenInfo);
                 }
 
-                result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos(null, result.MCA_CERO_KM, tokenInfo);
+                result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("MapfreMas", null, result.MCA_CERO_KM, tokenInfo);
 
                 if (mode == "continue")
                 {
@@ -50,7 +50,7 @@ namespace Architect.API.Tron.Business.Emision
                     {
                         foreach (Core.Contracts.General.AttachmentView attachment in attachments)
                         {
-                            result.documentosrequeridos.Add(new Contracts.Emision.MapfreMasdocumentosrequeridos()
+                            result.documentosrequeridos.Add(new Contracts.Comun.DocumentoRequerido()
                             {
                                 DStored = attachment.FileName,
                                 documentosrequeridosId = attachment.Id,
@@ -76,27 +76,7 @@ namespace Architect.API.Tron.Business.Emision
             return result;
         }
 
-        public static List<Contracts.Emision.MapfreMasterceros> Tercero_Complement(List<Contracts.Emision.MapfreMasterceros> terceros, string fuente_Tomador, Core.Contracts.Security.Token tokenInfo)
-        {
-            List<Contracts.Emision.MapfreMasterceros> result = Reglas.research.Apply_Terceros(terceros, fuente_Tomador, tokenInfo);
-          
-            if (result?.Count > 0 && terceros?.Count > 0)
-            {
-                foreach (Contracts.Emision.MapfreMasterceros item in terceros)
-                {
-                    if (result.Find(x => x.tipodetercero == item.tipodetercero).IsEmpty())
-                    {
-                        item.tercerosId = result.Count + 1;
-                        result.Add(item);
-                    }
-                }
-            }
-            else if (terceros?.Count > 0)
-            {
-                result = terceros;
-            }
-            return result;
-        }
+       
 
         public static Contracts.Emision.MapfreMas Issue(Contracts.Emision.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
@@ -239,7 +219,7 @@ namespace Architect.API.Tron.Business.Emision
         {
             string uniqueId = string.Empty;
             string solicitudPDF = General_PDF_Solicitud(quoteInfo, tokenInfo);
-            Contracts.Emision.MapfreMasterceros primaryInsured = (from t in quoteInfo.terceros where t.tipodetercero == 2 select t).First();
+            Contracts.Comun.tercero primaryInsured = (from t in quoteInfo.terceros where t.tipodetercero == 2 select t).First();
 
             if (tip_firma == Contracts.TipoDeFirma.Manual)
             {
@@ -269,7 +249,7 @@ namespace Architect.API.Tron.Business.Emision
             data.conductor = (from c in data.terceros where c.tipodetercero == 3 select c).FirstOrDefault();
             data.acredor = (from c in data.terceros where c.tipodetercero == 8 select c).FirstOrDefault();
             int index = 1;
-            foreach (Contracts.Emision.MapfreMasterceros item in from b in data.terceros where b.tipodetercero == 6 select b)
+            foreach (Contracts.Comun.tercero item in from b in data.terceros where b.tipodetercero == 6 select b)
             {
                 if (index == 1)
                 {
@@ -297,7 +277,7 @@ namespace Architect.API.Tron.Business.Emision
 
         private static void AlmacenarSolicitud(Contracts.Emision.MapfreMas quoteInfo, int status, Core.Contracts.Security.Token tokenInfo, string uniqueId)
         {
-            Contracts.Emision.MapfreMasterceros primaryInsured = (from t in quoteInfo.terceros where t.tipodetercero == 2 select t).First();
+            Contracts.Comun.tercero primaryInsured = (from t in quoteInfo.terceros where t.tipodetercero == 2 select t).First();
             DataAccess.PolicyProposal.Create(new Contracts.PolicyProposal()
             {
                 Id = DataAccess.PolicyProposal.RetrieveLastKey() + 1,

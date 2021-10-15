@@ -80,7 +80,7 @@ namespace Architect.API.Tron.Business.Cotizacion
 
             if (quoteInfo.coberturas.IsNotEmpty())
             {
-                foreach (Contracts.Cotizacion.MapfreMasCoberturas cover in quoteInfo.coberturas.Where(r => r.seleccionado))
+                foreach (Contracts.Comun.Cobertura cover in quoteInfo.coberturas.Where(r => r.seleccionado))
                 {
                     if (result.coberturas.IsNotEmpty())
                     {

@@ -11,7 +11,7 @@ app.HogarTotal = (function () {
         if (_id != '') {
             $('#coberturasTbl').bootstrapTable('showLoading');
             app.core.Get(app.setting.apipath + 'v1/Issue/HogarTotalSetup/' + _id)
-                .done(function (data, textStatus, jqXHR) {
+                .done(function (data) {
                     Init_Lookups(data);
                 });
         }
@@ -91,7 +91,7 @@ app.HogarTotal = (function () {
                         $('#importetotal').html(moneda + data.resumen.importetotal.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
                         $('#primaneta').html(data.resumen.primaneta.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
                         $('#iva').html(data.resumen.iVA.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                        $('#recardoporfraccionamiento').html(data.resumen.recardoporfraccionamiento.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                        $('#recargoporfraccionamiento').html(data.resumen.recargoporfraccionamiento.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
                         $('#cuotas').html(data.resumen.cuotas);
                         $('html,body').animate({ scrollTop: $('#quoteBlock').offset().top }, 'slow');
                     }
@@ -174,6 +174,7 @@ app.HogarTotal = (function () {
         $('#provincia').val(data.provincia);
         $('#canton').val(data.canton);
         $('#distrito').val(data.distrito);
+        $('#otrassenas').val(data.otrassenas);
         $('#ocupaciondelriesgo').val(data.ocupaciondelriesgo);
         $('#tipodesuscripcion').val(data.tipodesuscripcion);
         $('#numerodepisosedificacion').val(data.numerodepisosedificacion);
@@ -188,6 +189,14 @@ app.HogarTotal = (function () {
         app.ui.SetNumericValue('#sAPerdidaderentas', data.sAPerdidaderentas);
         $('#sARespcivil').val(data.sARespcivil);
         app.ui.SetNumericValue('#sAMobiliario', data.sAMobiliario);
+        if (data.terceros != null)
+            $('#tercerosTbl').bootstrapTable('load', data.terceros);
+        else
+            $('#tercerosTbl').bootstrapTable('load', {});
+        if (data.documentosrequeridos != null)
+            $('#documentosrequeridosTbl').bootstrapTable('load', data.documentosrequeridos);
+        else
+            $('#documentosrequeridosTbl').bootstrapTable('load', {});
         if (data.coberturas != null)
             $('#coberturasTbl').bootstrapTable('load', data.coberturas);
         else
@@ -199,10 +208,6 @@ app.HogarTotal = (function () {
             $('#plandepagoTbl').bootstrapTable('load', {});
 
 
-        if (data.documentosrequeridos != null)
-            $('#documentosrequeridosTbl').bootstrapTable('load', data.documentosrequeridos);
-        else
-            $('#documentosrequeridosTbl').bootstrapTable('load', {});
 
     };
 
@@ -535,8 +540,8 @@ app.HogarTotal = (function () {
                     formatter: 'app.ui.DecimalFormatter',
                     visible: true
                 }, {
-                    field: 'recardoporfraccionamiento',
-                    title: 'Recardo por fraccionamiento',
+                    field: 'recargoporfraccionamiento',
+                    title: 'Recargo por fraccionamiento',
                     titleTooltip: '',
                     sortable: false,
                     halign: 'center',
@@ -669,7 +674,7 @@ app.HogarTotal = (function () {
                     formatter: 'app.ui.DateFormatter',
                     visible: true
                 }, {
-                    field: 'mca_sexoDesc',
+                    field: 'tercerosMca_sexoDesc',
                     title: 'Sexo',
                     titleTooltip: '',
                     sortable: false,
@@ -859,7 +864,7 @@ app.HogarTotal = (function () {
                 apellido1: null,
                 apellido2: null,
                 fechadenacimiento: null,
-                mca_sexo: null,
+                tercerosMca_sexo: null,
                 estadoCivil: null,
                 numerodetelefono: null,
                 correoelectronico: null,
@@ -886,8 +891,8 @@ app.HogarTotal = (function () {
                 apellido1: $('#apellido1').val(),
                 apellido2: $('#apellido2').val(),
                 fechadenacimiento: app.ui.GetDateValue('#fechadenacimiento'),
-                mca_sexo: $('#mca_sexo').val(),
-                mca_sexoDesc: $('#mca_sexo option:selected').text(),
+                tercerosMca_sexo: $('#tercerosMca_sexo').val(),
+                tercerosMca_sexoDesc: $('#tercerosMca_sexo option:selected').text(),
                 estadoCivil: $('#estadoCivil').val(),
                 estadoCivilDesc: $('#estadoCivil option:selected').text(),
                 numerodetelefono: $('#numerodetelefono').val(),
@@ -924,7 +929,7 @@ app.HogarTotal = (function () {
         $('#apellido1').val(row.apellido1);
         $('#apellido2').val(row.apellido2);
         app.ui.SetDateValue('#fechadenacimiento', row.fechadenacimiento);
-        $('#mca_sexo').val(row.mca_sexo);
+        $('#tercerosMca_sexo').val(row.tercerosMca_sexo);
         $('#estadoCivil').val(row.estadoCivil);
         $('#numerodetelefono').val(row.numerodetelefono);
         $('#correoelectronico').val(row.correoelectronico);
@@ -958,7 +963,7 @@ app.HogarTotal = (function () {
                 apellido1: { required: true },
                 apellido2: { required: true },
                 fechadenacimiento: { required: true },
-                mca_sexo: { required: true },
+                tercerosMca_sexo: { required: true },
                 estadoCivil: { required: true },
                 numerodetelefono: { required: true },
                 correoelectronico: { email: true, required: true },
@@ -976,7 +981,7 @@ app.HogarTotal = (function () {
                 apellido1: { required: 'Debe indicar el Apellido 1' },
                 apellido2: { required: 'Debe indicar el Apellido 2' },
                 fechadenacimiento: { required: 'Debe indicar el Fecha de nacimiento' },
-                mca_sexo: { required: 'Debe indicar el Sexo' },
+                tercerosMca_sexo: { required: 'Debe indicar el Sexo' },
                 estadoCivil: { required: 'Debe indicar el Estado Civil' },
                 numerodetelefono: { required: 'Debe indicar el Número de teléfono' },
                 correoelectronico: { email: 'Debe indicar un correo electrónico valido', required: 'Debe indicar el correo electrónico' },
@@ -1038,7 +1043,7 @@ app.HogarTotal = (function () {
             $('#apellido2').val(data.SecondLastName);
             $('#PhoneNumber').val(data.PhoneNumber);
             app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
-            $('#mca_sexo').val(data.Gender);
+            $('#tercerosMca_sexo').val(data.Gender);
             $('#TProvincia').val(data.Province);
             $('#correoelectronico').val(data.PrimaryEmailAddress);
             $('#numerodetelefono').val(data.PhoneNumber);

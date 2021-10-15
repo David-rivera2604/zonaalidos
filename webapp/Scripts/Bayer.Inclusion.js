@@ -12,6 +12,14 @@ app.BayerInclusion = (function () {
             $('.tenant-bayer-visible').removeClass('d-none');
         }
 
+        if (localStorage.getItem('Tenant') === 'Caturix') {
+            let selectedOptions = $('select#IsHealth');
+            selectedOptions.children().remove();
+            selectedOptions.append($('<option />').val('').text(''));
+            selectedOptions.append($('<option />').val('A').text('Clase 1 - $100,000.00'));
+            selectedOptions.append($('<option />').val('B').text('Clase 2 - $150,000.00'));
+        }
+
         app.core.Lookups([
             'BayerPolizas.ContractorName',
             'BayerNumeroPoliza.MainPolicyId',
@@ -24,15 +32,15 @@ app.BayerInclusion = (function () {
             'CR_Bancos.RefundBankCode'],
             function () {
                 if (internalId != null) {
-                    app.core.Get(app.setting.apipath + 'v1/Inclusion/bayer/' + internalId, null,
-                        function (data) {
+                    app.core.Get(app.setting.apipath + 'v1/Inclusion/bayer/' + internalId)
+                        .done(function (data) {
                             $("#VisualizationsEdtForm fieldset").prop("disabled", false);
                             MapObjectToInput(data);
                         });
                 }
                 else {
-                    app.core.Get(app.setting.apipath + 'v1/Inclusion/bayer/0', null,
-                        function (data) {
+                    app.core.Get(app.setting.apipath + 'v1/Inclusion/bayer/0')
+                        .done(function (data) {
                             id = internalId;
                             $("#VisualizationsEdtForm fieldset").prop("disabled", false);
                             MapObjectToInput(data);
@@ -136,7 +144,7 @@ app.BayerInclusion = (function () {
         app.ui.SetNumericValue('#Weight', data.Weight);
         app.ui.SetNumericValue('#InsuredAmount', data.InsuredAmount);
         $('#Doctor').val(data.Doctor);
-        $('#EmployeeNumber').val(data.EmployeeNumber);        
+        $('#EmployeeNumber').val(data.EmployeeNumber);
         $('#Province').val(data.Province);
         app.core.LookupDependency(data.Province, 'Canton', 'CR_Canton', '', data.Canton, false);
         app.core.LookupDependency(data.Canton, 'District', 'CR_Distritos', '', data.District, false);
@@ -169,6 +177,9 @@ app.BayerInclusion = (function () {
                 app.ui.DataEntryBehavior('#VisualizationsEdtForm', 'disabled');
                 if (statusmode === 'Review') {
                     $('.role-Revisor-visible').removeClass('d-none');
+                    if (localStorage.getItem('Tenant') === 'Caturix') {
+                        $('#InsuredAmount').parent().parent().addClass('d-none');
+                    }
                     $('.role-Revisor-enabled').prop("disabled", false);
                     $('.role-Revisor-enabled-bayer').prop("disabled", false);
                     $('#VisualizationsEdtFormBack').removeClass('d-none');
@@ -190,7 +201,9 @@ app.BayerInclusion = (function () {
             case 10:
             case 31:
                 app.ui.DataEntryBehavior('#VisualizationsEdtForm', 'disabled');
-                //    $('#print').removeClass('d-none');
+                if (localStorage.getItem('Tenant') === 'Caturix') {
+                    $('#print').removeClass('d-none');
+                }
                 break;
             case 99:
                 app.ui.DataEntryBehavior('#VisualizationsEdtForm', 'disabled');
@@ -317,7 +330,7 @@ app.BayerInclusion = (function () {
         $("#VisualizationsEdtFormRevised").appendTo("#GenericToolBar");
         $("#VisualizationsEdtFormUpLoad").appendTo("#GenericToolBar");
 
-        
+
         $(".XXX").appendTo('.sidebar-content');
         $(".XXX").removeClass('d-none');
         $('#sidebarTitle').html("<h3>Motivo del rechazo</h3>");
@@ -338,8 +351,8 @@ app.BayerInclusion = (function () {
                 var value = $('#DocumentNumber').val().replace(/-/g, '');
                 if (value !== null && parseInt(0 + value, 10) !== 0 && parseInt(0 + value, 10) <= 999999999) {
                     $('#DocumentNumber').addClass('loading');
-                    app.core.Get(app.setting.apipath + 'v1/Insured/' +  value)
-                        .done(function (data, textStatus, jqXHR) {
+                    app.core.Get(app.setting.apipath + 'v1/Insured/' + value)
+                        .done(function (data) {
                             if (data.Nombre !== null) {
                                 $('#FirstName').val(data.Nombre);
                                 $('#LastName').val(data.ApellidoPaterno + ' ' + data.ApellidoMaterno);
@@ -442,7 +455,7 @@ app.BayerInclusion = (function () {
         $('#print').click(function () {
             event.preventDefault();
             app.core.Get(app.setting.apipath + 'v1/Inclusion/bayer/' + id)
-                .done(function (data, textStatus, jqXHR) {
+                .done(function (data) {
                     var urlServer = app.setting.apibase + '/AliadoServReports/api/Report/Build';
                     var data2 = {
                         Source: JSON.stringify(data),
@@ -506,7 +519,7 @@ app.BayerInclusion = (function () {
                     }
                 }).done(function (data, textStatus, jqXHR) {
                     app.core.Get(app.setting.apipath + 'v1/Inclusion/VerifySignature?id=' + id + '&fileName=' + data[0].StoredFileName + '&size=' + data[0].Size + '&originalFileName=' + data[0].FileName)
-                        .done(function (data2, textStatus, jqXHR) {
+                        .done(function (data2) {
                             Status_Handler(99, '');
                             if (data2.Valid) {
                                 Status_Handler(10, '');
@@ -556,9 +569,8 @@ app.BayerInclusion = (function () {
             uidata.Message = reason;
             app.ui.ButtonDoing(buttonId);
 
-            app.core.Post(app.setting.apipath + 'v1/Inclusion/bayer',
-                JSON.stringify(uidata),
-                function (data) {
+            app.core.Post(app.setting.apipath + 'v1/Inclusion/bayer', JSON.stringify(uidata))
+                .done(function (data, textStatus, jqXHR) {
                     if (callback !== undefined && callback !== null)
                         callback();
                     switch (stageMode) {
@@ -570,8 +582,13 @@ app.BayerInclusion = (function () {
                             Status_Handler(99, null);
                             break;
                         case 'back':
+                            Status_Handler(99, null);
+                            break;
                         case 'revised':
                             Status_Handler(99, null);
+                            if (localStorage.getItem('Tenant') === 'Caturix') {
+                                $('#print').removeClass('d-none');
+                            }
                             break;
                     }
                     if (data.Message != null) {

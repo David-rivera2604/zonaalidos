@@ -7,27 +7,21 @@ namespace Architect.API.Tron.Contracts.Cotizacion
 {
     public class HogarTotalSettings
     {
-        [DataMember(), JsonProperty()] public CuadroComisiones CuadroComisionesColones{ get; set; }
 
         /// <summary>
-        ///  Cuadro de comisiones
+        /// Fin de vigencia.
         /// </summary>
-        [DataMember(), JsonProperty()] public CuadroComisiones CuadroComisionesDolares { get; set; }
-
-    }
-
-    public class CuadroComisiones
-    {
+        [DataMember(), JsonProperty()] public DateTime fec_vcto_poliza { get; set; }
 
         /// <summary>
-        ///  Agente
+        /// Suma asegurada de Responsabilidad Civil
         /// </summary>
-        [DataMember(), JsonProperty()] public int cod_agt { get; set; }
+        [DataMember(), JsonProperty()] public List<Architect.API.Core.Contracts.General.LookupValue> SumasAseguradasRC { get; set; }
 
         /// <summary>
-        ///  Cuadro de comisiones
+        /// Coberturas
         /// </summary>
-        [DataMember(), JsonProperty()] public int cod_cuadro_com { get; set; }
+        [DataMember(), JsonProperty()] public List<Comun.Cobertura> coberturas { get; set; }
 
     }
 

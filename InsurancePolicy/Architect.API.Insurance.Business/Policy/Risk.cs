@@ -631,10 +631,10 @@ namespace Architect.API.Insurance.Business.Policy
         }
 
         /// <summary>
-        /// Valida la informacion de una póliza para permitir o no su emisión.
+        /// Valida la información de una póliza para permitir o no su emisión.
         /// </summary>
         /// <param name="source">Datos de la póliza</param>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <returns></returns>
         public static List<Core.Contracts.General.Error> Validate(Contracts.Policy.Risk source, int companyId)
         {
@@ -707,7 +707,7 @@ namespace Architect.API.Insurance.Business.Policy
         }
 
         /// <summary>
-        /// Aplica las reglas de suscripción de forma tomatica para determina si es necesario o no hacer la revisión de la póliza.
+        /// Aplica las reglas de suscripción de forma automática para determina si es necesario o no hacer la revisión de la póliza.
         /// </summary>
         /// <param name="riskToBeEvaluated">Riesgo a ser evaluado</param>
         /// <returns>Verdadero en caso de necesitar suscripción, falso en el caso contrario</returns>

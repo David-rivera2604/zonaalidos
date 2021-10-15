@@ -25,12 +25,20 @@ namespace Architect.API.Core.Business.General
                 {
                     code += item.Statement;
                 }
+                try
+                {
+                    await CSharpScript.EvaluateAsync(code,
+                        ScriptOptions.Default.WithReferences(typeof(Architect.Common.Helpers.LogHandler).Assembly,
+                                                             typeof(Architect.API.Core.Business.General.Mail).Assembly,
+                                                             entitySource.GetType().Assembly),
+                        globals: context).ConfigureAwait(false);
+                }
+                catch (Microsoft.CodeAnalysis.Scripting.CompilationErrorException ex)
+                {
+                    Architect.Common.Helpers.LogHandler.ErrorLog("Rules",string.Format("{0} - {1}", entityType, action), ex);
+                }
 
-                await CSharpScript.EvaluateAsync(code,
-                    ScriptOptions.Default.WithReferences(typeof(Architect.Common.Helpers.LogHandler).Assembly,
-                                                         typeof(Architect.API.Core.Business.General.Mail).Assembly,
-                                                         entitySource.GetType().Assembly),
-                    globals: context).ConfigureAwait(false);
+
 
                 //if (entityType == 1001)
                 //{

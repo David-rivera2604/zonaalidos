@@ -218,7 +218,7 @@ namespace Architect.API.Tron.Controllers
         public async Task<IHttpActionResult> MapfreMasCoverages(int cod_mon, int cod_marca, int cod_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int num_contrato, int num_subcontrato, string num_poliza_grupo)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
-            List<Tron.Contracts.Cotizacion.MapfreMasCoberturas> result = null;
+            List<Tron.Contracts.Comun.Cobertura> result = null;
             await Task.Run(() =>
             {
                 result = Architect.API.Tron.Business.Cotizacion.MapfreMas.CoverageByDefault(cod_mon, cod_marca, cod_modelo, anio_sub_modelo, cod_tip_vehi, cod_uso_vehi, mca_sexo, cod_zona_circul, edad, cod_plan_auto, num_contrato, num_subcontrato, num_poliza_grupo, tokenInfo);

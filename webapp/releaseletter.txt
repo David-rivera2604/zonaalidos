@@ -171,3 +171,21 @@
 1.5.55 07/09/2021 Fix. Manejo de cambio de fechas en la cotización y en la emisión.
                   MapfreMas. Se deshabilita el cambo de fin de vigencia y de calcula de forma automática.
 1.5.56 27/09/2021 Aliados. HogarTotal. Se habilita el manejo de pólizas de grupos.
+                  Aliados. MapfreMas. Se agregan nuevo tipos de productos.
+                  Aliados. MapfreMas. longitud del campo otras señas.
+                  Aliados. Consulta Cotizaciones. Condicional para davivienda y purdy, para completar solicitud o emisión directa.
+1.5.57 04/10/2021 Medical. Asistencias. Se modifica export para incluir dependiente.
+                  Aliados. MapfreMas. Filtrado de coberturas según nuevos tipos de productos (Oro, Plata, Trebol y Trebol RC).
+                  Aliados. MapfreMas. Corrección para manejar el valores de vehículo como 9200000000
+1.5.58 08/10/2021 Caturix. Ajustes según requerimiento RF01047405 (SOLICITUD DE NUEVO EMISOR WEB CATURIX)
+       08/11/2021 Coope. Fix. Fecha de inicio de vigencia para certificados de vida.
+                  HogarTotal. ESPH. Se condiciona campo de objetos valiosos.
+                  HogarTotal. ESPH. Se agrega campo otras señas en la cotización.
+                  HogarTotal. ESPH. Se agrega campo otras señas, tarifa de riesgo y número de presupuesto en el reporte.
+                  HogarTotal. ESPH. Se elimina la columna de recargo en la sección de datos económicos del reporte.
+                  HogarTotal. Manejo dinámico de terceros por defecto.
+                  HogarTotal. Manejo dinámico de documentos requeridos.
+                  HogarTotal. ESPH. Se ajustan los campos provincia, inicio de vigencia del colectivo y fecha al final del reporte.
+                  HogarTotal. ESPH. Recarga de contratos a partir del cambio de la moneda.
+                  MapfreMas. Se habilita el porcentaje de ajuste comercial para cualquier marca en caso de producto oro, plata, Trébol y Trébol RC.
+                  MapfreMas. Manejo de los campos capital y deducible basado en la selección de las coberturas.

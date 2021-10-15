@@ -47,16 +47,16 @@ namespace Architect.API.Tron.Business.Cotizacion
         }
 
 
-        internal static List<Contracts.Cotizacion.MultirriesgoCoberturas> CoverageByDefault(bool isCoope, int cod_cia, int cod_ramo, DateTime fec_validez)
+        internal static List<Contracts.Comun.Cobertura> CoverageByDefault(bool isCoope, int cod_cia, int cod_ramo, DateTime fec_validez)
         {
             string cod_cobExcludeFilter = "2019";
             string selected = "2001,2002,2024,2025,2026,2027";
             int cod_modalidad = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_modalidad"]);
 
-            List<Contracts.Cotizacion.MultirriesgoCoberturas> coberturas = new System.Collections.Generic.List<Contracts.Cotizacion.MultirriesgoCoberturas>();
+            List<Contracts.Comun.Cobertura> coberturas = new List<Contracts.Comun.Cobertura>();
             foreach (Architect.API.Tron.Contracts.Tables.a1002150 item in Architect.API.Tron.DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, cod_cobExcludeFilter, string.Empty))
             {
-                coberturas.Add(new Contracts.Cotizacion.MultirriesgoCoberturas()
+                coberturas.Add(new Contracts.Comun.Cobertura()
                 {
                     seleccionado = selected.Contains(item.COD_COB.ToString()),
                     requerida = item.MCA_OBLIGATORIO == "S",
@@ -194,7 +194,7 @@ namespace Architect.API.Tron.Business.Cotizacion
         private static bool Util_CoverageSelected(Contracts.Cotizacion.Multirriesgo source, int code)
         {
             bool finded = false;
-            foreach (MultirriesgoCoberturas item in source.coberturas)
+            foreach (Contracts.Comun.Cobertura item in source.coberturas)
             {
                 if (item.codigo == code && item.seleccionado)
                 {
@@ -208,7 +208,7 @@ namespace Architect.API.Tron.Business.Cotizacion
         private static bool Rule_AtLeastOneCoverageSelected(Contracts.Cotizacion.Multirriesgo source)
         {
             bool finded = false;
-            foreach (MultirriesgoCoberturas item in source.coberturas)
+            foreach (Contracts.Comun.Cobertura item in source.coberturas)
             {
                 if (item.seleccionado)
                 {

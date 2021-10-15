@@ -141,7 +141,7 @@ app.EmisionMapfreMas = (function () {
                         $('#importetotal').html(moneda + data.resumen.importetotal.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
                         $('#primaneta').html(data.resumen.primaneta.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
                         $('#iva').html(data.resumen.iVA.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                        $('#recardoporfraccionamiento').html(data.resumen.recardoporfraccionamiento.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                        $('#recargoporfraccionamiento').html(data.resumen.recargoporfraccionamiento.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
                         $('#cuotas').html(data.resumen.cuotas);
                         $('html,body').animate({ scrollTop: $('#quoteBlock').offset().top }, 'slow');
                     }
@@ -736,7 +736,7 @@ app.EmisionMapfreMas = (function () {
                     formatter: 'app.ui.DecimalFormatter',
                     visible: true
                 }, {
-                    field: 'recardoporfraccionamiento',
+                    field: 'recargoporfraccionamiento',
                     title: 'Recargo por fraccionamiento',
                     titleTooltip: '',
                     sortable: false,

@@ -27,7 +27,7 @@ namespace Architect.API.Tron.Controllers
             Tron.Contracts.Emision.HogarTotal result = null;
             await Task.Run(() =>
             {
-                result = Architect.API.Tron.Business.Emision.HogarTotal.Setup(presupuesto);
+                result = Architect.API.Tron.Business.Emision.HogarTotal.Setup(presupuesto, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -119,13 +119,13 @@ namespace Architect.API.Tron.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("MapfreMas/Terceros/{fuente_Tomador}")]
-        public async Task<IHttpActionResult> Tercero_Complement([FromUri] string fuente_Tomador, [FromBody] List<Contracts.Emision.MapfreMasterceros> terceros)
+        public async Task<IHttpActionResult> Tercero_Complement([FromUri] string fuente_Tomador, [FromBody] List<Contracts.Comun.tercero> terceros)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
-            List<Contracts.Emision.MapfreMasterceros> result = null;
+            List<Contracts.Comun.tercero> result = null;
             await Task.Run(() =>
             {
-                result = Architect.API.Tron.Business.Emision.MapfreMas.Tercero_Complement(terceros, fuente_Tomador, tokenInfo);
+                result = Architect.API.Tron.Business.Reglas.research.Apply_Terceros("MapfreMas", terceros, fuente_Tomador, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);

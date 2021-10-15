@@ -16,9 +16,9 @@ namespace Architect.API.Tron.Business.Emision
                 {
                     quoteInfo.Error = tronQuoteInfo.Calculado.Coberturas.First().TXT_ERROR;
                 }
-                foreach (Architect.API.Tron.Contracts.Poliza.CoberturaCalculada item in tronQuoteInfo.Calculado.Coberturas)
+                foreach (Contracts.Poliza.CoberturaCalculada item in tronQuoteInfo.Calculado.Coberturas)
                 {
-                    foreach (Architect.API.Tron.Contracts.Cotizacion.MapfreMasCoberturas itemQuote in quoteInfo.coberturas)
+                    foreach (Contracts.Comun.Cobertura itemQuote in quoteInfo.coberturas)
                     {
                         if (item.COD_COB == itemQuote.codigo)
                         {
@@ -52,18 +52,18 @@ namespace Architect.API.Tron.Business.Emision
             {
                 double importeAnual = 0;
                 bool setvalues = true;
-                quoteInfo.plandepago = new List<Contracts.Cotizacion.MapfreMasPlandepago>();
+                quoteInfo.plandepago = new List<Contracts.Comun.PlanDePago>();
                 foreach (Architect.API.Tron.Contracts.Poliza.ReciboCalculado item in tronQuoteInfo.Calculado.Recibos)
                 {
                     importeAnual = item.IMP_RECIBO;
-                    quoteInfo.plandepago.Add(new Contracts.Cotizacion.MapfreMasPlandepago()
+                    quoteInfo.plandepago.Add(new Contracts.Comun.PlanDePago()
                     {
                         cuota = item.NUM_CUOTA,
                         fechadesde = item.FEC_EFEC_RECIBO,
                         fechahasta = item.FEC_VCTO_RECIBO,
                         primaneta = item.IMP_NETA,
                         iVA = item.IMP_IMPTOS,
-                        recardoporfraccionamiento = item.IMP_INTERES,
+                        recargoporfraccionamiento = item.IMP_INTERES,
                         importetotal = item.IMP_RECIBO
                     });
                     if (setvalues)
@@ -73,7 +73,7 @@ namespace Architect.API.Tron.Business.Emision
                             cuotas = tronQuoteInfo.Calculado.Recibos.Count,
                             primaneta = item.IMP_NETA,
                             iVA = item.IMP_IMPTOS,
-                            recardoporfraccionamiento = item.IMP_INTERES,
+                            recargoporfraccionamiento = item.IMP_INTERES,
                             importetotal = item.IMP_RECIBO
                         };
                         setvalues = false;

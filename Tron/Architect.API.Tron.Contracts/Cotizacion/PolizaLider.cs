@@ -103,85 +103,11 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// <summary>
         /// @Control.Caption@.
         /// </summary>
-        [DataMember(), JsonProperty()] public List<PolizaLiderCoberturas> coberturas { get; set; }
+        [DataMember(), JsonProperty()] public List<Comun.Cobertura> coberturas { get; set; }
         /// <summary>
         /// @Control.Caption@.
         /// </summary>
-        [DataMember(), JsonProperty()] public List<PolizaLiderPlandepago> plandepago { get; set; }
-
-
-    }
-    public class PolizaLiderCoberturas
-    {
-
-        /// <summary>
-        /// Seleccionada.
-        /// </summary>
-        [DataMember(), JsonProperty()] public bool seleccionado { get; set; }
-
-        /// <summary>
-        /// Requerida.
-        /// </summary>
-        [DataMember(), JsonProperty()] public bool requerida { get; set; }
-
-        /// <summary>
-        /// Código.
-        /// </summary>
-        [DataMember(), JsonProperty()] public int codigo { get; set; }
-        /// <summary>
-        /// Nombre.
-        /// </summary>
-        [DataMember(), JsonProperty()] public string nombre { get; set; }
-        /// <summary>
-        /// Capital.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double capital { get; set; }
-        /// <summary>
-        /// Prima total.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double primatotal { get; set; }
-        /// <summary>
-        /// Deducible.
-        /// </summary>
-        [DataMember(), JsonProperty()] public string decucible { get; set; }
-        /// <summary>
-        /// Error.
-        /// </summary>
-        [DataMember(), JsonProperty()] public string error { get; set; }
-
-
-    }
-    public class PolizaLiderPlandepago
-    {
-
-        /// <summary>
-        /// Cuota.
-        /// </summary>
-        [DataMember(), JsonProperty()] public int cuota { get; set; }
-        /// <summary>
-        /// Fecha desde.
-        /// </summary>
-        [DataMember(), JsonProperty()] public DateTime fechadesde { get; set; }
-        /// <summary>
-        /// Fecha hasta.
-        /// </summary>
-        [DataMember(), JsonProperty()] public DateTime fechahasta { get; set; }
-        /// <summary>
-        /// Prima neta.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double primaneta { get; set; }
-        /// <summary>
-        /// IVA.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double iVA { get; set; }
-        /// <summary>
-        /// Recardo por fraccionamiento.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double recardoporfraccionamiento { get; set; }
-        /// <summary>
-        /// Importe total.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double importetotal { get; set; }
+        [DataMember(), JsonProperty()] public List<Comun.PlanDePago> plandepago { get; set; }
 
 
     }

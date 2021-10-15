@@ -13,100 +13,33 @@
 
 <body style="background-color: white;">
 
-    <div class="row">
-
-        <div class="col-lg-4">
-            <div class="row">
-                <div class="col-md-4 col-lg-12">
-                    <!-- Total de pólizas en vigor -->
-                    <div id="w5" class="widget style1">
-                        <div class="row">
-                            <div class="col-4 text-center">
-                                <i class="fa fa-shield fa-5x"></i>
-                            </div>
-                            <div class="col-8 text-right">
-                                <span> Pólizas en vigor </span>
-                                <h2 class="font-bold"></h2>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="w6" class="col-md-8 col-lg-12">
-                    <!-- Total de pólizas en vigor por sucursal -->
-                    <div class="ibox ">
-                        <div class="ibox-title">
-                            <h5>Pólizas emitidas por sucursal</h5>
-                        </div>
-                        <div class="ibox-content">
-                            <ul class="stat-list">
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-12">
-                <div>
-                    <h5>
-                        Productos disponible para la emisión de pólizas
-                    </h5>
-                    <table class="tablesimple">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <button type="button" class="btn btn-danger"><i class="fa fa-handshake-o"></i></button>
-
-                                </td>
-                                <td>
-                                    <a href="../policy/Edit?alias=cope_vida">
-                                        Seguro vida Mapfre colectivo colones
-                                    </a><br /><small>Ramo: Colectivo de vida</small>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <button type="button" class="btn btn-info m-r-sm"><i class="fa fa-credit-card"></i></button>
-                                </td>
-                                <td>
-                                    <a href="../policy/Edit?alias=cope_saldo_deudor">Seguro colectivo de vida saldo deudores colones</a><br /><small class="text-muted">Ramo: Colectivo de vida</small>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-
-            </div>
-        </div>
-        <div class="col-lg-8">
-            <!-- Pólizas emitidas mensual por sucursal -->
-            <div class="ibox">
-                <div class="ibox-title">
-                    <h5>Emisión mensual de pólizas por sucursal</h5>
-                    <div class="ibox-tools">
-                        <a class="fullscreen-link">
-                            <i class="fa fa-expand" title="Expande la zona de trabajo"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="ibox-content">
-                    <div id="chart">
-                    </div>
-                </div>
-            </div>
-        </div>
-
+    <!-- Grid -->
+    <div id="toolbar">
     </div>
-
+    <!-- Grid -->
+    <div class='form-row'>
+        <div class='col-md-12'>
+            <div class="table-responsive animated bounceInRight" style="padding: 0px 2px 0px 2px;">
+                <table id="RoleMemberGridTbl" style="font-size: 11px"></table>
+            </div>
+            <div id="chart" class="d-none">
+            </div>
+            <div id="tmpl" style="font-family: monospace;">
+            </div>
+        </div>
+    </div>
 
 </body>
 @Scripts.Render("~/bundles/jsView")
 </html>
 <script src="@Url.Content("~/assets/apexcharts/apexcharts.min.js")"></script>
-<script src="@Url.Content("~/Scripts/Dashboard.Render.js")"></script>
+<script src="@Url.Content("~/assets/tableExport.jquery.plugin/tableExport.min.js")"></script>
+<script src="@Url.Content("~/assets/bootstrap-table/extensions/export/bootstrap-table-export.js")"></script>
+<script src="@Url.Content("~/assets/template7/template7.min.js")"></script>
+<script src="@Url.Content("~/Scripts/Dashboard.Users.js")"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        app.ViewerDashboard.Init();
+        app.DashboardUsers.Init();
     });
 </script>
-}
+

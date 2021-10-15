@@ -124,7 +124,7 @@ namespace Architect.API.Tron.Business.Emision
 
             return datosFijos.Terceros;
         }
-        internal static Architect.API.Tron.Contracts.Presupuesto.Tercero TerceroPresupuesto(Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos, Contracts.Emision.MultirriesgoTerceros item, int tipodetercero)
+        internal static Architect.API.Tron.Contracts.Presupuesto.Tercero TerceroPresupuesto(Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos, Architect.API.Tron.Contracts.Comun.tercero item, int tipodetercero)
         {
             Architect.API.Tron.Contracts.Presupuesto.Tercero result = new Architect.API.Tron.Contracts.Presupuesto.Tercero()
             {
@@ -170,7 +170,7 @@ namespace Architect.API.Tron.Business.Emision
 
             return result;
         }
-        internal static Architect.API.Tron.Contracts.Presupuesto.DetalleDeTercero CambioTerceroPresupuesto(Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos, Contracts.Emision.MultirriesgoTerceros item)
+        internal static Architect.API.Tron.Contracts.Presupuesto.DetalleDeTercero CambioTerceroPresupuesto(Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos, Architect.API.Tron.Contracts.Emision.MultirriesgoTerceros item)
         {
             Architect.API.Tron.Contracts.Presupuesto.DetalleDeTercero result = new Architect.API.Tron.Contracts.Presupuesto.DetalleDeTercero()
             {

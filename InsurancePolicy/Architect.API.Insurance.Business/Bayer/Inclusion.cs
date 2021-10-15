@@ -54,40 +54,45 @@ namespace Architect.API.Insurance.Business.Bayer
         public static void EvicertiaSigned()
         {
             try
-            {
-                Utilities.Log.TraceLog("Bayer.Inclusion.EvicertiaSigned", DateTime.Now.ToString(), "Evicertia");
+            {              
                 Architect.API.Core.Contracts.EviSign.EviSignQueryResult eviSignInf = null;
-                int companyId = 4;
-                foreach (Utilities.Contracts.LookUpValue item in Architect.API.Insurance.DataAccess.Policy.Risk.RetrieveByStatus(companyId, 4))
+
+                foreach (string companyIdForReview in ConfigurationManager.AppSettings["Evicertia.Request.Company.Review"].ToString().Split(','))
                 {
-                    eviSignInf = API.Core.Business.General.Evicertia.EviSignQuery(item.Description).GetAwaiter().GetResult();
-                    if (eviSignInf?.results?.Length > 0)
+                    int companyId = Convert.ToInt32(companyIdForReview);
+                    Utilities.Log.TraceLog("Bayer.Inclusion.EvicertiaSigned", string.Format("{0} CompanyId {1}", DateTime.Now.ToString(), companyId), "Evicertia");
+
+                    foreach (Utilities.Contracts.LookUpValue item in Architect.API.Insurance.DataAccess.Policy.Risk.RetrieveByStatus(companyId, 4))
                     {
-                        Utilities.Log.TraceLog("MapfreMas.EvicertiaSigned", item.Description + " outcome " + eviSignInf.results[0].outcome, "Evicertia");
-                        switch (eviSignInf.results[0].outcome)
+                        eviSignInf = API.Core.Business.General.Evicertia.EviSignQuery(item.Description).GetAwaiter().GetResult();
+                        if (eviSignInf?.results?.Length > 0)
                         {
-                            case "Signed":
-                                Signed(companyId, Convert.ToInt32(item.Code));
-                                break;
-                            case "None":
-                                break;
-                            case "Expired":
-                                Expired(companyId, Convert.ToInt32(item.Code));
-                                break;
-                            case "Rejected":
-                                Rejected(companyId, Convert.ToInt32(item.Code));
-                                break;
+                            Utilities.Log.TraceLog(" Bayer.Inclusion.EvicertiaSigned", item.Description + " outcome " + eviSignInf.results[0].outcome, "Evicertia");
+                            switch (eviSignInf.results[0].outcome)
+                            {
+                                case "Signed":
+                                    Signed(companyId, Convert.ToInt32(item.Code));
+                                    break;
+                                case "None":
+                                    break;
+                                case "Expired":
+                                    Expired(companyId, Convert.ToInt32(item.Code));
+                                    break;
+                                case "Rejected":
+                                    Rejected(companyId, Convert.ToInt32(item.Code));
+                                    break;
+                            }
                         }
-                    }
-                    else
-                    {
-                        Utilities.Log.TraceLog("Bayer.Inclusion.EvicertiaSigned", item.Description + " not outcome", "Evicertia");
+                        else
+                        {
+                            Utilities.Log.TraceLog(" Bayer.Inclusion.EvicertiaSigned", item.Description + " not outcome", "Evicertia");
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
-                Utilities.Log.ErrorLog("Inclusion", "EvicertiaSigned", ex);
+                Utilities.Log.ErrorLog("Bayer.Inclusion.EvicertiaSigned", "EvicertiaSigned", ex);
                 throw ex;
             }
         }
@@ -256,7 +261,7 @@ namespace Architect.API.Insurance.Business.Bayer
         }
 
         /// <summary>
-        /// Almacena o actualiza la informacion de una planilla.
+        /// Almacena o actualiza la información de una planilla.
         /// </summary>
         public static Contracts.Bayer.InclusionRequest Issue(Contracts.Bayer.InclusionRequest inclusionInfo, Core.Contracts.Security.Token tokenInfo)
         {
@@ -378,10 +383,11 @@ namespace Architect.API.Insurance.Business.Bayer
 
                             if (!inclusionInfo.HasDigitalSignature)
                             {
+
                                 // Se enviar documento para su firma por medio de EviCertia
                                 string uniqueId = API.Core.Business.General.Evicertia.EviSignSubmit(
-                                                      "Bayer - Solicitud de inclusión",
-                                                      "Bayer - Solicitud de inclusión #" + inclusionInfo.Id.ToString(),
+                                                    string.Format("{0} - Solicitud de inclusión", Core.Business.Common.LkpDescription(tokenInfo.CompanyId, "Company", tokenInfo.CompanyId.ToString())),
+                                                    string.Format("{0} - Solicitud de inclusión #{1}", Core.Business.Common.LkpDescription(tokenInfo.CompanyId, "Company", tokenInfo.CompanyId.ToString()), inclusionInfo.Id),
                                                       name,
                                                       inclusionInfo.PrimaryEmailAddress,
                                                       archivo).GetAwaiter().GetResult();
