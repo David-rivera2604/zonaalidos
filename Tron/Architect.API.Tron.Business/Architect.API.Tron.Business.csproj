@@ -64,6 +64,9 @@
     <Compile Include="Cotizacion\HogarTotalConvertFrom.cs" />
     <Compile Include="Cotizacion\HogarTotalConvertTo.cs" />
     <Compile Include="Cotizacion\HogarTotal.cs" />
+    <Compile Include="Cotizacion\Viajero.cs" />
+    <Compile Include="Cotizacion\ViajeroConvertFrom.cs" />
+    <Compile Include="Cotizacion\ViajeroConvertTo .cs" />
     <Compile Include="Emision\MultirriesgoConvertFrom.cs" />
     <Compile Include="Emision\MapfreMasConvertFrom.cs" />
     <Compile Include="Emision\MultirriesgoConvertTo.cs" />
