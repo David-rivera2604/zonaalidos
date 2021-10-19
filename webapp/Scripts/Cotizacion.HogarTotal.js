@@ -339,10 +339,14 @@ app.HogarTotal = (function () {
         });
 
         $('#iniciodevigencia').blur(function () {
-            var minDate = app.ui.GetDateRawValue('#iniciodevigencia');
+            let minDate = app.ui.GetDateRawValue('#iniciodevigencia');
             minDate.setDate(minDate.getDate() + 1);
 
             $('#findevigencia_group').data("DateTimePicker").minDate(minDate);
+
+            let fec_vcto = app.ui.GetDateRawValue('#iniciodevigencia');
+            fec_vcto.setFullYear(fec_vcto.getFullYear() + 1);
+            app.ui.SetDateValue('#findevigencia', fec_vcto);
         });
 
         $('#cotizar').click(function () {
@@ -385,6 +389,16 @@ app.HogarTotal = (function () {
             $('#DISTANCIA_MTS').prop("disabled", app.ui.GetRadioNumericValue('CERCA_RI_MAR_LAG_TA_CI') === 2);
         });
 
+        $('#fec_efec_poliza').blur(function () {
+            var minDate = app.ui.GetDateRawValue('#fec_efec_poliza');
+            minDate.setDate(minDate.getDate() + 1);
+
+            $('#fec_vcto_poliza_group').data("DateTimePicker").minDate(minDate);
+
+            let fec_vcto = app.ui.GetDateRawValue('#fec_efec_poliza');
+            fec_vcto.setFullYear(fec_vcto.getFullYear() + 1);
+            app.ui.SetDateValue('#fec_vcto_poliza', fec_vcto);
+        });
     };
 
     function Setup_Validations() {

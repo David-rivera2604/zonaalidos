@@ -456,11 +456,9 @@ app.EmisionMapfreMas = (function () {
 
             $('#fec_vcto_poliza_group').data("DateTimePicker").minDate(minDate);
 
-            if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
-                let fec_vcto = app.ui.GetDateRawValue('#fec_efec_poliza');
-                fec_vcto.setFullYear(fec_vcto.getFullYear() + 1);
-                app.ui.SetDateValue('#fec_vcto_poliza', fec_vcto);
-            }
+            let fec_vcto = app.ui.GetDateRawValue('#fec_efec_poliza');
+            fec_vcto.setFullYear(fec_vcto.getFullYear() + 1);
+            app.ui.SetDateValue('#fec_vcto_poliza', fec_vcto);
         });
 
         $('#Fuente_Tomador').change(function () {

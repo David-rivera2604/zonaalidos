@@ -159,20 +159,20 @@ namespace Architect.API.Tron.Business.Cotizacion
 
                             case 34: // Oro
                                 selected = "3001,3002,3003,3004,3005,3006,3009,3010";
-                                cod_cobExcludeFilter = "1060,3016,3018,3017,3094,1061";
+                                cod_cobExcludeFilter = "3016,3018,3017,3094,1061";
                                 break;
                             case 35: //Plata
                                 selected = "3001,3004,3005,3010";
-                                cod_cobExcludeFilter = "1060,3016,3018,3017,3094,1061,3002,3003,3007,3014,3015,3008";
+                                cod_cobExcludeFilter = "3016,3018,3017,3094,1061,3002,3003,3007,3014,3015,3008";
                                 //cod_cobExcludeFilter = "3002,3003,3007,3014,3015,3008,1060,3016,3018,3017";
                                 break;
                             case 36: //Trebol
                                 selected = "3001,3004,3010";
-                                cod_cobExcludeFilter = "1060,3016,3018,3017,3094,1061";
+                                cod_cobExcludeFilter = "3016,3018,3017,3094,1061";
                                 break;
                             case 37: //Trebol RC
                                 selected = "3001,3004,3010";
-                                cod_cobExcludeFilter = "1060,3016,3018,3017,3094,1061";
+                                cod_cobExcludeFilter = "3016,3018,3017,3094,1061";
                                 break;
 
                             default: // 33 Plus
@@ -195,20 +195,20 @@ namespace Architect.API.Tron.Business.Cotizacion
 
                             case 34: // Oro
                                 selected = "3001,3002,3003,3004,3005,3006,3009,3010";
-                                cod_cobExcludeFilter = "1060,3016,3018,3017,3094,1061";
+                                cod_cobExcludeFilter = "3016,3018,3017,3094,1061";
                                 break;
                             case 35: //Plata
                                 selected = "3001,3004,3005,3010";
-                                cod_cobExcludeFilter = "1060,3016,3018,3017,3094,1061,3002,3003,3007,3014,3015,3008";
+                                cod_cobExcludeFilter = "3016,3018,3017,3094,1061,3002,3003,3007,3014,3015,3008";
                                 //cod_cobExcludeFilter = "3002,3003,3007,3014,3015,3008,1060,3016,3018,3017";
                                 break;
                             case 36: //Trebol
                                 selected = "3001,3004,3010";
-                                cod_cobExcludeFilter = "1060,3016,3018,3017,3094,1061";
+                                cod_cobExcludeFilter = "3016,3018,3017,3094,1061";
                                 break;
                             case 37: //Trebol RC
                                 selected = "3001,3004,3010";
-                                cod_cobExcludeFilter = "1060,3016,3018,3017,3094,1061";
+                                cod_cobExcludeFilter = "3016,3018,3017,3094,1061";
                                 break;
 
                             default: // 33 Plus

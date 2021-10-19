@@ -379,11 +379,9 @@ app.CotizacionMapfreMas = (function () {
 
             $('#fec_vcto_poliza_group').data("DateTimePicker").minDate(minDate);
 
-            if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
-                let fec_vcto = app.ui.GetDateRawValue('#fec_efec_poliza');
-                fec_vcto.setFullYear(fec_vcto.getFullYear() + 1);
-                app.ui.SetDateValue('#fec_vcto_poliza', fec_vcto);
-            }
+            let fec_vcto = app.ui.GetDateRawValue('#fec_efec_poliza');
+            fec_vcto.setFullYear(fec_vcto.getFullYear() + 1);
+            app.ui.SetDateValue('#fec_vcto_poliza', fec_vcto);
         });
 
         $('#cotizar').click(function () {
@@ -788,21 +786,9 @@ app.CotizacionMapfreMas = (function () {
         if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
             app.ui.DropDownDisabled('#DED_AUTO_RAD', $('#IMP_AUTO_RAD').prop('disabled') && app.ui.GetDropDownNumericValue('#IMP_AUTO_RAD') === 0);
         } else {
-            switch (app.ui.GetDropDownNumericValue('#DED_AUTO_CYV')) {
-                case 1:
-                    $('#DED_AUTO_RAD').val(2);
-                    break;
-                case 2:
-                    $('#DED_AUTO_RAD').val(4);
-                    break;
-                case 3:
-                    $('#DED_AUTO_RAD').val(5);
-                    break;
-                case 4:
-                    $('#DED_AUTO_RAD').val(7);
-                    break;
+            if (!$('#DED_AUTO_RAD').prop('disabled')) {
+                app.ui.SelectDropDownByText('#DED_AUTO_RAD', app.ui.GetDropDownSelectedText('#DED_AUTO_CYV'));
             }
-            app.ui.DropDownDisabled('#DED_AUTO_RAD', true);
         }
 
         let cod_marca = app.ui.GetDropDownNumericValue('#cod_marca');
@@ -937,7 +923,7 @@ app.CotizacionMapfreMas = (function () {
         }
         else {
             app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_CYV', true);
-            app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_CYV', false);
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_CYV', true);
             app.ui.SetNumericValue('#IMP_AUTO_CYV', 0);
             app.ui.SetDropDownNumericValue('#DED_AUTO_CYV', 0);
         }
@@ -947,7 +933,7 @@ app.CotizacionMapfreMas = (function () {
         }
         else {
             app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_RAD', true);
-            app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_RAD', false);
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_RAD', true);
             app.ui.SetNumericValue('#IMP_AUTO_RAD', 0);
             app.ui.SetDropDownNumericValue('#DED_AUTO_RAD', 0);
         }
@@ -957,7 +943,7 @@ app.CotizacionMapfreMas = (function () {
         }
         else {
             app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_ROB', true);
-            app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_ROB', false);
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_ROB', true);
             app.ui.SetNumericValue('#IMP_AUTO_ROB', 0);
             app.ui.SetDropDownNumericValue('#DED_AUTO_ROB', 0);
         }
@@ -977,7 +963,7 @@ app.CotizacionMapfreMas = (function () {
         }
         else {
             app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_EQESP', true);
-            app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_EQESP', false);
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_EQESP', true);
             app.ui.SetNumericValue('#IMP_AUTO_EQESP', 0);
             app.ui.SetDropDownNumericValue('#DED_AUTO_EQESP', 0);
         }

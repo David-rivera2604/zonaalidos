@@ -76,6 +76,9 @@ app.ui = (function () {
         GetDropDownStringValue: function (selector) {
             return $(selector).val();
         },
+        GetDropDownSelectedText: function (selector) {
+            return $(selector + ' option:selected').text();
+        },
         GetDropDownNumericValue: function (selector) {
             var value = $(selector).val();
             if (value === null || value === '')
@@ -101,6 +104,18 @@ app.ui = (function () {
                 }
             }
 
+        },
+        SelectDropDownByText: function (selector, selectText) {
+            let value = selectText.replace(/[ \.Cc\$\%\/]/g, '');
+            let changed = false;
+
+            $(selector + ' option').each(function (index, element) {
+                if (element.text.replace(/[ \.Cc\$\%\/]/g, '') === value) {
+                    element.selected = true;
+                    changed = true;
+                }
+            });
+            return changed;
         },
         GetNumericValue: function (selector) {
             var value = AutoNumeric.getNumber(selector)

@@ -347,6 +347,10 @@ app.HogarTotal = (function () {
             minDate.setDate(minDate.getDate() + 1);
 
             $('#findevigencia_group').data("DateTimePicker").minDate(minDate);
+
+            let fec_vcto = app.ui.GetDateRawValue('#iniciodevigencia');
+            fec_vcto.setFullYear(fec_vcto.getFullYear() + 1);
+            app.ui.SetDateValue('#findevigencia', fec_vcto);
         });
 
         $('#cotizar').click(function () {

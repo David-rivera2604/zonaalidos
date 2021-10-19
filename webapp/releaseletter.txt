@@ -178,7 +178,7 @@
                   Aliados. MapfreMas. Filtrado de coberturas según nuevos tipos de productos (Oro, Plata, Trebol y Trebol RC).
                   Aliados. MapfreMas. Corrección para manejar el valores de vehículo como 9200000000
 1.5.58 08/10/2021 Caturix. Ajustes según requerimiento RF01047405 (SOLICITUD DE NUEVO EMISOR WEB CATURIX)
-       08/11/2021 Coope. Fix. Fecha de inicio de vigencia para certificados de vida.
+       11/10/2021 Coope. Fix. Fecha de inicio de vigencia para certificados de vida.
                   HogarTotal. ESPH. Se condiciona campo de objetos valiosos.
                   HogarTotal. ESPH. Se agrega campo otras señas en la cotización.
                   HogarTotal. ESPH. Se agrega campo otras señas, tarifa de riesgo y número de presupuesto en el reporte.
@@ -189,3 +189,6 @@
                   HogarTotal. ESPH. Recarga de contratos a partir del cambio de la moneda.
                   MapfreMas. Se habilita el porcentaje de ajuste comercial para cualquier marca en caso de producto oro, plata, Trébol y Trébol RC.
                   MapfreMas. Manejo de los campos capital y deducible basado en la selección de las coberturas.
+1.5.59 16/10/2021 Aliados. Cotizadores y emisores. Calculo de fecha de expiración al cambiar la fecha de efecto.
+                  MapfreMas. Se elimina exclusión de la cobertura 1060 para los productos oro, plata, Trébol y Trébol RC.
+                  MapfreMas. Fix y Mejoras para la autoselección de deducible de riesgos adicionales
