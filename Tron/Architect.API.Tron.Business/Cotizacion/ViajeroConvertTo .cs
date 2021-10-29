@@ -103,7 +103,7 @@ namespace Architect.API.Tron.Business.Cotizacion
 
             List<Architect.API.Tron.Contracts.Presupuesto.Cobertura> coberturas = new List<Architect.API.Tron.Contracts.Presupuesto.Cobertura>();
 
-            foreach (Architect.API.Tron.Contracts.Cotizacion.Viajerocoberturas item in from c in quoteInfo.coberturas where c.seleccionado select c)
+            foreach (Architect.API.Tron.Contracts.Comun.Cobertura item in from c in quoteInfo.coberturas where c.seleccionado select c)
             {
 
                 coberturas.Add(Util.Cobertura(datosFijos, item.codigo));
@@ -126,12 +126,12 @@ namespace Architect.API.Tron.Business.Cotizacion
             int edad = DateTime.Today.AddTicks(-nacimiento.Ticks).Year - 1;
 
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "TIP_PLAN", quoteInfo.TIP_PLAN,1,1));
-            datosVariables.Add(Util.DatoVariable(datosFijos, 0, "FEC_VIAJE", quoteInfo.FEC_VIAJE.ToString("dd/MM/yyyy"), 1, 2));
+            datosVariables.Add(Util.DatoVariable(datosFijos, 0, "FEC_VIAJE", quoteInfo.FEC_VIAJE.ToString("ddMMyyyy"), 1, 2));
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "NUM_DIA", Convert.ToString(dias), 1, 3));
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "DES_DESTINO", quoteInfo.DES_DESTINO, 1, 4));
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "CANAL_VENTA", "TWB", 1, 5));
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "TIP_VIAJE", quoteInfo.TIP_VIAJE, 1, 6));
-            datosVariables.Add(Util.DatoVariable(datosFijos, 1, "FEC_NACIMIENTO", quoteInfo.FEC_NACIMIENTO.ToString("dd/MM/yyyy"), 2, 2));
+            datosVariables.Add(Util.DatoVariable(datosFijos, 1, "FEC_NACIMIENTO", quoteInfo.FEC_NACIMIENTO.ToString("ddMMyyyy"), 2, 2));
             datosVariables.Add(Util.DatoVariable(datosFijos, 1, "VAL_EDAD", Convert.ToString(edad), 2, 3));
             datosVariables.Add(Util.DatoVariable(datosFijos, 1, "COD_MODALIDAD",Convert.ToString(quoteInfo.COD_MODALIDAD), 2, 99));
 

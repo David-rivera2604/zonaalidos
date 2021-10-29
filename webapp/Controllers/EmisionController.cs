@@ -23,5 +23,10 @@ namespace aliados.Controllers
             return View();
         }
 
+        public ActionResult Viajero()
+        {
+            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
+            return View();
+        }
     }
 }

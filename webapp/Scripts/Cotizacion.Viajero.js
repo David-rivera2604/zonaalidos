@@ -206,6 +206,11 @@ $('#FEC_NACIMIENTO_group').datetimepicker({
             event.preventDefault();
         });
 
+        $('#emitir').click(function () {
+            event.preventDefault();
+            window.location.replace(app.setting.basepath + 'emision/viajero?presupuesto=' + quoteData.presupuesto);
+        });
+
     };
 
     function data_changed() {

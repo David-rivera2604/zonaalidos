@@ -53,82 +53,82 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         [DataMember(), JsonProperty()] public int COD_MODALIDAD { get; set; }
         [DataMember(), JsonProperty()] public string COD_MODALIDAD_DES { get; set; }
         /// <summary>
-        /// @Control.Caption@.
+        /// Coberturas
         /// </summary>
-        [DataMember(), JsonProperty()] public List<Viajerocoberturas> coberturas { get; set; }
+        [DataMember(), JsonProperty()] public List<Comun.Cobertura> coberturas { get; set; }
         /// <summary>
-        /// @Control.Caption@.
+        /// plan de pago
         /// </summary>
-        [DataMember(), JsonProperty()] public List<Viajeroplandepago> plandepago { get; set; }
+        [DataMember(), JsonProperty()] public List<Comun.PlanDePago> plandepago { get; set; }
 
 
     }
-    public class Viajerocoberturas
-    {
+    //public class Viajerocoberturas
+    //{
 
-        /// <summary>
-        /// Selecionada.
-        /// </summary>
-        [DataMember(), JsonProperty()] public bool seleccionado { get; set; }
-        /// <summary>
-        /// Código.
-        /// </summary>
-        [DataMember(), JsonProperty()] public int codigo { get; set; }
-        /// <summary>
-        /// Nombre.
-        /// </summary>
-        [DataMember(), JsonProperty()] public string nombre { get; set; }
-        /// <summary>
-        /// Capital.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double capital { get; set; }
-        /// <summary>
-        /// Prima total.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double primatotal { get; set; }
-        /// <summary>
-        /// Deducible.
-        /// </summary>
-        [DataMember(), JsonProperty()] public string deducible { get; set; }
-        /// <summary>
-        /// Error.
-        /// </summary>
-        [DataMember(), JsonProperty()] public string error { get; set; }
+    //    /// <summary>
+    //    /// Selecionada.
+    //    /// </summary>
+    //    [DataMember(), JsonProperty()] public bool seleccionado { get; set; }
+    //    /// <summary>
+    //    /// Código.
+    //    /// </summary>
+    //    [DataMember(), JsonProperty()] public int codigo { get; set; }
+    //    /// <summary>
+    //    /// Nombre.
+    //    /// </summary>
+    //    [DataMember(), JsonProperty()] public string nombre { get; set; }
+    //    /// <summary>
+    //    /// Capital.
+    //    /// </summary>
+    //    [DataMember(), JsonProperty()] public double capital { get; set; }
+    //    /// <summary>
+    //    /// Prima total.
+    //    /// </summary>
+    //    [DataMember(), JsonProperty()] public double primatotal { get; set; }
+    //    /// <summary>
+    //    /// Deducible.
+    //    /// </summary>
+    //    [DataMember(), JsonProperty()] public string deducible { get; set; }
+    //    /// <summary>
+    //    /// Error.
+    //    /// </summary>
+    //    [DataMember(), JsonProperty()] public string error { get; set; }
 
-    }
-    public class Viajeroplandepago
-    {
+    //}
+    //public class Viajeroplandepago
+    //{
 
-        /// <summary>
-        /// Cuota.
-        /// </summary>
-        [DataMember(), JsonProperty()] public int cuota { get; set; }
-        /// <summary>
-        /// Fecha desde.
-        /// </summary>
-        [DataMember(), JsonProperty()] public DateTime fechadesde { get; set; }
-        /// <summary>
-        /// Fecha hasta.
-        /// </summary>
-        [DataMember(), JsonProperty()] public DateTime fechahasta { get; set; }
-        /// <summary>
-        /// Prima neta.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double primaneta { get; set; }
-        /// <summary>
-        /// IVA.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double iVA { get; set; }
-        /// <summary>
-        /// Recargo por fraccionamiento.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double recargoporfraccionamiento { get; set; }
-        /// <summary>
-        /// Importe total.
-        /// </summary>
-        [DataMember(), JsonProperty()] public double importetotal { get; set; }
+    //    /// <summary>
+    //    /// Cuota.
+    //    /// </summary>
+    //    [DataMember(), JsonProperty()] public int cuota { get; set; }
+    //    /// <summary>
+    //    /// Fecha desde.
+    //    /// </summary>
+    //    [DataMember(), JsonProperty()] public DateTime fechadesde { get; set; }
+    //    /// <summary>
+    //    /// Fecha hasta.
+    //    /// </summary>
+    //    [DataMember(), JsonProperty()] public DateTime fechahasta { get; set; }
+    //    /// <summary>
+    //    /// Prima neta.
+    //    /// </summary>
+    //    [DataMember(), JsonProperty()] public double primaneta { get; set; }
+    //    /// <summary>
+    //    /// IVA.
+    //    /// </summary>
+    //    [DataMember(), JsonProperty()] public double iVA { get; set; }
+    //    /// <summary>
+    //    /// Recargo por fraccionamiento.
+    //    /// </summary>
+    //    [DataMember(), JsonProperty()] public double recargoporfraccionamiento { get; set; }
+    //    /// <summary>
+    //    /// Importe total.
+    //    /// </summary>
+    //    [DataMember(), JsonProperty()] public double importetotal { get; set; }
 
 
-    }
+    //}
 
 }

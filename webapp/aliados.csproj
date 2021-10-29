@@ -1186,6 +1186,7 @@
     <Content Include="products\cope_vida.xml" />
     <Content Include="releaseletter.txt" />
     <Content Include="Scripts\Clientes.Index.js" />
+    <Content Include="Scripts\Emision.Viajero.js" />
     <Content Include="Scripts\Cotizacion.Viajero.js" />
     <Content Include="Scripts\Dashboard.Users.js" />
     <Content Include="Scripts\Emision.MapfreMas.js" />
@@ -1481,6 +1482,7 @@
     <None Include="packages.config" />
     <Content Include="products\MapfreMas.json" />
     <Content Include="products\HogarTotal.json" />
+    <Content Include="products\Viajero.json" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\Policy\index.cshtml" />
     <Content Include="Views\Policy\Listv3.cshtml" />
@@ -1575,6 +1577,7 @@
     <Content Include="Reports\Coopesparta_saldo_deudor.repx" />
     <Content Include="Reports\Coopesparta_saldo_deudor_mayor_que_64.repx" />
     <Content Include="Views\Cotizacion\Viajero.cshtml" />
+    <Content Include="Views\Emision\Viajero.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

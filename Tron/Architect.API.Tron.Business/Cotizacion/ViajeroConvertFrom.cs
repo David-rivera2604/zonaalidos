@@ -73,7 +73,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 }
                 foreach (Architect.API.Tron.Contracts.Presupuesto.Cobertura item in tronQuoteInfo.Coberturas)
                 {
-                    foreach (Architect.API.Tron.Contracts.Cotizacion.Viajerocoberturas itemQuote in quoteInfo.coberturas)
+                    foreach (Architect.API.Tron.Contracts.Comun.Cobertura itemQuote in quoteInfo.coberturas)
                     {
                         if (item.cod_cob == itemQuote.codigo)
                         {
@@ -83,7 +83,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                             itemQuote.nombre = item.nom_cob;
                             itemQuote.capital = item.suma_aseg;
                             itemQuote.primatotal = item.imp_total;
-                            itemQuote.deducible = item.nom_franquicia;
+                            itemQuote.decucible = item.nom_franquicia;
                             itemQuote.error = item.txt_error;
                             if (quoteInfo.presupuesto.IsEmpty())
                             {
@@ -95,7 +95,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                         {
                             itemQuote.capital = 0;
                             itemQuote.primatotal = 0;
-                            itemQuote.deducible = string.Empty;
+                            itemQuote.decucible = string.Empty;
                             itemQuote.error = string.Empty;
                         }
                     }
@@ -107,11 +107,11 @@ namespace Architect.API.Tron.Business.Cotizacion
             {
                 double importeAnual = 0;
                 bool setvalues = true;
-                quoteInfo.plandepago = new List<Contracts.Cotizacion.Viajeroplandepago>();
+                quoteInfo.plandepago = new List<Contracts.Comun.PlanDePago>();
                 foreach (Architect.API.Tron.Contracts.Presupuesto.Recibo item in tronQuoteInfo.Recibos)
                 {
                     importeAnual = item.imp_recibo;
-                    quoteInfo.plandepago.Add(new Contracts.Cotizacion.Viajeroplandepago()
+                    quoteInfo.plandepago.Add(new Contracts.Comun.PlanDePago()
                     {
                         cuota = item.num_cuota,
                         fechadesde = item.fec_efec_recibo,

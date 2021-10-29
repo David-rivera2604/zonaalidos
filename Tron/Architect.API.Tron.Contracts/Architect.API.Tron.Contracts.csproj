@@ -54,6 +54,7 @@
     <Compile Include="Cotizacion\MapfreMasSettings.cs" />
     <Compile Include="Cotizacion\resumen.cs" />
     <Compile Include="Cotizacion\Viajero.cs" />
+    <Compile Include="Emision\Viajero.cs" />
     <Compile Include="Especificacion\Documento.cs" />
     <Compile Include="Especificacion\Producto.cs" />
     <Compile Include="Especificacion\Tercero.cs" />
