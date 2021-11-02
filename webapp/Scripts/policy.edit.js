@@ -18,6 +18,7 @@ app.PolicyEdit = (function () {
                 }
                 app.asegurado.ObjectToInput(data.PrimaryInsured);
                 app.cuestionario.ObjectToInput(data.Questionary);
+                app.cuestionariocovid.ObjectToInput(data.Questionary);
                 app.beneficiarios.ObjectToInput(data.Beneficiaries);
 
                 app.prestamo.ObjectToInput(data.Overdraft);
@@ -60,6 +61,7 @@ app.PolicyEdit = (function () {
             $('#applyChange').removeClass('d-none');
             $('#print').removeClass('d-none');
             $("#QuestionaryEdtFrm fieldset").prop("disabled", true);
+            $("#QuestionaryCovidEdtFrm fieldset").prop("disabled", true);
             $("#beneficiaryEdtFrm fieldset").prop("disabled", false);
             $("#RiskEdtFrm fieldset").prop("disabled", true);
             $("#OverdraftEdtFrm fieldset").prop("disabled", true);
@@ -67,6 +69,7 @@ app.PolicyEdit = (function () {
         }
         else {
             $("#QuestionaryEdtFrm fieldset").prop("disabled", disabled);
+            $("#QuestionaryCovidEdtFrm fieldset").prop("disabled", disabled);
             $("#beneficiaryEdtFrm fieldset").prop("disabled", disabled);
             //$("#RiskEdtFrm fieldset").prop("disabled", disabled);
             $("#OverdraftEdtFrm fieldset").prop("disabled", disabled);
@@ -111,6 +114,8 @@ app.PolicyEdit = (function () {
             result = false;
         if (!app.cuestionario.IsValid())
             result = false;
+        if (!app.cuestionariocovid.IsValid())
+            result = false;
         if (!$('#beneficiariosHTabHeader').hasClass('d-none') && !app.beneficiarios.IsValid())
             result = false;
         if (!app.poliza.IsValid())
@@ -125,6 +130,7 @@ app.PolicyEdit = (function () {
         var data = app.poliza.InputToObject();
         data.PrimaryInsured = app.asegurado.InputToObject();
         data.Questionary = app.cuestionario.InputToObject();
+        data.Questionary.push(...app.cuestionariocovid.InputToObject());
         data.Beneficiaries = app.beneficiarios.InputToObject();
         data.Overdraft = app.prestamo.InputToObject();
         data.Attachments = app.attachment.InputToObject();
@@ -189,6 +195,12 @@ app.PolicyEdit = (function () {
                         $('#cuestionarioHTab .badge').html(count);
                     else
                         $('#cuestionarioHTab .badge').html('');
+
+                    count = $('#QuestionaryCovidEdtFrm').validate().errorList.length;
+                    if (count > 0)
+                        $('#cuestionarioCovidHTab .badge').html(count);
+                    else
+                        $('#cuestionarioCovidHTab .badge').html('');
 
                     if (!$('#beneficiariosHTabHeader').hasClass('d-none')) {
                         count = $('#beneficiaryNotifyAlert').length;

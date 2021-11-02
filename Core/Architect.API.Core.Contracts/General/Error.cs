@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace Architect.API.Core.Contracts.General
 {
     /// <summary>
-    /// Información para un notifición.
+    /// Información para un notificación.
     /// </summary>
     [Serializable(), DataContract()]
     public class Error

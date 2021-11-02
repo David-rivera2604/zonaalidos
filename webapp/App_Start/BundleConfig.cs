@@ -125,6 +125,7 @@ namespace aliados
                         "~/Scripts/policy.common.js",
                         "~/Scripts/policy.edit.asegurado.js",
                          "~/Scripts/policy.edit.cuestionario.js",
+                         "~/Scripts/policy.edit.cuestionariocovid.js",
                          "~/Scripts/policy.edit.beneficiarios.js",
                          "~/Scripts/policy.edit.poliza.js",
                          "~/Scripts/policy.edit.prestamo.js",

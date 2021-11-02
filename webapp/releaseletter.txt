@@ -192,3 +192,25 @@
 1.5.59 16/10/2021 Aliados. Cotizadores y emisores. Calculo de fecha de expiración al cambiar la fecha de efecto.
                   MapfreMas. Se elimina exclusión de la cobertura 1060 para los productos oro, plata, Trébol y Trébol RC.
                   MapfreMas. Fix y Mejoras para la autoselección de deducible de riesgos adicionales
+1.5.60 19/10/2021 MapfreMas. Se filtras la coberturas del producto Trébol RC a 3001 y 3010
+                  MapfreMas. Se excluye los códigos 4, 5, 6 y 7 de la lista de deducibles de RC
+                  MapfreMas. Se excluye los códigos 6, 7 y 8 de la lista de deducibles de rotura de cristales
+                  MapfreMas. Se excluye los códigos 1, 2 y 5 de la lista de deducibles de equipo especial
+                  Medical. Se agrega el campo FechaSolicitudExclusion. 
+                  Medical. Mejora en el export de inclusiones para fecha vacias.
+1.5.61 26/10/2021 Coope. Se agrega el campo Total de Prima anual (Prima anual + Recargo) 
+                  Coope. Cuestionario de salud se condicionan algunas preguntas según el sexo del asegurado
+                  Coope. Cuestionario Covid
+                  Coope. Cuestionarios validación online de requerido para asegurado mayor a 64
+                  Aliados. MapfreMas y HogarTotal. Manejo dinámico de validaciones.
+                  MapfreMas. Se excluye los códigos 4, 5, 6 y 7 para todos producto menos Trébol RC y 1, 2, 3 y 7 para Trébol RC de la lista de deducibles de RC
+1.5.62 28/10/2021 MapfreMas. Se excluye la cobertura 1063 del producto Trébol
+                  MapfreMas. Selección y obligatoriedad de las coberturas basado en la tabla ta301003
+                  MapfreMas. Se deshabilita el uso del vehículo y selecciona 'Particular' para producto Trébol, para evitar que se seleccione la opción 'Comercial'
+                  MapfreMas. Se corrige duplicidad en la lista de monedas
+                  Coope. Se condiciona los 2 cuestionarios para que sean visible para asegurados mayores a 64
+                  Aliados. Se agrega los roles de los usuario en la tabla de consulta para el mantenimiento
+1.5.63 31/10/2021 Aliados. Nueva página inicial para agentes.
+1.5.64 01/11/2021 MapfreMas. Se excluyen las coberturas 3094, 1061, 1063 de los productos básico, amplio y plus
+                  Coope. Visibilidad del Cuestionario Covid-19 para mayores de 60 años
+                  MapfreMas. se deshabilitan los campos Colisión y vuelco, Riesgos adicionales y Robo para sincronizarlos según el valor del vehículo
