@@ -30,12 +30,12 @@ namespace Architect.API.Core.Business.General
                     await CSharpScript.EvaluateAsync(code,
                         ScriptOptions.Default.WithReferences(typeof(Architect.Common.Helpers.LogHandler).Assembly,
                                                              typeof(Architect.API.Core.Business.General.Mail).Assembly,
-                                                             entitySource.GetType().Assembly),
+                                                             entitySource.GetType().Assembly).AddImports("Architect.Utilities.Extensions"),
                         globals: context).ConfigureAwait(false);
                 }
                 catch (Microsoft.CodeAnalysis.Scripting.CompilationErrorException ex)
                 {
-                    Architect.Common.Helpers.LogHandler.ErrorLog("Rules",string.Format("{0} - {1}", entityType, action), ex);
+                    Architect.Common.Helpers.LogHandler.ErrorLog("Rules", string.Format("{0} - {1}", entityType, action), ex);
                 }
 
 
@@ -58,17 +58,53 @@ namespace Architect.API.Core.Business.General
         public static async Task<bool> Condition(string statement, object entitySource)
         {
 
-                string code = string.Format("{0} data = ({0})Data;{1}", entitySource.GetType().FullName, statement);
+            string code = string.Format("{0} data = ({0})Data;{1}", entitySource.GetType().FullName, statement);
 
-                Contracts.General.RuleContext context = new Contracts.General.RuleContext() { Data = entitySource };
+            Contracts.General.RuleContext context = new Contracts.General.RuleContext() { Data = entitySource };
 
-                bool result = (bool) await CSharpScript.EvaluateAsync(code,
-                                        ScriptOptions.Default.WithReferences(typeof(Architect.Common.Helpers.LogHandler).Assembly,
-                                                                             typeof(Architect.Utilities.Cache).Assembly,
-                                                                              entitySource.GetType().Assembly).AddImports("Architect.Utilities.Extensions"),
-                                            globals: context).ConfigureAwait(false);
+            bool result = (bool)await CSharpScript.EvaluateAsync(code,
+                                    ScriptOptions.Default.WithReferences(typeof(Architect.Common.Helpers.LogHandler).Assembly,
+                                                                         typeof(Architect.Utilities.Cache).Assembly,
+                                                                          entitySource.GetType().Assembly).
+                                    AddImports("Architect.Utilities.Extensions"),
+                                        globals: context).ConfigureAwait(false);
 
             return result;
+        }
+
+        public static async Task<List<Contracts.General.Error>> Runtime2(string ruleFile, string codeScript, object entitySource, Core.Contracts.Security.Token tokenInfo)
+        {
+            List<Architect.API.Core.Contracts.General.Error> errors = new List<Architect.API.Core.Contracts.General.Error>();
+
+            try
+            {
+                Task<ScriptState<object>> scrstate = CSharpScript.RunAsync(codeScript,
+                    ScriptOptions.Default.WithReferences(
+                        typeof(Architect.Utilities.Log).Assembly,
+                        typeof(Architect.API.Core.Contracts.Security.Token).Assembly,
+                        entitySource.GetType().Assembly)
+                    .AddImports("System")
+                    .AddImports("System.Collections.Generic")
+                    .AddImports("Architect.Utilities.Extensions"),
+                    globals: new Context() { Data = entitySource, token = tokenInfo });
+                object XXX = scrstate.Result.GetVariable("errors").Value;
+                errors = (List<Contracts.General.Error>)XXX;
+            }
+            catch (Microsoft.CodeAnalysis.Scripting.CompilationErrorException ex)
+            {
+                Architect.Common.Helpers.LogHandler.ErrorLog("Rules", string.Format("{0}\nCode:\n{1}", ruleFile, codeScript), ex );
+                throw;
+            }
+
+            return errors;
+        }
+
+        public class Context
+        {
+            public object Data { get; set; }
+            public Core.Contracts.Security.Token token { get; set; }
+
+            public string error { get; set; }
         }
     }
 }
