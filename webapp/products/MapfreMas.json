@@ -278,57 +278,52 @@
       ]
     }
   ],
-  "Rules": [
+  "Reglas": [
     {
-      "Role": "default",
-      "Detalles": [
-        {
-          "Message": "El valor del vehículo debe ser menor o igual a 28.650.000 colones",
-          "Group": "MapfreMas",
-          "Key": "IMP_VR",
-          "Condicion": "cod_mon == 1 && IMP_VR > 28650000"
-        },
-        {
-          "Message": "El valor del vehículo debe ser menor o igual a 50.000 dólares",
-          "Group": "MapfreMas",
-          "Key": "IMP_VR",
-          "Condicion": "cod_mon == 2 && IMP_VR > 50000"
-        }
-      ]
+      "Descripcion": "Si el rol del usuario es privilegios, la moneda es colones y el valor del vehículo es mayor a 45 millones",
+      "Condicion": "{Rol igual a Privilegios} y {Moneda igual a colones} y {Valor del vehículo} mayor a 45000000",
+      "Mensaje": "El valor del vehículo debe ser menor o igual a 45.000.000 colones",
+      "Campo": "IMP_VR"
     },
     {
-      "Role": "Privilegios",
-      "Detalles": [
-        {
-          "Message": "El valor del vehículo debe ser menor o igual a 45.000.000 colones",
-          "Group": "MapfreMas",
-          "Key": "IMP_VR",
-          "Condicion": "cod_mon == 1 && IMP_VR > 45000000"
-        },
-        {
-          "Message": "El valor del vehículo debe ser menor o igual a 75.000 dólares",
-          "Group": "MapfreMas",
-          "Key": "IMP_VR",
-          "Condicion": "cod_mon == 2 && IMP_VR > 75000"
-        }
-      ]
+      "Condicion": "{Rol igual a Davivienda_Prendarios} y {Moneda igual a dólares} y {Valor del vehículo} mayor a 75000",
+      "Mensaje": "El valor del vehículo debe ser menor o igual a 75.000 dólares",
+      "Campo": "IMP_VR"
     },
     {
-      "Role": "Davivienda_Prendarios",
-      "Detalles": [
-        {
-          "Message": "El valor del vehículo debe ser menor o igual a 80.000.000 colones",
-          "Group": "MapfreMas",
-          "Key": "IMP_VR",
-          "Condicion": "cod_mon == 1 && IMP_VR > 80000000"
-        },
-        {
-          "Message": "El valor del vehículo debe ser menor o igual a 125.000 dólares",
-          "Group": "MapfreMas",
-          "Key": "IMP_VR",
-          "Condicion": "cod_mon == 2 && IMP_VR > 125000"
-        }
-      ]
+      "Condicion": "({Rol igual a Davivienda_Prendarios} o {Rol igual a Davivienda_Leasing}) y {Moneda igual a colones} y {Valor del vehículo} mayor a 80000000",
+      "Mensaje": "El valor del vehículo debe ser menor o igual a 80.000.000 colones",
+      "Campo": "IMP_VR"
+    },
+    {
+      "Condicion": "({Rol igual a Davivienda_Prendarios} o {Rol igual a Davivienda_Leasing}) y {Moneda igual a dólares} y {Valor del vehículo} mayor a 125000",
+      "Mensaje": "El valor del vehículo debe ser menor o igual a 125.000 dólares",
+      "Campo": "IMP_VR"
+    },
+    {
+      "Condicion": "{Marca del vehículo} igual a 60 y {Año del vehículo} menor a {3 años de antigüedad}",
+      "Mensaje": "Para un Peugeot, el año del vehículo no debe superior a 3 años de antigüedad",
+      "Campo": "ANIO_SUB_MODELO"
+    },
+    {
+      "Condicion": "{Rol no sea igual a Purdy} y {Rol no sea igual a Privilegios} y {Año del vehículo} menor a {15 años de antigüedad}",
+      "Mensaje": "El año del vehículo no debe superior a 15 años de antigüedad",
+      "Campo": "ANIO_SUB_MODELO"
+    },
+    {
+      "Condicion": "{Rol igual a Privilegios} y {Año del vehículo} menor a {17 años de antigüedad}",
+      "Mensaje": "El año del vehículo no debe superior a 17 años de antigüedad",
+      "Campo": "ANIO_SUB_MODELO"
+    },
+    {
+      "Condicion": "{Rol igual a Purdy} y {Contrato} igual a 10002 y {Año del vehículo} menor a {1 año de antigüedad}",
+      "Mensaje": "El año del vehículo no debe superior a 1 año de antigüedad",
+      "Campo": "ANIO_SUB_MODELO"
+    },
+    {
+      "Condicion": "{Rol igual a Purdy} y {Contrato} no igual a 10002 y {Año del vehículo} menor a {6 años de antigüedad}",
+      "Mensaje": "El año del vehículo no debe superior a 6 años de antigüedad",
+      "Campo": "ANIO_SUB_MODELO"
     }
   ]
 }

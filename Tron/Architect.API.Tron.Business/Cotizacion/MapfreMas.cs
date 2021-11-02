@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Architect.API.Tron.Business.Cotizacion
 {
@@ -46,6 +47,9 @@ namespace Architect.API.Tron.Business.Cotizacion
             result.coberturas = CoverageByDefault(result.cod_mon, result.cod_marca, result.cod_modelo, result.ANIO_SUB_MODELO, result.cod_tip_vehi, result.cod_uso_vehi, result.mca_sexo, result.cod_zona_circul, result.edad, result.COD_PLAN_AUTO, 0, 0, string.Empty, tokenInfo);
 
             //Architect.API.Tron.Business.research.MapfreMasBuild();
+
+            List<Core.Contracts.General.Error> result2 = Reglas.research.Apply_Reglas("MapfreMas", result, tokenInfo);
+
             return result;
         }
 
@@ -97,7 +101,6 @@ namespace Architect.API.Tron.Business.Cotizacion
             List<Contracts.Comun.Cobertura> coberturas = new List<Contracts.Comun.Cobertura>();
             string cod_cobExcludeFilter = string.Empty;
             string cod_cobIncludeFilter = string.Empty;
-            string selected = string.Empty;
             int cod_modalidad = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_modalidad"]);
             int cod_cia = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_cia"]);
             int tip_valoracion = 1;
@@ -121,7 +124,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                                 cod_cobIncludeFilter = cod_cobIncludeFilter.Replace(",3017", string.Empty);
                                 break;
                         }
-                        selected = cod_cobIncludeFilter;
+
 
                         foreach (Architect.API.Tron.Contracts.Tables.a1002150 item in Architect.API.Tron.DataAccess.PorRamo.Coberturas(cod_cia, COD_RAMO, cod_modalidad, fec_validez, cod_cobExcludeFilter, cod_cobIncludeFilter))
                         {
@@ -143,89 +146,43 @@ namespace Architect.API.Tron.Business.Cotizacion
 
             if (cod_cobIncludeFilter.IsEmpty())
             {
-                switch (cod_uso_vehi)
+
+                switch (cod_plan_auto)
                 {
-                    case 2: //Si el vehículo es de uso comercial
-                        switch (cod_plan_auto)
-                        {
-                            case 31: // Básico
-                                selected = "3002,3003";
-                                cod_cobExcludeFilter = "3002,3003,3016,3018,3014,3015,3008,3017";
-                                break;
-                            case 32: // Amplio
-                                selected = "3002,3003";
-                                cod_cobExcludeFilter = "3015,3008,3016,3018,3017";
-                                break;
-
-                            case 34: // Oro
-                                selected = "3001,3002,3003,3004,3005,3006,3009,3010";
-                                cod_cobExcludeFilter = "3016,3018,3017,3094,1061";
-                                break;
-                            case 35: //Plata
-                                selected = "3001,3004,3005,3010";
-                                cod_cobExcludeFilter = "3016,3018,3017,3094,1061,3002,3003,3007,3014,3015,3008";
-                                //cod_cobExcludeFilter = "3002,3003,3007,3014,3015,3008,1060,3016,3018,3017";
-                                break;
-                            case 36: //Trebol
-                                selected = "3001,3004,3010";
-                                cod_cobExcludeFilter = "3016,3018,3017,3094,1061";
-                                break;
-                            case 37: //Trebol RC
-                                selected = "3001,3004,3010";
-                                cod_cobExcludeFilter = "3016,3018,3017,3094,1061";
-                                break;
-
-                            default: // 33 Plus
-                                selected = "3002,3003";
-                                cod_cobExcludeFilter = "3016,3018,3017";
-                                break;
-                        }
+                    case 31: // Básico
+                        cod_cobExcludeFilter = "3002,3003,3016,3018,3014,3015,3008,3017,3094,1061,1063";
                         break;
-                    default: //Si el vehículo no es de uso comercial
-                        switch (cod_plan_auto)
-                        {
-                            case 31: // Básico
-                                selected = "";
-                                cod_cobExcludeFilter = "3002,3003,3016,3018,3014,3015,3008,3017";
-                                break;
-                            case 32: // Amplio
-                                selected = "";
-                                cod_cobExcludeFilter = "3015,3008,3016,3018,3017";
-                                break;
+                    case 32: // Amplio
+                        cod_cobExcludeFilter = "3015,3008,3016,3018,3017,3094,1061,1063";
+                        break;
+                    case 34: // Oro
+                        cod_cobExcludeFilter = "3016,3018,3017,3094,1061,1063";
+                        break;
+                    case 35: //Plata
+                        cod_cobExcludeFilter = "3016,3018,3017,3094,1061,3002,3003,3007,3014,3015,3008";
+                        //cod_cobExcludeFilter = "3002,3003,3007,3014,3015,3008,1060,3016,3018,3017";
+                        break;
+                    case 36: // Trebol
+                        cod_cobExcludeFilter = "3016,3018,3017,3094,1061,1063";
+                        break;
+                    case 37: // Trebol RC
+                        cod_cobExcludeFilter = "3002,3003,3004,3005,3006,3007,3008,3009,3014,3015,3016,3017,3018,3094,1060,1061,1063";
+                        break;
 
-                            case 34: // Oro
-                                selected = "3001,3002,3003,3004,3005,3006,3009,3010";
-                                cod_cobExcludeFilter = "3016,3018,3017,3094,1061";
-                                break;
-                            case 35: //Plata
-                                selected = "3001,3004,3005,3010";
-                                cod_cobExcludeFilter = "3016,3018,3017,3094,1061,3002,3003,3007,3014,3015,3008";
-                                //cod_cobExcludeFilter = "3002,3003,3007,3014,3015,3008,1060,3016,3018,3017";
-                                break;
-                            case 36: //Trebol
-                                selected = "3001,3004,3010";
-                                cod_cobExcludeFilter = "3016,3018,3017,3094,1061";
-                                break;
-                            case 37: //Trebol RC
-                                selected = "3001,3004,3010";
-                                cod_cobExcludeFilter = "3016,3018,3017,3094,1061";
-                                break;
-
-                            default: // 33 Plus
-                                selected = "";
-                                cod_cobExcludeFilter = "3016,3018,3017";
-                                break;
-                        }
+                    default: // 33 Plus
+                        cod_cobExcludeFilter = "3016,3018,3017";
                         break;
                 }
-                List<Architect.API.Tron.Contracts.Tables.ta301003> coverageSelection = Architect.API.Tron.DataAccess.PorRamo.AutomobileCoverageSelection(cod_cia, num_poliza_grupo, num_contrato, num_subcontrato, COD_RAMO, cod_mon, cod_marca, cod_modelo, anio_sub_modelo, cod_tip_vehi, cod_uso_vehi, mca_sexo, cod_zona_circul, edad, cod_plan_auto, tip_valoracion);
 
-                foreach (Architect.API.Tron.Contracts.Tables.a1002150 item in Architect.API.Tron.DataAccess.PorRamo.Coberturas(cod_cia, COD_RAMO, cod_modalidad, fec_validez, cod_cobExcludeFilter, cod_cobIncludeFilter))
+                List<Contracts.Tables.ta301003> coverageSelection = DataAccess.PorRamo.AutomobileCoverageSelection(cod_cia, num_poliza_grupo, num_contrato, num_subcontrato, COD_RAMO, cod_mon, cod_marca, cod_modelo, anio_sub_modelo, cod_tip_vehi, cod_uso_vehi, mca_sexo, cod_zona_circul, edad, cod_plan_auto, tip_valoracion);
+                bool required;
+                foreach (Contracts.Tables.a1002150 item in DataAccess.PorRamo.Coberturas(cod_cia, COD_RAMO, cod_modalidad, fec_validez, cod_cobExcludeFilter, cod_cobIncludeFilter))
                 {
+                    required = coverageSelection.Any(r => r.cod_cob == item.COD_COB && r.mca_obligatoria == "S");
                     coberturas.Add(new Contracts.Comun.Cobertura()
                     {
-                        seleccionado = coverageSelection.Any(r => r.cod_cob == item.COD_COB && r.mca_obligatoria == "S"),
-                        requerida = item.MCA_OBLIGATORIO == "S",
+                        seleccionado = required,
+                        requerida = required,
                         codigo = item.COD_COB,
                         nombre = item.NOM_COB,
                         capital = item.SUMA_ASEG,
@@ -234,7 +191,6 @@ namespace Architect.API.Tron.Business.Cotizacion
                     });
                 }
             }
-
 
             return coberturas;
         }
@@ -277,7 +233,6 @@ namespace Architect.API.Tron.Business.Cotizacion
             return resultInfo;
         }
 
-
         /// <summary>
         /// Valida la información de una póliza para permitir o no su emisión.
         /// </summary>
@@ -287,7 +242,7 @@ namespace Architect.API.Tron.Business.Cotizacion
         private static List<Core.Contracts.General.Error> Validate(Contracts.Cotizacion.MapfreMas source, Core.Contracts.Security.Token tokenInfo)
         {
             const string group = "MapfreMas";
-            List<Core.Contracts.General.Error> result = new List<Core.Contracts.General.Error>();
+            List<Core.Contracts.General.Error> result = Reglas.research.Apply_Reglas("MapfreMas", source, tokenInfo);
 
             //Coberturas:
             if (!Rule_AtLeastOneCoverageSelected(source))
@@ -295,126 +250,52 @@ namespace Architect.API.Tron.Business.Cotizacion
                 result.Add(new Core.Contracts.General.Error() { Group = "Table", Key = "coberturasTbl", Message = "Debe seleccionar al menos una cobertura" });
             }
 
-            //ANIO_SUB_MODELO:
-            if (tokenInfo.Roles.Contain("Purdy") && Rule_MinYearOfVehicleManufacture_Purdy(source.ANIO_SUB_MODELO, source.contrato))
-            {
-                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "ANIO_SUB_MODELO", Message = string.Format("El año del vehículo debe ser mayor o igual a {0}", Util_MinYearOfVehicleManufactureAllowed_Purdy(source.contrato)) });
-            }
-            if (tokenInfo.Roles.Contain("Privilegios") && Rule_MinYearOfVehicleManufacture(source.ANIO_SUB_MODELO, 17))
-            {
-                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "ANIO_SUB_MODELO", Message = string.Format("El año del vehículo debe ser mayor o igual a {0}", Util_MinYearOfVehicleManufactureAllowed(17)) });
-            }
-            //Si no aplica algunos de los roles anteriores esta seria la validación por defecto
-            if (!tokenInfo.Roles.Contain("Purdy") && !tokenInfo.Roles.Contain("Privilegios") &&
-                Rule_MinYearOfVehicleManufacture(source.ANIO_SUB_MODELO, 15))
-            {
-                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "ANIO_SUB_MODELO", Message = string.Format("El año del vehículo debe ser mayor o igual a {0}", Util_MinYearOfVehicleManufactureAllowed(15)) });
-            }
+            ////ANIO_SUB_MODELO:
+            //if (tokenInfo.Roles.Contain("Purdy") && Rule_MinYearOfVehicleManufacture_Purdy(source.ANIO_SUB_MODELO, source.contrato))
+            //{
+            //    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "ANIO_SUB_MODELO", Message = string.Format("El año del vehículo debe ser mayor o igual a {0}", Util_MinYearOfVehicleManufactureAllowed_Purdy(source.contrato)) });
+            //}
+            //if (tokenInfo.Roles.Contain("Privilegios") && Rule_MinYearOfVehicleManufacture(source.ANIO_SUB_MODELO, 17))
+            //{
+            //    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "ANIO_SUB_MODELO", Message = string.Format("El año del vehículo debe ser mayor o igual a {0}", Util_MinYearOfVehicleManufactureAllowed(17)) });
+            //}
+            ////Si no aplica algunos de los roles anteriores esta seria la validación por defecto
+            //if (!tokenInfo.Roles.Contain("Purdy") && !tokenInfo.Roles.Contain("Privilegios") &&
+            //    Rule_MinYearOfVehicleManufacture(source.ANIO_SUB_MODELO, 15))
+            //{
+            //    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "ANIO_SUB_MODELO", Message = string.Format("El año del vehículo debe ser mayor o igual a {0}", Util_MinYearOfVehicleManufactureAllowed(15)) });
+            //}
 
-            //Se debe permitir cotizar la marca Peugeout, pero solamente con 3 años de antigüedad, es decir: del 2018 en adelante.
-            //Esto sería para los que cotizan de forma genérica.
-            if (source.cod_marca == 60 && Rule_MinYearOfVehicleManufacture(source.ANIO_SUB_MODELO, 3))
-            {
-                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "ANIO_SUB_MODELO", Message = string.Format("Para un Peugeot, el año del vehículo debe ser mayor o igual a {0}", Util_MinYearOfVehicleManufactureAllowed(3)) });
-            }
+            ////Se debe permitir cotizar la marca Peugeout, pero solamente con 3 años de antigüedad, es decir: del 2018 en adelante.
+            ////Esto sería para los que cotizan de forma genérica.
+            //if (source.cod_marca == 60 && Rule_MinYearOfVehicleManufacture(source.ANIO_SUB_MODELO, 3))
+            //{
+            //    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "ANIO_SUB_MODELO", Message = string.Format("Para un Peugeot, el año del vehículo debe ser mayor o igual a {0}", Util_MinYearOfVehicleManufactureAllowed(3)) });
+            //}
 
 
-            //IMP_VR:
-            if (tokenInfo.Roles.Contain("Privilegios") && 
-                Rule_MaximumAllowedValueOfVehicle(source.cod_mon, source.IMP_VR, 45000000, 75000))
-            {
-                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "IMP_VR", Message = string.Format("El valor del vehículo debe ser menor o igual a {0}", source.cod_mon == 1 ? "45.000.000 colones" : "75.000 dólares") });
-            }
-            if ((tokenInfo.Roles.Contain("Davivienda_Prendarios") || tokenInfo.Roles.Contain("Davivienda_Leasing")) && 
-                Rule_MaximumAllowedValueOfVehicle(source.cod_mon, source.IMP_VR, 80000000, 125000))
-            {
-                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "IMP_VR", Message = string.Format("El valor del vehículo debe ser menor o igual a {0}", source.cod_mon == 1 ? "80.000.000 colones" : "125.000 dólares") });
-            }
-            
+            ////IMP_VR:
+            //if (tokenInfo.Roles.Contain("Privilegios") && 
+            //    Rule_MaximumAllowedValueOfVehicle(source.cod_mon, source.IMP_VR, 45000000, 75000))
+            //{
+            //    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "IMP_VR", Message = string.Format("El valor del vehículo debe ser menor o igual a {0}", source.cod_mon == 1 ? "45.000.000 colones" : "75.000 dólares") });
+            //}
+            //if ((tokenInfo.Roles.Contain("Davivienda_Prendarios") || tokenInfo.Roles.Contain("Davivienda_Leasing")) && 
+            //    Rule_MaximumAllowedValueOfVehicle(source.cod_mon, source.IMP_VR, 80000000, 125000))
+            //{
+            //    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "IMP_VR", Message = string.Format("El valor del vehículo debe ser menor o igual a {0}", source.cod_mon == 1 ? "80.000.000 colones" : "125.000 dólares") });
+            //}
 
-            //Si no aplica algunos de los roles anteriores esta seria la validación por defecto
-            if (!tokenInfo.Roles.Contain("Privilegios") && 
-                !tokenInfo.Roles.Contain("Davivienda_Prendarios") && 
-                !tokenInfo.Roles.Contain("Davivienda_Leasing") &&
-                Rule_MaximumAllowedValueOfVehicle(source.cod_mon, source.IMP_VR, 28650000, 50000))
-            {
-                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "IMP_VR", Message = string.Format("El valor del vehículo debe ser menor o igual a {0}", source.cod_mon == 1 ? "28.650.000 colones" : "50.000 dólares") });
-            }
+
+            ////Si no aplica algunos de los roles anteriores esta seria la validación por defecto
+            //if (!tokenInfo.Roles.Contain("Privilegios") && 
+            //    !tokenInfo.Roles.Contain("Davivienda_Prendarios") && 
+            //    !tokenInfo.Roles.Contain("Davivienda_Leasing") &&
+            //    Rule_MaximumAllowedValueOfVehicle(source.cod_mon, source.IMP_VR, 28650000, 50000))
+            //{
+            //    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "IMP_VR", Message = string.Format("El valor del vehículo debe ser menor o igual a {0}", source.cod_mon == 1 ? "28.650.000 colones" : "50.000 dólares") });
+            //}
             return result;
-        }
-
-
-        /// <summary>
-        /// Valida monto permitido
-        /// </summary>
-        /// <param name="currency">Código de la moneda</param>
-        /// <param name="vehicleValue">Valor del vehículo</param>
-        /// <returns>Verdadero si el valor indicado es permitido, falso en el caso contrario</returns>
-        private static bool Rule_MaximumAllowedValueOfVehicle(int currency, int vehicleValue, int maximumColones, int maximumDollars)
-        {
-            bool result = false;
-            switch (currency)
-            {
-                case 1: //Colones
-                    result = vehicleValue > maximumColones;
-                    break;
-                case 2: //Dolares
-                    result = vehicleValue > maximumDollars;
-                    break;
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Solo se permite cotizar a vehículos máximo con 6 años de antigüedad excepto para el contrato 10002 el cual permite solo 1 año
-        /// </summary>
-        /// <param name="yearOfVehicleManufacture">Año de fabricación del vehículo</param>
-        /// <param name="contract">Número de contrato de póliza grupo</param>
-        /// <returns>Verdadero si el año de fabricación es valido, falso en el caso contrario</returns>
-        private static bool Rule_MinYearOfVehicleManufacture_Purdy(int yearOfVehicleManufacture, int contract)
-        {
-            return yearOfVehicleManufacture < Util_MinYearOfVehicleManufactureAllowed_Purdy(contract);
-        }
-
-        /// <summary>
-        /// Recupera el año mínimo permitido por contrato
-        /// </summary>
-        /// <param name="contract">Número de contrato de póliza grupo</param>
-        /// <returns>Año permitido</returns>
-        private static int Util_MinYearOfVehicleManufactureAllowed_Purdy(int contract)
-        {
-            int minYear = DateTime.Today.Year;
-
-            if (contract == 10002)
-            {
-                minYear -= 1;
-            }
-            else
-            {
-                minYear -= 6;
-            }
-            return minYear;
-        }
-
-        /// <summary>
-        /// Solo se permite cotizar a vehículos máximo con 17 años de antigüedad
-        /// </summary>
-        /// <param name="yearOfVehicleManufacture">Año de fabricación del vehículo</param>
-        /// <param name="maxValue">Cantidad máxima de años de antigüedad</param>
-        /// <returns>Verdadero si el año de fabricación es valido, falso en el caso contrario</returns>
-        private static bool Rule_MinYearOfVehicleManufacture(int yearOfVehicleManufacture, int maxValue)
-        {
-            return yearOfVehicleManufacture < Util_MinYearOfVehicleManufactureAllowed(maxValue);
-        }
-
-        /// <summary>
-        /// Recupera el año mínimo permitido por contrato
-        /// </summary>
-        /// <param name="maxValue">Cantidad máxima de años de antigüedad</param>
-        /// <returns>Año permitido</returns>
-        private static int Util_MinYearOfVehicleManufactureAllowed(int maxValue)
-        {
-            return DateTime.Today.Year - maxValue;
         }
 
         private static bool Rule_AtLeastOneCoverageSelected(Contracts.Cotizacion.MapfreMas source)

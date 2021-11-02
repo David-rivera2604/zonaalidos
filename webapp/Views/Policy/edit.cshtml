@@ -45,9 +45,14 @@
                     <i class="fa fa-user-o"></i> Asegurado <span id="PrimaryInsuredFullName"></span> <span class="badge badge-danger"></span>
                 </a>
             </li>
-            <li>
+            <li id="saludTabHeader" class="d-none">
                 <a class="nav-link" data-toggle="tab" href="#cuestionarioTab" id="cuestionarioHTab">
-                    <i class="fa fa-list-ol"></i> Cuestionario <span class="badge badge-danger"></span>
+                    <i class="fa fa-list-ol"></i> Cuestionario de Salud<span class="badge badge-danger"></span>
+                </a>
+            </li>
+            <li id="covidTabHeader" class="d-none">
+                <a class="nav-link" data-toggle="tab" href="#cuestionarioCovidTab" id="cuestionarioCovidHTab">
+                    <i class="fa fa-list-ol"></i> Cuestionario Covid<span class="badge badge-danger"></span>
                 </a>
             </li>
             <li id="beneficiariosHTabHeader" class="d-none">
@@ -728,7 +733,7 @@
                 </div>
             </div>
 
-            <!-- Cuestionario -->
+            <!-- Cuestionario de Salud-->
             <div id="cuestionarioTab" class="tab-pane fade">
                 <form id='QuestionaryEdtFrm'>
                     <fieldset>
@@ -1006,11 +1011,11 @@
                                         <div class='form-group'>
                                             <label class='control-label' for='Confirmation_6'>6. ¿Está usted embarazada actualmente?</label>
                                             <br /><div class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" id="Confirmation_6a" name="Confirmation_6" value="1">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_6a" name="Confirmation_6" value="1" disabled>
                                                 <label class="custom-control-label" for="Confirmation_6a">Si</label>
                                             </div>
                                             <div class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" id="Confirmation_6b" name="Confirmation_6" value="2">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_6b" name="Confirmation_6" value="2" disabled>
                                                 <label class="custom-control-label" for="Confirmation_6b">No</label>
                                             </div>
                                             <div id='Confirmation_6_validate'></div>
@@ -1169,11 +1174,11 @@
                                         <div class='form-group'>
                                             <label class='control-label' for='Confirmation_9'>9. ¿Se ha realizado examen de Papanicolau?</label>
                                             <br /><div class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" id="Confirmation_9a" name="Confirmation_9" value="1">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_9a" name="Confirmation_9" value="1" disabled>
                                                 <label class="custom-control-label" for="Confirmation_9a">Si</label>
                                             </div>
                                             <div class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" id="Confirmation_9b" name="Confirmation_9" value="2">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_9b" name="Confirmation_9" value="2" disabled>
                                                 <label class="custom-control-label" for="Confirmation_9b">No</label>
                                             </div>
                                             <div id='Confirmation_9_validate'></div>
@@ -1225,11 +1230,11 @@
                                         <div class='form-group'>
                                             <label class='control-label' for='Confirmation_10'>10. ¿Se ha realizado prueba del PSA (para hombres mayores de 40 años)?</label>
                                             <br /><div class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" id="Confirmation_10a" name="Confirmation_10" value="1">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_10a" name="Confirmation_10" value="1" disabled>
                                                 <label class="custom-control-label" for="Confirmation_10a">Si</label>
                                             </div>
                                             <div class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" id="Confirmation_10b" name="Confirmation_10" value="2">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_10b" name="Confirmation_10" value="2" disabled>
                                                 <label class="custom-control-label" for="Confirmation_10b">No</label>
                                             </div>
                                             <div id='Confirmation_10_validate'></div>
@@ -1270,6 +1275,324 @@
                                                 <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
                                             </div>
                                             <div id='When_10_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </fieldset>
+                </form>
+            </div>
+
+            <!-- Cuestionario Covid-->
+            <div id="cuestionarioCovidTab" class="tab-pane fade">
+                <form id='QuestionaryCovidEdtFrm'>
+                    <fieldset>
+                        <div class="form-row">
+                            <!-- Pregunta_51 -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_51'>1. ¿Ha estado fuera de Costa Rica durante los últimos 30 días?</label>
+                                            <br /><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_51a" name="Confirmation_51" value="1">
+                                                <label class="custom-control-label" for="Confirmation_51a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_51b" name="Confirmation_51" value="2">
+                                                <label class="custom-control-label" for="Confirmation_51b">No</label>
+                                            </div>
+                                            <div id='Confirmation_51_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_51" class="form-row d-none">
+                                    <!-- Diagnosis 1 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Diagnosis_51'>indique en qué país o países y las fechas exactas<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                            <textarea id='Diagnosis_51' name='Diagnosis_51' class='form-control' size='200' maxlength='200' rows="2" disabled></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Pregunta_52 -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_52'>2. ¿Si estuvo fuera del país, al ingresar le hicieron control de salud?</label>
+                                            <br /><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_52a" name="Confirmation_52" value="1">
+                                                <label class="custom-control-label" for="Confirmation_52a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_52b" name="Confirmation_52" value="2">
+                                                <label class="custom-control-label" for="Confirmation_52b">No</label>
+                                            </div>
+                                            <div id='Confirmation_52_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_52" class="form-row d-none">
+                                </div>
+                            </div>
+                            <!-- Pregunta_53 -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_53'>3. ¿Estuvo o ha estado en cuarentena obligatoria posterior o al momento de ingresar al país, por posible infección por Covid-19?</label>
+                                            <br /><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_53a" name="Confirmation_53" value="1">
+                                                <label class="custom-control-label" for="Confirmation_53a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_53b" name="Confirmation_53" value="2">
+                                                <label class="custom-control-label" for="Confirmation_53b">No</label>
+                                            </div>
+                                            <div id='Confirmation_53_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_53" class="form-row d-none">
+                                    <!-- Diagnosis_53 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Diagnosis_53'>Detalle<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                            <textarea id='Diagnosis_53' name='Diagnosis_53' class='form-control' size='200' maxlength='200' rows="2" disabled></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Pregunta_54 -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_54'>4. ¿Durante los últimos 14 días ha tenido o tuvo alguno de estos síntomas: Fiebre, Malestar general, Cansancio, Dolor de cuerpo, Tos, Dificultad para respirar, Dolor de garganta o Problemas gástricos como diarrea, náuseas y/o vomito?</label>
+                                            <br /><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_54a" name="Confirmation_54" value="1">
+                                                <label class="custom-control-label" for="Confirmation_54a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_54b" name="Confirmation_54" value="2">
+                                                <label class="custom-control-label" for="Confirmation_54b">No</label>
+                                            </div>
+                                            <div id='Confirmation_54_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_54" class="form-row d-none" style="margin-left: 15px;">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <div class="custom-control custom-checkbox" >
+                                                <input type="checkbox" class="custom-control-input" id="Diagnosis_54_1">
+                                                <label class="custom-control-label control-label" for="Diagnosis_54_1" style="padding-top: 4px;">¿Fiebre de cualquier tipo?</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <div class="custom-control custom-checkbox" >
+                                                <input type="checkbox" class="custom-control-input" id="Diagnosis_54_2">
+                                                <label class="custom-control-label control-label" for="Diagnosis_54_2" style="padding-top: 4px;">¿Malestar general, cansancio dolor de cuerpo?</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <div class="custom-control custom-checkbox" >
+                                                <input type="checkbox" class="custom-control-input" id="Diagnosis_54_3">
+                                                <label class="custom-control-label control-label" for="Diagnosis_54_3" style="padding-top: 4px;">¿Tos? ¿Con o sin flema?</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="Diagnosis_54_4">
+                                                <label class="custom-control-label control-label" for="Diagnosis_54_4" style="padding-top: 4px;">¿Dificultad para respirar?</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <div class="custom-control custom-checkbox" >
+                                                <input type="checkbox" class="custom-control-input" id="Diagnosis_54_5">
+                                                <label class="custom-control-label control-label" for="Diagnosis_54_5" style="padding-top: 4px;">¿Dolor de garganta?</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="Diagnosis_54_6">
+                                                <label class="custom-control-label control-label" for="Diagnosis_54_6" style="padding-top: 4px;">¿Problemas gástricos como diarrea, náuseas y/o vomito?</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Pregunta_55 -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_55'>5. Enfermedades o problemas del sistema respiratorio ¿tuberculosis, asma, tos crónica, bronquitis, otros?</label>
+                                            <br />
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_55a" name="Confirmation_55" value="1">
+                                                <label class="custom-control-label" for="Confirmation_55a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_55b" name="Confirmation_55" value="2">
+                                                <label class="custom-control-label" for="Confirmation_55b">No</label>
+                                            </div>
+                                            <div id='Confirmation_55_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_55" class="form-row d-none">
+
+                                </div>
+                            </div>
+                            <!-- Pregunta_56 -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_56'>6. ¿Usted está o ha estado en contacto cercano con alguien que ha estado o está actualmente en cuarentena o que ha sido diagnosticado o que está vigilado por sospecha de infección por Covid-19?</label>
+                                            <br /><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_56a" name="Confirmation_56" value="1">
+                                                <label class="custom-control-label" for="Confirmation_56a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_56b" name="Confirmation_56" value="2">
+                                                <label class="custom-control-label" for="Confirmation_56b">No</label>
+                                            </div>
+                                            <div id='Confirmation_56_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_56" class="form-row d-none">
+                                    <!-- Diagnosis 1 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Diagnosis_56'>Detalle<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                            <textarea id='Diagnosis_56' name='Diagnosis_56' class='form-control' size='200' maxlength='200' rows="2" disabled></textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- Pregunta_57 -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_57'>7. ¿Si se ha realizado prueba para diagnóstico por posible infección de Covid-19, ésta ha sido positiva?  ¿O está a espera del resultado?</label>
+                                            <br /><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_57a" name="Confirmation_57" value="1">
+                                                <label class="custom-control-label" for="Confirmation_57a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_57b" name="Confirmation_57" value="2">
+                                                <label class="custom-control-label" for="Confirmation_57b">No</label>
+                                            </div>
+                                            <div id='Confirmation_57_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_57" class="form-row d-none">
+
+                                    <!-- When 2 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='When_57'>indique la fecha<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                            <div class='input-group date' id='When_57_group'>
+                                                <input id='When_57' name='When_57' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                            </div>
+                                            <div id='When_57_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Pregunta_58 -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_58'>8. ¿Está en buen estado de estado general?</label>
+                                            <br /><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_58a" name="Confirmation_58" value="1">
+                                                <label class="custom-control-label" for="Confirmation_58a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_58b" name="Confirmation_58" value="2">
+                                                <label class="custom-control-label" for="Confirmation_58b">No</label>
+                                            </div>
+                                            <div id='Confirmation_58_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_58" class="form-row d-none">
+                                    <!-- Diagnosis 58 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Diagnosis_58'>Detalle el motivo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                            <textarea id='Diagnosis_58' name='Diagnosis_58' class='form-control' size='200' maxlength='200' rows="2" disabled></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Pregunta_59 -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_59'>9. ¿Ya fue vacunado contra el Covid-19?</label>
+                                            <br /><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_59a" name="Confirmation_59" value="1">
+                                                <label class="custom-control-label" for="Confirmation_59a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_59b" name="Confirmation_59" value="2">
+                                                <label class="custom-control-label" for="Confirmation_59b">No</label>
+                                            </div>
+                                            <div id='Confirmation_59_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_59" class="form-row d-none">
+                                    <!-- Treatment_59 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Treatment_59'>¿Cual vacuna le aplicaron?<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                            <input id='Treatment_59' name='Treatment_59' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+
+                                    <!-- When_59 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='When_59'>Indique la fecha<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                            <div class='input-group date' id='When_59_group'>
+                                                <input id='When_59' name='When_59' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                            </div>
+                                            <div id='When_59_validate'></div>
+                                        </div>
+                                    </div>
+                                    <!-- Doctor_59 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Doctor_59'>¿Cuántas dosis posee?<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                            <input id='Doctor_59' name='Doctor_59' type='text' class='form-control' size='2' maxlength='2'  disabled>
                                         </div>
                                     </div>
                                 </div>
@@ -1443,12 +1766,23 @@
                         </div>
                         <div class="form-row">
                             <!-- InsuredAmount -->
-                            <div class='col-sm-4 offset-sm-8 col-md-3 offset-md-6'>
+                            <div class='col-sm-4 offset-sm-8 col-md-3 offset-md-3'>
                                 <div class='form-group'>
                                     <label class='control-label' for='InsuredAmount'>
                                         <b>Total de suma asegurada </b>
                                     </label>
                                     <input id='InsuredAmount' name='InsuredAmount' type='text'
+                                           class='form-control text-right' size='18'
+                                           maxlength='18' style="font-weight: bold;" disabled>
+                                </div>
+                            </div>
+                            <!-- TotalAnnualPremium col-sm-4 offset-sm-4 col-md-3 offset-md-3-->
+                            <div class='col-sm-4 offset-sm-8 col-md-3 offset-md-0'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='TotalAnnualPremium'>
+                                        <b>Total de prima anual</b>
+                                    </label>
+                                    <input id='TotalAnnualPremium' name='TotalAnnualPremium' type='text'
                                            class='form-control text-right' size='18'
                                            maxlength='18' style="font-weight: bold;" disabled>
                                 </div>

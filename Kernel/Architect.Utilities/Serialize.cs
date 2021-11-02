@@ -33,9 +33,10 @@ namespace Architect.Utilities
         {
             JsonSerializerSettings config = new JsonSerializerSettings
             {
-                TypeNameHandling = TypeNameHandling.All,
-                StringEscapeHandling = StringEscapeHandling.EscapeNonAscii
             };
+
+            //TypeNameHandling = TypeNameHandling.All,
+            //    StringEscapeHandling = StringEscapeHandling.EscapeNonAscii
             if (IgnoreNull)
             {
                 config.NullValueHandling = NullValueHandling.Ignore;
@@ -47,7 +48,7 @@ namespace Architect.Utilities
             }
             config.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             string body = JsonConvert.SerializeObject(current, Newtonsoft.Json.Formatting.Indented, config);
-            System.IO.File.WriteAllText(fullFileName, body, Encoding.ASCII);
+            System.IO.File.WriteAllText(fullFileName, body, Encoding.UTF8);
         }
 
         public static string SerializeJSON(T current, bool withFormat, bool PreserveReferences = true, bool IgnoreNull = false, TypeNameHandling typeNameHandling = TypeNameHandling.All)

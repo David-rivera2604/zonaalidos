@@ -59,6 +59,7 @@
     <Compile Include="Especificacion\Producto.cs" />
     <Compile Include="Especificacion\Tercero.cs" />
     <Compile Include="Especificacion\DocumentCondicion.cs" />
+    <Compile Include="Especificacion\Regla.cs" />
     <Compile Include="Especificacion\TerceroCondicion.cs" />
     <Compile Include="Poliza\Variacion.cs" />
     <Compile Include="TipoDeFirma.cs" />

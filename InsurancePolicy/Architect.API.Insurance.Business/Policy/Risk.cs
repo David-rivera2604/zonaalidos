@@ -685,7 +685,7 @@ namespace Architect.API.Insurance.Business.Policy
             if (source.PrimaryInsured.IsNotEmpty())
                 result.AddRange(RiskRoles.Validate(source.PrimaryInsured, "PrimaryInsured", companyId, source));
 
-            // Se valida la información del questionario
+            // Se valida la información del cuestionario
             if (source.Questionary.IsNotEmpty())
                 result.AddRange(RiskQuestionnaires.Validate(source.Questionary, source, companyId));
 
@@ -762,7 +762,7 @@ namespace Architect.API.Insurance.Business.Policy
         /// <param name="person">Información de un perosnal o rol dentro de la póliza</param>
         /// <param name="age">Edad</param>
         /// <returns>Verdadero si la edad de la personal es mayor a 64 años, falso en el caso contrario</returns>
-        private static bool Rule_UnderwritingInsuredAgeGreaterThan(Contracts.Policy.RiskRoles person, int age)
+        internal static bool Rule_UnderwritingInsuredAgeGreaterThan(Contracts.Policy.RiskRoles person, int age)
         {
             bool result = false;
 

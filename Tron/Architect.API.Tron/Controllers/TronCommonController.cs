@@ -16,6 +16,34 @@ namespace Architect.API.Tron.Controllers
     public class TronCommonController : ApiController
     {
 
+        [HttpGet]
+        [Route("Producto")]
+        public async Task<IHttpActionResult> Producto([FromUri] string alias)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Contracts.Especificacion.Producto result = null;
+            await Task.Run(() =>
+            {
+                result = Business.Reglas.research.GetProducto(alias);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("Producto")]
+        public async Task<IHttpActionResult> Producto([FromUri] string alias, [FromBody] Contracts.Especificacion.Producto def)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Contracts.Especificacion.Producto result = null;
+            await Task.Run(() =>
+            {
+                result = Business.Reglas.research.UpdateProducto(alias, def);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
         //[Route("EnviarCertificado/{num_poliza}/{correoprincipal}/{correocopia1}/{correocopia2}")]
         /// <summary>
         /// Permite el envió de un certificado por correo
