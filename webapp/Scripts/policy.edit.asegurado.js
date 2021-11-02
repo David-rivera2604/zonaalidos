@@ -127,6 +127,7 @@ app.asegurado = (function () {
                                         app.core.LookupDependency($('select#Canton').val(), 'District', 'CR_Distritos', '', data.District, false);
                                     });
                                 $('#AddressDetail').val(data.AddressDetail);
+                                Event_Handler();
                             }
                         }).always(function () {
                             $('#DocumentNumber').removeClass('loading');
@@ -204,11 +205,17 @@ app.asegurado = (function () {
 
         $('#BirthDate').blur(function () {
             app.ui.IsElementValid('#RiskEdtFrm', '#ModuleCode');
+            Event_Handler();
         });
 
     };
 
     function Dynamic_Event_Controls() {
+
+        $('input:radio[name=Gender]').on('change', function () {
+            Event_Handler();
+        });
+
         $('input:radio[name=RetirementModality]').on('change', function () {
             $('#RetirementCause').prop("disabled", (this.value !== '2'));
 
@@ -233,6 +240,43 @@ app.asegurado = (function () {
 
         });
     };
+
+    function Event_Handler() {
+        if ($('input:radio[name=Gender]:checked').val() === '1') { //Masculino
+            $('#Confirmation_6a').prop("disabled", true);
+            $('#Confirmation_6b').prop("disabled", true);
+            $('#Confirmation_9a').prop("disabled", true);
+            $('#Confirmation_9b').prop("disabled", true);
+            $('#Confirmation_10a').prop("disabled", false);
+            $('#Confirmation_10b').prop("disabled", false);
+            $($('input:radio[name=Confirmation_6][value=1]')).prop('checked', false);
+            $($('input:radio[name=Confirmation_6][value=2]')).prop('checked', false);
+            $($('input:radio[name=Confirmation_9][value=1]')).prop('checked', false);
+            $($('input:radio[name=Confirmation_9][value=2]')).prop('checked', false);
+        }
+        else { //Femenino
+            $('#Confirmation_6a').prop("disabled", false);
+            $('#Confirmation_6b').prop("disabled", false);
+            $('#Confirmation_9a').prop("disabled", false);
+            $('#Confirmation_9b').prop("disabled", false);
+            $('#Confirmation_10a').prop("disabled", true);
+            $('#Confirmation_10b').prop("disabled", true);
+            $($('input:radio[name=Confirmation_10][value=1]')).prop('checked', false);
+            $($('input:radio[name=Confirmation_10][value=2]')).prop('checked', false);
+        }
+        let age = moment().diff($('#BirthDate_group').data('DateTimePicker').date(), 'years');
+        if (!Number.isNaN(age) && age > 64 && app.poliza.EntryAllowed()?.includes(";Questionnaires;")) {
+            $('#saludTabHeader').removeClass('d-none');
+        } else {
+            $('#saludTabHeader').addClass('d-none');
+        }
+        if (!Number.isNaN(age) && age >= 60 && app.poliza.EntryAllowed()?.includes(";Covid;")) {
+            $('#covidTabHeader').removeClass('d-none');
+        } else {
+            $('#covidTabHeader').addClass('d-none');
+        }
+    };
+
 
     function Setup_Validations() {
         app.ui.DateValidators();
@@ -441,6 +485,7 @@ app.asegurado = (function () {
             $('#SecondLastName').val(data.SecondLastName);
             app.ui.SetDateValue('#BirthDate', data.BirthDate)
             $($('input:radio[name=Gender][value=' + data.Gender + ']')).prop('checked', true);
+            Event_Handler();
             $('#CivilStatus').val(data.CivilStatus);
             app.ui.SetNumericValue('#Height', data.Height);
             app.ui.SetNumericValue('#Weight', data.Weight);

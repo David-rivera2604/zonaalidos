@@ -2,6 +2,7 @@ using Architect.DataFactory;
 using Architect.Utilities.Extensions;
 using System;
 using System.Data;
+using System.Collections.Generic;
 
 namespace Architect.API.Tron.DataAccess
 {
@@ -12,7 +13,10 @@ namespace Architect.API.Tron.DataAccess
     {
         public static Architect.API.Tron.Contracts.Presupuesto.DatoFijo P_Cotiza(Architect.API.Tron.Contracts.Batch.CotizadorPolizaLiderClass p2000030Instance, IDbConnection currentConnection)
         {
-            Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = new Architect.API.Tron.Contracts.Presupuesto.DatoFijo();
+            Contracts.Presupuesto.DatoFijo result = new Contracts.Presupuesto.DatoFijo()
+            {
+                Coberturas = new List<Contracts.Presupuesto.Cobertura>()
+            };
             Database.Procedure("EM_K_COTIZADOR_WEB_300_MCR.P_COTIZA")
                 .AddParameter("P_TIP_DOCUM", Architect.DataFactory.Enumerations.DbType.String, 3, p2000030Instance.tip_docum)
                 .AddParameter("P_COD_DOCUM", Architect.DataFactory.Enumerations.DbType.String, 20, p2000030Instance.cod_docum)
@@ -56,7 +60,7 @@ namespace Architect.API.Tron.DataAccess
                 .AddParameter("RC1", Architect.DataFactory.Enumerations.DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
                 .Query(currentConnection, new Action<IDataReader>((reader) =>
                 {
-                    result.Coberturas.Add(new Architect.API.Tron.Contracts.Presupuesto.Cobertura()
+                    result.Coberturas.Add(new Contracts.Presupuesto.Cobertura()
                     {
                         num_poliza = reader.StringValue("num_poliza"),
                         cod_cob = reader.IntegerValue("cod_cob"),

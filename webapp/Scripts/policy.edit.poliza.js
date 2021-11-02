@@ -73,6 +73,14 @@ app.poliza = (function () {
             minimumValue: '0',
             decimalPlaces: 2
         });
+        new AutoNumeric('#TotalAnnualPremium', {
+            decimalCharacter: ',',
+            decimalCharacterAlternative: '.',
+            digitGroupSeparator: '.',
+            maximumValue: '999999999999',
+            minimumValue: '0',
+            decimalPlaces: 2
+        });
         new AutoNumeric('#TotalPremium', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
@@ -122,11 +130,9 @@ app.poliza = (function () {
                     currency.val(-1);
                     currency.prop("disabled", false);
                 }
-
                 module.children().remove();
                 productModules = data.Modules;
                 EntryAllowed = data.EntryAllowed;
-
 
                 if (EntryAllowed.includes(";Overdraft;")) {
                     $('#prestamosHTabHeader').removeClass('d-none');
@@ -234,14 +240,19 @@ app.poliza = (function () {
         });
 
         $("#Surcharge").blur(function () {
-            var surcharge = app.ui.GetNumericValue('#Surcharge');
-            var premium = app.ui.GetNumericValue('#MonthlyPremium');
+            let surcharge = app.ui.GetNumericValue('#Surcharge');
+            let premium = app.ui.GetNumericValue('#MonthlyPremium');
+            let AnnualPremium = app.ui.GetNumericValue('#AnnualPremium');
             if (surcharge > 0) {
-                var value = premium * (1 + surcharge / 100);
-                app.ui.SetNumericValue('#TotalPremium', value);
-            }
-            else
+                premium = premium * (1 + surcharge / 100);
+                AnnualPremium = AnnualPremium * (1 + surcharge / 100);
                 app.ui.SetNumericValue('#TotalPremium', premium);
+                app.ui.SetNumericValue('#TotalAnnualPremium', AnnualPremium);
+            }
+            else {
+                app.ui.SetNumericValue('#TotalPremium', premium);
+                app.ui.SetNumericValue('#TotalAnnualPremium', AnnualPremium);
+            }
         });
 
     };
@@ -262,12 +273,14 @@ app.poliza = (function () {
                     function (data) {
                         app.ui.SetNumericValue("#AnnualPremium", data.AnnualPremium);
                         app.ui.SetNumericValue("#MonthlyPremium", data.MonthlyPremium);
+                        app.ui.SetNumericValue('#TotalAnnualPremium', data.AnnualPremium);
                         app.ui.SetNumericValue('#TotalPremium', data.MonthlyPremium);
                     });
         }
         else {
             app.ui.SetNumericValue("#AnnualPremium", 0);
             app.ui.SetNumericValue("#MonthlyPremium", 0);
+            app.ui.SetNumericValue('#TotalAnnualPremium', 0);
             app.ui.SetNumericValue('#TotalPremium', 0);
         }
     };
@@ -452,11 +465,27 @@ app.poliza = (function () {
             $('#ReasonForStatus').val(data.ReasonForStatus);
 
             if (data.Surcharge > 0) {
-                var value = data.MonthlyPremium * (1 + data.Surcharge / 100);
-                app.ui.SetNumericValue('#TotalPremium', value);
+                let Annualvalue = data.AnnualPremium * (1 + data.Surcharge / 100);
+                let Monthlyvalue = data.MonthlyPremium * (1 + data.Surcharge / 100);
+                app.ui.SetNumericValue('#TotalAnnualPremium', Annualvalue);
+                app.ui.SetNumericValue('#TotalPremium', Monthlyvalue);
             }
-            else
-                app.ui.SetNumericValue('#TotalPremium', data.MonthlyPremium);
+            else {
+                app.ui.SetNumericValue('#TotalAnnualPremium', data.AnnualPremium);
+                app.ui.SetNumericValue('#TotalPremium', data.MonthlyPremium);                
+            }
+
+            let age = moment().diff($('#BirthDate_group').data('DateTimePicker').date(), 'years');
+            if (!Number.isNaN(age) && age > 64 && app.poliza.EntryAllowed()?.includes(";Questionnaires;")) {
+                $('#saludTabHeader').removeClass('d-none');
+            } else {
+                $('#saludTabHeader').addClass('d-none');
+            }
+            if (!Number.isNaN(age) && age >= 60 && app.poliza.EntryAllowed()?.includes(";Covid;")) {
+                $('#covidTabHeader').removeClass('d-none');
+            } else {
+                $('#covidTabHeader').addClass('d-none');
+            }
 
             WorkMode(data.Status);
         }
@@ -603,6 +632,9 @@ app.poliza = (function () {
         },
         Modules: function () {
             return productModules;
+        },
+        EntryAllowed: function () {
+            return EntryAllowed;
         },
         Behavior: function (productKey, callback) {
             productAlias = productKey;

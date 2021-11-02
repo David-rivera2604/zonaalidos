@@ -1,0 +1,210 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+
+<div class="ibox">
+    <div class="ibox-title">
+        <h5><span id="PageTitle">Definición de un producto</span><small class="m-l-sm"><span id="PageSubTitle"> Reglas</span></small> </h5>
+        <!-- Opciones -->
+        <div class="ibox-tools">
+            <a class="fullscreen-link">
+                <i class="fa fa-expand"></i>
+            </a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <i class="fa fa-wrench"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                <li>
+                    <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar la información</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+            <div class="sk-rect4"></div>
+            <div class="sk-rect5"></div>
+        </div>
+        <div id="generalNotify">
+        </div>
+        <!-- Edit Form -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div id="VisualizationsEdt" class="animated fadeInRight">
+                    <form id='VisualizationsEdtForm' class='form-horizontal' data-toggle='validator'>
+                        <fieldset>
+                            <!-- datosgenerales Zone -->
+                            <div class="form-row">
+                                <div class="col-lg-12">
+                                    <h4>Datos generales</h4>
+                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                    <div class="form-row">
+
+                                        <!-- alias Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='alias'>Alias<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <input type='text' id='alias' name='alias' class='form-control' size='40' maxlength='40' />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- validaciones Grid -->
+                            <div class="form-row">
+                                <div class="col-lg-12">
+                                    <div class="form-row">
+                                        <div class='col'>
+                                            <h4>Validaciones<label id="validacionesTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                        </div>
+                                        <div class='col-auto'>
+                                            <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo Validaciones" data-toggle="modal" id="validacionesNew"> <i class="fa fa-plus"></i> </button>
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                    <div class="form-row">
+                                        <div class='col-md-12' style="padding-bottom: 20px">
+                                            <div class="table-responsive">
+                                                <table id="validacionesTbl" style="font-size: 11px;">
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class='col-md-12'>
+                                    <div class="modal-footer">
+                                        <button id="VisualizationsEdtFormSave"
+                                                type="button" class="btn btn-primary" data-doing="Guardando
+                                            cambios...">
+                                            Guardar cambios
+                                        </button> <button id="VisualizationsEdtFormCancel" type="button" class="btn btn-white"
+                                                          data-doing="Cancelando cambios...">
+                                            Cancelar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- validaciones Grid Modal -->
+        <div class="modal inmodal" id="validacionesModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog full_modal-dialog">
+                <div class="modal-content full_modal-content animated bounceInRight">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                        <h4 class="modal-title">Validación</h4>
+                        <small class="font-bold">Permite agregar un nueva validación o editar una ya existente</small>
+                    </div>
+                    <div class="modal-body">
+                        <!-- validaciones Grid Edit Form -->
+                        <div class='form-row'>
+                            <div class='col-md-12'>
+                                <div id="validacionesEdt" class="animated fadeInRight">
+                                    <form id='validacionesEdtForm' class='form-horizontal' data-toggle='validator'>
+                                        <fieldset>
+                                            <div class='form-row'>
+                                                <div class='col-md-9'>
+                                                    <!-- Descripcion Notes -->
+                                                    <div class='col-md'>
+                                                        <div class='form-group'>
+                                                            <label class='control-label' for='Descripcion'>Descripción de la condición<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                            <textarea id='Descripcion' name='Descripcion' class='form-control' rows="4"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Condicion Notes -->
+                                                    <div class='col-md'>
+                                                        <div class='form-group'>
+                                                            <label class='control-label' for='Condicion'>Condición para evaluar<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                            <textarea id='Condicion' name='Condicion' class='form-control' rows="4"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Mensaje Notes -->
+                                                    <div class='col-md'>
+                                                        <div class='form-group'>
+                                                            <label class='control-label' for='Mensaje'>Mensaje de error<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                            <textarea id='Mensaje' name='Mensaje' class='form-control' rows="2"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Campo Text -->
+                                                    <div class='col-md'>
+                                                        <div class='form-group'>
+                                                            <label class='control-label' for='Campo'>Nombre del campo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                            <input type='text' id='Campo' name='Campo' class='form-control' size='60' maxlength='60' />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class='col-md-3'>
+                                                    <!-- Variable Text -->
+                                                    <div class='col-md'>
+                                                        <div class='form-group'>
+                                                            <label class='control-label' for='Variable'>Variables</label>
+                                                            <select id='Variable' size='18' class='form-control'>
+                                                                <optgroup label='Generales'>
+                                                                    <option> {Rol igual a ?} </option>
+                                                                    <option> {Rol no sea igual a ?} </option>
+                                                                    <option> {Moneda igual a colones} </option>
+                                                                    <option> {Moneda igual a dólares} </option>
+                                                                    <option> {? años de antigüedad} </option>
+                                                                    <option> {? año de antigüedad} </option>
+                                                                    <option> o </option>
+                                                                    <option> y </option>
+                                                                    <option> menor a </option>
+                                                                    <option> mayor a </option>
+                                                                </optgroup>
+                                                                <optgroup label="MapfreMas">
+                                                                    <option> {Valor del vehículo} </option>
+                                                                    <option> {Año del vehículo} </option>
+                                                                    <option> {Contrato} </option>
+                                                                </optgroup>
+                                                            </select>
+                                                            <small class="form-text text-muted">
+                                                                Agregue la variable a la condición haciendo doble click
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+
+                                        </fieldset>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="validacionesEdtFormSave" data-doing="Guardando...">Guardar cambios</button>
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Form End -->
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/Prototype.Producto.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.PrototypeProducto.Init();
+        });
+    </script>
+}

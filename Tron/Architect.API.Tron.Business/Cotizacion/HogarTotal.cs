@@ -95,7 +95,6 @@ namespace Architect.API.Tron.Business.Cotizacion
             return result;
         }
 
-
         internal static List<Contracts.Comun.Cobertura> CoverageByDefault(bool isCoope, int cod_cia, int cod_ramo, DateTime fec_validez, string cobIncludeFilter)
         {
             string cod_cobExcludeFilter = string.Empty;
@@ -227,7 +226,7 @@ namespace Architect.API.Tron.Business.Cotizacion
         private static List<Core.Contracts.General.Error> Validate(Contracts.Cotizacion.HogarTotal source, Core.Contracts.Security.Token tokenInfo)
         {
             const string group = "HogarTotal";
-            List<Core.Contracts.General.Error> result = new List<Core.Contracts.General.Error>();
+            List<Core.Contracts.General.Error> result =  Reglas.research.Apply_Reglas("HogarTotal", source, tokenInfo);
 
             //Coberturas:
             if (!Rule_AtLeastOneCoverageSelected(source))
