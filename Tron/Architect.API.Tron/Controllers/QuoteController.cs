@@ -245,5 +245,43 @@ namespace Architect.API.Tron.Controllers
                 .ConfigureAwait(false);
             return Ok(result);
         }
+
+        /// <summary>
+        /// Devuelve la estructura de datos con los valores por defecto para una cotización de tipo Viajero|
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("ViajeroSetup")]
+        public async Task<IHttpActionResult> ViajeroSetup()
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Architect.API.Tron.Contracts.Cotizacion.Viajero result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Cotizacion.Viajero.Setup(tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+
+        /// <summary>
+        /// Realiza la validación de datos y cálculo necesarios para obtener una cotización o presupuesto de un producto de tipo Hogar Total
+        /// </summary>
+        /// <param name="quoteInfo"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("ViajeroQuote")]
+        public async Task<IHttpActionResult> ViajeroQuote([FromBody] Tron.Contracts.Cotizacion.Viajero quoteInfo)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Tron.Contracts.Cotizacion.Viajero result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Cotizacion.Viajero.Quote(quoteInfo, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
     }
 }

@@ -169,5 +169,42 @@ namespace Architect.API.Tron.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Devuelve la estructura de datos asociados a un presupuesto, con información complementaria para permitir la emisión de una póliza de tipo Viajero
+        /// </summary>
+        /// <param name="presupuesto"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("ViajeroSetup/{presupuesto}")]
+        public async Task<IHttpActionResult> ViajeroSetup(string presupuesto)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Tron.Contracts.Emision.Viajero result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Emision.Viajero.Setup(presupuesto, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Realiza la validación de datos y emisión de la póliza para un producto de tipo Viajero
+        /// </summary>
+        /// <param name="quoteInfo"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Viajero")]
+        public async Task<IHttpActionResult> ViajeroIssue([FromBody] Tron.Contracts.Emision.Viajero quoteInfo)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Tron.Contracts.Cotizacion.Viajero result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Emision.Viajero.Issue(quoteInfo, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
     }
 }
