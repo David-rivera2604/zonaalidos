@@ -1101,7 +1101,6 @@
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="html\view.html" />
     <Content Include="html\template.html" />
     <Content Include="html\asegurado.html" />
     <Content Include="html\fma.html" />
@@ -1179,7 +1178,6 @@
     <Content Include="logos\logo-core-alt.svg" />
     <Content Include="logos\logo-mapfre-alt.svg" />
     <Content Include="logos\velero3.jpg" />
-    <Content Include="products\research.xml" />
     <Content Include="products\TotalLeasing_saldo_deudor.xml" />
     <Content Include="products\carrofacil_saldo_deudor.xml" />
     <Content Include="products\cope_saldo_deudor.xml" />
@@ -1578,12 +1576,9 @@
     <Content Include="Reports\HogarTotal_ESPH.repx" />
     <Content Include="Reports\Coopesparta_saldo_deudor.repx" />
     <Content Include="Reports\Coopesparta_saldo_deudor_mayor_que_64.repx" />
-<<<<<<< HEAD
     <Content Include="Views\Cotizacion\Viajero.cshtml" />
     <Content Include="Views\Emision\Viajero.cshtml" />
-=======
     <Content Include="Views\Prototype\Producto.cshtml" />
->>>>>>> fe4a9319f347e5f2f5e7ea2af33077cdf89f6fd8
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -214,3 +214,4 @@
 1.5.64 01/11/2021 MapfreMas. Se excluyen las coberturas 3094, 1061, 1063 de los productos básico, amplio y plus
                   Coope. Visibilidad del Cuestionario Covid-19 para mayores de 60 años
                   MapfreMas. se deshabilitan los campos Colisión y vuelco, Riesgos adicionales y Robo para sincronizarlos según el valor del vehículo
+1.5.65 02/11/2021 Aliados. Se incorpora el cotizador y Emisor de Seguro Viajero 
