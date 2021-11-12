@@ -31,9 +31,9 @@ Namespace Architect.API.Core.DataAccess.Security
         End Function
 
         ''' <summary>
-        ''' Recupera una lista con la información de correo electronico de los usuario asociados a un rol.
+        ''' Recupera una lista con la información de correo electrónico de los usuario asociados a un rol.
         ''' </summary>
-        ''' <param name="companyId">Identificación de la compañia propietaria.</param>
+        ''' <param name="companyId">Identificación de la compañía propietaria.</param>
         ''' <param name="roleName">Nombre del rol usando para filtrar la lista</param>
         ''' <returns>Lista de instancias de UserMember</returns>
         Public Shared Function EmailInfoByRoleName(companyId As Integer, roleName As String) As List(Of Architect.API.Core.Contracts.Security.UserMember)
@@ -64,7 +64,7 @@ Namespace Architect.API.Core.DataAccess.Security
         ''' Recupera un registro en la tabla UserMember por medio de su clave primaria.
         ''' </summary>
         ''' <param name="eMail">E-Mail del Usuario.</param>
-        ''' <param name="companyId">Identificación de la compañia propietaria.</param>
+        ''' <param name="companyId">Identificación de la compañía propietaria.</param>
         ''' <returns>Instancia de UserMember</returns>
         Public Shared Function RetrieveByEMail(eMail As String, companyId As Integer) As Architect.API.Core.Contracts.Security.UserMember
             Dim rows As Data.DataTable = Nothing
@@ -86,7 +86,7 @@ Namespace Architect.API.Core.DataAccess.Security
         ''' Recupera un registro en la tabla UserMember por medio de su clave primaria.
         ''' </summary>
         ''' <param name="userName">Nombre Usuario.</param>
-        ''' <param name="companyId">Identificación de la compañia propietaria.</param>
+        ''' <param name="companyId">Identificación de la compañía propietaria.</param>
         ''' <returns>Instancia de UserMember</returns>
         Public Shared Function RetrieveByUserName(userName As String, companyId As Integer) As Architect.API.Core.Contracts.Security.UserMember
             Dim rows As Data.DataTable = Nothing

@@ -15,6 +15,10 @@ namespace Architect.API.Tron.Contracts.Especificacion
 
         public List<DocumentCondicion> DocumentosRequeridos { get; set; }
 
+        public List<Cobertura> Coberturas { get; set; }
+
+        public List<Lista> Listas { get; set; }
+
         public List<Regla> Reglas { get; set; }
 
     }

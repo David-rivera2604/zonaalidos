@@ -214,3 +214,17 @@
 1.5.64 01/11/2021 MapfreMas. Se excluyen las coberturas 3094, 1061, 1063 de los productos básico, amplio y plus
                   Coope. Visibilidad del Cuestionario Covid-19 para mayores de 60 años
                   MapfreMas. se deshabilitan los campos Colisión y vuelco, Riesgos adicionales y Robo para sincronizarlos según el valor del vehículo
+1.5.65 02/11/2021 Aliados. Se incorpora el cotizador y Emisor de Seguro Viajero 
+1.5.66 03/11/2021 Coope. Se condiciona el Cuestionario Covid-19 para mayores de 999 años
+1.5.67 04/11/2021 MapfreMas. Manejo dinámico de exclusiones de coberturas.
+                  MapfreMas. Manejo dinámico de opciones en las listas de valores.
+                  MapfreMas. Se incluye la cobertura 3008 del producto Plata
+                  MapfreMas. Para sumas aseguradas de Responsabilidad Civil del producto Trébol RC solo debe ser 50000000 /$ 100000
+                  MapfreMas. Se deshabilita el campo valor del vehículo para el tipo de producto Trébol RC 
+                  Coope. Se condiciona el Cuestionario Covid-19 para respetar setting en el xml
+                  Aliados. Fix para actualizar el email en la emisión.
+	              MapfreMas. Royner. En la cobertura de gastos médicos la suma asegurada $20.000 USD se excluye del listado para los planes amplio, plus, oro, plata y trebol
+				  MapfreMas. Royner. Para el paquete trébol RC: Se debe establece un límite de año del vehículo (hasta un máximo de 10 años).
+1.5.68 08/11/2021 MapfreMas. Se asigna cero al campo valor del vehículo para el tipo de producto Trébol RC 
+1.5.69 11/11/2021 MapfreMas. Fix. Se ajusta la emisión de forma directa para que use los terceros de forma dinámica en el archivo json.
+                  Coope. Manejo dinámico de validaciones.

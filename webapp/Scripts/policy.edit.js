@@ -114,7 +114,7 @@ app.PolicyEdit = (function () {
             result = false;
         if (!app.cuestionario.IsValid())
             result = false;
-        if (!app.cuestionariocovid.IsValid())
+        if (!$('#covidTabHeader').hasClass('d-none') && !app.cuestionariocovid.IsValid())
             result = false;
         if (!$('#beneficiariosHTabHeader').hasClass('d-none') && !app.beneficiarios.IsValid())
             result = false;
@@ -130,7 +130,9 @@ app.PolicyEdit = (function () {
         var data = app.poliza.InputToObject();
         data.PrimaryInsured = app.asegurado.InputToObject();
         data.Questionary = app.cuestionario.InputToObject();
-        data.Questionary.push(...app.cuestionariocovid.InputToObject());
+        if (!$('#covidTabHeader').hasClass('d-none')) {
+            data.Questionary.push(...app.cuestionariocovid.InputToObject());
+        }
         data.Beneficiaries = app.beneficiarios.InputToObject();
         data.Overdraft = app.prestamo.InputToObject();
         data.Attachments = app.attachment.InputToObject();
@@ -196,11 +198,13 @@ app.PolicyEdit = (function () {
                     else
                         $('#cuestionarioHTab .badge').html('');
 
-                    count = $('#QuestionaryCovidEdtFrm').validate().errorList.length;
-                    if (count > 0)
-                        $('#cuestionarioCovidHTab .badge').html(count);
-                    else
-                        $('#cuestionarioCovidHTab .badge').html('');
+                    if (!$('#covidTabHeader').hasClass('d-none')) {
+                        count = $('#QuestionaryCovidEdtFrm').validate().errorList.length;
+                        if (count > 0)
+                            $('#cuestionarioCovidHTab .badge').html(count);
+                        else
+                            $('#cuestionarioCovidHTab .badge').html('');
+                    }
 
                     if (!$('#beneficiariosHTabHeader').hasClass('d-none')) {
                         count = $('#beneficiaryNotifyAlert').length;

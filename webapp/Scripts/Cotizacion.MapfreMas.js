@@ -132,8 +132,11 @@ app.CotizacionMapfreMas = (function () {
             if (data.tipo_prod === 'trebolrc') {
                 $('#cod_uso_vehi').val('1');
                 app.ui.DropDownDisabled('#cod_uso_vehi', true, false);
+                app.ui.SetNumericValue('#IMP_VR', 0);
+                $('#IMP_VR').prop('disabled', true);
             } else {
                 app.ui.DropDownDisabled('#cod_uso_vehi', false, false);
+                $('#IMP_VR').prop('disabled', false);
             }
 
             app.core.Lookups([

@@ -140,7 +140,7 @@ namespace Architect.API.Tron.Business.Cotizacion
         {
             Contracts.Cotizacion.HogarTotal resultInfo = quoteInfo;
             //TODO: Es necesario convertir las validaciones existentes en el JS
-            resultInfo.Errors = Validate(quoteInfo, tokenInfo);
+            resultInfo.Errors = Reglas.research.Apply_Reglas("HogarTotal", quoteInfo, tokenInfo);
             if (resultInfo.Errors.Count == 0)
             {
                 bool IsCoope = false;
@@ -215,26 +215,6 @@ namespace Architect.API.Tron.Business.Cotizacion
             quoteInfo.descuentoDesc = Core.Business.Common.LkpDescription(tokenInfo.CompanyId, "DescuentoHogarTotal", quoteInfo.descuento.ToString());
 
             return quoteInfo;
-        }
-
-        /// <summary>
-        /// Valida la información de una póliza para permitir o no su emisión.
-        /// </summary>
-        /// <param name="source">Datos de la póliza</param>
-        /// <param name="companyId">Identificación de la compañía propietaria.</param>
-        /// <returns></returns>
-        private static List<Core.Contracts.General.Error> Validate(Contracts.Cotizacion.HogarTotal source, Core.Contracts.Security.Token tokenInfo)
-        {
-            const string group = "HogarTotal";
-            List<Core.Contracts.General.Error> result =  Reglas.research.Apply_Reglas("HogarTotal", source, tokenInfo);
-
-            //Coberturas:
-            if (!Rule_AtLeastOneCoverageSelected(source))
-            {
-                result.Add(new Core.Contracts.General.Error() { Group = "Table", Key = "coberturasTbl", Message = "Debe seleccionar al menos una cobertura" });
-            }
-
-            return result;
         }
 
         private static bool Rule_AtLeastOneCoverageSelected(Contracts.Cotizacion.HogarTotal source)

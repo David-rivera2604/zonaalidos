@@ -57,6 +57,19 @@
           "cod_prov": 102,
           "cod_localidad": 10203,
           "nom_domicilio1": "125 SUR MULTIPLAZA ESCAZÚ, EDIFICIO MERIDIANO, PISO 9"
+        },
+		{
+          "tip_benef": "8",
+          "tip_docum": "CJU",
+          "cod_docum": "3101692430",
+          "nom_tercero": "DAVIVIENDA LEASING (COSTA RICA) S.A.",
+          "email": "LEASING_SEGUROS@DAVIVIENDA.CR",
+          "tlf_numero": "2588-9477",
+          "cod_pais": "CRI",
+          "cod_estado": 1,
+          "cod_prov": 102,
+          "cod_localidad": 10203,
+          "nom_domicilio1": "125 SUR MULTIPLAZA ESCAZÚ, EDIFICIO MERIDIANO, PISO 9"
         }
       ]
     },

@@ -58,6 +58,52 @@
                                 </div>
                             </div>
 
+                            <!-- coberturas Grid -->
+                            <div class="form-row">
+                                <div class="col-lg-12">
+                                    <div class="form-row">
+                                        <div class='col'>
+                                            <h4>Coberturas<label id="coberturasTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                        </div>
+                                        <div class='col-auto'>
+                                            <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo coberturas" data-toggle="modal" id="coberturasNew"> <i class="fa fa-plus"></i> </button>
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                    <div class="form-row">
+                                        <div class='col-md-12' style="padding-bottom: 20px">
+                                            <div class="table-responsive">
+                                                <table id="coberturasTbl" style="font-size: 11px;">
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- listas Grid -->
+                            <div class="form-row">
+                                <div class="col-lg-12">
+                                    <div class="form-row">
+                                        <div class='col'>
+                                            <h4>Listas de valores<label id="listasTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                        </div>
+                                        <div class='col-auto'>
+                                            <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo listas" data-toggle="modal" id="listasNew"> <i class="fa fa-plus"></i> </button>
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                    <div class="form-row">
+                                        <div class='col-md-12' style="padding-bottom: 20px">
+                                            <div class="table-responsive">
+                                                <table id="listasTbl" style="font-size: 11px;">
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- validaciones Grid -->
                             <div class="form-row">
                                 <div class="col-lg-12">
@@ -80,6 +126,8 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Botonera -->
                             <div class="form-row">
                                 <div class='col-md-12'>
                                     <div class="modal-footer">
@@ -154,21 +202,41 @@
                                                             <label class='control-label' for='Variable'>Variables</label>
                                                             <select id='Variable' size='18' class='form-control'>
                                                                 <optgroup label='Generales'>
-                                                                    <option> {Rol igual a ?} </option>
-                                                                    <option> {Rol no sea igual a ?} </option>
-                                                                    <option> {Moneda igual a colones} </option>
-                                                                    <option> {Moneda igual a dólares} </option>
+                                                                    <option> {El Rol del usuario sea igual a  ?} </option>
+                                                                    <option> {El Rol del usuario no sea igual a ?} </option>
                                                                     <option> {? años de antigüedad} </option>
-                                                                    <option> {? año de antigüedad} </option>
+                                                                    <option> {La Cobertura ? sea seleccionada} </option>
+                                                                    <option> {No hay coberturas seleccionadas} </option>
+                                                                    <option> {Hay coberturas seleccionadas} </option>
+                                                                    <option> sea igual a </option>
+                                                                    <option> no sea igual a </option>
+                                                                    <option> sea menor a </option>
+                                                                    <option> sea mayor a </option>
                                                                     <option> o </option>
                                                                     <option> y </option>
-                                                                    <option> menor a </option>
-                                                                    <option> mayor a </option>
                                                                 </optgroup>
                                                                 <optgroup label="MapfreMas">
-                                                                    <option> {Valor del vehículo} </option>
-                                                                    <option> {Año del vehículo} </option>
-                                                                    <option> {Contrato} </option>
+                                                                    <option> {El Plan} </option>
+                                                                    <option> {El Tipo de producto} </option>
+                                                                    <option> {La Moneda} </option>
+                                                                    <option> {La Marca del vehículo} </option>
+                                                                    <option> {El Valor del vehículo} </option>
+                                                                    <option> {El Año del vehículo} </option>
+                                                                    <option> {El Contrato} </option>
+                                                                    <option> {La Suma Asegurada de Colisión y vuelco} </option>
+                                                                    <option> {La Suma Asegurada de Gastos Médicos} </option>
+                                                                    <option> {La Suma Asegurada de Riesgos adicionales} </option>
+                                                                    <option> {La Suma Asegurada de Robo} </option>
+
+                                                                    <option> {Básico} </option>
+                                                                    <option> {Amplio} </option>
+                                                                    <option> {Plus} </option>
+                                                                    <option> {Oro} </option>
+                                                                    <option> {Plata} </option>
+                                                                    <option> {Trébol} </option>
+                                                                    <option> {Trébol RC} </option>
+                                                                    <option> {Colones} </option>
+                                                                    <option> {Dólares} </option>
                                                                 </optgroup>
                                                             </select>
                                                             <small class="form-text text-muted">

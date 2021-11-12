@@ -6,26 +6,26 @@
         {
           "tip_benef": "0",
           "tip_docum": "CJU",
-          "cod_docum": "3101046008",
-          "nom_tercero": "BANCO DAVIVIENDA (COSTA RICA) SOCIEDAD ANONIMA",
-          "email": "IRIAKNA.HERNANDEZ@DAVIVIENDA.CR",
+          "cod_docum": "3101042028",
+          "nom_tercero": "EMPRESA DE SERVICIOS PUBLICOS DE HEREDIA, S.A",
+          "email": "echaves@esph-sa.com",
           "cod_pais": "CRI",
-          "cod_estado": 1,
-          "cod_prov": 101,
-          "cod_localidad": 10101,
-          "nom_domicilio1": "SAN JOSE"
+          "cod_estado": 4,
+          "cod_prov": 401,
+          "cod_localidad": 40101,
+          "nom_domicilio1": "HEREDIA"
         },
         {
           "tip_benef": "8",
           "tip_docum": "CJU",
-          "cod_docum": "3101046008",
-          "nom_tercero": "BANCO DAVIVIENDA (COSTA RICA) SOCIEDAD ANONIMA",
-          "email": "IRIAKNA.HERNANDEZ@DAVIVIENDA.CR",
+          "cod_docum": "3101042028",
+          "nom_tercero": "EMPRESA DE SERVICIOS PUBLICOS DE HEREDIA, S.A",
+          "email": "echaves@esph-sa.com",
           "cod_pais": "CRI",
-          "cod_estado": 1,
-          "cod_prov": 101,
-          "cod_localidad": 10101,
-          "nom_domicilio1": "SAN JOSE"
+          "cod_estado": 4,
+          "cod_prov": 401,
+          "cod_localidad": 40101,
+          "nom_domicilio1": "HEREDIA"
         }
       ]
     }
@@ -39,26 +39,7 @@
           "archivo": "CEDULA.docx",
           "requerido": true
         },
-        {
-          "descripcion": "Comprobante de entrega de condiciones generales",
-          "archivo": "CONDICIONES.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Consentimiento para uso de datos personales",
-          "archivo": "CONSENTIMIENTO.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Formato de validación de domicilio",
-          "archivo": "DOMICILIO.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Conozca a su cliente (KYC)",
-          "archivo": "KYC.pdf",
-          "requerido": true
-        },
+        
         {
           "descripcion": "Solicitud de seguro firmada",
           "archivo": "SOLICITUD.pdf",
@@ -89,26 +70,7 @@
           "archivo": "CERTIFICADO PARTICIPACION.docx",
           "requerido": true
         },
-        {
-          "descripcion": "Comprobante de entrega de condiciones generales",
-          "archivo": "CONDICIONES.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Consentimiento para uso de datos personales",
-          "archivo": "CONSENTIMIENTO.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Formato de validación de domicilio",
-          "archivo": "DOMICILIO.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Conozca a su cliente (KYC)",
-          "archivo": "KYC.pdf",
-          "requerido": true
-        },
+        
         {
           "descripcion": "Solicitud de seguro firmada",
           "archivo": "SOLICITUD.pdf",
