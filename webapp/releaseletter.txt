@@ -228,3 +228,4 @@
 1.5.68 08/11/2021 MapfreMas. Se asigna cero al campo valor del vehículo para el tipo de producto Trébol RC 
 1.5.69 11/11/2021 MapfreMas. Fix. Se ajusta la emisión de forma directa para que use los terceros de forma dinámica en el archivo json.
                   Coope. Manejo dinámico de validaciones.
+1.5.70 12/11/2021 Impresion de Certificado, Seguro Viajero Ramo 441

@@ -100,6 +100,9 @@ namespace Architect.API.Tron.Business.Backoffice
                 case "302":
                     procedureName = "em_k_jrp_cuadro_poliza_301_mcr.p_lista";
                     break;
+                case "441":
+                    procedureName = "em_k_jrp_condiciones_441_mcr.p_lista";
+                    break;
             }
             if (procedureName.IsEmpty()) {
                 throw new Utilities.Exceptions.ApplicationException(string.Format("No se puede imprimir la póliza {0} del ramo {0}", num_poliza, num_poliza.Substring(0, 3)));
