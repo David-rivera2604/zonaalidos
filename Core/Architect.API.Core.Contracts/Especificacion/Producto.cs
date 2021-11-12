@@ -4,20 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Architect.API.Tron.Contracts.Especificacion
+namespace Architect.API.Core.Contracts.Especificacion
 {
     /// <summary>
     /// Permite definir el comportamiento de un producto de TRON para la cotización y emisión 
     /// </summary>
     public class Producto
     {
-        public List<TerceroCondicion> Terceros { get; set; }
-
-        public List<DocumentCondicion> DocumentosRequeridos { get; set; }
-
-        public List<Cobertura> Coberturas { get; set; }
-
-        public List<Lista> Listas { get; set; }
 
         public List<Regla> Reglas { get; set; }
 

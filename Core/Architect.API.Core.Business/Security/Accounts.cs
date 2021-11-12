@@ -145,6 +145,7 @@ namespace Architect.API.Core.Business.Security
                         {
                             case 2: //Aliados
                                 result.InitialPath = "viewer/tab?id=310";
+                                result.InitialPath = "inicio/agente";
                                 break;
 
                             case 3: //Clientes

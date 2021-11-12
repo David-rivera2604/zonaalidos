@@ -185,7 +185,7 @@ namespace Architect.API.Tron.Business.Emision
                 cod_localidad = item.TDistrito,
                 nom_domicilio1 = item.otrasenas,
                 titular = (item.tipodetercero == 0),
-
+                email = item.correoelectronico,
                 cod_act_tercero = int.MinValue,
                 mca_fisico = "S",
                 tip_domicilio = int.MinValue,

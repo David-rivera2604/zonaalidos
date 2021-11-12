@@ -39,5 +39,14 @@ namespace Architect.Insurance.Contracts.Product
         [XmlAttribute("required")]
         [DefaultValue(false)]
         public bool Required { get; set; }
+
+        /// <summary>
+        /// Indica si la ventana esta activa.
+        /// </summary>
+        /// <remarks>VT.SEQUEN_POL.SREQUIRE</remarks>
+        [DataMember(EmitDefaultValue = false)]
+        [XmlAttribute("active")]
+        [DefaultValue(true)]
+        public bool Active { get; set; } = true;
     }
 }

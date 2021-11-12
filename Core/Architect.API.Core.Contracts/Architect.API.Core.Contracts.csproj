@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Especificacion\Producto.cs" />
+    <Compile Include="Especificacion\Regla.cs" />
     <Compile Include="EviSign\IdentitySign.cs" />
     <Compile Include="EviSign\SignSubmit.cs" />
     <Compile Include="EviSign\SigningParty.cs" />

@@ -48,14 +48,22 @@ namespace Architect.API.Tron.Business.Cotizacion
 
             //Architect.API.Tron.Business.research.MapfreMasBuild();
 
-            List<Core.Contracts.General.Error> result2 = Reglas.research.Apply_Reglas("MapfreMas", result, tokenInfo);
-
             return result;
         }
 
         public static Tron.Contracts.Cotizacion.MapfreMasSettings Settings(int cod_ramo, int cod_mon, int edad, string tipo_prod, int cod_marca, int num_contrato, int num_subcontrato, Core.Contracts.Security.Token tokenInfo)
         {
             Tron.Contracts.Cotizacion.MapfreMasSettings result = new Contracts.Cotizacion.MapfreMasSettings();
+            Contracts.Cotizacion.MapfreMas data = new Contracts.Cotizacion.MapfreMas()
+            {
+                cod_mon = cod_mon,
+                cod_marca = cod_marca,
+                tipo_prod = tipo_prod,
+                edad = edad,
+                contrato = num_contrato,
+                subcontrato = num_subcontrato
+            };
+
             List<string> keys = new List<string> {
                 "MM_Plan",
                 "MM_CAPITAL_RC", "MM_CAPITAL_GM", "MM_CAPITAL_AC", "MM_CAPITAL_GN", "MM_CAPITAL_AM", "MM_CAPITAL_ROTCRI",
@@ -91,7 +99,7 @@ namespace Architect.API.Tron.Business.Cotizacion
 
             }
 
-            LookUps(result, values);
+            LookUps(result, values, data, tokenInfo);
 
             return result;
         }
@@ -147,32 +155,50 @@ namespace Architect.API.Tron.Business.Cotizacion
             if (cod_cobIncludeFilter.IsEmpty())
             {
 
-                switch (cod_plan_auto)
-                {
-                    case 31: // Básico
-                        cod_cobExcludeFilter = "3002,3003,3016,3018,3014,3015,3008,3017,3094,1061,1063";
-                        break;
-                    case 32: // Amplio
-                        cod_cobExcludeFilter = "3015,3008,3016,3018,3017,3094,1061,1063";
-                        break;
-                    case 34: // Oro
-                        cod_cobExcludeFilter = "3016,3018,3017,3094,1061,1063";
-                        break;
-                    case 35: //Plata
-                        cod_cobExcludeFilter = "3016,3018,3017,3094,1061,3002,3003,3007,3014,3015,3008";
-                        //cod_cobExcludeFilter = "3002,3003,3007,3014,3015,3008,1060,3016,3018,3017";
-                        break;
-                    case 36: // Trebol
-                        cod_cobExcludeFilter = "3016,3018,3017,3094,1061,1063";
-                        break;
-                    case 37: // Trebol RC
-                        cod_cobExcludeFilter = "3002,3003,3004,3005,3006,3007,3008,3009,3014,3015,3016,3017,3018,3094,1060,1061,1063";
-                        break;
+                cod_cobExcludeFilter = Reglas.research.Apply_Coberturas("MapfreMas",
+                    new Contracts.Cotizacion.MapfreMas()
+                    {
+                        cod_mon = cod_mon,
+                        cod_marca = cod_marca,
+                        cod_modelo = cod_modelo,
+                        ANIO_SUB_MODELO = anio_sub_modelo,
+                        cod_tip_vehi = cod_tip_vehi,
+                        cod_uso_vehi = cod_uso_vehi,
+                        mca_sexo = mca_sexo,
+                        cod_zona_circul = cod_zona_circul,
+                        edad = edad,
+                        COD_PLAN_AUTO = cod_plan_auto,
+                        contrato = num_contrato,
+                        subcontrato = num_subcontrato,
+                        polizagrupo = num_poliza_grupo
+                    }, tokenInfo);
 
-                    default: // 33 Plus
-                        cod_cobExcludeFilter = "3016,3018,3017";
-                        break;
-                }
+                //switch (cod_plan_auto)
+                //{
+                //    case 31: // Básico
+                //        cod_cobExcludeFilter = "3002,3003,3016,3018,3014,3015,3008,3017,3094,1061,1063";
+                //        break;
+                //    case 32: // Amplio
+                //        cod_cobExcludeFilter = "3015,3008,3016,3018,3017,3094,1061,1063";
+                //        break;
+                //    case 34: // Oro
+                //        cod_cobExcludeFilter = "3016,3018,3017,3094,1061,1063";
+                //        break;
+                //    case 35: //Plata
+                //        cod_cobExcludeFilter = "3016,3018,3017,3094,1061,3002,3003,3007,3014,3015";
+                //        //cod_cobExcludeFilter = "3002,3003,3007,3014,3015,3008,1060,3016,3018,3017";
+                //        break;
+                //    case 36: // Trébol
+                //        cod_cobExcludeFilter = "3016,3018,3017,3094,1061,1063";
+                //        break;
+                //    case 37: // Trebol RC
+                //        cod_cobExcludeFilter = "3002,3003,3004,3005,3006,3007,3008,3009,3014,3015,3016,3017,3018,3094,1060,1061,1063";
+                //        break;
+
+                //    default: // 33 Plus
+                //        cod_cobExcludeFilter = "3016,3018,3017";
+                //        break;
+                //}
 
                 List<Contracts.Tables.ta301003> coverageSelection = DataAccess.PorRamo.AutomobileCoverageSelection(cod_cia, num_poliza_grupo, num_contrato, num_subcontrato, COD_RAMO, cod_mon, cod_marca, cod_modelo, anio_sub_modelo, cod_tip_vehi, cod_uso_vehi, mca_sexo, cod_zona_circul, edad, cod_plan_auto, tip_valoracion);
                 bool required;
@@ -199,8 +225,9 @@ namespace Architect.API.Tron.Business.Cotizacion
         {
             Contracts.Cotizacion.MapfreMas resultInfo = quoteInfo;
 
+            //Valida la información de una póliza para permitir o no su emisión.
+            resultInfo.Errors = Reglas.research.Apply_Reglas("MapfreMas", quoteInfo, tokenInfo);
             //TODO: Es necesario convertir las validaciones existentes en el JS
-            resultInfo.Errors = Validate(quoteInfo, tokenInfo);
 
             if (resultInfo.Errors.Count == 0)
             {
@@ -231,85 +258,6 @@ namespace Architect.API.Tron.Business.Cotizacion
                 }
             }
             return resultInfo;
-        }
-
-        /// <summary>
-        /// Valida la información de una póliza para permitir o no su emisión.
-        /// </summary>
-        /// <param name="source">Datos de la póliza</param>
-        /// <param name="companyId">Identificación de la compañía propietaria.</param>
-        /// <returns></returns>
-        private static List<Core.Contracts.General.Error> Validate(Contracts.Cotizacion.MapfreMas source, Core.Contracts.Security.Token tokenInfo)
-        {
-            const string group = "MapfreMas";
-            List<Core.Contracts.General.Error> result = Reglas.research.Apply_Reglas("MapfreMas", source, tokenInfo);
-
-            //Coberturas:
-            if (!Rule_AtLeastOneCoverageSelected(source))
-            {
-                result.Add(new Core.Contracts.General.Error() { Group = "Table", Key = "coberturasTbl", Message = "Debe seleccionar al menos una cobertura" });
-            }
-
-            ////ANIO_SUB_MODELO:
-            //if (tokenInfo.Roles.Contain("Purdy") && Rule_MinYearOfVehicleManufacture_Purdy(source.ANIO_SUB_MODELO, source.contrato))
-            //{
-            //    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "ANIO_SUB_MODELO", Message = string.Format("El año del vehículo debe ser mayor o igual a {0}", Util_MinYearOfVehicleManufactureAllowed_Purdy(source.contrato)) });
-            //}
-            //if (tokenInfo.Roles.Contain("Privilegios") && Rule_MinYearOfVehicleManufacture(source.ANIO_SUB_MODELO, 17))
-            //{
-            //    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "ANIO_SUB_MODELO", Message = string.Format("El año del vehículo debe ser mayor o igual a {0}", Util_MinYearOfVehicleManufactureAllowed(17)) });
-            //}
-            ////Si no aplica algunos de los roles anteriores esta seria la validación por defecto
-            //if (!tokenInfo.Roles.Contain("Purdy") && !tokenInfo.Roles.Contain("Privilegios") &&
-            //    Rule_MinYearOfVehicleManufacture(source.ANIO_SUB_MODELO, 15))
-            //{
-            //    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "ANIO_SUB_MODELO", Message = string.Format("El año del vehículo debe ser mayor o igual a {0}", Util_MinYearOfVehicleManufactureAllowed(15)) });
-            //}
-
-            ////Se debe permitir cotizar la marca Peugeout, pero solamente con 3 años de antigüedad, es decir: del 2018 en adelante.
-            ////Esto sería para los que cotizan de forma genérica.
-            //if (source.cod_marca == 60 && Rule_MinYearOfVehicleManufacture(source.ANIO_SUB_MODELO, 3))
-            //{
-            //    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "ANIO_SUB_MODELO", Message = string.Format("Para un Peugeot, el año del vehículo debe ser mayor o igual a {0}", Util_MinYearOfVehicleManufactureAllowed(3)) });
-            //}
-
-
-            ////IMP_VR:
-            //if (tokenInfo.Roles.Contain("Privilegios") && 
-            //    Rule_MaximumAllowedValueOfVehicle(source.cod_mon, source.IMP_VR, 45000000, 75000))
-            //{
-            //    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "IMP_VR", Message = string.Format("El valor del vehículo debe ser menor o igual a {0}", source.cod_mon == 1 ? "45.000.000 colones" : "75.000 dólares") });
-            //}
-            //if ((tokenInfo.Roles.Contain("Davivienda_Prendarios") || tokenInfo.Roles.Contain("Davivienda_Leasing")) && 
-            //    Rule_MaximumAllowedValueOfVehicle(source.cod_mon, source.IMP_VR, 80000000, 125000))
-            //{
-            //    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "IMP_VR", Message = string.Format("El valor del vehículo debe ser menor o igual a {0}", source.cod_mon == 1 ? "80.000.000 colones" : "125.000 dólares") });
-            //}
-
-
-            ////Si no aplica algunos de los roles anteriores esta seria la validación por defecto
-            //if (!tokenInfo.Roles.Contain("Privilegios") && 
-            //    !tokenInfo.Roles.Contain("Davivienda_Prendarios") && 
-            //    !tokenInfo.Roles.Contain("Davivienda_Leasing") &&
-            //    Rule_MaximumAllowedValueOfVehicle(source.cod_mon, source.IMP_VR, 28650000, 50000))
-            //{
-            //    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "IMP_VR", Message = string.Format("El valor del vehículo debe ser menor o igual a {0}", source.cod_mon == 1 ? "28.650.000 colones" : "50.000 dólares") });
-            //}
-            return result;
-        }
-
-        private static bool Rule_AtLeastOneCoverageSelected(Contracts.Cotizacion.MapfreMas source)
-        {
-            bool finded = false;
-            foreach (Contracts.Comun.Cobertura item in source.coberturas)
-            {
-                if (item.seleccionado)
-                {
-                    finded = true;
-                    break;
-                }
-            }
-            return finded;
         }
 
         private static void LookUpsForPolizaGrupo(Contracts.Cotizacion.MapfreMasSettings result, List<Core.Contracts.General.LookupValues> values)
@@ -352,10 +300,21 @@ namespace Architect.API.Tron.Business.Cotizacion
             }
         }
 
-        private static void LookUps(Contracts.Cotizacion.MapfreMasSettings result, List<Core.Contracts.General.LookupValues> values)
+        private static void LookUps(Contracts.Cotizacion.MapfreMasSettings result, List<Core.Contracts.General.LookupValues> values, Contracts.Cotizacion.MapfreMas data, Core.Contracts.Security.Token tokenInfo)
         {
+            string exclude = string.Empty;
             foreach (Core.Contracts.General.LookupValues itemValues in values)
             {
+                exclude = Reglas.research.Apply_Listas("MapfreMas", data, itemValues.Key, tokenInfo);
+
+                if (exclude.IsNotEmpty())
+                {
+                    foreach (string item in exclude.Split(','))
+                    {
+                        itemValues.Lkp.Remove(itemValues.Lkp.Find(r => r.Code == item));
+                    }
+                }
+
                 switch (itemValues.Key)
                 {
                     case "MM_Plan":

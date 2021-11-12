@@ -45,7 +45,7 @@ namespace Architect.API.Insurance.Business.Policy
             {
                 group = "QuestionaryCovid";
                 name = "cuestionario covid";
-                underwriting = (Risk.Rule_UnderwritingInsuredAgeGreaterThan(risk.PrimaryInsured, 59));
+                underwriting = (Risk.Rule_UnderwritingInsuredAgeGreaterThan(risk.PrimaryInsured, 60));
             } else
             {
                 underwriting = (Risk.Rule_UnderwritingInsuredAgeGreaterThan(risk.PrimaryInsured, 64));

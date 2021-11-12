@@ -10,10 +10,10 @@ namespace Architect.API.Insurance.Business.Policy
     public static partial class Risk
     {
         /// <summary>
-        /// Permite realizar los cambios de estado a una póliza que se encuentra en modo de subscripción.
+        /// Permite realizar los cambios de estado a una póliza que se encuentra en modo de suscripción.
         /// </summary>
         /// <param name="item">Datos para el cambio de estado.</param>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="userId">Identificación del usuario.</param>
         /// <param name="roles">Lista de roles permitidos del usuario que solicita el cambio.</param>
         /// <param name="message">Descripción del cambio realizado.</param>
@@ -51,11 +51,11 @@ namespace Architect.API.Insurance.Business.Policy
         /// <summary>
         /// Emite una póliza en suscripción.
         /// </summary>
-        /// <param name="result">Información de la poliza en suscripción.</param>
+        /// <param name="result">Información de la póliza en suscripción.</param>
         /// <param name="status">Estado nuevo.</param>
         /// <param name="currentStatus">Estado actual.</param>
         /// <param name="item">Datos para el cambio de estado.</param>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="userId">Identificación del usuario.</param>
         /// <param name="roles">Lista de roles permitidos del usuario que solicita el cambio.</param>
         /// <param name="message">Descripción del cambio realizado.</param>
@@ -94,11 +94,11 @@ namespace Architect.API.Insurance.Business.Policy
         /// <summary>
         /// Declina una póliza en suscripción.
         /// </summary>
-        /// <param name="result">Información de la poliza en suscripción.</param>
+        /// <param name="result">Información de la póliza en suscripción.</param>
         /// <param name="status">Estado nuevo.</param>
         /// <param name="currentStatus">Estado actual.</param>
         /// <param name="item">Datos para el cambio de estado.</param>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="userId">Identificación del usuario.</param>
         /// <param name="roles">Lista de roles permitidos del usuario que solicita el cambio.</param>
         /// <param name="message">Descripción del cambio realizado.</param>
@@ -136,11 +136,11 @@ namespace Architect.API.Insurance.Business.Policy
         /// <summary>
         /// Condiciona una póliza en suscripción para ser aceptada.
         /// </summary>
-        /// <param name="result">Información de la poliza en suscripción.</param>
+        /// <param name="result">Información de la póliza en suscripción.</param>
         /// <param name="status">Estado nuevo.</param>
         /// <param name="currentStatus">Estado actual.</param>
         /// <param name="item">Datos para el cambio de estado.</param>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="userId">Identificación del usuario.</param>
         /// <param name="roles">Lista de roles permitidos del usuario que solicita el cambio.</param>
         /// <param name="message">Descripción del cambio realizado.</param>
@@ -171,10 +171,10 @@ namespace Architect.API.Insurance.Business.Policy
         /// <summary>
         /// Cancela una póliza en vigor.
         /// </summary>
-        /// <param name="result">Información de la poliza en suscripción.</param>
+        /// <param name="result">Información de la póliza en suscripción.</param>
         /// <param name="status">Estado nuevo.</param>
         /// <param name="item">Datos para el cambio de estado.</param>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="userId">Identificación del usuario.</param>
         /// <param name="message">Descripción del cambio realizado.</param>
         /// <returns>Póliza con los cambios aplicados.</returns>
@@ -198,10 +198,10 @@ namespace Architect.API.Insurance.Business.Policy
         }
 
         /// <summary>
-        /// Envía una notificación al usuario encargado de manejar la subscripción
+        /// Envía una notificación al usuario encargado de manejar la suscripción
         /// </summary>
         /// <param name="item">Póliza usada para el contexto del cuerpo del correo.</param>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="userId">Identificación del usuario.</param>
         private static void Notify_InReviewStatus(Contracts.Policy.Risk item, int companyId, int userId)
         {
@@ -390,10 +390,10 @@ namespace Architect.API.Insurance.Business.Policy
         //}
 
         /// <summary>
-        /// Información imprimible de una póliza.
+        /// Información para la impresión de una póliza.
         /// </summary>
-        /// <param name="id">Identificción interna de una poliza.</param>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="id">Identificación interna de una póliza.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <returns>Información de una póliza</returns>
         public static Contracts.Policy.RiskView Information(int id, int companyId)
         {
@@ -518,31 +518,29 @@ namespace Architect.API.Insurance.Business.Policy
         /// <summary>
         /// Realiza la emisión de una póliza.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
-        /// <param name="userId">Identificación del usuario.</param>
-        /// <param name="branchOffice">Sucursal a la que pertenece el usuario.</param>
+        /// <param name="tokenInfo">Contexto del usuario conectado.</param>
         /// <param name="item">Instancia de la póliza a emitir.</param>
-        /// <param name="source">Indica si la poliza si se esta actualizando una poliza imcompleta (Put) o se esta emitiendo de forma directa(Post)</param>
+        /// <param name="source">Indica si la póliza si se esta actualizando una póliza incompleta (Put) o se esta emitiendo de forma directa(Post)</param>
         /// <returns>Información de la póliza emitida.</returns>
-        public static Architect.API.Insurance.Business.Structure.IssuePolicyResult IssuePolicy(int companyId, int userId, int branchOffice, Contracts.Policy.Risk item, string source)
+        public static Architect.API.Insurance.Business.Structure.IssuePolicyResult IssuePolicy(Core.Contracts.Security.Token tokenInfo, Contracts.Policy.Risk item, string source)
         {
             Architect.API.Insurance.Business.Structure.IssuePolicyResult result = new Structure.IssuePolicyResult();
             int orignalStatus = item.Status;
 
             item.Status = 1;
-            item = Business.Policy.Risk.Setup(item, companyId);
-            item.BranchOffice = branchOffice;
-            item.ExecutiveUserCode = userId;
-            result.Errors = Business.Policy.Risk.PolicyStorage(item, orignalStatus, companyId, userId, source);
+            item = Business.Policy.Risk.Setup(item, tokenInfo.CompanyId);
+            item.BranchOffice = tokenInfo.BranchOffice;
+            item.ExecutiveUserCode = tokenInfo.UserId;
+            result.Errors = Business.Policy.Risk.PolicyStorage(item, orignalStatus, tokenInfo, source);
 
             switch (source)
             {
                 case "Post":
-                    item = Business.Policy.Risk.CreatePolicy(item, userId, companyId);
+                    item = Business.Policy.Risk.CreatePolicy(item, tokenInfo.UserId, tokenInfo.CompanyId);
                     break;
 
                 case "Put":
-                    item = Business.Policy.Risk.UpdatePolicy(item, userId, companyId, source);
+                    item = Business.Policy.Risk.UpdatePolicy(item, tokenInfo.UserId, tokenInfo.CompanyId, source);
                     break;
             }
 
@@ -550,16 +548,16 @@ namespace Architect.API.Insurance.Business.Policy
             return result;
         }
 
-        public static Architect.API.Insurance.Business.Structure.IssuePolicyResult ModifyPolicy(int companyId, int userId, Contracts.Policy.Risk item)
+        public static Architect.API.Insurance.Business.Structure.IssuePolicyResult ModifyPolicy(Core.Contracts.Security.Token tokenInfo, Contracts.Policy.Risk item)
         {
             Architect.API.Insurance.Business.Structure.IssuePolicyResult result = new Structure.IssuePolicyResult();
             int orignalStatus = item.Status;
 
-            item = Business.Policy.Risk.Setup(item, companyId);
-            result.Errors = Business.Policy.Risk.PolicyStorage(item, orignalStatus, companyId, userId, "Modify");
+            item = Business.Policy.Risk.Setup(item, tokenInfo.CompanyId);
+            result.Errors = Business.Policy.Risk.PolicyStorage(item, orignalStatus, tokenInfo, "Modify");
 
             if (result.Errors.Count == 0)
-                item = Business.Policy.Risk.UpdatePolicy(item, userId, companyId, "Modify");
+                item = Business.Policy.Risk.UpdatePolicy(item, tokenInfo.UserId, tokenInfo.CompanyId, "Modify");
 
             result.Risk = item;
             return result;
@@ -584,11 +582,11 @@ namespace Architect.API.Insurance.Business.Policy
         /// <summary>
         /// Lista de pólizas existen según los criterio definidos en los filtros.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="filter">Permite filtrar por póliza o por la identificación, nombre, apellido, teléfono o correo electrónico del asegurado.</param>
         /// <param name="lineOfBusiness">Opción para filtrar por ramo o linea de negocio.</param>
-        /// <param name="product">Opción para filtrar por producto vincaulado a un ramo.</param>
-        /// <param name="status">Opción para filtrar por multiples esta de las pólizas.</param>
+        /// <param name="product">Opción para filtrar por producto vinculado a un ramo.</param>
+        /// <param name="status">Opción para filtrar por múltiples esta de las pólizas.</param>
         /// <returns>Lista de pólizas según los criterio definidos en el filtro.</returns>
         public static List<Contracts.Policy.PolicyView> View(int companyId, string filter, int lineOfBusiness, int product, string status)
         {
@@ -598,8 +596,8 @@ namespace Architect.API.Insurance.Business.Policy
         /// <summary>
         /// Información completa de una póliza.
         /// </summary>
-        /// <param name="id">Identificción interna de una poliza.</param>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="id">Identificación interna de una póliza.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <returns>Información de una póliza</returns>
         public static Contracts.Policy.Risk RetrievePolicyByKey(int id, int companyId)
         {
@@ -634,15 +632,15 @@ namespace Architect.API.Insurance.Business.Policy
         /// Valida la información de una póliza para permitir o no su emisión.
         /// </summary>
         /// <param name="source">Datos de la póliza</param>
-        /// <param name="companyId">Identificación de la compañía propietaria.</param>
+        /// <param name="tokenInfo">Contexto del usuario conectado.</param>
         /// <returns></returns>
-        public static List<Core.Contracts.General.Error> Validate(Contracts.Policy.Risk source, int companyId)
+        public static List<Core.Contracts.General.Error> Validate(Contracts.Policy.Risk source, Core.Contracts.Security.Token tokenInfo)
         {
             const string group = "Risk";
-            List<Core.Contracts.General.Error> result = new List<Core.Contracts.General.Error>();
+            List<Core.Contracts.General.Error> result = Reglas.research.Apply_Reglas("policy", source, tokenInfo);
 
             //LineOfBusinessCode:
-            if (source.Currency.IsEmpty())
+            if (source.LineOfBusinessCode.IsEmpty())
                 result.Add(new Core.Contracts.General.Error() { Group = group, Key = "LineOfBusinessCode", Message = "Debe indicar el ramo para la póliza" });
 
             //ProductCode:
@@ -683,11 +681,11 @@ namespace Architect.API.Insurance.Business.Policy
 
             // Se valida la información del asegurado principal.
             if (source.PrimaryInsured.IsNotEmpty())
-                result.AddRange(RiskRoles.Validate(source.PrimaryInsured, "PrimaryInsured", companyId, source));
+                result.AddRange(RiskRoles.Validate(source.PrimaryInsured, "PrimaryInsured", tokenInfo.CompanyId, source));
 
             // Se valida la información del cuestionario
             if (source.Questionary.IsNotEmpty())
-                result.AddRange(RiskQuestionnaires.Validate(source.Questionary, source, companyId));
+                result.AddRange(RiskQuestionnaires.Validate(source.Questionary, source, tokenInfo.CompanyId));
 
             // Si esta permitida, se valida la información del prestamo.
             if (Products.Specification.EntryAllow(source.ProductAlias, "Overdraft") && source.Overdraft.IsNotEmpty())
@@ -700,7 +698,7 @@ namespace Architect.API.Insurance.Business.Policy
             // Si esta permitida, se valida la información de los beneficiarios
             if (Products.Specification.EntryAllow(source.ProductAlias, "Beneficiaries"))
             {
-                result.AddRange(RiskBeneficiary.Validate(source.Beneficiaries, companyId, source));
+                result.AddRange(RiskBeneficiary.Validate(source.Beneficiaries, tokenInfo.CompanyId, source));
             }
 
             return result;
@@ -759,7 +757,7 @@ namespace Architect.API.Insurance.Business.Policy
         /// <summary>
         /// Verifica si la edad de una persona es mayor a 64 años
         /// </summary>
-        /// <param name="person">Información de un perosnal o rol dentro de la póliza</param>
+        /// <param name="person">Información de un personal o rol dentro de la póliza</param>
         /// <param name="age">Edad</param>
         /// <returns>Verdadero si la edad de la personal es mayor a 64 años, falso en el caso contrario</returns>
         internal static bool Rule_UnderwritingInsuredAgeGreaterThan(Contracts.Policy.RiskRoles person, int age)
@@ -791,10 +789,10 @@ namespace Architect.API.Insurance.Business.Policy
         }
 
         /// <summary>
-        /// Verifica si la suma asegura más el total de los montos de los prestamos este en el máximo permitido según el plan
+        /// Verifica si la suma asegura más el total de los monto de los prestamos este en el máximo permitido según el plan
         /// </summary>
         /// <param name="risk">Información de la póliza</param>
-        /// <param name="overdraft">Información del prestamo</param>
+        /// <param name="overdraft">Información del préstamo</param>
         /// <returns>Verdadero si el total sobre pasa el máximo permitido según el plan, falso en el caso contrario</returns>
         private static bool Rule_InsuredAmountAndOverDraftAmount_Greater_MaximumInsuredAmount(Contracts.Policy.Risk risk, Contracts.Policy.RiskOverdraft overdraft)
         {
@@ -949,26 +947,26 @@ namespace Architect.API.Insurance.Business.Policy
             return currentList;
         }
 
-        private static List<Core.Contracts.General.Error> PolicyStorage(Contracts.Policy.Risk item, int status, int companyId, int userId, string source)
+        private static List<Core.Contracts.General.Error> PolicyStorage(Contracts.Policy.Risk item, int status, Core.Contracts.Security.Token tokenInfo, string source)
         {
-            List<Core.Contracts.General.Error> errors = Business.Policy.Risk.Validate(item, companyId);
+            List<Core.Contracts.General.Error> errors = Business.Policy.Risk.Validate(item, tokenInfo);
 
             if (status == (int)Enumerations.PolicyStatus.InForce && errors.Count == 0 && source != "Modify")
             {
                 Architect.Insurance.Contracts.Policy.Risk rk = Business.Policy.Rating.Asegurado(item.ProductAlias, item.Currency, item.ModuleCode, item.PaymentFrequency, item.InsuredAmount, item.PrimaryInsured.BirthDate);
                 if (rk.Notify == null || rk.Notify.Count == 0)
                 {
-                    if (Rule_Underwriting(item, companyId))
+                    if (Rule_Underwriting(item, tokenInfo.CompanyId))
                     {
                         if (item.Id.IsEmpty())
                             item.Id = DataAccess.Policy.Risk.RetrieveLastKey() + 1;
                         item.Status = (int)Enumerations.PolicyStatus.InReview;
 
-                        Notify_InReviewStatus(item, companyId, userId);
+                        Notify_InReviewStatus(item, tokenInfo.CompanyId, tokenInfo.UserId);
                     }
                     else
                     {
-                        item.PolicyId = DataAccess.Policy.Risk.RetrieveLastPolicyId(companyId) + 1;
+                        item.PolicyId = DataAccess.Policy.Risk.RetrieveLastPolicyId(tokenInfo.CompanyId) + 1;
                         item.Status = status;
                     }
                 }
@@ -1118,7 +1116,7 @@ namespace Architect.API.Insurance.Business.Policy
 
             if (result.Questionary.IsNotEmpty() && result.Questionary.Count > 0)
             {
-                for (int index = 0; index < 10; index++)
+                for (int index = 0; index < result.Questionary.Count; index++)
                 {
                     result.Questionary[index] = Business.Policy.RiskQuestionnaires.Mapper(result.Questionary[index], item.Questionary[index]);
                     result.Questionary[index].CompanyId = companyId;
@@ -1162,54 +1160,54 @@ namespace Architect.API.Insurance.Business.Policy
         }
 
 
-        //public static Core.Contracts.General.GenericResponse Import(string excelFilename, string specificactionFilename, Core.Contracts.Security.Token tokenInfo)
-        //{
-        //    Core.Contracts.General.GenericResponse result = new Core.Contracts.General.GenericResponse();
-        //    excelFilename = @"C:\Architect\aliados\aliados\data\" + excelFilename;
-        //    specificactionFilename = @"C:\Architect\aliados\aliados\products\import." + specificactionFilename + ".json";
+        public static Core.Contracts.General.GenericResponse Import(string excelFilename, string specificactionFilename, Core.Contracts.Security.Token tokenInfo)
+        {
+            Core.Contracts.General.GenericResponse result = new Core.Contracts.General.GenericResponse();
+            excelFilename = @"C:\Architect\aliados\aliados\data\" + excelFilename;
+            specificactionFilename = @"C:\Architect\aliados\aliados\products\import." + specificactionFilename + ".json";
 
-        //    List<Contracts.Policy.Risk> risks = Architect.Domain.Excel.Import.Handlers.DTLHandler.Builder(specificactionFilename, excelFilename).Data;
+            List<Contracts.Policy.Risk> risks = Architect.Domain.Excel.Import.Handlers.DTLHandler.Builder(specificactionFilename, excelFilename).Data;
 
-        //    Contracts.Policy.Risk riskCreated = null;
-        //    foreach (Contracts.Policy.Risk riskItem in risks)
-        //    {
-        //        riskItem.BranchOffice = tokenInfo.BranchOffice;
-        //        riskItem.ExecutiveUserCode = tokenInfo.UserId;
+            Contracts.Policy.Risk riskCreated = null;
+            foreach (Contracts.Policy.Risk riskItem in risks)
+            {
+                riskItem.BranchOffice = tokenInfo.BranchOffice;
+                riskItem.ExecutiveUserCode = tokenInfo.UserId;
 
-        //        riskItem.AnnualPremium = riskItem.MonthlyPremium * 12;
-        //        riskItem.PrimaryInsured.PhoneNumber = riskItem.PrimaryInsured.PhoneNumber.Substring(3);
-        //        riskItem.PrimaryInsured.FirstName = riskItem.PrimaryInsured.FirstName.Capitalize();
-        //        riskItem.PrimaryInsured.SecondLastName = riskItem.PrimaryInsured.SecondLastName.Capitalize();
-        //        riskItem.PrimaryInsured.LastName = riskItem.PrimaryInsured.LastName.Capitalize();
-        //        riskItem.PrimaryInsured.SecondLastName = riskItem.PrimaryInsured.SecondLastName.Capitalize();
+                riskItem.AnnualPremium = riskItem.MonthlyPremium * 12;
+                riskItem.PrimaryInsured.PhoneNumber = riskItem.PrimaryInsured.PhoneNumber.Substring(3);
+                riskItem.PrimaryInsured.FirstName = riskItem.PrimaryInsured.FirstName.Capitalize();
+                riskItem.PrimaryInsured.SecondLastName = riskItem.PrimaryInsured.SecondLastName.Capitalize();
+                riskItem.PrimaryInsured.LastName = riskItem.PrimaryInsured.LastName.Capitalize();
+                riskItem.PrimaryInsured.SecondLastName = riskItem.PrimaryInsured.SecondLastName.Capitalize();
 
-        //        //TODO: falta tipo 2 y tipo 3
-        //        switch (riskItem.PrimaryInsured.DocumentType)
-        //        {
-        //            case 1:
-        //                if (riskItem.PrimaryInsured.DocumentNumber.Length == 9)
-        //                {
-        //                    riskItem.PrimaryInsured.DocumentNumber = string.Format("0{0}-{1}-{2}", riskItem.PrimaryInsured.DocumentNumber.Substring(0, 1),
-        //                        riskItem.PrimaryInsured.DocumentNumber.Substring(1, 4),
-        //                        riskItem.PrimaryInsured.DocumentNumber.Substring(5, 4));
-        //                }
-        //                break;
-        //            case 2:
-        //                if (riskItem.PrimaryInsured.DocumentNumber.Length == 12)
-        //                {
-        //                    riskItem.PrimaryInsured.DocumentNumber = string.Format("{0}-{1}-{2}", riskItem.PrimaryInsured.DocumentNumber.Substring(0, 4),
-        //                        riskItem.PrimaryInsured.DocumentNumber.Substring(4, 6),
-        //                        riskItem.PrimaryInsured.DocumentNumber.Substring(10, 2));
-        //                }
-        //                break;
+                //TODO: falta tipo 2 y tipo 3
+                switch (riskItem.PrimaryInsured.DocumentType)
+                {
+                    case 1:
+                        if (riskItem.PrimaryInsured.DocumentNumber.Length == 9)
+                        {
+                            riskItem.PrimaryInsured.DocumentNumber = string.Format("0{0}-{1}-{2}", riskItem.PrimaryInsured.DocumentNumber.Substring(0, 1),
+                                riskItem.PrimaryInsured.DocumentNumber.Substring(1, 4),
+                                riskItem.PrimaryInsured.DocumentNumber.Substring(5, 4));
+                        }
+                        break;
+                    case 2:
+                        if (riskItem.PrimaryInsured.DocumentNumber.Length == 12)
+                        {
+                            riskItem.PrimaryInsured.DocumentNumber = string.Format("{0}-{1}-{2}", riskItem.PrimaryInsured.DocumentNumber.Substring(0, 4),
+                                riskItem.PrimaryInsured.DocumentNumber.Substring(4, 6),
+                                riskItem.PrimaryInsured.DocumentNumber.Substring(10, 2));
+                        }
+                        break;
 
-        //        }
+                }
 
 
 
-        //        riskCreated = Business.Policy.Risk.CreatePolicy(riskItem, tokenInfo.UserId, tokenInfo.CompanyId);
-        //    }
-        //    return result;
-        //}
+                riskCreated = Business.Policy.Risk.CreatePolicy(riskItem, tokenInfo.UserId, tokenInfo.CompanyId);
+            }
+            return result;
+        }
     }
 }

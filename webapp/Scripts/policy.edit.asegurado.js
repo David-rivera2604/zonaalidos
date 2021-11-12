@@ -270,6 +270,7 @@ app.asegurado = (function () {
         } else {
             $('#saludTabHeader').addClass('d-none');
         }
+
         if (!Number.isNaN(age) && age >= 60 && app.poliza.EntryAllowed()?.includes(";Covid;")) {
             $('#covidTabHeader').removeClass('d-none');
         } else {

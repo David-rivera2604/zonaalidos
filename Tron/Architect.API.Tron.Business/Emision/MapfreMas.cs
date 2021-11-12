@@ -35,7 +35,7 @@ namespace Architect.API.Tron.Business.Emision
 
                 result.Modo = mode;
 
-                if (mode == "draft")
+                if (mode.IsEmpty() || mode == "draft")
                 {
                     result.terceros = Reglas.research.Apply_Terceros("MapfreMas", result.terceros, result.Fuente_Tomador, tokenInfo);
                 }

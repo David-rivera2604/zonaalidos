@@ -59,8 +59,8 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.IO.Packaging, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.IO.Packaging.5.0.0\lib\net46\System.IO.Packaging.dll</HintPath>
+    <Reference Include="System.IO.Packaging, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IO.Packaging.6.0.0\lib\net461\System.IO.Packaging.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.CSharp" />
@@ -83,6 +83,7 @@
     <Compile Include="Policy\RuleLoans.cs" />
     <Compile Include="Products\Specification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reglas\research.cs" />
     <Compile Include="Structure\IssuePolicyResult.cs" />
     <Compile Include="_Generated\Person.cs" />
     <Compile Include="_Generated\RiskOverdraft.cs" />
