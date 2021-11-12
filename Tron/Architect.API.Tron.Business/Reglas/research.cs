@@ -38,12 +38,26 @@ namespace Architect.API.Tron.Business.Reglas
             return def;
         }
 
-
-
         public static Contracts.Especificacion.Producto GetProducto(string ruleFile)
         {
             Contracts.Especificacion.Producto def = Utilities.SerializeHandler<Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
             int index = 1;
+            foreach (Architect.API.Tron.Contracts.Especificacion.Cobertura cobertura in def.Coberturas)
+            {
+                cobertura.Id = index++;
+                if (cobertura.Descripcion.IsEmpty())
+                {
+                    cobertura.Descripcion = cobertura.Condicion.Replace("{", "").Replace("}", "");
+                }
+            }
+            foreach (Architect.API.Tron.Contracts.Especificacion.Lista lista in def.Listas)
+            {
+                lista.Id = index++;
+                if (lista.Descripcion.IsEmpty())
+                {
+                    lista.Descripcion = lista.Condicion.Replace("{","").Replace("}","");
+                }
+            }
             foreach (Architect.API.Tron.Contracts.Especificacion.Regla rule in def.Reglas)
             {
                 rule.Id = index++;
@@ -57,13 +71,66 @@ namespace Architect.API.Tron.Business.Reglas
             return def;
         }
 
+        public static string Apply_Listas(string ruleFile, object data, string keyword, Core.Contracts.Security.Token tokenInfo)
+        {
+            Contracts.Especificacion.Producto def = Utilities.SerializeHandler<Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
+            string result = string.Empty;
+            if (def.Reglas?.Count > 0)
+            {
+                result = Architect.API.Core.Business.General.Rule.ApplyCoverages(ruleFile, BuildListasCode(ruleFile, data, def.Listas), data, keyword, tokenInfo).Result;
+            }
+            if (result == null)
+            {
+                result = string.Empty;
+            }
+            return result;
+        }
+        internal static string BuildListasCode(string ruleFile, object data, List<Lista> listas)
+        {
+            StringBuilder script = new StringBuilder();
+            script.AppendFormat("{0} data = ({0})Data;\n", data.GetType().FullName);
+            script.Append("string exclude = string.Empty;");
+
+            foreach (Architect.API.Tron.Contracts.Especificacion.Lista lista in listas)
+            {
+                script.AppendFormat("if(keyword==\"{2}\" && {0}){{exclude=\"{1}\";}}\n", ConditionParser(ruleFile, lista.Condicion), lista.Exclusion, lista.Nombre);
+            }
+            return script.ToString();
+        }
+
+        public static string Apply_Coberturas(string ruleFile, object data, Core.Contracts.Security.Token tokenInfo)
+        {
+            Contracts.Especificacion.Producto def = Utilities.SerializeHandler<Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
+            string result = string.Empty;
+            if (def.Reglas?.Count > 0)
+            {
+                result = Architect.API.Core.Business.General.Rule.ApplyCoverages(ruleFile, BuildCoveragesCode(ruleFile, data, def.Coberturas), data, null, tokenInfo).Result;
+            }
+            if (result == null)
+            {
+                result = string.Empty;
+            }
+            return result;
+        }
+        internal static string BuildCoveragesCode(string ruleFile, object data, List<Cobertura> Coberturas)
+        {
+            StringBuilder script = new StringBuilder();
+            script.AppendFormat("{0} data = ({0})Data;\n", data.GetType().FullName);
+            script.Append("string exclude = string.Empty;");
+
+            foreach (Architect.API.Tron.Contracts.Especificacion.Cobertura coverage in Coberturas)
+            {
+                script.AppendFormat("if({0}){{exclude=\"{1}\";}}\n", ConditionParser(ruleFile, coverage.Condicion), coverage.Exclusion);
+            }
+            return script.ToString();
+        }
         public static List<Architect.API.Core.Contracts.General.Error> Apply_Reglas(string ruleFile, object data, Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.Especificacion.Producto def = Utilities.SerializeHandler<Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
             List<Architect.API.Core.Contracts.General.Error> errors = null;
             if (def.Reglas?.Count > 0)
             {
-                errors = Architect.API.Core.Business.General.Rule.Runtime2(ruleFile, BuildCodeScript(ruleFile, data, def.Reglas), data, tokenInfo).Result;
+                errors = Architect.API.Core.Business.General.Rule.ApplyRules(ruleFile, BuildRulesCode(ruleFile, data, def.Reglas), data, tokenInfo).Result;
             }
             if (errors == null)
             {
@@ -72,7 +139,7 @@ namespace Architect.API.Tron.Business.Reglas
             return errors;
         }
 
-        internal static string BuildCodeScript(string ruleFile, object data, List<Regla> rules)
+        internal static string BuildRulesCode(string ruleFile, object data, List<Regla> rules)
         {
             StringBuilder script = new StringBuilder();
 
@@ -92,31 +159,27 @@ namespace Architect.API.Tron.Business.Reglas
         internal static string ConditionParser(string ruleFile, string condition)
         {
             string code = condition;
-            MatchCollection parameterMatches = Regex.Matches(condition, @"{(.+?)}"); // ([^)]*)
 
-            code = code.Replace(" y ", " && ");
-            code = code.Replace(" Y ", " && ");
-            code = code.Replace(" o ", " || ");
-            code = code.Replace(" O ", " || ");
-            code = code.Replace("No sea {", "!{");
-            code = code.Replace("no sea {", "!{");
-            code = code.Replace(" menor a ", " < ");
-            code = code.Replace(" mayor a ", " > ");
+            code = code.Replace("{el ", "{");
+            code = code.Replace("{El ", "{");
+            code = code.Replace("{La ", "{");
+            code = code.Replace("{la ", "{");
+            code = code.Replace(" sea ", " es ");
+            code = code.Replace(" Sea ", " es ");
+            code = code.Replace("{No tiene", "{No hay");
+            code = code.Replace("{no tiene", "{No hay");
+
+            MatchCollection parameterMatches = Regex.Matches(code, @"{(.+?)}"); // ([^)]*)
 
             foreach (Match paremeter in parameterMatches)
             {
                 switch (paremeter.Value.ToLower())
                 {
-                    case "{moneda igual a colones}":
-                        code = code.Replace(paremeter.Value, "data.cod_mon == 1");
-                        break;
-                    case "{moneda igual a dolares}":
-                    case "{moneda igual a dólares}":
-                        code = code.Replace(paremeter.Value, "data.cod_mon == 2");
+                    case "{moneda}":
+                        code = code.Replace(paremeter.Value, "data.cod_mon");
                         break;
                     case "{valor del vehículo}":
                     case "{valor del vehiculo}":
-                    case "{vehiculo}":
                         code = code.Replace(paremeter.Value, "data.IMP_VR");
                         break;
                     case "{marca del vehículo}":
@@ -125,21 +188,114 @@ namespace Architect.API.Tron.Business.Reglas
                         break;
                     case "{año del vehículo}":
                     case "{año del vehiculo}":
-                    case "{fabricación}":
-                    case "{fabricacion}":
+                    case "{año de fabricación}":
+                    case "{año de fabricacion}":
                         code = code.Replace(paremeter.Value, "data.ANIO_SUB_MODELO");
                         break;
                     case "{contrato}":
                         code = code.Replace(paremeter.Value, "data.contrato");
                         break;
+                    case "{suma asegurada de colisión y vuelco}":
+                    case "{suma asegurada de colision y vuelco}":
+                        code = code.Replace(paremeter.Value, "data.IMP_AUTO_CYV");
+                        break;
+                    case "{suma asegurada de gastos médicos}":
+                    case "{suma asegurada de gastos medicos}":
+                        code = code.Replace(paremeter.Value, "data.IMP_AUTO_CYV");
+                        break;
+                    case "{suma asegurada de riesgos adicionales}":
+                        code = code.Replace(paremeter.Value, "data.IMP_AUTO_RAD");
+                        break;
+                    case "{suma asegurada de robo}":
+                        code = code.Replace(paremeter.Value, "data.IMP_AUTO_ROB");
+                        break;
+                    case "{plan}":
+                        code = code.Replace(paremeter.Value, "data.COD_PLAN_AUTO");
+                        break;
+                    case "{tipo de producto}":
+                        code = code.Replace(paremeter.Value, "data.tipo_prod");
+                        break;
+                }
+            }
+            code = code.Replace(" y ", " && ");
+            code = code.Replace(" Y ", " && ");
+            code = code.Replace(" o ", " || ");
+            code = code.Replace(" O ", " || ");
+            code = code.Replace("No sea {", "!{");
+            code = code.Replace("no sea {", "!{");
+            code = code.Replace("es menor a ", " < ");
+            code = code.Replace("es mayor a ", " > ");
+
+            Match oldParemeter = null;
+            foreach (Match paremeter in parameterMatches)
+            {
+                switch (paremeter.Value.ToLower())
+                {
+                    case "{básico}":
+                    case "{basico}":
+                        code = code.Replace(paremeter.Value, "31");
+                        break;
+                    case "{amplio}":
+                        code = code.Replace(paremeter.Value, "32");
+                        break;
+                    case "{plus}":
+                        code = code.Replace(paremeter.Value, "33");
+                        break;
+                    case "{oro}":
+                        code = code.Replace(paremeter.Value, "34");
+                        break;
+                    case "{plata}":
+                        code = code.Replace(paremeter.Value, "35");
+                        break;
+                    case "{trébol}":
+                    case "{trebol}":
+                        code = code.Replace(paremeter.Value, "36");
+                        break;
+                    case "{trébol rc}":
+                    case "{trebol rc}":
+                        if (oldParemeter?.Value.ToLower() == "{tipo de producto}")
+                            code = code.Replace(paremeter.Value, "\"trebolrc\"");
+                        else
+                            code = code.Replace(paremeter.Value, "37");
+                        break;
+
+                    case "{colones}":
+                    case "{colon}":
+                        code = code.Replace(paremeter.Value, "1");
+                        break;
+                    case "{dolares}":
+                    case "{dolar}":
+                    case "{dólares}":
+                    case "{dólar}":
+                        code = code.Replace(paremeter.Value, "2");
+                        break;
+                    case "{no hay coberturas seleccionadas}":
+                        code = code.Replace(paremeter.Value, "!data.coberturas.Any(r => r.seleccionado)");
+                        break;
+                    case "{hay coberturas seleccionadas}":
+                        code = code.Replace(paremeter.Value, "data.coberturas.Any(r => r.seleccionado)");
+                        break;
+
                     default:
-                        if (paremeter.Value.ToLower().StartsWith("{rol igual a "))
+                        if (paremeter.Value.ToLower().StartsWith("{cobertura ") && paremeter.Value.ToLower().EndsWith(" es seleccionada}"))
                         {
-                            code = code.Replace(paremeter.Value, string.Format("token.Roles.Contain(\"{0}\")", paremeter.Value.Substring(13, paremeter.Value.Length - 14)));
+                            code = code.Replace(paremeter.Value, string.Format("data.coberturas.Any(r => r.codigo == {0} && r.seleccionado)", paremeter.Value.Substring(11, paremeter.Value.Length - 28).Trim()));
                         }
-                        if (paremeter.Value.ToLower().StartsWith("{rol no sea igual a "))
+                        if (paremeter.Value.ToLower().StartsWith("{rol es igual a "))
                         {
-                            code = code.Replace(paremeter.Value, string.Format("!token.Roles.Contain(\"{0}\")", paremeter.Value.Substring(20, paremeter.Value.Length - 21)));
+                            code = code.Replace(paremeter.Value, string.Format("token.Roles.Contain(\"{0}\")", paremeter.Value.Substring(16, paremeter.Value.Length - 17)));
+                        }
+                        if (paremeter.Value.ToLower().StartsWith("{rol del usuario es igual a "))
+                        {
+                            code = code.Replace(paremeter.Value, string.Format("token.Roles.Contain(\"{0}\")", paremeter.Value.Substring(28, paremeter.Value.Length - 29)));
+                        }
+                        if (paremeter.Value.ToLower().StartsWith("{rol no es igual a "))
+                        {
+                            code = code.Replace(paremeter.Value, string.Format("!token.Roles.Contain(\"{0}\")", paremeter.Value.Substring(19, paremeter.Value.Length - 20)));
+                        }
+                        if (paremeter.Value.ToLower().StartsWith("{rol del usuario no es igual a "))
+                        {
+                            code = code.Replace(paremeter.Value, string.Format("!token.Roles.Contain(\"{0}\")", paremeter.Value.Substring(31, paremeter.Value.Length - 32)));
                         }
                         if (paremeter.Value.ToLower().EndsWith(" año de antigüedad}") || paremeter.Value.ToLower().EndsWith(" año de antiguedad}"))
                         {
@@ -151,14 +307,25 @@ namespace Architect.API.Tron.Business.Reglas
                         }
                         break;
                 }
+                oldParemeter = paremeter;
             }
+            code = code.Replace(" no es igual a ", " != ");
+            code = code.Replace(" es diferente a ", " != ");
+            code = code.Replace(" es igual a ", " == ");
+            code = code.Replace(" es menor que ", " < ");
+            code = code.Replace(" es menor o igual que ", " <= ");
+            code = code.Replace(" es mayor que ", " > ");
+            code = code.Replace(" es mayor o igual que ", " >= ");
+
             code = code.Replace(" no igual a ", " != ");
+            code = code.Replace(" diferente a ", " != ");
             code = code.Replace(" igual a ", " == ");
-            code = code.Replace(" menor ", " < ");
-            code = code.Replace(" mayor ", " > ");
+            code = code.Replace(" menor que ", " < ");
+            code = code.Replace(" menor o igual que ", " <= ");
+            code = code.Replace(" mayor que ", " > ");
+            code = code.Replace(" mayor o igual que ", " >= ");
             return code;
         }
-
 
         public static List<Contracts.Comun.DocumentoRequerido> Apply_DocumentosRequeridos(string ruleFile, List<Contracts.Comun.DocumentoRequerido> documentos, int mca_cero_km, Core.Contracts.Security.Token tokenInfo)
         {
@@ -321,7 +488,6 @@ namespace Architect.API.Tron.Business.Reglas
             return terceros;
         }
 
-
         private static string tip_benef_lookup(int tip_benef)
         {
             string type = string.Empty;
@@ -347,347 +513,6 @@ namespace Architect.API.Tron.Business.Reglas
 
             return type;
         }
-
-        //public static void MapfreMasBuild()
-        //{
-        //    Architect.API.Tron.Contracts.Especificacion.Producto producto = new Contracts.Especificacion.Producto();
-
-        //    producto.Terceros = new List<Contracts.Especificacion.TerceroCondicion>();
-
-        //    producto = Davivienda_Prendarios(producto);
-        //    producto = Davivienda_Leasing(producto);
-
-        //    producto = Purdy_CAFSA(producto);
-        //    producto = Purdy_PURDY(producto);
-        //    producto = Purdy_SCOTIABANK(producto);
-
-        //    producto.DocumentosRequeridos = new List<Contracts.Especificacion.DocumentCondicion>();
-        //    producto = DocumentosRequeridos_Default_F(producto);
-        //    producto = DocumentosRequeridos_Default_J(producto);
-        //    producto = DocumentosRequeridos_Davivienda_Prendarios(producto);
-        //    producto = DocumentosRequeridos_Purdy(producto);
-
-
-        //    Utilities.SerializeHandler<Architect.API.Tron.Contracts.Especificacion.Producto>.SerializeToFile(producto,
-        //        ConfigurationManager.AppSettings["Path.Logs"] + @"\producto.xml", true);
-
-        //    //Utilities.SerializeHandler<Architect.API.Tron.Contracts.Especificacion.Producto>.SerializeJSONToFile(producto, 
-        //    //    ConfigurationManager.AppSettings["Path.Logs"] + @"\producto.json", true, false, false);
-        //    //string xx = Newtonsoft.Json.JsonConvert.SerializeObject(producto);
-        //}
-
-        //private static Architect.API.Tron.Contracts.Especificacion.Producto DocumentosRequeridos_Purdy(Architect.API.Tron.Contracts.Especificacion.Producto producto)
-        //{
-        //    Contracts.Especificacion.DocumentCondicion doc = new Contracts.Especificacion.DocumentCondicion()
-        //    {
-        //        Role = "Purdy",
-        //    };
-        //    doc.Detalles = new List<Contracts.Especificacion.Documento>();
-
-        //    doc.Detalles.Add(new Contracts.Especificacion.Documento()
-        //    {
-        //        descripcion = "Formulario de inspección",
-        //        archivo = "inspección.pdf",
-        //        requerido = true
-        //    });
-        //    doc.Detalles.Add(new Contracts.Especificacion.Documento()
-        //    {
-        //        descripcion = "Fotos o facturas",
-        //        archivo = "fotos.pdf,facturas.pdf",
-        //        requerido = true
-        //    });
-        //    doc.Detalles.Add(new Contracts.Especificacion.Documento()
-        //    {
-        //        descripcion = "Solicitud de inscripción",
-        //        archivo = "inscripción.pdf",
-        //        requerido = true
-        //    });
-
-        //    doc.Detalles.Add(new Contracts.Especificacion.Documento()
-        //    {
-        //        descripcion = "Fatura proforma",
-        //        archivo = "proforma.pdf",
-        //        requerido = true
-        //    });
-        //    doc.Detalles.Add(new Contracts.Especificacion.Documento()
-        //    {
-        //        descripcion = "Solicitud de seguro firmada",
-        //        archivo = "SolicitudFirmada.pdf",
-        //        requerido = true
-        //    });
-
-        //    producto.DocumentosRequeridos.Add(doc);
-        //    return producto;
-        //}
-
-        //private static Architect.API.Tron.Contracts.Especificacion.Producto DocumentosRequeridos_Default_F(Architect.API.Tron.Contracts.Especificacion.Producto producto)
-        //{
-        //    Contracts.Especificacion.DocumentCondicion doc = new Contracts.Especificacion.DocumentCondicion()
-        //    {
-        //        Role = "default",
-        //        Condicion = "F"
-        //    };
-        //    doc.Detalles = new List<Contracts.Especificacion.Documento>();
-
-        //    doc.Detalles.Add(new Contracts.Especificacion.Documento()
-        //    {
-        //        descripcion = "Copia de la cédula de identidad",
-        //        archivo = "CEDULA.docx",
-        //        requerido = true
-        //    });
-        //    doc.Detalles.Add(new Contracts.Especificacion.Documento()
-        //    {
-        //        descripcion = "Comprobante de entrega de condiciones generales",
-        //        archivo = "CONDICIONES.pdf",
-        //        requerido = true
-        //    });
-        //    doc.Detalles.Add(new Contracts.Especificacion.Documento()
-        //    {
-        //        descripcion = "Consentimiento para uso de datos personales",
-        //        archivo = "CONSENTIMIENTO.pdf",
-        //        requerido = true
-        //    });
-
-        //    doc.Detalles.Add(new Contracts.Especificacion.Documento()
-        //    {
-        //        descripcion = "Formato de validación de domicilio",
-        //        archivo = "DOMICILIO.pdf",
-        //        requerido = true
-        //    });
-        //    doc.Detalles.Add(new Contracts.Especificacion.Documento()
-        //    {
-        //        descripcion = "Conozca a su cliente (KYC)",
-        //        archivo = "KYC.pdf",
-        //        requerido = true
-        //    });
-        //    doc.Detalles.Add(new Contracts.Especificacion.Documento()
-        //    {
-        //        descripcion = "Solicitud de seguro firmada",
-        //        archivo = "SOLICITUD.pdf",
-        //        requerido = true
-        //    });
-        //    producto.DocumentosRequeridos.Add(doc);
-        //    return producto;
-        //}
-
-        //private static Architect.API.Tron.Contracts.Especificacion.Producto DocumentosRequeridos_Default_J(Architect.API.Tron.Contracts.Especificacion.Producto producto)
-        //{
-        //    Contracts.Especificacion.DocumentCondicion doc = new Contracts.Especificacion.DocumentCondicion()
-        //    {
-        //        Role = "default",
-        //        Condicion = "J"
-        //    };
-        //    doc.Detalles = new List<Contracts.Especificacion.Documento>();
-
-        //    doc.Detalles.Add(new Contracts.Especificacion.Documento()
-        //    {
-        //        descripcion = "Represéntate legal",
-        //        archivo = "REPRESENTANTE LEGAL.docx",
-        //        requerido = true
-        //    });
-        //    doc.Detalles.Add(new Contracts.Especificacion.Documento()
-        //    {
-        //        descripcion = "Participación accionaria",
-        //        archivo = "PARTICIPACION ACCIONARIA.docx",
-        //        requerido = true
-        //    });
-        //    doc.Detalles.Add(new Contracts.Especificacion.Documento()
-        //    {
-        //        descripcion = "Certificado de participación",
-        //        archivo = "CERTIFICADO PARTICIPACION.docx",
-        //        requerido = true
-        //    });
-        //    producto.DocumentosRequeridos.Add(doc);
-        //    return producto;
-        //}
-
-        //private static Architect.API.Tron.Contracts.Especificacion.Producto DocumentosRequeridos_Davivienda_Prendarios(Architect.API.Tron.Contracts.Especificacion.Producto producto)
-        //{
-        //    Contracts.Especificacion.DocumentCondicion doc = new Contracts.Especificacion.DocumentCondicion()
-        //    {
-        //        Role = "Davivienda_Prendarios"
-        //    };
-        //    doc.Detalles = new List<Contracts.Especificacion.Documento>();
-
-        //    doc.Detalles.Add(new Contracts.Especificacion.Documento()
-        //    {
-        //        descripcion = "Documentación digitalizada",
-        //        archivo = "Documentos.docx",
-        //        requerido = true
-        //    });
-        //    producto.DocumentosRequeridos.Add(doc);
-        //    return producto;
-        //}
-
-        //private static Architect.API.Tron.Contracts.Especificacion.Producto Davivienda_Prendarios(Architect.API.Tron.Contracts.Especificacion.Producto producto)
-        //{
-
-        //    Contracts.Especificacion.TerceroCondicion Davivienda_PrendariosTercero =
-        //        new Contracts.Especificacion.TerceroCondicion()
-        //        {
-        //            Role = "Davivienda_Prendarios"
-        //        };
-
-        //    Davivienda_PrendariosTercero.Detalles = new List<Contracts.Especificacion.Tercero>() { };
-        //    Contracts.Especificacion.Tercero titular = new Contracts.Especificacion.Tercero()
-        //    {
-        //        tip_benef = "0",
-        //        tip_docum = "CJU",
-        //        cod_docum = "3101046008",
-        //        nom_tercero = "BANCO DAVIVIENDA (COSTA RICA) SOCIEDAD ANONIMA",
-        //        email = "IRIAKNA.HERNANDEZ@DAVIVIENDA.CR",
-        //        cod_pais = "CRI",
-        //        cod_estado = 1,
-        //        cod_prov = 101,
-        //        cod_localidad = 10101,
-        //        nom_domicilio1 = "SAN JOSE"
-        //    };
-
-        //    Davivienda_PrendariosTercero.Detalles.Add(titular);
-
-        //    producto.Terceros.Add(Davivienda_PrendariosTercero);
-        //    return producto;
-        //}
-
-        //private static Architect.API.Tron.Contracts.Especificacion.Producto Davivienda_Leasing(Architect.API.Tron.Contracts.Especificacion.Producto producto)
-        //{
-
-        //    Contracts.Especificacion.TerceroCondicion Davivienda_PrendariosTercero =
-        //        new Contracts.Especificacion.TerceroCondicion()
-        //        {
-        //            Role = "Davivienda_Leasing"
-        //        };
-
-        //    Davivienda_PrendariosTercero.Detalles = new List<Contracts.Especificacion.Tercero>() { };
-        //    Contracts.Especificacion.Tercero titular = new Contracts.Especificacion.Tercero()
-        //    {
-        //        tip_benef = "0",
-        //        tip_docum = "CJU",
-        //        cod_docum = "3101692430",
-        //        nom_tercero = "DAVIVIENDA LEASING (COSTA RICA) S.A.",
-        //        email = "LEASING_SEGUROS@DAVIVIENDA.CR",
-        //        cod_pais = "CRI",
-        //        cod_estado = 1,
-        //        cod_prov = 102,
-        //        cod_localidad = 10203,
-        //        nom_domicilio1 = "125 SUR MULTIPLAZA ESCAZÚ, EDIFICIO MERIDIANO, PISO 9",
-        //        tlf_numero = "2588-9477"
-        //    };
-        //    Davivienda_PrendariosTercero.Detalles.Add(titular);
-
-        //    Contracts.Especificacion.Tercero asegurado = new Contracts.Especificacion.Tercero()
-        //    {
-        //        tip_benef = "2",
-        //        tip_docum = "CJU",
-        //        cod_docum = "3101692430",
-        //        nom_tercero = "DAVIVIENDA LEASING (COSTA RICA) S.A.",
-        //        email = "LEASING_SEGUROS@DAVIVIENDA.CR",
-        //        cod_pais = "CRI",
-        //        cod_estado = 1,
-        //        cod_prov = 102,
-        //        cod_localidad = 10203,
-        //        nom_domicilio1 = "125 SUR MULTIPLAZA ESCAZÚ, EDIFICIO MERIDIANO, PISO 9",
-        //        tlf_numero = "2588-9477"
-        //    };
-        //    Davivienda_PrendariosTercero.Detalles.Add(asegurado);
-
-        //    producto.Terceros.Add(Davivienda_PrendariosTercero);
-        //    return producto;
-        //}
-
-        //private static Architect.API.Tron.Contracts.Especificacion.Producto Purdy_CAFSA(Architect.API.Tron.Contracts.Especificacion.Producto producto)
-        //{
-
-        //    Contracts.Especificacion.TerceroCondicion Davivienda_PrendariosTercero =
-        //        new Contracts.Especificacion.TerceroCondicion()
-        //        {
-        //            Role = "Purdy",
-        //            Condicion = "CAFSA"
-        //        };
-
-        //    Davivienda_PrendariosTercero.Detalles = new List<Contracts.Especificacion.Tercero>() { };
-        //    Contracts.Especificacion.Tercero titular = new Contracts.Especificacion.Tercero()
-        //    {
-        //        tip_benef = "0",
-        //        tip_docum = "CJU",
-        //        cod_docum = "3101052431",
-        //        nom_tercero = "FINANCIERA CAFSA",
-        //        email = "INFO@CAFSA.FI.CR",
-        //        cod_pais = "CRI",
-        //        cod_estado = 1,
-        //        cod_prov = 101,
-        //        cod_localidad = 10102,
-        //        nom_domicilio1 = "DETRAS DE PURDY MOTOR EN PASEO COLON",
-        //        tlf_numero = "2884-1000"
-        //    };
-
-        //    Davivienda_PrendariosTercero.Detalles.Add(titular);
-
-        //    producto.Terceros.Add(Davivienda_PrendariosTercero);
-        //    return producto;
-        //}
-
-        //private static Architect.API.Tron.Contracts.Especificacion.Producto Purdy_PURDY(Architect.API.Tron.Contracts.Especificacion.Producto producto)
-        //{
-
-        //    Contracts.Especificacion.TerceroCondicion Davivienda_PrendariosTercero =
-        //        new Contracts.Especificacion.TerceroCondicion()
-        //        {
-        //            Role = "Purdy",
-        //            Condicion = "PURDY"
-        //        };
-
-        //    Davivienda_PrendariosTercero.Detalles = new List<Contracts.Especificacion.Tercero>() { };
-        //    Contracts.Especificacion.Tercero titular = new Contracts.Especificacion.Tercero()
-        //    {
-        //        tip_benef = "0",
-        //        tip_docum = "CJU",
-        //        cod_docum = "3101005744",
-        //        nom_tercero = "PURDY MOTOR SOCIEDAD ANONIMA",
-        //        cod_pais = "CRI",
-        //        cod_estado = 1,
-        //        cod_prov = 101,
-        //        cod_localidad = 10102,
-        //        nom_domicilio1 = "EDIFICIO PURDY MOTOR PASEO COLON"
-        //    };
-
-        //    Davivienda_PrendariosTercero.Detalles.Add(titular);
-
-        //    producto.Terceros.Add(Davivienda_PrendariosTercero);
-        //    return producto;
-        //}
-
-        //private static Architect.API.Tron.Contracts.Especificacion.Producto Purdy_SCOTIABANK(Architect.API.Tron.Contracts.Especificacion.Producto producto)
-        //{
-
-        //    Contracts.Especificacion.TerceroCondicion Davivienda_PrendariosTercero =
-        //        new Contracts.Especificacion.TerceroCondicion()
-        //        {
-        //            Role = "Purdy",
-        //            Condicion = "SCOTIABANK"
-        //        };
-
-        //    Davivienda_PrendariosTercero.Detalles = new List<Contracts.Especificacion.Tercero>() { };
-        //    Contracts.Especificacion.Tercero titular = new Contracts.Especificacion.Tercero()
-        //    {
-        //        tip_benef = "0",
-        //        tip_docum = "CJU",
-        //        cod_docum = "3101046536",
-        //        nom_tercero = "SCOTIABANK DE COSTA RICA SOCIEDAD ANONIMA",
-        //        email = "Marianela.arias@scotiabank.com",
-        //        cod_pais = "CRI",
-        //        cod_estado = 1,
-        //        cod_prov = 101,
-        //        cod_localidad = 10108,
-        //        nom_domicilio1 = "FINAL AVENIDA LAS AMERICAS, COSTADO N ESTADIO NACIONAL",
-        //        tlf_numero = "2210-4000"
-        //    };
-
-        //    Davivienda_PrendariosTercero.Detalles.Add(titular);
-
-        //    producto.Terceros.Add(Davivienda_PrendariosTercero);
-        //    return producto;
-        //}
 
     }
 }

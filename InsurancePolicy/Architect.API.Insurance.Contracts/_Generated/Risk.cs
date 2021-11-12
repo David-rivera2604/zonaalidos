@@ -147,7 +147,7 @@ namespace Architect.API.Insurance.Contracts.Policy
         /// </summary>
         [DataMember(), JsonProperty()] public string BranchOfficeDesc { get; set; }
         /// <summary>
-        /// Ejecutivo orginal de la póliza.
+        /// Ejecutivo original de la póliza.
         /// </summary>
         [DataMember(), JsonProperty()] public int ExecutiveUserCode { get; set; }
         /// <summary>

@@ -55,8 +55,10 @@
     <Compile Include="Cotizacion\resumen.cs" />
     <Compile Include="Cotizacion\Viajero.cs" />
     <Compile Include="Emision\Viajero.cs" />
+    <Compile Include="Especificacion\Lista.cs" />
     <Compile Include="Especificacion\Documento.cs" />
     <Compile Include="Especificacion\Producto.cs" />
+    <Compile Include="Especificacion\Cobertura.cs" />
     <Compile Include="Especificacion\Tercero.cs" />
     <Compile Include="Especificacion\DocumentCondicion.cs" />
     <Compile Include="Especificacion\Regla.cs" />

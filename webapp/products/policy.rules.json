@@ -1,0 +1,10 @@
+﻿{
+  "Reglas": [
+    {
+      "Condicion": "data.Currency.IsEmpty()",
+      "Mensaje": "Debe indicar una moneda para la póliza",
+      "Campo": "Currency",
+      "Grupo": "Risk"
+    }
+  ]
+}

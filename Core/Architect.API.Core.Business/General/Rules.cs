@@ -72,7 +72,7 @@ namespace Architect.API.Core.Business.General
             return result;
         }
 
-        public static async Task<List<Contracts.General.Error>> Runtime2(string ruleFile, string codeScript, object entitySource, Core.Contracts.Security.Token tokenInfo)
+        public static async Task<List<Contracts.General.Error>> ApplyRules(string ruleFile, string codeScript, object entitySource, Core.Contracts.Security.Token tokenInfo)
         {
             List<Architect.API.Core.Contracts.General.Error> errors = new List<Architect.API.Core.Contracts.General.Error>();
 
@@ -84,6 +84,7 @@ namespace Architect.API.Core.Business.General
                         typeof(Architect.API.Core.Contracts.Security.Token).Assembly,
                         entitySource.GetType().Assembly)
                     .AddImports("System")
+                    .AddImports("System.Linq")                    
                     .AddImports("System.Collections.Generic")
                     .AddImports("Architect.Utilities.Extensions"),
                     globals: new Context() { Data = entitySource, token = tokenInfo });
@@ -92,11 +93,39 @@ namespace Architect.API.Core.Business.General
             }
             catch (Microsoft.CodeAnalysis.Scripting.CompilationErrorException ex)
             {
-                Architect.Common.Helpers.LogHandler.ErrorLog("Rules", string.Format("{0}\nCode:\n{1}", ruleFile, codeScript), ex );
+                Architect.Common.Helpers.LogHandler.ErrorLog("Rules.ApplyRules", string.Format("{0}\nCode:\n{1}", ruleFile, codeScript), ex );
                 throw;
             }
 
             return errors;
+        }
+
+        public static async Task<string> ApplyCoverages(string ruleFile, string codeScript, object entitySource, string keyword, Core.Contracts.Security.Token tokenInfo)
+        {
+            string result = string.Empty;
+
+            try
+            {
+                Task<ScriptState<object>> scrstate = CSharpScript.RunAsync(codeScript,
+                    ScriptOptions.Default.WithReferences(
+                        typeof(Architect.Utilities.Log).Assembly,
+                        typeof(Architect.API.Core.Contracts.Security.Token).Assembly,
+                        entitySource.GetType().Assembly)
+                    .AddImports("System")
+                    .AddImports("System.Linq")
+                    .AddImports("System.Collections.Generic")
+                    .AddImports("Architect.Utilities.Extensions"),
+                    globals: new Context() { Data = entitySource, token = tokenInfo, keyword = keyword });
+                object XXX = scrstate.Result.GetVariable("exclude").Value;
+                result = (string)XXX;
+            }
+            catch (Microsoft.CodeAnalysis.Scripting.CompilationErrorException ex)
+            {
+                Architect.Common.Helpers.LogHandler.ErrorLog("Rules.ApplyCoverages", string.Format("{0}\nCode:\n{1}", ruleFile, codeScript), ex);
+                throw;
+            }
+
+            return result;
         }
 
         public class Context
@@ -104,7 +133,7 @@ namespace Architect.API.Core.Business.General
             public object Data { get; set; }
             public Core.Contracts.Security.Token token { get; set; }
 
-            public string error { get; set; }
+            public string keyword { get; set; }
         }
     }
 }

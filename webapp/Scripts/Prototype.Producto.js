@@ -89,6 +89,14 @@ app.PrototypeProducto = (function () {
             app.core.Get(app.setting.apipath + 'v1/TronCommon/Producto?alias=' + alias)
                 .done(function (data) {
                     setupData = data;
+                    if (data.Coberturas != null)
+                        $('#coberturasTbl').bootstrapTable('load', data.Coberturas);
+                    else
+                        $('#coberturasTbl').bootstrapTable('load', {});
+                    if (data.Listas != null)
+                        $('#listasTbl').bootstrapTable('load', data.Listas);
+                    else
+                        $('#listasTbl').bootstrapTable('load', {});
                     if (data.Reglas != null)
                         $('#validacionesTbl').bootstrapTable('load', data.Reglas);
                     else
@@ -131,33 +139,6 @@ app.PrototypeProducto = (function () {
             detailFormatter: 'app.ui.GenericDetailFormatter',
             columns: [
                 {
-                    field: 'Condicion',
-                    title: 'Condición',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    formatter: 'app.ui.StringFormatter',
-                    visible: false
-                }, {
-                    field: 'Mensaje',
-                    title: 'Mensaje',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    formatter: 'app.ui.StringFormatter',
-                    visible: false
-                }, {
-                    field: 'Campo',
-                    title: 'Campo',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    formatter: 'app.ui.StringFormatter',
-                    visible: false
-                }, {
                     field: 'Descripcion',
                     title: 'Descripción',
                     titleTooltip: '',
@@ -282,12 +263,179 @@ app.PrototypeProducto = (function () {
     };
 
 
+    function coberturas_table_setup() {
+
+        $('#coberturasTbl').bootstrapTable({
+            uniqueId: 'Id',
+            classes: 'table table-bordered table-hover table-index table-in-form',
+            pagination: true,
+            smartDisplay: true,
+            detailView: false,
+            detailFormatter: 'app.ui.GenericDetailFormatter',
+            columns: [
+                {
+                    field: 'Descripcion',
+                    title: 'Descripción',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter'
+                }, {
+                    field: 'Exclusion',
+                    title: 'Coberturas a excluir',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
+                    field: 'Actions',
+                    title: 'Acciones',
+                    class: 'd-none d-sm-table-cell',
+                    titleTooltip: 'Acciones disponibles para un visualizations',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    width: 10,
+                    widthUnit: "%",
+                    visible: true,
+                    events: 'coberturasTbl_Events',
+                    formatter: function (value, row, index, field) {
+                        return '<button type="button" class="btn btn-sm btn-white edit" title="Al hacer click permite la edición de los datos del visualizations de la fila"> <i class="fa fa-pencil"></i> </button>' +
+                            '<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar los datos del visualizations de la fila"> <i class="fa fa-close"></i> </button>';
+                    },
+                    cellStyle: function (value, row, index) {
+                        return {
+                            css: {
+                                'white-space': 'nowrap',
+                                'vertical-align': 'top'
+                            }
+                        }
+                    }
+                }]
+        });
+
+        $('#coberturasNew').click(function () {
+            coberturas_table_row_edit();
+        });
+
+        $('#coberturasEdtFormSave').click(function () {
+            if (app.ui.IsValid('#coberturasEdtForm', false)) {
+                app.ui.ButtonDoing('#coberturasEdtFormSave');
+
+                var row = coberturas_table_row('values');
+
+                if (row.Id === null)
+                    row.Id = 1;
+
+                if ($('#coberturasModal').data('id') != null) {
+                    $('#coberturasTbl').bootstrapTable('updateByUniqueId', { id: row.Id, row: row });
+                }
+                else {
+                    $('#coberturasTbl').bootstrapTable('append', row);
+                }
+
+                app.ui.ButtonDone('#coberturasEdtFormSave')
+                $('#coberturasModal').modal('hide');
+            }
+        });
+
+    };
+
+    function listas_table_setup() {
+
+        $('#listasTbl').bootstrapTable({
+            uniqueId: 'Id',
+            classes: 'table table-bordered table-hover table-index table-in-form',
+            pagination: true,
+            smartDisplay: true,
+            detailView: false,
+            detailFormatter: 'app.ui.GenericDetailFormatter',
+            columns: [
+                {
+                    field: 'Descripcion',
+                    title: 'Descripción',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
+                    field: 'Exclusion',
+                    title: 'Opciones a excluir',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
+                    field: 'Actions',
+                    title: 'Acciones',
+                    class: 'd-none d-sm-table-cell',
+                    titleTooltip: 'Acciones disponibles para un visualizations',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    width: 10,
+                    widthUnit: "%",
+                    visible: true,
+                    events: 'listasTbl_Events',
+                    formatter: function (value, row, index, field) {
+                        return '<button type="button" class="btn btn-sm btn-white edit" title="Al hacer click permite la edición de los datos del visualizations de la fila"> <i class="fa fa-pencil"></i> </button>' +
+                            '<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar los datos del visualizations de la fila"> <i class="fa fa-close"></i> </button>';
+                    },
+                    cellStyle: function (value, row, index) {
+                        return {
+                            css: {
+                                'white-space': 'nowrap',
+                                'vertical-align': 'top'
+                            }
+                        }
+                    }
+                }]
+        });
+
+        $('#listasNew').click(function () {
+            listas_table_row_edit();
+        });
+
+        $('#listasEdtFormSave').click(function () {
+            if (app.ui.IsValid('#listasEdtForm', false)) {
+                app.ui.ButtonDoing('#listasEdtFormSave');
+
+                var row = listas_table_row('values');
+
+                if (row.Id === null)
+                    row.Id = 1;
+
+                if ($('#listasModal').data('id') != null) {
+                    $('#listasTbl').bootstrapTable('updateByUniqueId', { id: row.Id, row: row });
+                }
+                else {
+                    $('#listasTbl').bootstrapTable('append', row);
+                }
+
+                app.ui.ButtonDone('#listasEdtFormSave')
+                $('#listasModal').modal('hide');
+            }
+        });
+
+    };
+
 
     return {
         Init: function () {
             try {
                 Controls_setup();
                 Setup_Validations();
+
+                coberturas_table_setup();
+                listas_table_setup();
+
                 validaciones_table_setup();
                 validaciones_table_Validations();
 

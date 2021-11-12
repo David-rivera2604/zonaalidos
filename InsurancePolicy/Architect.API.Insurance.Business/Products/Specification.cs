@@ -97,10 +97,13 @@ namespace Architect.API.Insurance.Business.Products
                     result.EntryIsRequired = ";";
                     foreach (Architect.Insurance.Contracts.Product.DataEntrySection entry in product.DataEntrySectionsAllowed)
                     {
-                        result.EntryAllowed += $"{entry.Code};";
-                        if (entry.Required)
+                        if (entry.Active)
                         {
-                            result.EntryIsRequired += $"{entry.Code};";
+                            result.EntryAllowed += $"{entry.Code};";
+                            if (entry.Required)
+                            {
+                                result.EntryIsRequired += $"{entry.Code};";
+                            }
                         }
                     }
                 }
