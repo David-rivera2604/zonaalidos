@@ -69,7 +69,13 @@ app.core = (function () {
         //    }
         //};
         //req.send();
-
+        let blobType = 'application/pdf';
+        if (filename === null) {
+            filename = new Date() + ".pdf";
+        }
+        if (filename.endsWith(".xlsx") ) {
+            blobType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;';
+        }
         fetch(url, {
             body: null,
             method: 'GET',
@@ -81,15 +87,13 @@ app.core = (function () {
             if (!response.ok) { throw response }
             return response.blob();
         }).then(response => {
-            let blob = new Blob([response], { type: 'application/pdf' });
+            let blob = new Blob([response], { type: blobType });
             let downloadUrl = URL.createObjectURL(blob);
 
             if (download) {
                 let a = document.createElement("a");
                 a.href = downloadUrl;
-                if (filename === null) {
-                    filename = new Date() + ".pdf";
-                }
+    
                 a.download = filename;
                 a.click();
                 a.remove()
