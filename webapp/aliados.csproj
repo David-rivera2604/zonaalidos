@@ -997,6 +997,7 @@
     <Content Include="assets\js\plugins\pace\pace.min.js" />
     <Content Include="assets\js\plugins\slimscroll\jquery.slimscroll.js" />
     <Content Include="assets\js\plugins\slimscroll\jquery.slimscroll.min.js" />
+    <Content Include="assets\js\plugins\typehead\bootstrap3-typeahead.min.js" />
     <Content Include="assets\js\popper.min.js" />
     <Content Include="assets\popper\esm\popper-utils.js" />
     <Content Include="assets\popper\esm\popper-utils.min.js" />
@@ -1480,10 +1481,13 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <Content Include="products\MapfreMas.json" />
-    <Content Include="products\HogarTotal.json" />
-    <Content Include="products\Viajero.json" />
+    <Content Include="products\MapfreMas.rules.json" />
+    <Content Include="products\HogarTotal.rules.json" />
+    <Content Include="products\Viajero.rules.json" />
     <Content Include="products\policy.rules.json" />
+    <Content Include="products\MapfreMas.vocabulary.json" />
+    <Content Include="products\syntax.settings.json" />
+    <Content Include="products\convention.settings.json" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\Policy\index.cshtml" />
     <Content Include="Views\Policy\Listv3.cshtml" />
@@ -1577,9 +1581,9 @@
     <Content Include="Reports\HogarTotal_ESPH.repx" />
     <Content Include="Reports\Coopesparta_saldo_deudor.repx" />
     <Content Include="Reports\Coopesparta_saldo_deudor_mayor_que_64.repx" />
+    <Content Include="Views\Prototype\Producto.cshtml" />
     <Content Include="Views\Cotizacion\Viajero.cshtml" />
     <Content Include="Views\Emision\Viajero.cshtml" />
-    <Content Include="Views\Prototype\Producto.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

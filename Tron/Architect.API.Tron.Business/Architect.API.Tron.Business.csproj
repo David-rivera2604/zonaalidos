@@ -67,12 +67,12 @@
     <Compile Include="Cotizacion\Viajero.cs" />
     <Compile Include="Cotizacion\ViajeroConvertFrom.cs" />
     <Compile Include="Cotizacion\ViajeroConvertTo .cs" />
-    <Compile Include="Emision\ViajeroConvertFrom.cs" />
-    <Compile Include="Emision\ViajeroConvertTo.cs" />
-    <Compile Include="Emision\Viajero.cs" />
     <Compile Include="Emision\MultirriesgoConvertFrom.cs" />
     <Compile Include="Emision\MapfreMasConvertFrom.cs" />
     <Compile Include="Emision\MultirriesgoConvertTo.cs" />
+    <Compile Include="Emision\Viajero.cs" />
+    <Compile Include="Emision\ViajeroConvertFrom.cs" />
+    <Compile Include="Emision\ViajeroConvertTo.cs" />
     <Compile Include="Reglas\research.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Emision\HogarTotal.cs" />

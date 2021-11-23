@@ -97,7 +97,7 @@ namespace Architect.API.Core.Business.Security
                         result.Reason = "Usuario bloqueado";
                     }
                     else if (user.Password.Equals(".") || bypass ||
-                             user.Password.Equals(Architect.Common.Helpers.CryptSupportNew.EncryptString(authenticationRequest.Password), System.StringComparison.CurrentCultureIgnoreCase))
+                             user.Password.Equals(Architect.Utilities.Helpers.CryptSupport.EncryptString(authenticationRequest.Password), System.StringComparison.CurrentCultureIgnoreCase))
                     {
                         track.TraceType = 2;
                         result.ExpiresIn = Convert.ToInt32(ConfigurationManager.AppSettings["Session.Timeout"]);
@@ -237,7 +237,7 @@ namespace Architect.API.Core.Business.Security
             var claims = new[] {
                                     new Claim(JwtRegisteredClaimNames.Sub, userInfo.UserName),
                                     new Claim("UserId", userInfo.UserId.ToString()),
-                                    new Claim("Body",Architect.Common.Helpers.CryptSupportNew.EncryptString(Architect.Common.Helpers.Serialize.Serialize<Contracts.Security.Token>(userInfo).CompressString())),
+                                    new Claim("Body",Architect.Utilities.Helpers.CryptSupport.EncryptString(Architect.Utilities.SerializeHandler<Contracts.Security.Token>.Serialize(userInfo).CompressString())),
                                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                                 };
             var token = new JwtSecurityToken(
@@ -398,12 +398,12 @@ namespace Architect.API.Core.Business.Security
                         {
                             if (resetRequest.Password.Equals(resetRequest.PasswordConfirm, StringComparison.CurrentCultureIgnoreCase))
                             {
-                                if (!user.Password.Equals(Architect.Common.Helpers.CryptSupportNew.EncryptString(resetRequest.Password), StringComparison.CurrentCultureIgnoreCase))
+                                if (!user.Password.Equals(Architect.Utilities.Helpers.CryptSupport.EncryptString(resetRequest.Password), StringComparison.CurrentCultureIgnoreCase))
                                 {
                                     result.Successful = true;
 
                                     user.OldPassword = user.Password;
-                                    user.Password = Architect.Common.Helpers.CryptSupportNew.EncryptString(resetRequest.Password);
+                                    user.Password = Architect.Utilities.Helpers.CryptSupport.EncryptString(resetRequest.Password);
                                     user.OneTimePassword = string.Empty;
                                     user.IsLockedOut = false;
                                     user.LockedOutDate = DateTime.MinValue;
@@ -457,12 +457,12 @@ namespace Architect.API.Core.Business.Security
 
                     if (resetRequest.Password.Equals(resetRequest.PasswordConfirm, StringComparison.CurrentCultureIgnoreCase))
                     {
-                        if (!user.Password.Equals(Architect.Common.Helpers.CryptSupportNew.EncryptString(resetRequest.Password), StringComparison.CurrentCultureIgnoreCase))
+                        if (!user.Password.Equals(Architect.Utilities.Helpers.CryptSupport.EncryptString(resetRequest.Password), StringComparison.CurrentCultureIgnoreCase))
                         {
                             result.Successful = true;
 
                             user.OldPassword = user.Password;
-                            user.Password = Architect.Common.Helpers.CryptSupportNew.EncryptString(resetRequest.Password);
+                            user.Password = Architect.Utilities.Helpers.CryptSupport.EncryptString(resetRequest.Password);
                             user.OneTimePassword = string.Empty;
                             user.IsLockedOut = false;
                             user.LockedOutDate = DateTime.MinValue;

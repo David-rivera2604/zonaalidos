@@ -9,6 +9,34 @@ namespace Architect.API.Insurance.Business.Policy
 {
     public partial class RiskQuestionnaires
     {
+       
+        /// <summary>
+        /// Recupera una lista de registros en la tabla RiskQuestionnaires basado en el número de documento de un asegurado.
+        /// </summary>
+        /// <param name="documentNumber">Número de documento del asegurado.</param>
+        /// <param name="questionnairyName">Nombre del cuestionario.</param>
+        /// <param name="companyid">Identificación de la compañía propietaria.</param>
+        /// <returns>Lista de instancias de RiskQuestionnaires.</returns>
+        public static List<Contracts.Policy.RiskQuestionnaires> RetrieveByDocumentNumber(string documentNumber, string questionnairyName, int companyid)
+        {
+            int questionIdBegin = 0;
+            int questionIdFinish = 0;
+
+            switch (questionnairyName.ToLower())
+            {
+                case "salud":
+                    questionIdBegin = 1;
+                    questionIdFinish = 10;
+                    break;
+                case "covid":
+                    questionIdBegin = 50;
+                    questionIdFinish = 59;
+                    break;
+            }
+            return DataAccess.Policy.RiskQuestionnaires.RetrieveByDocumentNumber(documentNumber, questionIdBegin, questionIdFinish, companyid);
+        }
+
+
         public static List<Contracts.Policy.RiskQuestionnaires> RetrieveByPolicyId(int policyId, int companyId)
         {
             List<Contracts.Policy.RiskQuestionnaires> result = DataAccess.Policy.RiskQuestionnaires.RetrieveByPolicyIdCompanyId(policyId, companyId);
@@ -24,10 +52,10 @@ namespace Architect.API.Insurance.Business.Policy
         public static List<Core.Contracts.General.Error> Validate(List<Contracts.Policy.RiskQuestionnaires> source, Contracts.Policy.Risk risk, int companyId)
         {
             List<Core.Contracts.General.Error> result = new List<Core.Contracts.General.Error>();
-            
+
             foreach (Architect.API.Insurance.Contracts.Policy.RiskQuestionnaires item in source)
             {
-                result.AddRange(RiskQuestionnaires.Validate( item, risk, companyId));
+                result.AddRange(RiskQuestionnaires.Validate(item, risk, companyId));
             }
 
             return result;
@@ -41,19 +69,20 @@ namespace Architect.API.Insurance.Business.Policy
             bool underwriting;
             List<Core.Contracts.General.Error> result = new List<Core.Contracts.General.Error>();
 
-            if (source.QuestionId >=51 && source.QuestionId<= 59)
+            if (source.QuestionId >= 51 && source.QuestionId <= 59)
             {
                 group = "QuestionaryCovid";
                 name = "cuestionario covid";
                 underwriting = (Risk.Rule_UnderwritingInsuredAgeGreaterThan(risk.PrimaryInsured, 60));
-            } else
+            }
+            else
             {
                 underwriting = (Risk.Rule_UnderwritingInsuredAgeGreaterThan(risk.PrimaryInsured, 64));
             }
 
             if ((source.QuestionId == 6 && risk.PrimaryInsured.Gender == 1) ||
                 (source.QuestionId == 9 && risk.PrimaryInsured.Gender == 1) ||
-                (source.QuestionId == 10 && risk.PrimaryInsured.Gender == 2) )
+                (source.QuestionId == 10 && risk.PrimaryInsured.Gender == 2))
             {
                 skip = true;
             }
@@ -61,7 +90,7 @@ namespace Architect.API.Insurance.Business.Policy
             {
                 //QuestionId
                 if (underwriting && source.Confirmation.IsEmpty())
-                    result.Add(new Core.Contracts.General.Error() { Group = group, Key = string.Format("Confirmation_{0}", source.QuestionId), Message = string.Format("Para mayores de 65 años debe responder la pregunta {0} del {1}", source.QuestionId > 50? source.QuestionId-50: source.QuestionId, name) });
+                    result.Add(new Core.Contracts.General.Error() { Group = group, Key = string.Format("Confirmation_{0}", source.QuestionId), Message = string.Format("Para mayores de 65 años debe responder la pregunta {0} del {1}", source.QuestionId > 50 ? source.QuestionId - 50 : source.QuestionId, name) });
 
                 //Diagnosis:
                 if (source.QuestionId >= 1 && source.QuestionId <= 6 && source.Confirmation == 1 && source.Diagnosis.IsEmpty())

@@ -6,6 +6,7 @@
 
 app.CotizacionMapfreMas = (function () {
 
+    let fec_vcto_poliza_grupo = null;
     var workMode = '';
     var setupData = null;
     var quoteData = null;
@@ -81,7 +82,6 @@ app.CotizacionMapfreMas = (function () {
             'ZonaCirculacion.cod_zona_circul',
             'MM_MarcasVehiculos.cod_marca',
             'MM_ModelosVehiculos.cod_modelo',
-            'MM_ClaseVehiculos.cod_tip_vehi',
             'UsoVehiculo.cod_uso_vehi',
             'MM_DEDU_AUTOSUS.DedudAutoSust'];
 
@@ -391,9 +391,14 @@ app.CotizacionMapfreMas = (function () {
 
             $('#fec_vcto_poliza_group').data("DateTimePicker").minDate(minDate);
 
-            let fec_vcto = app.ui.GetDateRawValue('#fec_efec_poliza');
-            fec_vcto.setFullYear(fec_vcto.getFullYear() + 1);
-            app.ui.SetDateValue('#fec_vcto_poliza', fec_vcto);
+            if (fec_vcto_poliza_grupo != null) {
+                app.ui.SetDateValue('#fec_vcto_poliza', fec_vcto_poliza);
+            } else {
+                let fec_vcto = app.ui.GetDateRawValue('#fec_efec_poliza');
+                fec_vcto.setFullYear(fec_vcto.getFullYear() + 1);
+                app.ui.SetDateValue('#fec_vcto_poliza', fec_vcto);
+            }
+
         });
 
         $('#cotizar').click(function () {
@@ -871,8 +876,11 @@ app.CotizacionMapfreMas = (function () {
 
         app.core.Get(app.setting.apipath + 'v1/Quote/MapfreMasSettings?' + `cod_ramo=${data.cod_ramo}&cod_mon=${data.cod_mon}&edad=${data.edad}&tipo_prod=${data.tipo_prod}&cod_marca=${data.cod_marca}&num_contrato=${data.num_contrato}&num_subcontrato=${data.num_subcontrato}&num_poliza_grupo=${data.num_poliza_grupo}`, null,
             function (settingData) {
+                fec_vcto_poliza_grupo = settingData.fec_vcto_poliza_grupo;
                 app.ui.SetDateValue('#fec_vcto_poliza', app.ui.GetDateValue('#fec_efec_poliza'))
                 app.ui.SetDateValue('#fec_vcto_poliza', settingData.fec_vcto_poliza);
+
+                app.ui.LookupLoad('cod_tip_vehi', settingData.cod_tip_vehi);
 
                 app.ui.LookupLoad('COD_PLAN_AUTO', settingData.PLAN_AUTO);
                 app.ui.LookupLoad('IMP_AUTO_RC', settingData.IMP_AUTO_RC);

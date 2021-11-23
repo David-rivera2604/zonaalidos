@@ -129,6 +129,7 @@
     <Compile Include="_Generated\UserRoleMember.cs" />
     <Compile Include="_Generated\Visualizations.cs" />
     <Compile Include="_Generated\VisualizationsResult.cs" />
+    <Compile Include="_Generated\WhiteList.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

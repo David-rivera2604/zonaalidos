@@ -18,23 +18,23 @@ namespace Architect.API.Core.Business.General
         /// Recupera la especificación de un proceso.
         /// </summary>
         /// <param name="flowId">Identificación única del proceso.</param>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <returns>Especificación de un proceso.</returns>
         public static Contracts.General.ProcessSpecFlow Specification(int flowId, int companyId)
         {
             Contracts.General.ProcessSpecFlow result = null;
             string key = string.Format("SpecFlow.{0}", flowId);
-            if (Architect.Common.Helpers.Caching.NotExist(key))
+            if (Architect.Utilities.Cache.NotExist(key))
             {
                 result = Architect.API.Core.DataAccess.General.Process.Specification.Retrieve(flowId, companyId);
                 if (result != null)
                 {
-                    Architect.Common.Helpers.Caching.SetItem(key, result);
+                    Architect.Utilities.Cache.SetItem(key, result);
                 }
             }
             else
             {
-                result = (Contracts.General.ProcessSpecFlow)Architect.Common.Helpers.Caching.GetItem(key);
+                result = (Contracts.General.ProcessSpecFlow)Architect.Utilities.Cache.GetItem(key);
             }
             return result;
         }

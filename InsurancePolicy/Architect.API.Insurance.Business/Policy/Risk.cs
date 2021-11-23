@@ -424,7 +424,6 @@ namespace Architect.API.Insurance.Business.Policy
 
             }
 
-
             List<Core.Contracts.General.LookupValue> values = null;
             if (result.IsNotEmpty())
             {
@@ -1161,5 +1160,54 @@ namespace Architect.API.Insurance.Business.Policy
         }
 
 
+        public static Core.Contracts.General.GenericResponse Import(string excelFilename, string specificactionFilename, Core.Contracts.Security.Token tokenInfo)
+        {
+            Core.Contracts.General.GenericResponse result = new Core.Contracts.General.GenericResponse();
+            excelFilename = @"C:\Architect\aliados\aliados\data\" + excelFilename;
+            specificactionFilename = @"C:\Architect\aliados\aliados\products\import." + specificactionFilename + ".json";
+
+            List<Contracts.Policy.Risk> risks = Architect.Domain.Excel.Import.Handlers.DTLHandler.Builder(specificactionFilename, excelFilename).Data;
+
+            Contracts.Policy.Risk riskCreated = null;
+            foreach (Contracts.Policy.Risk riskItem in risks)
+            {
+                riskItem.BranchOffice = tokenInfo.BranchOffice;
+                riskItem.ExecutiveUserCode = tokenInfo.UserId;
+
+                riskItem.AnnualPremium = riskItem.MonthlyPremium * 12;
+                riskItem.PrimaryInsured.PhoneNumber = riskItem.PrimaryInsured.PhoneNumber.Substring(3);
+                riskItem.PrimaryInsured.FirstName = riskItem.PrimaryInsured.FirstName.Capitalize();
+                riskItem.PrimaryInsured.SecondLastName = riskItem.PrimaryInsured.SecondLastName.Capitalize();
+                riskItem.PrimaryInsured.LastName = riskItem.PrimaryInsured.LastName.Capitalize();
+                riskItem.PrimaryInsured.SecondLastName = riskItem.PrimaryInsured.SecondLastName.Capitalize();
+
+                //TODO: falta tipo 2 y tipo 3
+                switch (riskItem.PrimaryInsured.DocumentType)
+                {
+                    case 1:
+                        if (riskItem.PrimaryInsured.DocumentNumber.Length == 9)
+                        {
+                            riskItem.PrimaryInsured.DocumentNumber = string.Format("0{0}-{1}-{2}", riskItem.PrimaryInsured.DocumentNumber.Substring(0, 1),
+                                riskItem.PrimaryInsured.DocumentNumber.Substring(1, 4),
+                                riskItem.PrimaryInsured.DocumentNumber.Substring(5, 4));
+                        }
+                        break;
+                    case 2:
+                        if (riskItem.PrimaryInsured.DocumentNumber.Length == 12)
+                        {
+                            riskItem.PrimaryInsured.DocumentNumber = string.Format("{0}-{1}-{2}", riskItem.PrimaryInsured.DocumentNumber.Substring(0, 4),
+                                riskItem.PrimaryInsured.DocumentNumber.Substring(4, 6),
+                                riskItem.PrimaryInsured.DocumentNumber.Substring(10, 2));
+                        }
+                        break;
+
+                }
+
+
+
+                riskCreated = Business.Policy.Risk.CreatePolicy(riskItem, tokenInfo.UserId, tokenInfo.CompanyId);
+            }
+            return result;
+        }
     }
 }

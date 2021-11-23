@@ -65,7 +65,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             };
 
             List<string> keys = new List<string> {
-                "MM_Plan",
+                "MM_ClaseVehiculos", "MM_Plan",
                 "MM_CAPITAL_RC", "MM_CAPITAL_GM", "MM_CAPITAL_AC", "MM_CAPITAL_GN", "MM_CAPITAL_AM", "MM_CAPITAL_ROTCRI",
                 "MM_DEDU_RC", "MM_DEDU_CV", "MM_DEDU_RA", "MM_DEDU_ROBO", "MM_DEDU_EE", "MM_DEDU_ROTCRI" };
             if (tokenInfo.Roles.Contain("PolizaGrupo"))
@@ -93,6 +93,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                         if (vcto_poliza.IsNotEmpty())
                         {
                             result.fec_vcto_poliza = DateTime.Parse(vcto_poliza, CultureInfo.CreateSpecificCulture("es-CR"));
+                            result.fec_vcto_poliza_grupo = result.fec_vcto_poliza;
                         }
                     }
                 }
@@ -172,33 +173,6 @@ namespace Architect.API.Tron.Business.Cotizacion
                         subcontrato = num_subcontrato,
                         polizagrupo = num_poliza_grupo
                     }, tokenInfo);
-
-                //switch (cod_plan_auto)
-                //{
-                //    case 31: // Básico
-                //        cod_cobExcludeFilter = "3002,3003,3016,3018,3014,3015,3008,3017,3094,1061,1063";
-                //        break;
-                //    case 32: // Amplio
-                //        cod_cobExcludeFilter = "3015,3008,3016,3018,3017,3094,1061,1063";
-                //        break;
-                //    case 34: // Oro
-                //        cod_cobExcludeFilter = "3016,3018,3017,3094,1061,1063";
-                //        break;
-                //    case 35: //Plata
-                //        cod_cobExcludeFilter = "3016,3018,3017,3094,1061,3002,3003,3007,3014,3015";
-                //        //cod_cobExcludeFilter = "3002,3003,3007,3014,3015,3008,1060,3016,3018,3017";
-                //        break;
-                //    case 36: // Trébol
-                //        cod_cobExcludeFilter = "3016,3018,3017,3094,1061,1063";
-                //        break;
-                //    case 37: // Trebol RC
-                //        cod_cobExcludeFilter = "3002,3003,3004,3005,3006,3007,3008,3009,3014,3015,3016,3017,3018,3094,1060,1061,1063";
-                //        break;
-
-                //    default: // 33 Plus
-                //        cod_cobExcludeFilter = "3016,3018,3017";
-                //        break;
-                //}
 
                 List<Contracts.Tables.ta301003> coverageSelection = DataAccess.PorRamo.AutomobileCoverageSelection(cod_cia, num_poliza_grupo, num_contrato, num_subcontrato, COD_RAMO, cod_mon, cod_marca, cod_modelo, anio_sub_modelo, cod_tip_vehi, cod_uso_vehi, mca_sexo, cod_zona_circul, edad, cod_plan_auto, tip_valoracion);
                 bool required;
@@ -317,6 +291,9 @@ namespace Architect.API.Tron.Business.Cotizacion
 
                 switch (itemValues.Key)
                 {
+                    case "MM_ClaseVehiculos":
+                        result.cod_tip_vehi = itemValues.Lkp;
+                        break;
                     case "MM_Plan":
                         result.PLAN_AUTO = itemValues.Lkp;
                         break;

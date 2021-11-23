@@ -15,6 +15,22 @@ namespace Architect.API.Tron.Controllers
     {
 
         /// <summary>
+        /// Recupera la información de un presupuesto
+        /// </summary>
+        [HttpGet]
+        [Route("{num_presupuesto}")]
+        public async Task<IHttpActionResult> Informacion([FromUri] string num_presupuesto)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = null;
+            await Task.Run(() =>
+            {
+                result = Business.Backoffice.Common.InformacionDePresupuesto(num_presupuesto);
+            }).ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
         /// Devuelve la estructura de datos con los valores por defecto para una cotización de tipo Hogar Total
         /// </summary>
         /// <returns></returns>

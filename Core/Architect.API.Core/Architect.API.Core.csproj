@@ -110,10 +110,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Architect.Common\Architect.Common.vbproj">
-      <Project>{7e7360b0-ea6a-4b93-852e-6f0ec759c02b}</Project>
-      <Name>Architect.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Kernel\Architect.Utilities\Architect.Utilities.csproj">
       <Project>{e8317ab3-7807-4fcf-8520-b80340b4eb7d}</Project>
       <Name>Architect.Utilities</Name>

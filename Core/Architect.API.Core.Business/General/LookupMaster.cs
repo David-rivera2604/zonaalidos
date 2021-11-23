@@ -21,7 +21,7 @@ namespace Architect.API.Core.Business.General
 
             List<Contracts.General.TenantLookup> tenantLkpMaster = new List<Contracts.General.TenantLookup>();
             Contracts.General.TenantLookup result = null;
-            if (Architect.Common.Helpers.Caching.NotExist("tenantLkpMaster"))
+            if (Architect.Utilities.Cache.NotExist("tenantLkpMaster"))
             {
                 List<Contracts.General.LookupMaster> lookupList = DataAccess.General.LookupMaster.RetrieveAll(string.Empty);
                 foreach (Contracts.General.LookupMaster item in lookupList)
@@ -39,11 +39,11 @@ namespace Architect.API.Core.Business.General
                         IsCached = item.IsCached
                     });
                 }
-                Architect.Common.Helpers.Caching.SetItem("tenantLkpMaster", tenantLkpMaster);
+                Architect.Utilities.Cache.SetItem("tenantLkpMaster", tenantLkpMaster);
             }
             else
             {
-                tenantLkpMaster = (List<Contracts.General.TenantLookup>)Architect.Common.Helpers.Caching.GetItem("tenantLkpMaster");
+                tenantLkpMaster = (List<Contracts.General.TenantLookup>)Architect.Utilities.Cache.GetItem("tenantLkpMaster");
             }
             foreach (Contracts.General.TenantLookup item in tenantLkpMaster)
             {

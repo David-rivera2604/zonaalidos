@@ -153,9 +153,9 @@ Namespace Architect.API.Core.DataAccess.Security
         ''' </summary>
         ''' <param name="companyId"></param>
         ''' <returns>Lista de instancias de LookUpValue</returns>
-        Public Shared Function LookUp(companyId As Integer, securityLevel As Integer) As List(Of Architect.Common.DataType.LookUpValue)
+        Public Shared Function LookUp(companyId As Integer, securityLevel As Integer) As List(Of Architect.Utilities.Contracts.LookUpValue)
             Dim rows As Data.DataTable = Nothing
-            Dim result As New List(Of Architect.Common.DataType.LookUpValue)
+            Dim result As New List(Of Architect.Utilities.Contracts.LookUpValue)
             With New DataManagerFactory("SELECT RoleId, RoleName " &
                                           "FROM RoleMember WHERE CompanyId=@:CompanyId AND SecurityLevel<=@:SecurityLevel ORDER BY RoleName", "RoleMember", "Research")
                 .AddParameter("CompanyId", DbType.Decimal, 5, False, companyId)
@@ -163,7 +163,7 @@ Namespace Architect.API.Core.DataAccess.Security
                 rows = .QueryExecuteToTable(True)
                 If rows.IsNotEmpty AndAlso rows.Rows.Count <> 0 Then
                     For Each itemRow As DataRow In rows.Rows
-                        result.Add(New Architect.Common.DataType.LookUpValue With {.Code = itemRow.StringValue("RoleId"), .Description = itemRow.StringValue("RoleName")})
+                        result.Add(New Architect.Utilities.Contracts.LookUpValue With {.Code = itemRow.StringValue("RoleId"), .Description = itemRow.StringValue("RoleName")})
                     Next
                 End If
             End With

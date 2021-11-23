@@ -39,7 +39,7 @@ namespace Architect.API.Core.Controllers
             else
             {
                 Contracts.Security.AuthenticationResponse responseItem = null;
-                authenticationRequest.IPAddress = Architect.Common.Helpers.Connection.UserHostAddress();
+                authenticationRequest.IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
                 authenticationRequest.UserAgent = Request.Headers.UserAgent.ToString();
 
                 await Task.Run(() => responseItem = Business.Security.Accounts.Authentication(authenticationRequest)).ConfigureAwait(false);
@@ -80,7 +80,7 @@ namespace Architect.API.Core.Controllers
             else
             {
                 string responseItem = null;
-                string ipAddress = Architect.Common.Helpers.Connection.UserHostAddress();
+                string ipAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
 
                 await Task.Run(() => responseItem = Business.Security.Token.AccessKeyInfo2(accessKey, ipAddress)).ConfigureAwait(false);
 
@@ -152,7 +152,7 @@ namespace Architect.API.Core.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IHttpActionResult> SendOTP(Contracts.Security.ResetPasswordRequest resetRequest)
         {
-            resetRequest.IPAddress = Architect.Common.Helpers.Connection.UserHostAddress();
+            resetRequest.IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
             Core.Contracts.General.GenericResponse result = null;
 
             await Task.Run(() => result = Architect.API.Core.Business.Security.Accounts.SendOTP(resetRequest)).ConfigureAwait(false);
@@ -172,7 +172,7 @@ namespace Architect.API.Core.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IHttpActionResult> IsOTPValid(Contracts.Security.ResetPasswordRequest resetRequest)
         {
-            resetRequest.IPAddress = Architect.Common.Helpers.Connection.UserHostAddress();
+            resetRequest.IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
             Core.Contracts.General.GenericResponse result = null;
 
             await Task.Run(() => result = Architect.API.Core.Business.Security.Accounts.IsOTPValid(resetRequest)).ConfigureAwait(false);
@@ -192,7 +192,7 @@ namespace Architect.API.Core.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IHttpActionResult> ResetPassword(Contracts.Security.ResetPasswordRequest resetRequest)
         {
-            resetRequest.IPAddress = Architect.Common.Helpers.Connection.UserHostAddress();
+            resetRequest.IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
             Core.Contracts.General.GenericResponse result = null;
 
             await Task.Run(() => result = Architect.API.Core.Business.Security.Accounts.ResetPassword(resetRequest)).ConfigureAwait(false);
@@ -213,7 +213,7 @@ namespace Architect.API.Core.Controllers
         public async Task<IHttpActionResult> ChangePassword(Contracts.Security.ResetPasswordRequest resetRequest)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
-            resetRequest.IPAddress = Architect.Common.Helpers.Connection.UserHostAddress();
+            resetRequest.IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
             Core.Contracts.General.GenericResponse result = null;
 
             await Task.Run(() => result = Architect.API.Core.Business.Security.Accounts.ChangePassword(tokenInfo.CompanyId, tokenInfo.UserId, resetRequest)).ConfigureAwait(false);

@@ -1,5 +1,6 @@
 ﻿using Architect.Utilities.Extensions;
 using Microsoft.Web.Http;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -64,11 +65,11 @@ namespace Architect.API.Insurance.Controllers
                     {
                         verbose += "->tron";
                     }
-                    else if(ready == ins)
+                    else if (ready == ins)
                     {
                         verbose += "->ins";
                     }
-                    else 
+                    else
                     {
                         verbose += "->padron";
                     }
@@ -77,7 +78,7 @@ namespace Architect.API.Insurance.Controllers
                     {
                         result = ready.Result;
                         processingTasks.Clear();
-                        Utilities.Log.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose,  "encontrado"), "integrations");
+                        Utilities.Log.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, "encontrado"), "integrations");
                     }
                     else
                     {
@@ -126,6 +127,31 @@ namespace Architect.API.Insurance.Controllers
             //}
 
             //LogHandler.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, result == null ? "no encontrado" : "encontrado"), "integrations");
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Recupera la información de un cuestionario, asociado a la identificación de un asegurado.
+        /// </summary>
+        /// <param name="id">Número de documento del asegurado</param>
+        /// <param name="name">Nombre del cuestionario</param>
+        /// <returns>Información del cuestionario</returns>
+        [HttpGet]
+        [Route("{id:int}/Questionary/{name}")]
+        [ResponseType(typeof(List<Architect.API.Insurance.Contracts.Policy.RiskQuestionnaires>))]
+        public async Task<IHttpActionResult> QuestionnairyByIdentification([FromUri] string id, [FromUri] string name)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            List<Architect.API.Insurance.Contracts.Policy.RiskQuestionnaires> result = null;
+            string verbose = string.Empty;
+
+            if (id.IsEmpty())
+            {
+                return BadRequest("Debe indicar la identificación");
+            }
+
+            result = Architect.API.Insurance.Business.Policy.RiskQuestionnaires.RetrieveByDocumentNumber(id, name, tokenInfo.CompanyId);
 
             return Ok(result);
         }

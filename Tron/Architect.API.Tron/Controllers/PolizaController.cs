@@ -18,6 +18,22 @@ namespace Architect.API.Tron.Controllers
     {
 
         /// <summary>
+        /// Recupera la información de una póliza
+        /// </summary>
+        [HttpGet]
+        [Route("{num_poliza}")]
+        public async Task<IHttpActionResult> Informacion([FromUri] string num_poliza)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Architect.API.Tron.Contracts.Poliza.DatoFijo result = null;
+            await Task.Run(() =>
+            {
+                result = Business.Backoffice.Common.InformacionDePoliza(num_poliza);
+            }).ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
         /// Recupera los datos variables de una póliza
         /// </summary>
         [HttpGet]

@@ -1,0 +1,22 @@
+{
+  "y": "&&",
+  "o": "||",
+  "no sea": "!",
+  "es menor a": "<",
+  "es mayor a": ">",
+  "no es igual a": "!=",
+  "es diferente a": "!=",
+  "es igual a": "==",
+  "es menor que": "<",
+  "es menor o igual que": "<=",
+  "es mayor que": ">",
+  "es mayor o igual que": ">=",
+  "no igual a": "!=",
+  "no sea igual a": "!=",
+  "diferente a": "!=",
+  "igual a": "==",
+  "menor que": "<",
+  "menor o igual que": "<=",
+  "mayor que": ">",
+  "mayor o igual que": ">="
+}

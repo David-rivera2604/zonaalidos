@@ -76,7 +76,7 @@ namespace Architect.API.Core.DataAccess.General
         /// Recupera un registro en la tabla ProcessSpecFlow por medio de su clave primaria.
         /// </summary>
         /// <param name="id">Identificación única del proceso.</param>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="connection">Instancia de una conexión compartida</param>
         /// <returns>Instancia de ProcessSpecFlow</returns>
         public static Architect.API.Core.Contracts.General.ProcessSpecFlow Retrieve(int id, int companyId, IDbConnection connection = null)
@@ -97,9 +97,9 @@ namespace Architect.API.Core.DataAccess.General
         /// <summary>
         /// Recupera una lista de registros en la tabla ProcessSpecFlow.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="filter">Filtro personalizado.</param>
-        /// <param name="parameters">Lista de parametros para complemento.</param>
+        /// <param name="parameters">Lista de parámetros para complemento.</param>
         /// <param name="connection">Instancia de una conexión compartida</param>
         /// <returns>Lista de instancias de ProcessSpecFlow</returns>
         public static List<Architect.API.Core.Contracts.General.ProcessSpecFlow> RetrieveAll(int companyId, string filter, List<DataFactory.Contracts.Parameter> parameters = null, IDbConnection connection = null)
@@ -120,11 +120,11 @@ namespace Architect.API.Core.DataAccess.General
         /// <summary>
         /// Recupera una lista de registros en la tabla ProcessSpecFlow.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="filter">Filtro personalizado.</param>
         /// <param name="beginIndex">Indice inicial para el paginado.</param>
         /// <param name="endIndex">Indice final para el paginado.</param>
-        /// <param name="parameters">Lista de parametros para complemento.</param>
+        /// <param name="parameters">Lista de parámetros para complemento.</param>
         /// <param name="connection">Instancia de una conexión compartida</param>
         /// <returns>Lista de instancias de ProcessSpecFlow</returns>
         public static List<Architect.API.Core.Contracts.General.ProcessSpecFlow> RetrieveAll(int companyId, string filter, int beginIndex, int endIndex, List<DataFactory.Contracts.Parameter> parameters = null, IDbConnection connection = null)
@@ -156,11 +156,11 @@ namespace Architect.API.Core.DataAccess.General
         }
 
         /// <summary>
-        /// Genera complemento del query para habilitar el filtro por columnas establecidas.
+        /// Genera complemento de la consulta para habilitar el filtro por columnas establecidas.
         /// </summary>
         /// <param name="filter">Permite filtrar la lista de registros.</param>
-        /// <param name="where">Indica que el complement debe incluir el WHERE del comando.</param>
-        /// <returns>Complemento del query</returns>
+        /// <param name="where">Indica que el complemento debe incluir el WHERE del comando.</param>
+        /// <returns>Complemento de la consulta</returns>
         public static string FilterBuilder(string filter, bool includeWhere = true)
         {
             string result = string.Empty;
@@ -185,7 +185,7 @@ namespace Architect.API.Core.DataAccess.General
         }
 
         /// <summary>
-        /// Último valor asignado a clave unica de la tabla ProcessSpecFlow.
+        /// Último valor asignado a clave única de la tabla ProcessSpecFlow.
         /// </summary>
         /// <param name="connection">Instancia de una conexión compartida</param>
         /// <returns>Último valor asignado.</returns>
@@ -261,7 +261,7 @@ namespace Architect.API.Core.DataAccess.General
         /// Elimina un registro en la tabla ProcessSpecFlow por medio de su clave primaria.
         /// </summary>
         /// <param name="id">Identificación única del proceso.</param>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="connection">Instancia de una conexión compartida</param>
         /// <returns>Cantidad de registros eliminados.</returns>
         public static int Delete(int id, int companyId, IDbConnection connection = null)
@@ -278,7 +278,7 @@ namespace Architect.API.Core.DataAccess.General
         /// </summary>
         /// <remarks>Complemento para procesamiento masivo</remarks>
         /// <param name="idList">Lista de Identificación única del proceso.</param>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="connection">Instancia de una conexión compartida</param>
         /// <returns>Lista con el resultado de la creación de cada instancia.</returns>
         public static List<int> Delete(List<int> idList, int companyId, IDbConnection connection = null)
@@ -306,7 +306,7 @@ namespace Architect.API.Core.DataAccess.General
         /// Recupera la cantidad de registros existentes en la tabla ProcessSpecFlow por medio de su clave primaria.
         /// </summary>
         /// <param name="id">Identificación única del proceso.</param>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="connection">Instancia de una conexión compartida</param>
         /// <returns>Cantidad de registros encontrados.</returns>
         public static int Count(int id, int companyId, IDbConnection connection = null)
@@ -324,7 +324,7 @@ namespace Architect.API.Core.DataAccess.General
         /// Recupera la cantidad de registros existentes en la tabla ProcessSpecFlow que cumplen con el filtro.
         /// </summary>
         /// <param name="filter">Permite filtrar la lista de registros</param>
-        /// <param name="parameters">Lista de parametros para complemento.</param>
+        /// <param name="parameters">Lista de parámetros para complemento.</param>
         /// <param name="connection">Instancia de una conexión compartida</param>
         /// <returns>Cantidad de registros encontrados.</returns>
         public static int Count(string filter, List<DataFactory.Contracts.Parameter> parameters = null, IDbConnection connection = null)
@@ -338,7 +338,7 @@ namespace Architect.API.Core.DataAccess.General
         /// <summary>
         /// Recupera una lista para selección de la tabla ProcessSpecFlow.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="connection">Instancia de una conexión compartida</param>
         /// <returns>Lista de instancias de LookUpValue</returns>
         public static List<Utilities.Contracts.LookUpValue> LookUp(int companyId, IDbConnection connection = null)

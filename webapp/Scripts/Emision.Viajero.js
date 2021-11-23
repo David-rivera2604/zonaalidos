@@ -17,7 +17,7 @@ app.EmisionViajero = (function () {
         }
     };
 
-   
+
     function Quote() {
         app.core.Post(app.setting.apipath + 'v1/Issue/Viajero',
             JSON.stringify(MapInputToObject()),
@@ -42,7 +42,7 @@ app.EmisionViajero = (function () {
                     $('#emitir').addClass('d-none');
                     $('#tercerosNew').addClass('d-none');
 
-                   
+
                     $('#tercerosTbl').bootstrapTable('hideColumn', 'Actions');
                     $('#documentosrequeridosTbl').bootstrapTable('hideColumn', 'Actions');
 
@@ -70,7 +70,7 @@ app.EmisionViajero = (function () {
             });
     };
 
-    
+
     function ReadOnly() {
         $('#cod_mon').replaceWith('<div>' + $('#cod_mon option:selected').text() + '</div>');
         $('#cod_fracc_pago').replaceWith('<div>' + $('#cod_fracc_pago option:selected').text() + '</div>');
@@ -157,23 +157,23 @@ app.EmisionViajero = (function () {
         $('#Tcanton').val(data.canton);
         $('#Tdistrito').val(data.distrito);
     };
-    
+
     function Controls_setup() {
-$('#fec_efec_poliza_group').datetimepicker({
+        $('#fec_efec_poliza_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es',
             defaultDate: new Date()
 
         });
-$('#fec_vcto_poliza_group').datetimepicker({
+        $('#fec_vcto_poliza_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
-$('#FEC_VIAJE_group').datetimepicker({
+        $('#FEC_VIAJE_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
-$('#FEC_NACIMIENTO_group').datetimepicker({
+        $('#FEC_NACIMIENTO_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es',
             maxDate: app.ui.Yesterday(),
@@ -192,7 +192,7 @@ $('#FEC_NACIMIENTO_group').datetimepicker({
         $("#VisualizationsEdtForm :input").change(function () {
             data_changed();
         });
-        
+
         $('#fec_efec_poliza').blur(function () {
             var minDate = app.ui.GetDateRawValue('#fec_efec_poliza');
             minDate.setDate(minDate.getDate());
@@ -214,7 +214,7 @@ $('#FEC_NACIMIENTO_group').datetimepicker({
                             app.ui.ShowAlert('quoteNotify', 'alert-danger', data.Mensaje);
                         }
                         else {
-                        
+
                         }
 
                     }).always(function () {
@@ -251,33 +251,35 @@ $('#FEC_NACIMIENTO_group').datetimepicker({
         if (changedCallback !== undefined && changedCallback !== null)
             changedCallback(MapInputToObject());
     };
-    
+
     function Setup_Validations() {
         app.ui.DateValidators();
         $("#VisualizationsEdtForm").validate({
             errorPlacement: app.ui.ErrorPlacement,
-            rules: {cod_mon: { required: true },
-cod_fracc_pago: { required: true },
-fec_efec_poliza: { required: true },
-fec_vcto_poliza: { required: true },
-TIP_PLAN: { required: true },
-TIP_VIAJE: { required: true },
-FEC_VIAJE: { required: true },
-DES_DESTINO: { required: true },
-FEC_NACIMIENTO: { required: true },
-COD_MODALIDAD: { required: true },
-},
-            messages: {cod_mon: { required: 'Debe indicar el Moneda' },
-cod_fracc_pago: { required: 'Debe indicar el Fraccionamiento de pago' },
-fec_efec_poliza: { required: 'Debe indicar el Inicio de vigencia' },
-fec_vcto_poliza: { required: 'Debe indicar el Fin de vigencia' },
-TIP_PLAN: { required: 'Debe indicar el Plan' },
-TIP_VIAJE: { required: 'Debe indicar el Tipo de viaje' },
-FEC_VIAJE: { required: 'Debe indicar el Fecha de inicio del viaje' },
-DES_DESTINO: { required: 'Debe indicar el Lugar de destino' },
-FEC_NACIMIENTO: { required: 'Debe indicar el Fecha de nacimiento' },
-COD_MODALIDAD: { required: 'Debe indicar el Modalidad' },
-}
+            rules: {
+                cod_mon: { required: true },
+                cod_fracc_pago: { required: true },
+                fec_efec_poliza: { required: true },
+                fec_vcto_poliza: { required: true },
+                TIP_PLAN: { required: true },
+                TIP_VIAJE: { required: true },
+                FEC_VIAJE: { required: true },
+                DES_DESTINO: { required: true },
+                FEC_NACIMIENTO: { required: true },
+                COD_MODALIDAD: { required: true },
+            },
+            messages: {
+                cod_mon: { required: 'Debe indicar el Moneda' },
+                cod_fracc_pago: { required: 'Debe indicar el Fraccionamiento de pago' },
+                fec_efec_poliza: { required: 'Debe indicar el Inicio de vigencia' },
+                fec_vcto_poliza: { required: 'Debe indicar el Fin de vigencia' },
+                TIP_PLAN: { required: 'Debe indicar el Plan' },
+                TIP_VIAJE: { required: 'Debe indicar el Tipo de viaje' },
+                FEC_VIAJE: { required: 'Debe indicar el Fecha de inicio del viaje' },
+                DES_DESTINO: { required: 'Debe indicar el Lugar de destino' },
+                FEC_NACIMIENTO: { required: 'Debe indicar el Fecha de nacimiento' },
+                COD_MODALIDAD: { required: 'Debe indicar el Modalidad' },
+            }
         });
     };
 
@@ -291,55 +293,55 @@ COD_MODALIDAD: { required: 'Debe indicar el Modalidad' },
             detailView: false,
             detailFormatter: 'app.ui.GenericDetailFormatter',
             columns: [
-{
+                {
                     field: 'seleccionado',
                     checkbox: true
-                },{
-	field: 'codigo',
-	title: 'Código',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'right',
-    formatter: 'app.ui.IntegerFormatter',
-    visible: true
-},{
-	field: 'nombre',
-	title: 'Nombre',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'left',
-    formatter: 'app.ui.StringFormatter',
-    visible: true
-},{
-	field: 'capital',
-	title: 'Capital',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'right',
-    formatter: 'app.ui.DecimalFormatter',
-    visible: true
-},{
-	field: 'primatotal',
-	title: 'Prima total',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'right',
-    formatter: 'app.ui.DecimalFormatter',
-    visible: true
-},{
-	field: 'deducible',
-	title: 'Deducible',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'left',
-    formatter: 'app.ui.StringFormatter',
-    visible: true
-},]
+                }, {
+                    field: 'codigo',
+                    title: 'Código',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.IntegerFormatter',
+                    visible: true
+                }, {
+                    field: 'nombre',
+                    title: 'Nombre',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
+                    field: 'capital',
+                    title: 'Capital',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }, {
+                    field: 'primatotal',
+                    title: 'Prima total',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }, {
+                    field: 'deducible',
+                    title: 'Deducible',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                },]
         });
 
 
@@ -356,70 +358,70 @@ COD_MODALIDAD: { required: 'Debe indicar el Modalidad' },
             detailView: false,
             detailFormatter: 'app.ui.GenericDetailFormatter',
             columns: [
-{
-	field: 'cuota',
-	title: 'Cuota',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'right',
-    formatter: 'app.ui.IntegerFormatter',
-    visible: true
-},{
-	field: 'fechadesde',
-	title: 'Fecha desde',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'center',
-    formatter: 'app.ui.DateFormatter',
-    visible: true
-},{
-	field: 'fechahasta',
-	title: 'Fecha hasta',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'center',
-    formatter: 'app.ui.DateFormatter',
-    visible: true
-},{
-	field: 'primaneta',
-	title: 'Prima neta',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'right',
-    formatter: 'app.ui.DecimalFormatter',
-    visible: true
-},{
-	field: 'iVA',
-	title: 'IVA',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'right',
-    formatter: 'app.ui.DecimalFormatter',
-    visible: true
-},{
-	field: 'recargoporfraccionamiento',
-	title: 'Recargo por fraccionamiento',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'right',
-    formatter: 'app.ui.DecimalFormatter',
-    visible: true
-},{
-	field: 'importetotal',
-	title: 'Importe total',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'right',
-    formatter: 'app.ui.DecimalFormatter',
-    visible: true
-},]
+                {
+                    field: 'cuota',
+                    title: 'Cuota',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.IntegerFormatter',
+                    visible: true
+                }, {
+                    field: 'fechadesde',
+                    title: 'Fecha desde',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    formatter: 'app.ui.DateFormatter',
+                    visible: true
+                }, {
+                    field: 'fechahasta',
+                    title: 'Fecha hasta',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    formatter: 'app.ui.DateFormatter',
+                    visible: true
+                }, {
+                    field: 'primaneta',
+                    title: 'Prima neta',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }, {
+                    field: 'iVA',
+                    title: 'IVA',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }, {
+                    field: 'recargoporfraccionamiento',
+                    title: 'Recargo por fraccionamiento',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }, {
+                    field: 'importetotal',
+                    title: 'Importe total',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                },]
         });
 
 
@@ -495,7 +497,7 @@ COD_MODALIDAD: { required: 'Debe indicar el Modalidad' },
         return result;
     }
 
-     //Terceros
+    //Terceros
 
     function terceros_table_setup() {
 
@@ -708,7 +710,7 @@ COD_MODALIDAD: { required: 'Debe indicar el Modalidad' },
         });
 
         $('#tercerosNew').click(function () {
-            
+
             terceros_table_row_edit();
         });
 
@@ -823,7 +825,7 @@ COD_MODALIDAD: { required: 'Debe indicar el Modalidad' },
                 porcentajeacredor: app.ui.GetNumericValue('#porcentajeacredor'),
                 parentesco: $('#parentesco').val(),
                 parentescoDesc: $('#parentesco option:selected').text(),
-               // porcentaje: app.ui.GetNumericValue('#porcentaje'),
+                // porcentaje: app.ui.GetNumericValue('#porcentaje'),
                 NoEditable: false
             };
         }
