@@ -13,6 +13,13 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// </summary>
         [DataMember(), JsonProperty()] public DateTime fec_vcto_poliza { get; set; }
 
+        /// <summary>
+        /// Fin de vigencia de la póliza grupo.
+        /// </summary>
+        [DataMember(), JsonProperty()] public DateTime? fec_vcto_poliza_grupo { get; set; }
+
+        [DataMember(), JsonProperty()] public List<Architect.API.Core.Contracts.General.LookupValue> cod_tip_vehi { get; set; }
+
         [DataMember(), JsonProperty()] public List<Architect.API.Core.Contracts.General.LookupValue> PLAN_AUTO { get; set; }
 
         /// <summary>

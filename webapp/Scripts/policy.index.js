@@ -240,6 +240,9 @@ app.policyview = (function () {
         $('.tool-refresh').on('click', function (e) {
             Refresh();
         });
+        $('.tool-excel-export').on('click', function (e) {
+            app.core.GetPDF(app.setting.apipath + 'v1/DataSource/excel?id=14', true, 'polizas.xlsx');
+        });
         $("#PolicySearch").keyup(function (event) {
             if (event.keyCode == 13)
                 Refresh();

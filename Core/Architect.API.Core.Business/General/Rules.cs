@@ -12,7 +12,7 @@ namespace Architect.API.Core.Business.General
     {
         public static async Task Runtime(int companyId, int userId, int entityType, string action, object entitySource)
         {
-            Architect.Common.Helpers.LogHandler.WarningLog(entityType.ToString(), action, "rules");
+            Architect.Utilities.Log.WarningLog(entityType.ToString(), action, "rules");
 
             //TODO: Es necesario optimizar estas lecturas 1
             if (DataAccess.General.Rules.CountByEntityAction(companyId, entityType, action) > 0)
@@ -28,14 +28,14 @@ namespace Architect.API.Core.Business.General
                 try
                 {
                     await CSharpScript.EvaluateAsync(code,
-                        ScriptOptions.Default.WithReferences(typeof(Architect.Common.Helpers.LogHandler).Assembly,
+                        ScriptOptions.Default.WithReferences(typeof(Architect.Utilities.Log).Assembly,
                                                              typeof(Architect.API.Core.Business.General.Mail).Assembly,
                                                              entitySource.GetType().Assembly).AddImports("Architect.Utilities.Extensions"),
                         globals: context).ConfigureAwait(false);
                 }
                 catch (Microsoft.CodeAnalysis.Scripting.CompilationErrorException ex)
                 {
-                    Architect.Common.Helpers.LogHandler.ErrorLog("Rules", string.Format("{0} - {1}", entityType, action), ex);
+                    Architect.Utilities.Log.ErrorLog("Rules", string.Format("{0} - {1}", entityType, action), ex);
                 }
 
 
@@ -63,7 +63,7 @@ namespace Architect.API.Core.Business.General
             Contracts.General.RuleContext context = new Contracts.General.RuleContext() { Data = entitySource };
 
             bool result = (bool)await CSharpScript.EvaluateAsync(code,
-                                    ScriptOptions.Default.WithReferences(typeof(Architect.Common.Helpers.LogHandler).Assembly,
+                                    ScriptOptions.Default.WithReferences(typeof(Architect.Utilities.Log).Assembly,
                                                                          typeof(Architect.Utilities.Cache).Assembly,
                                                                           entitySource.GetType().Assembly).
                                     AddImports("Architect.Utilities.Extensions"),
@@ -93,7 +93,7 @@ namespace Architect.API.Core.Business.General
             }
             catch (Microsoft.CodeAnalysis.Scripting.CompilationErrorException ex)
             {
-                Architect.Common.Helpers.LogHandler.ErrorLog("Rules.ApplyRules", string.Format("{0}\nCode:\n{1}", ruleFile, codeScript), ex );
+                Architect.Utilities.Log.ErrorLog("Rules.ApplyRules", string.Format("{0}\nCode:\n{1}", ruleFile, codeScript), ex );
                 throw;
             }
 
@@ -121,7 +121,7 @@ namespace Architect.API.Core.Business.General
             }
             catch (Microsoft.CodeAnalysis.Scripting.CompilationErrorException ex)
             {
-                Architect.Common.Helpers.LogHandler.ErrorLog("Rules.ApplyCoverages", string.Format("{0}\nCode:\n{1}", ruleFile, codeScript), ex);
+                Architect.Utilities.Log.ErrorLog("Rules.ApplyCoverages", string.Format("{0}\nCode:\n{1}", ruleFile, codeScript), ex);
                 throw;
             }
 

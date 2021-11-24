@@ -229,3 +229,11 @@
 1.5.69 11/11/2021 MapfreMas. Fix. Se ajusta la emisión de forma directa para que use los terceros de forma dinámica en el archivo json.
                   Coope. Manejo dinámico de validaciones.
 1.5.70 12/11/2021 Impresion de Certificado, Seguro Viajero Ramo 441
+1.5.71 22/11/2021 Coope. Tomar las respuestas del cuestionario Covid llenado el mismo día para el asegurado.
+                  Coope. Se agregan los campos 'Teléfono', 'Correo', 'Cantidad de adjuntos', al listado de todas las pólizas registra en el sistema.
+                  MapfreMas. Fix. Si se trata de una póliza grupo se debe respetar la fecha de termino del contrato.
+                  Coope. Se agrega la información de hasta 3 beneficiarios al listado de todas las pólizas registra en el sistema.
+                  Coope. Se cambiar el export del reporte para que se haga del lado del servidor y directamente desde la consulta principal.
+                  Alidos. API. Se agregar consultas de presupuesto y pólizas emitidas.
+                  MapfreMas. Se ajusta la lista de tipos de vehículos para que se recargue de forma dinámica.
+                  MapfreMas. Se ajusta la definición de la lista MM_ClaseVehiculos para incluir Motocicletas.

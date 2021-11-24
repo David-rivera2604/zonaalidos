@@ -82,7 +82,6 @@
     </Compile>
     <Compile Include="_Generated\CustomFields.vb" />
     <Compile Include="_Generated\RoleMember.vb" />
-    <Compile Include="_Generated\WhiteList.vb" />
     <Compile Include="_Generated\UserRoleMember.vb" />
     <Compile Include="_Generated\Attachments.vb" />
     <Compile Include="_Generated\ChangeSet.vb" />

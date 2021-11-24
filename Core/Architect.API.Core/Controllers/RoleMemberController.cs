@@ -82,7 +82,7 @@ namespace Architect.API.Core.Controllers
         {
             Contracts.Security.Token tokenInfo = Business.Security.Token.Info();
 
-            List<Architect.Common.DataType.LookUpValue> result = null;
+            List<Architect.Utilities.Contracts.LookUpValue> result = null;
 
             await Task.Run(() =>
             {

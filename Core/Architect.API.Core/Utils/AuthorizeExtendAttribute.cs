@@ -60,10 +60,10 @@ namespace Architect.API.Core.Utils
                     }
                     else
                     {
-                        var ipConsume = Architect.Common.Helpers.Connection.UserHostAddress();
+                        var ipConsume = Architect.Utilities.Helpers.Connection.UserHostAddress();
                         if (ipConsume.Equals("127.0.0.1"))
                             ipConsume = "*.*.*.*";
-                        if(DataAccess.Security.WhiteList.Find(ipConsume))
+                        if(Business.General.WhiteList.Find(ipConsume))
                             skip = true;
                     }
                 }
@@ -107,7 +107,7 @@ namespace Architect.API.Core.Utils
                             HttpContext.Current.User = principal;
                         }
 
-                        if (!actionContext.Request.RequestUri.LocalPath.EndsWith("/IsLive"))
+                        if (!actionContext.Request.RequestUri.LocalPath.EndsWith("/IsLive") && actionContext.Request.Headers.Referrer!=null)
                             Business.Security.Session.Refresh(authenticationToken, actionContext.Request.Headers.Referrer.AbsoluteUri);
                     }
                 }

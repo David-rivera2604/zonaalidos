@@ -38,6 +38,12 @@ namespace Architect.API.Insurance.Business.Reglas
 
         internal static string BuildRulesCode(string ruleFile, object data, List<Core.Contracts.Especificacion.Regla> rules)
         {
+            string basePath = ConfigurationManager.AppSettings["Product.Definition.Path"];
+            Architect.Decision.Vocabulary.Condition _rule = new Architect.Decision.Vocabulary.Condition(
+                $"{basePath}\\syntax.settings.json",
+                $"{basePath}\\convention.settings.json",
+                $"{basePath}\\{ruleFile}.vocabulary.json");
+
             StringBuilder script = new StringBuilder();
 
             script.AppendFormat("{0} data = ({0})Data;\n", data.GetType().FullName);
@@ -49,180 +55,9 @@ namespace Architect.API.Insurance.Business.Reglas
                 {
                     rule.Grupo = ruleFile;
                 }
-                script.AppendFormat("if ({0}){{errors.Add(new Architect.API.Core.Contracts.General.Error() {{ Group = \"{1}\", Key = \"{2}\", Message = \"{3}\" }});}}\n", ConditionParser(ruleFile, rule.Condicion), rule.Grupo, rule.Campo, rule.Mensaje);
+                script.AppendFormat("if ({0}){{errors.Add(new Architect.API.Core.Contracts.General.Error() {{ Group = \"{1}\", Key = \"{2}\", Message = \"{3}\" }});}}\n", _rule.Parser(rule.Condicion), rule.Grupo, rule.Campo, rule.Mensaje);
             }
             return script.ToString();
         }
-        internal static string ConditionParser(string ruleFile, string condition)
-        {
-            string code = condition;
-
-            code = code.Replace("{el ", "{");
-            code = code.Replace("{El ", "{");
-            code = code.Replace("{La ", "{");
-            code = code.Replace("{la ", "{");
-            code = code.Replace(" sea ", " es ");
-            code = code.Replace(" Sea ", " es ");
-            code = code.Replace("{No tiene", "{No hay");
-            code = code.Replace("{no tiene", "{No hay");
-
-            MatchCollection parameterMatches = Regex.Matches(code, @"{(.+?)}"); // ([^)]*)
-
-            foreach (Match paremeter in parameterMatches)
-            {
-                switch (paremeter.Value.ToLower())
-                {
-                    case "{moneda}":
-                        code = code.Replace(paremeter.Value, "data.cod_mon");
-                        break;
-                    case "{valor del vehículo}":
-                    case "{valor del vehiculo}":
-                        code = code.Replace(paremeter.Value, "data.IMP_VR");
-                        break;
-                    case "{marca del vehículo}":
-                    case "{marca del vehiculo}":
-                        code = code.Replace(paremeter.Value, "data.cod_marca");
-                        break;
-                    case "{año del vehículo}":
-                    case "{año del vehiculo}":
-                    case "{año de fabricación}":
-                    case "{año de fabricacion}":
-                        code = code.Replace(paremeter.Value, "data.ANIO_SUB_MODELO");
-                        break;
-                    case "{contrato}":
-                        code = code.Replace(paremeter.Value, "data.contrato");
-                        break;
-                    case "{suma asegurada de colisión y vuelco}":
-                    case "{suma asegurada de colision y vuelco}":
-                        code = code.Replace(paremeter.Value, "data.IMP_AUTO_CYV");
-                        break;
-                    case "{suma asegurada de gastos médicos}":
-                    case "{suma asegurada de gastos medicos}":
-                        code = code.Replace(paremeter.Value, "data.IMP_AUTO_CYV");
-                        break;
-                    case "{suma asegurada de riesgos adicionales}":
-                        code = code.Replace(paremeter.Value, "data.IMP_AUTO_RAD");
-                        break;
-                    case "{suma asegurada de robo}":
-                        code = code.Replace(paremeter.Value, "data.IMP_AUTO_ROB");
-                        break;
-                    case "{plan}":
-                        code = code.Replace(paremeter.Value, "data.COD_PLAN_AUTO");
-                        break;
-                    case "{tipo de producto}":
-                        code = code.Replace(paremeter.Value, "data.tipo_prod");
-                        break;
-                }
-            }
-            code = code.Replace(" y ", " && ");
-            code = code.Replace(" Y ", " && ");
-            code = code.Replace(" o ", " || ");
-            code = code.Replace(" O ", " || ");
-            code = code.Replace("No sea {", "!{");
-            code = code.Replace("no sea {", "!{");
-            code = code.Replace("es menor a ", " < ");
-            code = code.Replace("es mayor a ", " > ");
-
-            Match oldParemeter = null;
-            foreach (Match paremeter in parameterMatches)
-            {
-                switch (paremeter.Value.ToLower())
-                {
-                    case "{básico}":
-                    case "{basico}":
-                        code = code.Replace(paremeter.Value, "31");
-                        break;
-                    case "{amplio}":
-                        code = code.Replace(paremeter.Value, "32");
-                        break;
-                    case "{plus}":
-                        code = code.Replace(paremeter.Value, "33");
-                        break;
-                    case "{oro}":
-                        code = code.Replace(paremeter.Value, "34");
-                        break;
-                    case "{plata}":
-                        code = code.Replace(paremeter.Value, "35");
-                        break;
-                    case "{trébol}":
-                    case "{trebol}":
-                        code = code.Replace(paremeter.Value, "36");
-                        break;
-                    case "{trébol rc}":
-                    case "{trebol rc}":
-                        if (oldParemeter?.Value.ToLower() == "{tipo de producto}")
-                            code = code.Replace(paremeter.Value, "\"trebolrc\"");
-                        else
-                            code = code.Replace(paremeter.Value, "37");
-                        break;
-
-                    case "{colones}":
-                    case "{colon}":
-                        code = code.Replace(paremeter.Value, "1");
-                        break;
-                    case "{dolares}":
-                    case "{dolar}":
-                    case "{dólares}":
-                    case "{dólar}":
-                        code = code.Replace(paremeter.Value, "2");
-                        break;
-                    case "{no hay coberturas seleccionadas}":
-                        code = code.Replace(paremeter.Value, "!data.coberturas.Any(r => r.seleccionado)");
-                        break;
-                    case "{hay coberturas seleccionadas}":
-                        code = code.Replace(paremeter.Value, "data.coberturas.Any(r => r.seleccionado)");
-                        break;
-
-                    default:
-                        if (paremeter.Value.ToLower().StartsWith("{cobertura ") && paremeter.Value.ToLower().EndsWith(" es seleccionada}"))
-                        {
-                            code = code.Replace(paremeter.Value, string.Format("data.coberturas.Any(r => r.codigo == {0} && r.seleccionado)", paremeter.Value.Substring(11, paremeter.Value.Length - 28).Trim()));
-                        }
-                        if (paremeter.Value.ToLower().StartsWith("{rol es igual a "))
-                        {
-                            code = code.Replace(paremeter.Value, string.Format("token.Roles.Contain(\"{0}\")", paremeter.Value.Substring(16, paremeter.Value.Length - 17)));
-                        }
-                        if (paremeter.Value.ToLower().StartsWith("{rol del usuario es igual a "))
-                        {
-                            code = code.Replace(paremeter.Value, string.Format("token.Roles.Contain(\"{0}\")", paremeter.Value.Substring(28, paremeter.Value.Length - 29)));
-                        }
-                        if (paremeter.Value.ToLower().StartsWith("{rol no es igual a "))
-                        {
-                            code = code.Replace(paremeter.Value, string.Format("!token.Roles.Contain(\"{0}\")", paremeter.Value.Substring(19, paremeter.Value.Length - 20)));
-                        }
-                        if (paremeter.Value.ToLower().StartsWith("{rol del usuario no es igual a "))
-                        {
-                            code = code.Replace(paremeter.Value, string.Format("!token.Roles.Contain(\"{0}\")", paremeter.Value.Substring(31, paremeter.Value.Length - 32)));
-                        }
-                        if (paremeter.Value.ToLower().EndsWith(" año de antigüedad}") || paremeter.Value.ToLower().EndsWith(" año de antiguedad}"))
-                        {
-                            code = code.Replace(paremeter.Value, string.Format("(DateTime.Today.Year - {0})", paremeter.Value.Substring(1, paremeter.Value.Length - 20)));
-                        }
-                        if (paremeter.Value.ToLower().EndsWith(" años de antigüedad}") || paremeter.Value.ToLower().EndsWith(" años de antiguedad}"))
-                        {
-                            code = code.Replace(paremeter.Value, string.Format("(DateTime.Today.Year - {0})", paremeter.Value.Substring(1, paremeter.Value.Length - 21)));
-                        }
-                        break;
-                }
-                oldParemeter = paremeter;
-            }
-            code = code.Replace(" no es igual a ", " != ");
-            code = code.Replace(" es diferente a ", " != ");
-            code = code.Replace(" es igual a ", " == ");
-            code = code.Replace(" es menor que ", " < ");
-            code = code.Replace(" es menor o igual que ", " <= ");
-            code = code.Replace(" es mayor que ", " > ");
-            code = code.Replace(" es mayor o igual que ", " >= ");
-
-            code = code.Replace(" no igual a ", " != ");
-            code = code.Replace(" diferente a ", " != ");
-            code = code.Replace(" igual a ", " == ");
-            code = code.Replace(" menor que ", " < ");
-            code = code.Replace(" menor o igual que ", " <= ");
-            code = code.Replace(" mayor que ", " > ");
-            code = code.Replace(" mayor o igual que ", " >= ");
-            return code;
-        }
-
     }
 }

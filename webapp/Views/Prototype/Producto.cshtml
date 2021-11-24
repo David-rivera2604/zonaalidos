@@ -200,6 +200,7 @@
                                                     <div class='col-md'>
                                                         <div class='form-group'>
                                                             <label class='control-label' for='Variable'>Variables</label>
+                                                            <input id="AutoVariable" type="text" placeholder="Variable..." class="form-control" />
                                                             <select id='Variable' size='18' class='form-control'>
                                                                 <optgroup label='Generales'>
                                                                     <option> {El Rol del usuario sea igual a  ?} </option>
@@ -269,6 +270,7 @@
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/assets/js/plugins/typehead/bootstrap3-typeahead.min.js")"></script>
     <script src="@Url.Content("~/Scripts/Prototype.Producto.js")"></script>
     <script type="text/javascript">
         $(document).ready(function () {

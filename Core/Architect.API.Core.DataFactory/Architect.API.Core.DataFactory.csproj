@@ -85,6 +85,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleMemberNavigation.cs" />
     <Compile Include="Rules.cs" />
+    <Compile Include="WhiteList.cs" />
     <Compile Include="_Generated\DataSource.cs" />
     <Compile Include="_Generated\Labels.cs" />
     <Compile Include="_Generated\Lookup.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="_Generated\Tasks.cs" />
     <Compile Include="_Generated\Template.cs" />
     <Compile Include="_Generated\Visualizations.cs" />
+    <Compile Include="_Generated\WhiteList.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Kernel\Architect.DataFactory\Architect.DataFactory.csproj">

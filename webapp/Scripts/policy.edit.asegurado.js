@@ -191,6 +191,10 @@ app.asegurado = (function () {
                             });
                         });
 
+                    app.core.Get(app.setting.apipath + 'v1/Insured/' + parseInt(0 + value, 10) + '/Questionary/Covid')
+                        .done(function (data) {
+                            app.cuestionariocovid.ObjectToInput(data);
+                        });
                 }
             }
         });

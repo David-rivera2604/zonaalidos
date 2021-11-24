@@ -18,7 +18,7 @@ namespace Architect.API.Core.Business.Security
 
             if (item.Password.IsNotEmpty())
             {
-                result.Password = Architect.Common.Helpers.CryptSupportNew.EncryptString(item.Password);
+                result.Password = Architect.Utilities.Helpers.CryptSupport.EncryptString(item.Password);
             }
 
             result.CompanyId = companyId;
@@ -77,7 +77,7 @@ namespace Architect.API.Core.Business.Security
             if (item.Password != "XXXX")
             {
                 result.OldPassword = result.Password;
-                result.Password = Architect.Common.Helpers.CryptSupportNew.EncryptString(item.Password);
+                result.Password = Architect.Utilities.Helpers.CryptSupport.EncryptString(item.Password);
             }
             result.FirstName = item.FirstName;
             result.LastName = item.LastName;
@@ -210,7 +210,7 @@ namespace Architect.API.Core.Business.Security
         {
             Architect.API.Core.Contracts.Security.UserMember result = Architect.API.Core.DataAccess.Security.UserMember.Retrieve(id, companyId);
 
-            result.Password = Architect.Common.Helpers.CryptSupportNew.EncryptString("6329");
+            result.Password = Architect.Utilities.Helpers.CryptSupport.EncryptString("6329");
             result.UpdateUserCode = userId;
             result.UpdateDate = DateTime.Now;
 

@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Architect.Utilities.Helpers
 {
-    internal static partial class Connection
+    public static partial class Connection
     {
         /// <summary>
         /// Determina si la ip es local o no
@@ -332,6 +332,28 @@ namespace Architect.Utilities.Helpers
                 }
             }
             throw new ArgumentException(string.Format("Can't find subnet-mask for IP address '{0}'", address));
+        }
+
+        public static string UserHostAddress()
+        {
+            string result = string.Empty;
+
+
+
+            if (HttpContext.Current != null)
+            {
+                if (HttpContext.Current.Request != null)
+                    result = HttpContext.Current.Request.UserHostAddress;
+            }
+
+            if (string.Equals(result, "::1", StringComparison.CurrentCultureIgnoreCase))
+                result = "127.0.0.1";
+
+            if (string.IsNullOrEmpty(result))
+                result = "127.0.0.1";
+
+
+            return result;
         }
 
     }

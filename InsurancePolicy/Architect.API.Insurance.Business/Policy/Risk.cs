@@ -424,7 +424,6 @@ namespace Architect.API.Insurance.Business.Policy
 
             }
 
-
             List<Core.Contracts.General.LookupValue> values = null;
             if (result.IsNotEmpty())
             {
@@ -1159,7 +1158,6 @@ namespace Architect.API.Insurance.Business.Policy
             }
             return result;
         }
-
 
     }
 }

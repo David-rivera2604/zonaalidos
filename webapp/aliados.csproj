@@ -48,6 +48,12 @@
     <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="Architect.Data.Source">
+      <HintPath>..\runtime\Architect.Data.Source.dll</HintPath>
+    </Reference>
+    <Reference Include="Architect.Data.Viewer">
+      <HintPath>..\runtime\Architect.Data.Viewer.dll</HintPath>
+    </Reference>
     <Reference Include="ClosedXML, Version=0.95.4.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
       <HintPath>..\packages\ClosedXML.Signed.0.95.4\lib\net46\ClosedXML.dll</HintPath>
     </Reference>
@@ -76,11 +82,11 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Data.Edm, Version=5.8.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Data.Edm.5.8.4\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+    <Reference Include="Microsoft.Data.Edm, Version=5.8.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.Edm.5.8.5\lib\net40\Microsoft.Data.Edm.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Data.OData, Version=5.8.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Data.OData.5.8.4\lib\net40\Microsoft.Data.OData.dll</HintPath>
+    <Reference Include="Microsoft.Data.OData, Version=5.8.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.OData.5.8.5\lib\net40\Microsoft.Data.OData.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=6.14.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.JsonWebTokens.6.14.1\lib\net472\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
@@ -263,8 +269,8 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Spatial, Version=5.8.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Spatial.5.8.4\lib\net40\System.Spatial.dll</HintPath>
+    <Reference Include="System.Spatial, Version=5.8.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Spatial.5.8.5\lib\net40\System.Spatial.dll</HintPath>
     </Reference>
     <Reference Include="System.Text.Encodings.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Encodings.Web.6.0.0\lib\net461\System.Text.Encodings.Web.dll</HintPath>
@@ -997,6 +1003,7 @@
     <Content Include="assets\js\plugins\pace\pace.min.js" />
     <Content Include="assets\js\plugins\slimscroll\jquery.slimscroll.js" />
     <Content Include="assets\js\plugins\slimscroll\jquery.slimscroll.min.js" />
+    <Content Include="assets\js\plugins\typehead\bootstrap3-typeahead.min.js" />
     <Content Include="assets\js\popper.min.js" />
     <Content Include="assets\popper\esm\popper-utils.js" />
     <Content Include="assets\popper\esm\popper-utils.min.js" />
@@ -1480,10 +1487,13 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <Content Include="products\MapfreMas.json" />
-    <Content Include="products\HogarTotal.json" />
-    <Content Include="products\Viajero.json" />
+    <Content Include="products\MapfreMas.rules.json" />
+    <Content Include="products\HogarTotal.rules.json" />
+    <Content Include="products\Viajero.rules.json" />
     <Content Include="products\policy.rules.json" />
+    <Content Include="products\MapfreMas.vocabulary.json" />
+    <Content Include="products\syntax.settings.json" />
+    <Content Include="products\convention.settings.json" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\Policy\index.cshtml" />
     <Content Include="Views\Policy\Listv3.cshtml" />
@@ -1577,9 +1587,9 @@
     <Content Include="Reports\HogarTotal_ESPH.repx" />
     <Content Include="Reports\Coopesparta_saldo_deudor.repx" />
     <Content Include="Reports\Coopesparta_saldo_deudor_mayor_que_64.repx" />
+    <Content Include="Views\Prototype\Producto.cshtml" />
     <Content Include="Views\Cotizacion\Viajero.cshtml" />
     <Content Include="Views\Emision\Viajero.cshtml" />
-    <Content Include="Views\Prototype\Producto.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

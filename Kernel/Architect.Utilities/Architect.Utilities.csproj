@@ -63,6 +63,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\Assembly.cs" />
     <Compile Include="Helpers\Connection.cs" />
+    <Compile Include="Helpers\CryptSupport.cs" />
     <Compile Include="Helpers\Expando.cs" />
     <Compile Include="Helpers\PropertyBag.cs" />
     <Compile Include="Helpers\Xml.cs" />

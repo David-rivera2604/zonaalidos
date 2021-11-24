@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.IO;
 using System.Net;
 
@@ -12,6 +13,27 @@ namespace Architect.API.Tron.Business.Backoffice
     /// </summary>
     public static class Common
     {
+        public static Architect.API.Tron.Contracts.Presupuesto.DatoFijo InformacionDePresupuesto(string num_poliza)
+        {
+            Architect.API.Tron.Contracts.Presupuesto.DatoFijo data = null;
+            using (IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron"))
+            {
+                data = DataAccess.LeerPresupuesto.Presupuesto(Int32.Parse(ConfigurationManager.AppSettings["Mapfre.Tron.cod_cia"]), num_poliza, 0, 0, 0, currentConnection, true);
+                currentConnection.Close();
+            }
+            return data;
+        }
+
+        public static Architect.API.Tron.Contracts.Poliza.DatoFijo InformacionDePoliza(string num_poliza)
+        {
+            Contracts.Poliza.DatoFijo data = null;
+            using (IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron"))
+            {
+                data = DataAccess.LeerPoliza.Poliza(Int32.Parse(ConfigurationManager.AppSettings["Mapfre.Tron.cod_cia"]), num_poliza, 0, 0, 0, currentConnection, true);
+                currentConnection.Close();
+            }
+            return data;
+        }
 
         public static string EnviarCertificado(string num_poliza, string correoprincipal, string correocopia1, string correocopia2, Core.Contracts.Security.Token tokenInfo)
         {
@@ -104,7 +126,8 @@ namespace Architect.API.Tron.Business.Backoffice
                     procedureName = "em_k_jrp_condiciones_441_mcr.p_lista";
                     break;
             }
-            if (procedureName.IsEmpty()) {
+            if (procedureName.IsEmpty())
+            {
                 throw new Utilities.Exceptions.ApplicationException(string.Format("No se puede imprimir la póliza {0} del ramo {0}", num_poliza, num_poliza.Substring(0, 3)));
             }
             string id = string.Format("{0}/prd/servlet/mapfre.srv.SVJspool?otxtAccion=11&id={1}&format=pdf",

@@ -12,17 +12,17 @@ namespace Architect.API.Core.Business.General
         {
             List<Architect.API.Core.Contracts.General.Tenant> tenants = new List<Contracts.General.Tenant>();
             Architect.API.Core.Contracts.General.Tenant result = new Contracts.General.Tenant() { CompanyId = 0, Name = string.Empty };
-            if (Architect.Common.Helpers.Caching.NotExist("tenants"))
+            if (Architect.Utilities.Cache.NotExist("tenants"))
             {
                 List<Architect.API.Core.Contracts.General.LookupValue> lookupList = Architect.API.Core.DataAccess.General.LookupCustom.RetrieveByLookupMasterKey(4, 1, 0);
                 foreach (Architect.API.Core.Contracts.General.LookupValue item in lookupList)
                 {
                     tenants.Add(new Architect.API.Core.Contracts.General.Tenant() { CompanyId = Convert.ToInt32(item.Code), Name = item.Description });
                 }
-                Architect.Common.Helpers.Caching.SetItem("tenants", tenants);
+                Architect.Utilities.Cache.SetItem("tenants", tenants);
             }
             else
-                tenants = (List<Architect.API.Core.Contracts.General.Tenant>)Architect.Common.Helpers.Caching.GetItem("tenants");
+                tenants = (List<Architect.API.Core.Contracts.General.Tenant>)Architect.Utilities.Cache.GetItem("tenants");
 
             foreach (Architect.API.Core.Contracts.General.Tenant item in tenants)
             {

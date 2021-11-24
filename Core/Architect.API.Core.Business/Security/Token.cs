@@ -119,11 +119,11 @@ namespace Architect.API.Core.Business.Security
                 if (user.IsNotEmpty())
                 {
                     result = User2Token(user);
-                    Architect.Common.Helpers.LogHandler.WarningLog(">", string.Format("AccessKey={0} - Ok - CompanyId={1}, UserId={2}, From={3} ", accessKey, result.CompanyId, result.UserId, Architect.Common.Helpers.Connection.UserHostAddress()), "api");
+                    Architect.Utilities.Log.WarningLog(">", string.Format("AccessKey={0} - Ok - CompanyId={1}, UserId={2}, From={3} ", accessKey, result.CompanyId, result.UserId, Architect.Utilities.Helpers.Connection.UserHostAddress()), "api");
                 }
                 else
                 {
-                    Architect.Common.Helpers.LogHandler.WarningLog(">", string.Format("AccessKey={0} - Fail - From={1}", accessKey, Architect.Common.Helpers.Connection.UserHostAddress()), "api");
+                    Architect.Utilities.Log.WarningLog(">", string.Format("AccessKey={0} - Fail - From={1}", accessKey, Architect.Utilities.Helpers.Connection.UserHostAddress()), "api");
                 }
             }
             return result;
@@ -142,9 +142,9 @@ namespace Architect.API.Core.Business.Security
                 {
                     if (ConfigurationManager.AppSettings["Token.Mode"] != "JWT")
                     {
-                        tokenValue = Architect.Common.Helpers.CryptSupportNew.DecryptString(tokenValue);
+                        tokenValue = Architect.Utilities.Helpers.CryptSupport.DecryptString(tokenValue);
                         tokenValue = tokenValue.DecompressString();
-                        result = Architect.Common.Helpers.Serialize.Deserialize<Contracts.Security.Token>(tokenValue);
+                        result = Architect.Utilities.SerializeHandler<Contracts.Security.Token>.Deserialize(tokenValue);
                     }
                     else
                     {
@@ -164,9 +164,9 @@ namespace Architect.API.Core.Business.Security
                         if (jwtToken.Claims.Count(x => x.Type == "Body") != 0)
                         {
                             var body = jwtToken.Claims.First(x => x.Type == "Body").Value.ToString();
-                            body = Architect.Common.Helpers.CryptSupportNew.DecryptString(body);
+                            body = Architect.Utilities.Helpers.CryptSupport.DecryptString(body);
                             body = body.DecompressString();
-                            result = Architect.Common.Helpers.Serialize.Deserialize<Contracts.Security.Token>(body);
+                            result = Architect.Utilities.SerializeHandler<Contracts.Security.Token>.Deserialize(body);
                         }
                     }
                 }

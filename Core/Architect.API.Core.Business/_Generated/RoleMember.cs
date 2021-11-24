@@ -40,9 +40,9 @@ namespace Architect.API.Core.Business.Security
             return result;
         }
 
-        public static List<Architect.Common.DataType.LookUpValue> LookUp(int companyId, int securityLevel)
+        public static List<Architect.Utilities.Contracts.LookUpValue> LookUp(int companyId, int securityLevel)
         {
-            List<Architect.Common.DataType.LookUpValue> result = Architect.API.Core.DataAccess.Security.RoleMember.LookUp(companyId,  securityLevel);
+            List<Architect.Utilities.Contracts.LookUpValue> result = Architect.API.Core.DataAccess.Security.RoleMember.LookUp(companyId,  securityLevel);
 
             return result;
         }

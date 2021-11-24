@@ -6,6 +6,7 @@
 
 app.EmisionMapfreMas = (function () {
 
+    let fec_vcto_poliza_grupo = null;
     var workMode = '';
     var setupData = null;
     var showCalculate = false;
@@ -204,6 +205,7 @@ app.EmisionMapfreMas = (function () {
 
         app.core.Get(app.setting.apipath + 'v1/Quote/MapfreMasSettings?' + `cod_ramo=${data.cod_ramo}&cod_mon=${data.cod_mon}&edad=${data.edad}&tipo_prod=${data.tipo_prod}&cod_marca=${data.cod_marca}&num_contrato=${data.num_contrato}&num_subcontrato=${data.num_subcontrato}&num_poliza_grupo=${data.num_poliza_grupo}`, null,
             function (settingData) {
+                fec_vcto_poliza_grupo = settingData.fec_vcto_poliza_grupo;
                 if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
                     app.ui.SetDateValue('#fec_vcto_poliza', app.ui.GetDateValue('#fec_efec_poliza'))
                     app.ui.SetDateValue('#fec_vcto_poliza', settingData.fec_vcto_poliza);
@@ -455,10 +457,13 @@ app.EmisionMapfreMas = (function () {
             minDate.setDate(minDate.getDate() + 1);
 
             $('#fec_vcto_poliza_group').data("DateTimePicker").minDate(minDate);
-
-            let fec_vcto = app.ui.GetDateRawValue('#fec_efec_poliza');
-            fec_vcto.setFullYear(fec_vcto.getFullYear() + 1);
-            app.ui.SetDateValue('#fec_vcto_poliza', fec_vcto);
+            if (fec_vcto_poliza_grupo != null) {
+                app.ui.SetDateValue('#fec_vcto_poliza', fec_vcto_poliza);
+            } else {
+                let fec_vcto = app.ui.GetDateRawValue('#fec_efec_poliza');
+                fec_vcto.setFullYear(fec_vcto.getFullYear() + 1);
+                app.ui.SetDateValue('#fec_vcto_poliza', fec_vcto);
+            }
         });
 
         $('#Fuente_Tomador').change(function () {

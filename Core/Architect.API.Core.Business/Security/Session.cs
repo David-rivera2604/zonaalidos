@@ -10,19 +10,19 @@ namespace Architect.API.Core.Business.Security
     {
         public static void Create(Contracts.Security.Activity activity)
         {
-            List<Contracts.Security.Activity> sessions = (List<Contracts.Security.Activity>)Architect.Common.Helpers.Caching.GetItem("SessionActivity");
+            List<Contracts.Security.Activity> sessions = (List<Contracts.Security.Activity>)Architect.Utilities.Cache.GetItem("SessionActivity");
             if (sessions.IsEmpty())
                 sessions = new List<Contracts.Security.Activity>();
             activity.InitDateTime = DateTime.Now;
             activity.LastDateTime = DateTime.Now;
             activity.Id = sessions.Count + 1;
             sessions.Add(activity);
-            Architect.Common.Helpers.Caching.SetItem("SessionActivity", sessions, -1);
+            Architect.Utilities.Cache.SetItem("SessionActivity", sessions, -1);
         }
 
         public static Contracts.Security.Activity Get(string token)
         {
-            List<Contracts.Security.Activity> sessions = (List<Contracts.Security.Activity>)Architect.Common.Helpers.Caching.GetItem("SessionActivity");
+            List<Contracts.Security.Activity> sessions = (List<Contracts.Security.Activity>)Architect.Utilities.Cache.GetItem("SessionActivity");
             if (sessions.IsEmpty())
                 sessions = new List<Contracts.Security.Activity>();
             double timeout = Convert.ToDouble(ConfigurationManager.AppSettings["Session.Timeout"]);
@@ -69,7 +69,7 @@ namespace Architect.API.Core.Business.Security
 
         public static List<Contracts.Security.Activity> Sessions(string filter)
         {
-            List<Contracts.Security.Activity> sessions = (List<Contracts.Security.Activity>)Architect.Common.Helpers.Caching.GetItem("SessionActivity");
+            List<Contracts.Security.Activity> sessions = (List<Contracts.Security.Activity>)Architect.Utilities.Cache.GetItem("SessionActivity");
             if (sessions.IsEmpty())
                 sessions = new List<Contracts.Security.Activity>();
 

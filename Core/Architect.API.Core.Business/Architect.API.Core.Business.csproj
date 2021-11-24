@@ -137,6 +137,7 @@
     <Compile Include="General\ProcessSpecStep.cs" />
     <Compile Include="General\ProcessSpecTask.cs" />
     <Compile Include="General\Report.cs" />
+    <Compile Include="General\WhiteList.cs" />
     <Compile Include="_Generated\Lookup.cs" />
     <Compile Include="_Generated\Notes.cs" />
     <Compile Include="_Generated\ProcessCase.cs" />
@@ -168,10 +169,6 @@
     <Compile Include="_Generated\Visualizations.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Architect.Common\Architect.Common.vbproj">
-      <Project>{7e7360b0-ea6a-4b93-852e-6f0ec759c02b}</Project>
-      <Name>Architect.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Kernel\Architect.DataFactory\Architect.DataFactory.csproj">
       <Project>{011157f4-8e96-46fe-8ff6-2b36ae9f20c9}</Project>
       <Name>Architect.DataFactory</Name>

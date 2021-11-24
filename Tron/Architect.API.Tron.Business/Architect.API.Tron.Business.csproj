@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Architect.Decision">
+      <HintPath>..\..\runtime\Architect.Decision.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -67,12 +70,12 @@
     <Compile Include="Cotizacion\Viajero.cs" />
     <Compile Include="Cotizacion\ViajeroConvertFrom.cs" />
     <Compile Include="Cotizacion\ViajeroConvertTo .cs" />
-    <Compile Include="Emision\ViajeroConvertFrom.cs" />
-    <Compile Include="Emision\ViajeroConvertTo.cs" />
-    <Compile Include="Emision\Viajero.cs" />
     <Compile Include="Emision\MultirriesgoConvertFrom.cs" />
     <Compile Include="Emision\MapfreMasConvertFrom.cs" />
     <Compile Include="Emision\MultirriesgoConvertTo.cs" />
+    <Compile Include="Emision\Viajero.cs" />
+    <Compile Include="Emision\ViajeroConvertFrom.cs" />
+    <Compile Include="Emision\ViajeroConvertTo.cs" />
     <Compile Include="Reglas\research.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Emision\HogarTotal.cs" />
@@ -117,6 +120,8 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
