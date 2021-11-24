@@ -237,3 +237,6 @@
                   Alidos. API. Se agregar consultas de presupuesto y pólizas emitidas.
                   MapfreMas. Se ajusta la lista de tipos de vehículos para que se recargue de forma dinámica.
                   MapfreMas. Se ajusta la definición de la lista MM_ClaseVehiculos para incluir Motocicletas.
+1.5.72 24/11/2021 Viajero.  Manejo de mas de un Riesgo en la cotizacion.
+                  Viajero.  Manejo de Terceros por Riesgo en la emision.
+                  Viajero.  Integracion con WS Warranty de Panama Asistencia para el envio de polizas

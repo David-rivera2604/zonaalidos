@@ -351,6 +351,10 @@
     {
       "Condicion": "{El Plan} sea igual a {Plan trébol RC}",
       "Exclusion": "3002,3003,3004,3005,3006,3007,3008,3009,3014,3015,3016,3017,3018,3094,1060,1061,1063"
+    },
+    {
+      "Condicion": "{El Plan} sea igual a {Plan plata} y {La clase del vehículo} sea igual a 5",
+      "Exclusion": "3002,3003,3007,3014,3015,3008,3009,1060,1063,3016,3017,3018,3017,3094,1061"
     }
   ],
   "Listas": [
@@ -373,6 +377,11 @@
       "Nombre": "cod_fracc_pago",
       "Condicion": "({El Tipo de producto} sea igual a {Básico}) o ({El Tipo de producto} sea igual a {Amplio}) o ({El Tipo de producto} sea igual a {Plus}) o ({El Tipo de producto} sea igual a {Oro}) o ({El Tipo de producto} sea igual a {Plata}) o ({El Tipo de producto} sea igual a {Trébol}) o ({El Tipo de producto} sea igual a {Trébol RC})",
       "Exclusion": "26"
+    },
+    {
+      "Nombre": "MM_ClaseVehiculos",
+      "Condicion": "({El Tipo de producto} sea igual a {Básico}) o ({El Tipo de producto} sea igual a {Amplio}) o ({El Tipo de producto} sea igual a {Plus}) o ({El Tipo de producto} sea igual a {Oro}) o ({El Tipo de producto} sea igual a {Trébol}) o ({El Tipo de producto} sea igual a {Trébol RC}) ",
+      "Exclusion": "5"
     }
   ],
   "Reglas": [
