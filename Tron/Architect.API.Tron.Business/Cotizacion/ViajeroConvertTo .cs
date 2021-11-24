@@ -14,7 +14,7 @@ namespace Architect.API.Tron.Business.Cotizacion
 
             Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos = DatosFijos(quoteInfo, branch, agentCode, userName);
 
-            datosFijos.Riesgos = Util.DatosDelRiesgo(datosFijos, "Cotizador Seguro de Viaje");
+            datosFijos.Riesgos = Util.DatosDelRiesgo(datosFijos, "Cotizador Seguro de Viaje", quoteInfo.cantidad_riesgos);
             datosFijos.Terceros = Util.Terceros(datosFijos);
             datosFijos.Coberturas = Coberturas(quoteInfo, datosFijos);
             datosFijos.DatosVariables = DatosVariable(quoteInfo, datosFijos);
@@ -106,8 +106,11 @@ namespace Architect.API.Tron.Business.Cotizacion
             foreach (Architect.API.Tron.Contracts.Comun.Cobertura item in from c in quoteInfo.coberturas where c.seleccionado select c)
             {
 
-                coberturas.Add(Util.Cobertura(datosFijos, item.codigo));
-                    
+                for (int i = 1; i <= quoteInfo.cantidad_riesgos; i++)
+                {
+                    coberturas.Add(Util.Cobertura(datosFijos, item.codigo, i));
+                }
+  
             }
 
             return coberturas;
@@ -128,16 +131,21 @@ namespace Architect.API.Tron.Business.Cotizacion
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "TIP_PLAN", quoteInfo.TIP_PLAN,1,1));
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "FEC_VIAJE", quoteInfo.FEC_VIAJE.ToString("ddMMyyyy"), 1, 2));
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "NUM_DIA", Convert.ToString(dias), 1, 3));
-            datosVariables.Add(Util.DatoVariable(datosFijos, 0, "DES_DESTINO", quoteInfo.DES_DESTINO, 1, 4));
+            datosVariables.Add(Util.DatoVariable(datosFijos, 0, "DES_DESTINO", quoteInfo.DES_DESTINO_DESC, 1, 4));
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "CANAL_VENTA", "TWB", 1, 5));
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "TIP_VIAJE", quoteInfo.TIP_VIAJE, 1, 6));
-            datosVariables.Add(Util.DatoVariable(datosFijos, 1, "FEC_NACIMIENTO", quoteInfo.FEC_NACIMIENTO.ToString("ddMMyyyy"), 2, 2));
-            datosVariables.Add(Util.DatoVariable(datosFijos, 1, "VAL_EDAD", Convert.ToString(edad), 2, 3));
-            datosVariables.Add(Util.DatoVariable(datosFijos, 1, "COD_MODALIDAD",Convert.ToString(quoteInfo.COD_MODALIDAD), 2, 99));
+            
+            for (int i = 1; i <= quoteInfo.cantidad_riesgos; i++)
+            {
+                datosVariables.Add(Util.DatoVariable(datosFijos, i, "FEC_NACIMIENTO", quoteInfo.FEC_NACIMIENTO.ToString("ddMMyyyy"), 2, 2));
+                datosVariables.Add(Util.DatoVariable(datosFijos, i, "VAL_EDAD", Convert.ToString(edad), 2, 3));
+                datosVariables.Add(Util.DatoVariable(datosFijos, i, "COD_MODALIDAD", Convert.ToString(quoteInfo.COD_MODALIDAD), 2, 99));
+            }
 
-      
-            return datosVariables;
+                return datosVariables;
         }
+
+        
 
     }
 }

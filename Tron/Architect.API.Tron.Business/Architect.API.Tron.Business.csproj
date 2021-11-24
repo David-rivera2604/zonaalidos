@@ -108,6 +108,10 @@
       <Project>{4902e3e0-a90e-4769-807f-1b565ef66549}</Project>
       <Name>Architect.API.Tron.DataAccess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Architect.WS.Integrations\Architect.WS.Integrations.csproj">
+      <Project>{df22b5f7-3f15-408d-8fec-d38a1f10db32}</Project>
+      <Name>Architect.WS.Integrations</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

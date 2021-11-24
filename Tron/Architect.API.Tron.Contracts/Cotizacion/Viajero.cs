@@ -43,6 +43,7 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// Lugar de destino.
         /// </summary>
         [DataMember(), JsonProperty()] public string DES_DESTINO { get; set; }
+        [DataMember(), JsonProperty()] public string DES_DESTINO_DESC { get; set; }
         /// <summary>
         /// Fecha de nacimiento.
         /// </summary>
@@ -52,6 +53,10 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// </summary>
         [DataMember(), JsonProperty()] public int COD_MODALIDAD { get; set; }
         [DataMember(), JsonProperty()] public string COD_MODALIDAD_DES { get; set; }
+        /// <summary>
+        /// Cantidad Riesgos.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int cantidad_riesgos { get; set; }
         /// <summary>
         /// Coberturas
         /// </summary>

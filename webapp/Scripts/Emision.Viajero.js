@@ -80,6 +80,7 @@ app.EmisionViajero = (function () {
         $('#TIP_VIAJE').replaceWith('<div>' + $('#TIP_VIAJE option:selected').text() + '</div>');
         $('#FEC_VIAJE_group').replaceWith('<div>' + $('#FEC_VIAJE').val() + '</div>');
         $('#DES_DESTINO').replaceWith('<div>' + $('#DES_DESTINO').val() + '</div>');
+        $('#cantidad_riesgos').replaceWith('<div>' + $('#cantidad_riesgos').val() + '</div>');
         $('#FEC_NACIMIENTO_group').replaceWith('<div>' + $('#FEC_NACIMIENTO').val() + '</div>');
         $('#COD_MODALIDAD').replaceWith('<div>' + $('#COD_MODALIDAD option:selected').text() + '</div>');
 
@@ -130,7 +131,8 @@ app.EmisionViajero = (function () {
         $('#TIP_VIAJE').val(data.TIP_VIAJE);
         app.ui.SetDropDownNumericValue('#TIP_VIAJE', data.TIP_VIAJE, true, 'NA');
         app.ui.SetDateValue('#FEC_VIAJE', data.FEC_VIAJE);
-        $('#DES_DESTINO').val(data.DES_DESTINO);
+        $('#DES_DESTINO').val(data.DES_DESTINO_DESC);
+        $('#cantidad_riesgos').val(data.cantidad_riesgos);
         app.ui.SetDateValue('#FEC_NACIMIENTO', data.FEC_NACIMIENTO);
         $('#COD_MODALIDAD').val(data.COD_MODALIDAD);
         app.ui.SetDropDownNumericValue('#COD_MODALIDAD', data.COD_MODALIDAD, true);
@@ -516,6 +518,14 @@ COD_MODALIDAD: { required: 'Debe indicar el Modalidad' },
                     align: 'left',
                     formatter: 'app.ui.StringFormatter'
                 }, {
+                    field: 'numeroderiesgo',
+                    title: 'Riesgo',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter'
+                },{
                     field: 'DocumentNumber',
                     title: 'Identificación',
                     titleTooltip: '',
@@ -764,6 +774,7 @@ COD_MODALIDAD: { required: 'Debe indicar el Modalidad' },
             return {
                 tercerosId: null,
                 tipodetercero: $('#tipodetercero').val(),
+                numeroderiesgo: '1',
                 DocumentNumberType: null,
                 DocumentNumber: null,
                 nombre: null,
@@ -795,6 +806,7 @@ COD_MODALIDAD: { required: 'Debe indicar el Modalidad' },
                 tercerosId: $('#tercerosModal').data('id'),
                 tipodetercero: app.ui.GetDropDownNumericValue('#tipodetercero'),
                 tipodeterceroDesc: $('#tipodetercero option:selected').text(),
+                numeroderiesgo: $('#numeroderiesgo').val(),
                 DocumentNumberType: $("#DocumentNumberType").data("value"),
                 DocumentNumber: $('#DocumentNumber').val(),
                 nombre: $('#nombre').val(),
@@ -823,7 +835,7 @@ COD_MODALIDAD: { required: 'Debe indicar el Modalidad' },
                 porcentajeacredor: app.ui.GetNumericValue('#porcentajeacredor'),
                 parentesco: $('#parentesco').val(),
                 parentescoDesc: $('#parentesco option:selected').text(),
-               // porcentaje: app.ui.GetNumericValue('#porcentaje'),
+                porcentaje: app.ui.GetNumericValue('#porcentaje'),
                 NoEditable: false
             };
         }
@@ -839,6 +851,7 @@ COD_MODALIDAD: { required: 'Debe indicar el Modalidad' },
 
         $('#tipodetercero').val(row.tipodetercero);
         app.ui.SetDocumentTypeValue('#DocumentNumberType', row.DocumentNumberType);
+        $('#numeroderiesgo').val(row.numeroderiesgo);
         $('#DocumentNumber').val(row.DocumentNumber);
         $('#nombre').val(row.nombre);
         $('#apellido1').val(row.apellido1);
@@ -858,6 +871,7 @@ COD_MODALIDAD: { required: 'Debe indicar el Modalidad' },
         app.ui.SetNumericValue('#importedecesion', row.importedecesion);
         app.ui.SetDateValue('#vencimientodecesion', row.vencimientodecesion);
         app.ui.SetNumericValue('#porcentajeacredor', row.porcentajeacredor);
+        app.ui.SetNumericValue('#porcentaje', row.porcentaje);
 
 
         md.modal('show');
@@ -873,6 +887,7 @@ COD_MODALIDAD: { required: 'Debe indicar el Modalidad' },
             errorPlacement: app.ui.ErrorPlacement,
             rules: {
                 tipodetercero: { required: true },
+                numeroderiesgo: { required: true },
                 DocumentNumber: { required: true },
                 nombre: { required: true },
                 apellido1: { required: true },
@@ -893,6 +908,7 @@ COD_MODALIDAD: { required: 'Debe indicar el Modalidad' },
             },
             messages: {
                 tipodetercero: { required: 'Debe indicar el Tipo de tercero' },
+                numeroderiesgo: { required: 'Debe indicar el Número de Riesgo' },
                 DocumentNumber: { required: 'Debe indicar el Identificación' },
                 nombre: { required: 'Debe indicar el Nombre' },
                 apellido1: { required: 'Debe indicar el Apellido 1' },
@@ -948,6 +964,24 @@ COD_MODALIDAD: { required: 'Debe indicar el Modalidad' },
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
             maximumValue: '999',
+            minimumValue: '0',
+            decimalPlaces: '0',
+            emptyInputBehavior: 'null'
+        });
+        new AutoNumeric('#porcentaje', {
+            decimalCharacter: ',',
+            decimalCharacterAlternative: '.',
+            digitGroupSeparator: '.',
+            maximumValue: '999',
+            minimumValue: '0',
+            decimalPlaces: '0',
+            emptyInputBehavior: 'null'
+        });
+        new AutoNumeric('#numeroderiesgo', {
+            decimalCharacter: ',',
+            decimalCharacterAlternative: '.',
+            digitGroupSeparator: '.',
+            maximumValue: '99',
             minimumValue: '0',
             decimalPlaces: '0',
             emptyInputBehavior: 'null'

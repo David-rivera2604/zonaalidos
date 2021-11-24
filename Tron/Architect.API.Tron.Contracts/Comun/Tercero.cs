@@ -121,6 +121,8 @@ namespace Architect.API.Tron.Contracts.Comun
         [DataMember(), JsonProperty()] public int porcentaje { get; set; }
         [DataMember(), JsonProperty()] public bool NoEditable { get; set; }
 
+        //Numero de Riesgo
+        [DataMember(), JsonProperty()] public int numeroderiesgo { get; set; } = 1;
     }
 
 }

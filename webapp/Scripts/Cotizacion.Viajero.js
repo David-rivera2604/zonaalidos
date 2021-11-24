@@ -86,8 +86,10 @@ app.core.Get(app.setting.apipath + 'v1/Quote/ViajeroSetup', null,
             //TIP_VIAJE_DESC = $("#TIP_VIAJE option:selected").text(),
             FEC_VIAJE: app.ui.GetDateValue('#FEC_VIAJE'),
             DES_DESTINO: $('#DES_DESTINO').val(),
+            DES_DESTINO_DESC: $("#DES_DESTINO option:selected").text(),
             FEC_NACIMIENTO: app.ui.GetDateValue('#FEC_NACIMIENTO'),
             COD_MODALIDAD: app.ui.GetDropDownNumericValue('#COD_MODALIDAD'),
+            cantidad_riesgos: app.ui.GetNumericValue('#cantidad_riesgos'),
             //COD_MODALIDAD_DESC = $("#COD_MODALIDAD option:selected").text(),
             coberturas: $('#coberturasTbl').bootstrapTable('getData'),
             plandepago: $('#plandepagoTbl').bootstrapTable('getData'),
@@ -123,30 +125,48 @@ app.core.Get(app.setting.apipath + 'v1/Quote/ViajeroSetup', null,
         else
             $('#plandepagoTbl').bootstrapTable('load', {});
 
+        //$('#TIP_PLAN').on('change', function () {
+
+        //    if () {
+
+        //    }
+
+        //});
+
     };
     
     function Controls_setup() {
-$('#fec_efec_poliza_group').datetimepicker({
-            format: 'DD/MM/YYYY',
-            locale: 'es',
-            defaultDate: new Date()
+        $('#fec_efec_poliza_group').datetimepicker({
+                    format: 'DD/MM/YYYY',
+                    locale: 'es',
+                    defaultDate: new Date()
+
+                });
+        $('#fec_vcto_poliza_group').datetimepicker({
+                    format: 'DD/MM/YYYY',
+                    locale: 'es'
+                });
+        $('#FEC_VIAJE_group').datetimepicker({
+                    format: 'DD/MM/YYYY',
+                    locale: 'es'
+                });
+        $('#FEC_NACIMIENTO_group').datetimepicker({
+                    format: 'DD/MM/YYYY',
+                    locale: 'es',
+                    maxDate: app.ui.Yesterday(),
+                    date: null
 
         });
-$('#fec_vcto_poliza_group').datetimepicker({
-            format: 'DD/MM/YYYY',
-            locale: 'es'
+        new AutoNumeric('#cantidad_riesgos', {
+            decimalCharacter: ',',
+            decimalCharacterAlternative: '.',
+            digitGroupSeparator: '.',
+            maximumValue: '99',
+            minimumValue: '0',
+            decimalPlaces: '0',
+            emptyInputBehavior: 'null'
         });
-$('#FEC_VIAJE_group').datetimepicker({
-            format: 'DD/MM/YYYY',
-            locale: 'es'
-        });
-$('#FEC_NACIMIENTO_group').datetimepicker({
-            format: 'DD/MM/YYYY',
-            locale: 'es',
-            maxDate: app.ui.Yesterday(),
-            date: null
 
-        });
 
         $("#cotizar").appendTo("#GenericToolBar");
         $("#limpiar").appendTo("#GenericToolBar");

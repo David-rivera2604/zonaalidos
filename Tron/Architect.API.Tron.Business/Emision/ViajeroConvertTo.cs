@@ -105,6 +105,7 @@ namespace Architect.API.Tron.Business.Emision
             {
                 if (item.tipodetercero != 0)
                 {
+                
                     datosFijos.Terceros.Add(TerceroPresupuesto(datosFijos, item, item.tipodetercero));
                 }
                 else
@@ -114,6 +115,7 @@ namespace Architect.API.Tron.Business.Emision
                         datosFijos.Terceros.Add(TerceroPresupuesto(datosFijos, item, 2));
                     }
                 }
+
                 datosFijos.DetalleDeTerceros.Add(CambioTerceroPresupuesto(datosFijos, item));
             }
             return datosFijos.Terceros;
@@ -127,8 +129,8 @@ namespace Architect.API.Tron.Business.Emision
                 num_spto = datosFijos.num_spto,
                 num_apli = datosFijos.num_apli,
                 num_spto_apli = datosFijos.num_spto_apli,
-                num_riesgo = 1,
-                tip_benef = tipodetercero.ToString(),
+                num_riesgo = item.numeroderiesgo,
+                tip_benef = Convert.ToString(item.tipodetercero),
                 num_secu = 1,
                 tip_docum = Util.IdentificationTypeConvert(item.DocumentNumberType),
                 cod_docum = Util.IdentificationFormat(item.DocumentNumberType, item.DocumentNumber),
@@ -137,7 +139,8 @@ namespace Architect.API.Tron.Business.Emision
                 mca_baja = "N",
                 mca_vigente = "S",
                 pct_participacion = 0,
-                imp_cesion = 0
+                imp_cesion = 0,
+                tip_relac = Convert.ToString(item.parentesco),
             };
 
             switch (tipodetercero)
@@ -147,8 +150,9 @@ namespace Architect.API.Tron.Business.Emision
                     result.tip_benef = "2"; //Asegurado
                     break;
                 case 6: //Beneficiario pero esta opcion no esta disponible al dia de hoy.
-                    result.tip_benef = "";
-                    result.pct_participacion = item.porcentajeacredor;
+                    result.tip_benef = "6";
+                    result.tip_relac = Convert.ToString(item.parentesco);
+                    result.pct_participacion = item.porcentaje;
                     break;
                 case 8: //Acredor.
                     result.fec_vcto_cesion = item.vencimientodecesion;

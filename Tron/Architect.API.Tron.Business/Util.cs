@@ -107,7 +107,7 @@ namespace Architect.API.Tron.Business
             return result;
         }
 
-        internal static Architect.API.Tron.Contracts.Presupuesto.Cobertura Cobertura(Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos, int cod_cob)
+        internal static Architect.API.Tron.Contracts.Presupuesto.Cobertura Cobertura(Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos, int cod_cob, int num_riesgo = 1)
         {
             return new Architect.API.Tron.Contracts.Presupuesto.Cobertura()
             {
@@ -116,7 +116,7 @@ namespace Architect.API.Tron.Business
                 num_spto = datosFijos.num_spto,
                 num_apli = datosFijos.num_apli,
                 num_spto_apli = datosFijos.num_spto_apli,
-                num_riesgo = 1,
+                num_riesgo = num_riesgo,
                 num_periodo = 1,
                 cod_cob = cod_cob,
                 cod_ramo = datosFijos.cod_ramo,
@@ -153,27 +153,34 @@ namespace Architect.API.Tron.Business
             };
         }
 
-        internal static List<Architect.API.Tron.Contracts.Presupuesto.Riesgo> DatosDelRiesgo(Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos, string nom_riesgo)
+
+
+        internal static List<Architect.API.Tron.Contracts.Presupuesto.Riesgo> DatosDelRiesgo(Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos, string nom_riesgo, int num_riesgo = 1)
         {
             List<Architect.API.Tron.Contracts.Presupuesto.Riesgo> riesgos = new List<Architect.API.Tron.Contracts.Presupuesto.Riesgo>();
-            riesgos.Add(new Architect.API.Tron.Contracts.Presupuesto.Riesgo()
-            {
-                cod_cia = datosFijos.cod_cia,
-                num_poliza = datosFijos.num_poliza,
-                num_spto = datosFijos.num_spto,
-                num_apli = datosFijos.num_apli,
-                num_spto_apli = datosFijos.num_spto_apli,
-                fec_efec_riesgo = datosFijos.fec_efec_poliza,
-                fec_vcto_riesgo = datosFijos.fec_vcto_poliza,
-                mca_baja_riesgo = "N",
-                mca_vigente = "S",
-                mca_exclusivo = "N",
-                num_riesgo = 1,
-                nom_riesgo = nom_riesgo,
-                tip_spto = "XX",
-                cod_modalidad = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_modalidad"])
-            });
 
+            for (int i = 1; i <= num_riesgo; i++)
+            {
+                riesgos.Add(new Architect.API.Tron.Contracts.Presupuesto.Riesgo()
+                {
+                    cod_cia = datosFijos.cod_cia,
+                    num_poliza = datosFijos.num_poliza,
+                    num_spto = datosFijos.num_spto,
+                    num_apli = datosFijos.num_apli,
+                    num_spto_apli = datosFijos.num_spto_apli,
+                    fec_efec_riesgo = datosFijos.fec_efec_poliza,
+                    fec_vcto_riesgo = datosFijos.fec_vcto_poliza,
+                    mca_baja_riesgo = "N",
+                    mca_vigente = "S",
+                    mca_exclusivo = "N",
+                    num_riesgo = i,
+                    nom_riesgo = nom_riesgo,
+                    tip_spto = "XX",
+                    cod_modalidad = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_modalidad"])
+                });
+            }
+
+  
             return riesgos;
         }
 

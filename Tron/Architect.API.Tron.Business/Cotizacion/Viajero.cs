@@ -103,6 +103,9 @@ namespace Architect.API.Tron.Business.Cotizacion
                 if (resultInfo.presupuesto.IsNotEmpty())
                 {
                     Core.Business.General.ChangeSet.Create(3000, Convert.ToInt32(resultInfo.presupuesto.Substring(4)), tokenInfo.CompanyId, "Cotización Seguro de Viaje", "Presupuesto #" + resultInfo.presupuesto, tokenInfo.UserId, resultInfo);
+
+                    
+
                 }
 
             }

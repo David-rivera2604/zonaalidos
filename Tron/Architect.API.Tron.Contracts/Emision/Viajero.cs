@@ -13,6 +13,9 @@ namespace Architect.API.Tron.Contracts.Emision
         [DataMember(), JsonProperty()] public string num_poliza { get; set; }
         /// <summary>
         /// <summary>
+        /// Numero de Riesgo.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int num_riesgo { get; set; }
         /// Terceros
         /// </summary>
         [DataMember(), JsonProperty()] public List<Comun.tercero> terceros { get; set; }

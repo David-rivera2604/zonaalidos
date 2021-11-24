@@ -1,6 +1,10 @@
 ﻿using Architect.Utilities.Extensions;
 using System;
 using System.Configuration;
+using System.Data;
+using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace Architect.API.Tron.Business.Emision
 {
@@ -49,14 +53,21 @@ namespace Architect.API.Tron.Business.Emision
 
             if (resultQuoteInfo.num_poliza.IsNotEmpty())
             {
-                Core.Business.General.ChangeSet.Create(3000, Convert.ToInt32(resultQuoteInfo.num_poliza.Substring(4)), tokenInfo.CompanyId, "Emisión Hogar Total", "Póliza #" + resultQuoteInfo.num_poliza, tokenInfo.UserId, resultQuoteInfo);
+                Core.Business.General.ChangeSet.Create(3000, Convert.ToInt32(resultQuoteInfo.num_poliza.Substring(4)), tokenInfo.CompanyId, "Emisión Seguro de Viaje", "Póliza #" + resultQuoteInfo.num_poliza, tokenInfo.UserId, resultQuoteInfo);
 
                 //Se cambian los adjuntos creados al número de presupuesto al número de póliza generado
                 Core.Business.General.Attachment.ChangeEntityId(tokenInfo.CompanyId, 3000, Convert.ToInt64(resultQuoteInfo.presupuesto), 3000, Convert.ToInt64(resultQuoteInfo.num_poliza), tokenInfo.UserId);
-            }
 
+                //Llamado a Servicio de  Asistencia Panama (Ojo) Credenciales de Monge TEST
+                //var token_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.login("GMGTEST2", "gmgtest2021");
+                //var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo);
+                //resultQuoteInfo.num_poliza += " " + envio_poliza_panama;
+
+            }
             return resultQuoteInfo;
         }
+
+        
 
     }
 }
