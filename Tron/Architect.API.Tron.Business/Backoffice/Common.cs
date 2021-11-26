@@ -83,12 +83,12 @@ namespace Architect.API.Tron.Business.Backoffice
         /// </summary>
         /// <param name="quoteInfo"></param>
         /// <returns></returns>
-        public static string ImprimirPoliza_PDF(string num_poliza)
+        public static string ImprimirPoliza_PDF(string num_poliza, int num_riesgo = 1)
         {
             string fileName = "Mapfre_Certificado_" + num_poliza.ToString() + ".pdf";
 
             string result = ConfigurationManager.AppSettings["Attachments.Path"] + fileName;
-            byte[] bytes = ImprimirPoliza(num_poliza);
+            byte[] bytes = ImprimirPoliza(num_poliza, num_riesgo);
             using (var stream = new FileStream(result, FileMode.Create))
             {
                 stream.Write(bytes, 0, bytes.Length);
@@ -103,7 +103,7 @@ namespace Architect.API.Tron.Business.Backoffice
         /// </summary>
         /// <param name="quoteInfo"></param>
         /// <returns></returns>
-        public static byte[] ImprimirPoliza(string num_poliza)
+        public static byte[] ImprimirPoliza(string num_poliza, int num_riesgo = 1)
         {
             string procedureName = "";
             byte[] result = null;
@@ -132,7 +132,7 @@ namespace Architect.API.Tron.Business.Backoffice
             }
             string id = string.Format("{0}/prd/servlet/mapfre.srv.SVJspool?otxtAccion=11&id={1}&format=pdf",
                                         ConfigurationManager.AppSettings["Mapfre.Tron.RutaImpresion"],
-                                        Architect.API.Tron.DataAccess.Impresion.Poliza(1, num_poliza, procedureName));
+                                        Architect.API.Tron.DataAccess.Impresion.Poliza(1, num_poliza, procedureName, num_riesgo));
             using (WebClient client = new WebClient())
             {
                 result = client.DownloadData(id);

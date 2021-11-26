@@ -90,7 +90,7 @@ app.CotizacionViajero = (function () {
             DES_DESTINO_DESC: $("#DES_DESTINO option:selected").text(),
             FEC_NACIMIENTO: app.ui.GetDateValue('#FEC_NACIMIENTO'),
             COD_MODALIDAD: app.ui.GetDropDownNumericValue('#COD_MODALIDAD'),
-            COD_MODALIDAD_DESC: $("#COD_MODALIDAD option:selected").text(),
+            COD_MODALIDAD_DES: $("#COD_MODALIDAD option:selected").text(),
             cantidad_riesgos: app.ui.GetNumericValue('#cantidad_riesgos'),
             coberturas: $('#coberturasTbl').bootstrapTable('getData'),
             plandepago: $('#plandepagoTbl').bootstrapTable('getData')

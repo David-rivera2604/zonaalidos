@@ -242,3 +242,6 @@
                   Viajero. Royner. Integración con WS Warranty de Panamá Asistencia para el envío de pólizas.
 1.5.73 25/11/2021 Viajero. Reporte de cotización.
                   Viajero. Ajustes en la cotización para poder descargar el PDF de la misma.
+1.5.74 26/11/2021 Viajero. Royner. Impresion de Certificado por Numero de Riesgo  
+                  Viajero. Royner. Ajuste en el login de integracion con WS Warranty de Panamá Asistencia, se coloca como un setting en el config las credenciales y se condiciona
+				                   por rol el uso de ellas.

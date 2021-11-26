@@ -6,13 +6,13 @@ namespace Architect.API.Tron.DataAccess
 {
     public static class Impresion
     {
-        public static string Poliza(int cod_cia, string num_poliza, string procedureName)
+        public static string Poliza(int cod_cia, string num_poliza, string procedureName, int num_riesgo = 1)
         {
             IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron");
             Database.Procedure(procedureName)
                     .AddParameter("JBCOD_CIA", Architect.DataFactory.Enumerations.DbType.Int32, 22, cod_cia)
                     .AddParameter("JBNUM_POLIZA", Architect.DataFactory.Enumerations.DbType.String, 15, num_poliza)
-                    .AddParameter("JBNUM_RIESGO", Architect.DataFactory.Enumerations.DbType.Int32, 22, 1)
+                    .AddParameter("JBNUM_RIESGO", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_riesgo)
                     .Execute(currentConnection);
 
             string reportId = ReportIdentify(currentConnection);

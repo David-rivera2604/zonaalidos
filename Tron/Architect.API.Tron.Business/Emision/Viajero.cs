@@ -36,18 +36,9 @@ namespace Architect.API.Tron.Business.Emision
         public static Contracts.Emision.Viajero Issue(Contracts.Emision.Viajero quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
 
-            //Architect.Common.Helpers.Serialize.SerializeToFile<Contracts.Cotizacion.HogarTotal>(quoteInfo,
-            //    ConfigurationManager.AppSettings["Path.Logs"] + @"\hogartotal.emision.in.xml", true);
-
             Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = ViajeroConvertTo.Tron(quoteInfo);
 
-            //Architect.Common.Helpers.Serialize.SerializeToFile<Architect.API.Tron.Contracts.Batch.p2000030>(result,
-            //    ConfigurationManager.AppSettings["Path.Logs"] + @"\hogartotal.emision.in.raw.xml", true);
-
             Architect.API.Tron.Contracts.Poliza.DatoFijo result2 = Backoffice.Emision.Generico.Emitir(result, tokenInfo);
-
-            //Architect.Common.Helpers.Serialize.SerializeToFile<Architect.API.Tron.Contracts.Batch.a2000030>(result2,
-            //    ConfigurationManager.AppSettings["Path.Logs"] + @"\hogartotal.out.raw.xml", true);
 
             Contracts.Emision.Viajero resultQuoteInfo = ViajeroConvertFrom.Quote(quoteInfo, result2);
 
@@ -59,11 +50,13 @@ namespace Architect.API.Tron.Business.Emision
                 Core.Business.General.Attachment.ChangeEntityId(tokenInfo.CompanyId, 3000, Convert.ToInt64(resultQuoteInfo.presupuesto), 3000, Convert.ToInt64(resultQuoteInfo.num_poliza), tokenInfo.UserId);
 
                 //Llamado a Servicio de  Asistencia Panama (Ojo) Credenciales de Monge TEST
-                //var token_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.login("GMGTEST2", "gmgtest2021");
-                //var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo);
-                //resultQuoteInfo.num_poliza += " " + envio_poliza_panama;
-
-            }
+                if (tokenInfo.Roles.Contains("Grupo_Monge"))
+                { 
+                var token_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.login(ConfigurationManager.AppSettings["Warranty.User.Monge"], ConfigurationManager.AppSettings["Warranty.Pass.Monge"]);
+                var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo);
+                resultQuoteInfo.num_poliza += " " + envio_poliza_panama;
+                }
+        }
             return resultQuoteInfo;
         }
 

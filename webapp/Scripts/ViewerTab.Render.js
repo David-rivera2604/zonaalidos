@@ -505,7 +505,7 @@ app.ViewerQuery = (function () {
         ButtonClick: function (tbl, e, name, row, index) {
             switch (name) {
                 case 'print':
-                    app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/ImprimirPoliza/' + row.NUM_POLIZA, false, 'Mapfre Certificado.pdf');
+                    app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/ImprimirPoliza/' + row.NUM_POLIZA + "/"+ row.NUM_RIESGO, false, 'Mapfre Certificado.pdf');
                     break;
 
                 case 'printr':

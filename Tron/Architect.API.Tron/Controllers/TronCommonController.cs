@@ -71,15 +71,16 @@ namespace Architect.API.Tron.Controllers
         /// Descarga un certificado de una póliza
         /// </summary>
         /// <param name="num_poliza"></param>
+        /// <param name="num_riesgo"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("ImprimirPoliza/{num_poliza}")]
-        public HttpResponseMessage ImprimirPoliza([FromUri] string num_poliza)
+        [Route("ImprimirPoliza/{num_poliza}/{num_riesgo}")]
+        public HttpResponseMessage ImprimirPoliza([FromUri] string num_poliza, int num_riesgo = 1)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
 
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
-            var dataStream = new MemoryStream(Architect.API.Tron.Business.Backoffice.Common.ImprimirPoliza(num_poliza));
+            var dataStream = new MemoryStream(Architect.API.Tron.Business.Backoffice.Common.ImprimirPoliza(num_poliza, num_riesgo));
             result.Content = new StreamContent(dataStream);
             result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline");
             result.Content.Headers.ContentDisposition.FileName = "Mapfre Certificado.pdf";

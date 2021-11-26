@@ -36,8 +36,8 @@ app.Cotizacion = (function () {
                         }
                     });
         },
-        ImprimirPoliza: function (num_poliza) {
-            app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/ImprimirPoliza/' + num_poliza, false, 'Mapfre Certificado.pdf');
+        ImprimirPoliza: function (num_poliza,num_riesgo) {
+            app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/ImprimirPoliza/' + num_poliza + "/" + num_riesgo, false, 'Mapfre Certificado.pdf');
         },
         ImprimirRecibo: function (num_recibo) {
             app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/ImprimirRecibo/' + num_recibo, false, 'Mapfre Recibo.pdf');
