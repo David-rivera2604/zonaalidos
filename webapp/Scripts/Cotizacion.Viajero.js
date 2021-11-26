@@ -231,7 +231,7 @@ app.CotizacionViajero = (function () {
             data.plandepagoporfrecuencia = quoteData.plandepagoporfrecuencia;
             data.presupuesto = quoteData.presupuesto;
             data.Agente = setupData.Agente;
-            app.Cotizacion.Imprimir('MapfreMas', data);
+            app.Cotizacion.Imprimir('SegurViaje', data);
         });
 
         $('#emitir').click(function () {
