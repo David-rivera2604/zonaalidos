@@ -6,10 +6,10 @@ app.CotizacionViajero = (function () {
     var changedCallback = null;
 
     function Setup() {
-	
-app.core.Get(app.setting.apipath + 'v1/Quote/ViajeroSetup', null,
+
+        app.core.Get(app.setting.apipath + 'v1/Quote/ViajeroSetup', null,
             function (data) {
-                app.core.Lookups(['MonedasPorRamo.cod_mon','FrecuenciaDePagoPorRamo.cod_fracc_pago','TRON_G2990006:TIP_PLAN.TIP_PLAN','TRON_G2990006:TIP_VIAJE.TIP_VIAJE','TRON_A1002090.COD_MODALIDAD',],
+                app.core.Lookups(['MonedasPorRamo.cod_mon', 'FrecuenciaDePagoPorRamo.cod_fracc_pago', 'TRON_G2990006:TIP_PLAN.TIP_PLAN', 'TRON_G2990006:TIP_VIAJE.TIP_VIAJE', 'TRON_A1002090.COD_MODALIDAD',],
                     function () {
                         setupData = data;
                         MapObjectToInput(data);
@@ -59,7 +59,7 @@ app.core.Get(app.setting.apipath + 'v1/Quote/ViajeroSetup', null,
                 app.ui.ButtonDone('#cotizar');
             });
     };
-    
+
     function ReadOnly() {
         $('#cod_mon').replaceWith('<div>' + $('#cod_mon option:selected').text() + '</div>');
         $('#cod_fracc_pago').replaceWith('<div>' + $('#cod_fracc_pago option:selected').text() + '</div>');
@@ -73,28 +73,27 @@ app.core.Get(app.setting.apipath + 'v1/Quote/ViajeroSetup', null,
         $('#COD_MODALIDAD').replaceWith('<div>' + $('#COD_MODALIDAD option:selected').text() + '</div>');
 
     };
-    
-  function MapInputToObject() {
+
+    function MapInputToObject() {
         var data = {
             cod_mon: app.ui.GetDropDownNumericValue('#cod_mon'),
+            cod_mon_desc: $("#cod_mon option:selected").text(),
             cod_fracc_pago: app.ui.GetDropDownNumericValue('#cod_fracc_pago'),
             fec_efec_poliza: app.ui.GetDateValue('#fec_efec_poliza'),
             fec_vcto_poliza: app.ui.GetDateValue('#fec_vcto_poliza'),
             TIP_PLAN: app.ui.GetDropDownStringValue('#TIP_PLAN'),
-            //TIP_PLAN_DESC = $("#TIP_PLAN option:selected").text(),
+            TIP_PLAN_DESC: $("#TIP_PLAN option:selected").text(),
             TIP_VIAJE: app.ui.GetDropDownStringValue('#TIP_VIAJE'),
-            //TIP_VIAJE_DESC = $("#TIP_VIAJE option:selected").text(),
+            TIP_VIAJE_DESC: $("#TIP_VIAJE option:selected").text(),
             FEC_VIAJE: app.ui.GetDateValue('#FEC_VIAJE'),
             DES_DESTINO: $('#DES_DESTINO').val(),
             DES_DESTINO_DESC: $("#DES_DESTINO option:selected").text(),
             FEC_NACIMIENTO: app.ui.GetDateValue('#FEC_NACIMIENTO'),
             COD_MODALIDAD: app.ui.GetDropDownNumericValue('#COD_MODALIDAD'),
+            COD_MODALIDAD_DESC: $("#COD_MODALIDAD option:selected").text(),
             cantidad_riesgos: app.ui.GetNumericValue('#cantidad_riesgos'),
-            //COD_MODALIDAD_DESC = $("#COD_MODALIDAD option:selected").text(),
             coberturas: $('#coberturasTbl').bootstrapTable('getData'),
-            plandepago: $('#plandepagoTbl').bootstrapTable('getData'),
-            
-
+            plandepago: $('#plandepagoTbl').bootstrapTable('getData')
         };
         return data;
     };
@@ -134,27 +133,27 @@ app.core.Get(app.setting.apipath + 'v1/Quote/ViajeroSetup', null,
         //});
 
     };
-    
+
     function Controls_setup() {
         $('#fec_efec_poliza_group').datetimepicker({
-                    format: 'DD/MM/YYYY',
-                    locale: 'es',
-                    defaultDate: new Date()
+            format: 'DD/MM/YYYY',
+            locale: 'es',
+            defaultDate: new Date()
 
-                });
+        });
         $('#fec_vcto_poliza_group').datetimepicker({
-                    format: 'DD/MM/YYYY',
-                    locale: 'es'
-                });
+            format: 'DD/MM/YYYY',
+            locale: 'es'
+        });
         $('#FEC_VIAJE_group').datetimepicker({
-                    format: 'DD/MM/YYYY',
-                    locale: 'es'
-                });
+            format: 'DD/MM/YYYY',
+            locale: 'es'
+        });
         $('#FEC_NACIMIENTO_group').datetimepicker({
-                    format: 'DD/MM/YYYY',
-                    locale: 'es',
-                    maxDate: app.ui.Yesterday(),
-                    date: null
+            format: 'DD/MM/YYYY',
+            locale: 'es',
+            maxDate: app.ui.Yesterday(),
+            date: null
 
         });
         new AutoNumeric('#cantidad_riesgos', {
@@ -179,7 +178,7 @@ app.core.Get(app.setting.apipath + 'v1/Quote/ViajeroSetup', null,
         $("#VisualizationsEdtForm :input").change(function () {
             data_changed();
         });
-        
+
         $('#fec_efec_poliza').blur(function () {
             var minDate = app.ui.GetDateRawValue('#fec_efec_poliza');
             minDate.setDate(minDate.getDate());
@@ -201,7 +200,7 @@ app.core.Get(app.setting.apipath + 'v1/Quote/ViajeroSetup', null,
                             app.ui.ShowAlert('quoteNotify', 'alert-danger', data.Mensaje);
                         }
                         else {
-                        
+
                         }
 
                     }).always(function () {
@@ -226,6 +225,15 @@ app.core.Get(app.setting.apipath + 'v1/Quote/ViajeroSetup', null,
             event.preventDefault();
         });
 
+        $('#print').click(function () {
+            event.preventDefault();
+            let data = MapInputToObject();
+            data.plandepagoporfrecuencia = quoteData.plandepagoporfrecuencia;
+            data.presupuesto = quoteData.presupuesto;
+            data.Agente = setupData.Agente;
+            app.Cotizacion.Imprimir('MapfreMas', data);
+        });
+
         $('#emitir').click(function () {
             event.preventDefault();
             window.location.replace(app.setting.basepath + 'emision/viajero?presupuesto=' + quoteData.presupuesto);
@@ -237,37 +245,39 @@ app.core.Get(app.setting.apipath + 'v1/Quote/ViajeroSetup', null,
         if (changedCallback !== undefined && changedCallback !== null)
             changedCallback(MapInputToObject());
     };
-    
+
     function Setup_Validations() {
         app.ui.DateValidators();
         $("#VisualizationsEdtForm").validate({
             errorPlacement: app.ui.ErrorPlacement,
-            rules: {cod_mon: { required: true },
-cod_fracc_pago: { required: true },
-fec_efec_poliza: { required: true },
-fec_vcto_poliza: { required: true },
-TIP_PLAN: { required: true },
-TIP_VIAJE: { required: true },
-FEC_VIAJE: { required: true },
-DES_DESTINO: { required: true },
-FEC_NACIMIENTO: { required: true },
-COD_MODALIDAD: { required: true },
-},
-            messages: {cod_mon: { required: 'Debe indicar el Moneda' },
-cod_fracc_pago: { required: 'Debe indicar el Fraccionamiento de pago' },
-fec_efec_poliza: { required: 'Debe indicar el Inicio de vigencia' },
-fec_vcto_poliza: { required: 'Debe indicar el Fin de vigencia' },
-TIP_PLAN: { required: 'Debe indicar el Plan' },
-TIP_VIAJE: { required: 'Debe indicar el Tipo de viaje' },
-FEC_VIAJE: { required: 'Debe indicar el Fecha de inicio del viaje' },
-DES_DESTINO: { required: 'Debe indicar el Lugar de destino' },
-FEC_NACIMIENTO: { required: 'Debe indicar el Fecha de nacimiento' },
-COD_MODALIDAD: { required: 'Debe indicar el Modalidad' },
-}
+            rules: {
+                cod_mon: { required: true },
+                cod_fracc_pago: { required: true },
+                fec_efec_poliza: { required: true },
+                fec_vcto_poliza: { required: true },
+                TIP_PLAN: { required: true },
+                TIP_VIAJE: { required: true },
+                FEC_VIAJE: { required: true },
+                DES_DESTINO: { required: true },
+                FEC_NACIMIENTO: { required: true },
+                COD_MODALIDAD: { required: true },
+            },
+            messages: {
+                cod_mon: { required: 'Debe indicar el Moneda' },
+                cod_fracc_pago: { required: 'Debe indicar el Fraccionamiento de pago' },
+                fec_efec_poliza: { required: 'Debe indicar el Inicio de vigencia' },
+                fec_vcto_poliza: { required: 'Debe indicar el Fin de vigencia' },
+                TIP_PLAN: { required: 'Debe indicar el Plan' },
+                TIP_VIAJE: { required: 'Debe indicar el Tipo de viaje' },
+                FEC_VIAJE: { required: 'Debe indicar el Fecha de inicio del viaje' },
+                DES_DESTINO: { required: 'Debe indicar el Lugar de destino' },
+                FEC_NACIMIENTO: { required: 'Debe indicar el Fecha de nacimiento' },
+                COD_MODALIDAD: { required: 'Debe indicar el Modalidad' },
+            }
         });
     };
 
-function coberturas_table_setup() {
+    function coberturas_table_setup() {
 
         $('#coberturasTbl').bootstrapTable({
             uniqueId: 'coberturasId',
@@ -277,55 +287,55 @@ function coberturas_table_setup() {
             detailView: false,
             detailFormatter: 'app.ui.GenericDetailFormatter',
             columns: [
-{
+                {
                     field: 'seleccionado',
                     checkbox: true
-                },{
-	field: 'codigo',
-	title: 'Código',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'right',
-    formatter: 'app.ui.IntegerFormatter',
-    visible: true
-},{
-	field: 'nombre',
-	title: 'Nombre',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'left',
-    formatter: 'app.ui.StringFormatter',
-    visible: true
-},{
-	field: 'capital',
-	title: 'Capital',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'right',
-    formatter: 'app.ui.DecimalFormatter',
-    visible: true
-},{
-	field: 'primatotal',
-	title: 'Prima total',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'right',
-    formatter: 'app.ui.DecimalFormatter',
-    visible: true
-},{
-	field: 'deducible',
-	title: 'Deducible',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'left',
-    formatter: 'app.ui.StringFormatter',
-    visible: true
-},]
+                }, {
+                    field: 'codigo',
+                    title: 'Código',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.IntegerFormatter',
+                    visible: true
+                }, {
+                    field: 'nombre',
+                    title: 'Nombre',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
+                    field: 'capital',
+                    title: 'Capital',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }, {
+                    field: 'primatotal',
+                    title: 'Prima total',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }, {
+                    field: 'deducible',
+                    title: 'Deducible',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                },]
         });
 
 
@@ -334,7 +344,7 @@ function coberturas_table_setup() {
 
 
 
-function plandepago_table_setup() {
+    function plandepago_table_setup() {
 
         $('#plandepagoTbl').bootstrapTable({
             uniqueId: 'plandepagoId',
@@ -344,70 +354,70 @@ function plandepago_table_setup() {
             detailView: false,
             detailFormatter: 'app.ui.GenericDetailFormatter',
             columns: [
-{
-	field: 'cuota',
-	title: 'Cuota',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'right',
-    formatter: 'app.ui.IntegerFormatter',
-    visible: true
-},{
-	field: 'fechadesde',
-	title: 'Fecha desde',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'center',
-    formatter: 'app.ui.DateFormatter',
-    visible: true
-},{
-	field: 'fechahasta',
-	title: 'Fecha hasta',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'center',
-    formatter: 'app.ui.DateFormatter',
-    visible: true
-},{
-	field: 'primaneta',
-	title: 'Prima neta',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'right',
-    formatter: 'app.ui.DecimalFormatter',
-    visible: true
-},{
-	field: 'iVA',
-	title: 'IVA',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'right',
-    formatter: 'app.ui.DecimalFormatter',
-    visible: true
-},{
-	field: 'recargoporfraccionamiento',
-	title: 'Recargo por fraccionamiento',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'right',
-    formatter: 'app.ui.DecimalFormatter',
-    visible: true
-},{
-	field: 'importetotal',
-	title: 'Importe total',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'right',
-    formatter: 'app.ui.DecimalFormatter',
-    visible: true
-},]
+                {
+                    field: 'cuota',
+                    title: 'Cuota',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.IntegerFormatter',
+                    visible: true
+                }, {
+                    field: 'fechadesde',
+                    title: 'Fecha desde',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    formatter: 'app.ui.DateFormatter',
+                    visible: true
+                }, {
+                    field: 'fechahasta',
+                    title: 'Fecha hasta',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    formatter: 'app.ui.DateFormatter',
+                    visible: true
+                }, {
+                    field: 'primaneta',
+                    title: 'Prima neta',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }, {
+                    field: 'iVA',
+                    title: 'IVA',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }, {
+                    field: 'recargoporfraccionamiento',
+                    title: 'Recargo por fraccionamiento',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }, {
+                    field: 'importetotal',
+                    title: 'Importe total',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                },]
         });
 
 
@@ -416,20 +426,20 @@ function plandepago_table_setup() {
 
     return {
         Init: function () {
-			try {
-				Controls_setup();
-				Setup_Validations();
-	            coberturas_table_setup();
+            try {
+                Controls_setup();
+                Setup_Validations();
+                coberturas_table_setup();
                 plandepago_table_setup();
 
-				Controls_Events();
-				Setup();
-				console.log("Inicio");
-			}
-			catch(err) {
-			  console.error("Error Init");
-			  console.error(err);
-			}
+                Controls_Events();
+                Setup();
+                console.log("Inicio");
+            }
+            catch (err) {
+                console.error("Error Init");
+                console.error(err);
+            }
         },
         Data: function () {
             return MapInputToObject();
