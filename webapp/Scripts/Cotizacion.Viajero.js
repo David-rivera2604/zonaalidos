@@ -105,7 +105,7 @@ app.CotizacionViajero = (function () {
         app.ui.SetDropDownNumericValue('#cod_fracc_pago', data.cod_fracc_pago, true);
         app.ui.SetDateValue('#fec_efec_poliza', data.fec_efec_poliza);
         $('#fec_vcto_poliza_group').data("DateTimePicker").minDate($('#fec_efec_poliza_group').data("DateTimePicker").date());
-        app.ui.SetDateValue('#fec_vcto_poliza', data.fec_vcto_poliza);
+        //app.ui.SetDateValue('#fec_vcto_poliza', data.fec_vcto_poliza);
         $('#TIP_PLAN').val(data.TIP_PLAN);
         app.ui.SetDropDownNumericValue('#TIP_PLAN', data.TIP_PLAN, true, 'I');
         $('#TIP_VIAJE').val(data.TIP_VIAJE);
@@ -123,14 +123,6 @@ app.CotizacionViajero = (function () {
             $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
         else
             $('#plandepagoTbl').bootstrapTable('load', {});
-
-        //$('#TIP_PLAN').on('change', function () {
-
-        //    if () {
-
-        //    }
-
-        //});
 
     };
 
@@ -180,10 +172,14 @@ app.CotizacionViajero = (function () {
         });
 
         $('#fec_efec_poliza').blur(function () {
-            var minDate = app.ui.GetDateRawValue('#fec_efec_poliza');
+            let minDate = app.ui.GetDateRawValue('#fec_efec_poliza');
             minDate.setDate(minDate.getDate());
 
-            $('#fec_vcto_poliza_group').data("DateTimePicker").minDate(minDate);
+            //Asignacion a vencimiento
+            app.ui.SetDateValue('#fec_vcto_poliza', minDate + 1);
+
+            //Asignacion a fecha de viaje
+            app.ui.SetDateValue('#FEC_VIAJE', minDate);
         });
 
         $('#VisualizationsEdtFormSave').click(function () {
