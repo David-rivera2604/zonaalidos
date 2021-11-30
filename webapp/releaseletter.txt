@@ -245,3 +245,8 @@
 1.5.74 26/11/2021 Viajero. Royner. Impresion de Certificado por Numero de Riesgo  
                   Viajero. Royner. Ajuste en el login de integracion con WS Warranty de Panamá Asistencia, se coloca como un setting en el config las credenciales y se condiciona
 				                   por rol el uso de ellas.
+1.5.75 30/11/2021 Viajero. Royner. Integracion con Warranty, cambio el numero de dias de viaje, manejo de beneficiarios.
+                  Viajero. Se muestra el resultado de la integracion con Warranty en otra etiqueta.
+                  Viajero. Royner. Manejo de la fecha de viaje en la cotizacion, que tome automaticamente la fecha de inicio
+                  Viajero. Royner. Ajuste en calculo de numero de dias
+                  

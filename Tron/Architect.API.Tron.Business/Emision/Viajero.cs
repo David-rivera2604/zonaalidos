@@ -54,7 +54,7 @@ namespace Architect.API.Tron.Business.Emision
                 { 
                 var token_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.login(ConfigurationManager.AppSettings["Warranty.User.Monge"], ConfigurationManager.AppSettings["Warranty.Pass.Monge"]);
                 var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo);
-                resultQuoteInfo.num_poliza += " " + envio_poliza_panama;
+                resultQuoteInfo.envio_asistencia = envio_poliza_panama;
                 }
         }
             return resultQuoteInfo;

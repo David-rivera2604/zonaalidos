@@ -122,7 +122,7 @@ namespace Architect.API.Tron.Business.Cotizacion
 
             //Numero de Dias
             TimeSpan difFechas = quoteInfo.fec_vcto_poliza - quoteInfo.fec_efec_poliza;
-            int dias = difFechas.Days;
+            int dias = difFechas.Days + 1;
 
             //Edad 
             DateTime nacimiento = quoteInfo.FEC_NACIMIENTO; //Fecha de nacimiento

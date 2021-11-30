@@ -12,6 +12,10 @@ namespace Architect.API.Tron.Contracts.Emision
         /// </summary>
         [DataMember(), JsonProperty()] public string num_poliza { get; set; }
         /// <summary>
+        /// envio_asistencia Panama.
+        /// </summary>
+        [DataMember(), JsonProperty()] public string envio_asistencia { get; set; }
+        /// <summary>
         /// <summary>
         /// Numero de Riesgo.
         /// </summary>

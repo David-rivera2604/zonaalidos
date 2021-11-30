@@ -35,6 +35,7 @@ app.EmisionViajero = (function () {
 
 
                     $('#NumPoliza').html(data.num_poliza);
+                    $('#envio_asistencia').html(data.envio_asistencia);
                     //$('#emitir').html('Emision Procesada');
                     $("#emitir").css("display", "none");
 

@@ -76,10 +76,11 @@ namespace Architect.WS.Integrations.PanamaAsistencia
         {
             string xml = "";
             string resultado = "";
+            string xml_result;
 
             //Numero de Dias
             TimeSpan difFechas = quoteInfo.fec_vcto_poliza - quoteInfo.fec_efec_poliza;
-            int dias = difFechas.Days;
+            int dias = difFechas.Days + 1;
 
             //PolicyData
             Architect.API.Tron.Contracts.Integraciones.PanamaAsistencia.PolicyData policyData = new Architect.API.Tron.Contracts.Integraciones.PanamaAsistencia.PolicyData()
@@ -153,6 +154,39 @@ namespace Architect.WS.Integrations.PanamaAsistencia
                 txtAttribute012 = "",//Parentezco
             };
 
+            //Se recorre la lista de terceros para tomar los beneficiarios
+            int cant_benef = 0;
+            foreach (Architect.API.Tron.Contracts.Comun.tercero terceros in quoteInfo.terceros)
+            {
+                if (terceros.tipodetercero == 6)
+                {
+                    cant_benef++;
+
+                    switch (cant_benef)
+                    {
+                        case 1:
+                            riskData.txtAttribute1 = terceros.nombre + " " + terceros.apellido1 +" "+ terceros.apellido2;
+                            riskData.txtCodigoFipe = terceros.DocumentNumber;
+                            riskData.txtAttribute014 =  Convert.ToString(terceros.porcentaje);
+                            riskData.txtAttribute010 = Convert.ToString(terceros.parentescoDesc);
+                        break;
+                        case 2:
+                            riskData.txtAttribute2 = terceros.nombre + " " + terceros.apellido1 + " " + terceros.apellido2;
+                            riskData.txtNotaFiscal = terceros.DocumentNumber;
+                            riskData.txtAttribute015 = Convert.ToString(terceros.porcentaje);
+                            riskData.txtAttribute011 = Convert.ToString(terceros.parentescoDesc);
+                            break;
+                        case 3:
+                            riskData.txtAttribute3 = terceros.nombre + " " + terceros.apellido1 + " " + terceros.apellido2;
+                            riskData.txtDetalleVehiculo = terceros.DocumentNumber;
+                            riskData.txtAttribute016 = Convert.ToString(terceros.porcentaje);
+                            riskData.txtAttribute012 = Convert.ToString(terceros.parentescoDesc);
+                            break;
+
+                    }
+                }
+            }
+
             // InsuredData
             List<Architect.API.Tron.Contracts.Integraciones.PanamaAsistencia.InsuredData > list_insured_data = new List<Architect.API.Tron.Contracts.Integraciones.PanamaAsistencia.InsuredData>();
             
@@ -160,7 +194,7 @@ namespace Architect.WS.Integrations.PanamaAsistencia
             {
                 Architect.API.Tron.Contracts.Integraciones.PanamaAsistencia.InsuredData insuredData = new Architect.API.Tron.Contracts.Integraciones.PanamaAsistencia.InsuredData();
 
-                if (terceros.tipodetercero != 0)
+                if (terceros.tipodetercero == 2)
                 {
                     //Edad 
                     DateTime nacimiento = terceros.fechadenacimiento; //Fecha de nacimiento
@@ -170,7 +204,7 @@ namespace Architect.WS.Integrations.PanamaAsistencia
                     insuredData.TxtApeAsegurado = terceros.apellido1 + " " + terceros.apellido2;
                     insuredData.TxtIdFiscal = terceros.DocumentNumber.Replace("-","").Substring(1);
                     insuredData.TxtEmail = terceros.correoelectronico;
-                    insuredData.TxtFhNacimiento = terceros.fechadenacimiento.ToString("yyyy-mm-dd", CultureInfo.InvariantCulture);
+                    insuredData.TxtFhNacimiento = terceros.fechadenacimiento.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
                     insuredData.TXTEDADSV = Convert.ToString(edad);
                     insuredData.TxtDirAsegurado = terceros.otrasenas;
                     insuredData.TxtMovil = terceros.numerodetelefono;
@@ -314,11 +348,23 @@ namespace Architect.WS.Integrations.PanamaAsistencia
             ws.Abort();
 
             //lectura del xml de resultado 
-             resultado = respuesta.Rows[0]["description"].ToString();
- 
+            resultado = respuesta.Rows[0]["description"].ToString();
+
+            /*if (xml_result.Contains("file")){
+
+                XmlDocument XML = new XmlDocument();
+                XML.LoadXml(xml_result);
+                XmlNodeList elemlist = XML.GetElementsByTagName("file");
+                resultado = elemlist[0].InnerXml;
+            }
+            else
+            {
+                resultado = xml_result;
+            }*/
+           
             return resultado;
         }
-      
+
 
     }
 }
