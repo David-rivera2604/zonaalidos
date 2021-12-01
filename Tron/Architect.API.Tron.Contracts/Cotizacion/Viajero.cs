@@ -48,6 +48,16 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// Fecha de nacimiento.
         /// </summary>
         [DataMember(), JsonProperty()] public DateTime FEC_NACIMIENTO { get; set; }
+        [DataMember(), JsonProperty()] public DateTime FEC_NACIMIENTO2 { get; set; }
+        [DataMember(), JsonProperty()] public DateTime FEC_NACIMIENTO3 { get; set; }
+        [DataMember(), JsonProperty()] public DateTime FEC_NACIMIENTO4 { get; set; }
+        [DataMember(), JsonProperty()] public DateTime FEC_NACIMIENTO5 { get; set; }
+        [DataMember(), JsonProperty()] public DateTime FEC_NACIMIENTO6 { get; set; }
+        [DataMember(), JsonProperty()] public DateTime FEC_NACIMIENTO7 { get; set; }
+        [DataMember(), JsonProperty()] public DateTime FEC_NACIMIENTO8 { get; set; }
+        [DataMember(), JsonProperty()] public DateTime FEC_NACIMIENTO9 { get; set; }
+        [DataMember(), JsonProperty()] public DateTime FEC_NACIMIENTO10 { get; set; }
+
         /// <summary>
         /// Modalidad.
         /// </summary>

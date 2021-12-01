@@ -124,22 +124,111 @@ namespace Architect.API.Tron.Business.Cotizacion
             TimeSpan difFechas = quoteInfo.fec_vcto_poliza - quoteInfo.fec_efec_poliza;
             int dias = difFechas.Days + 1;
 
-            //Edad 
-            DateTime nacimiento = quoteInfo.FEC_NACIMIENTO; //Fecha de nacimiento
-            int edad = DateTime.Today.AddTicks(-nacimiento.Ticks).Year - 1;
-
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "TIP_PLAN", quoteInfo.TIP_PLAN,1,1));
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "FEC_VIAJE", quoteInfo.FEC_VIAJE.ToString("ddMMyyyy"), 1, 2));
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "NUM_DIA", Convert.ToString(dias), 1, 3));
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "DES_DESTINO", quoteInfo.DES_DESTINO_DESC, 1, 4));
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "CANAL_VENTA", "TWB", 1, 5));
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "TIP_VIAJE", quoteInfo.TIP_VIAJE, 1, 6));
-            
+
+            DateTime nacimiento;
+            int edad;
+
             for (int i = 1; i <= quoteInfo.cantidad_riesgos; i++)
             {
-                datosVariables.Add(Util.DatoVariable(datosFijos, i, "FEC_NACIMIENTO", quoteInfo.FEC_NACIMIENTO.ToString("ddMMyyyy"), 2, 2));
-                datosVariables.Add(Util.DatoVariable(datosFijos, i, "VAL_EDAD", Convert.ToString(edad), 2, 3));
-                datosVariables.Add(Util.DatoVariable(datosFijos, i, "COD_MODALIDAD", Convert.ToString(quoteInfo.COD_MODALIDAD), 2, 99));
+                switch(i)
+                {
+                    case 1:
+                        //Edad 
+                        nacimiento = quoteInfo.FEC_NACIMIENTO; //Fecha de nacimiento
+                        edad = DateTime.Today.AddTicks(-nacimiento.Ticks).Year - 1;
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "FEC_NACIMIENTO", quoteInfo.FEC_NACIMIENTO.ToString("ddMMyyyy"), 2, 2));
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "VAL_EDAD", Convert.ToString(edad), 2, 3));
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "COD_MODALIDAD", Convert.ToString(quoteInfo.COD_MODALIDAD), 2, 99));
+
+                        break;
+                    case 2:
+                        //Edad 
+                        nacimiento = quoteInfo.FEC_NACIMIENTO2; //Fecha de nacimiento
+                        edad = DateTime.Today.AddTicks(-nacimiento.Ticks).Year - 1;
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "FEC_NACIMIENTO", quoteInfo.FEC_NACIMIENTO2.ToString("ddMMyyyy"), 2, 2));
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "VAL_EDAD", Convert.ToString(edad), 2, 3));
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "COD_MODALIDAD", Convert.ToString(quoteInfo.COD_MODALIDAD), 2, 99));
+
+                        break;
+                    case 3:
+                        //Edad 
+                        nacimiento = quoteInfo.FEC_NACIMIENTO3; //Fecha de nacimiento
+                        edad = DateTime.Today.AddTicks(-nacimiento.Ticks).Year - 1;
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "FEC_NACIMIENTO", quoteInfo.FEC_NACIMIENTO3.ToString("ddMMyyyy"), 2, 2));
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "VAL_EDAD", Convert.ToString(edad), 2, 3));
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "COD_MODALIDAD", Convert.ToString(quoteInfo.COD_MODALIDAD), 2, 99));
+
+                        break;
+                    case 4:
+                        //Edad 
+                        nacimiento = quoteInfo.FEC_NACIMIENTO4; //Fecha de nacimiento
+                        edad = DateTime.Today.AddTicks(-nacimiento.Ticks).Year - 1;
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "FEC_NACIMIENTO", quoteInfo.FEC_NACIMIENTO4.ToString("ddMMyyyy"), 2, 2));
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "VAL_EDAD", Convert.ToString(edad), 2, 3));
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "COD_MODALIDAD", Convert.ToString(quoteInfo.COD_MODALIDAD), 2, 99));
+
+                        break;
+                    case 5:
+                        //Edad 
+                        nacimiento = quoteInfo.FEC_NACIMIENTO5; //Fecha de nacimiento
+                        edad = DateTime.Today.AddTicks(-nacimiento.Ticks).Year - 1;
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "FEC_NACIMIENTO", quoteInfo.FEC_NACIMIENTO5.ToString("ddMMyyyy"), 2, 2));
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "VAL_EDAD", Convert.ToString(edad), 2, 3));
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "COD_MODALIDAD", Convert.ToString(quoteInfo.COD_MODALIDAD), 2, 99));
+
+                        break;
+                    case 6:
+                        //Edad 
+                        nacimiento = quoteInfo.FEC_NACIMIENTO6; //Fecha de nacimiento
+                        edad = DateTime.Today.AddTicks(-nacimiento.Ticks).Year - 1;
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "FEC_NACIMIENTO", quoteInfo.FEC_NACIMIENTO6.ToString("ddMMyyyy"), 2, 2));
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "VAL_EDAD", Convert.ToString(edad), 2, 3));
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "COD_MODALIDAD", Convert.ToString(quoteInfo.COD_MODALIDAD), 2, 99));
+
+                        break;
+                    case 7:
+                        //Edad 
+                        nacimiento = quoteInfo.FEC_NACIMIENTO7; //Fecha de nacimiento
+                        edad = DateTime.Today.AddTicks(-nacimiento.Ticks).Year - 1;
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "FEC_NACIMIENTO", quoteInfo.FEC_NACIMIENTO7.ToString("ddMMyyyy"), 2, 2));
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "VAL_EDAD", Convert.ToString(edad), 2, 3));
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "COD_MODALIDAD", Convert.ToString(quoteInfo.COD_MODALIDAD), 2, 99));
+
+                        break;
+                    case 8:
+                        //Edad 
+                        nacimiento = quoteInfo.FEC_NACIMIENTO8; //Fecha de nacimiento
+                        edad = DateTime.Today.AddTicks(-nacimiento.Ticks).Year - 1;
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "FEC_NACIMIENTO", quoteInfo.FEC_NACIMIENTO8.ToString("ddMMyyyy"), 2, 2));
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "VAL_EDAD", Convert.ToString(edad), 2, 3));
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "COD_MODALIDAD", Convert.ToString(quoteInfo.COD_MODALIDAD), 2, 99));
+
+                        break;
+                    case 9:
+                        //Edad 
+                        nacimiento = quoteInfo.FEC_NACIMIENTO9; //Fecha de nacimiento
+                        edad = DateTime.Today.AddTicks(-nacimiento.Ticks).Year - 1;
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "FEC_NACIMIENTO", quoteInfo.FEC_NACIMIENTO9.ToString("ddMMyyyy"), 2, 2));
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "VAL_EDAD", Convert.ToString(edad), 2, 3));
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "COD_MODALIDAD", Convert.ToString(quoteInfo.COD_MODALIDAD), 2, 99));
+
+                        break;
+                    case 10:
+                        //Edad 
+                        nacimiento = quoteInfo.FEC_NACIMIENTO10; //Fecha de nacimiento
+                        edad = DateTime.Today.AddTicks(-nacimiento.Ticks).Year - 1;
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "FEC_NACIMIENTO", quoteInfo.FEC_NACIMIENTO10.ToString("ddMMyyyy"), 2, 2));
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "VAL_EDAD", Convert.ToString(edad), 2, 3));
+                        datosVariables.Add(Util.DatoVariable(datosFijos, i, "COD_MODALIDAD", Convert.ToString(quoteInfo.COD_MODALIDAD), 2, 99));
+
+                        break;
+                }
             }
 
                 return datosVariables;

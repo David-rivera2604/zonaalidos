@@ -249,4 +249,6 @@
                   Viajero. Se muestra el resultado de la integracion con Warranty en otra etiqueta.
                   Viajero. Royner. Manejo de la fecha de viaje en la cotizacion, que tome automaticamente la fecha de inicio
                   Viajero. Royner. Ajuste en calculo de numero de dias
+                  Viajero. Royner. Ajuste en la cotizacion para agregar diferentes fechas de nacimiento, segun los numeros de riesgos
+                  Vijero.  Royner. Se cambia Viajeros rules, para no solicitar documentacion antes de emitir.
                   

@@ -360,27 +360,27 @@
   "Listas": [
     {
       "Nombre": "MM_CAPITAL_RC",
-      "Condicion": "{El Tipo de producto} sea igual a {Trébol RC} y {La Moneda} sea igual a {Colones}",
+      "Condicion": "({El Tipo de producto} sea igual a {Trébol RC} y {La Moneda} sea igual a {Colones})",
       "Exclusion": "100000000,150000000"
     },
     {
       "Nombre": "MM_CAPITAL_RC",
-      "Condicion": "{El Tipo de producto} sea igual a {Trébol RC} y {La Moneda} sea igual a {Dólares}",
+      "Condicion": "({El Tipo de producto} sea igual a {Trébol RC} y {La Moneda} sea igual a {Dólares})",
       "Exclusion": "200000,300000"
     },
     {
       "Nombre": "MM_CAPITAL_GM",
-      "Condicion": "({El Tipo de producto} sea igual a {Amplio}) o ({El Tipo de producto} sea igual a {Plus}) o ({El Tipo de producto} sea igual a {Oro}) o ({El Tipo de producto} sea igual a {Plata}) o ({El Tipo de producto} sea igual a {Trébol}) y {La Moneda} sea igual a {Dólares}",
+      "Condicion": "(({El Tipo de producto} sea igual a {Amplio}) o ({El Tipo de producto} sea igual a {Plus}) o ({El Tipo de producto} sea igual a {Oro}) o ({El Tipo de producto} sea igual a {Plata}) o ({El Tipo de producto} sea igual a {Trébol}) y {La Moneda} sea igual a {Dólares})",
       "Exclusion": "20000"
     },
-    {
+    {	
       "Nombre": "cod_fracc_pago",
-      "Condicion": "({El Tipo de producto} sea igual a {Básico}) o ({El Tipo de producto} sea igual a {Amplio}) o ({El Tipo de producto} sea igual a {Plus}) o ({El Tipo de producto} sea igual a {Oro}) o ({El Tipo de producto} sea igual a {Plata}) o ({El Tipo de producto} sea igual a {Trébol}) o ({El Tipo de producto} sea igual a {Trébol RC})",
+      "Condicion": "(({El Tipo de producto} sea igual a {Básico}) o ({El Tipo de producto} sea igual a {Amplio}) o ({El Tipo de producto} sea igual a {Plus}) o ({El Tipo de producto} sea igual a {Oro}) o ({El Tipo de producto} sea igual a {Plata}) o ({El Tipo de producto} sea igual a {Trébol}) o ({El Tipo de producto} sea igual a {Trébol RC}))",
       "Exclusion": "26"
     },
-    {
+	{
       "Nombre": "MM_ClaseVehiculos",
-      "Condicion": "({El Tipo de producto} sea igual a {Básico}) o ({El Tipo de producto} sea igual a {Amplio}) o ({El Tipo de producto} sea igual a {Plus}) o ({El Tipo de producto} sea igual a {Oro}) o ({El Tipo de producto} sea igual a {Trébol}) o ({El Tipo de producto} sea igual a {Trébol RC}) ",
+      "Condicion": "(({El Tipo de producto} sea igual a {Básico}) o ({El Tipo de producto} sea igual a {Amplio}) o ({El Tipo de producto} sea igual a {Plus}) o ({El Tipo de producto} sea igual a {Oro}) o ({El Tipo de producto} sea igual a {Trébol}) o ({El Tipo de producto} sea igual a {Trébol RC})) ",
       "Exclusion": "5"
     }
   ],

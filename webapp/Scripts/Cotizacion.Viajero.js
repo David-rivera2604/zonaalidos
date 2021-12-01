@@ -89,6 +89,15 @@ app.CotizacionViajero = (function () {
             DES_DESTINO: $('#DES_DESTINO').val(),
             DES_DESTINO_DESC: $("#DES_DESTINO option:selected").text(),
             FEC_NACIMIENTO: app.ui.GetDateValue('#FEC_NACIMIENTO'),
+            FEC_NACIMIENTO2: app.ui.GetDateValue('#FEC_NACIMIENTO2'),
+            FEC_NACIMIENTO3: app.ui.GetDateValue('#FEC_NACIMIENTO3'),
+            FEC_NACIMIENTO4: app.ui.GetDateValue('#FEC_NACIMIENTO4'),
+            FEC_NACIMIENTO5: app.ui.GetDateValue('#FEC_NACIMIENTO5'),
+            FEC_NACIMIENTO6: app.ui.GetDateValue('#FEC_NACIMIENTO6'),
+            FEC_NACIMIENTO7: app.ui.GetDateValue('#FEC_NACIMIENTO7'),
+            FEC_NACIMIENTO8: app.ui.GetDateValue('#FEC_NACIMIENTO8'),
+            FEC_NACIMIENTO9: app.ui.GetDateValue('#FEC_NACIMIENTO9'),
+            FEC_NACIMIENTO10: app.ui.GetDateValue('#FEC_NACIMIENTO10'),
             COD_MODALIDAD: app.ui.GetDropDownNumericValue('#COD_MODALIDAD'),
             COD_MODALIDAD_DES: $("#COD_MODALIDAD option:selected").text(),
             cantidad_riesgos: app.ui.GetNumericValue('#cantidad_riesgos'),
@@ -113,6 +122,15 @@ app.CotizacionViajero = (function () {
         app.ui.SetDateValue('#FEC_VIAJE', data.FEC_VIAJE);
         $('#DES_DESTINO').val(data.DES_DESTINO);
         app.ui.SetDateValue('#FEC_NACIMIENTO', data.FEC_NACIMIENTO);
+        app.ui.SetDateValue('#FEC_NACIMIENTO2', data.FEC_NACIMIENTO2);
+        app.ui.SetDateValue('#FEC_NACIMIENTO3', data.FEC_NACIMIENTO3);
+        app.ui.SetDateValue('#FEC_NACIMIENTO4', data.FEC_NACIMIENTO4);
+        app.ui.SetDateValue('#FEC_NACIMIENTO5', data.FEC_NACIMIENTO5);
+        app.ui.SetDateValue('#FEC_NACIMIENTO6', data.FEC_NACIMIENTO6);
+        app.ui.SetDateValue('#FEC_NACIMIENTO7', data.FEC_NACIMIENTO7);
+        app.ui.SetDateValue('#FEC_NACIMIENTO8', data.FEC_NACIMIENTO8);
+        app.ui.SetDateValue('#FEC_NACIMIENTO9', data.FEC_NACIMIENTO9);
+        app.ui.SetDateValue('#FEC_NACIMIENTO10', data.FEC_NACIMIENTO10);
         $('#COD_MODALIDAD').val(data.COD_MODALIDAD);
         app.ui.SetDropDownNumericValue('#COD_MODALIDAD', data.COD_MODALIDAD, true);
         if (data.coberturas != null)
@@ -142,6 +160,69 @@ app.CotizacionViajero = (function () {
             locale: 'es'
         });
         $('#FEC_NACIMIENTO_group').datetimepicker({
+            format: 'DD/MM/YYYY',
+            locale: 'es',
+            maxDate: app.ui.Yesterday(),
+            date: null
+
+        });
+        $('#FEC_NACIMIENTO2_group').datetimepicker({
+            format: 'DD/MM/YYYY',
+            locale: 'es',
+            maxDate: app.ui.Yesterday(),
+            date: null
+
+        });
+        $('#FEC_NACIMIENTO3_group').datetimepicker({
+            format: 'DD/MM/YYYY',
+            locale: 'es',
+            maxDate: app.ui.Yesterday(),
+            date: null
+
+        });
+        $('#FEC_NACIMIENTO4_group').datetimepicker({
+            format: 'DD/MM/YYYY',
+            locale: 'es',
+            maxDate: app.ui.Yesterday(),
+            date: null
+
+        });
+        $('#FEC_NACIMIENTO5_group').datetimepicker({
+            format: 'DD/MM/YYYY',
+            locale: 'es',
+            maxDate: app.ui.Yesterday(),
+            date: null
+
+        });
+        $('#FEC_NACIMIENTO6_group').datetimepicker({
+            format: 'DD/MM/YYYY',
+            locale: 'es',
+            maxDate: app.ui.Yesterday(),
+            date: null
+
+        });
+        $('#FEC_NACIMIENTO7_group').datetimepicker({
+            format: 'DD/MM/YYYY',
+            locale: 'es',
+            maxDate: app.ui.Yesterday(),
+            date: null
+
+        });
+        $('#FEC_NACIMIENTO8_group').datetimepicker({
+            format: 'DD/MM/YYYY',
+            locale: 'es',
+            maxDate: app.ui.Yesterday(),
+            date: null
+
+        });
+        $('#FEC_NACIMIENTO9_group').datetimepicker({
+            format: 'DD/MM/YYYY',
+            locale: 'es',
+            maxDate: app.ui.Yesterday(),
+            date: null
+
+        });
+        $('#FEC_NACIMIENTO10_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es',
             maxDate: app.ui.Yesterday(),
@@ -180,6 +261,88 @@ app.CotizacionViajero = (function () {
 
             //Asignacion a fecha de viaje
             app.ui.SetDateValue('#FEC_VIAJE', minDate);
+        });
+
+        $('#cantidad_riesgos').blur(function () {
+            var riesgos = app.ui.GetNumericValue('#cantidad_riesgos');
+
+            //Los inicializa en disabled
+            $('#FEC_NACIMIENTO2').prop("disabled", true);
+            $('#FEC_NACIMIENTO3').prop("disabled", true);
+            $('#FEC_NACIMIENTO4').prop("disabled", true);
+            $('#FEC_NACIMIENTO5').prop("disabled", true);
+            $('#FEC_NACIMIENTO6').prop("disabled", true);
+            $('#FEC_NACIMIENTO7').prop("disabled", true);
+            $('#FEC_NACIMIENTO8').prop("disabled", true);
+            $('#FEC_NACIMIENTO9').prop("disabled", true);
+            $('#FEC_NACIMIENTO10').prop("disabled", true);
+
+            switch (riesgos) {
+
+                case 2:
+                    $('#FEC_NACIMIENTO2').prop("disabled", false);
+                    break;
+                case 3:
+                    $('#FEC_NACIMIENTO2').prop("disabled", false);
+                    $('#FEC_NACIMIENTO3').prop("disabled", false);
+                    break;
+                case 4:
+                    $('#FEC_NACIMIENTO2').prop("disabled", false);
+                    $('#FEC_NACIMIENTO3').prop("disabled", false);
+                    $('#FEC_NACIMIENTO4').prop("disabled", false);
+                    break;
+                case 5:
+                    $('#FEC_NACIMIENTO2').prop("disabled", false);
+                    $('#FEC_NACIMIENTO3').prop("disabled", false);
+                    $('#FEC_NACIMIENTO4').prop("disabled", false);
+                    $('#FEC_NACIMIENTO5').prop("disabled", false);
+                    break;
+                case 6:
+                    $('#FEC_NACIMIENTO2').prop("disabled", false);
+                    $('#FEC_NACIMIENTO3').prop("disabled", false);
+                    $('#FEC_NACIMIENTO4').prop("disabled", false);
+                    $('#FEC_NACIMIENTO5').prop("disabled", false);
+                    $('#FEC_NACIMIENTO6').prop("disabled", false);
+                    break;
+                case 7:
+                    $('#FEC_NACIMIENTO2').prop("disabled", false);
+                    $('#FEC_NACIMIENTO3').prop("disabled", false);
+                    $('#FEC_NACIMIENTO4').prop("disabled", false);
+                    $('#FEC_NACIMIENTO5').prop("disabled", false);
+                    $('#FEC_NACIMIENTO6').prop("disabled", false);
+                    $('#FEC_NACIMIENTO7').prop("disabled", false);
+                    break;
+                case 8:
+                    $('#FEC_NACIMIENTO2').prop("disabled", false);
+                    $('#FEC_NACIMIENTO3').prop("disabled", false);
+                    $('#FEC_NACIMIENTO4').prop("disabled", false);
+                    $('#FEC_NACIMIENTO5').prop("disabled", false);
+                    $('#FEC_NACIMIENTO6').prop("disabled", false);
+                    $('#FEC_NACIMIENTO7').prop("disabled", false);
+                    $('#FEC_NACIMIENTO8').prop("disabled", false);
+                    break;
+                case 9:
+                    $('#FEC_NACIMIENTO2').prop("disabled", false);
+                    $('#FEC_NACIMIENTO3').prop("disabled", false);
+                    $('#FEC_NACIMIENTO4').prop("disabled", false);
+                    $('#FEC_NACIMIENTO5').prop("disabled", false);
+                    $('#FEC_NACIMIENTO6').prop("disabled", false);
+                    $('#FEC_NACIMIENTO7').prop("disabled", false);
+                    $('#FEC_NACIMIENTO8').prop("disabled", false);
+                    $('#FEC_NACIMIENTO9').prop("disabled", false);
+                    break;
+                case 10:
+                    $('#FEC_NACIMIENTO2').prop("disabled", false);
+                    $('#FEC_NACIMIENTO3').prop("disabled", false);
+                    $('#FEC_NACIMIENTO4').prop("disabled", false);
+                    $('#FEC_NACIMIENTO5').prop("disabled", false);
+                    $('#FEC_NACIMIENTO6').prop("disabled", false);
+                    $('#FEC_NACIMIENTO7').prop("disabled", false);
+                    $('#FEC_NACIMIENTO8').prop("disabled", false);
+                    $('#FEC_NACIMIENTO9').prop("disabled", false);
+                    $('#FEC_NACIMIENTO10').prop("disabled", false);
+                    break;
+            }
         });
 
         $('#VisualizationsEdtFormSave').click(function () {
@@ -267,7 +430,7 @@ app.CotizacionViajero = (function () {
                 TIP_VIAJE: { required: 'Debe indicar el Tipo de viaje' },
                 FEC_VIAJE: { required: 'Debe indicar el Fecha de inicio del viaje' },
                 DES_DESTINO: { required: 'Debe indicar el Lugar de destino' },
-                FEC_NACIMIENTO: { required: 'Debe indicar el Fecha de nacimiento' },
+                FEC_NACIMIENTO: { required: 'Debe indicar la Fecha de nacimiento' },
                 COD_MODALIDAD: { required: 'Debe indicar el Modalidad' },
             }
         });

@@ -144,11 +144,11 @@
 
                                                     <!-- DES_DESTINO Text -->
                                                     @*<div class='col-sm-4 col-md-4'>
-                                                        <div class='form-group'>
-                                                            <label class='control-label' for='DES_DESTINO'>Lugar de destino<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                            <input type='text' id='DES_DESTINO' name='DES_DESTINO' class='form-control' size='50' maxlength='50' />
-                                                        </div>
-                                                    </div>*@
+            <div class='form-group'>
+                <label class='control-label' for='DES_DESTINO'>Lugar de destino<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                <input type='text' id='DES_DESTINO' name='DES_DESTINO' class='form-control' size='50' maxlength='50' />
+            </div>
+        </div>*@
                                                     <div class='col-sm-4 col-md-4'>
                                                         <div class='form-group'>
                                                             <label class='control-label' for='DES_DESTINO'>PAIS DESTINO<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
@@ -396,6 +396,14 @@
                                                             </select>
                                                         </div>
                                                     </div>
+                                                    <!-- COD_MODALIDAD DropDownList -->
+                                                    <div class='col-sm-4 col-md-4'>
+                                                        <div class='form-group'>
+                                                            <label class='control-label' for='COD_MODALIDAD'>Modalidad<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                            <select id='COD_MODALIDAD' name='COD_MODALIDAD' class='form-control'>
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                     <!-- cantidad_riesgos Numeric -->
                                                     <div class='col-sm-3 col-md-3'>
                                                         <div class='form-group'>
@@ -406,7 +414,7 @@
                                                     <!-- FEC_NACIMIENTO DatePicker -->
                                                     <div class='col-sm-4 col-md-4'>
                                                         <div class='form-group'>
-                                                            <label class='control-label' for='FEC_NACIMIENTO'>Fecha de nacimiento<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                            <label class='control-label' for='FEC_NACIMIENTO'>Fecha de nacimiento -Riesgo 1<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                             <div class='input-group date' id='FEC_NACIMIENTO_group'>
                                                                 <input type='text' id='FEC_NACIMIENTO' name='FEC_NACIMIENTO' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
                                                                 <span class='input-group-addon'>
@@ -416,16 +424,123 @@
                                                             <div id='FEC_NACIMIENTO_validate'></div>
                                                         </div>
                                                     </div>
-
-                                                    <!-- COD_MODALIDAD DropDownList -->
+                                                    <!-- FEC_NACIMIENTO2 DatePicker -->
                                                     <div class='col-sm-4 col-md-4'>
                                                         <div class='form-group'>
-                                                            <label class='control-label' for='COD_MODALIDAD'>Modalidad<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                            <select id='COD_MODALIDAD' name='COD_MODALIDAD' class='form-control'>
-                                                            </select>
+                                                            <label class='control-label' for='FEC_NACIMIENTO2'>Fecha de nacimiento -Riesgo 2<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                            <div class='input-group date' id='FEC_NACIMIENTO2_group'>
+                                                                <input type='text' id='FEC_NACIMIENTO2' name='FEC_NACIMIENTO2' disabled="disabled" class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                                <span class='input-group-addon'>
+                                                                    <span class='glyphicon glyphicon-calendar'></span>
+                                                                </span>
+                                                            </div>
+                                                            <div id='FEC_NACIMIENTO2_validate'></div>
                                                         </div>
                                                     </div>
-
+                                                    <!-- FEC_NACIMIENTO3 DatePicker -->
+                                                    <div class='col-sm-4 col-md-4'>
+                                                        <div class='form-group'>
+                                                            <label class='control-label' for='FEC_NACIMIENTO3'>Fecha de nacimiento -Riesgo 3<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                            <div class='input-group date' id='FEC_NACIMIENTO3_group'>
+                                                                <input type='text' id='FEC_NACIMIENTO3' name='FEC_NACIMIENTO3' disabled="disabled" class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                                <span class='input-group-addon'>
+                                                                    <span class='glyphicon glyphicon-calendar'></span>
+                                                                </span>
+                                                            </div>
+                                                            <div id='FEC_NACIMIENTO3_validate'></div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- FEC_NACIMIENTO4 DatePicker -->
+                                                    <div class='col-sm-4 col-md-4'>
+                                                        <div class='form-group'>
+                                                            <label class='control-label' for='FEC_NACIMIENTO4'>Fecha de nacimiento -Riesgo 4<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                            <div class='input-group date' id='FEC_NACIMIENTO4_group'>
+                                                                <input type='text' id='FEC_NACIMIENTO4' name='FEC_NACIMIENTO4' disabled="disabled" class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                                <span class='input-group-addon'>
+                                                                    <span class='glyphicon glyphicon-calendar'></span>
+                                                                </span>
+                                                            </div>
+                                                            <div id='FEC_NACIMIENTO4_validate'></div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- FEC_NACIMIENTO5 DatePicker -->
+                                                    <div class='col-sm-4 col-md-4'>
+                                                        <div class='form-group'>
+                                                            <label class='control-label' for='FEC_NACIMIENTO5'>Fecha de nacimiento -Riesgo 5<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                            <div class='input-group date' id='FEC_NACIMIENTO5_group'>
+                                                                <input type='text' id='FEC_NACIMIENTO5' name='FEC_NACIMIENTO5' disabled="disabled" class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                                <span class='input-group-addon'>
+                                                                    <span class='glyphicon glyphicon-calendar'></span>
+                                                                </span>
+                                                            </div>
+                                                            <div id='FEC_NACIMIENTO5_validate'></div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- FEC_NACIMIENTO6 DatePicker -->
+                                                    <div class='col-sm-4 col-md-4'>
+                                                        <div class='form-group'>
+                                                            <label class='control-label' for='FEC_NACIMIENTO6'>Fecha de nacimiento -Riesgo 6<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                            <div class='input-group date' id='FEC_NACIMIENTO6_group'>
+                                                                <input type='text' id='FEC_NACIMIENTO6' name='FEC_NACIMIENTO6' disabled="disabled" class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                                <span class='input-group-addon'>
+                                                                    <span class='glyphicon glyphicon-calendar'></span>
+                                                                </span>
+                                                            </div>
+                                                            <div id='FEC_NACIMIENTO6_validate'></div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- FEC_NACIMIENTO7 DatePicker -->
+                                                    <div class='col-sm-4 col-md-4'>
+                                                        <div class='form-group'>
+                                                            <label class='control-label' for='FEC_NACIMIENTO7'>Fecha de nacimiento -Riesgo 7<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                            <div class='input-group date' id='FEC_NACIMIENTO7_group'>
+                                                                <input type='text' id='FEC_NACIMIENTO7' name='FEC_NACIMIENTO7' disabled="disabled" class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                                <span class='input-group-addon'>
+                                                                    <span class='glyphicon glyphicon-calendar'></span>
+                                                                </span>
+                                                            </div>
+                                                            <div id='FEC_NACIMIENTO7_validate'></div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- FEC_NACIMIENTO8 DatePicker -->
+                                                    <div class='col-sm-4 col-md-4'>
+                                                        <div class='form-group'>
+                                                            <label class='control-label' for='FEC_NACIMIENTO8'>Fecha de nacimiento -Riesgo 8<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                            <div class='input-group date' id='FEC_NACIMIENTO8_group'>
+                                                                <input type='text' id='FEC_NACIMIENTO8' name='FEC_NACIMIENTO8' disabled="disabled" class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                                <span class='input-group-addon'>
+                                                                    <span class='glyphicon glyphicon-calendar'></span>
+                                                                </span>
+                                                            </div>
+                                                            <div id='FEC_NACIMIENTO8_validate'></div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- FEC_NACIMIENTO9 DatePicker -->
+                                                    <div class='col-sm-4 col-md-4'>
+                                                        <div class='form-group'>
+                                                            <label class='control-label' for='FEC_NACIMIENTO9'>Fecha de nacimiento -Riesgo 9<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                            <div class='input-group date' id='FEC_NACIMIENTO9_group'>
+                                                                <input type='text' id='FEC_NACIMIENTO9' name='FEC_NACIMIENTO9' disabled="disabled" class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                                <span class='input-group-addon'>
+                                                                    <span class='glyphicon glyphicon-calendar'></span>
+                                                                </span>
+                                                            </div>
+                                                            <div id='FEC_NACIMIENTO9_validate'></div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- FEC_NACIMIENTO10 DatePicker -->
+                                                    <div class='col-sm-4 col-md-4'>
+                                                        <div class='form-group'>
+                                                            <label class='control-label' for='FEC_NACIMIENTO10'>Fecha de nacimiento -Riesgo 10<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                            <div class='input-group date' id='FEC_NACIMIENTO10_group'>
+                                                                <input type='text' id='FEC_NACIMIENTO10' name='FEC_NACIMIENTO10' disabled="disabled" class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                                <span class='input-group-addon'>
+                                                                    <span class='glyphicon glyphicon-calendar'></span>
+                                                                </span>
+                                                            </div>
+                                                            <div id='FEC_NACIMIENTO10_validate'></div>
+                                                        </div>
+                                                    </div>
 
                                                 </div>
                                             </div>
