@@ -92,14 +92,14 @@ namespace Architect.WS.Integrations.PanamaAsistencia
                 TipoPagador = "", // Cuando es mismo tomador asegurado 1 , cuando son diferentes 0
                 TxtFhInicio = quoteInfo.fec_efec_poliza.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture),
                 TxtFhFin = quoteInfo.fec_vcto_poliza.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture),
-                TxtProducto = "PTRI21CR2100000000020P",
+                TxtProducto = "",
                 TxtDivisaProducto = "",
-                IdRegProducto = "1048",
+                IdRegProducto = "",
                 TxtComentario = "",
                 IdRegFranquicia = "-1",
                 IdRegDivisaProducto = "-1",
                 IdRegRegion = "-1",
-                TxtFHExpiracion = "02/12/2021",
+                TxtFHExpiracion = quoteInfo.fec_vcto_poliza.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture),
                 IdRegProductoComisionVariable = "",
                 TxtCodDealer = "DL0001S", //Ligado al usuario en este caso se tiene monge por default
                 TxtFhCambioDivisa = "",
@@ -133,6 +133,235 @@ namespace Architect.WS.Integrations.PanamaAsistencia
             else
             {
                 policyData.TipoPagador = "0";
+            }
+
+            //Codigo de Producto
+            switch (quoteInfo.COD_MODALIDAD)
+            {
+                case 44110: // BRONCE
+                    if (quoteInfo.TIP_PLAN == "F")                              // FAMILIAR
+                    {
+                        policyData.TxtProducto = "PTRI21CR2100000000020BF";
+                        policyData.IdRegProducto = "1071";
+
+                        if (quoteInfo.TIP_VIAJE == "N") // Nacional
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020N";
+                            policyData.IdRegProducto = "1127";
+                        }
+                    }
+                    else                                                        // INDIVIDUAL - TERCERO
+                    {
+                        if (quoteInfo.TIP_VIAJE == "R") //Receptivo
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020BR";
+                            policyData.IdRegProducto = "1114";
+                        }
+                        else if (quoteInfo.TIP_VIAJE == "E") // Estudio
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020BE";
+                            policyData.IdRegProducto = "1108";
+                        }
+                        else if (quoteInfo.TIP_VIAJE == "P")  // Placer -
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020B";
+                            policyData.IdRegProducto = "1065";
+                        }
+                        else   // Nacional
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020N";
+                            policyData.IdRegProducto = "1127";
+                        }
+
+                    }
+                   
+                break;
+                case 44111: //BRONCE PLUS
+                    if (quoteInfo.TIP_PLAN == "F")                              // FAMILIAR
+                    {
+                        policyData.TxtProducto = "PTRI21CR2100000000020BPF";
+                        policyData.IdRegProducto = "1070";
+
+                        if (quoteInfo.TIP_VIAJE == "N") // Nacional
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020N";
+                            policyData.IdRegProducto = "1127";
+                        }
+                    }
+                    else                                                        // INDIVIDUAL - TERCERO
+                    {
+                        if (quoteInfo.TIP_VIAJE == "R") //Receptivo
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020BPR";
+                            policyData.IdRegProducto = "1113";
+                        }
+                        else if (quoteInfo.TIP_VIAJE == "E") // Estudio
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020BPE";
+                            policyData.IdRegProducto = "1107";
+                        }
+                        else if (quoteInfo.TIP_VIAJE == "P")  // Placer 
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020BP";
+                            policyData.IdRegProducto = "1064";
+                        }
+                        else // Nacional
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020N";
+                            policyData.IdRegProducto = "1127";
+                        }
+
+                    }
+                    break;
+                case 44112: // SILVER PLUS
+                    if (quoteInfo.TIP_PLAN == "F")                              // FAMILIAR
+                    {
+                        policyData.TxtProducto = "PTRI21CR2100000000020SPF";
+                        policyData.IdRegProducto = "1069";
+
+                        if (quoteInfo.TIP_VIAJE == "N") // Nacional
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020N";
+                            policyData.IdRegProducto = "1127";
+                        }
+                    }
+                    else                                                        // INDIVIDUAL - TERCERO
+                    {
+                        if (quoteInfo.TIP_VIAJE == "R") //Receptivo
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020SPR";
+                            policyData.IdRegProducto = "1112";
+                        }
+                        else if (quoteInfo.TIP_VIAJE == "E") // Estudio
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020SPE";
+                            policyData.IdRegProducto = "1106";
+                        }
+                        else if (quoteInfo.TIP_VIAJE == "P")  // Placer 
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020SP";
+                            policyData.IdRegProducto = "1063";
+                        }
+                        else // Nacional
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020N";
+                            policyData.IdRegProducto = "1127";
+                        }
+
+                    }
+                    break;
+                case 44113: // GOLD pLUS
+                    if (quoteInfo.TIP_PLAN == "F")                              // FAMILIAR
+                    {
+                        policyData.TxtProducto = "PTRI21CR2100000000020GPF";
+                        policyData.IdRegProducto = "1068";
+
+                        if (quoteInfo.TIP_VIAJE == "N") // Nacional
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020N";
+                            policyData.IdRegProducto = "1127";
+                        }
+                    }
+                    else                                                        // INDIVIDUAL - TERCERO
+                    {
+                        if (quoteInfo.TIP_VIAJE == "R") //Receptivo
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020GPR";
+                            policyData.IdRegProducto = "1111";
+                        }
+                        else if (quoteInfo.TIP_VIAJE == "E") // Estudio
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020GPE";
+                            policyData.IdRegProducto = "1105";
+                        }
+                        else if (quoteInfo.TIP_VIAJE == "P")  // Placer 
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020GP";
+                            policyData.IdRegProducto = "1062";
+                        }
+                        else // Nacional
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020N";
+                            policyData.IdRegProducto = "1127";
+                        }
+
+                    }
+                    break;
+                case 44114: // PLATINUM PLUS
+                    if (quoteInfo.TIP_PLAN == "F")                              // FAMILIAR
+                    {
+                        policyData.TxtProducto = "PTRI21CR2100000000020PPF";
+                        policyData.IdRegProducto = "1067";
+
+                        if (quoteInfo.TIP_VIAJE == "N") // Nacional
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020N";
+                            policyData.IdRegProducto = "1127";
+                        }
+                    }
+                    else                                                        // INDIVIDUAL - TERCERO
+                    {
+                        if (quoteInfo.TIP_VIAJE == "R") //Receptivo
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020PPR";
+                            policyData.IdRegProducto = "1110";
+                        }
+                        else if (quoteInfo.TIP_VIAJE == "E") // Estudio
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020PPE";
+                            policyData.IdRegProducto = "1104";
+                        }
+                        else if (quoteInfo.TIP_VIAJE == "P")  // Placer 
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020PP";
+                            policyData.IdRegProducto = "1061";
+                        }
+                        else // Nacional
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020N";
+                            policyData.IdRegProducto = "1127";
+                        }
+
+                    }
+                    break;
+                case 44115: // PREMIUM
+                    if (quoteInfo.TIP_PLAN == "F")                              // FAMILIAR
+                    {
+                        policyData.TxtProducto = "PTRI21CR2100000000020PF";
+                        policyData.IdRegProducto = "1066";
+
+                        if (quoteInfo.TIP_VIAJE == "N") // Nacional
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020N";
+                            policyData.IdRegProducto = "1127";
+                        }
+                    }
+                    else                                                        // INDIVIDUAL - TERCERO
+                    {
+                        if (quoteInfo.TIP_VIAJE == "R") //Receptivo
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020PR";
+                            policyData.IdRegProducto = "1109";
+                        }
+                        else if (quoteInfo.TIP_VIAJE == "E") // Estudio
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020PE";
+                            policyData.IdRegProducto = "1103";
+                        }
+                        else if (quoteInfo.TIP_VIAJE == "P")  // Placer 
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020P";
+                            policyData.IdRegProducto = "1048";
+                        }
+                        else // Nacional
+                        {
+                            policyData.TxtProducto = "PTRI21CR2100000000020N";
+                            policyData.IdRegProducto = "1127";
+                        }
+
+                    }
+                    break;
+           
             }
 
             //RiskData
@@ -350,17 +579,12 @@ namespace Architect.WS.Integrations.PanamaAsistencia
             //lectura del xml de resultado 
             resultado = respuesta.Rows[0]["description"].ToString();
 
-            /*if (xml_result.Contains("file")){
-
-                XmlDocument XML = new XmlDocument();
-                XML.LoadXml(xml_result);
-                XmlNodeList elemlist = XML.GetElementsByTagName("file");
-                resultado = elemlist[0].InnerXml;
-            }
-            else
+            if (resultado.Contains("<file>"))
             {
-                resultado = xml_result;
-            }*/
+                int charPos = resultado.IndexOf("<file>") + 6;
+                resultado = resultado.Substring(charPos);          
+                resultado = resultado.Replace("</file>",string.Empty);
+            }
            
             return resultado;
         }

@@ -251,4 +251,6 @@
                   Viajero. Royner. Ajuste en calculo de numero de dias
                   Viajero. Royner. Ajuste en la cotizacion para agregar diferentes fechas de nacimiento, segun los numeros de riesgos
                   Vijero.  Royner. Se cambia Viajeros rules, para no solicitar documentacion antes de emitir.
+                  Viajero. Royner. Se hace homologacion de tipos de productos en Phoenix con los planes, tipo viaje y modalidad seleccionado
+                                   de emision en TRON.
                   
