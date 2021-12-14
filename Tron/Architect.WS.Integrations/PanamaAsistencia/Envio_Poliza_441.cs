@@ -72,7 +72,7 @@ namespace Architect.WS.Integrations.PanamaAsistencia
         //Envio de la Poliza
         
 
-        public static string envio_XML(string token, Architect.API.Tron.Contracts.Emision.Viajero quoteInfo,  Architect.API.Tron.Contracts.Emision.Viajero resultQuoteInfo)
+        public static string envio_XML(string token, Architect.API.Tron.Contracts.Emision.Viajero quoteInfo,  Architect.API.Tron.Contracts.Emision.Viajero resultQuoteInfo, string dealer)
         {
             string xml = "";
             string resultado = "";
@@ -101,7 +101,7 @@ namespace Architect.WS.Integrations.PanamaAsistencia
                 IdRegRegion = "-1",
                 TxtFHExpiracion = quoteInfo.fec_vcto_poliza.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture),
                 IdRegProductoComisionVariable = "",
-                TxtCodDealer = "DL0001S", //Ligado al usuario en este caso se tiene monge por default
+                TxtCodDealer = dealer,//"DL0001S", //Ligado al usuario en este caso se tiene monge por default
                 TxtFhCambioDivisa = "",
                 TxtCodPromocion = "",
                 TxtSufijo = "PTRI",

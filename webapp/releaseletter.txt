@@ -253,4 +253,6 @@
                   Vijero.  Royner. Se cambia Viajeros rules, para no solicitar documentacion antes de emitir.
                   Viajero. Royner. Se hace homologacion de tipos de productos en Phoenix con los planes, tipo viaje y modalidad seleccionado
                                    de emision en TRON.
+       14/12/2021 Viajero. Royner. Se agregan credenciales y dealer de diferentes usuarios para la emision en Warranty. Queda pendiente el manejo por config.
+
                   
