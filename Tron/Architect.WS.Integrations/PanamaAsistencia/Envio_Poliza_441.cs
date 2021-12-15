@@ -21,6 +21,7 @@ namespace Architect.WS.Integrations.PanamaAsistencia
         {
             string xml_result;
             string token;
+
             try
             {
                 //System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
@@ -36,18 +37,28 @@ namespace Architect.WS.Integrations.PanamaAsistencia
                 var result = ws.login(login.user, login.pass, login.country, login.remote_addr);
                 ws.Abort();
 
-                //lectura del xml de resultado 
                 xml_result = result.Rows[0]["description"].ToString();
-                XmlDocument xml = new XmlDocument();
-                xml.LoadXml(xml_result);
-                XmlNodeList elemlist = xml.GetElementsByTagName("token");
-                token = elemlist[0].InnerXml;
+
+                //lectura del xml de resultado 
+                if (xml_result.Contains("token"))
+                {
+                    xml_result = result.Rows[0]["description"].ToString();
+                    XmlDocument xml = new XmlDocument();
+                    xml.LoadXml(xml_result);
+                    XmlNodeList elemlist = xml.GetElementsByTagName("token");
+                    token = elemlist[0].InnerXml;
+
+                }
+                else
+                {
+                    token = xml_result;
+                }
 
                 return token;
             }
             catch (Exception ex)
             {
-                throw new FaultException(ex.Message);
+                return token = ex.Message;  //throw new FaultException(ex.Message);
             }
 
         }
@@ -77,6 +88,8 @@ namespace Architect.WS.Integrations.PanamaAsistencia
             string xml = "";
             string resultado = "";
             string xml_result;
+
+          try { 
 
             //Numero de Dias
             TimeSpan difFechas = quoteInfo.fec_vcto_poliza - quoteInfo.fec_efec_poliza;
@@ -587,6 +600,12 @@ namespace Architect.WS.Integrations.PanamaAsistencia
             }
            
             return resultado;
+          }
+
+            catch (Exception ex)
+            {
+                return resultado = ex.Message;  //throw new FaultException(ex.Message);
+            }
         }
 
 

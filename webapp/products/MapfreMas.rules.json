@@ -373,12 +373,12 @@
       "Condicion": "(({El Tipo de producto} sea igual a {Amplio}) o ({El Tipo de producto} sea igual a {Plus}) o ({El Tipo de producto} sea igual a {Oro}) o ({El Tipo de producto} sea igual a {Plata}) o ({El Tipo de producto} sea igual a {Trébol}) y {La Moneda} sea igual a {Dólares})",
       "Exclusion": "20000"
     },
-    {	
+    {
       "Nombre": "cod_fracc_pago",
       "Condicion": "(({El Tipo de producto} sea igual a {Básico}) o ({El Tipo de producto} sea igual a {Amplio}) o ({El Tipo de producto} sea igual a {Plus}) o ({El Tipo de producto} sea igual a {Oro}) o ({El Tipo de producto} sea igual a {Plata}) o ({El Tipo de producto} sea igual a {Trébol}) o ({El Tipo de producto} sea igual a {Trébol RC}))",
       "Exclusion": "26"
     },
-	{
+    {
       "Nombre": "MM_ClaseVehiculos",
       "Condicion": "(({El Tipo de producto} sea igual a {Básico}) o ({El Tipo de producto} sea igual a {Amplio}) o ({El Tipo de producto} sea igual a {Plus}) o ({El Tipo de producto} sea igual a {Oro}) o ({El Tipo de producto} sea igual a {Trébol}) o ({El Tipo de producto} sea igual a {Trébol RC})) ",
       "Exclusion": "5"
@@ -447,15 +447,22 @@
       "Mensaje": "Para el Plan Trébol RC el año del vehículo no debe ser superior a 10 años de antigüedad",
       "Campo": "ANIO_SUB_MODELO"
     },
-	 {
+    {
       "Condicion": "{El Rol del usuario sea igual a Cotizadores} y {El Rol del usuario no sea igual a Privilegios} y {La Moneda} sea igual a {Dólares} y {El Valor del vehículo} sea mayor a 70000",
       "Mensaje": "El valor del vehículo debe ser menor o igual a 70.000 dólares",
       "Campo": "IMP_VR"
     },
-	 {
+    {
       "Condicion": "{El Rol del usuario sea igual a Cotizadores} y {El Rol del usuario no sea igual a Privilegios} y {La Moneda} sea igual a {Colones} y {El Valor del vehículo} sea mayor a 45500000",
       "Mensaje": "El valor del vehículo debe ser menor o igual a 45 500 000 colones",
       "Campo": "IMP_VR"
+    },
+    {
+      "Condicion": "({El Tipo de producto} sea igual a \"trebol\") y !((data.coberturas.Any(r => r.codigo == 3002 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3003 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3004 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3005 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3006 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3007 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3008 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3009 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3014 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3015 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 1060 && r.seleccionado)))",
+      "Mensaje": "Debe seleccionar al menos una cobertura adicional",
+      "Campo": "coberturasTbl",
+      "Grupo": "Table"
     }
+
   ]
 }

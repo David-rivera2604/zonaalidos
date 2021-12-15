@@ -53,61 +53,85 @@ namespace Architect.API.Tron.Business.Emision
                 if (tokenInfo.Roles.Contains("Grupo_Monge"))
                 { 
                 var token_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.login(ConfigurationManager.AppSettings["Warranty.User.Monge"], ConfigurationManager.AppSettings["Warranty.Pass.Monge"]);
-                var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, "DL0001Q"); //Test- "DL0001S"
+                var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, ConfigurationManager.AppSettings["Warranty.Dealer.Monge"]); //Test- "DL0001S" //PRD: DL0001Q
                     resultQuoteInfo.envio_asistencia = envio_poliza_panama;
                 }
                 if (tokenInfo.Roles.Contains("Mapfre"))
                 {
                     var token_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.login(ConfigurationManager.AppSettings["Warranty.User.Mapfre"], ConfigurationManager.AppSettings["Warranty.Pass.Mapfre"]);
-                    var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, "RA03");
+                    var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, ConfigurationManager.AppSettings["Warranty.Dealer.Mapfre"]);
                     resultQuoteInfo.envio_asistencia = envio_poliza_panama;
                 }
                 if (tokenInfo.Roles.Contains("Confia"))
                 {
                     var token_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.login(ConfigurationManager.AppSettings["Warranty.User.Confia"], ConfigurationManager.AppSettings["Warranty.Pass.Confia"]);
-                    var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, "CONFICR");
+                    var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, ConfigurationManager.AppSettings["Warranty.Dealer.Confia"]);
                     resultQuoteInfo.envio_asistencia = envio_poliza_panama;
                 }
                 if (tokenInfo.Roles.Contains("Innova"))
                 {
                     var token_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.login(ConfigurationManager.AppSettings["Warranty.User.Innova"], ConfigurationManager.AppSettings["Warranty.Pass.Innova"]);
-                    var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, "INNOCR");
+                    var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, ConfigurationManager.AppSettings["Warranty.Dealer.Innova"]);
                     resultQuoteInfo.envio_asistencia = envio_poliza_panama;
                 }
                 if (tokenInfo.Roles.Contains("Martha"))
                 {
                     var token_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.login(ConfigurationManager.AppSettings["Warranty.User.Martha"], ConfigurationManager.AppSettings["Warranty.Pass.Martha"]);
-                    var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, "MARTHA");
+                    var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, ConfigurationManager.AppSettings["Warranty.Dealer.Martha"]);
                     resultQuoteInfo.envio_asistencia = envio_poliza_panama;
                 }
                 if (tokenInfo.Roles.Contains("Prisma"))
                 {
                     var token_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.login(ConfigurationManager.AppSettings["Warranty.User.Prisma"], ConfigurationManager.AppSettings["Warranty.Pass.Prisma"]);
-                    var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, "PRCR");
+                    var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, ConfigurationManager.AppSettings["Warranty.Dealer.Prisma"]);
                     resultQuoteInfo.envio_asistencia = envio_poliza_panama;
                 }
                 if (tokenInfo.Roles.Contains("GSI"))
                 {
                     var token_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.login(ConfigurationManager.AppSettings["Warranty.User.GSI"], ConfigurationManager.AppSettings["Warranty.Pass.GSI"]);
-                    var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, "GSICR");
+                    var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, ConfigurationManager.AppSettings["Warranty.Dealer.GSI"]);
                     resultQuoteInfo.envio_asistencia = envio_poliza_panama;
                 }
                  if (tokenInfo.Roles.Contains("IBG"))
                 {
                     var token_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.login(ConfigurationManager.AppSettings["Warranty.User.IBG"], ConfigurationManager.AppSettings["Warranty.Pass.IBG"]);
-                    var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, "IBGCR");
+                    var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, ConfigurationManager.AppSettings["Warranty.Dealer.IBG"]);
                     resultQuoteInfo.envio_asistencia = envio_poliza_panama;
                 }
                 if (tokenInfo.Roles.Contains("Metropolitanos"))
                 {
                     var token_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.login(ConfigurationManager.AppSettings["Warranty.User.Metropolitanos"], ConfigurationManager.AppSettings["Warranty.Pass.Metropolitanos"]);
-                    var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, "MTRCR");
+                    var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, ConfigurationManager.AppSettings["Warranty.Dealer.Metropolitanos"]);
                     resultQuoteInfo.envio_asistencia = envio_poliza_panama;
                 }
                 if (tokenInfo.Roles.Contains("Proteccion"))
                 {
                     var token_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.login(ConfigurationManager.AppSettings["Warranty.User.Proteccion"], ConfigurationManager.AppSettings["Warranty.Pass.Proteccion"]);
-                    var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, "PROTCR");
+                    var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, ConfigurationManager.AppSettings["Warranty.Dealer.Proteccion"]);
+                    resultQuoteInfo.envio_asistencia = envio_poliza_panama;
+                }
+                if (tokenInfo.Roles.Contains("Popular"))
+                {
+                    var token_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.login(ConfigurationManager.AppSettings["Warranty.User.Popular"], ConfigurationManager.AppSettings["Warranty.Pass.Popular"]);
+                    var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, ConfigurationManager.AppSettings["Warranty.Dealer.Popular"]);
+                    resultQuoteInfo.envio_asistencia = envio_poliza_panama;
+                }
+                if (tokenInfo.Roles.Contains("Davivienda"))
+                {
+                    var token_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.login(ConfigurationManager.AppSettings["Warranty.User.Davivienda"], ConfigurationManager.AppSettings["Warranty.Pass.Davivienda"]);
+                    var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, ConfigurationManager.AppSettings["Warranty.Dealer.Davivienda"]);
+                    resultQuoteInfo.envio_asistencia = envio_poliza_panama;
+                }
+                if (tokenInfo.Roles.Contains("Coopeservidores"))
+                {
+                    var token_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.login(ConfigurationManager.AppSettings["Warranty.User.Coopeservidores"], ConfigurationManager.AppSettings["Warranty.Pass.Coopeservidores"]);
+                    var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, ConfigurationManager.AppSettings["Warranty.Dealer.Coopeservidores"]);
+                    resultQuoteInfo.envio_asistencia = envio_poliza_panama;
+                }
+                if (tokenInfo.Roles.Contains("Comercial"))
+                {
+                    var token_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.login(ConfigurationManager.AppSettings["Warranty.User.Comercial"], ConfigurationManager.AppSettings["Warranty.Pass.Comercial"]);
+                    var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, ConfigurationManager.AppSettings["Warranty.Dealer.Comercial"]);
                     resultQuoteInfo.envio_asistencia = envio_poliza_panama;
                 }
             }
