@@ -16,13 +16,14 @@ namespace Architect.API.Tron.DataAccess
         {
             Architect.API.Tron.Contracts.Poliza.DatoFijo a2000030Instance = PP_Lee_A2000030(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
 
-            if (loadChilds)
+            if (a2000030Instance!= null && loadChilds)
             {
                 if (filter == "full")
                 {
                     a2000030Instance.Riesgos = PP_Lee_A2000031(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
                     a2000030Instance.DatosVariables = PP_Lee_A2000020(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
                     a2000030Instance.Ocurrencias = PP_Lee_A2000025(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
+                    a2000030Instance.DesgloseEconomico = PP_Lee_A2100170(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
                     a2000030Instance.Coberturas = PP_Lee_A2000040(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
                     a2000030Instance.Terceros = PP_Lee_A2000060(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
                     a2000030Instance.Recibos = PP_Lee_A2990700(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
@@ -504,5 +505,39 @@ namespace Architect.API.Tron.DataAccess
             return result;
         }
 
+        internal static List<Contracts.Poliza.DesgloseEconomico> PP_Lee_A2100170(int cod_cia, string num_poliza, int num_spto, int num_apli, int num_spto_apli, IDbConnection currentConnection)
+        {
+            List<Contracts.Poliza.DesgloseEconomico> result = new List<Contracts.Poliza.DesgloseEconomico>();
+            Database.Procedure("EM_K_MAPFRE_BATCH_CONTRACT_MCR.PP_LEE_A2100170")
+                                           .AddParameter("P_COD_CIA", Architect.DataFactory.Enumerations.DbType.Int32, 22, cod_cia)
+                                           .AddParameter("P_NUM_POLIZA", Architect.DataFactory.Enumerations.DbType.String, 13, num_poliza)
+                                           .AddParameter("P_NUM_SPTO", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_spto)
+                                           .AddParameter("P_NUM_APLI", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_apli)
+                                           .AddParameter("P_NUM_SPTO_APLI", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_spto_apli)
+                                           .AddParameter("RC1", Architect.DataFactory.Enumerations.DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
+                                           .Query(currentConnection, new Action<IDataReader>((reader) =>
+                                           {
+                                               result.Add(new Contracts.Poliza.DesgloseEconomico()
+                                               {
+                                                   cod_cia = reader.IntegerValue("cod_cia"),
+                                                   num_poliza = reader.StringValue("num_poliza"),
+                                                   num_spto = reader.IntegerValue("num_spto"),
+                                                   num_apli = reader.IntegerValue("num_apli"),
+                                                   num_spto_apli = reader.IntegerValue("num_spto_apli"),
+                                                   num_riesgo = reader.IntegerValue("num_riesgo"),
+                                                   num_periodo = reader.IntegerValue("num_periodo"),
+                                                   cod_cob = reader.IntegerValue("cod_cob"),
+                                                   cod_desglose = reader.IntegerValue("cod_desglose"),
+                                                   cod_eco = reader.IntegerValue("cod_eco"),
+                                                   num_bloque_estudio = reader.IntegerValue("num_bloque_estudio"),
+                                                   imp_acumulado_anual = reader.IntegerValue("imp_acumulado_anual"),
+                                                   imp_spto = reader.IntegerValue("imp_spto"),
+                                                   imp_no_consumido = reader.IntegerValue("imp_no_consumido"),
+                                                   imp_anual = reader.IntegerValue("imp_anual"),
+                                                   cod_ramo = reader.IntegerValue("cod_ramo")
+                                               });
+                                           }));
+            return result;
+        }
     }
 }

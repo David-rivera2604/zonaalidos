@@ -83,6 +83,8 @@ namespace Architect.API.Tron.Business.Cotizacion
                 Architect.API.Tron.Contracts.Presupuesto.DatoFijo quoteTron = MultirriesgoConvertTo.Tron(quoteInfo, IsCoope, COD_RAMO, tokenInfo.AgentCode, tokenInfo.UserName);
                 //Architect.Common.Helpers.Serialize.SerializeToFile<Architect.API.Tron.Contracts.Batch.p2000030>(result, @"C:\temp\Multirriesgo.in.xml");
 
+                //Utilities.SerializeHandler<Architect.API.Tron.Contracts.Presupuesto.DatoFijo>.SerializeJSONToFile(quoteTron, string.Format(@"c:\temp\multi.rriesgo.proposal.json"), true, false, false);
+
                 Architect.API.Tron.Contracts.Presupuesto.DatoFijo resultTron = Backoffice.Cotizacion.Generico.Calcular(quoteTron);
                 resultInfo = MultirriesgoConvertFrom.Quote(quoteInfo, resultTron);
 

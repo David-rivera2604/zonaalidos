@@ -17,6 +17,21 @@ namespace Architect.API.Tron.Controllers
     public class PolizaController : ApiController
     {
 
+        [HttpPost]
+        [Route("Emitir")]
+        [Authorize]
+        public async Task<IHttpActionResult> Emitir([FromBody] Architect.API.Tron.Contracts.Presupuesto.API.Presupuesto presupuesto)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Contracts.Poliza.API.Poliza result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Cotizacion.API.Issue(presupuesto, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
         /// <summary>
         /// Recupera la información de una póliza
         /// </summary>

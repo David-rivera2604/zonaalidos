@@ -109,7 +109,7 @@ namespace Architect.API.Tron.Contracts.Poliza
         public int num_renovaciones { get; set; }
 
         /// <summary>
-        ///  Tipo de coaseguro
+        ///  Tipo de coa-seguro
         /// </summary>
         public int tip_coaseguro { get; set; }
 
@@ -399,7 +399,7 @@ namespace Architect.API.Tron.Contracts.Poliza
         public DateTime fec_actu { get; set; }
 
         /// <summary>
-        ///  La aplicación se reasegura como la marco
+        ///  La aplicación se rea-segura como la marco
         /// </summary>
         public string mca_reaseguro_marco { get; set; }
 
@@ -419,7 +419,7 @@ namespace Architect.API.Tron.Contracts.Poliza
         public int cod_dst_agt { get; set; }
 
         /// <summary>
-        ///  Cuadro de coaseguro
+        ///  Cuadro de coa-seguro
         /// </summary>
         public string cod_cuadro_coa { get; set; }
 
@@ -444,7 +444,7 @@ namespace Architect.API.Tron.Contracts.Poliza
         public string hora_desde { get; set; }
 
         /// <summary>
-        ///  Número de subcontrato
+        ///  Número de sub-contrato
         /// </summary>
         public int num_subcontrato { get; set; }
 
@@ -479,6 +479,12 @@ namespace Architect.API.Tron.Contracts.Poliza
         /// </summary>
         public string tip_mvto_batch { get; set; }
 
+
+        /// <summary>
+        ///  Procesos masivos (G2000510)
+        /// </summary>
+        public Batch.Proceso DatosDelProceso { get; set; }
+
         /// <summary>
         /// Riesgos de la póliza (A2000031)
         /// </summary>
@@ -495,6 +501,11 @@ namespace Architect.API.Tron.Contracts.Poliza
         public List<Ocurrencia> Ocurrencias { get; set; }
 
         /// <summary>
+        ///  Conceptos de desglose económico (a2100170)
+        /// </summary>
+        public List<DesgloseEconomico> DesgloseEconomico { get; set; }
+
+        /// <summary>
         ///  Terceros de la póliza (A2000060)
         /// </summary>
         public List<Tercero> Terceros { get; set; }
@@ -508,11 +519,6 @@ namespace Architect.API.Tron.Contracts.Poliza
         ///  Recibos/cuotas de una póliza (A2990700)
         /// </summary>
         public List<Recibo> Recibos { get; set; }
-
-        /// <summary>
-        ///  Procesos masivos (G2000510)
-        /// </summary>
-        public Batch.Proceso DatosDelProceso { get; set; }
 
         public Calculado Calculado { get; set; }
 

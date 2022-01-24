@@ -24,9 +24,9 @@
   <DataEntrySectionsAllowed>
     <DataEntrySection code="Insured" description="Asegurado" required="true" />
     <DataEntrySection code="Questionnaires" description="Cuestionario de Salud" />
-    <DataEntrySection code="Covid" description="Cuestionario de Covid" />
+    <DataEntrySection code="Covid" description="Cuestionario de Covid" active="true" />
     <DataEntrySection code="Beneficiaries" description="Beneficiarios" required="true" />
-    <DataEntrySection code="Policy" description="Póliza" required="true" />
+    <DataEntrySection code="Policy" description="Póliza" required="true"/>
     <DataEntrySection code="Attachments" description="Adjuntos" />
   </DataEntrySectionsAllowed>
   <Underwriting>

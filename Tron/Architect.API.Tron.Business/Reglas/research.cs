@@ -1,6 +1,7 @@
 ﻿using Architect.API.Tron.Contracts.Emision;
 using Architect.API.Tron.Contracts.Especificacion;
 using Architect.Utilities.Extensions;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -14,70 +15,30 @@ namespace Architect.API.Tron.Business.Reglas
 
     public static class research
     {
-
-        public static Contracts.Especificacion.Producto UpdateProducto(string ruleFile, Contracts.Especificacion.Producto def)
-        {
-
-            foreach (Architect.API.Tron.Contracts.Especificacion.Regla rule in def.Reglas)
-            {
-                rule.Id = null;
-                if (rule.Grupo.IsEmpty())
-                {
-                    rule.Grupo = null;
-                }
-
-                if (rule.Descripcion == rule.Mensaje)
-                {
-                    rule.Descripcion = null;
-                }
-            }
-
-            Utilities.SerializeHandler<Architect.API.Tron.Contracts.Especificacion.Producto>.SerializeJSONToFile(def,
-                ConfigurationManager.AppSettings["Product.Definition.Path"] + @"\" + ruleFile + ".rules.json", false, false, true);
-
-            return def;
-        }
-
-        public static Contracts.Especificacion.Producto GetProducto(string ruleFile)
-        {
-            Contracts.Especificacion.Producto def = Utilities.SerializeHandler<Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
-            int index = 1;
-            foreach (Architect.API.Tron.Contracts.Especificacion.Cobertura cobertura in def.Coberturas)
-            {
-                cobertura.Id = index++;
-                if (cobertura.Descripcion.IsEmpty())
-                {
-                    cobertura.Descripcion = cobertura.Condicion.Replace("{", "").Replace("}", "");
-                }
-            }
-            foreach (Architect.API.Tron.Contracts.Especificacion.Lista lista in def.Listas)
-            {
-                lista.Id = index++;
-                if (lista.Descripcion.IsEmpty())
-                {
-                    lista.Descripcion = lista.Condicion.Replace("{","").Replace("}","");
-                }
-            }
-            foreach (Architect.API.Tron.Contracts.Especificacion.Regla rule in def.Reglas)
-            {
-                rule.Id = index++;
-                if (rule.Descripcion.IsEmpty())
-                {
-                    rule.Descripcion = rule.Mensaje;
-                }
-            }
-
-
-            return def;
-        }
-
         public static string Apply_Listas(string ruleFile, object data, string keyword, Core.Contracts.Security.Token tokenInfo)
         {
-            Contracts.Especificacion.Producto def = Utilities.SerializeHandler<Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
+            string key = $"{ruleFile}.listas";
+            string cacheKey = $"decision.{ruleFile}.listas.source";
+            string script = string.Empty;
             string result = string.Empty;
-            if (def.Reglas?.Count > 0)
+
+            if (Utilities.Cache.Exist(cacheKey))
             {
-                result = Architect.API.Core.Business.General.Rule.ApplyCoverages(ruleFile, BuildListasCode(ruleFile, data, def.Listas), data, keyword, tokenInfo).Result;
+                script = ((string)Utilities.Cache.GetItem(cacheKey));
+            }
+            else
+            {
+                Contracts.Especificacion.Producto def = Utilities.SerializeHandler<Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
+
+                if (def.Reglas?.Count > 0)
+                {
+                    script = BuildListasCode(ruleFile, data, def.Listas, keyword);
+                    Utilities.Cache.SetItem(cacheKey, script);
+                }
+            }
+            if (script.IsNotEmpty())
+            {
+                result = (string)Decision.Runtime.Execute(key, script, data, tokenInfo, null, null, new Dictionary<string, string>() { { "keyword", keyword } })["exclude"];
             }
             if (result == null)
             {
@@ -85,7 +46,7 @@ namespace Architect.API.Tron.Business.Reglas
             }
             return result;
         }
-        internal static string BuildListasCode(string ruleFile, object data, List<Lista> listas)
+        internal static string BuildListasCode(string ruleFile, object data, List<Lista> listas, string keyword)
         {
             string basePath = ConfigurationManager.AppSettings["Product.Definition.Path"];
             Architect.Decision.Vocabulary.Condition _rule = new Architect.Decision.Vocabulary.Condition(
@@ -98,18 +59,35 @@ namespace Architect.API.Tron.Business.Reglas
 
             foreach (Architect.API.Tron.Contracts.Especificacion.Lista lista in listas)
             {
-                script.AppendFormat("if(keyword==\"{2}\" && {0}){{exclude=\"{1}\";}}\n", _rule.Parser(lista.Condicion), lista.Exclusion, lista.Nombre);
+                script.AppendFormat("if(extend[\"keyword\"]==\"{2}\" && ({0})){{exclude=\"{1}\";}}\n", _rule.Parser(lista.Condicion), lista.Exclusion, lista.Nombre);
             }
             return script.ToString();
         }
 
         public static string Apply_Coberturas(string ruleFile, object data, Core.Contracts.Security.Token tokenInfo)
         {
-            Contracts.Especificacion.Producto def = Utilities.SerializeHandler<Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
+            string key = $"{ruleFile}.coberturas";
+            string cacheKey = $"decision.{ruleFile}.coberturas.source";
+            string script = string.Empty;
             string result = string.Empty;
-            if (def.Reglas?.Count > 0)
+
+            if (Utilities.Cache.Exist(cacheKey))
             {
-                result = Architect.API.Core.Business.General.Rule.ApplyCoverages(ruleFile, BuildCoveragesCode(ruleFile, data, def.Coberturas), data, null, tokenInfo).Result;
+                script = ((string)Utilities.Cache.GetItem(cacheKey));
+            }
+            else
+            {
+                Contracts.Especificacion.Producto def = Utilities.SerializeHandler<Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
+                if (def.Reglas?.Count > 0)
+                {
+                    script = BuildCoveragesCode(ruleFile, data, def.Coberturas);
+                }
+            }
+
+            if (script.IsNotEmpty())
+            {
+                // result = Architect.API.Core.Business.General.Rule.ApplyCoverages(ruleFile, script, data, null, tokenInfo).Result;
+                result = (string)Decision.Runtime.Execute(key, script, data, tokenInfo, null, null)["exclude"];
             }
             if (result == null)
             {
@@ -136,12 +114,30 @@ namespace Architect.API.Tron.Business.Reglas
         }
         public static List<Architect.API.Core.Contracts.General.Error> Apply_Reglas(string ruleFile, object data, Core.Contracts.Security.Token tokenInfo)
         {
-            Contracts.Especificacion.Producto def = Utilities.SerializeHandler<Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
-            List<Architect.API.Core.Contracts.General.Error> errors = null;
-            if (def.Reglas?.Count > 0)
+            string key = $"{ruleFile}.reglas";
+            string cacheKey = $"decision.{ruleFile}.reglas.source";
+            string script = string.Empty;
+            List<Core.Contracts.General.Error> errors = null;
+
+            if (Utilities.Cache.Exist(cacheKey))
             {
-                errors = Architect.API.Core.Business.General.Rule.ApplyRules(ruleFile, BuildRulesCode(ruleFile, data, def.Reglas), data, tokenInfo).Result;
+                script = ((string)Utilities.Cache.GetItem(cacheKey));
             }
+            else
+            {
+                Contracts.Especificacion.Producto def = Utilities.SerializeHandler<Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
+
+                if (def.Reglas?.Count > 0)
+                {
+                    script = BuildRulesCode(ruleFile, data, def.Reglas);
+                    Utilities.Cache.SetItem(cacheKey, script);
+                }
+            }
+            if (script.IsNotEmpty())
+            {
+                errors = (List<Architect.API.Core.Contracts.General.Error>)Decision.Runtime.Execute(key, script, data, tokenInfo, null, null)["errors"];
+            }
+
             if (errors == null)
             {
                 errors = new List<Core.Contracts.General.Error>();
@@ -153,8 +149,8 @@ namespace Architect.API.Tron.Business.Reglas
         {
             string basePath = ConfigurationManager.AppSettings["Product.Definition.Path"];
             Architect.Decision.Vocabulary.Condition _rule = new Architect.Decision.Vocabulary.Condition(
-                $"{basePath}\\syntax.settings.json", 
-                $"{basePath}\\convention.settings.json", 
+                $"{basePath}\\syntax.settings.json",
+                $"{basePath}\\convention.settings.json",
                 $"{basePath}\\{ruleFile}.vocabulary.json");
 
             StringBuilder script = new StringBuilder();
@@ -360,177 +356,93 @@ namespace Architect.API.Tron.Business.Reglas
             return type;
         }
 
-        //internal static string ConditionParser(string ruleFile, string condition)
-        //{
-        //    string code = condition;
 
-        //    code = code.Replace("{el ", "{");
-        //    code = code.Replace("{El ", "{");
-        //    code = code.Replace("{La ", "{");
-        //    code = code.Replace("{la ", "{");
-        //    code = code.Replace(" sea ", " es ");
-        //    code = code.Replace(" Sea ", " es ");
-        //    code = code.Replace("{No tiene", "{No hay");
-        //    code = code.Replace("{no tiene", "{No hay");
 
-        //    MatchCollection parameterMatches = Regex.Matches(code, @"{(.+?)}"); // ([^)]*)
+        /// <summary>
+        /// Temporal
+        /// </summary>
+        public static Contracts.Especificacion.Producto UpdateProducto(string ruleFile, Contracts.Especificacion.Producto def)
+        {
 
-        //    foreach (Match paremeter in parameterMatches)
-        //    {
-        //        switch (paremeter.Value.ToLower())
-        //        {
-        //            case "{moneda}":
-        //                code = code.Replace(paremeter.Value, "data.cod_mon");
-        //                break;
-        //            case "{valor del vehículo}":
-        //            case "{valor del vehiculo}":
-        //                code = code.Replace(paremeter.Value, "data.IMP_VR");
-        //                break;
-        //            case "{marca del vehículo}":
-        //            case "{marca del vehiculo}":
-        //                code = code.Replace(paremeter.Value, "data.cod_marca");
-        //                break;
-        //            case "{año del vehículo}":
-        //            case "{año del vehiculo}":
-        //            case "{año de fabricación}":
-        //            case "{año de fabricacion}":
-        //                code = code.Replace(paremeter.Value, "data.ANIO_SUB_MODELO");
-        //                break;
-        //            case "{contrato}":
-        //                code = code.Replace(paremeter.Value, "data.contrato");
-        //                break;
-        //            case "{suma asegurada de colisión y vuelco}":
-        //            case "{suma asegurada de colision y vuelco}":
-        //                code = code.Replace(paremeter.Value, "data.IMP_AUTO_CYV");
-        //                break;
-        //            case "{suma asegurada de gastos médicos}":
-        //            case "{suma asegurada de gastos medicos}":
-        //                code = code.Replace(paremeter.Value, "data.IMP_AUTO_CYV");
-        //                break;
-        //            case "{suma asegurada de riesgos adicionales}":
-        //                code = code.Replace(paremeter.Value, "data.IMP_AUTO_RAD");
-        //                break;
-        //            case "{suma asegurada de robo}":
-        //                code = code.Replace(paremeter.Value, "data.IMP_AUTO_ROB");
-        //                break;
-        //            case "{plan}":
-        //                code = code.Replace(paremeter.Value, "data.COD_PLAN_AUTO");
-        //                break;
-        //            case "{tipo de producto}":
-        //                code = code.Replace(paremeter.Value, "data.tipo_prod");
-        //                break;
-        //        }
-        //    }
-        //    code = code.Replace(" y ", " && ");
-        //    code = code.Replace(" Y ", " && ");
-        //    code = code.Replace(" o ", " || ");
-        //    code = code.Replace(" O ", " || ");
-        //    code = code.Replace("No sea {", "!{");
-        //    code = code.Replace("no sea {", "!{");
-        //    code = code.Replace("es menor a ", " < ");
-        //    code = code.Replace("es mayor a ", " > ");
+            foreach (Architect.API.Tron.Contracts.Especificacion.Regla rule in def.Reglas)
+            {
+                rule.Id = null;
+                if (rule.Grupo.IsEmpty())
+                {
+                    rule.Grupo = null;
+                }
 
-        //    Match oldParemeter = null;
-        //    foreach (Match paremeter in parameterMatches)
-        //    {
-        //        switch (paremeter.Value.ToLower())
-        //        {
-        //            case "{básico}":
-        //            case "{basico}":
-        //                code = code.Replace(paremeter.Value, "31");
-        //                break;
-        //            case "{amplio}":
-        //                code = code.Replace(paremeter.Value, "32");
-        //                break;
-        //            case "{plus}":
-        //                code = code.Replace(paremeter.Value, "33");
-        //                break;
-        //            case "{oro}":
-        //                code = code.Replace(paremeter.Value, "34");
-        //                break;
-        //            case "{plata}":
-        //                code = code.Replace(paremeter.Value, "35");
-        //                break;
-        //            case "{trébol}":
-        //            case "{trebol}":
-        //                code = code.Replace(paremeter.Value, "36");
-        //                break;
-        //            case "{trébol rc}":
-        //            case "{trebol rc}":
-        //                if (oldParemeter?.Value.ToLower() == "{tipo de producto}")
-        //                    code = code.Replace(paremeter.Value, "\"trebolrc\"");
-        //                else
-        //                    code = code.Replace(paremeter.Value, "37");
-        //                break;
+                if (rule.Descripcion == rule.Mensaje)
+                {
+                    rule.Descripcion = null;
+                }
+            }
 
-        //            case "{colones}":
-        //            case "{colon}":
-        //                code = code.Replace(paremeter.Value, "1");
-        //                break;
-        //            case "{dolares}":
-        //            case "{dolar}":
-        //            case "{dólares}":
-        //            case "{dólar}":
-        //                code = code.Replace(paremeter.Value, "2");
-        //                break;
-        //            case "{no hay coberturas seleccionadas}":
-        //                code = code.Replace(paremeter.Value, "!data.coberturas.Any(r => r.seleccionado)");
-        //                break;
-        //            case "{hay coberturas seleccionadas}":
-        //                code = code.Replace(paremeter.Value, "data.coberturas.Any(r => r.seleccionado)");
-        //                break;
+            Utilities.SerializeHandler<Architect.API.Tron.Contracts.Especificacion.Producto>.SerializeJSONToFile(def,
+                ConfigurationManager.AppSettings["Product.Definition.Path"] + @"\" + ruleFile + ".rules.json", false, false, true);
 
-        //            default:
-        //                if (paremeter.Value.ToLower().StartsWith("{cobertura ") && paremeter.Value.ToLower().EndsWith(" es seleccionada}"))
-        //                {
-        //                    code = code.Replace(paremeter.Value, string.Format("data.coberturas.Any(r => r.codigo == {0} && r.seleccionado)", paremeter.Value.Substring(11, paremeter.Value.Length - 28).Trim()));
-        //                }
-        //                if (paremeter.Value.ToLower().StartsWith("{rol es igual a "))
-        //                {
-        //                    code = code.Replace(paremeter.Value, string.Format("token.Roles.Contain(\"{0}\")", paremeter.Value.Substring(16, paremeter.Value.Length - 17)));
-        //                }
-        //                if (paremeter.Value.ToLower().StartsWith("{rol del usuario es igual a "))
-        //                {
-        //                    code = code.Replace(paremeter.Value, string.Format("token.Roles.Contain(\"{0}\")", paremeter.Value.Substring(28, paremeter.Value.Length - 29)));
-        //                }
-        //                if (paremeter.Value.ToLower().StartsWith("{rol no es igual a "))
-        //                {
-        //                    code = code.Replace(paremeter.Value, string.Format("!token.Roles.Contain(\"{0}\")", paremeter.Value.Substring(19, paremeter.Value.Length - 20)));
-        //                }
-        //                if (paremeter.Value.ToLower().StartsWith("{rol del usuario no es igual a "))
-        //                {
-        //                    code = code.Replace(paremeter.Value, string.Format("!token.Roles.Contain(\"{0}\")", paremeter.Value.Substring(31, paremeter.Value.Length - 32)));
-        //                }
-        //                if (paremeter.Value.ToLower().EndsWith(" año de antigüedad}") || paremeter.Value.ToLower().EndsWith(" año de antiguedad}"))
-        //                {
-        //                    code = code.Replace(paremeter.Value, string.Format("(DateTime.Today.Year - {0})", paremeter.Value.Substring(1, paremeter.Value.Length - 20)));
-        //                }
-        //                if (paremeter.Value.ToLower().EndsWith(" años de antigüedad}") || paremeter.Value.ToLower().EndsWith(" años de antiguedad}"))
-        //                {
-        //                    code = code.Replace(paremeter.Value, string.Format("(DateTime.Today.Year - {0})", paremeter.Value.Substring(1, paremeter.Value.Length - 21)));
-        //                }
-        //                break;
-        //        }
-        //        oldParemeter = paremeter;
-        //    }
-        //    code = code.Replace(" no es igual a ", " != ");
-        //    code = code.Replace(" es diferente a ", " != ");
-        //    code = code.Replace(" es igual a ", " == ");
-        //    code = code.Replace(" es menor que ", " < ");
-        //    code = code.Replace(" es menor o igual que ", " <= ");
-        //    code = code.Replace(" es mayor que ", " > ");
-        //    code = code.Replace(" es mayor o igual que ", " >= ");
+            return def;
+        }
 
-        //    code = code.Replace(" no igual a ", " != ");
-        //    code = code.Replace(" diferente a ", " != ");
-        //    code = code.Replace(" igual a ", " == ");
-        //    code = code.Replace(" menor que ", " < ");
-        //    code = code.Replace(" menor o igual que ", " <= ");
-        //    code = code.Replace(" mayor que ", " > ");
-        //    code = code.Replace(" mayor o igual que ", " >= ");
-        //    return code;
-        //}
+        /// <summary>
+        /// Temporal
+        /// </summary>
+        public static List<Architect.Decision.Vocabulary.Vocabulary> GetVocabulario(string ruleFile)
+        {
+            string basePath = ConfigurationManager.AppSettings["Product.Definition.Path"];
+            List<Architect.Decision.Vocabulary.Vocabulary> vocabulary = Architect.Decision.Vocabulary.Condition.VocabularyLoad($"{basePath}\\{ruleFile}.vocabulary.json");
 
+            foreach (Architect.Decision.Vocabulary.Vocabulary item in vocabulary)
+            {
+                item.Language = null;
+            }
+
+            List<string> keyList = new List<string>();
+            JObject jsonObjS = JObject.Parse(System.IO.File.ReadAllText($"{basePath}\\syntax.settings.json", System.Text.Encoding.GetEncoding("iso-8859-1")));
+            Dictionary<string, string> dictObjS = jsonObjS.ToObject<Dictionary<string, string>>().OrderBy(obj => obj.Key).ToDictionary(obj => obj.Key, obj => obj.Value);
+            foreach (string key in dictObjS.Keys)
+            {
+                vocabulary.Add(new Decision.Vocabulary.Vocabulary() { Key = key, Description = key });
+            }
+
+            return vocabulary;
+        }
+
+        /// <summary>
+        /// Temporal
+        /// </summary>
+        public static Contracts.Especificacion.Producto GetProducto(string ruleFile)
+        {
+            Contracts.Especificacion.Producto def = Utilities.SerializeHandler<Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
+            int index = 1;
+            foreach (Architect.API.Tron.Contracts.Especificacion.Cobertura cobertura in def.Coberturas)
+            {
+                cobertura.Id = index++;
+                if (cobertura.Descripcion.IsEmpty())
+                {
+                    cobertura.Descripcion = cobertura.Condicion.Replace("{", "").Replace("}", "");
+                }
+            }
+            foreach (Architect.API.Tron.Contracts.Especificacion.Lista lista in def.Listas)
+            {
+                lista.Id = index++;
+                if (lista.Descripcion.IsEmpty())
+                {
+                    lista.Descripcion = lista.Condicion.Replace("{", "").Replace("}", "");
+                }
+            }
+            foreach (Architect.API.Tron.Contracts.Especificacion.Regla rule in def.Reglas)
+            {
+                rule.Id = index++;
+                if (rule.Descripcion.IsEmpty())
+                {
+                    rule.Descripcion = rule.Mensaje;
+                }
+            }
+
+
+            return def;
+        }
     }
 
 }

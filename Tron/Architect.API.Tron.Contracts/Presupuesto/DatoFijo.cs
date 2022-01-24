@@ -15,7 +15,7 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public int cod_cia { get; set; }
 
         /// <summary>
-        ///  Poliza
+        ///  Póliza
         /// </summary>
         public string num_poliza { get; set; }
 
@@ -30,7 +30,7 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public int num_apli { get; set; }
 
         /// <summary>
-        ///  Suplemento de la aplicacion
+        ///  Suplemento de la aplicación
         /// </summary>
         public int num_spto_apli { get; set; }
 
@@ -50,12 +50,12 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public DateTime fec_validez { get; set; }
 
         /// <summary>
-        ///  Fecha de contabilizacion inicial
+        ///  Fecha de contabilización inicial
         /// </summary>
         public DateTime fec_emision { get; set; }
 
         /// <summary>
-        ///  Fecha de contabilizacion del suplemento
+        ///  Fecha de contabilización del suplemento
         /// </summary>
         public DateTime fec_emision_spto { get; set; }
 
@@ -100,7 +100,7 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public int cod_fracc_pago { get; set; }
 
         /// <summary>
-        ///  Número maximo de renovaciones que tendra la póliza
+        ///  Número máximo de renovaciones que tendrá la póliza
         /// </summary>
         public int cant_renovaciones { get; set; }
 
@@ -110,7 +110,7 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public int num_renovaciones { get; set; }
 
         /// <summary>
-        ///  Tipo de coaseguro
+        ///  Tipo de coa-seguro
         /// </summary>
         public int tip_coaseguro { get; set; }
 
@@ -253,32 +253,32 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public string mca_regulariza { get; set; }
 
         /// <summary>
-        ///  Forma de revalorizacion
+        ///  Forma de re-valorización
         /// </summary>
         public string tip_regulariza { get; set; }
 
         /// <summary>
-        ///  Porcentaje de revalorizacion
+        ///  Porcentaje de re-valorización
         /// </summary>
         public double pct_regulariza { get; set; }
 
         /// <summary>
-        ///  Indice de revalorizacion
+        ///  Indice de re-valorización
         /// </summary>
         public int cod_indice { get; set; }
 
         /// <summary>
-        ///  Anos de duracion de la póliza
+        ///  Anos de duración de la póliza
         /// </summary>
         public int anios_max_duracion { get; set; }
 
         /// <summary>
-        ///  Meses de duracion de la solicitud
+        ///  Meses de duración de la solicitud
         /// </summary>
         public int meses_max_duracion { get; set; }
 
         /// <summary>
-        ///  Dias de duracion de la póliza
+        ///  Días de duración de la póliza
         /// </summary>
         public int dias_max_duracion { get; set; }
 
@@ -313,12 +313,12 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public int pct_agt4 { get; set; }
 
         /// <summary>
-        ///  Duración del pago de primas (anios)
+        ///  Duración del pago de primas (años)
         /// </summary>
         public int duracion_pago_prima { get; set; }
 
         /// <summary>
-        ///  Forma en la que se envian los documentos
+        ///  Forma en la que se envían los documentos
         /// </summary>
         public string cod_envio { get; set; }
 
@@ -353,7 +353,7 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public string mca_provisional { get; set; }
 
         /// <summary>
-        ///  Fecha de autorizacion del control tecnico
+        ///  Fecha de autorización del control técnico
         /// </summary>
         public DateTime fec_autorizacion { get; set; }
 
@@ -383,7 +383,7 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public string mca_spto_tmp { get; set; }
 
         /// <summary>
-        ///  póliza con datos minismos para uso de siniestros
+        ///  póliza con datos mínimos para uso de siniestros
         /// </summary>
         public string mca_datos_minimos { get; set; }
 
@@ -408,22 +408,22 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public int cod_nivel3_captura { get; set; }
 
         /// <summary>
-        ///  Fecha de la ultima actualizacion del registro
+        ///  Fecha de la ultima actualización del registro
         /// </summary>
         public DateTime fec_actu { get; set; }
 
         /// <summary>
-        ///  La aplicacion se reasegura como la marco
+        ///  La aplicación se re-asegura como la marco
         /// </summary>
         public string mca_reaseguro_marco { get; set; }
 
         /// <summary>
-        ///  Tipo de poliza
+        ///  Tipo de póliza
         /// </summary>
         public string tip_poliza_tr { get; set; }
 
         /// <summary>
-        ///  Número de póliza marco (en los transportes y para los resupuestos de certificados)
+        ///  Número de póliza marco (en los transportes y para los presupuestos de certificados)
         /// </summary>
         public string num_poliza_tr { get; set; }
 
@@ -438,12 +438,12 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public string num_poliza_siguiente { get; set; }
 
         /// <summary>
-        ///  Distribucion de las comisiones
+        ///  Distribución de las comisiones
         /// </summary>
         public int cod_dst_agt { get; set; }
 
         /// <summary>
-        ///  Cuadro de coaseguro
+        ///  Cuadro de coa-seguro
         /// </summary>
         public string cod_cuadro_coa { get; set; }
 
@@ -458,7 +458,7 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public int num_spto_publico { get; set; }
 
         /// <summary>
-        ///  Valor utilizado por nucleo para validaciones internas
+        ///  Valor utilizado por núcleo para validaciones internas
         /// </summary>
         public string val_mca_int { get; set; }
 
@@ -468,7 +468,7 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public string hora_desde { get; set; }
 
         /// <summary>
-        ///  Número de subcontrato
+        ///  Número de sub-contrato
         /// </summary>
         public int num_subcontrato { get; set; }
 
@@ -497,6 +497,13 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         /// </summary>
         public string tip_mvto_batch { get; set; }
 
+
+        /// <summary>
+        ///  Procesos masivos (G2000510)
+        /// </summary>
+        public Batch.Proceso DatosDelProceso { get; set; }
+
+
         /// <summary>
         ///  Riesgos del presupuesto (P2000031)
         /// </summary>
@@ -513,14 +520,14 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public List<Ocurrencia> Ocurrencias { get; set; } = new List<Ocurrencia>();
 
         /// <summary>
+        /// Conceptos de desglose económico del presupuesto (P2100170)
+        /// </summary>
+        public List<Presupuesto.DesgloseEconomico> DesgloseEconomico { get; set; } = new List<Presupuesto.DesgloseEconomico>();
+
+        /// <summary>
         ///  Terceros del presupuesto (P2000060)
         /// </summary>
         public List<Tercero> Terceros { get; set; }
-
-        /// <summary>
-        ///  Coberturas del presupuesto (P2000040)
-        /// </summary>
-        public List<Presupuesto.Cobertura> Coberturas { get; set; }
 
         /// <summary>
         ///  Modificaciones de un tercero para un presupuesto (P1001331)
@@ -528,14 +535,14 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public List<DetalleDeTercero> DetalleDeTerceros { get; set; }
 
         /// <summary>
+        ///  Coberturas del presupuesto (P2000040)
+        /// </summary>
+        public List<Presupuesto.Cobertura> Coberturas { get; set; }
+
+        /// <summary>
         ///  Recibos/cuotas del presupuesto (P2990700)
         /// </summary>
         public List<Recibo> Recibos { get; set; }
-
-        /// <summary>
-        ///  Procesos masivos (G2000510)
-        /// </summary>
-        public Batch.Proceso DatosDelProceso { get; set; }
 
     }
 }

@@ -1,11 +1,1 @@
-{
-  "{El rol igual a {?}}": "token.Roles.Contain(\"{0}\")",
-  "{El rol no sea igual a {?}}": "!token.Roles.Contain(\"{0}\")",
-  "{El rol del usuario igual a {?}}": "token.Roles.Contain(\"{0}\")",
-  "{El rol del usuario no sea igual a {?}}": "!token.Roles.Contain(\"{0}\")",
-  "{{?} año de antiguedad}": "(DateTime.Today.Year - {0})",
-  "{{?} años de antiguedad}": "(DateTime.Today.Year - {0})",
-  "{La cobertura {?} es seleccionada}": "data.coberturas.Any(r => r.codigo == {0} && r.seleccionado)",
-  "{No hay coberturas seleccionadas}": "!data.coberturas.Any(r => r.seleccionado)",
-  "{Hay coberturas seleccionadas}": "data.coberturas.Any(r => r.seleccionado)"
-}
+[]

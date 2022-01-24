@@ -14,7 +14,7 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public int cod_cia { get; set; }
 
         /// <summary>
-        ///  Poliza
+        ///  Póliza
         /// </summary>
         public string num_poliza { get; set; }
 
@@ -29,7 +29,7 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public int num_apli { get; set; }
 
         /// <summary>
-        ///  Suplemento de la aplicacion
+        ///  Suplemento de la aplicación
         /// </summary>
         public int num_spto_apli { get; set; }
 
@@ -64,7 +64,7 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public int num_riesgo { get; set; }
 
         /// <summary>
-        ///  Descripcion del riesgo
+        ///  Descripción del riesgo
         /// </summary>
         public string nom_riesgo { get; set; }
 
@@ -89,7 +89,7 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public int num_certificado { get; set; }
 
         /// <summary>
-        ///  Descripcion del certificado (salud)
+        ///  Descripción del certificado (salud)
         /// </summary>
         public string nom_certificado { get; set; }
 

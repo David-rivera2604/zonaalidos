@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -15,20 +16,30 @@ namespace Architect.API.Insurance.Business.Reglas
 
         public static List<Architect.API.Core.Contracts.General.Error> Apply_Reglas(string ruleFile, object data, Core.Contracts.Security.Token tokenInfo)
         {
+            string key = $"{ruleFile}.reglas";
+            string cacheKey = $"decision.{ruleFile}.reglas.source";
+            string script = string.Empty;
             List<Core.Contracts.General.Error> errors = null;
-            string filename = string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile);
-            if (System.IO.File.Exists(filename))
+
+            if (Utilities.Cache.Exist(cacheKey))
             {
-                Core.Contracts.Especificacion.Producto def = Utilities.SerializeHandler<Core.Contracts.Especificacion.Producto>.DeserializeJSONFromFile(filename);
-                
+                script = ((string)Utilities.Cache.GetItem(cacheKey));
+            }
+            else
+            {
+                Core.Contracts.Especificacion.Producto def = Utilities.SerializeHandler<Core.Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
+
                 if (def.Reglas?.Count > 0)
                 {
-                    errors = Architect.API.Core.Business.General.Rule.ApplyRules(ruleFile, BuildRulesCode(ruleFile, data, def.Reglas), data, tokenInfo).Result;
+                    script = BuildRulesCode(ruleFile, data, def.Reglas);
+                    Utilities.Cache.SetItem(cacheKey, script);
                 }
-            } else
-            {
-                Utilities.Log.TraceLog(" Apply_Reglas", string.Format("No existe el archivo de reglas '{0}.rules.json'", ruleFile), "Architect.API.Insurance");
             }
+            if (script.IsNotEmpty())
+            {
+                errors = (List<Architect.API.Core.Contracts.General.Error>)Decision.Runtime.Execute(key, script, data, tokenInfo, null, null)["error"];
+            }
+
             if (errors == null)
             {
                 errors = new List<Core.Contracts.General.Error>();
@@ -39,7 +50,7 @@ namespace Architect.API.Insurance.Business.Reglas
         internal static string BuildRulesCode(string ruleFile, object data, List<Core.Contracts.Especificacion.Regla> rules)
         {
             string basePath = ConfigurationManager.AppSettings["Product.Definition.Path"];
-            Architect.Decision.Vocabulary.Condition _rule = new Architect.Decision.Vocabulary.Condition(
+            Architect.Decision.Vocabulary.Condition _rule = new Decision.Vocabulary.Condition(
                 $"{basePath}\\syntax.settings.json",
                 $"{basePath}\\convention.settings.json",
                 $"{basePath}\\{ruleFile}.vocabulary.json");

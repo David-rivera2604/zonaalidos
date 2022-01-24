@@ -14,7 +14,7 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public int cod_cia { get; set; }
 
         /// <summary>
-        ///  Poliza
+        ///  Póliza
         /// </summary>
         public string num_poliza { get; set; }
 
@@ -29,7 +29,7 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public int num_apli { get; set; }
 
         /// <summary>
-        ///  Suplemento de la aplicacion
+        ///  Suplemento de la aplicación
         /// </summary>
         public int num_spto_apli { get; set; }
 
@@ -84,24 +84,24 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public double pct_participacion { get; set; }
 
         /// <summary>
-        ///  Fecha de vencimiento de la financiacion del riesgo
+        ///  Fecha de vencimiento de la financiación del riesgo
         /// </summary>
         public DateTime fec_vcto_cesion { get; set; }
 
         /// <summary>
-        ///  Imprte financiado
+        ///  Importe financiado
         /// </summary>
         public double imp_cesion { get; set; }
 
 
         /// <summary>
-        ///  Número asociado a la financiacion del riesgo
+        ///  Número asociado a la financiación del riesgo
         /// </summary>
         [XmlIgnore] 
         public string num_prestamo { get; set; }
 
         /// <summary>
-        ///  Tipo de relacion
+        ///  Tipo de relación
         /// </summary>
         [XmlIgnore] 
         public string tip_relac { get; set; }

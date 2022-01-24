@@ -662,36 +662,57 @@ app.ui = (function () {
             options.cssHeight = options.height > 0 ? { "height": (options.height) + "%" } : {};
 
             //Create the modal structure
-            var $newModal = $("<div />").attr({ "role": "dialog" }).addClass("modal fade dynamicModal");
+            var $newModal = $("<div id='" + options.id + "' />").attr({ "role": "dialog" }).addClass("modal fade dynamicModal");
             var $modalDialog = $("<div />").attr({ "role": "document" }).addClass("modal-dialog");
             var $modalContent = $("<div />").addClass("modal-content");
-            var $modalHeader = $("<div />").addClass("modal-header").html('<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>');
+            var $modalHeader = $("<div />").addClass("modal-header");
             var $modalBody = $("<div />").addClass("modal-body clearfix");
 
             //Apply the custom options
             $modalDialog.css(options.cssWidth);
             $modalContent.css(options.cssHeight);
             $modalHeader.append(typeof options.title != "undefined" ? "<h4>" + options.title + "</h4>" : "");
+            $modalHeader.append('<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>');
 
             //Build the modal
             $modalContent.append($modalHeader).append($modalBody);
             $modalDialog.append($modalContent);
             $newModal.append($modalDialog);
 
-            //load teh content
-            if (options.isExternal) {
-                $modalContent.addClass(options.height > 0 ? "" : "default-size");
-                $modalBody.html($("<iframe />").attr({ frameBorder: 0, src: options.url }));
+            $("body").append($newModal);
+            if (options.id != null) {
+                app.core.Get(app.setting.apipath + `v1/Viewer/Dialog?id=${options.id}`)
+                    .done(function (data, textStatus, jqXHR) {
+                        let html = data.HTML.supplant(options.data);
+                        html = app.core.ReplaceAll(html, '@_eq', '=');
+                        html = app.core.ReplaceAll(html, '@_qt', '\'');
+                        html = app.core.ReplaceAll(html, '@_sc', ';');
+
+                        $modalBody.append(html.replace('ibox-content', 'ibox-content sidebar-content'));
+
+                        $newModal.modal("show");
+                        $newModal.on('hidden.bs.modal', function () { $newModal.remove() });
+                        let code = data.Code.supplant(options.data);
+                        code = app.core.ReplaceAll(code, '@_sc', ';');
+                        eval(code);
+                    });
             }
             else {
-                $internalContent = $("<div />").addClass("internalContent").load(options.url);
-                $internalContent.addClass(options.height > 0 ? "overflow-auto" : "");
-                $modalBody.append($internalContent);
-            }
+                //load teh content
+                if (options.isExternal) {
+                    $modalContent.addClass(options.height > 0 ? "" : "default-size");
+                    $modalBody.html($("<iframe />").attr({ frameBorder: 0, src: options.url }));
+                }
+                else {
+                    $internalContent = $("<div />").addClass("internalContent").load(options.url);
+                    $internalContent.addClass(options.height > 0 ? "overflow-auto" : "");
+                    $modalBody.append($internalContent);
+                }
 
-            //Display the modal
-            $newModal.modal("show");
-            $newModal.on('hidden.bs.modal', function () { $newModal.remove() });
+                //Display the modal
+                $newModal.modal("show");
+                $newModal.on('hidden.bs.modal', function () { $newModal.remove() });
+            }
         },
         CloseSideBar: function () {
             if ($('#right-sidebar').hasClass('sidebar-open')) {

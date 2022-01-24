@@ -73,7 +73,7 @@ app.core = (function () {
         if (filename === null) {
             filename = new Date() + ".pdf";
         }
-        if (filename.endsWith(".xlsx") ) {
+        if (filename.endsWith(".xlsx")) {
             blobType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;';
         }
         fetch(url, {
@@ -93,7 +93,7 @@ app.core = (function () {
             if (download) {
                 let a = document.createElement("a");
                 a.href = downloadUrl;
-    
+
                 a.download = filename;
                 a.click();
                 a.remove()
@@ -112,6 +112,57 @@ app.core = (function () {
                 console.groupEnd();
             });
         });
+    }
+
+    function UpLoadFileEx(formId, uploadCtrolId, entityType, entityId, documentType, description, callback) {
+        if (app.ui.IsValid(formId, false, true)) {
+            let index = 0;
+            let arr = $(uploadCtrolId + 'UploadModal').prop('files');
+            let message = '';
+            let elementInstance = $(formId).validate();
+
+            for (index = 0; index < arr.length; index++) {
+                if (arr[index].size >= 31457280) {
+                    if (message != '') {
+                        message = message & ', ';
+                    }
+                    message = message & 'El tamaño del archivo ' + arr[index].name + 'es mayor a 30mb';
+                }
+            }
+            if (message != '') {
+                elementInstance.showErrors({ 'FileName': message });
+            }
+            else {
+                app.ui.ButtonDoing(uploadCtrolId);
+                var fileData = new FormData();
+                fileData.append('EntityType', entityType);
+                fileData.append('EntityId', entityId);
+                fileData.append('DocumentType', documentType);
+                fileData.append('Description', description);
+                for (index = 0; index < arr.length; index++) {
+                    fileData.append('files', arr[index]);
+                }
+                $.ajax({
+                    type: "POST",
+                    enctype: 'multipart/form-data',
+                    url: app.setting.apipath + 'v1/Common/Upload',
+                    data: fileData,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    timeout: 600000,
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                    }
+                }).done(function (fileList) {
+                    callback(fileList);
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    ajaxErrorHandler(jqXHR, errorThrown);
+                }).always(function () {
+                    app.ui.ButtonDone(uploadCtrolId)
+                });
+            }
+        }
     }
 
     function UpLoadFile(formId, uploadCtrolId, callback) {
@@ -560,6 +611,9 @@ app.core = (function () {
         },
         UpLoadFile: function (formId, uploadCtrolId, callback) {
             return UpLoadFile(formId, uploadCtrolId, callback);
+        },
+        UpLoadFileEx: function (formId, uploadCtrolId, entityType, entityId, documentType, description, callback) {
+            return UpLoadFileEx(formId, uploadCtrolId, entityType, entityId, documentType, description, callback);
         },
         ValidatorRemoteIsValid: function (validator, element, name) {
             var errors = {};

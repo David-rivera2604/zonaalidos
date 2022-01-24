@@ -152,6 +152,10 @@ namespace Architect.API.Tron.Business.Cotizacion
 
                 Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = HogarTotalConvertTo.Tron(quoteInfo, IsCoope, COD_RAMO, tokenInfo.AgentCode, tokenInfo.UserName);
 
+
+//                Utilities.SerializeHandler<Architect.API.Tron.Contracts.Presupuesto.DatoFijo>.SerializeJSONToFile(result, string.Format(@"c:\temp\hogar.total.proposal.json"), true, false, false);
+
+
                 //Architect.Common.Helpers.Serialize.SerializeToFile<Architect.API.Tron.Contracts.Batch.p2000030>(result,
                 //    ConfigurationManager.AppSettings["Path.Logs"] + @"\hogartotal.in.raw.xml", true);
 

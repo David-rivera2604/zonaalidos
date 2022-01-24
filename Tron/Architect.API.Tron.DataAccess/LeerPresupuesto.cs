@@ -21,7 +21,7 @@ namespace Architect.API.Tron.DataAccess
 
 
             Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = PP_Lee_P2000030(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
-            if (loadChilds)
+            if (result!= null && loadChilds)
             {
                 if (filter == "full")
                 {
@@ -32,6 +32,7 @@ namespace Architect.API.Tron.DataAccess
                 }
                 if (filter == "full" || filter == "onlyresult")
                 {
+                    result.DesgloseEconomico = PP_Lee_P2100170(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
                     result.Coberturas = PP_Lee_P2000040(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
                     result.Recibos = PP_Lee_P2990700(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
                 }
@@ -448,6 +449,45 @@ namespace Architect.API.Tron.DataAccess
                         fec_vcto_pago = reader.DateTimeValue("fec_vcto_pago")
                     });
                 }));
+            return result;
+        }
+
+
+        /// <summary>
+        /// Conceptos de desglose
+        /// </summary>
+        private static List<Architect.API.Tron.Contracts.Presupuesto.DesgloseEconomico> PP_Lee_P2100170(int cod_cia, string num_poliza, int num_spto, int num_apli, int num_spto_apli, IDbConnection currentConnection)
+        {
+            List<Architect.API.Tron.Contracts.Presupuesto.DesgloseEconomico> result = new List<Architect.API.Tron.Contracts.Presupuesto.DesgloseEconomico>();
+            Database.Procedure("EM_K_MAPFRE_BATCH_CONTRACT_MCR.PP_LEE_P2100170")
+               .AddParameter("P_COD_CIA", Architect.DataFactory.Enumerations.DbType.Int32, 22, cod_cia)
+               .AddParameter("P_NUM_POLIZA", Architect.DataFactory.Enumerations.DbType.String, 13, num_poliza)
+               .AddParameter("P_NUM_SPTO", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_spto)
+               .AddParameter("P_NUM_APLI", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_apli)
+               .AddParameter("P_NUM_SPTO_APLI", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_spto_apli)
+               .AddParameter("RC1", Architect.DataFactory.Enumerations.DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
+               .Query(currentConnection, new Action<IDataReader>((reader) =>
+               {
+                   result.Add(new Architect.API.Tron.Contracts.Presupuesto.DesgloseEconomico()
+                   {
+                       cod_cia = reader.IntegerValue("cod_cia"),
+                       num_poliza = reader.StringValue("num_poliza"),
+                       num_spto = reader.IntegerValue("num_spto"),
+                       num_apli = reader.IntegerValue("num_apli"),
+                       num_spto_apli = reader.IntegerValue("num_spto_apli"),
+                       num_riesgo = reader.IntegerValue("num_riesgo"),
+                       num_periodo = reader.IntegerValue("num_periodo"),
+                       cod_cob = reader.IntegerValue("cod_cob"),
+                       cod_desglose = reader.IntegerValue("cod_desglose"),
+                       cod_eco = reader.IntegerValue("cod_eco"),
+                       num_bloque_estudio = reader.IntegerValue("num_bloque_estudio"),
+                       imp_acumulado_anual = reader.DoubleValue("imp_acumulado_anual"),
+                       imp_spto = reader.DoubleValue("imp_spto"),
+                       imp_no_consumido = reader.IntegerValue("imp_no_consumido"),
+                       imp_anual = reader.DoubleValue("imp_anual"),
+                       cod_ramo = reader.IntegerValue("cod_ramo")
+                   });
+               }));
             return result;
         }
 

@@ -12,7 +12,7 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public int cod_cia { get; set; }
 
         /// <summary>
-        ///  Poliza
+        ///  Póliza
         /// </summary>
         public string num_poliza { get; set; }
 
@@ -27,7 +27,7 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public int num_apli { get; set; }
 
         /// <summary>
-        ///  Suplemento de la aplicacion
+        ///  Suplemento de la aplicación
         /// </summary>
         public int num_spto_apli { get; set; }
 
@@ -37,12 +37,12 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public int num_riesgo { get; set; }
 
         /// <summary>
-        ///  Periodo (para polizas multianuales)
+        ///  Periodo (para pólizas multi-anuales)
         /// </summary>
         public int num_periodo { get; set; }
 
         /// <summary>
-        ///  Nivel de peticion
+        ///  Nivel de petición
         /// </summary>
         public int tip_nivel { get; set; }
 
@@ -72,7 +72,7 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public int cod_ramo { get; set; }
 
         /// <summary>
-        ///  Descripcion
+        ///  Descripción
         /// </summary>
         public string txt_campo { get; set; }
 

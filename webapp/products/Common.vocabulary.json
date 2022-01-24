@@ -1,0 +1,82 @@
+﻿[
+  {
+    "Key": "{El rol sea igual a {?}}",
+    "Description": "El rol sea igual a ?",
+    "Language": {
+      "CSharp": "token.Roles.Contain(\"{0}\")",
+      "JavaScript": "token.Roles.Contain(\"{0}\")"
+    }
+  },
+  {
+    "Key": "{El rol no sea igual a {?}}",
+    "Description": "El rol no sea igual a ?",
+    "Language": {
+      "CSharp": "!token.Roles.Contain(\"{0}\")",
+      "JavaScript": "##"
+    }
+  },
+  {
+    "Key": "{El rol del usuario sea igual a {?}}",
+    "Description": "El rol del usuario sea igual a ?",
+    "Language": {
+      "CSharp": "token.Roles.Contain(\"{0}\")",
+      "JavaScript": "token.Roles.Contain(\"{0}\")"
+    }
+  },
+  {
+    "Key": "{El rol del usuario no sea igual a {?}}",
+    "Description": "El rol del usuario no sea igual a ?",
+    "Language": {
+      "CSharp": "!token.Roles.Contain(\"{0}\")",
+      "JavaScript": "!token.Roles.Contain(\"{0}\")"
+    }
+  },
+  {
+    "Key": "{{?} año de antigüedad}",
+    "Description": "? año de antigüedad",
+    "Language": {
+      "CSharp": "(DateTime.Today.Year - {0})",
+      "JavaScript": "(DateTime.Today.Year - {0})"
+    }
+  },
+  {
+    "Key": "{{?} años de antigüedad}",
+    "Description": "? años de antigüedad",
+    "Language": {
+      "CSharp": "(DateTime.Today.Year - {0})",
+      "JavaScript": "(DateTime.Today.Year - {0})"
+    }
+  },
+  {
+    "Key": "{La cobertura {?} no sea seleccionada}",
+    "Description": "La cobertura ? no sea seleccionada",
+    "Language": {
+      "CSharp": "data.coberturas.Any(r => r.codigo == {0} && !r.seleccionado)",
+      "JavaScript": ""
+    }
+  },
+  {
+    "Key": "{La cobertura {?} es seleccionada}",
+    "Description": "La cobertura ? es seleccionada",
+    "Language": {
+      "CSharp": "data.coberturas.Any(r => r.codigo == {0} && r.seleccionado)",
+      "JavaScript": "data.coberturas.Any(r => r.codigo == {0} && r.seleccionado)"
+    }
+  },
+  {
+    "Key": "{No hay coberturas seleccionadas}",
+    "Description": "No hay coberturas seleccionadas",
+    "Language": {
+      "CSharp": "!data.coberturas.Any(r => r.seleccionado)",
+      "JavaScript": "!data.coberturas.Any(r => r.seleccionado)"
+    }
+  },
+  {
+    "Key": "{Hay coberturas seleccionadas}",
+    "Description": "Hay coberturas seleccionadas",
+    "Language": {
+      "CSharp": "data.coberturas.Any(r => r.seleccionado)",
+      "JavaScript": "data.coberturas.Any(r => r.seleccionado)"
+    }
+  }
+]

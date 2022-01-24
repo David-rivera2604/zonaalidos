@@ -128,17 +128,17 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public string num_apartado { get; set; }
 
         /// <summary>
-        ///  Prefijo telefonico del pais
+        ///  Prefijo telefónico del país
         /// </summary>
         public string tlf_pais { get; set; }
 
         /// <summary>
-        ///  Prefijo telefonico de la zona
+        ///  Prefijo telefónico de la zona
         /// </summary>
         public string tlf_zona { get; set; }
 
         /// <summary>
-        ///  Número de telefono
+        ///  Numero de teléfono
         /// </summary>
         public string tlf_numero { get; set; }
 
@@ -148,97 +148,97 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public string fax_numero { get; set; }
 
         /// <summary>
-        ///  Direccion de correo electronico
+        ///  Dirección de correo electrónico
         /// </summary>
         public string email { get; set; }
 
         /// <summary>
-        ///  Tipo de domicilio. direccion comercial
+        ///  Tipo de domicilio. dirección comercial
         /// </summary>
         public int tip_domicilio_com { get; set; }
 
         /// <summary>
-        ///  Domicilio (primera linea). direccion comercial
+        ///  Domicilio (primera linea). dirección comercial
         /// </summary>
         public string nom_domicilio1_com { get; set; }
 
         /// <summary>
-        ///  Domicilio (segunda linea). direccion comercial
+        ///  Domicilio (segunda linea). dirección comercial
         /// </summary>
         public string nom_domicilio2_com { get; set; }
 
         /// <summary>
-        ///  Domicilio (tercera linea). direccion comercial
+        ///  Domicilio (tercera linea). dirección comercial
         /// </summary>
         public string nom_domicilio3_com { get; set; }
 
         /// <summary>
-        ///  Descripcion del cuarto nivel de la estructura geografica. direccion comercial
+        ///  Descripción del cuarto nivel de la estructura geográfica. dirección comercial
         /// </summary>
         public string nom_localidad_com { get; set; }
 
         /// <summary>
-        ///  Pais, primer nivel de la estructura geografica. direccion comercial
+        ///  País, primer nivel de la estructura geográfica. dirección comercial
         /// </summary>
         public string cod_pais_com { get; set; }
 
         /// <summary>
-        ///  Tercer nivel de la estructura geografica. direccion comercial
+        ///  Tercer nivel de la estructura geográfica. dirección comercial
         /// </summary>
         public int cod_prov_com { get; set; }
 
         /// <summary>
-        ///  Código postal. direccion comercial
+        ///  Código postal. dirección comercial
         /// </summary>
         public string cod_postal_com { get; set; }
 
         /// <summary>
-        ///  Prefijo telefonico del pais, direccion comercial
+        ///  Prefijo telefónico del país, dirección comercial
         /// </summary>
         public string tlf_pais_com { get; set; }
 
         /// <summary>
-        ///  Prefijo telefonico de la zona. direccion comercial
+        ///  Prefijo telefónico de la zona. dirección comercial
         /// </summary>
         public string tlf_zona_com { get; set; }
 
         /// <summary>
-        ///  Número de telefono. direccion comercial
+        ///  Numero de teléfono. dirección comercial
         /// </summary>
         public string tlf_numero_com { get; set; }
 
         /// <summary>
-        ///  Fax. direccion comercial
+        ///  Fax. dirección comercial
         /// </summary>
         public string fax_numero_com { get; set; }
 
         /// <summary>
-        ///  Direccion de correo electronico. direccion comercial
+        ///  Dirección de correo electrónico. dirección comercial
         /// </summary>
         public string email_com { get; set; }
 
         /// <summary>
-        ///  Direccion (primera linea)
+        ///  Dirección (primera linea)
         /// </summary>
         public string txt_etiqueta1 { get; set; }
 
         /// <summary>
-        ///  Direccion (segunda linea)
+        ///  Dirección (segunda linea)
         /// </summary>
         public string txt_etiqueta2 { get; set; }
 
         /// <summary>
-        ///  Direccion (tercera linea)
+        ///  Dirección (tercera linea)
         /// </summary>
         public string txt_etiqueta3 { get; set; }
 
         /// <summary>
-        ///  Direccion (cuarta linea)
+        ///  Dirección (cuarta linea)
         /// </summary>
         public string txt_etiqueta4 { get; set; }
 
         /// <summary>
-        ///  Direccion (quinta linea)
+        ///  Dirección (quinta linea)
         /// </summary>
         public string txt_etiqueta5 { get; set; }
 
@@ -253,7 +253,7 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public int tip_cargo { get; set; }
 
         /// <summary>
-        ///  Tipo de actividad economica para personas juridicas
+        ///  Tipo de actividad económica para personas jurídicas
         /// </summary>
         public int tip_act_economica { get; set; }
 
@@ -268,12 +268,12 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public string cod_oficina { get; set; }
 
         /// <summary>
-        ///  Cuenta corrriente bancaria
+        ///  Cuenta corriente bancaria
         /// </summary>
         public string cta_cte { get; set; }
 
         /// <summary>
-        ///  Digito de control de la cuenta corriente bancaria
+        ///  Dígito de control de la cuenta corriente bancaria
         /// </summary>
         public string cta_dc { get; set; }
 
@@ -288,7 +288,7 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public DateTime fec_carnet_con { get; set; }
 
         /// <summary>
-        ///  Ocupacion
+        ///  Ocupación
         /// </summary>
         public int cod_ocupacion { get; set; }
 
@@ -298,7 +298,7 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public string cod_est_civil { get; set; }
 
         /// <summary>
-        ///  Profesion
+        ///  Profesión
         /// </summary>
         public int cod_profesion { get; set; }
 
@@ -323,32 +323,32 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public string obs_asegurado { get; set; }
 
         /// <summary>
-        ///  Agrupamento del tercero
+        ///  Agrupamiento del tercero
         /// </summary>
         public string cod_grp_tercero { get; set; }
 
         /// <summary>
-        ///  Campo auxiliar 1 (para datos especificos de una instalacion.  este campo no se debe usar en instalaciones nuevas)
+        ///  Campo auxiliar 1 (para datos específicos de una instalación.  este campo no se debe usar en instalaciones nuevas)
         /// </summary>
         public string txt_aux1 { get; set; }
 
         /// <summary>
-        ///  Campo auxiliar 2 (para datos especificos de una instalacion.  este campo no se debe usar en instalaciones nuevas)
+        ///  Campo auxiliar 2 (para datos específicos de una instalación.  este campo no se debe usar en instalaciones nuevas)
         /// </summary>
         public string txt_aux2 { get; set; }
 
         /// <summary>
-        ///  Campo auxiliar 3 (para datos especificos de una instalacion.  este campo no se debe usar en instalaciones nuevas)
+        ///  Campo auxiliar 3 (para datos específicos de una instalación.  este campo no se debe usar en instalaciones nuevas)
         /// </summary>
         public string txt_aux3 { get; set; }
 
         /// <summary>
-        ///  Campo auxiliar 4 (para datos especificos de una instalacion.  este campo no se debe usar en instalaciones nuevas)
+        ///  Campo auxiliar 4 (para datos específicos de una instalación.  este campo no se debe usar en instalaciones nuevas)
         /// </summary>
         public string txt_aux4 { get; set; }
 
         /// <summary>
-        ///  Campo auxiliar 5 (para datos especificos de una instalacion.  este campo no se debe usar en instalaciones nuevas)
+        ///  Campo auxiliar 5 (para datos específicos de una instalación.  este campo no se debe usar en instalaciones nuevas)
         /// </summary>
         public string txt_aux5 { get; set; }
 
@@ -378,107 +378,107 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public string cod_usr { get; set; }
 
         /// <summary>
-        ///  Fecha de la ultima actualizacion del registro
+        ///  Fecha de la ultima actualización del registro
         /// </summary>
         public DateTime fec_actu { get; set; }
 
         /// <summary>
-        ///  Telefono movil del tercero
+        ///  Teléfono móvil del tercero
         /// </summary>
         public string tlf_movil { get; set; }
 
         /// <summary>
-        ///  Número del busca
+        ///  Numero del busca
         /// </summary>
         public string num_busca { get; set; }
 
         /// <summary>
-        ///  Tipo de direccion de etiqueta
+        ///  Tipo de dirección de etiqueta
         /// </summary>
         public int tip_etiqueta { get; set; }
 
         /// <summary>
-        ///  Segundo nivel de la estructura geografica
+        ///  Segundo nivel de la estructura geográfica
         /// </summary>
         public int cod_estado { get; set; }
 
         /// <summary>
-        ///  Segundo nivel de la estructura geografica. direccion comercial
+        ///  Segundo nivel de la estructura geográfica. dirección comercial
         /// </summary>
         public int cod_estado_com { get; set; }
 
         /// <summary>
-        ///  Direccion de correo electronico
+        ///  Dirección de correo electrónico
         /// </summary>
         public string txt_email { get; set; }
 
         /// <summary>
-        ///  Apartado postal. direccion comercial
+        ///  Apartado postal. dirección comercial
         /// </summary>
         public string num_apartado_com { get; set; }
 
         /// <summary>
-        ///  Pais, primer nivel de la estructura geografica. direccion etiqueta
+        ///  País, primer nivel de la estructura geográfica. dirección etiqueta
         /// </summary>
         public string cod_pais_etiqueta { get; set; }
 
         /// <summary>
-        ///  Estado, segundo nivel de la estructura geografica. direccion etiqueta
+        ///  Estado, segundo nivel de la estructura geográfica. dirección etiqueta
         /// </summary>
         public int cod_estado_etiqueta { get; set; }
 
         /// <summary>
-        ///  Tercer nivel de la estructura geografica. direccion etiqueta
+        ///  Tercer nivel de la estructura geográfica. dirección etiqueta
         /// </summary>
         public int cod_prov_etiqueta { get; set; }
 
         /// <summary>
-        ///  Código postal. direccion etiqueta
+        ///  Código postal. dirección etiqueta
         /// </summary>
         public string cod_postal_etiqueta { get; set; }
 
         /// <summary>
-        ///  Número del apartado postal. direccion etiqueta
+        ///  Numero del apartado postal. dirección etiqueta
         /// </summary>
         public string num_apartado_etiqueta { get; set; }
 
         /// <summary>
-        ///  Cuarto nivel de la estructura geografica
+        ///  Cuarto nivel de la estructura geográfica
         /// </summary>
         public int cod_localidad { get; set; }
 
         /// <summary>
-        ///  Tipo de tarjeta de credito
+        ///  Tipo de tarjeta de crédito
         /// </summary>
         public int tip_tarjeta { get; set; }
 
         /// <summary>
-        ///  Código de tarjeta de credito
+        ///  Código de tarjeta de crédito
         /// </summary>
         public int cod_tarjeta { get; set; }
 
         /// <summary>
-        ///  Número de la tarjeta de credito
+        ///  Numero de la tarjeta de crédito
         /// </summary>
         public string num_tarjeta { get; set; }
 
         /// <summary>
-        ///  Localidad, cuarto nivel de la estructura geografica. direccion comercial
+        ///  Localidad, cuarto nivel de la estructura geográfica. dirección comercial
         /// </summary>
         public int cod_localidad_com { get; set; }
 
         /// <summary>
-        ///  Localidad, cuarto nivel de la estructura geografica. direccion etiqueta
+        ///  Localidad, cuarto nivel de la estructura geográfica. dirección etiqueta
         /// </summary>
         public int cod_localidad_etiqueta { get; set; }
 
         /// <summary>
-        ///  Descripcion del cuarto nivel de la estructura geografica. direccion etiqueta
+        ///  Descripción del cuarto nivel de la estructura geográfica. dirección etiqueta
         /// </summary>
         public string nom_localidad_etiqueta { get; set; }
 
         /// <summary>
-        ///  Vencimiento de la tarjeta de credito
+        ///  Vencimiento de la tarjeta de crédito
         /// </summary>
         public DateTime fec_vcto_tarjeta { get; set; }
 
@@ -488,7 +488,7 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public int cod_compensacion { get; set; }
 
         /// <summary>
-        ///  Sociedad para consolidacion del grupo mapfre
+        ///  Sociedad para consolidación del grupo mapfre
         /// </summary>
         public string cod_soc_gl { get; set; }
 
@@ -513,7 +513,7 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public string cod_clase_benef { get; set; }
 
         /// <summary>
-        ///  Causa de inhabilitacion del tercero
+        ///  Causa de in-habilitación del tercero
         /// </summary>
         public int cod_causa_inh_trc { get; set; }
 
@@ -538,7 +538,7 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public string atr_domicilio1 { get; set; }
 
         /// <summary>
-        ///  Número de portal
+        ///  Numero de portal
         /// </summary>
         public string atr_domicilio2 { get; set; }
 
@@ -623,7 +623,7 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public string ext_cod_postal_etiqueta { get; set; }
 
         /// <summary>
-        ///  Código geografico de  expedicion del carnet de conducir
+        ///  Código geográfico de expedición del carnet de conducir
         /// </summary>
         public int cod_exp_carnet_con { get; set; }
 

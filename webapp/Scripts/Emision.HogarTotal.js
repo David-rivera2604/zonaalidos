@@ -366,7 +366,7 @@ app.HogarTotal = (function () {
                 var result = instance.valid();
                 var count = validate.numberOfInvalids();
                 validate.settings.ignore = ':hidden';
-                toastr.error("Existen " + (count + others) + " errore(s), que ameritan su atención.", "", { closeButton: true, progressBar: true });
+                toastr.error("Existen " + (count + others) + " error(es), que ameritan su atención.", "", { closeButton: true, progressBar: true });
             }
             event.preventDefault();
         });

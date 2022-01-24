@@ -31,7 +31,37 @@
     }
   ],
   "DocumentosRequeridos": [
-
-    
+    {
+      "Role": "_default_asegurado_fisico",
+      "Detalles": [
+        {
+          "descripcion": "Copia de la cédula de identidad",
+          "archivo": "CEDULA.docx",
+          "requerido": true
+        },
+        
+        {
+          "descripcion": "Solicitud de seguro firmada",
+          "archivo": "SOLICITUD.pdf",
+          "requerido": true
+        }
+      ]
+    },
+    {
+      "Role": "_default_asegurado_juridico",
+      "Detalles": [
+        {
+          "descripcion": "Copia de la cédula de identidad",
+          "archivo": "CEDULA.docx",
+          "requerido": true
+        },
+        
+        {
+          "descripcion": "Solicitud de seguro firmada",
+          "archivo": "SOLICITUD.pdf",
+          "requerido": true
+        }
+      ]
+    }
   ]
 }

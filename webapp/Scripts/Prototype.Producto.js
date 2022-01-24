@@ -2,8 +2,9 @@
 
 app.PrototypeProducto = (function () {
 
-    var setupData = null;
-    var changedCallback = null;
+    let setupData = null;
+    let vocabulary = null;
+    let changedCallback = null;
 
     function Setup() {
 
@@ -48,13 +49,14 @@ app.PrototypeProducto = (function () {
     };
 
     function Controls_Events() {
+
         $(".input-group.date").on('dp.change', function (e) {
             data_changed();
         });
+
         $("#VisualizationsEdtForm :input").change(function () {
             data_changed();
         });
-
 
         $('#VisualizationsEdtFormSave').click(function () {
 
@@ -83,7 +85,6 @@ app.PrototypeProducto = (function () {
             event.preventDefault();
         });
 
-
         $("#alias").change(function () {
             let alias = $('#alias').val();
             app.core.Get(app.setting.apipath + 'v1/TronCommon/Producto?alias=' + alias)
@@ -102,10 +103,45 @@ app.PrototypeProducto = (function () {
                     else
                         $('#validacionesTbl').bootstrapTable('load', {});
                 });
+            app.core.Get(app.setting.apipath + 'v1/TronCommon/vocabulario?alias=' + alias)
+                .done(function (data) {
+                    vocabulary = data;
+                    let source = [];
+                    let selectedOptions = $('select#Variable');
+                    data.forEach(function (value, index, array) {
+                        source.push({ "name": value.Key, "code": value.Key });
+                        selectedOptions.append($('<option />').val(value.Key).text(value.Description).attr("title", value.Description));
+                    });
+
+                    $('#AutoVariable').typeahead({
+                        autoSelect: false,
+                        source: source,
+                        afterSelect: function (item) {
+                            let current = $('#Condicion').val().trim();
+                            if (current.length > 0)
+                                current += ' ';
+                            $('#Condicion').val(current + app.core.ReplaceAll(item.code, '{?}', '?'));
+                            $('#AutoVariable').val('');
+                        }
+                    });
+                    $("#AutoVariable").keyup(function (event) {
+                        if (event.keyCode == 13 && $("#AutoVariable").typeahead('val').val() != '') {
+                            let current = $('#Condicion').val().trim();
+                            if (current.length > 0)
+                                current += ' ';
+                            $('#Condicion').val(current + $("#AutoVariable").typeahead('val').val());
+
+                            $('#AutoVariable').val('');
+                        }
+                    });
+                });
         });
 
         $("#Variable").bind("dblclick", function () {
-            $('#Condicion').val($('#Condicion').val() + ' ' + $("#Variable").val() + ' ');
+            let current = $('#Condicion').val().trim();
+            if (current.length > 0)
+                current += ' ';
+            $('#Condicion').val(current + app.core.ReplaceAll($("#Variable").val(), '{?}', '?'));
         });
 
     };
@@ -442,40 +478,6 @@ app.PrototypeProducto = (function () {
                 Controls_Events();
                 Setup();
                 console.log("Inicio");
-
-                $('#AutoVariable').typeahead({
-                    autoSelect: false,
-                    source: [{ "name": "El Plan", "code": "{El Plan}" },
-                        { "name": "El Tipo de producto", "code": "{El Tipo de producto}" },
-                        { "name": "La Moneda", "code": "{La Moneda}" },
-                        { "name": "La Marca del vehículo", "code": "{La Marca del vehículo}" },
-                        { "name": "El Valor del vehículo", "code": "{El Valor del vehículo}" },
-                        { "name": "El Año del vehículo", "code": "{El Año del vehículo}" },
-                        { "name": "El Contrato", "code": "{El Contrato}" },
-                        { "name": "La Suma Asegurada de Colisión y vuelco", "code": "{La Suma Asegurada de Colisión y vuelco}" },
-                        { "name": "La Suma Asegurada de Gastos Médicos", "code": "{La Suma Asegurada de Gastos Médicos}" },
-                        { "name": "La Suma Asegurada de Riesgos adicionales", "code": "{La Suma Asegurada de Riesgos adicionales}" },
-                        { "name": "La Suma Asegurada de Robo", "code": "{La Suma Asegurada de Robo}" },
-                        { "name": "y", "code": "y" },
-                        { "name": "o", "code": "o" },
-                        { "name": "sea igual a", "code": "sea igual a" },
-                        { "name": "no sea igual a", "code": "no sea igual a" },
-                        { "name": "sea menor a", "code": "sea menor a" },
-                        { "name": "sea mayor a", "code": "sea mayor a" },
-                        { "name": "Colones", "code": "{Colones}" },
-                        { "name": "Dólares", "code": "{Dólares}" }
-                    ],
-                    afterSelect: function (item) {
-                        $('#Condicion').val($('#Condicion').val() + ' ' + item.code);
-                        $('#AutoVariable').val('');
-                    }
-                });
-                $("#AutoVariable").keyup(function (event) {
-                    if (event.keyCode == 13 && $("#AutoVariable").typeahead('val').val() != '') {
-                        $('#Condicion').val($('#Condicion').val() + ' ' + $("#AutoVariable").typeahead('val').val());
-                        $('#AutoVariable').val('');                        
-                    }
-                });
 
             }
             catch (err) {

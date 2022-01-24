@@ -55,6 +55,8 @@
     <Compile Include="Backoffice\Emision\Generico.cs" />
     <Compile Include="Backoffice\Emision\MapfreMas.cs" />
     <Compile Include="Clientes\Support.cs" />
+    <Compile Include="Cotizacion\API.cs" />
+    <Compile Include="Cotizacion\APIConvertTo.cs" />
     <Compile Include="Cotizacion\MapfreMasConvertTo.cs" />
     <Compile Include="Cotizacion\MapfreMasConvertFrom.cs" />
     <Compile Include="Cotizacion\PolizaLiderConvertFrom.cs" />
@@ -76,6 +78,7 @@
     <Compile Include="Emision\Viajero.cs" />
     <Compile Include="Emision\ViajeroConvertFrom.cs" />
     <Compile Include="Emision\ViajeroConvertTo.cs" />
+    <Compile Include="Ramo\Configuracion.cs" />
     <Compile Include="Reglas\research.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Emision\HogarTotal.cs" />
@@ -120,8 +123,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

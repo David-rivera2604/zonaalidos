@@ -174,6 +174,10 @@ namespace Architect.API.Tron.Business.Cotizacion
                         polizagrupo = num_poliza_grupo
                     }, tokenInfo);
 
+                if (cod_cobExcludeFilter.IsNotEmpty()) { 
+                    Architect.Utilities.Log.TraceLog("Coverage", $"Excluir '{cod_cobExcludeFilter}' las coberturas", "Decision");
+                }
+
                 List<Contracts.Tables.ta301003> coverageSelection = DataAccess.PorRamo.AutomobileCoverageSelection(cod_cia, num_poliza_grupo, num_contrato, num_subcontrato, COD_RAMO, cod_mon, cod_marca, cod_modelo, anio_sub_modelo, cod_tip_vehi, cod_uso_vehi, mca_sexo, cod_zona_circul, edad, cod_plan_auto, tip_valoracion);
                 bool required;
                 foreach (Contracts.Tables.a1002150 item in DataAccess.PorRamo.Coberturas(cod_cia, COD_RAMO, cod_modalidad, fec_validez, cod_cobExcludeFilter, cod_cobIncludeFilter))
@@ -279,10 +283,13 @@ namespace Architect.API.Tron.Business.Cotizacion
             string exclude = string.Empty;
             foreach (Core.Contracts.General.LookupValues itemValues in values)
             {
+                exclude = string.Empty;
                 exclude = Reglas.research.Apply_Listas("MapfreMas", data, itemValues.Key, tokenInfo);
 
                 if (exclude.IsNotEmpty())
                 {
+                    Architect.Utilities.Log.TraceLog("Lookups", $"Excluir '{exclude}' de la lista '{itemValues.Key}'", "Decision");
+
                     foreach (string item in exclude.Split(','))
                     {
                         itemValues.Lkp.Remove(itemValues.Lkp.Find(r => r.Code == item));

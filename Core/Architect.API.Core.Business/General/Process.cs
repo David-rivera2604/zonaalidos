@@ -43,7 +43,7 @@ namespace Architect.API.Core.Business.General
         /// Recupera una instancia de un proceso y en caso de no existir crea una nueva previamente.
         /// </summary>
         /// <param name="newInstance">Información de la instancia.</param>
-        /// <param name="token">Infomación del usuario conectando.</param>
+        /// <param name="token">Información del usuario conectando.</param>
         /// <returns>Instancia de un proceso.</returns>
         public static Contracts.General.InstanceInformation CreateAutomaticInstance(Contracts.General.CreateProcessInstance newInstance, Core.Contracts.Security.Token token)
         {

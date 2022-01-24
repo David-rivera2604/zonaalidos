@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Architect.Utilities.Extensions;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
@@ -111,13 +112,17 @@ namespace Architect.Utilities
 
         public static T DeserializeJSONFromFile(string fullFileName)
         {
-            string body = System.IO.File.ReadAllText(fullFileName);
+            return DeserializeJSONFromFile(fullFileName, "");
+        }
+
+        public static T DeserializeJSONFromFile(string fullFileName, string encoding = "")
+        {
+            string body = encoding.IsEmpty() ? System.IO.File.ReadAllText(fullFileName) : System.IO.File.ReadAllText(fullFileName, System.Text.Encoding.GetEncoding(encoding));
             body = body.Replace("Gears.Commons.Entity.SSH.ServerSSH", "Gears.Commons.Entity.SSH.SFTPServer");
             body = body.Replace("Gears.Commons.Entity.SSH.FileDownloadSSH", "Gears.Commons.Entity.SSH.SFTPFileDownload");
             body = body.Replace("Gears.Commons.Entity.SSH.CommandSSH", "Gears.Commons.Entity.SSH.SSHCommand");
 
             T result = JsonConvert.DeserializeObject<T>(body, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeNonAscii, PreserveReferencesHandling = PreserveReferencesHandling.Objects, TypeNameHandling = TypeNameHandling.All });
-
             return result;
         }
 

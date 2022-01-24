@@ -361,12 +361,13 @@ app.ViewerQuery = (function () {
             else
                 $("#QueryTitle").html('Consulta no indicada');
         },
-        Refresh: function (params, $el, xid, url) {
+        Refresh: function (params, $el, xid, url, index) {
             var element = $('#RoleMemberGridTbl');
             var id = _id;
-            var index = 1;
             var doing = true;
-
+            if (index === undefined) {
+                index = 1;
+            }
             if ($el != undefined) {
                 element = $el;
                 id = xid;
@@ -385,7 +386,8 @@ app.ViewerQuery = (function () {
                             url += ':' + p + '=' + dialogData[p];
                         }
                     }
-                    url = url.replace(/T00:00:00/g, '');
+                    if (params != undefined)
+                        url = url.replace(/T00:00:00/g, '');
                 } else {
                     doing = false;
                     if (params === undefined)

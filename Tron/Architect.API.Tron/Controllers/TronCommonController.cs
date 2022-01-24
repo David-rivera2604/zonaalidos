@@ -1,4 +1,5 @@
 ﻿using Microsoft.Web.Http;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -25,6 +26,20 @@ namespace Architect.API.Tron.Controllers
             await Task.Run(() =>
             {
                 result = Business.Reglas.research.GetProducto(alias);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("vocabulario")]
+        public async Task<IHttpActionResult> vocabulario([FromUri] string alias)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            List<Architect.Decision.Vocabulary.Vocabulary> result = null;
+            await Task.Run(() =>
+            {
+                result = Business.Reglas.research.GetVocabulario(alias);
             })
                 .ConfigureAwait(false);
             return Ok(result);

@@ -30,6 +30,11 @@ namespace Architect.API.Tron.Business.Backoffice
             using (IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron"))
             {
                 data = DataAccess.LeerPoliza.Poliza(Int32.Parse(ConfigurationManager.AppSettings["Mapfre.Tron.cod_cia"]), num_poliza, 0, 0, 0, currentConnection, true);
+
+                if (data?.Calculado!=null)
+                {
+                    data.Calculado = null;
+                }
                 currentConnection.Close();
             }
             return data;

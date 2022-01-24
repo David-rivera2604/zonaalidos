@@ -36,7 +36,7 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         public int num_riesgo { get; set; }
 
         /// <summary>
-        ///  Periodo (para pólizas multianuales)
+        ///  Periodo (para pólizas multi-anuales)
         /// </summary>
         public int num_periodo { get; set; }
 

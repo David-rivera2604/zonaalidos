@@ -254,5 +254,7 @@
                   Viajero. Royner. Se hace homologacion de tipos de productos en Phoenix con los planes, tipo viaje y modalidad seleccionado
                                    de emision en TRON.
        14/12/2021 Viajero. Royner. Se agregan credenciales y dealer de diferentes usuarios para la emision en Warranty. Queda pendiente el manejo por config.
+1.5.76 18/12/2021 Aliados. Servicio de Cotización-Emisión Ramo 490.
+1.5.77 22/12/2021 Aliados. Carga de documentos desde la consultas de póliza.
 
                   
