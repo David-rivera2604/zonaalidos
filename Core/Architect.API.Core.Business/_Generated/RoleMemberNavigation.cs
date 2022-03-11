@@ -13,7 +13,7 @@ namespace Architect.API.Core.Business.Security
         /// <summary>
         /// Crea registro o actualiza un registro en la tabla RoleMemberNavigation.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="userId">Identificación del usuario.</param>
         /// <param name="item">Instancia de RoleMemberNavigation</param>
         /// <returns>Instancia de RoleMemberNavigation creada o actualizada.</returns>
@@ -32,7 +32,7 @@ namespace Architect.API.Core.Business.Security
         /// <summary>
         /// Crea un registro en la tabla RoleMemberNavigation.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="userId">Identificación del usuario.</param>
         /// <param name="item">Instancia de RoleMemberNavigation</param>
         /// <returns>Instancia de RoleMemberNavigation creada.</returns>
@@ -63,7 +63,7 @@ namespace Architect.API.Core.Business.Security
         /// <summary>
         /// Recupera una lista de registros en la tabla RoleMemberNavigation.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="filter">Filtro personalizado.</param>
         /// <param name="beginIndex">Indice inicial para el paginado.</param>
         /// <param name="endIndex">Indice final para el paginado.</param>
@@ -82,7 +82,7 @@ namespace Architect.API.Core.Business.Security
         /// <summary>
         /// Recupera un registro en la tabla RoleMemberNavigation por medio de su clave primaria.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="id">Identificación única del registro.</param>
         /// <returns>Instancia de RoleMemberNavigation</returns>
         public static Architect.API.Core.Contracts.Security.RoleMemberNavigation RetrieveById(int companyId, int id)
@@ -97,7 +97,7 @@ namespace Architect.API.Core.Business.Security
         /// <summary>
         /// Actualiza un registro en la tabla RoleMemberNavigation por medio de su clave primaria.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="userId">Identificación del usuario.</param>
         /// <param name="id">Identificación única del registro.</param>
         /// <param name="item">Instancia de RoleMemberNavigation</param>
@@ -127,7 +127,7 @@ namespace Architect.API.Core.Business.Security
         /// <summary>
         /// Elimina un registro en la tabla RoleMemberNavigation por medio de su clave primaria.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="userId">Identificación del usuario.</param>
         /// <param name="id">Identificación única del registro.</param>
         /// <returns>Instancia de RoleMemberNavigation eliminada.</returns>
@@ -150,7 +150,7 @@ namespace Architect.API.Core.Business.Security
         /// <summary>
         /// Recupera la cantidad de registros existentes en la tabla RoleMemberNavigation que cumplen con el filtro.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="filter">Filtro personalizado.</param>
         /// <returns>Cantidad de registros existentes.</returns>
         public static int Count(int companyId, string filter)
@@ -161,7 +161,7 @@ namespace Architect.API.Core.Business.Security
         /// <summary>
         /// Validaciones para los campos de la tabla RoleMemberNavigation.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="source">Instancia de RoleMemberNavigation</param>
         /// <param name="isnew">Indicador de registro nuevo.</param>
         /// <param name="isdelete">Indicador que se quiere eliminar el registro.</param>
@@ -234,7 +234,7 @@ namespace Architect.API.Core.Business.Security
         /// <summary>
         /// Realiza la lectura de las descripciones asociadas a columnas que posean una lista de valores.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="item">Instancia de RoleMemberNavigation</param>
         private static void MapLookups(int companyId, Architect.API.Core.Contracts.Security.RoleMemberNavigation item)
         {

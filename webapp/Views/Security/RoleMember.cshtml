@@ -9,15 +9,15 @@
         <!-- Opciones -->
         <div class="ibox-tools">
             <a class="tool-filter">
-                <i class="fa fa-filter"></i>
+                <i class="fa fa-filter" title="Visualiza el filtro avanzado..."></i>
             </a>
             <a class="tool-new">
-                <i class="fa fa-plus"></i>
+                <i class="fa fa-plus" title="Crear un nuevo rol"></i>
             </a>
             <a class="fullscreen-link">
-                <i class="fa fa-expand"></i>
+                <i class="fa fa-expand" title="Expande la zona de trabajo"></i>
             </a>
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="Opciones adicionales...">
                 <i class="fa fa-wrench"></i>
             </a>
             <ul class="dropdown-menu dropdown-user">
@@ -25,7 +25,7 @@
                     <a href="#" class="dropdown-item tool-new"><i class="fa fa-plus"></i> Crear un nuevo rol</a>
                 </li>
                 <li>
-                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-filter"></i> Filtro avanzado...</a>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-filter"></i> Despliega el filtro avanzado...</a>
                 </li>
                 <li>
                     <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar los roles</a>
@@ -72,7 +72,7 @@
         <div class='form-row'>
             <div class='col-md-12'>
                 <div class="table-responsive animated bounceInRight">
-                    <table id="RoleMemberGridTbl"></table>
+                    <table id="RoleMemberGridTbl" style="font-size: 11px;"></table>
                 </div>
             </div>
         </div>
@@ -106,6 +106,13 @@
                                         <input id='SecurityLevel' name='SecurityLevel' type='text' class='form-control text-right' size='3' maxlength='3'>
                                     </div>
                                 </div>
+                                <!-- InitialNavigationCode -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='InitialNavigationCode'>Página inicial</label>
+                                        <select id='InitialNavigationCode' name='InitialNavigationCode' class='form-control'></select>
+                                    </div>
+                                </div>
                                 <!-- RecordStatus -->
                                 <div class='col-sm-4 col-md-4'>
                                     <div class='form-group'>
@@ -117,14 +124,12 @@
                             </div>
                             <div class="form-row">
                                 <div class='col-md-12'>
-                                    <div class="modal-footer">
-                                        <button id="RoleMemberEdtFormSave" type="button" class="btn btn-primary btn-sm d-none formbtn" data-doing="Guardando cambios..." title="Guardar cambios">Guardar</button>
-                                        <button id="RoleMemberEdtFormSaveContinue" type="button" class="btn btn-primary btn-sm d-none formbtn" data-doing="Guardando cambios..." title="Guardar cambios y continuar">Guardar y continuar</button>
-                                        <button id="RoleMemberEdtFormSaveCopy" type="button" class="btn btn-primary btn-sm d-none formbtn" data-doing="Guardando cambios..." title="Guardar cambios y continuar">Guardar y copiar</button>
-                                        <button id="RoleMemberEdtFormDuplicate" type="button" class="btn btn-info btn-sm d-none formbtn" data-doing="Duplicando..." title="Duplica la información actual">Duplicar</button>
-                                        <button id="RoleMemberEdtFormDelete" type="button" class="btn btn-danger btn-sm d-none formbtn" data-doing="Eliminando..." title="Elimina la información actual">Eliminar</button>
-                                        <button id="RoleMemberEdtFormCancel" type="button" class="btn btn-white btn-sm d-none formbtn">Cancelar</button>
-                                    </div>
+                                    <button id="RoleMemberEdtFormSave" type="button" class="btn btn-primary btn-sm d-none formbtn" data-doing="Guardando cambios..." title="Guardar cambios">Guardar</button>
+                                    <button id="RoleMemberEdtFormSaveContinue" type="button" class="btn btn-primary btn-sm d-none formbtn" data-doing="Guardando cambios..." title="Guardar cambios y continuar">Guardar y continuar</button>
+                                    <button id="RoleMemberEdtFormSaveCopy" type="button" class="btn btn-primary btn-sm d-none formbtn" data-doing="Guardando cambios..." title="Guardar cambios y continuar">Guardar y copiar</button>
+                                    <button id="RoleMemberEdtFormDuplicate" type="button" class="btn btn-info btn-sm d-none formbtn" data-doing="Duplicando..." title="Duplica la información actual">Duplicar</button>
+                                    <button id="RoleMemberEdtFormDelete" type="button" class="btn btn-danger btn-sm d-none formbtn" data-doing="Eliminando..." title="Elimina la información actual">Eliminar</button>
+                                    <button id="RoleMemberEdtFormCancel" type="button" class="btn btn-white btn-sm d-none formbtn">Cancelar</button>
                                 </div>
                             </div>
                         </fieldset>

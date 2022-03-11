@@ -35,7 +35,7 @@ namespace Architect.API.Tron.DataAccess
                         .Parameter("P_NOM_DOMICILIO1", Architect.DataFactory.Enumerations.DbType.String, 120, tercero.nom_domicilio1)
                         .Parameter("P_TLF_NUMERO", Architect.DataFactory.Enumerations.DbType.String, 10, tercero.tlf_numero)
                         .Parameter("P_EMAIL", Architect.DataFactory.Enumerations.DbType.String, 95, tercero.email)
-                        .Execute(currentConnection) != 0);
+                        .Execute(currentConnection, "Tron") != 0);
         }
 
     }

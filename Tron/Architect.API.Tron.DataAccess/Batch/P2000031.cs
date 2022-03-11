@@ -19,7 +19,7 @@ namespace Architect.API.Tron.DataAccess.Batch
                     .AddParameter("fec_efec_riesgo", Architect.DataFactory.Enumerations.DbType.Date, 0, fecha_efec)
                     .AddParameter("fec_vcto_riesgo", Architect.DataFactory.Enumerations.DbType.Date, 0, fecha_vec)
                     .AddParameter("num_poliza", Architect.DataFactory.Enumerations.DbType.String, 13, num_poliza)
-                    .Execute(currentConnection);
+                    .Execute(currentConnection, "Tron");
             return result >= 1;
         }
 

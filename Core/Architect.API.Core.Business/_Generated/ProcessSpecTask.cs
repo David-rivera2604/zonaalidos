@@ -13,7 +13,7 @@ namespace Architect.API.Core.Business.General
         /// <summary>
         /// Crea registro o actualiza un registro en la tabla ProcessSpecTask.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="userId">Identificación del usuario.</param>
         /// <param name="item">Instancia de ProcessSpecTask</param>
         /// <returns>Instancia de ProcessSpecTask creada o actualizada.</returns>
@@ -32,7 +32,7 @@ namespace Architect.API.Core.Business.General
         /// <summary>
         /// Crea un registro en la tabla ProcessSpecTask.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="userId">Identificación del usuario.</param>
         /// <param name="item">Instancia de ProcessSpecTask</param>
         /// <returns>Instancia de ProcessSpecTask creada.</returns>
@@ -46,6 +46,10 @@ namespace Architect.API.Core.Business.General
                 if (result.Id.IsEmpty())
                 {
                     result.Id = Architect.API.Core.DataAccess.General.ProcessSpecTask.RetrieveLastKey() + 1;
+                }
+                if (result.TaskOrder.IsEmpty())
+                {
+                    result.TaskOrder = DataAccess.General.ProcessSpecTask.LastTaskOrderByStepId(companyId, result.StepId) + 10;
                 }
                 result.CompanyId = companyId;
                 result.UpdateUserCode = userId;
@@ -64,7 +68,7 @@ namespace Architect.API.Core.Business.General
         /// <summary>
         /// Recupera una lista de registros en la tabla ProcessSpecTask.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="filter">Filtro personalizado.</param>
         /// <param name="beginIndex">Indice inicial para el paginado.</param>
         /// <param name="endIndex">Indice final para el paginado.</param>
@@ -83,7 +87,7 @@ namespace Architect.API.Core.Business.General
         /// <summary>
         /// Recupera un registro en la tabla ProcessSpecTask por medio de su clave primaria.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="id">Identificación única del registro.</param>
         /// <returns>Instancia de ProcessSpecTask</returns>
         public static Architect.API.Core.Contracts.General.ProcessSpecTask RetrieveById(int companyId, int id)
@@ -98,7 +102,7 @@ namespace Architect.API.Core.Business.General
         /// <summary>
         /// Actualiza un registro en la tabla ProcessSpecTask por medio de su clave primaria.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="userId">Identificación del usuario.</param>
         /// <param name="id">Identificación única del registro.</param>
         /// <param name="item">Instancia de ProcessSpecTask</param>
@@ -129,7 +133,7 @@ namespace Architect.API.Core.Business.General
         /// <summary>
         /// Elimina un registro en la tabla ProcessSpecTask por medio de su clave primaria.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="userId">Identificación del usuario.</param>
         /// <param name="id">Identificación única del registro.</param>
         /// <returns>Instancia de ProcessSpecTask eliminada.</returns>
@@ -153,7 +157,7 @@ namespace Architect.API.Core.Business.General
         /// <summary>
         /// Recupera la cantidad de registros existentes en la tabla ProcessSpecTask que cumplen con el filtro.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="filter">Filtro personalizado.</param>
         /// <returns>Cantidad de registros existentes.</returns>
         public static int Count(int companyId, string filter)
@@ -164,7 +168,7 @@ namespace Architect.API.Core.Business.General
         /// <summary>
         /// Validaciones para los campos de la tabla ProcessSpecTask.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="source">Instancia de ProcessSpecTask</param>
         /// <param name="isnew">Indicador de registro nuevo.</param>
         /// <param name="isdelete">Indicador que se quiere eliminar el registro.</param>
@@ -237,13 +241,21 @@ namespace Architect.API.Core.Business.General
                 //PostScript:
             }
 
+            if (result.Count == 0)
+            {
+                if (Rule_IsFinishStep(companyId, source.StepId))
+                {
+                    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "*", Message = "No se pueden asignar tareas a una etapa que tenga algunos de los siguientes estados: Finalizado, Cerrado, Aprobado o Rechazado" });
+                }
+            }
             return result;
         }
+
 
         /// <summary>
         /// Realiza la lectura de las descripciones asociadas a columnas que posean una lista de valores.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="item">Instancia de ProcessSpecTask</param>
         private static void MapLookups(int companyId, Architect.API.Core.Contracts.General.ProcessSpecTask item)
         {

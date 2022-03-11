@@ -418,6 +418,18 @@ app.GeneralProcessSpecStep = (function () {
                 $('.role-notify-visible').addClass('d-none');
             }
         });
+        $("#ProcessSpecStepEdtForm :input").change(function () {
+            EdtForm_Change();
+        });
+    };
+
+    function EdtForm_Change() {
+        if ($('#ProgressMode').val() == '1') {
+            $('.progressmode-visible').removeClass('d-none');
+        }
+        else {
+            $('.progressmode-visible').addClass('d-none');
+        }
     };
 
     function Create(uidata, mode) {
@@ -585,6 +597,9 @@ app.GeneralProcessSpecStep = (function () {
                 },
                 MailServer: {
                     required: true
+                },
+                ProcessStatus: {
+                    required: true
                 }
             },
             messages: {
@@ -602,6 +617,9 @@ app.GeneralProcessSpecStep = (function () {
                 },
                 MailServer: {
                     required: 'Debe indicar el servidor de correo'
+                },
+                ProcessStatus: {
+                    required: 'Debe indicar el estado'
                 }
             }
 
@@ -623,6 +641,7 @@ app.GeneralProcessSpecStep = (function () {
             $('#ProcessSpecStepEdtFormDelete').addClass('d-none');
             $('#ProcessSpecStepEdtFormSave').removeClass('d-none');
             $('#ProcessSpecStepEdtFormCancel').removeClass('d-none');
+            EdtForm_Change();
         } else {
             $('.ibox-content').toggleClass('sk-loading');
 
@@ -636,6 +655,7 @@ app.GeneralProcessSpecStep = (function () {
                     $('#ProcessSpecStepEdtFormDelete').removeClass('d-none');
                     $('#ProcessSpecStepEdtFormSave').removeClass('d-none');
                     $('#ProcessSpecStepEdtFormCancel').removeClass('d-none');
+                    EdtForm_Change();
                 }).always(function () {
                     $('.ibox-content').toggleClass('sk-loading');
                 });
@@ -780,7 +800,7 @@ app.GeneralProcessSpecStep = (function () {
             }
         },
         New: function (row) {
-            let newRow = { Id: 0, FlowId: 0, Name: null, Description: null, SLATimeOut: 0, StepOrder: 10, ProcessStatus: 0, ProcessLabel: null, EnableComment: false, ProgressMode: 1, SLA: 0, MailServer: 1, MailToContact: 1, MailToContactCustom: null, MailToContactTmpl: 1, MailToStepResponsible: 1, MailToStepResponsibleCustom: null, MailToStepResponsibleTmpl: 1, MailForSLAExpiration: 1, MailForSLAExpirationCustom: null, MailForSLAExpirationTmpl: 1, PreScript: null, PostScript: null }
+            let newRow = { Id: 0, FlowId: 0, Name: null, Description: null, SLATimeOut: 0, StepOrder: 0, ProcessStatus: 0, ProcessLabel: null, EnableComment: false, ProgressMode: 1, SLA: 0, MailServer: 1, MailToContact: 1, MailToContactCustom: null, MailToContactTmpl: 1, MailToStepResponsible: 1, MailToStepResponsibleCustom: null, MailToStepResponsibleTmpl: 1, MailForSLAExpiration: 1, MailForSLAExpirationCustom: null, MailForSLAExpirationTmpl: 1, PreScript: null, PostScript: null }
             if (row !== undefined) {
                 row.Id = 0;
                 newRow = row;

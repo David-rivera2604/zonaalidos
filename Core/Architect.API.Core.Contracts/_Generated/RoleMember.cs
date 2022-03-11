@@ -15,7 +15,7 @@ namespace Architect.API.Core.Contracts.Security
         /// </summary>
         [DataMember(), JsonProperty()] public int RoleId { get; set; }
         /// <summary>
-        /// Identificación de la compañia propietaria.
+        /// Identificación de la compañía propietaria.
         /// </summary>
         [DataMember(), JsonProperty()] public int CompanyId { get; set; }
         /// <summary>
@@ -30,6 +30,14 @@ namespace Architect.API.Core.Contracts.Security
         /// Nivel de seguridad.
         /// </summary>
         [DataMember(), JsonProperty()] public int SecurityLevel { get; set; }
+        /// <summary>
+        /// Indica la página a mostrar cuando el usuario con el rol se conecte.
+        /// </summary>
+        [DataMember(), JsonProperty()] public string InitialNavigationCode { get; set; }
+        /// <summary>
+        /// Descripción para indica la página a mostrar cuando el usuario con el rol se conecte.
+        /// </summary>
+        [DataMember(), JsonProperty()] public string InitialNavigationCodeDesc { get; set; }
         /// <summary>
         /// Estado general del registro.
         /// </summary>

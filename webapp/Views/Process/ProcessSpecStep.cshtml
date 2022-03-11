@@ -100,6 +100,7 @@
                                     <div class='form-group'>
                                         <label class='control-label' for='StepOrder'>Orden<span class='required-mark'>*</span></label>
                                         <input id='StepOrder' name='StepOrder' type='text' class='form-control text-right' size='5' maxlength='5'>
+                                        <small class="form-text text-muted">En caso de que el valor sea cero, el Sistema lo calculará de forma automática.</small>
                                     </div>
                                 </div>
                                 <!-- Roles -->
@@ -117,25 +118,10 @@
                                         <select id='ProgressMode' name='ProgressMode' class='form-control'></select>
                                     </div>
                                 </div>
-
-                                <!-- ProcessStatus -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='ProcessStatus'>Estado</label>
-                                        <select id='ProcessStatus' name='ProcessStatus' class='form-control'></select>
-                                    </div>
-                                </div>
-                                <!-- ProcessLabel -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='ProcessLabel'>Etiqueta</label>
-                                        <input id='ProcessLabel' name='ProcessLabel' type='text' class='form-control' size='80' maxlength='80'>
-                                    </div>
-                                </div>
                                 <!-- EnableComment -->
-                                <div class='col-sm-4 col-md-4'>
+                                <div class='col-sm-4 col-md-4 progressmode-visible d-none'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='EnableComment'>Enable Comment</label>
+                                        <label class='control-label' for='EnableComment'>¿Solicitar un comentario al seleccionar una opción?</label>
                                         <div style="padding-top: 6px;">
                                             <div class="custom-control custom-radio custom-control-inline">
                                                 <input type="radio" class="custom-control-input" id="EnableComment_1" name="EnableComment" value="true">
@@ -149,6 +135,21 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- ProcessStatus -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='ProcessStatus'>Estado<span class='required-mark'>*</span></label>
+                                        <select id='ProcessStatus' name='ProcessStatus' class='form-control'></select>
+                                    </div>
+                                </div>
+                                <!-- ProcessLabel -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='ProcessLabel'>Etiqueta</label>
+                                        <input id='ProcessLabel' name='ProcessLabel' type='text' class='form-control' size='80' maxlength='80'>
+                                    </div>
+                                </div>
+
 
                                 <!-- SLA -->
                                 <div class='col-sm-4 col-md-4 advanced d-none'>
@@ -160,8 +161,13 @@
                                 <!-- SLATimeOut -->
                                 <div class='col-sm-4 col-md-4'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='SLATimeOut'>SLA Time Out</label>
-                                        <input id='SLATimeOut' name='SLATimeOut' type='text' class='form-control text-right' size='9' maxlength='9'>
+                                        <label class='control-label' for='SLATimeOut' title="Acuerdo de nivel de servicio expresado en horas">Tiempo máximo para la atención (SLA)</label>
+                                        <div class="input-group">
+                                            <input id='SLATimeOut' name='SLATimeOut' type='text' class='form-control text-right' size='9' maxlength='9' title="Acuerdo de nivel de servicio expresado en horas">
+                                            <span class="input-group-addon">
+                                                <small class="text-muted" title="Minutos">hora(s)</small>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- MailServer -->

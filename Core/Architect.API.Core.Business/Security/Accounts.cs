@@ -3,7 +3,6 @@ using Architect.Utilities.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -21,8 +20,10 @@ namespace Architect.API.Core.Business.Security
         {
             Contracts.Security.AuthenticationResponse result = new Contracts.Security.AuthenticationResponse();
             Contracts.Security.UserMember user;
+            List<Contracts.Security.RoleMember> rols = null;
             int companyId = 0;
             bool bypass = false;
+            int tokenExpiresIn = 0;
             Contracts.Security.AuthenticationTrace track = new Contracts.Security.AuthenticationTrace() { TraceType = 1, IPAddress = authenticationRequest.IPAddress, UserName = authenticationRequest.Email, UserAgent = authenticationRequest.UserAgent };
 
             if (authenticationRequest.Tenant.IsEmpty())
@@ -99,11 +100,14 @@ namespace Architect.API.Core.Business.Security
                     else if (user.Password.Equals(".") || bypass ||
                              user.Password.Equals(Architect.Utilities.Helpers.CryptSupport.EncryptString(authenticationRequest.Password), System.StringComparison.CurrentCultureIgnoreCase))
                     {
+                        tokenExpiresIn = Utilities.Helpers.Settings.IntegerValue("Session.Timeout", 30);
                         track.TraceType = 2;
-                        result.ExpiresIn = Convert.ToInt32(ConfigurationManager.AppSettings["Session.Timeout"]);
+                        result.ExpiresIn = tokenExpiresIn;
                         result.UserName = string.Format("{0} {1}", user.FirstName, user.LastName).Trim();
 
-                        List<Utilities.Contracts.LookUpValue> rols = DataAccess.Security.UserRoleMember.RetrieveByUserId(user.UserId, user.CompanyId);
+                        tokenExpiresIn = Utilities.Helpers.Settings.IntegerValue("Token.Timeout", (int)(tokenExpiresIn * 2.5));
+
+                        rols = DataAccess.Security.UserRoleMember.RetrieveLookByUserId(user.UserId, user.CompanyId);
                         result.Roles = rols.Select(x => x.Description).ToArray();
 
                         //Este bloque esta duplicado en la clase token
@@ -111,11 +115,6 @@ namespace Architect.API.Core.Business.Security
                         if (user.CompanyId == 2)
                         {
                             agentInfo = Tron.RetrieveAgentInformationByEmail(user.CompanyId, user.EMail);
-                            //if (agentInfo == null)
-                            //{
-                            //    agentInfo = new Contracts.Security.AgentInformation() { cod_agt = 687, cod_sub_agt = 687, info_agt = "jose santisteba (687)", tip_docum = "CJU", cod_docum = "3101005744" };
-                            //    agentInfo = new Contracts.Security.AgentInformation() { cod_agt = 699, cod_sub_agt = 699, info_agt = "PAMPATAR 20959 (699)", tip_docum = "CJU", cod_docum = "3101587855" };
-                            //}
                         }
                         if (agentInfo == null)
                         {
@@ -129,7 +128,21 @@ namespace Architect.API.Core.Business.Security
                                 agentInfo.cod_docum = Convert.ToInt64(agentInfo.cod_docum.OnlyNumbers()).ToString();
                             }
                         }
-                        Contracts.Security.Token tokenItem = new Contracts.Security.Token() { UserId = user.UserId, BranchOffice = user.BranchOffice, ManagerId = user.ManagerId, SecurityLevel = user.SecurityLevel, Expires = DateTime.Now.AddMinutes(result.ExpiresIn), Roles = string.Join(",", rols.Select(x => x.Description)), CompanyId = user.CompanyId, AgentCode = agentInfo.cod_agt, SubAgentCode = agentInfo.cod_sub_agt, IdentificationType = agentInfo.tip_docum, Identification = agentInfo.cod_docum, UserName = result.UserName };
+                        Contracts.Security.Token tokenItem = new Contracts.Security.Token()
+                        {
+                            UserId = user.UserId,
+                            BranchOffice = user.BranchOffice,
+                            ManagerId = user.ManagerId,
+                            SecurityLevel = user.SecurityLevel,
+                            Expires = DateTime.Now.AddMinutes(tokenExpiresIn),
+                            Roles = string.Join(",", rols.Select(x => x.Description)),
+                            CompanyId = user.CompanyId,
+                            AgentCode = agentInfo.cod_agt,
+                            SubAgentCode = agentInfo.cod_sub_agt,
+                            IdentificationType = agentInfo.tip_docum,
+                            Identification = agentInfo.cod_docum,
+                            UserName = result.UserName
+                        };
 
                         result.Token = GeneratorToken(tokenItem);
                         user.LoginDate = DateTime.Now;
@@ -140,40 +153,72 @@ namespace Architect.API.Core.Business.Security
                         {
                             DataAccess.Security.UserMember.InternalUpdate(user);
                         }
-
-                        switch (user.CompanyId)
+                        if (user.InitialNavigationCode.IsNotEmpty())
                         {
-                            case 2: //Aliados
-                                result.InitialPath = "viewer/tab?id=310";
-                                result.InitialPath = "inicio/agente";
-                                break;
-
-                            case 3: //Clientes
-                                result.InitialPath = "viewer/tab?id=3000";
-                                break;
-
-                            case 4: //Bayer
-                            case 8: //Caturix
-                                if (rols.Select(x => x.Description == "Revisor").Contains(true))
+                            result.InitialPath = user.InitialNavigationCode;
+                        }
+                        else if (rols.IsNotEmpty())
+                        {
+                            foreach (Architect.API.Core.Contracts.Security.RoleMember rol in rols)
+                            {
+                                if (rol.InitialNavigationCode.IsNotEmpty())
                                 {
-                                    result.InitialPath = "viewer/viewer?id=41";
+                                    result.InitialPath = rol.InitialNavigationCode;
+                                    break;
                                 }
-                                else if (rols.Select(x => x.Description == "Mapfre").Contains(true))
-                                {
-                                    result.InitialPath = "viewer/viewer?id=42";
-                                }
-                                else
-                                {
-                                    result.InitialPath = "Bayer/Inclusion";
-                                }
-                                break;
+                            }
+                        }
+                        if (result.InitialPath.IsNotEmpty())
+                        {
+                            Contracts.General.Navigation nav = DataAccess.General.Navigation.RetrieveByCode(result.InitialPath, companyId);
+                            if (nav != null && nav.Code.IsNotEmpty())
+                            {
+                                result.InitialPath = nav.URLPath;
+                            }
+                            else
+                            {
+                                result.InitialPath = string.Empty;
+                            }
+                        }
 
-                            case 100: //Mapfre
-                                result.InitialPath = "viewer/viewer?id=4000";
-                                break;
-                            default:
-                                result.InitialPath = "Policy/Index";
-                                break;
+                        if (result.InitialPath.IsEmpty())
+                        {
+                            switch (user.CompanyId)
+                            {
+                                case 2: //Aliados
+                                    result.InitialPath = "viewer/tab?id=310";
+                                    result.InitialPath = "inicio/agente";
+                                    break;
+
+                                case 3: //Clientes
+                                    result.InitialPath = "viewer/tab?id=3000";
+                                    break;
+
+                                case 4: //Bayer
+                                case 8: //Caturix
+                                    if (rols.Select(x => x.Description == "Revisor").Contains(true))
+                                    {
+                                        result.InitialPath = "viewer/viewer?id=41";
+                                    }
+                                    else if (rols.Select(x => x.Description == "Mapfre").Contains(true) ||
+                                             rols.Select(x => x.Description == "Consulta").Contains(true))
+                                    {
+                                        result.InitialPath = "viewer/viewer?id=42";
+                                    }
+                                    else
+                                    {
+                                        result.InitialPath = "Bayer/Inclusion";
+                                    }
+                                    break;
+
+                                case 100: //Mapfre
+                                    result.InitialPath = "viewer/viewer?id=4000";
+                                    break;
+                                default:
+                                    result.InitialPath = "Policy/Index";
+                                    break;
+                            }
+
                         }
                         if (user.Password.Equals("."))
                             result.MustChangePassword = true;
@@ -232,7 +277,7 @@ namespace Architect.API.Core.Business.Security
 
         public static string GeneratorToken(Contracts.Security.Token userInfo)
         {
-            var securityKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(ConfigurationManager.AppSettings["Jwt:SecretKey"]));
+            var securityKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(Utilities.Helpers.Settings.StringValue("Jwt:SecretKey")));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new[] {
                                     new Claim(JwtRegisteredClaimNames.Sub, userInfo.UserName),
@@ -241,10 +286,10 @@ namespace Architect.API.Core.Business.Security
                                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                                 };
             var token = new JwtSecurityToken(
-                                            issuer: ConfigurationManager.AppSettings["Jwt:Issuer"],
-                                            audience: ConfigurationManager.AppSettings["Jwt:Audience"],
+                                            issuer: Utilities.Helpers.Settings.StringValue("Jwt:Issuer"),
+                                            audience: Utilities.Helpers.Settings.StringValue("Jwt:Audience"),
                                             claims: claims,
-                                            expires: DateTime.Now.AddMinutes(int.Parse(ConfigurationManager.AppSettings["Session.Timeout"])),
+                                            expires: userInfo.Expires,
                                             signingCredentials: credentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
@@ -523,7 +568,7 @@ namespace Architect.API.Core.Business.Security
             if (companyItem.IsNotEmpty())
             {
                 companyId = Int32.Parse(companyItem.Code);
-                internalUserId = Int32.Parse(ConfigurationManager.AppSettings[string.Format("Tenant.Settings.{0}.External.UserId", companyId)]);
+                internalUserId = Utilities.Helpers.Settings.IntegerValue( string.Format("Tenant.Settings.{0}.External.UserId", companyId));
                 result.UserMember.CompanyId = companyId;
 
                 result.Errors = Architect.API.Core.Business.Security.UserMember.Validate(result.UserMember, true);
@@ -557,7 +602,7 @@ namespace Architect.API.Core.Business.Security
 
             if (result.Errors.Count == 0)
             {
-                result.UserMember.Roles = new List<Utilities.Contracts.LookUpValue> { new Utilities.Contracts.LookUpValue() { Code = ConfigurationManager.AppSettings[string.Format("Tenant.Settings.{0}.External.RoleId", companyId)] } };
+                result.UserMember.Roles = new List<Utilities.Contracts.LookUpValue> { new Utilities.Contracts.LookUpValue() { Code = Utilities.Helpers.Settings.StringValue(string.Format("Tenant.Settings.{0}.External.UserId", companyId)) } };
                 result.UserMember = Architect.API.Core.Business.Security.UserMember.Create(companyId, internalUserId, result.UserMember);
             }
 

@@ -591,6 +591,7 @@ select option[disabled] {
 .widgetHome {
     padding: 10px;
 }
+
 span.columnBtn {
     white-space: nowrap;
 }
@@ -620,3 +621,13 @@ span.columnBtn {
     min-height: 99% !important;
     max-height: 99% !important;
 }
+
+.lookup {
+    margin-top: 3px;
+}
+    .lookup::placeholder {
+        color: grey;
+        font-size: x-small;
+        font-style: italic;
+    }
+

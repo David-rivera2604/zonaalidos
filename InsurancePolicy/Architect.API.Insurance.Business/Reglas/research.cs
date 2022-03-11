@@ -37,7 +37,7 @@ namespace Architect.API.Insurance.Business.Reglas
             }
             if (script.IsNotEmpty())
             {
-                errors = (List<Architect.API.Core.Contracts.General.Error>)Decision.Runtime.Execute(key, script, data, tokenInfo, null, null)["error"];
+                errors = (List<Architect.API.Core.Contracts.General.Error>)Decision.Runtime.Execute(key, script, data, tokenInfo, null, null)["errors"];
             }
 
             if (errors == null)

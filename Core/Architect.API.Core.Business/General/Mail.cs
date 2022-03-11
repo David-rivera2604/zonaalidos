@@ -45,6 +45,8 @@ namespace Architect.API.Core.Business.General
             Architect.API.Core.Contracts.Security.UserMember currentUserInfo = new Contracts.Security.UserMember();
             Architect.API.Core.Contracts.Security.UserMember ownerUserInfo = new Contracts.Security.UserMember();
             Core.Contracts.General.Tenant tenantInfo = new Contracts.General.Tenant();
+            string testEmail = ConfigurationManager.AppSettings["EMail.Test"];
+
             if (toAddressList == null)
             {
                 toAddressList = new Dictionary<string, string>();
@@ -97,7 +99,10 @@ namespace Architect.API.Core.Business.General
                             string settingValue = ConfigurationManager.AppSettings[key];
                             foreach (var item in Architect.API.Core.Business.Security.UserMember.EmailListByRolename(companyId, settingValue))
                             {
-                                toAddressList.Add(item.Key, item.Value);
+                                if (!toAddressList.ContainsKey(item.Key))
+                                {
+                                    toAddressList.Add(item.Key, item.Value);
+                                }
                             }
                         }
                         else if (tmpl.EmailTo.StartsWith("{UserRoleList.", StringComparison.CurrentCultureIgnoreCase))
@@ -105,12 +110,18 @@ namespace Architect.API.Core.Business.General
                             string rolelist = tmpl.EmailTo.Substring(14, tmpl.EmailTo.Length - 15).Trim();
                             foreach (var item in Architect.API.Core.Business.Security.UserMember.EmailListByRolename(companyId, rolelist))
                             {
-                                toAddressList.Add(item.Key, item.Value);
+                                if (!toAddressList.ContainsKey(item.Key))
+                                {
+                                    toAddressList.Add(item.Key, item.Value);
+                                }
                             }
                         }
-                        else if(tmpl.EmailTo.IsNotEmpty())
+                        else if (tmpl.EmailTo.IsNotEmpty())
                         {
-                            toAddressList.Add(tmpl.EmailTo, string.Empty);
+                            if (!toAddressList.ContainsKey(tmpl.EmailTo))
+                            {
+                                toAddressList.Add(tmpl.EmailTo, string.Empty);
+                            }
                         }
                         break;
                 }
@@ -120,6 +131,10 @@ namespace Architect.API.Core.Business.General
                 subject = Smart.Format(CultureInfo.CreateSpecificCulture("es-CR"), subject, context);
                 body = Smart.Format(CultureInfo.CreateSpecificCulture("es-CR"), body, context);
 
+            }
+            if (testEmail.IsNotEmpty())
+            {
+                subject += string.Format(" ({0}) ", testEmail);
             }
             if (mailServer == "Default")
             {
@@ -132,7 +147,7 @@ namespace Architect.API.Core.Business.General
 
             MailMessage mail = null;
 
-            if (body.Contains("##UserSignature##") && currentUserInfo != null)
+            if (body.Contains("##UserSignature##") && currentUserInfo != null && currentUserInfo.EMail.IsNotEmpty())
             {
                 string signatureFielName = string.Format(@"{0}Signature\{1}.jpg", ConfigurationManager.AppSettings["EMail.Path.Images"], currentUserInfo.EMail.Replace("@", "."));
                 if (File.Exists(signatureFielName))
@@ -179,9 +194,9 @@ namespace Architect.API.Core.Business.General
             {
                 if (index == 0)
                 {
-                    if(ConfigurationManager.AppSettings["EMail.Test"] != null)
+                    if (testEmail.IsNotEmpty())
                     {
-                        mail.To.Add(new MailAddress(ConfigurationManager.AppSettings["EMail.Test"].ToString(), entry.Value));
+                        mail.To.Add(new MailAddress(testEmail, entry.Value));
                     }
                     else
                     {
@@ -190,9 +205,9 @@ namespace Architect.API.Core.Business.General
                 }
                 else
                 {
-                    if (ConfigurationManager.AppSettings["EMail.Test"] != null)
+                    if (testEmail.IsNotEmpty())
                     {
-                        mail.Bcc.Add(new MailAddress(ConfigurationManager.AppSettings["EMail.Test"].ToString(), entry.Value));
+                        mail.Bcc.Add(new MailAddress(testEmail, entry.Value));
                     }
                     else
                     {
@@ -217,10 +232,11 @@ namespace Architect.API.Core.Business.General
                     //{
                     //    mail.Attachments.Add(new System.Net.Mail.Attachment(stream, Path.GetFileName(attachmentFile)));
                     //}
-                    if (attachmentFile.IndexOf(';')==-1)
+                    if (attachmentFile.IndexOf(';') == -1)
                     {
                         attachment = new System.Net.Mail.Attachment(attachmentFile);
-                    } else
+                    }
+                    else
                     {
                         attachment = new System.Net.Mail.Attachment(attachmentFile.Split(';')[0]);
                         attachment.Name = attachmentFile.Split(';')[1];
@@ -260,13 +276,13 @@ namespace Architect.API.Core.Business.General
             catch (Exception ex)
             {
                 Architect.Utilities.Log.WarningLog("Fail", ex.Message, "Mail");
-                Architect.Utilities.Log.ErrorLog("SendMail", $"Server setting: MailServer: {mailServer}, Host: {SmtpServer.Host}, Port: {SmtpServer.Host}, SSL: {SmtpServer.EnableSsl}, Username: {mailUsername}", ex);
+                Architect.Utilities.Log.ErrorLog("SendMail", $"Server setting: MailServer: {mailServer}, Host: {SmtpServer.Host}, Port: {SmtpServer.Port}, SSL: {SmtpServer.EnableSsl}, Username: {mailUsername}", ex);
             }
             mail.Dispose();
             SmtpServer.Dispose();
         }
 
-        /// Este metodo es usado desde las reglas.
+        /// Este método es usado desde las reglas.
         public static void Send(string eMail, string subject, string body, object entity)
         {
             string subjectResult = Smart.Format(CultureInfo.CreateSpecificCulture("es-CR"), subject, entity);
@@ -279,7 +295,11 @@ namespace Architect.API.Core.Business.General
         /// Usado por la versiones iniciales para el caso de coopeservidores.
         public static void Send(Dictionary<string, string> toAddressList, string subject, string body)
         {
-
+            string testEmail = ConfigurationManager.AppSettings["EMail.Test"];
+            if (testEmail.IsNotEmpty())
+            {
+                subject += string.Format(" ({0}) ", testEmail);
+            }
             var mail = new MailMessage
             {
                 From = new MailAddress(ConfigurationManager.AppSettings["EMail.From.Address"], ConfigurationManager.AppSettings["EMail.From.Diplayname"]),
@@ -290,7 +310,14 @@ namespace Architect.API.Core.Business.General
 
             foreach (KeyValuePair<string, string> entry in toAddressList)
             {
-                mail.To.Add(new MailAddress(entry.Key, entry.Value));
+                if (testEmail.IsNotEmpty())
+                {
+                    mail.To.Add(new MailAddress(testEmail, entry.Value));
+                }
+                else
+                {
+                    mail.To.Add(new MailAddress(entry.Key, entry.Value));
+                }
                 Architect.Utilities.Log.WarningLog(entry.Key, subject, "Mail");
             }
 

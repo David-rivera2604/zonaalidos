@@ -31,7 +31,7 @@ namespace Architect.API.Core.Business
             string keyValue;
             foreach (string keyItem in keys.Split(','))
             {
-   
+
                 if (keyItem.IndexOf(":") > -1)
                 {
                     extend = keyItem.Split(':')[1];
@@ -56,19 +56,28 @@ namespace Architect.API.Core.Business
                 switch (tenantLkpMaster.Type)
                 {
                     case 2: //Custom Select 
-                        DataTable table = Architect.DataFactory.Utils.StatementExecute(tenantLkpMaster.Statement, 1, tenantLkpMaster.ConnectionName, urlParameters, tenantLkpMaster.IsCached, keyValue);
+                        DataTable table = Architect.DataFactory.Utils.StatementExecute(tenantLkpMaster.Statement, tenantLkpMaster.StatementType, tenantLkpMaster.ConnectionName, urlParameters, tenantLkpMaster.IsCached, keyValue);
+                        LookupValue itemLook;
                         foreach (DataRow row in table.Rows)
                         {
-                            LookupValue itemLook = new LookupValue { Code = row[0].ToString().Trim(), Description = row[1].ToString() };
-                            if (table.Columns.Count != 2)
+                            if (tenantLkpMaster.Fields.IsEmpty())
                             {
-                                dynamic dItemLook = itemLook;
-                                var wrapped = ObjectAccessor.Create(dItemLook);
-                                for (int i = 2; i < table.Columns.Count; i++)
+                                itemLook = new LookupValue { Code = row[0].ToString().Trim(), Description = row[1].ToString() };
+                                if (table.Columns.Count != 2)
                                 {
-                                    var columnName = table.Columns[i].ColumnName;
-                                    wrapped[columnName] = row[i].ToString();
+                                    dynamic dItemLook = itemLook;
+                                    var wrapped = ObjectAccessor.Create(dItemLook);
+                                    for (int i = 2; i < table.Columns.Count; i++)
+                                    {
+                                        var columnName = table.Columns[i].ColumnName;
+                                        wrapped[columnName] = row[i].ToString();
+                                    }
                                 }
+                            }
+                            else
+                            {
+                                string[] fields = tenantLkpMaster.Fields.Split(',');
+                                itemLook = new LookupValue { Code = row.StringValue(fields[0]).Trim(), Description = row.StringValue(fields[1]).ToString() };
                             }
                             customValues.Add(itemLook);
                         }
@@ -269,7 +278,7 @@ namespace Architect.API.Core.Business
             switch (tenantLkpMaster.Type)
             {
                 case 2: //Custom Select 
-                    DataTable xxx = Architect.DataFactory.Utils.StatementExecute(tenantLkpMaster.Statement, 1, tenantLkpMaster.ConnectionName, urlParameters, tenantLkpMaster.IsCached, keyValue);
+                    DataTable xxx = Architect.DataFactory.Utils.StatementExecute(tenantLkpMaster.Statement, tenantLkpMaster.StatementType, tenantLkpMaster.ConnectionName, urlParameters, tenantLkpMaster.IsCached, keyValue);
                     List<LookupValue> customValues = new List<LookupValue>();
                     foreach (DataRow row in xxx.Rows)
                     {

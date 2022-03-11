@@ -114,6 +114,7 @@
     <Compile Include="_Generated\ProcessSpecStepRoleResult.cs" />
     <Compile Include="_Generated\ProcessSpecStepRole.cs" />
     <Compile Include="_Generated\RoleMemberNavigationResult.cs" />
+    <Compile Include="_Generated\RoleMemberResult.cs" />
     <Compile Include="_Generated\RulesResult.cs" />
     <Compile Include="_Generated\TasksResult.cs" />
     <Compile Include="_Generated\TemplateResult.cs" />

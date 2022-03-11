@@ -23,7 +23,7 @@ namespace Architect.API.Core.Contracts.General
         /// </summary>
         [DataMember(), JsonProperty()] public string FlowIdDesc { get; set; }
         /// <summary>
-        /// Identificación de la compañia propietaria.
+        /// Identificación de la compañía propietaria.
         /// </summary>
         [DataMember(), JsonProperty()] public int CompanyId { get; set; }
         /// <summary>
@@ -97,7 +97,7 @@ namespace Architect.API.Core.Contracts.General
         [DataMember(), JsonProperty()] public int MailForSLAExpiration { get; set; }
         [DataMember(), JsonProperty()] public string MailForSLAExpirationDesc { get; set; }
         [DataMember(), JsonProperty()] public string MailForSLAExpirationCustom { get; set; }
-        [DataMember(), JsonProperty()] public string MailForSLAExpirationTmpl { get; set; }
+        [DataMember(), JsonProperty()] public int MailForSLAExpirationTmpl { get; set; }
         [DataMember(), JsonProperty()] public string MailForSLAExpirationTmplDesc { get; set; }
         /// <summary>
         /// Establece un script que es ejecutado al activarse el paso (Script).

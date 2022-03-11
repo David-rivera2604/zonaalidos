@@ -15,7 +15,7 @@ namespace Architect.API.Core.Contracts.Security
         /// </summary>
         [DataMember(), JsonProperty()] public int Id { get; set; }
         /// <summary>
-        /// Identificación de la compañia propietaria.
+        /// Identificación de la compañía propietaria.
         /// </summary>
         [DataMember(), JsonProperty()] public int CompanyId { get; set; }
         /// <summary>
@@ -50,6 +50,11 @@ namespace Architect.API.Core.Contracts.Security
         /// Información sobre el dispositivo de consulta que efectúa una petición de red.
         /// </summary>
         [DataMember(), JsonProperty()] public string UserAgent { get; set; }
+
+        /// <summary>
+        /// Fecha que se actualizo por última vez el registro.
+        /// </summary>
+        [DataMember(), JsonProperty()] public DateTime UpdateDate { get; set; }
     }
 }
 

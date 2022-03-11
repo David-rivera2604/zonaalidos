@@ -19,7 +19,7 @@ namespace Architect.API.Core.Contracts.General
 
         [DataMember(), JsonProperty()] public int Progress { get; set; }
 
-        
+
         /// <summary>
         /// Etiqueta asociada al paso del proceso
         /// </summary>

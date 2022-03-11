@@ -158,7 +158,7 @@ app.SecurityUserMember = (function () {
                     formatter: function (value, row, index, field) {
                         return '<button type="button" class="btn btn-sm btn-white edit" title="Al hacer click permite la edición de los datos del usuario"> <i class="fa fa-pencil"></i> </button>' +
                             '<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar los datos del usuario"> <i class="fa fa-close"></i></button>' +
-                            '<button type="button" name="sendemail" class="btn btn-sm btn-white mail" title="Permite enviar el acceso por correo"><i class="fa fa-envelope-o"></i></button>';
+                            '<button type="button" name="sendemail" class="btn btn-sm btn-white mail" title="Se asigna una nueva clave de acceso y se envía al correo registrado"><i class="fa fa-envelope-o"></i></button>';
                     },
                     cellStyle: function (value, row, index) {
                         return {

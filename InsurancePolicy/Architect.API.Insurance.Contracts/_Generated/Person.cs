@@ -4,9 +4,10 @@ using System.Runtime.Serialization;
 
 namespace Architect.API.Insurance.Contracts.Policy
 {
-        /// <summary>
-        /// Personas
-        /// </summary>
+
+    /// <summary>
+    /// Personas
+    /// </summary>
     [Serializable(), DataContract()]
     public partial class Person
     {

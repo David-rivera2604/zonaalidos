@@ -34,11 +34,11 @@ app.GeneralNewCase = (function () {
         $('#FlowId').change(function () {
             app.core.Get(app.setting.apipath + 'v1/ProcessSpecFlow/' + $('#FlowId').val())
                 .done(function (data, textStatus, jqXHR) {
-                    ReferenceHandler(data.ReferenceCaption1, 'Reference1');
-                    ReferenceHandler(data.ReferenceCaption2, 'Reference2');
-                    ReferenceHandler(data.ReferenceCaption3, 'Reference3');
-                    ReferenceHandler(data.ReferenceCaption4, 'Reference4');
-                    ReferenceHandler(data.ReferenceCaption5, 'Reference5');
+                    ReferenceHandler(data.ReferenceCaption1, data.ReferenceLookupList1, 'Reference1');
+                    ReferenceHandler(data.ReferenceCaption2, data.ReferenceLookupList2, 'Reference2');
+                    ReferenceHandler(data.ReferenceCaption3, data.ReferenceLookupList3, 'Reference3');
+                    ReferenceHandler(data.ReferenceCaption4, data.ReferenceLookupList4, 'Reference4');
+                    ReferenceHandler(data.ReferenceCaption5, data.ReferenceLookupList5, 'Reference5');
                 });
         });
 
@@ -60,12 +60,29 @@ app.GeneralNewCase = (function () {
 
     }
 
-    function ReferenceHandler(caption, id) {
+    function ReferenceHandler(caption, valueList, id) {
         if (caption != '') {
             $("label[for='" + id + "']").text(caption);
+            if (valueList == '')
+                $('#' + id).removeClass('d-none');
+            else {
+                let selectedOptions = $('#' + id + 'List');
+                selectedOptions.removeClass('d-none');
+                selectedOptions.children().remove();
+
+                selectedOptions.append($('<option selected />').val('').text(''));
+                $.each(valueList.split(';'), function () {
+                    selectedOptions.append($('<option />').val(this).text(this));                    
+                });
+
+                
+            }
             $('#' + id).parent().parent().removeClass('d-none');
         } else {
             $('#' + id).parent().parent().addClass('d-none');
+            $('#' + id).addClass('d-none');
+            $('#' + id + 'List').addClass('d-none');
+            $('#' + id + 'List').val('');
         }
     }
 
@@ -93,11 +110,11 @@ app.GeneralNewCase = (function () {
             Description: $('#Description').val(),
             Priority: $('#Priority').val(),
             InstanceId: parseInt(0 + $('#InstanceId').val(), 10),
-            Reference1: $('#Reference1').val(),
-            Reference2: $('#Reference2').val(),
-            Reference3: $('#Reference3').val(),
-            Reference4: $('#Reference4').val(),
-            Reference5: $('#Reference5').val(),
+            Reference1: $('#Reference1').val() + $('#Reference1List').val(),
+            Reference2: $('#Reference2').val() + $('#Reference2List').val(),
+            Reference3: $('#Reference3').val() + $('#Reference3List').val(),
+            Reference4: $('#Reference4').val() + $('#Reference4List').val(),
+            Reference5: $('#Reference5').val() + $('#Reference5List').val(),
             ContactMainName: $('#ContactMainName').val(),
             ContactMainEmail: $('#ContactMainEmail').val(),
             Status: $('#Status').val(),
@@ -147,9 +164,6 @@ app.GeneralNewCase = (function () {
                 Title: {
                     required: true
                 },
-                Description: {
-                    required: true
-                },
                 Priority: {
                     required: true
                 },
@@ -166,9 +180,6 @@ app.GeneralNewCase = (function () {
             messages: {
                 Title: {
                     required: 'Debe indicar el asunto'
-                },
-                Description: {
-                    required: 'Debe indicar la descripción'
                 },
                 Priority: {
                     required: 'Debe indicar la prioridad'

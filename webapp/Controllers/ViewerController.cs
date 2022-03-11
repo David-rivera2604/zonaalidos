@@ -1,5 +1,4 @@
-﻿using Architect.Common.Extensions;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Web.Mvc;
 
 namespace aliados.Controllers

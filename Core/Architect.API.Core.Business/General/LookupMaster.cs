@@ -8,13 +8,13 @@ namespace Architect.API.Core.Business.General
     {
 
         /// <summary>
-        /// Recupera la información de la tabla LookUpMaster vinculada a la compañia por medio de sus clave.
+        /// Recupera la información de la tabla LookUpMaster vinculada a la compañía por medio de sus clave.
         /// </summary>
         /// <remarks>
-        /// Por medio del campo Tenant se sabe si la lista es particular por compañia propietaria o es global.
+        /// Por medio del campo Tenant se sabe si la lista es particular por compañía propietaria o es global.
         /// </remarks>
         /// <param name="key">Clave que identifica la lista.</param>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <returns>Instancia de LookupMaster.</returns>	
         public static Contracts.General.TenantLookup TenantInformation(string key, int companyId)
         {
@@ -32,7 +32,9 @@ namespace Architect.API.Core.Business.General
                         LookupId = item.LookupId,
                         Tenant = item.Tenant,
                         Type = item.Type,
+                        StatementType = item.StatementType,
                         Statement = item.Statement,
+                        Fields = item.Fields,
                         ConnectionName = item.ConnectionName,
                         IncludeByRole = item.IncludeByRole,
                         ExcludeByRole = item.ExcludeByRole,

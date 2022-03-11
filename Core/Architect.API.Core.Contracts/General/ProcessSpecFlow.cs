@@ -11,6 +11,11 @@ namespace Architect.API.Core.Contracts.General
         /// Pasos o estados de un proceso.
         /// </summary>
         [DataMember(), JsonProperty()] public List<ProcessSpecStep> ProcessSpecSteps { get; set; }
+
+        /// <summary>
+        /// Pasos o estados de un proceso.
+        /// </summary>
+        [DataMember(), JsonProperty()] public List<ProcessSpecLink> ProcessSpecLinks { get; set; }
     }
 }
 

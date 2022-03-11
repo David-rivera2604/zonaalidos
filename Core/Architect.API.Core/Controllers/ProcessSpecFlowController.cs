@@ -222,5 +222,42 @@ namespace Architect.API.Core.Controllers
             return BadRequest(ModelState);
         }
 
+
+        /// <summary>
+        /// Recupera un registro en la tabla ProcessSpecFlow por medio de su identificador único.
+        /// </summary>
+        /// <param name="id">Identificador único.</param>
+        /// <returns>Instancia del objecto ProcessSpecFlow.</returns>
+        [HttpPost]
+        [Route("{id:int}/Duplicate")]
+        [Authorize]
+        public async Task<IHttpActionResult> Duplicate([FromUri] int id)
+        {
+            Contracts.Security.Token tokenInfo = Business.Security.Token.Info();
+            IHttpActionResult result = null;
+            Architect.API.Core.Contracts.General.ProcessSpecFlow data = null;
+
+            if (id.IsEmpty())
+            {
+                result = BadRequest("Debe indicar el identificador del process spec flow");
+            }
+            else
+            {
+                await Task.Run(() =>
+                {
+                    Architect.API.Core.Contracts.General.ProcessSpecFlowResult created = Architect.API.Core.Business.General.ProcessSpecFlow.DuplicateById(tokenInfo.CompanyId, tokenInfo.UserId, id);
+                    if (created.Errors.Count == 0)
+                    {
+                        result = Created(string.Format("{0}/{1}", Request.RequestUri.AbsoluteUri.Substring(0, Request.RequestUri.AbsoluteUri.LastIndexOf("/")), created.ProcessSpecFlow.Id), new { Id = created.ProcessSpecFlow.Id, UpdateDate = created.ProcessSpecFlow.UpdateDate });
+                    }
+                    else
+                    {
+                        result = ErrorHandler(created.Errors);
+                    }
+                }).ConfigureAwait(false);
+            }
+            return result;
+        }
+
     }
 }

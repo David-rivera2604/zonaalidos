@@ -11,6 +11,8 @@ namespace Architect.API.Core.Contracts.Security
         /// </summary>
         [DataMember(), JsonProperty()] public List<Utilities.Contracts.LookUpValue> Roles { get; set; }
 
+        [DataMember(), JsonProperty()] public string RoleList { get; set; }
+
         [DataMember(), JsonProperty()] public object Extent { get; set; }
 
     }

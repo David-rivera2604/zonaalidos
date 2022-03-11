@@ -69,7 +69,7 @@ namespace Architect.API.Insurance.Controllers
         /// <summary>
         /// Información completa de una póliza.
         /// </summary>
-        /// <param name="id">Identificción interna de una poliza.</param>
+        /// <param name="id">Identificación interna de una póliza.</param>
         /// <returns>Información de una póliza</returns>
         [HttpGet]
         [Route("get")]
@@ -370,6 +370,18 @@ namespace Architect.API.Insurance.Controllers
                 return NotFound();
         }
 
+        [HttpGet]
+        [Route("import")]
+        [AllowAnonymous]
+        public IHttpActionResult Import([FromUri] string excelFilename,[FromUri] string specificactionFilename)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.General.GenericResponse result = Business.Policy.Risk.Import(excelFilename, specificactionFilename, tokenInfo);
 
+            if (result.IsNotEmpty())
+                return Ok(result);
+            else
+                return NotFound();
+        }
     }
 }

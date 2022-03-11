@@ -48,8 +48,8 @@
     <Reference Include="ExcelNumberFormat, Version=1.1.0.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ExcelNumberFormat.1.1.0\lib\net20\ExcelNumberFormat.dll</HintPath>
     </Reference>
-    <Reference Include="itextsharp, Version=5.5.13.2, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\iTextSharp.5.5.13.2\lib\itextsharp.dll</HintPath>
+    <Reference Include="itextsharp, Version=5.5.13.3, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\iTextSharp.5.5.13.3\lib\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -77,6 +77,9 @@
     <Compile Include="Bayer\Inclusion.cs" />
     <Compile Include="Enumerations\PolicyStatus.cs" />
     <Compile Include="Helpers\DocumentManager.cs" />
+    <Compile Include="ManualClaims\Claim.cs" />
+    <Compile Include="ManualPolicies\Policy.cs" />
+    <Compile Include="Policy\Notify.cs" />
     <Compile Include="Policy\Rating.cs" />
     <Compile Include="Policy\RiskBeneficiary.cs" />
     <Compile Include="Policy\RiskQuestionnaires.cs" />
@@ -88,17 +91,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reglas\research.cs" />
     <Compile Include="Structure\IssuePolicyResult.cs" />
-    <Compile Include="_Generated\Person.cs" />
+    <Compile Include="_Generated\Claim.cs" />
+    <Compile Include="_Generated\Policy.cs" />
     <Compile Include="_Generated\RiskOverdraft.cs" />
     <Compile Include="_Generated\Risk.cs" />
     <Compile Include="_Generated\RiskQuestionnaires.cs" />
     <Compile Include="_Generated\RiskRoles.cs" />
+    <Compile Include="_Generated\ThirdParty.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Architect.Common\Architect.Common.vbproj">
-      <Project>{7e7360b0-ea6a-4b93-852e-6f0ec759c02b}</Project>
-      <Name>Architect.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Core\Architect.API.Core.Business\Architect.API.Core.Business.csproj">
       <Project>{579105b3-776b-4094-a301-87a9c42962c5}</Project>
       <Name>Architect.API.Core.Business</Name>
@@ -127,8 +128,8 @@
       <Project>{3da1398d-ccc0-4f4b-a099-72cc3bbd2a9a}</Project>
       <Name>Architect.API.Insurance.Contracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Architect.API.Insurance.DataAccess\Architect.API.Insurance.DataAccess.vbproj">
-      <Project>{267ac5ae-18e1-4d75-91d7-1183aee670f1}</Project>
+    <ProjectReference Include="..\Architect.API.Insurance.DataAccess\Architect.API.Insurance.DataAccess.csproj">
+      <Project>{945e44c5-d4b9-0284-138f-dbfdcc714451}</Project>
       <Name>Architect.API.Insurance.DataAccess</Name>
     </ProjectReference>
   </ItemGroup>

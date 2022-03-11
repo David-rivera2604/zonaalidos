@@ -33,12 +33,12 @@ namespace Architect.API.Tron.Contracts.Batch
         public string txt_alias { get; set; }
 
         /// <summary>
-        ///  Situacion del movimiento
+        ///  Situación del movimiento
         /// </summary>
         public string tip_situ_filtro { get; set; }
 
         /// <summary>
-        ///  Procedimiento de excepcion
+        ///  Procedimiento de excepción
         /// </summary>
         public string nom_prg_excepcion { get; set; }
 
@@ -48,7 +48,7 @@ namespace Architect.API.Tron.Contracts.Batch
         public string mca_recalcula_fecha { get; set; }
 
         /// <summary>
-        ///  Indica en base a que fecha se hara el recalculo de la fecha
+        ///  Indica en base a que fecha se hará el re-calculo de la fecha
         /// </summary>
         public string tip_fecha_base { get; set; }
 
@@ -58,7 +58,7 @@ namespace Architect.API.Tron.Contracts.Batch
         public string cod_usr { get; set; }
 
         /// <summary>
-        ///  Fecha de la ultima actualizacion del registro
+        ///  Fecha de la ultima actualización del registro
         /// </summary>
         public DateTime fec_actu { get; set; }
 

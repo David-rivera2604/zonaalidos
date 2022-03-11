@@ -59,7 +59,7 @@ namespace Architect.API.Tron.DataAccess
                                            .AddParameter("P_NUM_APLI", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_apli)
                                            .AddParameter("P_NUM_SPTO_APLI", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_spto_apli)
                                            .AddParameter("RC1", Architect.DataFactory.Enumerations.DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
-                                           .Query(currentConnection, new Action<IDataReader>((reader) =>
+                                           .Query(currentConnection, "Tron", new Action<IDataReader>((reader) =>
                                            {
                                                result = new Architect.API.Tron.Contracts.Presupuesto.DatoFijo()
                                                {
@@ -173,7 +173,7 @@ namespace Architect.API.Tron.DataAccess
                .AddParameter("P_NUM_APLI", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_apli)
                .AddParameter("P_NUM_SPTO_APLI", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_spto_apli)
                .AddParameter("RC1", Architect.DataFactory.Enumerations.DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
-               .Query(currentConnection, new Action<IDataReader>((reader) =>
+               .Query(currentConnection, "Tron", new Action<IDataReader>((reader) =>
                {
                    result.Add(new Architect.API.Tron.Contracts.Presupuesto.Riesgo()
                    {
@@ -212,7 +212,7 @@ namespace Architect.API.Tron.DataAccess
                                            .AddParameter("P_NUM_APLI", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_apli)
                                            .AddParameter("P_NUM_SPTO_APLI", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_spto_apli)
                                            .AddParameter("RC1", Architect.DataFactory.Enumerations.DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
-                                           .Query(currentConnection, new Action<IDataReader>((reader) =>
+                                           .Query(currentConnection, "Tron", new Action<IDataReader>((reader) =>
                                            {
                                                result.Add(new Architect.API.Tron.Contracts.Presupuesto.DatoVariable()
                                                {
@@ -251,7 +251,7 @@ namespace Architect.API.Tron.DataAccess
                                            .AddParameter("P_NUM_APLI", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_apli)
                                            .AddParameter("P_NUM_SPTO_APLI", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_spto_apli)
                                            .AddParameter("RC1", Architect.DataFactory.Enumerations.DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
-                                           .Query(currentConnection, new Action<IDataReader>((reader) =>
+                                           .Query(currentConnection, "Tron", new Action<IDataReader>((reader) =>
                                            {
                                                result.Add(new Architect.API.Tron.Contracts.Presupuesto.Ocurrencia()
                                                {
@@ -291,7 +291,7 @@ namespace Architect.API.Tron.DataAccess
                 .AddParameter("P_NUM_APLI", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_apli)
                 .AddParameter("P_NUM_SPTO_APLI", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_spto_apli)
                 .AddParameter("RC1", Architect.DataFactory.Enumerations.DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
-                .Query(currentConnection, new Action<IDataReader>((reader) =>
+                .Query(currentConnection, "Tron", new Action<IDataReader>((reader) =>
                 {
                     result.Add(new Architect.API.Tron.Contracts.Presupuesto.Cobertura()
                     {
@@ -357,7 +357,7 @@ namespace Architect.API.Tron.DataAccess
                         .AddParameter("P_NUM_APLI", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_apli)
                         .AddParameter("P_NUM_SPTO_APLI", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_spto_apli)
                         .AddParameter("RC1", Architect.DataFactory.Enumerations.DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
-                        .Query(currentConnection, new Action<IDataReader>((reader) =>
+                        .Query(currentConnection, "Tron", new Action<IDataReader>((reader) =>
                         {
                             result.Add(new Architect.API.Tron.Contracts.Presupuesto.Tercero()
                             {
@@ -398,7 +398,7 @@ namespace Architect.API.Tron.DataAccess
                 .AddParameter("P_NUM_APLI", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_apli)
                 .AddParameter("P_NUM_SPTO_APLI", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_spto_apli)
                 .AddParameter("RC1", Architect.DataFactory.Enumerations.DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
-                .Query(currentConnection, new Action<IDataReader>((reader) =>
+                .Query(currentConnection, "Tron", new Action<IDataReader>((reader) =>
                 {
                     result.Add(new Architect.API.Tron.Contracts.Presupuesto.Recibo()
                     {
@@ -466,7 +466,7 @@ namespace Architect.API.Tron.DataAccess
                .AddParameter("P_NUM_APLI", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_apli)
                .AddParameter("P_NUM_SPTO_APLI", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_spto_apli)
                .AddParameter("RC1", Architect.DataFactory.Enumerations.DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
-               .Query(currentConnection, new Action<IDataReader>((reader) =>
+               .Query(currentConnection, "Tron", new Action<IDataReader>((reader) =>
                {
                    result.Add(new Architect.API.Tron.Contracts.Presupuesto.DesgloseEconomico()
                    {

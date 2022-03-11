@@ -4,14 +4,14 @@ using System.Runtime.Serialization;
 
 namespace Architect.API.Core.Contracts.Security
 {
-        /// <summary>
-        /// Datos del un usuario para su registrado.
-        /// </summary>
+    /// <summary>
+    /// Datos del un usuario para su registrado.
+    /// </summary>
     [Serializable(), DataContract()]
     public class Register
     {
         /// <summary>
-        /// Identificación de la compañia propietaria.
+        /// Identificación de la compañía propietaria.
         /// </summary>
         [DataMember(), JsonProperty()] public string Tenant { get; set; }
         /// <summary>

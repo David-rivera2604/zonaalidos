@@ -31,7 +31,7 @@ namespace Architect.API.Tron.DataAccess.Batch
                                            .AddParameter("P_NUM_RIESGO", Architect.DataFactory.Enumerations.DbType.Int32, 22, p2000020Instance.num_riesgo)
                                            .AddParameter("P_NUM_PERIODO", Architect.DataFactory.Enumerations.DbType.Int32, 22, p2000020Instance.num_periodo)
                                            .AddParameter("P_COD_CAMPO", Architect.DataFactory.Enumerations.DbType.String, 30, p2000020Instance.cod_campo)
-                                           .Execute(currentConnection);
+                                           .Execute(currentConnection, "Tron");
             if (affected != 0)
             {
                 result = true;
@@ -59,7 +59,7 @@ namespace Architect.API.Tron.DataAccess.Batch
                                            .AddParameter("P_NUM_RIESGO", Architect.DataFactory.Enumerations.DbType.Int32, 22, p2000020Instance.num_riesgo)
                                            .AddParameter("P_NUM_PERIODO", Architect.DataFactory.Enumerations.DbType.Int32, 22, p2000020Instance.num_periodo)
                                            .AddParameter("P_COD_CAMPO", Architect.DataFactory.Enumerations.DbType.String, 30, p2000020Instance.cod_campo)
-                                          .QueryScalar<string>(currentConnection);
+                                          .QueryScalar<string>(currentConnection, "Tron");
 
             return cod_campo.IsNotEmpty();
         }
@@ -73,7 +73,7 @@ namespace Architect.API.Tron.DataAccess.Batch
                                              "  AND COD_CAMPO=:P_COD_CAMPO")
                .AddParameter("P_NUM_POLIZA", Architect.DataFactory.Enumerations.DbType.String, 20, num_presupuesto)
                .AddParameter("P_COD_CAMPO", Architect.DataFactory.Enumerations.DbType.String, 20, cod_campo)
-                                          .QueryScalar<Decimal>(currentConnection)>0;
+                                          .QueryScalar<Decimal>(currentConnection, "Tron") >0;
         }
 
         public static bool Update(string num_presupuesto, string cod_campo, string val_campo, IDbConnection currentConnection)
@@ -83,7 +83,7 @@ namespace Architect.API.Tron.DataAccess.Batch
                     .AddParameter("P_NUM_PRESUPUESTO", Architect.DataFactory.Enumerations.DbType.String, 20, num_presupuesto)
                     .AddParameter("P_COD_CAMPO", Architect.DataFactory.Enumerations.DbType.String, 20, cod_campo)
                     .AddParameter("P_VALOR_CAMPO", Architect.DataFactory.Enumerations.DbType.String, 100, val_campo)
-                    .Execute(currentConnection);
+                    .Execute(currentConnection, "Tron");
             if (affected != 0)
             {
                 result = true;

@@ -13,7 +13,7 @@ namespace Architect.API.Tron.DataAccess
                     .AddParameter("JBCOD_CIA", Architect.DataFactory.Enumerations.DbType.Int32, 22, cod_cia)
                     .AddParameter("JBNUM_POLIZA", Architect.DataFactory.Enumerations.DbType.String, 15, num_poliza)
                     .AddParameter("JBNUM_RIESGO", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_riesgo)
-                    .Execute(currentConnection);
+                    .Execute(currentConnection, "Tron");
 
             string reportId = ReportIdentify(currentConnection);
             currentConnection.Close();
@@ -26,7 +26,7 @@ namespace Architect.API.Tron.DataAccess
             Database.Procedure("em_k_jrp_reimpfactura_mcr.p_lista")
                     .AddParameter("p_cod_cia", Architect.DataFactory.Enumerations.DbType.Int32, 22, cod_cia)
                     .AddParameter("p_num_recibo", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_recibo)
-                    .Execute(currentConnection);
+                    .Execute(currentConnection, "Tron");
 
             string reportId = ReportIdentify(currentConnection);
             currentConnection.Close();
@@ -39,7 +39,7 @@ namespace Architect.API.Tron.DataAccess
                              " FROM (SELECT id_report FROM tronweb_reports " +
                                     " WHERE fec_created >= TO_DATE('" + DateTime.Today.ToString("dd/MM/yy") + "', 'DD/MM/YY') ORDER BY fec_created DESC)" +
                             " WHERE ROWNUM = 1")
-                            .QueryScalar<Decimal>(currentConnection).ToString();
+                            .QueryScalar<Decimal>(currentConnection, "Tron").ToString();
         }
 
     }

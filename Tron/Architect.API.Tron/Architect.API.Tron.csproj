@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\IssueController.cs" />
+    <Compile Include="Controllers\SiniestroController.cs" />
     <Compile Include="Controllers\PolizaController.cs" />
     <Compile Include="Controllers\TronCommonController.cs" />
     <Compile Include="Controllers\TronClientController.cs" />

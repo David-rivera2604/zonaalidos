@@ -10,22 +10,23 @@
         <div class="ibox-tools">
             @*<a href="#" class="btn btn-white btn-xs float-right">Aceptar</a>*@
             @*<div data-toggle="buttons" class="btn-group btn-group-toggle">
-                    <label class="btn btn-sm btn-white active"> <input type="radio" id="option1" name="options"> Day </label>
-                    <label class="btn btn-sm btn-white"> <input type="radio" id="option2" name="options"> Week </label>
-                    <label class="btn btn-sm btn-white"> <input type="radio" id="option3" name="options"> Month </label>
-                </div>
+            <label class="btn btn-sm btn-white active"> <input type="radio" id="option1" name="options"> Day </label>
+            <label class="btn btn-sm btn-white"> <input type="radio" id="option2" name="options"> Week </label>
+            <label class="btn btn-sm btn-white"> <input type="radio" id="option3" name="options"> Month </label>
+        </div>
 
-                <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-comments"></i> </button>
-                <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-user"></i> </button>
-                <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-list"></i> </button>
-                <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-cogs"></i> </button>
-                    //<button id="save" type="button" class="btn btn-sm btn-white d-none"> <i class="fa fa-pencil"></i> </button>
-                    <button id="print" type="button" class="btn btn-sm btn-white d-none"> <i class="fa fa-print"></i> </button>
+        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-comments"></i> </button>
+        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-user"></i> </button>
+        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-list"></i> </button>
+        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-cogs"></i> </button>
+            //<button id="save" type="button" class="btn btn-sm btn-white d-none"> <i class="fa fa-pencil"></i> </button>
+            <button id="print" type="button" class="btn btn-sm btn-white d-none"> <i class="fa fa-print"></i> </button>
             *@
             <a id="applyChange" href="" class="btn btn-primary btn-xs d-none" title="Permite guardar los cambios de la póliza">Aplicar cambios</a>
             <a id="print" href="" class="btn btn-primary btn-xs d-none" title="Permite imprimir la póliza">Imprimir</a>
             <a id="save" href="" class="btn btn-primary btn-xs d-none" title="Permite guardar un borrador de la póliza">Guardar</a>
             <a id="accept" href="" class="btn btn-primary btn-xs d-none" title="Permite emitir la póliza">Emitir</a>
+            <a id="AcceptComplement" href="" class="btn btn-warning btn-xs d-none" style="color:white!important" title="Indica que los complementos solicitados ya fueron incluidos"><i class="fa fa-files-o"></i> Complementos incluidos</a>
             <a class="collapse-link">
                 <i class="fa fa-chevron-up"></i>
             </a>
@@ -113,16 +114,10 @@
                                                 Cédula
                                             </button>
                                             <div class="dropdown-menu" id="DocumentTypeMenu">
-                                                <a class="dropdown-item active"
-                                                   href="#" data-value='1'>Cédula</a>
-                                                <a class="dropdown-item" href="#" data-value='2'>
-                                                    Residencia
-                                                </a>
+                                                <a class="dropdown-item active" href="#" data-value='1'>Cédula</a>
+                                                <a class="dropdown-item" href="#" data-value='2'>DIMEX</a>
                                                 <a class="dropdown-item" href="#" data-value='3'>Pasaporte</a>
-                                                <a class="dropdown-item" href="#" data-value='4'>
-                                                    Cédula
-                                                    jurídica
-                                                </a>
+                                                <a class="dropdown-item" href="#" data-value='4'>Cédula jurídica</a>
                                             </div>
                                         </div>
 
@@ -477,17 +472,10 @@
                                                     Cédula
                                                 </button>
                                                 <div class="dropdown-menu" id="BDocumentTypeMenu">
-                                                    <a class="dropdown-item active"
-                                                       href="#" data-value='1'>Cédula</a>
-                                                    <a class="dropdown-item" href="#" data-value='2'>
-                                                        Cédula de
-                                                        residencia
-                                                    </a>
+                                                    <a class="dropdown-item active" href="#" data-value='1'>Cédula</a>
+                                                    <a class="dropdown-item" href="#" data-value='2'>DIMEX</a>
                                                     <a class="dropdown-item" href="#" data-value='3'>Pasaporte</a>
-                                                    <a class="dropdown-item" href="#" data-value='4'>
-                                                        Cédula
-                                                        jurídica
-                                                    </a>
+                                                    <a class="dropdown-item" href="#" data-value='4'>Cédula jurídica</a>
                                                 </div>
                                             </div>
 
@@ -1885,9 +1873,11 @@
                                         <a id="ReviewAccept" href="" class="btn btn-primary btn-xs d-none" title="Aceptar la solicitud"><i class="fa fa-thumbs-up"></i> Aceptar</a>
                                         <a id="ReviewCondition" href="" class="btn btn-primary btn-xs d-none" title="Define condiciones para ser aceptadas por el aliado"><i class="fa fa-comments"></i> Condicionar</a>
                                         <a id="ReviewDecline" href="" class="btn btn-danger btn-xs d-none" title="Declinar la solicitud"><i class="fa fa-times"></i> Declinar</a>
+                                        <a id="ReviewComplement" href="" class="btn btn-warning btn-xs d-none" title="Solicitar complementos"><i class="fa fa-files-o"></i> Solicitar complementos</a>
 
                                         <a id="AcceptCondition" href="" class="btn btn-primary btn-xs d-none" title="Aceptar las condiciones definidas"><i class="fa fa-thumbs-up"></i> Aceptar</a>
                                         <a id="AcceptDecline" href="" class="btn btn-danger btn-xs d-none" title="Declinar la solicitud"><i class="fa fa-times"></i> Declinar</a>
+                                        
                                     </div>
                                 </div>
                             </div>

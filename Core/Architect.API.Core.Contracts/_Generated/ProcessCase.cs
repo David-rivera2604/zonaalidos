@@ -15,7 +15,7 @@ namespace Architect.API.Core.Contracts.General
         /// </summary>
         [DataMember(), JsonProperty()] public int Id { get; set; }
         /// <summary>
-        /// Identificación de la compañia propietaria.
+        /// Identificación de la compañía propietaria.
         /// </summary>
         [DataMember(), JsonProperty()] public int CompanyId { get; set; }
         [DataMember(), JsonProperty()] public string Title { get; set; }
@@ -53,7 +53,13 @@ namespace Architect.API.Core.Contracts.General
         /// Identificado de uso genérico.
         /// </summary>
         [DataMember(), JsonProperty()] public string Reference5 { get; set; }
+        /// <summary>
+        /// Nombre completo del contacto externo.
+        /// </summary>
         [DataMember(), JsonProperty()] public string ContactMainName { get; set; }
+        /// <summary>
+        /// Correo electrónico del contacto externo.
+        /// </summary>
         [DataMember(), JsonProperty()] public string ContactMainEmail { get; set; }
         /// <summary>
         /// 1 Inicio, 2 En progreso, 3 Finalizado

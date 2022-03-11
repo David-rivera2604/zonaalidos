@@ -380,8 +380,18 @@
     },
     {
       "Nombre": "MM_ClaseVehiculos",
-      "Condicion": "(({El Tipo de producto} sea igual a {Básico}) o ({El Tipo de producto} sea igual a {Amplio}) o ({El Tipo de producto} sea igual a {Plus}) o ({El Tipo de producto} sea igual a {Oro}) o ({El Tipo de producto} sea igual a {Trébol}) o ({El Tipo de producto} sea igual a {Trébol RC})) ",
+      "Condicion": "(({El Tipo de producto} sea igual a {Básico}) o ({El Tipo de producto} sea igual a {Amplio}) o ({El Tipo de producto} sea igual a {Plus}))",
+      "Exclusion": "5,17,18"
+    },
+    {
+      "Nombre": "MM_ClaseVehiculos",
+      "Condicion": "(({El Tipo de producto} sea igual a {Oro}) o ({El Tipo de producto} sea igual a {Trébol}) )",
       "Exclusion": "5"
+    },
+    {
+      "Nombre": "MM_ClaseVehiculos",
+      "Condicion": "(({El Tipo de producto} sea igual a {Trébol RC}))",
+      "Exclusion": "5,17,18"
     }
   ],
   "Reglas": [

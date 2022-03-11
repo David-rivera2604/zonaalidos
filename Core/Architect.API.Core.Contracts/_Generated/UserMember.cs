@@ -15,7 +15,7 @@ namespace Architect.API.Core.Contracts.Security
         /// </summary>
         [DataMember(), JsonProperty()] public int UserId { get; set; }
         /// <summary>
-        /// Identificación de la compañia propietaria.
+        /// Identificación de la compañía propietaria.
         /// </summary>
         [DataMember(), JsonProperty()] public int CompanyId { get; set; }
         /// <summary>
@@ -79,7 +79,7 @@ namespace Architect.API.Core.Contracts.Security
         /// </summary>
         [DataMember(), JsonProperty()] public DateTime PasswordChangedDate { get; set; }
         /// <summary>
-        /// Cambiar una clave va a ameritar un campo nuevo que permite establecer una código random
+        /// Cambiar una clave va a ameritar un campo nuevo que permite establecer una codigo random
         /// </summary>
         [DataMember(), JsonProperty()] public string OneTimePassword { get; set; }
         /// <summary>
@@ -127,6 +127,10 @@ namespace Architect.API.Core.Contracts.Security
         /// </summary>
         [DataMember(), JsonProperty()] public string SalesChannelDesc { get; set; }
         /// <summary>
+        /// Indica la página a mostrar cuando el usuario se conecte.
+        /// </summary>
+        [DataMember(), JsonProperty()] public string InitialNavigationCode { get; set; }
+        /// <summary>
         /// Datos personalizables.
         /// </summary>
         [DataMember(), JsonProperty()] public string CustomData { get; set; }
@@ -150,9 +154,6 @@ namespace Architect.API.Core.Contracts.Security
         /// Fecha que se actualizo por última vez el registro.
         /// </summary>
         [DataMember(), JsonProperty()] public DateTime UpdateDate { get; set; }
-
-
-        [DataMember(), JsonProperty()] public string RoleList { get; set; }
     }
 }
 

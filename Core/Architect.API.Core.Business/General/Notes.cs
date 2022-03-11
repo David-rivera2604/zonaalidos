@@ -17,7 +17,7 @@ namespace Architect.API.Core.Business.General
         /// </summary>
         /// <param name="entityType">Tipo de entidad.</param>
         /// <param name="entityId">Identificación de la entidad.</param>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <returns>Lista de instancias de Notes</returns>
         public static List<Contracts.General.Notes> RetrieveByEntity(int entityType, Int64 entityId, int companyId)
         {

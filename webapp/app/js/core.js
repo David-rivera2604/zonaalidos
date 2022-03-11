@@ -649,9 +649,29 @@ app.core = (function () {
             var blob = new Blob(byteArrays, { type: contentType });
             return blob;
         },
+        DataToURL: function (data) {
+            let url = '';
+            if (data != null) {
+                for (var p in data) {
+                    if (data.hasOwnProperty(p)) {
+                        url += ':' + p + '=' + data[p];
+                    }
+                }
+                if (url != '') {
+                    url = url.replace(/T00:00:00/g, '');
+                    url = url.substring(1);
+                }
+            }
+            return url;
+        },
         GetXLSX: function (id, filename) {
+            let url = '';
+            if (typeof app.Prototype != "undefined") {
+                url = app.core.DataToURL(app.Prototype.Data());
+            }
+
             let a = document.createElement("a");
-            a.href = app.setting.apipath + 'v1/DataSource/excel?id=' + id;
+            a.href = app.setting.apipath + 'v1/DataSource/excel?id=' + id + '&url=' + url;
             a.download = filename;
             a.click();
             a.remove()

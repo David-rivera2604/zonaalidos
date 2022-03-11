@@ -16,7 +16,7 @@ namespace Architect.API.Core.Contracts.General
         /// </summary>
         [DataMember(), JsonProperty()] public int InstanceId { get; set; }
         /// <summary>
-        /// Identificación de la compañia propietaria.
+        /// Identificación de la compañía propietaria.
         /// </summary>
         [DataMember(), JsonProperty()] public int CompanyId { get; set; }
         /// <summary>
@@ -54,6 +54,10 @@ namespace Architect.API.Core.Contracts.General
         /// Observaciones.
         /// </summary>
         [DataMember(), JsonProperty()] public string Comments { get; set; }
+        /// <summary>
+        /// Last Over Due Notify
+        /// </summary>
+        [DataMember(), JsonProperty()] public DateTime LastOverDueNotify { get; set; }
         /// <summary>
         /// Usuario que actualizo por última vez el registro.
         /// </summary>

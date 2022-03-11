@@ -4,9 +4,9 @@ using System.Runtime.Serialization;
 
 namespace Architect.API.Insurance.Contracts.Policy
 {
-        /// <summary>
-        /// Información de asegurados y/o beneficiarios de una póliza.
-        /// </summary>
+    /// <summary>
+    /// Información de asegurados y/o beneficiarios de una póliza.
+    /// </summary>
     [Serializable(), DataContract()]
     public partial class RiskRoles
     {
@@ -103,7 +103,7 @@ namespace Architect.API.Insurance.Contracts.Policy
         /// </summary>
         [DataMember(), JsonProperty()] public string RetirementModalityDesc { get; set; }
         /// <summary>
-        /// Causa del pensonamiento
+        /// Causa del pensionamiento
         /// </summary>
         [DataMember(), JsonProperty()] public string RetirementCause { get; set; }
         /// <summary>
@@ -195,6 +195,14 @@ namespace Architect.API.Insurance.Contracts.Policy
         /// </summary>
         [DataMember(), JsonProperty()] public string PhoneNumber { get; set; }
         /// <summary>
+        /// Tipo de teléfono secundario.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int SecondaryPhoneType { get; set; }
+        /// <summary>
+        /// Número de teléfono secundario.
+        /// </summary>
+        [DataMember(), JsonProperty()] public string SeondaryPhoneNumber { get; set; }
+        /// <summary>
         /// Número de cuenta bancaria.
         /// </summary>
         [DataMember(), JsonProperty()] public string BankAccount { get; set; }
@@ -210,6 +218,10 @@ namespace Architect.API.Insurance.Contracts.Policy
         /// Edad en la inclusión.
         /// </summary>
         [DataMember(), JsonProperty()] public int AgeAtInclusion { get; set; }
+        /// <summary>
+        /// Identificado de uso genérico.
+        /// </summary>
+        [DataMember(), JsonProperty()] public string Reference { get; set; }
         /// <summary>
         /// Datos personalizables.
         /// </summary>

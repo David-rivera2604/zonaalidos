@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.IO.Compression;
+using System.Linq;
 using System.Text;
 
 namespace Architect.Utilities.Extensions
@@ -15,6 +16,11 @@ namespace Architect.Utilities.Extensions
     /// </summary>
     public static class StringExtensions
     {
+
+        public static bool IsNumeric(this string value)
+        {
+            return value.All(char.IsNumber);
+        }
 
         /// <summary>
         /// Turns a string into a properly XML Encoded string.

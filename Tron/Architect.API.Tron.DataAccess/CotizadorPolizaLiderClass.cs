@@ -58,7 +58,7 @@ namespace Architect.API.Tron.DataAccess
 
 
                 .AddParameter("RC1", Architect.DataFactory.Enumerations.DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
-                .Query(currentConnection, new Action<IDataReader>((reader) =>
+                .Query(currentConnection, "Tron", new Action<IDataReader>((reader) =>
                 {
                     result.Coberturas.Add(new Contracts.Presupuesto.Cobertura()
                     {

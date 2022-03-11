@@ -64,13 +64,35 @@
                     </form>
                 </div>
             </div>
+            <div class='col-md-12'>
+                <button id="RoleMemberEdtFormSave" type="button" class="btn btn-primary float-right" data-doing="Procesando...">Procesar</button>
+            </div>
+        </div>
+        <div class="form-row" style="padding-top: 14px">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-10">
+                <div class="jumbotron">
+                    <h3>Nota</h3>
+                    <p>Este proceso usa la segunda hoja del archivo Excel procesado, en dicha hoja la primera fila con la información del préstamo, debe ser la fila nueve, las columnas a ser procesadas son:</p>
+                    <ul>
+                        <li>'B' Nombre completo del deudor. Texto.</li>
+                        <li>'C' Número de identificación. Numérico.</li>
+                        <li>'E' Fecha de nacimiento. Fecha.</li>
+                        <li>'G' Número de préstamos. Numérico.</li>
+                        <li>'H' Fecha de inicio de vigencia del crédito. Fecha.</li>
+                        <li>'I' Fecha de finalización del crédito. Fecha.</li>
+                        <li>'K' Sexo del deudor. Texto.</li>
+                        <li>'L' Monto original de la deuda. Numérico.</li>
+                        <li>'N' Saldo adeudado. Numérico.</li>
+                        <li>'O' Plazos. Numérico.</li>
+                    </ul>
+                    <p>Esta información puede ayudar en la revisión de los datos en caso de ocurrir un error en con la carga del archivo.</p>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="ibox-footer">
-        <span id="lastChange" class="text-muted small " title="Último cambio">
-        </span>
-        <button id="RoleMemberEdtFormSave" type="button" class="btn btn-primary float-right" data-doing="Procesando...">Procesar</button>
-    </div>
+
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")

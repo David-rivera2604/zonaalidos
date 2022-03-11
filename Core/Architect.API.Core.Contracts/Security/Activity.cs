@@ -16,11 +16,11 @@ namespace Architect.API.Core.Contracts.Security
         /// </summary>
         public string Token { get; set; }
         /// <summary>
-        /// Identificación de la compañia propietaria.
+        /// Identificación de la compañía propietaria.
         /// </summary>
         public int CompanyId { get; set; }
         /// <summary>
-        ///  Nombre de la compañia propietaria.
+        ///  Nombre de la compañía propietaria.
         /// </summary>
         public string CompanyName { get; set; }
         /// <summary>

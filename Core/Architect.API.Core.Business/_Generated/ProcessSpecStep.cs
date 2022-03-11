@@ -14,7 +14,7 @@ namespace Architect.API.Core.Business.General
         /// <summary>
         /// Crea registro o actualiza un registro en la tabla ProcessSpecStep.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="userId">Identificación del usuario.</param>
         /// <param name="item">Instancia de ProcessSpecStep</param>
         /// <returns>Instancia de ProcessSpecStep creada o actualizada.</returns>
@@ -33,7 +33,7 @@ namespace Architect.API.Core.Business.General
         /// <summary>
         /// Crea un registro en la tabla ProcessSpecStep.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="userId">Identificación del usuario.</param>
         /// <param name="item">Instancia de ProcessSpecStep</param>
         /// <returns>Instancia de ProcessSpecStep creada.</returns>
@@ -47,6 +47,10 @@ namespace Architect.API.Core.Business.General
                 if (result.Id.IsEmpty())
                 {
                     result.Id = Architect.API.Core.DataAccess.General.ProcessSpecStep.RetrieveLastKey() + 1;
+                }
+                if (result.StepOrder.IsEmpty())
+                {
+                    result.StepOrder = DataAccess.General.ProcessSpecStep.LastStepOrderByFlowId(companyId, result.FlowId)+10;
                 }
                 result.CompanyId = companyId;
                 result.UpdateUserCode = userId;
@@ -67,7 +71,7 @@ namespace Architect.API.Core.Business.General
         /// <summary>
         /// Recupera una lista de registros en la tabla ProcessSpecStep.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="filter">Filtro personalizado.</param>
         /// <param name="beginIndex">Indice inicial para el paginado.</param>
         /// <param name="endIndex">Indice final para el paginado.</param>
@@ -86,7 +90,7 @@ namespace Architect.API.Core.Business.General
         /// <summary>
         /// Recupera un registro en la tabla ProcessSpecStep por medio de su clave primaria.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="id">Identificación única del registro.</param>
         /// <returns>Instancia de ProcessSpecStep</returns>
         public static Architect.API.Core.Contracts.General.ProcessSpecStep RetrieveById(int companyId, int id)
@@ -118,7 +122,7 @@ namespace Architect.API.Core.Business.General
         /// <summary>
         /// Actualiza un registro en la tabla ProcessSpecStep por medio de su clave primaria.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="userId">Identificación del usuario.</param>
         /// <param name="id">Identificación única del registro.</param>
         /// <param name="item">Instancia de ProcessSpecStep</param>
@@ -151,7 +155,7 @@ namespace Architect.API.Core.Business.General
         /// <summary>
         /// Elimina un registro en la tabla ProcessSpecStep por medio de su clave primaria.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="userId">Identificación del usuario.</param>
         /// <param name="id">Identificación única del registro.</param>
         /// <returns>Instancia de ProcessSpecStep eliminada.</returns>
@@ -177,7 +181,7 @@ namespace Architect.API.Core.Business.General
         /// <summary>
         /// Recupera la cantidad de registros existentes en la tabla ProcessSpecStep que cumplen con el filtro.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="filter">Filtro personalizado.</param>
         /// <returns>Cantidad de registros existentes.</returns>
         public static int Count(int companyId, string filter)
@@ -188,7 +192,7 @@ namespace Architect.API.Core.Business.General
         /// <summary>
         /// Validaciones para los campos de la tabla ProcessSpecStep.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="source">Instancia de ProcessSpecStep</param>
         /// <param name="isnew">Indicador de registro nuevo.</param>
         /// <param name="isdelete">Indicador que se quiere eliminar el registro.</param>
@@ -235,12 +239,16 @@ namespace Architect.API.Core.Business.General
                 //SLATimeOut:
 
                 //StepOrder:
-                if (source.StepOrder.IsEmpty())
+                if (!isnew && source.StepOrder.IsEmpty())
                 {
                     result.Add(new Core.Contracts.General.Error() { Group = group, Key = "StepOrder", Message = "Debe indicar el orden" });
                 }
 
                 //ProcessStatus:
+                if (source.ProcessStatus.IsEmpty())
+                {
+                    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "ProcessStatus", Message = "Debe indicar el estado" });
+                }
                 if (source.ProcessStatus.IsNotEmpty() && !Core.Business.Common.LkpExist(companyId, "ProcessStatus", source.ProcessStatus.ToString()))
                 {
                     result.Add(new Core.Contracts.General.Error() { Group = group, Key = "ProcessStatus", Message = "El valor indicado para el estado no es valido" });
@@ -325,7 +333,7 @@ namespace Architect.API.Core.Business.General
         /// <summary>
         /// Realiza la lectura de las descripciones asociadas a columnas que posean una lista de valores.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="item">Instancia de ProcessSpecStep</param>
         private static void MapLookups(int companyId, Architect.API.Core.Contracts.General.ProcessSpecStep item)
         {
@@ -394,7 +402,7 @@ namespace Architect.API.Core.Business.General
                 {
                     if (currentRoles.Find(r => r.Code == currentRole.RoleId.ToString()).IsEmpty())
                     {
-                        Core.DataAccess.General.ProcessSpecStepRole.DeleteWithRole(id, currentRole.RoleId,  companyId);
+                        Core.DataAccess.General.ProcessSpecStepRole.DeleteWithRole(id, currentRole.RoleId, companyId);
                     }
                 }
             }

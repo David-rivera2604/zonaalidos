@@ -217,13 +217,16 @@ app.beneficiarios = (function () {
                 },
                 BBirthDate: {
                     required: true,
-                    BirthDate: true
+                    BirthDate: true,
+                    required: true
                 },
                 BPhoneNumber: {
-                    minlength: 9
+                    minlength: 9,
+                    required: true
                 },
                 BPrimaryEmailAddress: {
-                    email: true
+                    email: true,
+                    required: true
                 },
                 BRelationship: {
                     required: true
@@ -238,7 +241,7 @@ app.beneficiarios = (function () {
                 },
                 BDocumentNumber: {
                     required: 'Debe indicar la identificación',
-                    BDocumentNumberLength: 'Faltan digitos a la identificación'
+                    BDocumentNumberLength: 'Faltan dígitos a la identificación'
                 },
                 BFirstName: {
                     required: 'Debe indicar el primer nombre'
@@ -251,10 +254,12 @@ app.beneficiarios = (function () {
                     BirthDate: 'Ingrese una fecha inferior al día de hoy'
                 },
                 BPhoneNumber: {
-                    minlength: 'Debe indicar 8 dígitos'
+                    minlength: 'Debe indicar 8 dígitos',
+                    required: 'Debe indicar un número de teléfono'
                 },
                 BPrimaryEmailAddress: {
-                    email: 'Debe indicar un correo electrónico valido'
+                    email: 'Debe indicar un correo electrónico valido',
+                    required: 'Debe indicar un coreo electrónico valido.'
                 },
                 BRelationship: {
                     required: 'Debe indicar el parentesco'

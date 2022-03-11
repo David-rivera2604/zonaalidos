@@ -37,7 +37,7 @@ namespace Architect.API.Core.Business.General
         /// </summary>
         /// <param name="entityType">Tipo de entidad.</param>
         /// <param name="entityId">Identificación de la entidad.</param>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <returns>Lista optimizada para consulta de los adjuntos disponibles.</returns>
         public static List<Contracts.General.AttachmentView> RetrieveByEntity(int entityType, Int64 entityId, int companyId)
         {
@@ -49,7 +49,7 @@ namespace Architect.API.Core.Business.General
         /// </summary>
         /// <param name="entityType">Tipo de entidad.</param>
         /// <param name="entityId">Identificación de la entidad.</param>
-        /// <param name="companyId">Identificación de lacompañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="attachments">Lista de adjuntos.</param>
         /// <param name="userId">Identificación del usuario.</param>
         /// <returns></returns>
@@ -70,7 +70,7 @@ namespace Architect.API.Core.Business.General
                     newItem.UpdateUserCode = userId;
                     newItem.UpdateDate = DateTime.Now;
                     newItem.FileContent = ConfigurationManager.AppSettings["Attachments.Path"] + item.Stored;
-                    DataAccess.General.Attachments.Create(Mapper(newItem, item));
+                    DataAccess.General.Attachments.CreateCustom(Mapper(newItem, item));
                 }
 
             }
@@ -84,11 +84,11 @@ namespace Architect.API.Core.Business.General
             if (attachment.Id.IsEmpty())
             {
                 attachment.Id = DataAccess.General.Attachments.RetrieveLastKey() + 1;
-                DataAccess.General.Attachments.Create(attachment);
+                DataAccess.General.Attachments.CreateCustom(attachment);
             }
             else
             {
-                DataAccess.General.Attachments.Update(attachment);
+                DataAccess.General.Attachments.UpdateCustom(attachment);
             }
             return attachment;
         }
@@ -116,7 +116,7 @@ namespace Architect.API.Core.Business.General
         /// <summary>
         /// Permite cambiar la entidad y su identificación a un grupo de adjuntos.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="entityType">Tipo de entidad actual.</param>
         /// <param name="entityId">Identificación de la entidad actual.</param>
         /// <param name="newEntityType">Tipo de entidad nueva.</param>

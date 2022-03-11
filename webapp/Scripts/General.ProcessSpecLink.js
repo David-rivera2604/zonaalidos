@@ -327,6 +327,9 @@ app.GeneralProcessSpecLink = (function () {
                 },
                 Type: {
                     required: true
+                },
+                LinkOrder: {
+                    required: true
                 }
             },
             messages: {
@@ -337,7 +340,10 @@ app.GeneralProcessSpecLink = (function () {
                     required: 'Debe indicar el nombre'
                 },
                 Type: {
-                    required: 'Debe indicar el tipo'
+                    required: 'Debe indicar el orden'
+                },
+                LinkOrder: {
+                    required: true
                 }
             }
 
@@ -397,10 +403,13 @@ app.GeneralProcessSpecLink = (function () {
             Setup_Validations();
         },
         New: function (row) {
-            let newRow = { Id: 0, FlowId: null, Name: null, Description: null, Icon: null, Type: null, LinkOrder: 0, URL: null }
+            let newRow = { Id: 0, FlowId: 0, Name: null, Description: null, Icon: null, Type: null, LinkOrder: 0, URL: null }
             if (row !== undefined) {
                 row.Id = 0;
                 newRow = row;
+            }
+            if (newRow.FlowId === 0 && $('#FlowIdFlt').val().length > 0) {
+                newRow.FlowId = $('#FlowIdFlt').val()[0];
             }
             EditMode(newRow);
         },

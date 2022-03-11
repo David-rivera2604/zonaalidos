@@ -1,5 +1,4 @@
-﻿using Architect.Utilities.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Architect.API.Core.Business.General
@@ -12,7 +11,7 @@ namespace Architect.API.Core.Business.General
         /// <summary>
         /// Recupera una lista de registros en la tabla ProcessSpecStep.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="filter">Filtro personalizado.</param>
         /// <param name="beginIndex">Indice inicial para el paginado.</param>
         /// <param name="endIndex">Indice final para el paginado.</param>

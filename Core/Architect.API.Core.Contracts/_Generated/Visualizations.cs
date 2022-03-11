@@ -15,7 +15,11 @@ namespace Architect.API.Core.Contracts.General
         /// </summary>
         [DataMember(), JsonProperty()] public int Id { get; set; }
         /// <summary>
-        /// Identificación de la compañia propietaria.
+        /// Clave que identificac la lista.
+        /// </summary>
+        [DataMember(), JsonProperty()] public string Key { get; set; }
+        /// <summary>
+        /// Identificación de la compañía propietaria.
         /// </summary>
         [DataMember(), JsonProperty()] public int CompanyId { get; set; }
         /// <summary>
@@ -59,9 +63,17 @@ namespace Architect.API.Core.Contracts.General
         /// </summary>
         [DataMember(), JsonProperty()] public string Statement { get; set; }
         /// <summary>
-        /// Especificación.
+        /// Statement Extend
+        /// </summary>
+        [DataMember(), JsonProperty()] public string StatementExtend { get; set; }
+        /// <summary>
+        /// Especificación. (CLOB)
         /// </summary>
         [DataMember(), JsonProperty()] public string Specification { get; set; }
+        /// <summary>
+        /// Dialog.
+        /// </summary>
+        [DataMember(), JsonProperty()] public string Dialog { get; set; }
         /// <summary>
         /// Icon.
         /// </summary>

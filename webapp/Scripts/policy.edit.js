@@ -46,7 +46,9 @@ app.PolicyEdit = (function () {
     var _WorkMode = function (status, statusDesc) {
         var disabled = status != 1;
 
-        if (status !== 1) {
+        $('#AcceptComplement').addClass('d-none');
+
+        if (status !== 1 ) {
             $('#print').removeClass('d-none');
             $('#accept').addClass('d-none');
             $('#save').addClass('d-none');
@@ -74,6 +76,7 @@ app.PolicyEdit = (function () {
             //$("#RiskEdtFrm fieldset").prop("disabled", disabled);
             $("#OverdraftEdtFrm fieldset").prop("disabled", disabled);
             $("#AttachmentsEdt fieldset").prop("disabled", disabled);
+            $("#NewAttachment").addClass('d-none')
         }
 
         if (statusDesc !== undefined)
@@ -95,6 +98,28 @@ app.PolicyEdit = (function () {
                     $('#AcceptCondition').addClass('d-none');
                     $('#AcceptDecline').addClass('d-none');
                 }
+                break;
+            case 5:
+                $("#RiskEdtFrm fieldset").prop("disabled", true);
+                $('#Surcharge').parent().parent().removeClass('d-none');
+                $('#policyComment').removeClass('d-none');
+
+                $('#ReviewAccept').addClass('d-none');
+                $('#ReviewCondition').addClass('d-none');
+                $('#ReviewDecline').addClass('d-none');
+                $('#ReviewComplement').addClass('d-none');
+                
+
+                $('#AcceptCondition').addClass('d-none');
+                $('#AcceptDecline').addClass('d-none');
+                $('#AcceptComplement').addClass('d-none');
+
+                $("#AttachmentsEdt fieldset").prop("disabled", false);
+                $("#NewAttachment").removeClass('d-none')
+                $('#AcceptComplement').removeClass('d-none');
+
+                $('#print').addClass('d-none');
+                $('#save').removeClass('d-none');
                 break;
             case 11:
                 $('#policyStatusZone').removeClass('d-none');

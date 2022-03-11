@@ -386,7 +386,7 @@ app.ViewerQuery = (function () {
                             url += ':' + p + '=' + dialogData[p];
                         }
                     }
-                    if (params != undefined)
+                    if (url != undefined)
                         url = url.replace(/T00:00:00/g, '');
                 } else {
                     doing = false;

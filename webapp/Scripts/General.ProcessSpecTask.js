@@ -459,6 +459,9 @@ app.GeneralProcessSpecTask = (function () {
                 Name: {
                     required: true
                 },
+                TaskOrder: {
+                    required: true
+                },
                 Type: {
                     required: true
                 }
@@ -468,7 +471,10 @@ app.GeneralProcessSpecTask = (function () {
                     required: 'Debe indicar el etapa'
                 },
                 Name: {
-                    required: 'Debe indicar el name'
+                    required: 'Debe indicar el nombre'
+                },
+                TaskOrder: {
+                    required: 'Debe indicar el orden'
                 },
                 Type: {
                     required: 'Debe indicar el tipo'

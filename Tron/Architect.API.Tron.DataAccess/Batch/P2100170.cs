@@ -31,7 +31,7 @@ namespace Architect.API.Tron.DataAccess.Batch
                                .AddParameter("P_IMP_NO_CONSUMIDO", Architect.DataFactory.Enumerations.DbType.Int32, 22, p2100170Instance.imp_no_consumido)
                                .AddParameter("P_IMP_ANUAL", Architect.DataFactory.Enumerations.DbType.Int32, 22, p2100170Instance.imp_anual)
                                .AddParameter("P_COD_RAMO", Architect.DataFactory.Enumerations.DbType.Int32, 22, p2100170Instance.cod_ramo)
-                               .Execute(currentConnection);
+                               .Execute(currentConnection, "Tron");
             if (affected != 0)
             {
                 result = true;

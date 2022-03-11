@@ -94,6 +94,15 @@ namespace Architect.Utilities.Extensions
             return value.Field<DateTime>(name, DateTime.MinValue);
         }
 
+        public static DateTime? DateTimeNullableValue(this IDataReader value, string name)
+        {
+            DateTime dateValue = value.Field<DateTime>(name, DateTime.MinValue);
+            if (dateValue != DateTime.MinValue)
+                return dateValue;
+            else
+                return null;
+        }
+
         public static object DateTimeValueWithFormatDefault(this IDataReader value, string name, string format, object defaultValue)
         {
             var result = defaultValue;

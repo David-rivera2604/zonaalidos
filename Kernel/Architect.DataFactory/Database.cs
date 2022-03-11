@@ -23,6 +23,8 @@ namespace Architect.DataFactory
         public double CacheExpiration { get; set; }
         public bool IsCaching { get; private set; }
 
+        public bool ForBuild { get; private set; }
+
         public string CachePrefix { get; private set; }
         public string ConnectionStringName { get; private set; }
 
@@ -30,9 +32,23 @@ namespace Architect.DataFactory
 
         #region Methods Data
 
+
+
+        public static Database Command(string statement)
+        {
+            var result = new Database() { StatementType = "Command", Statement = statement };
+            return result;
+        }
+
         public static Database Insert(string statement)
         {
             var result = new Database() { StatementType = "Insert", Statement = statement };
+            return result;
+        }
+
+        public static Database Insert(string tableName, Enumerations.ExecuteMode mode)
+        {
+            var result = new Database() { StatementType = "Insert", Statement = tableName, ForBuild = true };
             return result;
         }
 
@@ -47,10 +63,20 @@ namespace Architect.DataFactory
             var result = new Database() { StatementType = "Update", Statement = statement };
             return result;
         }
-
+        public static Database Update(string tableName, Enumerations.ExecuteMode mode)
+        {
+            var result = new Database() { StatementType = "Update", Statement = tableName, ForBuild = true };
+            return result;
+        }
         public static Database Delete(string statement)
         {
             var result = new Database() { StatementType = "Delete", Statement = statement };
+
+            return result;
+        }
+        public static Database Delete(string tableName, Enumerations.ExecuteMode mode)
+        {
+            var result = new Database() { StatementType = "Delete", Statement = tableName, ForBuild = true };
 
             return result;
         }
@@ -120,6 +146,25 @@ namespace Architect.DataFactory
             return this;
         }
 
+        public Database Filter(string name, Architect.DataFactory.Enumerations.DbType type, int size, object value, ParameterDirection direction = ParameterDirection.Input)
+        {
+            if (Parameters == null)
+            {
+                Parameters = new List<Contracts.Parameter>();
+            }
+            if (type == Enumerations.DbType.String && value.IsNotEmpty() && value.ToString().Length > size)
+            {
+                value = value.ToString().Substring(0, size);
+            }
+            Parameters.Add(new Contracts.Parameter() { Name = name, Type = type, Size = size, Value = value, direction = direction, Filter = true });
+
+            return this;
+        }
+        public Database Column(string name, Architect.DataFactory.Enumerations.DbType type, int size, object value, ParameterDirection direction = ParameterDirection.Input)
+        {
+            return Parameter(name, type, size, value, direction);
+        }
+
         public Database Parameter(string name, Architect.DataFactory.Enumerations.DbType type, int size, object value, ParameterDirection direction = ParameterDirection.Input)
         {
             if (Parameters == null)
@@ -156,7 +201,6 @@ namespace Architect.DataFactory
             OracleDbType result;
             switch (parameter.Type)
             {
-                case Enumerations.DbType.Binary:
                 case Enumerations.DbType.Byte:
                 case Enumerations.DbType.Boolean:
                 case Enumerations.DbType.Currency:
@@ -174,7 +218,9 @@ namespace Architect.DataFactory
                 case Enumerations.DbType.SByte:
                     Exception currentException2 = new Exception(string.Format("The data '{0}' type is not typed for conversion", parameter.Type.ToString()));
                     throw currentException2;
-
+                case Enumerations.DbType.Binary:
+                    result = OracleDbType.Blob;
+                    break;
                 case Enumerations.DbType.AnsiStringFixedLength:
                 case Enumerations.DbType.StringFixedLength:
                     result = OracleDbType.Char;
@@ -410,11 +456,6 @@ namespace Architect.DataFactory
 
         #region Queries
 
-        public DataTable Query(IDbConnection connection)
-        {
-            return Query(connection, string.Empty);
-        }
-
         public DataTable Query(string connectionStringName)
         {
             return Query(null, connectionStringName);
@@ -450,36 +491,33 @@ namespace Architect.DataFactory
             return result;
         }
 
-        public void Query(IDbConnection connection, string connectionStringName, Action<IDataReader> callBack)
+        public void Query(IDbConnection connection, string connectionStringName, Action<IDataReader> callBack, bool manyRows = true)
         {
             if (connection != null)
             {
-                Query(connection, callBack);
+                Query(connection, callBack, manyRows);
             }
             else
             {
-                Query(connectionStringName, callBack);
+                Query(connectionStringName, callBack, manyRows);
             }
         }
 
-        public void Query(string connectionStringName, Action<IDataReader> callBack)
+        public void Query(string connectionStringName, Action<IDataReader> callBack, bool manyRows = true)
         {
             this.ConnectionStringName = connectionStringName;
             IDbConnection local = OpenConnection(connectionStringName);
-            Query(local, callBack);
+            Query(local, callBack, manyRows);
             local.Close();
         }
 
-        public void Query(IDbConnection connection, Action<IDataReader> callBack)
+        private void Query(IDbConnection connection, Action<IDataReader> callBack, bool manyRows)
         {
             switch (StatementType)
             {
                 case "Select":
-                    ExecuteQueryWithDataReader(this, connection, callBack);
-                    break;
-
                 case "Procedure":
-                    ExecuteQueryWithDataReader(this, connection, callBack, StatementType);
+                    ExecuteQueryWithDataReader(this, connection, callBack, StatementType, manyRows);
                     break;
 
                 default:
@@ -512,7 +550,7 @@ namespace Architect.DataFactory
             return result;
         }
 
-        public T QueryScalar<T>(IDbConnection connection)
+        private T QueryScalar<T>(IDbConnection connection)
         {
             T result;
 
@@ -570,20 +608,79 @@ namespace Architect.DataFactory
             return result;
         }
 
-        public int Execute(IDbConnection connection)
+        private string InsertBuilder()
+        {
+            string fieldList = string.Empty;
+            foreach (var item in Parameters)
+            {
+                if (fieldList.IsNotEmpty())
+                    fieldList += ", ";
+                fieldList += string.Format(":{0}", item.Name);
+            }
+            return string.Format("INSERT INTO {0} ({1}) VALUES({2})", Statement, fieldList.Replace(":", string.Empty), fieldList);
+        }
+
+        private string UpdateBuilder()
+        {
+            string fieldList = string.Empty;
+            string filterList = string.Empty;
+            foreach (var item in Parameters)
+            {
+                if (!item.Filter)
+                {
+                    if (fieldList.IsNotEmpty())
+                        fieldList += ", ";
+                    fieldList += string.Format("{0}=:{0}", item.Name);
+                }
+                else
+                {
+                    if (filterList.IsNotEmpty())
+                        filterList += " AND ";
+                    filterList += string.Format("{0}=:{0}", item.Name);
+                }
+            }
+            return string.Format("UPDATE {0} SET {1} WHERE {2}", Statement, fieldList, filterList);
+        }
+
+        private string DeleteBuilder()
+        {
+            string filterList = string.Empty;
+            foreach (var item in Parameters)
+            {
+                if (filterList.IsNotEmpty())
+                    filterList += " AND ";
+                filterList += string.Format("{0}=:{0}", item.Name);
+            }
+            return string.Format("DELETE FROM {0} WHERE {1}", Statement, filterList);
+        }
+
+        private int Execute(IDbConnection connection)
         {
             int result;
             switch (StatementType)
             {
                 case "Insert":
+                case "Command":
+                    if (ForBuild)
+                    {
+                        Statement = InsertBuilder();
+                    }
                     result = ExecuteNonQuery(connection);
                     break;
 
                 case "Update":
+                    if (ForBuild)
+                    {
+                        Statement = UpdateBuilder();
+                    }
                     result = ExecuteNonQuery(connection);
                     break;
 
                 case "Delete":
+                    if (ForBuild)
+                    {
+                        Statement = DeleteBuilder();
+                    }
                     result = ExecuteNonQuery(connection);
                     break;
 
@@ -598,13 +695,14 @@ namespace Architect.DataFactory
             return result;
         }
 
-        public int Execute(IDbConnection connection, Action<DbCommand> callBack)
+        private int Execute(IDbConnection connection, Action<DbCommand> callBack)
         {
             int result = 0;
             OracleCommand command;
             switch (StatementType)
             {
                 case "Insert":
+                case "Command":
                     command = ExecuteNonQueryReturnCommand(connection);
                     break;
 
@@ -634,6 +732,12 @@ namespace Architect.DataFactory
 
         private int ExecuteNonQuery(IDbConnection connection, string CommandType = "Select")
         {
+            Stopwatch watch = null;
+            if (Handlers.UtilityHandler.AppSettingsCheck("Architect.DataFactory.Trace.Enabled"))
+            {
+                watch = new Stopwatch();
+                watch.Start();
+            }
             OracleCommand cmmd = new OracleCommand(Statement, (OracleConnection)connection);
             if (CommandType.Equals("Procedure"))
             {
@@ -663,6 +767,13 @@ namespace Architect.DataFactory
                 Exception temporalException = Exceptions.DataAccessException.Factory(ex, cmmd, string.Empty, CommandType);
                 ClosedConnection(cmmd, connection);
                 throw temporalException;
+            }
+            if (Handlers.UtilityHandler.AppSettingsCheck("Architect.DataFactory.Trace.Enabled"))
+            {
+                watch.Stop();
+                Log.TraceLog("DataAccessLayer",
+                    Handlers.UtilityHandler.MakeCommandSummary(cmmd) +
+                    String.Format("  {0} Rows affected in {1} ms\n", result, watch.ElapsedMilliseconds), "datafactory");
             }
             return result;
         }
@@ -713,6 +824,11 @@ namespace Architect.DataFactory
             Stopwatch watch = null;
             DataTable result = new DataTable();
             OracleCommand cmmd = new OracleCommand(Statement, (OracleConnection)connection);
+            if (Handlers.UtilityHandler.AppSettingsCheck("Architect.DataFactory.Trace.Enabled"))
+            {
+                watch = new Stopwatch();
+                watch.Start();
+            }
             if (database.IsCaching)
             {
                 key = string.Format("{1}.{0}", Architect.DataFactory.Handlers.UtilityHandler.GetMd5Hash(database.ConnectionStringName, Statement, database.Parameters), database.CachePrefix);
@@ -746,17 +862,10 @@ namespace Architect.DataFactory
                                 cmmd.Parameters.Add(new OracleParameter("RC1", OracleDbType.RefCursor, ParameterDirection.Output));
                             }
                         }
-                        if (Handlers.UtilityHandler.AppSettingsCheck("Architect.DataFactory.Trace.Enabled"))
-                        {
-                            watch = new Stopwatch();
-                            watch.Start();
-                        }
+
                         OracleDataAdapter oda = new OracleDataAdapter(cmmd);
                         oda.Fill(result);
-                        if (Handlers.UtilityHandler.AppSettingsCheck("Architect.DataFactory.Trace.Enabled"))
-                        {
-                            watch.Stop();
-                        }
+
                         if (database.IsCaching)
                         {
                             Architect.Utilities.Cache.SetItem(key, result, database.CacheExpiration);
@@ -838,16 +947,19 @@ namespace Architect.DataFactory
                         }
                     }
                 }
-                if (Handlers.UtilityHandler.AppSettingsCheck("Architect.DataFactory.Trace.Enabled"))
-                {
-                    Log.TraceLog("DataAccessLayer",
-                        Handlers.UtilityHandler.MakeCommandSummary(cmmd) +
-                        String.Format("  {0} Rows in {1} ms{2}\n", result.Rows.Count, watch.ElapsedMilliseconds, (database.IsCaching ? " (Cache)" : "")), "datafactory");
-                }
+
             }
             else
             {
                 result = (DataTable)Architect.Utilities.Cache.GetItem(key);
+            }
+            if (Handlers.UtilityHandler.AppSettingsCheck("Architect.DataFactory.Trace.Enabled"))
+            {
+                watch.Stop();
+
+                Log.TraceLog("DataAccessLayer",
+                    Handlers.UtilityHandler.MakeCommandSummary(cmmd) +
+                    String.Format("  {0} Rows in {1} ms{2}\n", result.Rows.Count, watch.ElapsedMilliseconds, (database.IsCaching ? " (Cache)" : "")), "datafactory");
             }
             return result;
         }
@@ -858,7 +970,7 @@ namespace Architect.DataFactory
         /// <param name="command">Objeto commandos que se desea ejecutar</param>
         /// <param name="connection">Instancia del objeto connections</param>
         /// <returns></returns>
-        private void ExecuteQueryWithDataReader(Database database, IDbConnection connection, Action<IDataReader> callBack, string CommandType = "Select")
+        private void ExecuteQueryWithDataReader(Database database, IDbConnection connection, Action<IDataReader> callBack, string CommandType = "Select", bool manyRows=true)
         {
             string key = string.Empty;
 
@@ -911,7 +1023,10 @@ namespace Architect.DataFactory
                                     while (read.Read())
                                     {
                                         callBack.DynamicInvoke(read);
-
+                                        if (!manyRows)
+                                        {
+                                            break;
+                                        }
                                     }
                                     rows = result.Rows.Count;
                                 }
@@ -924,6 +1039,10 @@ namespace Architect.DataFactory
                                     {
                                         callBack.DynamicInvoke(reader);
                                         rows++;
+                                        if (!manyRows)
+                                        {
+                                            break;
+                                        }
                                     }
                                 }
                             }
@@ -1030,7 +1149,11 @@ namespace Architect.DataFactory
             Stopwatch watch = null;
             T result = default(T);
             var method = string.Format("ExecuteQueryScalar<{0}>", typeof(T).FullName);
-
+            if (Handlers.UtilityHandler.AppSettingsCheck("Architect.DataFactory.Trace.Enabled"))
+            {
+                watch = new Stopwatch();
+                watch.Start();
+            }
             OracleCommand cmmd = new OracleCommand(Statement, (OracleConnection)connection);
 
             if (database.IsCaching)
@@ -1053,11 +1176,7 @@ namespace Architect.DataFactory
                     try
                     {
 
-                        if (Handlers.UtilityHandler.AppSettingsCheck("Architect.DataFactory.Trace.Enabled"))
-                        {
-                            watch = new Stopwatch();
-                            watch.Start();
-                        }
+ 
 
                         result = (T)cmmd.ExecuteScalar();
 
@@ -1147,16 +1266,17 @@ namespace Architect.DataFactory
                     }
                 }
 
-                if (Handlers.UtilityHandler.AppSettingsCheck("Architect.DataFactory.Trace.Enabled"))
-                {
-                    Log.TraceLog("DataAccessLayer",
-                        Handlers.UtilityHandler.MakeCommandSummary(cmmd) +
-                        String.Format("  Result {0} in {1} ms{2}\n", result, watch.ElapsedMilliseconds, (database.IsCaching ? " (Cache)" : "")), "datafactory");
-                }
+
             }
             else
             {
                 result = (T)Architect.Utilities.Cache.GetItem(key);
+            }
+            if (Handlers.UtilityHandler.AppSettingsCheck("Architect.DataFactory.Trace.Enabled"))
+            {
+                Log.TraceLog("DataAccessLayer",
+                    Handlers.UtilityHandler.MakeCommandSummary(cmmd) +
+                    String.Format("  Result {0} in {1} ms{2}\n", result, watch.ElapsedMilliseconds, (database.IsCaching ? " (Cache)" : "")), "datafactory");
             }
             return result;
         }
@@ -1166,10 +1286,10 @@ namespace Architect.DataFactory
         #region Native Method
 
         /// <summary>
-        /// Permite crear una instancia de connexion en base a el connectionStrngName
+        /// Permite crear una instancia de conexión en base a el connectionStrngName
         /// </summary>
         /// <param name="connectionStringName">Nombre de la OracleConnection a crear y buscar</param>
-        /// <param name="OpenConnection">Si desea hacer la apertura de la connexion de una vez</param>
+        /// <param name="OpenConnection">Si desea hacer la apertura de la conexión de una vez</param>
         /// <returns></returns>
         public static IDbConnection OpenConnection(string connectionStringName)
         {
@@ -1190,12 +1310,45 @@ namespace Architect.DataFactory
 
             return con;
         }
+        public static void Bulk(string connectionStringName, string destinationTableName, DataTable data)
+        {
+
+            using (OracleBulkCopy bulk = new OracleBulkCopy(ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString))
+            {
+                bulk.DestinationTableName = destinationTableName;
+                bulk.WriteToServer(data);
+                bulk.Close();
+            }
+        }
 
         private static void ClosedConnection(DbCommand Command, IDbConnection currentConnection)
         {
             Command.Connection = null;
             if (currentConnection.State == ConnectionState.Open)
                 currentConnection.Close();
+        }
+
+        public static string FilterFactory(string filter, string prefix)
+        {
+            string result = filter.Substring(1);
+
+            if (prefix.IsNotEmpty())
+            {
+                result = prefix + "." + result;
+            }
+            result = result.Replace(".in.", " IN ");
+            result = result.Replace(".eq.", " = ");
+            result = result.Replace(".neq.", " <> ");
+            result = result.Replace(".gt.", " > ");
+            result = result.Replace(".gte.", " >= ");
+            result = result.Replace(".lt.", " = ");
+            result = result.Replace(".lte.", " = ");
+            result = result.Replace(".like.", " LIKE ");
+            result = result.Replace(".and.", " AND ");
+            result = result.Replace(".or.", " OR ");
+            result = result.Replace(".not.", " NOT ");
+
+            return " AND " + result;
         }
 
         #endregion Native Method
@@ -1210,5 +1363,7 @@ namespace Architect.DataFactory
         }
 
         #endregion Implements
+
+
     }
 }

@@ -51,6 +51,7 @@
     <Compile Include="Cache.cs" />
     <Compile Include="Contracts\LookUpValue.cs" />
     <Compile Include="Exceptions\ApplicationException.cs" />
+    <Compile Include="Exceptions\CustomException.cs" />
     <Compile Include="Extensions\DataReaderExtensions.cs" />
     <Compile Include="Extensions\DataRowExtensions.cs" />
     <Compile Include="Extensions\DataTableExtensions.cs" />
@@ -63,10 +64,12 @@
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\Assembly.cs" />
+    <Compile Include="Helpers\ByteHandler.cs" />
     <Compile Include="Helpers\Connection.cs" />
     <Compile Include="Helpers\CryptSupport.cs" />
     <Compile Include="Helpers\Expando.cs" />
     <Compile Include="Helpers\PropertyBag.cs" />
+    <Compile Include="Helpers\Settings.cs" />
     <Compile Include="Helpers\Xml.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

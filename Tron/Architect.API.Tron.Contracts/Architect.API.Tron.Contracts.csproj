@@ -84,6 +84,10 @@
     <Compile Include="Ramo\G2000020.cs" />
     <Compile Include="Ramo\G2000170.cs" />
     <Compile Include="Ramo\G2000180.cs" />
+    <Compile Include="Siniestro\Purdy\DetalleDeSiniestro.cs" />
+    <Compile Include="Siniestro\Purdy\Siniestro.cs" />
+    <Compile Include="Siniestro\Purdy\SiniestroPurdyBase.cs" />
+    <Compile Include="Siniestro\Purdy\SiniestroPurdy.cs" />
     <Compile Include="TipoDeFirma.cs" />
     <Compile Include="Poliza\DetalleDeTercero.cs" />
     <Compile Include="Poliza\DatoVariable.cs" />

@@ -19,7 +19,7 @@ namespace Architect.API.Tron.DataAccess.Batch
                      .AddParameter("TIP_DOCUM", Architect.DataFactory.Enumerations.DbType.String, 13, tip_docum)
                      .AddParameter("COD_DOCUM", Architect.DataFactory.Enumerations.DbType.String, 13, cod_docum)
                      .AddParameter("NUM_POLIZA", Architect.DataFactory.Enumerations.DbType.String, 13, num_poliza)
-                     .Execute(currentConnection);
+                     .Execute(currentConnection, "Tron");
             return result >= 1;
         }
         public static bool UpdateEffectiveDate(DateTime fecha_efec, DateTime fecha_vec, string num_poliza, IDbConnection currentConnection)
@@ -35,7 +35,7 @@ namespace Architect.API.Tron.DataAccess.Batch
                     .AddParameter("fec_efec_spto", Architect.DataFactory.Enumerations.DbType.Date, 0, fecha_efec)
                     .AddParameter("fec_vcto_spto", Architect.DataFactory.Enumerations.DbType.Date, 0, fecha_vec)
                     .AddParameter("num_poliza", Architect.DataFactory.Enumerations.DbType.String, 13, num_poliza)
-                    .Execute(currentConnection);
+                    .Execute(currentConnection, "Tron");
             return result >= 1;
         }
 

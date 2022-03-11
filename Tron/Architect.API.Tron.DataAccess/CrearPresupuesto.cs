@@ -142,7 +142,7 @@ namespace Architect.API.Tron.DataAccess
                                            .AddParameter("P_EXT_COD_POSTAL_COM", Architect.DataFactory.Enumerations.DbType.String, 10, p1001331Instance.ext_cod_postal_com)
                                            .AddParameter("P_EXT_COD_POSTAL_ETIQUETA", Architect.DataFactory.Enumerations.DbType.String, 10, p1001331Instance.ext_cod_postal_etiqueta)
                                            .AddParameter("P_COD_EXP_CARNET_CON", Architect.DataFactory.Enumerations.DbType.Int32, 22, p1001331Instance.cod_exp_carnet_con)
-                                           .Execute(currentConnection);
+                                           .Execute(currentConnection, "Tron");
             if (affected != 0)
             {
                 result = true;
@@ -188,7 +188,7 @@ namespace Architect.API.Tron.DataAccess
                                            .AddParameter("P_HORA_DESDE", Architect.DataFactory.Enumerations.DbType.String, 0, p2000030Instance.hora_desde)
                                            .AddParameter("P_MCA_REASEGURO_MANUAL", Architect.DataFactory.Enumerations.DbType.String, 0, p2000030Instance.mca_reaseguro_manual)
                                            .AddParameter("P_MCA_PRIMA_MANUAL", Architect.DataFactory.Enumerations.DbType.String, 0, p2000030Instance.mca_prima_manual)
-                                           .Execute(currentConnection, new Action<DbCommand>((command) =>
+                                           .Execute(currentConnection, "Tron", new Action<DbCommand>((command) =>
                                            {
                                                p2000030Instance.num_poliza = (command.Parameters["P_NUM_POLIZA"].Value.ToString());
                                            }));
@@ -220,7 +220,7 @@ namespace Architect.API.Tron.DataAccess
                                            .AddParameter("P_NOM_RIESGO", Architect.DataFactory.Enumerations.DbType.String, 80, p2000031Instance.nom_riesgo)
                                            .AddParameter("P_TIP_SPTO", Architect.DataFactory.Enumerations.DbType.String, 2, p2000031Instance.tip_spto)
                                            .AddParameter("P_COD_MODALIDAD", Architect.DataFactory.Enumerations.DbType.Int32, 22, p2000031Instance.cod_modalidad)
-                                           .Execute(currentConnection);
+                                           .Execute(currentConnection, "Tron");
             if (affected != 0)
             {
                 result = true;
@@ -281,7 +281,7 @@ namespace Architect.API.Tron.DataAccess
                                            .AddParameter("P_MCA_VIGENTE_APLI", Architect.DataFactory.Enumerations.DbType.String, 1, p2000025Instance.mca_vigente_apli)
                                            .AddParameter("P_MCA_BAJA_OCURRENCIA", Architect.DataFactory.Enumerations.DbType.String, 1, p2000025Instance.mca_baja_ocurrencia)
                                            .AddParameter("P_IMP_OCURRENCIA", Architect.DataFactory.Enumerations.DbType.Int32, 22, p2000025Instance.imp_ocurrencia)
-                                           .Execute(currentConnection);
+                                           .Execute(currentConnection, "Tron");
             if (affected != 0)
             {
                 result = true;
@@ -315,7 +315,7 @@ namespace Architect.API.Tron.DataAccess
                                            .AddParameter("P_IMP_CESION", Architect.DataFactory.Enumerations.DbType.Int32, 22, p2000060Instance.imp_cesion)
                                            .AddParameter("P_NUM_PRESTAMO", Architect.DataFactory.Enumerations.DbType.String, 20, p2000060Instance.num_prestamo)
                                            .AddParameter("P_TIP_RELAC", Architect.DataFactory.Enumerations.DbType.String, 2, p2000060Instance.tip_relac)
-                                           .Execute(currentConnection);
+                                           .Execute(currentConnection, "Tron");
             if (affected != 0)
             {
                 result = true;
@@ -344,7 +344,7 @@ namespace Architect.API.Tron.DataAccess
                                            .AddParameter("P_IMP_PRIMA", Architect.DataFactory.Enumerations.DbType.Int32, 22, p2000040Instance.imp_prima)
                                            .AddParameter("P_COD_SECC_REAS", Architect.DataFactory.Enumerations.DbType.Int32, 22, p2000040Instance.cod_secc_reas)
                                            .AddParameter("P_SUM_ASEG_SPTO", Architect.DataFactory.Enumerations.DbType.Int32, 22, p2000040Instance.sum_aseg_spto)
-                                           .Execute(currentConnection);
+                                           .Execute(currentConnection, "Tron");
             if (affected != 0)
             {
                 result = true;

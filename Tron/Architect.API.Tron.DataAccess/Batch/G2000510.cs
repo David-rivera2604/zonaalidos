@@ -21,7 +21,7 @@ namespace Architect.API.Tron.DataAccess.Batch
                                            .AddParameter("P_NUM_ORDEN", Architect.DataFactory.Enumerations.DbType.Int32, 22, g2000510Instance.num_orden)
                                            .AddParameter("P_TIP_MVTO_BATCH", Architect.DataFactory.Enumerations.DbType.String, 2, g2000510Instance.tip_mvto_batch)
                                            .AddParameter("RC1", Architect.DataFactory.Enumerations.DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
-                                           .Query(currentConnection, new Action<IDataReader>((reader) =>
+                                           .Query(currentConnection, "Tron", new Action<IDataReader>((reader) =>
                                            {
                                                result = new Architect.API.Tron.Contracts.Batch.Proceso()
                                                {
@@ -46,7 +46,7 @@ namespace Architect.API.Tron.DataAccess.Batch
                                            .AddParameter("num_orden", Architect.DataFactory.Enumerations.DbType.Int32, 22, g2000510Instance.num_orden)
                                            .AddParameter("tip_mvto_batch", Architect.DataFactory.Enumerations.DbType.Int32, 22, g2000510Instance.tip_mvto_batch)
                                            .AddParameter("RC1", Architect.DataFactory.Enumerations.DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
-                                           .Query(currentConnection, new Action<IDataReader>((reader) =>
+                                           .Query(currentConnection, "Tron", new Action<IDataReader>((reader) =>
                                            {
                                                result = new Architect.API.Tron.Contracts.Batch.Proceso()
                                                {
@@ -74,7 +74,7 @@ namespace Architect.API.Tron.DataAccess.Batch
                                            .AddParameter("P_MCA_RECALCULA_FECHA", Architect.DataFactory.Enumerations.DbType.String, 1, g2000510Instance.mca_recalcula_fecha)
                                            .AddParameter("P_TIP_FECHA_BASE", Architect.DataFactory.Enumerations.DbType.String, 2, g2000510Instance.tip_fecha_base)
                                            .AddParameter("P_COD_USR", Architect.DataFactory.Enumerations.DbType.String, 8, g2000510Instance.cod_usr)
-                                           .Execute(currentConnection, new Action<DbCommand>((command) =>
+                                           .Execute(currentConnection, "Tron", new Action<DbCommand>((command) =>
                                            {
                                                g2000510Instance.num_orden = Int32.Parse(command.Parameters["P_NUM_ORDEN"].Value.ToString());
                                            }));

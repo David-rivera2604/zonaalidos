@@ -87,7 +87,6 @@
     <Compile Include="_Generated\ChangeSet.vb" />
     <Compile Include="_Generated\AuthenticationTrace.vb" />
     <Compile Include="_Generated\UserMember.vb" />
-    <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="Security\UserMember.vb" />
   </ItemGroup>
   <ItemGroup>

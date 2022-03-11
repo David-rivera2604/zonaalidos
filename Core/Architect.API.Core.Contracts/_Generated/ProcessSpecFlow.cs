@@ -15,7 +15,7 @@ namespace Architect.API.Core.Contracts.General
         /// </summary>
         [DataMember(), JsonProperty()] public int Id { get; set; }
         /// <summary>
-        /// Identificación de la compañia propietaria.
+        /// Identificación de la compañía propietaria.
         /// </summary>
         [DataMember(), JsonProperty()] public int CompanyId { get; set; }
         /// <summary>
@@ -33,10 +33,15 @@ namespace Architect.API.Core.Contracts.General
         [DataMember(), JsonProperty()] public int MailServer { get; set; }
         [DataMember(), JsonProperty()] public string MailServerDesc { get; set; }
         [DataMember(), JsonProperty()] public string ReferenceCaption1 { get; set; }
+        [DataMember(), JsonProperty()] public string ReferenceLookupList1 { get; set; }
         [DataMember(), JsonProperty()] public string ReferenceCaption2 { get; set; }
+        [DataMember(), JsonProperty()] public string ReferenceLookupList2 { get; set; }
         [DataMember(), JsonProperty()] public string ReferenceCaption3 { get; set; }
+        [DataMember(), JsonProperty()] public string ReferenceLookupList3 { get; set; }
         [DataMember(), JsonProperty()] public string ReferenceCaption4 { get; set; }
+        [DataMember(), JsonProperty()] public string ReferenceLookupList4 { get; set; }
         [DataMember(), JsonProperty()] public string ReferenceCaption5 { get; set; }
+        [DataMember(), JsonProperty()] public string ReferenceLookupList5 { get; set; }
         /// <summary>
         /// Estado (Activo/Inactivo)
         /// </summary>

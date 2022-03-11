@@ -1,6 +1,6 @@
 ﻿var app = app || {};
 
-app.Prototype = (function () {
+app.PrototypeIndex = (function () {
     return {
         Init: function () {
             _id = app.core.URLStringValue('id');
@@ -35,16 +35,23 @@ app.Prototype = (function () {
                             Body: $('#specification').val()
                         }))
                         .done(function (data, textStatus, jqXHR) {
+                            data = app.core.ReplaceAll(data, '@_eq', '=');
+                            data = app.core.ReplaceAll(data, '@_qt', '\'');
+                            data = app.core.ReplaceAll(data, '@_sc', ';');
+
                             $("#extend").html(data);
 
                             app.core.Post(app.setting.apipath + 'v1/Viewer/Prototype2',
                                 JSON.stringify({
                                     Subject: $('#key').val(),
-                                    Partial: false,
+                                    Partial: true,
                                     Body: $('#specification').val()
                                 }))
                                 .done(function (data, textStatus, jqXHR) {
-                                    eval(data);
+                                    //var geval = eval;
+
+                                    //data = app.core.ReplaceAll(data, "app.ui", "window['app'].ui");
+                                    eval(data + "app.Prototype.Init();");
                                 });
                         });
                 });

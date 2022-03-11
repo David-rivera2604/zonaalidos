@@ -25,8 +25,13 @@ namespace Architect.API.Core.Utils
         /// <param name="actionContext">Contexto.</param>
         public override void OnAuthorization(HttpActionContext actionContext)
         {
-            bool expired = false; 
-            if (actionContext.Request.Headers.Authorization == null && HttpContext.Current.Request.Headers["AccessKey"] == null)
+            bool expired = false;
+
+            if(actionContext.ControllerContext.Request.RequestUri.AbsolutePath.EndsWith("v1/Security/IsLive"))
+            {
+                base.OnAuthorization(actionContext);
+            }
+            else if (actionContext.Request.Headers.Authorization == null && HttpContext.Current.Request.Headers["AccessKey"] == null)
             {
                 base.OnAuthorization(actionContext);
             }

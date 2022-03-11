@@ -10,6 +10,6 @@ namespace Architect.API.Core.Contracts.Security
         /// </summary>
         [DataMember(), JsonProperty()] public string RoleName { get; set; }
 
-   }
+    }
 }
 

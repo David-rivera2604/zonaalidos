@@ -8,8 +8,8 @@ namespace Architect.API.Core.Contracts.General
     /// </summary>
     public class Tenant
     {
-            /// <summary>
-        /// Identificación de la compañia propietaria.
+        /// <summary>
+        /// Identificación de la compañía propietaria.
         /// </summary>
         [DataMember(), JsonProperty()] public int CompanyId { get; set; }
         /// <summary>

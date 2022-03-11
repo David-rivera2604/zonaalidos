@@ -3,6 +3,7 @@ using Architect.DataFactory.Handlers;
 using System;
 using System.Data;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Architect.API.Tron.Business.Backoffice.Cotizacion
 {
@@ -11,7 +12,7 @@ namespace Architect.API.Tron.Business.Backoffice.Cotizacion
     /// </summary>
     public static class MapfreMas
     {
-        public static Architect.API.Tron.Contracts.Presupuesto.DatoFijo Calcular(Architect.API.Tron.Contracts.Batch.CotizadorMapfreMasClass _class)
+        public static Architect.API.Tron.Contracts.Presupuesto.DatoFijo Calcular(Contracts.Batch.CotizadorMapfreMasClass _class)
         {
             IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron");
             Architect.Utilities.Log.TraceLog("processAutomobile302.QuotationIssue", "Antes de cotizar");
@@ -42,11 +43,33 @@ namespace Architect.API.Tron.Business.Backoffice.Cotizacion
 
             if (P30Instance?.Coberturas?.Count > 0 && P30Instance.Coberturas.First().txt_error.IsEmpty())
             {
-                P30Instance = DataAccess.LeerPresupuesto.Presupuesto(1, P30Instance.Coberturas.First().num_poliza, 0, 0, 0, currentConnection, true, "onlyresult");
+                P30Instance.num_poliza = P30Instance.Coberturas.First().num_poliza;
+                              
+                P30Instance = DataAccess.LeerPresupuesto.Presupuesto(1, P30Instance.num_poliza, 0, 0, 0, currentConnection, true, "onlyresult");
+                P30Instance.num_riesgos = 1;
+                Crea_DatosVariables(_class, P30Instance, currentConnection);
             }
 
             currentConnection.Close();
             return P30Instance;
+        }
+
+        /// <summary>
+        /// Permite la creación de los datos variables que no son ingresado por medio del procedimiento P_Cotiza
+        /// </summary>
+        private static void Crea_DatosVariables(Contracts.Batch.CotizadorMapfreMasClass _class, Contracts.Presupuesto.DatoFijo datoFijo, IDbConnection currentConnection)
+        {
+            List<Contracts.Presupuesto.DatoVariable> datosVariables = new List<Contracts.Presupuesto.DatoVariable>();
+
+            datosVariables.Add(Util.DatoVariable(datoFijo, datoFijo.num_riesgos, "NUM_MATRICULA", _class.num_matricula, 2, 7));
+            datosVariables.Add(Util.DatoVariable(datoFijo, datoFijo.num_riesgos, "NUM_MOTOR", _class.num_motor, 2, 8));
+            datosVariables.Add(Util.DatoVariable(datoFijo, datoFijo.num_riesgos, "COD_CHASSIS", _class.cod_chassis, 2, 12));
+
+            foreach (Contracts.Presupuesto.DatoVariable dato in datosVariables)
+            {
+                dato.num_poliza = datoFijo.num_poliza;
+                DataAccess.CrearPresupuesto.PP_Insert_P2000020(dato, currentConnection);
+            }
         }
 
     }

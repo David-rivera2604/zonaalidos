@@ -16,7 +16,8 @@ namespace Architect.API.Core.Business.Security
         public static Dictionary<string, string> EmailListByRolename(int companyId, string roleName)
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
-            List<Architect.API.Core.Contracts.Security.UserMember> userList = DataAccess.Security.UserMember.EmailInfoByRoleName(companyId, roleName);
+            roleName += ",,,";
+            List<Architect.API.Core.Contracts.Security.UserMember> userList = DataAccess.Security.UserMember.EmailInfoByRoleName(companyId, roleName.Split(',')[0].Trim().ToLower(), roleName.Split(',')[1].Trim().ToLower(), roleName.Split(',')[2].Trim().ToLower());
 
             foreach (Architect.API.Core.Contracts.Security.UserMember userItem in userList)
             {

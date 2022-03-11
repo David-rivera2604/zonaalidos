@@ -57,6 +57,18 @@ namespace aliados
                     Cron.MinuteInterval(interval));
             }
 
+            //int agentCode = Convert.ToInt32(ConfigurationManager.AppSettings["Purdy.Service.AgentCode"]);
+            //if (agentCode > 0)
+            //    RecurringJob.AddOrUpdate(() =>
+            //        Architect.API.Tron.Business.Siniestro.Purdy.PurdyServiceRequests(agentCode), Cron.Daily(1));
+            int processReviewEveryTime = Convert.ToInt32(ConfigurationManager.AppSettings["Process.Review.EveryTime"]);
+            if (processReviewEveryTime > 0)
+            {
+                RecurringJob.AddOrUpdate(() =>
+                       Architect.API.Core.Business.General.Process.OverDueSteps(),
+                       Cron.MinuteInterval(processReviewEveryTime));
+                ;
+            }
         }
 
     }

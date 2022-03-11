@@ -269,7 +269,7 @@ app.policyview = (function () {
         $('#StatusFlt').select2({ width: '100%', theme: 'bootstrap4' });
         var _statusFlt = app.core.URLStringValue('status');
         if (_statusFlt !== '') {
-            $('#StatusFlt').select2('val', _statusFlt.split(','));
+            $('#StatusFlt').val(_statusFlt.split(',')).change()
             Refresh();
         }
     };

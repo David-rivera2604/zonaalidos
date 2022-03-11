@@ -15,13 +15,17 @@ namespace Architect.API.Core.Contracts.General
         /// </summary>
         [DataMember(), JsonProperty()] public int Id { get; set; }
         /// <summary>
-        /// Identificación de la compañia propietaria.
+        /// Identificación de la compañía propietaria.
         /// </summary>
         [DataMember(), JsonProperty()] public int CompanyId { get; set; }
         /// <summary>
         /// Tipo de entidad u objeto que genera el registro.
         /// </summary>
         [DataMember(), JsonProperty()] public int EntityType { get; set; }
+        /// <summary>
+        /// Subtipo de entidad u objeto que genera el registro.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int EntitySubType { get; set; }
         /// <summary>
         /// Identificador de la entidad u objeto que genera el registro.
         /// </summary>

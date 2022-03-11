@@ -70,7 +70,10 @@ namespace Architect.API.Tron.Business.Cotizacion
                 num_contrato = quoteInfo.contrato,
                 num_subcontrato = quoteInfo.subcontrato,
                 num_poliza_grupo = quoteInfo.polizagrupo,
-                txt_motivo = "Cotización realizada desde la zona de aliados, por: " + userName
+                txt_motivo = "Cotización realizada desde la zona de aliados, por: " + userName,
+                num_matricula= quoteInfo.NUM_MATRICULA,
+                num_motor = quoteInfo.NUM_MOTOR,
+                cod_chassis = quoteInfo.COD_CHASSIS
             };
 
             //result.tip_docum = tip_documComboBox.Value

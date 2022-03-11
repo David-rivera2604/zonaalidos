@@ -138,7 +138,7 @@ namespace Architect.API.Tron.DataAccess.Batch
                                            .AddParameter("P_EXT_COD_POSTAL_COM", Architect.DataFactory.Enumerations.DbType.String, 10, p1001331Instance.ext_cod_postal_com)
                                            .AddParameter("P_EXT_COD_POSTAL_ETIQUETA", Architect.DataFactory.Enumerations.DbType.String, 10, p1001331Instance.ext_cod_postal_etiqueta)
                                            .AddParameter("P_COD_EXP_CARNET_CON", Architect.DataFactory.Enumerations.DbType.Int32, 22, p1001331Instance.cod_exp_carnet_con)
-                                           .Execute(currentConnection);
+                                           .Execute(currentConnection, "Tron");
             if (affected != 0)
             {
                 result = true;

@@ -35,30 +35,30 @@ namespace Architect.API.Insurance.Business.Policy
         /// <summary>
         /// Convierte un a fila de un archivo excel a un DataRow del DataTable "RuleLoans".
         /// </summary>
-        /// <param name="dataRow">DataRow vacio del DataTable</param>
+        /// <param name="dataRow">DataRow vacío del DataTable</param>
         /// <param name="sheet">Hola del archivo excel.</param>
         /// <param name="rowNumber">Número de fila a procesar.</param>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <returns>DataRow del DataTable "RuleLoans"</returns>
         private static System.Data.DataRow SheetRow2DataTableRow(System.Data.DataRow dataRow,
                                                                  IXLWorksheet sheet,
                                                                  int rowNumber,
                                                                  int companyId)
         {
-            dataRow["LoanNumber"] = Architect.Common.Extensions.IXLWorksheetExtensions.IntegerValue(sheet, rowNumber, "G");
+            dataRow["LoanNumber"] = Utilities.Excel.Extensions.IXLWorksheetExtensions.IntegerValue(sheet, rowNumber, "G");
             dataRow["CompanyId"] = companyId;
-            dataRow["DocumentNumber"] = Architect.Common.Extensions.IXLWorksheetExtensions.StringValue(sheet, rowNumber, "C");
-            dataRow["FullName"] = Architect.Common.Extensions.IXLWorksheetExtensions.StringValue(sheet,rowNumber, "B");
-            dataRow["BirthDate"] = Architect.Common.Extensions.IXLWorksheetExtensions.DateTimeValue(sheet, rowNumber, "E");
-            if (Architect.Common.Extensions.IXLWorksheetExtensions.StringValue(sheet, rowNumber, "K") == "M")
+            dataRow["DocumentNumber"] = Utilities.Excel.Extensions.IXLWorksheetExtensions.StringValue(sheet, rowNumber, "C");
+            dataRow["FullName"] = Utilities.Excel.Extensions.IXLWorksheetExtensions.StringValue(sheet,rowNumber, "B");
+            dataRow["BirthDate"] = Utilities.Excel.Extensions.IXLWorksheetExtensions.DateTimeValue(sheet, rowNumber, "E");
+            if (Utilities.Excel.Extensions.IXLWorksheetExtensions.StringValue(sheet, rowNumber, "K") == "M")
                 dataRow["Gender"] = 1;
             else
                 dataRow["Gender"] = 2;
-            dataRow["StartTerm"] = Common.Extensions.IXLWorksheetExtensions.DateTimeValue(sheet, rowNumber, "H");
-            dataRow["EndTerm"] = Common.Extensions.IXLWorksheetExtensions.DateTimeValue(sheet, rowNumber, "I");
-            dataRow["Duration"] = Common.Extensions.IXLWorksheetExtensions.DecimalValue(sheet, rowNumber, "O");
-            dataRow["Amount"] = Common.Extensions.IXLWorksheetExtensions.DecimalValue(sheet, rowNumber, "L");
-            dataRow["Balance"] = Common.Extensions.IXLWorksheetExtensions.DecimalValue(sheet, rowNumber, "N");
+            dataRow["StartTerm"] = Utilities.Excel.Extensions.IXLWorksheetExtensions.DateTimeValue(sheet, rowNumber, "H");
+            dataRow["EndTerm"] = Utilities.Excel.Extensions.IXLWorksheetExtensions.DateTimeValue(sheet, rowNumber, "I");
+            dataRow["Duration"] = Utilities.Excel.Extensions.IXLWorksheetExtensions.DecimalValue(sheet, rowNumber, "O");
+            dataRow["Amount"] = Utilities.Excel.Extensions.IXLWorksheetExtensions.DecimalValue(sheet, rowNumber, "L");
+            dataRow["Balance"] = Utilities.Excel.Extensions.IXLWorksheetExtensions.DecimalValue(sheet, rowNumber, "N");
 
             return dataRow;
         }
@@ -68,7 +68,7 @@ namespace Architect.API.Insurance.Business.Policy
         /// </summary>
         /// <param name="localFileName">Nombre del archivo excel en el servidor.</param>
         /// <param name="originalFileName">nombre original del archivo excel.</param>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="userId">Identificación del usuario.</param>
         /// <returns>Cantidad de registros procesador</returns>
         public static string Load(string localFileName, string originalFileName, int companyId, int userId)
@@ -83,7 +83,7 @@ namespace Architect.API.Insurance.Business.Policy
 
                 for (rowNumber = 9; rowNumber < 100000; rowNumber++)
                 {
-                    if (!string.IsNullOrEmpty(Common.Extensions.IXLWorksheetExtensions.StringValue(sheet, rowNumber, "A")))
+                    if (!string.IsNullOrEmpty(Utilities.Excel.Extensions.IXLWorksheetExtensions.StringValue(sheet, rowNumber, "B")))
                     {
                         data.Rows.Add(SheetRow2DataTableRow(data.NewRow(), sheet, rowNumber, companyId));
                     }
@@ -95,14 +95,17 @@ namespace Architect.API.Insurance.Business.Policy
                 if (data.Rows.Count > 0)
                 {
                     DataAccess.Policy.RuleLoans.Truncate();
-                    Architect.Common.Helpers.Bulk.test(data, "RULELOANS", "Research");
+                    Architect.DataFactory.Database.Bulk("Research", "RULELOANS", data);
 
                     result = string.Format("El archivo '{0}' fue procesado de forma exitosa, se cargaron {1} registros", originalFileName, data.Rows.Count);
 
                     Core.Business.General.ChangeSet.Create(2005, userId, companyId, "Procesado", result, userId, new { FileName = originalFileName, Rows = data.Rows.Count } );
+                } else
+                {
+                    result = "No se encontraron registros a procesar";
                 }
             }
-            catch (Architect.Common.Exceptions.WorksheetCellException wex)
+            catch (Utilities.Excel.Exceptions.WorksheetCellException wex)
             {
                 Utilities.Log.ErrorLog("Load", string.Format("fileName={0}, companyId={1}, row={2}, column={3}", localFileName, companyId, rowNumber, wex.Column), wex);
                 result = string.Format("Ha ocurrido un error procesando la fila {0} columna {1}, por favor verifique e intente nuevamente.", wex.RowNumber, wex.Column);
@@ -118,7 +121,7 @@ namespace Architect.API.Insurance.Business.Policy
         /// <summary>
         /// Devuelva la lista de prestamos de una persona por medio de su identificación.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="documentNumber">Documento o número de identificación.</param>
         /// <returns>lista de prestamos.</returns>
         public static List<Contracts.Policy.RuleLoans> RetrieveByDocumentNumber(int companyId, string documentNumber)

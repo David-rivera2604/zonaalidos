@@ -175,14 +175,16 @@ app.GeneralProcessSpecFlow = (function () {
         });
 
         $('#ProcessSpecFlowEdtFormDuplicate').click(function () {
-            if (app.ui.IsValid('#ProcessSpecFlowEdtForm', false)) {
-                app.ui.ButtonDoing('#ProcessSpecFlowEdtFormDuplicate');
-                var data = MapInputToObject();
-                data.Id = 0;
-                data.Name += ' duplicado';
-                app.ui.ButtonDone('#ProcessSpecFlowEdtFormDuplicate');
-                app.GeneralProcessSpecFlow.EditRow(data);
-            }
+            app.ui.ButtonDoing('#ProcessSpecFlowEdtFormDuplicate');
+            let uidata = MapInputToObject();
+
+            app.core.Post(app.setting.apipath + `v1/ProcessSpecFlow/${uidata.Id}/Duplicate`)
+                .done(function (data, textStatus, jqXHR) {
+                    ViewMode();
+                    Refresh();
+                }).always(function () {
+                    app.ui.ButtonDone('#ProcessSpecFlowEdtFormDuplicate');
+                });
             event.preventDefault();
         });
 
@@ -201,6 +203,35 @@ app.GeneralProcessSpecFlow = (function () {
             event.preventDefault();
         });
 
+        $('#ReferenceCaption1,#ReferenceCaption2,#ReferenceCaption3,#ReferenceCaption4,#ReferenceCaption5').change(function () {
+
+            CustomFields();
+
+        });
+
+    }
+
+    function CustomFields() {
+        if ($('#ReferenceCaption1').val() == '')
+            $('#ReferenceLookupList1').addClass('d-none');
+        else
+            $('#ReferenceLookupList1').removeClass('d-none');
+        if ($('#ReferenceCaption2').val() == '')
+            $('#ReferenceLookupList2').addClass('d-none');
+        else
+            $('#ReferenceLookupList2').removeClass('d-none');
+        if ($('#ReferenceCaption3').val() == '')
+            $('#ReferenceLookupList3').addClass('d-none');
+        else
+            $('#ReferenceLookupList3').removeClass('d-none');
+        if ($('#ReferenceCaption4').val() == '')
+            $('#ReferenceLookupList4').addClass('d-none');
+        else
+            $('#ReferenceLookupList4').removeClass('d-none');
+        if ($('#ReferenceCaption5').val() == '')
+            $('#ReferenceLookupList5').addClass('d-none');
+        else
+            $('#ReferenceLookupList5').removeClass('d-none');
     }
 
     function Create(uidata, mode) {
@@ -282,10 +313,15 @@ app.GeneralProcessSpecFlow = (function () {
             Alias: $('#Alias').val(),
             MailServer: $('#MailServer').val(),
             ReferenceCaption1: $('#ReferenceCaption1').val(),
+            ReferenceLookupList1: $('#ReferenceLookupList1').val(),
             ReferenceCaption2: $('#ReferenceCaption2').val(),
+            ReferenceLookupList2: $('#ReferenceLookupList2').val(),
             ReferenceCaption3: $('#ReferenceCaption3').val(),
+            ReferenceLookupList3: $('#ReferenceLookupList3').val(),
             ReferenceCaption4: $('#ReferenceCaption4').val(),
+            ReferenceLookupList4: $('#ReferenceLookupList4').val(),
             ReferenceCaption5: $('#ReferenceCaption5').val(),
+            ReferenceLookupList5: $('#ReferenceLookupList5').val(),
             Status: $('#Status').val()
 
         };
@@ -298,12 +334,18 @@ app.GeneralProcessSpecFlow = (function () {
         $('#Alias').val(data.Alias);
         $('#MailServer').val(data.MailServer);
         $('#ReferenceCaption1').val(data.ReferenceCaption1);
+        $('#ReferenceLookupList1').val(data.ReferenceLookupList1);
         $('#ReferenceCaption2').val(data.ReferenceCaption2);
+        $('#ReferenceLookupList2').val(data.ReferenceLookupList2);
         $('#ReferenceCaption3').val(data.ReferenceCaption3);
+        $('#ReferenceLookupList3').val(data.ReferenceLookupList3);
         $('#ReferenceCaption4').val(data.ReferenceCaption4);
+        $('#ReferenceLookupList4').val(data.ReferenceLookupList4);
         $('#ReferenceCaption5').val(data.ReferenceCaption5);
+        $('#ReferenceLookupList5').val(data.ReferenceLookupList5);
         $('#Status').val(data.Status);
 
+        
     }
 
     function Setup_Validations() {
@@ -353,6 +395,7 @@ app.GeneralProcessSpecFlow = (function () {
 
         if (row.Id === 0) {
             MapObjectToInput(row);
+            CustomFields();
             $('#Name').focus();
             $('#ProcessSpecFlowEdtFormSaveContinue').removeClass('d-none');
             $('#ProcessSpecFlowEdtFormSaveCopy').removeClass('d-none');
@@ -366,6 +409,7 @@ app.GeneralProcessSpecFlow = (function () {
             app.core.Get(app.setting.apipath + 'v1/ProcessSpecFlow/' + row.Id)
                 .done(function (data, textStatus, jqXHR) {
                     MapObjectToInput(data);
+                    CustomFields();
                     $('#Name').focus();
                     $('#ProcessSpecFlowEdtFormSaveContinue').addClass('d-none');
                     $('#ProcessSpecFlowEdtFormSaveCopy').addClass('d-none');
@@ -545,7 +589,7 @@ app.GeneralProcessSpecFlow = (function () {
                     widthUnit: '%',
                     formatter: 'app.ui.UpdateDateAndUserFormatter'
                 }],
-            icons : {
+            icons: {
                 paginationSwitchDown: 'fa-caret-square-o-down',
                 paginationSwitchUp: 'fa-caret-square-o-up',
                 refresh: 'fa-refresh',

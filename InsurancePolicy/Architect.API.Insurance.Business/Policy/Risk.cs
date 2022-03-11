@@ -1,8 +1,6 @@
 ﻿using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Globalization;
 using System.Linq;
 
 namespace Architect.API.Insurance.Business.Policy
@@ -26,6 +24,10 @@ namespace Architect.API.Insurance.Business.Policy
 
             switch (status)
             {
+                case Enumerations.PolicyStatus.InReview:
+                    result = ChangeStatusToInReview(result, status, currentStatus, item, companyId, userId, roles, ref message);
+                    break;
+
                 case Enumerations.PolicyStatus.InForce:
                     result = ChangeStatusInForce(result, status, currentStatus, item, companyId, userId, roles, ref message);
                     break;
@@ -38,12 +40,48 @@ namespace Architect.API.Insurance.Business.Policy
                     result = ChangeStatusToBeAccepted(result, status, currentStatus, item, companyId, userId, roles, ref message);
                     break;
 
+                case Enumerations.PolicyStatus.ComplementRequest:
+                    result = ChangeStatusToComplementRequest(result, status, currentStatus, item, companyId, userId, roles, ref message);
+                    break;
+
                 case Enumerations.PolicyStatus.Cancel:
                     result = ChangeStatusCancel(result, status, item, companyId, userId, ref message);
                     break;
             }
 
             item.NewStatusDesc = Core.Business.Common.Lkp("PolicyStatus", companyId).Find(x => x.Code == result.Status.ToString()).Description;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Condiciona una póliza en suscripción para su revisión por un suscriptor.
+        /// </summary>
+        /// <param name="result">Información de la póliza en suscripción.</param>
+        /// <param name="status">Estado nuevo.</param>
+        /// <param name="currentStatus">Estado actual.</param>
+        /// <param name="item">Datos para el cambio de estado.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
+        /// <param name="userId">Identificación del usuario.</param>
+        /// <param name="roles">Lista de roles permitidos del usuario que solicita el cambio.</param>
+        /// <param name="message">Descripción del cambio realizado.</param>
+        /// <returns>Póliza con los cambios aplicados.</returns>
+        private static Contracts.Policy.Risk ChangeStatusToInReview(Contracts.Policy.Risk result, Enumerations.PolicyStatus status, Enumerations.PolicyStatus currentStatus, Contracts.Policy.RiskStatus item, int companyId, int userId, string roles, ref string message)
+        {
+            if (currentStatus == Enumerations.PolicyStatus.InReview && !roles.Contains("Suscriptor"))
+                throw new Exception("El usuario no posee el rol necesario para realizar esta operación");
+
+            Architect.API.Core.Contracts.Security.UserMember ownerUserInfo = Architect.API.Core.Business.Security.UserMember.RetrieveById(companyId, result.UpdateUserCode);
+            Architect.API.Core.Contracts.Security.UserMember currentUserInfo = Architect.API.Core.Business.Security.UserMember.RetrieveById(companyId, userId);
+
+            result.Status = (int)status;
+            result.UpdateDate = DateTime.Now;
+            DataAccess.Policy.Risk.Update(result);
+            Core.Business.General.ChangeSet.Create(2000, item.Id, companyId, "En revisión", null, userId, item);
+
+            Notify.InReviewStatus(result, companyId, userId, currentStatus);
+
+            message = string.Format("La póliza cambio a revisión de forma exitosa. El usuario {0} {1} ({2}) fue notificado.", ownerUserInfo.FirstName, ownerUserInfo.LastName, ownerUserInfo.EMail);
 
             return result;
         }
@@ -79,7 +117,7 @@ namespace Architect.API.Insurance.Business.Policy
 
             if (currentStatus != Enumerations.PolicyStatus.ToBeAccepted)
             {
-                Notify_AcceptedStatus(result, companyId, userId, ownerUserInfo, currentUserInfo);
+                Notify.AcceptedStatus(result, companyId, userId, ownerUserInfo, currentUserInfo);
 
                 message = string.Format("La póliza fue emitida de forma exitosa, bajo el número #{0}. El usuario {1} {2} ({3}) fue notificado.", result.PolicyId, ownerUserInfo.FirstName, ownerUserInfo.LastName, ownerUserInfo.EMail);
             }
@@ -121,7 +159,7 @@ namespace Architect.API.Insurance.Business.Policy
 
             if (currentStatus != Enumerations.PolicyStatus.ToBeAccepted)
             {
-                Notify_DeclinedStatus(result, companyId, userId, ownerUserInfo, currentUserInfo);
+                Notify.DeclinedStatus(result, companyId, userId, ownerUserInfo, currentUserInfo);
 
                 message = string.Format("La póliza ha sido declinada de forma exitosa. El usuario {0} {1} ({2}) fue notificado.", ownerUserInfo.FirstName, ownerUserInfo.LastName, ownerUserInfo.EMail);
             }
@@ -156,14 +194,49 @@ namespace Architect.API.Insurance.Business.Policy
             result.Comments = item.Comments;
             result.Surcharge = item.Surcharge;
             result.Status = (int)status;
-            //result.UpdateUserCode = userId; No se puede cambiar el usuario original ya que asi queda la poliza amarrada a ese usuario
+            //result.UpdateUserCode = userId; No se puede cambiar el usuario original ya que así queda la póliza amarrada a ese usuario
             result.UpdateDate = DateTime.Now;
             DataAccess.Policy.Risk.Update(result);
             Core.Business.General.ChangeSet.Create(2000, item.Id, companyId, "Condicionada", null, userId, item);
 
-            Notify_ToBeAcceptedStatus(result, companyId, userId, ownerUserInfo, currentUserInfo);
+            Notify.ToBeAcceptedStatus(result, companyId, userId, ownerUserInfo, currentUserInfo);
 
             message = string.Format("La póliza ha sido condicionada de forma exitosa. El usuario {0} {1} ({2}) fue notificado.", ownerUserInfo.FirstName, ownerUserInfo.LastName, ownerUserInfo.EMail);
+
+            return result;
+        }
+
+
+        /// <summary>
+        /// Retorna la póliza en suscripción para que se complemente.
+        /// </summary>
+        /// <param name="result">Información de la póliza en suscripción.</param>
+        /// <param name="status">Estado nuevo.</param>
+        /// <param name="currentStatus">Estado actual.</param>
+        /// <param name="item">Datos para el cambio de estado.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
+        /// <param name="userId">Identificación del usuario.</param>
+        /// <param name="roles">Lista de roles permitidos del usuario que solicita el cambio.</param>
+        /// <param name="message">Descripción del cambio realizado.</param>
+        /// <returns>Póliza con los cambios aplicados.</returns>
+        private static Contracts.Policy.Risk ChangeStatusToComplementRequest(Contracts.Policy.Risk result, Enumerations.PolicyStatus status, Enumerations.PolicyStatus currentStatus, Contracts.Policy.RiskStatus item, int companyId, int userId, string roles, ref string message)
+        {
+            if (currentStatus == Enumerations.PolicyStatus.InReview && !roles.Contains("Suscriptor"))
+                throw new Exception("El usuario no posee el rol necesario para realizar esta operación");
+
+            Architect.API.Core.Contracts.Security.UserMember ownerUserInfo = Architect.API.Core.Business.Security.UserMember.RetrieveById(companyId, result.UpdateUserCode);
+            Architect.API.Core.Contracts.Security.UserMember currentUserInfo = Architect.API.Core.Business.Security.UserMember.RetrieveById(companyId, userId);
+
+            result.Comments = item.Comments;
+            result.Surcharge = item.Surcharge;
+            result.Status = (int)status;
+            result.UpdateDate = DateTime.Now;
+            DataAccess.Policy.Risk.Update(result);
+            Core.Business.General.ChangeSet.Create(2000, item.Id, companyId, "Complementos solicitados", null, userId, item);
+
+            Notify.ComplementRequestStatus(result, companyId, userId, ownerUserInfo, currentUserInfo);
+
+            message = string.Format("La solicitud de complementos fue enviada de forma exitosa. El usuario {0} {1} ({2}) fue notificado.", ownerUserInfo.FirstName, ownerUserInfo.LastName, ownerUserInfo.EMail);
 
             return result;
         }
@@ -194,168 +267,6 @@ namespace Architect.API.Insurance.Business.Policy
 
             message = "La póliza ha sido cancelada de forma exitosa.";
 
-            return result;
-        }
-
-        /// <summary>
-        /// Envía una notificación al usuario encargado de manejar la suscripción
-        /// </summary>
-        /// <param name="item">Póliza usada para el contexto del cuerpo del correo.</param>
-        /// <param name="companyId">Identificación de la compañía propietaria.</param>
-        /// <param name="userId">Identificación del usuario.</param>
-        private static void Notify_InReviewStatus(Contracts.Policy.Risk item, int companyId, int userId)
-        {
-            //int mapfre_userId = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Notify.Subscription.User"]);
-            //Architect.API.Core.Contracts.Security.UserMember mapfreUserInfo = Architect.API.Core.Business.Security.UserMember.RetrieveById(companyId, mapfre_userId);
-            string mailListRolName = ConfigurationManager.AppSettings["Mapfre.Notify.Subscription.RoleName"];
-            Dictionary<string, string> mailList = Architect.API.Core.Business.Security.UserMember.EmailListByRolename(companyId, mailListRolName);
-
-            Architect.API.Core.Contracts.Security.UserMember currentUserInfo = Architect.API.Core.Business.Security.UserMember.RetrieveById(companyId, userId);
-
-            if (mailList.IsNotEmpty())
-            {
-                string subject = "{Company.Name}: La póliza #I-{Risk.Id}, requiere ser revisada";
-                string body = "<p>El usuario {User.FirstName} {User.LastName}, ha registrado la póliza #I-{Risk.Id}, pero debido a las condiciones de esta, es necesario su revisión.</p>" +
-                              "<h4>Datos de la póliza</h4>" +
-                              "<p style='padding-left: 30px;'>" +
-                              "Ramo: {Risk.LineOfBusinessDesc}<br>" +
-                              "Producto: {Risk.ProductDesc}<br>" +
-                              "Moneda: {Risk.CurrencyDesc}<br>" +
-                              "Frecuencia de pago: {Risk.PaymentFrequencyDesc}<br>" +
-                              "Plan: {Risk.ModuleDesc}<br>" +
-                              "Capital: {Risk.InsuredAmount}<br>" +
-                              "Prima anual: {Risk.AnnualPremium}<br>" +
-                              "Prima mensual: {Risk.MonthlyPremium}<br>" +
-                              "</p>" +
-                              "<h4>Datos del asegurado</h4>" +
-                              "<p style='padding-left: 30px;'>" +
-                              "Nombre: {Risk.PrimaryInsured.FirstName} {Risk.PrimaryInsured.MiddleName} {Risk.PrimaryInsured.LastName} {Risk.PrimaryInsured.SecondLastName}<br>" +
-                              "Fecha de nacimiento: {Risk.PrimaryInsured.BirthDate} ({Risk.PrimaryInsured.Age} años)<br>" +
-                              "</p>";
-
-                RiskMailBody(item, currentUserInfo, ref subject, ref body, companyId);
-
-                Core.Business.General.Mail.Send(mailList, subject, body);
-                //Core.Business.General.ChangeSet.Create(2000, item.Id, companyId, "Notificación", string.Format("Se notificó al usuario {0} {1} ({2}) que la póliza queda pendiente para su revisión", mapfreUserInfo.FirstName, mapfreUserInfo.LastName, mapfreUserInfo.EMail), userId, item);
-                Core.Business.General.ChangeSet.Create(2000, item.Id, companyId, "Notificación", string.Format("Los usuarios del grupo '{0}' fueron notificados que la póliza queda pendiente para su revisión", mailListRolName), userId, item);
-
-                //LAB: API.Core.Business.General.Mail.Send("Notify_InReviewStatus", companyId, userId, 0, item);
-
-            }
-        }
-
-        private static void Notify_AcceptedStatus(Contracts.Policy.Risk item, int companyId, int userId, Architect.API.Core.Contracts.Security.UserMember ownerUserInfo, Architect.API.Core.Contracts.Security.UserMember currentUserInfo)
-        {
-            string subject = "MAPFRE: La póliza #{Risk.PolicyId} (#I-{Risk.Id}), fue aceptada";
-            string body = "<p>El usuario {User.FirstName} {User.LastName}, ha dado por aceptada la póliza #{Risk.PolicyId} (#I-{Risk.Id}).</p>" +
-                                              "<h4>Datos de la póliza</h4>" +
-                                              "<p style='padding-left: 30px;'>" +
-                                              "Ramo: {Risk.LineOfBusinessDesc}<br>" +
-                                              "Producto: {Risk.ProductDesc}<br>" +
-                                              "Moneda: {Risk.CurrencyDesc}<br>" +
-                                              "Frecuencia de pago: {Risk.PaymentFrequencyDesc}<br>" +
-                                              "Plan: {Risk.ModuleDesc}<br>" +
-                                              "Capital: {Risk.InsuredAmount}<br>" +
-                                              "Prima anual: {Risk.AnnualPremium}<br>" +
-                                              "Prima mensual: {Risk.MonthlyPremium}<br>" +
-                                              "</p>" +
-                                              "<h4>Datos del asegurado</h4>" +
-                                              "<p style='padding-left: 30px;'>" +
-                                              "Nombre: {Risk.PrimaryInsured.FirstName} {Risk.PrimaryInsured.MiddleName} {Risk.PrimaryInsured.LastName} {Risk.PrimaryInsured.SecondLastName}<br>" +
-                                              "Fecha de nacimiento: {Risk.PrimaryInsured.BirthDate} ({Risk.PrimaryInsured.Age} años)<br>" +
-                                              "</p>";
-            RiskMailBody(item, currentUserInfo, ref subject, ref body, companyId);
-
-            Dictionary<string, string> mailList = BuildMailList(ownerUserInfo, companyId);
-            Core.Business.General.Mail.Send(mailList, subject, body);
-
-            foreach (KeyValuePair<string, string> emailToSend in mailList)
-            {
-                Core.Business.General.ChangeSet.Create(2000, item.Id, companyId, "Notificación", string.Format("Se notificó al usuario {0} ({1}) que la póliza fue aceptada", emailToSend.Value, emailToSend.Key), userId, item);
-            }
-        }
-
-        private static void Notify_DeclinedStatus(Contracts.Policy.Risk item, int companyId, int userId, Architect.API.Core.Contracts.Security.UserMember ownerUserInfo, Architect.API.Core.Contracts.Security.UserMember currentUserInfo)
-        {
-            string subject = "MAPFRE: La póliza #I-{Risk.Id}, fue declinada";
-            string body = "<p>El usuario {User.FirstName} {User.LastName}, ha declinado la póliza #I-{Risk.Id}.</p>" +
-                                              "<h4>Datos de la póliza</h4>" +
-                                              "<p style='padding-left: 30px;'>" +
-                                              "Ramo: {Risk.LineOfBusinessDesc}<br>" +
-                                              "Producto: {Risk.ProductDesc}<br>" +
-                                              "Moneda: {Risk.CurrencyDesc}<br>" +
-                                              "Frecuencia de pago: {Risk.PaymentFrequencyDesc}<br>" +
-                                              "Plan: {Risk.ModuleDesc}<br>" +
-                                              "Capital: {Risk.InsuredAmount}<br>" +
-                                              "Prima anual: {Risk.AnnualPremium}<br>" +
-                                              "Prima mensual: {Risk.MonthlyPremium}<br>" +
-                                              "</p>" +
-                                              "<h4>Datos del asegurado</h4>" +
-                                              "<p style='padding-left: 30px;'>" +
-                                              "Nombre: {Risk.PrimaryInsured.FirstName} {Risk.PrimaryInsured.MiddleName} {Risk.PrimaryInsured.LastName} {Risk.PrimaryInsured.SecondLastName}<br>" +
-                                              "Fecha de nacimiento: {Risk.PrimaryInsured.BirthDate} ({Risk.PrimaryInsured.Age} años)<br>" +
-                                              "</p>";
-            RiskMailBody(item, currentUserInfo, ref subject, ref body, companyId);
-
-            Dictionary<string, string> mailList = BuildMailList(ownerUserInfo, companyId);
-            Core.Business.General.Mail.Send(mailList, subject, body);
-
-            foreach (KeyValuePair<string, string> emailToSend in mailList)
-            {
-                Core.Business.General.ChangeSet.Create(2000, item.Id, companyId, "Notificación", string.Format("Se notificó al usuario {0} ({1}) que la póliza fue declinada", emailToSend.Value, emailToSend.Key), userId, item);
-            }
-        }
-
-        private static void Notify_ToBeAcceptedStatus(Contracts.Policy.Risk item, int companyId, int userId, Architect.API.Core.Contracts.Security.UserMember ownerUserInfo, Architect.API.Core.Contracts.Security.UserMember currentUserInfo)
-        {
-            string subject = "MAPFRE: La póliza #I-{Risk.Id}, fue condiciona para su revisión";
-            string body = "<p>El usuario {User.FirstName} {User.LastName}, ha condicionado la póliza #I-{Risk.Id} para su revisión.</p>" +
-                                              "<h4>Datos de la póliza</h4>" +
-                                              "<p style='padding-left: 30px;'>" +
-                                              "Ramo: {Risk.LineOfBusinessDesc}<br>" +
-                                              "Producto: {Risk.ProductDesc}<br>" +
-                                              "Moneda: {Risk.CurrencyDesc}<br>" +
-                                              "Frecuencia de pago: {Risk.PaymentFrequencyDesc}<br>" +
-                                              "Plan: {Risk.ModuleDesc}<br>" +
-                                              "Capital: {Risk.InsuredAmount}<br>" +
-                                              "Prima anual: {Risk.AnnualPremium}<br>" +
-                                              "Prima mensual: {Risk.MonthlyPremium}<br>" +
-                                              "</p>" +
-                                              "<h4>Datos del asegurado</h4>" +
-                                              "<p style='padding-left: 30px;'>" +
-                                              "Nombre: {Risk.PrimaryInsured.FirstName} {Risk.PrimaryInsured.MiddleName} {Risk.PrimaryInsured.LastName} {Risk.PrimaryInsured.SecondLastName}<br>" +
-                                              "Fecha de nacimiento: {Risk.PrimaryInsured.BirthDate} ({Risk.PrimaryInsured.Age} años)<br>" +
-                                              "</p>" +
-                                              "<h4>Condiciones</h4>" +
-                                              "<p style='padding-left: 30px;'>" +
-                                              "Observaciones: {Risk.Comments}<br>" +
-                                              "Recargo: {Risk.Surcharge}<br>" +
-                                              "</p>";
-            RiskMailBody(item, currentUserInfo, ref subject, ref body, companyId);
-
-            Dictionary<string, string> mailList = BuildMailList(ownerUserInfo, companyId);
-            Core.Business.General.Mail.Send(mailList, subject, body);
-
-            foreach (KeyValuePair<string, string> emailToSend in mailList)
-            {
-                Core.Business.General.ChangeSet.Create(2000, item.Id, companyId, "Notificación", string.Format("Se notificó al usuario {0} ({1}) que la póliza fue condicionada", emailToSend.Value, emailToSend.Key), userId, item);
-            }
-        }
-
-        private static Dictionary<string, string> BuildMailList(Architect.API.Core.Contracts.Security.UserMember ownerUserInfo, int companyId)
-        {
-            Dictionary<string, string> result = new Dictionary<string, string>() { { ownerUserInfo.EMail, string.Format("{0} {1}", ownerUserInfo.FirstName, ownerUserInfo.LastName) } };
-            string mailList = ConfigurationManager.AppSettings[string.Format("Mapfre.Notify.{0}.Response.Mail", companyId)];
-            if (mailList.IsNotEmpty())
-            {
-                foreach (string emailToSend in mailList.Split(';'))
-                {
-                    if (!result.ContainsKey(emailToSend.Split('=')[0].Trim()))
-                    {
-                        result.Add(emailToSend.Split('=')[0].Trim(), emailToSend.Split('=')[1].Trim());
-                    }
-                }
-            }
             return result;
         }
 
@@ -838,56 +749,6 @@ namespace Architect.API.Insurance.Business.Policy
             return result;
         }
 
-        private static void RiskMailBody(Contracts.Policy.Risk item, Architect.API.Core.Contracts.Security.UserMember currentUserInfo, ref string subject, ref string body, int companyId)
-        {
-            List<Core.Contracts.General.LookupValue> values = Core.Business.Common.Lkp("LineOfBusiness", companyId);
-            item.LineOfBusinessCodeDesc = values.Find(x => x.Code == item.LineOfBusinessCode.ToString()).Description;
-
-            values = Core.Business.Common.Lkp("Company", companyId);
-            string companyDesc = values.Find(x => x.Code == companyId.ToString()).Description;
-
-            values = Core.Business.Common.LkpChild("ProductByLineOfBusiness", item.LineOfBusinessCode, 0, companyId);
-            item.ProductCodeDesc = values.Find(x => x.Code == item.ProductCode.ToString()).Description;
-
-            values = Core.Business.Common.LkpChild("CurrencyByProduct", item.LineOfBusinessCode, item.ProductCode, companyId);
-            item.CurrencyDesc = values.Find(x => x.Code == item.Currency.ToString()).Description;
-
-            values = Core.Business.Common.LkpChild("PaymentFrequencyByProduct", item.LineOfBusinessCode, item.ProductCode, companyId);
-            item.PaymentFrequencyDesc = values.Find(x => x.Code == item.PaymentFrequency.ToString()).Description;
-
-            values = Core.Business.Common.LkpChild("ModuleByProduct", item.LineOfBusinessCode, item.ProductCode, companyId);
-            item.ModuleCodeDesc = values.Find(x => x.Code == item.ModuleCode.ToString()).Description;
-
-            item.PrimaryInsured.AgeAtInclusion = item.PrimaryInsured.BirthDate.Age();
-
-            subject = subject.Replace("{Risk.Id}", item.Id.ToString());
-            subject = subject.Replace("{Company.Name}", companyDesc);
-            subject = subject.Replace("{Risk.PolicyId}", item.PolicyId.ToString());
-
-            body = body.Replace("{Company.Name}", companyDesc);
-            body = body.Replace("{User.FirstName}", currentUserInfo.FirstName);
-            body = body.Replace("{User.LastName}", currentUserInfo.LastName);
-            body = body.Replace("{Risk.Id}", item.Id.ToString());
-            body = body.Replace("{Risk.PolicyId}", item.PolicyId.ToString());
-            body = body.Replace("{Risk.LineOfBusinessDesc}", item.LineOfBusinessCodeDesc);
-            body = body.Replace("{Risk.ProductDesc}", item.ProductCodeDesc);
-            body = body.Replace("{Risk.CurrencyDesc}", item.CurrencyDesc);
-            body = body.Replace("{Risk.PaymentFrequencyDesc}", item.PaymentFrequencyDesc);
-            body = body.Replace("{Risk.ModuleDesc}", item.ModuleCodeDesc);
-            body = body.Replace("{Risk.InsuredAmount}", item.InsuredAmount.ToString("N2", CultureInfo.CreateSpecificCulture("es-CR")));
-            body = body.Replace("{Risk.AnnualPremium}", item.AnnualPremium.ToString("N2", CultureInfo.CreateSpecificCulture("es-CR")));
-            body = body.Replace("{Risk.MonthlyPremium}", item.MonthlyPremium.ToString("N2", CultureInfo.CreateSpecificCulture("es-CR")));
-
-            body = body.Replace("{Risk.PrimaryInsured.FirstName}", item.PrimaryInsured.FirstName);
-            body = body.Replace("{Risk.PrimaryInsured.MiddleName}", item.PrimaryInsured.MiddleName);
-            body = body.Replace("{Risk.PrimaryInsured.LastName}", item.PrimaryInsured.LastName);
-            body = body.Replace("{Risk.PrimaryInsured.SecondLastName}", item.PrimaryInsured.SecondLastName);
-            body = body.Replace("{Risk.PrimaryInsured.BirthDate}", item.PrimaryInsured.BirthDate.ToString("dd/MM/yyyy"));
-            body = body.Replace("{Risk.PrimaryInsured.Age}", item.PrimaryInsured.AgeAtInclusion.ToString());
-
-            body = body.Replace("{Risk.Comments}", item.Comments);
-            body = body.Replace("{Risk.Surcharge}", item.Surcharge.ToString("N2", CultureInfo.CreateSpecificCulture("es-CR")));
-        }
 
         private static List<Contracts.Policy.RiskRoles> SynchronizeBeneficiaries(List<Contracts.Policy.RiskRoles> currentList, List<Contracts.Policy.RiskRoles> newList, int companyId, int userId, int policyId)
         {
@@ -962,7 +823,7 @@ namespace Architect.API.Insurance.Business.Policy
                             item.Id = DataAccess.Policy.Risk.RetrieveLastKey() + 1;
                         item.Status = (int)Enumerations.PolicyStatus.InReview;
 
-                        Notify_InReviewStatus(item, tokenInfo.CompanyId, tokenInfo.UserId);
+                        Notify.InReviewStatus(item, tokenInfo.CompanyId, tokenInfo.UserId, Enumerations.PolicyStatus.InReview);
                     }
                     else
                     {
@@ -1096,68 +957,128 @@ namespace Architect.API.Insurance.Business.Policy
         {
             Contracts.Policy.Risk result = Risk.RetrievePolicyByKey(item.Id, companyId);
 
-            result = Business.Policy.Risk.Mapper(result, item);
-            result.CompanyId = companyId;
-            result.UpdateUserCode = userId;
-            result.UpdateDate = DateTime.Now;
-
-            DataAccess.Policy.Risk.Update(result);
-            if (result.PrimaryInsured.IsNotEmpty())
+            if (result.Status != 5)
             {
-                result.PrimaryInsured = Business.Policy.RiskRoles.Mapper(result.PrimaryInsured, item.PrimaryInsured);
-                result.PrimaryInsured.CompanyId = companyId;
-                result.PrimaryInsured.UpdateUserCode = userId;
-                result.PrimaryInsured.UpdateDate = DateTime.Now;
-                DataAccess.Policy.RiskRoles.Update(result.PrimaryInsured);
-            }
+                result = Business.Policy.Risk.Mapper(result, item);
+                result.CompanyId = companyId;
+                result.UpdateUserCode = userId;
+                result.UpdateDate = DateTime.Now;
 
-            //Beneficiarios
-            result.Beneficiaries = SynchronizeBeneficiaries(result.Beneficiaries, item.Beneficiaries, companyId, userId, item.Id);
-
-            if (result.Questionary.IsNotEmpty() && result.Questionary.Count > 0)
-            {
-                for (int index = 0; index < result.Questionary.Count; index++)
+                DataAccess.Policy.Risk.Update(result);
+                if (result.PrimaryInsured.IsNotEmpty())
                 {
-                    result.Questionary[index] = Business.Policy.RiskQuestionnaires.Mapper(result.Questionary[index], item.Questionary[index]);
-                    result.Questionary[index].CompanyId = companyId;
-                    result.Questionary[index].UpdateUserCode = userId;
-                    result.Questionary[index].UpdateDate = DateTime.Now;
-                    DataAccess.Policy.RiskQuestionnaires.Update(result.Questionary[index]);
+                    result.PrimaryInsured = Business.Policy.RiskRoles.Mapper(result.PrimaryInsured, item.PrimaryInsured);
+                    result.PrimaryInsured.CompanyId = companyId;
+                    result.PrimaryInsured.UpdateUserCode = userId;
+                    result.PrimaryInsured.UpdateDate = DateTime.Now;
+                    DataAccess.Policy.RiskRoles.Update(result.PrimaryInsured);
                 }
-            }
-            if (result.Overdraft.IsNotEmpty())
-            {
-                result.Overdraft = Business.Policy.RiskOverdraft.Mapper(result.Overdraft, item.Overdraft);
-                result.Overdraft.CompanyId = companyId;
-                result.Overdraft.UpdateUserCode = userId;
-                result.Overdraft.UpdateDate = DateTime.Now;
-                DataAccess.Policy.RiskOverdraft.Update(result.Overdraft);
-            }
 
-            if (item.Attachments.IsNotEmpty())
-            {
-                Core.Business.General.Attachment.SyncUp(2000, item.Id, companyId, item.Attachments, userId);
-            }
+                //Beneficiarios
+                result.Beneficiaries = SynchronizeBeneficiaries(result.Beneficiaries, item.Beneficiaries, companyId, userId, item.Id);
 
-            result.StatusDesc = Core.Business.Common.Lkp("PolicyStatus", companyId).Find(x => x.Code == result.Status.ToString()).Description;
-
-            if (result.Status == 1)
-            {
-                Core.Business.General.ChangeSet.Create(2000, result.Id, companyId, "Borrador", "Actualización", userId, result);
-            }
-            else
-            {
-                if (source == "Modify")
+                if (result.Questionary.IsNotEmpty() && result.Questionary.Count > 0)
                 {
-                    Core.Business.General.ChangeSet.Create(2000, result.Id, companyId, "Modificación", "", userId, result);
+                    for (int index = 0; index < result.Questionary.Count; index++)
+                    {
+                        result.Questionary[index] = Business.Policy.RiskQuestionnaires.Mapper(result.Questionary[index], item.Questionary[index]);
+                        result.Questionary[index].CompanyId = companyId;
+                        result.Questionary[index].UpdateUserCode = userId;
+                        result.Questionary[index].UpdateDate = DateTime.Now;
+                        DataAccess.Policy.RiskQuestionnaires.Update(result.Questionary[index]);
+                    }
+                }
+                if (result.Overdraft.IsNotEmpty())
+                {
+                    result.Overdraft = Business.Policy.RiskOverdraft.Mapper(result.Overdraft, item.Overdraft);
+                    result.Overdraft.CompanyId = companyId;
+                    result.Overdraft.UpdateUserCode = userId;
+                    result.Overdraft.UpdateDate = DateTime.Now;
+                    DataAccess.Policy.RiskOverdraft.Update(result.Overdraft);
+                }
+
+                if (item.Attachments.IsNotEmpty())
+                {
+                    Core.Business.General.Attachment.SyncUp(2000, item.Id, companyId, item.Attachments, userId);
+                }
+
+                result.StatusDesc = Core.Business.Common.Lkp("PolicyStatus", companyId).Find(x => x.Code == result.Status.ToString()).Description;
+
+                if (result.Status == 1)
+                {
+                    Core.Business.General.ChangeSet.Create(2000, result.Id, companyId, "Borrador", "Actualización", userId, result);
                 }
                 else
                 {
-                    Core.Business.General.ChangeSet.Create(2000, result.Id, companyId, result.StatusDesc, "", userId, result);
+                    if (source == "Modify")
+                    {
+                        Core.Business.General.ChangeSet.Create(2000, result.Id, companyId, "Modificación", "", userId, result);
+                    }
+                    else
+                    {
+                        Core.Business.General.ChangeSet.Create(2000, result.Id, companyId, result.StatusDesc, "", userId, result);
+                    }
+                }
+            }
+            else
+            {
+                if (item.Attachments.IsNotEmpty())
+                {
+                    Core.Business.General.Attachment.SyncUp(2000, item.Id, companyId, item.Attachments, userId);
                 }
             }
             return result;
         }
 
+
+        public static Core.Contracts.General.GenericResponse Import(string excelFilename, string specificactionFilename, Core.Contracts.Security.Token tokenInfo)
+        {
+            Core.Contracts.General.GenericResponse result = new Core.Contracts.General.GenericResponse();
+            //excelFilename = @"C:\Architect\aliados\aliados\data\" + excelFilename;
+            //specificactionFilename = @"C:\Architect\aliados\aliados\products\import." + specificactionFilename + ".json";
+
+            //List<Contracts.Policy.Risk> risks = Architect.Domain.Excel.Import.Handlers.DTLHandler.Builder(specificactionFilename, excelFilename).Data;
+
+            //Contracts.Policy.Risk riskCreated = null;
+            //foreach (Contracts.Policy.Risk riskItem in risks)
+            //{
+            //    riskItem.BranchOffice = tokenInfo.BranchOffice;
+            //    riskItem.ExecutiveUserCode = tokenInfo.UserId;
+
+            //    riskItem.AnnualPremium = riskItem.MonthlyPremium * 12;
+            //    riskItem.PrimaryInsured.PhoneNumber = riskItem.PrimaryInsured.PhoneNumber.Substring(3);
+            //    riskItem.PrimaryInsured.FirstName = riskItem.PrimaryInsured.FirstName.Capitalize();
+            //    riskItem.PrimaryInsured.SecondLastName = riskItem.PrimaryInsured.SecondLastName.Capitalize();
+            //    riskItem.PrimaryInsured.LastName = riskItem.PrimaryInsured.LastName.Capitalize();
+            //    riskItem.PrimaryInsured.SecondLastName = riskItem.PrimaryInsured.SecondLastName.Capitalize();
+
+            //    //TODO: falta tipo 2 y tipo 3
+            //    switch (riskItem.PrimaryInsured.DocumentType)
+            //    {
+            //        case 1:
+            //            if (riskItem.PrimaryInsured.DocumentNumber.Length == 9)
+            //            {
+            //                riskItem.PrimaryInsured.DocumentNumber = string.Format("0{0}-{1}-{2}", riskItem.PrimaryInsured.DocumentNumber.Substring(0, 1),
+            //                    riskItem.PrimaryInsured.DocumentNumber.Substring(1, 4),
+            //                    riskItem.PrimaryInsured.DocumentNumber.Substring(5, 4));
+            //            }
+            //            break;
+            //        case 2:
+            //            if (riskItem.PrimaryInsured.DocumentNumber.Length == 12)
+            //            {
+            //                riskItem.PrimaryInsured.DocumentNumber = string.Format("{0}-{1}-{2}", riskItem.PrimaryInsured.DocumentNumber.Substring(0, 4),
+            //                    riskItem.PrimaryInsured.DocumentNumber.Substring(4, 6),
+            //                    riskItem.PrimaryInsured.DocumentNumber.Substring(10, 2));
+            //            }
+            //            break;
+
+            //    }
+
+
+
+            //    riskCreated = Business.Policy.Risk.CreatePolicy(riskItem, tokenInfo.UserId, tokenInfo.CompanyId);
+            //}
+            return result;
+        }
     }
 }

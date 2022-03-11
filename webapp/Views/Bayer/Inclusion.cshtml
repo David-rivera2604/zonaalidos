@@ -63,7 +63,7 @@
                                         <!-- IssueDate DatePicker -->
                                         <div class='col-sm-4 col-md-4'>
                                             <div class='form-group'>
-                                                <label class='control-label' for='IssueDate'>Fecha de ingreso a la póliza</label>
+                                                <label class='control-label' for='IssueDate'>Fecha de ingreso a la póliza<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                 <div class='input-group date' id='IssueDate_group'>
                                                     <input type='text' id='IssueDate' name='IssueDate' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
                                                     <span class='input-group-addon'>
@@ -129,7 +129,7 @@
                                                         </button>
                                                         <div class="dropdown-menu" id="DocumentNumberTypeMenu">
                                                             <a class="dropdown-item active" href="#" data-value='1'>Cédula</a>
-                                                            <a class="dropdown-item" href="#" data-value='2'> Residencia</a>
+                                                            <a class="dropdown-item" href="#" data-value='2'>DIMEX</a>
                                                             <a class="dropdown-item" href="#" data-value='3'>Pasaporte</a>
                                                             <a class="dropdown-item" href="#" data-value='4'>Cédula jurídica</a>
                                                         </div>
@@ -269,10 +269,10 @@
                                             </div>
                                         </div>
                                         <!-- Número de empleado Text -->
-                                        <div class='col-sm-3 col-md-3'>
+                                        <div class='col-sm-3 col-md-3 role-Revisor-visible d-none'>
                                             <div class='form-group'>
-                                                <label class='control-label' for='EmployeeNumber'>Número de empleado</label>
-                                                <input type='text' id='EmployeeNumber' name='EmployeeNumber' class='form-control' size='30' maxlength='30' />
+                                                <label class='control-label' for='EmployeeNumber'>Número de empleado<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <input type='text' id='EmployeeNumber' name='EmployeeNumber' class='form-control role-Revisor-enabled' size='30' maxlength='30' />
                                             </div>
                                         </div>
                                         <!-- ContinuityDate DatePicker -->
@@ -614,7 +614,7 @@
                                                                 </button>
                                                                 <div class="dropdown-menu" id="BDocumentNumberTypeMenu">
                                                                     <a class="dropdown-item active" href="#" data-value='1'>Cédula</a>
-                                                                    <a class="dropdown-item" href="#" data-value='2'> Residencia</a>
+                                                                    <a class="dropdown-item" href="#" data-value='2'>DIMEX</a>
                                                                     <a class="dropdown-item" href="#" data-value='3'>Pasaporte</a>
                                                                     <a class="dropdown-item" href="#" data-value='4'>Cédula jurídica</a>
                                                                 </div>
@@ -717,7 +717,7 @@
                                                                 </button>
                                                                 <div class="dropdown-menu" id="DDocumentNumberTypeMenu">
                                                                     <a class="dropdown-item active" href="#" data-value='1'>Cédula</a>
-                                                                    <a class="dropdown-item" href="#" data-value='2'>Residencia</a>
+                                                                    <a class="dropdown-item" href="#" data-value='2'>DIMEX</a>
                                                                     <a class="dropdown-item" href="#" data-value='3'>Pasaporte</a>
                                                                     <a class="dropdown-item" href="#" data-value='4'>Cédula jurídica</a>
                                                                 </div>

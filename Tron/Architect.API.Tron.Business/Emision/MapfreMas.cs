@@ -10,6 +10,13 @@ namespace Architect.API.Tron.Business.Emision
 {
     public static class MapfreMas
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="presupuesto"></param>
+        /// <param name="mode">"continue" para retomar un presupuesto (json), "resume" para retomar directo de una cotización de tron, "draft" para complementar la solicitud para luego retomar bajo el modo "continue".</param>
+        /// <param name="tokenInfo"></param>
+        /// <returns></returns>
         public static Contracts.Emision.MapfreMas Setup(string presupuesto, string mode, Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.Emision.MapfreMas result = null;
@@ -35,7 +42,7 @@ namespace Architect.API.Tron.Business.Emision
 
                 result.Modo = mode;
 
-                if (mode.IsEmpty() || mode == "draft")
+                if (mode.IsEmpty() || mode == "draft" || mode == "resume")
                 {
                     result.terceros = Reglas.research.Apply_Terceros("MapfreMas", result.terceros, result.Fuente_Tomador, tokenInfo);
                 }
@@ -76,7 +83,7 @@ namespace Architect.API.Tron.Business.Emision
             return result;
         }
 
-       
+
 
         public static Contracts.Emision.MapfreMas Issue(Contracts.Emision.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {

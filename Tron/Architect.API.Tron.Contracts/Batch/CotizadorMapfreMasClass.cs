@@ -351,5 +351,10 @@ namespace Architect.API.Tron.Contracts.Batch
         public string p_mca_auto_sust { get; set; } = "N";
         public string p_ded_auto_sust { get; set; } = "1";
         public string p_ext_garantia { get; set; } = "N";
+
+        public string num_matricula { get; set; }
+        public string num_motor { get; set; }
+        public string cod_chassis { get; set; }
+
     }
 }

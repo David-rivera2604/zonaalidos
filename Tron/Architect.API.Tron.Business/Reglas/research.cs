@@ -1,5 +1,4 @@
-﻿using Architect.API.Tron.Contracts.Emision;
-using Architect.API.Tron.Contracts.Especificacion;
+﻿using Architect.API.Tron.Contracts.Especificacion;
 using Architect.Utilities.Extensions;
 using Newtonsoft.Json.Linq;
 using System;
@@ -7,8 +6,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Architect.API.Tron.Business.Reglas
 {
@@ -59,8 +56,13 @@ namespace Architect.API.Tron.Business.Reglas
 
             foreach (Architect.API.Tron.Contracts.Especificacion.Lista lista in listas)
             {
-                script.AppendFormat("if(extend[\"keyword\"]==\"{2}\" && ({0})){{exclude=\"{1}\";}}\n", _rule.Parser(lista.Condicion), lista.Exclusion, lista.Nombre);
+                script.AppendFormat("if(extend[\"keyword\"]==\"{2}\" && ({0})){{exclude+=\",{1}\";}}\n", _rule.Parser(lista.Condicion), lista.Exclusion, lista.Nombre);
             }
+
+
+            script.Append("if (exclude.Length > 0){exclude=exclude.Substring(1);}\n");
+
+
             return script.ToString();
         }
 

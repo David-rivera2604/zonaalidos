@@ -15,17 +15,20 @@ namespace Architect.API.Core.Contracts.Security
         /// </summary>
         [DataMember(), JsonProperty()] public int Id { get; set; }
         /// <summary>
-        /// Identificación de la compañia propietaria.
+        /// Identificación de la compañía propietaria.
         /// </summary>
         [DataMember(), JsonProperty()] public int CompanyId { get; set; }
         /// <summary>
         /// Identificación Rol.
         /// </summary>
         [DataMember(), JsonProperty()] public int RoleId { get; set; }
+        [DataMember(), JsonProperty()] public string RoleDesc { get; set; }
+
         /// <summary>
         /// Código que identifica el registro de navegación.
         /// </summary>
         [DataMember(), JsonProperty()] public string Code { get; set; }
+        [DataMember(), JsonProperty()] public string CodeDesc { get; set; }
         /// <summary>
         /// Permite o no el acceso al registro de navegación.
         /// </summary>

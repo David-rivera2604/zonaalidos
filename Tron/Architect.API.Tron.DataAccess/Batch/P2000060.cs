@@ -17,7 +17,7 @@ namespace Architect.API.Tron.DataAccess.Batch
                                             "AND TIP_DOCUM= 'CNA' " +
                                             "AND COD_DOCUM='999999999' ")
                                  .AddParameter("NUM_POLIZA", Architect.DataFactory.Enumerations.DbType.String, 13, num_poliza)
-                                 .Execute(currentConnection);
+                                 .Execute(currentConnection, "Tron");
             return result >= 1;
         }
 
@@ -34,7 +34,7 @@ namespace Architect.API.Tron.DataAccess.Batch
                         .AddParameter("COD_DOCUM", Architect.DataFactory.Enumerations.DbType.String, 20, cod_docum)
                         .AddParameter("TIP_BENEF", Architect.DataFactory.Enumerations.DbType.String, 100, tip_benef)
                         .AddParameter("NUM_POLIZA", Architect.DataFactory.Enumerations.DbType.String, 20, num_presupuesto)
-                        .QueryScalar<Decimal>(currentConnection) > 0;
+                        .QueryScalar<Decimal>(currentConnection, "Tron") > 0;
         }
     }
 }

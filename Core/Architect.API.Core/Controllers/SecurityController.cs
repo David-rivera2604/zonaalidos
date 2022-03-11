@@ -126,7 +126,7 @@ namespace Architect.API.Core.Controllers
         /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token acceso.</response>
         [HttpGet]
         [Route("IsLive")]
-        [Authorize]
+        [AllowAnonymous]
         [ApiExplorerSettings(IgnoreApi = true)]
         public IHttpActionResult IsLive(bool force = false)
         {

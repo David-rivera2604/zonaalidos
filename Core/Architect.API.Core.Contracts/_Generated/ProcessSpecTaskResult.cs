@@ -1,12 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 
 namespace Architect.API.Core.Contracts.General
 {
     /// <summary>
-    /// Tareas vinculadas a un paso o estado de un proceso.
+    /// Controla el flujo de procesamiento para Tareas vinculadas a un paso o estado de un proceso.
     /// </summary>
     public partial class ProcessSpecTaskResult
     {

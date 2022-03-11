@@ -223,7 +223,13 @@ app.poliza = (function () {
                 ChangeStatus(3, 'Póliza declinada');
             reviewMode = false;
         });
-
+        $('#ReviewComplement').click(function () {
+            event.preventDefault();
+            reviewMode = true;
+            if (app.ui.IsValid('#RiskEdtFrm', false))
+                ChangeStatus(5, 'Complementos solicitados');
+            reviewMode = false;
+        });
         $('#AcceptCondition').click(function () {
             event.preventDefault();
             ChangeStatus(10, 'Póliza emitida');
@@ -232,6 +238,11 @@ app.poliza = (function () {
             event.preventDefault();
             ChangeStatus(3, 'Póliza declinada');
         });
+        $('#AcceptComplement').click(function () {
+            event.preventDefault();
+            ChangeStatus(2, 'Póliza en revisión');
+        });
+        
 
         $('#AcceptCancellation').click(function () {
             event.preventDefault();
@@ -518,8 +529,9 @@ app.poliza = (function () {
                     $('#Comments').prop("disabled", false);
 
                     $('#ReviewAccept').removeClass('d-none');
-                    $('#ReviewCondition').removeClass('d-none');
+                    $('#ReviewCondition').removeClass('d-none');                    
                     $('#ReviewDecline').removeClass('d-none');
+                    $('#ReviewComplement').removeClass('d-none');
                 }
                 else {
                     $('select#ModuleCode').prop("disabled", true);
@@ -548,9 +560,15 @@ app.poliza = (function () {
 
                 $('#AcceptCondition').removeClass('d-none');
                 $('#AcceptDecline').removeClass('d-none');
+                $('#AcceptComplement').removeClass('d-none');
 
                 break;
-
+            case 5:
+                $("#RiskEdtFrm fieldset").prop("disabled", true);
+                $('#Surcharge').parent().parent().removeClass('d-none');
+                $('#policyComment').removeClass('d-none');
+                $('#AcceptComplement').removeClass('d-none');
+                break;
             case 10:
                 if (app.PolicyEdit.NavegationMode() === 'cancel') {
                     $("#RiskEdtFrm fieldset").prop("disabled", false);

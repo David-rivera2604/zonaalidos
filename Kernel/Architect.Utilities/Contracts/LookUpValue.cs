@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Architect.Utilities.Contracts
 {
-    public class LookUpValue
+    public class LookUpValue : Architect.Utilities.Helpers.Expando
     {
 
         public string Code { get; set; }

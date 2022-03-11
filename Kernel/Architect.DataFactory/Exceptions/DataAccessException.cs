@@ -54,7 +54,7 @@ namespace Architect.DataFactory.Exceptions
                     string owner = constraintKey.Split('.')[0];
                     string constraint = constraintKey.Split('.')[1];
                     string relation = Database.Select(string.Format("SELECT ALL_CONSTRAINTS.TABLE_NAME || '.' || REL.TABLE_NAME TABLE_NAME_REL FROM ALL_CONSTRAINTS LEFT JOIN ALL_CONSTRAINTS REL ON REL.OWNER = ALL_CONSTRAINTS.R_OWNER AND REL.CONSTRAINT_NAME = ALL_CONSTRAINTS.R_CONSTRAINT_NAME WHERE ALL_CONSTRAINTS.OWNER = '{0}' AND ALL_CONSTRAINTS.CONSTRAINT_NAME = '{1}'", owner, constraint))
-                                              .QueryScalar<string>(command.Connection); 
+                                              .QueryScalar<string>(command.Connection, string.Empty); 
                     internalMessage = string.Format(" Integrity constraint with table '{0}' violated", relation.Split('.')[1]);
                 }
 
@@ -92,7 +92,7 @@ namespace Architect.DataFactory.Exceptions
                     string owner = constraintKey.Split('.')[0];
                     string constraint = constraintKey.Split('.')[1];
                     string relation = Database.Select(string.Format("SELECT ALL_CONSTRAINTS.TABLE_NAME || '.' || REL.TABLE_NAME TABLE_NAME_REL FROM ALL_CONSTRAINTS LEFT JOIN ALL_CONSTRAINTS REL ON REL.OWNER = ALL_CONSTRAINTS.R_OWNER AND REL.CONSTRAINT_NAME = ALL_CONSTRAINTS.R_CONSTRAINT_NAME WHERE ALL_CONSTRAINTS.OWNER = '{0}' AND ALL_CONSTRAINTS.CONSTRAINT_NAME = '{1}'", owner, constraint))
-                                              .QueryScalar<string>(command.Connection);
+                                              .QueryScalar<string>(command.Connection, string.Empty);
                     internalMessage = string.Format(" Integrity constraint with table '{0}' violated", relation.Split('.')[1]);
                 }
                 else if (innerException.Message.StartsWith("ORA-") | innerException.Message.IndexOf(":") > -1)
@@ -136,7 +136,7 @@ namespace Architect.DataFactory.Exceptions
                     string owner = constraintKey.Split('.')[0];
                     string constraint = constraintKey.Split('.')[1];
                     string relation = Database.Select(string.Format("SELECT ALL_CONSTRAINTS.TABLE_NAME || '.' || REL.TABLE_NAME TABLE_NAME_REL FROM ALL_CONSTRAINTS LEFT JOIN ALL_CONSTRAINTS REL ON REL.OWNER = ALL_CONSTRAINTS.R_OWNER AND REL.CONSTRAINT_NAME = ALL_CONSTRAINTS.R_CONSTRAINT_NAME WHERE ALL_CONSTRAINTS.OWNER = '{0}' AND ALL_CONSTRAINTS.CONSTRAINT_NAME = '{1}'", owner, constraint))
-                                              .QueryScalar<string>(command.Connection);
+                                              .QueryScalar<string>(command.Connection, string.Empty);
                     internalMessage = string.Format(" Integrity constraint with table '{0}' violated", relation.Split('.')[1]);
                 }
                 else if (innerException.Message.StartsWith("ORA-") | innerException.Message.IndexOf(":") > -1)

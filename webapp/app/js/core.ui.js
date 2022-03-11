@@ -755,10 +755,11 @@ app.ui = (function () {
             if (!options.isExternal) {
                 app.core.Get(app.setting.apipath + `v1/Viewer/Dialog?id=${options.id}`)
                     .done(function (data, textStatus, jqXHR) {
-                        data = data.HTML.supplant(options.data);
-                        data = app.core.ReplaceAll(data, '@_eq', '=');
-                        data = app.core.ReplaceAll(data, '@_qt', '\'');
-                        $('.sidebar-content').replaceWith(data.replace('ibox-content', 'ibox-content sidebar-content'));
+                        let html = data.HTML.supplant(options.data);
+                        html = app.core.ReplaceAll(html, '@_eq', '=');
+                        html = app.core.ReplaceAll(html, '@_qt', '\'');
+                        html = app.core.ReplaceAll(html, '@_sc', ';');
+                        $('.sidebar-content').replaceWith(html.replace('ibox-content', 'ibox-content sidebar-content'));
                         eval(data.Code);
                     });
             }

@@ -19,5 +19,7 @@ namespace Architect.DataFactory.Contracts
         public object Value { get; set; }
 
         public ParameterDirection direction { get; set; }
+
+        public bool Filter { get; set; }
     }
 }

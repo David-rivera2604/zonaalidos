@@ -1,7 +1,6 @@
 ﻿using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 
 namespace Architect.API.Core.Business.Security
@@ -25,7 +24,7 @@ namespace Architect.API.Core.Business.Security
             List<Contracts.Security.Activity> sessions = (List<Contracts.Security.Activity>)Architect.Utilities.Cache.GetItem("SessionActivity");
             if (sessions.IsEmpty())
                 sessions = new List<Contracts.Security.Activity>();
-            double timeout = Convert.ToDouble(ConfigurationManager.AppSettings["Session.Timeout"]);
+            int timeout = Utilities.Helpers.Settings.IntegerValue("Session.Timeout", 30);
             foreach (Contracts.Security.Activity item in sessions)
             {
                 if (!item.Expired && DateTime.Now > item.LastDateTime.AddMinutes(timeout))

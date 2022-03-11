@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Architect.API.Core.Contracts.EviSign
 {
@@ -10,12 +7,12 @@ namespace Architect.API.Core.Contracts.EviSign
     /// firmantes del documento
     /// </summary>
     public class SigningParty
-    {       
+    {
         /// <summary>
         /// Nombre completo de la persona que debe firmar el documento/contrato.
         /// </summary>
         public string Name { get; set; }
-        
+
         /// <summary>
         /// Dirección e-mail o número de teléfono del firmante, al cual se le remitirá la solicitud de firma.
         /// </summary>
@@ -34,7 +31,7 @@ namespace Architect.API.Core.Contracts.EviSign
         ///   WebClick: Click en web mediante enlace o localizador seguro. La operación se realiza si se conoce la referencia o localizador del mensaje.
         /// </remarks>
         public string SigningMethod { get; set; }
-        
+
         ///// <summary>
         ///// El rol del firmante. Puede ser: Signer: Firmante, Reviewer: Revisor. Puede aceptar o rechazar el EviSign, pero no aparece como firmante.
         ///// </summary>

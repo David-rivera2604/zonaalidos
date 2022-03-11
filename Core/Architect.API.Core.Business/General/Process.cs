@@ -11,8 +11,42 @@ namespace Architect.API.Core.Business.General
     /// Logíca relacionada con el seguimiento de cambios.
     /// </summary>
     public static class Process
-
     {
+
+        public static void OverDueSteps()
+        {
+            int EveryTime = Convert.ToInt16(ConfigurationManager.AppSettings["Process.Mail.Responsible.Notify.OverDue.EveryTime"]);
+            DateTime now = DateTime.Now;
+            bool notify = false;
+            try
+            {
+                foreach (Contracts.General.ProcessInstance item in DataAccess.General.ProcessInstance.RetrieveOverDueSteps(now))
+                {
+                    Contracts.General.ProcessSpecFlow spec = Specification(item.FlowId, item.CompanyId);
+                    if (spec != null)
+                    {
+                        item.Step = spec.ProcessSpecSteps.Where(i=>i.Id == item.StepId).FirstOrDefault();
+                        if (item.Step != null)
+                        {
+                            notify = true;
+                            if(item.LastOverDueNotify.IsNotEmpty())
+                            {
+                                notify = (item.LastOverDueNotify.AddHours(EveryTime) <= now);
+                            }
+                            if (notify) {
+                                DataAccess.General.ProcessInstance.Update(item.ActivityId, now);
+                                Notify_ResponsibleProcess_Progress(item.CaseId, item, spec.MailServer, item.CompanyId, 0, "Process.Mail.Responsible.Notify.OverDue.Template");
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilities.Log.ErrorLog("Process", "OverDueSteps", ex);
+                throw ex;
+            }
+        }
 
         /// <summary>
         /// Recupera la especificación de un proceso.
@@ -119,7 +153,7 @@ namespace Architect.API.Core.Business.General
                     instance[instance.Count - 1].StartDate = current;
                     if (stepSource.SLATimeOut > 0)
                     {
-                        instance[instance.Count - 1].DueDate = current.AddMinutes(stepSource.SLATimeOut);
+                        instance[instance.Count - 1].DueDate = current.AddHours(stepSource.SLATimeOut);
                     }
                     currentStep = instance[instance.Count - 1];
                 }
@@ -149,7 +183,7 @@ namespace Architect.API.Core.Business.General
                             instance[instance.Count - 1].StartDate = current;
                             if (taskSource.SLATimeOut > 0)
                             {
-                                instance[instance.Count - 1].DueDate = current.AddMinutes(taskSource.SLATimeOut);
+                                instance[instance.Count - 1].DueDate = current.AddHours(taskSource.SLATimeOut);
                             }
                         }
                     }
@@ -506,7 +540,7 @@ namespace Architect.API.Core.Business.General
                         nextStep.StartDate = current;
                         if (nextStep.Step.SLATimeOut > 0)
                         {
-                            nextStep.DueDate = current.AddMinutes(nextStep.Step.SLATimeOut);
+                            nextStep.DueDate = current.AddHours(nextStep.Step.SLATimeOut);
                         }
                         nextStep.UpdateUserCode = userId;
                         nextStep.PreviousActivityId = currentTask.ActivityId;
@@ -519,7 +553,7 @@ namespace Architect.API.Core.Business.General
                             nextSubTask.StartDate = current;
                             if (nextSubTask.Task.SLATimeOut > 0)
                             {
-                                nextSubTask.DueDate = current.AddMinutes(nextSubTask.Task.SLATimeOut);
+                                nextSubTask.DueDate = current.AddHours(nextSubTask.Task.SLATimeOut);
                             }
                             nextSubTask.UpdateUserCode = userId;
                             nextSubTask.PreviousActivityId = currentTask.ActivityId;
@@ -537,7 +571,7 @@ namespace Architect.API.Core.Business.General
                     nextStep.StartDate = current;
                     if (nextStep.Step.SLATimeOut > 0)
                     {
-                        nextStep.DueDate = current.AddMinutes(nextStep.Step.SLATimeOut);
+                        nextStep.DueDate = current.AddHours(nextStep.Step.SLATimeOut);
                     }
                     nextStep.UpdateUserCode = userId;
                     nextStep.PreviousActivityId = currentTask.ActivityId;
@@ -549,7 +583,7 @@ namespace Architect.API.Core.Business.General
                         nextSubTask.StartDate = current;
                         if (nextSubTask.Task.SLATimeOut > 0)
                         {
-                            nextSubTask.DueDate = current.AddMinutes(nextSubTask.Task.SLATimeOut);
+                            nextSubTask.DueDate = current.AddHours(nextSubTask.Task.SLATimeOut);
                         }
                         nextSubTask.UpdateUserCode = userId;
                         nextSubTask.PreviousActivityId = currentTask.ActivityId;
@@ -559,6 +593,7 @@ namespace Architect.API.Core.Business.General
                     break;
 
             }
+            // 3=Finalizado, 6= Cerrado, 7=Aprobado, 8=Rechazado, 90=?
             if (nextStep?.Step?.ProcessStatus == 3 ||
                 nextStep?.Step?.ProcessStatus == 6 ||
                 nextStep?.Step?.ProcessStatus == 7 ||
@@ -660,7 +695,7 @@ namespace Architect.API.Core.Business.General
 
             if (mailFullList.Count > 0)
             {
-                string mailTemplate = ConfigurationManager.AppSettings["Process.Mail.Template.Contact"];
+                string mailTemplate = ConfigurationManager.AppSettings["Process.Mail.Contact.Notify.Template"];
                 if (step.Step.MailToContactTmpl != 1)
                 {
                     mailTemplate = Common.LkpDescription(companyId, "MailTemplateKey", step.Step.MailToContactTmpl.ToString());
@@ -678,7 +713,7 @@ namespace Architect.API.Core.Business.General
             }
         }
 
-        private static void Notify_ResponsibleProcess_Progress(int caseId, Contracts.General.ProcessInstance step, int mailServer, int companyId, int userId)
+        private static void Notify_ResponsibleProcess_Progress(int caseId, Contracts.General.ProcessInstance step, int mailServer, int companyId, int userId, string mailTemplateSetting= "Process.Mail.Responsible.Notify.Template")
         {
             Dictionary<string, string> mailFullList = new Dictionary<string, string>();
             Contracts.General.ProcessCase procCase = null;
@@ -709,7 +744,7 @@ namespace Architect.API.Core.Business.General
 
             if (mailFullList.Count > 0)
             {
-                string mailTemplate = ConfigurationManager.AppSettings["Process.Mail.Template.Responsible"];
+                string mailTemplate = ConfigurationManager.AppSettings[mailTemplateSetting];
                 if (step.Step.MailToStepResponsibleTmpl != 1)
                 {
                     mailTemplate = Common.LkpDescription(companyId, "MailTemplateKey", step.Step.MailToStepResponsibleTmpl.ToString());

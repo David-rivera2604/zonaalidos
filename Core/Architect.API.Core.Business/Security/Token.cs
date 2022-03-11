@@ -3,7 +3,6 @@ using Architect.Utilities.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
@@ -76,7 +75,7 @@ namespace Architect.API.Core.Business.Security
         private static Contracts.Security.Token User2Token(Architect.API.Core.Contracts.Security.UserMember user)
         {
             Contracts.Security.Token result = new Contracts.Security.Token() { CompanyId = 0, BranchOffice = 0, Roles = string.Empty, ManagerId = 0, SecurityLevel = 0, UserId = 0 };
-            List<Utilities.Contracts.LookUpValue> rols = DataAccess.Security.UserRoleMember.RetrieveByUserId(user.UserId, user.CompanyId);
+            List<Architect.API.Core.Contracts.Security.RoleMember> rols = DataAccess.Security.UserRoleMember.RetrieveLookByUserId(user.UserId, user.CompanyId);
 
             result.CompanyId = user.CompanyId;
             result.BranchOffice = user.BranchOffice;
@@ -87,7 +86,7 @@ namespace Architect.API.Core.Business.Security
             result.IdentificationType = user.IdentificationType.ToString();
             result.Identification = user.Identification;
             result.UserName = string.Format("{0} {1}", user.FirstName, user.LastName).Trim();
-            result.Expires = DateTime.Now.AddMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["Session.Timeout"]));
+            result.Expires = DateTime.Now.AddMinutes(Utilities.Helpers.Settings.IntegerValue("Session.Timeout", 30));
 
             //Este bloque esta duplicado en la clase account
             if (user.CompanyId == 2)
@@ -140,7 +139,7 @@ namespace Architect.API.Core.Business.Security
 
                 if (tokenValue.IsNotEmpty() && tokenValue != "null")
                 {
-                    if (ConfigurationManager.AppSettings["Token.Mode"] != "JWT")
+                    if (Utilities.Helpers.Settings.StringValue("Token.Mode") != "JWT")
                     {
                         tokenValue = Architect.Utilities.Helpers.CryptSupport.DecryptString(tokenValue);
                         tokenValue = tokenValue.DecompressString();
@@ -155,9 +154,9 @@ namespace Architect.API.Core.Business.Security
                             ValidateAudience = true,
                             ValidateLifetime = true,
                             ValidateIssuerSigningKey = true,
-                            ValidIssuer = ConfigurationManager.AppSettings["Jwt:Issuer"],
-                            ValidAudience = ConfigurationManager.AppSettings["Jwt:Audience"],
-                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigurationManager.AppSettings["Jwt:SecretKey"])), // set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
+                            ValidIssuer = Utilities.Helpers.Settings.StringValue("Jwt:Issuer"),
+                            ValidAudience = Utilities.Helpers.Settings.StringValue("Jwt:Audience"),
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Utilities.Helpers.Settings.StringValue("Jwt:SecretKey"))), // set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
                             ClockSkew = TimeSpan.Zero
                         }, out SecurityToken validatedToken);
                         var jwtToken = (JwtSecurityToken)validatedToken;

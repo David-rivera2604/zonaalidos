@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Architect.Utilities.Extensions;
 
 namespace Architect.API.Core.Business.Security
@@ -14,7 +15,7 @@ namespace Architect.API.Core.Business.Security
         {
             Architect.API.Core.Contracts.Security.UserMember result = item;
             if (result.UserId.IsEmpty())
-                result.UserId = Architect.API.Core.DataAccess.Security.UserMember.RetrieveLastKey() + 1;
+                result.UserId = Architect.API.Core.DataAccess.Security.UserMember.RetrieveLastKeyCustom() + 1;
 
             if (item.Password.IsNotEmpty())
             {
@@ -39,7 +40,7 @@ namespace Architect.API.Core.Business.Security
 
         public static List<Architect.API.Core.Contracts.Security.UserMember> Retrieve(int companyId, int securityLevel, string filter, string recordStatus)
         {
-            List<Architect.API.Core.Contracts.Security.UserMember> result = Architect.API.Core.DataAccess.Security.UserMember.RetrieveAll(companyId, securityLevel, filter, recordStatus);
+            List<Architect.API.Core.Contracts.Security.UserMember> result = Architect.API.Core.DataAccess.Security.UserMember.RetrieveAll(companyId, securityLevel, DataAccess.Security.UserMember.FilterBuilder(filter, false));
 
             foreach (Architect.API.Core.Contracts.Security.UserMember item in result)
             {
@@ -56,7 +57,9 @@ namespace Architect.API.Core.Business.Security
             MapLookups(companyId, result);
             if (includeRoleInformation && result.IsNotEmpty())
             {
-                result.Roles = DataAccess.Security.UserRoleMember.RetrieveByUserId(id, companyId);
+                List<Architect.API.Core.Contracts.Security.RoleMember> rols = DataAccess.Security.UserRoleMember.RetrieveLookByUserId(id, companyId);
+                result.Roles = (from r in rols
+                                select new Utilities.Contracts.LookUpValue() { Code = r.RoleId.ToString(), Description = r.Description }).ToList();
             }
 
             if (result.CustomData.IsNotEmpty())
@@ -137,7 +140,7 @@ namespace Architect.API.Core.Business.Security
 
         private static void SynchronizeUserRoleMember(int companyId, int userId, int id, List<Utilities.Contracts.LookUpValue> currentRoles)
         {
-            List<Architect.API.Core.Contracts.Security.UserRoleMember> roles = DataAccess.Security.UserRoleMember.Retrieve(id, companyId);
+            List<Architect.API.Core.Contracts.Security.UserRoleMember> roles = DataAccess.Security.UserRoleMember.RetrieveByUserId(id, companyId);
             if (roles.IsEmpty())
             {
                 roles = new List<Contracts.Security.UserRoleMember>();
@@ -162,7 +165,7 @@ namespace Architect.API.Core.Business.Security
                         toAdd.UpdateDate = DateTime.Now;
 
                         //toAdd.RoleId = DataAccess.Security.UserRoleMember.RetrieveLastKey() + 1;
-                        DataAccess.Security.UserRoleMember.Create(toAdd);
+                        DataAccess.Security.UserRoleMember.CreateCustom(toAdd);
                     }
                     else
                     {
@@ -170,7 +173,7 @@ namespace Architect.API.Core.Business.Security
                         toAdd.UpdateUserCode = userId;
                         toAdd.UpdateDate = DateTime.Now;
                         //Esta tabla o posee datos adicional por lo tanto solo se agregar
-                        DataAccess.Security.UserRoleMember.Update(toAdd);
+                        DataAccess.Security.UserRoleMember.UpdateCustom(toAdd);
                     }
                 }
             }

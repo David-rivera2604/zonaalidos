@@ -22,7 +22,7 @@
         /// </summary>
         public int ManagerId { get; set; }
         /// <summary>
-        /// Identificación de la compañia propietaria.
+        /// Identificación de la compañía propietaria.
         /// </summary>
         public int CompanyId { get; set; }
         /// <summary>
