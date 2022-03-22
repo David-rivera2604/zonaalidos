@@ -316,6 +316,8 @@ namespace Architect.API.Insurance.Business.Policy
                 result = Business.Policy.Risk.Mapper2View(resultInternal);
                 result.PrimaryInsured = Business.Policy.RiskRoles.Mapper2View(resultInternal.PrimaryInsured);
 
+                result.PrimaryInsured.AgeAtInclusion = result.PrimaryInsured.BirthDate.Age();
+
                 if (result.PrimaryInsured.RetirementModality == 1)
                     result.PrimaryInsured.IsRetired = "Si";
                 else
@@ -324,6 +326,7 @@ namespace Architect.API.Insurance.Business.Policy
                 result.Overdraft = Business.Policy.RiskOverdraft.Mapper2View(resultInternal.Overdraft);
 
                 result.Questionary = Business.Policy.RiskQuestionnaires.Mapper2View(resultInternal.Questionary);
+                result.Diagnosis = Business.Policy.RiskQuestionnaires.Mapper2DiagnosisView(resultInternal.Questionary);
                 result.Beneficiaries = Business.Policy.RiskRoles.Mapper2View(resultInternal.Beneficiaries, companyId);
 
                 result.ProductAlias = Core.Business.Common.LkpChildFull("ProductByLineOfBusiness", result.LineOfBusinessCode, companyId).Find(x => x.Code == result.ProductCode).ExtendStringValue1;
@@ -344,7 +347,7 @@ namespace Architect.API.Insurance.Business.Policy
                 if (result.LineOfBusinessCode.IsNotEmpty())
                 {
                     values = Core.Business.Common.Lkp("LineOfBusiness", companyId);
-                    result.LineOfBusinessDesc = values.Find(x => x.Code == result.LineOfBusinessCode.ToString()).Description;
+                    result.LineOfBusinessDesc = values.Find(x => x.Code == result.LineOfBusinessCode.ToString()).Description.ToUpper();
                     if (result.ProductCode.IsNotEmpty())
                     {
                         values = Core.Business.Common.LkpChild("ProductByLineOfBusiness", result.LineOfBusinessCode, 0, companyId);
@@ -352,17 +355,17 @@ namespace Architect.API.Insurance.Business.Policy
                         if (result.Currency.IsNotEmpty())
                         {
                             values = Core.Business.Common.LkpChild("CurrencyByProduct", result.LineOfBusinessCode, result.ProductCode, companyId);
-                            result.CurrencyDesc = values.Find(x => x.Code == result.Currency.ToString()).Description;
+                            result.CurrencyDesc = values.Find(x => x.Code == result.Currency.ToString()).Description.ToUpper();
                         }
                         if (result.PaymentFrequency.IsNotEmpty())
                         {
                             values = Core.Business.Common.LkpChild("PaymentFrequencyByProduct", result.LineOfBusinessCode, result.ProductCode, companyId);
-                            result.PaymentFrequencyDesc = values.Find(x => x.Code == result.PaymentFrequency.ToString()).Description;
+                            result.PaymentFrequencyDesc = values.Find(x => x.Code == result.PaymentFrequency.ToString()).Description.ToUpper();
                         }
                         if (result.ModuleCode.IsNotEmpty())
                         {
                             values = Core.Business.Common.LkpChild("ModuleByProduct", result.LineOfBusinessCode, result.ProductCode, companyId);
-                            result.ModuleDesc = values.Find(x => x.Code == result.ModuleCode.ToString()).Description;
+                            result.ModuleDesc = values.Find(x => x.Code == result.ModuleCode.ToString()).Description.ToUpper();
                         }
                     }
                 }
@@ -374,7 +377,7 @@ namespace Architect.API.Insurance.Business.Policy
                 if (result.ReasonForStatus.IsNotEmpty())
                 {
                     values = Core.Business.Common.LkpChild("ReasonForStatus", result.Status, 0, companyId);
-                    result.ReasonForStatusDesc = values.Find(x => x.Code == result.ReasonForStatus.ToString()).Description;
+                    result.ReasonForStatusDesc = values.Find(x => x.Code == result.ReasonForStatus.ToString()).Description.ToUpper();
                 }
             }
             if (result.IsNotEmpty() && result.PrimaryInsured.IsNotEmpty())
@@ -382,40 +385,40 @@ namespace Architect.API.Insurance.Business.Policy
                 if (result.PrimaryInsured.DocumentType.IsNotEmpty())
                 {
                     values = Core.Business.Common.Lkp("DocumentType", companyId);
-                    result.PrimaryInsured.DocumentTypeDesc = values.Find(x => x.Code == result.PrimaryInsured.DocumentType.ToString()).Description;
+                    result.PrimaryInsured.DocumentTypeDesc = values.Find(x => x.Code == result.PrimaryInsured.DocumentType.ToString()).Description.ToUpper();
                 }
                 if (result.PrimaryInsured.Gender.IsNotEmpty())
                 {
                     values = Core.Business.Common.Lkp("Gender", companyId);
-                    result.PrimaryInsured.GenderDesc = values.Find(x => x.Code == result.PrimaryInsured.Gender.ToString()).Description;
+                    result.PrimaryInsured.GenderDesc = values.Find(x => x.Code == result.PrimaryInsured.Gender.ToString()).Description.ToUpper();
                 }
                 if (result.PrimaryInsured.CivilStatus.IsNotEmpty())
                 {
                     values = Core.Business.Common.Lkp("CivilStatus", companyId);
-                    result.PrimaryInsured.CivilStatusDesc = values.Find(x => x.Code == result.PrimaryInsured.CivilStatus.ToString()).Description;
+                    result.PrimaryInsured.CivilStatusDesc = values.Find(x => x.Code == result.PrimaryInsured.CivilStatus.ToString()).Description.ToUpper();
                 }
                 if (result.PrimaryInsured.Province.IsNotEmpty())
                 {
                     values = Core.Business.Common.Lkp("CR_Provincia", companyId);
-                    result.PrimaryInsured.ProvinceDesc = values.Find(x => x.Code == result.PrimaryInsured.Province.ToString()).Description;
+                    result.PrimaryInsured.ProvinceDesc = values.Find(x => x.Code == result.PrimaryInsured.Province.ToString()).Description.ToUpper();
                 }
                 if (result.PrimaryInsured.Canton.IsNotEmpty())
                 {
                     values = Core.Business.Common.LkpChild("CR_Canton", result.PrimaryInsured.Province, 0, companyId);
-                    result.PrimaryInsured.CantonDesc = values.Find(x => x.Code == result.PrimaryInsured.Canton.ToString()).Description;
+                    result.PrimaryInsured.CantonDesc = values.Find(x => x.Code == result.PrimaryInsured.Canton.ToString()).Description.ToUpper();
                 }
                 if (result.PrimaryInsured.District.IsNotEmpty())
                 {
                     values = Core.Business.Common.LkpChild("CR_Distritos", result.PrimaryInsured.Canton, 0, companyId);
-                    result.PrimaryInsured.DistrictDesc = values.Find(x => x.Code == result.PrimaryInsured.District.ToString()).Description;
+                    result.PrimaryInsured.DistrictDesc = values.Find(x => x.Code == result.PrimaryInsured.District.ToString()).Description.ToUpper();
                 }
                 if (result.PrimaryInsured.PhoneType.IsNotEmpty())
                 {
                     values = Core.Business.Common.Lkp("PhoneType", companyId);
-                    result.PrimaryInsured.PhoneTypeDesc = values.Find(x => x.Code == result.PrimaryInsured.PhoneType.ToString()).Description;
+                    result.PrimaryInsured.PhoneTypeDesc = values.Find(x => x.Code == result.PrimaryInsured.PhoneType.ToString()).Description.ToUpper();
                 }
 
-                result.PrimaryInsured.FullAddress = string.Format("{0}, {1}, {2}, {3}", result.PrimaryInsured.ProvinceDesc, result.PrimaryInsured.CantonDesc, result.PrimaryInsured.DistrictDesc, result.PrimaryInsured.AddressDetail).Trim();
+                result.PrimaryInsured.FullAddress = string.Format("{0}, {1}, {2}, {3}", result.PrimaryInsured.ProvinceDesc, result.PrimaryInsured.CantonDesc, result.PrimaryInsured.DistrictDesc, result.PrimaryInsured.AddressDetail).Trim().ToUpper();
             }
 
             //Prefijo para reportes

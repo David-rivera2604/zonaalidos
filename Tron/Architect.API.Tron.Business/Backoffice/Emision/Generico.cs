@@ -133,16 +133,19 @@ namespace Architect.API.Tron.Business.Backoffice.Emision
                 foreach (Contracts.Presupuesto.DatoVariable p2000030Instance20 in s2000030Instance.DatosVariables)
                 {
                     p2000030Instance20.num_poliza = s2000030Instance.num_poliza;
-                    //if (DataAccess.Batch.p2000020.Exist(p2000030Instance20, currentConnection))
-                    //{
-                    //    DataAccess.Batch.p2000020.Delete(p2000030Instance20, currentConnection);
-                    //}
-                    DataAccess.CrearPresupuesto.PP_Insert_P2000020(p2000030Instance20, currentConnection);
+                    if (DataAccess.Batch.P2000020.Exist(p2000030Instance20.num_poliza, p2000030Instance20.cod_campo, currentConnection))
+                    {
+                        DataAccess.Batch.P2000020.Update(p2000030Instance20.num_poliza, p2000030Instance20.cod_campo, p2000030Instance20.val_campo, currentConnection);
+                    }
+                    else
+                    {
+                        DataAccess.CrearPresupuesto.PP_Insert_P2000020(p2000030Instance20, currentConnection);
+                    }
                 }
             }
         }
 
-        private static void Sincroniza_DetalleDeTerceros(Contracts.Presupuesto.DatoFijo s2000030Instance,  IDbConnection currentConnection, Proceso g2000510Instance)
+        private static void Sincroniza_DetalleDeTerceros(Contracts.Presupuesto.DatoFijo s2000030Instance, IDbConnection currentConnection, Proceso g2000510Instance)
         {
             string tip_docum = string.Empty;
             string cod_docum = string.Empty;

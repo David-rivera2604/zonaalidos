@@ -21,9 +21,9 @@ namespace Architect.API.Insurance.Controllers
     public class PolicyController : ApiController
     {
         /// <summary>
-        /// Información imprimible de una póliza.
+        /// Información para imprimir de una póliza.
         /// </summary>
-        /// <param name="id">Identificción interna de una poliza.</param>
+        /// <param name="id">Identificación interna de una póliza.</param>
         /// <returns>Información de una póliza</returns>
         [HttpGet]
         [Route("Information")]

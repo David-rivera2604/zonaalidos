@@ -84,6 +84,7 @@
     <Compile Include="Ramo\G2000020.cs" />
     <Compile Include="Ramo\G2000170.cs" />
     <Compile Include="Ramo\G2000180.cs" />
+    <Compile Include="Ramo\G2990026.cs" />
     <Compile Include="Siniestro\Purdy\DetalleDeSiniestro.cs" />
     <Compile Include="Siniestro\Purdy\Siniestro.cs" />
     <Compile Include="Siniestro\Purdy\SiniestroPurdyBase.cs" />

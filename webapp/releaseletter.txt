@@ -279,5 +279,20 @@
                   Trazabilidad. Agregar el incremento auto en la tarea.                                 
                   Trazabilidad. Enable Comment, no está operativo para selección simple.
                   Trazabilidad. Lista de valores agregar campo que configura y desplegar en la creación del caso.  
-
+1.5.86 10/03/2022 Aliados. Se agrega la habilidad de llamar procedimientos almacenados con opción de personalizar los campos esperados para los lookups.
+1.5.87 17/03/2022 Coope. Cambios en el cuestionario  de salud		
+                  Coope. Ajuste en el formato para los 4 reportes de coopeservidores por cambios del cuestionario de salud		
+                  Coope. Habilitar repuestas de cuestionario Covid para incluir en los reportes
+                  Carrofacil. Ajuste del formato de un reporte por los cambios del cuestionario de salud.
+1.5.88 18/03/2022 fix. Reportes con cuestionario de salud.
+                  Aliados. Coberturas obligatoria para póliza por grupo para Mapfre Mas y Hogar.
+                  Aliados. Verificar si existe el datos variable para actualizarlo en la emisión de hogar.
+1.5.89 22/03/2022 Coope. Reportes. Dejar en letra mayúscula toda la información que se complete desde la herramienta.
+                  Coope. Reportes. En el espacio de Lugar y fecha de firma, dejar como un dato fijo: SAN JOSE, COSTA RICA y dejar como dato variable la fecha.
+                  Coope. Reportes. El cuestionario covid solo debe salir para mayores de 60 años.
+                  Coope. Reportes. Fix para mostrar las repuesta con información de diagnostico.
+                  Coope. Reportes. Agregar la fecha de nacimiento en el certificado.
+                  Coope. Reportes. Ocultar la nacionalidad del certificado.
+                  Coope. Reportes. En temas adicionales, se podría reflejar lo que se estipula en observaciones de la herramienta.
+                  Coope. Reportes.  Agregar la prima en el certificado.
                   

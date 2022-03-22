@@ -8,12 +8,9 @@ namespace Architect.API.Insurance.Contracts.Policy
     /// Cuestionarios vinculados a una póliza.
     /// </summary>
     [Serializable(), DataContract()]
-    public partial class RiskQuestionView
+    public partial class RiskQuestionDiagnosisView
     {
-        /// <summary>
-        /// Indicador de respuesta, 1 si, 2 no.
-        /// </summary>
-        [DataMember(), JsonProperty()] public int Confirmation { get; set; }
+        [DataMember(), JsonProperty()] public int Id { get; set; }
         /// <summary>
         /// Diagnóstico.
         /// </summary>
@@ -30,6 +27,33 @@ namespace Architect.API.Insurance.Contracts.Policy
         /// Fecha.
         /// </summary>
         [DataMember(), JsonProperty()] public DateTime When { get; set; }
+
     }
+    /// <summary>
+    /// Cuestionarios vinculados a una póliza.
+    /// </summary>
+    [Serializable(), DataContract()]
+    public partial class RiskQuestionView : RiskQuestionDiagnosisView
+    {
+        /// <summary>
+        /// Indicador de respuesta, 1 si, 2 no.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int Confirmation { get; set; }
+
+        [DataMember(), JsonProperty()] public RiskQuestionDiagnosisDetailView Detail { get; set; }
+    }
+
+    [Serializable(), DataContract()]
+    public partial class RiskQuestionDiagnosisDetailView
+    {
+        [DataMember(), JsonProperty()] public Boolean Detail1 { get; set; }
+        [DataMember(), JsonProperty()] public Boolean Detail2 { get; set; }
+        [DataMember(), JsonProperty()] public Boolean Detail3 { get; set; }
+        [DataMember(), JsonProperty()] public Boolean Detail4 { get; set; }
+        [DataMember(), JsonProperty()] public Boolean Detail5 { get; set; }
+        [DataMember(), JsonProperty()] public Boolean Detail6 { get; set; }
+
+    }
+
 }
 

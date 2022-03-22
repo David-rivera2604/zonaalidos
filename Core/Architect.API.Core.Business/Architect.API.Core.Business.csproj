@@ -73,11 +73,29 @@
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Scriban, Version=5.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Scriban.5.4.0\lib\netstandard2.0\Scriban.dll</HintPath>
+    <Reference Include="Scriban, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Scriban.5.4.1\lib\netstandard2.0\Scriban.dll</HintPath>
     </Reference>
-    <Reference Include="SmartFormat, Version=2.7.0.0, Culture=neutral, PublicKeyToken=568866805651201f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SmartFormat.NET.2.7.2\lib\net461\SmartFormat.dll</HintPath>
+    <Reference Include="SmartFormat, Version=3.0.0.0, Culture=neutral, PublicKeyToken=568866805651201f, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SmartFormat.3.0.0\lib\net461\SmartFormat.dll</HintPath>
+    </Reference>
+    <Reference Include="SmartFormat.Extensions.Newtonsoft.Json, Version=3.0.0.0, Culture=neutral, PublicKeyToken=568866805651201f, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SmartFormat.Extensions.Newtonsoft.Json.3.0.0\lib\net461\SmartFormat.Extensions.Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SmartFormat.Extensions.System.Text.Json, Version=3.0.0.0, Culture=neutral, PublicKeyToken=568866805651201f, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SmartFormat.Extensions.System.Text.Json.3.0.0\lib\net461\SmartFormat.Extensions.System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SmartFormat.Extensions.Time, Version=3.0.0.0, Culture=neutral, PublicKeyToken=568866805651201f, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SmartFormat.Extensions.Time.3.0.0\lib\net461\SmartFormat.Extensions.Time.dll</HintPath>
+    </Reference>
+    <Reference Include="SmartFormat.Extensions.Xml, Version=3.0.0.0, Culture=neutral, PublicKeyToken=568866805651201f, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SmartFormat.Extensions.Xml.3.0.0\lib\net461\SmartFormat.Extensions.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="SmartFormat.Net, Version=3.0.0.0, Culture=neutral, PublicKeyToken=568866805651201f, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SmartFormat.NET.3.0.0\lib\net461\SmartFormat.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="SmartFormat.ZString, Version=3.0.0.0, Culture=neutral, PublicKeyToken=568866805651201f, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SmartFormat.3.0.0\lib\net461\SmartFormat.ZString.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -203,11 +221,11 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.props'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Scriban.5.4.0\build\Scriban.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Scriban.5.4.0\build\Scriban.props'))" />
-    <Error Condition="!Exists('..\..\packages\Scriban.5.4.0\build\Scriban.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Scriban.5.4.0\build\Scriban.targets'))" />
     <Error Condition="!Exists('..\..\packages\System.Text.Json.6.0.2\build\System.Text.Json.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\System.Text.Json.6.0.2\build\System.Text.Json.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Scriban.5.4.1\build\Scriban.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Scriban.5.4.1\build\Scriban.props'))" />
+    <Error Condition="!Exists('..\..\packages\Scriban.5.4.1\build\Scriban.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Scriban.5.4.1\build\Scriban.targets'))" />
   </Target>
   <Import Project="..\..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.targets" Condition="Exists('..\..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.targets')" />
-  <Import Project="..\..\packages\Scriban.5.4.0\build\Scriban.targets" Condition="Exists('..\..\packages\Scriban.5.4.0\build\Scriban.targets')" />
   <Import Project="..\..\packages\System.Text.Json.6.0.2\build\System.Text.Json.targets" Condition="Exists('..\..\packages\System.Text.Json.6.0.2\build\System.Text.Json.targets')" />
+  <Import Project="..\..\packages\Scriban.5.4.1\build\Scriban.targets" Condition="Exists('..\..\packages\Scriban.5.4.1\build\Scriban.targets')" />
 </Project>

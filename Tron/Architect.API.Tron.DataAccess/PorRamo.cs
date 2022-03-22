@@ -10,9 +10,39 @@ namespace Architect.API.Tron.DataAccess
     {
 
         /// <summary>
+        /// Coberturas por número de contrato de pólizas grupo o flotas.
+        /// </summary>
+        public static List<Contracts.Ramo.G2990026> Coberturas_por_contrato2(int cod_ramo, int num_contrato)
+        {
+            List<Contracts.Ramo.G2990026> result = new List<Contracts.Ramo.G2990026>();
+
+            Database.Select("SELECT COD_COB, MCA_OBLIGATORIO " +
+                             " FROM G2990026 " +
+                            " WHERE COD_CIA=1" +
+                              " AND COD_RAMO=:COD_RAMO" +
+                              " AND NUM_CONTRATO=:NUM_CONTRATO" +
+                              " AND MCA_INH = 'N'" +
+                            " ORDER BY COD_COB ASC")
+                .AddParameter("cod_ramo", Architect.DataFactory.Enumerations.DbType.Int32, 22, cod_ramo)
+                .AddParameter("num_contrato", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_contrato)
+                .Query("Tron", new Action<IDataReader>((reader) =>
+                {
+                    result.Add(new Contracts.Ramo.G2990026()
+                    {
+                        COD_COB = reader.IntegerValue("cod_cob"),
+                        MCA_OBLIGATORIO = reader.StringValue("MCA_OBLIGATORIO")
+                    });
+                }));
+
+            return result;
+        }
+
+
+        /// <summary>
         /// Coberturas por numero de contrato
         /// </summary>
         /// <returns></returns>
+        /// TODO: ELIMINAR
         public static string Coberturas_por_contrato(int cod_ramo, int num_contrato)
         {
             string result = Database.Select("SELECT NVL(LISTAGG(cod_cob, ',') WITHIN GROUP (ORDER BY cod_cob), '-') " +

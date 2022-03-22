@@ -210,6 +210,8 @@ app.asegurado = (function () {
         $('#BirthDate').blur(function () {
             app.ui.IsElementValid('#RiskEdtFrm', '#ModuleCode');
             Event_Handler();
+            let age = moment().diff($('#BirthDate_group').data('DateTimePicker').date(), 'years');
+            $('#BirthDate').attr('title', `${age} años`);
         });
 
     };
@@ -246,29 +248,36 @@ app.asegurado = (function () {
     };
 
     function Event_Handler() {
+        let age = moment().diff($('#BirthDate_group').data('DateTimePicker').date(), 'years');
+        if (Number.isNaN(age))
+            age = 0;
+        let enable = !(age >= 40);
         if ($('input:radio[name=Gender]:checked').val() === '1') { //Masculino
             $('#Confirmation_6a').prop("disabled", true);
             $('#Confirmation_6b').prop("disabled", true);
             $('#Confirmation_9a').prop("disabled", true);
             $('#Confirmation_9b').prop("disabled", true);
-            $('#Confirmation_10a').prop("disabled", false);
-            $('#Confirmation_10b').prop("disabled", false);
             $($('input:radio[name=Confirmation_6][value=1]')).prop('checked', false);
             $($('input:radio[name=Confirmation_6][value=2]')).prop('checked', false);
             $($('input:radio[name=Confirmation_9][value=1]')).prop('checked', false);
             $($('input:radio[name=Confirmation_9][value=2]')).prop('checked', false);
+            let enable = !(age >= 40);
+            $('#Confirmation_10a').prop("disabled", enable);
+            $('#Confirmation_10b').prop("disabled", enable);
         }
-        else { //Femenino
-            $('#Confirmation_6a').prop("disabled", false);
-            $('#Confirmation_6b').prop("disabled", false);
-            $('#Confirmation_9a').prop("disabled", false);
-            $('#Confirmation_9b').prop("disabled", false);
-            $('#Confirmation_10a').prop("disabled", true);
-            $('#Confirmation_10b').prop("disabled", true);
+        if ($('input:radio[name=Gender]:checked').val() === '2') { //Femenino
+            $('#Confirmation_6a').prop("disabled", enable);
+            $('#Confirmation_6b').prop("disabled", enable);
+            $('#Confirmation_9a').prop("disabled", enable);
+            $('#Confirmation_9b').prop("disabled", enable);
+
             $($('input:radio[name=Confirmation_10][value=1]')).prop('checked', false);
             $($('input:radio[name=Confirmation_10][value=2]')).prop('checked', false);
+
+            $('#Confirmation_10a').prop("disabled", true);
+            $('#Confirmation_10b').prop("disabled", true);
         }
-        let age = moment().diff($('#BirthDate_group').data('DateTimePicker').date(), 'years');
+
         if (!Number.isNaN(age) && age > 64 && app.poliza.EntryAllowed()?.includes(";Questionnaires;")) {
             $('#saludTabHeader').removeClass('d-none');
         } else {

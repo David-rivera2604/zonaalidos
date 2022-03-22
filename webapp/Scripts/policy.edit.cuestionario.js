@@ -2,7 +2,7 @@
 app.cuestionario = (function () {
 
     function Init_Controls() {
-        for (index = 1; index <= 10; index++) {
+        for (index = 1; index <= 14; index++) {
             $('#When_' + index + '_group').datetimepicker({
                 format: 'DD/MM/YYYY',
                 locale: 'es'
@@ -14,7 +14,7 @@ app.cuestionario = (function () {
     };
 
     function Event_Controls() {
-        $("input:radio[name='Confirmation_1'],input:radio[name='Confirmation_2'],input:radio[name='Confirmation_3'],input:radio[name='Confirmation_4'],input:radio[name='Confirmation_5'],input:radio[name='Confirmation_6'],input:radio[name='Confirmation_7'],input:radio[name='Confirmation_8'],input:radio[name='Confirmation_9'],input:radio[name='Confirmation_10']").on('change', function () {
+        $("input:radio[name='Confirmation_1'],input:radio[name='Confirmation_2'],input:radio[name='Confirmation_3'],input:radio[name='Confirmation_4'],input:radio[name='Confirmation_5'],input:radio[name='Confirmation_6'],input:radio[name='Confirmation_7'],input:radio[name='Confirmation_8'],input:radio[name='Confirmation_9'],input:radio[name='Confirmation_10'],input:radio[name='Confirmation_11'],input:radio[name='Confirmation_12'],input:radio[name='Confirmation_13'],input:radio[name='Confirmation_14']").on('change', function () {
             let indexValue = $(this)[0].name.substring(13);
             let value = this.value;
 
@@ -42,7 +42,7 @@ app.cuestionario = (function () {
                 var notError = true;
                 var age = moment().diff($('#BirthDate_group').data('DateTimePicker').date(), 'years');
                 if (!Number.isNaN(age)) {
-                    if (age > 64 && $('input:radio[name=' + element.id.substring(0, element.id.length-1) + ']:checked').val() === undefined) {
+                    if (age > 64 && $('input:radio[name=' + element.id.substring(0, element.id.length - 1) + ']:checked').val() === undefined) {
                         notError = false;
                     }
                 }
@@ -151,6 +151,18 @@ app.cuestionario = (function () {
                 },
                 Confirmation_10: {
                     AgeGreaterThan64_radio: true
+                },
+                Confirmation_11: {
+                    AgeGreaterThan64_radio: true
+                },
+                Confirmation_12: {
+                    AgeGreaterThan64_radio: true
+                },
+                Confirmation_13: {
+                    AgeGreaterThan64_radio: true
+                },
+                Confirmation_14: {
+                    AgeGreaterThan64_radio: true
                 }
             },
             messages: {
@@ -170,7 +182,7 @@ app.cuestionario = (function () {
                     required: 'Debe indicar la fecha'
                 },
                 Confirmation_2: {
-                    AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 2',
+                    AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 8',
                 },
                 Diagnosis_2: {
                     required: 'Debe indicar el diagnóstico'
@@ -185,7 +197,7 @@ app.cuestionario = (function () {
                     required: 'Debe indicar la fecha'
                 },
                 Confirmation_3: {
-                    AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 3',
+                    AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 2',
                 },
                 Diagnosis_3: {
                     required: 'Debe indicar el diagnóstico'
@@ -200,7 +212,7 @@ app.cuestionario = (function () {
                     required: 'Debe indicar la fecha'
                 },
                 Confirmation_4: {
-                    AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 4',
+                    AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 12',
                 },
                 Diagnosis_4: {
                     required: 'Debe indicar el diagnóstico'
@@ -230,19 +242,31 @@ app.cuestionario = (function () {
                     required: 'Debe indicar la fecha'
                 },
                 Confirmation_6: {
-                    AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 6',
-                },
-                Confirmation_7: {
                     AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 7',
                 },
+                Confirmation_7: {
+                    AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 10',
+                },
                 Confirmation_8: {
-                    AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 8',
+                    AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 3',
                 },
                 Confirmation_9: {
-                    AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 9',
+                    AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 13',
                 },
                 Confirmation_10: {
-                    AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 10',
+                    AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 14',
+                },
+                Confirmation_11: {
+                    AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 4',
+                },
+                Confirmation_12: {
+                    AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 6',
+                },
+                Confirmation_13: {
+                    AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 9',
+                },
+                Confirmation_14: {
+                    AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 11',
                 }
             }
         });
@@ -250,7 +274,7 @@ app.cuestionario = (function () {
 
     var _inputToObject = function () {
         var data = [];
-        for (index = 1; index <= 10; index++) {
+        for (index = 1; index <= 14; index++) {
             data.push({
                 QuestionId: index,
                 Confirmation: $('input:radio[name=Confirmation_' + index + ']:checked').val(),
@@ -268,7 +292,7 @@ app.cuestionario = (function () {
             let nindex = 1;
 
             $.each(data, function (index, row) {
-                if (row.QuestionId >= 1 && row.QuestionId <= 10) {
+                if (row.QuestionId >= 1 && row.QuestionId <= 14) {
                     nindex = row.QuestionId;
                     $($('input:radio[name=Confirmation_' + nindex + '][value=' + row.Confirmation + ']')).prop('checked', true);
                     $('input:radio[name=Confirmation_' + nindex + '][value=' + row.Confirmation + ']').change();

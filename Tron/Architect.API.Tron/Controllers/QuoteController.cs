@@ -169,7 +169,6 @@ namespace Architect.API.Tron.Controllers
         /// <summary>
         /// Devuelve la estructura de datos con los valores por defecto para una cotización de tipo Mapfre Más
         /// </summary>
-        /// <returns></returns>
         [HttpGet]
         [Route("MapfreMasSetup")]
         public async Task<IHttpActionResult> MapfreMasSetup()
@@ -190,14 +189,6 @@ namespace Architect.API.Tron.Controllers
         /// <summary>
         /// Recupera lista de valores para sumas aseguradas de coberturas o valores deducibles según el rol del usuario
         /// </summary>
-        /// <param name="cod_ramo"></param>
-        /// <param name="cod_mon"></param>
-        /// <param name="edad"></param>
-        /// <param name="tipo_prod"></param>
-        /// <param name="cod_marca"></param>
-        /// <param name="num_contrato"></param>
-        /// <param name="num_subcontrato"></param>
-        /// <returns></returns>
         [HttpGet]
         [Route("MapfreMasSettings")]
         public async Task<IHttpActionResult> MapfreMasSettings(int cod_ramo, int cod_mon, int edad, string tipo_prod, int cod_marca, int num_contrato, int num_subcontrato)
@@ -246,8 +237,6 @@ namespace Architect.API.Tron.Controllers
         /// <summary>
         /// Realiza la validación de datos y cálculo necesarios para obtener una cotización o presupuesto de un producto de tipo Mapfre Más
         /// </summary>
-        /// <param name="quoteInfo"></param>
-        /// <returns></returns>
         [HttpPost]
         [Route("MapfreMasQuote")]
         public async Task<IHttpActionResult> MapfreMasQuote([FromBody] Tron.Contracts.Cotizacion.MapfreMas quoteInfo)

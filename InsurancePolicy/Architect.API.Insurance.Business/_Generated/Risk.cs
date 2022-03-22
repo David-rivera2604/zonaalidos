@@ -56,10 +56,10 @@ namespace Architect.API.Insurance.Business.Policy
                 target.AnnualPremium = source.AnnualPremium;
                 target.MonthlyPremium = source.MonthlyPremium;
                 target.Status = source.Status;
-                target.StatusDesc = source.StatusDesc;
+                target.StatusDesc = source.StatusDesc.ToUpper();
                 target.CancellationDate = source.CancellationDate;
                 target.ReasonForStatus = source.ReasonForStatus;
-                target.Comments = source.Comments;
+                target.Comments = source.Comments.ToUpper();
                 //target.CompanyId = source.CompanyId;
                 //target.UpdateUserCode = source.UpdateUserCode;
                 //target.UpdateDate = source.UpdateDate;

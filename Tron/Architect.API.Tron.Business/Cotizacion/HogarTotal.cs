@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 
 namespace Architect.API.Tron.Business.Cotizacion
@@ -15,6 +16,9 @@ namespace Architect.API.Tron.Business.Cotizacion
 
         const int COD_RAMO = 201;
 
+        /// <summary>
+        /// Devuelve la estructura de datos con los valores por defecto para una cotización de tipo Hogar Total.
+        /// </summary>
         public static Contracts.Cotizacion.HogarTotal Setup(Core.Contracts.Security.Token tokenInfo)
         {
 
@@ -45,11 +49,14 @@ namespace Architect.API.Tron.Business.Cotizacion
             DateTime fec_validez = DateTime.Today;
 
 
-            result.coberturas = CoverageByDefault(IsCoope, cod_cia, cod_ramo, fec_validez, string.Empty);
+            result.coberturas = CoverageByDefault(IsCoope, cod_cia, cod_ramo, fec_validez, string.Empty, null);
 
             return result;
         }
 
+        /// <summary>
+        /// Recupera lista de valores para sumas aseguradas de coberturas o valores deducibles según el rol del usuario
+        /// </summary>
         public static Tron.Contracts.Cotizacion.HogarTotalSettings Settings(int cod_ramo, int num_contrato, int num_subcontrato, string num_poliza_grupo, int cod_mon, Core.Contracts.Security.Token tokenInfo)
         {
             Tron.Contracts.Cotizacion.HogarTotalSettings result = new Contracts.Cotizacion.HogarTotalSettings();
@@ -87,15 +94,19 @@ namespace Architect.API.Tron.Business.Cotizacion
                     int cod_cia = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_cia"]);
                     DateTime fec_validez = DateTime.Today;
 
-                    string cod_cobIncludeFilter = Architect.API.Tron.DataAccess.PorRamo.Coberturas_por_contrato(COD_RAMO, num_contrato);
-                    result.coberturas = CoverageByDefault(IsCoope, cod_cia, COD_RAMO, fec_validez, cod_cobIncludeFilter);
+                    List<Contracts.Ramo.G2990026> coberturaGrupo = DataAccess.PorRamo.Coberturas_por_contrato2(COD_RAMO, num_contrato);
+                    string cod_cobIncludeFilter = Util.Convert_CoverageListToString(coberturaGrupo);
+                    result.coberturas = CoverageByDefault(IsCoope, cod_cia, COD_RAMO, fec_validez, cod_cobIncludeFilter, coberturaGrupo);
                 }
             }
 
             return result;
         }
 
-        internal static List<Contracts.Comun.Cobertura> CoverageByDefault(bool isCoope, int cod_cia, int cod_ramo, DateTime fec_validez, string cobIncludeFilter)
+        /// <summary>
+        /// Recupera la configuración de coberturas por defecto.
+        /// </summary>
+        internal static List<Contracts.Comun.Cobertura> CoverageByDefault(bool isCoope, int cod_cia, int cod_ramo, DateTime fec_validez, string cobIncludeFilter, List<Contracts.Ramo.G2990026> coberturaGrupo)
         {
             string cod_cobExcludeFilter = string.Empty;
             string selected = string.Empty;
@@ -119,9 +130,10 @@ namespace Architect.API.Tron.Business.Cotizacion
             {
                 cod_modalidad = 99999;
             }
+            Contracts.Comun.Cobertura currentCoverage;
             foreach (Architect.API.Tron.Contracts.Tables.a1002150 item in Architect.API.Tron.DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, cod_cobExcludeFilter, cobIncludeFilter))
             {
-                coberturas.Add(new Contracts.Comun.Cobertura()
+                currentCoverage = new Contracts.Comun.Cobertura()
                 {
                     seleccionado = selected.Contains(item.COD_COB.ToString()),
                     requerida = item.MCA_OBLIGATORIO == "S",
@@ -131,11 +143,19 @@ namespace Architect.API.Tron.Business.Cotizacion
                     primatotal = item.IMP_TOTAL,
                     decucible = item.NOM_FRANQUICIA,
                     error = item.TXT_ERROR
-                });
+                };
+                if (coberturaGrupo.IsNotEmpty())
+                {
+                    currentCoverage.requerida = coberturaGrupo.Any(r => r.COD_COB == item.COD_COB && r.MCA_OBLIGATORIO == "S");
+                }
+                coberturas.Add(currentCoverage);
             }
             return coberturas;
         }
 
+        /// <summary>
+        /// Realiza la validación de datos y cálculo necesarios para obtener una cotización o presupuesto de un producto de tipo Hogar Total.
+        /// </summary>
         public static Contracts.Cotizacion.HogarTotal Quote(Contracts.Cotizacion.HogarTotal quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.Cotizacion.HogarTotal resultInfo = quoteInfo;
@@ -187,6 +207,9 @@ namespace Architect.API.Tron.Business.Cotizacion
             return resultInfo;
         }
 
+        /// <summary>
+        /// Prepara las descripciones de campos relacionados a listas de valores.
+        /// </summary>
         public static Contracts.Cotizacion.HogarTotal LookupComplements(Contracts.Cotizacion.HogarTotal quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
             string context = string.Format("cod_ramo={0}:cod_mon={1}:cod_pais={2}:cod_tip_ocup={3}%:cod_estado={4}:cod_prov={5}",
@@ -219,20 +242,6 @@ namespace Architect.API.Tron.Business.Cotizacion
             quoteInfo.descuentoDesc = Core.Business.Common.LkpDescription(tokenInfo.CompanyId, "DescuentoHogarTotal", quoteInfo.descuento.ToString());
 
             return quoteInfo;
-        }
-
-        private static bool Rule_AtLeastOneCoverageSelected(Contracts.Cotizacion.HogarTotal source)
-        {
-            bool finded = false;
-            foreach (Contracts.Comun.Cobertura item in source.coberturas)
-            {
-                if (item.seleccionado)
-                {
-                    finded = true;
-                    break;
-                }
-            }
-            return finded;
         }
 
     }

@@ -726,12 +726,12 @@
                 <form id='QuestionaryEdtFrm'>
                     <fieldset>
                         <div class="form-row">
-                            <!-- Pregunta_1 -->
+                            <!-- Pregunta_1 - 1 - ¿Cualquier desorden neurológico, sistema nervioso depresión, ... -->
                             <div class='col-md-6'>
                                 <div class="form-row">
                                     <div class='col-md-12'>
                                         <div class='form-group'>
-                                            <label class='control-label' for='Confirmation_1'>1. ¿Padecimientos cerebro vasculares, del sistema nervioso, cardiovasculares, respiratorios, urinarios, músculo esquelético, de la columna vertebral, sistema digestivo o de los órganos reproductivos?</label>
+                                            <label class='control-label' for='Confirmation_1'>1. ¿Cualquier desorden neurológico, sistema nervioso depresión, ansiedad, epilepsia y otros, sistema respiratorio, gastrointestinal, endocrinólogos o genito-urinario, diabetes, hipertensión, angina de pecho, colesterol o triglicéridos altos, trastornos de las arterias coronarias, problemas cardíacos o del sistema cardiovascular o los vasos sanguíneos, desorden de la sangre, transfusión de sangre problemas con la columna vertebral y/o los discos intervertebrales?</label>
                                             <br /><div class="custom-control custom-radio custom-control-inline">
                                                 <input type="radio" class="custom-control-input" id="Confirmation_1a" name="Confirmation_1" value="1">
                                                 <label class="custom-control-label" for="Confirmation_1a">Si</label>
@@ -779,65 +779,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Pregunta_2 -->
+
+                            <!-- Pregunta_3 - 2 - ¿Cualquier tipo de quiste, tumores o cáncer? -->
                             <div class='col-md-6'>
                                 <div class="form-row">
                                     <div class='col-md-12'>
                                         <div class='form-group'>
-                                            <label class='control-label' for='Confirmation_2'>2. ¿Padecimientos de tiroides, de la piel, de la vista u oído, trastornos sanguíneos y/o coagulación, diabetes?</label>
-                                            <br /><div class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" id="Confirmation_2a" name="Confirmation_2" value="1">
-                                                <label class="custom-control-label" for="Confirmation_2a">Si</label>
-                                            </div>
-                                            <div class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" id="Confirmation_2b" name="Confirmation_2" value="2">
-                                                <label class="custom-control-label" for="Confirmation_2b">No</label>
-                                            </div>
-                                            <div id='Confirmation_2_validate'></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="question_2" class="form-row d-none">
-                                    <!-- Diagnosis 2 -->
-                                    <div class='col-md-12'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='Diagnosis_2'>Diagnóstico</label>
-                                            <input id='Diagnosis_2' name='Diagnosis_2' type='text' class='form-control' size='200' maxlength='200' disabled>
-                                        </div>
-                                    </div>
-                                    <!-- Treatment 2 -->
-                                    <div class='col-md-12'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='Treatment_2'>Tratamiento</label>
-                                            <input id='Treatment_2' name='Treatment_2' type='text' class='form-control' size='200' maxlength='200' disabled>
-                                        </div>
-                                    </div>
-                                    <!-- Doctor 2 -->
-                                    <div class='col-md-6'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='Doctor_2'>Médico</label>
-                                            <input id='Doctor_2' name='Doctor_2' type='text' class='form-control' size='120' maxlength='120' disabled>
-                                        </div>
-                                    </div>
-                                    <!-- When 2 -->
-                                    <div class='col-md-6'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='When_2'>Fecha</label>
-                                            <div class='input-group date' id='When_2_group'>
-                                                <input id='When_2' name='When_2' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
-                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
-                                            </div>
-                                            <div id='When_2_validate'></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Pregunta_3 -->
-                            <div class='col-md-6'>
-                                <div class="form-row">
-                                    <div class='col-md-12'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='Confirmation_3'>3. ¿Cualquier tipo de quistes, nódulos, tumores y/o cáncer?</label>
+                                            <label class='control-label' for='Confirmation_3'>2. ¿Cualquier tipo de quiste, tumores o cáncer?</label>
                                             <br /><div class="custom-control custom-radio custom-control-inline">
                                                 <input type="radio" class="custom-control-input" id="Confirmation_3a" name="Confirmation_3" value="1">
                                                 <label class="custom-control-label" for="Confirmation_3a">Si</label>
@@ -854,28 +802,28 @@
                                     <!-- Diagnosis_3 -->
                                     <div class='col-md-12'>
                                         <div class='form-group'>
-                                            <label class='control-label' for='Diagnosis_3'>Diagnóstico</label>
+                                            <label class='control-label' for='Diagnosis_3'>Diagnóstico<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                             <input id='Diagnosis_3' name='Diagnosis_3' type='text' class='form-control' size='200' maxlength='200' disabled>
                                         </div>
                                     </div>
                                     <!-- Treatment_3 -->
                                     <div class='col-md-12'>
                                         <div class='form-group'>
-                                            <label class='control-label' for='Treatment_3'>Tratamiento</label>
+                                            <label class='control-label' for='Treatment_3'>Tratamiento<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                             <input id='Treatment_3' name='Treatment_3' type='text' class='form-control' size='200' maxlength='200' disabled>
                                         </div>
                                     </div>
                                     <!-- Doctor_3 -->
                                     <div class='col-md-6'>
                                         <div class='form-group'>
-                                            <label class='control-label' for='Doctor_3'>Médico</label>
+                                            <label class='control-label' for='Doctor_3'>Médico<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                             <input id='Doctor_3' name='Doctor_3' type='text' class='form-control' size='120' maxlength='120' disabled>
                                         </div>
                                     </div>
                                     <!-- When_3 -->
                                     <div class='col-md-6'>
                                         <div class='form-group'>
-                                            <label class='control-label' for='When_3'>Fecha</label>
+                                            <label class='control-label' for='When_3'>Fecha<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                             <div class='input-group date' id='When_3_group'>
                                                 <input id='When_3' name='When_3' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
                                                 <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
@@ -885,225 +833,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Pregunta_4 -->
+
+                            <!-- Pregunta_8 - 3 -->
                             <div class='col-md-6'>
                                 <div class="form-row">
                                     <div class='col-md-12'>
                                         <div class='form-group'>
-                                            <label class='control-label' for='Confirmation_4'>4. ¿Problemas alcohólicos o problemas de drogas?</label>
-                                            <br /><div class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" id="Confirmation_4a" name="Confirmation_4" value="1">
-                                                <label class="custom-control-label" for="Confirmation_4a">Si</label>
-                                            </div>
-                                            <div class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" id="Confirmation_4b" name="Confirmation_4" value="2">
-                                                <label class="custom-control-label" for="Confirmation_4b">No</label>
-                                            </div>
-                                            <div id='Confirmation_4_validate'></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="question_4" class="form-row d-none">
-                                    <!-- Diagnosis_4 -->
-                                    <div class='col-md-12'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='Diagnosis_4'>Diagnóstico</label>
-                                            <input id='Diagnosis_4' name='Diagnosis_4' type='text' class='form-control' size='200' maxlength='200' disabled>
-                                        </div>
-                                    </div>
-                                    <!-- Treatment_4 -->
-                                    <div class='col-md-12'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='Treatment_4'>Tratamiento</label>
-                                            <input id='Treatment_4' name='Treatment_4' type='text' class='form-control' size='200' maxlength='200' disabled>
-                                        </div>
-                                    </div>
-                                    <!-- Doctor_4 -->
-                                    <div class='col-md-6'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='Doctor_4'>Médico</label>
-                                            <input id='Doctor_4' name='Doctor_4' type='text' class='form-control' size='120' maxlength='120' disabled>
-                                        </div>
-                                    </div>
-                                    <!-- When_4 -->
-                                    <div class='col-md-6'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='When_4'>Fecha</label>
-                                            <div class='input-group date' id='When_4_group'>
-                                                <input id='When_4' name='When_4' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
-                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
-                                            </div>
-                                            <div id='When_4_validate'></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Pregunta_5 -->
-                            <div class='col-md-6'>
-                                <div class="form-row">
-                                    <div class='col-md-12'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='Confirmation_5'>5. ¿Ha estado usted recluido en un hospital o institución similar o recibido transfusiones de sangre?</label>
-                                            <br />
-                                            <div class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" id="Confirmation_5a" name="Confirmation_5" value="1">
-                                                <label class="custom-control-label" for="Confirmation_5a">Si</label>
-                                            </div>
-                                            <div class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" id="Confirmation_5b" name="Confirmation_5" value="2">
-                                                <label class="custom-control-label" for="Confirmation_5b">No</label>
-                                            </div>
-                                            <div id='Confirmation_5_validate'></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="question_5" class="form-row d-none">
-                                    <!-- Diagnosis_5 -->
-                                    <div class='col-md-12'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='Diagnosis_5'>Diagnóstico</label>
-                                            <input id='Diagnosis_5' name='Diagnosis_5' type='text' class='form-control' size='200' maxlength='200' disabled>
-                                        </div>
-                                    </div>
-                                    <!-- Treatment_5 -->
-                                    <div class='col-md-12'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='Treatment_5'>Tratamiento</label>
-                                            <input id='Treatment_5' name='Treatment_5' type='text' class='form-control' size='200' maxlength='200' disabled>
-                                        </div>
-                                    </div>
-                                    <!-- Doctor_5 -->
-                                    <div class='col-md-6'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='Doctor_5'>Médico</label>
-                                            <input id='Doctor_5' name='Doctor_5' type='text' class='form-control' size='120' maxlength='120' disabled>
-                                        </div>
-                                    </div>
-                                    <!-- When_5 -->
-                                    <div class='col-md-6'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='When_5'>Fecha</label>
-                                            <div class='input-group date' id='When_5_group'>
-                                                <input id='When_5' name='When_5' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
-                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
-                                            </div>
-                                            <div id='When_5_validate'></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Pregunta_6 -->
-                            <div class='col-md-6'>
-                                <div class="form-row">
-                                    <div class='col-md-12'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='Confirmation_6'>6. ¿Está usted embarazada actualmente?</label>
-                                            <br /><div class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" id="Confirmation_6a" name="Confirmation_6" value="1" disabled>
-                                                <label class="custom-control-label" for="Confirmation_6a">Si</label>
-                                            </div>
-                                            <div class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" id="Confirmation_6b" name="Confirmation_6" value="2" disabled>
-                                                <label class="custom-control-label" for="Confirmation_6b">No</label>
-                                            </div>
-                                            <div id='Confirmation_6_validate'></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="question_6" class="form-row d-none">
-                                    <!-- Diagnosis 1 -->
-                                    <div class='col-md-12'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='Diagnosis_6'>Diagnóstico</label>
-                                            <input id='Diagnosis_6' name='Diagnosis_6' type='text' class='form-control' size='200' maxlength='200' disabled>
-                                        </div>
-                                    </div>
-                                    <!-- Treatment 1 -->
-                                    <div class='col-md-12'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='Treatment_6'>Tratamiento</label>
-                                            <input id='Treatment_6' name='Treatment_6' type='text' class='form-control' size='200' maxlength='200' disabled>
-                                        </div>
-                                    </div>
-                                    <!-- Doctor 1 -->
-                                    <div class='col-md-6'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='Doctor_6'>Médico</label>
-                                            <input id='Doctor_6' name='Doctor_6' type='text' class='form-control' size='120' maxlength='120' disabled>
-                                        </div>
-                                    </div>
-                                    <!-- When 1 -->
-                                    <div class='col-md-6'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='When_6'>Fecha</label>
-                                            <div class='input-group date' id='When_6_group'>
-                                                <input id='When_6' name='When_6' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
-                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
-                                            </div>
-                                            <div id='When_6_validate'></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Pregunta_7 -->
-                            <div class='col-md-6'>
-                                <div class="form-row">
-                                    <div class='col-md-12'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='Confirmation_7'>7. ¿Padece usted alguna condición médica, signo, síntoma, accidente, examen o diagnóstico que no se haya mencionado en este cuestionario?</label>
-                                            <br /><div class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" id="Confirmation_7a" name="Confirmation_7" value="1">
-                                                <label class="custom-control-label" for="Confirmation_7a">Si</label>
-                                            </div>
-                                            <div class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" id="Confirmation_7b" name="Confirmation_7" value="2">
-                                                <label class="custom-control-label" for="Confirmation_7b">No</label>
-                                            </div>
-                                            <div id='Confirmation_7_validate'></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="question_7" class="form-row d-none">
-                                    <!-- Diagnosis 2 -->
-                                    <div class='col-md-12'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='Diagnosis_7'>Amplíe</label>
-                                            <input id='Diagnosis_7' name='Diagnosis_7' type='text' class='form-control' size='200' maxlength='200' disabled>
-                                        </div>
-                                    </div>
-                                    <!-- Treatment 2 -->
-                                    <div class='col-md-12 d-none'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='Treatment_7'>Tratamiento</label>
-                                            <input id='Treatment_7' name='Treatment_7' type='text' class='form-control' size='200' maxlength='200' disabled>
-                                        </div>
-                                    </div>
-                                    <!-- Doctor 2 -->
-                                    <div class='col-md-6 d-none'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='Doctor_7'>Médico</label>
-                                            <input id='Doctor_7' name='Doctor_7' type='text' class='form-control' size='120' maxlength='120' disabled>
-                                        </div>
-                                    </div>
-                                    <!-- When 2 -->
-                                    <div class='col-md-6 d-none'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='When_7'>Fecha</label>
-                                            <div class='input-group date' id='When_7_group'>
-                                                <input id='When_7' name='When_7' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
-                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
-                                            </div>
-                                            <div id='When_7_validate'></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Pregunta_8 -->
-                            <div class='col-md-6'>
-                                <div class="form-row">
-                                    <div class='col-md-12'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='Confirmation_8'>8. ¿Se ha realizado la prueba de SIDA?</label>
+                                            <label class='control-label' for='Confirmation_8'>3. ¿Síndrome de Inmuno Deficiencia Adquirida o relacionado con el SIDA?</label>
                                             <br /><div class="custom-control custom-radio custom-control-inline">
                                                 <input type="radio" class="custom-control-input" id="Confirmation_8a" name="Confirmation_8" value="1">
                                                 <label class="custom-control-label" for="Confirmation_8a">Si</label>
@@ -1155,12 +891,504 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Pregunta_9 -->
+
+                            <!-- Pregunta_11 - 4 NUEVA -->
                             <div class='col-md-6'>
                                 <div class="form-row">
                                     <div class='col-md-12'>
                                         <div class='form-group'>
-                                            <label class='control-label' for='Confirmation_9'>9. ¿Se ha realizado examen de Papanicolau?</label>
+                                            <label class='control-label' for='Confirmation_11'>4. ¿Se le ha aconsejado alguna prueba diagnóstica, hospitalización o cirugía que no se ha llevado a cabo?</label>
+                                            <br /><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_11a" name="Confirmation_11" value="1">
+                                                <label class="custom-control-label" for="Confirmation_11a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_11b" name="Confirmation_11" value="2">
+                                                <label class="custom-control-label" for="Confirmation_11b">No</label>
+                                            </div>
+                                            <div id='Confirmation_11_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_11" class="form-row d-none">
+                                    <!-- Diagnosis_11 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Diagnosis_11'>Diagnóstico</label>
+                                            <input id='Diagnosis_11' name='Diagnosis_11' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Treatment_11 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Treatment_11'>Tratamiento</label>
+                                            <input id='Treatment_11' name='Treatment_11' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Doctor_11 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Doctor_11'>Médico</label>
+                                            <input id='Doctor_11' name='Doctor_11' type='text' class='form-control' size='120' maxlength='120' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- When_11 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='When_11'>Fecha</label>
+                                            <div class='input-group date' id='When_11_group'>
+                                                <input id='When_11' name='When_11' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                            </div>
+                                            <div id='When_11_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pregunta_5 - 5 -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_5'>5. ¿Ha estado recluido en un hospital o institución similar, se le ha realizado algún examen especial, de laboratorio, ultrasonido, mamografía o laparoscopia?</label>
+                                            <br />
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_5a" name="Confirmation_5" value="1">
+                                                <label class="custom-control-label" for="Confirmation_5a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_5b" name="Confirmation_5" value="2">
+                                                <label class="custom-control-label" for="Confirmation_5b">No</label>
+                                            </div>
+                                            <div id='Confirmation_5_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_5" class="form-row d-none">
+                                    <!-- Diagnosis_5 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Diagnosis_5'>Diagnóstico</label>
+                                            <input id='Diagnosis_5' name='Diagnosis_5' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Treatment_5 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Treatment_5'>Tratamiento</label>
+                                            <input id='Treatment_5' name='Treatment_5' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Doctor_5 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Doctor_5'>Médico</label>
+                                            <input id='Doctor_5' name='Doctor_5' type='text' class='form-control' size='120' maxlength='120' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- When_5 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='When_5'>Fecha</label>
+                                            <div class='input-group date' id='When_5_group'>
+                                                <input id='When_5' name='When_5' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                            </div>
+                                            <div id='When_5_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pregunta_12 - 6 NUEVA -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_12'>6. ¿Alguna vez alguna aseguradora le ha denegado, aplazado o limitado un seguro de vida, de accidentes personales o de salud?</label>
+                                            <br /><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_12a" name="Confirmation_12" value="1">
+                                                <label class="custom-control-label" for="Confirmation_12a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_12b" name="Confirmation_12" value="2">
+                                                <label class="custom-control-label" for="Confirmation_12b">No</label>
+                                            </div>
+                                            <div id='Confirmation_12_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_12" class="form-row d-none">
+                                    <!-- Diagnosis 2 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Diagnosis_12'>Amplíe</label>
+                                            <input id='Diagnosis_12' name='Diagnosis_12' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Treatment 2 -->
+                                    <div class='col-md-12 d-none'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Treatment_12'>Tratamiento</label>
+                                            <input id='Treatment_12' name='Treatment_12' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Doctor 2 -->
+                                    <div class='col-md-6 d-none'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Doctor_12'>Médico</label>
+                                            <input id='Doctor_12' name='Doctor_12' type='text' class='form-control' size='120' maxlength='120' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- When 2 -->
+                                    <div class='col-md-6 d-none'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='When_12'>Fecha</label>
+                                            <div class='input-group date' id='When_12_group'>
+                                                <input id='When_12' name='When_12' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                            </div>
+                                            <div id='When_12_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pregunta_6 - 7 - ¿Está usted embarazada? -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_6'>7. ¿Está usted embarazada?</label>
+                                            <br /><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_6a" name="Confirmation_6" value="1" disabled>
+                                                <label class="custom-control-label" for="Confirmation_6a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_6b" name="Confirmation_6" value="2" disabled>
+                                                <label class="custom-control-label" for="Confirmation_6b">No</label>
+                                            </div>
+                                            <div id='Confirmation_6_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_6" class="form-row d-none">
+                                    <!-- Diagnosis 1 -->
+                                    <div class='col-md-12 d-none'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Diagnosis_6'>Diagnóstico</label>
+                                            <input id='Diagnosis_6' name='Diagnosis_6' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Treatment 1 -->
+                                    <div class='col-md-12 d-none'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Treatment_6'>Tratamiento</label>
+                                            <input id='Treatment_6' name='Treatment_6' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Doctor 1 -->
+                                    <div class='col-md-6 d-none'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Doctor_6'>Médico</label>
+                                            <input id='Doctor_6' name='Doctor_6' type='text' class='form-control' size='120' maxlength='120' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- When 1 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='When_6'>Fecha probable del alumbramiento</label>
+                                            <div class='input-group date' id='When_6_group'>
+                                                <input id='When_6' name='When_6' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                            </div>
+                                            <div id='When_6_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pregunta_2 - 8 - ¿Practica algún tipo de deporte profesional o amateur? -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_2'>8. ¿Practica algún tipo de deporte profesional o amateur?</label>
+                                            <br /><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_2a" name="Confirmation_2" value="1">
+                                                <label class="custom-control-label" for="Confirmation_2a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_2b" name="Confirmation_2" value="2">
+                                                <label class="custom-control-label" for="Confirmation_2b">No</label>
+                                            </div>
+                                            <div id='Confirmation_2_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_2" class="form-row d-none">
+                                    <!-- Diagnosis 2 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Diagnosis_2'>Amplíe</label>
+                                            <input id='Diagnosis_2' name='Diagnosis_2' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Treatment 2 -->
+                                    <div class='col-md-12 d-none'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Treatment_2'>Tratamiento</label>
+                                            <input id='Treatment_2' name='Treatment_2' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Doctor 2 -->
+                                    <div class='col-md-6 d-none'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Doctor_2'>Médico</label>
+                                            <input id='Doctor_2' name='Doctor_2' type='text' class='form-control' size='120' maxlength='120' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- When 2 -->
+                                    <div class='col-md-6 d-none'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='When_2'>Fecha</label>
+                                            <div class='input-group date' id='When_2_group'>
+                                                <input id='When_2' name='When_2' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                            </div>
+                                            <div id='When_2_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pregunta_13 - 9 NUEVA -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_13'>9. ¿Ha solicitado o recibido beneficios o pagos de una pensión, debido a un accidente, enfermedad o incapacidad?</label>
+                                            <br /><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_13a" name="Confirmation_13" value="1">
+                                                <label class="custom-control-label" for="Confirmation_13a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_13b" name="Confirmation_13" value="2">
+                                                <label class="custom-control-label" for="Confirmation_13b">No</label>
+                                            </div>
+                                            <div id='Confirmation_13_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_13" class="form-row d-none">
+                                    <!-- Diagnosis 2 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Diagnosis_13'>Amplíe</label>
+                                            <input id='Diagnosis_13' name='Diagnosis_13' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Treatment 2 -->
+                                    <div class='col-md-12 d-none'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Treatment_13'>Tratamiento</label>
+                                            <input id='Treatment_13' name='Treatment_13' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Doctor 2 -->
+                                    <div class='col-md-6 d-none'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Doctor_13'>Médico</label>
+                                            <input id='Doctor_13' name='Doctor_13' type='text' class='form-control' size='120' maxlength='120' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- When 2 -->
+                                    <div class='col-md-6 d-none'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='When_13'>Fecha</label>
+                                            <div class='input-group date' id='When_13_group'>
+                                                <input id='When_13' name='When_13' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                            </div>
+                                            <div id='When_13_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pregunta_7 - 10 -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_7'>10. ¿Ha sido diagnosticado de cualquier otra enfermedad o accidente que no haya estado indicado en las preguntas anteriores?</label>
+                                            <br /><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_7a" name="Confirmation_7" value="1">
+                                                <label class="custom-control-label" for="Confirmation_7a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_7b" name="Confirmation_7" value="2">
+                                                <label class="custom-control-label" for="Confirmation_7b">No</label>
+                                            </div>
+                                            <div id='Confirmation_7_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_7" class="form-row d-none">
+                                    <!-- Diagnosis 2 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Diagnosis_7'>Amplíe</label>
+                                            <input id='Diagnosis_7' name='Diagnosis_7' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Treatment 2 -->
+                                    <div class='col-md-12 d-none'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Treatment_7'>Tratamiento</label>
+                                            <input id='Treatment_7' name='Treatment_7' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Doctor 2 -->
+                                    <div class='col-md-6 d-none'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Doctor_7'>Médico</label>
+                                            <input id='Doctor_7' name='Doctor_7' type='text' class='form-control' size='120' maxlength='120' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- When 2 -->
+                                    <div class='col-md-6 d-none'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='When_7'>Fecha</label>
+                                            <div class='input-group date' id='When_7_group'>
+                                                <input id='When_7' name='When_7' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                            </div>
+                                            <div id='When_7_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pregunta_14 - 11 - ¿Es fumador? -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_14'>11. ¿Es fumador?</label>
+                                            <br /><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_14a" name="Confirmation_14" value="1">
+                                                <label class="custom-control-label" for="Confirmation_14a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_14b" name="Confirmation_14" value="2">
+                                                <label class="custom-control-label" for="Confirmation_14b">No</label>
+                                            </div>
+                                            <div id='Confirmation_14_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_14" class="form-row d-none">
+                                    <!-- Diagnosis_14 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group d-none'>
+                                            <label class='control-label' for='Diagnosis_14'>Resultado</label>
+
+                                            <select id='Diagnosis_14' name='Diagnosis_14' class='form-control' disabled>
+                                                <option value="Negativo">Negativo</option>
+                                                <option value="Positivo">Positivo</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- Treatment_14 -->
+                                    <div class='col-md-12 d-none'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Treatment_14'>Tratamiento</label>
+                                            <input id='Treatment_14' name='Treatment_14' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Doctor_14 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Doctor_14'>Cuantos cigarros al día fuma?</label>
+                                            <input id='Doctor_14' name='Doctor_14' type='text' class='form-control' size='120' maxlength='120' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- When_14 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='When_14'>Desde cuándo?</label>
+                                            <div class='input-group date' id='When_14_group'>
+                                                <input id='When_14' name='When_14' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                            </div>
+                                            <div id='When_14_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pregunta_4 - 12 -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_4'>12. ¿Problemas alcohólicos o problemas de drogas?</label>
+                                            <br /><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_4a" name="Confirmation_4" value="1">
+                                                <label class="custom-control-label" for="Confirmation_4a">Si</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="Confirmation_4b" name="Confirmation_4" value="2">
+                                                <label class="custom-control-label" for="Confirmation_4b">No</label>
+                                            </div>
+                                            <div id='Confirmation_4_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="question_4" class="form-row d-none">
+                                    <!-- Diagnosis_4 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Diagnosis_4'>Diagnóstico</label>
+                                            <input id='Diagnosis_4' name='Diagnosis_4' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Treatment_4 -->
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Treatment_4'>Tratamiento</label>
+                                            <input id='Treatment_4' name='Treatment_4' type='text' class='form-control' size='200' maxlength='200' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- Doctor_4 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Doctor_4'>Médico</label>
+                                            <input id='Doctor_4' name='Doctor_4' type='text' class='form-control' size='120' maxlength='120' disabled>
+                                        </div>
+                                    </div>
+                                    <!-- When_4 -->
+                                    <div class='col-md-6'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='When_4'>Fecha</label>
+                                            <div class='input-group date' id='When_4_group'>
+                                                <input id='When_4' name='When_4' type='text' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled>
+                                                <span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>
+                                            </div>
+                                            <div id='When_4_validate'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pregunta_9 - 13 - ¿Se ha realizado examen de Papanicolau (PAP)? (Solo aplica para mujeres mayores de 40 años) -->
+                            <div class='col-md-6'>
+                                <div class="form-row">
+                                    <div class='col-md-12'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='Confirmation_9'>13. ¿Se ha realizado examen de Papanicolau (PAP)? (Solo aplica para mujeres mayores de 40 años)</label>
                                             <br /><div class="custom-control custom-radio custom-control-inline">
                                                 <input type="radio" class="custom-control-input" id="Confirmation_9a" name="Confirmation_9" value="1" disabled>
                                                 <label class="custom-control-label" for="Confirmation_9a">Si</label>
@@ -1211,12 +1439,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Pregunta_10 -->
+
+                            <!-- Pregunta_10 - 14 -->
                             <div class='col-md-6'>
                                 <div class="form-row">
                                     <div class='col-md-12'>
                                         <div class='form-group'>
-                                            <label class='control-label' for='Confirmation_10'>10. ¿Se ha realizado prueba del PSA (para hombres mayores de 40 años)?</label>
+                                            <label class='control-label' for='Confirmation_10'>14. ¿Se ha realizado examen de antígeno prostático (PSA)? (Solo aplica para hombres mayores de 40 años)</label>
                                             <br /><div class="custom-control custom-radio custom-control-inline">
                                                 <input type="radio" class="custom-control-input" id="Confirmation_10a" name="Confirmation_10" value="1" disabled>
                                                 <label class="custom-control-label" for="Confirmation_10a">Si</label>

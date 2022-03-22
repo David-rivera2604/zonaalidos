@@ -57,12 +57,12 @@ namespace Architect.API.Insurance.Business.Policy
             if (source != null)
             {
                 target = new Contracts.Policy.RiskBeneficiaryView();
-                target.FullName = string.Format("{0} {1} {2} {3}", source.FirstName, source.MiddleName, source.LastName, source.SecondLastName).Trim();
+                target.FullName = string.Format("{0} {1} {2} {3}", source.FirstName, source.MiddleName, source.LastName, source.SecondLastName).Trim().ToUpper();
                 target.DocumentNumber = source.DocumentNumber;
-                target.RelationshipDesc = source.RelationshipDesc;
+                target.RelationshipDesc = source.RelationshipDesc.ToUpper();
                 target.ParticipationRate = source.ParticipationRate;
                 target.Phone = source.PhoneNumber;
-                target.Email = source.PrimaryEmailAddress;
+                target.Email = source.PrimaryEmailAddress.ToUpper();
                 target.FullAddress = string.Empty;
                 if (source.Province.IsNotEmpty())
                 {
@@ -95,6 +95,7 @@ namespace Architect.API.Insurance.Business.Policy
                     target.FullAddress += ", ";
                 }
                 target.FullAddress += source.AddressDetail;
+                target.FullAddress = target.FullAddress.ToUpper();
 
 
             }
@@ -144,11 +145,11 @@ namespace Architect.API.Insurance.Business.Policy
                 target.Type = source.Type;
                 target.DocumentType = source.DocumentType;
                 target.DocumentNumber = source.DocumentNumber;
-                target.FirstName = source.FirstName;
-                target.MiddleName = source.MiddleName;
-                target.LastName = source.LastName;
-                target.SecondLastName = source.SecondLastName;
-                target.FullName = string.Format("{0} {1} {2} {3}", source.FirstName, source.MiddleName, source.LastName, source.SecondLastName).Trim();
+                target.FirstName = source.FirstName.ToUpper();
+                target.MiddleName = source.MiddleName.ToUpper();
+                target.LastName = source.LastName.ToUpper();
+                target.SecondLastName = source.SecondLastName.ToUpper();
+                target.FullName = string.Format("{0} {1} {2} {3}", source.FirstName, source.MiddleName, source.LastName, source.SecondLastName).Trim().ToUpper();
                 target.BirthDate = source.BirthDate;
                 target.Gender = source.Gender;
                 target.CivilStatus = source.CivilStatus;
@@ -156,20 +157,20 @@ namespace Architect.API.Insurance.Business.Policy
                 target.Weight = source.Weight;
                 target.BloodPressureSystolic = source.BloodPressureSystolic;
                 target.BloodPressureDiastolic = source.BloodPressureDiastolic;
-                target.Occupation = source.Occupation;
+                target.Occupation = source.Occupation.ToUpper();
                 target.RetirementModality = source.RetirementModality;
-                target.RetirementCause = source.RetirementCause;
+                target.RetirementCause = source.RetirementCause.ToUpper();
                 target.CountryOfNationality = source.CountryOfNationality;
                 target.CountryOfBirth = source.CountryOfBirth;
                 target.ClientType = source.ClientType;
                 target.Relationship = source.Relationship;
                 target.ParticipationRate = source.ParticipationRate;
-                target.PrimaryEmailAddress = source.PrimaryEmailAddress;
+                target.PrimaryEmailAddress = source.PrimaryEmailAddress.ToUpper();
                 target.TypeOfAddress = source.TypeOfAddress;
                 target.Province = source.Province;
                 target.Canton = source.Canton;
                 target.District = source.District;
-                target.AddressDetail = source.AddressDetail;
+                target.AddressDetail = source.AddressDetail.ToUpper();
                 target.PhoneType = source.PhoneType;
                 target.PhoneNumber = source.PhoneNumber;
                 target.UpdateUserCode = source.UpdateUserCode;

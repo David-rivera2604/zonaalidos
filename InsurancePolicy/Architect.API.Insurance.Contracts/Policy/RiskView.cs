@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace Architect.API.Insurance.Contracts.Policy
@@ -140,6 +141,10 @@ namespace Architect.API.Insurance.Contracts.Policy
         /// </summary>
         [DataMember(), JsonProperty()] public RiskQuestionaryView Questionary { get; set; }
 
+        /// <summary>
+        /// Diagnósticos asociados a las respuesta del cuestionario de salud vinculado a la póliza.
+        /// </summary>
+        [DataMember(), JsonProperty()] public List<RiskQuestionDiagnosisView> Diagnosis { get; set; }
         /// <summary>
         /// Información de los beneficiarios vinculados a una póliza.
         /// </summary>

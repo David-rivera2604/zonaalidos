@@ -11,6 +11,20 @@ namespace Architect.API.Tron.Business
     internal static class Util
     {
 
+        internal static string Convert_CoverageListToString(List<Contracts.Ramo.G2990026> coverages)
+        {
+            string result = string.Empty;
+            foreach (Contracts.Ramo.G2990026 item in coverages)
+            {
+                if (result.IsNotEmpty())
+                {
+                    result += ",";
+                }
+                result += item.COD_COB;
+            }
+            return result;
+        }
+
         internal static void ChangeEffectiveDate(Contracts.Presupuesto.DatoFijo quoteTron, Core.Contracts.Security.Token tokenInfo, IDbConnection currentConnection)
         {
             DateTime fecha_efec = quoteTron.fec_efec_poliza;
