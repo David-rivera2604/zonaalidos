@@ -73,14 +73,14 @@ namespace Architect.API.Tron.Business.Reglas
             string script = string.Empty;
             string result = string.Empty;
 
-            if (Utilities.Cache.Exist(cacheKey))
+            if (Utilities.Helpers.Settings.StringValue("Working.Mode") != "Development" && Utilities.Cache.Exist(cacheKey))
             {
                 script = ((string)Utilities.Cache.GetItem(cacheKey));
             }
             else
             {
                 Contracts.Especificacion.Producto def = Utilities.SerializeHandler<Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
-                if (def.Reglas?.Count > 0)
+                if (def.Coberturas?.Count > 0)
                 {
                     script = BuildCoveragesCode(ruleFile, data, def.Coberturas);
                 }

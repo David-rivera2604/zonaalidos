@@ -1,0 +1,651 @@
+{
+  "Skip": 2,
+  "Homologates": [
+    {
+      "name": "Genero",
+      "parameters": {
+        "M": 1,
+        "Masculino": 1,
+        "F": 2,
+        "Femenino": 2
+      }
+    },
+    {
+      "name": "TipoIdentificación",
+      "parameters": {
+        "CNA": 1,
+        "Cédula": 1,
+        "CRE": 2,
+        "DIMEX": 2,
+        "PAS": 3,
+        "Pasaporte": 3,
+        "CJU": 4,
+        "Cédula jurídica": 4
+      }
+    },
+    {
+      "name": "EstadoCivil",
+      "parameters": {
+        "Casado(a)": 1,
+        "Divorciado(a)": 2,
+        "Soltero(a)": 3,
+        "Viudo(a)": 4,
+        "Otro": 5,
+        "Acompañado(a)": 7
+      }
+    },
+    {
+      "name": "Parentesco",
+      "parameters": {
+        "Abuelo(a)": 9,
+        "Amigo(a)": 12,
+        "Conyuge": 1,
+        "Cuñado(a)": 8,
+        "Hermano(a)": 5,
+        "Hijo(a)": 2,
+        "Madre": 4,
+        "Otra relación": 17,
+        "Padre": 3,
+        "Primo(a)": 13,
+        "Suegro(a)": 10,
+        "Tío(a)": 7
+      }
+    }
+  ],
+  "AssemblyName": "Architect.API.Insurance.Contracts",
+  "Setters": [
+    {
+      "Summary": "Póliza",
+      "ObjectType": "Architect.API.Insurance.Contracts.Policy.Risk",
+      "IsCollection": true,
+      "Setters": [
+        {
+          "PropertyName": "ProductAlias",
+          "ObjectType": "String",
+          "DefaultValue": "cope_saldo_deudor"
+        },
+        {
+          "PropertyName": "RestrictionLevel",
+          "ObjectType": "int",
+          "DefaultValue": "1"
+        },
+        {
+          "PropertyName": "Undewriting",
+          "ObjectType": "String",
+          "DefaultValue": "disabled"
+        },
+        {
+          "PropertyName": "DraftStorage",
+          "ObjectType": "String",
+          "DefaultValue": "disabled"
+        },
+        {
+          "PropertyName": "RowNumber",
+          "ObjectType": "int",
+          "DefaultValue": "#RowNumber"
+        },
+        {
+          "PropertyName": "LineOfBusinessCode",
+          "ObjectType": "int",
+          "DefaultValue": "1"
+        },
+        {
+          "PropertyName": "ProductCode",
+          "ObjectType": "int",
+          "DefaultValue": "1"
+        },
+        {
+          "PropertyName": "Currency",
+          "ObjectType": "int",
+          "DefaultValue": "1"
+        },
+        {
+          "PropertyName": "ModuleCode",
+          "ObjectType": "int",
+          "DefaultValue": "1"
+        },
+        {
+          "PropertyName": "PaymentFrequency",
+          "ObjectType": "int",
+          "DefaultValue": "1"
+        },
+        {
+          "Summary": "Fecha de alta",
+          "PropertyName": "IssueDate",
+          "ObjectType": "date",
+          "DefaultValue": "Today"
+        },
+        {
+          "Summary": "Suma asegurada",
+          "PropertyName": "InsuredAmount",
+          "ObjectType": "double",
+          "Locate": "C"
+        },
+        {
+          "Summary": "Anotación",
+          "PropertyName": "Annotation",
+          "ObjectType": "String",
+          "Locate": "D"
+        },
+        {
+          "Summary": "Estado de la póliza",
+          "PropertyName": "Status",
+          "ObjectType": "int",
+          "DefaultValue": "10"
+        },
+        {
+          "Summary": "Asegurado principal",
+          "ObjectType": "Architect.API.Insurance.Contracts.Policy.RiskRoles",
+          "PropertyName": "PrimaryInsured",
+          "Setters": [
+            {
+              "ObjectType": "Architect.API.Insurance.Contracts.Policy.RiskRoles",
+              "Setters": [
+                {
+                  "Summary": "Tipo de identificación",
+                  "PropertyName": "DocumentType",
+                  "ObjectType": "int",
+                  "Locate": "E",
+                  "Homologate": "TipoIdentificación"
+                },
+                {
+                  "Summary": "Identificación",
+                  "PropertyName": "DocumentNumber",
+                  "ObjectType": "String",
+                  "Locate": "F"
+                },
+                {
+                  "Summary": "Nombre",
+                  "PropertyName": "FirstName",
+                  "ObjectType": "String",
+                  "Locate": "G"
+                },
+                {
+                  "Summary": "Apellido paterno",
+                  "PropertyName": "LastName",
+                  "ObjectType": "String",
+                  "Locate": "H"
+                },
+                {
+                  "Summary": "Apellido materno",
+                  "PropertyName": "SecondLastName",
+                  "ObjectType": "String",
+                  "Locate": "I"
+                },
+                {
+                  "Summary": "Fecha de nacimiento",
+                  "PropertyName": "BirthDate",
+                  "ObjectType": "date",
+                  "Locate": "J"
+                },
+                {
+                  "Summary": "Genero",
+                  "PropertyName": "Gender",
+                  "ObjectType": "int",
+                  "Locate": "K",
+                  "Homologate": "Genero"
+                },
+                {
+                  "Summary": "Tipo de teléfono",
+                  "PropertyName": "PhoneType",
+                  "ObjectType": "int",
+                  "DefaultValue": "1"
+                },
+                {
+                  "Summary": "Número de teléfono",
+                  "PropertyName": "PhoneNumber",
+                  "ObjectType": "String",
+                  "Locate": "L"
+                },
+                {
+                  "Summary": "Correo electrónico",
+                  "PropertyName": "PrimaryEmailAddress",
+                  "ObjectType": "String",
+                  "Locate": "M"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Summary": "Prestamo",
+          "ObjectType": "Architect.API.Insurance.Contracts.Policy.RiskOverdraft",
+          "PropertyName": "Overdraft",
+          "Setters": [
+            {
+              "ObjectType": "Architect.API.Insurance.Contracts.Policy.RiskOverdraft",
+              "Setters": [
+                {
+                  "Summary": "Inicio del plazo",
+                  "PropertyName": "StartTerm",
+                  "ObjectType": "date",
+                  "Locate": "A"
+                },
+                {
+                  "Summary": "Vencimiento del plazo",
+                  "PropertyName": "EndTerm",
+                  "ObjectType": "date",
+                  "Locate": "B"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Summary": "Beneficiarios",
+          "ObjectType": "Architect.API.Insurance.Contracts.Policy.RiskRoles",
+          "PropertyName": "Beneficiaries",
+          "ForDifferentItems": true,
+          "IsCollection": true,
+          "Setters": [
+            {
+              "Summary": "Beneficiario #1",
+              "ObjectType": "Architect.API.Insurance.Contracts.Policy.RiskRoles",
+              "Setters": [
+                {
+                  "Summary": "Tipo de identificación",
+                  "PropertyName": "DocumentType",
+                  "ObjectType": "int",
+                  "Locate": "N",
+                  "Homologate": "TipoIdentificación"
+                },
+                {
+                  "Summary": "Identificación",
+                  "PropertyName": "DocumentNumber",
+                  "ObjectType": "String",
+                  "Locate": "O"
+                },
+                {
+                  "Summary": "Nombre",
+                  "PropertyName": "FirstName",
+                  "ObjectType": "String",
+                  "Locate": "P"
+                },
+                {
+                  "Summary": "Apellido paterno",
+                  "PropertyName": "LastName",
+                  "ObjectType": "String",
+                  "Locate": "Q"
+                },
+                {
+                  "Summary": "Apellido materno",
+                  "PropertyName": "SecondLastName",
+                  "ObjectType": "String",
+                  "Locate": "R"
+                },
+                {
+                  "Summary": "Fecha de nacimiento",
+                  "PropertyName": "BirthDate",
+                  "ObjectType": "date",
+                  "Locate": "S"
+                },
+                {
+                  "Summary": "Genero",
+                  "PropertyName": "Gender",
+                  "ObjectType": "int",
+                  "Locate": "T",
+                  "Homologate": "Genero"
+                },
+                {
+                  "Summary": "Tipo de teléfono",
+                  "PropertyName": "PhoneType",
+                  "ObjectType": "int",
+                  "DefaultValue": "1"
+                },
+                {
+                  "Summary": "Número de teléfono",
+                  "PropertyName": "PhoneNumber",
+                  "ObjectType": "String",
+                  "Locate": "U"
+                },
+                {
+                  "Summary": "Correo electrónico",
+                  "PropertyName": "PrimaryEmailAddress",
+                  "ObjectType": "String",
+                  "Locate": "V"
+                },
+                {
+                  "Summary": "Parentesco",
+                  "PropertyName": "Relationship",
+                  "ObjectType": "int",
+                  "Locate": "W",
+                  "Homologate": "Parentesco"
+                },
+                {
+                  "Summary": "% Participación",
+                  "PropertyName": "ParticipationRate",
+                  "ObjectType": "int",
+                  "Locate": "X"
+                }
+              ]
+            },
+            {
+              "Summary": "Beneficiario #2",
+              "ObjectType": "Architect.API.Insurance.Contracts.Policy.RiskRoles",
+              "Setters": [
+                {
+                  "Summary": "Tipo de identificación",
+                  "PropertyName": "DocumentType",
+                  "ObjectType": "int",
+                  "Locate": "Y",
+                  "Homologate": "TipoIdentificación"
+                },
+                {
+                  "Summary": "Identificación",
+                  "PropertyName": "DocumentNumber",
+                  "ObjectType": "String",
+                  "Locate": "Z"
+                },
+                {
+                  "Summary": "Nombre",
+                  "PropertyName": "FirstName",
+                  "ObjectType": "String",
+                  "Locate": "AA"
+                },
+                {
+                  "Summary": "Apellido paterno",
+                  "PropertyName": "LastName",
+                  "ObjectType": "String",
+                  "Locate": "AB"
+                },
+                {
+                  "Summary": "Apellido materno",
+                  "PropertyName": "SecondLastName",
+                  "ObjectType": "String",
+                  "Locate": "AC"
+                },
+                {
+                  "Summary": "Fecha de nacimiento",
+                  "PropertyName": "BirthDate",
+                  "ObjectType": "date",
+                  "Locate": "AD"
+                },
+                {
+                  "Summary": "Genero",
+                  "PropertyName": "Gender",
+                  "ObjectType": "int",
+                  "Locate": "AE",
+                  "Homologate": "Genero"
+                },
+                {
+                  "Summary": "Tipo de teléfono",
+                  "PropertyName": "PhoneType",
+                  "ObjectType": "int",
+                  "DefaultValue": "1"
+                },
+                {
+                  "Summary": "Número de teléfono",
+                  "PropertyName": "PhoneNumber",
+                  "ObjectType": "String",
+                  "Locate": "AF"
+                },
+                {
+                  "Summary": "Correo electrónico",
+                  "PropertyName": "PrimaryEmailAddress",
+                  "ObjectType": "String",
+                  "Locate": "AG"
+                },
+                {
+                  "Summary": "Parentesco",
+                  "PropertyName": "Relationship",
+                  "ObjectType": "int",
+                  "Locate": "AH",
+                  "Homologate": "Parentesco"
+                },
+                {
+                  "Summary": "% Participación",
+                  "PropertyName": "ParticipationRate",
+                  "ObjectType": "int",
+                  "Locate": "AI"
+                }
+              ]
+            },
+            {
+              "Summary": "Beneficiario #3",
+              "ObjectType": "Architect.API.Insurance.Contracts.Policy.RiskRoles",
+              "Setters": [
+                {
+                  "Summary": "Tipo de identificación",
+                  "PropertyName": "DocumentType",
+                  "ObjectType": "int",
+                  "Locate": "AJ",
+                  "Homologate": "TipoIdentificación"
+                },
+                {
+                  "Summary": "Identificación",
+                  "PropertyName": "DocumentNumber",
+                  "ObjectType": "String",
+                  "Locate": "AK"
+                },
+                {
+                  "Summary": "Nombre",
+                  "PropertyName": "FirstName",
+                  "ObjectType": "String",
+                  "Locate": "AL"
+                },
+                {
+                  "Summary": "Apellido paterno",
+                  "PropertyName": "LastName",
+                  "ObjectType": "String",
+                  "Locate": "AM"
+                },
+                {
+                  "Summary": "Apellido materno",
+                  "PropertyName": "SecondLastName",
+                  "ObjectType": "String",
+                  "Locate": "AN"
+                },
+                {
+                  "Summary": "Fecha de nacimiento",
+                  "PropertyName": "BirthDate",
+                  "ObjectType": "date",
+                  "Locate": "AO"
+                },
+                {
+                  "Summary": "Genero",
+                  "PropertyName": "Gender",
+                  "ObjectType": "int",
+                  "Locate": "AP",
+                  "Homologate": "Genero"
+                },
+                {
+                  "Summary": "Tipo de teléfono",
+                  "PropertyName": "PhoneType",
+                  "ObjectType": "int",
+                  "DefaultValue": "1"
+                },
+                {
+                  "Summary": "Número de teléfono",
+                  "PropertyName": "PhoneNumber",
+                  "ObjectType": "String",
+                  "Locate": "AQ"
+                },
+                {
+                  "Summary": "Correo electrónico",
+                  "PropertyName": "PrimaryEmailAddress",
+                  "ObjectType": "String",
+                  "Locate": "AR"
+                },
+                {
+                  "Summary": "Parentesco",
+                  "PropertyName": "Relationship",
+                  "ObjectType": "int",
+                  "Locate": "AS",
+                  "Homologate": "Parentesco"
+                },
+                {
+                  "Summary": "% Participación",
+                  "PropertyName": "ParticipationRate",
+                  "ObjectType": "int",
+                  "Locate": "AT"
+                }
+              ]
+            },
+            {
+              "Summary": "Beneficiario #4",
+              "ObjectType": "Architect.API.Insurance.Contracts.Policy.RiskRoles",
+              "Setters": [
+                {
+                  "Summary": "Tipo de identificación",
+                  "PropertyName": "DocumentType",
+                  "ObjectType": "int",
+                  "Locate": "AU",
+                  "Homologate": "TipoIdentificación"
+                },
+                {
+                  "Summary": "Identificación",
+                  "PropertyName": "DocumentNumber",
+                  "ObjectType": "String",
+                  "Locate": "AV"
+                },
+                {
+                  "Summary": "Nombre",
+                  "PropertyName": "FirstName",
+                  "ObjectType": "String",
+                  "Locate": "AW"
+                },
+                {
+                  "Summary": "Apellido paterno",
+                  "PropertyName": "LastName",
+                  "ObjectType": "String",
+                  "Locate": "AX"
+                },
+                {
+                  "Summary": "Apellido materno",
+                  "PropertyName": "SecondLastName",
+                  "ObjectType": "String",
+                  "Locate": "AY"
+                },
+                {
+                  "Summary": "Fecha de nacimiento",
+                  "PropertyName": "BirthDate",
+                  "ObjectType": "date",
+                  "Locate": "AZ"
+                },
+                {
+                  "Summary": "Genero",
+                  "PropertyName": "Gender",
+                  "ObjectType": "int",
+                  "Locate": "BA",
+                  "Homologate": "Genero"
+                },
+                {
+                  "Summary": "Tipo de teléfono",
+                  "PropertyName": "PhoneType",
+                  "ObjectType": "int",
+                  "DefaultValue": "1"
+                },
+                {
+                  "Summary": "Número de teléfono",
+                  "PropertyName": "PhoneNumber",
+                  "ObjectType": "String",
+                  "Locate": "BB"
+                },
+                {
+                  "Summary": "Correo electrónico",
+                  "PropertyName": "PrimaryEmailAddress",
+                  "ObjectType": "String",
+                  "Locate": "BC"
+                },
+                {
+                  "Summary": "Parentesco",
+                  "PropertyName": "Relationship",
+                  "ObjectType": "int",
+                  "Locate": "BD",
+                  "Homologate": "Parentesco"
+                },
+                {
+                  "Summary": "% Participación",
+                  "PropertyName": "ParticipationRate",
+                  "ObjectType": "int",
+                  "Locate": "BE"
+                }
+              ]
+            },
+            {
+              "Summary": "Beneficiario #5",
+              "ObjectType": "Architect.API.Insurance.Contracts.Policy.RiskRoles",
+              "Setters": [
+                {
+                  "Summary": "Tipo de identificación",
+                  "PropertyName": "DocumentType",
+                  "ObjectType": "int",
+                  "Locate": "BF",
+                  "Homologate": "TipoIdentificación"
+                },
+                {
+                  "Summary": "Identificación",
+                  "PropertyName": "DocumentNumber",
+                  "ObjectType": "String",
+                  "Locate": "BG"
+                },
+                {
+                  "Summary": "Nombre",
+                  "PropertyName": "FirstName",
+                  "ObjectType": "String",
+                  "Locate": "BH"
+                },
+                {
+                  "Summary": "Apellido paterno",
+                  "PropertyName": "LastName",
+                  "ObjectType": "String",
+                  "Locate": "BI"
+                },
+                {
+                  "Summary": "Apellido materno",
+                  "PropertyName": "SecondLastName",
+                  "ObjectType": "String",
+                  "Locate": "BJ"
+                },
+                {
+                  "Summary": "Fecha de nacimiento",
+                  "PropertyName": "BirthDate",
+                  "ObjectType": "date",
+                  "Locate": "BK"
+                },
+                {
+                  "Summary": "Genero",
+                  "PropertyName": "Gender",
+                  "ObjectType": "int",
+                  "Locate": "BL",
+                  "Homologate": "Genero"
+                },
+                {
+                  "Summary": "Tipo de teléfono",
+                  "PropertyName": "PhoneType",
+                  "ObjectType": "int",
+                  "DefaultValue": "1"
+                },
+                {
+                  "Summary": "Número de teléfono",
+                  "PropertyName": "PhoneNumber",
+                  "ObjectType": "String",
+                  "Locate": "BM"
+                },
+                {
+                  "Summary": "Correo electrónico",
+                  "PropertyName": "PrimaryEmailAddress",
+                  "ObjectType": "String",
+                  "Locate": "BN"
+                },
+                {
+                  "Summary": "Parentesco",
+                  "PropertyName": "Relationship",
+                  "ObjectType": "int",
+                  "Locate": "BO",
+                  "Homologate": "Parentesco"
+                },
+                {
+                  "Summary": "% Participación",
+                  "PropertyName": "ParticipationRate",
+                  "ObjectType": "int",
+                  "Locate": "BP"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

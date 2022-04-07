@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Especificacion\Producto.cs" />
+    <Compile Include="Especificacion\Comportamiento.cs" />
     <Compile Include="Especificacion\Regla.cs" />
     <Compile Include="EviSign\IdentitySign.cs" />
     <Compile Include="EviSign\SignSubmit.cs" />

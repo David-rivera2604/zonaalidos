@@ -40,6 +40,30 @@ namespace Architect.API.Insurance.Contracts.Policy
         /// Descripción para producto.
         /// </summary>
         [DataMember(), JsonProperty()] public string ProductDesc { get; set; }
+
+        /// <summary>
+        /// Nivel de restricción.
+        /// </summary>
+        [JsonIgnore()] public int RestrictionLevel { get; set; } = 9;
+
+        /// <summary>
+        /// Indica si el riesgo debe manejar suscripción.
+        /// </summary>
+        [JsonIgnore()] public string Undewriting { get; set; } = "enabled";
+
+        /// <summary>
+        /// Indica si el riesgo se debe almacenar en captura incompleta en caso de errores.
+        /// </summary>
+        [JsonIgnore()] public string DraftStorage { get; set; } = "enabled";
+
+        /// <summary>
+        /// Uso interno.
+        /// </summary>
+        [JsonIgnore()] public int RowNumber { get; set; }
+        /// <summary>
+        /// Uso interno.
+        /// </summary>
+        [JsonIgnore()] public string Behavior { get; set; }
     }
 }
 

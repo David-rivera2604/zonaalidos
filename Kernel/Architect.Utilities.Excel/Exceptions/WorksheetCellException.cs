@@ -8,6 +8,7 @@ namespace Architect.Utilities.Excel.Exceptions
     {
         private int _rowNumber;
         private string _column;
+        private string _verbose;
 
         public WorksheetCellException() : base()
         {
@@ -17,6 +18,13 @@ namespace Architect.Utilities.Excel.Exceptions
         {
             _rowNumber = rowNumber;
             _column = column;
+        }
+
+        public WorksheetCellException(int rowNumber, string column, string verbose, Exception inner) : base(string.Format("Failed to process row {0} column '{2}' ({1})", rowNumber, column, verbose), inner)
+        {
+            _rowNumber = rowNumber;
+            _column = column;
+            _verbose = verbose;
         }
 
         public int RowNumber
@@ -32,6 +40,13 @@ namespace Architect.Utilities.Excel.Exceptions
             get
             {
                 return _column;
+            }
+        }
+        public string Verbose
+        {
+            get
+            {
+                return _verbose;
             }
         }
     }

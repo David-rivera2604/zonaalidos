@@ -11,6 +11,7 @@ namespace Architect.API.Core.Contracts.Especificacion
     {
 
         public List<Regla> Reglas { get; set; }
+        public List<Comportamiento> Comportamientos { get; set; }
 
     }
 }

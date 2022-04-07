@@ -1,4 +1,5 @@
 ﻿using Architect.Utilities.Extensions;
+using Architect.Utilities.Excel.Extensions;
 using ClosedXML.Excel;
 using System;
 using System.Collections.Generic;
@@ -45,20 +46,20 @@ namespace Architect.API.Insurance.Business.Policy
                                                                  int rowNumber,
                                                                  int companyId)
         {
-            dataRow["LoanNumber"] = Utilities.Excel.Extensions.IXLWorksheetExtensions.IntegerValue(sheet, rowNumber, "G");
+            dataRow["LoanNumber"] = sheet.IntegerValue(rowNumber, "G", "Número de préstamo");
             dataRow["CompanyId"] = companyId;
-            dataRow["DocumentNumber"] = Utilities.Excel.Extensions.IXLWorksheetExtensions.StringValue(sheet, rowNumber, "C");
-            dataRow["FullName"] = Utilities.Excel.Extensions.IXLWorksheetExtensions.StringValue(sheet,rowNumber, "B");
-            dataRow["BirthDate"] = Utilities.Excel.Extensions.IXLWorksheetExtensions.DateTimeValue(sheet, rowNumber, "E");
-            if (Utilities.Excel.Extensions.IXLWorksheetExtensions.StringValue(sheet, rowNumber, "K") == "M")
+            dataRow["DocumentNumber"] = sheet.StringValue(rowNumber, "C", "Número de documento");
+            dataRow["FullName"] = sheet.StringValue(rowNumber, "B", "Nombre completo");
+            dataRow["BirthDate"] = sheet.DateTimeValue(rowNumber, "E", "Fecha de nacimiento");
+            if (sheet.StringValue(rowNumber, "K", "Genero") == "M")
                 dataRow["Gender"] = 1;
             else
                 dataRow["Gender"] = 2;
-            dataRow["StartTerm"] = Utilities.Excel.Extensions.IXLWorksheetExtensions.DateTimeValue(sheet, rowNumber, "H");
-            dataRow["EndTerm"] = Utilities.Excel.Extensions.IXLWorksheetExtensions.DateTimeValue(sheet, rowNumber, "I");
-            dataRow["Duration"] = Utilities.Excel.Extensions.IXLWorksheetExtensions.DecimalValue(sheet, rowNumber, "O");
-            dataRow["Amount"] = Utilities.Excel.Extensions.IXLWorksheetExtensions.DecimalValue(sheet, rowNumber, "L");
-            dataRow["Balance"] = Utilities.Excel.Extensions.IXLWorksheetExtensions.DecimalValue(sheet, rowNumber, "N");
+            dataRow["StartTerm"] = sheet.DateTimeValue(rowNumber, "H");
+            dataRow["EndTerm"] = sheet.DateTimeValue(rowNumber, "I");
+            dataRow["Duration"] = sheet.DecimalValue(rowNumber, "O");
+            dataRow["Amount"] = sheet.DecimalValue(rowNumber, "L");
+            dataRow["Balance"] = sheet.DecimalValue(rowNumber, "N");
 
             return dataRow;
         }
@@ -74,7 +75,7 @@ namespace Architect.API.Insurance.Business.Policy
         public static string Load(string localFileName, string originalFileName, int companyId, int userId)
         {
             string result = "";
-            int rowNumber =0;
+            int rowNumber = 0;
             try
             {
                 XLWorkbook workbook = new XLWorkbook(localFileName, XLEventTracking.Disabled);
@@ -99,8 +100,9 @@ namespace Architect.API.Insurance.Business.Policy
 
                     result = string.Format("El archivo '{0}' fue procesado de forma exitosa, se cargaron {1} registros", originalFileName, data.Rows.Count);
 
-                    Core.Business.General.ChangeSet.Create(2005, userId, companyId, "Procesado", result, userId, new { FileName = originalFileName, Rows = data.Rows.Count } );
-                } else
+                    Core.Business.General.ChangeSet.Create(2005, userId, companyId, "Procesado", result, userId, new { FileName = originalFileName, Rows = data.Rows.Count });
+                }
+                else
                 {
                     result = "No se encontraron registros a procesar";
                 }

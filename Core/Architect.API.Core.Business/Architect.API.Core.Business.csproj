@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\Scriban.5.4.0\build\Scriban.props" Condition="Exists('..\..\packages\Scriban.5.4.0\build\Scriban.props')" />
+  <Import Project="..\..\packages\Scriban.5.4.3\build\Scriban.props" Condition="Exists('..\..\packages\Scriban.5.4.3\build\Scriban.props')" />
   <Import Project="..\..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.props" Condition="Exists('..\..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -58,14 +58,14 @@
     <Reference Include="Microsoft.CodeAnalysis.Scripting, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.CodeAnalysis.Scripting.Common.4.1.0\lib\netstandard2.0\Microsoft.CodeAnalysis.Scripting.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=6.16.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.IdentityModel.JsonWebTokens.6.16.0\lib\net472\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
+    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=6.17.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.IdentityModel.JsonWebTokens.6.17.0\lib\net472\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IdentityModel.Logging, Version=6.16.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.IdentityModel.Logging.6.16.0\lib\net472\Microsoft.IdentityModel.Logging.dll</HintPath>
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=6.17.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.IdentityModel.Logging.6.17.0\lib\net472\Microsoft.IdentityModel.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IdentityModel.Tokens, Version=6.16.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.IdentityModel.Tokens.6.16.0\lib\net472\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=6.17.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.IdentityModel.Tokens.6.17.0\lib\net472\Microsoft.IdentityModel.Tokens.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -74,7 +74,7 @@
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
     <Reference Include="Scriban, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Scriban.5.4.1\lib\netstandard2.0\Scriban.dll</HintPath>
+      <HintPath>..\..\packages\Scriban.5.4.3\lib\netstandard2.0\Scriban.dll</HintPath>
     </Reference>
     <Reference Include="SmartFormat, Version=3.0.0.0, Culture=neutral, PublicKeyToken=568866805651201f, processorArchitecture=MSIL">
       <HintPath>..\..\packages\SmartFormat.3.0.0\lib\net461\SmartFormat.dll</HintPath>
@@ -107,8 +107,8 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel" />
-    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=6.16.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.IdentityModel.Tokens.Jwt.6.16.0\lib\net472\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=6.17.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IdentityModel.Tokens.Jwt.6.17.0\lib\net472\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
@@ -117,8 +117,8 @@
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Reflection.Metadata.6.0.0\lib\net461\System.Reflection.Metadata.dll</HintPath>
+    <Reference Include="System.Reflection.Metadata, Version=6.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Reflection.Metadata.6.0.1\lib\net461\System.Reflection.Metadata.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
@@ -222,10 +222,10 @@
     <Error Condition="!Exists('..\..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.props'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.targets'))" />
     <Error Condition="!Exists('..\..\packages\System.Text.Json.6.0.2\build\System.Text.Json.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\System.Text.Json.6.0.2\build\System.Text.Json.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Scriban.5.4.1\build\Scriban.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Scriban.5.4.1\build\Scriban.props'))" />
-    <Error Condition="!Exists('..\..\packages\Scriban.5.4.1\build\Scriban.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Scriban.5.4.1\build\Scriban.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Scriban.5.4.3\build\Scriban.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Scriban.5.4.3\build\Scriban.props'))" />
+    <Error Condition="!Exists('..\..\packages\Scriban.5.4.3\build\Scriban.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Scriban.5.4.3\build\Scriban.targets'))" />
   </Target>
   <Import Project="..\..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.targets" Condition="Exists('..\..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.targets')" />
   <Import Project="..\..\packages\System.Text.Json.6.0.2\build\System.Text.Json.targets" Condition="Exists('..\..\packages\System.Text.Json.6.0.2\build\System.Text.Json.targets')" />
-  <Import Project="..\..\packages\Scriban.5.4.1\build\Scriban.targets" Condition="Exists('..\..\packages\Scriban.5.4.1\build\Scriban.targets')" />
+  <Import Project="..\..\packages\Scriban.5.4.3\build\Scriban.targets" Condition="Exists('..\..\packages\Scriban.5.4.3\build\Scriban.targets')" />
 </Project>

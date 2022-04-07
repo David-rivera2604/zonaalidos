@@ -1,5 +1,5 @@
 ﻿<div class="modal inmodal fade" id="ChangeSetModal" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
@@ -33,6 +33,17 @@
 </div>
 <script>
     $(document).ready(function () {
+
+        $('#ChangeSetModal .modal-content')
+            .resizable()
+            .draggable({
+                cursor: "move",
+                handle: '.modal-header'
+            })
+            .on('hidden.bs.modal', function () {
+                $('#ChangeSetModal .modal-content').resizable("destroy");
+            });
+
         $('#ChangeSetGridTbl').bootstrapTable({
             uniqueId: 'Id',
             classes: 'table table-hover table-index',
@@ -41,14 +52,6 @@
             formatShowingRows: function () { { return '' } },
             formatRecordsPerPage: function () { { return '' } },
             columns: [{
-                field: 'UpdateDate',
-                title: 'Cuando',
-                visible: false,
-                class: 'd-none d-sm-table-cell',
-                sortable: true,
-                halign: 'center',
-                formatter: 'app.ui.DateAndTimeFormatter'
-            }, {
                 field: 'Summary',
                 title: 'Descripción',
                 class: 'd-none d-sm-table-cell',

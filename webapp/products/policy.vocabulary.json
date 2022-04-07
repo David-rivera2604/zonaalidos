@@ -1,0 +1,66 @@
+﻿[
+  {
+    "Key": "{La suma asegurada}",
+    "Description": "La suma asegurada",
+    "Language": {
+      "CSharp": "data.InsuredAmount",
+      "JavaScript": "data.InsuredAmount"
+    }
+  },
+  {
+    "Key": "{La edad del asegurado}",
+    "Description": "La edad del asegurado",
+    "Language": {
+      "CSharp": "data.PrimaryInsured.BirthDate.Age()",
+      "JavaScript": "data.PrimaryInsured.BirthDate.Age()"
+    }
+  },
+  {
+    "Key": "{Aliado}",
+    "Description": "Compañía o aliado",
+    "Language": {
+      "CSharp": "data.CompanyId",
+      "JavaScript": "data.CompanyId"
+    }
+  },
+  {
+    "Key": "{Coope}",
+    "Description": "Código de coopeservidores como compañía u aliados",
+    "Language": {
+      "CSharp": "1",
+      "JavaScript": "1"
+    }
+  },
+  {
+    "Key": "{Bayer}",
+    "Description": "Código de bayer como compañía u aliados",
+    "Language": {
+      "CSharp": "4",
+      "JavaScript": "4"
+    }
+  },
+  {
+    "Key": "{Carrofacil}",
+    "Description": "Código de carro fácil como compañía u aliados",
+    "Language": {
+      "CSharp": "5",
+      "JavaScript": "5"
+    }
+  },
+  {
+    "Key": "{Caturix}",
+    "Description": "Código de caturix como compañía u aliados",
+    "Language": {
+      "CSharp": "8",
+      "JavaScript": "8"
+    }
+  },
+  {
+    "Key": "{Credecoop}",
+    "Description": "Código de credecoop como compañía u aliados",
+    "Language": {
+      "CSharp": "9",
+      "JavaScript": "9"
+    }
+]
+

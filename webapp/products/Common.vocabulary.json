@@ -78,5 +78,13 @@
       "CSharp": "data.coberturas.Any(r => r.seleccionado)",
       "JavaScript": "data.coberturas.Any(r => r.seleccionado)"
     }
+  },
+  {
+    "Key": "{Siempre}",
+    "Description": "Siempre",
+    "Language": {
+      "CSharp": "true",
+      "JavaScript": "true"
+    }
   }
 ]

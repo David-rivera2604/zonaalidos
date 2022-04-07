@@ -35,115 +35,227 @@ namespace Architect.API.Insurance.Business.Policy
                 switch (item.QuestionId)
                 {
                     case 1:
-                        target.Question1 = Mapper2View(item);
+                        target.Question1 = new Contracts.Policy.RiskQuestionView()
+                        {
+                            Confirmation = item.Confirmation,
+                            Summary = string.Empty //$"Diagnóstico: {item.Diagnosis}, Tratamiento: {item.Treatment}, Médico: {item.Doctor}, Fecha: {item.When:dd/MM/yyyy}."
+                        };
                         break;
                     case 2:
-                        target.Question2 = Mapper2View(item);
+                        target.Question2 = new Contracts.Policy.RiskQuestionView()
+                        {
+                            Confirmation = item.Confirmation,
+                            Summary = item.Confirmation == 1 ? $"Amplíe: {item.Diagnosis}." : string.Empty
+                        };
                         break;
                     case 3:
-                        target.Question3 = Mapper2View(item);
+                        target.Question3 = new Contracts.Policy.RiskQuestionView()
+                        {
+                            Confirmation = item.Confirmation,
+                            Summary = string.Empty //$"Diagnóstico: {item.Diagnosis}, Tratamiento: {item.Treatment}, Médico: {item.Doctor}, Fecha: {item.When:dd/MM/yyyy}."
+                        };
                         break;
                     case 4:
-                        target.Question4 = Mapper2View(item);
+                        target.Question4 = new Contracts.Policy.RiskQuestionView()
+                        {
+                            Confirmation = item.Confirmation,
+                            Summary = string.Empty //$"Diagnóstico: {item.Diagnosis}, Tratamiento: {item.Treatment}, Médico: {item.Doctor}, Fecha: {item.When:dd/MM/yyyy}."
+                        };
                         break;
                     case 5:
-                        target.Question5 = Mapper2View(item);
+                        target.Question5 = new Contracts.Policy.RiskQuestionView()
+                        {
+                            Confirmation = item.Confirmation,
+                            Summary = string.Empty //$"Diagnóstico: {item.Diagnosis}, Tratamiento: {item.Treatment}, Médico: {item.Doctor}, Fecha {item.When:dd/MM/yyyy}."
+                        };
                         break;
                     case 6:
-                        target.Question6 = Mapper2View(item);
+                        target.Question6 = new Contracts.Policy.RiskQuestionView()
+                        {
+                            Confirmation = item.Confirmation,
+                            Summary = item.Confirmation == 1 ? $"Fecha probable del alumbramiento: {item.When:dd/MM/yyyy}." : string.Empty
+                        };
                         break;
                     case 7:
-                        target.Question7 = Mapper2View(item);
+                        target.Question7 = new Contracts.Policy.RiskQuestionView()
+                        {
+                            Confirmation = item.Confirmation,
+                            Summary = item.Confirmation == 1 ? $"Amplíe: {item.Diagnosis}." : string.Empty
+                        };
                         break;
                     case 8:
-                        target.Question8 = Mapper2View(item);
+                        target.Question8 = new Contracts.Policy.RiskQuestionView()
+                        {
+                            Confirmation = item.Confirmation,
+                            Summary = item.Confirmation == 1 ? $"Resultado: {item.Diagnosis}, Motivo: {item.Doctor}, Fecha: {item.When:dd/MM/yyyy}." : string.Empty
+                        };
                         break;
                     case 9:
-                        target.Question9 = Mapper2View(item);
+                        target.Question9 = new Contracts.Policy.RiskQuestionView()
+                        {
+                            Confirmation = item.Confirmation,
+                            Summary = item.Confirmation == 1 ? $"Resultado: {item.Diagnosis}, Lugar de atención: {item.Treatment}, Médico: {item.Doctor}, Fecha {item.When:dd/MM/yyyy}." : string.Empty
+                        };
                         break;
                     case 10:
-                        target.Question10 = Mapper2View(item);
+                        target.Question10 = new Contracts.Policy.RiskQuestionView()
+                        {
+                            Confirmation = item.Confirmation,
+                            Summary = item.Confirmation == 1 ? $"Resultado: {item.Diagnosis}, Lugar de atención: {item.Treatment}, Médico: {item.Doctor}, Fecha {item.When:dd/MM/yyyy}." : string.Empty
+                        };
                         break;
                     case 11:
-                        target.Question11 = Mapper2View(item);
+                        target.Question11 = new Contracts.Policy.RiskQuestionView()
+                        {
+                            Confirmation = item.Confirmation,
+                            Summary = string.Empty // $"Diagnóstico: {item.Diagnosis}, Tratamiento: {item.Treatment}, Médico: {item.Doctor}, Fecha: {item.When:dd/MM/yyyy}."
+                        };
                         break;
                     case 12:
-                        target.Question12 = Mapper2View(item);
+                        target.Question12 = new Contracts.Policy.RiskQuestionView()
+                        {
+                            Confirmation = item.Confirmation,
+                            Summary = item.Confirmation == 1 ? $"Amplíe: {item.Diagnosis}." : string.Empty
+                        };
                         break;
                     case 13:
-                        target.Question13 = Mapper2View(item);
+                        target.Question13 = new Contracts.Policy.RiskQuestionView()
+                        {
+                            Confirmation = item.Confirmation,
+                            Summary = item.Confirmation == 1 ? $"Amplíe: {item.Diagnosis}." : string.Empty
+                        };
                         break;
                     case 14:
-                        target.Question14 = Mapper2View(item);
+                        target.Question14 = new Contracts.Policy.RiskQuestionView()
+                        {
+                            Confirmation = item.Confirmation,
+                            Summary = item.Confirmation == 1 ? $"Cuantos cigarros al día fuma: {item.Doctor}, Desde cuándo: {item.When:dd/MM/yyyy}." : string.Empty
+                        };
                         break;
 
 
                     case 51:
-                        target.Question51 = Mapper2View(item);
+                        target.Question51 = new Contracts.Policy.RiskQuestionView()
+                        {
+                            Confirmation = item.Confirmation,
+                            Summary = item.Confirmation == 1 ? $"País o países y las fechas exactas: {item.Diagnosis}." : string.Empty
+                        };
                         break;
                     case 52:
-                        target.Question52 = Mapper2View(item);
+                        target.Question52 = new Contracts.Policy.RiskQuestionView()
+                        {
+                            Confirmation = item.Confirmation,
+                            Summary = string.Empty
+                        };
                         break;
                     case 53:
-                        target.Question53 = Mapper2View(item);
+                        target.Question53 = new Contracts.Policy.RiskQuestionView()
+                        {
+                            Confirmation = item.Confirmation,
+                            Summary = item.Confirmation == 1 ? $"Detalle: {item.Diagnosis}." : string.Empty
+                        };
                         break;
                     case 54:
-                        target.Question54 = Mapper2View(item);
+                        target.Question54 = new Contracts.Policy.RiskQuestionView()
+                        {
+                            Confirmation = item.Confirmation,
+                            Summary = string.Empty
+                        };
+                        if (item.QuestionId == 54 && item.Diagnosis.IsNotEmpty())
+                        {
+                            string value = item.Diagnosis + ",false,false,false,false,false,false";
+                            if (item.Confirmation == 1)
+                            {
+                                target.Question54.Detail = new Contracts.Policy.RiskQuestionDiagnosisDetailView()
+                                {
+                                    Detail1 = value.Split(',')[0] == "true",
+                                    Detail2 = value.Split(',')[1] == "true",
+                                    Detail3 = value.Split(',')[2] == "true",
+                                    Detail4 = value.Split(',')[3] == "true",
+                                    Detail5 = value.Split(',')[4] == "true",
+                                    Detail6 = value.Split(',')[5] == "true"
+                                };
+                            }
+                            else
+                            {
+                                target.Question54.Detail = new Contracts.Policy.RiskQuestionDiagnosisDetailView();
+                            }
+                        }
                         break;
                     case 55:
-                        target.Question55 = Mapper2View(item);
+                        target.Question55 = new Contracts.Policy.RiskQuestionView()
+                        {
+                            Confirmation = item.Confirmation,
+                            Summary = string.Empty
+                        };
                         break;
                     case 56:
-                        target.Question56 = Mapper2View(item);
+                        target.Question56 = new Contracts.Policy.RiskQuestionView()
+                        {
+                            Confirmation = item.Confirmation,
+                            Summary = item.Confirmation == 1 ? $"Detalle: {item.Diagnosis}." : string.Empty
+                        };
                         break;
                     case 57:
-                        target.Question57 = Mapper2View(item);
+                        target.Question57 = new Contracts.Policy.RiskQuestionView()
+                        {
+                            Confirmation = item.Confirmation,
+                            Summary = item.Confirmation == 1 ? $"Indique la fecha: {item.When:dd/MM/yyyy}." : string.Empty
+                        };
                         break;
                     case 58:
-                        target.Question58 = Mapper2View(item);
+                        target.Question58 = new Contracts.Policy.RiskQuestionView()
+                        {
+                            Confirmation = item.Confirmation,
+                            Summary = item.Confirmation == 2 ? $"Detalle el motivo: {item.Diagnosis}." : string.Empty
+                        };
                         break;
                     case 59:
-                        target.Question59 = Mapper2View(item);
+                        target.Question59 = new Contracts.Policy.RiskQuestionView()
+                        {
+                            Confirmation = item.Confirmation,
+                            Summary = item.Confirmation == 1 ? $"Cual vacuna le aplicaron: {item.Treatment}, Indique la fecha: {item.When:dd/MM/yyyy}, Cuántas dosis pose: {item.Doctor}." : string.Empty
+                        };
                         break;
                 }
             }
             return target;
         }
 
-        public static Contracts.Policy.RiskQuestionView Mapper2View(Contracts.Policy.RiskQuestionnaires source)
-        {
-            Contracts.Policy.RiskQuestionView target = new Contracts.Policy.RiskQuestionView();
-            //target.Id = source.Id;
-            //target.PolicyId = source.PolicyId;
-            //target.Type = source.Type;
-            //target.QuestionId = source.QuestionId;
-            if (source.QuestionId == 54)
-            {
-                target.Detail = new Contracts.Policy.RiskQuestionDiagnosisDetailView();
-            }
-            target.Confirmation = source.Confirmation;
-            if (target.Confirmation != 2)
-            {
-                target.Diagnosis = source.Diagnosis.ToUpper();
-                target.Treatment = source.Treatment.ToUpper();
-                target.Doctor = source.Doctor.ToUpper();
-                target.When = source.When;
-                if (source.QuestionId == 54 && source.Diagnosis.IsNotEmpty())
-                {
-                    string value = source.Diagnosis + ",false,false,false,false,false,false";
-                    target.Detail.Detail1 = value.Split(',')[0] == "true";
-                    target.Detail.Detail2 = value.Split(',')[1] == "true";
-                    target.Detail.Detail3 = value.Split(',')[2] == "true";
-                    target.Detail.Detail4 = value.Split(',')[3] == "true";
-                    target.Detail.Detail5 = value.Split(',')[4] == "true";
-                    target.Detail.Detail6 = value.Split(',')[5] == "true";
-                }
-            }
-            //target.CompanyId = source.CompanyId;
-            //target.UpdateUserCode = source.UpdateUserCode;
-            //target.UpdateDate = source.UpdateDate;
-            return target;
-        }
+        //public static Contracts.Policy.RiskQuestionView Mapper2View(Contracts.Policy.RiskQuestionnaires source)
+        //{
+        //    Contracts.Policy.RiskQuestionView target = new Contracts.Policy.RiskQuestionView();
+        //    //target.Id = source.Id;
+        //    //target.PolicyId = source.PolicyId;
+        //    //target.Type = source.Type;
+        //    //target.QuestionId = source.QuestionId;
+        //    if (source.QuestionId == 54)
+        //    {
+        //        target.Detail = new Contracts.Policy.RiskQuestionDiagnosisDetailView();
+        //    }
+        //    target.Confirmation = source.Confirmation;
+        //    if (target.Confirmation != 2)
+        //    {
+        //        target.Diagnosis = source.Diagnosis.ToUpper();
+        //        target.Treatment = source.Treatment.ToUpper();
+        //        target.Doctor = source.Doctor.ToUpper();
+        //        target.When = source.When;
+        //        if (source.QuestionId == 54 && source.Diagnosis.IsNotEmpty())
+        //        {
+        //            string value = source.Diagnosis + ",false,false,false,false,false,false";
+        //            target.Detail.Detail1 = value.Split(',')[0] == "true";
+        //            target.Detail.Detail2 = value.Split(',')[1] == "true";
+        //            target.Detail.Detail3 = value.Split(',')[2] == "true";
+        //            target.Detail.Detail4 = value.Split(',')[3] == "true";
+        //            target.Detail.Detail5 = value.Split(',')[4] == "true";
+        //            target.Detail.Detail6 = value.Split(',')[5] == "true";
+        //        }
+        //    }
+        //    //target.CompanyId = source.CompanyId;
+        //    //target.UpdateUserCode = source.UpdateUserCode;
+        //    //target.UpdateDate = source.UpdateDate;
+        //    return target;
+        //}
 
 
         public static List<Contracts.Policy.RiskQuestionDiagnosisView> Mapper2DiagnosisView(List<Contracts.Policy.RiskQuestionnaires> source)
@@ -151,25 +263,30 @@ namespace Architect.API.Insurance.Business.Policy
             List<Contracts.Policy.RiskQuestionDiagnosisView> target = new List<Contracts.Policy.RiskQuestionDiagnosisView>();
             int[] equiv = { 0, 1, 8, 2, 12, 5, 7, 10, 3, 13, 14, 4, 6, 9, 11 };
             int questionViewId = 0;
+            Contracts.Policy.RiskQuestionDiagnosisView current;
             foreach (Contracts.Policy.RiskQuestionnaires item in source)
             {
                 if (item.QuestionId >= 1 && item.QuestionId <= 14)
                 {
                     questionViewId = equiv[item.QuestionId];
-                    if (item.Confirmation == 1 && (questionViewId == 1 || questionViewId == 2 || questionViewId == 4 || questionViewId == 5 || questionViewId == 12))
+                    if (questionViewId == 1 || questionViewId == 2 || questionViewId == 4 || questionViewId == 5 || questionViewId == 12)
                     {
-                        target.Add(new Contracts.Policy.RiskQuestionDiagnosisView()
+                        current = new Contracts.Policy.RiskQuestionDiagnosisView()
                         {
-                            Id = questionViewId,
-                            Diagnosis = item.Diagnosis.ToUpper(),
-                            Treatment = item.Treatment.ToUpper(),
-                            Doctor = item.Doctor.ToUpper(),
-                            When = item.When
-                        });
+                            Id = questionViewId
+                        };
+                        if (item.Confirmation == 1)
+                        {
+                            current.Diagnosis = item.Diagnosis.ToUpper();
+                            current.Treatment = item.Treatment.ToUpper();
+                            current.Doctor = item.Doctor.ToUpper();
+                            current.When = item.When;
+                        }
+                        target.Add(current);
                     }
                 }
             }
-            return target;
+            return target.OrderBy(r => r.Id).ToList();
         }
 
     }

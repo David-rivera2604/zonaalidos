@@ -55,6 +55,7 @@ namespace aliados
                        "~/assets/css/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css",
                        "~/assets/select2/css/select2.min.css",
                        "~/assets/select2/css/select2-bootstrap4.css",
+                       "~/assets/css/plugins/jQueryUI/jquery-ui.css",
                        "~/app/css/custom.css"));
             bundles.Add(new ScriptBundle("~/bundles/jsCRUD").Include(
                                          "~/assets/bootstrap-table/bootstrap-table.js",

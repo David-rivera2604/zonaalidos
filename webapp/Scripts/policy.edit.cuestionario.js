@@ -83,15 +83,6 @@ app.cuestionario = (function () {
                 Diagnosis_2: {
                     required: true
                 },
-                Treatment_2: {
-                    required: true,
-                },
-                Doctor_2: {
-                    required: true
-                },
-                When_2: {
-                    required: true
-                },
                 Confirmation_3: {
                     AgeGreaterThan64_radio: true
                 },
@@ -185,16 +176,7 @@ app.cuestionario = (function () {
                     AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 8',
                 },
                 Diagnosis_2: {
-                    required: 'Debe indicar el diagnóstico'
-                },
-                Treatment_2: {
-                    required: 'Debe indicar el tratamiento',
-                },
-                Doctor_2: {
-                    required: 'Debe indicar el médico'
-                },
-                When_2: {
-                    required: 'Debe indicar la fecha'
+                    required: 'Debe ampliar su respuesta'
                 },
                 Confirmation_3: {
                     AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 2',

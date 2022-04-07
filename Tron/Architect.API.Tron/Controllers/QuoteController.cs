@@ -30,6 +30,8 @@ namespace Architect.API.Tron.Controllers
             return Ok(result);
         }
 
+        #region Hogar Total
+
         /// <summary>
         /// Devuelve la estructura de datos con los valores por defecto para una cotización de tipo Hogar Total
         /// </summary>
@@ -52,12 +54,10 @@ namespace Architect.API.Tron.Controllers
         /// Recupera lista de valores para sumas aseguradas de coberturas o valores deducibles según el rol del usuario
         /// </summary>
         /// <param name="cod_ramo"></param>
-        /// <param name="cod_mon"></param>
-        /// <param name="edad"></param>
-        /// <param name="tipo_prod"></param>
-        /// <param name="cod_marca"></param>
         /// <param name="num_contrato"></param>
         /// <param name="num_subcontrato"></param>
+        /// <param name="num_poliza_grupo"></param>
+        /// <param name="cod_mon"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("HogarTotalSettings")]
@@ -91,6 +91,10 @@ namespace Architect.API.Tron.Controllers
                 .ConfigureAwait(false);
             return Ok(result);
         }
+
+        #endregion
+
+        #region Multirriesgo
 
         /// <summary>
         /// Devuelve la estructura de datos con los valores por defecto para una cotización de tipo Multirriesgo
@@ -129,6 +133,10 @@ namespace Architect.API.Tron.Controllers
             return Ok(result);
         }
 
+        #endregion
+
+        #region Póliza Lider
+
         /// <summary>
         /// Devuelve la estructura de datos con los valores por defecto para una cotización de tipo Póliza Lider
         /// </summary>
@@ -165,6 +173,10 @@ namespace Architect.API.Tron.Controllers
                 .ConfigureAwait(false);
             return Ok(result);
         }
+
+        #endregion
+
+        #region MapfreMas
 
         /// <summary>
         /// Devuelve la estructura de datos con los valores por defecto para una cotización de tipo Mapfre Más
@@ -251,6 +263,10 @@ namespace Architect.API.Tron.Controllers
             return Ok(result);
         }
 
+        #endregion
+
+        #region Viajero
+
         /// <summary>
         /// Devuelve la estructura de datos con los valores por defecto para una cotización de tipo Viajero|
         /// </summary>
@@ -268,7 +284,6 @@ namespace Architect.API.Tron.Controllers
                 .ConfigureAwait(false);
             return Ok(result);
         }
-
 
         /// <summary>
         /// Realiza la validación de datos y cálculo necesarios para obtener una cotización o presupuesto de un producto de tipo Hogar Total
@@ -288,5 +303,49 @@ namespace Architect.API.Tron.Controllers
                 .ConfigureAwait(false);
             return Ok(result);
         }
+
+        #endregion
+
+        #region Saldo Deudor
+
+        /// <summary>
+        /// Devuelve la estructura de datos con los valores por defecto para una cotización de tipo Saldo Deudor
+        /// </summary>
+        [HttpGet]
+        [Route("SaldoDeudorSetup")]
+        public async Task<IHttpActionResult> SaldoDeudorSetup()
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Contracts.Cotizacion.SaldoDeudor result = null;
+            await Task.Run(() =>
+            {
+                tokenInfo.AgentCode = 180;
+                result = Business.Cotizacion.SaldoDeudor.Setup(tokenInfo);
+            }).ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Realiza la validación de datos y cálculo necesarios para obtener una cotización o presupuesto de un producto de tipo Saldo Deudor
+        /// </summary>
+        /// <param name="quoteInfo"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("SaldoDeudorQuote")]
+        public async Task<IHttpActionResult> SaldoDeudorQuote([FromBody] Tron.Contracts.Cotizacion.SaldoDeudor quoteInfo)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Tron.Contracts.Cotizacion.SaldoDeudor result = null;
+            await Task.Run(() =>
+            {
+                tokenInfo.AgentCode = 180;
+                result = Architect.API.Tron.Business.Cotizacion.SaldoDeudor.Quote(quoteInfo, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        #endregion
+
     }
 }

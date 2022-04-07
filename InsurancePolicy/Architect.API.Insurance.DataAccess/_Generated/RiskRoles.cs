@@ -279,8 +279,8 @@ namespace Architect.API.Insurance.DataAccess.Policy
             item.BirthDate = itemRow.DateTimeValue("BirthDate");
             item.Gender = itemRow.IntegerValue("Gender");
             item.CivilStatus = itemRow.IntegerValue("CivilStatus");
-            item.Height = itemRow.IntegerValue("Height");
-            item.Weight = itemRow.IntegerValue("Weight");
+            item.Height = itemRow.DoubleValue("Height");
+            item.Weight = itemRow.DoubleValue("Weight");
             item.BloodPressureSystolic = itemRow.IntegerValue("BloodPressureSystolic");
             item.BloodPressureDiastolic = itemRow.IntegerValue("BloodPressureDiastolic");
             item.Occupation = itemRow.StringValue("Occupation");

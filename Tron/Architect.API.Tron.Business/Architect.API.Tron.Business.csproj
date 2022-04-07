@@ -57,6 +57,8 @@
     <Compile Include="Clientes\Support.cs" />
     <Compile Include="Cotizacion\API.cs" />
     <Compile Include="Cotizacion\APIConvertTo.cs" />
+    <Compile Include="Cotizacion\Generico.cs" />
+    <Compile Include="Cotizacion\SaldoDeudorConvert.cs" />
     <Compile Include="Cotizacion\MapfreMasConvertTo.cs" />
     <Compile Include="Cotizacion\MapfreMasConvertFrom.cs" />
     <Compile Include="Cotizacion\PolizaLiderConvertFrom.cs" />
@@ -69,6 +71,7 @@
     <Compile Include="Cotizacion\HogarTotalConvertFrom.cs" />
     <Compile Include="Cotizacion\HogarTotalConvertTo.cs" />
     <Compile Include="Cotizacion\HogarTotal.cs" />
+    <Compile Include="Cotizacion\SaldoDeudor.cs" />
     <Compile Include="Cotizacion\Viajero.cs" />
     <Compile Include="Cotizacion\ViajeroConvertFrom.cs" />
     <Compile Include="Cotizacion\ViajeroConvertTo .cs" />

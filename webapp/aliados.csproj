@@ -88,14 +88,14 @@
     <Reference Include="Microsoft.Data.OData, Version=5.8.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Data.OData.5.8.5\lib\net40\Microsoft.Data.OData.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=6.16.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.IdentityModel.JsonWebTokens.6.16.0\lib\net472\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
+    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=6.17.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.JsonWebTokens.6.17.0\lib\net472\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IdentityModel.Logging, Version=6.16.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.IdentityModel.Logging.6.16.0\lib\net472\Microsoft.IdentityModel.Logging.dll</HintPath>
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=6.17.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Logging.6.17.0\lib\net472\Microsoft.IdentityModel.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IdentityModel.Tokens, Version=6.16.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.6.16.0\lib\net472\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=6.17.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.6.17.0\lib\net472\Microsoft.IdentityModel.Tokens.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Owin, Version=4.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.4.2.0\lib\net45\Microsoft.Owin.dll</HintPath>
@@ -159,8 +159,8 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=6.16.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.6.16.0\lib\net472\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=6.17.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.6.17.0\lib\net472\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>
     <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
@@ -1185,12 +1185,14 @@
     <Content Include="logos\logo-core-alt.svg" />
     <Content Include="logos\logo-mapfre-alt.svg" />
     <Content Include="logos\velero3.jpg" />
+    <Content Include="products\credecoop_saldo_deudor.xml" />
     <Content Include="products\TotalLeasing_saldo_deudor.xml" />
     <Content Include="products\carrofacil_saldo_deudor.xml" />
     <Content Include="products\cope_saldo_deudor.xml" />
     <Content Include="products\cope_vida.xml" />
     <Content Include="releaseletter.txt" />
     <Content Include="Scripts\Clientes.Index.js" />
+    <Content Include="Scripts\Cotizacion.SaldoDeudor.js" />
     <Content Include="Scripts\Emision.Viajero.js" />
     <Content Include="Scripts\Cotizacion.Viajero.js" />
     <Content Include="Scripts\Dashboard.Users.js" />
@@ -1215,6 +1217,7 @@
     <Content Include="Scripts\ManagerLinks.UI.js" />
     <Content Include="Scripts\policy.edit.cuestionariocovid.js" />
     <Content Include="Scripts\policy.products.js" />
+    <Content Include="Scripts\policy.imports.js" />
     <Content Include="Scripts\Prototype.Producto.js" />
     <Content Include="Scripts\Siniestros.Panel.js" />
     <Content Include="Scripts\Security.Integrate.js" />
@@ -1482,6 +1485,7 @@
     <Content Include="products\import.carrofacil.json" />
     <Content Include="documents\boletacargoautomatico.pdf" />
     <Content Include="documents\CertificadoComplemento\302\boletacargoautomatico.pdf" />
+    <Content Include="data\carga_masiva_saldo_deudor.xlsx" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1498,6 +1502,9 @@
     <Content Include="products\convention.settings.json" />
     <Content Include="products\HogarTotal.vocabulary.json" />
     <Content Include="products\Common.vocabulary.json" />
+    <Content Include="products\credecoop_saldo_deudor.import.json" />
+    <Content Include="products\policy.vocabulary.json" />
+    <Content Include="products\SaldoDeudor.rules.json" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\Policy\index.cshtml" />
     <Content Include="Views\Policy\Listv3.cshtml" />
@@ -1595,8 +1602,15 @@
     <Content Include="Views\Cotizacion\Viajero.cshtml" />
     <Content Include="Views\Emision\Viajero.cshtml" />
     <Content Include="Reports\SegurViaje.repx" />
+<<<<<<< HEAD
     <Content Include="Views\Provedores\ConsultasGastosMedicos.cshtml" />
     <Content Include="Scripts\Proveedores.ConsultasGastosMedicos.js" />
+=======
+    <Content Include="Reports\credecoop_saldo_deudor.repx" />
+    <Content Include="Reports\credecoop_saldo_deudor_mayor_que_64.repx" />
+    <Content Include="Views\Policy\imports.cshtml" />
+    <Content Include="Views\Cotizacion\SaldoDeudor.cshtml" />
+>>>>>>> 4898e34262a9ac3b9e2b15e3d249ba085c82cbf8
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
