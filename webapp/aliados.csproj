@@ -1260,6 +1260,7 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\UnhandledExceptionLogger.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\ProvedoresController.cs" />
     <Compile Include="Controllers\VariacionesController.cs" />
     <Compile Include="Controllers\InicioController.cs" />
     <Compile Include="Controllers\CaturixController.cs" />
@@ -1594,6 +1595,8 @@
     <Content Include="Views\Cotizacion\Viajero.cshtml" />
     <Content Include="Views\Emision\Viajero.cshtml" />
     <Content Include="Reports\SegurViaje.repx" />
+    <Content Include="Views\Provedores\ConsultasGastosMedicos.cshtml" />
+    <Content Include="Scripts\Proveedores.ConsultasGastosMedicos.js" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

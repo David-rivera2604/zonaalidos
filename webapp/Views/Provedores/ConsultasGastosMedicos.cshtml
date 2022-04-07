@@ -1,0 +1,191 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+
+<div class="ibox">
+    <div class="ibox-title">
+        <h5><span id="PageTitle">Gastos Médicos</span><small class="m-l-sm"><span id="PageSubTitle">Con el número de cédula del cliente podras consultar si posee pólizas de Gastos Médicos</span></small> </h5>
+        <!-- Opciones -->
+
+    </div>
+    <div class="ibox-content">
+
+        <!-- Edit Form -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div id="VisualizationsEdt" class="animated fadeInRight">
+                    <form id='VisualizationsEdtForm' class='form-horizontal' data-toggle='validator'>
+                        <fieldset>
+
+                            <!-- datosdelasegurado Zone -->
+                            <div class="form-row">
+                                <div class="col-lg-12">
+                                    <h4><i class="fa fa-user-o"></i> Datos del asegurado</h4>
+                                    <label class='control-label' id="resultadolbl"><span title='Resultado de la Busqueda del cliente'></span></label>
+
+                                    <div id="exitoso" hidden class="alert alert-success alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong>Exitoso!</strong> El cliente se encontro exitosamente en nuestros sistemas.
+                                    </div>
+                                    <div id="error" hidden class="alert alert-warning alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong>Atención!</strong> No se ha encontrado resultados en nuestros sistemas, por favor contacte a servicio al cliente para mas información.
+                                    </div>
+
+                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                    <div class="form-row">
+                                        <!-- DocumentNumber Text -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='DocumentNumber'>Identificación<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'></span></label>
+                                                <div class='input-group'>
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-barcode'></span>
+                                                    </span>
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-value='1' id="DocumentNumberType">
+                                                            Identificación
+                                                        </button>
+                                                        <div class="dropdown-menu" id="DocumentNumberTypeMenu">
+                                                            <a class="dropdown-item active" href="#" data-value='1'>Identificación</a>
+                                                        </div>
+                                                    </div>
+                                                    <input id='DocumentNumber' name='DocumentNumber'
+                                                           type='text' class='form-control' size='20'
+                                                           maxlength='20' placeholder="XXXXXXXXX">
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- FirstName Text -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='FirstName'>Nombre<span title='Este campo debe ser llenado de forma obligatoria'></span></label>
+                                                <input type='text' disabled="disabled" id='Nombre' name='Nombre' class='form-control' size='60' maxlength='60' />
+                                            </div>
+                                        </div>
+                                        <!-- LastName Text -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='LastName'>Apellidos<span title='Este campo debe ser llenado de forma obligatoria'></span></label>
+                                                <input type='text' id='Apellidos' disabled="disabled" name='Apellidos' class='form-control' size='60' maxlength='60' />
+                                            </div>
+                                        </div>
+                                        <!-- Poliza Text -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='LastName'>Poliza<span title='Este campo debe ser llenado de forma obligatoria'></span></label>
+                                                <input type='text' id='Poliza' disabled="disabled" name='Poliza' class='form-control' size='60' maxlength='60' />
+                                            </div>
+                                        </div>
+                                        <!-- Certficado Text -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='LastName'>Certificado<span title='Este campo debe ser llenado de forma obligatoria'></span></label>
+                                                <input type='text' id='Certificado' disabled="disabled" name='Certificado' class='form-control' size='60' maxlength='60' />
+                                            </div>
+                                        </div>
+                                        <!-- Inicio Vigencia Text -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='LastName'>Fecha Inicio Vigencia<span title='Este campo debe ser llenado de forma obligatoria'></span></label>
+                                                <input type='text' id='InicioVigencia' disabled="disabled" name='InicioVigencia' class='form-control' size='60' maxlength='60' />
+                                            </div>
+                                        </div>
+                                        <!-- Fin Vigencia Text -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='LastName'>Fecha Fin Vigencia<span title='Este campo debe ser llenado de forma obligatoria'></span></label>
+                                                <input type='text' id='FinVigencia' disabled="disabled" name='FinVigencia' class='form-control' size='60' maxlength='60' />
+                                            </div>
+                                        </div>
+                                        <!-- FechaIngreso Text -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='LastName'>Fecha de Ingreso<span title='Este campo debe ser llenado de forma obligatoria'></span></label>
+                                                <input type='text' id='FechaIngreso' disabled="disabled" name='FechaIngreso' class='form-control' size='60' maxlength='60' />
+                                            </div>
+                                        </div>
+                                        <!-- Fecha Exclusion Text -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='LastName'>Fecha Exclusion<span title='Este campo debe ser llenado de forma obligatoria'></span></label>
+                                                <input type='text' id='FechaExclusion' disabled="disabled" name='FechaExclusion' class='form-control' size='60' maxlength='60' />
+                                            </div>
+                                        </div>
+
+                                        <div class='col-sm-3 col-md-3'>
+                                        </div>
+
+                                    </div>
+                                    <!-- Dependientes Grid -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <div class='col'>
+                                                    <h4>
+                                                        Dependientes
+                                                        <label id="dependientesTbl-validate" class="float-right d-none LabelValidate"></label>
+                                                    </h4>
+                                                </div>
+
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class='col-md-12' style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="dependientesTbl" style="font-size: 11px;">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Beneficios Grid -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <div class='col'>
+                                                    <h4>
+                                                        Beneficios
+                                                        <label id="beneficiosTbl-validate" class="float-right d-none LabelValidate"></label>
+                                                    </h4>
+                                                </div>
+
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class='col-md-12' style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="beneficiosTbl" style="font-size: 11px;">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+     @section Scripts {
+     @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/Proveedores.ConsultasGastosMedicos.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.ConsultasGastosMedicos.Init();
+        });
+    </script>
+}

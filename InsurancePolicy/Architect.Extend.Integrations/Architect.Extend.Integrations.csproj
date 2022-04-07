@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Aliados\Consultas.cs" />
     <Compile Include="Coope\Consultas.cs" />
+    <Compile Include="GastosMedicos\ConsultaAsegurado.cs" />
     <Compile Include="InstitutoNacionalDeSeguros\Consultas.cs" />
     <Compile Include="My\Consultas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

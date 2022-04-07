@@ -51,6 +51,12 @@
     <Compile Include="Bayer\InclusionRequest.cs" />
     <Compile Include="Extender\Policy\RiskRoles.cs" />
     <Compile Include="Extender\Policy\RuleLoans.cs" />
+    <Compile Include="GastosMedicos\AseguradoMD.cs" />
+    <Compile Include="GastosMedicos\Beneficios.cs" />
+    <Compile Include="GastosMedicos\DependientesMD.cs" />
+    <Compile Include="GastosMedicos\Dependientes.cs" />
+    <Compile Include="GastosMedicos\AseguradoGastosMedicos.cs" />
+    <Compile Include="GastosMedicos\AseguradoGastosMedicosMD.cs" />
     <Compile Include="ManualClaims\Claim.cs" />
     <Compile Include="ManualPolicies\Certificate.cs" />
     <Compile Include="ManualPolicies\Policy.cs" />
