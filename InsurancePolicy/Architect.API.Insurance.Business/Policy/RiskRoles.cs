@@ -65,7 +65,8 @@ namespace Architect.API.Insurance.Business.Policy
             }
 
             //BirthDate:
-            if (source.BirthDate.IsEmpty())
+            if ((source.Type == 2 || (source.Type == 100 && risk.RestrictionLevel > 2  ) )
+                && source.BirthDate.IsEmpty())
             {
                 result.Add(new Core.Contracts.General.Error()
                 { Group = group, Key = prefix + "BirthDate", Message = "Debe indicar la fecha de nacimiento" });
@@ -79,7 +80,7 @@ namespace Architect.API.Insurance.Business.Policy
             }
 
             //CivilStatus:
-            if (source.Type == 2 && source.CivilStatus.IsEmpty())
+            if (risk.RestrictionLevel > 1 && source.Type == 2 && source.CivilStatus.IsEmpty())
             {
                 result.Add(new Core.Contracts.General.Error()
                 { Group = group, Key = prefix + "CivilStatus", Message = "Debe indicar el estado civil" });
@@ -97,7 +98,7 @@ namespace Architect.API.Insurance.Business.Policy
                 case 2: //PrimaryInsured
 
                     //Height:
-                    if (source.BirthDate.IsNotEmpty() && source.BirthDate.Age() > 64 && source.Height.IsEmpty())
+                    if (risk.RestrictionLevel > 1 && source.BirthDate.IsNotEmpty() && source.BirthDate.Age() > 64 && source.Height.IsEmpty())
                         result.Add(new Core.Contracts.General.Error()
                         {
                             Group = group,
@@ -106,7 +107,7 @@ namespace Architect.API.Insurance.Business.Policy
                         });
 
                     //Weight:
-                    if (source.BirthDate.IsNotEmpty() && source.BirthDate.Age() > 64 && source.Weight.IsEmpty())
+                    if (risk.RestrictionLevel > 1 && source.BirthDate.IsNotEmpty() && source.BirthDate.Age() > 64 && source.Weight.IsEmpty())
                         result.Add(new Core.Contracts.General.Error()
                         {
                             Group = group,
@@ -124,22 +125,22 @@ namespace Architect.API.Insurance.Business.Policy
                         });
 
                     //Province:
-                    if (source.Province.IsEmpty())
+                    if (risk.RestrictionLevel > 1 && source.Province.IsEmpty())
                         result.Add(new Core.Contracts.General.Error()
                         { Group = group, Key = "Province", Message = "Debe indicar la provincia" });
 
                     //Canton:
-                    if (source.Province.IsEmpty())
+                    if (risk.RestrictionLevel > 1 && source.Province.IsEmpty())
                         result.Add(new Core.Contracts.General.Error()
                         { Group = group, Key = "Canton", Message = "Debe indicar el cantón" });
 
                     //District:
-                    if (source.District.IsEmpty())
+                    if (risk.RestrictionLevel > 1 && source.District.IsEmpty())
                         result.Add(new Core.Contracts.General.Error()
                         { Group = group, Key = "District", Message = "Debe indicar el distrito" });
 
                     //Province:
-                    if (source.AddressDetail.IsEmpty())
+                    if (risk.RestrictionLevel > 1 && source.AddressDetail.IsEmpty())
                         result.Add(new Core.Contracts.General.Error()
                         { Group = group, Key = "AddressDetail", Message = "Debe indicar la dirección" });
                     break;

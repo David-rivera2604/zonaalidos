@@ -312,11 +312,11 @@ namespace Architect.Utilities.Extensions
             return output.ToString();
         }
 
-        public static string CompleteFullName(this string value, string value2, string value3 = "", string value4= "")
+        public static string CompleteFullName(this string value, string value2, string value3 = "", string value4 = "")
         {
             string result = value.Trim();
 
-            if(value2.IsNotEmpty())
+            if (value2.IsNotEmpty())
             {
                 result += " " + value2.Trim();
             }
@@ -329,6 +329,52 @@ namespace Architect.Utilities.Extensions
                 result += " " + value4.Trim();
             }
             return result;
+        }
+
+        public static string PhoneNumberFormat(this string value)
+        {
+            if (value.IsNotEmpty())
+            {
+                value = value.Replace("-", string.Empty).Trim();
+                value = value.Replace("(", string.Empty).Trim();
+                value = value.Replace(")", string.Empty).Trim();
+                if (value.StartsWith("506"))
+                {
+                    value = value.Substring(3).Trim();
+                }
+                value = value.Substring(0, 4) + "-" + value.Substring(4, 4);
+            }
+
+            return value;
+        }
+
+        public static string DocumentNumberFormat(this string value, int documentType)
+        {
+            if (value.IsNotEmpty())
+            {
+                switch (documentType)
+                {
+                    case 1:
+                        if (value.Length == 9)
+                        {
+                            value = string.Format("0{0}-{1}-{2}", value.Substring(0, 1),
+                                value.Substring(1, 4),
+                                value.Substring(5, 4));
+                        }
+                        break;
+                    case 2:
+                        if (value.Length == 12)
+                        {
+                            value = string.Format("{0}-{1}-{2}", value.Substring(0, 4),
+                                value.Substring(4, 6),
+                                value.Substring(10, 2));
+                        }
+                        break;
+
+                }
+            }
+
+            return value;
         }
 
     }

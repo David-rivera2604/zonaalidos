@@ -447,15 +447,18 @@ namespace Architect.API.Insurance.Business.Policy
             item.ExecutiveUserCode = tokenInfo.UserId;
             result.Errors = Business.Policy.Risk.PolicyStorage(item, orignalStatus, tokenInfo, source);
 
-            switch (source)
+            if (item.DraftStorage == "enabled" || (item.DraftStorage != "enabled" && result.Errors.Count == 0))
             {
-                case "Post":
-                    item = Business.Policy.Risk.CreatePolicy(item, tokenInfo.UserId, tokenInfo.CompanyId);
-                    break;
+                switch (source)
+                {
+                    case "Post":
+                        item = Business.Policy.Risk.CreatePolicy(item, tokenInfo.UserId, tokenInfo.CompanyId);
+                        break;
 
-                case "Put":
-                    item = Business.Policy.Risk.UpdatePolicy(item, tokenInfo.UserId, tokenInfo.CompanyId, source);
-                    break;
+                    case "Put":
+                        item = Business.Policy.Risk.UpdatePolicy(item, tokenInfo.UserId, tokenInfo.CompanyId, source);
+                        break;
+                }
             }
 
             result.Risk = item;
@@ -551,6 +554,7 @@ namespace Architect.API.Insurance.Business.Policy
         public static List<Core.Contracts.General.Error> Validate(Contracts.Policy.Risk source, Core.Contracts.Security.Token tokenInfo)
         {
             const string group = "Risk";
+
             List<Core.Contracts.General.Error> result = Reglas.research.Apply_Reglas("policy", source, tokenInfo);
 
             //LineOfBusinessCode:
@@ -598,7 +602,7 @@ namespace Architect.API.Insurance.Business.Policy
                 result.AddRange(RiskRoles.Validate(source.PrimaryInsured, "PrimaryInsured", tokenInfo.CompanyId, source));
 
             // Se valida la información del cuestionario
-            if (source.Questionary.IsNotEmpty())
+            if (source.RestrictionLevel > 1 && source.Questionary.IsNotEmpty())
                 result.AddRange(RiskQuestionnaires.Validate(source.Questionary, source, tokenInfo.CompanyId));
 
             // Si esta permitida, se valida la información del prestamo.
@@ -621,50 +625,39 @@ namespace Architect.API.Insurance.Business.Policy
         /// <summary>
         /// Aplica las reglas de suscripción de forma automática para determina si es necesario o no hacer la revisión de la póliza.
         /// </summary>
-        /// <param name="riskToBeEvaluated">Riesgo a ser evaluado</param>
         /// <returns>Verdadero en caso de necesitar suscripción, falso en el caso contrario</returns>
-        internal static bool Rule_Underwriting(Contracts.Policy.Risk riskToBeEvaluated, int companyId)
+        internal static bool Rule_Underwriting(Contracts.Policy.Risk riskToBeEvaluated, Core.Contracts.Security.Token tokenInfo)
         {
             bool result = false;
-
-            Architect.Insurance.Contracts.Product.ProductMaster product = Architect.API.Insurance.Business.Products.Specification.Definition(riskToBeEvaluated.ProductAlias);
-
-            switch (companyId)
+            
+            if (riskToBeEvaluated.Behavior.IsNotEmpty())
             {
-                case 1: //Coopeservidores
-                    if (Rule_UnderwritingInsuredAgeGreaterThan(riskToBeEvaluated.PrimaryInsured, 64))
-                    {
-                        result = true;
-                    }
-                    break;
-                case 2: //Aliados
-                case 3: //Clientes
-                case 4: //Bayer
-                    break;
-                case 5: //Carrofácil
-                    if (Rule_UnderwritingInsuredAgeGreaterThan(riskToBeEvaluated.PrimaryInsured, 64) ||
-                        Rule_UnderwritingByInsuranceAmountGreaterThan(riskToBeEvaluated, 140000))
-                    {
-                        result = true;
-                    }
-                    break;
-                default:
-                    //6: TotalLeasing
-                    if (product.Underwriting?.Count > 0)
-                    {
-                        foreach (Architect.Insurance.Contracts.Product.Underwriting.Rule rule in product.Underwriting)
-                        {
-                            if (Core.Business.General.Rule.Condition(rule.Condition, riskToBeEvaluated).Result)
-                            {
-                                result = true;
-                                break;
-                            }
-                        }
-                    }
-
-                    break;
+                result = riskToBeEvaluated.Behavior.Contains("Mode.Underwriting");
             }
+            else
+            {
+                switch (tokenInfo.CompanyId)
+                {
+                    case 1: //Coopeservidores
+                        if (Rule_UnderwritingInsuredAgeGreaterThan(riskToBeEvaluated.PrimaryInsured, 64))
+                        {
+                            result = true;
+                        }
+                        break;
+                    case 2: //Aliados
+                    case 3: //Clientes
+                    case 4: //Bayer
+                        break;
+                    case 5: //Carrofácil
+                        if (Rule_UnderwritingInsuredAgeGreaterThan(riskToBeEvaluated.PrimaryInsured, 64) ||
+                            Rule_UnderwritingByInsuranceAmountGreaterThan(riskToBeEvaluated, 140000))
+                        {
+                            result = true;
+                        }
+                        break;
 
+                }
+            }
             return result;
         }
 
@@ -813,6 +806,8 @@ namespace Architect.API.Insurance.Business.Policy
 
         private static List<Core.Contracts.General.Error> PolicyStorage(Contracts.Policy.Risk item, int status, Core.Contracts.Security.Token tokenInfo, string source)
         {
+            item.CompanyId = tokenInfo.CompanyId;
+            item.Behavior = Reglas.research.Apply_Comportamientos("policy", item, tokenInfo);
             List<Core.Contracts.General.Error> errors = Business.Policy.Risk.Validate(item, tokenInfo);
 
             if (status == (int)Enumerations.PolicyStatus.InForce && errors.Count == 0 && source != "Modify")
@@ -820,7 +815,7 @@ namespace Architect.API.Insurance.Business.Policy
                 Architect.Insurance.Contracts.Policy.Risk rk = Business.Policy.Rating.Asegurado(item.ProductAlias, item.Currency, item.ModuleCode, item.PaymentFrequency, item.InsuredAmount, item.PrimaryInsured.BirthDate);
                 if (rk.Notify == null || rk.Notify.Count == 0)
                 {
-                    if (Rule_Underwriting(item, tokenInfo.CompanyId))
+                    if (item.Undewriting == "enabled" && Rule_Underwriting(item, tokenInfo))
                     {
                         if (item.Id.IsEmpty())
                             item.Id = DataAccess.Policy.Risk.RetrieveLastKey() + 1;
@@ -1033,55 +1028,5 @@ namespace Architect.API.Insurance.Business.Policy
             return result;
         }
 
-
-        public static Core.Contracts.General.GenericResponse Import(string excelFilename, string specificactionFilename, Core.Contracts.Security.Token tokenInfo)
-        {
-            Core.Contracts.General.GenericResponse result = new Core.Contracts.General.GenericResponse();
-            //excelFilename = @"C:\Architect\aliados\aliados\data\" + excelFilename;
-            //specificactionFilename = @"C:\Architect\aliados\aliados\products\import." + specificactionFilename + ".json";
-
-            //List<Contracts.Policy.Risk> risks = Architect.Domain.Excel.Import.Handlers.DTLHandler.Builder(specificactionFilename, excelFilename).Data;
-
-            //Contracts.Policy.Risk riskCreated = null;
-            //foreach (Contracts.Policy.Risk riskItem in risks)
-            //{
-            //    riskItem.BranchOffice = tokenInfo.BranchOffice;
-            //    riskItem.ExecutiveUserCode = tokenInfo.UserId;
-
-            //    riskItem.AnnualPremium = riskItem.MonthlyPremium * 12;
-            //    riskItem.PrimaryInsured.PhoneNumber = riskItem.PrimaryInsured.PhoneNumber.Substring(3);
-            //    riskItem.PrimaryInsured.FirstName = riskItem.PrimaryInsured.FirstName.Capitalize();
-            //    riskItem.PrimaryInsured.SecondLastName = riskItem.PrimaryInsured.SecondLastName.Capitalize();
-            //    riskItem.PrimaryInsured.LastName = riskItem.PrimaryInsured.LastName.Capitalize();
-            //    riskItem.PrimaryInsured.SecondLastName = riskItem.PrimaryInsured.SecondLastName.Capitalize();
-
-            //    //TODO: falta tipo 2 y tipo 3
-            //    switch (riskItem.PrimaryInsured.DocumentType)
-            //    {
-            //        case 1:
-            //            if (riskItem.PrimaryInsured.DocumentNumber.Length == 9)
-            //            {
-            //                riskItem.PrimaryInsured.DocumentNumber = string.Format("0{0}-{1}-{2}", riskItem.PrimaryInsured.DocumentNumber.Substring(0, 1),
-            //                    riskItem.PrimaryInsured.DocumentNumber.Substring(1, 4),
-            //                    riskItem.PrimaryInsured.DocumentNumber.Substring(5, 4));
-            //            }
-            //            break;
-            //        case 2:
-            //            if (riskItem.PrimaryInsured.DocumentNumber.Length == 12)
-            //            {
-            //                riskItem.PrimaryInsured.DocumentNumber = string.Format("{0}-{1}-{2}", riskItem.PrimaryInsured.DocumentNumber.Substring(0, 4),
-            //                    riskItem.PrimaryInsured.DocumentNumber.Substring(4, 6),
-            //                    riskItem.PrimaryInsured.DocumentNumber.Substring(10, 2));
-            //            }
-            //            break;
-
-            //    }
-
-
-
-            //    riskCreated = Business.Policy.Risk.CreatePolicy(riskItem, tokenInfo.UserId, tokenInfo.CompanyId);
-            //}
-            return result;
-        }
     }
 }

@@ -14,6 +14,68 @@ namespace Architect.API.Insurance.Business.Reglas
     public static class research
     {
 
+        public static string Apply_Comportamientos(string ruleFile, object data, Core.Contracts.Security.Token tokenInfo)
+        {
+            string key = $"{ruleFile}.reglas";
+            string cacheKey = $"decision.{ruleFile}.reglas.source";
+            string script = string.Empty;
+            List<Core.Contracts.General.Error> errors = null;
+            string result = string.Empty;
+
+
+            if (ConfigurationManager.AppSettings["Working.Mode"] != "Development" && Utilities.Cache.Exist(cacheKey))
+            {
+                script = ((string)Utilities.Cache.GetItem(cacheKey));
+            }
+            else
+            {
+                Core.Contracts.Especificacion.Producto def = Utilities.SerializeHandler<Core.Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
+
+                if (def.Comportamientos?.Count > 0)
+                {
+                    script = BuildComportamientoCode(ruleFile, data, def.Comportamientos);
+                    Utilities.Cache.SetItem(cacheKey, script);
+                }
+            }
+            if (script.IsNotEmpty())
+            {
+                errors = (List<Architect.API.Core.Contracts.General.Error>)Decision.Runtime.Execute(key, script, data, tokenInfo, null, null)["errors"];
+            }
+
+            if (errors != null)
+            {
+                foreach (Core.Contracts.General.Error error in errors)
+                {
+                    if (result.IsNotEmpty())
+                    {
+                        result += ",";
+                    }
+                    result += error.Key;
+                }
+                
+            }
+            return result;
+        }
+
+        internal static string BuildComportamientoCode(string ruleFile, object data, List<Core.Contracts.Especificacion.Comportamiento> behaviors)
+        {
+            string basePath = ConfigurationManager.AppSettings["Product.Definition.Path"];
+            Architect.Decision.Vocabulary.Condition _rule = new Decision.Vocabulary.Condition(
+                $"{basePath}\\syntax.settings.json",
+                $"{basePath}\\convention.settings.json",
+                $"{basePath}\\{ruleFile}.vocabulary.json");
+
+            StringBuilder script = new StringBuilder();
+
+            script.AppendFormat("{0} data = ({0})Data;\n", data.GetType().FullName);
+            script.Append("List<Architect.API.Core.Contracts.General.Error> errors = new List<Architect.API.Core.Contracts.General.Error>();\n");
+
+            foreach (Core.Contracts.Especificacion.Comportamiento behavior in behaviors)
+            {
+                script.AppendFormat("if ({0}){{errors.Add(new Architect.API.Core.Contracts.General.Error() {{ Key = \"{1}\", Message = \"{2}\" }});}}\n", _rule.Parser(behavior.Condicion), behavior.Accion, behavior.Descripcion);
+            }
+            return script.ToString();
+        }
         public static List<Architect.API.Core.Contracts.General.Error> Apply_Reglas(string ruleFile, object data, Core.Contracts.Security.Token tokenInfo)
         {
             string key = $"{ruleFile}.reglas";
@@ -21,7 +83,7 @@ namespace Architect.API.Insurance.Business.Reglas
             string script = string.Empty;
             List<Core.Contracts.General.Error> errors = null;
 
-            if (Utilities.Cache.Exist(cacheKey))
+            if (ConfigurationManager.AppSettings["Working.Mode"] != "Development" && Utilities.Cache.Exist(cacheKey))
             {
                 script = ((string)Utilities.Cache.GetItem(cacheKey));
             }

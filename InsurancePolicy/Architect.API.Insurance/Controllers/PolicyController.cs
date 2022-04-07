@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web;
 
 namespace Architect.API.Insurance.Controllers
 {
@@ -370,13 +371,16 @@ namespace Architect.API.Insurance.Controllers
                 return NotFound();
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("import")]
-        [AllowAnonymous]
-        public IHttpActionResult Import([FromUri] string excelFilename,[FromUri] string specificactionFilename)
+        public IHttpActionResult Import([FromUri] string excelFilename, [FromUri] string originalFileName, [FromUri] string specificaction)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
-            Core.Contracts.General.GenericResponse result = Business.Policy.Risk.Import(excelFilename, specificactionFilename, tokenInfo);
+            Core.Contracts.General.GenericResponse result = Business.Policy.RiskImport.Import(HttpContext.Current.Server.MapPath(@"~\bin"), 
+                                                                                                Path.Combine(HostingEnvironment.MapPath(ConfigurationManager.AppSettings["Files.Path"]), excelFilename),
+                                                                                              originalFileName,
+                                                                                              Path.Combine(ConfigurationManager.AppSettings["Product.Definition.Path"],  specificaction + ".import.json"),
+                                                                                              tokenInfo);
 
             if (result.IsNotEmpty())
                 return Ok(result);

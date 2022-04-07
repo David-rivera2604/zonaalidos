@@ -55,6 +55,7 @@ namespace Architect.API.Insurance.Business.Policy
                 target.InsuredAmount = source.InsuredAmount;
                 target.AnnualPremium = source.AnnualPremium;
                 target.MonthlyPremium = source.MonthlyPremium;
+                target.Surcharge = source.Surcharge;
                 target.Status = source.Status;
                 target.StatusDesc = source.StatusDesc.ToUpper();
                 target.CancellationDate = source.CancellationDate;

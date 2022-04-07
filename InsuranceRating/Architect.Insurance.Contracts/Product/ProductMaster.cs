@@ -176,6 +176,6 @@ namespace Architect.Insurance.Contracts.Product
         /// </summary>
         public List<Setting> Settings { get; set; }
 
-        public List<Underwriting.Rule> Underwriting { get; set; }
+        //public List<Underwriting.Rule> Underwriting { get; set; }
     }
 }

@@ -1,10 +1,31 @@
 ﻿{
   "Reglas": [
+  ],
+  "Comportamientos": [
     {
-      "Condicion": "data.Currency.IsEmpty()",
-      "Mensaje": "Debe indicar una moneda para la póliza",
-      "Campo": "Currency",
-      "Grupo": "Risk"
+      "Condicion": "{Aliado} es igual a {Coope} y {La edad del asegurado} sea mayor o igual a 61",
+      "Descripcion": "Debe indicar el cuestionario de Covid",
+      "Accion": "Show.CV"
+    },
+    {
+      "Condicion": "{Aliado} no es igual a {Credecoop} y {La edad del asegurado} sea mayor o igual a 65",
+      "Descripcion": "Debe indicar la declaración de salud",
+      "Accion": "Show.DS,Mode.Underwriting"
+    },
+    {
+      "Condicion": "{Aliado} es igual a {Credecoop} y ({La edad del asegurado} sea mayor a 18 y {La edad del asegurado} sea menor a 55) y ({La suma asegurada} sea mayor a 0 y {La suma asegurada} sea menor o igual a 100000000)",
+      "Descripcion": "Debe indicar el cuestionario de Covid",
+      "Accion": "Show.CV"
+    },
+    {
+      "Condicion": "{Aliado} es igual a {Credecoop} y ({La edad del asegurado} sea mayor o igual a 18 y {La edad del asegurado} sea menor a 55) y ({La suma asegurada} sea mayor a 100000000 y {La suma asegurada} sea menor o igual a 195000000)",
+      "Descripcion": "Debe indicar el cuestionario de Covid y la declaración de salud",
+      "Accion": "Show.CV,Show.DS,Mode.Underwriting"
+    },
+    {
+      "Condicion": "{Aliado} es igual a {Credecoop} y {La edad del asegurado} sea mayor o igual a 55",
+      "Descripcion": "Debe indicar el cuestionario de Covid y la declaración de salud",
+      "Accion": "Show.CV,Show.DS,Mode.Underwriting"
     }
   ]
 }

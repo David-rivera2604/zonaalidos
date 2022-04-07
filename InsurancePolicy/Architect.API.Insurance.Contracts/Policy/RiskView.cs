@@ -84,6 +84,10 @@ namespace Architect.API.Insurance.Contracts.Policy
         /// </summary>
         [DataMember(), JsonProperty()] public double MonthlyPremium { get; set; }
         /// <summary>
+        /// Porcentaje del recargo.
+        /// </summary>
+        [DataMember(), JsonProperty()] public double Surcharge { get; set; }
+        /// <summary>
         /// Estado de la póliza.
         /// </summary>
         [DataMember(), JsonProperty()] public int Status { get; set; }

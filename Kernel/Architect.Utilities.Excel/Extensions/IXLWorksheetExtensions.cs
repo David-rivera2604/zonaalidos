@@ -18,7 +18,7 @@ namespace Architect.Utilities.Excel.Extensions
 {
     public static class IXLWorksheetExtensions
     {
-        public static string StringValue(this IXLWorksheet sheet, int rowNumber, string column)
+        public static string StringValue(this IXLWorksheet sheet, int rowNumber, string column, string verbose = "")
         {
             string result = string.Empty;
             if (sheet.Cell(rowNumber, column).Value != null)
@@ -53,7 +53,7 @@ namespace Architect.Utilities.Excel.Extensions
         }
 
 
-        public static int IntegerValue(this IXLWorksheet sheet, int rowNumber, string column)
+        public static int IntegerValue(this IXLWorksheet sheet, int rowNumber, string column, string verbose = "")
         {
             try
             {
@@ -66,7 +66,7 @@ namespace Architect.Utilities.Excel.Extensions
             }
             catch (Exception ex)
             {
-                throw new WorksheetCellException(rowNumber, column, ex);
+                throw new WorksheetCellException(rowNumber, column, verbose, ex);
             }
         }
 
@@ -158,12 +158,12 @@ namespace Architect.Utilities.Excel.Extensions
             }
         }
 
-        public static DateTime DateTimeValue(this IXLWorksheet sheet, int rowNumber, string column)
+        public static DateTime DateTimeValue(this IXLWorksheet sheet, int rowNumber, string column, string verbose = "")
         {
             DateTime result = DateTime.MinValue;
             DateTime @internal;
 
-            if (sheet.Cell(rowNumber, column).Value != null)
+            if (sheet.Cell(rowNumber, column).Value != null && sheet.Cell(rowNumber, column).Value.ToString() != "")
             {
                 try
                 {
@@ -180,7 +180,7 @@ namespace Architect.Utilities.Excel.Extensions
                 }
                 catch (Exception ex)
                 {
-                    throw new WorksheetCellException(rowNumber, column, ex);
+                    throw new WorksheetCellException(rowNumber, column, verbose, ex);
                 }
             }
 
@@ -485,6 +485,25 @@ namespace Architect.Utilities.Excel.Extensions
             catch (Exception ex)
             {
                 throw new WorksheetCellException(rowNumber, column, ex);
+            }
+        }
+
+
+        public static double DoubleValue(this IXLWorksheet sheet, int rowNumber, string column, string verbose = "")
+        {
+            try
+            {
+                if (sheet.Cell(rowNumber, column).Value == null || sheet.Cell(rowNumber, column).Value.ToString() == string.Empty)
+                    return 0;
+                else
+                {
+                    double value = Convert.ToDouble(sheet.Cell(rowNumber, column).Value);
+                    return value;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new WorksheetCellException(rowNumber, column, verbose,ex);
             }
         }
     }

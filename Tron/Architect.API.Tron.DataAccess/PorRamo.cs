@@ -37,32 +37,6 @@ namespace Architect.API.Tron.DataAccess
             return result;
         }
 
-
-        /// <summary>
-        /// Coberturas por numero de contrato
-        /// </summary>
-        /// <returns></returns>
-        /// TODO: ELIMINAR
-        public static string Coberturas_por_contrato(int cod_ramo, int num_contrato)
-        {
-            string result = Database.Select("SELECT NVL(LISTAGG(cod_cob, ',') WITHIN GROUP (ORDER BY cod_cob), '-') " +
-                                             " FROM G2990026 " +
-                                            " WHERE COD_CIA=1" +
-                                              " AND COD_RAMO=:COD_RAMO" +
-                                              " AND NUM_CONTRATO=:NUM_CONTRATO")
-                            .AddParameter("cod_ramo", Architect.DataFactory.Enumerations.DbType.Int32, 22, cod_ramo)
-                            .AddParameter("num_contrato", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_contrato)
-                            .QueryScalar<string>(null, "Tron");
-            if (result == "-")
-            {
-                return string.Empty;
-            }
-            else
-            {
-                return result;
-            }
-        }
-
         /// <summary>
         /// COBERTURAS DEL RAMO
         /// </summary>

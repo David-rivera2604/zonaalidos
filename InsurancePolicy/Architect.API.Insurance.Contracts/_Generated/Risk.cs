@@ -15,7 +15,7 @@ namespace Architect.API.Insurance.Contracts.Policy
         /// </summary>
         [DataMember(), JsonProperty()] public int Id { get; set; }
         /// <summary>
-        /// Identificación de la compañia propietaria.
+        /// Identificación de la compañía propietaria.
         /// </summary>
         [DataMember(), JsonProperty()] public int CompanyId { get; set; }
         /// <summary>
@@ -99,7 +99,7 @@ namespace Architect.API.Insurance.Contracts.Policy
         /// </summary>
         [DataMember(), JsonProperty()] public double MonthlyPremium { get; set; }
         /// <summary>
-        /// Importe de recargo.
+        /// Porcentaje del recargo.
         /// </summary>
         [DataMember(), JsonProperty()] public double Surcharge { get; set; }
         /// <summary>

@@ -1,6 +1,4 @@
 {
-  "y": "&&",
-  "o": "||",
   "no sea": "!",
   "es menor a": "<",
   "es mayor a": ">",
@@ -9,14 +7,22 @@
   "es igual a": "==",
   "es menor que": "<",
   "es menor o igual que": "<=",
+  "es menor o igual a": "<=",
   "es mayor que": ">",
   "es mayor o igual que": ">=",
+  "es mayor o igual a": ">=",
   "no igual a": "!=",
   "no sea igual a": "!=",
   "diferente a": "!=",
   "igual a": "==",
   "menor que": "<",
+  "menor a": "<",
   "menor o igual que": "<=",
+  "menor o igual a": "<=",
   "mayor que": ">",
-  "mayor o igual que": ">="
+  "mayor a": ">",
+  "mayor o igual que": ">=",
+  "mayor o igual a": ">=",
+  "y": "&&",
+  "o": "||"
 }

@@ -24,7 +24,7 @@ namespace Architect.API.Core.DataAccess.General
                 List<DataFactory.Contracts.Parameter> parameters = new List<DataFactory.Contracts.Parameter>();
 
 
-                parameters.Add(new DataFactory.Contracts.Parameter { Name = "EntityType", Type = DbType.Decimal, Size = 5, Value = entityType, direction= ParameterDirection.Input  });
+                parameters.Add(new DataFactory.Contracts.Parameter { Name = "EntityType", Type = DbType.Decimal, Size = 5, Value = entityType, direction = ParameterDirection.Input });
                 if (entityId.IsNotEmpty())
                 {
                     parameters.Add(new DataFactory.Contracts.Parameter { Name = "EntityId", Type = DbType.Decimal, Size = 9, Value = entityId, direction = ParameterDirection.Input });
@@ -39,7 +39,7 @@ namespace Architect.API.Core.DataAccess.General
                             .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
                             {
                                 result.Add(DataRowMapperView(reader));
-                            }));               
+                            }));
             }
 
             return result;
@@ -47,13 +47,15 @@ namespace Architect.API.Core.DataAccess.General
 
         private static Contracts.General.ChangeSetView DataRowMapperView(System.Data.IDataReader reader)
         {
-            return new Contracts.General.ChangeSetView() { 
+            return new Contracts.General.ChangeSetView()
+            {
                 Id = (int)Math.Round(reader.NumericValue("Id")),
                 Action = reader.StringValue("Action"),
-                Summary = reader.StringValue("Summary"), 
-                UpdateUserCode = (int)Math.Round(reader.NumericValue("UpdateUserCode")), 
-                UpdateUserName = reader.StringValue("UpdateUserName"), 
-                UpdateDate = reader.DateTimeValue("UpdateDate") };
+                Summary = reader.StringValue("Summary"),
+                UpdateUserCode = (int)Math.Round(reader.NumericValue("UpdateUserCode")),
+                UpdateUserName = reader.StringValue("UpdateUserName"),
+                UpdateDate = reader.DateTimeValue("UpdateDate")
+            };
         }
 
         public static string BuildFilter(string filter)
@@ -65,6 +67,24 @@ namespace Architect.API.Core.DataAccess.General
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Último valor asignado a clave única de la tabla ChangeSet.
+        /// </summary>
+        /// <param name="entityType">Tipo de entidad.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
+        /// <param name="connection">Instancia de una conexión compartida</param>
+        /// <returns>Último valor asignado.</returns>
+        public static Int64 RetrieveLastEntityId(int entityType, int companyId, IDbConnection connection = null)
+        {
+
+            return (Int64)Database.Select("SELECT NVL(MAX(EntityId),0) " +
+                                          "FROM ChangeSet" +
+                                        " WHERE companyId =:companyId AND EntityType=:EntityType")
+                                .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                                .AddParameter("EntityType", DbType.Decimal, 5, entityType)
+                                .QueryScalar<Decimal>(connection, "Research");
         }
     }
 }
