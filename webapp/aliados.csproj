@@ -1602,15 +1602,12 @@
     <Content Include="Views\Cotizacion\Viajero.cshtml" />
     <Content Include="Views\Emision\Viajero.cshtml" />
     <Content Include="Reports\SegurViaje.repx" />
-<<<<<<< HEAD
     <Content Include="Views\Provedores\ConsultasGastosMedicos.cshtml" />
     <Content Include="Scripts\Proveedores.ConsultasGastosMedicos.js" />
-=======
     <Content Include="Reports\credecoop_saldo_deudor.repx" />
     <Content Include="Reports\credecoop_saldo_deudor_mayor_que_64.repx" />
     <Content Include="Views\Policy\imports.cshtml" />
     <Content Include="Views\Cotizacion\SaldoDeudor.cshtml" />
->>>>>>> 4898e34262a9ac3b9e2b15e3d249ba085c82cbf8
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
