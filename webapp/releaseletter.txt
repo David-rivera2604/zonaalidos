@@ -294,5 +294,13 @@
                   Coope. Reportes. Agregar la fecha de nacimiento en el certificado.
                   Coope. Reportes. Ocultar la nacionalidad del certificado.
                   Coope. Reportes. En temas adicionales, se podría reflejar lo que se estipula en observaciones de la herramienta.
-                  Coope. Reportes.  Agregar la prima en el certificado.
-                  
+                  Coope. Reportes. Agregar la prima en el certificado.
+1.5.90 24/03/2022 Coope. Reportes. Mejoras en complementos de las respuesta del cuestionario de salud y el de covid.
+                  Coope. Campos de altura y peso redondea a entero su valor.
+                  Credecoop. Reporte. Preliminar.
+                  Credecoop. Carga masiva saldo deudor. Diseño de plantilla.
+1.5.91 29/03/2022 Coope. Reportes. Fix del campo peso.
+                  Reportes. Coope/Carrofacil/Credecoop. Se agrega el manejo del recargo para mostrar la prima mensual.
+1.5.92 06/04/2022 Credecoop. Carga masiva saldo deudor. Página e historial de cargas.
+1.5.93 07/04/2022 Proveedores. Royner. Se crea consulta de polizas Gastos Medicos tanto en Panama como en Medical para brindar la opcion mediante el tenant de Proveedores.
+             
