@@ -303,4 +303,5 @@
                   Reportes. Coope/Carrofacil/Credecoop. Se agrega el manejo del recargo para mostrar la prima mensual.
 1.5.92 06/04/2022 Credecoop. Carga masiva saldo deudor. Página e historial de cargas.
 1.5.93 07/04/2022 Proveedores. Royner. Se crea consulta de polizas Gastos Medicos tanto en Panama como en Medical para brindar la opcion mediante el tenant de Proveedores.
+1.5.94            Credecoop. (General) Condicionado para la visuzalización de los cuestionarios y proceso de revisión.
              

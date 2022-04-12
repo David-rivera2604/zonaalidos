@@ -48,8 +48,8 @@ namespace Architect.API.Insurance.Controllers
         /// asegurado.
         /// </param>
         /// <param name="lineOfBusiness">Opción para filtrar por ramo o linea de negocio.</param>
-        /// <param name="product">Opción para filtrar por producto vincaulado a un ramo.</param>
-        /// <param name="status">Opción para filtrar por multiples esta de las pólizas.</param>
+        /// <param name="product">Opción para filtrar por producto vinculado a un ramo.</param>
+        /// <param name="status">Opción para filtrar por múltiples esta de las pólizas.</param>
         /// <returns>Lista de pólizas según los criterio definidos en el filtro.</returns>
         [HttpGet]
         [Route("view")]
@@ -100,7 +100,7 @@ namespace Architect.API.Insurance.Controllers
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
             string message = "";
-            Architect.API.Insurance.Business.Structure.IssuePolicyResult result = null;
+            Contracts.Structure.IssuePolicyResult result = null;
 
             await Task.Run(() =>
             {
@@ -167,7 +167,7 @@ namespace Architect.API.Insurance.Controllers
         public async Task<IHttpActionResult> Put([FromBody] Contracts.Policy.Risk item)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
-            Architect.API.Insurance.Business.Structure.IssuePolicyResult result = null;
+            Contracts.Structure.IssuePolicyResult result = null;
             string message = "";
             await Task.Run(() =>
             {
@@ -215,7 +215,7 @@ namespace Architect.API.Insurance.Controllers
         public async Task<IHttpActionResult> Modify([FromBody] Contracts.Policy.Risk item)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
-            Architect.API.Insurance.Business.Structure.IssuePolicyResult result = null;
+            Contracts.Structure.IssuePolicyResult result = null;
             string message = "";
             await Task.Run(() =>
             {
@@ -363,7 +363,7 @@ namespace Architect.API.Insurance.Controllers
         {
             if (productAlias.IsEmpty())
                 return BadRequest("Debe indicar una clave de producto");
-            ProductDefinition result = Business.Products.Specification.DefinitionByAlias(productAlias);
+            ProductDefinition result = Business.Policy.Risk.DefinitionByAlias(productAlias);
 
             if (result.IsNotEmpty())
                 return Ok(result);
@@ -386,6 +386,22 @@ namespace Architect.API.Insurance.Controllers
                 return Ok(result);
             else
                 return NotFound();
+        }
+
+
+        [HttpPost]
+        [Route("Behavior")]
+        public async Task<IHttpActionResult> Behavior([FromBody] Contracts.Policy.Risk item)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Contracts.Structure.BehaviorResult result = null;
+
+            await Task.Run(() =>
+            {
+                result = Business.Policy.Risk.Behavior(tokenInfo, item);
+            }).ConfigureAwait(false);
+
+            return Ok(result);
         }
     }
 }

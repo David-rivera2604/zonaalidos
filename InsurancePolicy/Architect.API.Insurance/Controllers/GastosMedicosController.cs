@@ -11,7 +11,7 @@ using System.Web.Http.Description;
 namespace Architect.API.Insurance.Controllers
 {
     /// <summary>
-    /// Opciones para la consulta polizas GastosMedicos
+    /// Opciones para la consulta pólizas GastosMedicos
     /// </summary>
     [ApiVersion("1.0")]
     [Authorize]

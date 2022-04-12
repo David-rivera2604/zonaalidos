@@ -48,7 +48,7 @@ app.PolicyEdit = (function () {
 
         $('#AcceptComplement').addClass('d-none');
 
-        if (status !== 1 ) {
+        if (status !== 1) {
             $('#print').removeClass('d-none');
             $('#accept').addClass('d-none');
             $('#save').addClass('d-none');
@@ -108,7 +108,7 @@ app.PolicyEdit = (function () {
                 $('#ReviewCondition').addClass('d-none');
                 $('#ReviewDecline').addClass('d-none');
                 $('#ReviewComplement').addClass('d-none');
-                
+
 
                 $('#AcceptCondition').addClass('d-none');
                 $('#AcceptDecline').addClass('d-none');
@@ -399,6 +399,9 @@ app.PolicyEdit = (function () {
         NavegationMode: function () {
             return navegationMode;
         },
-        WorkMode: _WorkMode
+        WorkMode: _WorkMode,
+        Data: function () {
+            return MapInputToObject();
+        }
     };
 }());

@@ -62,7 +62,7 @@
         {
           "PropertyName": "ProductAlias",
           "ObjectType": "String",
-          "DefaultValue": "cope_saldo_deudor"
+          "DefaultValue": "credecoop_saldo_deudor"
         },
         {
           "PropertyName": "RestrictionLevel",

@@ -100,7 +100,6 @@
     <Compile Include="Products\Specification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reglas\research.cs" />
-    <Compile Include="Structure\IssuePolicyResult.cs" />
     <Compile Include="_Generated\Claim.cs" />
     <Compile Include="_Generated\Policy.cs" />
     <Compile Include="_Generated\RiskOverdraft.cs" />

@@ -142,7 +142,7 @@ namespace Architect.API.Insurance.Business.Products
 
                 foreach (Architect.Insurance.Contracts.Product.DataEntrySection entry in product.DataEntrySectionsAllowed)
                 {
-                    if (entry.Code == entryName)
+                    if (entry.Code.Equals(entryName, StringComparison.CurrentCultureIgnoreCase))
                     {
                         result = true;
                         break;

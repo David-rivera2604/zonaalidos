@@ -1481,8 +1481,6 @@
     <Content Include="assets\DevExtreme\css\icons\dxiconsmaterial.woff2" />
     <Content Include="assets\template7\template7.js.map" />
     <Content Include="assets\template7\template7.min.js.map" />
-    <Content Include="products\import.aliados.json" />
-    <Content Include="products\import.carrofacil.json" />
     <Content Include="documents\boletacargoautomatico.pdf" />
     <Content Include="documents\CertificadoComplemento\302\boletacargoautomatico.pdf" />
     <Content Include="data\carga_masiva_saldo_deudor.xlsx" />

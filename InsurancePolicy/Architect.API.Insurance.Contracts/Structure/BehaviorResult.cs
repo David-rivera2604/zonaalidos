@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Architect.API.Insurance.Business.Structure
+namespace Architect.API.Insurance.Contracts.Structure
 {
-    public class IssuePolicyResult
+    public class BehaviorResult
     {
-        public Contracts.Policy.Risk Risk { get; set; }
+        public string Behavior { get; set; }
 
         public List<Core.Contracts.General.Error> Errors { get; set; }
     }

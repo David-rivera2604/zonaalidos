@@ -310,6 +310,40 @@ app.cuestionario = (function () {
             else
                 $('#cuestionarioHTab .badge').html('');
             return result;
+        },
+        UIBehavior: function (gender, birthDate) {
+            if (app.poliza.EntryAllowed()?.includes(";Questionnaires;")) {
+
+                let age = moment().diff(birthDate, 'years');
+                if (Number.isNaN(age))
+                    age = 0;
+                let enable = !(age >= 40);
+                if (gender === '1') { //Masculino
+                    $('#Confirmation_6a').prop("disabled", true);
+                    $('#Confirmation_6b').prop("disabled", true);
+                    $('#Confirmation_9a').prop("disabled", true);
+                    $('#Confirmation_9b').prop("disabled", true);
+                    $($('input:radio[name=Confirmation_6][value=1]')).prop('checked', false);
+                    $($('input:radio[name=Confirmation_6][value=2]')).prop('checked', false);
+                    $($('input:radio[name=Confirmation_9][value=1]')).prop('checked', false);
+                    $($('input:radio[name=Confirmation_9][value=2]')).prop('checked', false);
+                    let enable = !(age >= 40);
+                    $('#Confirmation_10a').prop("disabled", enable);
+                    $('#Confirmation_10b').prop("disabled", enable);
+                }
+                if (gender === '2') { //Femenino
+                    $('#Confirmation_6a').prop("disabled", enable);
+                    $('#Confirmation_6b').prop("disabled", enable);
+                    $('#Confirmation_9a').prop("disabled", enable);
+                    $('#Confirmation_9b').prop("disabled", enable);
+
+                    $($('input:radio[name=Confirmation_10][value=1]')).prop('checked', false);
+                    $($('input:radio[name=Confirmation_10][value=2]')).prop('checked', false);
+
+                    $('#Confirmation_10a').prop("disabled", true);
+                    $('#Confirmation_10b').prop("disabled", true);
+                }
+            }
         }
     };
 })();

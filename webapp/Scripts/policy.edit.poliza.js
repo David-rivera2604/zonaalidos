@@ -108,6 +108,9 @@ app.poliza = (function () {
         app.core.Get(app.setting.apipath + 'v1/Policy/ProductDefinition?productAlias=' + productAlias, null,
             function (data) {
 
+                if (data.Behavior != null && data.Behavior != '') {
+                    eval(data.Behavior);
+                }
                 $('#ProductTitle').html(data.Title);
                 $('#ProductSubTitle').html(data.SubTitle);
 
@@ -242,7 +245,7 @@ app.poliza = (function () {
             event.preventDefault();
             ChangeStatus(2, 'Póliza en revisión');
         });
-        
+
 
         $('#AcceptCancellation').click(function () {
             event.preventDefault();
@@ -287,6 +290,8 @@ app.poliza = (function () {
                         app.ui.SetNumericValue('#TotalAnnualPremium', data.AnnualPremium);
                         app.ui.SetNumericValue('#TotalPremium', data.MonthlyPremium);
                     });
+
+            app.poliza.PageBehavior();
         }
         else {
             app.ui.SetNumericValue("#AnnualPremium", 0);
@@ -483,20 +488,10 @@ app.poliza = (function () {
             }
             else {
                 app.ui.SetNumericValue('#TotalAnnualPremium', data.AnnualPremium);
-                app.ui.SetNumericValue('#TotalPremium', data.MonthlyPremium);                
+                app.ui.SetNumericValue('#TotalPremium', data.MonthlyPremium);
             }
 
-            let age = moment().diff($('#BirthDate_group').data('DateTimePicker').date(), 'years');
-            if (!Number.isNaN(age) && age > 64 && app.poliza.EntryAllowed()?.includes(";Questionnaires;")) {
-                $('#saludTabHeader').removeClass('d-none');
-            } else {
-                $('#saludTabHeader').addClass('d-none');
-            }
-            if (!Number.isNaN(age) && age >= 60 && app.poliza.EntryAllowed()?.includes(";Covid;")) {
-                $('#covidTabHeader').removeClass('d-none');
-            } else {
-                $('#covidTabHeader').addClass('d-none');
-            }
+            app.poliza.PageBehavior();
 
             WorkMode(data.Status);
         }
@@ -529,7 +524,7 @@ app.poliza = (function () {
                     $('#Comments').prop("disabled", false);
 
                     $('#ReviewAccept').removeClass('d-none');
-                    $('#ReviewCondition').removeClass('d-none');                    
+                    $('#ReviewCondition').removeClass('d-none');
                     $('#ReviewDecline').removeClass('d-none');
                     $('#ReviewComplement').removeClass('d-none');
                 }
@@ -652,11 +647,30 @@ app.poliza = (function () {
             return productModules;
         },
         EntryAllowed: function () {
-            return EntryAllowed;
+            return EntryAllowed == null ? '' : EntryAllowed;
         },
         Behavior: function (productKey, callback) {
             productAlias = productKey;
             ProductDefinition(callback);
+        },
+        PageBehavior: function () {
+            let ds = app.poliza.EntryAllowed().includes(";Questionnaires;");
+            let cv = app.poliza.EntryAllowed().includes(";Covid;");
+            if (ds || cv) {
+                data = app.poliza.EvalBehavior();
+                if (ds && data.Behavior.includes("Show.DS")) {
+                    $('#saludTabHeader').removeClass('d-none');
+                } else {
+                    $('#saludTabHeader').addClass('d-none');
+                }
+
+                if (cv && data.Behavior.includes("Show.CV")) {
+                    $('#covidTabHeader').removeClass('d-none');
+                } else {
+                    $('#covidTabHeader').addClass('d-none');
+                }
+            }
+
         }
     };
 })();

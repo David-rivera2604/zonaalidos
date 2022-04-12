@@ -60,6 +60,8 @@
     <Compile Include="ManualClaims\Claim.cs" />
     <Compile Include="ManualPolicies\Certificate.cs" />
     <Compile Include="ManualPolicies\Policy.cs" />
+    <Compile Include="Structure\IssuePolicyResult.cs" />
+    <Compile Include="Structure\BehaviorResult.cs" />
     <Compile Include="_Generated\Certificate.cs" />
     <Compile Include="_Generated\CertificateResult.cs" />
     <Compile Include="_Generated\CertificateRole.cs" />

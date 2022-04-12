@@ -2,6 +2,12 @@
 app.ui = (function () {
 
     return {
+        Age: function (birthDate) {
+            let age = moment().diff(birthDate, 'years');
+            if (Number.isNaN(age))
+                age = 0;
+            return age;
+        },
         DropDownValueWithOption: function (selector, value, display) {
             $(selector).append(`<option value=${value} selected>${display}</option>`);
         },
