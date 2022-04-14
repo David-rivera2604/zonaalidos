@@ -33,11 +33,11 @@ namespace Architect.API.Tron.Business.Cotizacion
                 quoteInfo.presupuesto = string.Empty;
                 quoteInfo.resumen = null;
 
-                Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = SaldoDeudorConvert.ToTron(quoteInfo, COD_RAMO, tokenInfo.AgentCode, tokenInfo.UserName);
+                Contracts.Presupuesto.DatoFijo result = SaldoDeudorConvert.ToTron(quoteInfo, COD_RAMO, tokenInfo.AgentCode, tokenInfo.UserName);
                 result = Backoffice.Cotizacion.Generico.Calcular(result);
 
-                //resultInfo = LookupComplements(HogarTotalConvertFrom.Quote(quoteInfo, result), tokenInfo);
-                //Architect.Utilities.Cache.SetItem(string.Format("{0}.{1}", NOM_PROD, quoteInfo.presupuesto),Newtonsoft.Json.JsonConvert.SerializeObject(resultInfo), -1);
+                resultInfo = LookupComplements(SaldoDeudorConvert.FromTron(quoteInfo, result), tokenInfo);
+                Architect.Utilities.Cache.SetItem(string.Format("{0}.{1}", NOM_PROD, quoteInfo.presupuesto), Newtonsoft.Json.JsonConvert.SerializeObject(resultInfo), -1);
 
                 if (resultInfo.presupuesto.IsNotEmpty())
                 {
@@ -46,6 +46,20 @@ namespace Architect.API.Tron.Business.Cotizacion
             }
 
             return resultInfo;
+        }
+
+        /// <summary>
+        /// Prepara las descripciones de campos relacionados a listas de valores.
+        /// </summary>
+        private static Contracts.Cotizacion.SaldoDeudor LookupComplements(Contracts.Cotizacion.SaldoDeudor quoteInfo, Core.Contracts.Security.Token tokenInfo)
+        {
+            //string context = string.Format("cod_ramo={0}:cod_mon={1}:cod_pais={2}:cod_tip_ocup={3}%:cod_estado={4}:cod_prov={5}",
+            //    quoteInfo.cod_ramo, quoteInfo.moneda, quoteInfo.pais, quoteInfo.ocupaciondelriesgo, quoteInfo.provincia, quoteInfo.canton);
+
+            //quoteInfo.monedaDesc = Core.Business.Common.LkpDescription(tokenInfo.CompanyId, "MonedasPorRamo", quoteInfo.moneda.ToString(), context);
+
+
+            return quoteInfo;
         }
     }
 }

@@ -3,455 +3,514 @@
 }
 @Styles.Render("~/Content/cssCRUD")
 
-<div class="ibox">
-    <div class="ibox-title">
-        <h5><span id="PageTitle">Saldo deudor declarativo</span><small class="m-l-sm"><span id="PageSubTitle"> Cotización</span></small> </h5>
-        <!-- Opciones -->
-        <div class="ibox-tools">
-            <a class="fullscreen-link">
-                <i class="fa fa-expand"></i>
-            </a>
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                <i class="fa fa-wrench"></i>
-            </a>
-            <ul class="dropdown-menu dropdown-user">
-                <li>
-                    <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar la información</a>
-                </li>
-                <li>
-                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="ibox-content">
-        <div class="sk-spinner sk-spinner-wave">
-            <div class="sk-rect1"></div>
-            <div class="sk-rect2"></div>
-            <div class="sk-rect3"></div>
-            <div class="sk-rect4"></div>
-            <div class="sk-rect5"></div>
-        </div>
-        <div id="generalNotify">
-        </div>
-        <!-- Edit Form -->
-        <div class='form-row'>
-            <div class='col-md-12'>
-                <div id="SaldoDeudorEdt" class="animated fadeInRight">
-                    <form id='SaldoDeudorEdtForm' class='form-horizontal' data-toggle='validator'>
-                        <fieldset>
-                            <!-- datosgenerales Zone -->
-                            <div class="form-row">
-                                <div class="col-lg-12">
-                                    <h4>Datos generales</h4>
-                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-                                    <div class="form-row">
+<div class="row">
+    <div id="mainBlock" class="col-md-12">
 
-                                        <!-- cod_mon DropDownList -->
-                                        <div class='col-sm-3 col-md-3'>
-                                            <div class='form-group'>
-                                                <label class='control-label' for='cod_mon'>Moneda<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                <select id='cod_mon' name='cod_mon' class='form-control'>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <!-- cod_fracc_pago DropDownList -->
-                                        <div class='col-sm-3 col-md-3'>
-                                            <div class='form-group'>
-                                                <label class='control-label' for='cod_fracc_pago'>Fraccionamiento de pago<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                <select id='cod_fracc_pago' name='cod_fracc_pago' class='form-control'>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <!-- fec_efec_poliza DatePicker -->
-                                        <div class='col-sm-3 col-md-3'>
-                                            <div class='form-group'>
-                                                <label class='control-label' for='fec_efec_poliza'>Inicio de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                <div class='input-group date' id='fec_efec_poliza_group'>
-                                                    <input type='text' id='fec_efec_poliza' name='fec_efec_poliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
-                                                    <span class='input-group-addon'>
-                                                        <span class='glyphicon glyphicon-calendar'></span>
-                                                    </span>
-                                                </div>
-                                                <div id='fec_efec_poliza_validate'></div>
-                                            </div>
-                                        </div>
-
-                                        <!-- fec_vcto_poliza DatePicker -->
-                                        <div class='col-sm-3 col-md-3'>
-                                            <div class='form-group'>
-                                                <label class='control-label' for='fec_vcto_poliza'>Fin de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                <div class='input-group date' id='fec_vcto_poliza_group'>
-                                                    <input type='text' id='fec_vcto_poliza' name='fec_vcto_poliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
-                                                    <span class='input-group-addon'>
-                                                        <span class='glyphicon glyphicon-calendar'></span>
-                                                    </span>
-                                                </div>
-                                                <div id='fec_vcto_poliza_validate'></div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- datosdelasegurado Zone -->
-                            <div class="form-row">
-                                <div class="col-lg-12">
-                                    <h4>Datos del asegurado</h4>
-                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-                                    <div class="form-row">
-
-                                        <!-- FEC_NACIMIENTO DatePicker -->
-                                        <div class='col-sm-3 col-md-3'>
-                                            <div class='form-group'>
-                                                <label class='control-label' for='FEC_NACIMIENTO'>Fecha de nacimiento<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                <div class='input-group date' id='FEC_NACIMIENTO_group'>
-                                                    <input type='text' id='FEC_NACIMIENTO' name='FEC_NACIMIENTO' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
-                                                    <span class='input-group-addon'>
-                                                        <span class='glyphicon glyphicon-calendar'></span>
-                                                    </span>
-                                                </div>
-                                                <div id='FEC_NACIMIENTO_validate'></div>
-                                            </div>
-                                        </div>
-
-                                        <!-- MCA_SEXO RadioButtonList -->
-                                        <div class='col-sm-3 col-md-3'>
-                                            <div class='form-group'>
-                                                <label class='control-label' for='MCA_SEXO'>Sexo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                <div style="padding-top: 6px;">
-                                                    <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" class="custom-control-input" id="MCA_SEXO_1" name="MCA_SEXO" value="1">
-                                                        <label class="custom-control-label" for="MCA_SEXO_1">Femenino</label>
-                                                    </div><div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" class="custom-control-input" id="MCA_SEXO_2" name="MCA_SEXO" value="2">
-                                                        <label class="custom-control-label" for="MCA_SEXO_2">Masculino</label>
-                                                    </div>
-                                                </div>
-                                                <div id='MCA_SEXO_validate'></div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- informaciongeneral Zone -->
-                            <div class="form-row">
-                                <div class="col-lg-12">
-                                    <h4>Información general</h4>
-                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-                                    <div class="form-row">
-
-                                        <!-- COD_MODALIDAD_RIESGO DropDownList -->
-                                        <div class='col-sm-3 col-md-3'>
-                                            <div class='form-group'>
-                                                <label class='control-label' for='COD_MODALIDAD_RIESGO'>Modalidad de riesgo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                <select id='COD_MODALIDAD_RIESGO' name='COD_MODALIDAD_RIESGO' class='form-control'>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <!-- MCA_NEGOCIO_MIGRADO RadioButtonList -->
-                                        <div class='col-sm-3 col-md-3'>
-                                            <div class='form-group'>
-                                                <label class='control-label' for='MCA_NEGOCIO_MIGRADO'>¿Es un negocio migrado?<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                <div style="padding-top: 6px;">
-                                                    <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" class="custom-control-input" id="MCA_NEGOCIO_MIGRADO_1" name="MCA_NEGOCIO_MIGRADO" value="1">
-                                                        <label class="custom-control-label" for="MCA_NEGOCIO_MIGRADO_1">Si</label>
-                                                    </div><div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" class="custom-control-input" id="MCA_NEGOCIO_MIGRADO_2" name="MCA_NEGOCIO_MIGRADO" value="2">
-                                                        <label class="custom-control-label" for="MCA_NEGOCIO_MIGRADO_2">No</label>
-                                                    </div>
-                                                </div>
-                                                <div id='MCA_NEGOCIO_MIGRADO_validate'></div>
-                                            </div>
-                                        </div>
-
-                                        <!-- COD_CIA_ORI DropDownList -->
-                                        <div class='col-sm-3 col-md-3'>
-                                            <div class='form-group'>
-                                                <label class='control-label' for='COD_CIA_ORI'>Compañía original</label>
-                                                <select id='COD_CIA_ORI' name='COD_CIA_ORI' class='form-control'>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <!-- FEC_EMISION_ORI DatePicker -->
-                                        <div class='col-sm-3 col-md-3'>
-                                            <div class='form-group'>
-                                                <label class='control-label' for='FEC_EMISION_ORI'>Fecha de emisión original</label>
-                                                <div class='input-group date' id='FEC_EMISION_ORI_group'>
-                                                    <input type='text' id='FEC_EMISION_ORI' name='FEC_EMISION_ORI' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
-                                                    <span class='input-group-addon'>
-                                                        <span class='glyphicon glyphicon-calendar'></span>
-                                                    </span>
-                                                </div>
-                                                <div id='FEC_EMISION_ORI_validate'></div>
-                                            </div>
-                                        </div>
-
-                                        <!-- IMP_MONTO_ORI Numeric -->
-                                        <div class='col-sm-3 col-md-3'>
-                                            <div class='form-group'>
-                                                <label class='control-label' for='IMP_MONTO_ORI'>Monto original del préstamo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                <input type='text' id='IMP_MONTO_ORI' name='IMP_MONTO_ORI' class='form-control text-right' size='11' maxlength='11' />
-                                            </div>
-                                        </div>
-                                        <!-- IMP_SLD_ACTUAL Numeric -->
-                                        <div class='col-sm-3 col-md-3'>
-                                            <div class='form-group'>
-                                                <label class='control-label' for='IMP_SLD_ACTUAL'>Saldo actual<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                <input type='text' id='IMP_SLD_ACTUAL' name='IMP_SLD_ACTUAL' class='form-control text-right' size='11' maxlength='11' />
-                                            </div>
-                                        </div>
-                                        <!-- NUM_PRESTAMO Text -->
-                                        <div class='col-sm-3 col-md-3'>
-                                            <div class='form-group'>
-                                                <label class='control-label' for='NUM_PRESTAMO'>Número de préstamo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                <input type='text' id='NUM_PRESTAMO' name='NUM_PRESTAMO' class='form-control' size='20' maxlength='20' />
-                                            </div>
-                                        </div>
-                                        <!-- TIP_NEGOCIO DropDownList -->
-                                        <div class='col-sm-3 col-md-3'>
-                                            <div class='form-group'>
-                                                <label class='control-label' for='TIP_NEGOCIO'>Tipo de negocio<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                <select id='TIP_NEGOCIO' name='TIP_NEGOCIO' class='form-control'>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <!-- IMP_PRIMA_INFORMADA Numeric -->
-                                        <div class='col-sm-3 col-md-3'>
-                                            <div class='form-group'>
-                                                <label class='control-label' for='IMP_PRIMA_INFORMADA'>Prima informada</label>
-                                                <input type='text' id='IMP_PRIMA_INFORMADA' name='IMP_PRIMA_INFORMADA' class='form-control text-right' size='11' maxlength='11' />
-                                            </div>
-                                        </div>
-                                        <!-- IMP_GASTOS_EMISION Numeric -->
-                                        <div class='col-sm-3 col-md-3'>
-                                            <div class='form-group'>
-                                                <label class='control-label' for='IMP_GASTOS_EMISION'>Importe gastos de emisión</label>
-                                                <input type='text' id='IMP_GASTOS_EMISION' name='IMP_GASTOS_EMISION' class='form-control text-right' size='11' maxlength='11' />
-                                            </div>
-                                        </div>
-                                        <!-- PCT_DTO_COMERCIAL Numeric -->
-                                        <div class='col-sm-3 col-md-3'>
-                                            <div class='form-group'>
-                                                <label class='control-label' for='PCT_DTO_COMERCIAL'>% Descuento/recargo comercial</label>
-                                                <div class='input-group'>
-                                                    <input type='text' id='PCT_DTO_COMERCIAL' name='PCT_DTO_COMERCIAL' class='form-control text-right' size='3' maxlength='3' />
-                                                    <span class='input-group-addon'>
-                                                        <small class="text-muted">%</small>
-                                                    </span>
-                                                </div>
-                                                <div id='PCT_DTO_COMERCIAL_validate'></div>
-                                            </div>
-                                        </div>
-                                        <!-- PCT_DCTO_TECNICO Numeric -->
-                                        <div class='col-sm-3 col-md-3'>
-                                            <div class='form-group'>
-                                                <label class='control-label' for='PCT_DCTO_TECNICO'>% Porcentaje descuento técnico</label>
-                                                <div class='input-group'>
-                                                    <input type='text' id='PCT_DCTO_TECNICO' name='PCT_DCTO_TECNICO' class='form-control text-right' size='3' maxlength='3' />
-                                                    <span class='input-group-addon'>
-                                                        <small class="text-muted">%</small>
-                                                    </span>
-                                                </div>
-                                                <div id='PCT_DCTO_TECNICO_validate'></div>
-                                            </div>
-                                        </div>
-                                        <!-- FEC_PRIM_FINAN DatePicker -->
-                                        <div class='col-sm-3 col-md-3'>
-                                            <div class='form-group'>
-                                                <label class='control-label' for='FEC_PRIM_FINAN'>Fecha primer financiamiento</label>
-                                                <div class='input-group date' id='FEC_PRIM_FINAN_group'>
-                                                    <input type='text' id='FEC_PRIM_FINAN' name='FEC_PRIM_FINAN' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
-                                                    <span class='input-group-addon'>
-                                                        <span class='glyphicon glyphicon-calendar'></span>
-                                                    </span>
-                                                </div>
-                                                <div id='FEC_PRIM_FINAN_validate'></div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- enfermedadesexcluidas Grid -->
-                            <div class="form-row">
-                                <div class="col-lg-12">
-                                    <div class="form-row">
-                                        <div class='col'>
-                                            <h4>Enfermedades excluidas<label id="enfermedadesexcluidasTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
-                                        </div>
-                                        <div class='col-auto'>
-                                            <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo Enfermedades excluidas" data-toggle="modal" id="enfermedadesexcluidasNew"> <i class="fa fa-plus"></i> </button>
-                                        </div>
-                                    </div>
-                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-                                    <div class="form-row">
-                                        <div class='col-md-12' style="padding-bottom: 20px">
-                                            <div class="table-responsive">
-                                                <table id="enfermedadesexcluidasTbl" style="font-size: 11px;">
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- coberturas Grid -->
-                            <div class="form-row">
-                                <div class="col-lg-12">
-                                    <div class="form-row">
-                                        <div class='col'>
-                                            <h4>Coberturas<label id="coberturasTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
-                                        </div>
-
-                                    </div>
-                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-                                    <div class="form-row">
-                                        <div class='col-md-12' style="padding-bottom: 20px">
-                                            <div class="table-responsive">
-                                                <table id="coberturasTbl" style="font-size: 11px;">
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Notificaciones  -->
-                            <div id="quoteNotify">
-                            </div>
-                            <!-- Botonera -->
-                            <div class="form-row">
-                                <div class='col-md-12'>
-                                    <div class="modal-footer">
-                                        <button id="cotizar" type="button" class="btn  btn-primary" data-doing="Cotizando...">
-                                            Cotizar
-                                        </button>
-                                        <button id="limpiar" type="button" class="btn btn-default" data-doing="Limpiando...">
-                                            Limpiar
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- plandepago Grid -->
-                            <div class="form-row d-none" id="plandepagoRow">
-                                <div class="col-lg-12">
-                                    <div class="form-row">
-                                        <div class='col'>
-                                            <h4>Plan de pago<label id="plandepagoTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
-                                        </div>
-
-                                    </div>
-                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-                                    <div class="form-row">
-                                        <div class='col-md-12' style="padding-bottom: 20px">
-                                            <div class="table-responsive">
-                                                <table id="plandepagoTbl" style="font-size: 11px;">
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </form>
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5><span id="PageTitle">Saldo deudor declarativo</span><small class="m-l-sm"><span id="PageSubTitle"> Cotización</span></small> </h5>
+                <!-- Opciones -->
+                <div class="ibox-tools">
+                    <a class="fullscreen-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-wrench"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li>
+                            <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar la información</a>
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-        </div>
-        <!-- enfermedadesexcluidas Grid Modal -->
-        <div class="modal inmodal" id="enfermedadesexcluidasModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content animated bounceInRight">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                        <h4 class="modal-title">Enfermedades excluidas</h4>
-                        <small class="font-bold">Permite agregar un nuevo Enfermedades excluidas o editar uno ya existente</small>
-                    </div>
-                    <div class="modal-body">
-                        <!-- enfermedadesexcluidas Grid Edit Form -->
-                        <div class='form-row'>
-                            <div class='col-md-12'>
-                                <div id="enfermedadesexcluidasEdt" class="animated fadeInRight">
-                                    <form id='enfermedadesexcluidasEdtForm' class='form-horizontal' data-toggle='validator'>
-                                        <fieldset>
-                                            <div class='form-row'>
-                                                <!-- COD_ENF_EXC DropDownList -->
-                                                <div class='col-sm-4 col-md-4'>
+            <div class="ibox-content">
+                <div class="sk-spinner sk-spinner-wave">
+                    <div class="sk-rect1"></div>
+                    <div class="sk-rect2"></div>
+                    <div class="sk-rect3"></div>
+                    <div class="sk-rect4"></div>
+                    <div class="sk-rect5"></div>
+                </div>
+                <div id="generalNotify">
+                </div>
+                <!-- Edit Form -->
+                <div class='form-row'>
+                    <div class='col-md-12'>
+                        <div id="SaldoDeudorEdt" class="animated fadeInRight">
+                            <form id='SaldoDeudorEdtForm' class='form-horizontal' data-toggle='validator'>
+                                <fieldset>
+                                    <!-- datosgenerales Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Datos generales</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- cod_mon DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='COD_ENF_EXC'>Enfermedades<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <select id='COD_ENF_EXC' name='COD_ENF_EXC' class='form-control'>
+                                                        <label class='control-label' for='cod_mon'>Moneda<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='cod_mon' name='cod_mon' class='form-control'>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <!-- TXT_OBS_ENF_EXC Text -->
-                                                <div class='col-sm-4 col-md-4'>
+
+                                                <!-- cod_fracc_pago DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='TXT_OBS_ENF_EXC'>Observaciones</label>
-                                                        <input type='text' id='TXT_OBS_ENF_EXC' name='TXT_OBS_ENF_EXC' class='form-control' size='50' maxlength='50' />
-                                                    </div>
-                                                </div><!-- COD_TIP_EXC DropDownList -->
-                                                <div class='col-sm-4 col-md-4'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='COD_TIP_EXC'>Tipo exclusión<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <select id='COD_TIP_EXC' name='COD_TIP_EXC' class='form-control'>
+                                                        <label class='control-label' for='cod_fracc_pago'>Fraccionamiento de pago<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='cod_fracc_pago' name='cod_fracc_pago' class='form-control'>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <!-- FEC_INI_EXC DatePicker -->
-                                                <div class='col-sm-4 col-md-4'>
+
+                                                <!-- fec_efec_poliza DatePicker -->
+                                                <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='FEC_INI_EXC'>Fecha inicio de exclusión<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <div class='input-group date' id='FEC_INI_EXC_group'>
-                                                            <input type='text' id='FEC_INI_EXC' name='FEC_INI_EXC' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                        <label class='control-label' for='fec_efec_poliza'>Inicio de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='fec_efec_poliza_group'>
+                                                            <input type='text' id='fec_efec_poliza' name='fec_efec_poliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
                                                             <span class='input-group-addon'>
                                                                 <span class='glyphicon glyphicon-calendar'></span>
                                                             </span>
                                                         </div>
-                                                        <div id='FEC_INI_EXC_validate'></div>
+                                                        <div id='fec_efec_poliza_validate'></div>
                                                     </div>
                                                 </div>
-                                                <!-- FEC_FIN_EXC DatePicker -->
-                                                <div class='col-sm-4 col-md-4'>
+
+                                                <!-- fec_vcto_poliza DatePicker -->
+                                                <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='FEC_FIN_EXC'>Fecha fin de exclusión<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <div class='input-group date' id='FEC_FIN_EXC_group'>
-                                                            <input type='text' id='FEC_FIN_EXC' name='FEC_FIN_EXC' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                        <label class='control-label' for='fec_vcto_poliza'>Fin de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='fec_vcto_poliza_group'>
+                                                            <input type='text' id='fec_vcto_poliza' name='fec_vcto_poliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
                                                             <span class='input-group-addon'>
                                                                 <span class='glyphicon glyphicon-calendar'></span>
                                                             </span>
                                                         </div>
-                                                        <div id='FEC_FIN_EXC_validate'></div>
+                                                        <div id='fec_vcto_poliza_validate'></div>
                                                     </div>
                                                 </div>
 
                                             </div>
-                                        </fieldset>
-                                    </form>
+                                        </div>
+                                    </div>
+
+                                    <!-- datosdelasegurado Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Datos del asegurado</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- FEC_NACIMIENTO DatePicker -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='FEC_NACIMIENTO'>Fecha de nacimiento<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='FEC_NACIMIENTO_group'>
+                                                            <input type='text' id='FEC_NACIMIENTO' name='FEC_NACIMIENTO' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='FEC_NACIMIENTO_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- MCA_SEXO RadioButtonList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='MCA_SEXO'>Sexo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="MCA_SEXO_1" name="MCA_SEXO" value="0">
+                                                                <label class="custom-control-label" for="MCA_SEXO_1">Femenino</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="MCA_SEXO_2" name="MCA_SEXO" value="1">
+                                                                <label class="custom-control-label" for="MCA_SEXO_2">Masculino</label>
+                                                            </div>
+                                                        </div>
+                                                        <div id='MCA_SEXO_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- informaciongeneral Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Información general</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- COD_MODALIDAD_RIESGO DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='COD_MODALIDAD_RIESGO'>Modalidad de riesgo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='COD_MODALIDAD_RIESGO' name='COD_MODALIDAD_RIESGO' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- MCA_NEGOCIO_MIGRADO RadioButtonList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='MCA_NEGOCIO_MIGRADO'>¿Es un negocio migrado?<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="MCA_NEGOCIO_MIGRADO_1" name="MCA_NEGOCIO_MIGRADO" value="S">
+                                                                <label class="custom-control-label" for="MCA_NEGOCIO_MIGRADO_1">Si</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="MCA_NEGOCIO_MIGRADO_2" name="MCA_NEGOCIO_MIGRADO" value="N">
+                                                                <label class="custom-control-label" for="MCA_NEGOCIO_MIGRADO_2">No</label>
+                                                            </div>
+                                                        </div>
+                                                        <div id='MCA_NEGOCIO_MIGRADO_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- COD_CIA_ORI DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='COD_CIA_ORI'>Compañía original</label>
+                                                        <select id='COD_CIA_ORI' name='COD_CIA_ORI' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- FEC_EMISION_ORI DatePicker -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='FEC_EMISION_ORI'>Fecha de emisión original</label>
+                                                        <div class='input-group date' id='FEC_EMISION_ORI_group'>
+                                                            <input type='text' id='FEC_EMISION_ORI' name='FEC_EMISION_ORI' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='FEC_EMISION_ORI_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- IMP_MONTO_ORI Numeric -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='IMP_MONTO_ORI'>Monto original del préstamo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='IMP_MONTO_ORI' name='IMP_MONTO_ORI' class='form-control text-right' size='11' maxlength='11' />
+                                                    </div>
+                                                </div>
+                                                <!-- IMP_SLD_ACTUAL Numeric -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='IMP_SLD_ACTUAL'>Saldo actual<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='IMP_SLD_ACTUAL' name='IMP_SLD_ACTUAL' class='form-control text-right' size='11' maxlength='11' />
+                                                    </div>
+                                                </div>
+                                                <!-- NUM_PRESTAMO Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='NUM_PRESTAMO'>Número de préstamo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='NUM_PRESTAMO' name='NUM_PRESTAMO' class='form-control' size='20' maxlength='20' />
+                                                    </div>
+                                                </div>
+                                                <!-- TIP_NEGOCIO DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='TIP_NEGOCIO'>Tipo de negocio<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='TIP_NEGOCIO' name='TIP_NEGOCIO' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- IMP_PRIMA_INFORMADA Numeric -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='IMP_PRIMA_INFORMADA'>Prima informada</label>
+                                                        <input type='text' id='IMP_PRIMA_INFORMADA' name='IMP_PRIMA_INFORMADA' class='form-control text-right' size='11' maxlength='11' />
+                                                    </div>
+                                                </div>
+                                                <!-- IMP_GASTOS_EMISION Numeric -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='IMP_GASTOS_EMISION'>Importe gastos de emisión</label>
+                                                        <input type='text' id='IMP_GASTOS_EMISION' name='IMP_GASTOS_EMISION' class='form-control text-right' size='11' maxlength='11' />
+                                                    </div>
+                                                </div>
+                                                <!-- PCT_DTO_COMERCIAL Numeric -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='PCT_DTO_COMERCIAL'>% Descuento/recargo comercial</label>
+                                                        <div class='input-group'>
+                                                            <input type='text' id='PCT_DTO_COMERCIAL' name='PCT_DTO_COMERCIAL' class='form-control text-right' size='3' maxlength='3' />
+                                                            <span class='input-group-addon'>
+                                                                <small class="text-muted">%</small>
+                                                            </span>
+                                                        </div>
+                                                        <div id='PCT_DTO_COMERCIAL_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- PCT_DCTO_TECNICO Numeric -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='PCT_DCTO_TECNICO'>% Porcentaje descuento técnico</label>
+                                                        <div class='input-group'>
+                                                            <input type='text' id='PCT_DCTO_TECNICO' name='PCT_DCTO_TECNICO' class='form-control text-right' size='3' maxlength='3' />
+                                                            <span class='input-group-addon'>
+                                                                <small class="text-muted">%</small>
+                                                            </span>
+                                                        </div>
+                                                        <div id='PCT_DCTO_TECNICO_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- FEC_PRIM_FINAN DatePicker -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='FEC_PRIM_FINAN'>Fecha primer financiamiento</label>
+                                                        <div class='input-group date' id='FEC_PRIM_FINAN_group'>
+                                                            <input type='text' id='FEC_PRIM_FINAN' name='FEC_PRIM_FINAN' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='FEC_PRIM_FINAN_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- enfermedadesexcluidas Grid -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <div class='col'>
+                                                    <h4>Enfermedades excluidas<label id="enfermedadesexcluidasTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                                </div>
+                                                <div class='col-auto'>
+                                                    <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo Enfermedades excluidas" data-toggle="modal" id="enfermedadesexcluidasNew"> <i class="fa fa-plus"></i> </button>
+                                                </div>
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class='col-md-12' style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="enfermedadesexcluidasTbl" style="font-size: 11px;">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- coberturas Grid -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <div class='col'>
+                                                    <h4>Coberturas<label id="coberturasTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                                </div>
+
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class='col-md-12' style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="coberturasTbl" style="font-size: 11px;">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Notificaciones  -->
+                                    <div id="quoteNotify">
+                                    </div>
+                                    <!-- Botonera -->
+                                    <div class="form-row">
+                                        <div class='col-md-12'>
+                                            <div class="modal-footer">
+                                                <button id="cotizar" type="button" class="btn  btn-primary" data-doing="Cotizando...">
+                                                    Cotizar
+                                                </button>
+                                                <button id="limpiar" type="button" class="btn btn-default" data-doing="Limpiando...">
+                                                    Limpiar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- plandepago Grid -->
+                                    <div class="form-row d-none" id="plandepagoRow">
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <div class='col'>
+                                                    <h4>Plan de pago<label id="plandepagoTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                                </div>
+
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class='col-md-12' style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="plandepagoTbl" style="font-size: 11px;">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- enfermedadesexcluidas Grid Modal -->
+                <div class="modal inmodal" id="enfermedadesexcluidasModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content animated bounceInRight">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                                <h4 class="modal-title">Enfermedades excluidas</h4>
+                                <small class="font-bold">Permite agregar un nuevo Enfermedades excluidas o editar uno ya existente</small>
+                            </div>
+                            <div class="modal-body">
+                                <!-- enfermedadesexcluidas Grid Edit Form -->
+                                <div class='form-row'>
+                                    <div class='col-md-12'>
+                                        <div id="enfermedadesexcluidasEdt" class="animated fadeInRight">
+                                            <form id='enfermedadesexcluidasEdtForm' class='form-horizontal' data-toggle='validator'>
+                                                <fieldset>
+                                                    <div class='form-row'>
+                                                        <!-- COD_ENF_EXC DropDownList -->
+                                                        <div class='col-sm-4 col-md-4'>
+                                                            <div class='form-group'>
+                                                                <label class='control-label' for='COD_ENF_EXC'>Enfermedades<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                                <select id='COD_ENF_EXC' name='COD_ENF_EXC' class='form-control'>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <!-- TXT_OBS_ENF_EXC Text -->
+                                                        <div class='col-sm-4 col-md-4'>
+                                                            <div class='form-group'>
+                                                                <label class='control-label' for='TXT_OBS_ENF_EXC'>Observaciones</label>
+                                                                <input type='text' id='TXT_OBS_ENF_EXC' name='TXT_OBS_ENF_EXC' class='form-control' size='50' maxlength='50' />
+                                                            </div>
+                                                        </div><!-- COD_TIP_EXC DropDownList -->
+                                                        <div class='col-sm-4 col-md-4'>
+                                                            <div class='form-group'>
+                                                                <label class='control-label' for='COD_TIP_EXC'>Tipo exclusión<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                                <select id='COD_TIP_EXC' name='COD_TIP_EXC' class='form-control'>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <!-- FEC_INI_EXC DatePicker -->
+                                                        <div class='col-sm-4 col-md-4'>
+                                                            <div class='form-group'>
+                                                                <label class='control-label' for='FEC_INI_EXC'>Fecha inicio de exclusión<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                                <div class='input-group date' id='FEC_INI_EXC_group'>
+                                                                    <input type='text' id='FEC_INI_EXC' name='FEC_INI_EXC' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                                    <span class='input-group-addon'>
+                                                                        <span class='glyphicon glyphicon-calendar'></span>
+                                                                    </span>
+                                                                </div>
+                                                                <div id='FEC_INI_EXC_validate'></div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- FEC_FIN_EXC DatePicker -->
+                                                        <div class='col-sm-4 col-md-4'>
+                                                            <div class='form-group'>
+                                                                <label class='control-label' for='FEC_FIN_EXC'>Fecha fin de exclusión<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                                <div class='input-group date' id='FEC_FIN_EXC_group'>
+                                                                    <input type='text' id='FEC_FIN_EXC' name='FEC_FIN_EXC' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                                    <span class='input-group-addon'>
+                                                                        <span class='glyphicon glyphicon-calendar'></span>
+                                                                    </span>
+                                                                </div>
+                                                                <div id='FEC_FIN_EXC_validate'></div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </fieldset>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="enfermedadesexcluidasEdtFormSave" data-doing="Guardando...">Guardar cambios</button>
+                                <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="enfermedadesexcluidasEdtFormSave" data-doing="Guardando...">Guardar cambios</button>
-                        <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                </div>
+
+                <!-- Edit Form End -->
+            </div>
+        </div>
+    </div>
+    <div id="quoteBlock" class="col-md-3 animated bounceInRight d-none">
+
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Resumen de la cotización</h5>
+            </div>
+            <div class="ibox-content">
+
+                <div class="row">
+                    <div class="col-7 col-md-6">
+                        <span>
+                            Importe total
+                        </span>
+                        <h2 class="font-bold">
+                            <span id="importetotal">0,00</span>
+                        </h2>
+                    </div>
+                    <div class="col-5 col-md-6">
+                        <table class="text-muted small">
+                            <tr><td style="text-align:right"><span id="primaneta">0,00</span></td><td>Prima neta</td></tr>
+                            <tr><td style="text-align:right"><span id="iva">0,00</span></td><td>IVA</td></tr>
+                            <tr><td style="text-align:right"><span id="recardoporfraccionamiento">0,00</span></td><td>Recargo</td></tr>
+                            <tr class=""><td style="text-align:right"><span id="cuotas">0</span></td><td><a href="#plandepagoRow" title="Ver detalle de las cuotas">Cuotas</a></td></tr>
+                        </table>
+                    </div>
+                </div>
+                <hr>
+                <div class="m-t-sm">
+                    <div class="btn-group">
+                        <a id="emitir" href="#" class="btn btn-primary btn-sm"><i class="fa fa-check"></i> Emisión</a>
+                        <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-print"></i> Imprimir</a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Edit Form End -->
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Importe por fraccionamiento de pago</h5>
+            </div>
+            <div class="ibox-content text-center">
+                <div class="form-row">
+                    <div class='col-md-12' style="padding-bottom: 20px">
+                        <div class="table-responsive">
+                            <table id="plandepagoporfrecuenciaTbl" style="font-size: 11px;">
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
+
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")

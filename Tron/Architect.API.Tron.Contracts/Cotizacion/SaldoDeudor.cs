@@ -14,7 +14,7 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// <summary>
         /// Sexo.
         /// </summary>
-        [DataMember(), JsonProperty()] public int MCA_SEXO { get; set; }
+        [DataMember(), JsonProperty()] public string MCA_SEXO { get; set; }
         /// <summary>
         /// Modalidad de riesgo.
         /// </summary>
@@ -22,7 +22,7 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// <summary>
         /// ¿Es un negocio migrado?.
         /// </summary>
-        [DataMember(), JsonProperty()] public int MCA_NEGOCIO_MIGRADO { get; set; }
+        [DataMember(), JsonProperty()] public string MCA_NEGOCIO_MIGRADO { get; set; }
         /// <summary>
         /// Compañía original.
         /// </summary>
@@ -46,7 +46,7 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// <summary>
         /// Tipo de negocio.
         /// </summary>
-        [DataMember(), JsonProperty()] public int TIP_NEGOCIO { get; set; }
+        [DataMember(), JsonProperty()] public string TIP_NEGOCIO { get; set; }
         /// <summary>
         /// Prima informada.
         /// </summary>
@@ -84,7 +84,7 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// <summary>
         /// Enfermedades.
         /// </summary>
-        [DataMember(), JsonProperty()] public int COD_ENF_EXC { get; set; }
+        [DataMember(), JsonProperty()] public string COD_ENF_EXC { get; set; }
         /// <summary>
         /// Observaciones.
         /// </summary>
@@ -92,7 +92,7 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// <summary>
         /// Tipo exclusión.
         /// </summary>
-        [DataMember(), JsonProperty()] public int COD_TIP_EXC { get; set; }
+        [DataMember(), JsonProperty()] public string COD_TIP_EXC { get; set; }
         /// <summary>
         /// Fecha inicio de exclusión.
         /// </summary>

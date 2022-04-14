@@ -51,15 +51,15 @@ app.CotizacionSaldoDeudor = (function () {
             fec_efec_poliza: app.ui.GetDateValue('#fec_efec_poliza'),
             fec_vcto_poliza: app.ui.GetDateValue('#fec_vcto_poliza'),
             FEC_NACIMIENTO: app.ui.GetDateValue('#FEC_NACIMIENTO'),
-            MCA_SEXO: app.ui.GetRadioNumericValue('MCA_SEXO'),
+            MCA_SEXO: app.ui.GetRadioStringValue('MCA_SEXO'),
             COD_MODALIDAD_RIESGO: app.ui.GetDropDownNumericValue('#COD_MODALIDAD_RIESGO'),
-            MCA_NEGOCIO_MIGRADO: app.ui.GetRadioNumericValue('MCA_NEGOCIO_MIGRADO'),
-            COD_CIA_ORI: app.ui.GetDropDownNumericValue('#COD_CIA_ORI'),
+            MCA_NEGOCIO_MIGRADO: app.ui.GetRadioStringValue('MCA_NEGOCIO_MIGRADO'),
+            COD_CIA_ORI: app.ui.GetDropDownStringValue('#COD_CIA_ORI'),
             FEC_EMISION_ORI: app.ui.GetDateValue('#FEC_EMISION_ORI'),
             IMP_MONTO_ORI: app.ui.GetNumericValue('#IMP_MONTO_ORI'),
             IMP_SLD_ACTUAL: app.ui.GetNumericValue('#IMP_SLD_ACTUAL'),
             NUM_PRESTAMO: $('#NUM_PRESTAMO').val(),
-            TIP_NEGOCIO: app.ui.GetDropDownNumericValue('#TIP_NEGOCIO'),
+            TIP_NEGOCIO: app.ui.GetDropDownStringValue('#TIP_NEGOCIO'),
             IMP_PRIMA_INFORMADA: app.ui.GetNumericValue('#IMP_PRIMA_INFORMADA'),
             IMP_GASTOS_EMISION: app.ui.GetNumericValue('#IMP_GASTOS_EMISION'),
             PCT_DTO_COMERCIAL: app.ui.GetNumericValue('#PCT_DTO_COMERCIAL'),
@@ -82,10 +82,10 @@ app.CotizacionSaldoDeudor = (function () {
         $('#FEC_FIN_EXC_group').data("DateTimePicker").minDate($('#FEC_INI_EXC_group').data("DateTimePicker").date());
         app.ui.SetDateValue('#fec_vcto_poliza', data.fec_vcto_poliza);
         app.ui.SetDateValue('#FEC_NACIMIENTO', data.FEC_NACIMIENTO);
-        app.ui.SetRadioNumericValue('MCA_SEXO', data.MCA_SEXO);
+        app.ui.SetRadioStringValue('MCA_SEXO', data.MCA_SEXO);
         $('#COD_MODALIDAD_RIESGO').val(data.COD_MODALIDAD_RIESGO);
         app.ui.SetDropDownNumericValue('#COD_MODALIDAD_RIESGO', data.COD_MODALIDAD_RIESGO, true, 40101);
-        app.ui.SetRadioNumericValue('MCA_NEGOCIO_MIGRADO', data.MCA_NEGOCIO_MIGRADO);
+        app.ui.SetRadioStringValue('MCA_NEGOCIO_MIGRADO', data.MCA_NEGOCIO_MIGRADO);
         $('#COD_CIA_ORI').val(data.COD_CIA_ORI);
         app.ui.SetDropDownNumericValue('#COD_CIA_ORI', data.COD_CIA_ORI, true);
         app.ui.SetDateValue('#FEC_EMISION_ORI', data.FEC_EMISION_ORI);
@@ -93,7 +93,7 @@ app.CotizacionSaldoDeudor = (function () {
         app.ui.SetNumericValue('#IMP_SLD_ACTUAL', data.IMP_SLD_ACTUAL);
         $('#NUM_PRESTAMO').val(data.NUM_PRESTAMO);
         $('#TIP_NEGOCIO').val(data.TIP_NEGOCIO);
-        app.ui.SetDropDownNumericValue('#TIP_NEGOCIO', data.TIP_NEGOCIO, true, 'R');
+        app.ui.SetDropDownStringValue('#TIP_NEGOCIO', data.TIP_NEGOCIO, true, 'R');
         app.ui.SetNumericValue('#IMP_PRIMA_INFORMADA', data.IMP_PRIMA_INFORMADA);
         app.ui.SetNumericValue('#IMP_GASTOS_EMISION', data.IMP_GASTOS_EMISION);
         app.ui.SetNumericValue('#PCT_DTO_COMERCIAL', data.PCT_DTO_COMERCIAL);
@@ -624,10 +624,10 @@ app.CotizacionSaldoDeudor = (function () {
             JSON.stringify(MapInputToObject()),
             function (data) {
                 quoteData = data;
-                if (!app.ui.NotifyErrors(data.Mensaje, data.Errors, '#VisualizationsEdtForm')) {
+                if (!app.ui.NotifyErrors(data.Mensaje, data.Errors, '#SaldoDeudorEdtForm')) {
                     $('#coberturasRow').removeClass('d-none');
                     $('#coberturasTbl').bootstrapTable('load', data.coberturas);
-                    Coberturas_Fijas(data.coberturas);
+                    Coberturas_ManejoGeneral();
                     $('#plandepagoRow').removeClass('d-none');
                     $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
 

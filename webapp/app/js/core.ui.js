@@ -111,6 +111,32 @@ app.ui = (function () {
             }
 
         },
+        GetDropDownNumericValue: function (selector) {
+            var value = $(selector).val();
+            if (value === null || value === '')
+                value = 0;
+            return parseInt(value, 10);
+        },
+        SetDropDownStringValue: function (selector, value, autoSelect, defaultValue) {
+
+
+            $(selector).val(value);
+
+            if ($(selector).val() === null && (defaultValue != undefined && defaultValue != null)) {
+                $(selector).val(defaultValue);
+            }
+
+            if (autoSelect && (value === null || value === '') && (defaultValue === undefined || defaultValue == null)) {
+                $(selector).val($(selector + ' option:first').val());
+                $(selector).change();
+            } else {
+                if (autoSelect && ($(selector).val() === null)) {
+                    $(selector).val($(selector + ' option:first').val());
+                    $(selector).change();
+                }
+            }
+
+        },
         SelectDropDownByText: function (selector, selectText) {
             let value = selectText.replace(/[ \.Cc\$\%\/]/g, '');
             let changed = false;
