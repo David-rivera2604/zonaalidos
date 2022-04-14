@@ -65,7 +65,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             {
                 cod_modalidad = 99999;
             }
-            foreach (Architect.API.Tron.Contracts.Tables.a1002150 item in Architect.API.Tron.DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, cod_cobExcludeFilter, cobIncludeFilter))
+            foreach (Architect.API.Tron.Contracts.Ramo.a1002150 item in Architect.API.Tron.DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, cod_cobExcludeFilter, cobIncludeFilter))
             {
                 coberturas.Add(new Contracts.Comun.Cobertura()
                 {

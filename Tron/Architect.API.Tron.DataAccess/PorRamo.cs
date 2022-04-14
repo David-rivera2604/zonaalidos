@@ -40,9 +40,9 @@ namespace Architect.API.Tron.DataAccess
         /// <summary>
         /// COBERTURAS DEL RAMO
         /// </summary>
-        public static List<Architect.API.Tron.Contracts.Tables.a1002150> Coberturas(int cod_cia, int cod_ramo, int cod_modalidad, DateTime fec_validez, string cod_cobExcludeFilter, string cod_cobincludeFilter)
+        public static List<Architect.API.Tron.Contracts.Ramo.a1002150> Coberturas(int cod_cia, int cod_ramo, int cod_modalidad, DateTime fec_validez, string cod_cobExcludeFilter, string cod_cobincludeFilter)
         {
-            List<Architect.API.Tron.Contracts.Tables.a1002150> result = new List<Architect.API.Tron.Contracts.Tables.a1002150>();
+            List<Architect.API.Tron.Contracts.Ramo.a1002150> result = new List<Architect.API.Tron.Contracts.Ramo.a1002150>();
             string filter = string.Empty;
             if (!string.IsNullOrEmpty(cod_cobincludeFilter))
             {
@@ -66,7 +66,7 @@ namespace Architect.API.Tron.DataAccess
                     .AddParameter("fec_validez", Architect.DataFactory.Enumerations.DbType.Date, 7, fec_validez)
                     .Query("Tron", new Action<IDataReader>((reader) =>
                     {
-                        result.Add(new Architect.API.Tron.Contracts.Tables.a1002150()
+                        result.Add(new Architect.API.Tron.Contracts.Ramo.a1002150()
                         {
                             NUM_POLIZA = string.Empty,
                             COD_COB = reader.IntegerValue("cod_cob"),
@@ -115,9 +115,9 @@ namespace Architect.API.Tron.DataAccess
         /// <summary>
         /// FORMAS DE PAGO/PLANES DE PAGO DEL RAMO
         /// </summary>
-        public static List<Architect.API.Tron.Contracts.Tables.a1001403> FrecuenciaDePago(int cod_cia, int cod_ramo, int cod_mon)
+        public static List<Architect.API.Tron.Contracts.Ramo.A1001403> FrecuenciaDePago(int cod_cia, int cod_ramo, int cod_mon)
         {
-            List<Architect.API.Tron.Contracts.Tables.a1001403> result = new List<Architect.API.Tron.Contracts.Tables.a1001403>();
+            List<Architect.API.Tron.Contracts.Ramo.A1001403> result = new List<Architect.API.Tron.Contracts.Ramo.A1001403>();
 
             Database.Select("SELECT a.cod_fracc_pago, b.nom_fracc_pago, c.pct_fracc_pago" +
                              " FROM a1001403 a" +
@@ -135,7 +135,7 @@ namespace Architect.API.Tron.DataAccess
                     .AddParameter("cod_mon", Architect.DataFactory.Enumerations.DbType.Int32, 22, cod_mon)
                     .Query("Tron", new Action<IDataReader>((reader) =>
                     {
-                        result.Add(new Architect.API.Tron.Contracts.Tables.a1001403()
+                        result.Add(new Architect.API.Tron.Contracts.Ramo.A1001403()
                         {
                             cod_fracc_pago = reader.IntegerValue("cod_fracc_pago"),
                             nom_fracc_pago = reader.StringValue("nom_fracc_pago"),
@@ -146,9 +146,9 @@ namespace Architect.API.Tron.DataAccess
             return result;
         }
 
-        public static List<Architect.API.Tron.Contracts.Tables.ta301003> AutomobileCoverageSelection(int cod_cia, string num_poliza_grupo, int num_contrato, int num_subcontrato, int cod_ramo, int cod_mon, int cod_marca, int cod_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int tip_valoracion)
+        public static List<Architect.API.Tron.Contracts.Ramo.ta301003> AutomobileCoverageSelection(int cod_cia, string num_poliza_grupo, int num_contrato, int num_subcontrato, int cod_ramo, int cod_mon, int cod_marca, int cod_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int tip_valoracion)
         {
-            List<Architect.API.Tron.Contracts.Tables.ta301003> result = new List<Architect.API.Tron.Contracts.Tables.ta301003>();
+            List<Architect.API.Tron.Contracts.Ramo.ta301003> result = new List<Architect.API.Tron.Contracts.Ramo.ta301003>();
 
             Database.Select("SELECT DISTINCT a.cod_cob, a.mca_obligatoria " +
                               "FROM ta301003 a " +
@@ -190,7 +190,7 @@ namespace Architect.API.Tron.DataAccess
                     .AddParameter("tip_valoracion", Architect.DataFactory.Enumerations.DbType.Int32, 22, tip_valoracion)
                     .Query("Tron", new Action<IDataReader>((reader) =>
                     {
-                        result.Add(new Architect.API.Tron.Contracts.Tables.ta301003()
+                        result.Add(new Architect.API.Tron.Contracts.Ramo.ta301003()
                         {
                             mca_obligatoria = reader.StringValue("mca_obligatoria"),
                             cod_cob = reader.IntegerValue("cod_cob")

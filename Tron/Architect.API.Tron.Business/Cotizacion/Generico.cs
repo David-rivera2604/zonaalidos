@@ -29,7 +29,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             }
 
             string selected = string.Empty;
-            foreach (Contracts.Tables.a1002150 item in DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, cod_cobExcludeFilter, string.Empty))
+            foreach (Contracts.Ramo.a1002150 item in DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, cod_cobExcludeFilter, string.Empty))
             {
                 currentCoverage = new Contracts.Comun.Cobertura()
                 {

@@ -4,7 +4,7 @@
 
 using System;
 
-namespace Architect.API.Tron.Contracts.Tables
+namespace Architect.API.Tron.Contracts.Ramo
 {
     public class ta301003
     {

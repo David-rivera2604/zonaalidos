@@ -147,7 +147,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                         }
 
 
-                        foreach (Contracts.Tables.a1002150 item in DataAccess.PorRamo.Coberturas(cod_cia, COD_RAMO, cod_modalidad, fec_validez, cod_cobExcludeFilter, cod_cobIncludeFilter))
+                        foreach (Contracts.Ramo.a1002150 item in DataAccess.PorRamo.Coberturas(cod_cia, COD_RAMO, cod_modalidad, fec_validez, cod_cobExcludeFilter, cod_cobIncludeFilter))
                         {
                             coberturas.Add(new Contracts.Comun.Cobertura()
                             {
@@ -189,9 +189,9 @@ namespace Architect.API.Tron.Business.Cotizacion
                     Architect.Utilities.Log.TraceLog("Coverage", $"Excluir '{cod_cobExcludeFilter}' las coberturas", "Decision");
                 }
 
-                List<Contracts.Tables.ta301003> coverageSelection = DataAccess.PorRamo.AutomobileCoverageSelection(cod_cia, num_poliza_grupo, num_contrato, num_subcontrato, COD_RAMO, cod_mon, cod_marca, cod_modelo, anio_sub_modelo, cod_tip_vehi, cod_uso_vehi, mca_sexo, cod_zona_circul, edad, cod_plan_auto, tip_valoracion);
+                List<Contracts.Ramo.ta301003> coverageSelection = DataAccess.PorRamo.AutomobileCoverageSelection(cod_cia, num_poliza_grupo, num_contrato, num_subcontrato, COD_RAMO, cod_mon, cod_marca, cod_modelo, anio_sub_modelo, cod_tip_vehi, cod_uso_vehi, mca_sexo, cod_zona_circul, edad, cod_plan_auto, tip_valoracion);
                 bool required;
-                foreach (Contracts.Tables.a1002150 item in DataAccess.PorRamo.Coberturas(cod_cia, COD_RAMO, cod_modalidad, fec_validez, cod_cobExcludeFilter, cod_cobIncludeFilter))
+                foreach (Contracts.Ramo.a1002150 item in DataAccess.PorRamo.Coberturas(cod_cia, COD_RAMO, cod_modalidad, fec_validez, cod_cobExcludeFilter, cod_cobIncludeFilter))
                 {
                     required = coverageSelection.Any(r => r.cod_cob == item.COD_COB && r.mca_obligatoria == "S");
                     coberturas.Add(new Contracts.Comun.Cobertura()

@@ -1,10 +1,9 @@
-/// <summary>
-///  Formas de pago/planes de pago del ramo
-/// </summary>
-
-namespace Architect.API.Tron.Contracts.Tables
+namespace Architect.API.Tron.Contracts.Ramo
 {
-    public class a1001403
+    /// <summary>
+    ///  Formas de pago/planes de pago del ramo
+    /// </summary>
+    public class A1001403
     {
         /// <summary>
         ///  Plan de pago

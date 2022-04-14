@@ -54,7 +54,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             int cod_modalidad = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_modalidad"]);
 
             List<Contracts.Comun.Cobertura> coberturas = new List<Contracts.Comun.Cobertura>();
-            foreach (Architect.API.Tron.Contracts.Tables.a1002150 item in Architect.API.Tron.DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, cod_cobExcludeFilter, string.Empty))
+            foreach (Architect.API.Tron.Contracts.Ramo.a1002150 item in Architect.API.Tron.DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, cod_cobExcludeFilter, string.Empty))
             {
                 coberturas.Add(new Contracts.Comun.Cobertura()
                 {
