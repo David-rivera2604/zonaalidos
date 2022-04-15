@@ -101,14 +101,19 @@ namespace Architect.API.Tron.Business
             return datosFijos;
         }
 
-        internal static List<Contracts.Presupuesto.Cobertura> Coberturas(Contracts.Cotizacion.GenericQuote quoteInfo, Contracts.Presupuesto.DatoFijo datosFijos)
+        internal static List<Contracts.Presupuesto.Cobertura> Coberturas(Contracts.Cotizacion.GenericQuote quoteInfo, Contracts.Presupuesto.DatoFijo datosFijos, bool includeCapital =false)
         {
 
             List<Contracts.Presupuesto.Cobertura> coberturas = new List<Contracts.Presupuesto.Cobertura>();
-
+            Contracts.Presupuesto.Cobertura currentItem;
             foreach (Contracts.Comun.Cobertura item in from c in quoteInfo.coberturas where c.seleccionado select c)
             {
-                coberturas.Add(Util.Cobertura(datosFijos, item.codigo));
+                currentItem = Util.Cobertura(datosFijos, item.codigo);
+                if (includeCapital)
+                {
+                    currentItem.suma_aseg = item.capital;
+                }
+                coberturas.Add(currentItem);
             }
             return coberturas;
         }

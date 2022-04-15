@@ -2,11 +2,11 @@
 
 app.CotizacionSaldoDeudor = (function () {
 
-    var setupData = null;
-    var changedCallback = null;
+    let setupData = null;
+    let changedCallback = null;
+    let CapitalCtrls = [];
 
     function Setup() {
-
         app.core.Get(app.setting.apipath + 'v1/Quote/SaldoDeudorSetup', null,
             function (data) {
                 setupData = data;
@@ -14,9 +14,21 @@ app.CotizacionSaldoDeudor = (function () {
                     function () {
                         setupData = data;
                         MapObjectToInput(data);
+                        Dynamic_Event_Controls();
+
+
                     }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}`);
 
             });
+    };
+
+    function Dynamic_Event_Controls() {
+        $('input:radio[name=MCA_NEGOCIO_MIGRADO]').on('change', function () {
+            if (app.ui.GetRadioStringValue('MCA_NEGOCIO_MIGRADO') == 'S')
+                $('.MCA_NEGOCIO_MIGRADO_SHOW').removeClass('d-none');
+            else
+                $('.MCA_NEGOCIO_MIGRADO_SHOW').addClass('d-none');
+        });
     };
 
     function ReadOnly() {
@@ -53,6 +65,7 @@ app.CotizacionSaldoDeudor = (function () {
             FEC_NACIMIENTO: app.ui.GetDateValue('#FEC_NACIMIENTO'),
             MCA_SEXO: app.ui.GetRadioStringValue('MCA_SEXO'),
             COD_MODALIDAD_RIESGO: app.ui.GetDropDownNumericValue('#COD_MODALIDAD_RIESGO'),
+            NOM_MODALIDAD_RIESGO: $("#COD_MODALIDAD_RIESGO option:selected").text(),
             MCA_NEGOCIO_MIGRADO: app.ui.GetRadioStringValue('MCA_NEGOCIO_MIGRADO'),
             COD_CIA_ORI: app.ui.GetDropDownStringValue('#COD_CIA_ORI'),
             FEC_EMISION_ORI: app.ui.GetDateValue('#FEC_EMISION_ORI'),
@@ -60,6 +73,7 @@ app.CotizacionSaldoDeudor = (function () {
             IMP_SLD_ACTUAL: app.ui.GetNumericValue('#IMP_SLD_ACTUAL'),
             NUM_PRESTAMO: $('#NUM_PRESTAMO').val(),
             TIP_NEGOCIO: app.ui.GetDropDownStringValue('#TIP_NEGOCIO'),
+            NOM_TIP_NEGOCIO: $("#TIP_NEGOCIO option:selected").text(),
             IMP_PRIMA_INFORMADA: app.ui.GetNumericValue('#IMP_PRIMA_INFORMADA'),
             IMP_GASTOS_EMISION: app.ui.GetNumericValue('#IMP_GASTOS_EMISION'),
             PCT_DTO_COMERCIAL: app.ui.GetNumericValue('#PCT_DTO_COMERCIAL'),
@@ -70,6 +84,12 @@ app.CotizacionSaldoDeudor = (function () {
             plandepago: $('#plandepagoTbl').bootstrapTable('getData'),
 
         };
+
+
+        data.coberturas.forEach(function (currentValue, index) {
+            currentValue.capital = app.ui.GetNumericValue('#CapitalRow_' + index);
+        })
+
         return data;
     };
 
@@ -201,6 +221,12 @@ app.CotizacionSaldoDeudor = (function () {
 
         $("#cotizar").appendTo("#GenericToolBar");
         $("#limpiar").appendTo("#GenericToolBar");
+
+        $('#IMP_MONTO_ORI').change(function () {
+            let value = app.ui.GetNumericValue('#IMP_MONTO_ORI');
+
+            app.ui.SetNumericValue('#CapitalRow_0', value);
+        });
     };
 
     function Controls_Events() {
@@ -292,8 +318,8 @@ app.CotizacionSaldoDeudor = (function () {
             detailFormatter: 'app.ui.GenericDetailFormatter',
             columns: [
                 {
-                    field: 'COD_ENF_EXC',
-                    title: 'Enfermedades',
+                    field: 'NOM_ENF_EXC',
+                    title: 'Enfermedad',
                     titleTooltip: '',
                     sortable: false,
                     halign: 'center',
@@ -301,16 +327,7 @@ app.CotizacionSaldoDeudor = (function () {
                     formatter: 'app.ui.StringFormatter',
                     visible: true
                 }, {
-                    field: 'TXT_OBS_ENF_EXC',
-                    title: 'Observaciones',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    formatter: 'app.ui.StringFormatter',
-                    visible: true
-                }, {
-                    field: 'COD_TIP_EXC',
+                    field: 'NOM_TIP_EXC',
                     title: 'Tipo exclusión',
                     titleTooltip: '',
                     sortable: false,
@@ -335,6 +352,15 @@ app.CotizacionSaldoDeudor = (function () {
                     halign: 'center',
                     align: 'center',
                     formatter: 'app.ui.DateFormatter',
+                    visible: true
+                }, {
+                    field: 'TXT_OBS_ENF_EXC',
+                    title: 'Observaciones',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
                     visible: true
                 }, {
                     field: 'Actions',
@@ -395,8 +421,10 @@ app.CotizacionSaldoDeudor = (function () {
             return {
                 enfermedadesexcluidasId: null,
                 COD_ENF_EXC: null,
+                NOM_ENF_EXC: null,
                 TXT_OBS_ENF_EXC: null,
                 COD_TIP_EXC: null,
+                NOM_TIP_EXC: null,
                 FEC_INI_EXC: null,
                 FEC_FIN_EXC: null
             };
@@ -405,8 +433,10 @@ app.CotizacionSaldoDeudor = (function () {
             return {
                 enfermedadesexcluidasId: $('#enfermedadesexcluidasModal').data('id'),
                 COD_ENF_EXC: $('#COD_ENF_EXC').val(),
+                NOM_ENF_EXC: $("#COD_ENF_EXC option:selected").text(),
                 TXT_OBS_ENF_EXC: $('#TXT_OBS_ENF_EXC').val(),
                 COD_TIP_EXC: $('#COD_TIP_EXC').val(),
+                NOM_TIP_EXC: $("#COD_TIP_EXC option:selected").text(),
                 FEC_INI_EXC: app.ui.GetDateValue('#FEC_INI_EXC'),
                 FEC_FIN_EXC: app.ui.GetDateValue('#FEC_FIN_EXC')
             };
@@ -493,8 +523,9 @@ app.CotizacionSaldoDeudor = (function () {
                     sortable: false,
                     halign: 'center',
                     align: 'right',
-                    formatter: 'app.ui.DecimalFormatter',
-                    visible: true
+                    formatter: function (value, row, index, field) {
+                        return '<input id="CapitalRow_' + index + '" name="CapitalGridEdit" type="text" class="form-control text-right" size="21" maxlength="21" disabled>';
+                    }
                 }, {
                     field: 'primatotal',
                     title: 'Prima total',
@@ -517,18 +548,11 @@ app.CotizacionSaldoDeudor = (function () {
         });
 
         $('#coberturasTbl').on('check.bs.table', function () {
-            Coberturas_ManejoGeneral();
-        });
-        $('#coberturasTbl').on('check-all.bs.table', function () {
-            Coberturas_ManejoGeneral();
+            Coberturas_ManejoGeneral2();
         });
         $('#coberturasTbl').on('uncheck.bs.table', function () {
-            Coberturas_ManejoGeneral();
+            Coberturas_ManejoGeneral2();
         });
-        $('#coberturasTbl').on('uncheck-all.bs.table', function () {
-            Coberturas_ManejoGeneral();
-        });
-
     };
 
     function plandepago_table_setup() {
@@ -611,12 +635,38 @@ app.CotizacionSaldoDeudor = (function () {
 
     };
 
-    function Coberturas_ManejoGeneral() {
+    function Coberturas_ManejoGeneral2() {
         coberturas = $('#coberturasTbl').bootstrapTable('getData');
+        coberturas.forEach(function (currentValue, index) {
+            if (!currentValue.requerida)
+                $('#CapitalRow_' + index).prop('disabled', !currentValue.seleccionado);
+        });
+    };
+    function Coberturas_ManejoGeneral() {
+        CapitalCtrls.forEach(element => element.wipe());
+        CapitalCtrls = [];
+        $('input[name="CapitalGridEdit"]').each(function () {
+            CapitalCtrls.push(new AutoNumeric(this, {
+                decimalCharacter: ',',
+                decimalCharacterAlternative: '.',
+                digitGroupSeparator: '.',
+                maximumValue: '99999999999999',
+                minimumValue: '0',
+                decimalPlaces: '0',
+                emptyInputBehavior: 'null'
+            }));
+        });
+
+        coberturas = $('#coberturasTbl').bootstrapTable('getData');
+        coberturas.forEach(function (currentValue, index) {
+            app.ui.SetNumericValue('#CapitalRow_' + index, currentValue.capital);
+        });
+
         coberturas.forEach(function (value, index, array) {
             $('[name=btSelectItem][data-index=' + index + ']').prop('disabled', value.requerida);
         });
         $('[name=btSelectAll]').prop('disabled', true);
+        Coberturas_ManejoGeneral2();
     };
 
     function Quote() {

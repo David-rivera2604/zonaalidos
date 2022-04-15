@@ -19,6 +19,7 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// Modalidad de riesgo.
         /// </summary>
         [DataMember(), JsonProperty()] public int COD_MODALIDAD_RIESGO { get; set; }
+        [DataMember(), JsonProperty()] public string NOM_MODALIDAD_RIESGO { get; set; }
         /// <summary>
         /// ¿Es un negocio migrado?.
         /// </summary>
@@ -47,6 +48,7 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// Tipo de negocio.
         /// </summary>
         [DataMember(), JsonProperty()] public string TIP_NEGOCIO { get; set; }
+        [DataMember(), JsonProperty()] public string NOM_TIP_NEGOCIO { get; set; }
         /// <summary>
         /// Prima informada.
         /// </summary>
@@ -74,6 +76,10 @@ namespace Architect.API.Tron.Contracts.Cotizacion
 
 
     }
+
+    /// <summary>
+    /// Enfermedades excluidas.
+    /// </summary>
     public class enfermedadesexcluidas
     {
 
@@ -85,6 +91,7 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// Enfermedades.
         /// </summary>
         [DataMember(), JsonProperty()] public string COD_ENF_EXC { get; set; }
+        [DataMember(), JsonProperty()] public string NOM_ENF_EXC { get; set; }
         /// <summary>
         /// Observaciones.
         /// </summary>
@@ -93,6 +100,7 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// Tipo exclusión.
         /// </summary>
         [DataMember(), JsonProperty()] public string COD_TIP_EXC { get; set; }
+        [DataMember(), JsonProperty()] public string NOM_TIP_EXC { get; set; }
         /// <summary>
         /// Fecha inicio de exclusión.
         /// </summary>
