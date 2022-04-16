@@ -341,6 +341,10 @@ namespace Architect.API.Tron.Contracts.Ramo
         /// DATOS VARIABLES.
         /// </summary>
         [DataMember(), JsonProperty()] public List<G2000010> DatosVariablesGenericos { get; set; }
+        /// <summary>
+        ///  Formas de pago/planes de pago del ramo
+        /// </summary>
+        [DataMember(), JsonProperty()] public List<A1001403> FrecuenciasDePago { get; set; }
 
     }
 }
