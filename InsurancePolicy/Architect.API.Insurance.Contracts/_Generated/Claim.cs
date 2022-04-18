@@ -12,9 +12,12 @@ namespace Architect.API.Insurance.Contracts.ManualClaims
         /// </summary>
         [DataMember(), JsonProperty()] public int Id { get; set; }
         /// <summary>
-        /// Identificación de la compañia propietaria.
+        /// Identificación de la compañía propietaria.
         /// </summary>
         [DataMember(), JsonProperty()] public int CompanyId { get; set; }
+        /// <summary>
+        /// Identificación del siniestro
+        /// </summary>
         [DataMember(), JsonProperty()] public string ClaimId { get; set; }
         [DataMember(), JsonProperty()] public DateTime StatementDate { get; set; }
         [DataMember(), JsonProperty()] public DateTime OccurrenceDate { get; set; }

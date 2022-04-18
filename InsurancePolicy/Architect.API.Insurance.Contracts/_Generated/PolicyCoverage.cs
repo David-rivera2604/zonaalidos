@@ -33,7 +33,7 @@ namespace Architect.API.Insurance.Contracts.ManualPolicies
         /// <summary>
         /// Descripción de la cobertura.
         /// </summary>
-        [DataMember(), JsonProperty()] public Int64 Description { get; set; }
+        [DataMember(), JsonProperty()] public string Description { get; set; }
         /// <summary>
         /// Usuario que actualizo por última vez el registro.
         /// </summary>

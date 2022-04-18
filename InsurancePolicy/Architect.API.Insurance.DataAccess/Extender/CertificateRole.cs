@@ -20,7 +20,7 @@ namespace Architect.API.Insurance.DataAccess.ManualPolicies
         /// <param name="certificatId">Identificación única del certificado.</param>
         /// <param name="connection">Instancia de una conexión compartida</param>
         /// <returns>Lista de instancias de CertificateRole</returns>
-        public static List<Architect.API.Insurance.Contracts.ManualPolicies.CertificateRole> RetrieveByCertificatId(int companyId, int certificatId, IDbConnection connection = null)
+        public static List<Architect.API.Insurance.Contracts.ManualPolicies.CertificateRole> RetrieveByCertificateId(int companyId, int certificatId, IDbConnection connection = null)
         {
             return RetrieveAll(companyId,
                 " AND CertificateRole.CertificatInternalId=:CertificatInternalId",

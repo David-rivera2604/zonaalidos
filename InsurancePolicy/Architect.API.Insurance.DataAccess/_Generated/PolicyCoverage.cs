@@ -32,7 +32,7 @@ namespace Architect.API.Insurance.DataAccess.ManualPolicies
                             .AddParameter("PolicyInternalId", DbType.Decimal, 9, policycoverageItem.PolicyInternalId)
                             .AddParameter("InsuredAmount", DbType.Decimal, 18, policycoverageItem.InsuredAmount)
                             .AddParameter("Code", DbType.AnsiString, 12, policycoverageItem.Code)
-                            .AddParameter("Description", DbType.Decimal, 80, policycoverageItem.Description)
+                            .AddParameter("Description", DbType.AnsiString, 80, policycoverageItem.Description)
                             .AddParameter("UpdateUserCode", DbType.Decimal, 9, policycoverageItem.UpdateUserCode)
                             .AddParameter("UpdateDate", DbType.DateTime, 0, policycoverageItem.UpdateDate)
                             .Execute(connection, "Research");
@@ -195,7 +195,7 @@ namespace Architect.API.Insurance.DataAccess.ManualPolicies
                                 .AddParameter("PolicyInternalId", DbType.Decimal, 9, policycoverageItem.PolicyInternalId)
                                 .AddParameter("InsuredAmount", DbType.Decimal, 18, policycoverageItem.InsuredAmount)
                                 .AddParameter("Code", DbType.AnsiString, 12, policycoverageItem.Code)
-                                .AddParameter("Description", DbType.Decimal, 80, policycoverageItem.Description)
+                                .AddParameter("Description", DbType.AnsiString, 80, policycoverageItem.Description)
                                 .AddParameter("UpdateUserCode", DbType.Decimal, 9, policycoverageItem.UpdateUserCode)
                                 .AddParameter("UpdateDate", DbType.DateTime, 0, policycoverageItem.UpdateDate)
                                 .AddParameter("Id", DbType.Decimal, 9, policycoverageItem.Id)
@@ -325,7 +325,7 @@ namespace Architect.API.Insurance.DataAccess.ManualPolicies
             item.PolicyInternalId = reader.IntegerValue("PolicyInternalId");
             item.InsuredAmount = reader.DoubleValue("InsuredAmount");
             item.Code = reader.StringValue("Code");
-            item.Description = reader.Integer64Value("Description");
+            item.Description = reader.StringValue("Description");
             item.UpdateUserCode = reader.IntegerValue("UpdateUserCode");
             item.UpdateUserName = reader.StringValue("UpdateUserName");
             item.UpdateDate = reader.DateTimeValue("UpdateDate");

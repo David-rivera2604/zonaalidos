@@ -65,6 +65,7 @@
     <Compile Include="Controllers\GastosMedicosController.cs" />
     <Compile Include="Controllers\InsuredController.cs" />
     <Compile Include="Controllers\InclusionController.cs" />
+    <Compile Include="Controllers\ClaimController.cs" />
     <Compile Include="Controllers\RatingController.cs" />
     <Compile Include="Controllers\PolicyController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
