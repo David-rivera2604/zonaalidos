@@ -547,7 +547,7 @@ app.CotizacionMapfreMas = (function () {
                 IMP_AUTO_CYV: { required: true, Numeric: true },
                 DED_AUTO_CYV: { required: true, min: 1 },
                 IMP_AUTO_RAD: { required: true, Numeric: true },
-                DED_AUTO_RAD: { required: true, min: 2 },
+                DED_AUTO_RAD: { required: true, min: 1 },
                 IMP_AUTO_ROB: { required: true, Numeric: true },
                 DED_AUTO_ROB: { required: true, min: 1 },
                 DED_AUTO_EQESP: { required: true },
