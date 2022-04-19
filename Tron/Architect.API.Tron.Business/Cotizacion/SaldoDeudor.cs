@@ -1,5 +1,6 @@
 ﻿using Architect.Utilities.Extensions;
 using System;
+using System.Linq;
 
 namespace Architect.API.Tron.Business.Cotizacion
 {
@@ -16,7 +17,28 @@ namespace Architect.API.Tron.Business.Cotizacion
         /// </summary>
         public static Contracts.Cotizacion.SaldoDeudor Setup(Core.Contracts.Security.Token tokenInfo)
         {
-            return (Contracts.Cotizacion.SaldoDeudor)Generico.ValoresIniciales(new Contracts.Cotizacion.SaldoDeudor(), COD_RAMO, NOM_PROD, tokenInfo);
+            Contracts.Cotizacion.SaldoDeudor result = (Contracts.Cotizacion.SaldoDeudor)Generico.ValoresIniciales(new Contracts.Cotizacion.SaldoDeudor(), COD_RAMO, NOM_PROD, tokenInfo);
+            if(result.coberturas.Where(r => r.codigo==4001) != null){
+                result.coberturas.Where(r => r.codigo == 4001).First().edtCapital = true;
+            }
+            if (result.coberturas.Where(r => r.codigo == 4002) != null)
+            {
+                result.coberturas.Where(r => r.codigo == 4002).First().edtCapital = true;
+            }
+            if (result.coberturas.Where(r => r.codigo == 4005) != null)
+            {
+                result.coberturas.Where(r => r.codigo == 4005).First().edtCapital = true;
+            }
+            if (result.coberturas.Where(r => r.codigo == 4006) != null)
+            {
+                result.coberturas.Where(r => r.codigo == 4006).First().edtCapital = true;
+            }
+            if (result.coberturas.Where(r => r.codigo == 4007) != null)
+            {
+                result.coberturas.Where(r => r.codigo == 4007).First().edtCapital = true;
+            }
+            result.MCA_NEGOCIO_MIGRADO = "N";
+            return result;
         }
 
 

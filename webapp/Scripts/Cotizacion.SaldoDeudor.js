@@ -29,31 +29,13 @@ app.CotizacionSaldoDeudor = (function () {
             else
                 $('.MCA_NEGOCIO_MIGRADO_SHOW').addClass('d-none');
         });
-    };
+        $('#TIP_NEGOCIO').on('change', function () {
 
-    function ReadOnly() {
-        $('#cod_mon').replaceWith('<div>' + $('#cod_mon option:selected').text() + '</div>');
-        $('#cod_fracc_pago').replaceWith('<div>' + $('#cod_fracc_pago option:selected').text() + '</div>');
-        $('#fec_efec_poliza_group').replaceWith('<div>' + $('#fec_efec_poliza').val() + '</div>');
-        $('#fec_vcto_poliza_group').replaceWith('<div>' + $('#fec_vcto_poliza').val() + '</div>');
-        $('#FEC_NACIMIENTO_group').replaceWith('<div>' + $('#FEC_NACIMIENTO').val() + '</div>');
-        $('label[for=MCA_SEXO').next().replaceWith('<div>' + $('label[for=MCA_SEXO_' + app.ui.GetRadioNumericValue('MCA_SEXO') + '').html() + '</div>');
-        $('#COD_MODALIDAD_RIESGO').replaceWith('<div>' + $('#COD_MODALIDAD_RIESGO option:selected').text() + '</div>');
-        $('label[for=MCA_NEGOCIO_MIGRADO').next().replaceWith('<div>' + $('label[for=MCA_NEGOCIO_MIGRADO_' + app.ui.GetRadioNumericValue('MCA_NEGOCIO_MIGRADO') + '').html() + '</div>');
-        $('#COD_CIA_ORI').replaceWith('<div>' + $('#COD_CIA_ORI option:selected').text() + '</div>');
-        $('#FEC_EMISION_ORI_group').replaceWith('<div>' + $('#FEC_EMISION_ORI').val() + '</div>');
-        $('#IMP_MONTO_ORI').replaceWith('<div>' + $('#IMP_MONTO_ORI').val() + '</div>');
-        $('#IMP_SLD_ACTUAL').replaceWith('<div>' + $('#IMP_SLD_ACTUAL').val() + '</div>');
-        $('#NUM_PRESTAMO').replaceWith('<div>' + $('#NUM_PRESTAMO').val() + '</div>');
-        $('#TIP_NEGOCIO').replaceWith('<div>' + $('#TIP_NEGOCIO option:selected').text() + '</div>');
-        $('#IMP_PRIMA_INFORMADA').replaceWith('<div>' + $('#IMP_PRIMA_INFORMADA').val() + '</div>');
-        $('#IMP_GASTOS_EMISION').replaceWith('<div>' + $('#IMP_GASTOS_EMISION').val() + '</div>');
-        $('#PCT_DTO_COMERCIAL').replaceWith('<div>' + $('#PCT_DTO_COMERCIAL').val() + '</div>');
-        $('#PCT_DCTO_TECNICO').replaceWith('<div>' + $('#PCT_DCTO_TECNICO').val() + '</div>');
-        $('#FEC_PRIM_FINAN_group').replaceWith('<div>' + $('#FEC_PRIM_FINAN').val() + '</div>');
-        $('#enfermedadesexcluidasNew').addClass('d-none');
-        $('#enfermedadesexcluidasTbl').bootstrapTable('hideColumn', 'Actions');
-
+            if (app.ui.GetDropDownStringValue('#TIP_NEGOCIO') == 'A')
+                $('.TIP_NEGOCIO_SHOW').removeClass('d-none');
+            else
+                $('.TIP_NEGOCIO_SHOW').addClass('d-none');
+        });
     };
 
     function MapInputToObject() {
@@ -87,7 +69,8 @@ app.CotizacionSaldoDeudor = (function () {
 
 
         data.coberturas.forEach(function (currentValue, index) {
-            currentValue.capital = app.ui.GetNumericValue('#CapitalRow_' + index);
+            if (currentValue.edtCapital)
+                currentValue.capital = app.ui.GetNumericValue('#CapitalRow_' + index);
         })
 
         return data;
@@ -224,8 +207,13 @@ app.CotizacionSaldoDeudor = (function () {
 
         $('#IMP_MONTO_ORI').change(function () {
             let value = app.ui.GetNumericValue('#IMP_MONTO_ORI');
-
+            // 4001	A - MUERTE POR CUALQUIER CAUSA
             app.ui.SetNumericValue('#CapitalRow_0', value);
+        });
+
+        $('#COD_ENF_EXC').select2({
+            width: '100%', theme: 'bootstrap4', dropdownParent: $("#enfermedadesexcluidasModal .modal-content"),
+            language: { noResults: function () { return "No hay resultado"; }, searching: function () { return "Buscando.."; } }
         });
     };
 
@@ -285,8 +273,9 @@ app.CotizacionSaldoDeudor = (function () {
                 MCA_SEXO: { required: true },
                 COD_MODALIDAD_RIESGO: { required: true },
                 MCA_NEGOCIO_MIGRADO: { required: true },
+                COD_CIA_ORI: { required: true },
+                FEC_EMISION_ORI: { required: true },
                 IMP_MONTO_ORI: { required: true, Numeric: true },
-                IMP_SLD_ACTUAL: { required: true, Numeric: true },
                 NUM_PRESTAMO: { required: true },
                 TIP_NEGOCIO: { required: true },
             },
@@ -299,8 +288,9 @@ app.CotizacionSaldoDeudor = (function () {
                 MCA_SEXO: { required: 'Debe indicar el sexo' },
                 COD_MODALIDAD_RIESGO: { required: 'Debe indicar la modalidad de riesgo' },
                 MCA_NEGOCIO_MIGRADO: { required: 'Debe indicar si es un negocio migrado' },
+                COD_CIA_ORI: { required: 'Debe indicar la compañía original' },
+                FEC_EMISION_ORI: { required: 'Debe indicar la fecha de emisión original' },
                 IMP_MONTO_ORI: { required: 'Debe indicar el monto original del préstamo', Numeric: 'Debe indicar el monto original del préstamo' },
-                IMP_SLD_ACTUAL: { required: 'Debe indicar el saldo actual', Numeric: 'Debe indicar el saldo actual' },
                 NUM_PRESTAMO: { required: 'Debe indicar el número de préstamo' },
                 TIP_NEGOCIO: { required: 'Debe indicar el tipo de negocio' },
             }
@@ -328,7 +318,7 @@ app.CotizacionSaldoDeudor = (function () {
                     visible: true
                 }, {
                     field: 'NOM_TIP_EXC',
-                    title: 'Tipo exclusión',
+                    title: 'Tipo',
                     titleTooltip: '',
                     sortable: false,
                     halign: 'center',
@@ -337,7 +327,7 @@ app.CotizacionSaldoDeudor = (function () {
                     visible: true
                 }, {
                     field: 'FEC_INI_EXC',
-                    title: 'Fecha inicio de exclusión',
+                    title: 'Fecha inicio',
                     titleTooltip: '',
                     sortable: false,
                     halign: 'center',
@@ -346,7 +336,7 @@ app.CotizacionSaldoDeudor = (function () {
                     visible: true
                 }, {
                     field: 'FEC_FIN_EXC',
-                    title: 'Fecha fin de exclusión',
+                    title: 'Fecha fin',
                     titleTooltip: '',
                     sortable: false,
                     halign: 'center',
@@ -524,7 +514,13 @@ app.CotizacionSaldoDeudor = (function () {
                     halign: 'center',
                     align: 'right',
                     formatter: function (value, row, index, field) {
-                        return '<input id="CapitalRow_' + index + '" name="CapitalGridEdit" type="text" class="form-control text-right" size="21" maxlength="21" disabled>';
+                        if (row.edtCapital)
+                            return '<input id="CapitalRow_' + index + '" name="CapitalGridEdit" type="text" class="form-control grid-control text-right" size="21" maxlength="21" disabled placeholder="Indique el capital">';
+                        else
+                            if (value == undefined || value === null || value === 0)
+                                return '';
+                            else
+                                return value.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                     }
                 }, {
                     field: 'primatotal',
@@ -635,11 +631,65 @@ app.CotizacionSaldoDeudor = (function () {
 
     };
 
+    function plandepagoporfrecuencia_table_setup() {
+
+        $('#plandepagoporfrecuenciaTbl').bootstrapTable({
+            classes: 'table table-bordered table-hover table-index table-in-form',
+            pagination: false,
+            smartDisplay: true,
+            detailView: false,
+            columns: [
+                {
+                    field: 'codigo',
+                    title: 'codigo',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.IntegerFormatter',
+                    visible: false
+                }, {
+                    field: 'frecuencia',
+                    title: 'Fraccionamiento',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    visible: true
+                }, {
+                    field: 'importetotal',
+                    title: 'Importe',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }, {
+                    field: 'recargoporfraccionamiento',
+                    title: '%',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }]
+        });
+
+    };
+
     function Coberturas_ManejoGeneral2() {
         coberturas = $('#coberturasTbl').bootstrapTable('getData');
         coberturas.forEach(function (currentValue, index) {
-            if (!currentValue.requerida)
-                $('#CapitalRow_' + index).prop('disabled', !currentValue.seleccionado);
+            if (currentValue.edtCapital) {
+                if (!currentValue.requerida)
+                    $('#CapitalRow_' + index).prop('disabled', !currentValue.seleccionado);
+                if (currentValue.capital == null || currentValue.capital == 0)
+                    app.ui.SetNumericValue('#CapitalRow_' + index, '');
+                else
+                    app.ui.SetNumericValue('#CapitalRow_' + index, currentValue.capital);
+            }
         });
     };
     function Coberturas_ManejoGeneral() {
@@ -659,7 +709,11 @@ app.CotizacionSaldoDeudor = (function () {
 
         coberturas = $('#coberturasTbl').bootstrapTable('getData');
         coberturas.forEach(function (currentValue, index) {
-            app.ui.SetNumericValue('#CapitalRow_' + index, currentValue.capital);
+            if (currentValue.edtCapital)
+                if (currentValue.capital == null || currentValue.capital == 0)
+                    app.ui.SetNumericValue('#CapitalRow_' + index, '');
+                else
+                    app.ui.SetNumericValue('#CapitalRow_' + index, currentValue.capital);
         });
 
         coberturas.forEach(function (value, index, array) {
@@ -682,10 +736,12 @@ app.CotizacionSaldoDeudor = (function () {
                     $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
 
 
-                    if (data.plandepagoporfrecuencia != null)
+                    if (data.plandepagoporfrecuencia != null) {
                         $('#plandepagoporfrecuenciaTbl').bootstrapTable('load', data.plandepagoporfrecuencia);
+                        $('#plandepagoporfrecuencia').removeClass('d-none');
+                    }
                     else
-                        $('#plandepagoporfrecuenciaTbl').bootstrapTable('load', {});
+                        $('#plandepagoporfrecuencia').bootstrapTable('load', {});
 
                     $('#mainBlock').removeClass('col-md-12');
                     $('#mainBlock').addClass('col-md-9');
@@ -710,6 +766,7 @@ app.CotizacionSaldoDeudor = (function () {
                 app.ui.ButtonDone('#cotizar');
             });
     }
+
     return {
         Init: function () {
             try {
@@ -719,6 +776,7 @@ app.CotizacionSaldoDeudor = (function () {
                 enfermedadesexcluidas_table_Validations();
                 coberturas_table_setup();
                 plandepago_table_setup();
+                plandepagoporfrecuencia_table_setup();
 
                 Controls_Events();
                 Setup();

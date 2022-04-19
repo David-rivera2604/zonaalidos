@@ -178,7 +178,7 @@
                                                 <!-- COD_CIA_ORI DropDownList -->
                                                 <div class='col-sm-3 col-md-3 MCA_NEGOCIO_MIGRADO_SHOW d-none'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='COD_CIA_ORI'>Compañía original</label>
+                                                        <label class='control-label' for='COD_CIA_ORI'>Compañía original<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                         <select id='COD_CIA_ORI' name='COD_CIA_ORI' class='form-control'>
                                                         </select>
                                                     </div>
@@ -187,7 +187,7 @@
                                                 <!-- FEC_EMISION_ORI DatePicker -->
                                                 <div class='col-sm-3 col-md-3 MCA_NEGOCIO_MIGRADO_SHOW d-none'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='FEC_EMISION_ORI'>Fecha de emisión original</label>
+                                                        <label class='control-label' for='FEC_EMISION_ORI'>Fecha de emisión original<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                         <div class='input-group date' id='FEC_EMISION_ORI_group'>
                                                             <input type='text' id='FEC_EMISION_ORI' name='FEC_EMISION_ORI' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
                                                             <span class='input-group-addon'>
@@ -202,13 +202,13 @@
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='IMP_MONTO_ORI'>Monto original del préstamo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <input type='text' id='IMP_MONTO_ORI' name='IMP_MONTO_ORI' class='form-control text-right' size='11' maxlength='11' />
+                                                        <input type='text' id='IMP_MONTO_ORI' name='IMP_MONTO_ORI' class='form-control text-right' size='11' maxlength='11' placeholder="OK" />
                                                     </div>
                                                 </div>
                                                 <!-- IMP_SLD_ACTUAL Numeric -->
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='IMP_SLD_ACTUAL'>Saldo actual<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <label class='control-label' for='IMP_SLD_ACTUAL'>Saldo actual</label>
                                                         <input type='text' id='IMP_SLD_ACTUAL' name='IMP_SLD_ACTUAL' class='form-control text-right' size='11' maxlength='11' />
                                                     </div>
                                                 </div>
@@ -229,7 +229,7 @@
                                                 </div>
 
                                                 <!-- IMP_PRIMA_INFORMADA Numeric -->
-                                                <div class='col-sm-3 col-md-3'>
+                                                <div class='col-sm-3 col-md-3 TIP_NEGOCIO_SHOW d-none'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='IMP_PRIMA_INFORMADA'>Prima informada</label>
                                                         <input type='text' id='IMP_PRIMA_INFORMADA' name='IMP_PRIMA_INFORMADA' class='form-control text-right' size='11' maxlength='11' />
@@ -493,7 +493,7 @@
             </div>
         </div>
 
-        <div class="ibox">
+        <div class="ibox d-none" id="plandepagoporfrecuencia">
             <div class="ibox-title">
                 <h5>Importe por fraccionamiento de pago</h5>
             </div>
@@ -514,6 +514,7 @@
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
     <script src="@Url.Content("~/Scripts/Cotizacion.SaldoDeudor.js")"></script>
     <script type="text/javascript">
         $(document).ready(function () {

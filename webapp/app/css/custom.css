@@ -347,7 +347,15 @@ span.page-list button.btn.btn-outline.btn-default.dropdown-toggle {
     font-weight: 600;
 }
 
-
+.select2-selection--single:before {
+    content: "";
+    position: absolute;
+    right: 7px;
+    top: 42%;
+    border-top: 5px solid #888;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+}
 
 .select2-selection--multiple:before {
     content: "";
@@ -625,9 +633,28 @@ span.columnBtn {
 .lookup {
     margin-top: 3px;
 }
+
     .lookup::placeholder {
         color: grey;
         font-size: x-small;
         font-style: italic;
     }
 
+.grid-control {
+    height: 25px;
+    font-size: 12px;
+}
+
+    .grid-control::placeholder {
+        text-align: left;
+        font-style: italic;
+    }
+
+    .grid-control:disabled {
+        background-color: initial;
+        border: 0px solid #e5e6e7;
+    }
+
+        .grid-control:disabled::placeholder {
+            color: transparent;
+        }

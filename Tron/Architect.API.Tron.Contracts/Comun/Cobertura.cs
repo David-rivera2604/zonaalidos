@@ -41,7 +41,10 @@ namespace Architect.API.Tron.Contracts.Comun
         /// </summary>
         [DataMember(), JsonProperty()] public string error { get; set; }
 
-
+        /// <summary>
+        /// Indica si el capital es editable
+        /// </summary>
+        [DataMember(), JsonProperty()] public bool edtCapital{ get; set; }
     }
 
 }
