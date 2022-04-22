@@ -1193,6 +1193,7 @@
     <Content Include="products\cope_vida.xml" />
     <Content Include="releaseletter.txt" />
     <Content Include="Scripts\Clientes.Index.js" />
+    <Content Include="Scripts\Emision.SaldoDeudor.js" />
     <Content Include="Scripts\Cotizacion.SaldoDeudor.js" />
     <Content Include="Scripts\Emision.Viajero.js" />
     <Content Include="Scripts\Cotizacion.Viajero.js" />
@@ -1216,6 +1217,7 @@
     <Content Include="Scripts\General.ProcessSpecTask.js" />
     <Content Include="Scripts\General.Template.js" />
     <Content Include="Scripts\ManagerLinks.UI.js" />
+    <Content Include="Scripts\Manual.Siniestro.js" />
     <Content Include="Scripts\policy.edit.cuestionariocovid.js" />
     <Content Include="Scripts\policy.products.js" />
     <Content Include="Scripts\policy.imports.js" />
@@ -1264,6 +1266,7 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\UnhandledExceptionLogger.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\ManualController.cs" />
     <Compile Include="Controllers\ProvedoresController.cs" />
     <Compile Include="Controllers\VariacionesController.cs" />
     <Compile Include="Controllers\InicioController.cs" />
@@ -1607,6 +1610,8 @@
     <Content Include="Reports\credecoop_saldo_deudor_mayor_que_64.repx" />
     <Content Include="Views\Policy\imports.cshtml" />
     <Content Include="Views\Cotizacion\SaldoDeudor.cshtml" />
+    <Content Include="Views\Emision\SaldoDeudor.cshtml" />
+    <Content Include="Views\Manual\Siniestro.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

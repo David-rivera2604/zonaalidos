@@ -206,5 +206,42 @@ namespace Architect.API.Tron.Controllers
                 .ConfigureAwait(false);
             return Ok(result);
         }
+
+        /// <summary>
+        /// Devuelve información de un presupuesto para la emisión de una póliza de saldo deudor.
+        /// </summary>
+        /// <param name="presupuesto"></param>
+        [HttpGet]
+        [Route("SaldoDeudorSetup/{presupuesto}")]
+        public async Task<IHttpActionResult> SaldoDeudorSetup(string presupuesto)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Tron.Contracts.Emision.SaldoDeudor result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Emision.SaldoDeudor.Setup(presupuesto, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Realiza la validación de datos y emisión de la póliza para un producto de tipo Saldo deudor
+        /// </summary>
+        /// <param name="quoteInfo"></param>
+        [HttpPost]
+        [Route("Viajero")]
+        public async Task<IHttpActionResult> SaldoDeudorIssue([FromBody] Tron.Contracts.Emision.SaldoDeudor quoteInfo)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Tron.Contracts.Cotizacion.SaldoDeudor result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Emision.SaldoDeudor.Issue(quoteInfo, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
     }
 }

@@ -5,6 +5,9 @@ using System.Runtime.Serialization;
 
 namespace Architect.API.Tron.Contracts.Cotizacion
 {
+    /// <summary>
+    /// Información de una cotización de saldo deudor.
+    /// </summary>
     public class SaldoDeudor : GenericQuote
     {
         /// <summary>

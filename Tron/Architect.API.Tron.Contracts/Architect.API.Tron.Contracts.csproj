@@ -56,6 +56,7 @@
     <Compile Include="Cotizacion\resumen.cs" />
     <Compile Include="Cotizacion\SaldoDeudor.cs" />
     <Compile Include="Cotizacion\Viajero.cs" />
+    <Compile Include="Emision\SaldoDeudor.cs" />
     <Compile Include="Emision\Viajero.cs" />
     <Compile Include="Especificacion\Lista.cs" />
     <Compile Include="Especificacion\Documento.cs" />

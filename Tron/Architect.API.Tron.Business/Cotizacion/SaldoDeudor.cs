@@ -9,8 +9,8 @@ namespace Architect.API.Tron.Business.Cotizacion
     /// </summary>
     public sealed class SaldoDeudor
     {
-        const int COD_RAMO = 401;
-        const string NOM_PROD = "SaldoDeudor";
+        public const int COD_RAMO = 401;
+        public const string NOM_PROD = "SaldoDeudor";
 
         /// <summary>
         /// Devuelve la estructura de datos con los valores por defecto para una cotización de tipo saldo deudor.
@@ -40,7 +40,6 @@ namespace Architect.API.Tron.Business.Cotizacion
             result.MCA_NEGOCIO_MIGRADO = "N";
             return result;
         }
-
 
         /// <summary>
         /// Realiza la validación de datos y cálculo necesarios para obtener una cotización o presupuesto de un producto de tipo saldo deudor.
@@ -83,5 +82,6 @@ namespace Architect.API.Tron.Business.Cotizacion
 
             return quoteInfo;
         }
+
     }
 }

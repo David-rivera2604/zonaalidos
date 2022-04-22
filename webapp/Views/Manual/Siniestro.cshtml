@@ -1,0 +1,495 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<!-- RoleMember -->
+<div class="form-row">
+							<div class='col-md-12'>
+								<div class="modal-footer">
+									<button id="PrototypeEdtFormSave" type="button" class="btn btn-primary" data-doing="Guardando cambios...">Guardar cambios</button>
+									<button id="PrototypeEdtFormCancel" type="button" class="btn btn-white" data-doing="Cancelando cambios...">Cancelar</button>
+								</div>
+							</div>
+						</div><div class="ibox">
+    <div class="ibox-title">
+        <h5><span id="PageTitle">Siniestro</span><small class="m-l-sm"><span id="PageSubTitle"> Manuales</span></small> </h5>
+        <!-- Opciones -->
+        <div class="ibox-tools">
+            <a class="fullscreen-link">
+                <i class="fa fa-expand"></i>
+            </a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <i class="fa fa-wrench"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                <li>
+                    <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar la información</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+<div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+            <div class="sk-rect4"></div>
+            <div class="sk-rect5"></div>
+        </div>
+        <div id="generalNotify">
+        </div>	
+        <!-- Edit Form -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div id="PrototypeEdt" class="animated fadeInRight">
+                    <form id='PrototypeEdtForm' class='form-horizontal' data-toggle='validator'>
+                        <fieldset>
+<!-- informaciongeneral Zone -->
+<div class="form-row">
+<div class="col-lg-12">
+  <h4>Información general</h4>
+  <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+  <div class="form-row">
+
+<!-- StatementDate DatePicker -->
+<div class='col-sm-3 col-md-3'>
+  <div class='form-group'>
+    <label class='control-label' for='StatementDate'>Apertura</label>
+    <div class='input-group date' id='StatementDate_group'>
+      <input type='text' id='StatementDate' name='StatementDate' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+        <span class='input-group-addon'>
+          <span class='glyphicon glyphicon-calendar'></span>
+        </span>
+    </div>
+    <div id='StatementDate_validate'></div>
+  </div>
+</div>
+
+<!-- OccurrenceDate DatePicker -->
+<div class='col-sm-3 col-md-3'>
+  <div class='form-group'>
+    <label class='control-label' for='OccurrenceDate'>Ocurrencia</label>
+    <div class='input-group date' id='OccurrenceDate_group'>
+      <input type='text' id='OccurrenceDate' name='OccurrenceDate' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+        <span class='input-group-addon'>
+          <span class='glyphicon glyphicon-calendar'></span>
+        </span>
+    </div>
+    <div id='OccurrenceDate_validate'></div>
+  </div>
+</div>
+
+<!-- ReserveAmount Numeric -->
+<div class='col-sm-3 col-md-3'>
+  <div class='form-group'>
+    <label class='control-label' for='ReserveAmount'>Reserve Amount</label>
+    <input type='text' id='ReserveAmount' name='ReserveAmount' class='form-control text-right' size='11' maxlength='11' />
+  </div>
+</div>
+<!-- PaidAmount Numeric -->
+<div class='col-sm-3 col-md-3'>
+  <div class='form-group'>
+    <label class='control-label' for='PaidAmount'>Paid Amount</label>
+    <input type='text' id='PaidAmount' name='PaidAmount' class='form-control text-right' size='11' maxlength='11' />
+  </div>
+</div>
+<!-- PaidDate DatePicker -->
+<div class='col-sm-3 col-md-3'>
+  <div class='form-group'>
+    <label class='control-label' for='PaidDate'>Paid Date</label>
+    <div class='input-group date' id='PaidDate_group'>
+      <input type='text' id='PaidDate' name='PaidDate' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+        <span class='input-group-addon'>
+          <span class='glyphicon glyphicon-calendar'></span>
+        </span>
+    </div>
+    <div id='PaidDate_validate'></div>
+  </div>
+</div>
+
+<!-- DeclinedDate DatePicker -->
+<div class='col-sm-3 col-md-3'>
+  <div class='form-group'>
+    <label class='control-label' for='DeclinedDate'>Declined Date</label>
+    <div class='input-group date' id='DeclinedDate_group'>
+      <input type='text' id='DeclinedDate' name='DeclinedDate' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+        <span class='input-group-addon'>
+          <span class='glyphicon glyphicon-calendar'></span>
+        </span>
+    </div>
+    <div id='DeclinedDate_validate'></div>
+  </div>
+</div>
+
+<!-- AssociateIsTheInsured RadioButtonList -->
+<div class='col-sm-3 col-md-3'>
+  <div class='form-group'>
+    <label class='control-label' for='AssociateIsTheInsured'>El asociado es el mismo asegurado?</label>
+	<div style="padding-top: 6px;"><div class="custom-control custom-radio custom-control-inline">
+	<input type="radio" class="custom-control-input" id="AssociateIsTheInsured_1" name="AssociateIsTheInsured" value="1">
+	<label class="custom-control-label" for="AssociateIsTheInsured_1">Si</label>
+</div><div class="custom-control custom-radio custom-control-inline">
+	<input type="radio" class="custom-control-input" id="AssociateIsTheInsured_2" name="AssociateIsTheInsured" value="2">
+	<label class="custom-control-label" for="AssociateIsTheInsured_2">No</label>
+</div></div>
+  </div>
+</div>
+
+<!-- DisabilityDate DatePicker -->
+<div class='col-sm-3 col-md-3'>
+  <div class='form-group'>
+    <label class='control-label' for='DisabilityDate'>Disability Date</label>
+    <div class='input-group date' id='DisabilityDate_group'>
+      <input type='text' id='DisabilityDate' name='DisabilityDate' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+        <span class='input-group-addon'>
+          <span class='glyphicon glyphicon-calendar'></span>
+        </span>
+    </div>
+    <div id='DisabilityDate_validate'></div>
+  </div>
+</div>
+
+<!-- Disputability RadioButtonList -->
+<div class='col-sm-3 col-md-3'>
+  <div class='form-group'>
+    <label class='control-label' for='Disputability'>Disputabilidad?</label>
+	<div style="padding-top: 6px;"><div class="custom-control custom-radio custom-control-inline">
+	<input type="radio" class="custom-control-input" id="Disputability_1" name="Disputability" value="1">
+	<label class="custom-control-label" for="Disputability_1">Si</label>
+</div><div class="custom-control custom-radio custom-control-inline">
+	<input type="radio" class="custom-control-input" id="Disputability_2" name="Disputability" value="2">
+	<label class="custom-control-label" for="Disputability_2">No</label>
+</div></div>
+  </div>
+</div>
+
+  </div>
+</div>
+  </div>
+
+<!-- informaciongeneralInformaciongeneral Zone -->
+<div class="form-row">
+<div class="col-lg-12">
+  <h4>Información general</h4>
+  <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+  <div class="form-row">
+
+<!-- ClaimId Text -->
+<div class='col-sm-12 col-md-12'>
+  <div class='form-group'>
+    <label class='control-label' for='ClaimId'>Número de siniestro</label>
+    <input type='text' id='ClaimId' name='ClaimId' class='form-control' size='60' maxlength='60'  />
+  </div>
+</div>
+<!-- Status DropDownList -->
+<div class='col-sm-12 col-md-12'>
+  <div class='form-group'>
+    <label class='control-label' for='Status'>Estado</label>
+    <select id='Status' name='Status' class='form-control'  >
+    </select>
+  </div>
+</div>
+
+<!-- IncidentDetail Notes -->
+<div class='col-sm-12 col-md-12'>
+  <div class='form-group'>
+    <label class='control-label' for='IncidentDetail'>Detalle del incidente</label>
+	<textarea id='IncidentDetail' name='IncidentDetail' class='form-control' rows="4" ></textarea>
+  </div>
+</div>
+  </div>
+</div>
+  </div>
+
+<!-- datosdelapolizacertificado Zone -->
+<div class="form-row">
+<div class="col-lg-12">
+  <h4>Datos de la póliza/certificado</h4>
+  <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+  <div class="form-row">
+
+<!-- PolicyInternalId DropDownList -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='PolicyInternalId'>Póliza</label>
+    <select id='PolicyInternalId' name='PolicyInternalId' class='form-control'  >
+    </select>
+  </div>
+</div>
+
+<!-- CertificatInternalId DropDownList -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='CertificatInternalId'>Certificado</label>
+    <select id='CertificatInternalId' name='CertificatInternalId' class='form-control'  >
+    </select>
+  </div>
+</div>
+
+<!-- CoverageInternalId DropDownList -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='CoverageInternalId'>Cobertura afectada</label>
+    <select id='CoverageInternalId' name='CoverageInternalId' class='form-control'  >
+    </select>
+  </div>
+</div>
+
+<!-- Sector Numeric -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='Sector'>Sector</label>
+    <input type='text' id='Sector' name='Sector' class='form-control text-right' size='11' maxlength='11' />
+  </div>
+</div>
+<!-- LineOfBusiness Numeric -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='LineOfBusiness'>Ramo</label>
+    <input type='text' id='LineOfBusiness' name='LineOfBusiness' class='form-control text-right' size='11' maxlength='11' />
+  </div>
+</div>
+<!-- IssueDate DatePicker -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='IssueDate'>Emisión</label>
+    <div class='input-group date' id='IssueDate_group'>
+      <input type='text' id='IssueDate' name='IssueDate' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+        <span class='input-group-addon'>
+          <span class='glyphicon glyphicon-calendar'></span>
+        </span>
+    </div>
+    <div id='IssueDate_validate'></div>
+  </div>
+</div>
+
+<!-- EffectiveDate DatePicker -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='EffectiveDate'>Inicio de vigencia</label>
+    <div class='input-group date' id='EffectiveDate_group'>
+      <input type='text' id='EffectiveDate' name='EffectiveDate' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+        <span class='input-group-addon'>
+          <span class='glyphicon glyphicon-calendar'></span>
+        </span>
+    </div>
+    <div id='EffectiveDate_validate'></div>
+  </div>
+</div>
+
+<!-- EndingDate DatePicker -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='EndingDate'>Fin de vigencia</label>
+    <div class='input-group date' id='EndingDate_group'>
+      <input type='text' id='EndingDate' name='EndingDate' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+        <span class='input-group-addon'>
+          <span class='glyphicon glyphicon-calendar'></span>
+        </span>
+    </div>
+    <div id='EndingDate_validate'></div>
+  </div>
+</div>
+
+<!-- ProducerId Numeric -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='ProducerId'>Intermediario</label>
+    <input type='text' id='ProducerId' name='ProducerId' class='form-control text-right' size='11' maxlength='11' />
+  </div>
+</div>
+  </div>
+</div>
+  </div>
+
+<!-- polizaproveedoranteriorcertificado Zone -->
+<div class="form-row">
+<div class="col-lg-12">
+  <h4>Póliza proveedor anterior/certificado</h4>
+  <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+  <div class="form-row">
+
+<!-- EffectiveOtherPolicyDate DatePicker -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='EffectiveOtherPolicyDate'>Fecha de efecto</label>
+    <div class='input-group date' id='EffectiveOtherPolicyDate_group'>
+      <input type='text' id='EffectiveOtherPolicyDate' name='EffectiveOtherPolicyDate' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+        <span class='input-group-addon'>
+          <span class='glyphicon glyphicon-calendar'></span>
+        </span>
+    </div>
+    <div id='EffectiveOtherPolicyDate_validate'></div>
+  </div>
+</div>
+
+  </div>
+</div>
+  </div>
+
+<!-- terceros Grid -->
+<div class="form-row">
+	<div class="col-lg-12">
+                                    <div class="form-row">
+                                        <div class='col'>
+                                            <h4>Terceros<label id="tercerosTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                        </div>
+
+                                    </div>	
+		<div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+		<div class="form-row">
+			<div class='col-md-12' style="padding-bottom: 20px">
+				<div class="table-responsive">
+					<table id="tercerosTbl" style="font-size: 11px;">
+
+
+
+
+
+
+
+
+
+
+</table>
+				</div>	
+			</div>	
+		</div>	
+	</div>
+</div>
+
+<!-- documentosrequeridos Grid -->
+<div class="form-row">
+	<div class="col-lg-12">
+                                    <div class="form-row">
+                                        <div class='col'>
+                                            <h4>Documentos requeridos<label id="documentosrequeridosTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                        </div>
+<div class='col-auto'>
+                                            <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo Documentos requeridos" data-toggle="modal" id="documentosrequeridosNew"> <i class="fa fa-plus"></i> </button>
+                                        </div>
+                                    </div>	
+		<div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+		<div class="form-row">
+			<div class='col-md-12' style="padding-bottom: 20px">
+				<div class="table-responsive">
+					<table id="documentosrequeridosTbl" style="font-size: 11px;">
+
+
+
+
+
+
+
+
+</table>
+				</div>	
+			</div>	
+		</div>	
+	</div>
+</div>
+
+
+@ibox-content-footer@
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+<!-- documentosrequeridos Grid Modal -->
+        <div class="modal inmodal" id="documentosrequeridosModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content animated bounceInRight">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                        <h4 class="modal-title">Documentos requeridos</h4>
+                        <small class="font-bold">Permite agregar un nuevo Documentos requeridos o editar uno ya existente</small>
+                    </div>
+                    <div class="modal-body">
+<!-- documentosrequeridos Grid Edit Form -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div id="documentosrequeridosEdt" class="animated fadeInRight">
+                    <form id='documentosrequeridosEdtForm' class='form-horizontal' data-toggle='validator'>
+                        <fieldset>
+                            <div class='form-row'>
+<!-- DStored Text -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='DStored'>Estado</label>
+    <input type='text' id='DStored' name='DStored' class='form-control' size='60' maxlength='60'  />
+  </div>
+</div><!-- tipo Text -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='tipo'>Tipo de documento</label>
+    <input type='text' id='tipo' name='tipo' class='form-control' size='60' maxlength='60'  />
+  </div>
+</div><!-- DNombre Text -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='DNombre'>Archivo</label>
+    <input type='text' id='DNombre' name='DNombre' class='form-control' size='100' maxlength='100'  />
+  </div>
+</div><!-- DArchivoEsperado Text -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='DArchivoEsperado'>Archivoeseperado</label>
+    <input type='text' id='DArchivoEsperado' name='DArchivoEsperado' class='form-control' size='100' maxlength='100'  />
+  </div>
+</div><!-- Grupo Text -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='Grupo'>Grupo</label>
+    <input type='text' id='Grupo' name='Grupo' class='form-control' size='100' maxlength='100'  />
+  </div>
+</div><!-- DFecha DatePicker -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='DFecha'>Fecha</label>
+    <div class='input-group date' id='DFecha_group'>
+      <input type='text' id='DFecha' name='DFecha' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+        <span class='input-group-addon'>
+          <span class='glyphicon glyphicon-calendar'></span>
+        </span>
+    </div>
+    <div id='DFecha_validate'></div>
+  </div>
+</div>
+<!-- DTamano Numeric -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='DTamano'>Tamaño</label>
+    <input type='text' id='DTamano' name='DTamano' class='form-control text-right' size='5' maxlength='5' />
+  </div>
+</div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+                 </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="documentosrequeridosEdtFormSave" data-doing="Guardando...">Guardar cambios</button>
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>		
+
+		<!-- Edit Form End -->
+    </div>	
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/Manual.Siniestro.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.ManualSiniestro.Init();
+        });
+    </script>
+}

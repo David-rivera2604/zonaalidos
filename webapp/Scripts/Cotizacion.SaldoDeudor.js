@@ -38,6 +38,31 @@ app.CotizacionSaldoDeudor = (function () {
         });
     };
 
+    function ReadOnly() {
+        $('#cod_mon').replaceWith('<div>' + $('#cod_mon option:selected').text() + '</div>');
+        $('#cod_fracc_pago').replaceWith('<div>' + $('#cod_fracc_pago option:selected').text() + '</div>');
+        $('#fec_efec_poliza_group').replaceWith('<div>' + $('#fec_efec_poliza').val() + '</div>');
+        $('#fec_vcto_poliza_group').replaceWith('<div>' + $('#fec_vcto_poliza').val() + '</div>');
+        $('#FEC_NACIMIENTO_group').replaceWith('<div>' + $('#FEC_NACIMIENTO').val() + '</div>');
+        $('label[for=MCA_SEXO').next().replaceWith('<div>' + $('label[for=MCA_SEXO_' + app.ui.GetRadioNumericValue('MCA_SEXO') + '').html() + '</div>');
+        $('#COD_MODALIDAD_RIESGO').replaceWith('<div>' + $('#COD_MODALIDAD_RIESGO option:selected').text() + '</div>');
+        $('label[for=MCA_NEGOCIO_MIGRADO').next().replaceWith('<div>' + $('label[for=MCA_NEGOCIO_MIGRADO_' + app.ui.GetRadioNumericValue('MCA_NEGOCIO_MIGRADO') + '').html() + '</div>');
+        $('#COD_CIA_ORI').replaceWith('<div>' + $('#COD_CIA_ORI option:selected').text() + '</div>');
+        $('#FEC_EMISION_ORI_group').replaceWith('<div>' + $('#FEC_EMISION_ORI').val() + '</div>');
+        $('#IMP_MONTO_ORI').replaceWith('<div>' + $('#IMP_MONTO_ORI').val() + '</div>');
+        $('#IMP_SLD_ACTUAL').replaceWith('<div>' + $('#IMP_SLD_ACTUAL').val() + '</div>');
+        $('#NUM_PRESTAMO').replaceWith('<div>' + $('#NUM_PRESTAMO').val() + '</div>');
+        $('#TIP_NEGOCIO').replaceWith('<div>' + $('#TIP_NEGOCIO option:selected').text() + '</div>');
+        $('#IMP_PRIMA_INFORMADA').replaceWith('<div>' + $('#IMP_PRIMA_INFORMADA').val() + '</div>');
+        $('#IMP_GASTOS_EMISION').replaceWith('<div>' + $('#IMP_GASTOS_EMISION').val() + '</div>');
+        $('#PCT_DTO_COMERCIAL').replaceWith('<div>' + $('#PCT_DTO_COMERCIAL').val() + '</div>');
+        $('#PCT_DCTO_TECNICO').replaceWith('<div>' + $('#PCT_DCTO_TECNICO').val() + '</div>');
+        $('#FEC_PRIM_FINAN_group').replaceWith('<div>' + $('#FEC_PRIM_FINAN').val() + '</div>');
+        $('#enfermedadesexcluidasNew').addClass('d-none');
+        $('#enfermedadesexcluidasTbl').bootstrapTable('hideColumn', 'Actions');
+
+    };
+
     function MapInputToObject() {
         var data = {
             cod_mon: app.ui.GetDropDownNumericValue('#cod_mon'),
