@@ -27,5 +27,6 @@ namespace Architect.API.Tron.Business.Emision
             //FALTAN
             return quoteInfo;
         }
+
     }
 }

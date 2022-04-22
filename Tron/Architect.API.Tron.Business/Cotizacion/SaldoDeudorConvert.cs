@@ -35,7 +35,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "FEC_EMISION_ORI", quoteInfo.FEC_EMISION_ORI.ToString("ddMMyyyy"), 2, 4));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "IMP_MONTO_ORI", quoteInfo.IMP_MONTO_ORI.ToString(), 2, 5));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "IMP_SLD_ACTUAL", quoteInfo.IMP_SLD_ACTUAL.ToString(), 2, 6));
-            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_PRESTAMO", quoteInfo.NUM_PRESTAMO.ToString(), 2, 7));
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_PRESTAMO", quoteInfo.NUM_PRESTAMO, 2, 7));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "FEC_NACIMIENTO", quoteInfo.FEC_NACIMIENTO.ToString(("ddMMyyyy")), 2, 10));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "MCA_SEXO", quoteInfo.MCA_SEXO, 2, 11, quoteInfo.MCA_SEXO));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_EDAD_ASEGURADO", quoteInfo.FEC_NACIMIENTO.Age().ToString(), 2, 12));
@@ -186,6 +186,149 @@ namespace Architect.API.Tron.Business.Cotizacion
                 }
             }
 
+            return quoteInfo;
+        }
+
+        internal static Contracts.Cotizacion.SaldoDeudor FromTron_Full(Contracts.Presupuesto.DatoFijo tronQuoteInfo)
+        {
+            Contracts.Cotizacion.SaldoDeudor quoteInfo = new Contracts.Cotizacion.SaldoDeudor()
+            {
+                cod_ramo = tronQuoteInfo.cod_ramo,
+                presupuesto = tronQuoteInfo.num_poliza,
+                cod_mon = tronQuoteInfo.cod_mon,
+                cod_fracc_pago = tronQuoteInfo.cod_fracc_pago,
+                fec_efec_poliza = tronQuoteInfo.fec_efec_poliza,
+                fec_vcto_poliza = tronQuoteInfo.fec_vcto_poliza,
+                coberturas = new List<Contracts.Comun.Cobertura>()
+            };
+
+            return FromTron_Coberturas(tronQuoteInfo,
+                        FromTron_Ocurrencias(tronQuoteInfo,
+                            FromTron_DatosVariables(tronQuoteInfo, quoteInfo)));
+        }
+
+        private static Contracts.Cotizacion.SaldoDeudor FromTron_Coberturas(Contracts.Presupuesto.DatoFijo tronQuoteInfo, Contracts.Cotizacion.SaldoDeudor quoteInfo)
+        {
+            foreach (Contracts.Presupuesto.Cobertura item in tronQuoteInfo.Coberturas)
+            {
+                quoteInfo.coberturas.Add(new Contracts.Comun.Cobertura()
+                {
+                    seleccionado = true,
+                    requerida = true,
+                    codigo = item.cod_cob,
+                    nombre = item.nom_cob,
+                    capital = item.suma_aseg,
+                    primatotal = item.imp_total,
+                    decucible = item.nom_franquicia
+                });
+            }
+            return quoteInfo;
+        }
+
+        private static Contracts.Cotizacion.SaldoDeudor FromTron_DatosVariables(Contracts.Presupuesto.DatoFijo tronQuoteInfo, Contracts.Cotizacion.SaldoDeudor quoteInfo)
+        {
+            foreach (Contracts.Presupuesto.DatoVariable item in tronQuoteInfo.DatosVariables)
+            {
+                switch (item.cod_campo)
+                {
+                    case "COD_MODALIDAD_RIESGO":
+                        quoteInfo.COD_MODALIDAD_RIESGO = Convert.ToInt32(item.val_campo);
+                        quoteInfo.NOM_MODALIDAD_RIESGO = item.txt_campo;
+                        break;
+                    case "MCA_NEGOCIO_MIGRADO":
+                        quoteInfo.MCA_NEGOCIO_MIGRADO = item.val_campo;
+                        quoteInfo.MCA_NEGOCIO_MIGRADO = item.txt_campo;
+                        break;
+                    case "COD_CIA_ORI":
+                        quoteInfo.COD_CIA_ORI = Convert.ToInt32(item.val_campo);
+                        break;
+                    case "FEC_EMISION_ORI":
+                        quoteInfo.FEC_EMISION_ORI = DateTime.ParseExact(item.val_campo, "ddMMyyyy", System.Globalization.CultureInfo.InvariantCulture);
+                        break;
+                    case "IMP_MONTO_ORI":
+                        quoteInfo.IMP_MONTO_ORI = Convert.ToDouble(item.val_campo);
+                        break;
+                    case "IMP_SLD_ACTUAL":
+                        quoteInfo.IMP_SLD_ACTUAL = Convert.ToDouble(item.val_campo);
+                        break;
+                    case "NUM_PRESTAMO":
+                        quoteInfo.NUM_PRESTAMO = item.val_campo;
+                        break;
+                    case "FEC_NACIMIENTO":
+                        quoteInfo.FEC_NACIMIENTO = DateTime.ParseExact(item.val_campo, "ddMMyyyy", System.Globalization.CultureInfo.InvariantCulture);
+                        break;
+                    case "MCA_SEXO":
+                        quoteInfo.MCA_SEXO = item.val_campo;
+                        break;
+                    case "TIP_NEGOCIO":
+                        quoteInfo.TIP_NEGOCIO = item.val_campo;
+                        quoteInfo.NOM_TIP_NEGOCIO = item.txt_campo;
+                        break;
+                    case "IMP_PRIMA_INFORMADA":
+                        quoteInfo.IMP_PRIMA_INFORMADA = Convert.ToDouble(item.val_campo);
+                        break;
+                    case "IMP_GASTOS_EMISION":
+                        quoteInfo.IMP_GASTOS_EMISION = Convert.ToDouble(item.val_campo);
+                        break;
+                    case "PCT_DTO_COMERCIAL":
+                        quoteInfo.PCT_DTO_COMERCIAL = Convert.ToInt32(item.val_campo);
+                        break;
+                    case "PCT_DCTO_TECNICO":
+                        quoteInfo.PCT_DCTO_TECNICO = Convert.ToInt32(item.val_campo);
+                        break;
+                    case "FEC_PRIM_FINAN":
+                        quoteInfo.FEC_PRIM_FINAN = DateTime.ParseExact(item.val_campo, "ddMMyyyy", System.Globalization.CultureInfo.InvariantCulture);
+                        break;
+
+
+                    case "FEC_VALIDEZ_TARIFA":
+                    case "MCA_COMISION_ADMON_POLIZA":
+                    case "PCT_COMISION_ADMON_POLIZA":
+                    case "TIP_DOCUM_CIA_ORI":
+                    case "COD_DOCUM_CIA_ORI":
+                    case "NUM_EDAD_ASEGURADO":
+                    case "NUM_ENF_EXC":
+                    case "COD_MODALIDAD":
+                        break;
+                }
+            }
+            return quoteInfo;
+        }
+
+        private static Contracts.Cotizacion.SaldoDeudor FromTron_Ocurrencias(Contracts.Presupuesto.DatoFijo tronQuoteInfo, Contracts.Cotizacion.SaldoDeudor quoteInfo)
+        {
+            int index = -1;
+            Contracts.Cotizacion.enfermedadesexcluidas current = null;
+
+            quoteInfo.enfermedadesexcluidas = new List<Contracts.Cotizacion.enfermedadesexcluidas>();
+            foreach (Contracts.Presupuesto.Ocurrencia item in tronQuoteInfo.Ocurrencias)
+            {
+                if (index != item.num_ocurrencia)
+                {
+                    current = new Contracts.Cotizacion.enfermedadesexcluidas();
+                    quoteInfo.enfermedadesexcluidas.Add(current);
+                }
+                switch (item.cod_campo)
+                {
+                    case "COD_ENF_EXC":
+                        current.COD_ENF_EXC = item.val_campo;
+                        current.NOM_ENF_EXC = item.txt_campo;
+                        break;
+                    case "TXT_OBS_ENF_EXC":
+                        current.TXT_OBS_ENF_EXC = item.val_campo;
+                        break;
+                    case "COD_TIP_EXC":
+                        current.COD_TIP_EXC = item.val_campo;
+                        current.NOM_TIP_EXC = item.txt_campo;
+                        break;
+                    case "FEC_INI_EXC":
+                        current.FEC_INI_EXC = DateTime.ParseExact(item.val_campo, "ddMMyyyy", System.Globalization.CultureInfo.InvariantCulture);
+                        break;
+                    case "FEC_FIN_EXC":
+                        current.FEC_FIN_EXC = DateTime.ParseExact(item.val_campo, "ddMMyyyy", System.Globalization.CultureInfo.InvariantCulture);
+                        break;
+                }
+            }
             return quoteInfo;
         }
 
