@@ -29,7 +29,7 @@ namespace Architect.API.Tron.DataAccess
                         .AddParameter("COD_CIA", DbType.Decimal, 5, cod_cia)
                         .AddParameter("NUM_POLIZA", DbType.AnsiString, 13, num_poliza)
                         .AddParameter("COD_AGT", DbType.Decimal, 5, cod_agt)
-                        .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
+                        .Query(connection, "Tron", new Action<System.Data.IDataReader>((reader) =>
                         {
                             result = new Architect.API.Tron.Contracts.Vistas.Recibo()
                             {

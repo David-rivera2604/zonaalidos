@@ -3,11 +3,16 @@
 app.Payment = (function () {
 
     return {
-        Recibo: function (row) {
+        Recibo: function (row, id, sequence) {
+            let data = { num_poliza: '', num_recibo: 0 };
             console.log('row', row);
 
+            if (id == 310 && sequence == 2) {
+                data = { num_poliza: row.NUM_POLIZA, num_recibo: row.NUM_RECIBO }
+            }
+
             $('.ibox-content').toggleClass('sk-loading');
-            app.Payment.Process({ num_poliza: '123', num_recibo: 456 })
+            app.Payment.Process(data)
                 .then(d => {
                     app.ui.ShowAlert('generalNotify', 'alert-primary', d.status);
                 })

@@ -23,7 +23,7 @@ namespace Architect.Payment.Integrations
             Business.OnlinePayment.Create(companyId, userId, new Contracts.OnlinePayment()
             {
                 CompanyId = companyId,
-                DocumentType = payInfo.DocumentType,
+                DocumentType = IdentificationTypeConvert( payInfo.DocumentType),
                 DocumentNumber = payInfo.Document,
                 FirstName = payInfo.FirstName,
                 LastName = payInfo.LastName,
@@ -31,7 +31,7 @@ namespace Architect.Payment.Integrations
                 PhoneNumberMobile = payInfo.Mobile,
                 PolicyId = payInfo.PolicyId,
                 BillNumber = payInfo.BillNumber,
-                Currency = payInfo.Currency,
+                Currency = CurrencyConvert(payInfo.Currency),
                 Amount = payInfo.Amount,
                 Reference = payInfo.Reference,
                 Description = payInfo.Description,
@@ -119,5 +119,53 @@ namespace Architect.Payment.Integrations
             Business.OnlinePayment.Update(currentRecord);
         }
 
+        public static int IdentificationTypeConvert(string identificationType)
+        {
+            int type = 0;
+
+            switch (identificationType)
+            {
+                case "1": //Cédula
+                case "CNA":
+                    type = 1;
+                    break;
+
+                case "2": //Residencia
+                case "CRE":
+                    type = 2;
+                    break;
+
+                case "4": //Cédula jurídica
+                case "CJU":
+                    type = 4;
+                    break;
+
+                case "3": //Pasaporte
+                case "PAS":
+                    type = 3;
+                    break;
+
+                    //DIDI
+            }
+
+            return type;
+        }
+
+        private static int CurrencyConvert(string currency)
+        {
+            int result = 0;
+            switch (currency)
+            {
+                case "1":
+                case "CRC":
+                    result = 1;
+                    break;
+                case "2":
+                case "USD":
+                    result = 2;
+                    break;
+            }
+            return result;
+        }
     }
 }

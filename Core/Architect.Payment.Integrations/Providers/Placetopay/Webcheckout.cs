@@ -91,8 +91,8 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
             };
 
             var data = new StringContent(JsonConvert.SerializeObject(sessionRequest), Encoding.UTF8, "application/json");
-            HttpClient client = new HttpClient() { Timeout = new TimeSpan(0, 0, 2) };
-            var response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("Payment.Placetopay.PaymentUrl") + "api/session", data).ConfigureAwait(false);
+            HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
+            var response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("Payment.Placetopay.PaymentUrl") + "api/session", data);
             string resultResponse = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
@@ -130,7 +130,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
             string json = JsonConvert.SerializeObject(new { auth = BuildAuth(CurrencyConvert(currency.ToString())) });
             var data = new StringContent(json, Encoding.UTF8, "application/json");
             HttpClient client = new HttpClient() { Timeout = new TimeSpan(0, 0, 2) };
-            var response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("Payment.Placetopay.PaymentUrl") + "api/session/" + requestId.ToString(), data).ConfigureAwait(false);
+            var response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("Payment.Placetopay.PaymentUrl") + "api/session/" + requestId.ToString(), data);
             if (response.IsSuccessStatusCode)
             {
                 resultResponse = await response.Content.ReadAsStringAsync();

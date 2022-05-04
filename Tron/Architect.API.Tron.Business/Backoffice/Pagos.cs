@@ -45,12 +45,12 @@ namespace Architect.API.Tron.Business.Backoffice
                     LastName = recibo.APE1_TERCERO,
                     Email = recibo.EMAIL.IfEmpty(recibo.TXT_EMAIL),
                     Document = recibo.COD_DOCUM,
-                    DocumentType = Convert.ToInt32(recibo.TIP_DOCUM),
+                    DocumentType = recibo.TIP_DOCUM,
                     Mobile = recibo.TLF_MOVIL.IfEmpty(recibo.TLF_NUMERO),
                     PolicyId = num_poliza,
                     BillNumber = num_recibo,
-                    Description = string.Format("MAPFRE: {0} POLIZA #{1} RECIBO #{2}", recibo.NOM_RAMO, num_poliza, num_recibo),
-                    Currency = recibo.COD_MON,
+                    Description = string.Format("MAPFRE: {0}. POLIZA #{1} RECIBO #{2}", recibo.NOM_RAMO, num_poliza, num_recibo),
+                    Currency = recibo.COD_MON.ToString(),
                     Amount = recibo.IMP_RECIBO
                 };
                 session = await Payment.Integrations.Payment.NewSession(companyId, userId, payInfo, ipAddress, userAgent);

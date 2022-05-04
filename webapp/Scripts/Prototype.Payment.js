@@ -14,9 +14,9 @@ app.PrototypePayment = (function () {
             DocumentType: '2',
             Document: '186200170219',
             Mobile: '72155569',
-            PolicyId: '3001510108954',
-            BillNumber: '0000907640',
-            Description: 'MAPFRE: NUEVA PÓLIZA LÍDER #3001510108954 FACTURA #0000907640',
+            PolicyId: '123',
+            BillNumber: '456',
+            Description: 'MAPFRE: NUEVA PÓLIZA LÍDER #123 FACTURA #456',
             Currency: '1',
             Amount: 53909.96,
         };
