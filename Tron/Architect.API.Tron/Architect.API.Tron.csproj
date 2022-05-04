@@ -81,6 +81,14 @@
       <Project>{29b21bef-8c87-4a9d-8b37-fecc57cd03c7}</Project>
       <Name>Architect.API.Core.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Core\Architect.Payment.Integrations\Architect.Payment.Integrations.csproj">
+      <Project>{4950c088-7a09-4e2b-b4de-d2381d0739c6}</Project>
+      <Name>Architect.Payment.Integrations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Kernel\Architect.Utilities\Architect.Utilities.csproj">
+      <Project>{e8317ab3-7807-4fcf-8520-b80340b4eb7d}</Project>
+      <Name>Architect.Utilities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Architect.API.Tron.Business\Architect.API.Tron.Business.csproj">
       <Project>{6a906932-7049-4dbd-88f6-2b3f5b3b0f94}</Project>
       <Name>Architect.API.Tron.Business</Name>
