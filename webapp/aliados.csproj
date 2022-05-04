@@ -1109,6 +1109,7 @@
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="html\view.html" />
     <Content Include="html\template.html" />
     <Content Include="html\asegurado.html" />
     <Content Include="html\fma.html" />
@@ -1195,7 +1196,6 @@
     <Content Include="Scripts\Clientes.Index.js" />
     <Content Include="Scripts\Emision.SaldoDeudor.js" />
     <Content Include="Scripts\Cotizacion.SaldoDeudor.js" />
-    <Content Include="Scripts\Emision.Viajero.js" />
     <Content Include="Scripts\Cotizacion.Viajero.js" />
     <Content Include="Scripts\Dashboard.Users.js" />
     <Content Include="Scripts\Emision.MapfreMas.js" />
@@ -1221,6 +1221,7 @@
     <Content Include="Scripts\policy.edit.cuestionariocovid.js" />
     <Content Include="Scripts\policy.products.js" />
     <Content Include="Scripts\policy.imports.js" />
+    <Content Include="Scripts\Prototype.Payment.js" />
     <Content Include="Scripts\Prototype.Producto.js" />
     <Content Include="Scripts\Siniestros.Panel.js" />
     <Content Include="Scripts\Security.Integrate.js" />
@@ -1612,6 +1613,7 @@
     <Content Include="Views\Cotizacion\SaldoDeudor.cshtml" />
     <Content Include="Views\Emision\SaldoDeudor.cshtml" />
     <Content Include="Views\Manual\Siniestro.cshtml" />
+    <Content Include="Views\Prototype\Payment.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

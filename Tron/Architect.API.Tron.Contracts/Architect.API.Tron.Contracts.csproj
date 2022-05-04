@@ -128,6 +128,7 @@
     <Compile Include="Ramo\A1001403.cs" />
     <Compile Include="Tables\a1002150.cs" />
     <Compile Include="Tables\ta301003.cs" />
+    <Compile Include="Vistas\Recibo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Architect.API.Core.Contracts\Architect.API.Core.Contracts.csproj">

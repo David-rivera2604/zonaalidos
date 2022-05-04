@@ -103,27 +103,5 @@ namespace Architect.API.Tron.Controllers
             result.Content.Headers.ContentLength = dataStream.Length;
             return result;
         }
-
-        /// <summary>
-        /// Descarga un recibo asociado a una póliza
-        /// </summary>
-        /// <param name="num_recibo"></param>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("ImprimirRecibo/{num_recibo}")]
-        public HttpResponseMessage ImprimirRecibo([FromUri] int num_recibo)
-        {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
-
-            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
-            var dataStream = new MemoryStream(Architect.API.Tron.Business.Backoffice.Common.ImprimirRecibo(num_recibo));
-            result.Content = new StreamContent(dataStream);
-            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline");
-            result.Content.Headers.ContentDisposition.FileName = "Mapfre Recibo.pdf";
-            result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
-            result.Content.Headers.ContentLength = dataStream.Length;
-            return result;
-        }
-
     }
 }

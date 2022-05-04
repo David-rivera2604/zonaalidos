@@ -696,6 +696,34 @@ app.core = (function () {
         },
         Data: function () {
             return { lookups: lookupData };
+        },
+        LoadScriptFile: function (url, async = true, type = "text/javascript") {
+            if (!url.startsWith('http')) {
+                url = app.setting.basepath + 'Scripts/' + url;
+            }
+            return new Promise((resolve, reject) => {
+                try {
+                    const scriptEle = document.createElement("script");
+                    scriptEle.type = type;
+                    scriptEle.async = async;
+                    scriptEle.src = url;
+
+                    scriptEle.addEventListener("load", (ev) => {
+                        resolve({ status: true });
+                    });
+
+                    scriptEle.addEventListener("error", (ev) => {
+                        reject({
+                            status: false,
+                            message: `Failed to load the script ${url}`
+                        });
+                    });
+
+                    document.body.appendChild(scriptEle);
+                } catch (error) {
+                    reject(error);
+                }
+            });
         }
     };
 })();

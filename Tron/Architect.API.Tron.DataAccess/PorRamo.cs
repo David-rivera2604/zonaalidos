@@ -3,11 +3,57 @@ using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using DbType = Architect.DataFactory.Enumerations.DbType;
 
 namespace Architect.API.Tron.DataAccess
 {
     public static class PorRamo
     {
+
+        public static Architect.API.Tron.Contracts.Vistas.Recibo Informacion_de_un_Recibo(int cod_cia, int cod_agt, string num_poliza, Int64 num_recibo, IDbConnection connection = null)
+        {
+            Architect.API.Tron.Contracts.Vistas.Recibo result = null;
+            Database.Select(
+@"SELECT a30.COD_RAMO, a1800.nom_ramo, a30.TIP_DOCUM, a30.COD_DOCUM, v1390.NOM_TERCERO, v1390.NOM2_TERCERO, v1390.APE1_TERCERO, v1390.APE2_TERCERO, a1331.email, a1331.TXT_EMAIL, a1331.tlf_numero, a1331.TLF_MOVIL, a700.cod_mon, a700.imp_recibo, a1331.TIP_TARJETA, a1331.COD_TARJETA, a1331.NUM_TARJETA
+  FROM a2000030 a30
+  JOIN A1001800 a1800 ON a1800.COD_CIA=a30.COD_CIA AND a1800.COD_RAMO = a30.COD_RAMO
+  JOIN a1001331 a1331 ON a1331.COD_CIA=a30.COD_CIA AND a1331.TIP_DOCUM = a30.TIP_DOCUM AND a1331.COD_DOCUM = a30.COD_DOCUM
+  JOIN v1001390 v1390 ON v1390.COD_CIA=a30.COD_CIA AND v1390.TIP_DOCUM = a30.TIP_DOCUM AND v1390.COD_DOCUM = a30.COD_DOCUM
+  JOIN a2990700 a700 ON a700.COD_CIA=a30.COD_CIA AND a700.NUM_POLIZA= a30.NUM_POLIZA AND a700.num_spto = a30.num_spto AND a700.num_apli = a30.num_apli AND a700.num_poliza = a30.num_poliza AND a700.num_spto_apli = a30.num_spto_apli AND a700.NUM_RECIBO = :NUM_RECIBO AND a700.TIP_SITUACION = 'EP'
+ WHERE a30.COD_CIA   = :COD_CIA
+  AND a30.NUM_POLIZA = :NUM_POLIZA
+  AND a30.COD_AGT    = :COD_AGT
+  AND a30.mca_spto_anulado   = 'N'
+  AND a30.mca_poliza_anulada = 'N'")
+                        .AddParameter("NUM_RECIBO", DbType.Decimal, 11, num_recibo)
+                        .AddParameter("COD_CIA", DbType.Decimal, 5, cod_cia)
+                        .AddParameter("NUM_POLIZA", DbType.AnsiString, 13, num_poliza)
+                        .AddParameter("COD_AGT", DbType.Decimal, 5, cod_agt)
+                        .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
+                        {
+                            result = new Architect.API.Tron.Contracts.Vistas.Recibo()
+                            {
+                                COD_RAMO = reader.IntegerValue("COD_RAMO"),
+                                NOM_RAMO = reader.StringValue("NOM_RAMO"),
+                                TIP_DOCUM = reader.StringValue("TIP_DOCUM"),
+                                COD_DOCUM = reader.StringValue("COD_DOCUM"),
+                                NOM_TERCERO = reader.StringValue("NOM_TERCERO"),
+                                NOM2_TERCERO = reader.StringValue("NOM2_TERCERO"),
+                                APE1_TERCERO = reader.StringValue("APE1_TERCERO"),
+                                APE2_TERCERO = reader.StringValue("APE2_TERCERO"),
+                                EMAIL = reader.StringValue("EMAIL"),
+                                TXT_EMAIL = reader.StringValue("TXT_EMAIL"),
+                                TLF_NUMERO = reader.StringValue("TLF_NUMERO"),
+                                TLF_MOVIL = reader.StringValue("TLF_MOVIL"),
+                                COD_MON = reader.IntegerValue("COD_MON"),
+                                IMP_RECIBO = reader.DoubleValue("IMP_RECIBO"),
+                                TIP_TARJETA = reader.IntegerValue("TIP_TARJETA"),
+                                COD_TARJETA = reader.IntegerValue("COD_TARJETA"),
+                                NUM_TARJETA = reader.StringValue("NUM_TARJETA"),
+                            };
+                        }));
+            return result;
+        }
 
         /// <summary>
         /// Coberturas por número de contrato de pólizas grupo o flotas.

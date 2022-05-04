@@ -477,8 +477,12 @@ app.CotizacionMapfreMas = (function () {
                 let cod_tip_vehi = app.ui.GetDropDownNumericValue('#cod_tip_vehi');
                 let cod_plan_auto = app.ui.GetDropDownNumericValue('#COD_PLAN_AUTO');
 
-                if (cod_tip_vehi === 2 && cod_plan_auto != 32 && cod_plan_auto != 33)
-                    return true;
+                if (cod_tip_vehi === 2 && cod_plan_auto != 32 && cod_plan_auto != 33){
+					return true;
+				}
+				else if(cod_plan_auto == 35){
+					return true;
+				}
                 else {
                     return (value != '0');
                 }

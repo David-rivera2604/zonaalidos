@@ -62,9 +62,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\CreateSession.cs" />
     <Compile Include="Controllers\IssueController.cs" />
     <Compile Include="Controllers\SiniestroController.cs" />
     <Compile Include="Controllers\PolizaController.cs" />
+    <Compile Include="Controllers\PagosController.cs" />
     <Compile Include="Controllers\TronCommonController.cs" />
     <Compile Include="Controllers\TronClientController.cs" />
     <Compile Include="Controllers\QuoteController.cs" />
@@ -92,5 +94,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
