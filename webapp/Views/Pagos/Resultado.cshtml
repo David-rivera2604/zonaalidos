@@ -1,0 +1,81 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+
+
+<div class="row justify-content-md-center">
+
+
+    <div class="col-md-6 col-lg-6">
+
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Transacción</h5>
+                <div class="ibox-tools">
+                    <span class="label label-success float-right d-none status-APPROVED"><i class="fa fa-check"></i> Aprobada</span>
+                    <span class="label label-danger float-right d-none status-REJECTED"><i class="fa fa-close"></i> Rechazada</span>
+                </div>
+            </div>
+            <div class="ibox-content ibox-heading">
+                <h2 class="d-none status-NotFound">
+                    No se puede recuperar la información de la transacción suministrada
+                </h2>
+                <h2 id="amount" class="font-bold d-none status-APPROVED status-REJECTED">
+                </h2>
+                <small class="d-none status-APPROVED">Total pagado</small>
+                <small class="d-none status-REJECTED">Total a pagar</small>
+            </div>
+            <div class="ibox-content d-none status-APPROVED status-REJECTED">
+
+                <div class="row" style="padding-bottom: 10px;">
+                    <div class="col-md-12"><div class=" font-bold">Descripción</div><span id="description"></span></div>
+                </div>
+                <div class="row" style="padding-bottom:6px;">
+                    <div class="col-md-6"><div class=" font-bold">Referencia</div><span id="reference"></span></div>
+                    <div class="col-md-6 d-none status-APPROVED"><div class=" font-bold">Medio de pago</div><span id="paymentMethodName"></span></div>
+                </div>
+                <div class="row" style="padding-bottom:6px;">
+                    <div class="col-md-6 d-none status-APPROVED"><div class=" font-bold">Autorización</div><span id="authorization"></span></div>
+                    <div class="col-md-6 d-none status-APPROVED"><div class=" font-bold">Recibo</div><span id="receipt"></span></div>
+                </div>
+                <div class="row status-REJECTED" style="padding-bottom: 10px;">
+                    <div class="col-md-12"><div class=" font-bold">Causa del rechazo</div><span id="message"></span></div>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <span class="text-muted small float-right d-none status-REJECTED">
+                    *El pago no se pudo realizar
+                </span>
+                <div class="btn-group">
+                    <a href="#" class="btn btn-primary btn-sm d-none status-REJECTED"><i class="fa fa-shopping-cart"></i> Reintentar el pago</a>
+                    <a href="#" class="btn btn-white btn-sm"> Ir al inicio</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Soporte</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-auto"><i class="fa fa-phone"></i> +506 100 783 001 <br /> <i class="fa fa-envelope"></i> soporte@mapfre.com</div>
+                    <div class="col"> Por favor contáctenos en caso de tener alguna duda o pregunta. Estamos disponibles las 24 horas del día.</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/Pagos.Resultado.js")"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.PrototypePayment.Init();
+        });
+    </script>
+}

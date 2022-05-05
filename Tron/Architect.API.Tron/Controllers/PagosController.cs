@@ -43,6 +43,16 @@ namespace Architect.API.Tron.Controllers
         }
 
         [HttpPost]
+        [Route("Sesion/ref={reference}")]
+        public async Task<IHttpActionResult> Refresh([FromUri] string reference)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Payment.Integrations.Providers.Placetopay.Contracts.InformationRequest result = await Payment.Integrations.Payment.GetRequestInformation(tokenInfo.CompanyId, tokenInfo.UserId, reference, true);
+
+            return Ok(result);
+        }
+
+        [HttpPost]
         [Route("Notificar")]
         [AllowAnonymous]
         public async Task<IHttpActionResult> Notify(Payment.Integrations.Providers.Placetopay.Contracts.NotifyRequest notify)

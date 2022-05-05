@@ -55,7 +55,7 @@ namespace Architect.Payment.Integrations.DataAccess
         }
 
         /// <summary>
-        /// Recupera un registro en la tabla OnlinePayment por medio de su clave primaria.
+        /// Recupera un registro en la tabla OnlinePayment por el campo RequestID.
         /// </summary>
         public static Contracts.OnlinePayment RetrieveByRequestID(Int64 requestID, int companyId, bool full = false, IDbConnection connection = null)
         {
@@ -77,28 +77,29 @@ namespace Architect.Payment.Integrations.DataAccess
             return result;
         }
 
-
         /// <summary>
-        /// Recupera una lista de registros en la tabla OnlinePayment.
+        /// Recupera un registro en la tabla OnlinePayment con estado pendiente por póliza y recibo.
         /// </summary>
-        public static List<Contracts.OnlinePayment> Retrieve(string policyId, Int64 billNumber, int companyId, bool full = false, IDbConnection connection = null)
+        public static Contracts.OnlinePayment Retrieve(string policyId, Int64 billNumber, int companyId, bool full = false, IDbConnection connection = null)
         {
             string complement = ", NULL ResponseData";
             if (full)
             {
                 complement = ", ResponseData";
             }
-            List<Contracts.OnlinePayment> result = new List<Contracts.OnlinePayment>();
+
+            // AND Status=1
+            Contracts.OnlinePayment result = null;
             Database.Select("SELECT Id, OnlinePayment.CompanyId, DocumentType, DocumentNumber, OnlinePayment.FirstName, OnlinePayment.LastName, PrimaryEmailAddress, PhoneNumberMobile, PolicyId, BillNumber, Currency, Amount, OnlinePayment.Reference, Description, IssueDate, NULL StatusDate, RequestID, ProcessUrl, ProviderStatus" + complement + ", Status, Reason, Authorization, Receipt, OnlinePayment.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, OnlinePayment.UpdateDate " +
                               "FROM OnlinePayment LEFT JOIN UserMember um ON um.UserId = OnlinePayment.UpdateUserCode " +
-                             "WHERE OnlinePayment.CompanyId=:CompanyId AND OnlinePayment.PolicyId=:PolicyId AND OnlinePayment.BillNumber=:BillNumber" +
-                             "ORDER BY OnlinePayment.IssueDate DESC")
+                             "WHERE OnlinePayment.CompanyId=:CompanyId AND OnlinePayment.PolicyId=:PolicyId AND OnlinePayment.BillNumber=:BillNumber " +
+                             "ORDER BY OnlinePayment.IssueDate DESC FETCH FIRST 1 ROWS ONLY")
                         .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
                         .AddParameter("PolicyId", DbType.AnsiString, 13, policyId)
                         .AddParameter("BillNumber", DbType.Decimal, 11, billNumber)
                         .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
                         {
-                            result.Add(DataReaderToOnlinePayment(reader));
+                            result = DataReaderToOnlinePayment(reader);
                         }));
             return result;
         }

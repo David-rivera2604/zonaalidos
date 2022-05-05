@@ -23,7 +23,7 @@ namespace Architect.Payment.Integrations
             Business.OnlinePayment.Create(companyId, userId, new Contracts.OnlinePayment()
             {
                 CompanyId = companyId,
-                DocumentType = IdentificationTypeConvert( payInfo.DocumentType),
+                DocumentType = IdentificationTypeConvert(payInfo.DocumentType),
                 DocumentNumber = payInfo.Document,
                 FirstName = payInfo.FirstName,
                 LastName = payInfo.LastName,
@@ -51,14 +51,33 @@ namespace Architect.Payment.Integrations
         /// <summary>
         /// Obtiene y actualiza la información de un pago.
         /// </summary>
+        public async static Task<Providers.Placetopay.Contracts.InformationRequest> GetRequestInformation(int companyId, int userId, string reference, bool updateStatus = false)
+        {
+            Contracts.OnlinePayment currentRecord = null;
+            if (reference.IndexOf("-") > -1)
+            {
+                string policyId = reference.Split('-')[0].OnlyNumbers();
+                Int64 billNumber = Convert.ToInt64("0" + reference.Split('-')[1].OnlyNumbers());
+                currentRecord = Business.OnlinePayment.RetrieveByPolicyAndBill(companyId, policyId, billNumber);
+            }
+            return await XXX(currentRecord, userId, updateStatus);
+        }
+
+        /// <summary>
+        /// Obtiene y actualiza la información de un pago.
+        /// </summary>
         public async static Task<Providers.Placetopay.Contracts.InformationRequest> GetRequestInformation(int companyId, int userId, Int64 requestId, bool updateStatus = false)
         {
-            Providers.Placetopay.Contracts.InformationRequest result = null;
             Contracts.OnlinePayment currentRecord = Business.OnlinePayment.RetrieveByRequestID(companyId, requestId);
+            return await XXX(currentRecord, userId, updateStatus);
+        }
 
+        private async static Task<Providers.Placetopay.Contracts.InformationRequest> XXX(Contracts.OnlinePayment currentRecord, int userId, bool updateStatus)
+        {
+            Providers.Placetopay.Contracts.InformationRequest result = null;
             if (currentRecord != null)
             {
-                result = await Providers.Placetopay.Webcheckout.GetRequestInformation(requestId, currentRecord.Currency);
+                result = await Providers.Placetopay.Webcheckout.GetRequestInformation(currentRecord.RequestID, currentRecord.Currency);
                 if (updateStatus && result.status.status != currentRecord.ProviderStatus)
                 {
                     UpdateStatus(userId, currentRecord, result);
@@ -76,6 +95,27 @@ namespace Architect.Payment.Integrations
                 };
             }
             return result;
+        }
+
+
+        /// <summary>
+        /// Actualiza la información relacionada con un pago.
+        /// </summary>
+        private static void UpdateStatus(int userId, OnlinePayment currentRecord, InformationRequest result)
+        {
+            currentRecord.StatusDate = DateTime.Now;
+            currentRecord.ProviderStatus = result.status.status;
+            currentRecord.ResponseData = result.rawData;
+            currentRecord.Status = Providers.Placetopay.Webcheckout.StatusConvert(result.status.status);
+            currentRecord.Reason = result.status.message;
+            currentRecord.UpdateUserCode = userId;
+            currentRecord.UpdateDate = DateTime.Now;
+            if (result.payment?.Count > 0)
+            {
+                currentRecord.Authorization = result.payment.FirstOrDefault().authorization;
+                currentRecord.Receipt = result.payment.FirstOrDefault().receipt;
+            }
+            Business.OnlinePayment.Update(currentRecord);
         }
 
         /// <summary>
@@ -99,25 +139,6 @@ namespace Architect.Payment.Integrations
             }
         }
 
-        /// <summary>
-        /// Actualiza la información relacionada con un pago.
-        /// </summary>
-        private static void UpdateStatus(int userId, OnlinePayment currentRecord, InformationRequest result)
-        {
-            currentRecord.StatusDate = DateTime.Now;
-            currentRecord.ProviderStatus = result.status.status;
-            currentRecord.ResponseData = result.rawData;
-            currentRecord.Status = Providers.Placetopay.Webcheckout.StatusConvert(result.status.status);
-            currentRecord.Reason = result.status.message;
-            currentRecord.UpdateUserCode = userId;
-            currentRecord.UpdateDate = DateTime.Now;
-            if (result.payment?.Count > 0)
-            {
-                currentRecord.Authorization = result.payment.FirstOrDefault().authorization;
-                currentRecord.Receipt = result.payment.FirstOrDefault().receipt;
-            }
-            Business.OnlinePayment.Update(currentRecord);
-        }
 
         public static int IdentificationTypeConvert(string identificationType)
         {

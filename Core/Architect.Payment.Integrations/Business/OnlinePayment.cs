@@ -38,6 +38,11 @@ namespace Architect.Payment.Integrations.Business
             return DataAccess.OnlinePayment.RetrieveByRequestID(requestId, companyId );
         }
 
+        public static Contracts.OnlinePayment RetrieveByPolicyAndBill(int companyId, string policyId, Int64 billNumber)
+        {
+            return DataAccess.OnlinePayment.Retrieve(policyId, billNumber, companyId);
+        }
+
         /// <summary>
         /// Actualiza un registro en la tabla OnlinePayment por medio de su clave primaria.
         /// </summary>

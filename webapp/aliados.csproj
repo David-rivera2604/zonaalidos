@@ -1194,6 +1194,7 @@
     <Content Include="products\cope_vida.xml" />
     <Content Include="releaseletter.txt" />
     <Content Include="Scripts\Clientes.Index.js" />
+    <Content Include="Scripts\Payment.js" />
     <Content Include="Scripts\Emision.SaldoDeudor.js" />
     <Content Include="Scripts\Cotizacion.SaldoDeudor.js" />
     <Content Include="Scripts\Cotizacion.Viajero.js" />
@@ -1222,6 +1223,7 @@
     <Content Include="Scripts\policy.edit.cuestionariocovid.js" />
     <Content Include="Scripts\policy.products.js" />
     <Content Include="Scripts\policy.imports.js" />
+    <Content Include="Scripts\Pagos.Resultado.js" />
     <Content Include="Scripts\Prototype.Payment.js" />
     <Content Include="Scripts\Prototype.Producto.js" />
     <Content Include="Scripts\Siniestros.Panel.js" />
@@ -1269,6 +1271,8 @@
     <Compile Include="App_Start\UnhandledExceptionLogger.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ManualController.cs" />
+    <Compile Include="Controllers\PagosController.cs" />
+
     <Compile Include="Controllers\ProvedoresController.cs" />
     <Compile Include="Controllers\VariacionesController.cs" />
     <Compile Include="Controllers\InicioController.cs" />
@@ -1615,6 +1619,7 @@
     <Content Include="Views\Emision\SaldoDeudor.cshtml" />
     <Content Include="Views\Manual\Siniestro.cshtml" />
     <Content Include="Views\Prototype\Payment.cshtml" />
+    <Content Include="Views\Pagos\Resultado.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
