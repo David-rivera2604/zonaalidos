@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Architect.Payment.Integrations;
 using Architect.Utilities.Extensions;
+using Newtonsoft.Json;
 
 namespace Architect.API.Tron.Business.Backoffice
 {
@@ -64,6 +65,67 @@ namespace Architect.API.Tron.Business.Backoffice
                 };
             }
             return session;
+        }
+
+        public async static Task<Payment.Integrations.Providers.Placetopay.Contracts.InformationRequest> GetRequestInformation(int companyId, int userId, Int64 requestId, string reference)
+        {
+
+            Payment.Integrations.Providers.Placetopay.Contracts.InformationRequest result;
+
+            if (requestId.IsNotEmpty())
+            {
+                result = await Payment.Integrations.Payment.GetRequestInformation(companyId, userId, requestId, true);
+            }
+            else
+            {
+                result = await Payment.Integrations.Payment.GetRequestInformation(companyId, userId, reference, true);
+            }
+            if (result.changed && result.status.status == "APPROVED")
+            {
+                bool tronPayment = await TronPayment(result);
+            }
+            return result;
+        }
+
+
+        public async static Task<bool> TronPayment(Payment.Integrations.Providers.Placetopay.Contracts.InformationRequest request)
+        {
+            var payment = request.payment.FirstOrDefault();
+            string data = JsonConvert.SerializeObject(
+                new
+                {
+                    guid = "dbcf5209-f0fe-47db-9fe3-085b392b53aa",
+                    canal = "ALI",
+                    fechaPago = payment.status.date,
+                    tipoPagador = "A",
+                    pagador = "277",
+                    tipoPago = "DB",
+                    referenciaPago = "8ac7a4a27aadeb34017aae3feeef73c4",
+                    montoTotal = payment.amount.to.total,
+                    moneda = payment.amount.to.currency,
+                    direccionIP = request.request.ipAddress,
+                    huellaNavegador = (string)null,
+                    tarjeta = new
+                    {
+                        bin = "420000",
+                        terminacion = payment.processorFields.Find(f => f.keyword == "lastDigits").value,
+                        nombre = string.Format("{0} {1}", request.request.payer.name, request.request.payer.surname),
+                        mesExpira = "08",
+                        annioExpira = "2021",
+                        marcaTarjeta = payment.paymentMethodName
+                    },
+                    recibos = new[] {
+                        new {
+                            numPoliza = request.OnlinePayment.PolicyId,
+                            numRecibo = request.OnlinePayment.BillNumber.ToString(),
+                            tipoPago = "C",
+                            monto = request.OnlinePayment.Amount
+                        }
+                    }
+                });
+            Contracts.Batch.Respuesta resp = DataAccess.PorRamo.p_proceso_cobro(1, string.Empty, data);
+
+            return true;
         }
     }
 }

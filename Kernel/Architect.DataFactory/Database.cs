@@ -253,6 +253,7 @@ namespace Architect.DataFactory
 
                 case Enumerations.DbType.AnsiString:
                 case Enumerations.DbType.String:
+                case Enumerations.DbType.StringArray:
                     result = OracleDbType.NVarchar2;
                     break;
 
@@ -748,6 +749,11 @@ namespace Architect.DataFactory
                 foreach (var item in Parameters)
                 {
                     OracleParameter parameter = new OracleParameter(item.Name, DBParameterTypeConvert(item), item.Size, DBParameterValueConvert(item.Value), DBParameterDirectionConvert(item));
+                    if (item.Type == Enumerations.DbType.StringArray)
+                    {
+                        parameter.CollectionType = OracleCollectionType.PLSQLAssociativeArray;
+                    }
+
                     cmmd.Parameters.Add(parameter);
                 }
             }
@@ -790,6 +796,10 @@ namespace Architect.DataFactory
                 foreach (var item in Parameters)
                 {
                     OracleParameter parameter = new OracleParameter(item.Name, DBParameterTypeConvert(item), item.Size, DBParameterValueConvert(item.Value), DBParameterDirectionConvert(item));
+                    if (item.Type == Enumerations.DbType.StringArray)
+                    {
+                        parameter.CollectionType = OracleCollectionType.PLSQLAssociativeArray;
+                    }
                     cmmd.Parameters.Add(parameter);
                 }
             }
@@ -850,6 +860,10 @@ namespace Architect.DataFactory
                             {
                                 OracleParameter parameter;
                                 parameter = new OracleParameter(item.Name, DBParameterTypeConvert(item), item.Size, item.Value, DBParameterDirectionConvert(item));
+                                if (item.Type == Enumerations.DbType.StringArray)
+                                {
+                                    parameter.CollectionType = OracleCollectionType.PLSQLAssociativeArray;
+                                }
                                 if (item.Type == Enumerations.DbType.RefCursor)
                                 {
                                     haveRefCursor = true;
@@ -970,7 +984,7 @@ namespace Architect.DataFactory
         /// <param name="command">Objeto commandos que se desea ejecutar</param>
         /// <param name="connection">Instancia del objeto connections</param>
         /// <returns></returns>
-        private void ExecuteQueryWithDataReader(Database database, IDbConnection connection, Action<IDataReader> callBack, string CommandType = "Select", bool manyRows=true)
+        private void ExecuteQueryWithDataReader(Database database, IDbConnection connection, Action<IDataReader> callBack, string CommandType = "Select", bool manyRows = true)
         {
             string key = string.Empty;
 
@@ -998,6 +1012,10 @@ namespace Architect.DataFactory
                             foreach (var item in Parameters)
                             {
                                 OracleParameter parameter = new OracleParameter(item.Name, DBParameterTypeConvert(item), item.Size, item.Value, DBParameterDirectionConvert(item));
+                                if (item.Type == Enumerations.DbType.StringArray)
+                                {
+                                    parameter.CollectionType = OracleCollectionType.PLSQLAssociativeArray;
+                                }
                                 cmmd.Parameters.Add(parameter);
                             }
                         }
@@ -1165,6 +1183,10 @@ namespace Architect.DataFactory
                 foreach (var item in Parameters)
                 {
                     OracleParameter parameter = new OracleParameter(item.Name, DBParameterTypeConvert(item), item.Size, item.Value, DBParameterDirectionConvert(item));
+                    if (item.Type == Enumerations.DbType.StringArray)
+                    {
+                        parameter.CollectionType = OracleCollectionType.PLSQLAssociativeArray;
+                    }
                     cmmd.Parameters.Add(parameter);
                 }
             }
@@ -1176,7 +1198,7 @@ namespace Architect.DataFactory
                     try
                     {
 
- 
+
 
                         result = (T)cmmd.ExecuteScalar();
 

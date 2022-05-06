@@ -143,6 +143,8 @@ namespace Architect.DataFactory.Enumerations
 
         RefCursor = 28,
 
-        Clob = 29
+        Clob = 29,
+
+        StringArray = 30
     }
 }

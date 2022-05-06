@@ -74,13 +74,15 @@ namespace Architect.Payment.Integrations
 
         private async static Task<Providers.Placetopay.Contracts.InformationRequest> XXX(Contracts.OnlinePayment currentRecord, int userId, bool updateStatus)
         {
-            Providers.Placetopay.Contracts.InformationRequest result = null;
+            Providers.Placetopay.Contracts.InformationRequest result ;
             if (currentRecord != null)
             {
                 result = await Providers.Placetopay.Webcheckout.GetRequestInformation(currentRecord.RequestID, currentRecord.Currency);
+                result.OnlinePayment = currentRecord;
                 if (updateStatus && result.status.status != currentRecord.ProviderStatus)
                 {
-                    UpdateStatus(userId, currentRecord, result);
+                    result.OnlinePayment = UpdateStatus(userId, currentRecord, result);
+                    result.changed = true;
                 }
             }
             else
@@ -101,7 +103,7 @@ namespace Architect.Payment.Integrations
         /// <summary>
         /// Actualiza la información relacionada con un pago.
         /// </summary>
-        private static void UpdateStatus(int userId, OnlinePayment currentRecord, InformationRequest result)
+        private static OnlinePayment  UpdateStatus(int userId, OnlinePayment currentRecord, InformationRequest result)
         {
             currentRecord.StatusDate = DateTime.Now;
             currentRecord.ProviderStatus = result.status.status;
@@ -116,6 +118,7 @@ namespace Architect.Payment.Integrations
                 currentRecord.Receipt = result.payment.FirstOrDefault().receipt;
             }
             Business.OnlinePayment.Update(currentRecord);
+            return currentRecord;
         }
 
         /// <summary>

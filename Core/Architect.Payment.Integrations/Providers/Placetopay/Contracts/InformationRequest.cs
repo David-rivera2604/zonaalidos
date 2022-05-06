@@ -20,5 +20,14 @@ namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
 
         [JsonIgnore]
         public string rawData { get; set; }
+
+        [JsonIgnore]
+        public bool changed { get; set; }
+
+        [JsonIgnore]
+        public Architect.Payment.Integrations.Contracts.OnlinePayment OnlinePayment { get; set; }
+
+        
+
     }
 }

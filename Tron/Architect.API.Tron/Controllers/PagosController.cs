@@ -37,7 +37,7 @@ namespace Architect.API.Tron.Controllers
         public async Task<IHttpActionResult> Refresh([FromUri] Int64 requestId)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
-            Payment.Integrations.Providers.Placetopay.Contracts.InformationRequest result = await Payment.Integrations.Payment.GetRequestInformation(tokenInfo.CompanyId, tokenInfo.UserId, requestId, true);
+            Payment.Integrations.Providers.Placetopay.Contracts.InformationRequest result = await Business.Backoffice.Pagos.GetRequestInformation(tokenInfo.CompanyId, tokenInfo.UserId, requestId, string.Empty);
 
             return Ok(result);
         }
@@ -47,7 +47,7 @@ namespace Architect.API.Tron.Controllers
         public async Task<IHttpActionResult> Refresh([FromUri] string reference)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
-            Payment.Integrations.Providers.Placetopay.Contracts.InformationRequest result = await Payment.Integrations.Payment.GetRequestInformation(tokenInfo.CompanyId, tokenInfo.UserId, reference, true);
+            Payment.Integrations.Providers.Placetopay.Contracts.InformationRequest result = await Business.Backoffice.Pagos.GetRequestInformation(tokenInfo.CompanyId, tokenInfo.UserId, 0, reference);
 
             return Ok(result);
         }

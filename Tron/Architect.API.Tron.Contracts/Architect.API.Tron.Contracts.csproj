@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Batch\Respuesta.cs" />
     <Compile Include="Comun\PlanDePago.cs" />
     <Compile Include="Comun\DocumentoRequerido.cs" />
     <Compile Include="Comun\Cobertura.cs" />

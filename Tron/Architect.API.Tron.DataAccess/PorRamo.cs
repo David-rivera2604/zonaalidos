@@ -10,6 +10,31 @@ namespace Architect.API.Tron.DataAccess
     public static class PorRamo
     {
 
+        /// <summary>
+        /// Proceso de cobro automático de recibos por la WEB
+        /// </summary>
+        public static Contracts.Batch.Respuesta p_proceso_cobro(int cod_cia, string session_id, string json, IDbConnection connection = null)
+        {
+            Contracts.Batch.Respuesta result = null;
+            string[] jsonArray = { json };
+
+            Database.Procedure("gc_k_pagos_web.p_proceso_cobro")
+                    .AddParameter("p_cod_cia", DbType.Int32, 22, cod_cia)
+                    .AddParameter("p_session_id", DbType.String, 13, session_id)
+                    .AddParameter("p_array", DbType.StringArray, 22, jsonArray)
+                    .AddParameter("RC1", DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
+                    .Query(connection, "Tron", new Action<IDataReader>((reader) =>
+                    {
+                        result = new Contracts.Batch.Respuesta()
+                        {
+                            codigo_respuesta = reader.StringValue("codigo_respuesta"),
+                            mensaje_respuesta = reader.StringValue("mensaje_respuesta"),
+                            id_report = reader.StringValue("id_report")
+                        };
+                    }));
+            return result;
+        }
+
         public static Architect.API.Tron.Contracts.Vistas.Recibo Informacion_de_un_Recibo(int cod_cia, int cod_agt, string num_poliza, Int64 num_recibo, IDbConnection connection = null)
         {
             Architect.API.Tron.Contracts.Vistas.Recibo result = null;
