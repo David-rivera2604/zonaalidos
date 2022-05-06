@@ -3,6 +3,7 @@ using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using DbType = Architect.DataFactory.Enumerations.DbType;
 
 namespace Architect.API.Tron.DataAccess
@@ -15,14 +16,18 @@ namespace Architect.API.Tron.DataAccess
         /// </summary>
         public static Contracts.Batch.Respuesta p_proceso_cobro(int cod_cia, string session_id, string json, IDbConnection connection = null)
         {
-            Contracts.Batch.Respuesta result = null;
+            Contracts.Batch.Respuesta result = new Contracts.Batch.Respuesta();
             string[] jsonArray = { json };
 
-            Database.Procedure("gc_k_pagos_web.p_proceso_cobro")
+            var ArrayBindSize = jsonArray.Select(_ => _.Length).ToArray();
+            var ArrayBindStatus = Enumerable.Repeat(0, jsonArray.Count()).ToArray();
+
+                //                .AddParameter("RC1", DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
+
+            Database.Procedure("gc_k_pagos_web.p_proceso_cobro_net")
                     .AddParameter("p_cod_cia", DbType.Int32, 22, cod_cia)
                     .AddParameter("p_session_id", DbType.String, 13, session_id)
-                    .AddParameter("p_array", DbType.StringArray, 22, jsonArray)
-                    .AddParameter("RC1", DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
+                    .AddParameter("p_array", DbType.String, 4000, json)
                     .Query(connection, "Tron", new Action<IDataReader>((reader) =>
                     {
                         result = new Contracts.Batch.Respuesta()

@@ -13,6 +13,6 @@ namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
         public string email { get; set; }
         public string document { get; set; }
         public string documentType { get; set; }
-        public long mobile { get; set; }
+        public string mobile { get; set; }
     }
 }

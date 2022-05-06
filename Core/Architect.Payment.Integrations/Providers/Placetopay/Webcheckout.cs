@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Architect.Utilities.Extensions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -58,7 +59,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
             if (string.IsNullOrEmpty(payInfo.ReturnUrl))
             {
                 payInfo.ReturnUrl = "https://dnetix.co/p2p/client";
-                payInfo.ReturnUrl = "http://localhost:8082/Aliados/prototype/payment?test=123";
+                payInfo.ReturnUrl = "http://localhost:8082/Aliados/pagos/resultado?ref=" + payInfo.Reference;
             }
             Contracts.RedirectRequest sessionRequest = new Contracts.RedirectRequest()
             {
@@ -69,7 +70,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
                     email = payInfo.Email,
                     document = payInfo.Document,
                     documentType = IdentificationTypeConvert(payInfo.DocumentType.ToString()),
-                    mobile = Convert.ToInt64(payInfo.Mobile)
+                    mobile = payInfo.Mobile.OnlyNumbers()
                 },
                 payment = new Contracts.PaymentRequest()
                 {

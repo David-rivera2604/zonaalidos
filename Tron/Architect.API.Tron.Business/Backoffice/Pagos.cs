@@ -123,9 +123,9 @@ namespace Architect.API.Tron.Business.Backoffice
                         }
                     }
                 });
-            Contracts.Batch.Respuesta resp = DataAccess.PorRamo.p_proceso_cobro(1, string.Empty, data);
+            Contracts.Batch.Respuesta resp = DataAccess.PorRamo.p_proceso_cobro(1, Guid.NewGuid().ToString(), data);
 
-            return true;
+            return resp.codigo_respuesta == "200";
         }
     }
 }

@@ -50,7 +50,6 @@ app.PrototypePayment = (function () {
 
     return {
         Init: function () {
-            $("body").toggleClass("mini-navbar");
             try {
                 Controls_Events();
                 Setup();

@@ -1009,14 +1009,35 @@ namespace Architect.DataFactory
                         }
                         if (Parameters?.Count > 0)
                         {
+                            bool haveRefCursor = false;
                             foreach (var item in Parameters)
                             {
-                                OracleParameter parameter = new OracleParameter(item.Name, DBParameterTypeConvert(item), item.Size, item.Value, DBParameterDirectionConvert(item));
+                                OracleParameter parameter;
                                 if (item.Type == Enumerations.DbType.StringArray)
                                 {
+                                    parameter = new OracleParameter(item.Name, OracleDbType.Varchar2);
+
                                     parameter.CollectionType = OracleCollectionType.PLSQLAssociativeArray;
+                                    parameter.Size = 1;
+                                    parameter.ArrayBindSize =new int[1] { 517 };
+                                    parameter.ArrayBindStatus = new OracleParameterStatus[1] { OracleParameterStatus.Success };
+                                    
+
+                                } else
+                                {
+                                    parameter = new OracleParameter(item.Name, DBParameterTypeConvert(item), item.Size, item.Value, DBParameterDirectionConvert(item));
                                 }
                                 cmmd.Parameters.Add(parameter);
+                                if (item.Type == Enumerations.DbType.RefCursor)
+                                {
+                                    haveRefCursor = true;
+                                }
+
+                            }
+
+                            if (CommandType.Equals("Procedure") && !haveRefCursor)
+                            {
+                                cmmd.Parameters.Add(new OracleParameter("RC1", OracleDbType.RefCursor, ParameterDirection.Output));
                             }
                         }
                         if (Handlers.UtilityHandler.AppSettingsCheck("Architect.DataFactory.Trace.Enabled"))
