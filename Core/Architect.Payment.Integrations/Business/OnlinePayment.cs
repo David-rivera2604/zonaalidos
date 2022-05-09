@@ -30,6 +30,8 @@ namespace Architect.Payment.Integrations.Business
             return result;
         }
 
+        
+
         /// <summary>
         /// Recupera un registro en la tabla OnlinePayment por medio del campo RequestID.
         /// </summary>
@@ -43,12 +45,25 @@ namespace Architect.Payment.Integrations.Business
             return DataAccess.OnlinePayment.Retrieve(policyId, billNumber, companyId);
         }
 
+        public static Contracts.OnlinePayment RetrieveById(int companyId, int id)
+        {
+            return DataAccess.OnlinePayment.Retrieve(id, companyId);
+        }
+
         /// <summary>
         /// Actualiza un registro en la tabla OnlinePayment por medio de su clave primaria.
         /// </summary>
         public static int Update(Contracts.OnlinePayment onlinepaymentItem)
         {
             return DataAccess.OnlinePayment.Update(onlinepaymentItem);
+        }
+
+        /// <summary>
+        /// Actualiza un registro en la tabla OnlinePayment por medio de su clave primaria.
+        /// </summary>
+        public static int UpdateNewSession(Contracts.OnlinePayment onlinepaymentItem)
+        {
+            return DataAccess.OnlinePayment.UpdateNewSession(onlinepaymentItem);
         }
     }
 }

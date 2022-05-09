@@ -9,6 +9,7 @@ app.ViewerQuery = (function () {
     var _itemBody = '<div class="tab-pane fade {show}" id="tab_{index}">{Body}</div>';
 
     var _itemTable = '<!-- Grid -->  ' +
+        '<div id="QueryNotify{index}"></div>' +
         '<div id="header{index}" class="d-none"> ' +
         '</div> ' +
         '<div id="{index}toolbar"> ' +

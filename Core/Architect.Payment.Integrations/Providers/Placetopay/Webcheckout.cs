@@ -59,7 +59,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
             if (string.IsNullOrEmpty(payInfo.ReturnUrl))
             {
                 payInfo.ReturnUrl = "https://dnetix.co/p2p/client";
-                payInfo.ReturnUrl = "http://localhost:8082/Aliados/pagos/resultado?ref=" + payInfo.Reference;
+                payInfo.ReturnUrl = Utilities.Helpers.Settings.StringValue("Payment.Placetopay.PaymentUrl") + "?ref=" + payInfo.Reference;
             }
             Contracts.RedirectRequest sessionRequest = new Contracts.RedirectRequest()
             {

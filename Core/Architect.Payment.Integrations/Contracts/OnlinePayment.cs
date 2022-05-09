@@ -44,6 +44,8 @@ namespace Architect.Payment.Integrations.Contracts
         /// Número de teléfono del celular.
         /// </summary>
         public string PhoneNumberMobile { get; set; }
+
+        public int AgentCode { get; set; }
         public string PolicyId { get; set; }
         public Int64 BillNumber { get; set; }
         /// <summary>

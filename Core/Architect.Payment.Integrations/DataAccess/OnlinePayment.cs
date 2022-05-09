@@ -25,8 +25,8 @@ namespace Architect.Payment.Integrations.DataAccess
             {
                 onlinepaymentItem.UpdateDate = DateTime.Now;
             }
-            return Database.Insert("INSERT INTO OnlinePayment (Id, CompanyId, DocumentType, DocumentNumber, FirstName, LastName, PrimaryEmailAddress, PhoneNumberMobile, PolicyId, BillNumber, Currency, Amount, Reference, Description, IssueDate, StatusDate, RequestID, ProcessUrl, ProviderStatus, ResponseData, Status, Reason, UpdateUserCode, UpdateDate) " +
-                                                 "VALUES(:Id, :CompanyId, :DocumentType, :DocumentNumber, :FirstName, :LastName, :PrimaryEmailAddress, :PhoneNumberMobile, :PolicyId, :BillNumber, :Currency, :Amount, :Reference, :Description, :IssueDate, :StatusDate, :RequestID, :ProcessUrl, :ProviderStatus, :ResponseData, :Status, :Reason, :UpdateUserCode, :UpdateDate)")
+            return Database.Insert("INSERT INTO OnlinePayment (Id, CompanyId, DocumentType, DocumentNumber, FirstName, LastName, PrimaryEmailAddress, PhoneNumberMobile, AgentCode, PolicyId, BillNumber, Currency, Amount, Reference, Description, IssueDate, StatusDate, RequestID, ProcessUrl, ProviderStatus, ResponseData, Status, Reason, UpdateUserCode, UpdateDate) " +
+                                                 "VALUES(:Id, :CompanyId, :DocumentType, :DocumentNumber, :FirstName, :LastName, :PrimaryEmailAddress, :PhoneNumberMobile, :AgentCode, :PolicyId, :BillNumber, :Currency, :Amount, :Reference, :Description, :IssueDate, :StatusDate, :RequestID, :ProcessUrl, :ProviderStatus, :ResponseData, :Status, :Reason, :UpdateUserCode, :UpdateDate)")
                             .AddParameter("Id", DbType.Decimal, 9, onlinepaymentItem.Id)
                             .AddParameter("CompanyId", DbType.Decimal, 5, onlinepaymentItem.CompanyId)
                             .AddParameter("DocumentType", DbType.Decimal, 8, onlinepaymentItem.DocumentType)
@@ -35,6 +35,7 @@ namespace Architect.Payment.Integrations.DataAccess
                             .AddParameter("LastName", DbType.AnsiString, 40, onlinepaymentItem.LastName)
                             .AddParameter("PrimaryEmailAddress", DbType.AnsiString, 80, onlinepaymentItem.PrimaryEmailAddress)
                             .AddParameter("PhoneNumberMobile", DbType.AnsiString, 20, onlinepaymentItem.PhoneNumberMobile)
+                            .AddParameter("AgentCode", DbType.Decimal, 11, onlinepaymentItem.AgentCode)
                             .AddParameter("PolicyId", DbType.AnsiString, 13, onlinepaymentItem.PolicyId)
                             .AddParameter("BillNumber", DbType.Decimal, 11, onlinepaymentItem.BillNumber)
                             .AddParameter("Currency", DbType.Decimal, 5, onlinepaymentItem.Currency)
@@ -55,6 +56,29 @@ namespace Architect.Payment.Integrations.DataAccess
         }
 
         /// <summary>
+        /// Recupera un registro en la tabla OnlinePayment por el campo Id.
+        /// </summary>
+        public static Contracts.OnlinePayment Retrieve(int id, int companyId, bool full = false, IDbConnection connection = null)
+        {
+            Contracts.OnlinePayment result = null;
+            string complement = ", NULL ResponseData";
+            if (full)
+            {
+                complement = ", ResponseData";
+            }
+            Database.Select("SELECT Id, OnlinePayment.CompanyId, DocumentType, DocumentNumber, OnlinePayment.FirstName, OnlinePayment.LastName, PrimaryEmailAddress, PhoneNumberMobile, AgentCode, PolicyId, BillNumber, Currency, Amount, OnlinePayment.Reference, Description, IssueDate, StatusDate, RequestID, ProcessUrl, ProviderStatus" + complement + ", Status, Reason, Authorization, Receipt, OnlinePayment.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, OnlinePayment.UpdateDate " +
+                              "FROM OnlinePayment LEFT JOIN UserMember um ON um.UserId = OnlinePayment.UpdateUserCode " +
+                             "WHERE OnlinePayment.Id=:Id")
+                        .AddParameter("Id", DbType.Decimal, 9, id)
+                        .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                        .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
+                        {
+                            result = DataReaderToOnlinePayment(reader);
+                        }));
+            return result;
+        }
+
+        /// <summary>
         /// Recupera un registro en la tabla OnlinePayment por el campo RequestID.
         /// </summary>
         public static Contracts.OnlinePayment RetrieveByRequestID(Int64 requestID, int companyId, bool full = false, IDbConnection connection = null)
@@ -65,7 +89,7 @@ namespace Architect.Payment.Integrations.DataAccess
             {
                 complement = ", ResponseData";
             }
-            Database.Select("SELECT Id, OnlinePayment.CompanyId, DocumentType, DocumentNumber, OnlinePayment.FirstName, OnlinePayment.LastName, PrimaryEmailAddress, PhoneNumberMobile, PolicyId, BillNumber, Currency, Amount, OnlinePayment.Reference, Description, IssueDate, StatusDate, RequestID, ProcessUrl, ProviderStatus" + complement + ", Status, Reason, Authorization, Receipt, OnlinePayment.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, OnlinePayment.UpdateDate " +
+            Database.Select("SELECT Id, OnlinePayment.CompanyId, DocumentType, DocumentNumber, OnlinePayment.FirstName, OnlinePayment.LastName, PrimaryEmailAddress, PhoneNumberMobile, AgentCode, PolicyId, BillNumber, Currency, Amount, OnlinePayment.Reference, Description, IssueDate, StatusDate, RequestID, ProcessUrl, ProviderStatus" + complement + ", Status, Reason, Authorization, Receipt, OnlinePayment.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, OnlinePayment.UpdateDate " +
                               "FROM OnlinePayment LEFT JOIN UserMember um ON um.UserId = OnlinePayment.UpdateUserCode " +
                              "WHERE OnlinePayment.RequestID=:RequestID AND OnlinePayment.CompanyId=:CompanyId")
                         .AddParameter("RequestID", DbType.Decimal, 11, requestID)
@@ -76,7 +100,6 @@ namespace Architect.Payment.Integrations.DataAccess
                         }));
             return result;
         }
-
         /// <summary>
         /// Recupera un registro en la tabla OnlinePayment con estado pendiente por póliza y recibo.
         /// </summary>
@@ -90,7 +113,7 @@ namespace Architect.Payment.Integrations.DataAccess
 
             // AND Status=1
             Contracts.OnlinePayment result = null;
-            Database.Select("SELECT Id, OnlinePayment.CompanyId, DocumentType, DocumentNumber, OnlinePayment.FirstName, OnlinePayment.LastName, PrimaryEmailAddress, PhoneNumberMobile, PolicyId, BillNumber, Currency, Amount, OnlinePayment.Reference, Description, IssueDate, NULL StatusDate, RequestID, ProcessUrl, ProviderStatus" + complement + ", Status, Reason, Authorization, Receipt, OnlinePayment.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, OnlinePayment.UpdateDate " +
+            Database.Select("SELECT Id, OnlinePayment.CompanyId, DocumentType, DocumentNumber, OnlinePayment.FirstName, OnlinePayment.LastName, PrimaryEmailAddress, PhoneNumberMobile, AgentCode, PolicyId, BillNumber, Currency, Amount, OnlinePayment.Reference, Description, IssueDate, NULL StatusDate, RequestID, ProcessUrl, ProviderStatus" + complement + ", Status, Reason, Authorization, Receipt, OnlinePayment.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, OnlinePayment.UpdateDate " +
                               "FROM OnlinePayment LEFT JOIN UserMember um ON um.UserId = OnlinePayment.UpdateUserCode " +
                              "WHERE OnlinePayment.CompanyId=:CompanyId AND OnlinePayment.PolicyId=:PolicyId AND OnlinePayment.BillNumber=:BillNumber " +
                              "ORDER BY OnlinePayment.IssueDate DESC FETCH FIRST 1 ROWS ONLY")
@@ -115,6 +138,30 @@ namespace Architect.Payment.Integrations.DataAccess
             return (int)Database.Select("SELECT NVL(MAX(Id),0) " +
                                           "FROM OnlinePayment")
                                 .QueryScalar<Decimal>(connection, "Research");
+        }
+
+        public static int UpdateNewSession(Contracts.OnlinePayment onlinepaymentItem, IDbConnection connection = null)
+        {
+            if (onlinepaymentItem.UpdateDate.IsEmpty())
+            {
+                onlinepaymentItem.UpdateDate = DateTime.Now;
+            }
+            return Database.Update("UPDATE OnlinePayment " +
+                                      "SET RequestID=:RequestID, ProviderStatus=:ProviderStatus, Reason=:Reason, ResponseData=:ResponseData, Reference=:Reference, IssueDate=:IssueDate, StatusDate=:StatusDate, ProcessUrl=:ProcessUrl, Status=:Status, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
+                                    "WHERE Id=:Id")
+                                .AddParameter("RequestID", DbType.Decimal, 11, onlinepaymentItem.RequestID)
+                                .AddParameter("ProviderStatus", DbType.AnsiString, 20, onlinepaymentItem.ProviderStatus)
+                                .AddParameter("Reason", DbType.AnsiString, 256, onlinepaymentItem.Reason)
+                                .AddParameter("ResponseData", DbType.AnsiString, 4000, onlinepaymentItem.ResponseData)
+                                .AddParameter("Reference", DbType.AnsiString, 80, onlinepaymentItem.Reference)
+                                .AddParameter("IssueDate", DbType.DateTime, 9, onlinepaymentItem.IssueDate)
+                                .AddParameter("StatusDate", DbType.DateTime, 9, onlinepaymentItem.StatusDate)
+                                .AddParameter("ProcessUrl", DbType.AnsiString, 256, onlinepaymentItem.ProcessUrl)
+                                .AddParameter("Status", DbType.Decimal, 5, onlinepaymentItem.Status)
+                                .AddParameter("UpdateUserCode", DbType.Decimal, 9, onlinepaymentItem.UpdateUserCode)
+                                .AddParameter("UpdateDate", DbType.DateTime, 0, onlinepaymentItem.UpdateDate)
+                                .AddParameter("Id", DbType.Decimal, 9, onlinepaymentItem.Id)
+                                .Execute(connection, "Research");
         }
 
         /// <summary>
@@ -162,6 +209,7 @@ namespace Architect.Payment.Integrations.DataAccess
             item.LastName = reader.StringValue("LastName");
             item.PrimaryEmailAddress = reader.StringValue("PrimaryEmailAddress");
             item.PhoneNumberMobile = reader.StringValue("PhoneNumberMobile");
+            item.AgentCode = reader.IntegerValue("AgentCode");
             item.PolicyId = reader.StringValue("PolicyId");
             item.BillNumber = reader.Integer64Value("BillNumber");
             item.Currency = reader.IntegerValue("Currency");

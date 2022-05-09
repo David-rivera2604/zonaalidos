@@ -1,14 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+
 using System.Threading.Tasks;
-using Architect.Payment.Integrations;
 using Architect.Utilities.Extensions;
 using Newtonsoft.Json;
 
 namespace Architect.API.Tron.Business.Backoffice
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Pagos
     {
         /// <summary>
@@ -54,7 +55,7 @@ namespace Architect.API.Tron.Business.Backoffice
                     Currency = recibo.COD_MON.ToString(),
                     Amount = recibo.IMP_RECIBO
                 };
-                session = await Payment.Integrations.Payment.NewSession(companyId, userId, payInfo, ipAddress, userAgent);
+                session = await Payment.Integrations.Payment.NewSession(companyId, userId, cod_agt, payInfo, ipAddress, userAgent);
             }
             else
             {
@@ -67,6 +68,9 @@ namespace Architect.API.Tron.Business.Backoffice
             return session;
         }
 
+        /// <summary>
+        /// Recupera la información de una sesión de pago, en caso de haber algún cambio de estado, se actualiza la tabla interna.
+        /// </summary>
         public async static Task<Payment.Integrations.Providers.Placetopay.Contracts.InformationRequest> GetRequestInformation(int companyId, int userId, Int64 requestId, string reference)
         {
 
@@ -80,34 +84,39 @@ namespace Architect.API.Tron.Business.Backoffice
             {
                 result = await Payment.Integrations.Payment.GetRequestInformation(companyId, userId, reference, true);
             }
+            // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
             if (result.changed && result.status.status == "APPROVED")
             {
-                bool tronPayment = await TronPayment(result);
+                bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode);
             }
             return result;
         }
 
-
-        public async static Task<bool> TronPayment(Payment.Integrations.Providers.Placetopay.Contracts.InformationRequest request)
+        /// <summary>
+        /// Procesa el pago de un recibo en tron.
+        /// </summary>
+        public async static Task<bool> TronPayment(Payment.Integrations.Providers.Placetopay.Contracts.InformationRequest request, int agentCode)
         {
+
+            //tipoPagador A / C. pagador = codigo de cliente o agente
             var payment = request.payment.FirstOrDefault();
             string data = JsonConvert.SerializeObject(
                 new
                 {
-                    guid = "dbcf5209-f0fe-47db-9fe3-085b392b53aa",
+                    guid = request.OnlinePayment.RequestID.ToString(),
                     canal = "ALI",
                     fechaPago = payment.status.date,
                     tipoPagador = "A",
-                    pagador = "277",
-                    tipoPago = "DB",
-                    referenciaPago = "8ac7a4a27aadeb34017aae3feeef73c4",
+                    pagador = agentCode.ToString(),
+                    tipoPago = string.Empty,
+                    referenciaPago = payment.authorization,
                     montoTotal = payment.amount.to.total,
                     moneda = payment.amount.to.currency,
                     direccionIP = request.request.ipAddress,
                     huellaNavegador = (string)null,
                     tarjeta = new
                     {
-                        bin = "420000",
+                        bin = string.Empty,
                         terminacion = payment.processorFields.Find(f => f.keyword == "lastDigits").value,
                         nombre = string.Format("{0} {1}", request.request.payer.name, request.request.payer.surname),
                         mesExpira = "08",
@@ -118,14 +127,13 @@ namespace Architect.API.Tron.Business.Backoffice
                         new {
                             numPoliza = request.OnlinePayment.PolicyId,
                             numRecibo = request.OnlinePayment.BillNumber.ToString(),
-                            tipoPago = "C",
+                            tipoPago = string.Empty,
                             monto = request.OnlinePayment.Amount
                         }
                     }
                 });
-            Contracts.Batch.Respuesta resp = DataAccess.PorRamo.p_proceso_cobro(1, Guid.NewGuid().ToString(), data);
 
-            return resp.codigo_respuesta == "200";
+            return (DataAccess.PorRamo.p_proceso_cobro(1, Guid.NewGuid().ToString(), data).codigo_respuesta == "200");
         }
     }
 }
