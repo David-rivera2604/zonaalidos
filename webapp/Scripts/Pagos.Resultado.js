@@ -18,6 +18,7 @@ app.PrototypePayment = (function () {
 
                 switch (data.status.status) {
                     case 'APPROVED':
+                    case 'PENDING':
                         let payment = data.payment[0];
                         $('#description').html(data.request.payment.description);
                         $('#reference').html(data.request.payment.reference);
@@ -25,8 +26,9 @@ app.PrototypePayment = (function () {
                         $('#paymentMethodName').html(payment.paymentMethodName + ' **** ' + payment.processorFields.find(element => element.keyword == 'lastDigits')?.value);
                         $('#authorization').html(payment.authorization);
                         $('#receipt').html(payment.receipt);
+                        $('#message').html(payment.status.message);
                         break;
-                    case 'REJECTED':
+                    case 'REJECTED':                    
                         let paymentr = data.request.payment;
                         $('#description').html(data.request.payment.description);
                         $('#reference').html(data.request.payment.reference);

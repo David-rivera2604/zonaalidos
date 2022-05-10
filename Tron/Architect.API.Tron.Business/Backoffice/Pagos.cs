@@ -17,53 +17,37 @@ namespace Architect.API.Tron.Business.Backoffice
         /// </summary>
         public async static Task<Payment.Integrations.Contracts.SessionInformation> CrearSesion(int companyId, int userId, string ipAddress, string userAgent, int cod_agt, string num_poliza, Int64 num_recibo)
         {
-            Payment.Integrations.Contracts.SessionInformation session;
-            Contracts.Vistas.Recibo recibo;
-            if (num_poliza == "123" && num_recibo == 456)
+            Payment.Integrations.Contracts.SessionInformation session = await Payment.Integrations.Payment.VerifySession(companyId, num_poliza, num_recibo);
+            if (session == null)
             {
-                recibo = new Contracts.Vistas.Recibo()
-                {
-                    NOM_TERCERO = "Nelson",
-                    APE1_TERCERO = "Soler",
-                    EMAIL = "solernelson@hotmail.com",
-                    TIP_DOCUM = "2",
-                    COD_DOCUM = "186200170219",
-                    TLF_MOVIL = "72155569",
-                    NOM_RAMO = "NUEVA PÓLIZA LÍDER",
-                    COD_MON = 1,
-                    IMP_RECIBO = 53909.96
-                };
-            }
-            else
-            {
-                recibo = DataAccess.PorRamo.Informacion_de_un_Recibo(Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1), cod_agt, num_poliza, num_recibo);
-            }
+                Contracts.Vistas.Recibo recibo = DataAccess.PorRamo.Informacion_de_un_Recibo(Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1), cod_agt, num_poliza, num_recibo);
 
-            if (recibo != null)
-            {
-                Payment.Integrations.Contracts.PaymentInformation payInfo = new Payment.Integrations.Contracts.PaymentInformation()
+                if (recibo != null)
                 {
-                    FirstName = recibo.NOM_TERCERO,
-                    LastName = recibo.APE1_TERCERO,
-                    Email = recibo.EMAIL.IfEmpty(recibo.TXT_EMAIL),
-                    Document = recibo.COD_DOCUM,
-                    DocumentType = recibo.TIP_DOCUM,
-                    Mobile = recibo.TLF_MOVIL.IfEmpty(recibo.TLF_NUMERO),
-                    PolicyId = num_poliza,
-                    BillNumber = num_recibo,
-                    Description = string.Format("MAPFRE: {0}. POLIZA #{1} RECIBO #{2}", recibo.NOM_RAMO, num_poliza, num_recibo),
-                    Currency = recibo.COD_MON.ToString(),
-                    Amount = recibo.IMP_RECIBO
-                };
-                session = await Payment.Integrations.Payment.NewSession(companyId, userId, cod_agt, payInfo, ipAddress, userAgent);
-            }
-            else
-            {
-                session = new Payment.Integrations.Contracts.SessionInformation()
+                    Payment.Integrations.Contracts.PaymentInformation payInfo = new Payment.Integrations.Contracts.PaymentInformation()
+                    {
+                        FirstName = recibo.NOM_TERCERO,
+                        LastName = recibo.APE1_TERCERO,
+                        Email = recibo.EMAIL.IfEmpty(recibo.TXT_EMAIL),
+                        Document = recibo.COD_DOCUM,
+                        DocumentType = recibo.TIP_DOCUM,
+                        Mobile = recibo.TLF_MOVIL.IfEmpty(recibo.TLF_NUMERO),
+                        PolicyId = num_poliza,
+                        BillNumber = num_recibo,
+                        Description = string.Format("MAPFRE: {0}. POLIZA #{1} RECIBO #{2}", recibo.NOM_RAMO, num_poliza, num_recibo),
+                        Currency = recibo.COD_MON.ToString(),
+                        Amount = recibo.IMP_RECIBO
+                    };
+                    session = await Payment.Integrations.Payment.NewSession(companyId, userId, cod_agt, payInfo, ipAddress, userAgent);
+                }
+                else
                 {
-                    Status = "FAIL",
-                    Reason = "Recibo no encontrado o no esta pendiente de pago"
-                };
+                    session = new Payment.Integrations.Contracts.SessionInformation()
+                    {
+                        Status = "FAIL",
+                        Reason = "Recibo no encontrado o no está pendiente de pago"
+                    };
+                }
             }
             return session;
         }

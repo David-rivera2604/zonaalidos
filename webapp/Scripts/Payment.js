@@ -17,7 +17,7 @@ app.Payment = (function () {
                 //    //app.ui.ShowAlert('generalNotify', 'alert-primary', d.status);
                 //})
                 .catch(err => {
-                    app.ui.ShowAlert('generalNotify', 'alert-danger', d.status);
+                    app.ui.ShowAlert('generalNotify', 'alert-danger', err.message);
                 }).then(d => {
                     $('.ibox-content').toggleClass('sk-loading');
                     switch (d.status) {
@@ -29,7 +29,10 @@ app.Payment = (function () {
                             //toastr.error("La transacción con la referencia 98432345234523 ha sido rechazada", "El pago ha sido rechazado", { timeOut: 50000, closeButton: true, progressBar: true });
                             app.ui.ShowAlert('generalNotify', 'alert-danger', '<b> <i class="fa fa-close"></i> El pago ha sido rechazado:</b> El cobro del recibo ' + row.NUM_RECIBO + ' con el número de referencia ' + d.data.request.payment.reference + ', ha sido rechazado.');
                             break
-                            
+                        case 'PENDING':
+                            //toastr.error("La transacción con la referencia 98432345234523 ha sido rechazada", "El pago ha sido rechazado", { timeOut: 50000, closeButton: true, progressBar: true });
+                            app.ui.ShowAlert('generalNotify', 'alert-warning', '<b> <i class="fa fa-question-circle-o"></i> El proceso de pago está pendiente:</b> El cobro del recibo ' + row.NUM_RECIBO + ' con el número de referencia ' + d.data.request.payment.reference + ', está pendiente, se requiere una revisión adicional para procesar la transacción.');
+                            break
                     }
                     
 
@@ -66,7 +69,7 @@ app.Payment = (function () {
                                 }
                             }
                             else {
-                                reject({ status: session.Status, message: data.Reason });
+                                reject({ status: session.Status, message: session.Reason });
                             }
                         }).fail(function (jqXHR, textStatus, errorThrown) {
                             resolve({ status: 'FAIL', message: 'Error', data: null });

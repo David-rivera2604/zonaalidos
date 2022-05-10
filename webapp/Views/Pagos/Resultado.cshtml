@@ -15,32 +15,33 @@
                 <div class="ibox-tools">
                     <span class="label label-success float-right d-none status-APPROVED"><i class="fa fa-check"></i> Aprobada</span>
                     <span class="label label-danger float-right d-none status-REJECTED"><i class="fa fa-close"></i> Rechazada</span>
+                    <span class="label label-warning float-right d-none status-PENDING"><i class="fa fa-question-circle-o"></i> Pendiente</span>
                 </div>
             </div>
             <div class="ibox-content ibox-heading">
                 <h2 class="d-none status-NotFound">
                     No se puede recuperar la información de la transacción suministrada
                 </h2>
-                <h2 id="amount" class="font-bold d-none status-APPROVED status-REJECTED">
+                <h2 id="amount" class="font-bold d-none status-APPROVED status-REJECTED status-PENDING">
                 </h2>
                 <small class="d-none status-APPROVED">Total pagado</small>
-                <small class="d-none status-REJECTED">Total a pagar</small>
+                <small class="d-none status-REJECTED status-PENDING">Total a pagar</small>
             </div>
-            <div class="ibox-content d-none status-APPROVED status-REJECTED">
+            <div class="ibox-content d-none status-APPROVED status-REJECTED status-PENDING">
 
                 <div class="row" style="padding-bottom: 10px;">
                     <div class="col-md-12"><div class=" font-bold">Descripción</div><span id="description"></span></div>
                 </div>
                 <div class="row" style="padding-bottom:6px;">
                     <div class="col-md-6"><div class=" font-bold">Referencia</div><span id="reference"></span></div>
-                    <div class="col-md-6 d-none status-APPROVED"><div class=" font-bold">Medio de pago</div><span id="paymentMethodName"></span></div>
+                    <div class="col-md-6 d-none status-APPROVED status-PENDING"><div class=" font-bold">Medio de pago</div><span id="paymentMethodName"></span></div>
                 </div>
                 <div class="row" style="padding-bottom:6px;">
                     <div class="col-md-6 d-none status-APPROVED"><div class=" font-bold">Autorización</div><span id="authorization"></span></div>
                     <div class="col-md-6 d-none status-APPROVED"><div class=" font-bold">Recibo</div><span id="receipt"></span></div>
                 </div>
-                <div class="row d-none status-REJECTED" style="padding-bottom: 10px;">
-                    <div class="col-md-12"><div class=" font-bold">Causa del rechazo</div><span id="message"></span></div>
+                <div class="row d-none status-REJECTED status-PENDING" style="padding-bottom: 10px;">
+                    <div class="col-md-12"><div class=" font-bold">Causa</div><span id="message"></span></div>
                 </div>
             </div>
             <div class="ibox-content">

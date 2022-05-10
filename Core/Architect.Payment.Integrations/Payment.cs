@@ -15,6 +15,29 @@ namespace Architect.Payment.Integrations
         /// <summary>
         /// Permite la creación de un sesión para realizar un pago.
         /// </summary>
+        public async static Task<Contracts.SessionInformation> VerifySession(int companyId, string policyId, Int64 billNumber)
+        {
+            Contracts.SessionInformation current = null;
+            Contracts.OnlinePayment currenTrack = Business.OnlinePayment.RetrieveByPolicyAndBill(companyId, policyId, billNumber);
+
+            if (currenTrack != null)
+            {
+                if (currenTrack.ProviderStatus == "INIT" || currenTrack.ProviderStatus == Providers.Placetopay.Webcheckout.ST_PENDING)
+                {
+
+                    current = new Contracts.SessionInformation()
+                    {
+                        Status = "FAIL",
+                        Reason = string.Format("El recibo #{0} se encuentra en un proceso de pago que no ha terminado", billNumber)
+                    };
+                }
+            }
+            return current;
+        }
+
+        /// <summary>
+        /// Permite la creación de un sesión para realizar un pago.
+        /// </summary>
         public async static Task<Contracts.SessionInformation> NewSession(int companyId, int userId, int cod_agt, Contracts.PaymentInformation payInfo, string ipAddress, string userAgent)
         {
             Contracts.OnlinePayment track = Business.OnlinePayment.Create(companyId, userId, new Contracts.OnlinePayment()
@@ -35,7 +58,7 @@ namespace Architect.Payment.Integrations
                 Description = payInfo.Description,
                 IssueDate = DateTime.Now,
                 StatusDate = DateTime.Now,
-                Status = 0
+                Status = 1
             });
 
             payInfo.Reference = string.Format("{0}-{1}-{2}", payInfo.PolicyId, payInfo.BillNumber, track.Id);
@@ -47,10 +70,10 @@ namespace Architect.Payment.Integrations
             track.StatusDate = DateTime.Now;
             track.RequestID = Convert.ToInt64(result.RequestId);
             track.ProcessUrl = result.ProcessUrl;
-            track.ProviderStatus = result.Status == Providers.Placetopay.Webcheckout.ST_OK ? Providers.Placetopay.Webcheckout.ST_PENDING : result.Status;
+            track.ProviderStatus = result.Status == Providers.Placetopay.Webcheckout.ST_OK ? "INIT" : result.Status;
             track.Reason = result.Reason;
             track.ResponseData = result.rawData;
-            track.Status = result.Status == Providers.Placetopay.Webcheckout.ST_OK ? 1 : Providers.Placetopay.Webcheckout.StatusConvert(result.Status);
+            track.Status = result.Status == Providers.Placetopay.Webcheckout.ST_OK ? 2 : Providers.Placetopay.Webcheckout.StatusConvert(result.Status);
 
             Business.OnlinePayment.UpdateNewSession(track);
 

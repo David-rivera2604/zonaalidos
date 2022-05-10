@@ -9,7 +9,7 @@ app.ViewerQuery = (function () {
     var _itemBody = '<div class="tab-pane fade {show}" id="tab_{index}">{Body}</div>';
 
     var _itemTable = '<!-- Grid -->  ' +
-        '<div id="QueryNotify{index}"></div>' +
+        '<div id="QueryHNotify{index}"></div>' +
         '<div id="header{index}" class="d-none"> ' +
         '</div> ' +
         '<div id="{index}toolbar"> ' +
@@ -23,7 +23,8 @@ app.ViewerQuery = (function () {
         '		<div id="chart{index}" class="d-none">  ' +
         '		</div>  ' +
         '	</div>  ' +
-        '</div>  ';
+        '</div>  ' +
+        '<div id="QueryFNotify{index}"></div>';
 
     function ReplaceAll(string, search, replace) {
         return string.split(search).join(replace);
@@ -444,6 +445,9 @@ app.ViewerQuery = (function () {
                         }
 
                     }).always(function () {
+                        if (_id == '310') {
+                            $("#QueryFNotify2").html('<div class="row" style="padding-top: 25px;"><div class="col-9"><a href="" style="font-size: smaller;">Ver preguntas y respuestas frecuentes sobre pagos electrónicos</a></div><div class="col-3"><a href="https://www.placetopay.com/web/" target="_blank"><img src="https://static.placetopay.com/placetopay-logo.svg" class="img-fluid float-right" alt="Responsive image" style="width: 125px;"></a></div></div>')
+                        }
                     });
             else
                 $("#QueryTitle").html('Consulta no indicada');
@@ -508,7 +512,7 @@ app.ViewerQuery = (function () {
         ButtonClick: function (tbl, e, name, row, index) {
             switch (name) {
                 case 'print':
-                    app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/ImprimirPoliza/' + row.NUM_POLIZA + "/"+ row.NUM_RIESGO, false, 'Mapfre Certificado.pdf');
+                    app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/ImprimirPoliza/' + row.NUM_POLIZA + "/" + row.NUM_RIESGO, false, 'Mapfre Certificado.pdf');
                     break;
 
                 case 'printr':

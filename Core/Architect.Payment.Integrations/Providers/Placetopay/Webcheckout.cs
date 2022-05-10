@@ -226,41 +226,38 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
 
         internal static int StatusConvert(string status)
         {
-            int result;
+            int result =0;
             switch (status)
             {
                 case Providers.Placetopay.Webcheckout.ST_PENDING:
-                    result = 1;
-                    break;
-                case Providers.Placetopay.Webcheckout.ST_REJECTED:
                     result = 2;
                     break;
+
                 case Providers.Placetopay.Webcheckout.ST_APPROVED:
                     result = 3;
                     break;
-
-                case Providers.Placetopay.Webcheckout.ST_FAILED:
+                case Providers.Placetopay.Webcheckout.ST_REJECTED:
                     result = 4;
                     break;
-                case Providers.Placetopay.Webcheckout.ST_APPROVED_PARTIAL:
+
+                case Providers.Placetopay.Webcheckout.ST_FAILED:
                     result = 5;
                     break;
-                case Providers.Placetopay.Webcheckout.ST_PENDING_VALIDATION:
+                case Providers.Placetopay.Webcheckout.ST_APPROVED_PARTIAL:
                     result = 6;
                     break;
-                case Providers.Placetopay.Webcheckout.ST_REFUNDED:
+                case Providers.Placetopay.Webcheckout.ST_PENDING_VALIDATION:
                     result = 7;
                     break;
-                case Providers.Placetopay.Webcheckout.ST_ERROR:
+                case Providers.Placetopay.Webcheckout.ST_REFUNDED:
                     result = 8;
                     break;
-                case Providers.Placetopay.Webcheckout.ST_UNKNOWN:
+                case Providers.Placetopay.Webcheckout.ST_ERROR:
                     result = 9;
                     break;
-                default:
-                    result = 0;
+                case Providers.Placetopay.Webcheckout.ST_UNKNOWN:
+                    result = 10;
                     break;
-
             }
             return result;
         }
