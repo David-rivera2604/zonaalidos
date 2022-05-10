@@ -120,7 +120,7 @@ app.ViewerQuery = (function () {
             };
         }
         else {
-            if (spec.detailView != undefined && spec.detailView) {
+            if (spec.detailView != undefined && spec.detailView && spec.detailFormatter == undefined) {
                 spec.detailFormatter = function (index, row, element) {
                     var html = [];
                     var columns = $(this).bootstrapTable('getOptions')[0].columns[0];
@@ -140,6 +140,10 @@ app.ViewerQuery = (function () {
                     return html.join('')
                 };
             }
+            if (spec.detailFormatter != undefined && spec.detailFormatter.startsWith('function ')) {
+                spec.detailFormatter = spec.detailFormatter.replace(/@_/g, '\\\'').parseFunction();
+            }
+
         }
         //spec.onRefresh = function (params) {
         //    app.ViewerQuery.Refresh();

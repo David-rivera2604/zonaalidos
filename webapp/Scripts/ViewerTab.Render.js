@@ -446,7 +446,7 @@ app.ViewerQuery = (function () {
 
                     }).always(function () {
                         if (_id == '310') {
-                            $("#QueryFNotify2").html('<div class="row" style="padding-top: 25px;"><div class="col-9"><a href="" style="font-size: smaller;">Ver preguntas y respuestas frecuentes sobre pagos electrónicos</a></div><div class="col-3"><a href="https://www.placetopay.com/web/" target="_blank"><img src="https://static.placetopay.com/placetopay-logo.svg" class="img-fluid float-right" alt="Responsive image" style="width: 125px;"></a></div></div>')
+                            $("#QueryFNotify2").html('<div class="row" style="padding-top: 25px;"><div class="col-9"><a href="javascript:app.master.ShowSideBarExternal(\'Preguntas y respuestas frecuentes\', \'/aliados/viewer/render?id=392&t=4&wd=400px\');" style="font-size: smaller;">Ver preguntas y respuestas frecuentes sobre pagos electrónicos</a></div><div class="col-3"><a href="https://www.placetopay.com/web/" target="_blank"><img src="https://static.placetopay.com/placetopay-logo.svg" class="img-fluid float-right" alt="Responsive image" style="width: 125px;"></a></div></div>')
                         }
                     });
             else
