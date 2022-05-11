@@ -103,8 +103,8 @@ namespace Architect.API.Tron.Business.Backoffice
                         bin = string.Empty,
                         terminacion = payment.processorFields.Find(f => f.keyword == "lastDigits").value,
                         nombre = string.Format("{0} {1}", request.request.payer.name, request.request.payer.surname),
-                        mesExpira = "08",
-                        annioExpira = "2021",
+                        mesExpira = string.Empty,
+                        annioExpira = string.Empty,
                         marcaTarjeta = payment.paymentMethodName
                     },
                     recibos = new[] {

@@ -1194,7 +1194,6 @@
     <Content Include="products\cope_vida.xml" />
     <Content Include="releaseletter.txt" />
     <Content Include="Scripts\Clientes.Index.js" />
-    <Content Include="Scripts\Payment.js" />
     <Content Include="Scripts\Emision.SaldoDeudor.js" />
     <Content Include="Scripts\Cotizacion.SaldoDeudor.js" />
     <Content Include="Scripts\Cotizacion.Viajero.js" />
