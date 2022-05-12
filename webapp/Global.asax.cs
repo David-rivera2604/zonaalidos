@@ -67,9 +67,14 @@ namespace aliados
                 RecurringJob.AddOrUpdate(() =>
                        Architect.API.Core.Business.General.Process.OverDueSteps(),
                        Cron.MinuteInterval(processReviewEveryTime));
-                ;
             }
+
+            //Monitor de transacciones de pago pendientes
+            //RecurringJob.AddOrUpdate(() => Architect.Payment.Integrations.Payment.Monitor(), Cron.Daily(5));
+            BackgroundJob.Enqueue(() => Architect.Payment.Integrations.Payment.Monitor());
+
         }
+
 
     }
 

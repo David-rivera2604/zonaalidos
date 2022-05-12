@@ -231,6 +231,27 @@ namespace Architect.Payment.Integrations.DataAccess
             return item;
         }
 
+
+        /// <summary>
+        /// Recupera una lista de registros en la tabla OnlinePayment.
+        /// </summary>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
+        /// <param name="connection">Instancia de una conexión compartida</param>
+        /// <returns>Lista de instancias de OnlinePayment</returns>
+        public static List<Contracts.OnlinePayment> RetrievePendings(int companyId, IDbConnection connection = null)
+        {
+            List<Contracts.OnlinePayment> result = new List<Contracts.OnlinePayment>();
+            Database.Select("SELECT Id, OnlinePayment.CompanyId, RequestID, ProviderStatus, Reason, Authorization, Receipt, NULL ResponseData, DocumentType, DocumentNumber, OnlinePayment.FirstName, OnlinePayment.LastName, PrimaryEmailAddress, PhoneNumberMobile, AgentCode, PolicyId, BillNumber, Currency, Amount, OnlinePayment.Reference, Description, IssueDate, StatusDate, ProcessUrl, Status, OnlinePayment.UpdateUserCode, NULL UpdateUserName, OnlinePayment.UpdateDate " +
+                              "FROM OnlinePayment " +
+                             "WHERE OnlinePayment.CompanyId=:CompanyId AND OnlinePayment.ProviderStatus IN ('INIT', 'PENDING')")
+                        .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                        .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
+                        {
+                            result.Add(DataReaderToOnlinePayment(reader));
+                        }));
+            return result;
+        }
+
     }
 
 }

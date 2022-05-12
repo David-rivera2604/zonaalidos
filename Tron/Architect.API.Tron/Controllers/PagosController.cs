@@ -57,7 +57,7 @@ namespace Architect.API.Tron.Controllers
         [AllowAnonymous]
         public async Task<IHttpActionResult> Notify(Payment.Integrations.Providers.Placetopay.Contracts.NotifyRequest notify)
         {
-            await Payment.Integrations.Payment.Notify(1, 1, notify);
+            await Payment.Integrations.Payment.Notify(2, notify);
 
             return Ok();
         }

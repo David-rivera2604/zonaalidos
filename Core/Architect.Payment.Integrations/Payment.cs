@@ -12,6 +12,41 @@ namespace Architect.Payment.Integrations
     public static class Payment
     {
 
+        public static void Monitor()
+        {
+            try
+            {
+
+                List<Contracts.OnlinePayment> pendings = DataAccess.OnlinePayment.RetrievePendings(2);
+                if (pendings.IsNotEmpty())
+                {
+                    Task.Run(() => NewMethod(pendings));
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilities.Log.ErrorLog("Payment", "Monitor", ex);
+                throw ex;
+            }
+        }
+
+        private static void NewMethod(List<OnlinePayment> pendings)
+        {
+            try
+            {
+                foreach (Contracts.OnlinePayment currentRecord in pendings)
+                {
+                    Verify(currentRecord);
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilities.Log.ErrorLog("Payment", "NewMethod", ex);
+                throw ex;
+            }
+
+        }
+
         /// <summary>
         /// Permite la creación de un sesión para realizar un pago.
         /// </summary>
@@ -22,7 +57,7 @@ namespace Architect.Payment.Integrations
 
             if (currenTrack != null)
             {
-                if (currenTrack.ProviderStatus == "INIT" || currenTrack.ProviderStatus == Providers.Placetopay.Webcheckout.ST_PENDING)
+                if (currenTrack.ProviderStatus == Providers.Placetopay.Webcheckout.ST_INIT || currenTrack.ProviderStatus == Providers.Placetopay.Webcheckout.ST_PENDING)
                 {
 
                     current = new Contracts.SessionInformation()
@@ -70,10 +105,10 @@ namespace Architect.Payment.Integrations
             track.StatusDate = DateTime.Now;
             track.RequestID = Convert.ToInt64(result.RequestId);
             track.ProcessUrl = result.ProcessUrl;
-            track.ProviderStatus = result.Status == Providers.Placetopay.Webcheckout.ST_OK ? "INIT" : result.Status;
+            track.ProviderStatus = result.Status == Providers.Placetopay.Webcheckout.ST_OK ? Providers.Placetopay.Webcheckout.ST_INIT : result.Status;
             track.Reason = result.Reason;
             track.ResponseData = result.rawData;
-            track.Status = result.Status == Providers.Placetopay.Webcheckout.ST_OK ? 2 : Providers.Placetopay.Webcheckout.StatusConvert(result.Status);
+            track.Status = Providers.Placetopay.Webcheckout.StatusConvert(track.ProviderStatus);
 
             Business.OnlinePayment.UpdateNewSession(track);
 
@@ -162,7 +197,7 @@ namespace Architect.Payment.Integrations
         /// <summary>
         /// Procesa y valida una notificación de pago.
         /// </summary>
-        public async static Task Notify(int companyId, int userId, Integrations.Providers.Placetopay.Contracts.NotifyRequest notify)
+        public async static Task Notify(int companyId, Integrations.Providers.Placetopay.Contracts.NotifyRequest notify)
         {
             Contracts.OnlinePayment currentRecord = Business.OnlinePayment.RetrieveByRequestID(companyId, Convert.ToInt64(notify.requestId));
             if (currentRecord != null)
@@ -171,17 +206,13 @@ namespace Architect.Payment.Integrations
 
                 if (signature == notify.signature)
                 {
-                    Providers.Placetopay.Contracts.InformationRequest result = await Providers.Placetopay.Webcheckout.GetRequestInformation(Convert.ToInt64(notify.requestId), currentRecord.Currency);
-                    if (result.status.status != currentRecord.ProviderStatus)
-                    {
-                        UpdateStatus(userId, currentRecord, result);
-                    }
+                    await Verify(currentRecord);
                 }
             }
         }
 
 
-        public static int IdentificationTypeConvert(string identificationType)
+        private static int IdentificationTypeConvert(string identificationType)
         {
             int type = 0;
 
@@ -228,6 +259,18 @@ namespace Architect.Payment.Integrations
                     break;
             }
             return result;
+        }
+
+
+
+
+        private static async Task Verify(OnlinePayment currentRecord)
+        {
+            Providers.Placetopay.Contracts.InformationRequest result = await Providers.Placetopay.Webcheckout.GetRequestInformation(currentRecord.RequestID, currentRecord.Currency);
+            if (result.status.status != currentRecord.ProviderStatus)
+            {
+                UpdateStatus(currentRecord.UpdateUserCode, currentRecord, result);
+            }
         }
     }
 }

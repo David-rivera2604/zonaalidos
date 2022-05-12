@@ -18,13 +18,14 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
         public const string ST_APPROVED = "APPROVED";
 
         public const string ST_OK = "OK";
+        public const string ST_INIT = "INIT";
         public const string ST_FAILED = "FAILED";
         public const string ST_APPROVED_PARTIAL = "APPROVED_PARTIAL";
         public const string ST_PENDING_VALIDATION = "PENDING_VALIDATION";
         public const string ST_REFUNDED = "REFUNDED";
         public const string ST_ERROR = "ERROR";
         public const string ST_UNKNOWN = "UNKNOWN";
-        public static readonly string[] STATUSES = new string[] { ST_OK, ST_FAILED, ST_APPROVED, ST_APPROVED_PARTIAL, ST_REJECTED, ST_PENDING, ST_PENDING_VALIDATION, ST_REFUNDED, ST_ERROR, ST_UNKNOWN };
+        public static readonly string[] STATUSES = new string[] { ST_OK, ST_INIT, ST_FAILED, ST_APPROVED, ST_APPROVED_PARTIAL, ST_REJECTED, ST_PENDING, ST_PENDING_VALIDATION, ST_REFUNDED, ST_ERROR, ST_UNKNOWN };
 
 
         public static string NotifySignature(Integrations.Providers.Placetopay.Contracts.NotifyRequest notify, int currency)
@@ -226,37 +227,40 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
 
         internal static int StatusConvert(string status)
         {
-            int result =0;
+            int result = 0;
             switch (status)
             {
-                case Providers.Placetopay.Webcheckout.ST_PENDING:
+                case Providers.Placetopay.Webcheckout.ST_INIT:
                     result = 2;
+                    break;
+                case Providers.Placetopay.Webcheckout.ST_PENDING:
+                    result = 3;
                     break;
 
                 case Providers.Placetopay.Webcheckout.ST_APPROVED:
-                    result = 3;
+                    result = 4;
                     break;
                 case Providers.Placetopay.Webcheckout.ST_REJECTED:
-                    result = 4;
+                    result = 5;
                     break;
 
                 case Providers.Placetopay.Webcheckout.ST_FAILED:
-                    result = 5;
-                    break;
-                case Providers.Placetopay.Webcheckout.ST_APPROVED_PARTIAL:
                     result = 6;
                     break;
-                case Providers.Placetopay.Webcheckout.ST_PENDING_VALIDATION:
+                case Providers.Placetopay.Webcheckout.ST_APPROVED_PARTIAL:
                     result = 7;
                     break;
-                case Providers.Placetopay.Webcheckout.ST_REFUNDED:
+                case Providers.Placetopay.Webcheckout.ST_PENDING_VALIDATION:
                     result = 8;
                     break;
-                case Providers.Placetopay.Webcheckout.ST_ERROR:
+                case Providers.Placetopay.Webcheckout.ST_REFUNDED:
                     result = 9;
                     break;
-                case Providers.Placetopay.Webcheckout.ST_UNKNOWN:
+                case Providers.Placetopay.Webcheckout.ST_ERROR:
                     result = 10;
+                    break;
+                case Providers.Placetopay.Webcheckout.ST_UNKNOWN:
+                    result = 11;
                     break;
             }
             return result;
