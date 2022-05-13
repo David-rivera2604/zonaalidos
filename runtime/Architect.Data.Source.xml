@@ -1,0 +1,358 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Architect.Data.Source</name>
+    </assembly>
+    <members>
+        <member name="T:Architect.Data.Source.Business.Lookup">
+            <summary>
+            Logíca relacionada con la lista de valores disponible de la aplicación.
+            </summary>
+        </member>
+        <member name="M:Architect.Data.Source.Business.Lookup.Lkps(System.String,System.String,Architect.API.Core.Contracts.Security.Token)">
+            <summary>
+            Recupera multiples lista de valores disponibles a partir de mutiples claves.
+            </summary>
+            <param name="keys">Lista de claves de valores posibles separadas por coma.</param>
+            <param name="companyId">Identificación de lacompañia propietaria.</param>
+            <returns>Mutiples listas de valores disponibles</returns>
+        </member>
+        <member name="M:Architect.Data.Source.Business.Lookup.LkpChild(System.String,System.Int32,System.String,Architect.API.Core.Contracts.Security.Token)">
+            <summary>
+            Lista de valores disponibles según la clave de valores posibles.
+            </summary>
+            <param name="key">Clave de la lista de valores posibles.</param>
+            <param name="parentId">Clave que identifica el agrupado de la lista dependiente.</param>
+            <param name="tokenInfo">Información del token de acceso.</param>
+            <returns>Lista de valores disponibles</returns>
+        </member>
+        <member name="M:Architect.Data.Source.Business.Tenant.TenantInformation(System.String,System.Int32)">
+            <summary>
+            Recupera la información de la tabla LookUpMaster vinculada a la compañia por medio de sus clave.
+            </summary>
+            <remarks>
+            Por medio del campo Tenant se sabe si la lista es particular por compañia propietaria o es global.
+            </remarks>
+            <param name="key">Clave que identifica la lista.</param>
+            <param name="companyId">Identificación de la compañia propietaria.</param>
+            <returns>Instancia de LookupMaster.</returns>	
+        </member>
+        <member name="T:Architect.Data.Source.Contracts.DataSource">
+            <summary>
+             Dominio de sources
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.DataSource.Name">
+            <summary>
+            Nombre del source
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.DataSource.Statement">
+            <summary>
+            Statement a ejecutar
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.DataSource.SourceName">
+            <summary>
+            A la fuente de datos
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.DataSource.Return">
+            <summary>
+            Define si se retorno de datos
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.DataSource.LookUps">
+            <summary>
+            Define si se tiene lookups
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.DataSource.Childrens">
+            <summary>
+            Se tiene la posibilidad hacer children's
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.DataSource.CountTry">
+            <summary>
+            Numero de intentos
+            </summary>
+        </member>
+        <member name="T:Architect.Data.Source.Contracts.DataSourceResponse">
+            <summary>
+             Dominio de sources
+            </summary>
+        </member>
+        <member name="T:Architect.Data.Source.Contracts.Lookup">
+            <summary>
+            Lista de valores generica.
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.Lookup.Key">
+            <summary>
+            Clave que identifica la lista.
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.Lookup.Lkp">
+            <summary>
+            Lista de valores.
+            </summary>
+        </member>
+        <member name="T:Architect.Data.Source.Contracts.LookupMaster">
+            <summary>
+            Maestro de lista de valores disponibles.
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.LookupMaster.LookupId">
+            <summary>
+            Identificación de la lista.
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.LookupMaster.Type">
+            <summary>
+            Indica el tipo de la lista de valores.
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.LookupMaster.TypeDesc">
+            <summary>
+            Descripción para indica el tipo de la lista de valores.
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.LookupMaster.Description">
+            <summary>
+            Descripción
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.LookupMaster.Key">
+            <summary>
+            Clave que identifica la lista.
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.LookupMaster.Tenant">
+            <summary>
+            Identificación de la compañía propietaria.
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.LookupMaster.StatementType">
+            <summary>
+            Indica el tipo del comando 1 select, 2 procedure
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.LookupMaster.Statement">
+            <summary>
+            Instrucción o datos para la generación de la lista
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.LookupMaster.ConnectionName">
+            <summary>
+            Nombre de la cadena de conexión.
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.LookupMaster.RecordStatus">
+            <summary>
+            Estado general del registro.
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.LookupMaster.RecordStatusDesc">
+            <summary>
+            Descripción para estado general del registro.
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.LookupMaster.UpdateUserCode">
+            <summary>
+            Usuario que actualizo por última vez el registro.
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.LookupMaster.UpdateUserName">
+            <summary>
+            Nombre del usuario que actualizo por última vez el registro.
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.LookupMaster.UpdateDate">
+            <summary>
+            Fecha que se actualizo por última vez el registro.
+            </summary>
+        </member>
+        <member name="T:Architect.Data.Source.Contracts.Root">
+            <summary>
+             Clases raíz
+            </summary>
+        </member>
+        <member name="T:Architect.Data.Source.Contracts.TenantLookup">
+            <summary>
+            Configuración de la lista de valores.
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.TenantLookup.Tenant">
+            <summary>
+            Indica si la lista se maneja de forma general o por propietario.
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.TenantLookup.Type">
+            <summary>
+            Indica el tipo de la lista de valores.
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.TenantLookup.LookupId">
+            <summary>
+            Identificación de la lista.
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.TenantLookup.Key">
+            <summary>
+            Clave que identifica la lista.
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.TenantLookup.CompanyId">
+            <summary>
+            Identificación de la compañía propietaria.
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.TenantLookup.StatementType">
+            <summary>
+            Indica el tipo del comando 1 select, 2 procedure
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.TenantLookup.Statement">
+            <summary>
+            Instrucción o datos para la generación de la lista
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.TenantLookup.ConnectionName">
+            <summary>
+            Nombre de la cadena de conexión.
+            </summary>
+        </member>
+        <member name="T:Architect.Data.Source.Contracts.Visualizations">
+            <summary>
+            Visualizaciones de datos en forma de widget, reportes, dashboard.
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.Visualizations.Sequence">
+            <summary>
+            Identificación secuencial asociada al identificador único del registro.
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.Visualizations.Type">
+            <summary>
+            Tipo de visualizacion, 1 consultas.
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.Visualizations.Caption">
+            <summary>
+            Caption.
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.Visualizations.Description">
+            <summary>
+            Description.
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.Visualizations.StatementType">
+            <summary>
+            Indica el tipo del comando 1 select, 2 procedure
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.Visualizations.Statement">
+            <summary>
+            Statement.
+            </summary>
+        </member>
+        <member name="P:Architect.Data.Source.Contracts.Visualizations.ConnectionName">
+            <summary>
+            Nombre de la cadena de conexión.
+            </summary>
+        </member>
+        <member name="T:Architect.Data.Source.Controllers.DataSourceController">
+            <summary>
+            Acciones relacionas con la seguridad de la aplicación.
+            </summary>
+        </member>
+        <member name="M:Architect.Data.Source.Controllers.DataSourceController.Build(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Boolean)">
+            <summary>
+            Permite la construcción de fuentes de datos.
+            </summary>
+            <param name="key">Key </param>
+            <returns></returns>
+        </member>
+        <member name="M:Architect.Data.Source.Controllers.DataSourceController.ExportToExcel(System.String,System.Int32,System.String)">
+            <summary>
+            Method para obtener puntumente la consulta
+            </summary>
+            <param name="id">Id de query</param>
+            <param name="sequence">Secuencia a usar</param>
+            <param name="url">Url raw</param>
+            <param name="parameters">parameters en consulta</param>
+            <returns></returns>
+        </member>
+        <member name="M:Architect.Data.Source.Controllers.DataSourceController.DataFactory(System.String,System.String,System.String)">
+            <summary>
+            Permite recuperar la información generada desde cualquier consulta de datos configurable
+            </summary>
+            <param name="id">Id de query</param>
+            <param name="sequence">Secuencia a usar</param>
+            <param name="url">Url raw</param>
+            <param name="parameters">parameters en consulta</param>
+            <returns></returns>
+        </member>
+        <member name="M:Architect.Data.Source.Controllers.DataSourceController.LookupChild(System.String,System.Int32,System.String)">
+            <summary>
+            Lista de valores disponibles según la clave de valores posibles.
+            </summary>
+            <param name="key">clave de la lista de valores posibles.</param>
+            <param name="parentId">clave que identifica el agrupado de la lista dependiente.</param>
+            <param name="url"></param>
+            <returns>Lista de valores disponibles</returns>
+        </member>
+        <member name="M:Architect.Data.Source.Controllers.DataSourceController.Lookups(System.String,System.String)">
+            <summary>
+            Recupera multiples lista de valores disponibles a partir de mutiples claves.
+            </summary>
+            <param name="keys">Lista de claves de valores posibles separadas por coma.</param>
+            <returns>Mutiples listas de valores disponibles</returns>
+        </member>
+        <member name="M:Architect.Data.Source.Controllers.DataSourceController.DataFactory">
+            <summary>
+            Permite recuperar la información generada desde cualquier consulta de datos configurables
+            </summary>
+        </member>
+        <member name="M:Architect.Data.Source.DataAccess.Lookup.RetrieveAll(System.String,System.Collections.Generic.List{Architect.DataFactory.Contracts.Parameter},System.Data.IDbConnection)">
+            <summary>
+            Recupera una lista de registros en la tabla LookupMaster.
+            </summary>
+            <param name="filter">Filtro personalizado.</param>
+            <param name="parameters">Lista de parámetros para complemento.</param>
+            <param name="connection">Instancia de una conexión compartida</param>
+            <returns>Lista de instancias de LookupMaster</returns>
+        </member>
+        <member name="M:Architect.Data.Source.DataAccess.Lookup.RetrieveByLookupMasterKey(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Recupera una lista de registros en la tabla Lookup.
+            </summary>
+            <param name="companyId">Identificación de la compañía propietaria.</param>
+            <param name="filter">Filtro personalizado.</param>
+            <param name="parameters">Lista de parámetros para complemento.</param>
+            <param name="connection">Instancia de una conexión compartida</param>
+            <returns>Lista de instancias de Lookup</returns>
+        </member>
+        <member name="T:Architect.Data.Source.DataAccess.Visualizations">
+            <summary>
+            Visualizaciones de datos en forma de widget, reportes, dashboard.
+            </summary>
+        </member>
+        <member name="M:Architect.Data.Source.DataAccess.Visualizations.RetrieveWithCache(System.Int32,System.Int32)">
+            <summary>
+            Recupera un registro en la tabla Visualizations por medio de su clave primaria.
+            </summary>
+            <param name="id">Identificación única del registro.</param>
+            <param name="sequence">Identificación de la secuencia.</param>
+            <returns>Instancia de Visualizations</returns>
+        </member>
+        <member name="M:Architect.Data.Source.DataAccess.Visualizations.RetrieveWithCache(System.Int32)">
+            <summary>
+            Recupera una lista de registros en la tabla Visualizations.
+            </summary>
+            <param name="id">Identificación única del registro.</param>
+            <returns>Lista de instancias de Visualizations</returns>
+        </member>
+    </members>
+</doc>
