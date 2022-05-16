@@ -119,33 +119,43 @@ namespace Architect.API.Tron.Business.Cotizacion
                         {
                             case 1:
                                 quoteInfo.FEC_NACIMIENTO = DateTime.ParseExact(item.val_campo, "ddMMyyyy", System.Globalization.CultureInfo.InvariantCulture);
+                                quoteInfo.cantidad_riesgos = 1;
                                 break;
                             case 2:
                                 quoteInfo.FEC_NACIMIENTO2 = DateTime.ParseExact(item.val_campo, "ddMMyyyy", System.Globalization.CultureInfo.InvariantCulture);
+                                quoteInfo.cantidad_riesgos = 2;
                                 break;
                             case 3:
                                 quoteInfo.FEC_NACIMIENTO3 = DateTime.ParseExact(item.val_campo, "ddMMyyyy", System.Globalization.CultureInfo.InvariantCulture);
+                                quoteInfo.cantidad_riesgos = 3;
                                 break;
                             case 4:
                                 quoteInfo.FEC_NACIMIENTO4 = DateTime.ParseExact(item.val_campo, "ddMMyyyy", System.Globalization.CultureInfo.InvariantCulture);
+                                quoteInfo.cantidad_riesgos = 4;
                                 break;
                             case 5:
                                 quoteInfo.FEC_NACIMIENTO5 = DateTime.ParseExact(item.val_campo, "ddMMyyyy", System.Globalization.CultureInfo.InvariantCulture);
+                                quoteInfo.cantidad_riesgos = 5;
                                 break;
                             case 6:
                                 quoteInfo.FEC_NACIMIENTO6 = DateTime.ParseExact(item.val_campo, "ddMMyyyy", System.Globalization.CultureInfo.InvariantCulture);
+                                quoteInfo.cantidad_riesgos = 6;
                                 break;
                             case 7:
                                 quoteInfo.FEC_NACIMIENTO7 = DateTime.ParseExact(item.val_campo, "ddMMyyyy", System.Globalization.CultureInfo.InvariantCulture);
+                                quoteInfo.cantidad_riesgos = 7;
                                 break;
                             case 8:
                                 quoteInfo.FEC_NACIMIENTO8 = DateTime.ParseExact(item.val_campo, "ddMMyyyy", System.Globalization.CultureInfo.InvariantCulture);
+                                quoteInfo.cantidad_riesgos = 8;
                                 break;
                             case 9:
                                 quoteInfo.FEC_NACIMIENTO9 = DateTime.ParseExact(item.val_campo, "ddMMyyyy", System.Globalization.CultureInfo.InvariantCulture);
+                                quoteInfo.cantidad_riesgos = 9;
                                 break;
                             case 10:
                                 quoteInfo.FEC_NACIMIENTO10 = DateTime.ParseExact(item.val_campo, "ddMMyyyy", System.Globalization.CultureInfo.InvariantCulture);
+                                quoteInfo.cantidad_riesgos = 10;
                                 break;
                         }
 

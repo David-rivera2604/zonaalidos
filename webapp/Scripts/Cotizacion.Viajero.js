@@ -9,7 +9,7 @@ app.CotizacionViajero = (function () {
 
         app.core.Get(app.setting.apipath + 'v1/Quote/ViajeroSetup', null,
             function (data) {
-                app.core.Lookups(['MonedasPorRamo.cod_mon', 'FrecuenciaDePagoPorRamo.cod_fracc_pago', 'TRON_G2990006:TIP_PLAN.TIP_PLAN', 'TRON_G2990006:TIP_VIAJE.TIP_VIAJE', 'TRON_A1002090.COD_MODALIDAD',],
+                app.core.Lookups(['MonedasPorRamo.cod_mon', 'FrecuenciaDePagoPorRamo.cod_fracc_pago', 'TRON_G2990006:TIP_PLAN.TIP_PLAN', 'TRON_G2990006:TIP_VIAJE.TIP_VIAJE', 'TRON_A1002090.COD_MODALIDAD'],
                     function () {
                         setupData = data;
                         MapObjectToInput(data);
@@ -239,6 +239,10 @@ app.CotizacionViajero = (function () {
             emptyInputBehavior: 'null'
         });
 
+        $("#DES_DESTINO").append($("#DES_DESTINO option").remove().sort(function (a, b) {
+            var at = $(a).text(), bt = $(b).text();
+            return (at > bt) ? 1 : ((at < bt) ? -1 : 0);
+        }));
 
         $("#cotizar").appendTo("#GenericToolBar");
         $("#limpiar").appendTo("#GenericToolBar");
@@ -583,6 +587,22 @@ app.CotizacionViajero = (function () {
 
     };
 
+    function XXX() {
+        var options = $('select.whatever option');
+        var arr = options.map(function (_, o) {
+            return {
+                t: $(o).text(),
+                v: o.value
+            };
+        }).get();
+        arr.sort(function (o1, o2) {
+            return o1.t > o2.t ? 1 : o1.t < o2.t ? -1 : 0;
+        });
+        options.each(function (i, o) {
+            o.value = arr[i].v;
+            $(o).text(arr[i].t);
+        });
+    }
     return {
         Init: function () {
             try {

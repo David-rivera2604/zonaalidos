@@ -278,6 +278,15 @@ app.ui = (function () {
             }
             return value.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         },
+        CurrencyAmountFormatter: function (value, row, index, field) {
+            let currency = 'XX';
+            if (value === null) {
+                value = 0;
+            }
+            if (row?.NOM_MON == 'CRC') currency = '₡ ';
+            if (row?.NOM_MON == 'USD') currency = '$ ';
+            return currency + value.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        },
         DateFormatter: function (value, row, index, field) {
             if (value === null || value === '0001-01-01T00:00:00')
                 value = '';
@@ -437,7 +446,7 @@ app.ui = (function () {
                 error.insertAfter(element);
             }
         },
-        DocumentTypeHandler: function (el, element, type) {
+        DocumentTypeHandler: function (el, element, type, callbackDocumentType) {
             var btn = $(el).parent().parent().find('.btn');
             var value = $(el).data('value');
             btn.text($(el).text());
@@ -464,7 +473,9 @@ app.ui = (function () {
                         break;
                 }
             }
-
+            if (callbackDocumentType !== undefined && callbackDocumentType !== null) {
+                callbackDocumentType(value);
+            }
         },
         Yesterday: function () {
             var value = new Date();
@@ -491,13 +502,13 @@ app.ui = (function () {
             }
             return result;
         },
-        DocumentNumberHandler: function (documentNumberElement, callbackDone) {
+        DocumentNumberHandler: function (documentNumberElement, callbackDone, callbackDocumentType) {
             $(documentNumberElement).formatter({
                 pattern: '0{{9}}-{{9999}}-{{9999}}',
                 persistent: false
             });
             $(documentNumberElement + 'TypeMenu a').click(function () {
-                app.ui.DocumentTypeHandler(this, documentNumberElement, 'Identification');
+                app.ui.DocumentTypeHandler(this, documentNumberElement, 'Identification', callbackDocumentType);
             });
             $(documentNumberElement).on('blur', function () {
                 if (app.ui.IsDocumentNumberValid($(documentNumberElement + 'Type').data('value'), $(documentNumberElement).val())) {

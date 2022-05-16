@@ -1,5 +1,6 @@
 ﻿using Architect.Utilities.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.IO;
@@ -14,20 +15,78 @@ namespace Architect.API.Tron.Business.Emision
     public static class Viajero
     {
 
-        public static Contracts.Emision.Viajero Setup(string presupuesto, Core.Contracts.Security.Token tokenInfo)
+        public static Contracts.Emision.Viajero Setup(string presupuesto, string mode, Core.Contracts.Security.Token tokenInfo)
         {
 
             Contracts.Emision.Viajero result = null;
             string key = string.Format("viajero.{0}", presupuesto);
 
+            if (mode == "resume")
+            {
+                //Contracts.PolicyProposal proposal = DataAccess.PolicyProposal.RetrieveByProposalId(presupuesto, tokenInfo.CompanyId);
+
+                Contracts.Presupuesto.DatoFijo P30Instance = DataAccess.LeerPresupuesto.Presupuesto(1, presupuesto, 0, 0, 0, null, true);
+                Contracts.Cotizacion.Viajero resultInfo2 = Cotizacion.ViajeroConvert.FromTron_Full(P30Instance);
+
+                Utilities.Cache.SetItem(key, Newtonsoft.Json.JsonConvert.SerializeObject(resultInfo2), -1);
+            }
+
             if (Architect.Utilities.Cache.Exist(key))
             {
                 result = Newtonsoft.Json.JsonConvert.DeserializeObject<Contracts.Emision.Viajero>(Architect.Utilities.Cache.GetItem(key).ToString());
+
+                result.terceros = Default_Terceros(result);
 
                 result.terceros = Reglas.research.Apply_Terceros("Viajero", result.terceros, string.Empty, tokenInfo);
 
                 result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("Viajero", null, 0, tokenInfo);
 
+            }
+
+            return result;
+        }
+        private static List<Contracts.Comun.tercero> Default_Terceros(Contracts.Emision.Viajero quoteInfo)
+        {
+            List<Contracts.Comun.tercero> result = new List<Contracts.Comun.tercero>();
+            DateTime[] values = { DateTime.MinValue, quoteInfo.FEC_NACIMIENTO, quoteInfo.FEC_NACIMIENTO2, quoteInfo.FEC_NACIMIENTO3, quoteInfo.FEC_NACIMIENTO4, quoteInfo.FEC_NACIMIENTO5, quoteInfo.FEC_NACIMIENTO6, quoteInfo.FEC_NACIMIENTO7, quoteInfo.FEC_NACIMIENTO8, quoteInfo.FEC_NACIMIENTO9, quoteInfo.FEC_NACIMIENTO10 };
+            for (int riesgo = 1; riesgo <= quoteInfo.cantidad_riesgos; riesgo++)
+            {
+                result.Add(new Contracts.Comun.tercero()
+                {
+                    tercerosId = riesgo,
+                    tipodetercero = riesgo == 1 ? 0: 2, //Tomandor, Asegurado
+                    tipodeterceroDesc = Reglas.research.tip_benef_lookup(riesgo == 1 ? 0 : 2),
+                    DocumentNumberType = 0,
+                    DocumentNumber = string.Empty,
+                    nombre = string.Empty,
+                    apellido1 = null,
+                    apellido2 = null,
+                    fechadenacimiento = values[riesgo],
+                    tercerosMca_sexo = 0,
+                    tercerosMca_sexoDesc = string.Empty,
+                    estadoCivil = string.Empty,
+                    estadoCivilDesc = string.Empty,
+                    numerodetelefono = string.Empty,
+                    correoelectronico = string.Empty,
+                    cod_pais = "CRI",
+                    TProvincia = 0,
+                    TProvinciaDesc = string.Empty,
+                    TCanton = 0,
+                    TCantonDesc = string.Empty,
+                    TDistrito = 0,
+                    TDistritoDesc = string.Empty,
+                    otrasenas = string.Empty,
+                    eltomadoreselmismoasegurado = 2,
+                    elaseguradoeselconductorhabitual = 0,
+                    numerodeprestamo = null,
+                    importedecesion = 0,
+                    vencimientodecesion = DateTime.MinValue,
+                    porcentajeacredor = 0,
+                    parentesco = 0,
+                    porcentaje = 0,
+                    NoEditable = false,
+                    numeroderiesgo = riesgo
+                });
             }
 
             return result;
@@ -51,9 +110,9 @@ namespace Architect.API.Tron.Business.Emision
 
                 //Llamado a Servicio de  Asistencia Panama (Ojo) Credenciales de Monge TEST
                 if (tokenInfo.Roles.Contains("Grupo_Monge"))
-                { 
-                var token_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.login(ConfigurationManager.AppSettings["Warranty.User.Monge"], ConfigurationManager.AppSettings["Warranty.Pass.Monge"]);
-                var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, ConfigurationManager.AppSettings["Warranty.Dealer.Monge"]); //Test- "DL0001S" //PRD: DL0001Q
+                {
+                    var token_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.login(ConfigurationManager.AppSettings["Warranty.User.Monge"], ConfigurationManager.AppSettings["Warranty.Pass.Monge"]);
+                    var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, ConfigurationManager.AppSettings["Warranty.Dealer.Monge"]); //Test- "DL0001S" //PRD: DL0001Q
                     resultQuoteInfo.envio_asistencia = envio_poliza_panama;
                 }
                 if (tokenInfo.Roles.Contains("Mapfre"))
@@ -92,7 +151,7 @@ namespace Architect.API.Tron.Business.Emision
                     var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, ConfigurationManager.AppSettings["Warranty.Dealer.GSI"]);
                     resultQuoteInfo.envio_asistencia = envio_poliza_panama;
                 }
-                 if (tokenInfo.Roles.Contains("IBG"))
+                if (tokenInfo.Roles.Contains("IBG"))
                 {
                     var token_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.login(ConfigurationManager.AppSettings["Warranty.User.IBG"], ConfigurationManager.AppSettings["Warranty.Pass.IBG"]);
                     var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, ConfigurationManager.AppSettings["Warranty.Dealer.IBG"]);
@@ -138,7 +197,7 @@ namespace Architect.API.Tron.Business.Emision
             return resultQuoteInfo;
         }
 
-        
+
 
     }
 }

@@ -1,7 +1,7 @@
 ﻿var app = app || {};
 
 app.EmisionViajero = (function () {
-
+    let workMode = '';
     var setupData = null;
     var changedCallback = null;
     var showCalculate = false;
@@ -9,14 +9,14 @@ app.EmisionViajero = (function () {
     function Setup() {
         var _id = app.core.URLStringValue('presupuesto');
         if (_id != '') {
+            workMode = app.core.URLStringValue('mode');
             $('#coberturasTbl').bootstrapTable('showLoading');
-            app.core.Get(app.setting.apipath + 'v1/Issue/ViajeroSetup/' + _id)
+            app.core.Get(app.setting.apipath + 'v1/Issue/Viajero/' + _id + '?mode=' + workMode)
                 .done(function (data) {
                     Init_Lookups(data);
                 });
         }
     };
-
 
     function Quote() {
         app.core.Post(app.setting.apipath + 'v1/Issue/Viajero',
@@ -67,10 +67,9 @@ app.EmisionViajero = (function () {
 
 
             }).always(function () {
-                app.ui.ButtonDone('#cotizar');
+                app.ui.ButtonDone('#emitir');
             });
     };
-
 
     function ReadOnly() {
         $('#cod_mon').replaceWith('<div>' + $('#cod_mon option:selected').text() + '</div>');
@@ -108,7 +107,6 @@ app.EmisionViajero = (function () {
             app.core.LookupDependency($('select#TCanton').val(), 'TDistrito', 'Distritos', '', null, false, null, `cod_pais=${pais}:cod_prov=`);
         });
     };
-
 
     function MapInputToObject() {
         var data = setupData;
@@ -192,6 +190,7 @@ app.EmisionViajero = (function () {
         $(".input-group.date").on('dp.change', function (e) {
             data_changed();
         });
+
         $("#VisualizationsEdtForm :input").change(function () {
             data_changed();
         });
@@ -233,12 +232,20 @@ app.EmisionViajero = (function () {
             event.preventDefault();
         });
 
-
         $('#emitir').click(function () {
-
-            if (app.ui.IsValid('#VisualizationsEdtForm', false)) {
+            let others = OtherValidations();
+            if (app.ui.IsValid('#VisualizationsEdtForm', false) && others === 0) {
                 app.ui.ButtonDoing('#emitir');
                 Quote();
+            }
+            else {
+                var instance = $('#VisualizationsEdtForm');
+                var validate = instance.validate();
+                validate.settings.ignore = '';
+                var result = instance.valid();
+                var count = validate.numberOfInvalids();
+                validate.settings.ignore = ':hidden';
+                toastr.error("Existen " + (count + others) + " error(es), que ameritan su atención.", "", { closeButton: true, progressBar: true });
             }
             event.preventDefault();
         });
@@ -346,8 +353,6 @@ app.EmisionViajero = (function () {
                     visible: true
                 },]
         });
-
-
 
     };
 
@@ -461,21 +466,16 @@ app.EmisionViajero = (function () {
         let terceros = $('#tercerosTbl').bootstrapTable('getData');
         let terceroserrors = (terceros.length === 0);
 
-        if (!terceroserrors && workMode === 'draft') {
+        if (!terceroserrors) {
             let holder = terceros.filter(i => i.tipodetercero === 0);
             let insured = terceros.filter(i => i.tipodetercero === 2);
-            let driver = terceros.filter(i => i.tipodetercero === 3);
 
-            if (holder.length === 0) {
+            if (holder.length === 0 || holder[0].DocumentNumber === '') {
                 message += ', indique el tomador';
                 terceroserrors = true;
             }
-            if (insured.length === 0) {
+            if (insured.length === 0 || insured[0].DocumentNumber === '') {
                 message += ', indique el asegurado';
-                terceroserrors = true;
-            }
-            if (driver.length === 0) {
-                message += ', indique el conductor habitual';
                 terceroserrors = true;
             }
         }
@@ -485,17 +485,16 @@ app.EmisionViajero = (function () {
             result = result + 1;
         }
 
-        if (workMode != 'draft') {
-            var grupo = 'F';
-            let documentosrequeridos = $('#documentosrequeridosTbl').bootstrapTable('getData');
-            let lista = documentosrequeridos.filter(function (row) {
-                return (row.DStored === null || row.DStored === '');
-            });
-            if (lista.length > 0) {
-                $('#documentosrequeridosTbl-error').html('Debe cargar todos los documentos pendientes');
-                $('#documentosrequeridosTbl-error').removeClass('d-none');
-                result = result + 1;
-            }
+
+        let grupo = 'F';
+        let documentosrequeridos = $('#documentosrequeridosTbl').bootstrapTable('getData');
+        let lista = documentosrequeridos.filter(function (row) {
+            return (row.DStored === null || row.DStored === '');
+        });
+        if (lista.length > 0) {
+            $('#documentosrequeridosTbl-error').html('Debe cargar todos los documentos pendientes');
+            $('#documentosrequeridosTbl-error').removeClass('d-none');
+            result = result + 1;
         }
         return result;
     }
@@ -528,7 +527,7 @@ app.EmisionViajero = (function () {
                     halign: 'center',
                     align: 'left',
                     formatter: 'app.ui.StringFormatter'
-                },{
+                }, {
                     field: 'DocumentNumber',
                     title: 'Identificación',
                     titleTooltip: '',
@@ -747,6 +746,7 @@ app.EmisionViajero = (function () {
                         newinsurance.tipodeterceroDesc = $('#tipodetercero option[value="2"]').text();
                         newinsurance.eltomadoreselmismoasegurado = 1;
                         newinsurance.elaseguradoeselconductorhabitual = 2;
+                        newinsurance.elbeneficiarioeselmismotodoslosriesgos = 2;
                         $('#tercerosTbl').bootstrapTable('append', newinsurance);
                     }
 
@@ -757,6 +757,7 @@ app.EmisionViajero = (function () {
                         newDriver.tipodeterceroDesc = $('#tipodetercero option[value="3"]').text();
                         newDriver.eltomadoreselmismoasegurado = 1;
                         newDriver.elaseguradoeselconductorhabitual = 2;
+                        newDriver.elbeneficiarioeselmismotodoslosriesgos = 2;
                         $('#tercerosTbl').bootstrapTable('append', newDriver);
                     }
                 }
@@ -795,6 +796,7 @@ app.EmisionViajero = (function () {
                 otrasenas: null,
                 eltomadoreselmismoasegurado: 2,
                 elaseguradoeselconductorhabitual: 2,
+                elbeneficiarioeselmismotodoslosriesgos: 2,
                 numerodeprestamo: null,
                 importedecesion: null,
                 vencimientodecesion: null,
@@ -832,6 +834,7 @@ app.EmisionViajero = (function () {
                 otrasenas: $('#otrasenas').val(),
                 eltomadoreselmismoasegurado: app.ui.GetRadioNumericValue('eltomadoreselmismoasegurado'),
                 elaseguradoeselconductorhabitual: app.ui.GetRadioNumericValue('elaseguradoeselconductorhabitual'),
+                elbeneficiarioeselmismotodoslosriesgos: app.ui.GetRadioNumericValue('elbeneficiarioeselmismotodoslosriesgos'),
                 numerodeprestamo: $('#numerodeprestamo').val(),
                 importedecesion: app.ui.GetNumericValue('#importedecesion'),
                 vencimientodecesion: app.ui.GetDateValue('#vencimientodecesion'),
@@ -856,6 +859,7 @@ app.EmisionViajero = (function () {
 
         $('#tipodetercero').val(row.tipodetercero);
         app.ui.SetDocumentTypeValue('#DocumentNumberType', row.DocumentNumberType);
+        terceros_documentTypeCallBack(row.DocumentNumberType);
         $('#numeroderiesgo').val(row.numeroderiesgo);
         $('#DocumentNumber').val(row.DocumentNumber);
         $('#nombre').val(row.nombre);
@@ -872,13 +876,12 @@ app.EmisionViajero = (function () {
         $('#TDistrito').val(row.TDistrito);
         $('#otrasenas').val(row.otrasenas);
         app.ui.SetRadioNumericValue('eltomadoreselmismoasegurado', row.eltomadoreselmismoasegurado)
+        app.ui.SetRadioNumericValue('elbeneficiarioeselmismotodoslosriesgos', row.elbeneficiarioeselmismotodoslosriesgos)
         $('#numerodeprestamo').val(row.numerodeprestamo);
         app.ui.SetNumericValue('#importedecesion', row.importedecesion);
         app.ui.SetDateValue('#vencimientodecesion', row.vencimientodecesion);
         app.ui.SetNumericValue('#porcentajeacredor', row.porcentajeacredor);
         app.ui.SetNumericValue('#porcentaje', row.porcentaje);
-
-
         md.modal('show');
     };
 
@@ -1025,46 +1028,66 @@ app.EmisionViajero = (function () {
             //$('#TCanton').val(data.Canton);
             //$('#TDistrito').val(data.District);
             $('#otrasenas').val(data.AddressDetail);
+        }
+    }
 
+    function terceros_documentTypeCallBack(data) {
+        data = $("#DocumentNumberType").data("value");
+        if (data === 4) {
+            $('#apellido1').parent().parent().addClass('d-none');
+            $('#apellido2').parent().parent().addClass('d-none');
+            $('#fechadenacimiento').parent().parent().parent().addClass('d-none');
+            $('#tercerosMca_sexo').parent().parent().addClass('d-none');
+            $('#estadoCivil').parent().parent().addClass('d-none');
+            $('#nombre').parent().parent().addClass('col-sm-8 col-md-8');
 
-
-
-
+        } else {
+            $('#apellido1').parent().parent().removeClass('d-none');
+            $('#apellido2').parent().parent().removeClass('d-none');
+            $('#fechadenacimiento').parent().parent().parent().removeClass('d-none');
+            $('#tercerosMca_sexo').parent().parent().removeClass('d-none');
+            $('#estadoCivil').parent().parent().removeClass('d-none');
+            $('#nombre').parent().parent().removeClass('col-sm-8 col-md-8');
         }
     }
 
     function terceros_controls_Events() {
-        app.ui.DocumentNumberHandler('#DocumentNumber', terceros_documentNumberCallBack);
+        app.ui.DocumentNumberHandler('#DocumentNumber', terceros_documentNumberCallBack, terceros_documentTypeCallBack);
 
         $('#tipodetercero').change(function () {
             switch ($('#tipodetercero').val()) {
                 case '0':
                     $('[name=eltomadoreselmismoasegurado]').first().parent().parent().parent().parent().removeClass('d-none');
                     $('[name=elaseguradoeselconductorhabitual]').first().parent().parent().parent().removeClass('d-none');
+                    $('[name=elbeneficiarioeselmismotodoslosriesgos]').first().parent().parent().parent().parent().addClass('d-none');
                     $('#beneficiarioZone').addClass('d-none');
                     $('#acredorZone').addClass('d-none');
                     break;
                 case '2':
                     $('[name=eltomadoreselmismoasegurado]').first().parent().parent().parent().parent().addClass('d-none');
                     $('[name=elaseguradoeselconductorhabitual]').first().parent().parent().parent().parent().removeClass('d-none');
+                    $('[name=elbeneficiarioeselmismotodoslosriesgos]').first().parent().parent().parent().parent().addClass('d-none');
                     $('#beneficiarioZone').addClass('d-none');
                     $('#acredorZone').addClass('d-none');
                     break;
                 case '3':
                     $('[name=eltomadoreselmismoasegurado]').first().parent().parent().parent().parent().addClass('d-none');
                     $('[name=elaseguradoeselconductorhabitual]').first().parent().parent().parent().parent().addClass('d-none');
+                    $('[name=elbeneficiarioeselmismotodoslosriesgos]').first().parent().parent().parent().parent().addClass('d-none');
                     $('#beneficiarioZone').addClass('d-none');
                     $('#acredorZone').addClass('d-none');
                     break;
                 case '6':
                     $('[name=eltomadoreselmismoasegurado]').first().parent().parent().parent().parent().addClass('d-none');
                     $('[name=elaseguradoeselconductorhabitual]').first().parent().parent().parent().parent().addClass('d-none');
+                    $('[name=elbeneficiarioeselmismotodoslosriesgos]').first().parent().parent().parent().parent().removeClass('d-none');
                     $('#beneficiarioZone').removeClass('d-none');
                     $('#acredorZone').addClass('d-none');
                     break;
                 case '8':
                     $('[name=eltomadoreselmismoasegurado]').first().parent().parent().parent().parent().addClass('d-none');
                     $('[name=elaseguradoeselconductorhabitual]').first().parent().parent().parent().parent().addClass('d-none');
+                    $('[name=elbeneficiarioeselmismotodoslosriesgos]').first().parent().parent().parent().parent().addClass('d-none');
                     $('#beneficiarioZone').addClass('d-none');
                     $('#acredorZone').removeClass('d-none');
                     break;

@@ -1,4 +1,6 @@
-﻿using Architect.Utilities.Extensions;
+﻿using Architect.API.Tron.Contracts.Cotizacion;
+using Architect.API.Tron.Contracts.Presupuesto;
+using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -418,11 +420,58 @@ namespace Architect.API.Tron.Business
             quote.fec_efec_poliza = tronQuoteInfo.fec_efec_poliza;
             quote.fec_vcto_poliza = tronQuoteInfo.fec_vcto_poliza;
             quote.coberturas = Coberturas_FromTron(tronQuoteInfo);
+            quote.plandepago = Recibo_FromTron(tronQuoteInfo);
+            quote.resumen = Resumen_FromTron(tronQuoteInfo);
 
             return quote;
         }
 
-        private static List<Contracts.Comun.Cobertura> Coberturas_FromTron(Contracts.Presupuesto.DatoFijo tronQuoteInfo)
+        internal static List<Contracts.Comun.PlanDePago> Recibo_FromTron(DatoFijo tronQuoteInfo)
+        {
+            double importeAnual;
+            List<Contracts.Comun.PlanDePago> plandepago = new List<Contracts.Comun.PlanDePago>();
+
+            foreach (Contracts.Presupuesto.Recibo item in tronQuoteInfo.Recibos)
+            {
+                importeAnual = item.imp_recibo;
+                plandepago.Add(new Contracts.Comun.PlanDePago()
+                {
+                    cuota = item.num_cuota,
+                    fechadesde = item.fec_efec_recibo,
+                    fechahasta = item.fec_vcto_recibo,
+                    primaneta = item.imp_neta + item.imp_recargo,
+                    iVA = item.imp_imptos,
+                    recargoporfraccionamiento = item.imp_interes,
+                    importetotal = item.imp_recibo
+                });               
+            }
+            return plandepago;
+        }
+
+        internal static Contracts.Cotizacion.resumen Resumen_FromTron(DatoFijo tronQuoteInfo)
+        {
+            bool setvalues = true;
+            Contracts.Cotizacion.resumen resumen = new Contracts.Cotizacion.resumen();
+
+            foreach (Contracts.Presupuesto.Recibo item in tronQuoteInfo.Recibos)
+            {
+                if (setvalues)
+                {
+                    resumen = new Contracts.Cotizacion.resumen()
+                    {
+                        cuotas = tronQuoteInfo.Recibos.Count,
+                        primaneta = item.imp_neta + item.imp_recargo,
+                        iVA = item.imp_imptos,
+                        recargoporfraccionamiento = item.imp_interes,
+                        importetotal = item.imp_recibo
+                    };
+                    setvalues = false;
+                }
+            }
+            return resumen;
+        }
+
+        internal static List<Contracts.Comun.Cobertura> Coberturas_FromTron(Contracts.Presupuesto.DatoFijo tronQuoteInfo)
         {
             List<Contracts.Comun.Cobertura> result = new List<Contracts.Comun.Cobertura>();
             foreach (Contracts.Presupuesto.Cobertura item in tronQuoteInfo.Coberturas)

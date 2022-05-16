@@ -366,11 +366,11 @@
                                                     <div class='form-group'>
                                                         <label class='control-label'>
                                                             Número de Riesgo<span class='required-mark'
-                                                                                    title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                                                                  title='Este campo debe ser llenado de forma obligatoria'>*</span>
                                                         </label>
                                                         <div class='input-group'>
                                                             <span class='input-group-addon'>
-                                                              
+
                                                             </span>
                                                             <input id='numeroderiesgo' name='numeroderiesgo' type='text' class='form-control'
                                                                    size='9' maxlength='9'>
@@ -477,6 +477,7 @@
                                                             <option value="C">Casado(a)</option>
                                                             <option value="D">Divorciado(a)</option>
                                                             <option value="S">Soltero(a)</option>
+                                                            <option value="U">Unión Libre</option>
                                                             <option value="V">Viudo(a)</option>
                                                         </select>
                                                     </div>
@@ -554,7 +555,7 @@
                                                     </div>
                                                 </div>
                                                 <!-- otrasenas Text -->
-                                                <div class='col-sm-4 col-md-4'>
+                                                <div class='col-sm-8 col-md-8'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='otrasenas'>
                                                             Otra señas<span class='required-mark'
@@ -565,7 +566,7 @@
                                                     </div>
                                                 </div>
                                                 <!-- eltomadoreselmismoasegurado RadioButtonList -->
-                                                <div class='col-sm-4 col-md-4' hidden>
+                                                <div class='col-sm-4 col-md-4 d-none'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='eltomadoreselmismoasegurado'>
                                                             El tomador es el mismo
@@ -585,7 +586,26 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
+                                                <!-- elbeneficiarioeselmismotodoslosriesgos RadioButtonList -->
+                                                <div class='col-sm-4 col-md-4 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='elbeneficiarioeselmismotodoslosriesgos'>
+                                                            El beneficiario es el mismo para todos los riesgos
+                                                        </label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="elbeneficiarioeselmismotodoslosriesgos_1"
+                                                                       name="elbeneficiarioeselmismotodoslosriesgos" value="1">
+                                                                <label class="custom-control-label" for="elbeneficiarioeselmismotodoslosriesgos_1">Si</label>
+                                                            </div>
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="elbeneficiarioeselmismotodoslosriesgos_2"
+                                                                       name="elbeneficiarioeselmismotodoslosriesgos" value="2">
+                                                                <label class="custom-control-label" for="elbeneficiarioeselmismotodoslosriesgos_2">No</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
                                             </div>
                                             <!-- beneficiario Zone -->
@@ -609,6 +629,8 @@
                                                                     <option value="7">Hermano(a)</option>
                                                                     <option value="8">Primo(a)</option>
                                                                     <option value="9">Conyugue</option>
+                                                                    <option value="11">Tío(a)</option>
+                                                                    <option value="12">Otro</option>
                                                                 </select>
                                                             </div>
                                                         </div>

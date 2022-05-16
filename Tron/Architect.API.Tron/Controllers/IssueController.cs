@@ -175,14 +175,14 @@ namespace Architect.API.Tron.Controllers
         /// <param name="presupuesto"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("ViajeroSetup/{presupuesto}")]
-        public async Task<IHttpActionResult> ViajeroSetup(string presupuesto)
+        [Route("Viajero/{presupuesto}")]
+        public async Task<IHttpActionResult> ViajeroSetup(string presupuesto, string mode)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
             Tron.Contracts.Emision.Viajero result = null;
             await Task.Run(() =>
             {
-                result = Architect.API.Tron.Business.Emision.Viajero.Setup(presupuesto, tokenInfo);
+                result = Architect.API.Tron.Business.Emision.Viajero.Setup(presupuesto, mode, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -213,13 +213,13 @@ namespace Architect.API.Tron.Controllers
         /// <param name="presupuesto"></param>
         [HttpGet]
         [Route("SaldoDeudorSetup/{presupuesto}")]
-        public async Task<IHttpActionResult> SaldoDeudorSetup(string presupuesto)
+        public async Task<IHttpActionResult> SaldoDeudorSetup(string presupuesto, string mode)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
             Tron.Contracts.Emision.SaldoDeudor result = null;
             await Task.Run(() =>
             {
-                result = Architect.API.Tron.Business.Emision.SaldoDeudor.Setup(presupuesto, tokenInfo);
+                result = Architect.API.Tron.Business.Emision.SaldoDeudor.Setup(presupuesto, mode, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -230,7 +230,7 @@ namespace Architect.API.Tron.Controllers
         /// </summary>
         /// <param name="quoteInfo"></param>
         [HttpPost]
-        [Route("Viajero")]
+        [Route("SaldoDeudor")]
         public async Task<IHttpActionResult> SaldoDeudorIssue([FromBody] Tron.Contracts.Emision.SaldoDeudor quoteInfo)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();

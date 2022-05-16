@@ -356,12 +356,28 @@ app.ViewerQuery = (function () {
             _id = app.core.URLStringValue('id');
             Event_Controls();
             if (_id != '')
-                app.core.Get(app.setting.apipath + 'v1/Viewer/QuerySpecification?id=' + _id + '&url=' + window.location.search.slice(1).replace(/&/g, ':'))
-                    .done(function (data, textStatus, jqXHR) {
-                        Render(data);
-                    }).always(function () {
 
-                    });
+                if (_id == '320') {
+
+                    app.core.LoadScriptFile("Extend.js")
+                        .then(d => {
+                            app.core.Get(app.setting.apipath + 'v1/Viewer/QuerySpecification?id=' + _id + '&url=' + window.location.search.slice(1).replace(/&/g, ':'))
+                                .done(function (data, textStatus, jqXHR) {
+                                    Render(data);
+                                });
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        });
+
+
+
+                } else {
+                    app.core.Get(app.setting.apipath + 'v1/Viewer/QuerySpecification?id=' + _id + '&url=' + window.location.search.slice(1).replace(/&/g, ':'))
+                        .done(function (data, textStatus, jqXHR) {
+                            Render(data);
+                        });
+                }
             else
                 $("#QueryTitle").html('Consulta no indicada');
         },

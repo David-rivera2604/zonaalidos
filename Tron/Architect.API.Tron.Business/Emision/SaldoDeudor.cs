@@ -13,11 +13,21 @@ namespace Architect.API.Tron.Business.Emision
         /// <summary>
         /// Devuelve información de un presupuesto para la emisión de una póliza de saldo deudor.
         /// </summary>
-        public static Contracts.Emision.SaldoDeudor Setup(string presupuesto, Core.Contracts.Security.Token tokenInfo)
+        public static Contracts.Emision.SaldoDeudor Setup(string presupuesto, string mode, Core.Contracts.Security.Token tokenInfo)
         {
 
             Contracts.Emision.SaldoDeudor result = null;
             string key = string.Format("{0}.{1}", Cotizacion.SaldoDeudor.NOM_PROD, presupuesto);
+
+            if (mode == "resume")
+            {
+                //Contracts.PolicyProposal proposal = DataAccess.PolicyProposal.RetrieveByProposalId(presupuesto, tokenInfo.CompanyId);
+
+                Contracts.Presupuesto.DatoFijo P30Instance = DataAccess.LeerPresupuesto.Presupuesto(1, presupuesto, 0, 0, 0, null, true);
+                Contracts.Cotizacion.SaldoDeudor resultInfo2 = Cotizacion.SaldoDeudorConvert.FromTron_Full(P30Instance);
+
+                Utilities.Cache.SetItem(key, Newtonsoft.Json.JsonConvert.SerializeObject(resultInfo2), -1);
+            }
 
             if (Utilities.Cache.Exist(key))
             {

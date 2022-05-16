@@ -332,7 +332,7 @@ namespace Architect.API.Tron.Business.Reglas
             return terceros;
         }
 
-        private static string tip_benef_lookup(int tip_benef)
+        internal static string tip_benef_lookup(int tip_benef)
         {
             string type = string.Empty;
 
