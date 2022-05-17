@@ -911,6 +911,7 @@ app.EmisionViajero = (function () {
 
     function terceros_table_Validations() {
         app.ui.DateValidators();
+        app.ui.NumericValidators();
         $("#tercerosEdtForm").validate({
             errorPlacement: app.ui.ErrorPlacement,
             rules: {
@@ -932,7 +933,7 @@ app.EmisionViajero = (function () {
                 otrasenas: { required: true },
                 vencimientodecesion: { required: true },
                 parentesco: { required: true },
-                porcentaje: { required: true },
+                porcentaje: { required: true, Numeric: true },
             },
             messages: {
                 tipodetercero: { required: 'Debe indicar el tipo de tercero' },
@@ -953,7 +954,7 @@ app.EmisionViajero = (function () {
                 otrasenas: { required: 'Debe indicar las otra señas' },
                 vencimientodecesion: { required: 'Debe indicar el vencimiento de cesión' },
                 parentesco: { required: 'Debe indicar el parentesco' },
-                porcentaje: { required: 'Debe indicar el porcentaje' },
+                porcentaje: { required: 'Debe indicar el porcentaje', Numeric: 'Debe indicar el porcentaje' },
             }
         });
     }
@@ -991,7 +992,7 @@ app.EmisionViajero = (function () {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
-            maximumValue: '999',
+            maximumValue: '100',
             minimumValue: '0',
             decimalPlaces: '0',
             emptyInputBehavior: 'null'
@@ -1544,7 +1545,7 @@ app.EmisionViajero = (function () {
 
 window.tercerosTbl_Events = {
     'click .delete': function (e, value, row, index) {
-        toastr.warning("Si está seguro de querer eliminar el tercero '" + row.nombre + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionMapfreMas.tercerosDeleteRow(row); } });
+        toastr.warning("Si está seguro de querer eliminar el tercero '" + row.nombre + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionViajero.tercerosDeleteRow(row); } });
         e.stopPropagation();
     },
     'click .edit': function (e, value, row, index) {
@@ -1554,7 +1555,7 @@ window.tercerosTbl_Events = {
 };
 window.documentosrequeridosTbl_Events = {
     'click .delete': function (e, value, row, index) {
-        toastr.warning("Si está seguro de querer limpiar el documento requerido '" + row.DNombre + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionMapfreMas.documentosrequeridosDeleteRow(row); } });
+        toastr.warning("Si está seguro de querer limpiar el documento requerido '" + row.DNombre + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionViajero.documentosrequeridosDeleteRow(row); } });
         e.stopPropagation();
     },
     'click .edit': function (e, value, row, index) {

@@ -116,6 +116,7 @@ namespace Architect.API.Tron.Business.Emision
                     datosFijos.Terceros.Add(TerceroPresupuesto(datosFijos, item, item.tipodetercero));
                     if (beneficiario != null)
                     {
+                        beneficiario.numeroderiesgo = item.numeroderiesgo;
                         datosFijos.Terceros.Add(TerceroPresupuesto(datosFijos, beneficiario, 6));
                     }                    
                 }
