@@ -557,8 +557,8 @@ app.CotizacionSaldoDeudor = (function () {
                     formatter: 'app.ui.DecimalFormatter',
                     visible: true
                 }, {
-                    field: 'decucible',
-                    title: 'Decucible',
+                    field: 'deducible',
+                    title: 'Deducible',
                     titleTooltip: '',
                     sortable: false,
                     halign: 'center',

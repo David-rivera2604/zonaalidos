@@ -39,10 +39,10 @@
           "archivo": "CEDULA.docx",
           "requerido": true
         },
-        
+
         {
-          "descripcion": "Solicitud de seguro firmada",
-          "archivo": "SOLICITUD.pdf",
+          "descripcion": "Comprobante de pago",
+          "archivo": "Comprobante.pdf",
           "requerido": true
         }
       ]
@@ -55,13 +55,19 @@
           "archivo": "CEDULA.docx",
           "requerido": true
         },
-        
+
         {
-          "descripcion": "Solicitud de seguro firmada",
-          "archivo": "SOLICITUD.pdf",
+          "descripcion": "Comprobante de pago",
+          "archivo": "Comprobante.pdf",
           "requerido": true
         }
       ]
+    }
+  ],
+  "Coberturas": [
+    {
+      "Condicion": "{Siempre}",
+      "Exclusion": "9998"
     }
   ]
 }

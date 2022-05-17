@@ -70,8 +70,11 @@ namespace aliados
             }
 
             //Monitor de transacciones de pago pendientes
-            //RecurringJob.AddOrUpdate(() => Architect.Payment.Integrations.Payment.Monitor(), Cron.Daily(5));
-            BackgroundJob.Enqueue(() => Architect.Payment.Integrations.Payment.Monitor());
+            if (Architect.Utilities.Helpers.Settings.IntegerValue("Payment.Placetopay.Sonda.ExecutionTime") > 0)
+            {
+                int sondaHour = Architect.Utilities.Helpers.Settings.IntegerValue("Payment.Placetopay.Sonda.ExecutionTime");
+                RecurringJob.AddOrUpdate(() => Architect.Payment.Integrations.Payment.Monitor(), Cron.Daily(sondaHour));
+            }
 
         }
 

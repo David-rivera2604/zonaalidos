@@ -26,7 +26,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 TIP_VIAJE = "NA",
                 FEC_VIAJE = DateTime.Today,
                 DES_DESTINO = "",
-
+                cantidad_riesgos = 1
             };
 
             bool IsCoope = false;
@@ -74,7 +74,6 @@ namespace Architect.API.Tron.Business.Cotizacion
                     nombre = item.NOM_COB,
                     capital = item.SUMA_ASEG,
                     primatotal = item.IMP_TOTAL
-
                 });
             }
             return coberturas;
@@ -94,7 +93,9 @@ namespace Architect.API.Tron.Business.Cotizacion
 
                 result = Backoffice.Cotizacion.Generico.Calcular(result);
 
-                resultInfo = LookupComplements((Contracts.Cotizacion.Viajero)Util.FromTron_CoberturasResult(quoteInfo, result, 1), tokenInfo);
+                resultInfo = LookupComplements((Contracts.Cotizacion.Viajero)Util.FromTron_CoberturasResult(quoteInfo, result, 1, true), tokenInfo);
+
+                resultInfo.coberturas.Remove(resultInfo.coberturas.Find(r => r.codigo == 9998));
 
                 Utilities.Cache.SetItem(
                     string.Format("viajero.{0}", quoteInfo.presupuesto),

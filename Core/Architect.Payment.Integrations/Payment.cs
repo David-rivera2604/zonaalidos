@@ -261,12 +261,10 @@ namespace Architect.Payment.Integrations
             return result;
         }
 
-
-
-
         private static async Task Verify(OnlinePayment currentRecord)
-        {
+        {            
             Providers.Placetopay.Contracts.InformationRequest result = await Providers.Placetopay.Webcheckout.GetRequestInformation(currentRecord.RequestID, currentRecord.Currency);
+            Utilities.Log.WarningLog("Payment.Verify", string.Format("requestId={0}, currency={1}, currentStatus={2}, newStatus={3}", currentRecord.RequestID, currentRecord.Currency, currentRecord.ProviderStatus, result.status.status), "payment");
             if (result.status.status != currentRecord.ProviderStatus)
             {
                 UpdateStatus(currentRecord.UpdateUserCode, currentRecord, result);

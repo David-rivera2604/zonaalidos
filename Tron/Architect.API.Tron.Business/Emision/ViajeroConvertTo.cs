@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using Architect.Utilities.Extensions;
 
 namespace Architect.API.Tron.Business.Emision
@@ -101,12 +102,22 @@ namespace Architect.API.Tron.Business.Emision
             datosFijos.Terceros = new List<Architect.API.Tron.Contracts.Presupuesto.Tercero>();
             datosFijos.DetalleDeTerceros = new List<Architect.API.Tron.Contracts.Presupuesto.DetalleDeTercero>();
 
+            Contracts.Comun.tercero beneficiario = quoteInfo.terceros.Where(c=> c.tipodetercero== 6 && c.elbeneficiarioeselmismotodoslosriesgos==1).FirstOrDefault();
+            if (beneficiario != null)
+            {
+                quoteInfo.terceros.Remove(beneficiario);
+            }
+
             foreach (Contracts.Comun.tercero item in quoteInfo.terceros)
             {
                 if (item.tipodetercero != 0)
                 {
                 
                     datosFijos.Terceros.Add(TerceroPresupuesto(datosFijos, item, item.tipodetercero));
+                    if (beneficiario != null)
+                    {
+                        datosFijos.Terceros.Add(TerceroPresupuesto(datosFijos, beneficiario, 6));
+                    }                    
                 }
                 else
                 {

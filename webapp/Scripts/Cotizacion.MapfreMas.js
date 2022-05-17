@@ -650,7 +650,7 @@ app.CotizacionMapfreMas = (function () {
                     formatter: 'app.ui.DecimalWithZeroFormatter',
                     visible: true
                 }, {
-                    field: 'decucible',
+                    field: 'deducible',
                     title: 'Deducible',
                     titleTooltip: '',
                     sortable: false,
@@ -857,7 +857,7 @@ app.CotizacionMapfreMas = (function () {
             for (var i = 0; i < coberturasLocal.length; i++) {
                 coberturasLocal[i].capital = 0;
                 coberturasLocal[i].primatotal = 0;
-                coberturasLocal[i].decucible = '';
+                coberturasLocal[i].deducible = '';
                 coberturasLocal[i].error = '';
             }
             $('#coberturasTbl').bootstrapTable('load', coberturasLocal);

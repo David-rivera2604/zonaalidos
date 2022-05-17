@@ -465,7 +465,7 @@ app.HogarTotal = (function () {
                     formatter: 'app.ui.DecimalWithZeroFormatter',
                     visible: true
                 }, {
-                    field: 'decucible',
+                    field: 'deducible',
                     title: 'Deducible',
                     titleTooltip: '',
                     sortable: false,
@@ -579,7 +579,7 @@ app.HogarTotal = (function () {
             for (var i = 0; i < coberturas.length; i++) {
                 coberturas[i].capital = 0;
                 coberturas[i].primatotal = 0;
-                coberturas[i].decucible = '';
+                coberturas[i].deducible = '';
                 coberturas[i].error = '';
             }
             $('#coberturasTbl').bootstrapTable('load', coberturas);

@@ -141,7 +141,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                     nombre = item.NOM_COB,
                     capital = item.SUMA_ASEG,
                     primatotal = item.IMP_TOTAL,
-                    decucible = item.NOM_FRANQUICIA,
+                    deducible = item.NOM_FRANQUICIA,
                     error = item.TXT_ERROR
                 };
                 if (coberturaGrupo.IsNotEmpty())

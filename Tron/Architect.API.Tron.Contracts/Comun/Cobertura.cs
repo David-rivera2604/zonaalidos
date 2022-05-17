@@ -5,6 +5,9 @@ using System.Runtime.Serialization;
 
 namespace Architect.API.Tron.Contracts.Comun
 {
+    /// <summary>
+    /// Detalle de una cobertura.
+    /// </summary>
     public class Cobertura
     {
 
@@ -17,7 +20,11 @@ namespace Architect.API.Tron.Contracts.Comun
         /// </summary>
         [DataMember(), JsonProperty()] public bool requerida { get; set; }
         /// <summary>
-        /// Código.
+        /// Número de riesgo.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int riesgo { get; set; }
+        /// <summary>
+        /// Código de cobertura.
         /// </summary>
         [DataMember(), JsonProperty()] public int codigo { get; set; }
         /// <summary>
@@ -35,7 +42,7 @@ namespace Architect.API.Tron.Contracts.Comun
         /// <summary>
         /// Deducible.
         /// </summary>
-        [DataMember(), JsonProperty()] public string decucible { get; set; }
+        [DataMember(), JsonProperty()] public string deducible { get; set; }
         /// <summary>
         /// Error.
         /// </summary>

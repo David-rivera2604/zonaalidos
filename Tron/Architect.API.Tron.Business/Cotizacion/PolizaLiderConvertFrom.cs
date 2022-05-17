@@ -146,7 +146,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                             itemQuote.nombre = item.nom_cob;
                             itemQuote.capital = item.suma_aseg;
                             itemQuote.primatotal = item.imp_total;
-                            itemQuote.decucible = item.nom_franquicia;
+                            itemQuote.deducible = item.nom_franquicia;
                             itemQuote.error = item.txt_error;
                             if (quoteInfo.presupuesto.IsEmpty())
                             {
@@ -158,7 +158,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                         {
                             itemQuote.capital = 0;
                             itemQuote.primatotal = 0;
-                            itemQuote.decucible = string.Empty;
+                            itemQuote.deducible = string.Empty;
                             itemQuote.error = string.Empty;
                         }
                     }
