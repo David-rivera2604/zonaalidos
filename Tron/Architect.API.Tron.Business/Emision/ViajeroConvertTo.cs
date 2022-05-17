@@ -81,7 +81,7 @@ namespace Architect.API.Tron.Business.Emision
                 cod_nivel3_captura = 0,
                 fec_actu = DateTime.MinValue,
                 cod_dst_agt = 0,
-                num_spto_publico = 0,                
+                num_spto_publico = 0,
                 fec_tratamiento = DateTime.MinValue,
                 num_orden = 0
             };
@@ -94,7 +94,7 @@ namespace Architect.API.Tron.Business.Emision
             List<Architect.API.Tron.Contracts.Presupuesto.DatoVariable> datosVariables = new List<Architect.API.Tron.Contracts.Presupuesto.DatoVariable>();
 
             //datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "OTRA_SENAS_RGO1", quoteInfo.otrassenas, 2, 5));
-         
+
             return datosVariables;
         }
         internal static List<Architect.API.Tron.Contracts.Presupuesto.Tercero> Terceros(Contracts.Emision.Viajero quoteInfo, Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos)
@@ -102,7 +102,7 @@ namespace Architect.API.Tron.Business.Emision
             datosFijos.Terceros = new List<Architect.API.Tron.Contracts.Presupuesto.Tercero>();
             datosFijos.DetalleDeTerceros = new List<Architect.API.Tron.Contracts.Presupuesto.DetalleDeTercero>();
 
-            Contracts.Comun.tercero beneficiario = quoteInfo.terceros.Where(c=> c.tipodetercero== 6 && c.elbeneficiarioeselmismotodoslosriesgos==1).FirstOrDefault();
+            Contracts.Comun.tercero beneficiario = quoteInfo.terceros.Where(c => c.tipodetercero == 6 && c.elbeneficiarioeselmismotodoslosriesgos == 1).FirstOrDefault();
             if (beneficiario != null)
             {
                 quoteInfo.terceros.Remove(beneficiario);
@@ -112,13 +112,13 @@ namespace Architect.API.Tron.Business.Emision
             {
                 if (item.tipodetercero != 0)
                 {
-                
+
                     datosFijos.Terceros.Add(TerceroPresupuesto(datosFijos, item, item.tipodetercero));
-                    if (beneficiario != null)
+                    if (beneficiario != null && item.tipodetercero == 2)
                     {
                         beneficiario.numeroderiesgo = item.numeroderiesgo;
                         datosFijos.Terceros.Add(TerceroPresupuesto(datosFijos, beneficiario, 6));
-                    }                    
+                    }
                 }
                 else
                 {
@@ -187,7 +187,7 @@ namespace Architect.API.Tron.Business.Emision
                 fec_tratamiento = DateTime.Today,
                 tip_mvto_batch = "3",
                 tip_docum = Util.IdentificationTypeConvert(item.DocumentNumberType),
-                cod_docum = Util.IdentificationFormat(item.DocumentNumberType,item.DocumentNumber),
+                cod_docum = Util.IdentificationFormat(item.DocumentNumberType, item.DocumentNumber),
                 nom_tercero = item.nombre,
                 ape1_tercero = item.apellido1,
                 ape2_tercero = item.apellido2,
