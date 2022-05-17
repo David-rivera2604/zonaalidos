@@ -582,6 +582,26 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <!-- elaseguradoeselmismotomador RadioButtonList -->
+                                        <div class='col-sm-4 col-md-4 d-none'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='elaseguradoeselmismotomador'>
+                                                    El asegurado es el mismo tomador
+                                                </label>
+                                                <div style="padding-top: 6px;">
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" class="custom-control-input" id="elaseguradoeselmismotomador_1"
+                                                               name="elaseguradoeselmismotomador" value="1">
+                                                        <label class="custom-control-label" for="elaseguradoeselmismotomador_1">Si</label>
+                                                    </div>
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" class="custom-control-input" id="elaseguradoeselmismotomador_2"
+                                                               name="elaseguradoeselmismotomador" value="2">
+                                                        <label class="custom-control-label" for="elaseguradoeselmismotomador_2">No</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <!-- elbeneficiarioeselmismotodoslosriesgos RadioButtonList -->
                                         <div class='col-sm-4 col-md-4 d-none'>
                                             <div class='form-group'>
@@ -706,12 +726,20 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="tercerosEdtFormSave" data-doing="Guardando...">
-                    Guardar
-                    cambios
-                </button>
-                <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+            <div class="modal-footer" style="justify-content: space-between;">
+                <div>
+                    <div class="custom-control custom-checkbox" title="Si está marcado permite usar la dirección actual, como la dirección base para otros terceros.">
+                        <input type="checkbox" class="custom-control-input" id="reutilizarestadireccion">
+                        <label class="custom-control-label control-label" for="reutilizarestadireccion" style="padding-top: 4px;">Reutilizar la dirección</label>
+                    </div>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-primary" id="tercerosEdtFormSave" data-doing="Guardando...">
+                        Guardar
+                        cambios
+                    </button>
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                </div>
             </div>
         </div>
     </div>

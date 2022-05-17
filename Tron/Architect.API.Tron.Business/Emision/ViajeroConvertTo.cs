@@ -130,6 +130,17 @@ namespace Architect.API.Tron.Business.Emision
 
                 datosFijos.DetalleDeTerceros.Add(CambioTerceroPresupuesto(datosFijos, item));
             }
+
+            //En caso de existir un asegurado con el indicador de tomador
+            Contracts.Comun.tercero aseguradoTomador = quoteInfo.terceros.Where(c => c.tipodetercero == 2 && c.elaseguradoeselmismotomador == 1).FirstOrDefault();
+            if (aseguradoTomador != null)
+            {
+                aseguradoTomador.tipodetercero = 0;
+                datosFijos.DetalleDeTerceros.Add(CambioTerceroPresupuesto(datosFijos, aseguradoTomador));
+                aseguradoTomador.tipodetercero = 2;
+            }
+
+
             return datosFijos.Terceros;
         }
         internal static Architect.API.Tron.Contracts.Presupuesto.Tercero TerceroPresupuesto(Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos, Contracts.Comun.tercero item, int tipodetercero)

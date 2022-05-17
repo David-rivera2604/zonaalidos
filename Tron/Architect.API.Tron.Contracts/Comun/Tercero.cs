@@ -91,6 +91,10 @@ namespace Architect.API.Tron.Contracts.Comun
         /// </summary>
         [DataMember(), JsonProperty()] public int eltomadoreselmismoasegurado { get; set; } = 2;
         /// <summary>
+        /// El asegurado es el mismo tomador.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int elaseguradoeselmismotomador { get; set; } = 2;
+        /// <summary>
         /// El asegurado es el conductor habitual.
         /// </summary>
         [DataMember(), JsonProperty()] public int elaseguradoeselconductorhabitual { get; set; } = 2;
@@ -130,6 +134,11 @@ namespace Architect.API.Tron.Contracts.Comun
         /// El beneficiario es el mismo para todos los riesgos
         /// </summary>
         [DataMember(), JsonProperty()] public int elbeneficiarioeselmismotodoslosriesgos { get; set; } = 2;
+
+        /// <summary>
+        /// Indica que la dirección actual sera usada por la dirección por default.
+        /// </summary>
+        [DataMember(), JsonProperty()] public bool reutilizarestadireccion { get; set; }
     }
 
 }
