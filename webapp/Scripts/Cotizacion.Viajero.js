@@ -341,23 +341,40 @@ app.CotizacionViajero = (function () {
                 TIP_VIAJE: { required: true },
                 FEC_VIAJE: { required: true },
                 DES_DESTINO: { required: true },
-                FEC_NACIMIENTO: { required: true },
                 COD_MODALIDAD: { required: true },
                 cantidad_riesgos: { required: true, Numeric: true },
-                
+                FEC_NACIMIENTO: { required: true },
+                FEC_NACIMIENTO2: { required: true },
+                FEC_NACIMIENTO3: { required: true },
+                FEC_NACIMIENTO4: { required: true },
+                FEC_NACIMIENTO5: { required: true },
+                FEC_NACIMIENTO6: { required: true },
+                FEC_NACIMIENTO7: { required: true },
+                FEC_NACIMIENTO8: { required: true },
+                FEC_NACIMIENTO9: { required: true },
+                FEC_NACIMIENTO10: { required: true }
             },
             messages: {
-                cod_mon: { required: 'Debe indicar el Moneda' },
-                cod_fracc_pago: { required: 'Debe indicar el Fraccionamiento de pago' },
-                fec_efec_poliza: { required: 'Debe indicar el Inicio de vigencia' },
-                fec_vcto_poliza: { required: 'Debe indicar el Fin de vigencia' },
-                TIP_PLAN: { required: 'Debe indicar el Plan' },
-                TIP_VIAJE: { required: 'Debe indicar el Tipo de viaje' },
-                FEC_VIAJE: { required: 'Debe indicar el Fecha de inicio del viaje' },
-                DES_DESTINO: { required: 'Debe indicar el Lugar de destino' },
-                FEC_NACIMIENTO: { required: 'Debe indicar la Fecha de nacimiento' },
-                COD_MODALIDAD: { required: 'Debe indicar el Modalidad' },
+                cod_mon: { required: 'Debe indicar la moneda' },
+                cod_fracc_pago: { required: 'Debe indicar el fraccionamiento de pago' },
+                fec_efec_poliza: { required: 'Debe indicar el inicio de vigencia' },
+                fec_vcto_poliza: { required: 'Debe indicar el fin de vigencia' },
+                TIP_PLAN: { required: 'Debe indicar el plan' },
+                TIP_VIAJE: { required: 'Debe indicar el tipo de viaje' },
+                FEC_VIAJE: { required: 'Debe indicar el fecha de inicio del viaje' },
+                DES_DESTINO: { required: 'Debe indicar el lugar de destino' },
+                COD_MODALIDAD: { required: 'Debe indicar la modalidad' },
                 cantidad_riesgos: { required: 'Debe indicar la cantidad de riesgos', Numeric: 'Debe indicar la cantidad de riesgos' },
+                FEC_NACIMIENTO: { required: 'Debe indicar la fecha de nacimiento - Riesgo 1' },
+                FEC_NACIMIENTO2: { required: 'Debe indicar la fecha de nacimiento - Riesgo 2' },
+                FEC_NACIMIENTO3: { required: 'Debe indicar la fecha de nacimiento - Riesgo 3' },
+                FEC_NACIMIENTO4: { required: 'Debe indicar la fecha de nacimiento - Riesgo 4' },
+                FEC_NACIMIENTO5: { required: 'Debe indicar la fecha de nacimiento - Riesgo 5' },
+                FEC_NACIMIENTO6: { required: 'Debe indicar la fecha de nacimiento - Riesgo 6' },
+                FEC_NACIMIENTO7: { required: 'Debe indicar la fecha de nacimiento - Riesgo 7' },
+                FEC_NACIMIENTO8: { required: 'Debe indicar la fecha de nacimiento - Riesgo 8' },
+                FEC_NACIMIENTO9: { required: 'Debe indicar la fecha de nacimiento - Riesgo 9' },
+                FEC_NACIMIENTO10: { required: 'Debe indicar la fecha de nacimiento - Riesgo 10' }
             }
         });
     };
@@ -543,5 +560,3 @@ app.CotizacionViajero = (function () {
         }
     };
 })();
-
-
