@@ -225,6 +225,7 @@ app.EmisionMapfreMas = (function () {
                 app.ui.LookupLoad('DED_AUTO_RAD', settingData.DED_AUTO_RAD);
                 app.ui.LookupLoad('DED_AUTO_ROB', settingData.DED_AUTO_ROB);
                 app.ui.LookupLoad('DED_AUTO_EQESP', settingData.DED_AUTO_EQESP);
+                app.ui.LookupLoad('DED_AUTO_CRI', settingData.DED_AUTO_CRI);
 
                 if (callback !== undefined && callback !== null) {
                     callback();
