@@ -589,7 +589,7 @@
             </Item3>
             <Item4 Ref="298" ControlType="XRLabel" Name="label10" Multiline="true" Text="label1" SizeF="151.816711,18" LocationFloat="534.8477,0.9999749" Padding="2,2,0,0,100">
               <ExpressionBindings>
-                <Item1 Ref="299" EventName="BeforePrint" PropertyName="Text" Expression="[decucible]" />
+                <Item1 Ref="299" EventName="BeforePrint" PropertyName="Text" Expression="[deducible]" />
               </ExpressionBindings>
             </Item4>
           </Controls>

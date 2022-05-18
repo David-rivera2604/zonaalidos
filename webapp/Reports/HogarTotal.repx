@@ -426,7 +426,7 @@
             </Item3>
             <Item4 Ref="205" ControlType="XRLabel" Name="label1" Multiline="true" Text="label1" TextAlignment="TopCenter" SizeF="151.816711,18" LocationFloat="534.8477,0" Padding="2,2,0,0,100">
               <ExpressionBindings>
-                <Item1 Ref="206" EventName="BeforePrint" PropertyName="Text" Expression="[decucible]" />
+                <Item1 Ref="206" EventName="BeforePrint" PropertyName="Text" Expression="[deducible]" />
               </ExpressionBindings>
               <StylePriority Ref="207" UseTextAlignment="false" />
             </Item4>
