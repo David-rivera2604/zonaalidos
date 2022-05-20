@@ -779,10 +779,10 @@ app.ui = (function () {
             }
             $('#sidebarTitle').html('');
             if (typeof options.title != "undefined") {
-                $('#sidebarTitle').append('<h3>' + options.title + '</h3>');
+                $('#sidebarTitle').append('<h3>' + options.title.supplant(options.data) + '</h3>');
             }
             if (typeof options.subtitle != "undefined") {
-                $('#sidebarTitle').append('<small>' + options.subtitle + '</small>');
+                $('#sidebarTitle').append('<small>' + options.subtitle.supplant(options.data) + '</small>');
             }
             $('.sidebar-content').toggleClass('sk-loading');
             if (options.class === '') {
@@ -802,6 +802,7 @@ app.ui = (function () {
                         html = app.core.ReplaceAll(html, '@_eq', '=');
                         html = app.core.ReplaceAll(html, '@_qt', '\'');
                         html = app.core.ReplaceAll(html, '@_sc', ';');
+                        //html = html.replace(/@_/g, '\'');
                         $('.sidebar-content').replaceWith(html.replace('ibox-content', 'ibox-content sidebar-content'));
                         eval(data.Code);
                     });

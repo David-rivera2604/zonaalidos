@@ -58,14 +58,17 @@
     <Reference Include="Microsoft.CodeAnalysis.Scripting, Version=4.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.CodeAnalysis.Scripting.Common.4.2.0\lib\netstandard2.0\Microsoft.CodeAnalysis.Scripting.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=6.17.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.IdentityModel.JsonWebTokens.6.17.0\lib\net472\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
+    <Reference Include="Microsoft.IdentityModel.Abstractions, Version=6.18.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.IdentityModel.Abstractions.6.18.0\lib\net472\Microsoft.IdentityModel.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IdentityModel.Logging, Version=6.17.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.IdentityModel.Logging.6.17.0\lib\net472\Microsoft.IdentityModel.Logging.dll</HintPath>
+    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=6.18.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.IdentityModel.JsonWebTokens.6.18.0\lib\net472\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IdentityModel.Tokens, Version=6.17.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.IdentityModel.Tokens.6.17.0\lib\net472\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=6.18.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.IdentityModel.Logging.6.18.0\lib\net472\Microsoft.IdentityModel.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=6.18.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.IdentityModel.Tokens.6.18.0\lib\net472\Microsoft.IdentityModel.Tokens.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -77,25 +80,25 @@
       <HintPath>..\..\packages\Scriban.5.4.4\lib\netstandard2.0\Scriban.dll</HintPath>
     </Reference>
     <Reference Include="SmartFormat, Version=3.0.0.0, Culture=neutral, PublicKeyToken=568866805651201f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SmartFormat.3.0.0\lib\net461\SmartFormat.dll</HintPath>
+      <HintPath>..\..\packages\SmartFormat.3.1.0\lib\net461\SmartFormat.dll</HintPath>
     </Reference>
     <Reference Include="SmartFormat.Extensions.Newtonsoft.Json, Version=3.0.0.0, Culture=neutral, PublicKeyToken=568866805651201f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SmartFormat.Extensions.Newtonsoft.Json.3.0.0\lib\net461\SmartFormat.Extensions.Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\SmartFormat.Extensions.Newtonsoft.Json.3.1.0\lib\net461\SmartFormat.Extensions.Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SmartFormat.Extensions.System.Text.Json, Version=3.0.0.0, Culture=neutral, PublicKeyToken=568866805651201f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SmartFormat.Extensions.System.Text.Json.3.0.0\lib\net461\SmartFormat.Extensions.System.Text.Json.dll</HintPath>
+      <HintPath>..\..\packages\SmartFormat.Extensions.System.Text.Json.3.1.0\lib\net461\SmartFormat.Extensions.System.Text.Json.dll</HintPath>
     </Reference>
     <Reference Include="SmartFormat.Extensions.Time, Version=3.0.0.0, Culture=neutral, PublicKeyToken=568866805651201f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SmartFormat.Extensions.Time.3.0.0\lib\net461\SmartFormat.Extensions.Time.dll</HintPath>
+      <HintPath>..\..\packages\SmartFormat.Extensions.Time.3.1.0\lib\net461\SmartFormat.Extensions.Time.dll</HintPath>
     </Reference>
     <Reference Include="SmartFormat.Extensions.Xml, Version=3.0.0.0, Culture=neutral, PublicKeyToken=568866805651201f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SmartFormat.Extensions.Xml.3.0.0\lib\net461\SmartFormat.Extensions.Xml.dll</HintPath>
+      <HintPath>..\..\packages\SmartFormat.Extensions.Xml.3.1.0\lib\net461\SmartFormat.Extensions.Xml.dll</HintPath>
     </Reference>
     <Reference Include="SmartFormat.Net, Version=3.0.0.0, Culture=neutral, PublicKeyToken=568866805651201f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SmartFormat.NET.3.0.0\lib\net461\SmartFormat.Net.dll</HintPath>
+      <HintPath>..\..\packages\SmartFormat.NET.3.1.0\lib\net461\SmartFormat.Net.dll</HintPath>
     </Reference>
     <Reference Include="SmartFormat.ZString, Version=3.0.0.0, Culture=neutral, PublicKeyToken=568866805651201f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SmartFormat.3.0.0\lib\net461\SmartFormat.ZString.dll</HintPath>
+      <HintPath>..\..\packages\SmartFormat.3.1.0\lib\net461\SmartFormat.ZString.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -107,8 +110,8 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel" />
-    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=6.17.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.IdentityModel.Tokens.Jwt.6.17.0\lib\net472\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=6.18.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IdentityModel.Tokens.Jwt.6.18.0\lib\net472\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>

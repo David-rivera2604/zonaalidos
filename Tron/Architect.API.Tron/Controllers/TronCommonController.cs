@@ -59,24 +59,18 @@ namespace Architect.API.Tron.Controllers
             return Ok(result);
         }
 
-        //[Route("EnviarCertificado/{num_poliza}/{correoprincipal}/{correocopia1}/{correocopia2}")]
         /// <summary>
         /// Permite el envió de un certificado por correo
         /// </summary>
-        /// <param name="num_poliza"></param>
-        /// <param name="correoprincipal"></param>
-        /// <param name="correocopia1"></param>
-        /// <param name="correocopia2"></param>
-        /// <returns></returns>
         [HttpGet]
         [Route("EnviarCertificado")]
-        public async Task<IHttpActionResult> EnviarCertificado([FromUri] string num_poliza, [FromUri] string correoprincipal, [FromUri] string correocopia1, [FromUri] string correocopia2)
+        public async Task<IHttpActionResult> EnviarCertificado([FromUri] string num_poliza, [FromUri] int num_riesgo, [FromUri] string correoprincipal, [FromUri] string correocopia1, [FromUri] string correocopia2)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
-            string result = "";
+            string result = string.Empty;
             await Task.Run(() =>
             {
-                result = Architect.API.Tron.Business.Backoffice.Common.EnviarCertificado(num_poliza, correoprincipal, correocopia1, correocopia2, tokenInfo);
+                result = Business.Backoffice.Common.EnviarCertificado(num_poliza, num_riesgo, correoprincipal, correocopia1, correocopia2, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -95,13 +89,16 @@ namespace Architect.API.Tron.Controllers
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
 
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
-            var dataStream = new MemoryStream(Architect.API.Tron.Business.Backoffice.Common.ImprimirPoliza(num_poliza, num_riesgo));
+            var dataStream = new MemoryStream(Business.Backoffice.Common.ImprimirPoliza(num_poliza, num_riesgo));
             result.Content = new StreamContent(dataStream);
-            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline");
-            result.Content.Headers.ContentDisposition.FileName = "Mapfre Certificado.pdf";
+            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline")
+            {
+                FileName = "Mapfre Certificado.pdf"
+            };
             result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
             result.Content.Headers.ContentLength = dataStream.Length;
             return result;
         }
+
     }
 }

@@ -21,12 +21,12 @@ app.Cotizacion = (function () {
                     window.open(blobUrl);
                 });
         },
-        EnviarCertificado: function (num_poliza, correoprincipal, correocopia1, correocopia2) {
+        EnviarCertificado: function (num_poliza, num_riesgo, correoprincipal, correocopia1, correocopia2) {
             if (typeof correoprincipal == "undefined" || correoprincipal == '') {
                 toastr.error('Debe indicar al menos el correo principal', '', { timeOut: 7000, closeButton: true, progressBar: true });
             }
             else
-                app.core.Get(app.setting.apipath + `v1/TronCommon/EnviarCertificado?num_poliza=${num_poliza}&correoprincipal=${correoprincipal}&correocopia1=${correocopia1}&correocopia2=${correocopia2}`)
+                app.core.Get(app.setting.apipath + `v1/TronCommon/EnviarCertificado?num_poliza=${num_poliza}&num_riesgo=${num_riesgo}&correoprincipal=${correoprincipal}&correocopia1=${correocopia1}&correocopia2=${correocopia2}`)
                     .done(function (data, textStatus, jqXHR) {
                         if (data == null || data === '') {
                             toastr.error('Ha ocurrido un error intentando enviar el certificado por correo', '', { timeOut: 7000, closeButton: true, progressBar: true });
