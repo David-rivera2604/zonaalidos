@@ -25,6 +25,7 @@ namespace Architect.API.Core.Business.Security
             result.CompanyId = companyId;
             result.UpdateUserCode = userId;
             result.UpdateDate = DateTime.Now;
+            result.PasswordChangedDate = DateTime.Today;
 
             int affectedRows = DataAccess.Security.UserMember.Create(result);
             if (affectedRows > 0)

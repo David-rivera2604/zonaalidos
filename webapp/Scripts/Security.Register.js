@@ -31,28 +31,18 @@ app.SecurityRegister = (function () {
 
     function Controls_Events() {
 
+        app.ui.DocumentNumberHandler('#identificacion',
+            function (data) {
+                if (data != null) {
+                    $('#FirstName').val(data.FirstName);
+                    $('#LastName').val(`${data.LastName} ${data.SecondLastName}`);
+                    app.ui.SetDateValue('#BirthDate', data.BirthDate);
+                    $('#EMail').val(data.PrimaryEmailAddress);
+                }
+            });
+
         $('#identificacionTypeMenu a').click(function () {
             app.ui.DocumentTypeHandler(this, '#identificacion', 'Identification');
-        });
-
-        $('#identificacion').on('blur', function () {
-            if (app.ui.IsDocumentNumberValid($('#identificacionType').data('value'), $('#identificacion').val())) {
-                var value = $('#identificacion').val().replace(/-/g, '');
-                if (value !== null && parseInt(0 + value, 10) !== 0 && parseInt(0 + value, 10) <= 999999999) {
-                    $('#identificacion').addClass('loading');
-                    app.core.Get(app.setting.apipath + 'v1/Insured/' + value)
-                        .done(function (data, textStatus, jqXHR) {
-                            if (data.FirstName !== null) {
-                                $('#FirstName').val(data.FirstName);
-                                $('#LastName').val(`${data.LastName} ${data.SecondLastName}`);
-                                app.ui.SetDateValue('#BirthDate', data.BirthDate);
-                                $('#EMail').val(data.PrimaryEmailAddress);                                
-                            }
-                        }).always(function () {
-                            $('#identificacion').removeClass('loading');
-                        });
-                }
-            }
         });
 
         $('#RegisterEdtFormSave').click(function () {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using System.Threading.Tasks;
@@ -12,6 +13,72 @@ namespace Architect.API.Tron.Business.Backoffice
     /// </summary>
     public class Pagos
     {
+
+        public static void Monitor()
+        {
+            try
+            {
+
+                List<Payment.Integrations.Contracts.OnlinePayment> pendings = Payment.Integrations.DataAccess.OnlinePayment.RetrievePendings(2);
+                if (pendings.IsNotEmpty())
+                {
+                    Task.Run(() => VerifiyOnlinePaymentPending(pendings));
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilities.Log.ErrorLog("Payment", "Monitor", ex);
+                throw ex;
+            }
+        }
+
+        private static void VerifiyOnlinePaymentPending(List<Payment.Integrations.Contracts.OnlinePayment> pendings)
+        {
+            try
+            {
+                foreach (Payment.Integrations.Contracts.OnlinePayment currentRecord in pendings)
+                {
+                    Verify(currentRecord);
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilities.Log.ErrorLog("Payment", "NewMethod", ex);
+                throw ex;
+            }
+
+        }
+
+        private static async Task Verify(Payment.Integrations.Contracts.OnlinePayment currentRecord)
+        {
+            Payment.Integrations.Providers.Placetopay.Contracts.InformationRequest result = await Payment.Integrations.Payment.VerifyUpdateStatus(currentRecord, currentRecord.UpdateUserCode, true);
+
+            // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
+            if (result.changed && result.status.status == "APPROVED")
+            {
+                bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode);
+            }
+        }
+
+        /// <summary>
+        /// Procesa y valida una notificación de pago.
+        /// </summary>
+        public async static Task Notificacion(int companyId, Payment.Integrations.Providers.Placetopay.Contracts.NotifyRequest notify)
+        {
+            Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveByRequestID(companyId, Convert.ToInt64(notify.requestId));
+            if (currentRecord != null)
+            {
+                string signature = Payment.Integrations.Providers.Placetopay.Webcheckout.NotifySignature(notify, currentRecord.Currency);
+
+                if (signature == notify.signature)
+                {
+                    await Verify(currentRecord);
+                }
+            }
+        }
+
+
+
         /// <summary>
         /// Permite la creación de un sesión para realizar un pago.
         /// </summary>

@@ -1645,10 +1645,6 @@
       <Project>{c3df159d-24f2-48f6-ab4c-1480a47626f0}</Project>
       <Name>Architect.API.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Core\Architect.Payment.Integrations\Architect.Payment.Integrations.csproj">
-      <Project>{4950c088-7a09-4e2b-b4de-d2381d0739c6}</Project>
-      <Name>Architect.Payment.Integrations</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InsurancePolicy\Architect.API.Insurance.Business\Architect.API.Insurance.Business.csproj">
       <Project>{09a0943e-ce17-433e-ab5b-9f6e3af78e50}</Project>
       <Name>Architect.API.Insurance.Business</Name>

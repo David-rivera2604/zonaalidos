@@ -22,7 +22,7 @@ namespace Architect.API.Tron.Contracts.Comun
         /// <summary>
         /// Número de riesgo.
         /// </summary>
-        [DataMember(), JsonProperty()] public int riesgo { get; set; }
+        [DataMember(), JsonProperty()] public int riesgo { get; set; } = 1;
         /// <summary>
         /// Código de cobertura.
         /// </summary>

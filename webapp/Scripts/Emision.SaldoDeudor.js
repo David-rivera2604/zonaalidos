@@ -3,16 +3,18 @@
 app.EmisionSaldoDeudor = (function () {
 
     let setupData = null;
+    let workMode = '';
     let changedCallback = null;
     let CapitalCtrls = [];
 
     function Setup() {
-        var _id = app.core.URLStringValue('presupuesto');
+        let _id = app.core.URLStringValue('presupuesto');
         if (_id != '') {
-            app.core.Get(app.setting.apipath + 'v1/Issue/SaldoDeudorSetup/' + _id, null,
+            workMode = app.core.URLStringValue('mode');
+            app.core.Get(app.setting.apipath + 'v1/Issue/SaldoDeudorSetup/' + _id + '?mode=' + workMode, null,
                 function (data) {
                     setupData = data;
-                    app.core.Lookups(['MonedasPorRamo.cod_mon', 'FrecuenciaDePagoPorRamo.cod_fracc_pago', 'TRON_G2990004.COD_MODALIDAD_RIESGO', 'TRON_G2990006:COD_CIA_ORI.COD_CIA_ORI', 'TRON_G2990006:TIP_NEGOCIO.TIP_NEGOCIO', 'TRON_G7000210.COD_ENF_EXC', 'TRON_G1010031:COD_TIP_EXC.COD_TIP_EXC',],
+                    app.core.Lookups(['MonedasPorRamo.cod_mon', 'FrecuenciaDePagoPorRamo.cod_fracc_pago', 'TRON_G2990004.COD_MODALIDAD_RIESGO', 'TRON_G2990006:COD_CIA_ORI.COD_CIA_ORI', 'TRON_G2990006:TIP_NEGOCIO.TIP_NEGOCIO', 'TRON_G7000210.COD_ENF_EXC', 'TRON_G1010031:COD_TIP_EXC.COD_TIP_EXC'],
                         function () {
                             setupData = data;
                             MapObjectToInput(data);
@@ -1121,7 +1123,7 @@ app.EmisionSaldoDeudor = (function () {
                 porcentajeacredor: app.ui.GetNumericValue('#porcentajeacredor'),
                 parentesco: $('#parentesco').val(),
                 parentescoDesc: $('#parentesco option:selected').text(),
-                porcentaje: app.ui.GetNumericValue('#porcentaje'),
+                //porcentaje: app.ui.GetNumericValue('#porcentaje'),
                 NoEditable: false
             };
         }
@@ -1159,7 +1161,7 @@ app.EmisionSaldoDeudor = (function () {
         app.ui.SetDateValue('#vencimientodecesion', row.vencimientodecesion);
         app.ui.SetNumericValue('#porcentajeacredor', row.porcentajeacredor);
         $('#parentesco').val(row.parentesco);
-        app.ui.SetNumericValue('#porcentaje', row.porcentaje);
+        // app.ui.SetNumericValue('#porcentaje', row.porcentaje);
 
 
         md.modal('show');
@@ -1254,15 +1256,15 @@ app.EmisionSaldoDeudor = (function () {
             decimalPlaces: '0',
             emptyInputBehavior: 'null'
         });
-        new AutoNumeric('#porcentaje', {
-            decimalCharacter: ',',
-            decimalCharacterAlternative: '.',
-            digitGroupSeparator: '.',
-            maximumValue: '999',
-            minimumValue: '0',
-            decimalPlaces: '0',
-            emptyInputBehavior: 'null'
-        });
+        //new AutoNumeric('#porcentaje', {
+        //    decimalCharacter: ',',
+        //    decimalCharacterAlternative: '.',
+        //    digitGroupSeparator: '.',
+        //    maximumValue: '999',
+        //    minimumValue: '0',
+        //    decimalPlaces: '0',
+        //    emptyInputBehavior: 'null'
+        //});
 
     }
 

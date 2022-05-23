@@ -66,6 +66,10 @@ namespace Architect.API.Tron.Business.Backoffice.Cotizacion
                         quoteInfo = DataAccess.LeerPresupuesto.Presupuesto(quoteInfo.cod_cia, g2000510Instance.num_poliza_definitivo, 0, 0, 0, currentConnection, true, "onlyresult");
                     }
                 }
+                else {
+                    Utilities.Log.WarningLog("Cotizacion.Generico.txt_error", g2000510Instance.txt_error, "tron");
+                    Utilities.Log.WarningLog("Cotizacion.Generico.txt_ruta_error", g2000510Instance.txt_ruta_error, "tron");
+                }
 
                 quoteInfo.DatosDelProceso = g2000510Instance;
 

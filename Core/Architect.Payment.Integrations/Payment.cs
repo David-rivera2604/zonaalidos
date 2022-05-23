@@ -12,41 +12,6 @@ namespace Architect.Payment.Integrations
     public static class Payment
     {
 
-        public static void Monitor()
-        {
-            try
-            {
-
-                List<Contracts.OnlinePayment> pendings = DataAccess.OnlinePayment.RetrievePendings(2);
-                if (pendings.IsNotEmpty())
-                {
-                    Task.Run(() => NewMethod(pendings));
-                }
-            }
-            catch (Exception ex)
-            {
-                Utilities.Log.ErrorLog("Payment", "Monitor", ex);
-                throw ex;
-            }
-        }
-
-        private static void NewMethod(List<OnlinePayment> pendings)
-        {
-            try
-            {
-                foreach (Contracts.OnlinePayment currentRecord in pendings)
-                {
-                    Verify(currentRecord);
-                }
-            }
-            catch (Exception ex)
-            {
-                Utilities.Log.ErrorLog("Payment", "NewMethod", ex);
-                throw ex;
-            }
-
-        }
-
         /// <summary>
         /// Permite la creación de un sesión para realizar un pago.
         /// </summary>
@@ -133,7 +98,7 @@ namespace Architect.Payment.Integrations
                 }
 
             }
-            return await XXX(currentRecord, userId, updateStatus);
+            return await VerifyUpdateStatus(currentRecord, userId, updateStatus);
         }
 
         /// <summary>
@@ -142,16 +107,19 @@ namespace Architect.Payment.Integrations
         public async static Task<Providers.Placetopay.Contracts.InformationRequest> GetRequestInformation(int companyId, int userId, Int64 requestId, bool updateStatus = false)
         {
             Contracts.OnlinePayment currentRecord = Business.OnlinePayment.RetrieveByRequestID(companyId, requestId);
-            return await XXX(currentRecord, userId, updateStatus);
+            return await VerifyUpdateStatus(currentRecord, userId, updateStatus);
         }
 
-        private async static Task<Providers.Placetopay.Contracts.InformationRequest> XXX(Contracts.OnlinePayment currentRecord, int userId, bool updateStatus)
+        public async static Task<Providers.Placetopay.Contracts.InformationRequest> VerifyUpdateStatus(Contracts.OnlinePayment currentRecord, int userId, bool updateStatus)
         {
             Providers.Placetopay.Contracts.InformationRequest result;
             if (currentRecord != null)
             {
                 result = await Providers.Placetopay.Webcheckout.GetRequestInformation(currentRecord.RequestID, currentRecord.Currency);
                 result.OnlinePayment = currentRecord;
+                Utilities.Log.WarningLog("Payment.VerifyUpdateStatus", string.Format("requestId={0}, currency={1}, currentStatus={2}, newStatus={3}", currentRecord.RequestID, currentRecord.Currency, currentRecord.ProviderStatus, result.status.status), "payment");
+
+
                 if (updateStatus && result.status.status != currentRecord.ProviderStatus)
                 {
                     result.OnlinePayment = UpdateStatus(userId, currentRecord, result);
@@ -194,22 +162,7 @@ namespace Architect.Payment.Integrations
             return currentRecord;
         }
 
-        /// <summary>
-        /// Procesa y valida una notificación de pago.
-        /// </summary>
-        public async static Task Notify(int companyId, Integrations.Providers.Placetopay.Contracts.NotifyRequest notify)
-        {
-            Contracts.OnlinePayment currentRecord = Business.OnlinePayment.RetrieveByRequestID(companyId, Convert.ToInt64(notify.requestId));
-            if (currentRecord != null)
-            {
-                string signature = Providers.Placetopay.Webcheckout.NotifySignature(notify, currentRecord.Currency);
-
-                if (signature == notify.signature)
-                {
-                    await Verify(currentRecord);
-                }
-            }
-        }
+       
 
 
         private static int IdentificationTypeConvert(string identificationType)
@@ -261,14 +214,6 @@ namespace Architect.Payment.Integrations
             return result;
         }
 
-        private static async Task Verify(OnlinePayment currentRecord)
-        {            
-            Providers.Placetopay.Contracts.InformationRequest result = await Providers.Placetopay.Webcheckout.GetRequestInformation(currentRecord.RequestID, currentRecord.Currency);
-            Utilities.Log.WarningLog("Payment.Verify", string.Format("requestId={0}, currency={1}, currentStatus={2}, newStatus={3}", currentRecord.RequestID, currentRecord.Currency, currentRecord.ProviderStatus, result.status.status), "payment");
-            if (result.status.status != currentRecord.ProviderStatus)
-            {
-                UpdateStatus(currentRecord.UpdateUserCode, currentRecord, result);
-            }
-        }
+
     }
 }

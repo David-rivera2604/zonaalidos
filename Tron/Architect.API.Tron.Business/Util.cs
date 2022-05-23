@@ -108,7 +108,7 @@ namespace Architect.API.Tron.Business
 
             List<Contracts.Presupuesto.Cobertura> coberturas = new List<Contracts.Presupuesto.Cobertura>();
             Contracts.Presupuesto.Cobertura currentItem;
-            foreach (Contracts.Comun.Cobertura item in from c in quoteInfo.coberturas where c.seleccionado select c)
+            foreach (Contracts.Comun.Cobertura item in from c in quoteInfo.coberturas where c.seleccionado && c.riesgo == 1 select c)
             {
                 for (int riesgo = 1; riesgo <= num_riesgo; riesgo++)
                 {

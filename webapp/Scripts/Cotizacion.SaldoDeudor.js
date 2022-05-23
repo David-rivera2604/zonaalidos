@@ -71,6 +71,9 @@ app.CotizacionSaldoDeudor = (function () {
             fec_vcto_poliza: app.ui.GetDateValue('#fec_vcto_poliza'),
             FEC_NACIMIENTO: app.ui.GetDateValue('#FEC_NACIMIENTO'),
             MCA_SEXO: app.ui.GetRadioStringValue('MCA_SEXO'),
+            NUM_ESTATURA_CM: app.ui.GetNumericValue('#NUM_ESTATURA_CM'),
+            NUM_PESO: app.ui.GetNumericValue('#NUM_PESO'),
+            NUM_IMC: app.ui.GetNumericValue('#NUM_IMC'),
             COD_MODALIDAD_RIESGO: app.ui.GetDropDownNumericValue('#COD_MODALIDAD_RIESGO'),
             NOM_MODALIDAD_RIESGO: $("#COD_MODALIDAD_RIESGO option:selected").text(),
             MCA_NEGOCIO_MIGRADO: app.ui.GetRadioStringValue('MCA_NEGOCIO_MIGRADO'),
@@ -111,6 +114,9 @@ app.CotizacionSaldoDeudor = (function () {
         app.ui.SetDateValue('#fec_vcto_poliza', data.fec_vcto_poliza);
         app.ui.SetDateValue('#FEC_NACIMIENTO', data.FEC_NACIMIENTO);
         app.ui.SetRadioStringValue('MCA_SEXO', data.MCA_SEXO);
+        app.ui.SetNumericValue('#NUM_ESTATURA_CM', data.NUM_ESTATURA_CM);
+        app.ui.SetNumericValue('#NUM_PESO', data.NUM_PESO);
+        app.ui.SetNumericValue('#NUM_IMC', data.NUM_IMC);
         $('#COD_MODALIDAD_RIESGO').val(data.COD_MODALIDAD_RIESGO);
         app.ui.SetDropDownNumericValue('#COD_MODALIDAD_RIESGO', data.COD_MODALIDAD_RIESGO, true, 40101);
         app.ui.SetRadioStringValue('MCA_NEGOCIO_MIGRADO', data.MCA_NEGOCIO_MIGRADO);
@@ -155,6 +161,30 @@ app.CotizacionSaldoDeudor = (function () {
         $('#FEC_NACIMIENTO_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es'
+        });
+        new AutoNumeric('#NUM_ESTATURA_CM', {
+            decimalCharacter: ',',
+            decimalCharacterAlternative: '.',
+            digitGroupSeparator: '.',
+            maximumValue: '999',
+            minimumValue: '0',
+            decimalPlaces: 2
+        });
+        new AutoNumeric('#NUM_PESO', {
+            decimalCharacter: ',',
+            decimalCharacterAlternative: '.',
+            digitGroupSeparator: '.',
+            maximumValue: '999',
+            minimumValue: '0',
+            decimalPlaces: 2
+        });
+        new AutoNumeric('#NUM_IMC', {
+            decimalCharacter: ',',
+            decimalCharacterAlternative: '.',
+            digitGroupSeparator: '.',
+            maximumValue: '999',
+            minimumValue: '0',
+            decimalPlaces: 2
         });
         $('#FEC_EMISION_ORI_group').datetimepicker({
             format: 'DD/MM/YYYY',
@@ -277,6 +307,19 @@ app.CotizacionSaldoDeudor = (function () {
             event.preventDefault();
         });
 
+        $('#print').click(function () {
+            event.preventDefault();
+            let data = MapInputToObject();
+            data.plandepagoporfrecuencia = quoteData.plandepagoporfrecuencia;
+            data.presupuesto = quoteData.presupuesto;
+            data.Agente = setupData.Agente;
+            app.Cotizacion.Imprimir('SaldoDeudor', data);
+        });
+
+        $('#emitir').click(function () {
+            event.preventDefault();
+            window.location.replace(app.setting.basepath + 'emision/SaldoDeudor?presupuesto=' + quoteData.presupuesto);
+        });
     };
 
     function data_changed() {
@@ -514,6 +557,15 @@ app.CotizacionSaldoDeudor = (function () {
                     align: 'center',
                     checkbox: true
                 }, {
+                    field: 'riesgo',
+                    title: 'Riesgo',
+                    titleTooltip: 'Número del riesgo',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    formatter: 'app.ui.IntegerFormatter',
+                    visible: false
+                }, {
                     field: 'codigo',
                     title: 'Código',
                     titleTooltip: '',
@@ -717,6 +769,7 @@ app.CotizacionSaldoDeudor = (function () {
             }
         });
     };
+
     function Coberturas_ManejoGeneral() {
         CapitalCtrls.forEach(element => element.wipe());
         CapitalCtrls = [];

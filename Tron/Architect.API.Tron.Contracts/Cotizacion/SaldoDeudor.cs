@@ -72,8 +72,25 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// Fecha primer financiamiento.
         /// </summary>
         [DataMember(), JsonProperty()] public DateTime FEC_PRIM_FINAN { get; set; }
+
+
         /// <summary>
-        /// @Control.Caption@.
+        /// Peso.
+        /// </summary>
+        [DataMember(), JsonProperty()] public double NUM_PESO { get; set; }
+
+        /// <summary>
+        /// Altura en centimetros.
+        /// </summary>
+        [DataMember(), JsonProperty()] public double NUM_ESTATURA_CM { get; set; }
+
+        /// <summary>
+        /// Indice de masa muscular.
+        /// </summary>
+        [DataMember(), JsonProperty()] public double NUM_IMC { get; set; }
+
+        /// <summary>
+        /// Enfermedades excluidas.
         /// </summary>
         [DataMember(), JsonProperty()] public List<enfermedadesexcluidas> enfermedadesexcluidas { get; set; }
 
@@ -113,6 +130,5 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// </summary>
         [DataMember(), JsonProperty()] public DateTime FEC_FIN_EXC { get; set; }
 
-     
     }
 }

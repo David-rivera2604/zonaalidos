@@ -73,7 +73,7 @@ namespace aliados
             if (Architect.Utilities.Helpers.Settings.IntegerValue("Payment.Placetopay.Sonda.ExecutionTime") > 0)
             {
                 int sondaHour = Architect.Utilities.Helpers.Settings.IntegerValue("Payment.Placetopay.Sonda.ExecutionTime");
-                RecurringJob.AddOrUpdate(() => Architect.Payment.Integrations.Payment.Monitor(), Cron.Daily(sondaHour));
+                RecurringJob.AddOrUpdate(() => Architect.API.Tron.Business.Backoffice.Pagos.Monitor(), Cron.Daily(sondaHour));
             }
 
         }

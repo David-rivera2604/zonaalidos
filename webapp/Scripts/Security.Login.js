@@ -25,11 +25,13 @@ app.login = (function () {
             $('#forgo').addClass('d-none');
             $('#login').removeClass('d-none');
         });
+
         $('#forgotlink').click(function () {
             event.preventDefault();
             $('#forgo').removeClass('d-none');
             $('#login').addClass('d-none');
         });
+
         $('#Send').click(function () {
             if (app.ui.IsValid('#LoginEdtForm', false)) {
                 var status = 'validate';
@@ -39,22 +41,32 @@ app.login = (function () {
                 app.core.Post(app.setting.apipath + 'v1/Security/Authentication', JSON.stringify(InputToObject()))
                     .done(function (data, textStatus, jqXHR) {
                         if (data.Reason == null) {
-                            localStorage.setItem('Username', data.UserName);
-                            localStorage.setItem('Tenant', data.Tenant);
-                            localStorage.setItem('Roles', JSON.stringify(data.Roles));
+                            if (!data.MustChangePassword) {
+                                localStorage.setItem('Username', data.UserName);
+                                localStorage.setItem('Tenant', data.Tenant);
+                                localStorage.setItem('Roles', JSON.stringify(data.Roles));
 
-                            var dta = new Date();
-                            localStorage.setItem('LastActivity', dta);
-                            var dt = new Date();
-                            dt.setMinutes(dt.getMinutes() + parseInt(data.ExpiresIn));
-                            localStorage.setItem('Expires', dt);
+                                var dta = new Date();
+                                localStorage.setItem('LastActivity', dta);
+                                var dt = new Date();
+                                dt.setMinutes(dt.getMinutes() + parseInt(data.ExpiresIn));
+                                localStorage.setItem('Expires', dt);
 
-                            localStorage.setItem('Token', data.Token);
-                            $('#Send').prop("disabled", true);
-                            $('#Send').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Accediendo...');
-                            status = 'redirect';
-                            window.location.replace(app.setting.basepath + data.InitialPath);
+                                localStorage.setItem('Token', data.Token);
+                                $('#Send').prop("disabled", true);
+                                $('#Send').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Accediendo...');
+                                status = 'redirect';
+                                window.location.replace(app.setting.basepath + data.InitialPath);
+                            } else {
+  
+                                $('#ForgotMail').val(data.EMail);
+                                $('#login').addClass('d-none');
 
+                                $('#forgoCode').removeClass('d-none');
+
+                                $("#forgoCode h3").html('Su clave de acceso ha expirado, hemos enviado a su correo electrónico, un código de verificación');
+                                $("#forgoCode p").html('Ingrese el código de verificación enviado a su correo electrónico registrado, para establecer su nueva clave de acceso');
+                            }
                         }
                         else
                             toastr.error(data.Reason, "Ha ocurrido un error", { timeOut: 10000, closeButton: true, progressBar: true });

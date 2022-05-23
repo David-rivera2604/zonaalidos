@@ -46,6 +46,9 @@ namespace Architect.API.Tron.Business.Cotizacion
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "PCT_DCTO_TECNICO", quoteInfo.PCT_DCTO_TECNICO.ToString(), 2, 17));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_ENF_EXC", quoteInfo.enfermedadesexcluidas.Count().ToString(), 2, 18));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "FEC_PRIM_FINAN", quoteInfo.FEC_PRIM_FINAN.ToString("ddMMyyyy"), 2, 19));
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_PESO", quoteInfo.NUM_PESO.ToString(), 2, 20));
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_ESTATURA_CM", quoteInfo.NUM_ESTATURA_CM.ToString(), 2, 21));
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_IMC", quoteInfo.NUM_IMC.ToString(), 2, 22));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "COD_MODALIDAD", quoteInfo.COD_MODALIDAD_RIESGO.ToString(), 2, 99, quoteInfo.NOM_MODALIDAD_RIESGO));
 
             return datosVariables;
@@ -110,6 +113,15 @@ namespace Architect.API.Tron.Business.Cotizacion
                         break;
                     case "MCA_SEXO":
                         quoteInfo.MCA_SEXO = item.val_campo;
+                        break;
+                    case "NUM_PESO":
+                        quoteInfo.NUM_PESO = Convert.ToDouble(item.val_campo);
+                        break;
+                    case "NUM_ESTATURA_CM":
+                        quoteInfo.NUM_ESTATURA_CM = Convert.ToDouble(item.val_campo);
+                        break;
+                    case "NUM_IMC":
+                        quoteInfo.NUM_IMC = Convert.ToDouble(item.val_campo);
                         break;
                     case "TIP_NEGOCIO":
                         quoteInfo.TIP_NEGOCIO = item.val_campo;
