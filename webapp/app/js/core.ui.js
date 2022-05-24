@@ -186,7 +186,7 @@ app.ui = (function () {
             $(name).data('value', value);
             $(name).text($(name).parent().find(name + 'Menu a[data-value=' + value + ']').text());
         },
-        IsValid: function (formId, ignore, showResume) {
+        IsValid: function (formId, ignore, showResume, others) {
             if (ignore)
                 return true;
             else {
@@ -196,13 +196,17 @@ app.ui = (function () {
                 if (showResume === undefined || showResume == null) {
                     showResume = true;
                 }
-                if (!result && showResume) {
+                if (others === undefined || others == null) {
+                    others = [];
+                }
+                if ((!result || others.length > 0) && showResume) {
                     var title = '';
                     var count = validate.errorList.length;
-                    if (count > 1)
-                        title = 'Existen ' + count + ' errores';
+                    let iCount = count + others.length;
+                    if (iCount > 1)
+                        title = 'Existen ' + iCount + ' errores';
                     else
-                        title = 'Existe ' + count + ' error';
+                        title = 'Existe ' + iCount + ' error';
                     title += ' que necesitan su atención';
                     var errorHtml = '<small>';
                     if (count > 7) {
@@ -213,10 +217,17 @@ app.ui = (function () {
                     for (var i = 0; i < count; i++) {
                         errorHtml += '<label id="' + $(validate.errorList[i]['element']).attr('id') + '-error" for="' + $(validate.errorList[i]['element']).attr('id') + '">' + validate.errorList[i]['message'] + '</label>';
                     }
+                    if (count <= 5) {
+                        for (var i = 0; i < others.length; i++) {
+                            errorHtml += '<label id="' + others[i].id + '" for="' + others[i].id + '">' + others[i].message + '</label>';
+                        }
+                    }
                     errorHtml += '</small>';
-                    toastr.error(errorHtml, title, { timeOut: 7000, closeButton: true, progressBar: true });
+                    toastr.error(errorHtml, title, { timeOut: 9000, closeButton: true, progressBar: true });
                     validate.focusInvalid();
+                    result = false;
                 }
+
                 return result;
             }
         },

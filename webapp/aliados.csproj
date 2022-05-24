@@ -1622,6 +1622,11 @@
     <Content Include="Views\Manual\Siniestro.cshtml" />
     <Content Include="Views\Prototype\Payment.cshtml" />
     <Content Include="Views\Pagos\Resultado.cshtml" />
+    <Content Include="Views\Emision\_tercero.cshtml" />
+    <Content Include="Views\Emision\_documentorequerido.cshtml" />
+    <Content Include="Views\Emision\_resumen.cshtml" />
+    <Content Include="Views\Cotizacion\_resumen.cshtml" />
+    <Content Include="Views\Cotizacion\_coberturaPlan.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

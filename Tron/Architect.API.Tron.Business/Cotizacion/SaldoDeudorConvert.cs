@@ -75,6 +75,7 @@ namespace Architect.API.Tron.Business.Cotizacion
 
             Contracts.Cotizacion.SaldoDeudor quoteInfo = (Contracts.Cotizacion.SaldoDeudor)Util.GenericInfo_FromTron(tronQuoteInfo, new Contracts.Cotizacion.SaldoDeudor());
 
+
             return FromTron_Ocurrencias(tronQuoteInfo,
                             FromTron_DatosVariables(tronQuoteInfo, quoteInfo));
         }
@@ -91,7 +92,6 @@ namespace Architect.API.Tron.Business.Cotizacion
                         break;
                     case "MCA_NEGOCIO_MIGRADO":
                         quoteInfo.MCA_NEGOCIO_MIGRADO = item.val_campo;
-                        quoteInfo.MCA_NEGOCIO_MIGRADO = item.txt_campo;
                         break;
                     case "COD_CIA_ORI":
                         quoteInfo.COD_CIA_ORI = Convert.ToInt32(item.val_campo);

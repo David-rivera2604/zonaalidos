@@ -58,6 +58,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 result = Backoffice.Cotizacion.Generico.Calcular(result);
 
                 resultInfo = LookupComplements((Contracts.Cotizacion.SaldoDeudor)Util.FromTron_CoberturasResult(quoteInfo, result, 11), tokenInfo);
+                resultInfo.cod_ramo = COD_RAMO;
                 Architect.Utilities.Cache.SetItem(string.Format("{0}.{1}", NOM_PROD, quoteInfo.presupuesto), Newtonsoft.Json.JsonConvert.SerializeObject(resultInfo), -1);
 
                 if (resultInfo.presupuesto.IsNotEmpty())

@@ -10,13 +10,11 @@ app.CotizacionSaldoDeudor = (function () {
         app.core.Get(app.setting.apipath + 'v1/Quote/SaldoDeudorSetup', null,
             function (data) {
                 setupData = data;
-                app.core.Lookups(['MonedasPorRamo.cod_mon', 'FrecuenciaDePagoPorRamo.cod_fracc_pago', 'TRON_G2990004.COD_MODALIDAD_RIESGO', 'TRON_G2990006:COD_CIA_ORI.COD_CIA_ORI', 'TRON_G2990006:TIP_NEGOCIO.TIP_NEGOCIO', 'TRON_G7000210.COD_ENF_EXC', 'TRON_G1010031:COD_TIP_EXC.COD_TIP_EXC',],
+                app.core.Lookups(['MonedasPorRamo.cod_mon', 'FrecuenciaDePagoPorRamo.cod_fracc_pago', 'TRON_G2990004.COD_MODALIDAD_RIESGO', 'TRON_G2990006:COD_CIA_ORI.COD_CIA_ORI', 'TRON_G2990006:TIP_NEGOCIO.TIP_NEGOCIO', 'TRON_G7000210.COD_ENF_EXC', 'TRON_G1010031:COD_TIP_EXC.COD_TIP_EXC'],
                     function () {
                         setupData = data;
                         MapObjectToInput(data);
                         Dynamic_Event_Controls();
-
-
                     }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}`);
 
             });
@@ -36,31 +34,6 @@ app.CotizacionSaldoDeudor = (function () {
             else
                 $('.TIP_NEGOCIO_SHOW').addClass('d-none');
         });
-    };
-
-    function ReadOnly() {
-        $('#cod_mon').replaceWith('<div>' + $('#cod_mon option:selected').text() + '</div>');
-        $('#cod_fracc_pago').replaceWith('<div>' + $('#cod_fracc_pago option:selected').text() + '</div>');
-        $('#fec_efec_poliza_group').replaceWith('<div>' + $('#fec_efec_poliza').val() + '</div>');
-        $('#fec_vcto_poliza_group').replaceWith('<div>' + $('#fec_vcto_poliza').val() + '</div>');
-        $('#FEC_NACIMIENTO_group').replaceWith('<div>' + $('#FEC_NACIMIENTO').val() + '</div>');
-        $('label[for=MCA_SEXO').next().replaceWith('<div>' + $('label[for=MCA_SEXO_' + app.ui.GetRadioNumericValue('MCA_SEXO') + '').html() + '</div>');
-        $('#COD_MODALIDAD_RIESGO').replaceWith('<div>' + $('#COD_MODALIDAD_RIESGO option:selected').text() + '</div>');
-        $('label[for=MCA_NEGOCIO_MIGRADO').next().replaceWith('<div>' + $('label[for=MCA_NEGOCIO_MIGRADO_' + app.ui.GetRadioNumericValue('MCA_NEGOCIO_MIGRADO') + '').html() + '</div>');
-        $('#COD_CIA_ORI').replaceWith('<div>' + $('#COD_CIA_ORI option:selected').text() + '</div>');
-        $('#FEC_EMISION_ORI_group').replaceWith('<div>' + $('#FEC_EMISION_ORI').val() + '</div>');
-        $('#IMP_MONTO_ORI').replaceWith('<div>' + $('#IMP_MONTO_ORI').val() + '</div>');
-        $('#IMP_SLD_ACTUAL').replaceWith('<div>' + $('#IMP_SLD_ACTUAL').val() + '</div>');
-        $('#NUM_PRESTAMO').replaceWith('<div>' + $('#NUM_PRESTAMO').val() + '</div>');
-        $('#TIP_NEGOCIO').replaceWith('<div>' + $('#TIP_NEGOCIO option:selected').text() + '</div>');
-        $('#IMP_PRIMA_INFORMADA').replaceWith('<div>' + $('#IMP_PRIMA_INFORMADA').val() + '</div>');
-        $('#IMP_GASTOS_EMISION').replaceWith('<div>' + $('#IMP_GASTOS_EMISION').val() + '</div>');
-        $('#PCT_DTO_COMERCIAL').replaceWith('<div>' + $('#PCT_DTO_COMERCIAL').val() + '</div>');
-        $('#PCT_DCTO_TECNICO').replaceWith('<div>' + $('#PCT_DCTO_TECNICO').val() + '</div>');
-        $('#FEC_PRIM_FINAN_group').replaceWith('<div>' + $('#FEC_PRIM_FINAN').val() + '</div>');
-        $('#enfermedadesexcluidasNew').addClass('d-none');
-        $('#enfermedadesexcluidasTbl').bootstrapTable('hideColumn', 'Actions');
-
     };
 
     function MapInputToObject() {
@@ -807,6 +780,7 @@ app.CotizacionSaldoDeudor = (function () {
             function (data) {
                 quoteData = data;
                 if (!app.ui.NotifyErrors(data.Mensaje, data.Errors, '#SaldoDeudorEdtForm')) {
+                    $('#presupuesto').html(data.presupuesto);
                     $('#coberturasRow').removeClass('d-none');
                     $('#coberturasTbl').bootstrapTable('load', data.coberturas);
                     Coberturas_ManejoGeneral();
