@@ -13,9 +13,7 @@ namespace Architect.API.Tron.DataAccess.Batch
         public static bool Delete(string num_poliza, IDbConnection currentConnection)
         {
             var result = Database.Delete("DELETE P2000060 " +
-                                         " WHERE NUM_POLIZA = :NUM_POLIZA " +
-                                            "AND TIP_DOCUM= 'CNA' " +
-                                            "AND COD_DOCUM='999999999' ")
+                                         " WHERE NUM_POLIZA = :NUM_POLIZA " )
                                  .AddParameter("NUM_POLIZA", Architect.DataFactory.Enumerations.DbType.String, 13, num_poliza)
                                  .Execute(currentConnection, "Tron");
             return result >= 1;

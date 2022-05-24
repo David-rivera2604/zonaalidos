@@ -11,21 +11,69 @@ app.EmisionSaldoDeudor = (function () {
         let _id = app.core.URLStringValue('presupuesto');
         if (_id != '') {
             workMode = app.core.URLStringValue('mode');
-            app.core.Get(app.setting.apipath + 'v1/Issue/SaldoDeudorSetup/' + _id + '?mode=' + workMode, null,
+            app.core.Get(app.setting.apipath + 'v1/Issue/SaldoDeudor/' + _id + '?mode=' + workMode, null,
                 function (data) {
                     setupData = data;
-                    app.core.Lookups(['MonedasPorRamo.cod_mon', 'FrecuenciaDePagoPorRamo.cod_fracc_pago', 'TRON_G2990004.COD_MODALIDAD_RIESGO', 'TRON_G2990006:COD_CIA_ORI.COD_CIA_ORI', 'TRON_G2990006:TIP_NEGOCIO.TIP_NEGOCIO', 'TRON_G7000210.COD_ENF_EXC', 'TRON_G1010031:COD_TIP_EXC.COD_TIP_EXC'],
+                    app.core.Lookups(['MonedasPorRamo.cod_mon', 'FrecuenciaDePagoPorRamo.cod_fracc_pago', 'TRON_G2990004.COD_MODALIDAD_RIESGO', 'TRON_G2990006:COD_CIA_ORI.COD_CIA_ORI', 'TRON_G2990006:TIP_NEGOCIO.TIP_NEGOCIO', 'TRON_G7000210.COD_ENF_EXC', 'TRON_G1010031:COD_TIP_EXC.COD_TIP_EXC', 'Paises.cod_pais', 'Provincias.TProvincia'],
                         function () {
                             setupData = data;
                             MapObjectToInput(data);
                             Dynamic_Event_Controls();
                             ReadOnly();
                             $('#plandepagoporfrecuencia').removeClass('d-none');
-                        }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}`);
+                        }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:cod_pais=CRI`);
 
                 });
         }
     };
+
+    function Quote() {
+        app.core.Post(app.setting.apipath + 'v1/Issue/SaldoDeudor',
+            JSON.stringify(MapInputToObject()),
+            function (data) {
+                quoteData = data;
+                if (!app.ui.NotifyErrors(data.Mensaje, data.Errors, '#SaldoDeudorEdtForm')) {
+
+                    $('#NumPoliza').html(data.num_poliza);
+                    $('#cotizar').addClass('d-none');
+
+                    $('#coberturasRow').removeClass('d-none');
+                    $('#coberturasTbl').bootstrapTable('load', data.coberturas);
+                    Coberturas_ManejoGeneral();
+                    $('#plandepagoRow').removeClass('d-none');
+                    $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
+
+
+                    if (data.plandepagoporfrecuencia != null) {
+                        $('#plandepagoporfrecuenciaTbl').bootstrapTable('load', data.plandepagoporfrecuencia);
+                        $('#plandepagoporfrecuencia').removeClass('d-none');
+                    }
+                    else
+                        $('#plandepagoporfrecuencia').bootstrapTable('load', {});
+
+                    $('#mainBlock').removeClass('col-md-12');
+                    $('#mainBlock').addClass('col-md-9');
+                    $('#quoteBlock').removeClass('d-none');
+                    showCalculate = true;
+                    if (data.resumen != null) {
+                        var moneda = "$ ";
+                        if (app.ui.GetDropDownNumericValue('#cod_mon') == 1) {
+                            moneda = "₡ "
+                        }
+                        $('#importetotal').html(moneda + data.resumen.importetotal.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                        $('#primaneta').html(data.resumen.primaneta.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                        $('#iva').html(data.resumen.iVA.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                        $('#recargoporfraccionamiento').html(data.resumen.recargoporfraccionamiento.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                        $('#cuotas').html(data.resumen.cuotas);
+                        $('html,body').animate({ scrollTop: $('#quoteBlock').offset().top }, 'slow');
+                    }
+                }
+
+
+            }).always(function () {
+                app.ui.ButtonDone('#cotizar');
+            });
+    }
 
     function Dynamic_Event_Controls() {
         $('input:radio[name=MCA_NEGOCIO_MIGRADO]').on('change', function () {
@@ -785,54 +833,7 @@ app.EmisionSaldoDeudor = (function () {
         Coberturas_ManejoGeneral2();
     };
 
-    function Quote() {
-        app.core.Post(app.setting.apipath + 'v1/Quote/SaldoDeudorQuote',
-            JSON.stringify(MapInputToObject()),
-            function (data) {
-                quoteData = data;
-                if (!app.ui.NotifyErrors(data.Mensaje, data.Errors, '#SaldoDeudorEdtForm')) {
-
-                    $('#NumPoliza').html(data.num_poliza);
-                    $('#cotizar').addClass('d-none');
-
-                    $('#coberturasRow').removeClass('d-none');
-                    $('#coberturasTbl').bootstrapTable('load', data.coberturas);
-                    Coberturas_ManejoGeneral();
-                    $('#plandepagoRow').removeClass('d-none');
-                    $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
-
-
-                    if (data.plandepagoporfrecuencia != null) {
-                        $('#plandepagoporfrecuenciaTbl').bootstrapTable('load', data.plandepagoporfrecuencia);
-                        $('#plandepagoporfrecuencia').removeClass('d-none');
-                    }
-                    else
-                        $('#plandepagoporfrecuencia').bootstrapTable('load', {});
-
-                    $('#mainBlock').removeClass('col-md-12');
-                    $('#mainBlock').addClass('col-md-9');
-                    $('#quoteBlock').removeClass('d-none');
-                    showCalculate = true;
-                    if (data.resumen != null) {
-                        var moneda = "$ ";
-                        if (app.ui.GetDropDownNumericValue('#cod_mon') == 1) {
-                            moneda = "₡ "
-                        }
-                        $('#importetotal').html(moneda + data.resumen.importetotal.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                        $('#primaneta').html(data.resumen.primaneta.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                        $('#iva').html(data.resumen.iVA.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                        $('#recargoporfraccionamiento').html(data.resumen.recargoporfraccionamiento.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                        $('#cuotas').html(data.resumen.cuotas);
-                        $('html,body').animate({ scrollTop: $('#quoteBlock').offset().top }, 'slow');
-                    }
-                }
-
-
-            }).always(function () {
-                app.ui.ButtonDone('#cotizar');
-            });
-    }
-
+ 
     function terceros_table_setup() {
 
         $('#tercerosTbl').bootstrapTable({
@@ -1312,7 +1313,7 @@ app.EmisionSaldoDeudor = (function () {
             $('#apellido2').val(data.SecondLastName);
             $('#PhoneNumber').val(data.PhoneNumber);
             app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
-            $('#tercerosMca_sexo').val(data.Gender);
+            $('#tercerosMca_sexo').val(data.Gender == 2 ? 1 : 0);
             $('#TProvincia').val(data.Province);
             $('#correoelectronico').val(data.PrimaryEmailAddress);
             $('#numerodetelefono').val(data.PhoneNumber);

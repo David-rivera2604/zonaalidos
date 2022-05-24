@@ -41,6 +41,9 @@ namespace Architect.API.Tron.Business.Emision
             return result;
         }
 
+        /// <summary>
+        /// Realiza la validación de datos y emisión de la póliza para un producto de tipo Saldo deudor
+        /// </summary>
         public static Contracts.Emision.SaldoDeudor Issue(Contracts.Emision.SaldoDeudor quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
 
@@ -60,8 +63,6 @@ namespace Architect.API.Tron.Business.Emision
             }
             return resultQuoteInfo;
         }
-
-
 
     }
 }

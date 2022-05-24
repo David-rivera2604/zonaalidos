@@ -629,5 +629,139 @@ namespace Architect.API.Tron.Business
             return quoteInfo;
         }
 
+
+        internal static List<Contracts.Presupuesto.Tercero> Terceros_ToTron(List<Contracts.Comun.tercero> terceros, Contracts.Presupuesto.DatoFijo datosFijos, bool expanded)
+        {
+            datosFijos.Terceros = new List<Contracts.Presupuesto.Tercero>();
+            datosFijos.DetalleDeTerceros = new List<Contracts.Presupuesto.DetalleDeTercero>();
+
+            foreach (Contracts.Comun.tercero item in terceros)
+            {
+                if (item.tipodetercero != 0)
+                {
+                    datosFijos.Terceros.Add(TerceroPresupuesto(datosFijos, item, item.tipodetercero));
+                }
+                else
+                {
+                    if (!expanded && item.eltomadoreselmismoasegurado == 1)
+                    {
+                        datosFijos.Terceros.Add(TerceroPresupuesto(datosFijos, item, 2));
+                    }
+                    if (!expanded && item.elaseguradoeselconductorhabitual == 1)
+                    {
+                        datosFijos.Terceros.Add(TerceroPresupuesto(datosFijos, item, 3));
+                    }
+                }
+
+
+                datosFijos.DetalleDeTerceros.Add(CambioTerceroPresupuesto(datosFijos, item));
+            }
+
+
+            return datosFijos.Terceros;
+        }
+
+        internal static Contracts.Presupuesto.Tercero TerceroPresupuesto(Contracts.Presupuesto.DatoFijo datosFijos, Contracts.Comun.tercero item, int tipodetercero)
+        {
+            Contracts.Presupuesto.Tercero result = new Contracts.Presupuesto.Tercero()
+            {
+                cod_cia = datosFijos.cod_cia,
+                num_poliza = datosFijos.num_poliza,
+                num_spto = datosFijos.num_spto,
+                num_apli = datosFijos.num_apli,
+                num_spto_apli = datosFijos.num_spto_apli,
+                num_riesgo = 1,
+                tip_benef = tipodetercero.ToString(),
+                num_secu = 1,
+                tip_docum = Util.IdentificationTypeConvert(item.DocumentNumberType),
+                cod_docum = Util.IdentificationFormat(item.DocumentNumberType, item.DocumentNumber),
+                mca_principal = "N",
+                mca_calculo = "N",
+                mca_baja = "N",
+                mca_vigente = "S",
+                pct_participacion = 0,
+                imp_cesion = 0
+            };
+
+            switch (tipodetercero)
+
+            {
+                case 0: //Titular.
+                    result.tip_benef = "2"; //Asegurado
+                    break;
+                case 3: //Conductor Habitual.
+                    result.mca_principal = "S";
+                    break;
+                case 6: //Beneficiario pero esta opción no esta disponible al día de hoy.
+                    result.tip_relac = item.parentesco.ToString();
+                    result.pct_participacion = item.porcentaje;
+                    break;
+                case 8: //Acredor.
+                    result.fec_vcto_cesion = item.vencimientodecesion;
+                    result.imp_cesion = item.importedecesion;
+                    result.num_prestamo = item.numerodeprestamo;
+                    result.pct_participacion = item.porcentajeacredor;
+                    break;
+
+            }
+
+            return result;
+        }
+
+        internal static Contracts.Presupuesto.DetalleDeTercero CambioTerceroPresupuesto(Contracts.Presupuesto.DatoFijo datosFijos, Contracts.Comun.tercero item)
+        {
+            Contracts.Presupuesto.DetalleDeTercero result = new Contracts.Presupuesto.DetalleDeTercero()
+            {
+                cod_cia = datosFijos.cod_cia,
+                fec_tratamiento = DateTime.Today,
+                tip_mvto_batch = "3",
+                tip_docum = Util.IdentificationTypeConvert(item.DocumentNumberType),
+                cod_docum = Util.IdentificationFormat(item.DocumentNumberType, item.DocumentNumber),
+                nom_tercero = item.nombre,
+                ape1_tercero = item.apellido1,
+                ape2_tercero = item.apellido2,
+                fec_nacimiento = item.fechadenacimiento,
+                mca_sexo = item.tercerosMca_sexo.ToString(),
+                cod_est_civil = item.estadoCivil,
+                tlf_numero = item.numerodetelefono,
+                cod_pais = item.cod_pais,
+                cod_estado = item.TProvincia,
+                cod_prov = item.TCanton,
+                cod_localidad = item.TDistrito,
+                nom_domicilio1 = item.otrasenas,
+                titular = (item.tipodetercero == 0),
+                email = item.correoelectronico,
+
+                cod_act_tercero = int.MinValue,
+                mca_fisico = "S",
+                tip_domicilio = int.MinValue,
+                tip_domicilio_com = int.MinValue,
+                cod_prov_com = int.MinValue,
+                tip_cargo = int.MinValue,
+                tip_act_economica = int.MinValue,
+                cod_ocupacion = int.MinValue,
+                cod_profesion = int.MinValue,
+                tip_etiqueta = int.MinValue,
+                cod_estado_com = int.MinValue,
+                cod_estado_etiqueta = int.MinValue,
+                cod_prov_etiqueta = int.MinValue,
+                tip_tarjeta = int.MinValue,
+                cod_tarjeta = int.MinValue,
+                cod_localidad_com = int.MinValue,
+                cod_localidad_etiqueta = int.MinValue,
+                cod_compensacion = int.MinValue,
+                cod_causa_inh_trc = int.MinValue,
+                cod_exp_carnet_con = int.MinValue
+            };
+            //Si es tipo de documento es cedula jurida
+            if (result.tip_docum == "CJU")
+            {
+                result.mca_fisico = "N";
+            }
+            return result;
+        }
+
+
+
     }
 }

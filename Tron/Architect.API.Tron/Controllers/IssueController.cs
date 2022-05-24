@@ -210,9 +210,8 @@ namespace Architect.API.Tron.Controllers
         /// <summary>
         /// Devuelve información de un presupuesto para la emisión de una póliza de saldo deudor.
         /// </summary>
-        /// <param name="presupuesto"></param>
         [HttpGet]
-        [Route("SaldoDeudorSetup/{presupuesto}")]
+        [Route("SaldoDeudor/{presupuesto}")]
         public async Task<IHttpActionResult> SaldoDeudorSetup(string presupuesto, string mode)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
@@ -228,7 +227,6 @@ namespace Architect.API.Tron.Controllers
         /// <summary>
         /// Realiza la validación de datos y emisión de la póliza para un producto de tipo Saldo deudor
         /// </summary>
-        /// <param name="quoteInfo"></param>
         [HttpPost]
         [Route("SaldoDeudor")]
         public async Task<IHttpActionResult> SaldoDeudorIssue([FromBody] Tron.Contracts.Emision.SaldoDeudor quoteInfo)

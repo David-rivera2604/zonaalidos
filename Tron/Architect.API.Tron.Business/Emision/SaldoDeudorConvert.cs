@@ -15,9 +15,8 @@ namespace Architect.API.Tron.Business.Emision
 
             datosFijos.num_poliza = quoteInfo.presupuesto;
 
-            //FALTAN
-            //Terceros(quoteInfo, datosFijos);
-            //datosFijos.DatosVariables = DatosVariable(quoteInfo, datosFijos);
+            Util.Terceros_ToTron(quoteInfo.terceros, datosFijos, true);
+            datosFijos.DatosVariables = new List<Architect.API.Tron.Contracts.Presupuesto.DatoVariable>();
 
             return datosFijos;
         }
