@@ -21,6 +21,7 @@ app.EmisionSaldoDeudor = (function () {
                             Dynamic_Event_Controls();
                             ReadOnly();
                             $('#plandepagoporfrecuencia').removeClass('d-none');
+                            $('#plandepagoRow').removeClass('d-none');
                         }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:cod_pais=CRI`);
 
                 });
@@ -44,20 +45,18 @@ app.EmisionSaldoDeudor = (function () {
                     $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
 
 
-                    if (data.plandepagoporfrecuencia != null) {
-                        $('#plandepagoporfrecuenciaTbl').bootstrapTable('load', data.plandepagoporfrecuencia);
-                        $('#plandepagoporfrecuencia').removeClass('d-none');
-                    }
-                    else
-                        $('#plandepagoporfrecuencia').bootstrapTable('load', {});
-
                     $('#mainBlock').removeClass('col-md-12');
                     $('#mainBlock').addClass('col-md-9');
                     $('#quoteBlock').removeClass('d-none');
+                    $('#tercerosNew').addClass('d-none');
+                    $('#tercerosTbl').bootstrapTable('hideColumn', 'Actions');
+                    $('#documentosrequeridosNew').addClass('d-none');
+                    $('#documentosrequeridosTbl').bootstrapTable('hideColumn', 'Actions');
+
                     showCalculate = true;
                     if (data.resumen != null) {
                         var moneda = "$ ";
-                        if (app.ui.GetDropDownNumericValue('#cod_mon') == 1) {
+                        if (data.cod_mon == 1) {
                             moneda = "₡ "
                         }
                         $('#importetotal').html(moneda + data.resumen.importetotal.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
@@ -314,7 +313,7 @@ app.EmisionSaldoDeudor = (function () {
         });
 
         $('#cotizar').click(function () {
-            if (app.ui.IsValid('#SaldoDeudorEdtForm', false, true, OtherValidations()) ) {
+            if (app.ui.IsValid('#SaldoDeudorEdtForm', false, true, OtherValidations())) {
                 app.ui.ButtonDoing('#cotizar');
                 Quote();
             }
@@ -623,15 +622,7 @@ app.EmisionSaldoDeudor = (function () {
                     sortable: false,
                     halign: 'center',
                     align: 'right',
-                    formatter: function (value, row, index, field) {
-                        if (row.edtCapital)
-                            return '<input id="CapitalRow_' + index + '" name="CapitalGridEdit" type="text" class="form-control grid-control text-right" size="21" maxlength="21" disabled placeholder="Indique el capital">';
-                        else
-                            if (value == undefined || value === null || value === 0)
-                                return '';
-                            else
-                                return value.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                    }
+                    formatter: 'app.ui.DecimalFormatter',
                 }, {
                     field: 'primatotal',
                     title: 'Prima total',
@@ -653,12 +644,6 @@ app.EmisionSaldoDeudor = (function () {
                 },]
         });
 
-        $('#coberturasTbl').on('check.bs.table', function () {
-            Coberturas_ManejoGeneral2();
-        });
-        $('#coberturasTbl').on('uncheck.bs.table', function () {
-            Coberturas_ManejoGeneral2();
-        });
     };
 
     function plandepago_table_setup() {
@@ -789,51 +774,15 @@ app.EmisionSaldoDeudor = (function () {
 
     };
 
-    function Coberturas_ManejoGeneral2() {
-        coberturas = $('#coberturasTbl').bootstrapTable('getData');
-        coberturas.forEach(function (currentValue, index) {
-            if (currentValue.edtCapital) {
-                if (!currentValue.requerida)
-                    $('#CapitalRow_' + index).prop('disabled', !currentValue.seleccionado);
-                if (currentValue.capital == null || currentValue.capital == 0)
-                    app.ui.SetNumericValue('#CapitalRow_' + index, '');
-                else
-                    app.ui.SetNumericValue('#CapitalRow_' + index, currentValue.capital);
-            }
-        });
-    };
     function Coberturas_ManejoGeneral() {
-        CapitalCtrls.forEach(element => element.wipe());
-        CapitalCtrls = [];
-        $('input[name="CapitalGridEdit"]').each(function () {
-            CapitalCtrls.push(new AutoNumeric(this, {
-                decimalCharacter: ',',
-                decimalCharacterAlternative: '.',
-                digitGroupSeparator: '.',
-                maximumValue: '99999999999999',
-                minimumValue: '0',
-                decimalPlaces: '0',
-                emptyInputBehavior: 'null'
-            }));
-        });
-
         coberturas = $('#coberturasTbl').bootstrapTable('getData');
-        coberturas.forEach(function (currentValue, index) {
-            if (currentValue.edtCapital)
-                if (currentValue.capital == null || currentValue.capital == 0)
-                    app.ui.SetNumericValue('#CapitalRow_' + index, '');
-                else
-                    app.ui.SetNumericValue('#CapitalRow_' + index, currentValue.capital);
-        });
-
         coberturas.forEach(function (value, index, array) {
-            $('[name=btSelectItem][data-index=' + index + ']').prop('disabled', value.requerida);
+            $('[name=btSelectItem][data-index=' + index + ']').prop('disabled', true);
         });
         $('[name=btSelectAll]').prop('disabled', true);
-        Coberturas_ManejoGeneral2();
     };
 
- 
+
     function terceros_table_setup() {
 
         $('#tercerosTbl').bootstrapTable({

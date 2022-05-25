@@ -1,0 +1,79 @@
+﻿<div class="modal inmodal" id="enfermedadesexcluidasModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                <h4 class="modal-title">Enfermedades excluidas</h4>
+                <small class="font-bold">Permite agregar una Enfermedad excluida o editar una ya existente</small>
+            </div>
+            <div class="modal-body">
+                <!-- enfermedadesexcluidas Grid Edit Form -->
+                <div class='form-row'>
+                    <div class='col-md-12'>
+                        <div id="enfermedadesexcluidasEdt" class="animated fadeInRight">
+                            <form id='enfermedadesexcluidasEdtForm' class='form-horizontal' data-toggle='validator'>
+                                <fieldset>
+                                    <div class='form-row'>
+                                        <!-- COD_ENF_EXC DropDownList -->
+                                        <div class='col-sm-12 col-md-12'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='COD_ENF_EXC'>Enfermedad<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <select id='COD_ENF_EXC' name='COD_ENF_EXC' class='form-control'>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- COD_TIP_EXC DropDownList -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='COD_TIP_EXC'>Tipo exclusión<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <select id='COD_TIP_EXC' name='COD_TIP_EXC' class='form-control'>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- FEC_INI_EXC DatePicker -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='FEC_INI_EXC'>Fecha inicio de exclusión<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <div class='input-group date' id='FEC_INI_EXC_group'>
+                                                    <input type='text' id='FEC_INI_EXC' name='FEC_INI_EXC' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-calendar'></span>
+                                                    </span>
+                                                </div>
+                                                <div id='FEC_INI_EXC_validate'></div>
+                                            </div>
+                                        </div>
+                                        <!-- FEC_FIN_EXC DatePicker -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='FEC_FIN_EXC'>Fecha fin de exclusión<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <div class='input-group date' id='FEC_FIN_EXC_group'>
+                                                    <input type='text' id='FEC_FIN_EXC' name='FEC_FIN_EXC' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-calendar'></span>
+                                                    </span>
+                                                </div>
+                                                <div id='FEC_FIN_EXC_validate'></div>
+                                            </div>
+                                        </div>
+                                        <!-- TXT_OBS_ENF_EXC Text -->
+                                        <div class='col-sm-64 col-md-12'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='TXT_OBS_ENF_EXC'>Observaciones</label>
+                                                <input type='text' id='TXT_OBS_ENF_EXC' name='TXT_OBS_ENF_EXC' class='form-control' size='50' maxlength='50' />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="enfermedadesexcluidasEdtFormSave" data-doing="Guardando...">Guardar cambios</button>
+                <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
