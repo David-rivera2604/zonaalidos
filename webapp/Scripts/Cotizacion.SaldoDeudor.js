@@ -39,17 +39,20 @@ app.CotizacionSaldoDeudor = (function () {
     function MapInputToObject() {
         var data = {
             cod_mon: app.ui.GetDropDownNumericValue('#cod_mon'),
+            cod_mon_desc: $('#cod_mon option:selected').text(),
             cod_fracc_pago: app.ui.GetDropDownNumericValue('#cod_fracc_pago'),
             fec_efec_poliza: app.ui.GetDateValue('#fec_efec_poliza'),
             fec_vcto_poliza: app.ui.GetDateValue('#fec_vcto_poliza'),
             FEC_NACIMIENTO: app.ui.GetDateValue('#FEC_NACIMIENTO'),
             MCA_SEXO: app.ui.GetRadioStringValue('MCA_SEXO'),
+            NOM_SEXO: $('label[for=MCA_SEXO_' + app.ui.GetRadioStringValue('MCA_SEXO') + ']').html(),
             NUM_ESTATURA_CM: app.ui.GetNumericValue('#NUM_ESTATURA_CM'),
             NUM_PESO: app.ui.GetNumericValue('#NUM_PESO'),
             NUM_IMC: app.ui.GetNumericValue('#NUM_IMC'),
             COD_MODALIDAD_RIESGO: app.ui.GetDropDownNumericValue('#COD_MODALIDAD_RIESGO'),
             NOM_MODALIDAD_RIESGO: $("#COD_MODALIDAD_RIESGO option:selected").text(),
             MCA_NEGOCIO_MIGRADO: app.ui.GetRadioStringValue('MCA_NEGOCIO_MIGRADO'),
+            NOM_NEGOCIO_MIGRADO: $('label[for=MCA_NEGOCIO_MIGRADO_' + app.ui.GetRadioStringValue('MCA_NEGOCIO_MIGRADO') + ']').html(),
             COD_CIA_ORI: app.ui.GetDropDownStringValue('#COD_CIA_ORI'),
             FEC_EMISION_ORI: app.ui.GetDateValue('#FEC_EMISION_ORI'),
             IMP_MONTO_ORI: app.ui.GetNumericValue('#IMP_MONTO_ORI'),
@@ -65,9 +68,7 @@ app.CotizacionSaldoDeudor = (function () {
             enfermedadesexcluidas: $('#enfermedadesexcluidasTbl').bootstrapTable('getData'),
             coberturas: $('#coberturasTbl').bootstrapTable('getData'),
             plandepago: $('#plandepagoTbl').bootstrapTable('getData'),
-
         };
-
 
         data.coberturas.forEach(function (currentValue, index) {
             if (currentValue.edtCapital)
@@ -282,11 +283,7 @@ app.CotizacionSaldoDeudor = (function () {
 
         $('#print').click(function () {
             event.preventDefault();
-            let data = MapInputToObject();
-            data.plandepagoporfrecuencia = quoteData.plandepagoporfrecuencia;
-            data.presupuesto = quoteData.presupuesto;
-            data.Agente = setupData.Agente;
-            app.Cotizacion.Imprimir('SaldoDeudor', data);
+            app.Cotizacion.Imprimir('SaldoDeudor', app.CotizacionSaldoDeudor.Data());
         });
 
         $('#emitir').click(function () {
@@ -672,7 +669,11 @@ app.CotizacionSaldoDeudor = (function () {
             }
         },
         Data: function () {
-            return MapInputToObject();
+            let data = MapInputToObject();
+            data.plandepagoporfrecuencia = quoteData.plandepagoporfrecuencia;
+            data.presupuesto = quoteData.presupuesto;
+            data.Agente = setupData.Agente;
+            return data;
         },
         Changed: function (callback) {
             changedCallback = callback;

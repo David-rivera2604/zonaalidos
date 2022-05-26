@@ -18,14 +18,14 @@ namespace Architect.API.Tron.Controllers
     {
 
         [HttpGet]
-        [Route("Producto")]
-        public async Task<IHttpActionResult> Producto([FromUri] string alias)
+        [Route("Ramo")]
+        public async Task<IHttpActionResult> Ramo([FromUri] int cod_ramo)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
-            Contracts.Especificacion.Producto result = null;
+            Contracts.Ramo.A1001800 result = null;
             await Task.Run(() =>
             {
-                result = Business.Reglas.research.GetProducto(alias);
+                result = Architect.API.Tron.Business.Ramo.Configuracion.Retrieve(cod_ramo);
             })
                 .ConfigureAwait(false);
             return Ok(result);

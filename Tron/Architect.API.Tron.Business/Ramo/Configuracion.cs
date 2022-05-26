@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Architect.API.Tron.Business.Ramo
 {
-    class Configuracion
+    public class Configuracion
     {
 
         /// <summary>
