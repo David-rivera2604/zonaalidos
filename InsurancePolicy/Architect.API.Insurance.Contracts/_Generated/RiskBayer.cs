@@ -27,9 +27,13 @@ namespace Architect.API.Insurance.Contracts.Policy
         /// </summary>
         [DataMember(), JsonProperty()] public DateTime IssueDate { get; set; }
         /// <summary>
-        /// Nombre del contratante.
+        /// Código del contratante.
         /// </summary>
         [DataMember(), JsonProperty()] public string ContractorName { get; set; }
+        /// <summary>
+        /// Nombre del contratante.
+        /// </summary>
+        [DataMember(), JsonProperty()] public string ContractorDesc { get; set; }
         /// <summary>
         /// Producto de vida.
         /// </summary>

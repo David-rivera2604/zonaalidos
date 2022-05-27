@@ -41,7 +41,7 @@ namespace Architect.API.Core.DataAccess.Security
                               WHERE TIP_DOCUM=:TIP_DOCUM AND COD_DOCUM=:COD_DOCUM")
                          .AddParameter("TIP_DOCUM", DbType.String, 3, tip_docum)
                          .AddParameter("COD_DOCUM", DbType.String, 20, cod_docum)
-                         .Query(null, "Research", new Action<System.Data.IDataReader>((reader) =>
+                         .Query(null, "Tron", new Action<System.Data.IDataReader>((reader) =>
                          {
                              result = new Contracts.Security.ClientInformation()
                              {

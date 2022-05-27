@@ -102,7 +102,7 @@ namespace Architect.API.Insurance.Business.Bayer
         /// <summary>
         /// Convierte la planilla de requerimiento a un objeto tipo información particular de bayer.
         /// </summary>
-        internal static Contracts.Policy.RiskBayer InclusionToRiskBayer(Contracts.Bayer.InclusionRequest inclusionInfo)
+        internal static Contracts.Policy.RiskBayer InclusionToRiskBayer(int companyId, Contracts.Bayer.InclusionRequest inclusionInfo)
         {
             return new Contracts.Policy.RiskBayer()
             {
@@ -110,6 +110,7 @@ namespace Architect.API.Insurance.Business.Bayer
                 MainPolicyId = inclusionInfo.MainPolicyId,
                 IssueDate = inclusionInfo.IssueDate,
                 ContractorName = inclusionInfo.ContractorName,
+                ContractorDesc = Core.Business.Common.LkpDescription(companyId, "BayerPolizas", inclusionInfo.ContractorName),
                 IsLife = inclusionInfo.IsLife,
                 IsHealth = inclusionInfo.IsHealth,
                 SocialSecurity = inclusionInfo.SocialSecurity,

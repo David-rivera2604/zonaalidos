@@ -191,7 +191,7 @@ app.BayerInclusion = (function () {
                 if (data.HasDigitalSignature) {
                     $('#acceptedNotify').removeClass('d-none');
                     $('#VisualizationsEdtFormUpLoad').removeClass('d-none');
-
+                    $('#print').removeClass('d-none');
                 }
             case 32:
                 if (statusmode === 'Review') {
@@ -201,9 +201,7 @@ app.BayerInclusion = (function () {
             case 10:
             case 31:
                 app.ui.DataEntryBehavior('#VisualizationsEdtForm', 'disabled');
-                if (localStorage.getItem('Tenant') === 'Caturix') {
-                    $('#print').removeClass('d-none');
-                }
+                $('#print').removeClass('d-none');
                 break;
             case 99:
                 app.ui.DataEntryBehavior('#VisualizationsEdtForm', 'disabled');
@@ -338,6 +336,7 @@ app.BayerInclusion = (function () {
     }
 
     function Controls_Events() {
+
         $("#motivo").keyup(function () {
             $("#VisualizationsEdtFormBackConfirm").prop("disabled", $('#motivo').val().length === 0);
         });
@@ -353,7 +352,7 @@ app.BayerInclusion = (function () {
                     $('#DocumentNumber').addClass('loading');
                     app.core.Get(app.setting.apipath + 'v1/Insured/' + value)
                         .done(function (data) {
-                            if (data.Nombre !== null) {
+                            if (data !== null && data.Nombre !== null) {
                                 $('#FirstName').val(data.Nombre);
                                 $('#LastName').val(data.ApellidoPaterno + ' ' + data.ApellidoMaterno);
                                 $('#Gender').val(data.CodigoSexo);
@@ -385,7 +384,7 @@ app.BayerInclusion = (function () {
                     $('#BDocumentNumber').addClass('loading');
                     app.core.Get(app.setting.apipath + 'v1/Insured/' + value)
                         .done(function (data, textStatus, jqXHR) {
-                            if (data.Nombre !== null) {
+                            if (data !== null && data.Nombre !== null) {
                                 $('#BFirstName').val(data.Nombre);
                                 $('#BLastName').val(data.ApellidoPaterno + ' ' + data.ApellidoMaterno);
                             }
@@ -395,6 +394,7 @@ app.BayerInclusion = (function () {
                 }
             }
         });
+
         $('#DDocumentNumberTypeMenu a').click(function () {
             app.ui.DocumentTypeHandler(this, '#DDocumentNumber', 'Identification');
         });
@@ -1151,6 +1151,7 @@ window.beneficiariosTbl_Events = {
         e.stopPropagation();
     }
 };
+
 window.dependientesTbl_Events = {
     'click .delete': function (e, value, row, index) {
         toastr.warning("Si está seguro de querer eliminar a '" + row.DFirstName + ' ' + row.DLastName + "' como dependiente, haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.BayerInclusion.dependientesDeleteRow(row); } });

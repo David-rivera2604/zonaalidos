@@ -100,6 +100,7 @@ namespace Architect.API.Insurance.Business.Bayer
         private static void Signed(int companyId, int id)
         {
             Risk risk = Architect.API.Insurance.Business.Policy.Risk.RetrievePolicyByKey(id, companyId);
+            risk.Bayer = DataAccess.Policy.RiskBayer.Retrieve(id, companyId);
             risk.LineOfBusinessDesc = Core.Business.Common.LkpDescription(companyId, "LineOfBusiness", risk.LineOfBusinessCode.ToString());
             risk.Status = 10;
             DataAccess.Policy.Risk.Update(risk);
@@ -115,6 +116,7 @@ namespace Architect.API.Insurance.Business.Bayer
         private static void Expired(int companyId, int id)
         {
             Risk risk = Architect.API.Insurance.Business.Policy.Risk.RetrievePolicyByKey(id, companyId);
+            risk.Bayer = DataAccess.Policy.RiskBayer.Retrieve(id, companyId);
             risk.LineOfBusinessDesc = Core.Business.Common.LkpDescription(companyId, "LineOfBusiness", risk.LineOfBusinessCode.ToString());
             risk.Status = 31;
             DataAccess.Policy.Risk.Update(risk);
@@ -125,6 +127,7 @@ namespace Architect.API.Insurance.Business.Bayer
         private static void Rejected(int companyId, int id)
         {
             Risk risk = Architect.API.Insurance.Business.Policy.Risk.RetrievePolicyByKey(id, companyId);
+            risk.Bayer = DataAccess.Policy.RiskBayer.Retrieve(id, companyId);
             risk.LineOfBusinessDesc = Core.Business.Common.LkpDescription(companyId, "LineOfBusiness", risk.LineOfBusinessCode.ToString());
             risk.Status = 32;
             DataAccess.Policy.Risk.Update(risk);
@@ -326,26 +329,27 @@ namespace Architect.API.Insurance.Business.Bayer
                     }
                 }
 
-                Contracts.Policy.RiskBayer bayer = Convertions.InclusionToRiskBayer(inclusionInfo);
+                
 
                 if (risk.Id.IsEmpty())
                     risk = Business.Policy.Risk.CreatePolicy(risk, tokenInfo.UserId, tokenInfo.CompanyId);
                 else
                     risk = Business.Policy.Risk.UpdatePolicy(risk, tokenInfo.UserId, tokenInfo.CompanyId, string.Empty);
 
-                bayer.Id = risk.Id;
-                bayer.CompanyId = risk.CompanyId;
-                bayer.UpdateUserCode = risk.UpdateUserCode;
-                bayer.UpdateDate = risk.UpdateDate;
+                risk.Bayer = Convertions.InclusionToRiskBayer(tokenInfo.CompanyId, inclusionInfo);
+                risk.Bayer.Id = risk.Id;
+                risk.Bayer.CompanyId = risk.CompanyId;
+                risk.Bayer.UpdateUserCode = risk.UpdateUserCode;
+                risk.Bayer.UpdateDate = risk.UpdateDate;
                 if (risk.Id.IsNotEmpty())
                 {
                     if (inclusionInfo.Id.IsEmpty())
                     {
-                        DataAccess.Policy.RiskBayer.Create(bayer);
+                        DataAccess.Policy.RiskBayer.Create(risk.Bayer);
                     }
                     else
                     {
-                        DataAccess.Policy.RiskBayer.Update(bayer);
+                        DataAccess.Policy.RiskBayer.Update(risk.Bayer);
                     }
                 }
                 inclusionInfo.Id = risk.Id;
