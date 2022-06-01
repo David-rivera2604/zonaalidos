@@ -1,0 +1,14 @@
+﻿Los roles que tengan el signo '+' como prefijo indican que tiene tratamiento especial por código.
+
+ALIADO: COOPE, CARRO FACIL
+--------------------------
+  + Suscriptor - Usuario que permite la revisión de las solicitudes. (empleados de mapfre)
+				 Notificados por la plantilla Notify_InReviewStatus({UserRoleList.App.Mapfre.Notify.Subscription.RoleName}) setting "Mapfre.Notify.Subscription.RoleName"
+
+ALIADO: BAYER, CATURIX
+----------------------
+	Mapfre    - Empleado de Mapfre
+  + Revisor   - Usuario que permite la revisión de las inclusiones. (normalmente rrhh)
+				Notificados por la plantilla Notify_RequestOnReview({UserRoleList.Revisor}) setting "Mapfre.Notify.Revisor.RoleName"
+  + Empleado  - Indica que el usuario es empleado de Bayer
+	Seguridad - Acceso a opciones de seguridad del sistema.

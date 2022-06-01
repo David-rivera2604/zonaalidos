@@ -1209,6 +1209,7 @@
     <Content Include="products\carrofacil_saldo_deudor.xml" />
     <Content Include="products\cope_saldo_deudor.xml" />
     <Content Include="products\cope_vida.xml" />
+    <Content Include="roles.configurations.txt" />
     <Content Include="releaseletter.txt" />
     <Content Include="Scripts\Clientes.Index.js" />
     <Content Include="Scripts\Cotizacion.Coberturas.js" />
@@ -1646,6 +1647,7 @@
     <Content Include="Views\Cotizacion\_enfermedadesexcluidasGrid.cshtml" />
     <Content Include="Views\Cotizacion\_enfermedadesexcluidasModal.cshtml" />
     <Content Include="Views\Cotizacion\_datosgenerales.cshtml" />
+    <Content Include="Reports\SegurSaldoDeudor.repx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
