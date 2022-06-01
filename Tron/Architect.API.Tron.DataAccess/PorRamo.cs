@@ -22,7 +22,7 @@ namespace Architect.API.Tron.DataAccess
             var ArrayBindSize = jsonArray.Select(_ => _.Length).ToArray();
             var ArrayBindStatus = Enumerable.Repeat(0, jsonArray.Count()).ToArray();
 
-                //                .AddParameter("RC1", DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
+            //                .AddParameter("RC1", DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
 
             Database.Procedure("gc_k_pagos_web.p_proceso_cobro_net")
                     .AddParameter("p_cod_cia", DbType.Int32, 22, cod_cia)
@@ -40,9 +40,26 @@ namespace Architect.API.Tron.DataAccess
             return result;
         }
 
-        public static Architect.API.Tron.Contracts.Vistas.Recibo Informacion_de_un_Recibo(int cod_cia, int cod_agt, string num_poliza, Int64 num_recibo, IDbConnection connection = null)
+        public static Architect.API.Tron.Contracts.Vistas.Recibo Informacion_de_un_Recibo(int cod_cia, int cod_agt, string tip_docum, string cod_docum, string num_poliza, Int64 num_recibo, IDbConnection connection = null)
         {
+            List<DataFactory.Contracts.Parameter> parameters = new List<DataFactory.Contracts.Parameter>();
             Architect.API.Tron.Contracts.Vistas.Recibo result = null;
+            string filter = string.Empty;
+
+            if (cod_agt > 0)
+            {
+                filter = " AND a30.COD_AGT = :COD_AGT";
+                parameters = Database.ParameterList().AddParameter("COD_AGT", DbType.Decimal, 5, cod_agt).Parameters;
+            }
+            else
+            {
+                filter = " AND a30.TIP_DOCUM = :TIP_DOCUM AND a30.COD_DOCUM = :COD_DOCUM";
+                parameters = Database.ParameterList()
+                        .AddParameter("TIP_DOCUM", DbType.String, 3, tip_docum)
+                        .AddParameter("COD_DOCUM", DbType.String, 20, cod_docum).Parameters;
+            }
+
+
             Database.Select(
 @"SELECT a30.COD_RAMO, a1800.nom_ramo, a30.TIP_DOCUM, a30.COD_DOCUM, v1390.NOM_TERCERO, v1390.NOM2_TERCERO, v1390.APE1_TERCERO, v1390.APE2_TERCERO, a1331.email, a1331.TXT_EMAIL, a1331.tlf_numero, a1331.TLF_MOVIL, a700.cod_mon, SUM(a700.imp_recibo) imp_recibo, a1331.TIP_TARJETA, a1331.COD_TARJETA, a1331.NUM_TARJETA
   FROM a2000030 a30
@@ -51,15 +68,14 @@ namespace Architect.API.Tron.DataAccess
   JOIN v1001390 v1390 ON v1390.COD_CIA=a30.COD_CIA AND v1390.TIP_DOCUM = a30.TIP_DOCUM AND v1390.COD_DOCUM = a30.COD_DOCUM
   JOIN a2990700 a700 ON a700.COD_CIA=a30.COD_CIA AND a700.NUM_POLIZA= a30.NUM_POLIZA AND a700.num_spto = a30.num_spto AND a700.num_apli = a30.num_apli AND a700.num_poliza = a30.num_poliza AND a700.num_spto_apli = a30.num_spto_apli AND a700.NUM_RECIBO = :NUM_RECIBO AND a700.TIP_SITUACION = 'EP'
  WHERE a30.COD_CIA   = :COD_CIA
-  AND a30.NUM_POLIZA = :NUM_POLIZA
-  AND a30.COD_AGT    = :COD_AGT
-  AND a30.mca_spto_anulado   = 'N'
+  AND a30.NUM_POLIZA = :NUM_POLIZA" + filter +
+@" AND a30.mca_spto_anulado   = 'N'
   AND a30.mca_poliza_anulada = 'N'
  GROUP BY a30.COD_RAMO, a1800.nom_ramo, a30.TIP_DOCUM, a30.COD_DOCUM, v1390.NOM_TERCERO, v1390.NOM2_TERCERO, v1390.APE1_TERCERO, v1390.APE2_TERCERO, a1331.email, a1331.TXT_EMAIL, a1331.tlf_numero, a1331.TLF_MOVIL, a700.cod_mon, a1331.TIP_TARJETA, a1331.COD_TARJETA, a1331.NUM_TARJETA")
                         .AddParameter("NUM_RECIBO", DbType.Decimal, 11, num_recibo)
                         .AddParameter("COD_CIA", DbType.Decimal, 5, cod_cia)
                         .AddParameter("NUM_POLIZA", DbType.AnsiString, 13, num_poliza)
-                        .AddParameter("COD_AGT", DbType.Decimal, 5, cod_agt)
+                        .AddParameter(parameters)
                         .Query(connection, "Tron", new Action<System.Data.IDataReader>((reader) =>
                         {
                             result = new Architect.API.Tron.Contracts.Vistas.Recibo()

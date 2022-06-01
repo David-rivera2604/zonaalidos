@@ -124,7 +124,7 @@ namespace Architect.API.Core.Business.Security
                         }
                         if (user.CompanyId == 3)
                         {
-                            agentInfo.tip_docum = IdentificationTypeConvert(agentInfo.tip_docum);
+                            agentInfo.tip_docum = agentInfo.tip_docum.IdentificationType();
                             if (agentInfo.cod_docum.IsNotEmpty())
                             {
                                 agentInfo.cod_docum = Convert.ToInt64(agentInfo.cod_docum.OnlyNumbers()).ToString();
@@ -598,7 +598,7 @@ namespace Architect.API.Core.Business.Security
                     else
                         if (companyId == 3)
                     {
-                        Contracts.Security.ClientInformation clientInfo = Tron.RetrieveClientInformationByDocument(IdentificationTypeConvert(result.UserMember.IdentificationType.ToString()), result.UserMember.Identification);
+                        Contracts.Security.ClientInformation clientInfo = Tron.RetrieveClientInformationByDocument(result.UserMember.IdentificationType.ToString().IdentificationType(), result.UserMember.Identification.OnlyNumbers());
 
                         if (clientInfo.IsEmpty())
                         {
@@ -625,32 +625,5 @@ namespace Architect.API.Core.Business.Security
             return result;
         }
 
-        public static string IdentificationTypeConvert(string identificationType)
-        {
-            string type = "";
-
-            switch (identificationType)
-            {
-                case "1": //Cédula
-                    type = "CNA";
-                    break;
-
-                case "2": //Residencia
-                    type = "CRE";
-                    break;
-
-                case "3": //Pasaporte
-                    type = "PAS";
-                    break;
-
-                case "4": //Cédula jurídica
-                    type = "CJU";
-                    break;
-                    //CIN
-                    //EEX
-            }
-
-            return type;
-        }
-    }
+   }
 }

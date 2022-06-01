@@ -2,6 +2,7 @@
 
 app.ViewerQuery = (function () {
 
+    let _handler = null;
     var _id = null;
     var _data;
 
@@ -355,29 +356,27 @@ app.ViewerQuery = (function () {
         Init: function () {
             _id = app.core.URLStringValue('id');
             Event_Controls();
-            if (_id != '')
+            if (_id != '') {
 
-                if (_id == '320') {
+                app.core.Get(app.setting.apipath + 'v1/Viewer/QuerySpecification?id=' + _id + '&url=' + window.location.search.slice(1).replace(/&/g, ':'))
+                    .done(function (data, textStatus, jqXHR) {
 
-                    app.core.LoadScriptFile("Extend.js")
-                        .then(d => {
-                            app.core.Get(app.setting.apipath + 'v1/Viewer/QuerySpecification?id=' + _id + '&url=' + window.location.search.slice(1).replace(/&/g, ':'))
-                                .done(function (data, textStatus, jqXHR) {
+                        if (data.include !== null  &&  data.include !== '') {
+                            app.core.LoadScriptFile(data.include)
+                                .then(d => {
                                     Render(data);
+                                })
+                                .catch(err => {
+                                    console.error(err);
                                 });
-                        })
-                        .catch(err => {
-                            console.error(err);
-                        });
-
-
-
-                } else {
-                    app.core.Get(app.setting.apipath + 'v1/Viewer/QuerySpecification?id=' + _id + '&url=' + window.location.search.slice(1).replace(/&/g, ':'))
-                        .done(function (data, textStatus, jqXHR) {
+                        }
+                        else {
                             Render(data);
-                        });
-                }
+                        }
+                    });
+
+
+            }
             else
                 $("#QueryTitle").html('Consulta no indicada');
         },
@@ -438,6 +437,9 @@ app.ViewerQuery = (function () {
         },
         Data: function () {
             return _data;
+        },
+        EventHandler: function (handler) {
+            _handler = handler;
         }
     };
 })();

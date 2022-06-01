@@ -36,6 +36,7 @@
       <HintPath>..\..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
@@ -45,6 +46,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AvisosDeCobro\AvisoConsultaResponse.cs" />
+    <Compile Include="AvisosDeCobro\AvisoResponse.cs" />
+    <Compile Include="AvisosDeCobro\AvisosBaseResponse.cs" />
+    <Compile Include="AvisosDeCobro\InformacionAvisosResponse.cs" />
+    <Compile Include="AvisosDeCobro\Parameters\AvisoCobroBaseParametros.cs" />
+    <Compile Include="AvisosDeCobro\Parameters\AvisoCobroConsultaParametros.cs" />
+    <Compile Include="AvisosDeCobro\Parameters\AvisoCobroGenerarParametros.cs" />
+    <Compile Include="AvisosDeCobro\ReciboAvisoRespose.cs" />
+    <Compile Include="AvisosDeCobro\ReciboRespose.cs" />
     <Compile Include="Batch\Respuesta.cs" />
     <Compile Include="Comun\PlanDePago.cs" />
     <Compile Include="Comun\DocumentoRequerido.cs" />

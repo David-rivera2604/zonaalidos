@@ -348,6 +348,38 @@ namespace Architect.Utilities.Extensions
             return value;
         }
 
+        public static string IdentificationType(this string value)
+        {
+            string type = "";
+
+            switch (value)
+            {
+                case "1": //Cédula
+                case "CNA":
+                    type = "CNA";
+                    break;
+
+                case "2": //Residencia
+                case "CRE":
+                    type = "CRE";
+                    break;
+
+                case "3": //Pasaporte
+                case "PAS":
+                    type = "PAS";
+                    break;
+
+                case "4": //Cédula jurídica
+                case "CJU":
+                    type = "CJU";
+                    break;
+                    //CIN
+                    //EEX
+            }
+
+            return type;
+        }
+
         public static string DocumentNumberFormat(this string value, int documentType)
         {
             if (value.IsNotEmpty())

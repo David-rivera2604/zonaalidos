@@ -1,6 +1,7 @@
 ﻿var app = app || {};
 
 app.ViewerQuery = (function () {
+    let _handler = null;
     var _id = null;
     var _itemHeader = '  <li class="nav-item"> ' +
         '    <a class="nav-link {show}" id="{index}_htab" data-toggle="tab" href="#tab_{index}" >{title}</a> ' +
@@ -430,7 +431,22 @@ app.ViewerQuery = (function () {
                                 item.index = index;
                                 $("#queryTab").append(RenderTabHeader(item));
                                 $("#queryTabContent").append(RenderTabBody(item));
-                                Render(item);
+                                if (item.include !== null && item.include !== '') {
+                                    app.core.LoadScriptFile(item.include)
+                                        .then(d => {
+                                            Render(item);
+                                            if (app.Extend.EventHandler !== null) {
+                                                app.Extend.EventHandler(_id, item.index, 'loaded');
+                                            }
+                                        })
+                                        .catch(err => {
+                                            console.error(err);
+                                        });
+                                } else {
+                                    Render(item);
+                                }
+
+
                             });
                         }
                         else {
@@ -445,9 +461,7 @@ app.ViewerQuery = (function () {
                         }
 
                     }).always(function () {
-                        if (_id == '310') {
-                            $("#QueryFNotify2").html('<div class="row" style="padding-top: 25px;"><div class="col-9"><a href="javascript:app.master.ShowSideBarExternal(\'Preguntas y respuestas frecuentes\', \'/aliados/viewer/render?id=392&t=4&wd=400px\');" style="font-size: smaller;">Ver preguntas y respuestas frecuentes sobre pagos electrónicos</a></div><div class="col-3"><a href="https://www.placetopay.com/web/" target="_blank"><img src="https://static.placetopay.com/placetopay-logo.svg" class="img-fluid float-right" alt="Responsive image" style="width: 125px;"></a></div></div>')
-                        }
+             
                     });
             else
                 $("#QueryTitle").html('Consulta no indicada');
@@ -530,6 +544,9 @@ app.ViewerQuery = (function () {
                     })
                     break;
             }
+        },
+        EventHandler: function (handler) {
+            _handler = handler;
         }
     }
 })();

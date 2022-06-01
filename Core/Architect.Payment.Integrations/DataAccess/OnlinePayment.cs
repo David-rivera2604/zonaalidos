@@ -139,6 +139,10 @@ namespace Architect.Payment.Integrations.DataAccess
                                 .QueryScalar<Decimal>(connection, "Research");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>Este metodo de actualizacion debido a su naturaleza no actualiza el código el usuario que actualiza.</remarks>
         public static int UpdateNewSession(Contracts.OnlinePayment onlinepaymentItem, IDbConnection connection = null)
         {
             if (onlinepaymentItem.UpdateDate.IsEmpty())
@@ -146,7 +150,7 @@ namespace Architect.Payment.Integrations.DataAccess
                 onlinepaymentItem.UpdateDate = DateTime.Now;
             }
             return Database.Update("UPDATE OnlinePayment " +
-                                      "SET RequestID=:RequestID, ProviderStatus=:ProviderStatus, Reason=:Reason, ResponseData=:ResponseData, Reference=:Reference, IssueDate=:IssueDate, StatusDate=:StatusDate, ProcessUrl=:ProcessUrl, Status=:Status, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
+                                      "SET RequestID=:RequestID, ProviderStatus=:ProviderStatus, Reason=:Reason, ResponseData=:ResponseData, Reference=:Reference, IssueDate=:IssueDate, StatusDate=:StatusDate, ProcessUrl=:ProcessUrl, Status=:Status, UpdateDate=:UpdateDate " +
                                     "WHERE Id=:Id")
                                 .AddParameter("RequestID", DbType.Decimal, 11, onlinepaymentItem.RequestID)
                                 .AddParameter("ProviderStatus", DbType.AnsiString, 20, onlinepaymentItem.ProviderStatus)
@@ -157,7 +161,6 @@ namespace Architect.Payment.Integrations.DataAccess
                                 .AddParameter("StatusDate", DbType.DateTime, 9, onlinepaymentItem.StatusDate)
                                 .AddParameter("ProcessUrl", DbType.AnsiString, 256, onlinepaymentItem.ProcessUrl)
                                 .AddParameter("Status", DbType.Decimal, 5, onlinepaymentItem.Status)
-                                .AddParameter("UpdateUserCode", DbType.Decimal, 9, onlinepaymentItem.UpdateUserCode)
                                 .AddParameter("UpdateDate", DbType.DateTime, 0, onlinepaymentItem.UpdateDate)
                                 .AddParameter("Id", DbType.Decimal, 9, onlinepaymentItem.Id)
                                 .Execute(connection, "Research");
@@ -166,6 +169,7 @@ namespace Architect.Payment.Integrations.DataAccess
         /// <summary>
         /// Actualiza un registro en la tabla OnlinePayment por medio de su clave primaria.
         /// </summary>
+        /// <remarks>Este metodo de actualizacion debido a su naturaleza no actualiza el código el usuario que actualiza.</remarks>
         public static int Update(Contracts.OnlinePayment onlinepaymentItem, IDbConnection connection = null)
         {
             if (onlinepaymentItem.UpdateDate.IsEmpty())
@@ -173,7 +177,7 @@ namespace Architect.Payment.Integrations.DataAccess
                 onlinepaymentItem.UpdateDate = DateTime.Now;
             }
             return Database.Update("UPDATE OnlinePayment " +
-                                      "SET StatusDate=:StatusDate, ProviderStatus=:ProviderStatus, ResponseData=:ResponseData, Status=:Status, Reason=:Reason, Authorization=:Authorization, Receipt=:Receipt, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
+                                      "SET StatusDate=:StatusDate, ProviderStatus=:ProviderStatus, ResponseData=:ResponseData, Status=:Status, Reason=:Reason, Authorization=:Authorization, Receipt=:Receipt, UpdateDate=:UpdateDate " +
                                     "WHERE Id=:Id")
                                 .AddParameter("StatusDate", DbType.DateTime, 9, onlinepaymentItem.StatusDate)
                                 .AddParameter("ProviderStatus", DbType.AnsiString, 20, onlinepaymentItem.ProviderStatus)
@@ -182,7 +186,6 @@ namespace Architect.Payment.Integrations.DataAccess
                                 .AddParameter("Reason", DbType.AnsiString, 256, onlinepaymentItem.Reason)
                                 .AddParameter("Authorization", DbType.AnsiString, 128, onlinepaymentItem.Authorization)
                                 .AddParameter("Receipt", DbType.AnsiString, 128, onlinepaymentItem.Receipt)
-                                .AddParameter("UpdateUserCode", DbType.Decimal, 9, onlinepaymentItem.UpdateUserCode)
                                 .AddParameter("UpdateDate", DbType.DateTime, 0, onlinepaymentItem.UpdateDate)
                                 .AddParameter("Id", DbType.Decimal, 9, onlinepaymentItem.Id)
                                 .Execute(connection, "Research");

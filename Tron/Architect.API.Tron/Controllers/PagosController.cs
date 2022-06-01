@@ -27,7 +27,7 @@ namespace Architect.API.Tron.Controllers
             string ipAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
             string userAgent = Request.Headers.UserAgent.ToString();
 
-            Payment.Integrations.Contracts.SessionInformation result = await Business.Backoffice.Pagos.CrearSesion(tokenInfo.CompanyId, tokenInfo.UserId, ipAddress, userAgent, tokenInfo.AgentCode, sessionRequest.num_poliza, sessionRequest.num_recibo);
+            Payment.Integrations.Contracts.SessionInformation result = await Business.Backoffice.Pagos.CrearSesion(tokenInfo, ipAddress, userAgent, sessionRequest.num_poliza, sessionRequest.num_recibo);
 
             return Ok(result);
         }

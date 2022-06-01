@@ -82,12 +82,12 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Permite la creación de un sesión para realizar un pago.
         /// </summary>
-        public async static Task<Payment.Integrations.Contracts.SessionInformation> CrearSesion(int companyId, int userId, string ipAddress, string userAgent, int cod_agt, string num_poliza, Int64 num_recibo)
+        public async static Task<Payment.Integrations.Contracts.SessionInformation> CrearSesion(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent,  string num_poliza, Int64 num_recibo)
         {
-            Payment.Integrations.Contracts.SessionInformation session = await Payment.Integrations.Payment.VerifySession(companyId, num_poliza, num_recibo);
+            Payment.Integrations.Contracts.SessionInformation session = await Payment.Integrations.Payment.VerifySession(tokenInfo.CompanyId, num_poliza, num_recibo);
             if (session == null)
             {
-                Contracts.Vistas.Recibo recibo = DataAccess.PorRamo.Informacion_de_un_Recibo(Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1), cod_agt, num_poliza, num_recibo);
+                Contracts.Vistas.Recibo recibo = DataAccess.PorRamo.Informacion_de_un_Recibo(Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1), tokenInfo.AgentCode, tokenInfo.IdentificationType.IdentificationType(), tokenInfo.Identification.OnlyNumbers(), num_poliza, num_recibo);
 
                 if (recibo != null)
                 {
@@ -105,7 +105,7 @@ namespace Architect.API.Tron.Business.Backoffice
                         Currency = recibo.COD_MON.ToString(),
                         Amount = recibo.IMP_RECIBO
                     };
-                    session = await Payment.Integrations.Payment.NewSession(companyId, userId, cod_agt, payInfo, ipAddress, userAgent);
+                    session = await Payment.Integrations.Payment.NewSession(tokenInfo.CompanyId, tokenInfo.UserId, tokenInfo.AgentCode, payInfo, ipAddress, userAgent);
                 }
                 else
                 {
