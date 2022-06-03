@@ -290,12 +290,16 @@ app.ui = (function () {
             return value.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         },
         CurrencyAmountFormatter: function (value, row, index, field) {
-            let currency = 'XX';
+            let currency = '';
             if (value === null) {
                 value = 0;
             }
             if (row?.NOM_MON == 'CRC') currency = '₡ ';
             if (row?.NOM_MON == 'USD') currency = '$ ';
+            if (row?.Cod_Mon == 1) currency = '₡ ';
+            if (row?.Cod_Mon == 2) currency = '$ ';
+            if (row?.COD_MON == 1) currency = '₡ ';
+            if (row?.COD_MON == 2) currency = '$ ';
             return currency + value.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         },
         DateFormatter: function (value, row, index, field) {

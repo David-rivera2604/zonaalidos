@@ -329,11 +329,11 @@ app.ViewerQuery = (function () {
                 spec.showExport = false;
                 spec.showPaginationSwitch = false;
                 spec.exportDataType = null;
-                spec.search = false;
                 spec.showToggle = false;
                 spec.showRefresh = false;
                 spec.showColumns = false;
                 spec.showColumnsToggleAll = false;
+                spec.searchAlign = 'left';
 
                 //spec.onRefresh = function (params) {
                 //    app.ViewerQuery.Refresh(params, $el);
@@ -342,6 +342,11 @@ app.ViewerQuery = (function () {
                 $.each(spec.columns, function (key, column) {
                     if (column.formatter != undefined && column.formatter.startsWith('function ')) {
                         column.formatter = column.formatter.replace(/@_/g, '\\\'').parseFunction();
+                    }
+                    if (column.format != undefined) {
+                        column.formatter = function (value, row, index, field) {
+                            return column.format.supplant(row);
+                        }
                     }
                 });
 

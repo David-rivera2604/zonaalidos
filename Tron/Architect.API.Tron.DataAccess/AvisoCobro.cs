@@ -65,12 +65,14 @@ namespace Architect.API.Tron.DataAccess
         /// <summary>
         /// Consulta de avisos de cobro
         /// </summary>
-        public static Contracts.AvisosDeCobro.InformacionAvisosResponse Consulta(Contracts.AvisosDeCobro.Parameters.AvisoCobroConsultaParametros avisoCobroInstance, int cod_Agt, IDbConnection connection = null)
+        public static Contracts.AvisosDeCobro.InformacionAvisosResponse ConsultaAvisos(Contracts.AvisosDeCobro.Parameters.AvisoCobroConsultaParametros avisoCobroInstance, int cod_Agt, IDbConnection connection = null)
         {
-            Contracts.AvisosDeCobro.InformacionAvisosResponse result = new Contracts.AvisosDeCobro.InformacionAvisosResponse() { 
-                Avisos = new List<Contracts.AvisosDeCobro.AvisoConsultaResponse>(), 
-                Errors = new List<string>(), 
-                RecibosAviso = new List<Contracts.AvisosDeCobro.ReciboAvisoRespose>() };
+            Contracts.AvisosDeCobro.InformacionAvisosResponse result = new Contracts.AvisosDeCobro.InformacionAvisosResponse()
+            {
+                Avisos = new List<Contracts.AvisosDeCobro.AvisoConsultaResponse>(),
+                Errors = new List<string>(),
+                RecibosAviso = new List<Contracts.AvisosDeCobro.ReciboAvisoRespose>()
+            };
 
             //avisoCobroInstance.Num_Contrato != 0 ? avisoCobroInstance.Num_Contrato : null  segundo parametro
             Database.Procedure("DC_K_CONSULTA_WEB_AVISOS_MCR.P_CONSULTA_AVISOS")
@@ -126,6 +128,56 @@ namespace Architect.API.Tron.DataAccess
                                 break;
                         }
                     }));
+            return result;
+        }
+
+        /// <summary>
+        ///  Consulta recibos para incluir en aviso de cobro
+        /// </summary>
+        public static List<Contracts.AvisosDeCobro.ReciboRespose> ConsultaRecibos(Contracts.AvisosDeCobro.Parameters.RecibosParametros cobrosInstance, int cod_Agt, IDbConnection connection = null)
+        {
+            List<Contracts.AvisosDeCobro.ReciboRespose> result = new List<Contracts.AvisosDeCobro.ReciboRespose>();
+            Database.Procedure("DC_K_CONSULTA_WEB_AVISOS_MCR.P_CONSULTA_RECIBOS")
+                    .AddParameter("P_NUM_POLIZA_GRUPO", DbType.String, 13, cobrosInstance.Num_Poliza_Grupo)
+                    .AddParameter("P_NUM_CONTRATO", DbType.Int32, 22, cobrosInstance.Num_Contrato)
+                    .AddParameter("P_NUM_POLIZA_CLIENTE", DbType.String, 13, string.Empty)
+                    .AddParameter("P_NUM_POLIZA", DbType.String, 13, string.Empty)
+                    .AddParameter("P_TIP_DOCUM", DbType.String, 3, cobrosInstance.Tip_Docum)
+                    .AddParameter("P_COD_DOCUM", DbType.String, 20, cobrosInstance.Cod_Docum.IsNotEmpty() ? cobrosInstance.Cod_Docum : null)
+                    .AddParameter("P_COD_MON", DbType.Int32, 22, cobrosInstance.Cod_Mon)
+                    .AddParameter("P_FEC_EFEC_REC_DESDE", DbType.Date, 0, cobrosInstance.Fec_Efec_Rec_Desde)
+                    .AddParameter("P_FEC_EFEC_REC_HASTA", DbType.Date, 0, cobrosInstance.Fec_Efec_Rec_Hasta)
+                    .AddParameter("P_COD_AGT", DbType.Int32, 22, cod_Agt)
+                    .AddParameter("P_COD_FRACC_PAGO", DbType.Int32, 22, cobrosInstance.Cod_Fracc_Pago != 0 ? cobrosInstance.Cod_Fracc_Pago : null)
+                    .AddParameter("P_TIP_DOCUM_ACREEDOR", DbType.String, 3, cobrosInstance.Tip_Docum_Acreedor)
+                    .AddParameter("P_COD_DOCUM_ACREEDOR", DbType.String, 20, cobrosInstance.Cod_Docum_Acreedor)
+                    .AddParameter("P_RECIBOS_AVISO", DbType.RefCursor, 0, null, ParameterDirection.Output)
+                    .AddParameter("P_ERRORES", DbType.RefCursor, 0, null, ParameterDirection.Output)
+                    .Query(connection, "Tron", new Action<System.Data.IDataReader, string>((reader, key) =>
+                    {
+                        switch (key)
+                        {
+                            case "P_RECIBOS_AVISO":
+                                result.Add(new Contracts.AvisosDeCobro.ReciboRespose()
+                                {
+                                    Imp_Recibo = reader.DoubleValue("imp_recibo"),
+                                    Num_Recibo = reader.IntegerValue("num_recibo"),
+                                    Fec_Efec_Recibo = reader.DateTimeValue("fec_efec_recibo"),
+                                    Cod_Mon = reader.IntegerValue("cod_mon"),
+                                    Estatus = reader.StringValue("estatus"),
+                                    Num_Poliza = reader.StringValue("num_poliza"),
+                                    Nom_Riesgo = reader.StringValue("nom_riesgo"),
+                                    Tip_Docum_Aseg = reader.StringValue("tip_docum_aseg"),
+                                    Cod_Docum_Aseg = reader.StringValue("cod_docum_aseg"),
+                                    Nom_Asegurado = reader.StringValue("nom_asegurado")
+                                });
+                                break;
+                            case "P_ERRORES":
+                                string xx  = reader.GetValue(0).ToString();
+                                break;
+                        }
+                    }));
+
             return result;
         }
 

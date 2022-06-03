@@ -1,0 +1,179 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<!-- RoleMember -->
+<div class="ibox">
+    <div class="ibox-title">
+        <h5><span id="PageTitle">Avisos de cobro.</span><small class="m-l-sm"><span id="PageSubTitle"> Recibos disponibles</span></small> </h5>
+        <!-- Opciones -->
+        <div class="ibox-tools">
+            <a class="fullscreen-link">
+                <i class="fa fa-expand"></i>
+            </a>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+            <div class="sk-rect4"></div>
+            <div class="sk-rect5"></div>
+        </div>
+        <div id="generalNotify">
+        </div>
+        <!-- Edit Form -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div id="PrototypeEdt" class="animated fadeInRight">
+                    <form id='PrototypeEdtForm' class='form-horizontal' data-toggle='validator'>
+                        <fieldset>
+                            <!-- datosdelapoliza Zone -->
+                            <div class="form-row">
+                                <div class="col-lg-12">
+
+                                    <div class="form-row">
+                                        <!-- desde DatePicker -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='desde'>Desde<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <div class='input-group date' id='desde_group'>
+                                                    <input type='text' id='desde' name='desde' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-calendar'></span>
+                                                    </span>
+                                                </div>
+                                                <div id='desde_validate'></div>
+                                            </div>
+                                        </div>
+
+                                        <!-- hasta DatePicker -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='hasta'>Hasta<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <div class='input-group date' id='hasta_group'>
+                                                    <input type='text' id='hasta' name='hasta' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-calendar'></span>
+                                                    </span>
+                                                </div>
+                                                <div id='hasta_validate'></div>
+                                            </div>
+                                        </div>
+
+                                        <!-- cod_mon DropDownList -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='cod_mon'>Moneda<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <select id='cod_mon' name='cod_mon' class='form-control'>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- cod_fracc_pago DropDownList -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='cod_fracc_pago'>Fraccionamiento</label>
+                                                <select id='cod_fracc_pago' name='cod_fracc_pago' class='form-control'>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- polizagrupo DropDownList -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='polizagrupo'>Póliza grupo</label>
+                                                <select id='polizagrupo' name='polizagrupo' class='form-control'>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- contratos DropDownList -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='contratos'>Contratos</label>
+                                                <select id='contratos' name='contratos' class='form-control'>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- DocumentNumber Text -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='DocumentNumber'>Tomador</label>
+                                                <div class='input-group'>
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-barcode'></span>
+                                                    </span>
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-value='1' id="DocumentNumberType">
+                                                            Cédula
+                                                        </button>
+                                                        <div class="dropdown-menu" id="DocumentNumberTypeMenu">
+                                                            <a class="dropdown-item active" href="#" data-value='1'>Cédula</a>
+                                                            <a class="dropdown-item" href="#" data-value='2'>DIMEX</a>
+                                                            <a class="dropdown-item" href="#" data-value='3'>Pasaporte</a>
+                                                            <a class="dropdown-item" href="#" data-value='4'>Cédula jurídica</a>
+                                                        </div>
+                                                    </div>
+                                                    <input id='DocumentNumber' name='DocumentNumber'
+                                                           type='text' class='form-control' size='20'
+                                                           maxlength='20' placeholder='0X-XXXX-XXXX'>
+
+                                                </div>
+                                                <div id='DocumentNumber_validate'></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- recibos Grid -->
+                            <div class="form-row">
+                                <div class="col-lg-12">
+                                    <div class="form-row">
+                                        <div class='col'>
+                                            <h4>Recibos<label id="recibosTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                        </div>
+                                        <div class='col-auto'>
+                                            <button type="button" class="btn btn-sm btn-outline-primary" title="Al hacer click permite generar un aviso de cobro usando los recibos seleccionados" data-toggle="modal" id="enfermedadesexcluidasNew" disabled> <i class="fa fa-bell-o"></i> Generar aviso de cobro</button>
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                    <div class="form-row">
+                                        <div class='col-md-12' style="padding-bottom: 20px">
+                                            <div class="table-responsive">
+                                                <table id="recibosTbl" style="font-size: 11px;">
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class='col-md-12'>
+                                    <div class="modal-footer">
+                                        <button id="PrototypeEdtFormSave" type="button" class="btn btn-primary" data-doing="Buscando ..." title="Busca los recibos que cumplan con los criterios indicados">Buscar</button>
+                                        <button id="PrototypeEdtFormCancel" type="button" class="btn btn-white" data-doing="Cancelando cambios...">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Form End -->
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/AvisosCobro.Recibos.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.AvisosRecibos.Init();
+        });
+    </script>
+}

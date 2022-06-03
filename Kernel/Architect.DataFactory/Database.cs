@@ -530,7 +530,7 @@ namespace Architect.DataFactory
         public void Query(IDbConnection connection, string connectionStringName, Action<IDataReader, string> callBack)
         {
             IDbConnection local = null;
-            if (connection != null)
+            if (connection == null)
             {
                 this.ConnectionStringName = connectionStringName;
                 local = OpenConnection(connectionStringName);
@@ -1258,7 +1258,7 @@ namespace Architect.DataFactory
                                 }
                                 else
                                 {
-                                    parameter = new OracleParameter(item.Name, DBParameterTypeConvert(item), item.Size, item.Value, DBParameterDirectionConvert(item));
+                                    parameter = new OracleParameter(item.Name, DBParameterTypeConvert(item), item.Size, DBParameterValueConvert(item.Value), DBParameterDirectionConvert(item));
                                 }
                                 cmmd.Parameters.Add(parameter);
                                 if (item.Type == Enumerations.DbType.RefCursor)

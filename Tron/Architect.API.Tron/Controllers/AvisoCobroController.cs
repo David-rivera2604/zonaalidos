@@ -22,14 +22,31 @@ namespace Architect.API.Tron.Controllers
         /// <summary>
         ///  Consulta Recibos para incluir en aviso de cobro
         /// </summary>
-        [HttpGet]
-        public async Task<IHttpActionResult> Consulta([FromUri] Contracts.AvisosDeCobro.Parameters.AvisoCobroConsultaParametros item)
+        [HttpPost]
+        [Route("ConsultaRecibos")]
+        public async Task<IHttpActionResult> ConsultaRecibos([FromBody] Contracts.AvisosDeCobro.Parameters.RecibosParametros item)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            List<Contracts.AvisosDeCobro.ReciboRespose> result = null;
+            await Task.Run(() =>
+            {
+                result = Business.Backoffice.AvisoCobro.ConsultaRecibos(item, tokenInfo.AgentCode);
+            }).ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
+        ///  Consulta avisos de cobro
+        /// </summary>
+        [HttpPost]
+        [Route("ConsultaAvisos")]
+        public async Task<IHttpActionResult> ConsultaAvisos([FromBody] Contracts.AvisosDeCobro.Parameters.AvisoCobroConsultaParametros item)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
             Contracts.AvisosDeCobro.InformacionAvisosResponse result = null;
             await Task.Run(() =>
             {
-                result = Business.Backoffice.AvisoCobro.Consulta(item, tokenInfo.AgentCode);
+                result = Business.Backoffice.AvisoCobro.ConsultaAvisos(item, tokenInfo.AgentCode);
             }).ConfigureAwait(false);
             return Ok(result);
         }
@@ -38,6 +55,7 @@ namespace Architect.API.Tron.Controllers
         ///  Genera aviso de cobro
         /// </summary>
         [HttpPost]
+        [Route("Generar")]
         public async Task<IHttpActionResult> Generar([FromBody] Contracts.AvisosDeCobro.Parameters.AvisoCobroGenerarParametros item)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
@@ -56,7 +74,6 @@ namespace Architect.API.Tron.Controllers
         /// </summary>
         [HttpDelete]
         [Route("Elimina/{numAviso}")]
-        [Authorize]
         public async Task<IHttpActionResult> Delete([FromUri] string numAviso)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
