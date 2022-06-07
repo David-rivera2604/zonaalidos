@@ -409,5 +409,22 @@ namespace Architect.Utilities.Extensions
             return value;
         }
 
+        public static string DocumentNumber(this string value, string documentType)
+        {
+            if (value.IsNotEmpty())
+            {
+                if (documentType != "3" && documentType != "PAS")
+                {
+                    value = value.OnlyNumbers();
+                    if (value.Length > 0)
+                    {
+                        value = Convert.ToInt64(value).ToString();
+                    }
+                }
+            }
+
+            return value;
+        }
+
     }
 }

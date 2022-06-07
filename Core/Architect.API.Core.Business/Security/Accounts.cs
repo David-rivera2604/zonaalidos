@@ -598,7 +598,7 @@ namespace Architect.API.Core.Business.Security
                     else
                         if (companyId == 3)
                     {
-                        Contracts.Security.ClientInformation clientInfo = Tron.RetrieveClientInformationByDocument(result.UserMember.IdentificationType.ToString().IdentificationType(), result.UserMember.Identification.OnlyNumbers());
+                        Contracts.Security.ClientInformation clientInfo = Tron.RetrieveClientInformationByDocument(result.UserMember.IdentificationType.ToString().IdentificationType(), result.UserMember.Identification.DocumentNumber(result.UserMember.IdentificationType.ToString().IdentificationType()));
 
                         if (clientInfo.IsEmpty())
                         {
@@ -625,5 +625,5 @@ namespace Architect.API.Core.Business.Security
             return result;
         }
 
-   }
+    }
 }
