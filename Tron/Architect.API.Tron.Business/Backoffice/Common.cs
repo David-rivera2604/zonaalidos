@@ -54,14 +54,6 @@ namespace Architect.API.Tron.Business.Backoffice
                 string failDetail = System.Text.Encoding.Default.GetString(result);
                 Architect.Utilities.Log.ErrorLog("ImprimirAviso", failDetail);
                 throw new Exception(failDetail);
-            } else
-            {
-                string filename = ConfigurationManager.AppSettings["Attachments.Path"] + "test_"+ num_aviso.ToString() +".pdf";
-                using (var stream = new FileStream(filename, FileMode.Create))
-                {
-                    stream.Write(result, 0, result.Length);
-                    stream.Flush();
-                }
             }
             return result;
         }
