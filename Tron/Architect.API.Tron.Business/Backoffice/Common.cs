@@ -14,6 +14,60 @@ namespace Architect.API.Tron.Business.Backoffice
     public static class Common
     {
         /// <summary>
+        /// Descarga el detalle de un aviso de cobro de tron.
+        /// </summary>
+        public static byte[] ImprimirAvisoDetalle(int num_aviso)
+        {
+            byte[] result = null;
+
+            string id = string.Format("{0}/prd/servlet/mapfre.srv.SVJspool?otxtAccion=11&id={1}&format=pdf",
+                                        ConfigurationManager.AppSettings["Mapfre.Tron.RutaImpresion"],
+                                        Architect.API.Tron.DataAccess.Impresion.AvisoDeCobroDetalle(num_aviso));
+            using (WebClient client = new WebClient())
+            {
+                result = client.DownloadData(id);
+            }
+            if (result.Length < 200)
+            {
+                string failDetail = System.Text.Encoding.Default.GetString(result);
+                Architect.Utilities.Log.ErrorLog("ImprimirAvisoDetalle", failDetail);
+                throw new Exception(failDetail);
+            }
+            return result;
+        }
+        /// <summary>
+        /// Descarga el aviso de cobro de tron.
+        /// </summary>
+        public static byte[] ImprimirAviso(int num_aviso)
+        {
+            byte[] result = null;
+
+            string id = string.Format("{0}/prd/servlet/mapfre.srv.SVJspool?otxtAccion=11&id={1}&format=pdf",
+                                        ConfigurationManager.AppSettings["Mapfre.Tron.RutaImpresion"],
+                                        Architect.API.Tron.DataAccess.Impresion.AvisoDeCobro(1, num_aviso));
+            using (WebClient client = new WebClient())
+            {
+                result = client.DownloadData(id);
+            }
+            if (result.Length < 200)
+            {
+                string failDetail = System.Text.Encoding.Default.GetString(result);
+                Architect.Utilities.Log.ErrorLog("ImprimirAviso", failDetail);
+                throw new Exception(failDetail);
+            } else
+            {
+                string filename = ConfigurationManager.AppSettings["Attachments.Path"] + "test_"+ num_aviso.ToString() +".pdf";
+                using (var stream = new FileStream(filename, FileMode.Create))
+                {
+                    stream.Write(result, 0, result.Length);
+                    stream.Flush();
+                }
+            }
+            return result;
+        }
+
+
+        /// <summary>
         /// Recupera la información de un presupuesto
         /// </summary>
         public static Contracts.Presupuesto.DatoFijo InformacionDePresupuesto(string num_poliza)

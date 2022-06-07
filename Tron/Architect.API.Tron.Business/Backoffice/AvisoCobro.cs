@@ -12,6 +12,14 @@ namespace Architect.API.Tron.Business.Backoffice
     public class AvisoCobro
     {
         /// <summary>
+        /// Modifica un aviso de cobro para exluir recibos del mismo
+        /// </summary>
+        public static bool Modifica(Contracts.AvisosDeCobro.Parameters.AvisoCobroModificaParametros item)
+        {
+            return DataAccess.AvisoCobro.Modifica(item.Num_Aviso, item.Lista_Recibos);
+        }
+
+        /// <summary>
         /// Consulta Recibos para incluir en aviso de cobro
         /// </summary>
         public static List<Contracts.AvisosDeCobro.ReciboRespose> ConsultaRecibos(Contracts.AvisosDeCobro.Parameters.RecibosParametros item, int cod_Agt)
@@ -21,19 +29,6 @@ namespace Architect.API.Tron.Business.Backoffice
                 item.Num_Contrato = int.MinValue;
             }
             return DataAccess.AvisoCobro.ConsultaRecibos(item, cod_Agt);
-        }
-
-
-        /// <summary>
-        /// Consulta Recibos para incluir en aviso de cobro
-        /// </summary>
-        public static Contracts.AvisosDeCobro.InformacionAvisosResponse ConsultaAvisos(Contracts.AvisosDeCobro.Parameters.AvisoCobroConsultaParametros item, int cod_Agt)
-        {
-            if (item.Num_Contrato == 0)
-            {
-                item.Num_Contrato = int.MinValue;
-            }
-            return DataAccess.AvisoCobro.ConsultaAvisos(item, cod_Agt);
         }
 
         /// <summary>

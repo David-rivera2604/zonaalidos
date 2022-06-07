@@ -13,6 +13,19 @@ namespace Architect.API.Tron.DataAccess
     /// </summary>
     public static partial class AvisoCobro
     {
+        /// <summary>
+        /// Modifica un aviso de cobro para exluir recibos del mismo
+        /// </summary>
+        public static bool Modifica(Int64 numAviso, string recibos_excluir, IDbConnection connection = null)
+        {
+            return Database.Procedure("DC_K_CONSULTA_WEB_AVISOS_MCR.p_modifica_aviso")
+                        .AddParameter("P_NUM_AVISO", DbType.String, 15, numAviso.ToString())
+                        .AddParameter("p_lista_recibos_excluir", DbType.String, 65535, recibos_excluir)
+                        .AddParameter("P_RESULTADO", DbType.RefCursor, 0, null, ParameterDirection.Output)
+                        .AddParameter("P_ERRORES", DbType.RefCursor, 0, null, ParameterDirection.Output)
+                        .Execute(connection, "Tron") != 0;
+        }
+
         //reparar contrato
         /// <summary>
         /// Genera Aviso de Cobro
@@ -62,74 +75,7 @@ namespace Architect.API.Tron.DataAccess
                         .Execute(connection, "Tron") != 0;
         }
 
-        /// <summary>
-        /// Consulta de avisos de cobro
-        /// </summary>
-        public static Contracts.AvisosDeCobro.InformacionAvisosResponse ConsultaAvisos(Contracts.AvisosDeCobro.Parameters.AvisoCobroConsultaParametros avisoCobroInstance, int cod_Agt, IDbConnection connection = null)
-        {
-            Contracts.AvisosDeCobro.InformacionAvisosResponse result = new Contracts.AvisosDeCobro.InformacionAvisosResponse()
-            {
-                Avisos = new List<Contracts.AvisosDeCobro.AvisoConsultaResponse>(),
-                Errors = new List<string>(),
-                RecibosAviso = new List<Contracts.AvisosDeCobro.ReciboAvisoRespose>()
-            };
 
-            //avisoCobroInstance.Num_Contrato != 0 ? avisoCobroInstance.Num_Contrato : null  segundo parametro
-            Database.Procedure("DC_K_CONSULTA_WEB_AVISOS_MCR.P_CONSULTA_AVISOS")
-                    .AddParameter("P_NUM_POLIZA_GRUPO", DbType.String, 13, avisoCobroInstance.Num_Poliza_Grupo)
-                    .AddParameter("P_NUM_CONTRATO", DbType.Int32, 22, avisoCobroInstance.Num_Contrato)
-                    .AddParameter("P_NUM_POLIZA_CLIENTE", DbType.String, 13, string.Empty)
-                    .AddParameter("P_NUM_POLIZA", DbType.String, 13, string.Empty)
-                    .AddParameter("P_TIP_DOCUM", DbType.String, 3, avisoCobroInstance.Tip_Docum)
-                    .AddParameter("P_COD_DOCUM", DbType.String, 20, avisoCobroInstance.Cod_Docum)
-                    .AddParameter("P_COD_MON", DbType.Int32, 22, avisoCobroInstance.Cod_Mon)
-                    .AddParameter("P_FEC_EFEC_REC_DESDE", DbType.Date, 0, avisoCobroInstance.Fec_Efec_Rec_Desde)
-                    .AddParameter("P_FEC_EFEC_REC_HASTA", DbType.Date, 0, avisoCobroInstance.Fec_Efec_Rec_Hasta)
-                    .AddParameter("P_COD_AGT", DbType.Int32, 22, cod_Agt)
-                    .AddParameter("P_COD_FRACC_PAGO", DbType.Int32, 22, avisoCobroInstance.Cod_Fracc_Pago != 0 ? avisoCobroInstance.Cod_Fracc_Pago : null)
-                    .AddParameter("P_TIP_DOCUM_ACREEDOR", DbType.String, 3, avisoCobroInstance.Tip_Docum_Acreedor)
-                    .AddParameter("P_COD_DOCUM_ACREEDOR", DbType.String, 20, avisoCobroInstance.Cod_Docum_Acreedor)
-                    .AddParameter("P_AVISO", DbType.RefCursor, 0, null, ParameterDirection.Output)
-                    .AddParameter("P_RECIBOS_AVISO", DbType.RefCursor, 0, null, ParameterDirection.Output)
-                    .AddParameter("P_ERRORES", DbType.RefCursor, 0, null, ParameterDirection.Output)
-                    .Query(connection, "Tron", new Action<System.Data.IDataReader, string>((reader, key) =>
-                    {
-                        switch (key)
-                        {
-                            case "P_AVISO":
-                                result.Avisos.Add(new Contracts.AvisosDeCobro.AvisoConsultaResponse()
-                                {
-                                    Num_Aviso = reader.Integer64Value("NUM_AVISO"),
-                                    Cantidad_Recibos = reader.IntegerValue("CANT_RECIBOS"),
-                                    Total_Recivos = reader.DoubleValue("TOTAL_RECIBOS"),
-                                    Estatus = reader.StringValue("ESTATUS")
-                                });
-
-                                break;
-                            case "P_RECIBOS_AVISO":
-                                result.RecibosAviso.Add(new Contracts.AvisosDeCobro.ReciboAvisoRespose()
-                                {
-                                    Imp_Recibo = reader.DoubleValue("imp_recibo"),
-                                    Num_Recibo = reader.IntegerValue("num_recibo"),
-                                    Fec_Efec_Recibo = reader.DateTimeValue("fec_efec_recibo"),
-                                    Cod_Mon = reader.IntegerValue("cod_mon"),
-                                    Num_Aviso = reader.StringValue("num_aviso"),
-                                    Estatus = reader.StringValue("estatus"),
-                                    Num_Poliza = reader.StringValue("num_poliza"),
-                                    Nom_Riesgo = reader.StringValue("nom_riesgo"),
-                                    Tip_Docum_Aseg = reader.StringValue("tip_docum_aseg"),
-                                    Cod_Docum_Aseg = reader.StringValue("cod_docum_aseg"),
-                                    Nom_Asegurado = reader.StringValue("nom_asegurado")
-                                });
-                                break;
-
-                            case "P_ERRORES":
-                                result.Errors.Add(reader.StringValue("''"));
-                                break;
-                        }
-                    }));
-            return result;
-        }
 
         /// <summary>
         ///  Consulta recibos para incluir en aviso de cobro
@@ -173,7 +119,7 @@ namespace Architect.API.Tron.DataAccess
                                 });
                                 break;
                             case "P_ERRORES":
-                                string xx  = reader.GetValue(0).ToString();
+                                string xx = reader.GetValue(0).ToString();
                                 break;
                         }
                     }));

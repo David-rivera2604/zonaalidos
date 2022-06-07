@@ -85,11 +85,11 @@ app.AvisosRecibos = (function () {
     function Controls_Events() {
 
         $(".input-group.date").on('dp.change', function (e) {
-            data_changed();
+            data_changed('#' + this.id.replace('_group', ''));
         });
 
-        $("#PrototypeEdtForm :input").change(function () {
-            data_changed();
+        $("#PrototypeEdtForm :input").change(function (e) {
+            data_changed(this);
         });
 
         $('#desde').blur(function () {
@@ -118,6 +118,34 @@ app.AvisosRecibos = (function () {
                         });
                 }
             }
+        });
+
+        $('#GeneraAvisos').click(function () {
+
+            if (app.ui.IsValid('#PrototypeEdtForm', false)) {
+                let payload = MapInputToObject();
+                payload.Lista_Recibos = $('#recibosTbl').bootstrapTable('getData').filter(i => i.seleccionado).map(u => u.Num_Recibo).join(';');
+
+                app.ui.ButtonDoing('#GeneraAvisos');
+                app.core.Post(app.setting.apipath + 'v1/AvisoCobro/Generar',
+                    JSON.stringify(payload),
+                    function (data) {
+                        console.log(data);
+                        if (data?.length > 0) {
+                            app.ui.ShowAlert('generalNotify', 'alert-success', `<b> <i class="fa fa-check"></i> El aviso de cobro #${data[0].Num_Aviso} por un total de ${data[0].Total_Importe_Aviso.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }, fue creado de forma existosa.</b> Se procesaron con exito ${data[0].Cantidad_Recibos} recibos y los no procesados fueron ${data[0].Cantidad_Recibos_No_Procesados}.`);
+                        } else {
+                            app.ui.ShowAlert('quoteNotify', 'alert-danger', 'Ha ocurrido un error al tratar de generar el aviso de cobro, por favor intente nuevamente y en caso de persistir el problema contacte el personal de soporte');
+                        }
+                        $('#recibosTbl').bootstrapTable('removeAll', {});
+                        $('#recibosTbl').bootstrapTable('load', {});
+
+                    }).always(function () {
+                        app.ui.ButtonDone('#GeneraAvisos');
+                    });
+                
+
+            }
+            event.preventDefault();
         });
 
         $('#PrototypeEdtFormSave').click(function () {
@@ -153,9 +181,19 @@ app.AvisosRecibos = (function () {
 
     };
 
-    function data_changed() {
-        $('#recibosTbl').bootstrapTable('load', {});
+    function data_changed(e) {
+        let event = $(e).data('event');
+        switch (event) {
+            case 'clear.grid':
+                $('#recibosTbl').bootstrapTable('removeAll', {});
+                $('#recibosTbl').bootstrapTable('load', {});
+                break;
+        }
 
+        if ($('#generalNotify').html().length > 10) {
+            $('#generalNotify').html('');
+        }
+        $('#GeneraAvisos').prop("disabled", $('#recibosTbl').bootstrapTable('getData').filter(i => i.seleccionado).length == 0);
 
         if (changedCallback !== undefined && changedCallback !== null)
             changedCallback(MapInputToObject());
@@ -256,6 +294,12 @@ app.AvisosRecibos = (function () {
                 }]
         });
 
+        $('#recibosTbl').on('check.bs.table', function () {
+            data_changed('#recibosTbl');
+        });
+        $('#recibosTbl').on('uncheck.bs.table', function () {
+            data_changed('#recibosTbl');
+        });
     };
 
     return {

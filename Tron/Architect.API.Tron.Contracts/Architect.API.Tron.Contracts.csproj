@@ -53,6 +53,7 @@
     <Compile Include="AvisosDeCobro\Parameters\AvisoCobroBaseParametros.cs" />
     <Compile Include="AvisosDeCobro\Parameters\AvisoCobroConsultaParametros.cs" />
     <Compile Include="AvisosDeCobro\Parameters\AvisoCobroGenerarParametros.cs" />
+    <Compile Include="AvisosDeCobro\Parameters\AvisoCobroModificaParametros.cs" />
     <Compile Include="AvisosDeCobro\Parameters\RecibosParametros.cs" />
     <Compile Include="AvisosDeCobro\ReciboAvisoRespose.cs" />
     <Compile Include="AvisosDeCobro\ReciboRespose.cs" />

@@ -1,6 +1,7 @@
 ﻿var app = app || {};
 
 app.ViewerQuery = (function () {
+    let _handler = null;
     var _id = null;
     var _data;
     var _itemHeader = '  <li class="nav-item"> ' +
@@ -13,6 +14,9 @@ app.ViewerQuery = (function () {
 
     var _itemTable = '<!-- Grid -->  ' +
         '{BodyFilter} ' +
+        '<div id="QueryHNotify{index}"></div>' +
+        '<div id="header{index}" class="d-none"> ' +
+        '</div> ' +
         '<div id="{index}toolbar"> ' +
         '</div> ' +
         '<!-- Grid --> ' +
@@ -24,7 +28,8 @@ app.ViewerQuery = (function () {
         '		<div id="chart{index}" class="d-none">  ' +
         '		</div>  ' +
         '	</div>  ' +
-        '</div>  ';
+        '</div>  ' +
+        '<div id="QueryFNotify{index}"></div>';
 
     var _itemAvanceFilter = '						<div class="col-sm-12 col-md-12"> ' +
         '							<div class="form-group"> ' +
@@ -101,19 +106,7 @@ app.ViewerQuery = (function () {
         }
 
 
-        if (data.dialog != undefined && data.dialog.html != null) {
-            var code = app.core.ReplaceAll(data.dialog.code, ".Prototype", ".Prototype" + data.index);
-            code = app.core.ReplaceAll(code, 'Init"', 'Init' + data.index + '"');
-            eval(code);
 
-            var nameClass = "Prototype" + data.index;
-            if (nameClass in app) {
-                app[nameClass]['Changed'](function (data) {
-                    var gridControlName = "#" + index + "GridTbl";
-                    app.ViewerQuery.Refresh(undefined, $(gridControlName), _id, '');
-                });
-            }
-        }
 
         if (data.chart != undefined) {
             var spec = data.table;
@@ -122,13 +115,26 @@ app.ViewerQuery = (function () {
                 Chart_Render(data.chart, data.table.data, data.index);
             }
         }
-        else if (data.type != 'template') {
-            if (data.table != undefined)
-                data.table.Direct = data.Direct;
-            Table_Render(data.table, data.index);
-        }
+        else {
+            if (data.dialog != undefined && data.dialog.html != null) {
+                var code = app.core.ReplaceAll(data.dialog.code, ".Prototype", ".Prototype" + data.index);
+                code = app.core.ReplaceAll(code, 'Init"', 'Init' + data.index + '"');
+                eval(code);
 
-       
+                var nameClass = "Prototype" + data.index;
+                if (nameClass in app) {
+                    app[nameClass]['Changed'](function (data) {
+                        var gridControlName = "#" + index + "GridTbl";
+                        app.ViewerQuery.Refresh(undefined, $(gridControlName), _id, '');
+                    });
+                }
+            }
+            if (data.type != 'template') {
+                if (data.table != undefined)
+                    data.table.Direct = data.Direct;
+                Table_Render(data.table, data.index);
+            }
+        }      
     }
 
     function Template_Render(template, data) {
@@ -161,7 +167,13 @@ app.ViewerQuery = (function () {
         spec.clickToSelect = true;
         spec.showColumnsToggleAll = true;
         spec.searchAlign = 'left';
-
+        spec.rowStyle = function (row, index) {
+            return {
+                css: {
+                    'vertical-align': 'top'
+                }
+            }
+        }
         //spec.detailFilter = function (index, row) {
         //    var result = true;
         //    //var columns = $("#RoleMemberGridTbl").bootstrapTable('getOptions').columns[0];
@@ -276,6 +288,9 @@ app.ViewerQuery = (function () {
             export: 'fa-download'
         };
         $(gridControlName).bootstrapTable(spec);
+        if (spec.searchStyle != undefined) {
+            $('.search').width(spec.searchStyle);
+        }
     }
 
     function Chart_Render(chartSpec, data, renderIndex) {
@@ -405,7 +420,8 @@ app.ViewerQuery = (function () {
                 spec.showExport = false;
                 spec.showPaginationSwitch = false;
                 spec.exportDataType = null;
-                spec.search = false;
+                //spec.search = false;
+                spec.searchAlign = 'left';
                 spec.showToggle = false;
                 spec.showRefresh = false;
                 spec.showColumns = false;
@@ -470,7 +486,20 @@ app.ViewerQuery = (function () {
                                 item.index = index;
                                 $("#queryTab").append(RenderTabHeader(item));
                                 $("#queryTabContent").append(RenderTabBody(item));
-                                Render(item);
+                                if (item.include !== null && item.include !== '') {
+                                    app.core.LoadScriptFile(item.include)
+                                        .then(d => {
+                                            Render(item);
+                                            if (app.Extend.EventHandler !== null) {
+                                                app.Extend.EventHandler(_id, item.index, 'loaded');
+                                            }
+                                        })
+                                        .catch(err => {
+                                            console.error(err);
+                                        });
+                                } else {
+                                    Render(item);
+                                }
                             });
                         }
                         else {
@@ -481,7 +510,20 @@ app.ViewerQuery = (function () {
                                 item = JSON.parse(item);
                                 item.index = index;
                                 $("#container").append(RenderTabContentUI(item));
-                                Render(item);
+                                if (item.include !== null && item.include !== '') {
+                                    app.core.LoadScriptFile(item.include)
+                                        .then(d => {
+                                            Render(item);
+                                            if (app.Extend != undefined && app.Extend.EventHandler != undefined && app.Extend.EventHandler !== null) {
+                                                app.Extend.EventHandler(_id, item.index, 'loaded');
+                                            }
+                                        })
+                                        .catch(err => {
+                                            console.error(err);
+                                        });
+                                } else {
+                                    Render(item);
+                                }
                             });
                         }
                     });
@@ -581,6 +623,9 @@ app.ViewerQuery = (function () {
         },
         Data: function () {
             return _data;
+        },
+        EventHandler: function (handler) {
+            _handler = handler;
         }
     };
 })();

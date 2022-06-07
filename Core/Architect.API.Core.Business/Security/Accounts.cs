@@ -57,9 +57,9 @@ namespace Architect.API.Core.Business.Security
             {
                 track.UserName = authenticationRequest.Email;
                 if (authenticationRequest.Email.Contains("@"))
-                    user = DataAccess.Security.UserMember.RetrieveByEMail(authenticationRequest.Email, companyId);
+                    user = DataAccess.Security.UserMember.RetrieveByEMail(authenticationRequest.Email.ToLower(), companyId);
                 else
-                    user = DataAccess.Security.UserMember.RetrieveByUserName(authenticationRequest.Email, companyId);
+                    user = DataAccess.Security.UserMember.RetrieveByUserName(authenticationRequest.Email.ToLower(), companyId);
 
                 if (user.IsNotEmpty())
                 {

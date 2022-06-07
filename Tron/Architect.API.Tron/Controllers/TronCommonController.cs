@@ -16,6 +16,47 @@ namespace Architect.API.Tron.Controllers
     [RoutePrefix("api/v{version:apiVersion}/TronCommon")]
     public class TronCommonController : ApiController
     {
+        /// <summary>
+        /// Descarga el reporte para un aviso de cobro
+        /// </summary>
+        [HttpGet]
+        [Route("ImprimirAviso/{num_aviso}")]
+        public HttpResponseMessage ImprimirAviso([FromUri] int num_aviso)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+
+            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+            var dataStream = new MemoryStream(Business.Backoffice.Common.ImprimirAviso(num_aviso));
+            result.Content = new StreamContent(dataStream);
+            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline")
+            {
+                FileName = "Mapfre Aviso " + num_aviso.ToString() + ".pdf"
+            };
+            result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
+            result.Content.Headers.ContentLength = dataStream.Length;
+            return result;
+        }
+
+        /// <summary>
+        /// Descarga el detalle de un reporte para un aviso de cobro
+        /// </summary>
+        [HttpGet]
+        [Route("ImprimirAvisoDetalle/{num_aviso}")]
+        public HttpResponseMessage ImprimirAvisoDetalle([FromUri] int num_aviso)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+
+            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+            var dataStream = new MemoryStream(Business.Backoffice.Common.ImprimirAvisoDetalle(num_aviso));
+            result.Content = new StreamContent(dataStream);
+            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline")
+            {
+                FileName = "Mapfre Aviso " + num_aviso.ToString() + ".pdf"
+            };
+            result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
+            result.Content.Headers.ContentLength = dataStream.Length;
+            return result;
+        }
 
         [HttpGet]
         [Route("Ramo")]

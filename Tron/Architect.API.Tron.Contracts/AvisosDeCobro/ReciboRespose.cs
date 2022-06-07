@@ -12,6 +12,10 @@ namespace Architect.API.Tron.Contracts.AvisosDeCobro
     public class ReciboRespose
     {
         /// <summary>
+        /// Indica si el recibo fue seleccionado
+        /// </summary>
+        public bool Seleccionado { get; set; }
+        /// <summary>
         /// Total del recibo
         /// </summary>
         public double Imp_Recibo { get; set; }

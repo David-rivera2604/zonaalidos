@@ -20,6 +20,22 @@ namespace Architect.API.Tron.Controllers
     {
 
         /// <summary>
+        /// Modifica un aviso de cobro para exluir recibos del mismo
+        /// </summary>
+        [HttpPut]
+        [Route("")]
+        public async Task<IHttpActionResult> Modifica([FromBody] Contracts.AvisosDeCobro.Parameters.AvisoCobroModificaParametros item)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            bool result = false;
+            await Task.Run(() =>
+            {
+                result = Business.Backoffice.AvisoCobro.Modifica(item);
+            }).ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
         ///  Consulta Recibos para incluir en aviso de cobro
         /// </summary>
         [HttpPost]
@@ -31,22 +47,6 @@ namespace Architect.API.Tron.Controllers
             await Task.Run(() =>
             {
                 result = Business.Backoffice.AvisoCobro.ConsultaRecibos(item, tokenInfo.AgentCode);
-            }).ConfigureAwait(false);
-            return Ok(result);
-        }
-
-        /// <summary>
-        ///  Consulta avisos de cobro
-        /// </summary>
-        [HttpPost]
-        [Route("ConsultaAvisos")]
-        public async Task<IHttpActionResult> ConsultaAvisos([FromBody] Contracts.AvisosDeCobro.Parameters.AvisoCobroConsultaParametros item)
-        {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
-            Contracts.AvisosDeCobro.InformacionAvisosResponse result = null;
-            await Task.Run(() =>
-            {
-                result = Business.Backoffice.AvisoCobro.ConsultaAvisos(item, tokenInfo.AgentCode);
             }).ConfigureAwait(false);
             return Ok(result);
         }
@@ -73,7 +73,7 @@ namespace Architect.API.Tron.Controllers
         ///  Elimina un aviso de cobro
         /// </summary>
         [HttpDelete]
-        [Route("Elimina/{numAviso}")]
+        [Route("{numAviso}")]
         public async Task<IHttpActionResult> Delete([FromUri] string numAviso)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();

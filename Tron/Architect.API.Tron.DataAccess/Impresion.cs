@@ -6,6 +6,32 @@ namespace Architect.API.Tron.DataAccess
 {
     public static class Impresion
     {
+        public static string AvisoDeCobroDetalle(int num_aviso)
+        {
+            IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron");
+            Database.Procedure("dc_k_consulta_web_avisos_mcr.p_imprime_aviso")
+                    .AddParameter("p_num_aviso", Architect.DataFactory.Enumerations.DbType.String, 7, num_aviso.ToString())
+                    .AddParameter("p_id_report", Architect.DataFactory.Enumerations.DbType.String, 22, 0, ParameterDirection.Output)
+                    .AddParameter("p_errores", Architect.DataFactory.Enumerations.DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
+                    .Execute(currentConnection, "Tron");
+
+            string reportId = ReportIdentify(currentConnection);
+            currentConnection.Close();
+            return reportId;
+        }
+
+        public static string AvisoDeCobro(int cod_cia, int num_aviso)
+        {
+            IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron");
+            Database.Procedure("TRON2000.em_k_jrp_factura_aviso_mcr.p_lista")
+                    .AddParameter("p_cod_cia", Architect.DataFactory.Enumerations.DbType.Int32, 22, cod_cia)
+                    .AddParameter("p_num_aviso", Architect.DataFactory.Enumerations.DbType.String, 7, num_aviso.ToString())
+                    .Execute(currentConnection, "Tron");
+
+            string reportId = ReportIdentify(currentConnection);
+            currentConnection.Close();
+            return reportId;
+        }
         public static string Poliza(int cod_cia, string num_poliza, string procedureName, int num_riesgo = 1)
         {
             IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron");
