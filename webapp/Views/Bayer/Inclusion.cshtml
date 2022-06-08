@@ -64,8 +64,8 @@
                                         <div class='col-sm-4 col-md-4'>
                                             <div class='form-group'>
                                                 <label class='control-label' for='IssueDate'>Fecha de ingreso a la póliza<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                <div class='input-group date' id='IssueDate_group'>
-                                                    <input type='text' id='IssueDate' name='IssueDate' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                <div class='input-group date role-Revisor-enabled-bayer' id='IssueDate_group'>
+                                                    <input type='text' id='IssueDate' name='IssueDate' class='form-control role-Revisor-enabled-bayer' size='10' maxlength='10' placeholder='día/mes/año' />
                                                     <span class='input-group-addon'>
                                                         <span class='glyphicon glyphicon-calendar'></span>
                                                     </span>
@@ -259,8 +259,8 @@
                                         <div class='col-sm-3 col-md-3'>
                                             <div class='form-group'>
                                                 <label class='control-label' for='DateEntryWork'>Fecha de Ingreso a trabajar<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                <div class='input-group date' id='DateEntryWork_group'>
-                                                    <input type='text' id='DateEntryWork' name='DateEntryWork' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                <div class='input-group date role-Revisor-enabled-bayer' id='DateEntryWork_group'>
+                                                    <input type='text' id='DateEntryWork' name='DateEntryWork' class='form-control role-Revisor-enabled-bayer' size='10' maxlength='10' placeholder='día/mes/año' />
                                                     <span class='input-group-addon'>
                                                         <span class='glyphicon glyphicon-calendar'></span>
                                                     </span>
@@ -293,7 +293,7 @@
                                         <div class='col-sm-3 col-md-3 tenant-bayer-visible d-none'>
                                             <div class='form-group'>
                                                 <label class='control-label' for='MonthlySalary'>Salario mensual<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                <input type='text' id='MonthlySalary' name='MonthlySalary' class='form-control text-right' size='21' maxlength='21' />
+                                                <input type='text' id='MonthlySalary' name='MonthlySalary' class='form-control text-right role-Revisor-enabled-bayer' size='21' maxlength='21' />
                                             </div>
                                         </div>
 
@@ -541,7 +541,6 @@
                                     <button id="VisualizationsEdtFormUpLoad" type="button" class="btn btn-primary d-none" data-doing="Cargando la solicitud firmada...">Cargar la solicitud firmada</button>
                                 </div>
                             </div>
-
 
                             <!-- Adjuntos Zone -->
                             <div class="form-row attachment d-none">

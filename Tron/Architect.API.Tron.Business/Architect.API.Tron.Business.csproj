@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Backoffice\AvisoCobro.cs" />
+    <Compile Include="Backoffice\Pagos.cs" />
     <Compile Include="Backoffice\Poliza.cs" />
     <Compile Include="Backoffice\Common.cs" />
     <Compile Include="Backoffice\Cotizacion\Generico.cs" />
@@ -73,11 +75,12 @@
     <Compile Include="Cotizacion\HogarTotal.cs" />
     <Compile Include="Cotizacion\SaldoDeudor.cs" />
     <Compile Include="Cotizacion\Viajero.cs" />
-    <Compile Include="Cotizacion\ViajeroConvertFrom.cs" />
-    <Compile Include="Cotizacion\ViajeroConvertTo .cs" />
+    <Compile Include="Cotizacion\ViajeroConvert.cs" />
     <Compile Include="Emision\MultirriesgoConvertFrom.cs" />
     <Compile Include="Emision\MapfreMasConvertFrom.cs" />
     <Compile Include="Emision\MultirriesgoConvertTo.cs" />
+    <Compile Include="Emision\SaldoDeudor.cs" />
+    <Compile Include="Emision\SaldoDeudorConvert.cs" />
     <Compile Include="Emision\Viajero.cs" />
     <Compile Include="Emision\ViajeroConvertFrom.cs" />
     <Compile Include="Emision\ViajeroConvertTo.cs" />
@@ -102,6 +105,10 @@
     <ProjectReference Include="..\..\Core\Architect.API.Core.Contracts\Architect.API.Core.Contracts.csproj">
       <Project>{29b21bef-8c87-4a9d-8b37-fecc57cd03c7}</Project>
       <Name>Architect.API.Core.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Architect.Payment.Integrations\Architect.Payment.Integrations.csproj">
+      <Project>{4950c088-7a09-4e2b-b4de-d2381d0739c6}</Project>
+      <Name>Architect.Payment.Integrations</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Kernel\Architect.DataFactory\Architect.DataFactory.csproj">
       <Project>{011157f4-8e96-46fe-8ff6-2b36ae9f20c9}</Project>
@@ -128,6 +135,5 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

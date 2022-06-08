@@ -253,6 +253,7 @@ namespace Architect.DataFactory
 
                 case Enumerations.DbType.AnsiString:
                 case Enumerations.DbType.String:
+                case Enumerations.DbType.StringArray:
                     result = OracleDbType.NVarchar2;
                     break;
 
@@ -526,6 +527,33 @@ namespace Architect.DataFactory
             }
         }
 
+        public void Query(IDbConnection connection, string connectionStringName, Action<IDataReader, string> callBack)
+        {
+            IDbConnection local = null;
+            if (connection == null)
+            {
+                this.ConnectionStringName = connectionStringName;
+                local = OpenConnection(connectionStringName);
+                connection = local;
+            }
+            switch (StatementType)
+            {
+                case "Select":
+                case "Procedure":
+                    ExecuteQueryWithDataReader(this, connection, callBack, StatementType, true);
+                    break;
+
+                default:
+                    Exception currentException = new Exception(string.Format("Tipo de instrucción ({0}) invalida para esta operación", StatementType));
+                    throw currentException;
+            }
+            if (local != null)
+            {
+                local.Close();
+            }
+
+        }
+
         #endregion Queries
 
         #region QueriesScalar
@@ -748,6 +776,11 @@ namespace Architect.DataFactory
                 foreach (var item in Parameters)
                 {
                     OracleParameter parameter = new OracleParameter(item.Name, DBParameterTypeConvert(item), item.Size, DBParameterValueConvert(item.Value), DBParameterDirectionConvert(item));
+                    if (item.Type == Enumerations.DbType.StringArray)
+                    {
+                        parameter.CollectionType = OracleCollectionType.PLSQLAssociativeArray;
+                    }
+
                     cmmd.Parameters.Add(parameter);
                 }
             }
@@ -790,6 +823,10 @@ namespace Architect.DataFactory
                 foreach (var item in Parameters)
                 {
                     OracleParameter parameter = new OracleParameter(item.Name, DBParameterTypeConvert(item), item.Size, DBParameterValueConvert(item.Value), DBParameterDirectionConvert(item));
+                    if (item.Type == Enumerations.DbType.StringArray)
+                    {
+                        parameter.CollectionType = OracleCollectionType.PLSQLAssociativeArray;
+                    }
                     cmmd.Parameters.Add(parameter);
                 }
             }
@@ -850,6 +887,10 @@ namespace Architect.DataFactory
                             {
                                 OracleParameter parameter;
                                 parameter = new OracleParameter(item.Name, DBParameterTypeConvert(item), item.Size, item.Value, DBParameterDirectionConvert(item));
+                                if (item.Type == Enumerations.DbType.StringArray)
+                                {
+                                    parameter.CollectionType = OracleCollectionType.PLSQLAssociativeArray;
+                                }
                                 if (item.Type == Enumerations.DbType.RefCursor)
                                 {
                                     haveRefCursor = true;
@@ -970,7 +1011,7 @@ namespace Architect.DataFactory
         /// <param name="command">Objeto commandos que se desea ejecutar</param>
         /// <param name="connection">Instancia del objeto connections</param>
         /// <returns></returns>
-        private void ExecuteQueryWithDataReader(Database database, IDbConnection connection, Action<IDataReader> callBack, string CommandType = "Select", bool manyRows=true)
+        private void ExecuteQueryWithDataReader(Database database, IDbConnection connection, Action<IDataReader> callBack, string CommandType = "Select", bool manyRows = true)
         {
             string key = string.Empty;
 
@@ -995,10 +1036,36 @@ namespace Architect.DataFactory
                         }
                         if (Parameters?.Count > 0)
                         {
+                            bool haveRefCursor = false;
                             foreach (var item in Parameters)
                             {
-                                OracleParameter parameter = new OracleParameter(item.Name, DBParameterTypeConvert(item), item.Size, item.Value, DBParameterDirectionConvert(item));
+                                OracleParameter parameter;
+                                if (item.Type == Enumerations.DbType.StringArray)
+                                {
+                                    parameter = new OracleParameter(item.Name, OracleDbType.Varchar2);
+
+                                    parameter.CollectionType = OracleCollectionType.PLSQLAssociativeArray;
+                                    parameter.Size = 1;
+                                    parameter.ArrayBindSize = new int[1] { 517 };
+                                    parameter.ArrayBindStatus = new OracleParameterStatus[1] { OracleParameterStatus.Success };
+
+
+                                }
+                                else
+                                {
+                                    parameter = new OracleParameter(item.Name, DBParameterTypeConvert(item), item.Size, item.Value, DBParameterDirectionConvert(item));
+                                }
                                 cmmd.Parameters.Add(parameter);
+                                if (item.Type == Enumerations.DbType.RefCursor)
+                                {
+                                    haveRefCursor = true;
+                                }
+
+                            }
+
+                            if (CommandType.Equals("Procedure") && !haveRefCursor)
+                            {
+                                cmmd.Parameters.Add(new OracleParameter("RC1", OracleDbType.RefCursor, ParameterDirection.Output));
                             }
                         }
                         if (Handlers.UtilityHandler.AppSettingsCheck("Architect.DataFactory.Trace.Enabled"))
@@ -1143,6 +1210,223 @@ namespace Architect.DataFactory
             }
         }
 
+        /// <summary>
+        /// Métodos para ejecutar queries en base de datos, con sobrecarga del connections
+        /// </summary>
+        /// <param name="command">Objeto commandos que se desea ejecutar</param>
+        /// <param name="connection">Instancia del objeto connections</param>
+        /// <returns></returns>
+        private void ExecuteQueryWithDataReader(Database database, IDbConnection connection, Action<IDataReader, string> callBack, string CommandType = "Select", bool manyRows = true)
+        {
+            string key = string.Empty;
+
+            Stopwatch watch = null;
+            int rows = 0;
+
+            OracleCommand cmmd = new OracleCommand(Statement, (OracleConnection)connection);
+
+            if (database.IsCaching)
+            {
+                key = string.Format("{1}.{0}", Architect.DataFactory.Handlers.UtilityHandler.GetMd5Hash(database.ConnectionStringName, Statement, database.Parameters), database.CachePrefix);
+            }
+            if (!database.IsCaching || Architect.Utilities.Cache.NotExist(key))
+            {
+                for (int attempts = 1; attempts <= 3; attempts++)
+                {
+                    try
+                    {
+                        if (CommandType.Equals("Procedure"))
+                        {
+                            cmmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        }
+                        if (Parameters?.Count > 0)
+                        {
+                            bool haveRefCursor = false;
+                            foreach (var item in Parameters)
+                            {
+                                OracleParameter parameter;
+                                if (item.Type == Enumerations.DbType.StringArray)
+                                {
+                                    parameter = new OracleParameter(item.Name, OracleDbType.Varchar2);
+
+                                    parameter.CollectionType = OracleCollectionType.PLSQLAssociativeArray;
+                                    parameter.Size = 1;
+                                    parameter.ArrayBindSize = new int[1] { 517 };
+                                    parameter.ArrayBindStatus = new OracleParameterStatus[1] { OracleParameterStatus.Success };
+
+
+                                }
+                                else
+                                {
+                                    parameter = new OracleParameter(item.Name, DBParameterTypeConvert(item), item.Size, DBParameterValueConvert(item.Value), DBParameterDirectionConvert(item));
+                                }
+                                cmmd.Parameters.Add(parameter);
+                                if (item.Type == Enumerations.DbType.RefCursor)
+                                {
+                                    haveRefCursor = true;
+                                }
+
+                            }
+
+                            if (CommandType.Equals("Procedure") && !haveRefCursor)
+                            {
+                                cmmd.Parameters.Add(new OracleParameter("RC1", OracleDbType.RefCursor, ParameterDirection.Output));
+                            }
+                        }
+                        if (Handlers.UtilityHandler.AppSettingsCheck("Architect.DataFactory.Trace.Enabled"))
+                        {
+                            watch = new Stopwatch();
+                            watch.Start();
+                        }
+                        using (var reader = cmmd.ExecuteReader())
+                        {
+                            if (Handlers.UtilityHandler.AppSettingsCheck("Architect.DataFactory.Trace.Enabled"))
+                            {
+                                watch.Stop();
+                            }
+                            if (database.IsCaching)
+                            {
+                                DataTable result = new DataTable();
+                                result.Load(reader);
+                                Architect.Utilities.Cache.SetItem(key, result, database.CacheExpiration);
+                                if (result.Rows.Count > 0)
+                                {
+                                    DataTableReader read = result.CreateDataReader();
+                                    while (read.Read())
+                                    {
+                                        callBack.DynamicInvoke(read);
+                                        if (!manyRows)
+                                        {
+                                            break;
+                                        }
+                                    }
+                                    rows = result.Rows.Count;
+                                }
+                            }
+                            else
+                            {
+                                var index = 1;
+                                var currsors = Parameters.Where(c => c.Type ==  Enumerations.DbType.RefCursor && c.direction == ParameterDirection.Output).ToList<Architect.DataFactory.Contracts.Parameter>();
+
+                                if (reader.HasRows)
+                                {
+                                    while (reader.Read())
+                                    {
+                                        callBack.DynamicInvoke(reader, currsors.FirstOrDefault().Name);
+                                        rows++;
+                                        if (!manyRows)
+                                        {
+                                            break;
+                                        }
+                                    }
+                                }
+                                while (reader.NextResult())
+                                {
+                                    while (reader.Read())
+                                    {
+                                        callBack.DynamicInvoke(reader, currsors[index].Name);
+                                        rows++;
+                                    }
+                                    index++;
+                                }
+                            }
+                            reader.Close();
+                        }
+                        break;
+                    }
+                    catch (OracleException exOracle)
+                    {
+                        if ((exOracle.Message.StartsWith("ORA-03135:") ||
+                             exOracle.Message.StartsWith("ORA-03113:") ||
+                             exOracle.Message.IndexOf("End-of-file on communication channel", StringComparison.CurrentCultureIgnoreCase) > -1 ||
+                             exOracle.Message.IndexOf("fin de archivo en el canal de comunicación", StringComparison.CurrentCultureIgnoreCase) > -1 ||
+                             exOracle.Message.IndexOf("TNS:packet writer failure", StringComparison.CurrentCultureIgnoreCase) > -1) && attempts < 3)
+                        {
+                            MethodInfo magicMethod = connection.GetType().GetMethod("ClearAllPools");
+                            for (int connectAttempts = 1; connectAttempts <= 3; connectAttempts++)
+                            {
+                                cmmd.Connection = null;
+                                if (connection.State == ConnectionState.Open)
+                                    connection.Close();
+
+                                if (magicMethod.IsNotEmpty())
+                                    magicMethod.Invoke(connection, new Object[] { });
+
+                                Log.WarningLog("DataAccessLayer", String.Format("Retry due to disconnection for query on table '{2}' ({0}/{3}). {1}", attempts, exOracle.Message, string.Empty, connectAttempts), "datafactory");
+                                Thread.Sleep(1000);
+
+                                try
+                                {
+                                    connection.Open();
+                                    break;
+                                }
+                                catch (Exception ex2)
+                                {
+                                    if (connectAttempts >= 3)
+                                    {
+                                        var temporalException = Exceptions.DataAccessException.Factory(ex2, cmmd, string.Empty, "Query");
+                                        ClosedConnection(cmmd, connection);
+                                        throw temporalException;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Exception temporalException = Exceptions.DataAccessException.Factory(exOracle, cmmd, string.Empty, "Query");
+                            ClosedConnection(cmmd, connection);
+                            throw temporalException;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Exception temporalException;
+                        if ((ex.Message.StartsWith("ORA-03135:") || ex.Message.StartsWith("ORA-03113:") || ex.Message.IndexOf("End-of-file on communication channel", StringComparison.CurrentCultureIgnoreCase) > -1 || ex.Message.IndexOf("fin de archivo en el canal de comunicación", StringComparison.CurrentCultureIgnoreCase) > -1 || ex.Message.IndexOf("TNS:packet writer failure", StringComparison.CurrentCultureIgnoreCase) > -1) && attempts < 3)
+                        {
+                            MethodInfo magicMethod = connection.GetType().GetMethod("ClearAllPools");
+                            if (magicMethod.IsNotEmpty())
+                                magicMethod.Invoke(connection, new Object[] { });
+                            Log.WarningLog("DataAccessLayer", String.Format("Retry due to disconnection for '{3}' command on table '{2}' ({0}). {1}", attempts, ex.Message, string.Empty, "Query"), "datafactory");
+
+                            Thread.Sleep(500);
+
+                            try
+                            {
+                                connection.Open();
+                            }
+                            catch (Exception ex2)
+                            {
+                                temporalException = Exceptions.DataAccessException.Factory(ex, cmmd, string.Empty, "Query");
+                                ClosedConnection(cmmd, connection);
+                                throw temporalException;
+                            }
+                        }
+                        else
+                        {
+                            temporalException = Exceptions.DataAccessException.Factory(ex, cmmd, string.Empty, "Query");
+                            ClosedConnection(cmmd, connection);
+                            throw temporalException;
+                        }
+                    }
+                }
+                if (Handlers.UtilityHandler.AppSettingsCheck("Architect.DataFactory.Trace.Enabled"))
+                {
+                    Log.TraceLog("DataAccessLayer",
+                       Handlers.UtilityHandler.MakeCommandSummary(cmmd) +
+                       String.Format("  {0} Rows in {1} ms{2}\n", rows, watch.ElapsedMilliseconds, (database.IsCaching ? " (Cache)" : "")), "datafactory");
+                }
+            }
+            else
+            {
+                DataTable result = (DataTable)Architect.Utilities.Cache.GetItem(key);
+                var reader = result.CreateDataReader();
+                while (reader.Read())
+                {
+                    callBack.DynamicInvoke(reader);
+                }
+            }
+        }
+
         private T ExecuteQueryScalar<T>(Database database, IDbConnection connection)
         {
             var key = "";
@@ -1165,6 +1449,10 @@ namespace Architect.DataFactory
                 foreach (var item in Parameters)
                 {
                     OracleParameter parameter = new OracleParameter(item.Name, DBParameterTypeConvert(item), item.Size, item.Value, DBParameterDirectionConvert(item));
+                    if (item.Type == Enumerations.DbType.StringArray)
+                    {
+                        parameter.CollectionType = OracleCollectionType.PLSQLAssociativeArray;
+                    }
                     cmmd.Parameters.Add(parameter);
                 }
             }
@@ -1176,7 +1464,7 @@ namespace Architect.DataFactory
                     try
                     {
 
- 
+
 
                         result = (T)cmmd.ExecuteScalar();
 

@@ -1,0 +1,214 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<div class="ibox">
+    <div class="ibox-title">
+        <h5><span id="PageTitle">Solicitud de pago</span><small class="m-l-sm"><span id="PageSubTitle"> Integración</span></small> </h5>
+        <!-- Opciones -->
+        <div class="ibox-tools">
+            <a class="fullscreen-link">
+                <i class="fa fa-expand"></i>
+            </a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <i class="fa fa-wrench"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                <li>
+                    <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar la información</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+            <div class="sk-rect4"></div>
+            <div class="sk-rect5"></div>
+        </div>
+        <div id="generalNotify">
+        </div>
+        <!-- Edit Form -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div id="PrototypeEdt" class="animated fadeInRight">
+                    <form id='PrototypeEdtForm' class='form-horizontal' data-toggle='validator'>
+                        <fieldset>
+                            <!-- datosdelapoliza Zone -->
+                            <div class="form-row">
+                                <div class="col-lg-12">
+                                    <h4>Datos de la póliza</h4>
+                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                    <div class="form-row">
+
+                                        <!-- FirstName Text -->
+                                        <div class='col-sm-6 col-md-6'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='FirstName'>Nombre</label>
+                                                <input type='text' id='FirstName' name='FirstName' class='form-control' size='60' maxlength='60' value='Nelson' />
+                                            </div>
+                                        </div>
+                                        <!-- LastName Text -->
+                                        <div class='col-sm-6 col-md-6'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='LastName'>Apellido</label>
+                                                <input type='text' id='LastName' name='LastName' class='form-control' size='60' maxlength='60' value='Soler' />
+                                            </div>
+                                        </div>
+                                        <!-- Email Text -->
+                                        <div class='col-sm-6 col-md-6'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='Email'>Correo electrónico<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <div class='input-group'>
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-envelope'></span>
+                                                    </span>
+                                                    <input id='Email' name='Email' type='text' class='form-control' size='80' maxlength='80' value='solernelson@hotmail.com'>
+                                                </div>
+                                                <div id='Email_validate'></div>
+                                            </div>
+                                        </div>
+                                        <!-- DocumentType DropDownList -->
+                                        <div class='col-sm-6 col-md-6'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='DocumentType'>Tipo de documento</label>
+                                                <select id='DocumentType' name='DocumentType' class='form-control'>
+                                                    <option value='1'>CRCPF</option>
+                                                    <option value='4'>CPJ</option>
+                                                    <option value='2'>DIMEX</option>
+                                                    @*<option value='DIDI'>DIDI</option>*@
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Document Text -->
+                                        <div class='col-sm-6 col-md-6'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='Document'>Documento</label>
+                                                <input type='text' id='Document' name='Document' class='form-control' size='60' maxlength='60' value='186200170219' />
+                                            </div>
+                                        </div>
+                                        <!-- Mobile Text -->
+                                        <div class='col-sm-6 col-md-6'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='Mobile'>Número de teléfono<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <div class='input-group'>
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-earphone'></span>
+                                                    </span>
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="MobileType" data-value='1'>
+                                                            Celular
+                                                        </button>
+                                                        <div class="dropdown-menu" id="MobileTypeMenu">
+                                                            <a class="dropdown-item active" data-value='1' href="#">Celular</a>
+                                                            <a class="dropdown-item" data-value='2' href="#">Habitación</a>
+                                                            <a class="dropdown-item" data-value='3' href="#">Oficina</a>
+                                                            <a class="dropdown-item" data-value='4' href="#">Fax</a>
+                                                        </div>
+                                                    </div>
+                                                    <input id='Mobile' name='Mobile' type='text' class='form-control' size='9' maxlength='9' value='72155569'>
+                                                </div>
+                                                <div id='Mobile_validate'></div>
+                                            </div>
+                                        </div>
+                                        <!-- PolicyId Text -->
+                                        <div class='col-sm-6 col-md-6'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='PolicyId'>PolicyId</label>
+                                                <input type='text' id='PolicyId' name='PolicyId' class='form-control' size='60' maxlength='60' value='123' />
+                                            </div>
+                                        </div>
+                                        <!-- BillNumber Text -->
+                                        <div class='col-sm-6 col-md-6'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='Reference'>BillNumber</label>
+                                                <input type='text' id='BillNumber' name='BillNumber' class='form-control' size='60' maxlength='60' value='456' />
+                                            </div>
+                                        </div>
+                                        <!-- Description Text -->
+                                        <div class='col-sm-6 col-md-6'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='Description'>Descripción</label>
+                                                <input type='text' id='Description' name='Description' class='form-control' size='90' maxlength='90' value='MAPFRE: NUEVA PÓLIZA LÍDER #3001510108954 FACTURA #0000907640' />
+                                            </div>
+                                        </div>
+                                        <!-- Currency DropDownList -->
+                                        <div class='col-sm-6 col-md-6'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='Currency'>Moneda</label>
+                                                <select id='Currency' name='Currency' class='form-control'>
+                                                    <option value='1'>CRC</option>
+                                                    <option value='2'>USD</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Amount Numeric -->
+                                        <div class='col-sm-6 col-md-6'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='Amount'>Monto</label>
+                                                <input type='text' id='Amount' name='Amount' class='form-control text-right' size='11' maxlength='11' />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- datosdelapoliza Zone -->
+                            <div class="form-row">
+                                <div class="col-lg-12">
+                                    <h4>Verificación</h4>
+                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                    <div class="form-row">
+                                        <!-- $requestId Text -->
+                                        <div class='col-sm-6 col-md-6'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='requestId'>RequestId</label>
+                                                <input type='text' id='requestId' name='requestId' class='form-control' size='90' maxlength='90' value="4322" />
+                                            </div>
+                                        </div>
+                                        <!-- FirstName Text -->
+                                        <div class='col-sm-12 col-md-12'>
+                                            <div class='form-group'>
+                                                <textarea id='result' class='form-control' rows="10"></textarea>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- RoleMember -->
+                            <div class="form-row">
+                                <div class='col-md-12'>
+                                    <div class="modal-footer">
+                                        <button id="PrototypeEdtFormSave" type="button" class="btn btn-primary" data-doing="Pagando...">Pagar</button>
+                                        <button id="PrototypeEdtFormCancel" type="button" class="btn btn-white" data-doing="Verificando...">Verificar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Form End -->
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/Prototype.Payment.js")"></script>
+    @*<script src="https://secure.placetopay.com/redirection/lightbox.min.js"></script>*@
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.PrototypePayment.Init();
+        });
+    </script>
+}

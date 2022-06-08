@@ -26,7 +26,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 TIP_VIAJE = "NA",
                 FEC_VIAJE = DateTime.Today,
                 DES_DESTINO = "",
-                
+                cantidad_riesgos = 1
             };
 
             bool IsCoope = false;
@@ -49,23 +49,23 @@ namespace Architect.API.Tron.Business.Cotizacion
             List<Contracts.Comun.Cobertura> coberturas = new List<Contracts.Comun.Cobertura>();
             if (cobIncludeFilter.IsEmpty())
             {
-                
-                    cod_modalidad = 99999;
-                    cod_cobExcludeFilter = "4449,4450,4451,4452,4453,4454,4455," +
-                                "4456,4458,4459,4461,4462,4463,4464,4465,4466,4467,4468,4469,4470,4474," +
-                                "4471,4472,4473,4475,4476,4477,44784421,4423,4424,4425,4426," +
-                                "4427,4428,4429,4430,4431,4432,4434,4435," +
-                                "4436,4437,4438,4439,4440,4441,4442," +
-                                "4443,4445,4446,4447,4448,9998,4421,4478";
 
-                    selected = "4457,4460";
-                
+                cod_modalidad = 99999;
+                cod_cobExcludeFilter = "4449,4450,4451,4452,4453,4454,4455," +
+                            "4456,4458,4459,4461,4462,4463,4464,4465,4466,4467,4468,4469,4470,4474," +
+                            "4471,4472,4473,4475,4476,4477,44784421,4423,4424,4425,4426," +
+                            "4427,4428,4429,4430,4431,4432,4434,4435," +
+                            "4436,4437,4438,4439,4440,4441,4442," +
+                            "4443,4445,4446,4447,4448,9998,4421,4478";
+
+                selected = "4457,4460";
+
             }
             else
             {
                 cod_modalidad = 99999;
             }
-            foreach (Architect.API.Tron.Contracts.Tables.a1002150 item in Architect.API.Tron.DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, cod_cobExcludeFilter, cobIncludeFilter))
+            foreach (Architect.API.Tron.Contracts.Ramo.a1002150 item in Architect.API.Tron.DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, cod_cobExcludeFilter, cobIncludeFilter))
             {
                 coberturas.Add(new Contracts.Comun.Cobertura()
                 {
@@ -74,7 +74,6 @@ namespace Architect.API.Tron.Business.Cotizacion
                     nombre = item.NOM_COB,
                     capital = item.SUMA_ASEG,
                     primatotal = item.IMP_TOTAL
-                    
                 });
             }
             return coberturas;
@@ -90,13 +89,15 @@ namespace Architect.API.Tron.Business.Cotizacion
                 quoteInfo.presupuesto = string.Empty;
                 quoteInfo.resumen = null;
 
-                Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = ViajeroConvertTo.Tron(quoteInfo, COD_RAMO, tokenInfo.AgentCode, tokenInfo.UserName);
+                Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = ViajeroConvert.ToTron(quoteInfo, COD_RAMO, tokenInfo.AgentCode, tokenInfo.UserName);
 
                 result = Backoffice.Cotizacion.Generico.Calcular(result);
 
-                resultInfo = LookupComplements(ViajeroConvertFrom.Quote(quoteInfo, result), tokenInfo);
+                resultInfo = LookupComplements((Contracts.Cotizacion.Viajero)Util.FromTron_CoberturasResult(quoteInfo, result, 1, true), tokenInfo);
 
-                Architect.Utilities.Cache.SetItem(
+                resultInfo.coberturas.Remove(resultInfo.coberturas.Find(r => r.codigo == 9998));
+
+                Utilities.Cache.SetItem(
                     string.Format("viajero.{0}", quoteInfo.presupuesto),
                      Newtonsoft.Json.JsonConvert.SerializeObject(resultInfo), -1);
 
@@ -142,7 +143,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             return result;
         }
 
-               private static bool Rule_AtLeastOneCoverageSelected(Contracts.Cotizacion.Viajero source)
+        private static bool Rule_AtLeastOneCoverageSelected(Contracts.Cotizacion.Viajero source)
         {
             bool finded = false;
             foreach (Contracts.Comun.Cobertura item in source.coberturas)

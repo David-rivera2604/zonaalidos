@@ -74,12 +74,12 @@ namespace Architect.API.Insurance.Business.Policy
             {
                 group = "QuestionaryCovid";
                 name = "cuestionario covid";
-                underwriting = (Risk.Rule_UnderwritingInsuredAgeGreaterThan(risk.PrimaryInsured, 60));
+                underwriting = (risk.Behavior.Contains("Show.CV"));
                 questionId = source.QuestionId;
             }
             else
             {
-                underwriting = (Risk.Rule_UnderwritingInsuredAgeGreaterThan(risk.PrimaryInsured, 64));
+                underwriting = (risk.Behavior.Contains("Show.DS"));
                 int[] equiv = { 0, 1, 8, 2, 12, 5, 7, 10, 3, 13, 14, 4, 6, 9, 11 };
                 questionId = equiv[source.QuestionId];
             }

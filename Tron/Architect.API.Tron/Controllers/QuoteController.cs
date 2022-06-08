@@ -319,7 +319,7 @@ namespace Architect.API.Tron.Controllers
             Contracts.Cotizacion.SaldoDeudor result = null;
             await Task.Run(() =>
             {
-                tokenInfo.AgentCode = 180;
+               // tokenInfo.AgentCode = 180;
                 result = Business.Cotizacion.SaldoDeudor.Setup(tokenInfo);
             }).ConfigureAwait(false);
             return Ok(result);
@@ -338,7 +338,7 @@ namespace Architect.API.Tron.Controllers
             Tron.Contracts.Cotizacion.SaldoDeudor result = null;
             await Task.Run(() =>
             {
-                tokenInfo.AgentCode = 180;
+                //tokenInfo.AgentCode = 180;
                 result = Architect.API.Tron.Business.Cotizacion.SaldoDeudor.Quote(quoteInfo, tokenInfo);
             })
                 .ConfigureAwait(false);

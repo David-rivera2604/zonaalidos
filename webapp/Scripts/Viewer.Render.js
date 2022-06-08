@@ -2,6 +2,7 @@
 
 app.ViewerQuery = (function () {
 
+    let _handler = null;
     var _id = null;
     var _data;
 
@@ -120,7 +121,7 @@ app.ViewerQuery = (function () {
             };
         }
         else {
-            if (spec.detailView != undefined && spec.detailView) {
+            if (spec.detailView != undefined && spec.detailView && spec.detailFormatter == undefined) {
                 spec.detailFormatter = function (index, row, element) {
                     var html = [];
                     var columns = $(this).bootstrapTable('getOptions')[0].columns[0];
@@ -140,6 +141,10 @@ app.ViewerQuery = (function () {
                     return html.join('')
                 };
             }
+            if (spec.detailFormatter != undefined && spec.detailFormatter.startsWith('function ')) {
+                spec.detailFormatter = spec.detailFormatter.replace(/@_/g, '\\\'').parseFunction();
+            }
+
         }
         //spec.onRefresh = function (params) {
         //    app.ViewerQuery.Refresh();
@@ -324,11 +329,11 @@ app.ViewerQuery = (function () {
                 spec.showExport = false;
                 spec.showPaginationSwitch = false;
                 spec.exportDataType = null;
-                spec.search = false;
                 spec.showToggle = false;
                 spec.showRefresh = false;
                 spec.showColumns = false;
                 spec.showColumnsToggleAll = false;
+                spec.searchAlign = 'left';
 
                 //spec.onRefresh = function (params) {
                 //    app.ViewerQuery.Refresh(params, $el);
@@ -337,6 +342,11 @@ app.ViewerQuery = (function () {
                 $.each(spec.columns, function (key, column) {
                     if (column.formatter != undefined && column.formatter.startsWith('function ')) {
                         column.formatter = column.formatter.replace(/@_/g, '\\\'').parseFunction();
+                    }
+                    if (column.format != undefined) {
+                        column.formatter = function (value, row, index, field) {
+                            return column.format.supplant(row);
+                        }
                     }
                 });
 
@@ -351,13 +361,27 @@ app.ViewerQuery = (function () {
         Init: function () {
             _id = app.core.URLStringValue('id');
             Event_Controls();
-            if (_id != '')
+            if (_id != '') {
+
                 app.core.Get(app.setting.apipath + 'v1/Viewer/QuerySpecification?id=' + _id + '&url=' + window.location.search.slice(1).replace(/&/g, ':'))
                     .done(function (data, textStatus, jqXHR) {
-                        Render(data);
-                    }).always(function () {
 
+                        if (data.include !== null  &&  data.include !== '') {
+                            app.core.LoadScriptFile(data.include)
+                                .then(d => {
+                                    Render(data);
+                                })
+                                .catch(err => {
+                                    console.error(err);
+                                });
+                        }
+                        else {
+                            Render(data);
+                        }
                     });
+
+
+            }
             else
                 $("#QueryTitle").html('Consulta no indicada');
         },
@@ -418,6 +442,9 @@ app.ViewerQuery = (function () {
         },
         Data: function () {
             return _data;
+        },
+        EventHandler: function (handler) {
+            _handler = handler;
         }
     };
 })();

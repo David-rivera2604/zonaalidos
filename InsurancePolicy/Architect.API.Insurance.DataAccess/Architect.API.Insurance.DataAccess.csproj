@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extender\CertificateRole.cs" />
+    <Compile Include="Extender\Claim.cs" />
     <Compile Include="Extender\ClaimDocumentRequest.cs" />
     <Compile Include="Extender\ClaimRole.cs" />
     <Compile Include="Extender\PolicyCoverage.cs" />

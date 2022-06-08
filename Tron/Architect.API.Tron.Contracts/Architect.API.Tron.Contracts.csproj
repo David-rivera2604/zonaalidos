@@ -36,6 +36,7 @@
       <HintPath>..\..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
@@ -45,6 +46,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AvisosDeCobro\AvisoConsultaResponse.cs" />
+    <Compile Include="AvisosDeCobro\AvisoResponse.cs" />
+    <Compile Include="AvisosDeCobro\AvisosBaseResponse.cs" />
+    <Compile Include="AvisosDeCobro\InformacionAvisosResponse.cs" />
+    <Compile Include="AvisosDeCobro\Parameters\AvisoCobroBaseParametros.cs" />
+    <Compile Include="AvisosDeCobro\Parameters\AvisoCobroConsultaParametros.cs" />
+    <Compile Include="AvisosDeCobro\Parameters\AvisoCobroGenerarParametros.cs" />
+    <Compile Include="AvisosDeCobro\Parameters\AvisoCobroModificaParametros.cs" />
+    <Compile Include="AvisosDeCobro\Parameters\RecibosParametros.cs" />
+    <Compile Include="AvisosDeCobro\ReciboAvisoRespose.cs" />
+    <Compile Include="AvisosDeCobro\ReciboRespose.cs" />
+    <Compile Include="Batch\Respuesta.cs" />
     <Compile Include="Comun\PlanDePago.cs" />
     <Compile Include="Comun\DocumentoRequerido.cs" />
     <Compile Include="Comun\Cobertura.cs" />
@@ -56,6 +69,7 @@
     <Compile Include="Cotizacion\resumen.cs" />
     <Compile Include="Cotizacion\SaldoDeudor.cs" />
     <Compile Include="Cotizacion\Viajero.cs" />
+    <Compile Include="Emision\SaldoDeudor.cs" />
     <Compile Include="Emision\Viajero.cs" />
     <Compile Include="Especificacion\Lista.cs" />
     <Compile Include="Especificacion\Documento.cs" />
@@ -124,9 +138,10 @@
     <Compile Include="Emision\MapfreMas.cs" />
     <Compile Include="Emision\Multirriesgo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tables\a1001403.cs" />
+    <Compile Include="Ramo\A1001403.cs" />
     <Compile Include="Tables\a1002150.cs" />
     <Compile Include="Tables\ta301003.cs" />
+    <Compile Include="Vistas\Recibo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Architect.API.Core.Contracts\Architect.API.Core.Contracts.csproj">

@@ -68,19 +68,19 @@ namespace Architect.Utilities
         /// <param name="Async"></param>
         public static void WarningLog(String source, String entry, String prefix, Object customData, bool Async)
         {
-            String logprefix = String.Empty;  //System.Configuration.ConfigurationManager.AppSettings["Log.Prefix"];
+            
             String filename = String.Empty;
             string DebugMode = "File"; // System.Configuration.ConfigurationManager.AppSettings["Log.Mode"];
 
             String rootPath = GetPath();
 
-            if (logprefix.IsEmpty())
+            if (prefix.IsEmpty())
             {
                 filename = String.Format(@"{0}\{1:yyyyMMdd}.Warning.log", rootPath, DateTime.Now);
             }
             else
             {
-                filename = String.Format(@"{0}\{1:yyyyMMdd}.Warning.{2}.log", rootPath, DateTime.Now, logprefix);
+                filename = String.Format(@"{0}\{1:yyyyMMdd}.Warning.{2}.log", rootPath, DateTime.Now, prefix);
             }
 
             NameFile = filename;
@@ -255,7 +255,7 @@ namespace Architect.Utilities
         {
             try
             {
-                String logPrefix = String.Empty;  //System.Configuration.ConfigurationManager.AppSettings["Log.Prefix"];
+             
                 String filename = String.Empty;
                 string DebugMode = "File";
                 string format = "log";
@@ -286,13 +286,13 @@ namespace Architect.Utilities
 
                 if (_logDebug)
                 {
-                    if (logPrefix.IsEmpty())
+                    if (prefix.IsEmpty())
                     {
                         filename = String.Format(@"{0}\{1:yyyyMMdd}.{2}", rootPath, DateTime.Now, prefix);
                     }
                     else
                     {
-                        filename = String.Format(@"{0}\{1:yyyyMMdd}.{2}.{3}", rootPath, DateTime.Now, prefix, logPrefix);
+                        filename = String.Format(@"{0}\{1:yyyyMMdd}.{2}.{3}", rootPath, DateTime.Now, prefix, prefix);
                     }
 
                     filename = filename + string.Format(".{0}", format);

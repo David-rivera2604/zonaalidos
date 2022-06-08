@@ -45,7 +45,7 @@ app.core = (function () {
 
     let lookupData;
 
-    function GetPDF(url, download, filename) {
+    function GetPDF(url, download, filename, callback) {
         //var req = new XMLHttpRequest();
         //req.open("GET", url, true);
         //req.responseType = "blob";
@@ -101,7 +101,13 @@ app.core = (function () {
             else {
                 window.open(downloadUrl);
             }
+            if (callback !== undefined && callback !== null) {
+                callback();
+            }
         }).catch(function (error) {
+            if (callback !== undefined && callback !== null) {
+                callback();
+            }
             toastr.error("Por favor intente nuevamente y en caso de persistir el problema contacte el personal de soporte", "Ha ocurrido un error no controlado", { timeOut: 10000, closeButton: true, progressBar: true });
             error.json().then(body => {
                 console.info('%c Error ', 'color: white; background-color: #D33F49', body.ExceptionMessage);
@@ -606,8 +612,8 @@ app.core = (function () {
         GetView: function (url, data, success) {
             return ajaxCall('GET', url, data, success, true, 'text/html; charset=utf-8');
         },
-        GetPDF: function (url, download, filename) {
-            return GetPDF(url, download, filename);
+        GetPDF: function (url, download, filename, callback) {
+            return GetPDF(url, download, filename, callback);
         },
         UpLoadFile: function (formId, uploadCtrolId, callback) {
             return UpLoadFile(formId, uploadCtrolId, callback);
@@ -696,6 +702,34 @@ app.core = (function () {
         },
         Data: function () {
             return { lookups: lookupData };
+        },
+        LoadScriptFile: function (url, async = true, type = "text/javascript") {
+            if (!url.startsWith('http')) {
+                url = app.setting.basepath + 'Scripts/' + url;
+            }
+            return new Promise((resolve, reject) => {
+                try {
+                    const scriptEle = document.createElement("script");
+                    scriptEle.type = type;
+                    scriptEle.async = async;
+                    scriptEle.src = url;
+
+                    scriptEle.addEventListener("load", (ev) => {
+                        resolve({ status: true });
+                    });
+
+                    scriptEle.addEventListener("error", (ev) => {
+                        reject({
+                            status: false,
+                            message: `Failed to load the script ${url}`
+                        });
+                    });
+
+                    document.body.appendChild(scriptEle);
+                } catch (error) {
+                    reject(error);
+                }
+            });
         }
     };
 })();

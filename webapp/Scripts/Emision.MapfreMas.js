@@ -225,6 +225,7 @@ app.EmisionMapfreMas = (function () {
                 app.ui.LookupLoad('DED_AUTO_RAD', settingData.DED_AUTO_RAD);
                 app.ui.LookupLoad('DED_AUTO_ROB', settingData.DED_AUTO_ROB);
                 app.ui.LookupLoad('DED_AUTO_EQESP', settingData.DED_AUTO_EQESP);
+                app.ui.LookupLoad('DED_AUTO_CRI', settingData.DED_AUTO_CRI);
 
                 if (callback !== undefined && callback !== null) {
                     callback();
@@ -531,7 +532,7 @@ app.EmisionMapfreMas = (function () {
 
         $('#print').click(function () {
             event.preventDefault();
-            app.ui.ShowSideBar({ title: 'Enviar certificado por correo', subtitle: 'Póliza #{NUM_POLIZA}', id: 9000, data: { NUM_POLIZA: setupData.num_poliza } })
+            app.ui.ShowSideBar({ title: 'Enviar certificado por correo', subtitle: 'Póliza #{NUM_POLIZA}', id: 9000, data: { NUM_POLIZA: setupData.num_poliza, NUM_RIESGO: 1 } })
         });
     }
 
@@ -669,7 +670,7 @@ app.EmisionMapfreMas = (function () {
                     formatter: 'app.ui.DecimalWithZeroFormatter',
                     visible: true
                 }, {
-                    field: 'decucible',
+                    field: 'deducible',
                     title: 'Deducible',
                     titleTooltip: '',
                     sortable: false,
@@ -773,7 +774,7 @@ app.EmisionMapfreMas = (function () {
             for (var i = 0; i < coberturas.length; i++) {
                 coberturas[i].capital = 0;
                 coberturas[i].primatotal = 0;
-                coberturas[i].decucible = '';
+                coberturas[i].deducible = '';
                 coberturas[i].error = '';
             }
             $('#coberturasTbl').bootstrapTable('load', coberturas);

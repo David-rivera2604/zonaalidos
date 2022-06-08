@@ -9,7 +9,7 @@ app.CotizacionViajero = (function () {
 
         app.core.Get(app.setting.apipath + 'v1/Quote/ViajeroSetup', null,
             function (data) {
-                app.core.Lookups(['MonedasPorRamo.cod_mon', 'FrecuenciaDePagoPorRamo.cod_fracc_pago', 'TRON_G2990006:TIP_PLAN.TIP_PLAN', 'TRON_G2990006:TIP_VIAJE.TIP_VIAJE', 'TRON_A1002090.COD_MODALIDAD',],
+                app.core.Lookups(['MonedasPorRamo.cod_mon', 'FrecuenciaDePagoPorRamo.cod_fracc_pago', 'TRON_G2990006:TIP_PLAN.TIP_PLAN', 'TRON_G2990006:TIP_VIAJE.TIP_VIAJE', 'TRON_A1002090.COD_MODALIDAD'],
                     function () {
                         setupData = data;
                         MapObjectToInput(data);
@@ -60,20 +60,6 @@ app.CotizacionViajero = (function () {
             });
     };
 
-    function ReadOnly() {
-        $('#cod_mon').replaceWith('<div>' + $('#cod_mon option:selected').text() + '</div>');
-        $('#cod_fracc_pago').replaceWith('<div>' + $('#cod_fracc_pago option:selected').text() + '</div>');
-        $('#fec_efec_poliza_group').replaceWith('<div>' + $('#fec_efec_poliza').val() + '</div>');
-        $('#fec_vcto_poliza_group').replaceWith('<div>' + $('#fec_vcto_poliza').val() + '</div>');
-        $('#TIP_PLAN').replaceWith('<div>' + $('#TIP_PLAN option:selected').text() + '</div>');
-        $('#TIP_VIAJE').replaceWith('<div>' + $('#TIP_VIAJE option:selected').text() + '</div>');
-        $('#FEC_VIAJE_group').replaceWith('<div>' + $('#FEC_VIAJE').val() + '</div>');
-        $('#DES_DESTINO').replaceWith('<div>' + $('#DES_DESTINO').val() + '</div>');
-        $('#FEC_NACIMIENTO_group').replaceWith('<div>' + $('#FEC_NACIMIENTO').val() + '</div>');
-        $('#COD_MODALIDAD').replaceWith('<div>' + $('#COD_MODALIDAD option:selected').text() + '</div>');
-
-    };
-
     function MapInputToObject() {
         var data = {
             cod_mon: app.ui.GetDropDownNumericValue('#cod_mon'),
@@ -121,6 +107,7 @@ app.CotizacionViajero = (function () {
         app.ui.SetDropDownNumericValue('#TIP_VIAJE', data.TIP_VIAJE, true, 'NA');
         app.ui.SetDateValue('#FEC_VIAJE', data.FEC_VIAJE);
         $('#DES_DESTINO').val(data.DES_DESTINO);
+        app.ui.SetNumericValue('#cantidad_riesgos', data.cantidad_riesgos);
         app.ui.SetDateValue('#FEC_NACIMIENTO', data.FEC_NACIMIENTO);
         app.ui.SetDateValue('#FEC_NACIMIENTO2', data.FEC_NACIMIENTO2);
         app.ui.SetDateValue('#FEC_NACIMIENTO3', data.FEC_NACIMIENTO3);
@@ -233,12 +220,16 @@ app.CotizacionViajero = (function () {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
-            maximumValue: '99',
-            minimumValue: '0',
+            maximumValue: '10',
+            minimumValue: '1',
             decimalPlaces: '0',
             emptyInputBehavior: 'null'
         });
 
+        $("#DES_DESTINO").append($("#DES_DESTINO option").remove().sort(function (a, b) {
+            var at = $(a).text(), bt = $(b).text();
+            return (at > bt) ? 1 : ((at < bt) ? -1 : 0);
+        }));
 
         $("#cotizar").appendTo("#GenericToolBar");
         $("#limpiar").appendTo("#GenericToolBar");
@@ -264,85 +255,16 @@ app.CotizacionViajero = (function () {
         });
 
         $('#cantidad_riesgos').blur(function () {
-            var riesgos = app.ui.GetNumericValue('#cantidad_riesgos');
+            let riesgos = app.ui.GetNumericValue('#cantidad_riesgos');
 
-            //Los inicializa en disabled
-            $('#FEC_NACIMIENTO2').prop("disabled", true);
-            $('#FEC_NACIMIENTO3').prop("disabled", true);
-            $('#FEC_NACIMIENTO4').prop("disabled", true);
-            $('#FEC_NACIMIENTO5').prop("disabled", true);
-            $('#FEC_NACIMIENTO6').prop("disabled", true);
-            $('#FEC_NACIMIENTO7').prop("disabled", true);
-            $('#FEC_NACIMIENTO8').prop("disabled", true);
-            $('#FEC_NACIMIENTO9').prop("disabled", true);
-            $('#FEC_NACIMIENTO10').prop("disabled", true);
-
-            switch (riesgos) {
-
-                case 2:
-                    $('#FEC_NACIMIENTO2').prop("disabled", false);
-                    break;
-                case 3:
-                    $('#FEC_NACIMIENTO2').prop("disabled", false);
-                    $('#FEC_NACIMIENTO3').prop("disabled", false);
-                    break;
-                case 4:
-                    $('#FEC_NACIMIENTO2').prop("disabled", false);
-                    $('#FEC_NACIMIENTO3').prop("disabled", false);
-                    $('#FEC_NACIMIENTO4').prop("disabled", false);
-                    break;
-                case 5:
-                    $('#FEC_NACIMIENTO2').prop("disabled", false);
-                    $('#FEC_NACIMIENTO3').prop("disabled", false);
-                    $('#FEC_NACIMIENTO4').prop("disabled", false);
-                    $('#FEC_NACIMIENTO5').prop("disabled", false);
-                    break;
-                case 6:
-                    $('#FEC_NACIMIENTO2').prop("disabled", false);
-                    $('#FEC_NACIMIENTO3').prop("disabled", false);
-                    $('#FEC_NACIMIENTO4').prop("disabled", false);
-                    $('#FEC_NACIMIENTO5').prop("disabled", false);
-                    $('#FEC_NACIMIENTO6').prop("disabled", false);
-                    break;
-                case 7:
-                    $('#FEC_NACIMIENTO2').prop("disabled", false);
-                    $('#FEC_NACIMIENTO3').prop("disabled", false);
-                    $('#FEC_NACIMIENTO4').prop("disabled", false);
-                    $('#FEC_NACIMIENTO5').prop("disabled", false);
-                    $('#FEC_NACIMIENTO6').prop("disabled", false);
-                    $('#FEC_NACIMIENTO7').prop("disabled", false);
-                    break;
-                case 8:
-                    $('#FEC_NACIMIENTO2').prop("disabled", false);
-                    $('#FEC_NACIMIENTO3').prop("disabled", false);
-                    $('#FEC_NACIMIENTO4').prop("disabled", false);
-                    $('#FEC_NACIMIENTO5').prop("disabled", false);
-                    $('#FEC_NACIMIENTO6').prop("disabled", false);
-                    $('#FEC_NACIMIENTO7').prop("disabled", false);
-                    $('#FEC_NACIMIENTO8').prop("disabled", false);
-                    break;
-                case 9:
-                    $('#FEC_NACIMIENTO2').prop("disabled", false);
-                    $('#FEC_NACIMIENTO3').prop("disabled", false);
-                    $('#FEC_NACIMIENTO4').prop("disabled", false);
-                    $('#FEC_NACIMIENTO5').prop("disabled", false);
-                    $('#FEC_NACIMIENTO6').prop("disabled", false);
-                    $('#FEC_NACIMIENTO7').prop("disabled", false);
-                    $('#FEC_NACIMIENTO8').prop("disabled", false);
-                    $('#FEC_NACIMIENTO9').prop("disabled", false);
-                    break;
-                case 10:
-                    $('#FEC_NACIMIENTO2').prop("disabled", false);
-                    $('#FEC_NACIMIENTO3').prop("disabled", false);
-                    $('#FEC_NACIMIENTO4').prop("disabled", false);
-                    $('#FEC_NACIMIENTO5').prop("disabled", false);
-                    $('#FEC_NACIMIENTO6').prop("disabled", false);
-                    $('#FEC_NACIMIENTO7').prop("disabled", false);
-                    $('#FEC_NACIMIENTO8').prop("disabled", false);
-                    $('#FEC_NACIMIENTO9').prop("disabled", false);
-                    $('#FEC_NACIMIENTO10').prop("disabled", false);
-                    break;
+            for (var i = 2; i <= 10; i++) {
+                if (i <= riesgos) {
+                    $('#FEC_NACIMIENTO' + i).parent().parent().parent().removeClass('d-none');
+                } else {
+                    $('#FEC_NACIMIENTO' + i).parent().parent().parent().addClass('d-none');
+                }
             }
+
         });
 
         $('#VisualizationsEdtFormSave').click(function () {
@@ -407,6 +329,7 @@ app.CotizacionViajero = (function () {
 
     function Setup_Validations() {
         app.ui.DateValidators();
+        app.ui.NumericValidators();
         $("#VisualizationsEdtForm").validate({
             errorPlacement: app.ui.ErrorPlacement,
             rules: {
@@ -418,20 +341,40 @@ app.CotizacionViajero = (function () {
                 TIP_VIAJE: { required: true },
                 FEC_VIAJE: { required: true },
                 DES_DESTINO: { required: true },
-                FEC_NACIMIENTO: { required: true },
                 COD_MODALIDAD: { required: true },
+                cantidad_riesgos: { required: true, Numeric: true },
+                FEC_NACIMIENTO: { required: true },
+                FEC_NACIMIENTO2: { required: true },
+                FEC_NACIMIENTO3: { required: true },
+                FEC_NACIMIENTO4: { required: true },
+                FEC_NACIMIENTO5: { required: true },
+                FEC_NACIMIENTO6: { required: true },
+                FEC_NACIMIENTO7: { required: true },
+                FEC_NACIMIENTO8: { required: true },
+                FEC_NACIMIENTO9: { required: true },
+                FEC_NACIMIENTO10: { required: true }
             },
             messages: {
-                cod_mon: { required: 'Debe indicar el Moneda' },
-                cod_fracc_pago: { required: 'Debe indicar el Fraccionamiento de pago' },
-                fec_efec_poliza: { required: 'Debe indicar el Inicio de vigencia' },
-                fec_vcto_poliza: { required: 'Debe indicar el Fin de vigencia' },
-                TIP_PLAN: { required: 'Debe indicar el Plan' },
-                TIP_VIAJE: { required: 'Debe indicar el Tipo de viaje' },
-                FEC_VIAJE: { required: 'Debe indicar el Fecha de inicio del viaje' },
-                DES_DESTINO: { required: 'Debe indicar el Lugar de destino' },
-                FEC_NACIMIENTO: { required: 'Debe indicar la Fecha de nacimiento' },
-                COD_MODALIDAD: { required: 'Debe indicar el Modalidad' },
+                cod_mon: { required: 'Debe indicar la moneda' },
+                cod_fracc_pago: { required: 'Debe indicar el fraccionamiento de pago' },
+                fec_efec_poliza: { required: 'Debe indicar el inicio de vigencia' },
+                fec_vcto_poliza: { required: 'Debe indicar el fin de vigencia' },
+                TIP_PLAN: { required: 'Debe indicar el plan' },
+                TIP_VIAJE: { required: 'Debe indicar el tipo de viaje' },
+                FEC_VIAJE: { required: 'Debe indicar el fecha de inicio del viaje' },
+                DES_DESTINO: { required: 'Debe indicar el lugar de destino' },
+                COD_MODALIDAD: { required: 'Debe indicar la modalidad' },
+                cantidad_riesgos: { required: 'Debe indicar la cantidad de riesgos', Numeric: 'Debe indicar la cantidad de riesgos' },
+                FEC_NACIMIENTO: { required: 'Debe indicar la fecha de nacimiento - Riesgo 1' },
+                FEC_NACIMIENTO2: { required: 'Debe indicar la fecha de nacimiento - Riesgo 2' },
+                FEC_NACIMIENTO3: { required: 'Debe indicar la fecha de nacimiento - Riesgo 3' },
+                FEC_NACIMIENTO4: { required: 'Debe indicar la fecha de nacimiento - Riesgo 4' },
+                FEC_NACIMIENTO5: { required: 'Debe indicar la fecha de nacimiento - Riesgo 5' },
+                FEC_NACIMIENTO6: { required: 'Debe indicar la fecha de nacimiento - Riesgo 6' },
+                FEC_NACIMIENTO7: { required: 'Debe indicar la fecha de nacimiento - Riesgo 7' },
+                FEC_NACIMIENTO8: { required: 'Debe indicar la fecha de nacimiento - Riesgo 8' },
+                FEC_NACIMIENTO9: { required: 'Debe indicar la fecha de nacimiento - Riesgo 9' },
+                FEC_NACIMIENTO10: { required: 'Debe indicar la fecha de nacimiento - Riesgo 10' }
             }
         });
     };
@@ -448,7 +391,17 @@ app.CotizacionViajero = (function () {
             columns: [
                 {
                     field: 'seleccionado',
-                    checkbox: true
+                    checkbox: true,
+                    visible: false
+                }, {
+                    field: 'riesgo',
+                    title: 'Riesgo',
+                    titleTooltip: 'Número del riesgo',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    formatter: 'app.ui.IntegerFormatter',
+                    visible: true
                 }, {
                     field: 'codigo',
                     title: 'Código',
@@ -500,8 +453,6 @@ app.CotizacionViajero = (function () {
 
 
     };
-
-
 
     function plandepago_table_setup() {
 
@@ -579,8 +530,6 @@ app.CotizacionViajero = (function () {
                 },]
         });
 
-
-
     };
 
     return {
@@ -611,5 +560,3 @@ app.CotizacionViajero = (function () {
         }
     };
 })();
-
-

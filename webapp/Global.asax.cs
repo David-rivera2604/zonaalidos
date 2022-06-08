@@ -67,9 +67,17 @@ namespace aliados
                 RecurringJob.AddOrUpdate(() =>
                        Architect.API.Core.Business.General.Process.OverDueSteps(),
                        Cron.MinuteInterval(processReviewEveryTime));
-                ;
             }
+
+            //Monitor de transacciones de pago pendientes
+            if (Architect.Utilities.Helpers.Settings.IntegerValue("Payment.Placetopay.Sonda.ExecutionTime") > 0)
+            {
+                int sondaHour = Architect.Utilities.Helpers.Settings.IntegerValue("Payment.Placetopay.Sonda.ExecutionTime");
+                RecurringJob.AddOrUpdate(() => Architect.API.Tron.Business.Backoffice.Pagos.Monitor(), Cron.Daily(sondaHour));
+            }
+
         }
+
 
     }
 

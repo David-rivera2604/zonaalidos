@@ -5,6 +5,9 @@ using System.Runtime.Serialization;
 
 namespace Architect.API.Tron.Contracts.Cotizacion
 {
+    /// <summary>
+    /// Información de una cotización de saldo deudor.
+    /// </summary>
     public class SaldoDeudor : GenericQuote
     {
         /// <summary>
@@ -14,15 +17,16 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// <summary>
         /// Sexo.
         /// </summary>
-        [DataMember(), JsonProperty()] public int MCA_SEXO { get; set; }
+        [DataMember(), JsonProperty()] public string MCA_SEXO { get; set; }
         /// <summary>
         /// Modalidad de riesgo.
         /// </summary>
         [DataMember(), JsonProperty()] public int COD_MODALIDAD_RIESGO { get; set; }
+        [DataMember(), JsonProperty()] public string NOM_MODALIDAD_RIESGO { get; set; }
         /// <summary>
         /// ¿Es un negocio migrado?.
         /// </summary>
-        [DataMember(), JsonProperty()] public int MCA_NEGOCIO_MIGRADO { get; set; }
+        [DataMember(), JsonProperty()] public string MCA_NEGOCIO_MIGRADO { get; set; }
         /// <summary>
         /// Compañía original.
         /// </summary>
@@ -46,7 +50,8 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// <summary>
         /// Tipo de negocio.
         /// </summary>
-        [DataMember(), JsonProperty()] public int TIP_NEGOCIO { get; set; }
+        [DataMember(), JsonProperty()] public string TIP_NEGOCIO { get; set; }
+        [DataMember(), JsonProperty()] public string NOM_TIP_NEGOCIO { get; set; }
         /// <summary>
         /// Prima informada.
         /// </summary>
@@ -67,13 +72,34 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// Fecha primer financiamiento.
         /// </summary>
         [DataMember(), JsonProperty()] public DateTime FEC_PRIM_FINAN { get; set; }
+
+
         /// <summary>
-        /// @Control.Caption@.
+        /// Peso.
+        /// </summary>
+        [DataMember(), JsonProperty()] public double NUM_PESO { get; set; }
+
+        /// <summary>
+        /// Altura en centimetros.
+        /// </summary>
+        [DataMember(), JsonProperty()] public double NUM_ESTATURA_CM { get; set; }
+
+        /// <summary>
+        /// Indice de masa muscular.
+        /// </summary>
+        [DataMember(), JsonProperty()] public double NUM_IMC { get; set; }
+
+        /// <summary>
+        /// Enfermedades excluidas.
         /// </summary>
         [DataMember(), JsonProperty()] public List<enfermedadesexcluidas> enfermedadesexcluidas { get; set; }
 
 
     }
+
+    /// <summary>
+    /// Enfermedades excluidas.
+    /// </summary>
     public class enfermedadesexcluidas
     {
 
@@ -84,7 +110,8 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// <summary>
         /// Enfermedades.
         /// </summary>
-        [DataMember(), JsonProperty()] public int COD_ENF_EXC { get; set; }
+        [DataMember(), JsonProperty()] public string COD_ENF_EXC { get; set; }
+        [DataMember(), JsonProperty()] public string NOM_ENF_EXC { get; set; }
         /// <summary>
         /// Observaciones.
         /// </summary>
@@ -92,7 +119,8 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// <summary>
         /// Tipo exclusión.
         /// </summary>
-        [DataMember(), JsonProperty()] public int COD_TIP_EXC { get; set; }
+        [DataMember(), JsonProperty()] public string COD_TIP_EXC { get; set; }
+        [DataMember(), JsonProperty()] public string NOM_TIP_EXC { get; set; }
         /// <summary>
         /// Fecha inicio de exclusión.
         /// </summary>
@@ -102,6 +130,5 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// </summary>
         [DataMember(), JsonProperty()] public DateTime FEC_FIN_EXC { get; set; }
 
-     
     }
 }

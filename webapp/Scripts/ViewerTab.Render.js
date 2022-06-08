@@ -1,6 +1,7 @@
 ﻿var app = app || {};
 
 app.ViewerQuery = (function () {
+    let _handler = null;
     var _id = null;
     var _itemHeader = '  <li class="nav-item"> ' +
         '    <a class="nav-link {show}" id="{index}_htab" data-toggle="tab" href="#tab_{index}" >{title}</a> ' +
@@ -9,6 +10,7 @@ app.ViewerQuery = (function () {
     var _itemBody = '<div class="tab-pane fade {show}" id="tab_{index}">{Body}</div>';
 
     var _itemTable = '<!-- Grid -->  ' +
+        '<div id="QueryHNotify{index}"></div>' +
         '<div id="header{index}" class="d-none"> ' +
         '</div> ' +
         '<div id="{index}toolbar"> ' +
@@ -22,7 +24,8 @@ app.ViewerQuery = (function () {
         '		<div id="chart{index}" class="d-none">  ' +
         '		</div>  ' +
         '	</div>  ' +
-        '</div>  ';
+        '</div>  ' +
+        '<div id="QueryFNotify{index}"></div>';
 
     function ReplaceAll(string, search, replace) {
         return string.split(search).join(replace);
@@ -428,7 +431,22 @@ app.ViewerQuery = (function () {
                                 item.index = index;
                                 $("#queryTab").append(RenderTabHeader(item));
                                 $("#queryTabContent").append(RenderTabBody(item));
-                                Render(item);
+                                if (item.include !== null && item.include !== '') {
+                                    app.core.LoadScriptFile(item.include)
+                                        .then(d => {
+                                            Render(item);
+                                            if (app.Extend.EventHandler !== null) {
+                                                app.Extend.EventHandler(_id, item.index, 'loaded');
+                                            }
+                                        })
+                                        .catch(err => {
+                                            console.error(err);
+                                        });
+                                } else {
+                                    Render(item);
+                                }
+
+
                             });
                         }
                         else {
@@ -443,6 +461,7 @@ app.ViewerQuery = (function () {
                         }
 
                     }).always(function () {
+             
                     });
             else
                 $("#QueryTitle").html('Consulta no indicada');
@@ -507,7 +526,7 @@ app.ViewerQuery = (function () {
         ButtonClick: function (tbl, e, name, row, index) {
             switch (name) {
                 case 'print':
-                    app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/ImprimirPoliza/' + row.NUM_POLIZA + "/"+ row.NUM_RIESGO, false, 'Mapfre Certificado.pdf');
+                    app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/ImprimirPoliza/' + row.NUM_POLIZA + "/" + row.NUM_RIESGO, false, 'Mapfre Certificado.pdf');
                     break;
 
                 case 'printr':
@@ -525,6 +544,9 @@ app.ViewerQuery = (function () {
                     })
                     break;
             }
+        },
+        EventHandler: function (handler) {
+            _handler = handler;
         }
     }
 })();

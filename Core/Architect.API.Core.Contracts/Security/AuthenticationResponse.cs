@@ -43,5 +43,10 @@
         /// Ruta incial
         /// </summary>
         public string InitialPath { get; set; }
+
+        /// <summary>
+        /// E-Mail del Usuario.
+        /// </summary>
+        public string EMail { get; set; }
     }
 }

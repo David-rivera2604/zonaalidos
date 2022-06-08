@@ -2,7 +2,7 @@
 ///  Coberturas del ramo
 /// </summary>
 
-namespace Architect.API.Tron.Contracts.Tables
+namespace Architect.API.Tron.Contracts.Ramo
 {
     public class a1002150
     {

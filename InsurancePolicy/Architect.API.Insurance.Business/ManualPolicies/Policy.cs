@@ -20,11 +20,9 @@ namespace Architect.API.Insurance.Business.ManualPolicies
         public static Contracts.ManualPolicies.Policy Retrieve(int companyId, int id, string include = "")
         {
             Contracts.ManualPolicies.Policy result = DataAccess.ManualPolicies.Policy.Retrieve(id, companyId);
-
-            MapLookups(companyId, result);
-
             if (result.IsNotEmpty())
             {
+                MapLookups(companyId, result);
                 if (include == "*" || include.Contain("Role"))
                 {
                     result.Roles = DataAccess.ManualPolicies.PolicyRole.RetrieveByPolicyId(companyId, id);

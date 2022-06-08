@@ -28,7 +28,7 @@ namespace Architect.API.Tron.Business.Emision
                             itemQuote.nombre = item.NOM_COB;
                             itemQuote.capital = item.SUMA_ASEG;
                             itemQuote.primatotal = item.IMP_TOTAL;
-                            itemQuote.decucible = item.NOM_FRANQUICIA;
+                            itemQuote.deducible = item.NOM_FRANQUICIA;
                             itemQuote.error = item.TXT_ERROR;
                             if (quoteInfo.num_poliza.IsEmpty())
                             {
@@ -40,7 +40,7 @@ namespace Architect.API.Tron.Business.Emision
                         {
                             itemQuote.capital = 0;
                             itemQuote.primatotal = 0;
-                            itemQuote.decucible = string.Empty;
+                            itemQuote.deducible = string.Empty;
                             itemQuote.error = string.Empty;
                         }
                     }

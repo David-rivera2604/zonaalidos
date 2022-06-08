@@ -2,6 +2,12 @@
 app.ui = (function () {
 
     return {
+        Age: function (birthDate) {
+            let age = moment().diff(birthDate, 'years');
+            if (Number.isNaN(age))
+                age = 0;
+            return age;
+        },
         DropDownValueWithOption: function (selector, value, display) {
             $(selector).append(`<option value=${value} selected>${display}</option>`);
         },
@@ -105,6 +111,32 @@ app.ui = (function () {
             }
 
         },
+        GetDropDownNumericValue: function (selector) {
+            var value = $(selector).val();
+            if (value === null || value === '')
+                value = 0;
+            return parseInt(value, 10);
+        },
+        SetDropDownStringValue: function (selector, value, autoSelect, defaultValue) {
+
+
+            $(selector).val(value);
+
+            if ($(selector).val() === null && (defaultValue != undefined && defaultValue != null)) {
+                $(selector).val(defaultValue);
+            }
+
+            if (autoSelect && (value === null || value === '') && (defaultValue === undefined || defaultValue == null)) {
+                $(selector).val($(selector + ' option:first').val());
+                $(selector).change();
+            } else {
+                if (autoSelect && ($(selector).val() === null)) {
+                    $(selector).val($(selector + ' option:first').val());
+                    $(selector).change();
+                }
+            }
+
+        },
         SelectDropDownByText: function (selector, selectText) {
             let value = selectText.replace(/[ \.Cc\$\%\/]/g, '');
             let changed = false;
@@ -154,7 +186,7 @@ app.ui = (function () {
             $(name).data('value', value);
             $(name).text($(name).parent().find(name + 'Menu a[data-value=' + value + ']').text());
         },
-        IsValid: function (formId, ignore, showResume) {
+        IsValid: function (formId, ignore, showResume, others) {
             if (ignore)
                 return true;
             else {
@@ -164,13 +196,17 @@ app.ui = (function () {
                 if (showResume === undefined || showResume == null) {
                     showResume = true;
                 }
-                if (!result && showResume) {
+                if (others === undefined || others == null) {
+                    others = [];
+                }
+                if ((!result || others.length > 0) && showResume) {
                     var title = '';
                     var count = validate.errorList.length;
-                    if (count > 1)
-                        title = 'Existen ' + count + ' errores';
+                    let iCount = count + others.length;
+                    if (iCount > 1)
+                        title = 'Existen ' + iCount + ' errores';
                     else
-                        title = 'Existe ' + count + ' error';
+                        title = 'Existe ' + iCount + ' error';
                     title += ' que necesitan su atención';
                     var errorHtml = '<small>';
                     if (count > 7) {
@@ -181,10 +217,17 @@ app.ui = (function () {
                     for (var i = 0; i < count; i++) {
                         errorHtml += '<label id="' + $(validate.errorList[i]['element']).attr('id') + '-error" for="' + $(validate.errorList[i]['element']).attr('id') + '">' + validate.errorList[i]['message'] + '</label>';
                     }
+                    if (count <= 5) {
+                        for (var i = 0; i < others.length; i++) {
+                            errorHtml += '<label id="' + others[i].id + '" for="' + others[i].id + '">' + others[i].message + '</label>';
+                        }
+                    }
                     errorHtml += '</small>';
-                    toastr.error(errorHtml, title, { timeOut: 7000, closeButton: true, progressBar: true });
+                    toastr.error(errorHtml, title, { timeOut: 9000, closeButton: true, progressBar: true });
                     validate.focusInvalid();
+                    result = false;
                 }
+
                 return result;
             }
         },
@@ -245,6 +288,19 @@ app.ui = (function () {
                 value = 0;
             }
             return value.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        },
+        CurrencyAmountFormatter: function (value, row, index, field) {
+            let currency = '';
+            if (value === null) {
+                value = 0;
+            }
+            if (row?.NOM_MON == 'CRC') currency = '₡ ';
+            if (row?.NOM_MON == 'USD') currency = '$ ';
+            if (row?.Cod_Mon == 1) currency = '₡ ';
+            if (row?.Cod_Mon == 2) currency = '$ ';
+            if (row?.COD_MON == 1) currency = '₡ ';
+            if (row?.COD_MON == 2) currency = '$ ';
+            return currency + value.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         },
         DateFormatter: function (value, row, index, field) {
             if (value === null || value === '0001-01-01T00:00:00')
@@ -405,7 +461,7 @@ app.ui = (function () {
                 error.insertAfter(element);
             }
         },
-        DocumentTypeHandler: function (el, element, type) {
+        DocumentTypeHandler: function (el, element, type, callbackDocumentType) {
             var btn = $(el).parent().parent().find('.btn');
             var value = $(el).data('value');
             btn.text($(el).text());
@@ -432,7 +488,9 @@ app.ui = (function () {
                         break;
                 }
             }
-
+            if (callbackDocumentType !== undefined && callbackDocumentType !== null) {
+                callbackDocumentType(value);
+            }
         },
         Yesterday: function () {
             var value = new Date();
@@ -459,13 +517,13 @@ app.ui = (function () {
             }
             return result;
         },
-        DocumentNumberHandler: function (documentNumberElement, callbackDone) {
+        DocumentNumberHandler: function (documentNumberElement, callbackDone, callbackDocumentType) {
             $(documentNumberElement).formatter({
                 pattern: '0{{9}}-{{9999}}-{{9999}}',
                 persistent: false
             });
             $(documentNumberElement + 'TypeMenu a').click(function () {
-                app.ui.DocumentTypeHandler(this, documentNumberElement, 'Identification');
+                app.ui.DocumentTypeHandler(this, documentNumberElement, 'Identification', callbackDocumentType);
             });
             $(documentNumberElement).on('blur', function () {
                 if (app.ui.IsDocumentNumberValid($(documentNumberElement + 'Type').data('value'), $(documentNumberElement).val())) {
@@ -736,10 +794,10 @@ app.ui = (function () {
             }
             $('#sidebarTitle').html('');
             if (typeof options.title != "undefined") {
-                $('#sidebarTitle').append('<h3>' + options.title + '</h3>');
+                $('#sidebarTitle').append('<h3>' + options.title.supplant(options.data) + '</h3>');
             }
             if (typeof options.subtitle != "undefined") {
-                $('#sidebarTitle').append('<small>' + options.subtitle + '</small>');
+                $('#sidebarTitle').append('<small>' + options.subtitle.supplant(options.data) + '</small>');
             }
             $('.sidebar-content').toggleClass('sk-loading');
             if (options.class === '') {
@@ -759,6 +817,7 @@ app.ui = (function () {
                         html = app.core.ReplaceAll(html, '@_eq', '=');
                         html = app.core.ReplaceAll(html, '@_qt', '\'');
                         html = app.core.ReplaceAll(html, '@_sc', ';');
+                        //html = html.replace(/@_/g, '\'');
                         $('.sidebar-content').replaceWith(html.replace('ibox-content', 'ibox-content sidebar-content'));
                         eval(data.Code);
                     });

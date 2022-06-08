@@ -436,9 +436,9 @@ namespace Architect.API.Insurance.Business.Policy
         /// <param name="item">Instancia de la póliza a emitir.</param>
         /// <param name="source">Indica si la póliza si se esta actualizando una póliza incompleta (Put) o se esta emitiendo de forma directa(Post)</param>
         /// <returns>Información de la póliza emitida.</returns>
-        public static Architect.API.Insurance.Business.Structure.IssuePolicyResult IssuePolicy(Core.Contracts.Security.Token tokenInfo, Contracts.Policy.Risk item, string source)
+        public static Contracts.Structure.IssuePolicyResult IssuePolicy(Core.Contracts.Security.Token tokenInfo, Contracts.Policy.Risk item, string source)
         {
-            Architect.API.Insurance.Business.Structure.IssuePolicyResult result = new Structure.IssuePolicyResult();
+            Contracts.Structure.IssuePolicyResult result = new Contracts.Structure.IssuePolicyResult();
             int orignalStatus = item.Status;
 
             item.Status = 1;
@@ -465,9 +465,9 @@ namespace Architect.API.Insurance.Business.Policy
             return result;
         }
 
-        public static Architect.API.Insurance.Business.Structure.IssuePolicyResult ModifyPolicy(Core.Contracts.Security.Token tokenInfo, Contracts.Policy.Risk item)
+        public static Contracts.Structure.IssuePolicyResult ModifyPolicy(Core.Contracts.Security.Token tokenInfo, Contracts.Policy.Risk item)
         {
-            Architect.API.Insurance.Business.Structure.IssuePolicyResult result = new Structure.IssuePolicyResult();
+            Contracts.Structure.IssuePolicyResult result = new Contracts.Structure.IssuePolicyResult();
             int orignalStatus = item.Status;
 
             item = Business.Policy.Risk.Setup(item, tokenInfo.CompanyId);
@@ -602,10 +602,10 @@ namespace Architect.API.Insurance.Business.Policy
                 result.AddRange(RiskRoles.Validate(source.PrimaryInsured, "PrimaryInsured", tokenInfo.CompanyId, source));
 
             // Se valida la información del cuestionario
-            if (source.RestrictionLevel > 1 && source.Questionary.IsNotEmpty())
+            if (source.RestrictionLevel > 1 && (Products.Specification.EntryAllow(source.ProductAlias, "Questionnaires") || Products.Specification.EntryAllow(source.ProductAlias, "Covid")))
                 result.AddRange(RiskQuestionnaires.Validate(source.Questionary, source, tokenInfo.CompanyId));
 
-            // Si esta permitida, se valida la información del prestamo.
+            // Si esta permitida, se valida la información del préstamo.
             if (Products.Specification.EntryAllow(source.ProductAlias, "Overdraft") && source.Overdraft.IsNotEmpty())
             {
                 result.AddRange(RiskOverdraft.Validate(source.Overdraft));
@@ -628,71 +628,7 @@ namespace Architect.API.Insurance.Business.Policy
         /// <returns>Verdadero en caso de necesitar suscripción, falso en el caso contrario</returns>
         internal static bool Rule_Underwriting(Contracts.Policy.Risk riskToBeEvaluated, Core.Contracts.Security.Token tokenInfo)
         {
-            bool result = false;
-            
-            if (riskToBeEvaluated.Behavior.IsNotEmpty())
-            {
-                result = riskToBeEvaluated.Behavior.Contains("Mode.Underwriting");
-            }
-            else
-            {
-                switch (tokenInfo.CompanyId)
-                {
-                    case 1: //Coopeservidores
-                        if (Rule_UnderwritingInsuredAgeGreaterThan(riskToBeEvaluated.PrimaryInsured, 64))
-                        {
-                            result = true;
-                        }
-                        break;
-                    case 2: //Aliados
-                    case 3: //Clientes
-                    case 4: //Bayer
-                        break;
-                    case 5: //Carrofácil
-                        if (Rule_UnderwritingInsuredAgeGreaterThan(riskToBeEvaluated.PrimaryInsured, 64) ||
-                            Rule_UnderwritingByInsuranceAmountGreaterThan(riskToBeEvaluated, 140000))
-                        {
-                            result = true;
-                        }
-                        break;
-
-                }
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Verifica si la edad de una persona es mayor a 64 años
-        /// </summary>
-        /// <param name="person">Información de un personal o rol dentro de la póliza</param>
-        /// <param name="age">Edad</param>
-        /// <returns>Verdadero si la edad de la personal es mayor a 64 años, falso en el caso contrario</returns>
-        internal static bool Rule_UnderwritingInsuredAgeGreaterThan(Contracts.Policy.RiskRoles person, int age)
-        {
-            bool result = false;
-
-            if (person.BirthDate.Age() > age)
-            {
-                result = true;
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Verifica si la suma asegurada es superior al monto indicada
-        /// </summary>
-        /// <param name="riskToBeEvaluated">Riesgo a ser evaluado</param>
-        /// <param name="minimunInsuredAmount">Monto asegurado</param>
-        /// <returns>Verdadero si la edad de la personal es mayor a 64 años, falso en el caso contrario</returns>
-        private static bool Rule_UnderwritingByInsuranceAmountGreaterThan(Contracts.Policy.Risk riskToBeEvaluated, double minimunInsuredAmount)
-        {
-            bool result = false;
-
-            if (riskToBeEvaluated.InsuredAmount > minimunInsuredAmount)
-            {
-                result = true;
-            }
-            return result;
+           return riskToBeEvaluated.Behavior.Contains("Mode.Underwriting"); 
         }
 
         /// <summary>
@@ -1028,5 +964,19 @@ namespace Architect.API.Insurance.Business.Policy
             return result;
         }
 
+        public static Contracts.Structure.BehaviorResult Behavior(Core.Contracts.Security.Token tokenInfo, Contracts.Policy.Risk item)
+        {
+            item.CompanyId = tokenInfo.CompanyId;
+            item.Behavior = Reglas.research.Apply_Comportamientos("policy", item, tokenInfo);
+            List<Core.Contracts.General.Error> errors = null; // Business.Policy.Risk.Validate(item, tokenInfo);
+            return new Contracts.Structure.BehaviorResult() { Behavior = item.Behavior, Errors = errors };
+        }
+
+        public static Contracts.Product.ProductDefinition DefinitionByAlias(string productAlias)
+        {
+            Contracts.Product.ProductDefinition result = Business.Products.Specification.DefinitionByAlias(productAlias);
+            result.Behavior = Reglas.research.JSCode_Comportamientos("policy");
+            return result;
+        }
     }
 }

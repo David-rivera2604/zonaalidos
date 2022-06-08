@@ -3,11 +3,104 @@ using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using DbType = Architect.DataFactory.Enumerations.DbType;
 
 namespace Architect.API.Tron.DataAccess
 {
     public static class PorRamo
     {
+
+        /// <summary>
+        /// Proceso de cobro automático de recibos por la WEB
+        /// </summary>
+        public static Contracts.Batch.Respuesta p_proceso_cobro(int cod_cia, string session_id, string json, IDbConnection connection = null)
+        {
+            Contracts.Batch.Respuesta result = new Contracts.Batch.Respuesta();
+            string[] jsonArray = { json };
+
+            var ArrayBindSize = jsonArray.Select(_ => _.Length).ToArray();
+            var ArrayBindStatus = Enumerable.Repeat(0, jsonArray.Count()).ToArray();
+
+            //                .AddParameter("RC1", DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
+
+            Database.Procedure("gc_k_pagos_web.p_proceso_cobro_net")
+                    .AddParameter("p_cod_cia", DbType.Int32, 22, cod_cia)
+                    .AddParameter("p_session_id", DbType.String, 13, session_id)
+                    .AddParameter("p_array", DbType.String, 4000, json)
+                    .Query(connection, "Tron", new Action<IDataReader>((reader) =>
+                    {
+                        result = new Contracts.Batch.Respuesta()
+                        {
+                            codigo_respuesta = reader.StringValue("codigo_respuesta"),
+                            mensaje_respuesta = reader.StringValue("mensaje_respuesta"),
+                            id_report = reader.StringValue("id_report")
+                        };
+                    }));
+            return result;
+        }
+
+        public static Architect.API.Tron.Contracts.Vistas.Recibo Informacion_de_un_Recibo(int cod_cia, int cod_agt, string tip_docum, string cod_docum, string num_poliza, Int64 num_recibo, IDbConnection connection = null)
+        {
+            List<DataFactory.Contracts.Parameter> parameters = new List<DataFactory.Contracts.Parameter>();
+            Architect.API.Tron.Contracts.Vistas.Recibo result = null;
+            string filter = string.Empty;
+
+            if (cod_agt > 0)
+            {
+                filter = " AND a30.COD_AGT = :COD_AGT";
+                parameters = Database.ParameterList().AddParameter("COD_AGT", DbType.Decimal, 5, cod_agt).Parameters;
+            }
+            else
+            {
+                filter = " AND a30.TIP_DOCUM = :TIP_DOCUM AND a30.COD_DOCUM = :COD_DOCUM";
+                parameters = Database.ParameterList()
+                        .AddParameter("TIP_DOCUM", DbType.String, 3, tip_docum)
+                        .AddParameter("COD_DOCUM", DbType.String, 20, cod_docum).Parameters;
+            }
+
+
+            Database.Select(
+@"SELECT a30.COD_RAMO, a1800.nom_ramo, a30.TIP_DOCUM, a30.COD_DOCUM, v1390.NOM_TERCERO, v1390.NOM2_TERCERO, v1390.APE1_TERCERO, v1390.APE2_TERCERO, a1331.email, a1331.TXT_EMAIL, a1331.tlf_numero, a1331.TLF_MOVIL, a700.cod_mon, SUM(a700.imp_recibo) imp_recibo, a1331.TIP_TARJETA, a1331.COD_TARJETA, a1331.NUM_TARJETA
+  FROM a2000030 a30
+  JOIN A1001800 a1800 ON a1800.COD_CIA=a30.COD_CIA AND a1800.COD_RAMO = a30.COD_RAMO
+  JOIN a1001331 a1331 ON a1331.COD_CIA=a30.COD_CIA AND a1331.TIP_DOCUM = a30.TIP_DOCUM AND a1331.COD_DOCUM = a30.COD_DOCUM
+  JOIN v1001390 v1390 ON v1390.COD_CIA=a30.COD_CIA AND v1390.TIP_DOCUM = a30.TIP_DOCUM AND v1390.COD_DOCUM = a30.COD_DOCUM
+  JOIN a2990700 a700 ON a700.COD_CIA=a30.COD_CIA AND a700.NUM_POLIZA= a30.NUM_POLIZA AND a700.num_spto = a30.num_spto AND a700.num_apli = a30.num_apli AND a700.num_poliza = a30.num_poliza AND a700.num_spto_apli = a30.num_spto_apli AND a700.NUM_RECIBO = :NUM_RECIBO AND a700.TIP_SITUACION = 'EP'
+ WHERE a30.COD_CIA   = :COD_CIA
+  AND a30.NUM_POLIZA = :NUM_POLIZA" + filter +
+@" AND a30.mca_spto_anulado   = 'N'
+  AND a30.mca_poliza_anulada = 'N'
+ GROUP BY a30.COD_RAMO, a1800.nom_ramo, a30.TIP_DOCUM, a30.COD_DOCUM, v1390.NOM_TERCERO, v1390.NOM2_TERCERO, v1390.APE1_TERCERO, v1390.APE2_TERCERO, a1331.email, a1331.TXT_EMAIL, a1331.tlf_numero, a1331.TLF_MOVIL, a700.cod_mon, a1331.TIP_TARJETA, a1331.COD_TARJETA, a1331.NUM_TARJETA")
+                        .AddParameter("NUM_RECIBO", DbType.Decimal, 11, num_recibo)
+                        .AddParameter("COD_CIA", DbType.Decimal, 5, cod_cia)
+                        .AddParameter("NUM_POLIZA", DbType.AnsiString, 13, num_poliza)
+                        .AddParameter(parameters)
+                        .Query(connection, "Tron", new Action<System.Data.IDataReader>((reader) =>
+                        {
+                            result = new Architect.API.Tron.Contracts.Vistas.Recibo()
+                            {
+                                COD_RAMO = reader.IntegerValue("COD_RAMO"),
+                                NOM_RAMO = reader.StringValue("NOM_RAMO"),
+                                TIP_DOCUM = reader.StringValue("TIP_DOCUM"),
+                                COD_DOCUM = reader.StringValue("COD_DOCUM"),
+                                NOM_TERCERO = reader.StringValue("NOM_TERCERO"),
+                                NOM2_TERCERO = reader.StringValue("NOM2_TERCERO"),
+                                APE1_TERCERO = reader.StringValue("APE1_TERCERO"),
+                                APE2_TERCERO = reader.StringValue("APE2_TERCERO"),
+                                EMAIL = reader.StringValue("EMAIL"),
+                                TXT_EMAIL = reader.StringValue("TXT_EMAIL"),
+                                TLF_NUMERO = reader.StringValue("TLF_NUMERO"),
+                                TLF_MOVIL = reader.StringValue("TLF_MOVIL"),
+                                COD_MON = reader.IntegerValue("COD_MON"),
+                                IMP_RECIBO = reader.DoubleValue("IMP_RECIBO"),
+                                TIP_TARJETA = reader.IntegerValue("TIP_TARJETA"),
+                                COD_TARJETA = reader.IntegerValue("COD_TARJETA"),
+                                NUM_TARJETA = reader.StringValue("NUM_TARJETA"),
+                            };
+                        }));
+            return result;
+        }
 
         /// <summary>
         /// Coberturas por número de contrato de pólizas grupo o flotas.
@@ -40,9 +133,9 @@ namespace Architect.API.Tron.DataAccess
         /// <summary>
         /// COBERTURAS DEL RAMO
         /// </summary>
-        public static List<Architect.API.Tron.Contracts.Tables.a1002150> Coberturas(int cod_cia, int cod_ramo, int cod_modalidad, DateTime fec_validez, string cod_cobExcludeFilter, string cod_cobincludeFilter)
+        public static List<Architect.API.Tron.Contracts.Ramo.a1002150> Coberturas(int cod_cia, int cod_ramo, int cod_modalidad, DateTime fec_validez, string cod_cobExcludeFilter, string cod_cobincludeFilter)
         {
-            List<Architect.API.Tron.Contracts.Tables.a1002150> result = new List<Architect.API.Tron.Contracts.Tables.a1002150>();
+            List<Architect.API.Tron.Contracts.Ramo.a1002150> result = new List<Architect.API.Tron.Contracts.Ramo.a1002150>();
             string filter = string.Empty;
             if (!string.IsNullOrEmpty(cod_cobincludeFilter))
             {
@@ -66,7 +159,7 @@ namespace Architect.API.Tron.DataAccess
                     .AddParameter("fec_validez", Architect.DataFactory.Enumerations.DbType.Date, 7, fec_validez)
                     .Query("Tron", new Action<IDataReader>((reader) =>
                     {
-                        result.Add(new Architect.API.Tron.Contracts.Tables.a1002150()
+                        result.Add(new Architect.API.Tron.Contracts.Ramo.a1002150()
                         {
                             NUM_POLIZA = string.Empty,
                             COD_COB = reader.IntegerValue("cod_cob"),
@@ -115,9 +208,9 @@ namespace Architect.API.Tron.DataAccess
         /// <summary>
         /// FORMAS DE PAGO/PLANES DE PAGO DEL RAMO
         /// </summary>
-        public static List<Architect.API.Tron.Contracts.Tables.a1001403> FrecuenciaDePago(int cod_cia, int cod_ramo, int cod_mon)
+        public static List<Architect.API.Tron.Contracts.Ramo.A1001403> FrecuenciaDePago(int cod_cia, int cod_ramo, int cod_mon)
         {
-            List<Architect.API.Tron.Contracts.Tables.a1001403> result = new List<Architect.API.Tron.Contracts.Tables.a1001403>();
+            List<Architect.API.Tron.Contracts.Ramo.A1001403> result = new List<Architect.API.Tron.Contracts.Ramo.A1001403>();
 
             Database.Select("SELECT a.cod_fracc_pago, b.nom_fracc_pago, c.pct_fracc_pago" +
                              " FROM a1001403 a" +
@@ -135,7 +228,7 @@ namespace Architect.API.Tron.DataAccess
                     .AddParameter("cod_mon", Architect.DataFactory.Enumerations.DbType.Int32, 22, cod_mon)
                     .Query("Tron", new Action<IDataReader>((reader) =>
                     {
-                        result.Add(new Architect.API.Tron.Contracts.Tables.a1001403()
+                        result.Add(new Architect.API.Tron.Contracts.Ramo.A1001403()
                         {
                             cod_fracc_pago = reader.IntegerValue("cod_fracc_pago"),
                             nom_fracc_pago = reader.StringValue("nom_fracc_pago"),
@@ -146,9 +239,9 @@ namespace Architect.API.Tron.DataAccess
             return result;
         }
 
-        public static List<Architect.API.Tron.Contracts.Tables.ta301003> AutomobileCoverageSelection(int cod_cia, string num_poliza_grupo, int num_contrato, int num_subcontrato, int cod_ramo, int cod_mon, int cod_marca, int cod_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int tip_valoracion)
+        public static List<Architect.API.Tron.Contracts.Ramo.ta301003> AutomobileCoverageSelection(int cod_cia, string num_poliza_grupo, int num_contrato, int num_subcontrato, int cod_ramo, int cod_mon, int cod_marca, int cod_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int tip_valoracion)
         {
-            List<Architect.API.Tron.Contracts.Tables.ta301003> result = new List<Architect.API.Tron.Contracts.Tables.ta301003>();
+            List<Architect.API.Tron.Contracts.Ramo.ta301003> result = new List<Architect.API.Tron.Contracts.Ramo.ta301003>();
 
             Database.Select("SELECT DISTINCT a.cod_cob, a.mca_obligatoria " +
                               "FROM ta301003 a " +
@@ -190,7 +283,7 @@ namespace Architect.API.Tron.DataAccess
                     .AddParameter("tip_valoracion", Architect.DataFactory.Enumerations.DbType.Int32, 22, tip_valoracion)
                     .Query("Tron", new Action<IDataReader>((reader) =>
                     {
-                        result.Add(new Architect.API.Tron.Contracts.Tables.ta301003()
+                        result.Add(new Architect.API.Tron.Contracts.Ramo.ta301003()
                         {
                             mca_obligatoria = reader.StringValue("mca_obligatoria"),
                             cod_cob = reader.IntegerValue("cod_cob")

@@ -477,8 +477,12 @@ app.CotizacionMapfreMas = (function () {
                 let cod_tip_vehi = app.ui.GetDropDownNumericValue('#cod_tip_vehi');
                 let cod_plan_auto = app.ui.GetDropDownNumericValue('#COD_PLAN_AUTO');
 
-                if (cod_tip_vehi === 2 && cod_plan_auto != 32 && cod_plan_auto != 33)
-                    return true;
+                if (cod_tip_vehi === 2 && cod_plan_auto != 32 && cod_plan_auto != 33){
+					return true;
+				}
+				else if(cod_plan_auto == 35){
+					return true;
+				}
                 else {
                     return (value != '0');
                 }
@@ -547,7 +551,7 @@ app.CotizacionMapfreMas = (function () {
                 IMP_AUTO_CYV: { required: true, Numeric: true },
                 DED_AUTO_CYV: { required: true, min: 1 },
                 IMP_AUTO_RAD: { required: true, Numeric: true },
-                DED_AUTO_RAD: { required: true, min: 2 },
+                DED_AUTO_RAD: { required: true, min: 1 },
                 IMP_AUTO_ROB: { required: true, Numeric: true },
                 DED_AUTO_ROB: { required: true, min: 1 },
                 DED_AUTO_EQESP: { required: true },
@@ -646,7 +650,7 @@ app.CotizacionMapfreMas = (function () {
                     formatter: 'app.ui.DecimalWithZeroFormatter',
                     visible: true
                 }, {
-                    field: 'decucible',
+                    field: 'deducible',
                     title: 'Deducible',
                     titleTooltip: '',
                     sortable: false,
@@ -853,7 +857,7 @@ app.CotizacionMapfreMas = (function () {
             for (var i = 0; i < coberturasLocal.length; i++) {
                 coberturasLocal[i].capital = 0;
                 coberturasLocal[i].primatotal = 0;
-                coberturasLocal[i].decucible = '';
+                coberturasLocal[i].deducible = '';
                 coberturasLocal[i].error = '';
             }
             $('#coberturasTbl').bootstrapTable('load', coberturasLocal);

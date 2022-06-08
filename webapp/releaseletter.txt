@@ -295,12 +295,47 @@
                   Coope. Reportes. Ocultar la nacionalidad del certificado.
                   Coope. Reportes. En temas adicionales, se podría reflejar lo que se estipula en observaciones de la herramienta.
                   Coope. Reportes. Agregar la prima en el certificado.
-1.5.90 24/03/2022 Coope. Reportes. Mejoras en complementos de las respuesta del cuestionario de salud y el de covid.
-                  Coope. Campos de altura y peso redondea a entero su valor.
-                  Credecoop. Reporte. Preliminar.
-                  Credecoop. Carga masiva saldo deudor. Diseño de plantilla.
-1.5.91 29/03/2022 Coope. Reportes. Fix del campo peso.
-                  Reportes. Coope/Carrofacil/Credecoop. Se agrega el manejo del recargo para mostrar la prima mensual.
-1.5.92 06/04/2022 Credecoop. Carga masiva saldo deudor. Página e historial de cargas.
-1.5.93 07/04/2022 Proveedores. Royner. Se crea consulta de polizas Gastos Medicos tanto en Panama como en Medical para brindar la opcion mediante el tenant de Proveedores.
-             
+1.5.90  24/03/2022 Coope. Reportes. Mejoras en complementos de las respuesta del cuestionario de salud y el de covid.
+                   Coope. Campos de altura y peso redondea a entero su valor.
+                   Credecoop. Reporte. Preliminar.
+                   Credecoop. Carga masiva saldo deudor. Diseño de plantilla.
+1.5.91  29/03/2022 Coope. Reportes. Fix del campo peso.
+                   Reportes. Coope/Carrofacil/Credecoop. Se agrega el manejo del recargo para mostrar la prima mensual.
+1.5.92  06/04/2022 Credecoop. Carga masiva saldo deudor. Página e historial de cargas.
+1.5.93  07/04/2022 Proveedores. Royner. Se crea consulta de pólizas Gastos Médicos tanto en Panamá como en Medical para brindar la opción mediante el tenant de Proveedores.
+1.5.94  19/04/2022 Credecoop. (General) Condicionado para la visualización de los cuestionarios y proceso de revisión.
+                   Fix. Mapfre. Validación de deducible de riesgos adicionales.
+                   Aliados. Saldo deudor. Cotizador.             
+1.5.95  09/05/2022 Aliados. Integración con pasarela de pago.
+1.5.96  17/05/2022 Aliados. Integración con pasarela de pago.
+                   Fix. Aliados. Correo cuando se bloquea a una cuenta.
+                   Aliados. Viajero. 
+                     1) Permitir recuperar la cotización.
+                     2) Emisión. Verificar porque se esconde el número de riesgo.
+                     3) Cotización. Ordenar Países Alfabéticamente.
+                     4) Emisión. Agregar en Estado Civil, Unión Libre.
+                     5) La fecha de nacimiento trasladarla a la emisión para no volver a pedirla.
+                     6) Emisión. Agregar en parentesco de Beneficiarios la opción de Tío, o bien colocar Otros.
+                     7) Emisión. Subir los documentos como comprobante de pago y cédula sea un requisito obligatorio para emitir.
+                     8) Emisión. Cuando es jurídico solo debe pedir el nombre, el resto de los campos son opcionales.
+                     9) Emisión. Debe existir un check para indicar que el beneficiario es el mismo  para todos los riesgos.
+1.5.96a 18/05/2022 Aliados. Davivienda.
+                     1) PDF de cotización: No muestra los deducibles en ninguna cobertura.
+                     2) Sumas aseguradas en zona de Aliados: no aparece el deducible de la cobertura de Rotura de cristales.
+                     3) En la solicitud: se debe indicar lugar de firma (San José, la hora y además el número del colectivo contratado)
+                   Aliados. Viajero. Campos nuevos al momento de agregar los terceros (indicador que el asegurado es el mismo tomador y un check para indicar que la dirección se usara como referencia)
+1.5.97  19/05/2022 Aliados. Viajero. Emisión. Cuando es un plan familiar con varios riesgos, cuando se envía en certificado solo envía el del tomador y no todos los riesgos.
+1.5.98  24/05/2022 Aliados. Manejo de expiración de la clave de usuario.
+                   Aliados. Integración EVERTEC PlacetoPay. Ajuste en el manejo de notificaciones y sondeo.
+                   Aliados. Se cambia la consulta de cotizaciones para mostrar solo las validas.
+                   Bayer. Revisar el mensaje de error que arroja a la hora del registro de usuario, ya que sí crea el mismo, pero no indica que ha sido exitoso.
+                   Bayer. Revisar el tiempo de búsqueda de la cédula de identificación, la misma se queda cargando y no trae la información de la base del TSE
+                   Aliados. Saldo Deudor. Ajuste en la cotización por cambio del producto.
+1.5.99  27/05/2022 Aliados. Saldo Deudor. Emisión.
+                   Aliados. Saldo Deudor. Reporte de cotización.
+                   Bayer. Mejoras:
+                     1) Incluir el nombre de la filial (BAYER, S.A. – BAYER MEDICAL – BAYER BUSINESS) en el asunto de correo notificación de una nueva inclusión		
+                     2) Habilitar a los usuarios de revisor la modificación de salario mensual, fecha de ingreso a trabajar, fecha de ingreso a la póliza		
+                     3) Incluir el botón de impresión de la solicitud de inclusión		
+                   Fix. Clientes. Falla la tratar de verificar el correo del cliente.
+

@@ -131,7 +131,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 cod_modalidad = 99999;
             }
             Contracts.Comun.Cobertura currentCoverage;
-            foreach (Architect.API.Tron.Contracts.Tables.a1002150 item in Architect.API.Tron.DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, cod_cobExcludeFilter, cobIncludeFilter))
+            foreach (Architect.API.Tron.Contracts.Ramo.a1002150 item in Architect.API.Tron.DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, cod_cobExcludeFilter, cobIncludeFilter))
             {
                 currentCoverage = new Contracts.Comun.Cobertura()
                 {
@@ -141,7 +141,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                     nombre = item.NOM_COB,
                     capital = item.SUMA_ASEG,
                     primatotal = item.IMP_TOTAL,
-                    decucible = item.NOM_FRANQUICIA,
+                    deducible = item.NOM_FRANQUICIA,
                     error = item.TXT_ERROR
                 };
                 if (coberturaGrupo.IsNotEmpty())

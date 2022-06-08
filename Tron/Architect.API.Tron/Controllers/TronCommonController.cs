@@ -16,16 +16,57 @@ namespace Architect.API.Tron.Controllers
     [RoutePrefix("api/v{version:apiVersion}/TronCommon")]
     public class TronCommonController : ApiController
     {
-
+        /// <summary>
+        /// Descarga el reporte para un aviso de cobro
+        /// </summary>
         [HttpGet]
-        [Route("Producto")]
-        public async Task<IHttpActionResult> Producto([FromUri] string alias)
+        [Route("ImprimirAviso/{num_aviso}")]
+        public HttpResponseMessage ImprimirAviso([FromUri] int num_aviso)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
-            Contracts.Especificacion.Producto result = null;
+
+            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+            var dataStream = new MemoryStream(Business.Backoffice.Common.ImprimirAviso(num_aviso));
+            result.Content = new StreamContent(dataStream);
+            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline")
+            {
+                FileName = "Mapfre Aviso " + num_aviso.ToString() + ".pdf"
+            };
+            result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
+            result.Content.Headers.ContentLength = dataStream.Length;
+            return result;
+        }
+
+        /// <summary>
+        /// Descarga el detalle de un reporte para un aviso de cobro
+        /// </summary>
+        [HttpGet]
+        [Route("ImprimirAvisoDetalle/{num_aviso}")]
+        public HttpResponseMessage ImprimirAvisoDetalle([FromUri] int num_aviso)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+
+            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+            var dataStream = new MemoryStream(Business.Backoffice.Common.ImprimirAvisoDetalle(num_aviso));
+            result.Content = new StreamContent(dataStream);
+            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline")
+            {
+                FileName = "Mapfre Aviso " + num_aviso.ToString() + ".pdf"
+            };
+            result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
+            result.Content.Headers.ContentLength = dataStream.Length;
+            return result;
+        }
+
+        [HttpGet]
+        [Route("Ramo")]
+        public async Task<IHttpActionResult> Ramo([FromUri] int cod_ramo)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Contracts.Ramo.A1001800 result = null;
             await Task.Run(() =>
             {
-                result = Business.Reglas.research.GetProducto(alias);
+                result = Architect.API.Tron.Business.Ramo.Configuracion.Retrieve(cod_ramo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -59,24 +100,18 @@ namespace Architect.API.Tron.Controllers
             return Ok(result);
         }
 
-        //[Route("EnviarCertificado/{num_poliza}/{correoprincipal}/{correocopia1}/{correocopia2}")]
         /// <summary>
         /// Permite el envió de un certificado por correo
         /// </summary>
-        /// <param name="num_poliza"></param>
-        /// <param name="correoprincipal"></param>
-        /// <param name="correocopia1"></param>
-        /// <param name="correocopia2"></param>
-        /// <returns></returns>
         [HttpGet]
         [Route("EnviarCertificado")]
-        public async Task<IHttpActionResult> EnviarCertificado([FromUri] string num_poliza, [FromUri] string correoprincipal, [FromUri] string correocopia1, [FromUri] string correocopia2)
+        public async Task<IHttpActionResult> EnviarCertificado([FromUri] string num_poliza, [FromUri] int num_riesgo, [FromUri] string correoprincipal, [FromUri] string correocopia1, [FromUri] string correocopia2)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
-            string result = "";
+            string result = string.Empty;
             await Task.Run(() =>
             {
-                result = Architect.API.Tron.Business.Backoffice.Common.EnviarCertificado(num_poliza, correoprincipal, correocopia1, correocopia2, tokenInfo);
+                result = Business.Backoffice.Common.EnviarCertificado(num_poliza, num_riesgo, correoprincipal, correocopia1, correocopia2, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -95,31 +130,12 @@ namespace Architect.API.Tron.Controllers
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
 
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
-            var dataStream = new MemoryStream(Architect.API.Tron.Business.Backoffice.Common.ImprimirPoliza(num_poliza, num_riesgo));
+            var dataStream = new MemoryStream(Business.Backoffice.Common.ImprimirPoliza(num_poliza, num_riesgo));
             result.Content = new StreamContent(dataStream);
-            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline");
-            result.Content.Headers.ContentDisposition.FileName = "Mapfre Certificado.pdf";
-            result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
-            result.Content.Headers.ContentLength = dataStream.Length;
-            return result;
-        }
-
-        /// <summary>
-        /// Descarga un recibo asociado a una póliza
-        /// </summary>
-        /// <param name="num_recibo"></param>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("ImprimirRecibo/{num_recibo}")]
-        public HttpResponseMessage ImprimirRecibo([FromUri] int num_recibo)
-        {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
-
-            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
-            var dataStream = new MemoryStream(Architect.API.Tron.Business.Backoffice.Common.ImprimirRecibo(num_recibo));
-            result.Content = new StreamContent(dataStream);
-            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline");
-            result.Content.Headers.ContentDisposition.FileName = "Mapfre Recibo.pdf";
+            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline")
+            {
+                FileName = "Mapfre Certificado.pdf"
+            };
             result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
             result.Content.Headers.ContentLength = dataStream.Length;
             return result;

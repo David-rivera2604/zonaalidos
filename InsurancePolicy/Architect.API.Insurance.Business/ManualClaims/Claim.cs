@@ -11,31 +11,43 @@ namespace Architect.API.Insurance.Business.ManualClaims
     {
 
         /// <summary>
-        /// Recupera un registro en la tabla Claim por medio de su clave primaria.
+        /// Recupera un siniestro por medio de su identificación única o su identificación de siniestro.
         /// </summary>
         /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="id">Identificación única del registro.</param>
+        /// <param name="claimId">Identificación del siniestro.</param>
         /// <param name="include">Indica que información incluir, opciones posibles Roles y DocumentRequests</param>
         /// <returns>Instancia de Claim</returns>
-        public static Contracts.ManualClaims.Claim Retrieve(int companyId, int id, string include = "")
+        public static Contracts.ManualClaims.Claim Retrieve(int companyId, int id, string claimId = "", string include = "")
         {
-            Contracts.ManualClaims.Claim result = DataAccess.ManualClaims.Claim.Retrieve(id, companyId);
+            Contracts.ManualClaims.Claim result;
 
-            MapLookups(companyId, result);
+            if (id != 0)
+            {
+                result = DataAccess.ManualClaims.Claim.Retrieve(id, companyId);
+            }
+            else
+            {
+                result = DataAccess.ManualClaims.Claim.RetrieveByClaimId(claimId, companyId);
+            }
+
 
             if (result.IsNotEmpty())
             {
-                if (include == "*" || include.Contain("Role"))
+                MapLookups(companyId, result);
+                if (include == "*" || include.Contain("Roles"))
                 {
-                    result.Roles = DataAccess.ManualClaims.ClaimRole.RetrieveByClaimId(companyId, id);
+                    result.Roles = DataAccess.ManualClaims.ClaimRole.RetrieveByClaimId(companyId, result.Id);
                 }
-                if (include == "*" || include.Contain("DocumentRequest"))
+                if (include == "*" || include.Contain("DocumentRequests"))
                 {
-                    result.DocumentRequests = DataAccess.ManualClaims.ClaimDocumentRequest.RetrieveByClaimId(companyId, id);
+                    result.DocumentRequests = DataAccess.ManualClaims.ClaimDocumentRequest.RetrieveByClaimId(companyId, result.Id);
                 }
             }
             return result;
         }
+
+
 
     }
 }

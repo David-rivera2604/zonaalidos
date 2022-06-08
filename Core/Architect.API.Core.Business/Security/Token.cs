@@ -102,7 +102,7 @@ namespace Architect.API.Core.Business.Security
             }
             if (user.CompanyId == 3)
             {
-                result.IdentificationType = Accounts.IdentificationTypeConvert(result.IdentificationType);
+                result.IdentificationType = result.IdentificationType.IdentificationType();
                 result.Identification = Convert.ToInt64(result.Identification.OnlyNumbers()).ToString();
             }
             return result;

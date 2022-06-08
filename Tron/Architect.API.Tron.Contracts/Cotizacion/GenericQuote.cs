@@ -9,9 +9,13 @@ namespace Architect.API.Tron.Contracts.Cotizacion
     public class GenericQuote
     {
         /// <summary>
-        /// Moneda.
+        /// Código de la moneda.
         /// </summary>
         [DataMember(), JsonProperty()] public int cod_mon { get; set; }
+        /// <summary>
+        /// Nombre de la moneda.
+        /// </summary>
+        [DataMember(), JsonProperty()] public string cod_mon_desc { get; set; }
         /// <summary>
         /// Fraccionamiento de pago.
         /// </summary>

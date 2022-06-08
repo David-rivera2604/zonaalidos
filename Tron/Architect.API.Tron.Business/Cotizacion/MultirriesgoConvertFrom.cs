@@ -274,7 +274,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                             itemQuote.nombre = item.nom_cob;
                             itemQuote.capital = item.suma_aseg;
                             itemQuote.primatotal = item.imp_total;
-                            itemQuote.decucible = item.nom_franquicia;
+                            itemQuote.deducible = item.nom_franquicia;
                             itemQuote.error = item.txt_error;
                             if (quoteInfo.presupuesto.IsEmpty())
                             {
@@ -286,7 +286,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                         {
                             itemQuote.capital = 0;
                             itemQuote.primatotal = 0;
-                            itemQuote.decucible = string.Empty;
+                            itemQuote.deducible = string.Empty;
                             itemQuote.error = string.Empty;
                         }
                     }
@@ -330,7 +330,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 {
                     double amount = 0;
                     quoteInfo.plandepagoporfrecuencia = new List<Contracts.Cotizacion.plandepagoporfrecuencia>();
-                    foreach (Architect.API.Tron.Contracts.Tables.a1001403 item in Architect.API.Tron.DataAccess.PorRamo.FrecuenciaDePago(tronQuoteInfo.cod_cia, tronQuoteInfo.cod_ramo, tronQuoteInfo.cod_mon))
+                    foreach (Architect.API.Tron.Contracts.Ramo.A1001403 item in Architect.API.Tron.DataAccess.PorRamo.FrecuenciaDePago(tronQuoteInfo.cod_cia, tronQuoteInfo.cod_ramo, tronQuoteInfo.cod_mon))
                     {
                         amount = (importeAnual / item.cod_fracc_pago) + ((importeAnual / item.cod_fracc_pago) * (item.pct_fracc_pago / 100));
                         quoteInfo.plandepagoporfrecuencia.Add(new Contracts.Cotizacion.plandepagoporfrecuencia()

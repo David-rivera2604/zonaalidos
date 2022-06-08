@@ -57,6 +57,9 @@ namespace Architect.API.Insurance.Contracts.Product
         /// Identificador del tomandor de la póliza matriz.
         /// </summary>
         public string OwnerId { get; set; }
+
+
+        public string Behavior { get; set; }
     }
     /// <summary>
     /// Código y descripción usado para lista genericas.

@@ -89,11 +89,15 @@ namespace Architect.API.Tron.Contracts.Comun
         /// <summary>
         /// El tomador es el mismo asegurado.
         /// </summary>
-        [DataMember(), JsonProperty()] public int eltomadoreselmismoasegurado { get; set; }
+        [DataMember(), JsonProperty()] public int eltomadoreselmismoasegurado { get; set; } = 2;
+        /// <summary>
+        /// El asegurado es el mismo tomador.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int elaseguradoeselmismotomador { get; set; } = 2;
         /// <summary>
         /// El asegurado es el conductor habitual.
         /// </summary>
-        [DataMember(), JsonProperty()] public int elaseguradoeselconductorhabitual { get; set; }
+        [DataMember(), JsonProperty()] public int elaseguradoeselconductorhabitual { get; set; } = 2;
         /// <summary>
         /// Número de préstamo.
         /// </summary>
@@ -121,8 +125,20 @@ namespace Architect.API.Tron.Contracts.Comun
         [DataMember(), JsonProperty()] public int porcentaje { get; set; }
         [DataMember(), JsonProperty()] public bool NoEditable { get; set; }
 
-        //Numero de Riesgo
+        /// <summary>
+        /// Numero de Riesgo
+        /// </summary>
         [DataMember(), JsonProperty()] public int numeroderiesgo { get; set; } = 1;
+
+        /// <summary>
+        /// El beneficiario es el mismo para todos los riesgos
+        /// </summary>
+        [DataMember(), JsonProperty()] public int elbeneficiarioeselmismotodoslosriesgos { get; set; } = 2;
+
+        /// <summary>
+        /// Indica que la dirección actual sera usada por la dirección por default.
+        /// </summary>
+        [DataMember(), JsonProperty()] public bool reutilizarestadireccion { get; set; }
     }
 
 }

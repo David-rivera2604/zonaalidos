@@ -12,11 +12,11 @@ namespace Architect.API.Tron.Business.Cotizacion
         internal static Contracts.Presupuesto.DatoFijo ToTron(Contracts.Cotizacion.SaldoDeudor quoteInfo, int branch, int agentCode, string userName)
         {
 
-            Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos = Util.DatosFijos(quoteInfo, branch, agentCode, userName, Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.SaldoDeudor.cod_sector", 1));
+            Contracts.Presupuesto.DatoFijo datosFijos = Util.DatosFijos(quoteInfo, branch, agentCode, userName, Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.SaldoDeudor.cod_sector", 1));
 
             datosFijos.Riesgos = Util.DatosDelRiesgo(datosFijos, "Cotizador Saldo Deudor");
             datosFijos.Terceros = Util.Terceros(datosFijos);
-            datosFijos.Coberturas = Util.Coberturas(quoteInfo, datosFijos);
+            datosFijos.Coberturas = Util.Coberturas(quoteInfo, datosFijos, true);
             datosFijos.DatosVariables = DatosVariable(quoteInfo, datosFijos);
             datosFijos.Ocurrencias = Ocurrencias(quoteInfo, datosFijos);
 
@@ -25,46 +25,174 @@ namespace Architect.API.Tron.Business.Cotizacion
 
         private static List<Contracts.Presupuesto.DatoVariable> DatosVariable(Contracts.Cotizacion.SaldoDeudor quoteInfo, Contracts.Presupuesto.DatoFijo datosFijos)
         {
-            List<Architect.API.Tron.Contracts.Presupuesto.DatoVariable> datosVariables = new List<Architect.API.Tron.Contracts.Presupuesto.DatoVariable>();
+            List<Contracts.Presupuesto.DatoVariable> datosVariables = new List<Contracts.Presupuesto.DatoVariable>();
             int num_riesgo = datosFijos.Riesgos.FirstOrDefault().num_riesgo;
 
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "FEC_VALIDEZ_TARIFA", DateTime.Today.ToString("ddMMyyyy"), 1, 1, "Date"));
-            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "COD_MODALIDAD_RIESGO", quoteInfo.COD_MODALIDAD_RIESGO.ToString(), 2, 1, "PEND"));
-            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "MCA_NEGOCIO_MIGRADO", quoteInfo.MCA_NEGOCIO_MIGRADO == 1 ? "S" : "N", 2, 2, "PEND"));
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "COD_MODALIDAD_RIESGO", quoteInfo.COD_MODALIDAD_RIESGO.ToString(), 2, 1, quoteInfo.NOM_MODALIDAD_RIESGO));
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "MCA_NEGOCIO_MIGRADO", quoteInfo.MCA_NEGOCIO_MIGRADO, 2, 2, quoteInfo.MCA_NEGOCIO_MIGRADO));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "COD_CIA_ORI", quoteInfo.COD_CIA_ORI.ToString(), 2, 3));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "FEC_EMISION_ORI", quoteInfo.FEC_EMISION_ORI.ToString("ddMMyyyy"), 2, 4));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "IMP_MONTO_ORI", quoteInfo.IMP_MONTO_ORI.ToString(), 2, 5));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "IMP_SLD_ACTUAL", quoteInfo.IMP_SLD_ACTUAL.ToString(), 2, 6));
-            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_PRESTAMO", quoteInfo.NUM_PRESTAMO.ToString(), 2, 7));
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_PRESTAMO", quoteInfo.NUM_PRESTAMO, 2, 7));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "FEC_NACIMIENTO", quoteInfo.FEC_NACIMIENTO.ToString(("ddMMyyyy")), 2, 10));
-            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "MCA_SEXO", quoteInfo.MCA_SEXO.ToString(), 2, 11, "PEND"));
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "MCA_SEXO", quoteInfo.MCA_SEXO, 2, 11, quoteInfo.MCA_SEXO));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_EDAD_ASEGURADO", quoteInfo.FEC_NACIMIENTO.Age().ToString(), 2, 12));
-            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "TIP_NEGOCIO", quoteInfo.TIP_NEGOCIO.ToString(), 2, 13, "PEND"));
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "TIP_NEGOCIO", quoteInfo.TIP_NEGOCIO, 2, 13, quoteInfo.NOM_TIP_NEGOCIO));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "IMP_PRIMA_INFORMADA", quoteInfo.IMP_PRIMA_INFORMADA.ToString(), 2, 14));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "IMP_GASTOS_EMISION", quoteInfo.IMP_GASTOS_EMISION.ToString(), 2, 15));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "PCT_DTO_COMERCIAL", quoteInfo.PCT_DTO_COMERCIAL.ToString(), 2, 16));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "PCT_DCTO_TECNICO", quoteInfo.PCT_DCTO_TECNICO.ToString(), 2, 17));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_ENF_EXC", quoteInfo.enfermedadesexcluidas.Count().ToString(), 2, 18));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "FEC_PRIM_FINAN", quoteInfo.FEC_PRIM_FINAN.ToString("ddMMyyyy"), 2, 19));
-            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "COD_MODALIDAD", quoteInfo.COD_MODALIDAD_RIESGO.ToString(), 2, 99, "PEND"));
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_PESO", quoteInfo.NUM_PESO.ToString(), 2, 20));
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_ESTATURA_CM", quoteInfo.NUM_ESTATURA_CM.ToString(), 2, 21));
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_IMC", quoteInfo.NUM_IMC.ToString(), 2, 22));
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "COD_MODALIDAD", quoteInfo.COD_MODALIDAD_RIESGO.ToString(), 2, 99, quoteInfo.NOM_MODALIDAD_RIESGO));
 
             return datosVariables;
         }
 
         private static List<Contracts.Presupuesto.Ocurrencia> Ocurrencias(Contracts.Cotizacion.SaldoDeudor quoteInfo, Contracts.Presupuesto.DatoFijo datosFijos)
         {
-            List<Architect.API.Tron.Contracts.Presupuesto.Ocurrencia> ocurrencias = new List<Architect.API.Tron.Contracts.Presupuesto.Ocurrencia>();
+            List<Contracts.Presupuesto.Ocurrencia> ocurrencias = new List<Contracts.Presupuesto.Ocurrencia>();
             int index = 1;
-            foreach (Architect.API.Tron.Contracts.Cotizacion.enfermedadesexcluidas enfermedadexcluida in quoteInfo.enfermedadesexcluidas)
+            foreach (Contracts.Cotizacion.enfermedadesexcluidas enfermedadexcluida in quoteInfo.enfermedadesexcluidas)
             {
-                ocurrencias.Add(Util.Ocurrencia(datosFijos, index, "COD_ENF_EXC", enfermedadexcluida.COD_ENF_EXC.ToString(), 1, "PEND"));
+                ocurrencias.Add(Util.Ocurrencia(datosFijos, index, "COD_ENF_EXC", enfermedadexcluida.COD_ENF_EXC, 1, enfermedadexcluida.NOM_ENF_EXC));
                 ocurrencias.Add(Util.Ocurrencia(datosFijos, index, "TXT_OBS_ENF_EXC", enfermedadexcluida.TXT_OBS_ENF_EXC, 2));
-                ocurrencias.Add(Util.Ocurrencia(datosFijos, index, "COD_TIP_EXC", enfermedadexcluida.COD_TIP_EXC.ToString(), 3, "PEND"));
+                ocurrencias.Add(Util.Ocurrencia(datosFijos, index, "COD_TIP_EXC", enfermedadexcluida.COD_TIP_EXC, 3, enfermedadexcluida.NOM_TIP_EXC));
                 ocurrencias.Add(Util.Ocurrencia(datosFijos, index, "FEC_INI_EXC", enfermedadexcluida.FEC_INI_EXC.ToString("ddMMyyyy"), 4));
                 ocurrencias.Add(Util.Ocurrencia(datosFijos, index, "FEC_FIN_EXC", enfermedadexcluida.FEC_FIN_EXC.ToString("ddMMyyyy"), 5));
                 index++;
             }
             return ocurrencias;
+        }
+
+        internal static Contracts.Cotizacion.SaldoDeudor FromTron_Full(Contracts.Presupuesto.DatoFijo tronQuoteInfo)
+        {
+
+            Contracts.Cotizacion.SaldoDeudor quoteInfo = (Contracts.Cotizacion.SaldoDeudor)Util.GenericInfo_FromTron(tronQuoteInfo, new Contracts.Cotizacion.SaldoDeudor());
+
+
+            return FromTron_Ocurrencias(tronQuoteInfo,
+                            FromTron_DatosVariables(tronQuoteInfo, quoteInfo));
+        }
+
+        private static Contracts.Cotizacion.SaldoDeudor FromTron_DatosVariables(Contracts.Presupuesto.DatoFijo tronQuoteInfo, Contracts.Cotizacion.SaldoDeudor quoteInfo)
+        {
+            foreach (Contracts.Presupuesto.DatoVariable item in tronQuoteInfo.DatosVariables)
+            {
+                switch (item.cod_campo)
+                {
+                    case "COD_MODALIDAD_RIESGO":
+                        quoteInfo.COD_MODALIDAD_RIESGO = Convert.ToInt32(item.val_campo);
+                        quoteInfo.NOM_MODALIDAD_RIESGO = item.txt_campo;
+                        break;
+                    case "MCA_NEGOCIO_MIGRADO":
+                        quoteInfo.MCA_NEGOCIO_MIGRADO = item.val_campo;
+                        break;
+                    case "COD_CIA_ORI":
+                        quoteInfo.COD_CIA_ORI = Convert.ToInt32(item.val_campo);
+                        break;
+                    case "FEC_EMISION_ORI":
+                        quoteInfo.FEC_EMISION_ORI = DateTime.ParseExact(item.val_campo, "ddMMyyyy", System.Globalization.CultureInfo.InvariantCulture);
+                        break;
+                    case "IMP_MONTO_ORI":
+                        quoteInfo.IMP_MONTO_ORI = Convert.ToDouble(item.val_campo);
+                        break;
+                    case "IMP_SLD_ACTUAL":
+                        quoteInfo.IMP_SLD_ACTUAL = Convert.ToDouble(item.val_campo);
+                        break;
+                    case "NUM_PRESTAMO":
+                        quoteInfo.NUM_PRESTAMO = item.val_campo;
+                        break;
+                    case "FEC_NACIMIENTO":
+                        quoteInfo.FEC_NACIMIENTO = DateTime.ParseExact(item.val_campo, "ddMMyyyy", System.Globalization.CultureInfo.InvariantCulture);
+                        break;
+                    case "MCA_SEXO":
+                        quoteInfo.MCA_SEXO = item.val_campo;
+                        break;
+                    case "NUM_PESO":
+                        quoteInfo.NUM_PESO = Convert.ToDouble(item.val_campo);
+                        break;
+                    case "NUM_ESTATURA_CM":
+                        quoteInfo.NUM_ESTATURA_CM = Convert.ToDouble(item.val_campo);
+                        break;
+                    case "NUM_IMC":
+                        quoteInfo.NUM_IMC = Convert.ToDouble(item.val_campo);
+                        break;
+                    case "TIP_NEGOCIO":
+                        quoteInfo.TIP_NEGOCIO = item.val_campo;
+                        quoteInfo.NOM_TIP_NEGOCIO = item.txt_campo;
+                        break;
+                    case "IMP_PRIMA_INFORMADA":
+                        quoteInfo.IMP_PRIMA_INFORMADA = Convert.ToDouble(item.val_campo);
+                        break;
+                    case "IMP_GASTOS_EMISION":
+                        quoteInfo.IMP_GASTOS_EMISION = Convert.ToDouble(item.val_campo);
+                        break;
+                    case "PCT_DTO_COMERCIAL":
+                        quoteInfo.PCT_DTO_COMERCIAL = Convert.ToInt32(item.val_campo);
+                        break;
+                    case "PCT_DCTO_TECNICO":
+                        quoteInfo.PCT_DCTO_TECNICO = Convert.ToInt32(item.val_campo);
+                        break;
+                    case "FEC_PRIM_FINAN":
+                        quoteInfo.FEC_PRIM_FINAN = DateTime.ParseExact(item.val_campo, "ddMMyyyy", System.Globalization.CultureInfo.InvariantCulture);
+                        break;
+
+
+                    case "FEC_VALIDEZ_TARIFA":
+                    case "MCA_COMISION_ADMON_POLIZA":
+                    case "PCT_COMISION_ADMON_POLIZA":
+                    case "TIP_DOCUM_CIA_ORI":
+                    case "COD_DOCUM_CIA_ORI":
+                    case "NUM_EDAD_ASEGURADO":
+                    case "NUM_ENF_EXC":
+                    case "COD_MODALIDAD":
+                        break;
+                }
+            }
+            return quoteInfo;
+        }
+
+        private static Contracts.Cotizacion.SaldoDeudor FromTron_Ocurrencias(Contracts.Presupuesto.DatoFijo tronQuoteInfo, Contracts.Cotizacion.SaldoDeudor quoteInfo)
+        {
+            int index = -1;
+            Contracts.Cotizacion.enfermedadesexcluidas current = null;
+
+            quoteInfo.enfermedadesexcluidas = new List<Contracts.Cotizacion.enfermedadesexcluidas>();
+            foreach (Contracts.Presupuesto.Ocurrencia item in tronQuoteInfo.Ocurrencias)
+            {
+                if (index != item.num_ocurrencia)
+                {
+                    current = new Contracts.Cotizacion.enfermedadesexcluidas();
+                    quoteInfo.enfermedadesexcluidas.Add(current);
+                }
+                switch (item.cod_campo)
+                {
+                    case "COD_ENF_EXC":
+                        current.COD_ENF_EXC = item.val_campo;
+                        current.NOM_ENF_EXC = item.txt_campo;
+                        break;
+                    case "TXT_OBS_ENF_EXC":
+                        current.TXT_OBS_ENF_EXC = item.val_campo;
+                        break;
+                    case "COD_TIP_EXC":
+                        current.COD_TIP_EXC = item.val_campo;
+                        current.NOM_TIP_EXC = item.txt_campo;
+                        break;
+                    case "FEC_INI_EXC":
+                        current.FEC_INI_EXC = DateTime.ParseExact(item.val_campo, "ddMMyyyy", System.Globalization.CultureInfo.InvariantCulture);
+                        break;
+                    case "FEC_FIN_EXC":
+                        current.FEC_FIN_EXC = DateTime.ParseExact(item.val_campo, "ddMMyyyy", System.Globalization.CultureInfo.InvariantCulture);
+                        break;
+                }
+            }
+            return quoteInfo;
         }
 
     }

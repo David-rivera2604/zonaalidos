@@ -64,6 +64,12 @@ namespace Architect.API.Insurance.Contracts.Policy
         /// Uso interno.
         /// </summary>
         [JsonIgnore()] public string Behavior { get; set; }
+
+        /// <summary>
+        /// Información particular de Bayer.
+        /// </summary>
+        [DataMember(), JsonProperty()] public Contracts.Policy.RiskBayer Bayer { get; set; }
+
     }
 }
 

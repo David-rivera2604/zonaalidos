@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4950C088-7A09-4E2B-B4DE-D2381D0739C6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Architect.Payment.Integrations</RootNamespace>
+    <AssemblyName>Architect.Payment.Integrations</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Business\OnlinePayment.cs" />
+    <Compile Include="Contracts\OnlinePayment.cs" />
+    <Compile Include="Contracts\PaymentInformation.cs" />
+    <Compile Include="Contracts\SessionResponse.cs" />
+    <Compile Include="DataAccess\OnlinePayment.cs" />
+    <Compile Include="Payment.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\Placetopay\Contracts\AmountConversion.cs" />
+    <Compile Include="Providers\Placetopay\Contracts\Amount.cs" />
+    <Compile Include="Providers\Placetopay\Contracts\Auth.cs" />
+    <Compile Include="Providers\Placetopay\Contracts\Person.cs" />
+    <Compile Include="Providers\Placetopay\Contracts\PaymentRequest.cs" />
+    <Compile Include="Providers\Placetopay\Contracts\InformationRequest.cs" />
+    <Compile Include="Providers\Placetopay\Contracts\RedirectRequest.cs" />
+    <Compile Include="Providers\Placetopay\Contracts\SessionResponse.cs" />
+    <Compile Include="Providers\Placetopay\Contracts\Status.cs" />
+    <Compile Include="Providers\Placetopay\Contracts\NameValuePair.cs" />
+    <Compile Include="Providers\Placetopay\Contracts\NotifyRequest.cs" />
+    <Compile Include="Providers\Placetopay\Contracts\Transaction.cs" />
+    <Compile Include="Providers\Placetopay\Webcheckout.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Kernel\Architect.DataFactory\Architect.DataFactory.csproj">
+      <Project>{011157f4-8e96-46fe-8ff6-2b36ae9f20c9}</Project>
+      <Name>Architect.DataFactory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Kernel\Architect.Utilities\Architect.Utilities.csproj">
+      <Project>{e8317ab3-7807-4fcf-8520-b80340b4eb7d}</Project>
+      <Name>Architect.Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
