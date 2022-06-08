@@ -1126,10 +1126,6 @@
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="html\view.html" />
-    <Content Include="html\template.html" />
-    <Content Include="html\asegurado.html" />
-    <Content Include="html\fma.html" />
     <Content Include="images\favicon-mapfre.png" />
     <Content Include="images\favicon.png" />
     <Content Include="images\help\general_cambio_clave_1.gif" />
