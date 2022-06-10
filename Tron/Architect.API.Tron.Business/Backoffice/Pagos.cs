@@ -56,7 +56,7 @@ namespace Architect.API.Tron.Business.Backoffice
             // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
             if (result.changed && result.status.status == "APPROVED")
             {
-                bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode);
+                bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode, result.OnlinePayment.UpdateUserCode);
             }
         }
 
@@ -77,12 +77,10 @@ namespace Architect.API.Tron.Business.Backoffice
             }
         }
 
-
-
         /// <summary>
         /// Permite la creación de un sesión para realizar un pago.
         /// </summary>
-        public async static Task<Payment.Integrations.Contracts.SessionInformation> CrearSesion(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent,  string num_poliza, Int64 num_recibo)
+        public async static Task<Payment.Integrations.Contracts.SessionInformation> CrearSesion(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo)
         {
             Payment.Integrations.Contracts.SessionInformation session = await Payment.Integrations.Payment.VerifySession(tokenInfo.CompanyId, num_poliza, num_recibo);
             if (session == null)
@@ -138,7 +136,7 @@ namespace Architect.API.Tron.Business.Backoffice
             // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
             if (result.changed && result.status.status == "APPROVED")
             {
-                bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode);
+                bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode, result.OnlinePayment.UpdateUserCode);
             }
             return result;
         }
@@ -146,10 +144,22 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Procesa el pago de un recibo en tron.
         /// </summary>
-        public async static Task<bool> TronPayment(Payment.Integrations.Providers.Placetopay.Contracts.InformationRequest request, int agentCode)
+        public async static Task<bool> TronPayment(Payment.Integrations.Providers.Placetopay.Contracts.InformationRequest request, int agentCode, int userCode)
         {
+            string tipoPagador = "A";
+            string pagador = agentCode.ToString();
 
-            //tipoPagador A / C. pagador = codigo de cliente o agente
+            //En el caso de que no se trate de un agente, se asume que es un cliente tomador
+            if (agentCode.IsEmpty() && request.OnlinePayment.UpdateUserCode.IsNotEmpty())
+            {
+                tipoPagador = "C";
+                var userInfo = Core.Business.Security.UserMember.RetrieveById(request.OnlinePayment.CompanyId, request.OnlinePayment.UpdateUserCode);
+                if (userInfo.IsNotEmpty())
+                {
+                    pagador = userInfo.IdentificationType.ToString().IdentificationType() + "-" + userInfo.Identification.DocumentNumber(userInfo.IdentificationType.ToString());
+                }
+            }
+
             var payment = request.payment.FirstOrDefault();
             string data = JsonConvert.SerializeObject(
                 new
@@ -157,8 +167,8 @@ namespace Architect.API.Tron.Business.Backoffice
                     guid = request.OnlinePayment.RequestID.ToString(),
                     canal = "ALI",
                     fechaPago = payment.status.date,
-                    tipoPagador = "A",
-                    pagador = agentCode.ToString(),
+                    tipoPagador = tipoPagador,
+                    pagador = pagador,
                     tipoPago = string.Empty,
                     referenciaPago = payment.authorization,
                     montoTotal = payment.amount.to.total,
@@ -186,5 +196,6 @@ namespace Architect.API.Tron.Business.Backoffice
 
             return (DataAccess.PorRamo.p_proceso_cobro(1, Guid.NewGuid().ToString(), data).codigo_respuesta == "200");
         }
+
     }
 }
