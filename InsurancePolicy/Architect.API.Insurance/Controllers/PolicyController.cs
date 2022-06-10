@@ -1,14 +1,14 @@
-﻿using Architect.Utilities.Extensions;
-using Architect.API.Insurance.Contracts.Product;
+﻿using Architect.API.Insurance.Contracts.Product;
+using Architect.Utilities.Extensions;
 using Microsoft.Web.Http;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web;
 
 namespace Architect.API.Insurance.Controllers
 {
@@ -376,10 +376,10 @@ namespace Architect.API.Insurance.Controllers
         public IHttpActionResult Import([FromUri] string excelFilename, [FromUri] string originalFileName, [FromUri] string specificaction)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
-            Core.Contracts.General.GenericResponse result = Business.Policy.RiskImport.Import(HttpContext.Current.Server.MapPath(@"~\bin"), 
+            Core.Contracts.General.GenericResponse result = Business.Policy.RiskImport.Import(HttpContext.Current.Server.MapPath(@"~\bin"),
                                                                                                 Path.Combine(HostingEnvironment.MapPath(ConfigurationManager.AppSettings["Files.Path"]), excelFilename),
                                                                                               originalFileName,
-                                                                                              Path.Combine(ConfigurationManager.AppSettings["Product.Definition.Path"],  specificaction + ".import.json"),
+                                                                                              Path.Combine(ConfigurationManager.AppSettings["Product.Definition.Path"], specificaction + ".import.json"),
                                                                                               tokenInfo);
 
             if (result.IsNotEmpty())

@@ -1,4 +1,5 @@
-﻿using Architect.Utilities.Extensions;
+﻿using Architect.API.Core.Contracts.Security;
+using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -308,9 +309,13 @@ namespace Architect.API.Insurance.Business.Policy
         /// <returns>Información de una póliza</returns>
         public static Contracts.Policy.RiskView Information(int id, int companyId)
         {
-            Contracts.Policy.Risk resultInternal = RetrievePolicyByKey(id, companyId);
-            Contracts.Policy.RiskView result = null;
+            return Mapper_Information(RetrievePolicyByKey(id, companyId), companyId);
+        }
 
+
+        internal static Contracts.Policy.RiskView Mapper_Information(Contracts.Policy.Risk resultInternal, int companyId)
+        {
+            Contracts.Policy.RiskView result = null;
             if (resultInternal.IsNotEmpty())
             {
                 result = Business.Policy.Risk.Mapper2View(resultInternal);
@@ -425,7 +430,6 @@ namespace Architect.API.Insurance.Business.Policy
             result.Prefix = string.Empty;
             if (result.PrimaryInsured.IsNotEmpty() && result.PrimaryInsured.BirthDate.Age() > 64)
                 result.Prefix = "_mayor_que_64";
-
             return result;
         }
 
@@ -628,7 +632,7 @@ namespace Architect.API.Insurance.Business.Policy
         /// <returns>Verdadero en caso de necesitar suscripción, falso en el caso contrario</returns>
         internal static bool Rule_Underwriting(Contracts.Policy.Risk riskToBeEvaluated, Core.Contracts.Security.Token tokenInfo)
         {
-           return riskToBeEvaluated.Behavior.Contains("Mode.Underwriting"); 
+            return riskToBeEvaluated.Behavior.Contains("Mode.Underwriting");
         }
 
         /// <summary>
@@ -763,11 +767,44 @@ namespace Architect.API.Insurance.Business.Policy
                     {
                         item.PolicyId = DataAccess.Policy.Risk.RetrieveLastPolicyId(tokenInfo.CompanyId) + 1;
                         item.Status = status;
+
+                        if (Products.Specification.SettingBoolValue(item.ProductAlias, "Request.Sign.Enabled"))
+                        {
+                            DigitalSignature(item, tokenInfo);
+                        }
                     }
                 }
             }
 
             return errors;
+        }
+
+        private static void DigitalSignature(Contracts.Policy.Risk item, Token tokenInfo)
+        {
+            if (item.StatusDesc == null)
+            {
+                item.StatusDesc = "";
+            }
+            Contracts.Policy.RiskView riskInfo = Mapper_Information(item, tokenInfo.CompanyId);
+
+            string archivo = Core.Business.General.Report.GeneratePDFFile(riskInfo.ProductAlias + riskInfo.Prefix, item).GetAwaiter().GetResult();
+
+            if (!item.HasDigitalSignature)
+            {
+                // Se enviar documento para su firma por medio de EviCertia
+                string uniqueId = Core.Business.General.Evicertia.EviSignSubmit(
+                                        string.Format("{0} - Solicitud de inclusión", Core.Business.Common.LkpDescription(tokenInfo.CompanyId, "Company", tokenInfo.CompanyId.ToString())),
+                                        string.Format("{0} - Solicitud de inclusión #{1}", Core.Business.Common.LkpDescription(tokenInfo.CompanyId, "Company", tokenInfo.CompanyId.ToString()), item.Id),
+                                        item.PrimaryInsured.FirstName + " " + item.PrimaryInsured.LastName,
+                                        item.PrimaryInsured.PrimaryEmailAddress,
+                                        archivo).GetAwaiter().GetResult();
+                DataAccess.Policy.Risk.UpdateReference(tokenInfo.CompanyId, item.Id, uniqueId);
+            }
+            else
+            {
+                // Se enviar documento directo al empleado para su firma digital
+                Core.Business.General.Mail.SendByTemplate("Notify_RequestReviewed", tokenInfo.CompanyId, tokenInfo.UserId, item.ExecutiveUserCode, item, null, new string[] { archivo });
+            }
         }
 
         private static Contracts.Policy.Risk Setup(Contracts.Policy.Risk item, int companyId)

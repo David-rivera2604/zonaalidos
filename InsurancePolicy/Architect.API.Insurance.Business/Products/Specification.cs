@@ -202,7 +202,7 @@ namespace Architect.API.Insurance.Business.Products
                     if (entry.Name == name)
                     {
                         result = DateTime.ParseExact(entry.Value, "yyyy-MM-ddTHH:mm:ss", CultureInfo.CurrentCulture);
-                      
+
                         break;
                     }
                 }
@@ -212,7 +212,7 @@ namespace Architect.API.Insurance.Business.Products
 
         public static bool SettingBoolValue(string alias, string name, bool defaultValue = false)
         {
-            bool result = defaultValue ;
+            bool result = defaultValue;
             Architect.Insurance.Contracts.Product.ProductMaster product = Definition(alias);
             if (product != null && product?.Settings != null)
             {
@@ -221,8 +221,8 @@ namespace Architect.API.Insurance.Business.Products
                 {
                     if (entry.Name == name)
                     {
-                        result = (entry.Value.ToLower() == "true" || 
-                                  entry.Value.ToLower() == "verdadero" || 
+                        result = (entry.Value.ToLower() == "true" ||
+                                  entry.Value.ToLower() == "verdadero" ||
                                   entry.Value.ToLower() == "yes" ||
                                   entry.Value.ToLower() == "si");
                         break;

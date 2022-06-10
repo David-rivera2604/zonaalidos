@@ -3,7 +3,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -33,60 +32,63 @@ namespace Architect.API.Core.Business.General
         public async static Task<string> EviSignSubmit(string lookupKey, string subject, string signingName, string signingEmail, string fileName, string signingMethod = "WebClick")
         {
             string result = string.Empty;
-            var json = JsonConvert.SerializeObject(new Architect.API.Core.Contracts.EviSign.SignSubmit()
+
+            if (lookupKey.Length > 35)
+            {
+                lookupKey = lookupKey.Substring(0, 35);
+            }
+
+            string json = JsonConvert.SerializeObject(new Contracts.EviSign.SignSubmit()
             {
                 LookupKey = lookupKey,
                 Subject = subject,
                 Document = Convert.ToBase64String(System.IO.File.ReadAllBytes(fileName)),
                 SigningParties = new List<Contracts.EviSign.SigningParty>() {
-                    new Architect.API.Core.Contracts.EviSign.SigningParty()
+                    new Contracts.EviSign.SigningParty()
                     {
                         Name = signingName,
                         Address = signingEmail,
                         SigningMethod = signingMethod
                     } }
             });
-            eviCertiaClient.DefaultRequestHeaders.Authorization
-                         = new AuthenticationHeaderValue("Basic", ConfigurationManager.AppSettings["Evicertia.Authentication"]);
+            eviCertiaClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", ConfigurationManager.AppSettings["Evicertia.Authentication"]);
             HttpResponseMessage response = await eviCertiaClient.PostAsync(ConfigurationManager.AppSettings["Evicertia.URL.EviSignSubmit"], new StringContent(json, Encoding.UTF8, "application/json"));
+            string resultResponse = response.Content.ReadAsStringAsync().Result;
             if (response.IsSuccessStatusCode)
             {
-                string resultResponse = response.Content.ReadAsStringAsync().Result;
-
                 JObject jsonvalues = JObject.Parse(resultResponse);
-
                 result = jsonvalues.SelectToken("uniqueId").Value<string>();
             }
             else
             {
                 Utilities.Log.ErrorLog("EviSignSubmit", response.ReasonPhrase);
+                Utilities.Log.ErrorLog("EviSignSubmit", resultResponse);
             }
             return result;
         }
 
         public async static Task<Architect.API.Core.Contracts.EviSign.EviSignQueryResult> EviSignQuery(string uniqueIds = "4bd687422b4e4a3d9c1dacde016d6938", bool includeAffidavits = false)
         {
-            Architect.API.Core.Contracts.EviSign.EviSignQueryResult result = null;
+            Contracts.EviSign.EviSignQueryResult result = null;
             string urlComplement = string.Empty;
             if (includeAffidavits)
             {
                 urlComplement = "&includeAffidavitBlobsOnResult=true&includeAffidavitsOnResult=true";
             }
 
-            eviCertiaClient.DefaultRequestHeaders.Authorization
-                         = new AuthenticationHeaderValue("Basic", ConfigurationManager.AppSettings["Evicertia.Authentication"]);
-            eviCertiaClient.DefaultRequestHeaders.Accept
-              .Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var response = await eviCertiaClient.GetAsync(ConfigurationManager.AppSettings["Evicertia.URL.EviSignQuery"] + "?WithUniqueIds=" + uniqueIds + "&includeEventsOnResult=true" + urlComplement);
+            eviCertiaClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", ConfigurationManager.AppSettings["Evicertia.Authentication"]);
+            eviCertiaClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            HttpResponseMessage response = await eviCertiaClient.GetAsync($"{ConfigurationManager.AppSettings["Evicertia.URL.EviSignQuery"]}?WithUniqueIds={uniqueIds}&includeEventsOnResult=true{urlComplement}");
+            string resultResponse = response.Content.ReadAsStringAsync().Result;
             if (response.IsSuccessStatusCode)
             {
-                string resultResponse = response.Content.ReadAsStringAsync().Result;
                 //Utilities.Log.TraceLog("EviSignQuery.resultResponse", resultResponse);
                 result = JsonConvert.DeserializeObject<Architect.API.Core.Contracts.EviSign.EviSignQueryResult>(resultResponse);
             }
             else
             {
                 Utilities.Log.ErrorLog("EviSignQuery", response.ReasonPhrase);
+                Utilities.Log.ErrorLog("EviSignSubmit", resultResponse);
             }
             return result;
         }

@@ -1,5 +1,4 @@
 ﻿using Architect.Utilities.Extensions;
-using System;
 using System.Collections.Generic;
 
 namespace Architect.API.Insurance.Business.Policy
@@ -65,7 +64,7 @@ namespace Architect.API.Insurance.Business.Policy
             }
 
             //BirthDate:
-            if ((source.Type == 2 || (source.Type == 100 && risk.RestrictionLevel > 2  ) )
+            if ((source.Type == 2 || (source.Type == 100 && risk.RestrictionLevel > 2))
                 && source.BirthDate.IsEmpty())
             {
                 result.Add(new Core.Contracts.General.Error()

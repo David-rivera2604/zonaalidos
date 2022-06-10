@@ -41,7 +41,7 @@ namespace Architect.API.Insurance.Contracts.Policy
         /// <summary>
         /// Descripción para plan.
         /// </summary>
-        [DataMember(), JsonProperty()] public string Module  { get; set; }
+        [DataMember(), JsonProperty()] public string Module { get; set; }
         /// <summary>
         /// Inicio de vigencia.
         /// </summary>

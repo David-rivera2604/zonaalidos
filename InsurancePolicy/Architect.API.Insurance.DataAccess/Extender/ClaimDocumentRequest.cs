@@ -1,6 +1,4 @@
 ﻿using Architect.DataFactory;
-using Architect.Utilities.Extensions;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using DbType = Architect.DataFactory.Enumerations.DbType;
@@ -20,7 +18,7 @@ namespace Architect.API.Insurance.DataAccess.ManualClaims
         /// <param name="claimId">Identificación única del siniestro.</param>
         /// <param name="connection">Instancia de una conexión compartida</param>
         /// <returns>Lista de instancias de ClaimDocumentRequest</returns>
-        public static List<Architect.API.Insurance.Contracts.ManualClaims.ClaimDocumentRequest> RetrieveByClaimId(int companyId, int claimId,  IDbConnection connection = null)
+        public static List<Architect.API.Insurance.Contracts.ManualClaims.ClaimDocumentRequest> RetrieveByClaimId(int companyId, int claimId, IDbConnection connection = null)
         {
             return RetrieveAll(companyId,
                 " AND ClaimDocumentRequest.ClaimInternalId=:ClaimInternalId",

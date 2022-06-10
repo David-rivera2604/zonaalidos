@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,7 +41,8 @@ namespace Architect.Extend.Integrations.InstitutoNacionalDeSeguros
                 {
                     resultResponse = response.Content.ReadAsStringAsync().Result;
 
-                    if (resultResponse.IsNotEmpty()) {
+                    if (resultResponse.IsNotEmpty())
+                    {
                         JObject jsonvalues = JObject.Parse(resultResponse);
 
                         if (jsonvalues.SelectToken("PrimerNombre") != null)

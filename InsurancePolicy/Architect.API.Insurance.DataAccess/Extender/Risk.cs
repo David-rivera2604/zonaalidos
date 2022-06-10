@@ -1,6 +1,5 @@
 ﻿using Architect.DataFactory;
 using Architect.Utilities.Extensions;
-using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -160,10 +159,10 @@ namespace Architect.API.Insurance.DataAccess.Policy
             return (int)Database.Update(@"UPDATE Risk 
                                              SET Reference=:Reference 
                                            WHERE Id=:Id AND CompanyId=:CompanyId")
-                            .AddParameter("Reference", DbType.AnsiString, 36,  reference)
-                            .AddParameter("Id", DbType.Decimal, 9,  Id)
-                            .AddParameter("CompanyId", DbType.Decimal, 5,  companyId)
-                            .Execute(connection, "Research"); 
+                            .AddParameter("Reference", DbType.AnsiString, 36, reference)
+                            .AddParameter("Id", DbType.Decimal, 9, Id)
+                            .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                            .Execute(connection, "Research");
         }
 
         /// <summary>
@@ -180,12 +179,12 @@ namespace Architect.API.Insurance.DataAccess.Policy
                                 FROM Risk  
                                 JOIN RiskBayer ON RiskBayer.Id=Risk.Id AND NVL(RiskBayer.HasDigitalSignature,0)=0  
                                WHERE Risk.CompanyId=:CompanyId AND Risk.Status=:Status ")
-                    .AddParameter("CompanyId", DbType.Decimal, 5,  companyid)
+                    .AddParameter("CompanyId", DbType.Decimal, 5, companyid)
                     .AddParameter("Status", DbType.Decimal, 5, status)
                     .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
                      {
                          result.Add(new Utilities.Contracts.LookUpValue() { Code = reader.NumericValue("Id").ToString(), Description = reader.StringValue("Reference") });
-                     })); 
+                     }));
             return result;
         }
 
@@ -207,7 +206,7 @@ namespace Architect.API.Insurance.DataAccess.Policy
                         {
                             result.Add(DataReaderToRisk(reader));
                         }));
-            return result; 
+            return result;
         }
 
         /// <summary>
@@ -222,7 +221,7 @@ namespace Architect.API.Insurance.DataAccess.Policy
                                      WHERE Id=:Id AND CompanyId=:CompanyId")
                               .AddParameter("Id", DbType.Decimal, 9, id)
                               .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
-                              .Execute(connection, "Research"); 
+                              .Execute(connection, "Research");
         }
     }
 }

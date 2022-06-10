@@ -1,7 +1,4 @@
 ﻿using Architect.DataFactory;
-using Architect.Utilities.Extensions;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using DbType = Architect.DataFactory.Enumerations.DbType;

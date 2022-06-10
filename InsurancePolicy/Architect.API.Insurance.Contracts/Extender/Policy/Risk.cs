@@ -70,6 +70,12 @@ namespace Architect.API.Insurance.Contracts.Policy
         /// </summary>
         [DataMember(), JsonProperty()] public Contracts.Policy.RiskBayer Bayer { get; set; }
 
+        /// <summary>
+        /// Indica si el usuario puede firma de forma electrónica.
+        /// </summary>
+        [DataMember(), JsonProperty()] public bool HasDigitalSignature { get; set; }
+        
+
     }
 }
 

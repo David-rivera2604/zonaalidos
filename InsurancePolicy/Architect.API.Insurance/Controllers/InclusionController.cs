@@ -127,7 +127,9 @@ namespace Architect.API.Insurance.Controllers
                                        });
         }
 
-
+        /// <summary>
+        /// Verifica que la firma electronica de un PDF corresponda con el número de documento de indentificación del usuario responsable.
+        /// </summary>
         [HttpGet]
         [Route("VerifySignature")]
         public async Task<IHttpActionResult> VerifySignature([FromUri] int id, [FromUri] string fileName, [FromUri] int size, [FromUri] string originalFileName)
@@ -144,12 +146,13 @@ namespace Architect.API.Insurance.Controllers
             if (result)
             {
                 message = "La solicitud fue procesada y su firma debidamente verificada por medio de su identificación.";
-            } else
+            }
+            else
             {
                 message = "La verificación de la firma por medio de su identificación, no se pudo realizar de forma exitosa, por favor aplique nuevamente la firma digital al documento enviado por correo y repita el proceso de carga.";
             }
 
-            return Ok(new { Valid  = result, Message = message });
+            return Ok(new { Valid = result, Message = message });
         }
 
     }

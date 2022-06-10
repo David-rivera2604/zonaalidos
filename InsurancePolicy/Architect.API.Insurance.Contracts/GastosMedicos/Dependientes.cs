@@ -1,10 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Architect.API.Insurance.Contracts.GastosMedicos
 {
@@ -26,7 +22,7 @@ namespace Architect.API.Insurance.Contracts.GastosMedicos
         /// fechaNacimiento.
         /// </summary>
         [DataMember(), JsonProperty()] public string fechaNacimiento { get; set; }
-        
-       
+
+
     }
 }

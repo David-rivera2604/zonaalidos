@@ -247,7 +247,7 @@ namespace Architect.API.Insurance.DataAccess.Policy
                         {
                             result.Add(DataReaderToRiskOverdraft(reader));
                         }));
-            return result; 
+            return result;
         }
 
         /// <summary>
@@ -262,7 +262,7 @@ namespace Architect.API.Insurance.DataAccess.Policy
                                     "WHERE Id=:Id AND CompanyId=:CompanyId")
                                 .AddParameter("Id", DbType.Decimal, 9, id)
                                 .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
-                                .Execute(connection, "Research"); 
+                                .Execute(connection, "Research");
         }
 
         /// <summary>

@@ -23,7 +23,7 @@ namespace Architect.API.Insurance.Contracts.Bayer
         /// <summary>
         /// Descripción del contratante.
         /// </summary>
-        [DataMember(), JsonProperty()] public string ContractorDesc { get; set; }        
+        [DataMember(), JsonProperty()] public string ContractorDesc { get; set; }
 
         /// <summary>
         /// Fecha de ingreso a póliza.
@@ -200,7 +200,7 @@ namespace Architect.API.Insurance.Contracts.Bayer
         /// Número de empleado
         /// </summary>
         [DataMember(), JsonProperty()] public string EmployeeNumber { get; set; }
-        
+
     }
 
     /// <summary>
@@ -294,7 +294,7 @@ namespace Architect.API.Insurance.Contracts.Bayer
         /// Fecha de inclusión.
         /// </summary>
         [DataMember(), JsonProperty()] public DateTime DInclusionDate { get; set; }
-        
+
 
     }
 

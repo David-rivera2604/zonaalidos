@@ -33,7 +33,7 @@ namespace Architect.API.Insurance.Contracts.Policy
     /// Cuestionarios vinculados a una póliza.
     /// </summary>
     [Serializable(), DataContract()]
-    public partial class RiskQuestionView 
+    public partial class RiskQuestionView
     {
         /// <summary>
         /// Indicador de respuesta, 1 si, 2 no.

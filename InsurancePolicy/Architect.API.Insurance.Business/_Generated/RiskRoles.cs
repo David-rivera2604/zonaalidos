@@ -1,5 +1,4 @@
 ﻿using Architect.Utilities.Extensions;
-using System;
 using System.Collections.Generic;
 
 namespace Architect.API.Insurance.Business.Policy
@@ -67,7 +66,8 @@ namespace Architect.API.Insurance.Business.Policy
                 if (source.Province.IsNotEmpty())
                 {
                     values = Core.Business.Common.Lkp("CR_Provincia", companyId);
-                    if (target.FullAddress.IsNotEmpty()) {
+                    if (target.FullAddress.IsNotEmpty())
+                    {
                         target.FullAddress += ", ";
                     }
                     target.FullAddress += values.Find(x => x.Code == source.Province.ToString()).Description;
@@ -115,7 +115,7 @@ namespace Architect.API.Insurance.Business.Policy
                 switch (index)
                 {
                     case 1:
-                        target.Beneficiary1 = Mapper2BeneficiaryView(item,  companyId);
+                        target.Beneficiary1 = Mapper2BeneficiaryView(item, companyId);
                         break;
                     case 2:
                         target.Beneficiary2 = Mapper2BeneficiaryView(item, companyId);

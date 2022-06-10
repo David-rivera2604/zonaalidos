@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Architect.API.Insurance.Business.Policy
+﻿namespace Architect.API.Insurance.Business.Policy
 {
     public partial class RiskOverdraft
     {
@@ -28,7 +22,7 @@ namespace Architect.API.Insurance.Business.Policy
             target.Amount5 = source.Amount5;
             target.EndTermOnAmount5 = source.EndTermOnAmount5;
             target.Recast5 = source.Recast5;
-            target.CompanyId= source.CompanyId;
+            target.CompanyId = source.CompanyId;
             //target.UpdateDate = source.UpdateDate;
             //target.UpdateUserCode = source.UpdateUserCode;
             return target;

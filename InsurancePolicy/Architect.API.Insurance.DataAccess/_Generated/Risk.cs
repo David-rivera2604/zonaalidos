@@ -266,7 +266,7 @@ namespace Architect.API.Insurance.DataAccess.Policy
             return result;
         }
 
-        
+
 
         /// <summary>
         /// Recupera la cantidad de registros existentes en la tabla Risk que cumplen con el filtro.

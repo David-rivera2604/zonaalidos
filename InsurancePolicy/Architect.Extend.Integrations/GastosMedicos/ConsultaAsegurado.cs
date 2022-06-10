@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,7 +31,7 @@ namespace Architect.Extend.Integrations.GastosMedicos
             try
             {
                 var responsetoken = new HttpResponseMessage();
-                
+
                 //Genera Token
                 using (var httpClient_token = new HttpClient())
                 {
@@ -46,7 +45,7 @@ namespace Architect.Extend.Integrations.GastosMedicos
 
                     });
 
-                     responsetoken =  await httpClient_token.PostAsync(httpClient_token.BaseAddress, content);
+                    responsetoken = await httpClient_token.PostAsync(httpClient_token.BaseAddress, content);
                 }
 
                 if (responsetoken.IsSuccessStatusCode)
@@ -61,7 +60,7 @@ namespace Architect.Extend.Integrations.GastosMedicos
                         {
 
                             token = jsonvalues.SelectToken("token_type").Value<string>() + " " + jsonvalues.SelectToken("access_token").Value<string>();
-                   
+
                         }
                     }
                 }
@@ -69,7 +68,7 @@ namespace Architect.Extend.Integrations.GastosMedicos
                 //Consulta carnetDigitalInfo Panama
                 var json = JsonConvert.SerializeObject(new { identificacion = cedula, pais = "506" });
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
-                
+
 
                 HttpClient client = new HttpClient() { Timeout = new TimeSpan(0, 0, 2) };
                 client.DefaultRequestHeaders.Add("Authorization", token);
@@ -92,9 +91,9 @@ namespace Architect.Extend.Integrations.GastosMedicos
                 //Sino lo encuentra en Panama, busca asegurado en Medical 
 
                 if (resultado.nombre == null)
-                { 
+                {
                     HttpClient client_medical = new HttpClient() { Timeout = new TimeSpan(0, 0, 2) };
-                    var response_medical = await client.GetAsync("https://www.mapfrecr.com/apps/service.svc/REST/InformacionAsegurado?identificacionAsegurado="+ cedula +"&clave=12345678901234567890").ConfigureAwait(false);
+                    var response_medical = await client.GetAsync("https://www.mapfrecr.com/apps/service.svc/REST/InformacionAsegurado?identificacionAsegurado=" + cedula + "&clave=12345678901234567890").ConfigureAwait(false);
 
                     if (response_medical.IsSuccessStatusCode)
                     {
@@ -103,8 +102,8 @@ namespace Architect.Extend.Integrations.GastosMedicos
                         if (resultResponse.IsNotEmpty())
                         {
                             API.Insurance.Contracts.GastosMedicos.AseguradoGastosMedicosMD result_md = new API.Insurance.Contracts.GastosMedicos.AseguradoGastosMedicosMD();
-                            result_md = JsonConvert.DeserializeObject <API.Insurance.Contracts.GastosMedicos.AseguradoGastosMedicosMD>(resultResponse);
-                            List <API.Insurance.Contracts.GastosMedicos.Dependientes> dependientes_list  = new List<API.Insurance.Contracts.GastosMedicos.Dependientes>();
+                            result_md = JsonConvert.DeserializeObject<API.Insurance.Contracts.GastosMedicos.AseguradoGastosMedicosMD>(resultResponse);
+                            List<API.Insurance.Contracts.GastosMedicos.Dependientes> dependientes_list = new List<API.Insurance.Contracts.GastosMedicos.Dependientes>();
 
                             if (result_md.Asegurado != null)
                             {
@@ -128,7 +127,7 @@ namespace Architect.Extend.Integrations.GastosMedicos
                                 }
 
                                 resultado.dependientes = dependientes_list;
-                                
+
                             }
                         }
                     }
