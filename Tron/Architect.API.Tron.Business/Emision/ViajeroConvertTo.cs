@@ -2,28 +2,27 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using Architect.Utilities.Extensions;
 
 namespace Architect.API.Tron.Business.Emision
 {
     internal static class ViajeroConvertTo
     {
 
-        internal static Architect.API.Tron.Contracts.Presupuesto.DatoFijo Tron(Contracts.Emision.Viajero quoteInfo)
+        internal static Contracts.Presupuesto.DatoFijo Tron(Contracts.Emision.Viajero quoteInfo)
         {
 
-            Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos = DatosFijos(quoteInfo, quoteInfo.cod_ramo);
+            Contracts.Presupuesto.DatoFijo datosFijos = DatosFijos(quoteInfo, quoteInfo.cod_ramo);
             Terceros(quoteInfo, datosFijos);
             datosFijos.DatosVariables = DatosVariable(quoteInfo, datosFijos);
 
             return datosFijos;
         }
 
-        internal static Architect.API.Tron.Contracts.Presupuesto.DatoFijo DatosFijos(Contracts.Emision.Viajero quoteInfo, int branch)
+        internal static Contracts.Presupuesto.DatoFijo DatosFijos(Contracts.Emision.Viajero quoteInfo, int branch)
         {
 
             //Datos fijos del presupuesto
-            Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos = new Architect.API.Tron.Contracts.Presupuesto.DatoFijo()
+            Contracts.Presupuesto.DatoFijo datosFijos = new Contracts.Presupuesto.DatoFijo()
             {
                 cod_cia = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_cia"]),
                 num_poliza = quoteInfo.presupuesto,
@@ -89,20 +88,23 @@ namespace Architect.API.Tron.Business.Emision
 
             return datosFijos;
         }
-        internal static List<Architect.API.Tron.Contracts.Presupuesto.DatoVariable> DatosVariable(Contracts.Emision.Viajero quoteInfo, Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos)
+
+        internal static List<Contracts.Presupuesto.DatoVariable> DatosVariable(Contracts.Emision.Viajero quoteInfo, Contracts.Presupuesto.DatoFijo datosFijos)
         {
-            List<Architect.API.Tron.Contracts.Presupuesto.DatoVariable> datosVariables = new List<Architect.API.Tron.Contracts.Presupuesto.DatoVariable>();
+            List<Contracts.Presupuesto.DatoVariable> datosVariables = new List<Contracts.Presupuesto.DatoVariable>();
 
             //datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "OTRA_SENAS_RGO1", quoteInfo.otrassenas, 2, 5));
 
             return datosVariables;
         }
-        internal static List<Architect.API.Tron.Contracts.Presupuesto.Tercero> Terceros(Contracts.Emision.Viajero quoteInfo, Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos)
-        {
-            datosFijos.Terceros = new List<Architect.API.Tron.Contracts.Presupuesto.Tercero>();
-            datosFijos.DetalleDeTerceros = new List<Architect.API.Tron.Contracts.Presupuesto.DetalleDeTercero>();
 
-            Contracts.Comun.tercero beneficiario = quoteInfo.terceros.Where(c => c.tipodetercero == 6 && c.elbeneficiarioeselmismotodoslosriesgos == 1).FirstOrDefault();
+        internal static List<Contracts.Presupuesto.Tercero> Terceros(Contracts.Emision.Viajero quoteInfo, Contracts.Presupuesto.DatoFijo datosFijos)
+        {
+            datosFijos.Terceros = new List<Contracts.Presupuesto.Tercero>();
+            datosFijos.DetalleDeTerceros = new List<Contracts.Presupuesto.DetalleDeTercero>();
+
+            // Se verifica si existe un beneficio con el indicador que es el mismo para todos los riesgos.
+            Contracts.Comun.tercero beneficiario = quoteInfo.terceros.Where(c => c.tipodetercero == Contracts.Comun.tercero.BENEFICIARIO && c.elbeneficiarioeselmismotodoslosriesgos == 1).FirstOrDefault();
             if (beneficiario != null)
             {
                 quoteInfo.terceros.Remove(beneficiario);
@@ -110,21 +112,26 @@ namespace Architect.API.Tron.Business.Emision
 
             foreach (Contracts.Comun.tercero item in quoteInfo.terceros)
             {
-                if (item.tipodetercero != 0)
+                if (item.tipodetercero != Contracts.Comun.tercero.TOMADOR)
                 {
 
                     datosFijos.Terceros.Add(TerceroPresupuesto(datosFijos, item, item.tipodetercero));
-                    if (beneficiario != null && item.tipodetercero == 2)
+                    if (beneficiario != null && item.tipodetercero == Contracts.Comun.tercero.ASEGURADO)
                     {
                         beneficiario.numeroderiesgo = item.numeroderiesgo;
-                        datosFijos.Terceros.Add(TerceroPresupuesto(datosFijos, beneficiario, 6));
+                        datosFijos.Terceros.Add(TerceroPresupuesto(datosFijos, beneficiario, Contracts.Comun.tercero.BENEFICIARIO));
+
+                        if (!datosFijos.DetalleDeTerceros.Exists(r => r.cod_docum == beneficiario.DocumentNumber))
+                        {
+                            datosFijos.DetalleDeTerceros.Add(CambioTerceroPresupuesto(datosFijos, beneficiario));
+                        }
                     }
                 }
                 else
                 {
                     if (item.eltomadoreselmismoasegurado == 1)
                     {
-                        datosFijos.Terceros.Add(TerceroPresupuesto(datosFijos, item, 2));
+                        datosFijos.Terceros.Add(TerceroPresupuesto(datosFijos, item, Contracts.Comun.tercero.ASEGURADO));
                     }
                 }
 
@@ -132,20 +139,21 @@ namespace Architect.API.Tron.Business.Emision
             }
 
             //En caso de existir un asegurado con el indicador de tomador
-            Contracts.Comun.tercero aseguradoTomador = quoteInfo.terceros.Where(c => c.tipodetercero == 2 && c.elaseguradoeselmismotomador == 1).FirstOrDefault();
+            Contracts.Comun.tercero aseguradoTomador = quoteInfo.terceros.Where(c => c.tipodetercero == Contracts.Comun.tercero.ASEGURADO && c.elaseguradoeselmismotomador == 1).FirstOrDefault();
             if (aseguradoTomador != null)
             {
-                aseguradoTomador.tipodetercero = 0;
+                aseguradoTomador.tipodetercero = Contracts.Comun.tercero.TOMADOR;
                 datosFijos.DetalleDeTerceros.Add(CambioTerceroPresupuesto(datosFijos, aseguradoTomador));
-                aseguradoTomador.tipodetercero = 2;
+                aseguradoTomador.tipodetercero = Contracts.Comun.tercero.ASEGURADO;
             }
 
 
             return datosFijos.Terceros;
         }
-        internal static Architect.API.Tron.Contracts.Presupuesto.Tercero TerceroPresupuesto(Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos, Contracts.Comun.tercero item, int tipodetercero)
+
+        internal static Contracts.Presupuesto.Tercero TerceroPresupuesto(Contracts.Presupuesto.DatoFijo datosFijos, Contracts.Comun.tercero item, int tipodetercero)
         {
-            Architect.API.Tron.Contracts.Presupuesto.Tercero result = new Architect.API.Tron.Contracts.Presupuesto.Tercero()
+            Contracts.Presupuesto.Tercero result = new Contracts.Presupuesto.Tercero()
             {
                 cod_cia = datosFijos.cod_cia,
                 num_poliza = datosFijos.num_poliza,
@@ -190,9 +198,10 @@ namespace Architect.API.Tron.Business.Emision
 
             return result;
         }
-        internal static Architect.API.Tron.Contracts.Presupuesto.DetalleDeTercero CambioTerceroPresupuesto(Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos, Contracts.Comun.tercero item)
+
+        internal static Contracts.Presupuesto.DetalleDeTercero CambioTerceroPresupuesto(Contracts.Presupuesto.DatoFijo datosFijos, Contracts.Comun.tercero item)
         {
-            Architect.API.Tron.Contracts.Presupuesto.DetalleDeTercero result = new Architect.API.Tron.Contracts.Presupuesto.DetalleDeTercero()
+            Contracts.Presupuesto.DetalleDeTercero result = new Contracts.Presupuesto.DetalleDeTercero()
             {
                 cod_cia = datosFijos.cod_cia,
                 fec_tratamiento = DateTime.Today,

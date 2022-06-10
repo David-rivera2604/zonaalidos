@@ -618,8 +618,23 @@ namespace Architect.API.Core.Business.Security
 
             if (result.Errors.Count == 0)
             {
-                result.UserMember.Roles = new List<Utilities.Contracts.LookUpValue> { new Utilities.Contracts.LookUpValue() { Code = Utilities.Helpers.Settings.StringValue(string.Format("Tenant.Settings.{0}.External.RoleId", companyId)) } };
-                result.UserMember = Architect.API.Core.Business.Security.UserMember.Create(companyId, internalUserId, result.UserMember);
+                string roleId = "";
+                string roleName = Utilities.Helpers.Settings.StringValue(string.Format("Tenant.Settings.{0}.External.RoleName", companyId));
+                if (roleName.IsNotEmpty())
+                {
+                    Contracts.General.LookupValue rolInfo = Common.Lkp("Roles", companyId).Where(r => r.Description == roleName).FirstOrDefault();
+                    if (rolInfo.IsNotEmpty())
+                    {
+                        roleId = rolInfo.Code;
+                    }
+                }
+                if (roleId.IsEmpty())
+                {
+                    roleId = Utilities.Helpers.Settings.StringValue(string.Format("Tenant.Settings.{0}.External.RoleId", companyId));
+                }
+
+                result.UserMember.Roles = new List<Utilities.Contracts.LookUpValue> { new Utilities.Contracts.LookUpValue() { Code = roleId } };
+                result.UserMember = UserMember.Create(companyId, internalUserId, result.UserMember);
             }
 
             return result;

@@ -187,6 +187,7 @@ app.EmisionViajero = (function () {
     };
 
     function Controls_Events() {
+
         $(".input-group.date").on('dp.change', function (e) {
             data_changed();
         });
@@ -741,8 +742,14 @@ app.EmisionViajero = (function () {
             if (app.ui.IsValid('#tercerosEdtForm', false)) {
                 app.ui.ButtonDoing('#tercerosEdtFormSave');
 
-                var row = terceros_table_row('values');
+                let row = terceros_table_row('values');
+                let cloneBeneficiario = (row.elbeneficiarioeselmismotodoslosriesgos === 1);
 
+                
+                if (cloneBeneficiario) {
+                    row.elbeneficiarioeselmismotodoslosriesgos = 2;
+                    row.numeroderiesgo = 1;
+                }
                 if (row.tercerosId === null)
                     row.tercerosId = $('#tercerosTbl').bootstrapTable('getData').length + 1;
 
@@ -753,14 +760,10 @@ app.EmisionViajero = (function () {
                     $('#tercerosTbl').bootstrapTable('append', row);
 
                     if (row.eltomadoreselmismoasegurado === 1) {
-                        let newinsurance = JSON.parse(JSON.stringify(row));
-                        newinsurance.tercerosId += 1;
-                        newinsurance.tipodetercero = 2;
-                        newinsurance.tipodeterceroDesc = $('#tipodetercero option[value="2"]').text();
-                        newinsurance.eltomadoreselmismoasegurado = 1;
-                        newinsurance.elaseguradoeselconductorhabitual = 2;
-                        newinsurance.elbeneficiarioeselmismotodoslosriesgos = 2;
-                        $('#tercerosTbl').bootstrapTable('append', newinsurance);
+                        terceros_clone(row, 2, 1, 1);
+                    }
+                    if (cloneBeneficiario) {
+                        terceros_clone(row, 6, 2, setupData.cantidad_riesgos);
                     }
                 }
 
@@ -773,6 +776,21 @@ app.EmisionViajero = (function () {
             }
         });
 
+    }
+
+    function terceros_clone(row, rol, num_riesgo_ini, num_riesgo_fin) {
+        let tbl = $('#tercerosTbl');
+        for (index = num_riesgo_ini; index <= num_riesgo_fin; index++) {
+            let newinsurance = JSON.parse(JSON.stringify(row));
+            newinsurance.tercerosId = tbl.bootstrapTable('getData').length + 1;
+            newinsurance.numeroderiesgo = index;
+            newinsurance.tipodetercero = rol;
+            newinsurance.tipodeterceroDesc = $('#tipodetercero option[value="' + rol + '"]').text();
+            newinsurance.eltomadoreselmismoasegurado = 2;
+            newinsurance.elaseguradoeselconductorhabitual = 2;
+            newinsurance.elbeneficiarioeselmismotodoslosriesgos = 2;
+            tbl.bootstrapTable('append', newinsurance);
+        }
     }
 
     function terceros_table_row(mode) {
@@ -869,12 +887,12 @@ app.EmisionViajero = (function () {
         let currentTomador = terceros.find(e => e.tipodetercero === 0);
         let currentAseguradoTomador = terceros.find(e => e.tipodetercero === 2 && e.elaseguradoeselmismotomador === 1);
         let direccion = terceros.find(e => e.reutilizarestadireccion);
-        if ((currentTomador && currentTomador.tercerosId != row.tercerosId) || currentAseguradoTomador) {
+        if ((currentTomador && currentTomador.tercerosId != row.tercerosId) || (currentAseguradoTomador && currentAseguradoTomador.tercerosId != row.tercerosId)) {
             $('#tipodetercero option[value=0]').attr('hidden', '');
         } else {
             $('#tipodetercero option[value=0]').removeAttr('hidden');
         }
-        if (currentAseguradoTomador) {
+        if (currentAseguradoTomador && currentAseguradoTomador.tercerosId != row.tercerosId) {
             $('[name=elaseguradoeselmismotomador]').first().parent().parent().parent().parent().addClass('d-none');
         } else {
             $('[name=elaseguradoeselmismotomador]').first().parent().parent().parent().parent().removeClass('d-none');
@@ -892,8 +910,6 @@ app.EmisionViajero = (function () {
         } else {
             $('#reutilizarestadireccion').parent().removeClass('d-none');
         }
-
-
 
         let currentBeneficiario = terceros.find(e => e.tipodetercero === 6);
         if (currentBeneficiario && currentBeneficiario.elbeneficiarioeselmismotodoslosriesgos === 1 && currentBeneficiario.tercerosId != row.tercerosId) {
@@ -928,7 +944,7 @@ app.EmisionViajero = (function () {
         app.ui.SetNumericValue('#porcentajeacredor', row.porcentajeacredor);
         app.ui.SetNumericValue('#porcentaje', row.porcentaje);
         $('#reutilizarestadireccion').prop('checked', row.reutilizarestadireccion)
-        terceros_tipodeterceroHandler();
+        //terceros_tipodeterceroHandler();
 
         md.modal('show');
     };
@@ -1052,7 +1068,9 @@ app.EmisionViajero = (function () {
             $('#apellido1').val(data.LastName);
             $('#apellido2').val(data.SecondLastName);
             $('#PhoneNumber').val(data.PhoneNumber);
-            app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
+            if (app.ui.GetDateValue('#fechadenacimiento') === '0001-01-01T00:00:00') {
+                app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
+            }
             $('#tercerosMca_sexo').val(data.Gender == 2 ? 1 : 0);
             $('#TProvincia').val(data.Province);
             $('#correoelectronico').val(data.PrimaryEmailAddress);

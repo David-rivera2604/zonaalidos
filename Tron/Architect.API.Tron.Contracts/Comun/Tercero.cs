@@ -5,8 +5,25 @@ using System.Runtime.Serialization;
 
 namespace Architect.API.Tron.Contracts.Comun
 { 
+    /// <summary>
+    /// Información de terceros reclacionados a una póliza.
+    /// </summary>
     public class tercero
     {
+        /// <summary>
+        /// Tomador de la póliza.
+        /// </summary>
+        public const int TOMADOR = 0;
+        
+        /// <summary>
+        /// Asegurado de la póliza.
+        /// </summary>
+        public const int ASEGURADO = 2;
+
+        /// <summary>
+        /// Beneficiario de la póliza.
+        /// </summary>
+        public const int BENEFICIARIO = 62;
 
         /// <summary>
         /// Id.
@@ -16,6 +33,9 @@ namespace Architect.API.Tron.Contracts.Comun
         /// Tipo de tercero.
         /// </summary>
         [DataMember(), JsonProperty()] public int tipodetercero { get; set; }
+        /// <summary>
+        /// Descripción del tipo de tercero.
+        /// </summary>
         [DataMember(), JsonProperty()] public string tipodeterceroDesc { get; set; }
 
         /// <summary>
@@ -46,12 +66,18 @@ namespace Architect.API.Tron.Contracts.Comun
         /// Sexo.
         /// </summary>
         [DataMember(), JsonProperty()] public int tercerosMca_sexo { get; set; }
+        /// <summary>
+        /// Descripción del sexo.
+        /// </summary>
         [DataMember(), JsonProperty()] public string tercerosMca_sexoDesc { get; set; }
 
         /// <summary>
         /// Estado Civil.
         /// </summary>
         [DataMember(), JsonProperty()] public string estadoCivil { get; set; }
+        /// <summary>
+        /// Descripción del estado civil.
+        /// </summary>
         [DataMember(), JsonProperty()] public string estadoCivilDesc { get; set; }
 
         /// <summary>
@@ -70,17 +96,26 @@ namespace Architect.API.Tron.Contracts.Comun
         /// Provincia.
         /// </summary>
         [DataMember(), JsonProperty()] public int TProvincia { get; set; }
+        /// <summary>
+        /// Descripción de la provincia.
+        /// </summary>
         [DataMember(), JsonProperty()] public string TProvinciaDesc { get; set; }
         /// <summary>
         /// Cantón.
         /// </summary>
         [DataMember(), JsonProperty()] public int TCanton { get; set; }
+        /// <summary>
+        /// Descripción del canton.
+        /// </summary>
         [DataMember(), JsonProperty()] public string TCantonDesc { get; set; }
 
         /// <summary>
         /// Distrito.
         /// </summary>
         [DataMember(), JsonProperty()] public int TDistrito { get; set; }
+        /// <summary>
+        /// Descripción del distrito.
+        /// </summary>
         [DataMember(), JsonProperty()] public string TDistritoDesc { get; set; }
         /// <summary>
         /// Otra señas.
@@ -118,11 +153,17 @@ namespace Architect.API.Tron.Contracts.Comun
         /// Parentesco.
         /// </summary>
         [DataMember(), JsonProperty()] public int parentesco { get; set; }
+        /// <summary>
+        /// Descripción del parentesco.
+        /// </summary>
         [DataMember(), JsonProperty()] public string parentescoDesc { get; set; }
         /// <summary>
         /// Porcentaje.
         /// </summary>
         [DataMember(), JsonProperty()] public int porcentaje { get; set; }
+        /// <summary>
+        /// Indica que el tercero no es editable.
+        /// </summary>
         [DataMember(), JsonProperty()] public bool NoEditable { get; set; }
 
         /// <summary>
