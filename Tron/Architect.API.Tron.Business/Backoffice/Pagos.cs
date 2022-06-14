@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using System.Threading.Tasks;
 using Architect.Utilities.Extensions;
 using Newtonsoft.Json;
@@ -65,14 +64,17 @@ namespace Architect.API.Tron.Business.Backoffice
         /// </summary>
         public async static Task Notificacion(int companyId, Payment.Integrations.Providers.Placetopay.Contracts.NotifyRequest notify)
         {
-            Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveByRequestID(companyId, Convert.ToInt64(notify.requestId));
-            if (currentRecord != null)
+            if (Utilities.Helpers.Settings.BoolValue("Payment.Placetopay.Notify.Enabled", true))
             {
-                string signature = Payment.Integrations.Providers.Placetopay.Webcheckout.NotifySignature(notify, currentRecord.Currency);
-
-                if (signature == notify.signature)
+                Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveByRequestID(companyId, Convert.ToInt64(notify.requestId));
+                if (currentRecord != null)
                 {
-                    await Verify(currentRecord);
+                    string signature = Payment.Integrations.Providers.Placetopay.Webcheckout.NotifySignature(notify, currentRecord.Currency);
+
+                    if (signature == notify.signature)
+                    {
+                        await Verify(currentRecord);
+                    }
                 }
             }
         }
@@ -194,7 +196,12 @@ namespace Architect.API.Tron.Business.Backoffice
                     }
                 });
 
-            return (DataAccess.PorRamo.p_proceso_cobro(1, Guid.NewGuid().ToString(), data).codigo_respuesta == "200");
+            Contracts.Batch.Respuesta tronCobro = DataAccess.PorRamo.p_proceso_cobro(1, Guid.NewGuid().ToString(), data);
+            if (tronCobro.codigo_respuesta != "200")
+            {
+                Utilities.Log.WarningLog("Pagos.TronPayment", string.Format("codigo_respuesta={0}, mensaje_respuesta={1}", tronCobro.codigo_respuesta, tronCobro.mensaje_respuesta), "payment");
+            }
+            return (tronCobro.codigo_respuesta == "200");
         }
 
     }

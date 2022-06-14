@@ -32,5 +32,20 @@ namespace Architect.Utilities.Helpers
             else
                 return defaultValue;
         }
+
+        public static bool BoolValue(string settingName, bool defaultValue = false)
+        {
+            string current = StringValue(settingName, string.Empty);
+            if (current.IsEmpty())
+            {
+                return defaultValue;
+            }
+            else { 
+                return (current.ToLower() == "true" ||
+                        current.ToLower() == "verdadero" ||
+                        current.ToLower() == "yes" ||
+                        current.ToLower() == "si");
+            }
+        }
     }
 }
