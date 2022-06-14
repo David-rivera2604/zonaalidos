@@ -106,7 +106,7 @@ namespace Architect.API.Insurance.Business.Bayer
             Risk risk = Policy.Risk.RetrievePolicyByKey(id, companyId);
             risk.Bayer = DataAccess.Policy.RiskBayer.Retrieve(id, companyId);
             risk.LineOfBusinessDesc = Core.Business.Common.LkpDescription(companyId, "LineOfBusiness", risk.LineOfBusinessCode.ToString());
-            risk.Status = 10;
+            risk.Status = (int)Enumerations.PolicyStatus.InForce;
             DataAccess.Policy.Risk.Update(risk);
             Core.Business.General.ChangeSet.Create(2000, risk.Id, companyId, "Aceptada", null, risk.ExecutiveUserCode, risk);
             int medicalId = DataAccess.Others.Inclusiones.Create(
@@ -125,7 +125,7 @@ namespace Architect.API.Insurance.Business.Bayer
             Risk risk = Policy.Risk.RetrievePolicyByKey(id, companyId);
             risk.Bayer = DataAccess.Policy.RiskBayer.Retrieve(id, companyId);
             risk.LineOfBusinessDesc = Core.Business.Common.LkpDescription(companyId, "LineOfBusiness", risk.LineOfBusinessCode.ToString());
-            risk.Status = 31;
+            risk.Status = (int)Enumerations.PolicyStatus.DeclinedDuToSignatureExpiration;
             DataAccess.Policy.Risk.Update(risk);
             Core.Business.General.ChangeSet.Create(2000, risk.Id, companyId, "Declinada por expiracíon", null, risk.ExecutiveUserCode, risk);
             Core.Business.General.Mail.SendByTemplate("Notify_RequestOnTimeOutDeclined", companyId, risk.ExecutiveUserCode, risk.ExecutiveUserCode, risk);
@@ -139,7 +139,7 @@ namespace Architect.API.Insurance.Business.Bayer
             Risk risk = Policy.Risk.RetrievePolicyByKey(id, companyId);
             risk.Bayer = DataAccess.Policy.RiskBayer.Retrieve(id, companyId);
             risk.LineOfBusinessDesc = Core.Business.Common.LkpDescription(companyId, "LineOfBusiness", risk.LineOfBusinessCode.ToString());
-            risk.Status = 32;
+            risk.Status = (int)Enumerations.PolicyStatus.RejectedBySigner;
             DataAccess.Policy.Risk.Update(risk);
             Core.Business.General.ChangeSet.Create(2000, risk.Id, companyId, "Rechazada", null, risk.ExecutiveUserCode, risk);
             Core.Business.General.Mail.SendByTemplate("Notify_RequestOnUserDeclined", companyId, risk.ExecutiveUserCode, risk.ExecutiveUserCode, risk);

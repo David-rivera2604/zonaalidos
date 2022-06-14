@@ -31,5 +31,6 @@
 	</DataEntrySectionsAllowed>
 	<Settings>
 		<Setting name="Parent.Policy.Effective" description="Fecha de efecto de la póliza matriz" value="2019-03-01T00:00:00"/>
+		<Setting name="Request.Sign.Enabled" description="Indica que es necesario la firma del documento previo a su emisión" value="false"/>
 	</Settings>
 </ProductMaster>

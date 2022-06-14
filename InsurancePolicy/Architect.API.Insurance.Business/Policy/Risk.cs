@@ -770,6 +770,7 @@ namespace Architect.API.Insurance.Business.Policy
 
                         if (Products.Specification.SettingBoolValue(item.ProductAlias, "Request.Sign.Enabled"))
                         {
+                            item.Status = (int)Enumerations.PolicyStatus.PendingBySignature;
                             DigitalSignature(item, tokenInfo);
                         }
                     }
@@ -787,7 +788,7 @@ namespace Architect.API.Insurance.Business.Policy
             }
             Contracts.Policy.RiskView riskInfo = Mapper_Information(item, tokenInfo.CompanyId);
 
-            string archivo = Core.Business.General.Report.GeneratePDFFile(riskInfo.ProductAlias + riskInfo.Prefix, item).GetAwaiter().GetResult();
+            string archivo = Core.Business.General.Report.GeneratePDFFile(riskInfo.ProductAlias + riskInfo.Prefix, riskInfo).GetAwaiter().GetResult();
 
             if (!item.HasDigitalSignature)
             {

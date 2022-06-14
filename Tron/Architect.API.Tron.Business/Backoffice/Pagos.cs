@@ -56,7 +56,7 @@ namespace Architect.API.Tron.Business.Backoffice
             // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
             if (result.changed && result.status.status == "APPROVED")
             {
-                bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode, result.OnlinePayment.UpdateUserCode);
+                bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode);
             }
         }
 
@@ -136,7 +136,7 @@ namespace Architect.API.Tron.Business.Backoffice
             // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
             if (result.changed && result.status.status == "APPROVED")
             {
-                bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode, result.OnlinePayment.UpdateUserCode);
+                bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode);
             }
             return result;
         }
@@ -144,7 +144,7 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Procesa el pago de un recibo en tron.
         /// </summary>
-        public async static Task<bool> TronPayment(Payment.Integrations.Providers.Placetopay.Contracts.InformationRequest request, int agentCode, int userCode)
+        public async static Task<bool> TronPayment(Payment.Integrations.Providers.Placetopay.Contracts.InformationRequest request, int agentCode)
         {
             string tipoPagador = "A";
             string pagador = agentCode.ToString();
