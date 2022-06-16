@@ -24,8 +24,7 @@ app.ConsultasGastosMedicos = (function () {
             app.core.Get(app.setting.apipath + 'v1/GastosMedicos/' + cedula)
                 .done(function (data) {
                     if (data.nombre !== null) {
-                        $('#Nombre').val(data.nombre);
-                        $('#Apellidos').val(data.apellido);
+                        $('#Nombre').val(data.nombre + ' ' + data.apellido);
                         $('#Poliza').val(data.poliza);
                         $('#Certificado').val(data.certificado);
                         $('#InicioVigencia').val(data.fechaInicioVigencia);
@@ -51,7 +50,6 @@ app.ConsultasGastosMedicos = (function () {
                     else {
                         
                         $('#Nombre').val('');
-                        $('#Apellidos').val('');
                         $('#Poliza').val('');
                         $('#Certificado').val('');
                         $('#InicioVigencia').val('');
