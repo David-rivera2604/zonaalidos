@@ -51,22 +51,22 @@ namespace Architect.Extend.Integrations.InstitutoNacionalDeSeguros
                             {
                                 DocumentType = 1,
                                 DocumentNumber = identificacion,
-                                FirstName = jsonvalues.SelectToken("PrimerNombre").Value<string>(),
-                                MiddleName = jsonvalues.SelectToken("SegundoNombre").Value<string>(),
-                                LastName = jsonvalues.SelectToken("PrimerApellido").Value<string>(),
-                                SecondLastName = jsonvalues.SelectToken("SegundoApellido").Value<string>(),
+                                FirstName = jsonvalues.SelectStringToken("PrimerNombre"),
+                                MiddleName = jsonvalues.SelectStringToken("SegundoNombre"),
+                                LastName = jsonvalues.SelectStringToken("PrimerApellido"),
+                                SecondLastName = jsonvalues.SelectStringToken("SegundoApellido"),
                                 Gender = 0,
                                 CivilStatus = 0,
-                                PrimaryEmailAddress = jsonvalues.SelectToken("email").Value<string>(),
+                                PrimaryEmailAddress = jsonvalues.SelectStringToken("email"),
                                 Province = 0,
                                 Canton = 0,
                                 District = 0,
                                 AddressDetail = string.Empty,
                                 PhoneType = 0,
-                                PhoneNumber = jsonvalues.SelectToken("phone").Value<string>(),
+                                PhoneNumber = jsonvalues.SelectStringToken("phone"),
                                 Source = "INS"
                             };
-                            switch (jsonvalues.SelectToken("CodigoSexo").Value<string>())
+                            switch (jsonvalues.SelectStringToken("CodigoSexo"))
                             {
                                 case "F":
                                     result.Gender = 2;
@@ -75,7 +75,7 @@ namespace Architect.Extend.Integrations.InstitutoNacionalDeSeguros
                                     result.Gender = 1;
                                     break;
                             }
-                            switch (jsonvalues.SelectToken("CodigoEstadoCivil").Value<string>())
+                            switch (jsonvalues.SelectStringToken("CodigoEstadoCivil"))
                             {
                                 case "1":
                                     result.CivilStatus = 3;  // Soltero(a)
@@ -167,5 +167,21 @@ namespace Architect.Extend.Integrations.InstitutoNacionalDeSeguros
             }
             return result;
         }
+    }
+    public static class JObjectExtensions
+    {
+
+        public static string SelectStringToken(this JObject value, string path, string defaultValue = "" )
+        {
+            string result = defaultValue;
+            JToken token = value.SelectToken(path);
+            if (token != null)
+            {
+                result = token.Value<string>();
+            }
+
+            return result;            
+        }
+
     }
 }
