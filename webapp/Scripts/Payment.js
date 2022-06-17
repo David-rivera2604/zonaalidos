@@ -31,6 +31,9 @@ app.Payment = (function () {
                         if (id == 310 && sequence == 2) {
                             app.ViewerQuery.Refresh(undefined, $('#2GridTbl'), id, '', sequence);
                         }
+                        if (id == 3001 && sequence == 1) {
+                            app.ViewerQuery.Refresh(undefined, $('#1GridTbl'), 3000, '', sequence);
+                        }
                     }
                 });
         },

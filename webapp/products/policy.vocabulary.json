@@ -62,6 +62,14 @@
       "CSharp": "9",
       "JavaScript": "'Credecoop'"
     }
+  },
+  {
+    "Key": "{Sur Química}",
+    "Description": "Código de Sur Química como aliado",
+    "Language": {
+      "CSharp": "11",
+      "JavaScript": "'Sur Química'"
+    }
   }
 ]
 

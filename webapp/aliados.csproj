@@ -1199,7 +1199,9 @@
     <Content Include="logos\logo-coopeservidores-alt.svg" />
     <Content Include="logos\logo-core-alt.svg" />
     <Content Include="logos\logo-mapfre-alt.svg" />
+    <Content Include="logos\logo-sur química-alt.svg" />
     <Content Include="logos\velero3.jpg" />
+    <Content Include="products\suquímica_vida.xml" />
     <Content Include="products\credecoop_saldo_deudor.xml" />
     <Content Include="products\TotalLeasing_saldo_deudor.xml" />
     <Content Include="products\carrofacil_saldo_deudor.xml" />
@@ -1288,6 +1290,7 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\UnhandledExceptionLogger.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\DocuSignController.cs" />
     <Compile Include="Controllers\AvisosController.cs" />
     <Compile Include="Controllers\ManualController.cs" />
     <Compile Include="Controllers\PagosController.cs" />
@@ -1648,6 +1651,11 @@
     <Content Include="Views\Cotizacion\_datosgenerales.cshtml" />
     <Content Include="Reports\SegurSaldoDeudor.repx" />
     <Content Include="Views\Avisos\Recibos.cshtml" />
+    <Content Include="Views\Policy\_asegurado.cshtml" />
+    <Content Include="Views\DocuSign\Notify.cshtml" />
+    <Content Include="Reports\surquímica_vida.repx" />
+    <Content Include="Reports\surquímica_vida_mayor_que_64.repx" />
+    <Content Include="Views\Policy\_poliza.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

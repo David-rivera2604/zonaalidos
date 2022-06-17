@@ -15,7 +15,7 @@ namespace Architect.API.Insurance.Business.Bayer
     {
 
         /// <summary>
-        /// Verifica que la firma electronica de un PDF corresponda con el número de documento de indentificación del usuario responsable.
+        /// Verifica que la firma electrónica de un PDF corresponda con el número de documento de identificación del usuario responsable.
         /// </summary>
         public static bool VerifySignature(int id, string fileName, int size, string originalFileName, Core.Contracts.Security.Token tokenInfo)
         {
@@ -56,7 +56,7 @@ namespace Architect.API.Insurance.Business.Bayer
         {
             try
             {
-                Architect.API.Core.Contracts.EviSign.EviSignQueryResult eviSignInf = null;
+                DocuSign.Integrations.Contracts.QueryResult eviSignInf = null;
 
                 foreach (string companyIdForReview in ConfigurationManager.AppSettings["Evicertia.Request.Company.Review"].ToString().Split(','))
                 {
@@ -65,11 +65,11 @@ namespace Architect.API.Insurance.Business.Bayer
 
                     foreach (Utilities.Contracts.LookUpValue item in DataAccess.Policy.Risk.RetrieveByStatus(companyId, 4))
                     {
-                        eviSignInf = Core.Business.General.Evicertia.EviSignQuery(item.Description).GetAwaiter().GetResult();
-                        if (eviSignInf?.results?.Length > 0)
+                        eviSignInf = DocuSign.Integrations.DocuSign.Query(item.Description).GetAwaiter().GetResult();
+                        if (eviSignInf != null)
                         {
-                            Utilities.Log.TraceLog(" Bayer.Inclusion.EvicertiaSigned", item.Description + " outcome " + eviSignInf.results[0].outcome, "Evicertia");
-                            switch (eviSignInf.results[0].outcome)
+                            Utilities.Log.TraceLog(" Bayer.Inclusion.EvicertiaSigned", item.Description + " outcome " + eviSignInf.outcome, "Evicertia");
+                            switch (eviSignInf.outcome)
                             {
                                 case "Signed":
                                     Signed(companyId, Convert.ToInt32(item.Code));
@@ -401,15 +401,14 @@ namespace Architect.API.Insurance.Business.Bayer
 
                             if (!inclusionInfo.HasDigitalSignature)
                             {
-
                                 // Se enviar documento para su firma por medio de EviCertia
-                                string uniqueId = Core.Business.General.Evicertia.EviSignSubmit(
+                                DocuSign.Integrations.Contracts.SubmitResult submit = DocuSign.Integrations.DocuSign.Submit(
                                                     string.Format("{0} - Solicitud de inclusión", Core.Business.Common.LkpDescription(tokenInfo.CompanyId, "Company", tokenInfo.CompanyId.ToString())),
                                                     string.Format("{0} - Solicitud de inclusión #{1}", Core.Business.Common.LkpDescription(tokenInfo.CompanyId, "Company", tokenInfo.CompanyId.ToString()), inclusionInfo.Id),
                                                       name,
                                                       inclusionInfo.PrimaryEmailAddress,
                                                       archivo).GetAwaiter().GetResult();
-                                DataAccess.Policy.Risk.UpdateReference(tokenInfo.CompanyId, inclusionInfo.Id, uniqueId);
+                                DataAccess.Policy.Risk.UpdateReference(tokenInfo.CompanyId, inclusionInfo.Id, submit.UniqueId);
                             }
                             else
                             {
@@ -553,7 +552,7 @@ namespace Architect.API.Insurance.Business.Bayer
 
             return result;
         }
-        
+
         /// <summary>
         /// Mapea el tipo de documento usando en aliados al equivalente en medical.
         /// </summary>

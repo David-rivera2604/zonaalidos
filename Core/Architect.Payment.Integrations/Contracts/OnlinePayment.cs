@@ -80,6 +80,9 @@ namespace Architect.Payment.Integrations.Contracts
 
         public string Authorization { get; set; }
 
+        public int TronCode { get; set; }
+        public string TronMessage { get; set; }
+
         /// <summary>
         /// Estado de la póliza.
         /// </summary>

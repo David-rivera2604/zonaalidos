@@ -142,7 +142,7 @@ namespace Architect.Payment.Integrations.DataAccess
         /// <summary>
         /// 
         /// </summary>
-        /// <remarks>Este metodo de actualizacion debido a su naturaleza no actualiza el código el usuario que actualiza.</remarks>
+        /// <remarks>Este método de actualización debido a su naturaleza no actualiza el código el usuario que actualiza.</remarks>
         public static int UpdateNewSession(Contracts.OnlinePayment onlinepaymentItem, IDbConnection connection = null)
         {
             if (onlinepaymentItem.UpdateDate.IsEmpty())
@@ -169,7 +169,7 @@ namespace Architect.Payment.Integrations.DataAccess
         /// <summary>
         /// Actualiza un registro en la tabla OnlinePayment por medio de su clave primaria.
         /// </summary>
-        /// <remarks>Este metodo de actualizacion debido a su naturaleza no actualiza el código el usuario que actualiza.</remarks>
+        /// <remarks>Este método de actualización debido a su naturaleza no actualiza el código el usuario que actualiza.</remarks>
         public static int Update(Contracts.OnlinePayment onlinepaymentItem, IDbConnection connection = null)
         {
             if (onlinepaymentItem.UpdateDate.IsEmpty())
@@ -188,6 +188,22 @@ namespace Architect.Payment.Integrations.DataAccess
                                 .AddParameter("Receipt", DbType.AnsiString, 128, onlinepaymentItem.Receipt)
                                 .AddParameter("UpdateDate", DbType.DateTime, 0, onlinepaymentItem.UpdateDate)
                                 .AddParameter("Id", DbType.Decimal, 9, onlinepaymentItem.Id)
+                                .Execute(connection, "Research");
+        }
+
+        /// <summary>
+        /// Actualiza la información retornada por el package de pago en tron.
+        /// </summary>
+        /// <remarks>Este método de actualización debido a su naturaleza no actualiza el código el usuario que actualiza.</remarks>
+        public static int UpdateTronInformation(int id, int tronCode, string tronMessage, IDbConnection connection = null)
+        {
+            return Database.Update("UPDATE OnlinePayment " +
+                                      "SET TronCode=:TronCode, TronMessage=:TronMessage, UpdateDate=:UpdateDate " +
+                                    "WHERE Id=:Id")
+                                .AddParameter("TronCode", DbType.Decimal, 5, tronCode)
+                                .AddParameter("TronMessage", DbType.AnsiString, 256, tronMessage)
+                                .AddParameter("UpdateDate", DbType.DateTime, 0, DateTime.Now)
+                                .AddParameter("Id", DbType.Decimal, 9, id)
                                 .Execute(connection, "Research");
         }
 
@@ -233,7 +249,6 @@ namespace Architect.Payment.Integrations.DataAccess
             item.UpdateDate = reader.DateTimeValue("UpdateDate");
             return item;
         }
-
 
         /// <summary>
         /// Recupera una lista de registros en la tabla OnlinePayment.

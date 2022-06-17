@@ -152,7 +152,6 @@
     <Compile Include="General\Notes.cs" />
     <Compile Include="General\Attachment.cs" />
     <Compile Include="General\CustomFields.cs" />
-    <Compile Include="General\Evicertia.cs" />
     <Compile Include="General\LookupMaster.cs" />
     <Compile Include="General\ProcessCase.cs" />
     <Compile Include="General\ProcessSpecFlow.cs" />

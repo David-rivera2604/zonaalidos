@@ -6,6 +6,9 @@ using System.Linq;
 
 namespace Architect.API.Insurance.Business.Policy
 {
+    /// <summary>
+    /// Opciones para la emisión de las pólizas
+    /// </summary>
     public static partial class Risk
     {
         /// <summary>
@@ -207,7 +210,6 @@ namespace Architect.API.Insurance.Business.Policy
             return result;
         }
 
-
         /// <summary>
         /// Retorna la póliza en suscripción para que se complemente.
         /// </summary>
@@ -311,7 +313,6 @@ namespace Architect.API.Insurance.Business.Policy
         {
             return Mapper_Information(RetrievePolicyByKey(id, companyId), companyId);
         }
-
 
         internal static Contracts.Policy.RiskView Mapper_Information(Contracts.Policy.Risk resultInternal, int companyId)
         {
@@ -685,7 +686,6 @@ namespace Architect.API.Insurance.Business.Policy
             return result;
         }
 
-
         private static List<Contracts.Policy.RiskRoles> SynchronizeBeneficiaries(List<Contracts.Policy.RiskRoles> currentList, List<Contracts.Policy.RiskRoles> newList, int companyId, int userId, int policyId)
         {
             Contracts.Policy.RiskRoles toAdd = null;
@@ -768,10 +768,10 @@ namespace Architect.API.Insurance.Business.Policy
                         item.PolicyId = DataAccess.Policy.Risk.RetrieveLastPolicyId(tokenInfo.CompanyId) + 1;
                         item.Status = status;
 
-                        if (Products.Specification.SettingBoolValue(item.ProductAlias, "Request.Sign.Enabled"))
+                        if (Products.Specification.SettingBoolValue(item.ProductAlias, "Allow.DigitalSign"))
                         {
                             item.Status = (int)Enumerations.PolicyStatus.PendingBySignature;
-                            DigitalSignature(item, tokenInfo);
+                            DigitalSignature.Submit(item, tokenInfo, true);
                         }
                     }
                 }
@@ -780,33 +780,7 @@ namespace Architect.API.Insurance.Business.Policy
             return errors;
         }
 
-        private static void DigitalSignature(Contracts.Policy.Risk item, Token tokenInfo)
-        {
-            if (item.StatusDesc == null)
-            {
-                item.StatusDesc = "";
-            }
-            Contracts.Policy.RiskView riskInfo = Mapper_Information(item, tokenInfo.CompanyId);
 
-            string archivo = Core.Business.General.Report.GeneratePDFFile(riskInfo.ProductAlias + riskInfo.Prefix, riskInfo).GetAwaiter().GetResult();
-
-            if (!item.HasDigitalSignature)
-            {
-                // Se enviar documento para su firma por medio de EviCertia
-                string uniqueId = Core.Business.General.Evicertia.EviSignSubmit(
-                                        string.Format("{0} - Solicitud de inclusión", Core.Business.Common.LkpDescription(tokenInfo.CompanyId, "Company", tokenInfo.CompanyId.ToString())),
-                                        string.Format("{0} - Solicitud de inclusión #{1}", Core.Business.Common.LkpDescription(tokenInfo.CompanyId, "Company", tokenInfo.CompanyId.ToString()), item.Id),
-                                        item.PrimaryInsured.FirstName + " " + item.PrimaryInsured.LastName,
-                                        item.PrimaryInsured.PrimaryEmailAddress,
-                                        archivo).GetAwaiter().GetResult();
-                DataAccess.Policy.Risk.UpdateReference(tokenInfo.CompanyId, item.Id, uniqueId);
-            }
-            else
-            {
-                // Se enviar documento directo al empleado para su firma digital
-                Core.Business.General.Mail.SendByTemplate("Notify_RequestReviewed", tokenInfo.CompanyId, tokenInfo.UserId, item.ExecutiveUserCode, item, null, new string[] { archivo });
-            }
-        }
 
         private static Contracts.Policy.Risk Setup(Contracts.Policy.Risk item, int companyId)
         {

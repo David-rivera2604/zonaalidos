@@ -39,30 +39,36 @@ namespace Architect.API.Insurance.Contracts.Product
         public List<LookupSimple> PaymentFrequencies { get; set; }
 
         /// <summary>
-        /// seccion o entradas de datos permitidas.
+        /// sección o entradas de datos permitidas.
         /// </summary>
         public string EntryAllowed { get; set; }
 
         /// <summary>
-        /// seccion o entradas de datos requeridas.
+        /// sección o entradas de datos requeridas.
         /// </summary>
         public string EntryIsRequired { get; set; }
 
         /// <summary>
-        /// Nombre del tomandor de la póliza matriz.
+        /// Nombre del tomador de la póliza matriz.
         /// </summary>
         public string OwnerName { get; set; }
 
         /// <summary>
-        /// Identificador del tomandor de la póliza matriz.
+        /// Identificador del tomador de la póliza matriz.
         /// </summary>
         public string OwnerId { get; set; }
 
 
         public string Behavior { get; set; }
+
+        /// <summary>
+        /// Indicado de uso de firma digital
+        /// </summary>
+        public bool AllowDigitalSign { get; set; }
+
     }
     /// <summary>
-    /// Código y descripción usado para lista genericas.
+    /// Código y descripción usado para lista genéricas.
     /// </summary>
     public class LookupSimple
     {

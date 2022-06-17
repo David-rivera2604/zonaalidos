@@ -76,6 +76,15 @@ namespace aliados
                 RecurringJob.AddOrUpdate(() => Architect.API.Tron.Business.Backoffice.Pagos.Monitor(), Cron.Daily(sondaHour));
             }
 
+           // Architect.API.Insurance.Business.Policy.DigitalSignature.VerifyDocuSigned();
+            int docuSignInterval = Convert.ToInt32(ConfigurationManager.AppSettings["DocuSign.Interval.Review"]);
+            if (docuSignInterval > 0)
+            {
+                RecurringJob.AddOrUpdate(() =>
+                    Architect.API.Insurance.Business.Policy.DigitalSignature.VerifyDocuSigned(),
+                    Cron.MinuteInterval(interval));
+            }
+
         }
 
 

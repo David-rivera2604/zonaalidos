@@ -34,7 +34,8 @@ namespace Architect.API.Insurance.Business.Products
                     SubTitle = product.SubTitle,
                     Currencies = new List<LookupSimple>(),
                     PaymentFrequencies = new List<LookupSimple>(),
-                    Modules = new List<LookupModules>()
+                    Modules = new List<LookupModules>(),
+                    AllowDigitalSign = Products.Specification.SettingBoolValue(productAlias, "Allow.DigitalSign")
                 };
 
                 result.OwnerName = SettingStringValue(productAlias, "Parent.Policy.Owner.Name");
@@ -88,6 +89,13 @@ namespace Architect.API.Insurance.Business.Products
                             item.FixedInsuredAmount = fixCover.FixedInsuredAmount;
                             item.FixedPremium = fixCover.FixedPremium;
                             item.FixedMonthlyPremium = fixCover.FixedPremium / 12;
+                        }
+                        Architect.Insurance.Contracts.Policy.Risk rk = Business.Policy.Rating.Asegurado(productAlias, result.Currencies.First().Code, result.Modules.First().Code, result.PaymentFrequencies.First().Code, (double)fixCover.FixedInsuredAmount, DateTime.Now);
+
+                        if (rk.IsNotEmpty())
+                        {
+                            item.FixedPremium = rk.Premium.AnnualPremium;
+                            item.FixedMonthlyPremium = rk.Premium.BillPremium;
                         }
                     }
                 }

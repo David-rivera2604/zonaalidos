@@ -1,0 +1,50 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Zona de Aliados | Acceso</title>
+
+    @Styles.Render("~/Content/cssBase")
+    <link rel="shortcut icon" href="~/images/favicon.png" />
+</head>
+<body class="gray-bg @ViewBag.theme">
+    <div class="loginBackground">
+        <div class="middle-box text-center loginscreen animated fadeInDown">
+            <div>
+
+                <div>
+                    <h1 class="logo-name"></h1>
+                </div>
+                <div id="login">
+                    <div class="wellcome-info">
+                        <h3>Bienvenido a la Zona de Aliados MAPFRE COSTA RICA</h3>
+                        <p>
+                            Con el compromiso de siempre por brindar herramientas que apoyen en la gestión de venta y el cumplimiento de objetivos ponemos a su disposición nuestra zona de aliados, la cual permitirá reducir los tiempos de respuesta en los procesos de cotización y emisión con mayor accesibilidad y comodidad.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jsBase")
+    <script>
+        $(document).ready(function () {
+            let uniqueId = app.core.URLStringValue('uniqueId');
+            if (uniqueId != '') {
+                app.core.Get(app.setting.apipath + 'v1/DocuSign/' + uniqueId)
+                    .done(function (data) {
+                        console.log(data);
+                    });
+            }
+        });
+    </script>
+</body>
+</html>

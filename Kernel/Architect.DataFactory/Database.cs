@@ -254,7 +254,7 @@ namespace Architect.DataFactory
                 case Enumerations.DbType.AnsiString:
                 case Enumerations.DbType.String:
                 case Enumerations.DbType.StringArray:
-                    result = OracleDbType.NVarchar2;
+                    result = OracleDbType.Varchar2;
                     break;
 
                 case Enumerations.DbType.RefCursor:

@@ -443,7 +443,8 @@ app.asegurado = (function () {
             AddressDetail: $('#AddressDetail').val(),
             Occupation: $('#Occupation').val(),
             RetirementModality: $('input:radio[name=RetirementModality]:checked').val(),
-            RetirementCause: $('#RetirementCause').val()
+            RetirementCause: $('#RetirementCause').val(),
+            HasDigitalSignature: $('input:radio[name=HasDigitalSignature]:checked').val() === "1"
         };
         return data;
     };
@@ -478,6 +479,7 @@ app.asegurado = (function () {
             $('#Occupation').val(data.Occupation);
             $($('input:radio[name=RetirementModality][value=' + data.RetirementModality + ']')).prop('checked', true);
             $('#RetirementCause').val(data.RetirementCause);
+            $('input:radio[name=HasDigitalSignature][value=' + (data.HasDigitalSignature ? 1 : 2) + ']').prop('checked', true);
         }
     };
 

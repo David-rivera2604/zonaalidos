@@ -31,7 +31,7 @@ namespace Architect.API.Core.Business.Security
                 result.Reason = "Debe indicar la compañía";
             if (result.Reason.IsEmpty())
             {
-                Core.Contracts.General.LookupValue companyItem = TenantInformation(authenticationRequest.Tenant);
+                Core.Contracts.General.LookupValue companyItem = TenantInformation(authenticationRequest.Tenant.Trim());
 
                 if (companyItem.IsNotEmpty())
                 {
@@ -55,11 +55,11 @@ namespace Architect.API.Core.Business.Security
 
             if (result.Reason.IsEmpty())
             {
-                track.UserName = authenticationRequest.Email;
+                track.UserName = authenticationRequest.Email.Trim();
                 if (authenticationRequest.Email.Contains("@"))
-                    user = DataAccess.Security.UserMember.RetrieveByEMail(authenticationRequest.Email.ToLower(), companyId);
+                    user = DataAccess.Security.UserMember.RetrieveByEMail(authenticationRequest.Email.Trim().ToLower(), companyId);
                 else
-                    user = DataAccess.Security.UserMember.RetrieveByUserName(authenticationRequest.Email.ToLower(), companyId);
+                    user = DataAccess.Security.UserMember.RetrieveByUserName(authenticationRequest.Email.Trim().ToLower(), companyId);
 
                 if (user.IsNotEmpty())
                 {

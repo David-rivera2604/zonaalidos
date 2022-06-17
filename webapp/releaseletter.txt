@@ -344,10 +344,12 @@
                    Aliados. Visualización de imágenes cargadas por PWA en la consultas de cotizaciones de un agente.
                    Aliados. Avisos de cobro.
                    Fix. Login. Ignorar mayúsculas y minúsculas en el nombre del usuario.
-1.6.2   10/09/2022 Fix. Viajero. No permite cambiar cual asegurado es el mismo contratante.
+1.6.2   10/06/2022 Fix. Viajero. No permite cambiar cual asegurado es el mismo contratante.
                    Fix. Viajero. No almacena información de los beneficiarios.
-                   Viajero. Ajuste para copiar los beneficiariospor cada riengo directo en la página.
-                   Registro. Manejo de rol por defecto pot nombre.
-                   Pasarela de pago. Se cambia el queri para evitar casos donde el tomar tiene mas de un tipo de actividad.
+                   Viajero. Ajuste para copiar los beneficiarios por cada riesgo directo en la página.
+                   Registro. Manejo de rol por defecto por nombre.
+                   Pasarela de pago. Se cambia el query para evitar casos donde el tomar tiene mas de un tipo de actividad.
                    Clientes. Consulta Mis Pólizas. Se crea query que filtre por tomador.
                    Clientes. Consulta Mis Pólizas -> Recibos. Se crea query para mostrar el estado y fechas del recibo.
+1.6.3   16/06/2022 Fix. Login. Ignorar espacios antes y después en el nombre del usuario.
+                   Fix. Lentitud en consultas asociadas al cliente.

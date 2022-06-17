@@ -27,8 +27,8 @@ namespace Architect.API.Insurance.DataAccess.Policy
             {
                 riskItem.UpdateDate = DateTime.Now;
             }
-            return Database.Insert("INSERT INTO Risk (Id, CompanyId, OriginType, LineOfBusinessCode, ProductCode, PolicyId, Currency, ModuleCode, PaymentFrequency, IssueDate, EffectiveDate, EndingDate, InsuredAmountBase, InsuredAmountComplement, InsuredAmount, AnnualPremium, MonthlyPremium, Surcharge, Status, CancellationDate, ReasonForStatus, CertificateId, Comments, Annotation, Reference, BranchOffice, ExecutiveUserCode, CustomData, UpdateUserCode, UpdateDate) " +
-                                                 "VALUES(:Id, :CompanyId, :OriginType, :LineOfBusinessCode, :ProductCode, :PolicyId, :Currency, :ModuleCode, :PaymentFrequency, :IssueDate, :EffectiveDate, :EndingDate, :InsuredAmountBase, :InsuredAmountComplement, :InsuredAmount, :AnnualPremium, :MonthlyPremium, :Surcharge, :Status, :CancellationDate, :ReasonForStatus, :CertificateId, :Comments, :Annotation, :Reference, :BranchOffice, :ExecutiveUserCode, :CustomData, :UpdateUserCode, :UpdateDate)")
+            return Database.Insert("INSERT INTO Risk (Id, CompanyId, OriginType, LineOfBusinessCode, ProductCode, PolicyId, Currency, ModuleCode, PaymentFrequency, IssueDate, EffectiveDate, EndingDate, InsuredAmountBase, InsuredAmountComplement, InsuredAmount, AnnualPremium, MonthlyPremium, Surcharge, Status, CancellationDate, ReasonForStatus, CertificateId, Comments, Annotation, Reference, BranchOffice, ExecutiveUserCode, HasDigitalSignature, Subsidiary, MainPolicyId, CustomData, UpdateUserCode, UpdateDate) " +
+                                                 "VALUES(:Id, :CompanyId, :OriginType, :LineOfBusinessCode, :ProductCode, :PolicyId, :Currency, :ModuleCode, :PaymentFrequency, :IssueDate, :EffectiveDate, :EndingDate, :InsuredAmountBase, :InsuredAmountComplement, :InsuredAmount, :AnnualPremium, :MonthlyPremium, :Surcharge, :Status, :CancellationDate, :ReasonForStatus, :CertificateId, :Comments, :Annotation, :Reference, :BranchOffice, :ExecutiveUserCode, :HasDigitalSignature, :Subsidiary, :MainPolicyId, :CustomData, :UpdateUserCode, :UpdateDate)")
                             .AddParameter("Id", DbType.Decimal, 9, riskItem.Id)
                             .AddParameter("CompanyId", DbType.Decimal, 5, riskItem.CompanyId)
                             .AddParameter("OriginType", DbType.Decimal, 5, riskItem.OriginType)
@@ -56,6 +56,9 @@ namespace Architect.API.Insurance.DataAccess.Policy
                             .AddParameter("Reference", DbType.AnsiString, 36, riskItem.Reference)
                             .AddParameter("BranchOffice", DbType.Decimal, 5, riskItem.BranchOffice)
                             .AddParameter("ExecutiveUserCode", DbType.Decimal, 9, riskItem.ExecutiveUserCode)
+                            .AddParameter("HasDigitalSignature", DbType.Decimal, 1, riskItem.HasDigitalSignature ? 1 : 0)
+                            .AddParameter("Subsidiary", DbType.Decimal, 5, riskItem.Subsidiary)
+                            .AddParameter("MainPolicyId", DbType.AnsiString, 20, riskItem.MainPolicyId)
                             .AddParameter("CustomData", DbType.AnsiString, 2000, riskItem.CustomData)
                             .AddParameter("UpdateUserCode", DbType.Decimal, 9, riskItem.UpdateUserCode)
                             .AddParameter("UpdateDate", DbType.DateTime, 0, riskItem.UpdateDate)
@@ -100,7 +103,7 @@ namespace Architect.API.Insurance.DataAccess.Policy
         public static Architect.API.Insurance.Contracts.Policy.Risk Retrieve(int id, int companyId, IDbConnection connection = null)
         {
             Architect.API.Insurance.Contracts.Policy.Risk result = null;
-            Database.Select("SELECT Id, Risk.CompanyId, OriginType, LineOfBusinessCode, ProductCode, PolicyId, Currency, ModuleCode, PaymentFrequency, IssueDate, EffectiveDate, EndingDate, InsuredAmountBase, InsuredAmountComplement, InsuredAmount, AnnualPremium, MonthlyPremium, Surcharge, Status, CancellationDate, ReasonForStatus, CertificateId, Comments, Annotation, Risk.Reference, Risk.BranchOffice, ExecutiveUserCode, Risk.CustomData, Risk.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, Risk.UpdateDate " +
+            Database.Select("SELECT Id, Risk.CompanyId, OriginType, LineOfBusinessCode, ProductCode, PolicyId, Currency, ModuleCode, PaymentFrequency, IssueDate, EffectiveDate, EndingDate, InsuredAmountBase, InsuredAmountComplement, InsuredAmount, AnnualPremium, MonthlyPremium, Surcharge, Status, CancellationDate, ReasonForStatus, CertificateId, Comments, Annotation, Risk.Reference, Risk.BranchOffice, ExecutiveUserCode, HasDigitalSignature, Subsidiary, MainPolicyId, Risk.CustomData, Risk.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, Risk.UpdateDate " +
                               "FROM Risk LEFT JOIN UserMember um ON um.UserId = Risk.UpdateUserCode " +
                              "WHERE Risk.Id=:Id AND Risk.CompanyId=:CompanyId")
                         .AddParameter("Id", DbType.Decimal, 9, id)
@@ -158,7 +161,7 @@ namespace Architect.API.Insurance.DataAccess.Policy
                 riskItem.UpdateDate = DateTime.Now;
             }
             return Database.Update("UPDATE Risk " +
-                                      "SET CompanyId=:CompanyId, OriginType=:OriginType, LineOfBusinessCode=:LineOfBusinessCode, ProductCode=:ProductCode, PolicyId=:PolicyId, Currency=:Currency, ModuleCode=:ModuleCode, PaymentFrequency=:PaymentFrequency, IssueDate=:IssueDate, EffectiveDate=:EffectiveDate, EndingDate=:EndingDate, InsuredAmountBase=:InsuredAmountBase, InsuredAmountComplement=:InsuredAmountComplement, InsuredAmount=:InsuredAmount, AnnualPremium=:AnnualPremium, MonthlyPremium=:MonthlyPremium, Surcharge=:Surcharge, Status=:Status, CancellationDate=:CancellationDate, ReasonForStatus=:ReasonForStatus, CertificateId=:CertificateId, Comments=:Comments, Annotation=:Annotation, Reference=:Reference, BranchOffice=:BranchOffice, ExecutiveUserCode=:ExecutiveUserCode, CustomData=:CustomData, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
+                                      "SET CompanyId=:CompanyId, OriginType=:OriginType, LineOfBusinessCode=:LineOfBusinessCode, ProductCode=:ProductCode, PolicyId=:PolicyId, Currency=:Currency, ModuleCode=:ModuleCode, PaymentFrequency=:PaymentFrequency, IssueDate=:IssueDate, EffectiveDate=:EffectiveDate, EndingDate=:EndingDate, InsuredAmountBase=:InsuredAmountBase, InsuredAmountComplement=:InsuredAmountComplement, InsuredAmount=:InsuredAmount, AnnualPremium=:AnnualPremium, MonthlyPremium=:MonthlyPremium, Surcharge=:Surcharge, Status=:Status, CancellationDate=:CancellationDate, ReasonForStatus=:ReasonForStatus, CertificateId=:CertificateId, Comments=:Comments, Annotation=:Annotation, Reference=:Reference, BranchOffice=:BranchOffice, ExecutiveUserCode=:ExecutiveUserCode, HasDigitalSignature=:HasDigitalSignature, Subsidiary=:Subsidiary, MainPolicyId=:MainPolicyId, CustomData=:CustomData, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
                                     "WHERE Id=:Id")
                                 .AddParameter("CompanyId", DbType.Decimal, 5, riskItem.CompanyId)
                                 .AddParameter("OriginType", DbType.Decimal, 5, riskItem.OriginType)
@@ -186,6 +189,9 @@ namespace Architect.API.Insurance.DataAccess.Policy
                                 .AddParameter("Reference", DbType.AnsiString, 36, riskItem.Reference)
                                 .AddParameter("BranchOffice", DbType.Decimal, 5, riskItem.BranchOffice)
                                 .AddParameter("ExecutiveUserCode", DbType.Decimal, 9, riskItem.ExecutiveUserCode)
+                                .AddParameter("HasDigitalSignature", DbType.Decimal, 1, riskItem.HasDigitalSignature ? 1 : 0)
+                                .AddParameter("Subsidiary", DbType.Decimal, 5, riskItem.Subsidiary)
+                                .AddParameter("MainPolicyId", DbType.AnsiString, 20, riskItem.MainPolicyId)
                                 .AddParameter("CustomData", DbType.AnsiString, 2000, riskItem.CustomData)
                                 .AddParameter("UpdateUserCode", DbType.Decimal, 9, riskItem.UpdateUserCode)
                                 .AddParameter("UpdateDate", DbType.DateTime, 0, riskItem.UpdateDate)
@@ -322,6 +328,9 @@ namespace Architect.API.Insurance.DataAccess.Policy
             item.Reference = reader.StringValue("Reference");
             item.BranchOffice = reader.IntegerValue("BranchOffice");
             item.ExecutiveUserCode = reader.IntegerValue("ExecutiveUserCode");
+            item.HasDigitalSignature = reader.IntegerValue("HasDigitalSignature") == 1;
+            item.Subsidiary = reader.IntegerValue("Subsidiary");
+            item.MainPolicyId = reader.StringValue("MainPolicyId");
             item.CustomData = reader.StringValue("CustomData");
             item.UpdateUserCode = reader.IntegerValue("UpdateUserCode");
             item.UpdateUserName = reader.StringValue("UpdateUserName");

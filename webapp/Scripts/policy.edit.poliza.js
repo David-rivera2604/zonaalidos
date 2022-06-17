@@ -97,7 +97,10 @@ app.poliza = (function () {
     };
 
     function Init_Lookups() {
-        app.core.Lookups(['PolicyStatus.Status', 'ReasonForStatus']);
+        app.core.Lookups(['PolicyStatus.Status',
+            'ReasonForStatus',
+            'BayerPolizas.ContractorName',
+            'BayerNumeroPoliza.MainPolicyId']);
     };
 
     function ProductDefinition(callback) {
@@ -189,6 +192,11 @@ app.poliza = (function () {
                     AutoNumeric.set("#MonthlyPremium", 0);
                 }
 
+                if (data.AllowDigitalSign) {
+                    $('.DigitalSign-visible').removeClass('d-none');
+                    $('.DigitalSign-enable').prop("disabled", false);
+                }
+
                 if (callback !== undefined)
                     callback();
             });
@@ -269,6 +277,9 @@ app.poliza = (function () {
             }
         });
 
+        $('#ContractorName').change(function () {
+            $('#MainPolicyId').val($('#ContractorName').val());
+        });
     };
 
     function Calculate() {
@@ -409,7 +420,8 @@ app.poliza = (function () {
                 },
                 ReasonForStatus: {
                     required: true
-                }
+                },
+                ContractorName: { required: true }
             },
             messages: {
                 ModuleCode: {
@@ -431,7 +443,8 @@ app.poliza = (function () {
                 },
                 ReasonForStatus: {
                     required: 'Debe indicar la causa de la baja'
-                }
+                },
+                ContractorName: { required: 'Debe indicar la filial' }
             }
 
         });
@@ -454,7 +467,10 @@ app.poliza = (function () {
             Status: app.ui.GetDropDownNumericValue('#Status'),
             Surcharge: app.ui.GetNumericValue('#Surcharge'),
             Comments: $('#Comments').val(),
-            Annotation: $('#Annotation').val()
+            Annotation: $('#Annotation').val(),
+            MainPolicyId: $('#MainPolicyId').val(),
+            ContractorName: app.ui.GetDropDownNumericValue('#ContractorName'),
+            ContractorDesc: $("#ContractorName option:selected").text(),
         };
         return data;
     };
@@ -479,6 +495,9 @@ app.poliza = (function () {
             $('#Annotation').val(data.Annotation);
             app.ui.SetDateValue('#CancellationDate', data.CancellationDate);
             $('#ReasonForStatus').val(data.ReasonForStatus);
+
+            $('#MainPolicyId').val(data.ContractorName);
+            app.ui.SetDropDownNumericValue('#ContractorName', data.ContractorName, true);
 
             if (data.Surcharge > 0) {
                 let Annualvalue = data.AnnualPremium * (1 + data.Surcharge / 100);

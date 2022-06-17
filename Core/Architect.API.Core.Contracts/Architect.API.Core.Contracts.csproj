@@ -49,10 +49,6 @@
     <Compile Include="Especificacion\Producto.cs" />
     <Compile Include="Especificacion\Comportamiento.cs" />
     <Compile Include="Especificacion\Regla.cs" />
-    <Compile Include="EviSign\IdentitySign.cs" />
-    <Compile Include="EviSign\SignSubmit.cs" />
-    <Compile Include="EviSign\SigningParty.cs" />
-    <Compile Include="EviSign\EviSignQueryResult.cs" />
     <Compile Include="General\AttachmentItem.cs" />
     <Compile Include="General\CaseComplement.cs" />
     <Compile Include="General\GenericResponse.cs" />
