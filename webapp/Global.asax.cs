@@ -8,6 +8,7 @@ using Hangfire;
 using Hangfire.MemoryStorage;
 using Newtonsoft.Json.Serialization;
 using System.Configuration;
+using Architect.Utilities.Extensions;
 
 namespace aliados
 {
@@ -70,10 +71,12 @@ namespace aliados
             }
 
             //Monitor de transacciones de pago pendientes
-            if (Architect.Utilities.Helpers.Settings.IntegerValue("Payment.Placetopay.Sonda.ExecutionTime") > 0)
+            if (Architect.Utilities.Helpers.Settings.StringValue("Payment.Placetopay.Sonda.ExecutionTime").IsNotEmpty())
             {
-                int sondaHour = Architect.Utilities.Helpers.Settings.IntegerValue("Payment.Placetopay.Sonda.ExecutionTime");
-                RecurringJob.AddOrUpdate(() => Architect.API.Tron.Business.Backoffice.Pagos.Monitor(), Cron.Daily(sondaHour));
+                
+                RecurringJob.AddOrUpdate("Payment.Sonda", 
+                    () => Architect.API.Tron.Business.Backoffice.Pagos.Monitor(),
+                    Architect.Utilities.Helpers.Settings.StringValue("Payment.Placetopay.Sonda.ExecutionTime"), TimeZoneInfo.Local);
             }
 
            // Architect.API.Insurance.Business.Policy.DigitalSignature.VerifyDocuSigned();
