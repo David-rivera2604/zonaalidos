@@ -2,7 +2,6 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -31,14 +30,14 @@ namespace Architect.DocuSign.Integrations
             if (includeCallback)
             {
                 //https://www.google.com/?uniqueId=890ead9f-9c78-4a34-acbf-aeb4003dedbf&accepted=True
-                callbackURL = Utilities.Helpers.Settings.StringValue("Aliados.URL.Base") + "/DocuSign/Notify";
+                callbackURL = $"{Utilities.Helpers.Settings.StringValue("Aliados.URL.Base")}/DocuSign/Notify";
             }
             if (lookupKey.Length > 35)
             {
                 lookupKey = lookupKey.Substring(0, 35);
             }
 
-            
+
             string json = JsonConvert.SerializeObject(new Providers.Evicertia.Contracts.SignSubmit()
             {
                 LookupKey = lookupKey,

@@ -16,7 +16,7 @@ namespace Architect.DataFactory
             System.Data.DataTable records = null;
             MatchCollection parameterMatches = Regex.Matches(statement, @"{(.+?)}"); // ([^)]*)
 
-            if(ConfigurationManager.AppSettings["Working.Mode"] == "Development")
+            if(Utilities.Helpers.Settings.StringValue("Working.Mode") == "Development")
             {
                 withCache = false;
             }
