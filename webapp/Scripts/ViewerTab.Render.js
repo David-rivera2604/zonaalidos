@@ -1,5 +1,6 @@
 ﻿var app = app || {};
 
+
 app.ViewerQuery = (function () {
     let _handler = null;
     var _id = null;
@@ -224,6 +225,9 @@ app.ViewerQuery = (function () {
             if (column.events != undefined) {
                 column.events = 'Local_Events';
             }
+            if (column.colorstate != undefined) {
+                app.ViewerQuery.state[column.field] = column.colorstate;
+            }
         });
 
         spec.icons = {
@@ -405,6 +409,9 @@ app.ViewerQuery = (function () {
                     if (column.events != undefined) {
                         column.events = 'Local_Events';
                     }
+                    if (column.colorstate != undefined) {
+                        app.ViewerQuery.state[column.field] = column.colorstate;
+                    }
                 });
 
                 $el.bootstrapTable(spec);
@@ -461,7 +468,7 @@ app.ViewerQuery = (function () {
                         }
 
                     }).always(function () {
-             
+
                     });
             else
                 $("#QueryTitle").html('Consulta no indicada');
@@ -550,6 +557,7 @@ app.ViewerQuery = (function () {
         }
     }
 })();
+app.ViewerQuery.state = {};
 
 window.Local_Events = {
     'click .event': function (e, value, row, index) {

@@ -883,5 +883,24 @@ app.ui = (function () {
                     app.ui.CloseSideBar()
                 });
         },
+        TextColorFormatter: function (value, row, index, field) {
+            return '<span class="text-' + (app.ViewerQuery.state[field][value] || app.ViewerQuery.state[field]['_']) + '">' + app.ui.StringCapitalizeFormatter(value) + '</span>';
+        },
+        BadgeColorFormatter: function (value, row, index, field) {
+            return '<span class="badge badge-' + (app.ViewerQuery.state[field][value] || app.ViewerQuery.state[field]['_']) + '">' + app.ui.StringCapitalizeFormatter(value) + '</span>';
+        },
+        LabelColorFormatter: function (value, row, index, field) {
+            return '<span class="label label-' + (app.ViewerQuery.state[field][value] || app.ViewerQuery.state[field]['_']) + '">' + app.ui.StringCapitalizeFormatter(value) + '</span>';
+        },
+        CommonBehaviour: function () {
+            let roles = JSON.parse(localStorage.getItem('Roles'));
+            let tenant = localStorage.getItem('Tenant');
+            roles.forEach(function (item) {
+                $(`.role-${item}-visible`).removeClass('d-none');
+                $(`.role-${item}-enable`).prop("disabled", false);
+                $(`.role-${item}-${tenant}-visible`).removeClass('d-none');
+                $(`.role-${item}-${tenant}-enable`).prop("disabled", false);
+            })
+        }
     };
 })();

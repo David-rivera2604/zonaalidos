@@ -256,6 +256,9 @@ app.ViewerQuery = (function () {
                     if (column.events != undefined) {
                         column.events = 'Local_Events';
                     }
+                    if (column.colorstate != undefined) {
+                        app.ViewerQuery.state[column.field] = column.colorstate;
+                    }
                 });
             });
         }
@@ -271,6 +274,9 @@ app.ViewerQuery = (function () {
                 }
                 if (column.events != undefined) {
                     column.events = 'Local_Events';
+                }
+                if (column.colorstate != undefined) {
+                    app.ViewerQuery.state[column.field] = column.colorstate;
                 }
             });
         }
@@ -442,6 +448,9 @@ app.ViewerQuery = (function () {
                     }
                     if (column.events != undefined) {
                         column.events = 'Local_Events';
+                    }
+                    if (column.colorstate != undefined) {
+                        app.ViewerQuery.state[column.field] = column.colorstate;
                     }
                 });
 
@@ -629,7 +638,7 @@ app.ViewerQuery = (function () {
         }
     };
 })();
-
+app.ViewerQuery.state = {};
 window.Local_Events = {
     'click .event': function (e, value, row, index) {
         e.stopPropagation();

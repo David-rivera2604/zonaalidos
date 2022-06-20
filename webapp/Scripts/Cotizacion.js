@@ -58,6 +58,12 @@ app.Cotizacion = (function () {
                 $(element + '-error').html('');
                 $(element).removeClass('error');
             }
+            else {
+                if ($(element).children().length == 1) {
+                    $(element).val($(element + ' option:first').val());
+                    $(element).change();
+                }
+            }
         }
     };
 })();
