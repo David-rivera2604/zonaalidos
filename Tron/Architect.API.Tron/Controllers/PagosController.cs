@@ -62,5 +62,15 @@ namespace Architect.API.Tron.Controllers
             return Ok();
         }
 
+        [HttpGet]
+        [Route("Monitor")]
+        [AllowAnonymous]
+        public async Task<IHttpActionResult> Monitor()
+        {
+            Business.Backoffice.Pagos.Monitor();
+
+            return Ok();
+        }
+
     }
 }

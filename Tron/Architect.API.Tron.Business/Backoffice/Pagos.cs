@@ -15,13 +15,20 @@ namespace Architect.API.Tron.Business.Backoffice
 
         public static void Monitor()
         {
+            Utilities.Log.WarningLog("Payment.Monitor", "Inicio - Proceso de sondeo", "payment");
+
             try
             {
 
-                List<Payment.Integrations.Contracts.OnlinePayment> pendings = Payment.Integrations.DataAccess.OnlinePayment.RetrievePendings(2);
-                if (pendings.IsNotEmpty())
+                List<Payment.Integrations.Contracts.OnlinePayment> pendingOnlinePayment = Payment.Integrations.DataAccess.OnlinePayment.RetrievePendings(2);
+                if (pendingOnlinePayment.IsNotEmpty())
                 {
-                    Task.Run(() => VerifiyOnlinePaymentPending(pendings));
+                    Task.Run(() => VerifiyOnlinePaymentPending(pendingOnlinePayment));
+                }
+                List<Payment.Integrations.Contracts.OnlinePayment> pendingPaymentInTron = Payment.Integrations.DataAccess.OnlinePayment.RetrieveByTronCode(2, 500);
+                if (pendingPaymentInTron.IsNotEmpty())
+                {
+                    Task.Run(() => VerifiyOnlinePaymentPending(pendingPaymentInTron));
                 }
             }
             catch (Exception ex)
@@ -29,6 +36,7 @@ namespace Architect.API.Tron.Business.Backoffice
                 Utilities.Log.ErrorLog("Payment", "Monitor", ex);
                 throw ex;
             }
+            Utilities.Log.WarningLog("Payment.Monitor", "Fin - Proceso de sondeo", "payment");
         }
 
         private static void VerifiyOnlinePaymentPending(List<Payment.Integrations.Contracts.OnlinePayment> pendings)
