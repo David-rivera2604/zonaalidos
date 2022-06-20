@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,7 +32,7 @@ namespace Architect.Extend.Integrations.GastosMedicos
             try
             {
                 var responsetoken = new HttpResponseMessage();
-
+                
                 //Genera Token
                 using (var httpClient_token = new HttpClient())
                 {
@@ -45,7 +46,7 @@ namespace Architect.Extend.Integrations.GastosMedicos
 
                     });
 
-                    responsetoken = await httpClient_token.PostAsync(httpClient_token.BaseAddress, content);
+                     responsetoken =  await httpClient_token.PostAsync(httpClient_token.BaseAddress, content);
                 }
 
                 if (responsetoken.IsSuccessStatusCode)
@@ -60,7 +61,7 @@ namespace Architect.Extend.Integrations.GastosMedicos
                         {
 
                             token = jsonvalues.SelectToken("token_type").Value<string>() + " " + jsonvalues.SelectToken("access_token").Value<string>();
-
+                   
                         }
                     }
                 }
@@ -68,7 +69,7 @@ namespace Architect.Extend.Integrations.GastosMedicos
                 //Consulta carnetDigitalInfo Panama
                 var json = JsonConvert.SerializeObject(new { identificacion = cedula, pais = "506" });
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
-
+                
 
                 HttpClient client = new HttpClient() { Timeout = new TimeSpan(0, 0, 2) };
                 client.DefaultRequestHeaders.Add("Authorization", token);
@@ -91,9 +92,9 @@ namespace Architect.Extend.Integrations.GastosMedicos
                 //Sino lo encuentra en Panama, busca asegurado en Medical 
 
                 if (resultado.nombre == null)
-                {
-                    HttpClient client_medical = new HttpClient() { Timeout = new TimeSpan(0, 0, 2) };
-                    var response_medical = await client.GetAsync("https://www.mapfrecr.com/apps/service.svc/REST/InformacionAsegurado?identificacionAsegurado=" + cedula + "&clave=12345678901234567890").ConfigureAwait(false);
+                { 
+                    HttpClient client_medical = new HttpClient() { Timeout = new TimeSpan(0, 0, 5) };
+                    var response_medical = await client.GetAsync("https://www.mapfrecr.com/apps/service.svc/REST/InformacionAsegurado?identificacionAsegurado="+ cedula +"&clave=12345678901234567890").ConfigureAwait(false);
 
                     if (response_medical.IsSuccessStatusCode)
                     {
@@ -102,8 +103,10 @@ namespace Architect.Extend.Integrations.GastosMedicos
                         if (resultResponse.IsNotEmpty())
                         {
                             API.Insurance.Contracts.GastosMedicos.AseguradoGastosMedicosMD result_md = new API.Insurance.Contracts.GastosMedicos.AseguradoGastosMedicosMD();
-                            result_md = JsonConvert.DeserializeObject<API.Insurance.Contracts.GastosMedicos.AseguradoGastosMedicosMD>(resultResponse);
-                            List<API.Insurance.Contracts.GastosMedicos.Dependientes> dependientes_list = new List<API.Insurance.Contracts.GastosMedicos.Dependientes>();
+                            result_md = JsonConvert.DeserializeObject <API.Insurance.Contracts.GastosMedicos.AseguradoGastosMedicosMD>(resultResponse);
+                            List <API.Insurance.Contracts.GastosMedicos.Dependientes> dependientes_list  = new List<API.Insurance.Contracts.GastosMedicos.Dependientes>();
+                            List<API.Insurance.Contracts.GastosMedicos.Beneficios> beneficios_list = new List<API.Insurance.Contracts.GastosMedicos.Beneficios>();
+
 
                             if (result_md.Asegurado != null)
                             {
@@ -116,17 +119,40 @@ namespace Architect.Extend.Integrations.GastosMedicos
                                 resultado.fechaIngreso = "";
                                 resultado.fechaExclusion = result_md.Asegurado.FechaExclusion;
 
-                                foreach (API.Insurance.Contracts.GastosMedicos.DependientesMD dependientes_md in result_md.Dependientes)
+                                if (result_md.Dependientes != null)
                                 {
-                                    API.Insurance.Contracts.GastosMedicos.Dependientes dependientes = new API.Insurance.Contracts.GastosMedicos.Dependientes();
-                                    dependientes.identificacion = dependientes_md.Identificacion;
-                                    dependientes.nombre = dependientes_md.Nombres;
-                                    dependientes.fechaNacimiento = "";
 
-                                    dependientes_list.Add(dependientes);
+                                    foreach (API.Insurance.Contracts.GastosMedicos.DependientesMD dependientes_md in result_md.Dependientes)
+                                    {
+                                        API.Insurance.Contracts.GastosMedicos.Dependientes dependientes = new API.Insurance.Contracts.GastosMedicos.Dependientes();
+                                        dependientes.identificacion = dependientes_md.Identificacion;
+                                        dependientes.nombre = dependientes_md.Nombres;
+                                        dependientes.fechaNacimiento = "";
+
+                                        dependientes_list.Add(dependientes);
+                                    }
+
+                                    resultado.dependientes = dependientes_list;
+
+                                }
+                                
+                                //Se llena listado de beneficios
+                                  String[] beneficios = { "URGENCIAS SIN HOSPITALIZACION: CO-PAGO 25%",
+                                                          "URGENCIAS CON HOSPITALIZACION CO-PAGO: 20% DESPUES DE CUBIERTO EL DEDUCIBLE ",
+                                                          "LABORATORIOS Y RAYOS X: POR REEMBOLSO ",
+                                                          "MEDICAMENTOS: POR REEMBOLSO ",
+                                                          "Máximo por consulta Externa en clínica ₡50,400.00"
+                                                        };
+
+                                for (int benef = 0; benef < beneficios.Length; benef++)
+                                {
+                                    API.Insurance.Contracts.GastosMedicos.Beneficios beneficio = new API.Insurance.Contracts.GastosMedicos.Beneficios();
+                                    beneficio.benef = beneficios[benef];
+                                    
+                                    beneficios_list.Add(beneficio);
                                 }
 
-                                resultado.dependientes = dependientes_list;
+                                resultado.beneficios = beneficios_list;
 
                             }
                         }
