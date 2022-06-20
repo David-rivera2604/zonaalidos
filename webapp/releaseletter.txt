@@ -351,5 +351,11 @@
                    Pasarela de pago. Se cambia el query para evitar casos donde el tomar tiene mas de un tipo de actividad.
                    Clientes. Consulta Mis Pólizas. Se crea query que filtre por tomador.
                    Clientes. Consulta Mis Pólizas -> Recibos. Se crea query para mostrar el estado y fechas del recibo.
-1.6.3   16/06/2022 Fix. Login. Ignorar espacios antes y después en el nombre del usuario.
+1.6.3   20/06/2022 Fix. Login. Ignorar espacios antes y después en el nombre del usuario.
                    Fix. Lentitud en consultas asociadas al cliente.
+                   Sur Química. Agregar firma electrónica		
+                   Mapfremas dropdown ruptura con un solo valor no se auto-selecciona.
+                   Aviso de cobros recuerdas de poder seleccionar un agente.
+                   Consulta Aviso de cobros recuerdas de poder seleccionar un agente.
+                   Nueva consulta para que los empleados puedan visualización de imágenes cargadas por PWA por un agente.		
+                   viajero. Se quita texto de asistencia panamá y se general log con dicho texto.
