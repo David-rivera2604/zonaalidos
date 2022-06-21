@@ -4,8 +4,17 @@ app.AvisosRecibos = (function () {
     const estado = { EP: "Pendiente" };
     let changedCallback = null;
 
-    function Setup() {        
-        app.core.Lookups(['Agents.Cod_Agt', 'MonedasPorRamo.cod_mon', 'FrecuenciaDePagoPorRamo.cod_fracc_pago.', 'PolizaGrupo.polizagrupo.', 'Contratos.contratos.'],
+    function Setup() {
+        let lks = ['MonedasPorRamo.cod_mon', 'FrecuenciaDePagoPorRamo.cod_fracc_pago.'];
+
+        if (localStorage.getItem('Roles').includes('Empleado')) {
+            lks.push('Agents.Cod_Agt');
+        } else {
+            lks.push('PolizaGrupo.polizagrupo.');
+            lks.push('Contratos.contratos.');
+        }
+
+        app.core.Lookups(lks,
             function () {
                 data = {
                     Cod_Agt: null,
@@ -20,7 +29,7 @@ app.AvisosRecibos = (function () {
                 };
                 MapObjectToInput(data);
 
-                }, `cod_ramo=302:cod_mon=1`);
+            }, `cod_ramo=302:cod_mon=1`);
     };
 
     function MapInputToObject() {
@@ -181,6 +190,11 @@ app.AvisosRecibos = (function () {
             app.ui.ButtonDoing('#PrototypeEdtFormCancel');
             setTimeout(() => { app.ui.ButtonDone('#PrototypeEdtFormCancel'); }, 3000);
             event.preventDefault();
+        });
+
+        $('#Cod_Agt').on('change', function () {
+            app.core.LookupDependency($('select#Cod_Agt').val(), 'polizagrupo', 'PolizaGrupoPorAgente', '', null, true, null, `cod_ramo=302:cod_mon=${app.ui.GetDropDownNumericValue('#cod_mon')}:Cod_Agt=`);
+            app.core.LookupDependency($('select#Cod_Agt').val(), 'contratos', 'ContratosPorAgente', '', null, true, null, `cod_ramo=302:cod_mon=${app.ui.GetDropDownNumericValue('#cod_mon')}:Cod_Agt=`);
         });
 
     };
