@@ -34,7 +34,7 @@ namespace Architect.API.Insurance.Controllers
             Contracts.Policy.RiskView result = null;
             await Task.Run(() =>
             {
-                result = Business.Policy.Risk.Information(id, tokenInfo.CompanyId);
+                result = Business.Policy.Risk.Information(id, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);

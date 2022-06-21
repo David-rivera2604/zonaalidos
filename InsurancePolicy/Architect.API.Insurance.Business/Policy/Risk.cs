@@ -306,12 +306,12 @@ namespace Architect.API.Insurance.Business.Policy
         /// <summary>
         /// Información para la impresión de una póliza.
         /// </summary>
-        /// <param name="id">Identificación interna de una póliza.</param>
-        /// <param name="companyId">Identificación de la compañía propietaria.</param>
-        /// <returns>Información de una póliza</returns>
-        public static Contracts.Policy.RiskView Information(int id, int companyId)
+        public static Contracts.Policy.RiskView Information(int id, Core.Contracts.Security.Token tokenInfo)
         {
-            return Mapper_Information(RetrievePolicyByKey(id, companyId), companyId);
+            Contracts.Policy.Risk risk = RetrievePolicyByKey(id, tokenInfo.CompanyId);
+            Contracts.Policy.RiskView result = Mapper_Information(risk, tokenInfo.CompanyId);
+            result.Behavior = Reglas.research.Apply_Comportamientos("policy", risk, tokenInfo);
+            return result;
         }
 
         internal static Contracts.Policy.RiskView Mapper_Information(Contracts.Policy.Risk resultInternal, int companyId)
