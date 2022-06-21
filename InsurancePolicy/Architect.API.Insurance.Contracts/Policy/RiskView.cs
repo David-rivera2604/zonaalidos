@@ -158,6 +158,7 @@ namespace Architect.API.Insurance.Contracts.Policy
         /// Uso interno.
         /// </summary>
         [DataMember(), JsonProperty()] public string Behavior { get; set; }
+
     }
 }
 

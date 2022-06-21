@@ -317,6 +317,8 @@ namespace Architect.API.Insurance.Business.Policy
         internal static Contracts.Policy.RiskView Mapper_Information(Contracts.Policy.Risk resultInternal, int companyId)
         {
             Contracts.Policy.RiskView result = null;
+            List<Core.Contracts.General.LookupValue> values = null;
+
             if (resultInternal.IsNotEmpty())
             {
                 result = Business.Policy.Risk.Mapper2View(resultInternal);
@@ -338,13 +340,16 @@ namespace Architect.API.Insurance.Business.Policy
                 result.ProductAlias = Core.Business.Common.LkpChildFull("ProductByLineOfBusiness", result.LineOfBusinessCode, companyId).Find(x => x.Code == result.ProductCode).ExtendStringValue1;
                 if (result.ProductAlias.IsNotEmpty())
                 {
-                    result.OwnerName = Architect.API.Insurance.Business.Products.Specification.SettingStringValue(result.ProductAlias, "Parent.Policy.Owner.Name");
-                    result.OwnerId = Architect.API.Insurance.Business.Products.Specification.SettingStringValue(result.ProductAlias, "Parent.Policy.Owner.Id");
+                    result.OwnerName = Products.Specification.SettingStringValue(result.ProductAlias, "Parent.Policy.Owner.Name");
+                    result.OwnerId = Products.Specification.SettingStringValue(result.ProductAlias, "Parent.Policy.Owner.Id");
                 }
-
+                if (resultInternal.Subsidiary.IsNotEmpty()) {
+                    result.OwnerName = Core.Business.Common.LkpDescription(companyId, "BayerPolizas", resultInternal.Subsidiary.ToString());
+                    result.OwnerId = resultInternal.MainPolicyId;
+                }
             }
 
-            List<Core.Contracts.General.LookupValue> values = null;
+            
             if (result.IsNotEmpty())
             {
                 if (result.CancellationDate == DateTime.MinValue)
