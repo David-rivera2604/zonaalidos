@@ -6,9 +6,11 @@ using System.Web.Routing;
 using System.Web.Optimization;
 using Hangfire;
 using Hangfire.MemoryStorage;
+using Hangfire.Storage;
 using Newtonsoft.Json.Serialization;
 using System.Configuration;
 using Architect.Utilities.Extensions;
+using System.Linq;
 
 namespace aliados
 {
@@ -87,6 +89,11 @@ namespace aliados
                     Architect.API.Insurance.Business.Policy.DigitalSignature.VerifyDocuSigned(),
                     Cron.MinuteInterval(interval));
             }
+
+
+
+            //var recurringJobs = Hangfire.JobStorage.Current.GetConnection().GetRecurringJobs().ToList();
+
 
         }
 

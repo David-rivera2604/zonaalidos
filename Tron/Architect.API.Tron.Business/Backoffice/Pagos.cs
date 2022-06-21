@@ -23,11 +23,13 @@ namespace Architect.API.Tron.Business.Backoffice
                 List<Payment.Integrations.Contracts.OnlinePayment> pendingOnlinePayment = Payment.Integrations.DataAccess.OnlinePayment.RetrievePendings(2);
                 if (pendingOnlinePayment.IsNotEmpty())
                 {
+                    Utilities.Log.WarningLog("Payment.Monitor", $"  {pendingOnlinePayment.Count} Pending Online Payment", "payment");
                     Task.Run(() => VerifiyOnlinePaymentPending(pendingOnlinePayment));
                 }
                 List<Payment.Integrations.Contracts.OnlinePayment> pendingPaymentInTron = Payment.Integrations.DataAccess.OnlinePayment.RetrieveByTronCode(2, 500);
                 if (pendingPaymentInTron.IsNotEmpty())
                 {
+                    Utilities.Log.WarningLog("Payment.Monitor", $"  {pendingOnlinePayment.Count} Pending Payment In Tron", "payment");
                     Task.Run(() => VerifiyOnlinePaymentPending(pendingPaymentInTron));
                 }
             }

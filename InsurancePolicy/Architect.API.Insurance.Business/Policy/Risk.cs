@@ -345,7 +345,7 @@ namespace Architect.API.Insurance.Business.Policy
                 }
                 if (resultInternal.Subsidiary.IsNotEmpty()) {
                     result.OwnerName = Core.Business.Common.LkpDescription(companyId, "BayerPolizas", resultInternal.Subsidiary.ToString());
-                    result.OwnerId = resultInternal.MainPolicyId;
+                    result.OwnerId = Core.Business.Common.LkpDescription(companyId, "BayerNumeroPoliza", resultInternal.MainPolicyId);
                 }
             }
 

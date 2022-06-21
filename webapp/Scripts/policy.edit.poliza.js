@@ -99,7 +99,7 @@ app.poliza = (function () {
     function Init_Lookups() {
         app.core.Lookups(['PolicyStatus.Status',
             'ReasonForStatus',
-            'BayerPolizas.ContractorName',
+            'BayerPolizas.Subsidiary',
             'BayerNumeroPoliza.MainPolicyId']);
     };
 
@@ -277,8 +277,8 @@ app.poliza = (function () {
             }
         });
 
-        $('#ContractorName').change(function () {
-            $('#MainPolicyId').val($('#ContractorName').val());
+        $('#Subsidiary').change(function () {
+            $('#MainPolicyId').val($('#Subsidiary').val());
         });
     };
 
@@ -421,7 +421,7 @@ app.poliza = (function () {
                 ReasonForStatus: {
                     required: true
                 },
-                ContractorName: { required: true }
+                Subsidiary: { required: true }
             },
             messages: {
                 ModuleCode: {
@@ -444,7 +444,7 @@ app.poliza = (function () {
                 ReasonForStatus: {
                     required: 'Debe indicar la causa de la baja'
                 },
-                ContractorName: { required: 'Debe indicar la filial' }
+                Subsidiary: { required: 'Debe indicar la filial' }
             }
 
         });
@@ -469,8 +469,8 @@ app.poliza = (function () {
             Comments: $('#Comments').val(),
             Annotation: $('#Annotation').val(),
             MainPolicyId: $('#MainPolicyId').val(),
-            ContractorName: app.ui.GetDropDownNumericValue('#ContractorName'),
-            ContractorDesc: $("#ContractorName option:selected").text(),
+            Subsidiary: app.ui.GetDropDownNumericValue('#Subsidiary'),
+            SubsidiaryDesc: $("#Subsidiary option:selected").text(),
         };
         return data;
     };
@@ -496,8 +496,8 @@ app.poliza = (function () {
             app.ui.SetDateValue('#CancellationDate', data.CancellationDate);
             $('#ReasonForStatus').val(data.ReasonForStatus);
 
-            $('#MainPolicyId').val(data.ContractorName);
-            app.ui.SetDropDownNumericValue('#ContractorName', data.ContractorName, true);
+            $('#MainPolicyId').val(data.MainPolicyId);
+            app.ui.SetDropDownNumericValue('#Subsidiary', data.SubsidiaryDesc, true);
 
             if (data.Surcharge > 0) {
                 let Annualvalue = data.AnnualPremium * (1 + data.Surcharge / 100);

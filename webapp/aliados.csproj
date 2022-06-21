@@ -1198,10 +1198,11 @@
     <Content Include="images\help\policy_1.gif" />
     <Content Include="logos\logo-coopeservidores-alt.svg" />
     <Content Include="logos\logo-core-alt.svg" />
+    <Content Include="logos\logo-credecoop-alt.svg" />
     <Content Include="logos\logo-mapfre-alt.svg" />
     <Content Include="logos\logo-sur química-alt.svg" />
     <Content Include="logos\velero3.jpg" />
-    <Content Include="products\suquímica_vida.xml" />
+    <Content Include="products\surquímica_vida.xml" />
     <Content Include="products\credecoop_saldo_deudor.xml" />
     <Content Include="products\TotalLeasing_saldo_deudor.xml" />
     <Content Include="products\carrofacil_saldo_deudor.xml" />
