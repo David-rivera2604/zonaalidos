@@ -359,5 +359,10 @@
                    Consulta Aviso de cobros recuerdas de poder seleccionar un agente.
                    Nueva consulta para que los empleados puedan visualización de imágenes cargadas por PWA por un agente.		
                    viajero. Se quita texto de asistencia panamá y se general log con dicho texto.
-1.6.3a  20/06/2022 Monitoreo de fallos en el procedure de pago de tron.
+1.6.4   21/06/2022 Monitoreo de fallos en el procedure de pago de tron.
                    EndPoint para ejecución de job de monitoreo de pagos.
+                   CreedeCoop. Manejo de condiciones para mostrar los cuestionarios en los reportes.		
+                   Sur Química. Certificado.
+                   Credecoop. Fix. Error de validación al emitir.
+                   Aviso de cobros. No se ve el detalle de los recibos de un aviso de cobro por agente indicado.
+                   Aviso de cobros. Pólizas grupos y contratos por agente indicado.
