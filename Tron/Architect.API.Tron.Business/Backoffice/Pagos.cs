@@ -209,7 +209,7 @@ namespace Architect.API.Tron.Business.Backoffice
             Contracts.Batch.Respuesta tronCobro = DataAccess.PorRamo.p_proceso_cobro(1, Guid.NewGuid().ToString(), data);
 
             Payment.Integrations.DataAccess.OnlinePayment.UpdateTronInformation(request.OnlinePayment.Id, Convert.ToInt16(tronCobro.codigo_respuesta), tronCobro.mensaje_respuesta);
-            Utilities.Log.WarningLog("Pagos.TronPayment", string.Format("codigo_respuesta={0}, mensaje_respuesta={1}", tronCobro.codigo_respuesta, tronCobro.mensaje_respuesta), "payment");
+            Utilities.Log.WarningLog("Pagos.TronPayment", string.Format("codigo_respuesta={0}, mensaje_respuesta={1}, recibo={2}", tronCobro.codigo_respuesta, tronCobro.mensaje_respuesta, request.OnlinePayment.BillNumber), "payment");
             return (tronCobro.codigo_respuesta == "200");
         }
 

@@ -22,15 +22,20 @@ namespace Architect.API.Insurance.Business.Policy
         /// </summary>
         public static void VerifyDocuSigned()
         {
+            Utilities.Log.WarningLog("DigitalSignature.VerifyDocuSigned", "Inicio - Proceso de sondeo", "DocuSigned");
             try
             {
                 foreach (string companyIdForReview in Utilities.Helpers.Settings.StringValue("DocuSign.Request.Company.Review").Split(','))
                 {
                     int userId = 666;
                     int companyId = Convert.ToInt32(companyIdForReview);
-                    Utilities.Log.TraceLog("VerifyDocuSigned", string.Format("{0} CompanyId {1}", DateTime.Now.ToString(), companyId), "DocuSigned");
 
-                    foreach (LookUpValue item in DataAccess.Policy.Risk.RetrieveByStatus(companyId, (int)Enumerations.PolicyStatus.PendingBySignature))
+                    List<LookUpValue> items = DataAccess.Policy.Risk.RetrieveByStatus(companyId, (int)Enumerations.PolicyStatus.PendingBySignature);
+
+
+                    Utilities.Log.WarningLog("DigitalSignature.VerifyDocuSigned", $"  {items.Count} Documentos pendientes por firma ({companyIdForReview})", "DocuSigned");
+
+                    foreach (LookUpValue item in items)
                     {
                         VerifySign(userId, companyId, item.Description, Convert.ToInt32(item.Code));
                     }
@@ -41,6 +46,7 @@ namespace Architect.API.Insurance.Business.Policy
                 Utilities.Log.ErrorLog("VerifyDocuSigned", "EvicertiaSigned", ex);
                 throw ex;
             }
+            Utilities.Log.WarningLog("DigitalSignature.VerifyDocuSigned", "Fin - Proceso de sondeo", "DocuSigned");
         }
 
         /// <summary>

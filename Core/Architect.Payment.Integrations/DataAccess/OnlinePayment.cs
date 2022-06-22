@@ -91,7 +91,7 @@ namespace Architect.Payment.Integrations.DataAccess
             }
             Database.Select("SELECT Id, OnlinePayment.CompanyId, DocumentType, DocumentNumber, OnlinePayment.FirstName, OnlinePayment.LastName, PrimaryEmailAddress, PhoneNumberMobile, AgentCode, PolicyId, BillNumber, Currency, Amount, OnlinePayment.Reference, Description, IssueDate, StatusDate, RequestID, ProcessUrl, ProviderStatus" + complement + ", Status, Reason, Authorization, Receipt, OnlinePayment.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, OnlinePayment.UpdateDate " +
                               "FROM OnlinePayment LEFT JOIN UserMember um ON um.UserId = OnlinePayment.UpdateUserCode " +
-                             "WHERE OnlinePayment.RequestID=:RequestID AND OnlinePayment.CompanyId=:CompanyId")
+                             "WHERE OnlinePayment.RequestID=:RequestID")
                         .AddParameter("RequestID", DbType.Decimal, 11, requestID)
                         .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
                         {
