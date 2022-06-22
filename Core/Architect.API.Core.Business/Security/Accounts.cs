@@ -127,7 +127,7 @@ namespace Architect.API.Core.Business.Security
                             agentInfo.tip_docum = agentInfo.tip_docum.IdentificationType();
                             if (agentInfo.cod_docum.IsNotEmpty())
                             {
-                                agentInfo.cod_docum = Convert.ToInt64(agentInfo.cod_docum.OnlyNumbers()).ToString();
+                                agentInfo.cod_docum = agentInfo.cod_docum.DocumentNumber(agentInfo.tip_docum);
                             }
                         }
                         Contracts.Security.Token tokenItem = new Contracts.Security.Token()
@@ -587,7 +587,7 @@ namespace Architect.API.Core.Business.Security
                 internalUserId = Utilities.Helpers.Settings.IntegerValue(string.Format("Tenant.Settings.{0}.External.UserId", companyId));
                 result.UserMember.CompanyId = companyId;
 
-                result.Errors = Architect.API.Core.Business.Security.UserMember.Validate(result.UserMember, true);
+                result.Errors = UserMember.Validate(result.UserMember, true);
                 if (result.Errors.Count == 0)
                 {
                     Contracts.Security.UserMember user = DataAccess.Security.UserMember.RetrieveByEMail(result.UserMember.EMail, companyId);
@@ -598,7 +598,7 @@ namespace Architect.API.Core.Business.Security
                     else
                         if (companyId == 3)
                     {
-                        Contracts.Security.ClientInformation clientInfo = Tron.RetrieveClientInformationByDocument(result.UserMember.IdentificationType.ToString().IdentificationType(), result.UserMember.Identification.DocumentNumber(result.UserMember.IdentificationType.ToString().IdentificationType()));
+                        ClientInformation clientInfo = Tron.RetrieveClientInformationByDocument(result.UserMember.IdentificationType.ToString().IdentificationType(), result.UserMember.Identification.DocumentNumber(result.UserMember.IdentificationType.ToString().IdentificationType()));
 
                         if (clientInfo.IsEmpty())
                         {

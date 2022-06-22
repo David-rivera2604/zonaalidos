@@ -215,7 +215,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
 
                 case "3": //Pasaporte
                 case "PAS":
-                    type = "";
+                    type = "PPN";
                     break;
 
                     //DIDI
