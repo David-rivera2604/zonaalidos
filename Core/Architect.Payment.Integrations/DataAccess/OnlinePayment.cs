@@ -81,7 +81,7 @@ namespace Architect.Payment.Integrations.DataAccess
         /// <summary>
         /// Recupera un registro en la tabla OnlinePayment por el campo RequestID.
         /// </summary>
-        public static Contracts.OnlinePayment RetrieveByRequestID(Int64 requestID, int companyId, bool full = false, IDbConnection connection = null)
+        public static Contracts.OnlinePayment RetrieveByRequestID(Int64 requestID, bool full = false, IDbConnection connection = null)
         {
             Contracts.OnlinePayment result = null;
             string complement = ", NULL ResponseData";
@@ -93,7 +93,6 @@ namespace Architect.Payment.Integrations.DataAccess
                               "FROM OnlinePayment LEFT JOIN UserMember um ON um.UserId = OnlinePayment.UpdateUserCode " +
                              "WHERE OnlinePayment.RequestID=:RequestID AND OnlinePayment.CompanyId=:CompanyId")
                         .AddParameter("RequestID", DbType.Decimal, 11, requestID)
-                        .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
                         .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
                         {
                             result = DataReaderToOnlinePayment(reader);
@@ -253,16 +252,12 @@ namespace Architect.Payment.Integrations.DataAccess
         /// <summary>
         /// Recupera una lista de registros en la tabla OnlinePayment.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañía propietaria.</param>
-        /// <param name="connection">Instancia de una conexión compartida</param>
-        /// <returns>Lista de instancias de OnlinePayment</returns>
-        public static List<Contracts.OnlinePayment> RetrievePendings(int companyId, IDbConnection connection = null)
+        public static List<Contracts.OnlinePayment> RetrievePendings(IDbConnection connection = null)
         {
             List<Contracts.OnlinePayment> result = new List<Contracts.OnlinePayment>();
             Database.Select("SELECT Id, OnlinePayment.CompanyId, RequestID, ProviderStatus, Reason, Authorization, Receipt, NULL ResponseData, DocumentType, DocumentNumber, OnlinePayment.FirstName, OnlinePayment.LastName, PrimaryEmailAddress, PhoneNumberMobile, AgentCode, PolicyId, BillNumber, Currency, Amount, OnlinePayment.Reference, Description, IssueDate, StatusDate, ProcessUrl, Status, OnlinePayment.UpdateUserCode, NULL UpdateUserName, OnlinePayment.UpdateDate " +
                               "FROM OnlinePayment " +
-                             "WHERE OnlinePayment.CompanyId=:CompanyId AND OnlinePayment.ProviderStatus IN ('INIT', 'PENDING')")
-                        .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                             "WHERE OnlinePayment.ProviderStatus IN ('INIT', 'PENDING')")
                         .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
                         {
                             result.Add(DataReaderToOnlinePayment(reader));
@@ -273,13 +268,12 @@ namespace Architect.Payment.Integrations.DataAccess
         /// <summary>
         /// Recupera una lista de registros en la tabla OnlinePayment que cumplan con el criterio del campo TronCode.
         /// </summary>
-        public static List<Contracts.OnlinePayment> RetrieveByTronCode(int companyId, int tronCode, IDbConnection connection = null)
+        public static List<Contracts.OnlinePayment> RetrieveByTronCode(int tronCode, IDbConnection connection = null)
         {
             List<Contracts.OnlinePayment> result = new List<Contracts.OnlinePayment>();
             Database.Select("SELECT Id, OnlinePayment.CompanyId, RequestID, ProviderStatus, Reason, Authorization, Receipt, NULL ResponseData, DocumentType, DocumentNumber, OnlinePayment.FirstName, OnlinePayment.LastName, PrimaryEmailAddress, PhoneNumberMobile, AgentCode, PolicyId, BillNumber, Currency, Amount, OnlinePayment.Reference, Description, IssueDate, StatusDate, ProcessUrl, Status, OnlinePayment.UpdateUserCode, NULL UpdateUserName, OnlinePayment.UpdateDate " +
                               "FROM OnlinePayment " +
-                             "WHERE OnlinePayment.CompanyId=:CompanyId AND NVL(OnlinePayment.TronCode,0) = :TronCode")
-                        .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                             "WHERE NVL(OnlinePayment.TronCode,0) = :TronCode")
                         .AddParameter("TronCode", DbType.Decimal, 5, tronCode)
                         .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
                         {

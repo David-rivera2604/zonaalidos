@@ -245,6 +245,8 @@ app.AvisosRecibos = (function () {
             smartDisplay: true,
             search: true,
             searchAlign: 'left',
+            maintainMetaData: true,
+            clickToSelect: true,
             columns: [
                 {
                     field: 'seleccionado',

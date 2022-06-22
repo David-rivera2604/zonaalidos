@@ -94,6 +94,7 @@ app.PolicyEdit = (function () {
                     $('#ReviewAccept').addClass('d-none');
                     $('#ReviewCondition').addClass('d-none');
                     $('#ReviewDecline').addClass('d-none');
+                    $('#ReviewComplement').addClass('d-none');
 
                     $('#AcceptCondition').addClass('d-none');
                     $('#AcceptDecline').addClass('d-none');

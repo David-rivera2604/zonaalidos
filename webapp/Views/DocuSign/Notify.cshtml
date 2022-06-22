@@ -1,17 +1,13 @@
 ﻿@{
     Layout = null;
 }
-
 <!DOCTYPE html>
 <html>
 
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Zona de Aliados | Acceso</title>
-
+    <title>Zona de Aliados</title>
     @Styles.Render("~/Content/cssBase")
     <link rel="shortcut icon" href="~/images/favicon.png" />
 </head>
@@ -38,11 +34,24 @@
     <script>
         $(document).ready(function () {
             let uniqueId = app.core.URLStringValue('uniqueId');
+            let accepted = (app.core.URLStringValue('accepted') == 'True');
             if (uniqueId != '') {
-                app.core.Get(app.setting.apipath + 'v1/DocuSign/' + uniqueId)
-                    .done(function (data) {
-                        console.log(data);
-                    });
+                myInterval = setInterval(function () {
+                    clearInterval(myInterval);
+                    app.core.Get(app.setting.apipath + 'v1/DocuSign/' + uniqueId)
+                        .done(function (data) {
+                            console.log(1, data);
+                            if (data == '') {
+                                myInterval = setInterval(function () {
+                                    clearInterval(myInterval);
+                                    app.core.Get(app.setting.apipath + 'v1/DocuSign/' + uniqueId)
+                                        .done(function (data) {
+                                            console.log(2, data);
+                                        });
+                                }, 5000);
+                            }
+                        });
+                }, 3000);
             }
         });
     </script>

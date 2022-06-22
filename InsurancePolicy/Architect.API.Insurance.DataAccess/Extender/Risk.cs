@@ -203,7 +203,7 @@ namespace Architect.API.Insurance.DataAccess.Policy
         {
             Contracts.Policy.Risk result = null;
 
-            Database.Select(@"SELECT Id, CompanyId, PolicyId, UpdateUserCode, UpdateDate, Reference
+            Database.Select(@"SELECT Id, CompanyId, PolicyId, UpdateUserCode, UpdateDate, Reference, Status
                                 FROM Risk 
                                WHERE Reference=:Reference AND NVL(HasDigitalSignature,0)=0")
                 .AddParameter("Reference", DbType.AnsiString, 36, reference)
@@ -217,8 +217,9 @@ namespace Architect.API.Insurance.DataAccess.Policy
                         PolicyId = reader.IntegerValue("PolicyId"),
                         UpdateUserCode = reader.IntegerValue("UpdateUserCode"),
                         UpdateDate = reader.DateTimeValue("UpdateDate"),
-                        Reference = reader.StringValue("Reference")
-                    };
+                        Reference = reader.StringValue("Reference"),
+                        Status = reader.IntegerValue("Status")
+                };
                 }));
             return result;
         }

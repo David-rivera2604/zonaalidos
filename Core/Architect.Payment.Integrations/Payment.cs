@@ -104,9 +104,9 @@ namespace Architect.Payment.Integrations
         /// <summary>
         /// Obtiene y actualiza la información de un pago.
         /// </summary>
-        public async static Task<Providers.Placetopay.Contracts.InformationRequest> GetRequestInformation(int companyId, int userId, Int64 requestId, bool updateStatus = false)
+        public async static Task<Providers.Placetopay.Contracts.InformationRequest> GetRequestInformation(int userId, Int64 requestId, bool updateStatus = false)
         {
-            Contracts.OnlinePayment currentRecord = Business.OnlinePayment.RetrieveByRequestID(companyId, requestId);
+            Contracts.OnlinePayment currentRecord = Business.OnlinePayment.RetrieveByRequestID(requestId);
             return await VerifyUpdateStatus(currentRecord, userId, updateStatus);
         }
 

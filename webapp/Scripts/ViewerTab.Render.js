@@ -537,7 +537,11 @@ app.ViewerQuery = (function () {
                     break;
 
                 case 'printr':
-                    app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/ImprimirRecibo/' + row.NUM_RECIBO, false, 'Mapfre Recibo.pdf')
+                    let reportPath = 'Recibo';
+                    if (row.TIP_SITUACION == 'CT') {
+                        reportPath = 'DepositoPrima';
+                    }
+                    app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/Imprimir' + reportPath + '/' + row.NUM_RECIBO, false, 'Mapfre ' + reportPath + '.pdf')
                         .done(function (data, textStatus, jqXHR) {
                             window.open(data);
                         });

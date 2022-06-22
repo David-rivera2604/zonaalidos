@@ -20,13 +20,13 @@ namespace Architect.API.Tron.Business.Backoffice
             try
             {
 
-                List<Payment.Integrations.Contracts.OnlinePayment> pendingOnlinePayment = Payment.Integrations.DataAccess.OnlinePayment.RetrievePendings(2);
+                List<Payment.Integrations.Contracts.OnlinePayment> pendingOnlinePayment = Payment.Integrations.DataAccess.OnlinePayment.RetrievePendings();
                 if (pendingOnlinePayment.IsNotEmpty())
                 {
                     Utilities.Log.WarningLog("Payment.Monitor", $"  {pendingOnlinePayment.Count} Pending Online Payment", "payment");
                     Task.Run(() => VerifiyOnlinePaymentPending(pendingOnlinePayment));
                 }
-                List<Payment.Integrations.Contracts.OnlinePayment> pendingPaymentInTron = Payment.Integrations.DataAccess.OnlinePayment.RetrieveByTronCode(2, 500);
+                List<Payment.Integrations.Contracts.OnlinePayment> pendingPaymentInTron = Payment.Integrations.DataAccess.OnlinePayment.RetrieveByTronCode(500);
                 if (pendingPaymentInTron.IsNotEmpty())
                 {
                     Utilities.Log.WarningLog("Payment.Monitor", $"  {pendingOnlinePayment.Count} Pending Payment In Tron", "payment");
@@ -72,11 +72,11 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Procesa y valida una notificación de pago.
         /// </summary>
-        public async static Task Notificacion(int companyId, Payment.Integrations.Providers.Placetopay.Contracts.NotifyRequest notify)
+        public async static Task Notificacion(Payment.Integrations.Providers.Placetopay.Contracts.NotifyRequest notify)
         {
             if (Utilities.Helpers.Settings.BoolValue("Payment.Placetopay.Notify.Enabled", true))
             {
-                Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveByRequestID(companyId, Convert.ToInt64(notify.requestId));
+                Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveByRequestID(Convert.ToInt64(notify.requestId));
                 if (currentRecord != null)
                 {
                     string signature = Payment.Integrations.Providers.Placetopay.Webcheckout.NotifySignature(notify, currentRecord.Currency);
@@ -139,7 +139,7 @@ namespace Architect.API.Tron.Business.Backoffice
 
             if (requestId.IsNotEmpty())
             {
-                result = await Payment.Integrations.Payment.GetRequestInformation(companyId, userId, requestId, true);
+                result = await Payment.Integrations.Payment.GetRequestInformation(userId, requestId, true);
             }
             else
             {

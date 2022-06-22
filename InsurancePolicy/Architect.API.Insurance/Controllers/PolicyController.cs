@@ -262,7 +262,7 @@ namespace Architect.API.Insurance.Controllers
             await Task.Run(() =>
             {
                 Business.Policy.Risk
-                    .ChangeStatus(item, tokenInfo.CompanyId, tokenInfo.UserId, tokenInfo.Roles, ref message);
+                    .ChangeStatus(item, tokenInfo, ref message);
             })
                 .ConfigureAwait(false);
 

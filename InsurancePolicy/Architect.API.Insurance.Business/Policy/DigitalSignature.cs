@@ -50,7 +50,7 @@ namespace Architect.API.Insurance.Business.Policy
         {
             string result = string.Empty;
             Contracts.Policy.Risk risk = DataAccess.Policy.Risk.RetrieveByReference(uniqueId.Replace("-", ""));
-            if (risk != null)
+            if (risk != null && risk.Status == (int)Enumerations.PolicyStatus.PendingBySignature)
             {
                 int userId = 666;
                 result = VerifySign(userId, risk.CompanyId, risk.Reference, risk.Id);
@@ -195,6 +195,7 @@ namespace Architect.API.Insurance.Business.Policy
                                         item.PrimaryInsured.PrimaryEmailAddress,
                                         archivo, "WebClick", includeCallback).GetAwaiter().GetResult();
                 DataAccess.Policy.Risk.UpdateReference(tokenInfo.CompanyId, item.Id, submit.UniqueId);
+                item.Reference = submit.UniqueId;
             }
             else
             {

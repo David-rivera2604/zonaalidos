@@ -14,14 +14,11 @@ namespace Architect.API.Insurance.Business.Policy
         /// <summary>
         /// Permite realizar los cambios de estado a una póliza que se encuentra en modo de suscripción.
         /// </summary>
-        /// <param name="item">Datos para el cambio de estado.</param>
-        /// <param name="companyId">Identificación de la compañía propietaria.</param>
-        /// <param name="userId">Identificación del usuario.</param>
-        /// <param name="roles">Lista de roles permitidos del usuario que solicita el cambio.</param>
-        /// <param name="message">Descripción del cambio realizado.</param>
-        /// <returns>Póliza con los cambios aplicados.</returns>
-        public static Contracts.Policy.Risk ChangeStatus(Contracts.Policy.RiskStatus item, int companyId, int userId, string roles, ref string message)
+        public static Contracts.Policy.Risk ChangeStatus(Contracts.Policy.RiskStatus item, Core.Contracts.Security.Token tokenInfo, ref string message)
         {
+            int companyId = tokenInfo.CompanyId;
+            int userId = tokenInfo.UserId;
+            string roles = tokenInfo.Roles;
             Enumerations.PolicyStatus status = (Enumerations.PolicyStatus)item.NewStatus;
             Contracts.Policy.Risk result = Risk.RetrievePolicyByKey(item.Id, companyId);
             Enumerations.PolicyStatus currentStatus = (Enumerations.PolicyStatus)result.Status;
@@ -33,7 +30,15 @@ namespace Architect.API.Insurance.Business.Policy
                     break;
 
                 case Enumerations.PolicyStatus.InForce:
-                    result = ChangeStatusInForce(result, status, currentStatus, item, companyId, userId, roles, ref message);
+                    if (Products.Specification.SettingBoolValue(result.ProductAlias, "Allow.DigitalSign"))
+                    {
+                        DigitalSignature.Submit(result, tokenInfo, true);
+                        result = ChangeStatusPendingBySignature(result, Enumerations.PolicyStatus.PendingBySignature, item, companyId, userId, ref message);
+                    }
+                    else
+                    {
+                        result = ChangeStatusInForce(result, status, currentStatus, item, companyId, userId, roles, ref message);
+                    }
                     break;
 
                 case Enumerations.PolicyStatus.Declined:
@@ -54,6 +59,24 @@ namespace Architect.API.Insurance.Business.Policy
             }
 
             item.NewStatusDesc = Core.Business.Common.Lkp("PolicyStatus", companyId).Find(x => x.Code == result.Status.ToString()).Description;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Cancela una póliza en vigor.
+        /// </summary>
+        private static Contracts.Policy.Risk ChangeStatusPendingBySignature(Contracts.Policy.Risk result, Enumerations.PolicyStatus status, Contracts.Policy.RiskStatus item, int companyId, int userId, ref string message)
+        {
+            result.Status = (int)status;
+            result.UpdateUserCode = userId;
+            result.UpdateDate = DateTime.Now;
+
+            DataAccess.Policy.Risk.Update(result);
+
+            Core.Business.General.ChangeSet.Create(2000, item.Id, companyId, "Pendiente por firma.", null, userId, item);
+
+            message = "Póliza enviada para su firma electrónica";
 
             return result;
         }
@@ -174,6 +197,8 @@ namespace Architect.API.Insurance.Business.Policy
 
             return result;
         }
+
+      
 
         /// <summary>
         /// Condiciona una póliza en suscripción para ser aceptada.
@@ -343,13 +368,14 @@ namespace Architect.API.Insurance.Business.Policy
                     result.OwnerName = Products.Specification.SettingStringValue(result.ProductAlias, "Parent.Policy.Owner.Name");
                     result.OwnerId = Products.Specification.SettingStringValue(result.ProductAlias, "Parent.Policy.Owner.Id");
                 }
-                if (resultInternal.Subsidiary.IsNotEmpty()) {
+                if (resultInternal.Subsidiary.IsNotEmpty())
+                {
                     result.OwnerName = Core.Business.Common.LkpDescription(companyId, "BayerPolizas", resultInternal.Subsidiary.ToString());
                     result.OwnerId = Core.Business.Common.LkpDescription(companyId, "BayerNumeroPoliza", resultInternal.MainPolicyId);
                 }
             }
 
-            
+
             if (result.IsNotEmpty())
             {
                 if (result.CancellationDate == DateTime.MinValue)

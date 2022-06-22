@@ -87,7 +87,7 @@ namespace aliados
             {
                 RecurringJob.AddOrUpdate(() =>
                     Architect.API.Insurance.Business.Policy.DigitalSignature.VerifyDocuSigned(),
-                    Cron.MinuteInterval(interval));
+                    Cron.MinuteInterval(docuSignInterval));
             }
 
 
