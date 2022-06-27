@@ -111,6 +111,7 @@ app.ViewerQuery = (function () {
         spec.clickToSelect = true;
         spec.showColumnsToggleAll = true;
         spec.searchAlign = 'left';
+        spec.maintainMetaData = true;
         spec.rowStyle = function (row, index) {
             return {
                 css: {
@@ -241,6 +242,9 @@ app.ViewerQuery = (function () {
             detailOpen: 'fa-angle-double-right',
             detailClose: 'fa-angle-double-down',
             export: 'fa-download'
+        };
+        spec.onPostBody = function (data) {
+            app.ui.CommonBehaviour();
         };
         //spec.onAll = function (name, args) {
         //    console.log(name, args);
@@ -392,6 +396,11 @@ app.ViewerQuery = (function () {
                 spec.showRefresh = false;
                 spec.showColumns = false;
                 spec.showColumnsToggleAll = false;
+                spec.maintainMetaData = true;
+
+                spec.onPostBody = function (data) {
+                    app.ui.CommonBehaviour();
+                };
 
                 //spec.onRefresh = function (params) {
                 //    app.ViewerQuery.Refresh(params, $el);

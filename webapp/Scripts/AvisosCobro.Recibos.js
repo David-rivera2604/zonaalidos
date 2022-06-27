@@ -87,10 +87,6 @@ app.AvisosRecibos = (function () {
             defaultDate: new Date()
 
         });
-        $('#DocumentNumber').formatter({
-            pattern: '0{{9}}-{{9999}}-{{9999}}',
-            persistent: false
-        });
         $("#PrototypeEdtFormSave").appendTo("#GenericToolBar");
         $("#PrototypeEdtFormCancel").appendTo("#GenericToolBar");
     };
@@ -110,27 +106,6 @@ app.AvisosRecibos = (function () {
             minDate.setDate(minDate.getDate());
 
             $('#hasta_group').data("DateTimePicker").minDate(minDate);
-        });
-
-        $('#DocumentNumberTypeMenu a').click(function () {
-            app.ui.DocumentTypeHandler(this, '#DocumentNumber', 'Identification');
-        });
-
-        $('#DocumentNumber').on('blur', function () {
-            if (app.ui.IsDocumentNumberValid($('#DocumentNumberType').data('value'), $('#DocumentNumber').val())) {
-                var value = $('#DocumentNumber').val().replace(/-/g, '');
-                if (value !== null && parseInt(0 + value, 10) !== 0 && parseInt(0 + value, 10) <= 999999999) {
-                    $('#DocumentNumber').addClass('loading');
-                    app.core.GetExt('https://www.inmotiontools.com:8083/logic/api/padron/personaporcedula?cedula=' + parseInt(0 + value, 10))
-                        .done(function (data, textStatus, jqXHR) {
-                            if (data.Nombre !== null) {
-                                alert(data.Nombre);
-                            }
-                        }).always(function () {
-                            $('#DocumentNumber').removeClass('loading');
-                        });
-                }
-            }
         });
 
         $('#GeneraAvisos').click(function () {
@@ -197,9 +172,13 @@ app.AvisosRecibos = (function () {
             app.core.LookupDependency($('select#Cod_Agt').val(), 'contratos', 'ContratosPorAgente', '', null, true, null, `cod_ramo=302:cod_mon=${app.ui.GetDropDownNumericValue('#cod_mon')}:Cod_Agt=`);
         });
 
+        app.ui.DocumentNumberHandler('#DocumentNumber', function (data) {
+            $("#Name").html(data != null ? data.FullName : '');
+        });
     };
 
     function data_changed(e) {
+
         let event = $(e).data('event');
         switch (event) {
             case 'clear.grid':
@@ -215,6 +194,14 @@ app.AvisosRecibos = (function () {
 
         if (changedCallback !== undefined && changedCallback !== null)
             changedCallback(MapInputToObject());
+
+        if (e != null && e.name == 'btSelectAllX') {
+            console.log(e);
+            let checked = $("[name='btSelectAll']").is(":checked");
+            $('#recibosTbl').bootstrapTable('getData').forEach(function (item) {
+                item.seleccionado = checked;
+            })
+        }
     };
 
     function Setup_Validations() {
@@ -328,6 +315,18 @@ app.AvisosRecibos = (function () {
         $('#recibosTbl').on('uncheck.bs.table', function () {
             data_changed('#recibosTbl');
         });
+
+        $('#recibosTbl').on('check-all.bs.table', function () {
+            $('#recibosTbl').bootstrapTable('getData').forEach(function (item) {
+                item.seleccionado = true;
+            })
+        });
+        $('#recibosTbl').on('uncheck-all.bs.table', function () {
+            $('#recibosTbl').bootstrapTable('getData').forEach(function (item) {
+                item.seleccionado = false;
+            })
+        });
+
     };
 
     return {

@@ -67,6 +67,21 @@ app.Ex_AvisosCobro = (function () {
                     }
                 }
             };
+        },
+        Eventos: function (tableid, name, args) {
+            console.log(tableid, name, args)
+            switch (name) {
+                case 'check-all.bs.table':
+                    $('#' + tableid).bootstrapTable('getData').forEach(function (item) {
+                        item.SEL = true;
+                    })
+                    break;
+                case 'uncheck-all.bs.table':
+                    $('#' + tableid).bootstrapTable('getData').forEach(function (item) {
+                        item.SEL = true;
+                    })
+                    break;
+            }
         }
     };
 })();
