@@ -13,9 +13,25 @@
     <title>Zona de Aliados | Acceso</title>
 
     @Styles.Render("~/Content/cssBase")
+	@Scripts.Render("~/bundles/jsMaster")
     <link rel="shortcut icon" href="~/images/favicon.png" />
+
+	<!-- Google Tag Manager -->
+		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-NL4F2ZN');</script>
+	<!-- End Google Tag Manager -->
+	
 </head>
 <body class="gray-bg @ViewBag.theme">
+
+	<!-- Google Tag Manager (noscript) -->
+		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NL4F2ZN"
+		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+	<!-- End Google Tag Manager (noscript) -->
+	
     <div class="loginBackground">
         <!-- Toast notification -->
         @*<div class="toast toast toast-bootstrap hide" role="alert" aria-live="assertive" aria-atomic="true" style="position: absolute; top:20px; right:20px">
@@ -171,7 +187,7 @@
             </div>
         </div>
     </div>
-    @Scripts.Render("~/bundles/jsBase")
+    <!-- @Scripts.Render("~/bundles/jsMaster") -->
 
     <script src="@Url.Content("~/Scripts/Security.Login.js")"></script>
 </body>
