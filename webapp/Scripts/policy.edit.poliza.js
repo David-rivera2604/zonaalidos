@@ -673,10 +673,14 @@ app.poliza = (function () {
             ProductDefinition(callback);
         },
         PageBehavior: function () {
+            let data = null;
             let ds = app.poliza.EntryAllowed().includes(";Questionnaires;");
             let cv = app.poliza.EntryAllowed().includes(";Covid;");
-            if (ds || cv) {
+
+            if (typeof app.poliza.EvalBehavior === "function") {
                 data = app.poliza.EvalBehavior();
+            }
+            if (ds || cv) {
                 if (ds && data.Behavior.includes("Show.DS")) {
                     $('#saludTabHeader').removeClass('d-none');
                 } else {
@@ -688,8 +692,12 @@ app.poliza = (function () {
                 } else {
                     $('#covidTabHeader').addClass('d-none');
                 }
-            }
 
+            }
+            if (data != null) {
+                app.ui.RequiredMark("Height", data.Behavior.includes("Mode.Underwriting"));
+                app.ui.RequiredMark("Weight", data.Behavior.includes("Mode.Underwriting"));
+            }
         }
     };
 })();

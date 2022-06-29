@@ -77,7 +77,7 @@ app.beneficiarios = (function () {
         });
 
         $("#BDocumentNumber").on('blur', function () {
-            if (app.policy_common.IsDocumentNumberValida($("#BDocumentType").data("value"), $('#BDocumentNumber').val())) {
+            if (app.ui.IsDocumentNumberValid($("#BDocumentType").data("value"), $('#BDocumentNumber').val())) {
                 var value = $('#BDocumentNumber').val().replace(/-/g, '');
                 if (value !== null && parseInt(0 + value, 10) !== 0 && parseInt(0 + value, 10) <= 999999999) {
                     $('#BDocumentNumber').addClass('loading');
@@ -186,7 +186,7 @@ app.beneficiarios = (function () {
 
         $.validator.addMethod("BDocumentNumberLength",
             function (value, element, params) {
-                return app.policy_common.IsDocumentNumberValida($("#BDocumentType").data("value"), value);
+                return app.ui.IsDocumentNumberValid($("#BDocumentType").data("value"), value);
             }
         );
 

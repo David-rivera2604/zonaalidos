@@ -24,7 +24,7 @@ namespace Architect.Extend.Integrations.InstitutoNacionalDeSeguros
         /// 9 Pasaporte
         /// 12 DIDI (Identificación de Diplomáticos)
         /// 
-        /// url: https://www.grupoins.com/estudiantes/
+        /// url: https://www.grupo-ins.com/public/seguroescolar?step=1
         /// </remarks>
         public async static Task<Architect.API.Insurance.Contracts.Policy.Insured> PersonaPorIdentificacion(string identificacion, string tipo = "0")
         {

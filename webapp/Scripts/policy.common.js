@@ -23,10 +23,8 @@ app.policy_common = (function () {
         app.core.Get(app.setting.apipath + 'v1/Policy/Information?id=' + id)
             .done(function (data, textStatus, jqXHR) {
                 var urlServer = app.setting.apibase + '/AliadoServReports/api/Report/Build';
-                //urlServer = 'https://www.inmotiontools.com:8083/Report.Services/api/Report/Build';
                 //urlServer = 'http://localhost:5870/api/Report/Build';
-
-                urlServer = 'https://appqa.mapfrecr.com' + '/AliadoServReports/api/Report/Build';
+                //urlServer = 'https://appqa.mapfrecr.com' + '/AliadoServReports/api/Report/Build';
                 var data2 = {
                     Source: JSON.stringify(data),
                     Type: 'pdf',
@@ -72,26 +70,6 @@ app.policy_common = (function () {
         },
         PolicyStatusFormatter: function (value, row, index, field) {
             return '<span class="label ' + app.policy_common.PolicyStatus2CSSClass(value)  + '">' + value + '</span>';
-        },
-        IsDocumentNumberValida: function (documentType, documentNumber) {
-            var result = false;
-            var length = documentNumber.length;
-
-            switch (documentType) {
-                case 1: //10 DIGITOS Y DEBE INICIAR CON “0”: 0X-XXXX-XXXX
-                    result = (length === 12);
-                    break;
-                case 2: //12 DÍGITOS Y DEBE INICIAR CON “1”: 1XXX-XXXXXX-XX
-                    result = (length === 14);
-                    break;
-                case 3: //14 DÍGITOS: PASXXXXXXXXXXXXXX
-                    result = (length >= 7 && length <= 14);
-                    break;
-                case 4:
-                    result = (length === 17);
-                    break;
-            }
-            return result;
         }
     };
 }());

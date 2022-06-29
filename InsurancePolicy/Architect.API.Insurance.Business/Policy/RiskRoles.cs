@@ -97,21 +97,21 @@ namespace Architect.API.Insurance.Business.Policy
                 case 2: //PrimaryInsured
 
                     //Height:
-                    if (risk.RestrictionLevel > 1 && source.BirthDate.IsNotEmpty() && source.BirthDate.Age() > 64 && source.Height.IsEmpty())
+                    if (risk.RestrictionLevel > 1 && source.BirthDate.IsNotEmpty() && source.Height.IsEmpty() && risk.Behavior.Contains("Mode.Underwriting"))
                         result.Add(new Core.Contracts.General.Error()
                         {
                             Group = group,
                             Key = "Height",
-                            Message = "Para mayores de 65 años se debe indicar la estatura"
+                            Message = "Debe indicar la estatura"
                         });
 
                     //Weight:
-                    if (risk.RestrictionLevel > 1 && source.BirthDate.IsNotEmpty() && source.BirthDate.Age() > 64 && source.Weight.IsEmpty())
+                    if (risk.RestrictionLevel > 1 && source.BirthDate.IsNotEmpty() && source.Weight.IsEmpty() && risk.Behavior.Contains("Mode.Underwriting"))
                         result.Add(new Core.Contracts.General.Error()
                         {
                             Group = group,
                             Key = "Weight",
-                            Message = "Para mayores de 65 años se debe indicar la peso"
+                            Message = "Debe indicar la peso"
                         });
 
                     //PrimaryEmailAddress: email: 'Debe indicar un correo electrónico valido'

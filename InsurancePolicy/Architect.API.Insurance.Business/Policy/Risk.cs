@@ -198,7 +198,7 @@ namespace Architect.API.Insurance.Business.Policy
             return result;
         }
 
-      
+
 
         /// <summary>
         /// Condiciona una póliza en suscripción para ser aceptada.
@@ -956,13 +956,17 @@ namespace Architect.API.Insurance.Business.Policy
 
                 if (result.Questionary.IsNotEmpty() && result.Questionary.Count > 0)
                 {
+                    int countSrc = item.Questionary.Count;
                     for (int index = 0; index < result.Questionary.Count; index++)
                     {
-                        result.Questionary[index] = Business.Policy.RiskQuestionnaires.Mapper(result.Questionary[index], item.Questionary[index]);
-                        result.Questionary[index].CompanyId = companyId;
-                        result.Questionary[index].UpdateUserCode = userId;
-                        result.Questionary[index].UpdateDate = DateTime.Now;
-                        DataAccess.Policy.RiskQuestionnaires.Update(result.Questionary[index]);
+                        if (index < countSrc)
+                        {
+                            result.Questionary[index] = Business.Policy.RiskQuestionnaires.Mapper(result.Questionary[index], item.Questionary[index]);
+                            result.Questionary[index].CompanyId = companyId;
+                            result.Questionary[index].UpdateUserCode = userId;
+                            result.Questionary[index].UpdateDate = DateTime.Now;
+                            DataAccess.Policy.RiskQuestionnaires.Update(result.Questionary[index]);
+                        }
                     }
                 }
                 if (result.Overdraft.IsNotEmpty())

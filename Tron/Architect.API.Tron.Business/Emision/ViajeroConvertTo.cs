@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Architect.Utilities.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -163,8 +164,8 @@ namespace Architect.API.Tron.Business.Emision
                 num_riesgo = item.numeroderiesgo,
                 tip_benef = Convert.ToString(item.tipodetercero),
                 num_secu = 1,
-                tip_docum = Util.IdentificationTypeConvert(item.DocumentNumberType),
-                cod_docum = Util.IdentificationFormat(item.DocumentNumberType, item.DocumentNumber),
+                tip_docum = item.DocumentNumberType.ToString().IdentificationType(),
+                cod_docum = item.DocumentNumber.DocumentNumber(item.DocumentNumberType.ToString()),
                 mca_principal = "N",
                 mca_calculo = "N",
                 mca_baja = "N",
@@ -206,8 +207,8 @@ namespace Architect.API.Tron.Business.Emision
                 cod_cia = datosFijos.cod_cia,
                 fec_tratamiento = DateTime.Today,
                 tip_mvto_batch = "3",
-                tip_docum = Util.IdentificationTypeConvert(item.DocumentNumberType),
-                cod_docum = Util.IdentificationFormat(item.DocumentNumberType, item.DocumentNumber),
+                tip_docum = item.DocumentNumberType.ToString().IdentificationType(),
+                cod_docum = item.DocumentNumber.DocumentNumber(item.DocumentNumberType.ToString()),
                 nom_tercero = item.nombre,
                 ape1_tercero = item.apellido1,
                 ape2_tercero = item.apellido2,
