@@ -366,3 +366,12 @@
                    Credecoop. Fix. Error de validación al emitir.
                    Aviso de cobros. No se ve el detalle de los recibos de un aviso de cobro por agente indicado.
                    Aviso de cobros. Pólizas grupos y contratos por agente indicado.
+1.6.5   22/06/2022 Impresión de reporte para recibo cobrado "deposito  de prima".
+1.6.6   30/06/2022 Sur Química. Validaciones de los campos altura y peso.
+                   Condicionar botón de pago para agente por rol.
+                   Aviso de cobro. Mantener selección y seleccionar todo los registros.
+                   Sur Química. Carga de información de asegurados y rutina para auto completado.
+                   Campo nacionalidad en información del asegurado.
+                   Google Analytic. Aplicar cambios enviado por royner.
+                   Incidentes con el número de documento.
+                   Impresión de certificados para el ramo 205.

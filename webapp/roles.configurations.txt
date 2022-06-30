@@ -14,7 +14,9 @@ ALIADO: BAYER, CATURIX
 	Seguridad - Acceso a opciones de seguridad del sistema.
 
 
-ALIADO: ALIADO (Avisos de cobro)
+ALIADO: ALIADO
 --------------------------------
-  + Empleado  - Indica que el usuario es empleado de Mapfre.
+  + Empleado  - Avisos de cobro. Indica que el usuario es empleado de Mapfre.
 				En la creación de avisos de cobro, permite indicar el agente al cual se quieres generar el aviso.
+  + Pago      - Botón de pago. Indica que el botón de pago debe estar visible para su uso.
+				En la consulta de recibos pendientes, permite que se haga visible el botón de pago.
