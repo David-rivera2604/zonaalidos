@@ -768,7 +768,7 @@ namespace Architect.API.Insurance.Business.Policy
                 {
                     if (newList.Find(r => r.DocumentNumber == curentRole.DocumentNumber).IsEmpty())
                     {
-                        DataAccess.Policy.RiskRoles.Delete(curentRole.RoleId);
+                        DataAccess.Policy.RiskRoles.Delete(curentRole.RoleId, companyId);
                     }
                 }
             }

@@ -31,16 +31,6 @@
       "Condicion": "{Aliado} es igual a {Credecoop} y {La edad del asegurado} sea mayor o igual a 55",
       "Descripcion": "Debe indicar el cuestionario de Covid y la declaración de salud",
       "Accion": "Show.CV,Show.DS,Mode.Underwriting"
-    },
-    {
-      "Condicion": "{Aliado} es igual a {Sur Química} y {La edad del asegurado} sea mayor o igual a 18",
-      "Descripcion": "Debe indicar el cuestionario de Covid",
-      "Accion": "Show.CV"
-    },
-    {
-      "Condicion": "{Aliado} es igual a {Sur Química} y {La edad del asegurado} sea mayor o igual a 45",
-      "Descripcion": "Debe indicar la declaración de salud",
-      "Accion": "Show.DS,Mode.Underwriting"
     }
   ]
 }

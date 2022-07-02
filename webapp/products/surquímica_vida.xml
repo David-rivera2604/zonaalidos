@@ -32,11 +32,11 @@
 	</BillingConcepts>
 	<DataEntrySectionsAllowed>
 		<DataEntrySection code="Insured" description="Asegurado" required="true" />
-		<DataEntrySection code="Questionnaires" description="Cuestionario de Salud" />
-		<DataEntrySection code="Covid" description="Cuestionario de Covid" active="true" />
+		<DataEntrySection code="Questionnaires" description="Cuestionario de Salud" active="false" />
+		<DataEntrySection code="Covid" description="Cuestionario de Covid" active="false" />
 		<DataEntrySection code="Beneficiaries" description="Beneficiarios" required="true" />
 		<DataEntrySection code="Policy" description="Póliza" required="true"/>
-		<DataEntrySection code="Attachments" description="Adjuntos" />
+		<DataEntrySection code="Attachments" description="Adjuntos" active="false" />
 	</DataEntrySectionsAllowed>
 	<Settings>
 		<Setting name="Parent.Policy.Effective" description="Fecha de efecto de la póliza matriz" value="2022-06-15T00:00:00"/>
