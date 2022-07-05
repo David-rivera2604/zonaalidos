@@ -104,8 +104,14 @@
     <Compile Include="_Generated\ProcessSpecFlowResult.cs" />
     <Compile Include="_Generated\ProcessSpecFlow.cs" />
     <Compile Include="_Generated\ProcessCaseResult.cs" />
+    <Compile Include="_Generated\ProcessSpecFlowRole.cs" />
+    <Compile Include="_Generated\ProcessSpecFlowRoleResult.cs" />
     <Compile Include="_Generated\ProcessSpecLink.cs" />
     <Compile Include="_Generated\ProcessSpecLinkResult.cs" />
+    <Compile Include="_Generated\ProcessSpecSLA.cs" />
+    <Compile Include="_Generated\ProcessSpecSLALevel.cs" />
+    <Compile Include="_Generated\ProcessSpecSLALevelResult.cs" />
+    <Compile Include="_Generated\ProcessSpecSLAResult.cs" />
     <Compile Include="_Generated\ProcessSpecStepResult.cs" />
     <Compile Include="_Generated\ProcessSpecStep.cs" />
     <Compile Include="_Generated\ProcessSpecStepRoleResult.cs" />

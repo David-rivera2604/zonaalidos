@@ -217,13 +217,25 @@ namespace Architect.API.Core.Business.General
 
                 //ReferenceCaption1:
 
+                //ReferenceLookupList1:
+
                 //ReferenceCaption2:
+
+                //ReferenceLookupList2:
 
                 //ReferenceCaption3:
 
+                //ReferenceLookupList3:
+
                 //ReferenceCaption4:
 
+                //ReferenceLookupList4:
+
                 //ReferenceCaption5:
+
+                //ReferenceLookupList5:
+
+                //SLA:
 
                 //Status:
                 if (source.Status.IsEmpty())

@@ -956,16 +956,27 @@ namespace Architect.API.Insurance.Business.Policy
 
                 if (result.Questionary.IsNotEmpty() && result.Questionary.Count > 0)
                 {
-                    int countSrc = item.Questionary.Count;
-                    for (int index = 0; index < result.Questionary.Count; index++)
+                    int countUpd = item.Questionary.Count;
+                    int countCurr = result.Questionary.Count;
+                    int countMax = countUpd > countCurr ? countUpd : countCurr;
+                    for (int index = 0; index < countMax; index++)
                     {
-                        if (index < countSrc)
+                        if (index < countCurr)
                         {
                             result.Questionary[index] = Business.Policy.RiskQuestionnaires.Mapper(result.Questionary[index], item.Questionary[index]);
                             result.Questionary[index].CompanyId = companyId;
                             result.Questionary[index].UpdateUserCode = userId;
                             result.Questionary[index].UpdateDate = DateTime.Now;
                             DataAccess.Policy.RiskQuestionnaires.Update(result.Questionary[index]);
+                        }
+                        else
+                        {
+                            item.Questionary[index].Id = DataAccess.Policy.RiskQuestionnaires.RetrieveLastKey() + 1;
+                            item.Questionary[index].PolicyId = item.Id;
+                            item.Questionary[index].CompanyId = companyId;
+                            item.Questionary[index].UpdateUserCode = userId;
+                            item.Questionary[index].UpdateDate = DateTime.Now;
+                            DataAccess.Policy.RiskQuestionnaires.Create(item.Questionary[index]);
                         }
                     }
                 }

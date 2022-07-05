@@ -60,7 +60,7 @@ app.asegurado = (function () {
 
     function Init_Lookups() {
         app.core.Lookups(['@Gender', 'CivilStatus', 'Pais.CountryOfNationality.', 'CR_Provincia.Province.',
-            '@RetirementModality'], Dynamic_Event_Controls);
+            'RetirementModality.RetirementModality.'], Dynamic_Event_Controls);
 
         // Dependencies
         $('#Province').on('change', function () {
@@ -223,8 +223,9 @@ app.asegurado = (function () {
             Event_Handler();
         });
 
-        $('input:radio[name=RetirementModality]').on('change', function () {
-            $('#RetirementCause').prop("disabled", (this.value !== '2'));
+        $('#RetirementModality').on('change', function () {
+
+            $('#RetirementCause').prop("disabled", (app.ui.GetDropDownNumericValue('#RetirementModality') !== 2));
 
 
             //var formInstance1 = $("#PrimaryInsuredEdtFrm");
@@ -439,7 +440,7 @@ app.asegurado = (function () {
             District: $('#District').val(),
             AddressDetail: $('#AddressDetail').val(),
             Occupation: $('#Occupation').val(),
-            RetirementModality: $('input:radio[name=RetirementModality]:checked').val(),
+            RetirementModality: app.ui.GetDropDownNumericValue('#RetirementModality'),
             RetirementCause: $('#RetirementCause').val(),
             HasDigitalSignature: $('input:radio[name=HasDigitalSignature]:checked').val() === "1",
             CountryOfNationality: app.ui.GetDropDownNumericValue('#CountryOfNationality'),
@@ -476,7 +477,8 @@ app.asegurado = (function () {
             app.core.LookupDependency(data.Canton, 'District', 'CR_Distritos', '', data.District, false);
             $('#AddressDetail').val(data.AddressDetail);
             $('#Occupation').val(data.Occupation);
-            $($('input:radio[name=RetirementModality][value=' + data.RetirementModality + ']')).prop('checked', true);
+            $('#RetirementModality').val(data.RetirementModality);
+            $('#RetirementModality').change();
             $('#RetirementCause').val(data.RetirementCause);
             $('input:radio[name=HasDigitalSignature][value=' + (data.HasDigitalSignature ? 1 : 2) + ']').prop('checked', true);
             $('#CountryOfNationality').val(data.CountryOfNationality);

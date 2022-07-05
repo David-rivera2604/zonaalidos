@@ -5,10 +5,10 @@ using System.Runtime.Serialization;
 namespace Architect.API.Core.Contracts.General
 {
     /// <summary>
-    /// Especificación de un proceso.
+    /// ProcessSpecSLA
     /// </summary>
     [Serializable(), DataContract()]
-    public partial class ProcessSpecFlow
+    public partial class ProcessSpecSLA
     {
         /// <summary>
         /// Identificación única del proceso.
@@ -26,23 +26,6 @@ namespace Architect.API.Core.Contracts.General
         /// Descripción del proceso.
         /// </summary>
         [DataMember(), JsonProperty()] public string Description { get; set; }
-        /// <summary>
-        /// Alieas del proceso.
-        /// </summary>
-        [DataMember(), JsonProperty()] public string Alias { get; set; }
-        [DataMember(), JsonProperty()] public int MailServer { get; set; }
-        [DataMember(), JsonProperty()] public string MailServerDesc { get; set; }
-        [DataMember(), JsonProperty()] public string ReferenceCaption1 { get; set; }
-        [DataMember(), JsonProperty()] public string ReferenceLookupList1 { get; set; }
-        [DataMember(), JsonProperty()] public string ReferenceCaption2 { get; set; }
-        [DataMember(), JsonProperty()] public string ReferenceLookupList2 { get; set; }
-        [DataMember(), JsonProperty()] public string ReferenceCaption3 { get; set; }
-        [DataMember(), JsonProperty()] public string ReferenceLookupList3 { get; set; }
-        [DataMember(), JsonProperty()] public string ReferenceCaption4 { get; set; }
-        [DataMember(), JsonProperty()] public string ReferenceLookupList4 { get; set; }
-        [DataMember(), JsonProperty()] public string ReferenceCaption5 { get; set; }
-        [DataMember(), JsonProperty()] public string ReferenceLookupList5 { get; set; }
-        [DataMember(), JsonProperty()] public int SLA { get; set; }
         /// <summary>
         /// Estado (Activo/Inactivo)
         /// </summary>
