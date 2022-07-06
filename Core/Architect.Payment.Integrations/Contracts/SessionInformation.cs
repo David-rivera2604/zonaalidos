@@ -13,6 +13,7 @@ namespace Architect.Payment.Integrations.Contracts
         public string Reason { get; set; }
         public string RequestId { get; set; }
         public string ProcessUrl { get; set; }
+        public string Reference { get; set; }
 
         [JsonIgnore]
         public string rawData { get; set; }

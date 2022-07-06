@@ -64,6 +64,7 @@ namespace Architect.Payment.Integrations
             payInfo.Reference = string.Format("{0}-{1}-{2}", payInfo.PolicyId, payInfo.BillNumber, track.Id);
 
             Contracts.SessionInformation result = await Providers.Placetopay.Webcheckout.CreateRequest(payInfo, ipAddress, userAgent);
+            result.Reference = payInfo.Reference;
 
             track.Reference = string.Format("{0}-{1}-{2}", payInfo.PolicyId, payInfo.BillNumber, track.Id);
             track.IssueDate = DateTime.Now;
@@ -143,7 +144,7 @@ namespace Architect.Payment.Integrations
         /// <summary>
         /// Actualiza la información relacionada con un pago.
         /// </summary>
-        private static OnlinePayment UpdateStatus(int userId, OnlinePayment currentRecord, InformationRequest result)
+        private static OnlinePayment UpdateStatus(int userId, OnlinePayment currentRecord, Providers.Placetopay.Contracts.InformationRequest result)
         {
             currentRecord.StatusDate = DateTime.Now;
             currentRecord.ProviderStatus = result.status.status;

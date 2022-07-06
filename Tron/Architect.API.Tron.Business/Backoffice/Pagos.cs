@@ -150,6 +150,35 @@ namespace Architect.API.Tron.Business.Backoffice
             {
                 bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode);
             }
+
+            Payment.Integrations.Contracts.InformationRequest result2 = new Payment.Integrations.Contracts.InformationRequest() { status = result.status.status };
+
+            switch (result.status.status)
+            {
+                case "APPROVED":
+                case "PENDING":
+                    Payment.Integrations.Providers.Placetopay.Contracts.Transaction payment = result.payment.First();
+
+                    result2.description = result.request.payment.description;
+                    result2.reference = result.request.payment.reference;
+                    result2.currency = payment.amount.to.currency;
+                    result2.total = payment.amount.to.total;
+                    result2.paymentMethodName = payment.paymentMethodName;
+                    result2.lastDigits = ""; //' **** ' + payment.processorFields.find(element => element.keyword == 'lastDigits')?.value
+                    result2.authorization = payment.authorization;
+                    result2.receipt = payment.receipt;
+                    result2.message = payment.status.message;
+                    break;
+                case "REJECTED":
+                    Payment.Integrations.Providers.Placetopay.Contracts.PaymentRequest paymentr = result.request.payment;
+                    result2.description = result.request.payment.description;
+                    result2.reference = result.request.payment.reference;
+                    result2.currency = paymentr.amount.currency;
+                    result2.total = paymentr.amount.total;
+                    result2.message = result.status.message;
+                    break;
+            }
+
             return result;
         }
 

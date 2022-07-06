@@ -44,9 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Business\OnlinePayment.cs" />
+    <Compile Include="Contracts\InformationRequest.cs" />
     <Compile Include="Contracts\OnlinePayment.cs" />
     <Compile Include="Contracts\PaymentInformation.cs" />
-    <Compile Include="Contracts\SessionResponse.cs" />
+    <Compile Include="Contracts\SessionInformation.cs" />
     <Compile Include="DataAccess\OnlinePayment.cs" />
     <Compile Include="Payment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
