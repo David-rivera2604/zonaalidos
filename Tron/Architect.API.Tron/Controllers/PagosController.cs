@@ -19,8 +19,13 @@ namespace Architect.API.Tron.Controllers
     public class PagosController : ApiController
     {
 
+        /// <summary>
+        /// Permite la creación de un sesión para realizar un pago.
+        /// </summary>
+        /// <param name="sessionRequest">Datos para la creación de una sesión de pago.</param>
         [HttpPost]
         [Route("Sesion")]
+        [ResponseType(typeof(Payment.Integrations.Contracts.SessionInformation))]        
         public async Task<IHttpActionResult> postPayment([FromBody] Contracts.CreateSession sessionRequest)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
@@ -32,30 +37,44 @@ namespace Architect.API.Tron.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Recupera la información de una sesión de pago, en caso de haber algún cambio de estado, se actualiza la tabla interna.
+        /// </summary>
+        /// <param name="requestId">Identificador de la sessión de pago.</param>
         [HttpPost]
         [Route("Sesion/{requestId}")]
+        [ResponseType(typeof(Payment.Integrations.Contracts.InformationRequest))]
         public async Task<IHttpActionResult> Refresh([FromUri] Int64 requestId)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
-            Payment.Integrations.Providers.Placetopay.Contracts.InformationRequest result = await Business.Backoffice.Pagos.GetRequestInformation(tokenInfo.CompanyId, tokenInfo.UserId, requestId, string.Empty);
+            Payment.Integrations.Contracts.InformationRequest result = await Business.Backoffice.Pagos.GetRequestInformation(tokenInfo.CompanyId, tokenInfo.UserId, requestId, string.Empty);
 
             return Ok(result);
         }
 
+        /// <summary>
+        /// Recupera la información de una sesión de pago, en caso de haber algún cambio de estado, se actualiza la tabla interna.
+        /// </summary>
+        /// <param name="reference">Referencia enviada por el comercio para la transacción.</param>
         [HttpPost]
         [Route("Sesion/ref={reference}")]
+        [ResponseType(typeof(Payment.Integrations.Contracts.InformationRequest))]
         public async Task<IHttpActionResult> Refresh([FromUri] string reference)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
-            Payment.Integrations.Providers.Placetopay.Contracts.InformationRequest result = await Business.Backoffice.Pagos.GetRequestInformation(tokenInfo.CompanyId, tokenInfo.UserId, 0, reference);
+            Payment.Integrations.Contracts.InformationRequest result = await Business.Backoffice.Pagos.GetRequestInformation(tokenInfo.CompanyId, tokenInfo.UserId, 0, reference);
 
             return Ok(result);
         }
 
+        /// <summary>
+        /// Procesa y valida una notificación de pago.
+        /// </summary>
         [HttpPost]
         [Route("Notificar")]
         [AllowAnonymous]
-        public async Task<IHttpActionResult> Notify(Payment.Integrations.Providers.Placetopay.Contracts.NotifyRequest notify)
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public async Task<IHttpActionResult> Notify(Architect.Payment.Integrations.Contracts.NotifyRequest notify)
         {
             await Business.Backoffice.Pagos.Notificacion(notify);
 
@@ -65,6 +84,7 @@ namespace Architect.API.Tron.Controllers
         [HttpGet]
         [Route("Monitor")]
         [AllowAnonymous]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IHttpActionResult> Monitor()
         {
             Business.Backoffice.Pagos.Monitor();

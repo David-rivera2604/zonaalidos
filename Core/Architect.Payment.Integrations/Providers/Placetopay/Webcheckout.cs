@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Architect.Payment.Integrations.Providers.Placetopay
 {
-    public static class Webcheckout
+    internal static class Webcheckout
     {
         public const string ST_PENDING = "PENDING";
         public const string ST_REJECTED = "REJECTED";
@@ -28,7 +28,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
         public static readonly string[] STATUSES = new string[] { ST_OK, ST_INIT, ST_FAILED, ST_APPROVED, ST_APPROVED_PARTIAL, ST_REJECTED, ST_PENDING, ST_PENDING_VALIDATION, ST_REFUNDED, ST_ERROR, ST_UNKNOWN };
 
 
-        public static string NotifySignature(Integrations.Providers.Placetopay.Contracts.NotifyRequest notify, int currency)
+        public static string NotifySignature(Architect.Payment.Integrations.Contracts.NotifyRequest notify, int currency)
         {
             return ByteArrayToString(Sha1(notify.requestId + notify.status.status + notify.status.date + Utilities.Helpers.Settings.StringValue("Payment.Placetopay.SecretKey." + CurrencyConvert(currency.ToString()))));
         }
@@ -41,7 +41,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
             return hex.ToString();
         }
 
-        public async static void Notify(Integrations.Providers.Placetopay.Contracts.NotifyRequest notify, int currency)
+        public async static void Notify(Architect.Payment.Integrations.Contracts.NotifyRequest notify, int currency)
         {
             string currentSignature = Convert.ToString(Sha1(notify.requestId + notify.status.status + notify.status.date + Utilities.Helpers.Settings.StringValue("Payment.Placetopay.SecretKey." + currency)));
 
@@ -125,9 +125,9 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
         /// <summary>
         /// Obtiene la información de la sesión, si en la sesión hay transacciones se muestra el detalle de las mismas.
         /// </summary>
-        public async static Task<Contracts.InformationRequest> GetRequestInformation(Int64 requestId, int currency)
+        public async static Task<Architect.Payment.Integrations.Contracts.InformationRequest> GetRequestInformation(Int64 requestId, int currency)
         {
-            Contracts.InformationRequest result = null;
+            Architect.Payment.Integrations.Contracts.InformationRequest result = null;
             string resultResponse = string.Empty;
             string json = JsonConvert.SerializeObject(new { auth = BuildAuth(CurrencyConvert(currency.ToString())) });
             var data = new StringContent(json, Encoding.UTF8, "application/json");
@@ -136,19 +136,52 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
             if (response.IsSuccessStatusCode)
             {
                 resultResponse = await response.Content.ReadAsStringAsync();
-                result = JsonConvert.DeserializeObject<Contracts.InformationRequest>(resultResponse);
-                result.rawData = resultResponse;
+                Contracts.InformationRequest internalResult = JsonConvert.DeserializeObject<Contracts.InformationRequest>(resultResponse);
+                internalResult.rawData = resultResponse;
+
+                result = new Architect.Payment.Integrations.Contracts.InformationRequest()
+                {
+                    status = internalResult.status.status,
+                    ipAddress = internalResult.request?.userAgent,
+                    rawData = resultResponse
+                };
+
+                switch (internalResult.status.status)
+                {
+                    case "APPROVED":
+                    case "PENDING":
+                        Contracts.Transaction payment = internalResult.payment.First();
+                        result.date = payment.status.date;
+                        result.description = internalResult.request.payment.description;
+                        result.reference = internalResult.request.payment.reference;
+                        result.currency = payment.amount.to.currency;
+                        result.total = payment.amount.to.total;
+                        result.paymentMethodName = payment.paymentMethodName;
+                        result.lastDigits = payment.processorFields?.Find(r => r.keyword == "lastDigits")?.value;
+                        result.authorization = payment.authorization;
+                        result.receipt = payment.receipt;
+                        result.message = payment.status.message;
+                        result.payerName = internalResult.request?.payer?.name;
+                        result.payerSurname = internalResult.request?.payer?.surname;
+                        break;
+                    case "REJECTED":
+                        Contracts.PaymentRequest paymentr = internalResult.request.payment;
+                        result.description = internalResult.request.payment.description;
+                        result.reference = internalResult.request.payment.reference;
+                        result.currency = paymentr.amount.currency;
+                        result.total = paymentr.amount.total;
+                        result.message = internalResult.status.message;
+                        result.date = internalResult.status.date;
+                        break;
+                }
+
             }
             else
             {
-                result = new Contracts.InformationRequest()
+                result = new Architect.Payment.Integrations.Contracts.InformationRequest()
                 {
-                    status = new Contracts.Status()
-                    {
-                        date = DateTime.Now.ToString("yyyy-MM-ddTHH\\:mm\\:sszzz"),
-                        status = ST_FAILED,
-                        reason = response.ReasonPhrase
-                    },
+                    status = ST_FAILED,
+                    reason = response.ReasonPhrase,
                     rawData = resultResponse
                 };
             }

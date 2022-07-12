@@ -9,7 +9,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
     /// <summary>
     /// Estructura que contiene información sobre el proceso de pago de la transacción en PlacetoPay.
     /// </summary>
-    public class PaymentRequest
+    internal class PaymentRequest
     {
         /// <summary>
         /// Única referencia para la solicitud de pago

@@ -19,13 +19,13 @@ app.Payment = (function () {
                     if (d?.status != undefined) {
                         switch (d.status) {
                             case 'APPROVED':
-                                app.ui.ShowAlert('generalNotify', 'alert-success', '<b> <i class="fa fa-check"></i> Transacción aprobada:</b> El cobro del recibo ' + row.NUM_RECIBO + ' con el número de referencia ' + d.data.payment[0].reference + ', fue realizado de forma exitosa.');
+                                app.ui.ShowAlert('generalNotify', 'alert-success', '<b> <i class="fa fa-check"></i> Transacción aprobada:</b> El cobro del recibo ' + row.NUM_RECIBO + ' con el número de referencia ' + d.data.reference + ', fue realizado de forma exitosa.');
                                 break
                             case 'REJECTED':
-                                app.ui.ShowAlert('generalNotify', 'alert-danger', '<b> <i class="fa fa-close"></i> El pago ha sido rechazado:</b> El cobro del recibo ' + row.NUM_RECIBO + ' con el número de referencia ' + d.data.request.payment.reference + ', ha sido rechazado.');
+                                app.ui.ShowAlert('generalNotify', 'alert-danger', '<b> <i class="fa fa-close"></i> El pago ha sido rechazado:</b> El cobro del recibo ' + row.NUM_RECIBO + ' con el número de referencia ' + d.data.reference + ', ha sido rechazado.');
                                 break
                             case 'PENDING':
-                                app.ui.ShowAlert('generalNotify', 'alert-warning', '<b> <i class="fa fa-question-circle-o"></i> El proceso de pago está pendiente:</b> El cobro del recibo ' + row.NUM_RECIBO + ' con el número de referencia ' + d.data.request.payment.reference + ', está pendiente, se requiere una revisión adicional para procesar la transacción.');
+                                app.ui.ShowAlert('generalNotify', 'alert-warning', '<b> <i class="fa fa-question-circle-o"></i> El proceso de pago está pendiente:</b> El cobro del recibo ' + row.NUM_RECIBO + ' con el número de referencia ' + d.data.reference + ', está pendiente, se requiere una revisión adicional para procesar la transacción.');
                                 break
                         }
                         if (id == 310 && sequence == 2) {
@@ -42,17 +42,14 @@ app.Payment = (function () {
                 try {
                     app.core.Post(app.setting.apipath + 'v1/Pagos/Sesion', JSON.stringify(dataRequest))
                         .done(function (session) {
-                            console.log('session', session);
                             if (session != null && session.Status == "OK") {
                                 if (lightbox) {
                                     app.core.LoadScriptFile("https://secure.placetopay.com/redirection/lightbox.min.js")
                                         .then(d => {
                                             P.on('response', function (data) {
-                                                console.log('result', data);
                                                 app.core.Post(app.setting.apipath + 'v1/Pagos/Sesion/' + session.RequestId, null)
                                                     .done(function (data) {
-                                                        console.log('refresh', data);
-                                                        resolve({ status: data.status.status, message: data.status.message, data: data });
+                                                        resolve({ status: data.status, message: data.message, data: data });
                                                     });
                                             });
                                             P.init(session.ProcessUrl);

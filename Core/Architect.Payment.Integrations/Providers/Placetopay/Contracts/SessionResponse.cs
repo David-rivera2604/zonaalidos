@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
 {
-    public class SessionResponse
+    internal class SessionResponse
     {
         public Status status { get; set; }
         public string requestId { get; set; }
