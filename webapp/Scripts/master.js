@@ -146,27 +146,30 @@ app.master = (function () {
             var name = localStorage.getItem('Tenant');
             name = name.replace('á', 'a');
 
-            $('#tenantLogo').attr('src', $('#tenantLogo').attr('src').replace('core', name))
+            if ($('#tenantLogo').length > 0) {
+                $('#tenantLogo').attr('src', $('#tenantLogo').attr('src').replace('core', name))
 
-            $('#UserNameMaster').html(localStorage.getItem('Username'));
-            $('#TenantMaster').html(localStorage.getItem('Tenant'));
 
-            main_menu();
-            token_timeout(10000);
+                $('#UserNameMaster').html(localStorage.getItem('Username'));
+                $('#TenantMaster').html(localStorage.getItem('Tenant'));
 
-            activateActivityTracker();
+                main_menu();
+                token_timeout(10000);
 
-            $('.close-link-sidebar').click(function () {
-                event.preventDefault();
-                $('#right-sidebar').toggleClass('sidebar-open');
-                $('.sidebar-content').replaceWith('<div class="ibox-content sidebar-content"><div class="sk-spinner sk-spinner-wave"><div class="sk-rect1"></div><div class="sk-rect2"></div><div class="sk-rect3"></div><div class="sk-rect4"></div><div class="sk-rect5"></div></div></div>');
-                $('#right-sidebar').addClass('d-none');
-            });
+                activateActivityTracker();
 
-            $('#showHelp').click(function () {
-                event.preventDefault();
-                window.open(app.setting.viewpath + 'help/index', "Ayuda", "left=200, width=750, height=550, titlebar=no, location=NO,resizable,scrollbars,status");
-            });
+                $('.close-link-sidebar').click(function () {
+                    event.preventDefault();
+                    $('#right-sidebar').toggleClass('sidebar-open');
+                    $('.sidebar-content').replaceWith('<div class="ibox-content sidebar-content"><div class="sk-spinner sk-spinner-wave"><div class="sk-rect1"></div><div class="sk-rect2"></div><div class="sk-rect3"></div><div class="sk-rect4"></div><div class="sk-rect5"></div></div></div>');
+                    $('#right-sidebar').addClass('d-none');
+                });
+
+                $('#showHelp').click(function () {
+                    event.preventDefault();
+                    window.open(app.setting.viewpath + 'help/index', "Ayuda", "left=200, width=750, height=550, titlebar=no, location=NO,resizable,scrollbars,status");
+                });
+            }
         },
         ShowSideBar: function (title, id) {
             app.ui.ShowSideBar({ title: title, subtitle: '', id: id, data: null })
