@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
 {
-    public class InformationRequest
+    internal class InformationRequest
     {
         public Status status { get; set; }
 
@@ -27,7 +27,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
         [JsonIgnore]
         public Architect.Payment.Integrations.Contracts.OnlinePayment OnlinePayment { get; set; }
 
-        
+
 
     }
 }

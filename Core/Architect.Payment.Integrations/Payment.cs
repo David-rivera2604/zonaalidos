@@ -12,6 +12,12 @@ namespace Architect.Payment.Integrations
     public static class Payment
     {
 
+        public static string NotifySignature(Architect.Payment.Integrations.Contracts.NotifyRequest notify, int currency)
+        {
+            return Architect.Payment.Integrations.Providers.Placetopay.Webcheckout.NotifySignature(notify, currency);
+
+        }
+
         /// <summary>
         /// Permite la creación de un sesión para realizar un pago.
         /// </summary>
@@ -84,7 +90,7 @@ namespace Architect.Payment.Integrations
         /// <summary>
         /// Obtiene y actualiza la información de un pago.
         /// </summary>
-        public async static Task<Providers.Placetopay.Contracts.InformationRequest> GetRequestInformation(int companyId, int userId, string reference, bool updateStatus = false)
+        public async static Task<Architect.Payment.Integrations.Contracts.InformationRequest> GetRequestInformation(int companyId, int userId, string reference, bool updateStatus = false)
         {
             Contracts.OnlinePayment currentRecord = null;
             if (reference.IndexOf("-") > -1)
@@ -105,22 +111,22 @@ namespace Architect.Payment.Integrations
         /// <summary>
         /// Obtiene y actualiza la información de un pago.
         /// </summary>
-        public async static Task<Providers.Placetopay.Contracts.InformationRequest> GetRequestInformation(int userId, Int64 requestId, bool updateStatus = false)
+        public async static Task<Architect.Payment.Integrations.Contracts.InformationRequest> GetRequestInformation(int userId, Int64 requestId, bool updateStatus = false)
         {
             Contracts.OnlinePayment currentRecord = Business.OnlinePayment.RetrieveByRequestID(requestId);
             return await VerifyUpdateStatus(currentRecord, userId, updateStatus);
         }
 
-        public async static Task<Providers.Placetopay.Contracts.InformationRequest> VerifyUpdateStatus(Contracts.OnlinePayment currentRecord, int userId, bool updateStatus)
+        public async static Task<Architect.Payment.Integrations.Contracts.InformationRequest> VerifyUpdateStatus(Contracts.OnlinePayment currentRecord, int userId, bool updateStatus)
         {
-            Providers.Placetopay.Contracts.InformationRequest result;
+            Architect.Payment.Integrations.Contracts.InformationRequest result;
             if (currentRecord != null)
             {
                 result = await Providers.Placetopay.Webcheckout.GetRequestInformation(currentRecord.RequestID, currentRecord.Currency);
                 result.OnlinePayment = currentRecord;
-                Utilities.Log.WarningLog("Payment.VerifyUpdateStatus", string.Format("requestId={0}, currency={1}, currentStatus={2}, newStatus={3}, recibo={4}", currentRecord.RequestID, currentRecord.Currency, currentRecord.ProviderStatus, result.status.status, currentRecord.BillNumber), "payment");
+                Utilities.Log.WarningLog("Payment.VerifyUpdateStatus", string.Format("requestId={0}, currency={1}, currentStatus={2}, newStatus={3}, recibo={4}", currentRecord.RequestID, currentRecord.Currency, currentRecord.ProviderStatus, result.status, currentRecord.BillNumber), "payment");
 
-                if (updateStatus && result.status.status != currentRecord.ProviderStatus)
+                if (updateStatus && result.status != currentRecord.ProviderStatus)
                 {
                     result.OnlinePayment = UpdateStatus(userId, currentRecord, result);
                     result.changed = true;
@@ -128,13 +134,9 @@ namespace Architect.Payment.Integrations
             }
             else
             {
-                result = new Providers.Placetopay.Contracts.InformationRequest()
+                result = new Architect.Payment.Integrations.Contracts.InformationRequest()
                 {
-                    status = new Providers.Placetopay.Contracts.Status()
-                    {
-                        date = DateTime.Now.ToString("yyyy-MM-ddTHH\\:mm\\:sszzz"),
-                        status = "NotFound"
-                    }
+                    status = "NotFound"
                 };
             }
             return result;
@@ -144,25 +146,23 @@ namespace Architect.Payment.Integrations
         /// <summary>
         /// Actualiza la información relacionada con un pago.
         /// </summary>
-        private static OnlinePayment UpdateStatus(int userId, OnlinePayment currentRecord, Providers.Placetopay.Contracts.InformationRequest result)
+        private static OnlinePayment UpdateStatus(int userId, OnlinePayment currentRecord, Architect.Payment.Integrations.Contracts.InformationRequest result)
         {
             currentRecord.StatusDate = DateTime.Now;
-            currentRecord.ProviderStatus = result.status.status;
+            currentRecord.ProviderStatus = result.status;
             currentRecord.ResponseData = result.rawData;
-            currentRecord.Status = Providers.Placetopay.Webcheckout.StatusConvert(result.status.status);
-            currentRecord.Reason = result.status.message;
+            currentRecord.Status = Providers.Placetopay.Webcheckout.StatusConvert(result.status);
+            currentRecord.Reason = result.message;
             currentRecord.UpdateUserCode = userId;
             currentRecord.UpdateDate = DateTime.Now;
-            if (result.payment?.Count > 0)
-            {
-                currentRecord.Authorization = result.payment.FirstOrDefault().authorization;
-                currentRecord.Receipt = result.payment.FirstOrDefault().receipt;
-            }
+            currentRecord.Authorization = result.authorization;
+            currentRecord.Receipt = result.receipt;
+
             Business.OnlinePayment.Update(currentRecord);
             return currentRecord;
         }
 
-       
+
 
 
         private static int IdentificationTypeConvert(string identificationType)

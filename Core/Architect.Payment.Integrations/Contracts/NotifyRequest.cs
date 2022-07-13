@@ -1,12 +1,20 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
+namespace Architect.Payment.Integrations.Contracts
 {
-    /// <summary>
-    /// Estructura que contiene la información de la respuesta sobre una solicitud o pago, e informa el estado actual de la misma.
-    /// </summary>
-    internal class Status
+    public class NotifyRequest
+    {
+        public Status status { get; set; }
+        public string requestId { get; set; }
+        public string signature { get; set; }
+    }
+
+    public class Status
     {
         /// <summary>
         /// Estado de una petición o pago
@@ -26,4 +34,5 @@ namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
         public string date { get; set; }
 
     }
+
 }

@@ -9,7 +9,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
     /// <summary>
     /// Estructura que contiene toda la información acerca de la transacción para ser procesada.
     /// </summary>
-    public class RedirectRequest
+    internal class RedirectRequest
     {
         public string locale { get; set; }
         public Auth auth { get; set; }

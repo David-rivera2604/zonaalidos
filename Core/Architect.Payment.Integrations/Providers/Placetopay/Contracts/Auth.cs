@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
 {
-    public class Auth
+    internal class Auth
     {
         public string login { get; set; }
         public string tranKey { get; set; }

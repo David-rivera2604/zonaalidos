@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
 {
-    public class NotifyRequest
+    internal class NotifyRequest
     {
         public Status status { get; set; }
         public string requestId { get; set; }

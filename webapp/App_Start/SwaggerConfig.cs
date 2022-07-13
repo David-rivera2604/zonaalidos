@@ -121,6 +121,7 @@ namespace aliados
                             c.IncludeXmlComments($@"{System.AppDomain.CurrentDomain.BaseDirectory}\bin\Architect.API.TRON.xml");
                             c.IncludeXmlComments($@"{System.AppDomain.CurrentDomain.BaseDirectory}\bin\Architect.API.Tron.Contracts.xml");
                             c.IncludeXmlComments($@"{System.AppDomain.CurrentDomain.BaseDirectory}\bin\Architect.Data.Source.xml");
+                            c.IncludeXmlComments($@"{System.AppDomain.CurrentDomain.BaseDirectory}\bin\Architect.Payment.Integrations.xml");
 
                             //c.IncludeXmlComments(System.AppDomain.CurrentDomain.BaseDirectory + @"\bin\Architect.Data.Source.xml");
 

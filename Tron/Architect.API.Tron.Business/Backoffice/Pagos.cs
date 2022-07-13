@@ -60,10 +60,10 @@ namespace Architect.API.Tron.Business.Backoffice
 
         private static async Task Verify(Payment.Integrations.Contracts.OnlinePayment currentRecord)
         {
-            Payment.Integrations.Providers.Placetopay.Contracts.InformationRequest result = await Payment.Integrations.Payment.VerifyUpdateStatus(currentRecord, currentRecord.UpdateUserCode, true);
+            Architect.Payment.Integrations.Contracts.InformationRequest result = await Payment.Integrations.Payment.VerifyUpdateStatus(currentRecord, currentRecord.UpdateUserCode, true);
 
             // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
-            if (result.changed && result.status.status == "APPROVED")
+            if (result.changed && result.status == "APPROVED")
             {
                 bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode);
             }
@@ -72,14 +72,14 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Procesa y valida una notificación de pago.
         /// </summary>
-        public async static Task Notificacion(Payment.Integrations.Providers.Placetopay.Contracts.NotifyRequest notify)
+        public async static Task Notificacion(Architect.Payment.Integrations.Contracts.NotifyRequest notify)
         {
             if (Utilities.Helpers.Settings.BoolValue("Payment.Placetopay.Notify.Enabled", true))
             {
                 Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveByRequestID(Convert.ToInt64(notify.requestId));
                 if (currentRecord != null)
                 {
-                    string signature = Payment.Integrations.Providers.Placetopay.Webcheckout.NotifySignature(notify, currentRecord.Currency);
+                    string signature = Payment.Integrations.Payment.NotifySignature(notify, currentRecord.Currency);
 
                     if (signature == notify.signature)
                     {
@@ -132,10 +132,10 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Recupera la información de una sesión de pago, en caso de haber algún cambio de estado, se actualiza la tabla interna.
         /// </summary>
-        public async static Task<Payment.Integrations.Providers.Placetopay.Contracts.InformationRequest> GetRequestInformation(int companyId, int userId, Int64 requestId, string reference)
+        public async static Task<Payment.Integrations.Contracts.InformationRequest> GetRequestInformation(int companyId, int userId, Int64 requestId, string reference)
         {
 
-            Payment.Integrations.Providers.Placetopay.Contracts.InformationRequest result;
+            Architect.Payment.Integrations.Contracts.InformationRequest result;
 
             if (requestId.IsNotEmpty())
             {
@@ -146,37 +146,9 @@ namespace Architect.API.Tron.Business.Backoffice
                 result = await Payment.Integrations.Payment.GetRequestInformation(companyId, userId, reference, true);
             }
             // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
-            if (result.changed && result.status.status == "APPROVED")
+            if (result.changed && result.status == "APPROVED")
             {
                 bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode);
-            }
-
-            Payment.Integrations.Contracts.InformationRequest result2 = new Payment.Integrations.Contracts.InformationRequest() { status = result.status.status };
-
-            switch (result.status.status)
-            {
-                case "APPROVED":
-                case "PENDING":
-                    Payment.Integrations.Providers.Placetopay.Contracts.Transaction payment = result.payment.First();
-
-                    result2.description = result.request.payment.description;
-                    result2.reference = result.request.payment.reference;
-                    result2.currency = payment.amount.to.currency;
-                    result2.total = payment.amount.to.total;
-                    result2.paymentMethodName = payment.paymentMethodName;
-                    result2.lastDigits = ""; //' **** ' + payment.processorFields.find(element => element.keyword == 'lastDigits')?.value
-                    result2.authorization = payment.authorization;
-                    result2.receipt = payment.receipt;
-                    result2.message = payment.status.message;
-                    break;
-                case "REJECTED":
-                    Payment.Integrations.Providers.Placetopay.Contracts.PaymentRequest paymentr = result.request.payment;
-                    result2.description = result.request.payment.description;
-                    result2.reference = result.request.payment.reference;
-                    result2.currency = paymentr.amount.currency;
-                    result2.total = paymentr.amount.total;
-                    result2.message = result.status.message;
-                    break;
             }
 
             return result;
@@ -185,7 +157,7 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Procesa el pago de un recibo en tron.
         /// </summary>
-        public async static Task<bool> TronPayment(Payment.Integrations.Providers.Placetopay.Contracts.InformationRequest request, int agentCode)
+        public async static Task<bool> TronPayment(Architect.Payment.Integrations.Contracts.InformationRequest request, int agentCode)
         {
             string tipoPagador = "A";
             string pagador = agentCode.ToString();
@@ -201,29 +173,28 @@ namespace Architect.API.Tron.Business.Backoffice
                 }
             }
 
-            var payment = request.payment.FirstOrDefault();
             string data = JsonConvert.SerializeObject(
                 new
                 {
                     guid = request.OnlinePayment.RequestID.ToString(),
                     canal = "ALI",
-                    fechaPago = payment.status.date,
+                    fechaPago = request.date,
                     tipoPagador = tipoPagador,
                     pagador = pagador,
                     tipoPago = string.Empty,
-                    referenciaPago = payment.authorization,
-                    montoTotal = payment.amount.to.total,
-                    moneda = payment.amount.to.currency,
-                    direccionIP = request.request.ipAddress,
+                    referenciaPago = request.authorization,
+                    montoTotal = request.total,
+                    moneda = request.currency,
+                    direccionIP = request.ipAddress,
                     huellaNavegador = (string)null,
                     tarjeta = new
                     {
                         bin = string.Empty,
-                        terminacion = payment.processorFields.Find(f => f.keyword == "lastDigits").value,
-                        nombre = string.Format("{0} {1}", request.request.payer.name, request.request.payer.surname),
+                        terminacion = request.lastDigits,
+                        nombre = string.Format("{0} {1}", request.payerName, request.payerSurname),
                         mesExpira = string.Empty,
                         annioExpira = string.Empty,
-                        marcaTarjeta = payment.paymentMethodName
+                        marcaTarjeta = request.paymentMethodName
                     },
                     recibos = new[] {
                         new {
