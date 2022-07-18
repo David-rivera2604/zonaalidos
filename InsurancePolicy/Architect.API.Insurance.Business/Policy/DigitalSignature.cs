@@ -181,8 +181,9 @@ namespace Architect.API.Insurance.Business.Policy
         /// <summary>
         /// Envía un documento para su respectiva firma digital.
         /// </summary>
-        internal static void Submit(Contracts.Policy.Risk item, Token tokenInfo, bool includeCallback = false)
+        internal static Boolean Submit(Contracts.Policy.Risk item, Token tokenInfo, bool includeCallback = false)
         {
+            bool result = true;
             if (item.StatusDesc == null)
             {
                 item.StatusDesc = string.Empty;
@@ -200,14 +201,22 @@ namespace Architect.API.Insurance.Business.Policy
                                         item.PrimaryInsured.FirstName + " " + item.PrimaryInsured.LastName,
                                         item.PrimaryInsured.PrimaryEmailAddress,
                                         archivo, "WebClick", includeCallback).GetAwaiter().GetResult();
-                DataAccess.Policy.Risk.UpdateReference(tokenInfo.CompanyId, item.Id, submit.UniqueId);
-                item.Reference = submit.UniqueId;
+                if (submit.UniqueId.IsNotEmpty())
+                {
+                    DataAccess.Policy.Risk.UpdateReference(tokenInfo.CompanyId, item.Id, submit.UniqueId);
+                    item.Reference = submit.UniqueId;
+                }
+                else
+                {
+                    result = false;
+                }
             }
             else
             {
                 // Se enviar documento directo al empleado para su firma digital
                 Core.Business.General.Mail.SendByTemplate("Notify_RequestReviewed", tokenInfo.CompanyId, tokenInfo.UserId, item.ExecutiveUserCode, item, null, new string[] { archivo });
             }
+            return result;
         }
 
     }

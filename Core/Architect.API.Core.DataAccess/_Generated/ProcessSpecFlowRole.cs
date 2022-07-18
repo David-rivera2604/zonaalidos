@@ -67,16 +67,18 @@ namespace Architect.API.Core.DataAccess.General
         /// Recupera un registro en la tabla ProcessSpecFlowRole por medio de su clave primaria.
         /// </summary>
         /// <param name="id">Identificación única del proceso.</param>
+        /// <param name="roleid">Identificación Rol.</param>
         /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="connection">Instancia de una conexión compartida</param>
         /// <returns>Instancia de ProcessSpecFlowRole</returns>
-        public static Architect.API.Core.Contracts.General.ProcessSpecFlowRole Retrieve(int id, int companyId, IDbConnection connection = null)
+        public static Architect.API.Core.Contracts.General.ProcessSpecFlowRole Retrieve(int id, int roleid, int companyId, IDbConnection connection = null)
         {
             Architect.API.Core.Contracts.General.ProcessSpecFlowRole result = null;
             Database.Select("SELECT Id, RoleId, ProcessSpecFlowRole.CompanyId, ProcessSpecFlowRole.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessSpecFlowRole.UpdateDate " +
                               "FROM ProcessSpecFlowRole LEFT JOIN UserMember um ON um.UserId = ProcessSpecFlowRole.UpdateUserCode " +
-                             "WHERE ProcessSpecFlowRole.Id=:Id AND ProcessSpecFlowRole.CompanyId=:CompanyId")
+                             "WHERE ProcessSpecFlowRole.Id=:Id AND ProcessSpecFlowRole.RoleId=:RoleId AND ProcessSpecFlowRole.CompanyId=:CompanyId")
                         .AddParameter("Id", DbType.Decimal, 9, id)
+                        .AddParameter("RoleId", DbType.Decimal, 9, roleid)
                         .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
                         .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
                         {
@@ -163,13 +165,16 @@ namespace Architect.API.Core.DataAccess.General
         /// <summary>
         /// Último valor asignado a clave única de la tabla ProcessSpecFlowRole.
         /// </summary>
+        /// <param name="id"></param>
         /// <param name="connection">Instancia de una conexión compartida</param>
         /// <returns>Último valor asignado.</returns>
-        public static int RetrieveLastKey(IDbConnection connection = null)
+        public static int RetrieveLastKey(int id, IDbConnection connection = null)
         {
 
-            return (int)Database.Select("SELECT NVL(MAX(Id),0) " +
-                                     "FROM ProcessSpecFlowRole")
+            return (int)Database.Select("SELECT NVL(MAX(RoleId),0) " +
+                                     "FROM ProcessSpecFlowRole " +
+                                    "WHERE Id=:Id")
+                                .AddParameter("Id", DbType.Decimal, 9, id)
                                 .QueryScalar<Decimal>(connection, "Research");
         }
 
@@ -186,13 +191,13 @@ namespace Architect.API.Core.DataAccess.General
                 processspecflowroleItem.UpdateDate = DateTime.Now;
             }
             return Database.Update("UPDATE ProcessSpecFlowRole " +
-                                      "SET RoleId=:RoleId, CompanyId=:CompanyId, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
-                                    "WHERE Id=:Id")
-                                .AddParameter("RoleId", DbType.Decimal, 9, processspecflowroleItem.RoleId)
+                                      "SET CompanyId=:CompanyId, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
+                                    "WHERE Id=:Id AND RoleId=:RoleId")
                                 .AddParameter("CompanyId", DbType.Decimal, 5, processspecflowroleItem.CompanyId)
                                 .AddParameter("UpdateUserCode", DbType.Decimal, 9, processspecflowroleItem.UpdateUserCode)
                                 .AddParameter("UpdateDate", DbType.DateTime, 0, processspecflowroleItem.UpdateDate)
                                 .AddParameter("Id", DbType.Decimal, 9, processspecflowroleItem.Id)
+                                .AddParameter("RoleId", DbType.Decimal, 9, processspecflowroleItem.RoleId)
                                 .Execute(connection, "Research");
         }
 
@@ -228,14 +233,16 @@ namespace Architect.API.Core.DataAccess.General
         /// Elimina un registro en la tabla ProcessSpecFlowRole por medio de su clave primaria.
         /// </summary>
         /// <param name="id">Identificación única del proceso.</param>
+        /// <param name="roleid">Identificación Rol.</param>
         /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="connection">Instancia de una conexión compartida</param>
         /// <returns>Cantidad de registros eliminados.</returns>
-        public static int Delete(int id, int companyId, IDbConnection connection = null)
+        public static int Delete(int id, int roleid, int companyId, IDbConnection connection = null)
         {
             return Database.Delete("DELETE FROM ProcessSpecFlowRole " +
-                                    "WHERE Id=:Id AND CompanyId=:CompanyId")
+                                    "WHERE Id=:Id AND RoleId=:RoleId AND CompanyId=:CompanyId")
                                 .AddParameter("Id", DbType.Decimal, 9, id)
+                                .AddParameter("RoleId", DbType.Decimal, 9, roleid)
                                 .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
                                 .Execute(connection, "Research");
         }
@@ -245,10 +252,11 @@ namespace Architect.API.Core.DataAccess.General
         /// </summary>
         /// <remarks>Complemento para procesamiento masivo</remarks>
         /// <param name="idList">Lista de Identificación única del proceso.</param>
+        /// <param name="roleidList">Lista de Identificación Rol.</param>
         /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="connection">Instancia de una conexión compartida</param>
         /// <returns>Lista con el resultado de la creación de cada instancia.</returns>
-        public static List<int> Delete(List<int> idList, int companyId, IDbConnection connection = null)
+        public static List<int> Delete(List<int> idList, List<int> roleidList, int companyId, IDbConnection connection = null)
         {
             List<int> result = new List<int>();
             bool local = false;
@@ -260,7 +268,7 @@ namespace Architect.API.Core.DataAccess.General
             }
             foreach (int item in idList)
             {
-                result.Add(Delete(item, companyId, connection));
+                result.Add(Delete(item, item, companyId, connection));
             }
             if (local)
             {
@@ -273,16 +281,18 @@ namespace Architect.API.Core.DataAccess.General
         /// Recupera la cantidad de registros existentes en la tabla ProcessSpecFlowRole por medio de su clave primaria.
         /// </summary>
         /// <param name="id">Identificación única del proceso.</param>
+        /// <param name="roleid">Identificación Rol.</param>
         /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="connection">Instancia de una conexión compartida</param>
         /// <returns>Cantidad de registros encontrados.</returns>
-        public static int Count(int id, int companyId, IDbConnection connection = null)
+        public static int Count(int id, int roleid, int companyId, IDbConnection connection = null)
         {
 
             return (int)Database.Select("SELECT COUNT(Id) " +
                                           "FROM ProcessSpecFlowRole " +
-                                         "WHERE Id=:Id AND CompanyId=:CompanyId")
+                                         "WHERE Id=:Id AND RoleId=:RoleId AND CompanyId=:CompanyId")
                                .AddParameter("Id", DbType.Decimal, 9, id)
+                               .AddParameter("RoleId", DbType.Decimal, 9, roleid)
                                .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
                                .QueryScalar<Decimal>(connection, "Research");
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Architect.Utilities.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -80,5 +81,50 @@ namespace Architect.API.Core.Business.General
                 Errors = new List<Contracts.General.Error>()
             };
         }
+
+        private static void SynchronizeRoles(int companyId, int userId, int id, List<Utilities.Contracts.LookUpValue> currentRoles)
+        {
+            List<Architect.API.Core.Contracts.General.ProcessSpecFlowRole> roles = Core.DataAccess.General.ProcessSpecFlowRole.RetrieveByStepId(id);
+            if (roles.IsEmpty())
+            {
+                roles = new List<Architect.API.Core.Contracts.General.ProcessSpecFlowRole>();
+            }
+            if (currentRoles.IsNotEmpty())
+            {
+                //Agrega un nuevo registro o se cambia uno existente                
+                Architect.API.Core.Contracts.General.ProcessSpecFlowRole toAdd = null;
+                foreach (Utilities.Contracts.LookUpValue newItem in currentRoles)
+                {
+                    toAdd = roles.Find(r => r.RoleId.ToString() == newItem.Code);
+
+                    if (toAdd.IsEmpty())
+                    {
+                        toAdd = new Architect.API.Core.Contracts.General.ProcessSpecFlowRole();
+                        roles.Add(toAdd);
+                        toAdd.Id = id;
+                        toAdd.RoleId = Convert.ToInt32(newItem.Code);
+
+                        toAdd.CompanyId = companyId;
+                        toAdd.UpdateUserCode = userId;
+                        toAdd.UpdateDate = DateTime.Now;
+
+                        Core.DataAccess.General.ProcessSpecFlowRole.Create(toAdd);
+                    }
+                }
+            }
+
+            //Elimina los registros que no venga en la lista nueva
+            if (roles?.Count > 0)
+            {
+                foreach (Architect.API.Core.Contracts.General.ProcessSpecFlowRole currentRole in roles)
+                {
+                    if (currentRoles.Find(r => r.Code == currentRole.RoleId.ToString()).IsEmpty())
+                    {
+                        Core.DataAccess.General.ProcessSpecFlowRole.DeleteWithRole(id, currentRole.RoleId, companyId);
+                    }
+                }
+            }
+        }
+
     }
 }

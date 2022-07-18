@@ -25,11 +25,13 @@ namespace Architect.API.Core.DataAccess.General
             {
                 processspecslalevelItem.UpdateDate = DateTime.Now;
             }
-            return Database.Insert("INSERT INTO ProcessSpecSLALevel (Id, CompanyId, SLA, MailForSLAExpiration, MailForSLAExpirationCustom, MailForSLAExpirationTmpl, UpdateUserCode, UpdateDate) " +
-                                                 "VALUES(:Id, :CompanyId, :SLA, :MailForSLAExpiration, :MailForSLAExpirationCustom, :MailForSLAExpirationTmpl, :UpdateUserCode, :UpdateDate)")
+            return Database.Insert("INSERT INTO ProcessSpecSLALevel (Id, SLAId, CompanyId, SLATimeOut, SLATimeMode, MailForSLAExpiration, MailForSLAExpirationCustom, MailForSLAExpirationTmpl, UpdateUserCode, UpdateDate) " +
+                                                 "VALUES(:Id, :SLAId, :CompanyId, :SLATimeOut, :SLATimeMode, :MailForSLAExpiration, :MailForSLAExpirationCustom, :MailForSLAExpirationTmpl, :UpdateUserCode, :UpdateDate)")
                             .AddParameter("Id", DbType.Decimal, 9, processspecslalevelItem.Id)
+                            .AddParameter("SLAId", DbType.Decimal, 9, processspecslalevelItem.SLAId)
                             .AddParameter("CompanyId", DbType.Decimal, 5, processspecslalevelItem.CompanyId)
-                            .AddParameter("SLA", DbType.Decimal, 5, processspecslalevelItem.SLA)
+                            .AddParameter("SLATimeOut", DbType.Decimal, 9, processspecslalevelItem.SLATimeOut)
+                            .AddParameter("SLATimeMode", DbType.Decimal, 5, processspecslalevelItem.SLATimeMode)
                             .AddParameter("MailForSLAExpiration", DbType.Decimal, 5, processspecslalevelItem.MailForSLAExpiration)
                             .AddParameter("MailForSLAExpirationCustom", DbType.AnsiString, 256, processspecslalevelItem.MailForSLAExpirationCustom)
                             .AddParameter("MailForSLAExpirationTmpl", DbType.Decimal, 5, processspecslalevelItem.MailForSLAExpirationTmpl)
@@ -76,7 +78,7 @@ namespace Architect.API.Core.DataAccess.General
         public static Architect.API.Core.Contracts.General.ProcessSpecSLALevel Retrieve(int id, int companyId, IDbConnection connection = null)
         {
             Architect.API.Core.Contracts.General.ProcessSpecSLALevel result = null;
-            Database.Select("SELECT Id, ProcessSpecSLALevel.CompanyId, SLA, MailForSLAExpiration, MailForSLAExpirationCustom, MailForSLAExpirationTmpl, ProcessSpecSLALevel.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessSpecSLALevel.UpdateDate " +
+            Database.Select("SELECT Id, SLAId, ProcessSpecSLALevel.CompanyId, SLATimeOut, SLATimeMode, MailForSLAExpiration, MailForSLAExpirationCustom, MailForSLAExpirationTmpl, ProcessSpecSLALevel.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessSpecSLALevel.UpdateDate " +
                               "FROM ProcessSpecSLALevel LEFT JOIN UserMember um ON um.UserId = ProcessSpecSLALevel.UpdateUserCode " +
                              "WHERE ProcessSpecSLALevel.Id=:Id AND ProcessSpecSLALevel.CompanyId=:CompanyId")
                         .AddParameter("Id", DbType.Decimal, 9, id)
@@ -99,7 +101,7 @@ namespace Architect.API.Core.DataAccess.General
         public static List<Architect.API.Core.Contracts.General.ProcessSpecSLALevel> RetrieveAll(int companyId, string filter, List<DataFactory.Contracts.Parameter> parameters = null, IDbConnection connection = null)
         {
             List<Architect.API.Core.Contracts.General.ProcessSpecSLALevel> result = new List<Architect.API.Core.Contracts.General.ProcessSpecSLALevel>();
-            Database.Select("SELECT Id, ProcessSpecSLALevel.CompanyId, SLA, MailForSLAExpiration, MailForSLAExpirationCustom, MailForSLAExpirationTmpl, ProcessSpecSLALevel.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessSpecSLALevel.UpdateDate " +
+            Database.Select("SELECT Id, SLAId, ProcessSpecSLALevel.CompanyId, SLATimeOut, SLATimeMode, MailForSLAExpiration, MailForSLAExpirationCustom, MailForSLAExpirationTmpl, ProcessSpecSLALevel.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessSpecSLALevel.UpdateDate " +
                               "FROM ProcessSpecSLALevel LEFT JOIN UserMember um ON um.UserId = ProcessSpecSLALevel.UpdateUserCode " +
                              "WHERE ProcessSpecSLALevel.CompanyId=:CompanyId" + filter)
                         .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
@@ -133,7 +135,7 @@ namespace Architect.API.Core.DataAccess.General
                 endIndex = int.MaxValue;
             }
             Database.Select("SELECT * FROM (" +
-                            "SELECT Id, ProcessSpecSLALevel.CompanyId, SLA, MailForSLAExpiration, MailForSLAExpirationCustom, MailForSLAExpirationTmpl, ProcessSpecSLALevel.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessSpecSLALevel.UpdateDate " +
+                            "SELECT Id, SLAId, ProcessSpecSLALevel.CompanyId, SLATimeOut, SLATimeMode, MailForSLAExpiration, MailForSLAExpirationCustom, MailForSLAExpirationTmpl, ProcessSpecSLALevel.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessSpecSLALevel.UpdateDate " +
                                    ", ROW_NUMBER() OVER (ORDER BY ProcessSpecSLALevel.Id DESC) RowNumber " +
                               "FROM ProcessSpecSLALevel LEFT JOIN UserMember um ON um.UserId = ProcessSpecSLALevel.UpdateUserCode " +
                              "WHERE ProcessSpecSLALevel.CompanyId=:CompanyId" + filter +
@@ -189,10 +191,12 @@ namespace Architect.API.Core.DataAccess.General
                 processspecslalevelItem.UpdateDate = DateTime.Now;
             }
             return Database.Update("UPDATE ProcessSpecSLALevel " +
-                                      "SET CompanyId=:CompanyId, SLA=:SLA, MailForSLAExpiration=:MailForSLAExpiration, MailForSLAExpirationCustom=:MailForSLAExpirationCustom, MailForSLAExpirationTmpl=:MailForSLAExpirationTmpl, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
+                                      "SET SLAId=:SLAId, CompanyId=:CompanyId, SLATimeOut=:SLATimeOut, SLATimeMode=:SLATimeMode, MailForSLAExpiration=:MailForSLAExpiration, MailForSLAExpirationCustom=:MailForSLAExpirationCustom, MailForSLAExpirationTmpl=:MailForSLAExpirationTmpl, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
                                     "WHERE Id=:Id")
+                                .AddParameter("SLAId", DbType.Decimal, 9, processspecslalevelItem.SLAId)
                                 .AddParameter("CompanyId", DbType.Decimal, 5, processspecslalevelItem.CompanyId)
-                                .AddParameter("SLA", DbType.Decimal, 5, processspecslalevelItem.SLA)
+                                .AddParameter("SLATimeOut", DbType.Decimal, 9, processspecslalevelItem.SLATimeOut)
+                                .AddParameter("SLATimeMode", DbType.Decimal, 5, processspecslalevelItem.SLATimeMode)
                                 .AddParameter("MailForSLAExpiration", DbType.Decimal, 5, processspecslalevelItem.MailForSLAExpiration)
                                 .AddParameter("MailForSLAExpirationCustom", DbType.AnsiString, 256, processspecslalevelItem.MailForSLAExpirationCustom)
                                 .AddParameter("MailForSLAExpirationTmpl", DbType.Decimal, 5, processspecslalevelItem.MailForSLAExpirationTmpl)
@@ -321,8 +325,10 @@ namespace Architect.API.Core.DataAccess.General
                 item = new Architect.API.Core.Contracts.General.ProcessSpecSLALevel();
             }
             item.Id = reader.IntegerValue("Id");
+            item.SLAId = reader.IntegerValue("SLAId");
             item.CompanyId = reader.IntegerValue("CompanyId");
-            item.SLA = reader.IntegerValue("SLA");
+            item.SLATimeOut = reader.IntegerValue("SLATimeOut");
+            item.SLATimeMode = reader.IntegerValue("SLATimeMode");
             item.MailForSLAExpiration = reader.IntegerValue("MailForSLAExpiration");
             item.MailForSLAExpirationCustom = reader.StringValue("MailForSLAExpirationCustom");
             item.MailForSLAExpirationTmpl = reader.IntegerValue("MailForSLAExpirationTmpl");

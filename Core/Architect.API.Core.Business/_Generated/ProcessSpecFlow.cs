@@ -1,6 +1,7 @@
 ﻿using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace Architect.API.Core.Business.General
 {
@@ -53,6 +54,8 @@ namespace Architect.API.Core.Business.General
 
                 if (Architect.API.Core.DataAccess.General.ProcessSpecFlow.Create(result) > 0)
                 {
+                    SynchronizeRoles(companyId, userId, result.Id, result.Roles);
+
                     MapLookups(companyId, result);
                     Core.Business.General.ChangeSet.Create(1300, result.Id, companyId, "Creación", string.Format("Se creó el process spec flow '{0}'", result.Name), userId, result);
 
@@ -91,7 +94,22 @@ namespace Architect.API.Core.Business.General
         /// <returns>Instancia de ProcessSpecFlow</returns>
         public static Architect.API.Core.Contracts.General.ProcessSpecFlow RetrieveById(int companyId, int id)
         {
-            Architect.API.Core.Contracts.General.ProcessSpecFlow result = Architect.API.Core.DataAccess.General.ProcessSpecFlow.Retrieve(id, companyId);
+            IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Research");
+            Architect.API.Core.Contracts.General.ProcessSpecFlow result = Architect.API.Core.DataAccess.General.ProcessSpecFlow.Retrieve(id, companyId, currentConnection);
+
+            if (result.IsNotEmpty())
+            {
+                List<Architect.API.Core.Contracts.General.ProcessSpecFlowRole> internalRoles = Core.DataAccess.General.ProcessSpecFlowRole.RetrieveByStepId(id, currentConnection);
+                if (internalRoles.Count > 0)
+                {
+                    result.Roles = new List<Utilities.Contracts.LookUpValue>();
+                    foreach (Architect.API.Core.Contracts.General.ProcessSpecFlowRole item in internalRoles)
+                    {
+                        result.Roles.Add(new Utilities.Contracts.LookUpValue() { Code = item.RoleId.ToString(), Description = item.RoleName });
+                    }
+                }
+            }
+            currentConnection.Close();
 
             MapLookups(companyId, result);
 
@@ -121,6 +139,8 @@ namespace Architect.API.Core.Business.General
 
                 if (Architect.API.Core.DataAccess.General.ProcessSpecFlow.Update(result) > 0)
                 {
+                    SynchronizeRoles(companyId, userId, result.Id, result.Roles);
+
                     MapLookups(companyId, result);
                     Core.Business.General.ChangeSet.Create(1300, item.Id, companyId, "Modificación", string.Format("Se modificó el process spec flow '{0}'", result.Name), userId, result);
                     Utilities.Cache.RemoveStartWith("Process");

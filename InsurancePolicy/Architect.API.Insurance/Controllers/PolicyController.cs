@@ -125,8 +125,16 @@ namespace Architect.API.Insurance.Controllers
 
             if (result.Errors.Count > 0)
             {
-                message = string.Format("No se puede emitir la póliza ya que existen {0} error(es) que ameritan su atención",
-                                        result.Errors.Count);
+                if (result.Errors.Find(r => r.Group == "DigitalSignFail") == null)
+                {
+
+                    message = string.Format("No se puede emitir la póliza ya que existen {0} error(es) que ameritan su atención",
+                                            result.Errors.Count);
+                }
+                else
+                {
+                    message = "Hubo un problema al tratar de enviar el documento para su firma, por favor intente nuevamente, si el problema persiste, vuelva a intentar en 10 minutos.";
+                }
             }
             else
             {
@@ -178,8 +186,16 @@ namespace Architect.API.Insurance.Controllers
 
             if (result.Errors.Count > 0)
             {
-                message = string.Format("No se puede emitir la póliza ya que existen {0} error(es) que ameritan su atención",
+                if (result.Errors.Find(r => r.Group == "DigitalSignFail") == null)
+                {
+
+                    message = string.Format("No se puede emitir la póliza ya que existen {0} error(es) que ameritan su atención",
                                         result.Errors.Count);
+                }
+                else
+                {
+                    message = "Hubo un problema al tratar de enviar el documento para su firma, por favor intente nuevamente, si el problema persiste, vuelva a intentar en 10 minutos.";
+                }
             }
             else
             {

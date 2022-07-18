@@ -1234,6 +1234,8 @@
     <Content Include="Scripts\General.ProcessEditor.js" />
     <Content Include="Scripts\General.ProcessSpecFlow.js" />
     <Content Include="Scripts\General.ProcessSpecLink.js" />
+    <Content Include="Scripts\General.ProcessSpecSLA.js" />
+    <Content Include="Scripts\General.ProcessSpecSLALevel.js" />
     <Content Include="Scripts\General.ProcessSpecStep.js" />
     <Content Include="Scripts\General.ProcessSpecTask.js" />
     <Content Include="Scripts\General.Template.js" />
@@ -1657,6 +1659,9 @@
     <Content Include="Reports\surquímica_vida.repx" />
     <Content Include="Reports\surquímica_vida_mayor_que_64.repx" />
     <Content Include="Views\Policy\_poliza.cshtml" />
+    <Content Include="Views\Process\ProcessSpecSLA.cshtml" />
+    <Content Include="Views\Process\_processSpecSLALevelGrid.cshtml" />
+    <Content Include="Views\Process\_processSpecSLALevelModal.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

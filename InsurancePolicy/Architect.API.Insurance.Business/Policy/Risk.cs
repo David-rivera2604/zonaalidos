@@ -483,7 +483,8 @@ namespace Architect.API.Insurance.Business.Policy
             item.ExecutiveUserCode = tokenInfo.UserId;
             result.Errors = Business.Policy.Risk.PolicyStorage(item, orignalStatus, tokenInfo, source);
 
-            if (item.DraftStorage == "enabled" || (item.DraftStorage != "enabled" && result.Errors.Count == 0))
+            bool digitalSignFail = result.Errors.Find(r => r.Group == "DigitalSignFail") != null;
+            if (digitalSignFail || item.DraftStorage == "enabled" || (item.DraftStorage != "enabled" && result.Errors.Count == 0))
             {
                 switch (source)
                 {
@@ -802,7 +803,14 @@ namespace Architect.API.Insurance.Business.Policy
                         if (Products.Specification.SettingBoolValue(item.ProductAlias, "Allow.DigitalSign"))
                         {
                             item.Status = (int)Enumerations.PolicyStatus.PendingBySignature;
-                            DigitalSignature.Submit(item, tokenInfo, true);
+                            if (!DigitalSignature.Submit(item, tokenInfo, true))
+                            {
+                                item.Status = status;
+                                errors = new List<Core.Contracts.General.Error>() {
+                                    new Core.Contracts.General.Error() {
+                                        Group="DigitalSignFail"
+                                    } };
+                            };
                         }
                     }
                 }

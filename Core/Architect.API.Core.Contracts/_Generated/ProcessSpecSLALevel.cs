@@ -14,11 +14,16 @@ namespace Architect.API.Core.Contracts.General
         /// Identificación única del proceso.
         /// </summary>
         [DataMember(), JsonProperty()] public int Id { get; set; }
+        [DataMember(), JsonProperty()] public int SLAId { get; set; }
         /// <summary>
         /// Identificación de la compañía propietaria.
         /// </summary>
         [DataMember(), JsonProperty()] public int CompanyId { get; set; }
-        [DataMember(), JsonProperty()] public int SLA { get; set; }
+        /// <summary>
+        /// Define el tiempo maximo en horas para que el paso o estado se de por procesado.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int SLATimeOut { get; set; }
+        [DataMember(), JsonProperty()] public int SLATimeMode { get; set; }
         [DataMember(), JsonProperty()] public int MailForSLAExpiration { get; set; }
         [DataMember(), JsonProperty()] public string MailForSLAExpirationDesc { get; set; }
         [DataMember(), JsonProperty()] public string MailForSLAExpirationCustom { get; set; }

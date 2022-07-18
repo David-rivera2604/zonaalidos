@@ -187,7 +187,11 @@ namespace Architect.API.Core.Business.General
             if (!isdelete)
             {
 
-                //SLA:
+                //SLAId:
+
+                //SLATimeOut:
+
+                //SLATimeMode:
 
                 //MailForSLAExpiration:
                 if (source.MailForSLAExpiration.IsNotEmpty() && !Core.Business.Common.LkpExist(companyId, "MailSendOptions", source.MailForSLAExpiration.ToString()))

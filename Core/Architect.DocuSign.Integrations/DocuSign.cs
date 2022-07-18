@@ -12,7 +12,7 @@ namespace Architect.DocuSign.Integrations
 
     public static class DocuSign
     {
-        private static HttpClient eviCertiaClient = new HttpClient();
+   //     private static HttpClient eviCertiaClient = new HttpClient();
 
         /// <summary>
         /// Permite la remisión a EVICERTIA de una carta o documento notarial
@@ -55,19 +55,34 @@ namespace Architect.DocuSign.Integrations
                         SigningMethod = signingMethod
                     } }
             });
+            HttpClient eviCertiaClient = new HttpClient();
             eviCertiaClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Utilities.Helpers.Settings.StringValue("Evicertia.Authentication"));
-            HttpResponseMessage response = await eviCertiaClient.PostAsync(Utilities.Helpers.Settings.StringValue("Evicertia.URL.EviSignSubmit"), new StringContent(json, Encoding.UTF8, "application/json"));
-            string resultResponse = response.Content.ReadAsStringAsync().Result;
-            if (response.IsSuccessStatusCode)
+            eviCertiaClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            eviCertiaClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
+
+            try
             {
-                JObject jsonvalues = JObject.Parse(resultResponse);
-                result.UniqueId = jsonvalues.SelectToken("uniqueId").Value<string>();
+                HttpResponseMessage response = await eviCertiaClient.PostAsync(Utilities.Helpers.Settings.StringValue("Evicertia.URL.EviSignSubmit"), new StringContent(json, Encoding.UTF8, "application/json"));
+                string resultResponse = response.Content.ReadAsStringAsync().Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    JObject jsonvalues = JObject.Parse(resultResponse);
+                    result.UniqueId = jsonvalues.SelectToken("uniqueId").Value<string>();
+                }
+                else
+                {
+                    Utilities.Log.ErrorLog("EviSignSubmit", response.ReasonPhrase);
+                    Utilities.Log.ErrorLog("EviSignSubmit", resultResponse);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Utilities.Log.ErrorLog("EviSignSubmit", response.ReasonPhrase);
-                Utilities.Log.ErrorLog("EviSignSubmit", resultResponse);
+                eviCertiaClient.Dispose();
+                eviCertiaClient = new HttpClient();
+                throw ex;
             }
+
+
             return result;
         }
 
@@ -79,36 +94,46 @@ namespace Architect.DocuSign.Integrations
             {
                 urlComplement = "&includeAffidavitBlobsOnResult=true&includeAffidavitsOnResult=true";
             }
-
+            HttpClient eviCertiaClient = new HttpClient();
             eviCertiaClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Utilities.Helpers.Settings.StringValue("Evicertia.Authentication"));
             eviCertiaClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            HttpResponseMessage response = await eviCertiaClient.GetAsync($"{Utilities.Helpers.Settings.StringValue("Evicertia.URL.EviSignQuery")}?WithUniqueIds={uniqueIds}&includeEventsOnResult=true{urlComplement}");
-            string resultResponse = response.Content.ReadAsStringAsync().Result;
-            if (response.IsSuccessStatusCode)
+            eviCertiaClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
+            try
             {
-                //Utilities.Log.TraceLog("EviSignQuery.resultResponse", resultResponse);
-                Providers.Evicertia.Contracts.EviSignQueryResult iresult = JsonConvert.DeserializeObject<Providers.Evicertia.Contracts.EviSignQueryResult>(resultResponse);
-                if (iresult?.results?.Length > 0)
+                HttpResponseMessage response = await eviCertiaClient.GetAsync($"{Utilities.Helpers.Settings.StringValue("Evicertia.URL.EviSignQuery")}?WithUniqueIds={uniqueIds}&includeEventsOnResult=true{urlComplement}");
+                string resultResponse = response.Content.ReadAsStringAsync().Result;
+                if (response.IsSuccessStatusCode)
                 {
-                    result = new Contracts.QueryResult()
+                    //Utilities.Log.TraceLog("EviSignQuery.resultResponse", resultResponse);
+                    Providers.Evicertia.Contracts.EviSignQueryResult iresult = JsonConvert.DeserializeObject<Providers.Evicertia.Contracts.EviSignQueryResult>(resultResponse);
+                    if (iresult?.results?.Length > 0)
                     {
-                        outcome = iresult.results[0].outcome,
-                        affidavits = new List<Contracts.affidavits>()
-                    };
-                    foreach (Providers.Evicertia.Contracts.affidavits affidavit in iresult.results[0].affidavits)
-                    {
-                        result.affidavits.Add(new Contracts.affidavits()
+                        result = new Contracts.QueryResult()
                         {
-                            description = affidavit.description,
-                            bytes = affidavit.bytes
-                        });
+                            outcome = iresult.results[0].outcome,
+                            affidavits = new List<Contracts.affidavits>()
+                        };
+                        foreach (Providers.Evicertia.Contracts.affidavits affidavit in iresult.results[0].affidavits)
+                        {
+                            result.affidavits.Add(new Contracts.affidavits()
+                            {
+                                description = affidavit.description,
+                                bytes = affidavit.bytes
+                            });
+                        }
                     }
                 }
+                else
+                {
+                    Utilities.Log.ErrorLog("EviSignQuery", response.ReasonPhrase);
+                    Utilities.Log.ErrorLog("EviSignSubmit", resultResponse);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Utilities.Log.ErrorLog("EviSignQuery", response.ReasonPhrase);
-                Utilities.Log.ErrorLog("EviSignSubmit", resultResponse);
+                eviCertiaClient.Dispose();
+                eviCertiaClient = new HttpClient();
+                throw ex;
             }
             return result;
         }

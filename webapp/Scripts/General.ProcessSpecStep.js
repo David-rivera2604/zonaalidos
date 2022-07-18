@@ -22,23 +22,7 @@ app.GeneralProcessSpecStep = (function () {
     }
 
     function Init_Controls() {
-        new AutoNumeric('#SLATimeOut', {
-            decimalCharacter: ',',
-            digitGroupSeparator: '.',
-            maximumValue: '999999999',
-            minimumValue: '0',
-            decimalPlaces: 0,
-            emptyInputBehavior: 'null'
-        });
         new AutoNumeric('#StepOrder', {
-            decimalCharacter: ',',
-            digitGroupSeparator: '.',
-            maximumValue: '99999',
-            minimumValue: '0',
-            decimalPlaces: 0,
-            emptyInputBehavior: 'null'
-        });
-        new AutoNumeric('#SLA', {
             decimalCharacter: ',',
             digitGroupSeparator: '.',
             maximumValue: '99999',
@@ -89,15 +73,6 @@ app.GeneralProcessSpecStep = (function () {
                     sortable: true,
                     halign: 'center'
                 }, {
-                    field: 'SLATimeOut',
-                    title: 'SLA Time Out',
-                    titleTooltip: 'Define el tiempo maximo en minutos para que el paso o estado se de por procesado.',
-                    sortable: true,
-                    halign: 'center',
-                    align: 'right',
-                    formatter: 'app.ui.IntegerFormatter',
-                    visible: false
-                }, {
                     field: 'StepOrder',
                     title: 'Orden',
                     titleTooltip: 'Orden en que se procesan los pasos para un proceso.',
@@ -130,15 +105,6 @@ app.GeneralProcessSpecStep = (function () {
                     title: 'Tipo',
                     sortable: true,
                     halign: 'center'
-                }, {
-                    field: 'SLA',
-                    title: 'SLA',
-                    titleTooltip: '.',
-                    sortable: true,
-                    halign: 'center',
-                    align: 'right',
-                    formatter: 'app.ui.IntegerFormatter',
-                    visible: false
                 }, {
                     field: 'MailServerDesc',
                     title: 'Servidor de correo',
@@ -178,24 +144,6 @@ app.GeneralProcessSpecStep = (function () {
                 }, {
                     field: 'MailToStepResponsibleTmplDesc',
                     title: 'Mail to Step Responsible Tmpl',
-                    sortable: true,
-                    halign: 'center',
-                    visible: false
-                }, {
-                    field: 'MailForSLAExpirationDesc',
-                    title: 'Mail for SLA Expiration',
-                    sortable: true,
-                    halign: 'center',
-                    visible: false
-                }, {
-                    field: 'MailForSLAExpirationCustom',
-                    title: 'Mail for SLA Expiration',
-                    sortable: true,
-                    halign: 'center',
-                    visible: false
-                }, {
-                    field: 'MailForSLAExpirationTmplDesc',
-                    title: 'Mail for SLAE xpiration Tmpl',
                     sortable: true,
                     halign: 'center',
                     visible: false
@@ -380,36 +328,8 @@ app.GeneralProcessSpecStep = (function () {
             }
         });
 
-        $('#MailForSLAExpiration').change(function () {
-            switch (app.ui.GetDropDownNumericValue('#MailForSLAExpiration')) {
-                case 1:
-                    $('#MailForSLAExpirationCustom').val('');
-                    $("#MailForSLAExpirationCustom").prop("disabled", true);
-                    $("#MailForSLAExpirationTmpl").prop("disabled", false);
-                    break;
-                case 2:
-                    $('#MailForSLAExpirationCustom').val('');
-                    $("#MailForSLAExpirationCustom").prop("disabled", true);
-                    $('#MailForSLAExpirationTmpl').val('1');
-                    $("#MailForSLAExpirationTmpl").prop("disabled", true);
-                    break;
-                case 3:
-                    $("#MailForSLAExpirationCustom").prop("disabled", false);
-                    $('#MailForSLAExpirationTmpl').val('1');
-                    $("#MailForSLAExpirationTmpl").prop("disabled", false);
-                    break;
-            }
-        });
-
         $('#FlowIdFlt').on('select2:select', function (e) {
             Refresh();
-        });
-        $('#SLATimeOut').change(function () {
-            if (app.ui.GetNumericValue('#SLATimeOut') > 0)
-                $('.sla-notify-visible').removeClass('d-none');
-            else {
-                $('.sla-notify-visible').addClass('d-none');
-            }
         });
         $('#Roles').change(function () {
             if (app.ui.GetDropDownMultiValues('Roles').length > 0)
@@ -494,7 +414,7 @@ app.GeneralProcessSpecStep = (function () {
     };
 
     function Init_Lookups() {
-        app.core.Lookups(['Process.FlowId', 'Process.FlowIdFlt', 'ProcessStatus.ProcessStatus', 'ProgressMode.ProgressMode', 'MailServer.MailServer', 'MailSendOptions.MailToContact', 'MailTemplate.MailToContactTmpl', 'MailSendOptions.MailToStepResponsible', 'MailTemplate.MailToStepResponsibleTmpl', 'MailSendOptions.MailForSLAExpiration', 'MailTemplate.MailForSLAExpirationTmpl'], Dynamic_Event_Controls);
+        app.core.Lookups(['Process.FlowId', 'Process.FlowIdFlt', 'ProcessStatus.ProcessStatus', 'ProgressMode.ProgressMode', 'MailServer.MailServer', 'MailSendOptions.MailToContact', 'MailTemplate.MailToContactTmpl', 'MailSendOptions.MailToStepResponsible', 'MailTemplate.MailToStepResponsibleTmpl', 'SLA.SLA.'], Dynamic_Event_Controls);
         // Dependencies
     };
 
@@ -510,13 +430,12 @@ app.GeneralProcessSpecStep = (function () {
             Name: $('#Name').val(),
             Description: $('#Description').val(),
             Roles: app.ui.GetDropDownMultiValues('Roles'),
-            SLATimeOut: app.ui.GetNumericValue('#SLATimeOut'),
             StepOrder: app.ui.GetNumericValue('#StepOrder'),
             ProcessStatus: $('#ProcessStatus').val(),
             ProcessLabel: $('#ProcessLabel').val(),
             EnableComment: app.ui.GetRadioNumericValue('EnableComment'),
             ProgressMode: $('#ProgressMode').val(),
-            SLA: app.ui.GetNumericValue('#SLA'),
+            SLA: app.ui.GetDropDownNumericValue('#SLA'),
             MailServer: $('#MailServer').val(),
             MailToContact: $('#MailToContact').val(),
             MailToContactCustom: $('#MailToContactCustom').val(),
@@ -524,9 +443,6 @@ app.GeneralProcessSpecStep = (function () {
             MailToStepResponsible: $('#MailToStepResponsible').val(),
             MailToStepResponsibleCustom: $('#MailToStepResponsibleCustom').val(),
             MailToStepResponsibleTmpl: $('#MailToStepResponsibleTmpl').val(),
-            MailForSLAExpiration: $('#MailForSLAExpiration').val(),
-            MailForSLAExpirationCustom: $('#MailForSLAExpirationCustom').val(),
-            MailForSLAExpirationTmpl: $('#MailForSLAExpirationTmpl').val(),
             PreScript: $('#PreScript').val(),
             PostScript: $('#PostScript').val()
 
@@ -541,15 +457,13 @@ app.GeneralProcessSpecStep = (function () {
         $('#Description').val(data.Description);
         app.ui.SetDropDownMultiValues('Roles', data.Roles);
         $('#Roles').change();
-        app.ui.SetNumericValue('#SLATimeOut', data.SLATimeOut);
         app.ui.SetNumericValue('#StepOrder', data.StepOrder);
         $('#ProcessStatus').val(data.ProcessStatus);
         $('#ProcessLabel').val(data.ProcessLabel);
         $('#EnableComment').prop('checked', data.EnableComment);
         app.ui.SetRadioNumericValue('EnableComment', data.EnableComment);
         $('#ProgressMode').val(data.ProgressMode);
-        app.ui.SetNumericValue('#SLA', data.SLA);
-        $('#SLA').change();
+        $('#SLA').val(data.SLA);
         $('#MailServer').val(data.MailServer);
 
         $('#MailToContactCustom').val(data.MailToContactCustom);
@@ -559,10 +473,6 @@ app.GeneralProcessSpecStep = (function () {
         $('#MailToStepResponsibleCustom').val(data.MailToStepResponsibleCustom);
         $('#MailToStepResponsibleTmpl').val(data.MailToStepResponsibleTmpl);
         $('#MailToStepResponsible').val(data.MailToStepResponsible).change();
-
-        $('#MailForSLAExpirationCustom').val(data.MailForSLAExpirationCustom);
-        $('#MailForSLAExpirationTmpl').val(data.MailForSLAExpirationTmpl);
-        $('#MailForSLAExpiration').val(data.MailForSLAExpiration).change();
 
         $('#PreScript').val(data.PreScript);
         $('#PostScript').val(data.PostScript);
@@ -700,15 +610,6 @@ app.GeneralProcessSpecStep = (function () {
                     sortable: true,
                     halign: 'center'
                 }, {
-                    field: 'SLATimeOut',
-                    title: 'SLA Time Out',
-                    titleTooltip: 'Define el tiempo maximo en minutos para que el paso o estado se de por procesado.',
-                    sortable: true,
-                    halign: 'center',
-                    align: 'right',
-                    formatter: 'app.ui.IntegerFormatter',
-                    visible: false
-                }, {
                     field: 'IsRequired',
                     title: 'Is Required',
                     titleTooltip: '.',
@@ -800,7 +701,7 @@ app.GeneralProcessSpecStep = (function () {
             }
         },
         New: function (row) {
-            let newRow = { Id: 0, FlowId: 0, Name: null, Description: null, SLATimeOut: 0, StepOrder: 0, ProcessStatus: 0, ProcessLabel: null, EnableComment: false, ProgressMode: 1, SLA: 0, MailServer: 1, MailToContact: 1, MailToContactCustom: null, MailToContactTmpl: 1, MailToStepResponsible: 1, MailToStepResponsibleCustom: null, MailToStepResponsibleTmpl: 1, MailForSLAExpiration: 1, MailForSLAExpirationCustom: null, MailForSLAExpirationTmpl: 1, PreScript: null, PostScript: null }
+            let newRow = { Id: 0, FlowId: 0, Name: null, Description: null, StepOrder: 0, ProcessStatus: 0, ProcessLabel: null, EnableComment: false, ProgressMode: 1, SLA: 0, MailServer: 1, MailToContact: 1, MailToContactCustom: null, MailToContactTmpl: 1, MailToStepResponsible: 1, MailToStepResponsibleCustom: null, MailToStepResponsibleTmpl: 1, PreScript: null, PostScript: null }
             if (row !== undefined) {
                 row.Id = 0;
                 newRow = row;

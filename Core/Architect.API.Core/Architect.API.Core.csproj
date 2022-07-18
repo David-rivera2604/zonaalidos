@@ -91,6 +91,7 @@
     <Compile Include="Controllers\ProcessCaseController.cs" />
     <Compile Include="Controllers\ProcessSpecFlowController.cs" />
     <Compile Include="Controllers\ProcessSpecLinkController.cs" />
+    <Compile Include="Controllers\ProcessSpecSLAController.cs" />
     <Compile Include="Controllers\ProcessSpecStepController.cs" />
     <Compile Include="Controllers\ProcessSpecTaskController.cs" />
     <Compile Include="Controllers\ResearchController.cs" />

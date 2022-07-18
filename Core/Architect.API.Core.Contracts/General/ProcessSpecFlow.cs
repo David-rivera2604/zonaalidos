@@ -16,6 +16,9 @@ namespace Architect.API.Core.Contracts.General
         /// Pasos o estados de un proceso.
         /// </summary>
         [DataMember(), JsonProperty()] public List<ProcessSpecLink> ProcessSpecLinks { get; set; }
+
+        [DataMember(), JsonProperty()] public List<Utilities.Contracts.LookUpValue> Roles { get; set; }
+
     }
 }
 
