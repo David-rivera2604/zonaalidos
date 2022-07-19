@@ -375,3 +375,12 @@
                    Google Analytic. Aplicar cambios enviado por royner.
                    Incidentes con el número de documento.
                    Impresión de certificados para el ramo 205.
+1.6.7   18/07/2022 CreedeCoop. Falla al eliminar un beneficiario.
+                   Export Vida Saldo Deudor en Aliados, agregar género, nacimiento y dirección para el asegurado y los 3 beneficiarios.
+                   CreedeCoop. Se pierde información del Covid al Guardar y Emitir.
+                   CreedeCoop. Cambiar Radio buttons de Condición (Jubilado/Pensionado) por un dropdown con valor en blanco.
+                   Aliados. Agergar botón para la impresión del deposito de prima en la consulta 318.
+                   Trazabilidad. No permite trabajar en un caso basado en un proceso duplicado.
+                   Trazabilidad. Definición de proceso agrandar lista a 4000 el máx de una varchar.
+                   Trazabilidad. Permitir acceso al uso del proceso por rol.
+                   Trazabilidad. SLA a nivel del proceso.
