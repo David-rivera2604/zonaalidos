@@ -7,7 +7,8 @@ app.GeneralProcessSpecSLALevel = (function () {
     function Events() {
 
         $('#ProcessSpecSLALevelNew').click(function () {
-            NewEditRow({ Id: 0, SLAId: 0, SLATimeOut: 0, MailForSLAExpiration: 1, MailForSLAExpirationCustom: null, MailForSLAExpirationTmpl: 1 });
+            NewEditRow({
+                Id: 0, SLAId: 0, SLATimeOut: 0, MailForSLAExpiration: 1, MailForSLAExpirationCustom: '{roles}', MailForSLAExpirationTmpl: 1 });
             event.preventDefault();
         });
 
@@ -71,7 +72,7 @@ app.GeneralProcessSpecSLALevel = (function () {
         $('#MailForSLAExpiration').change(function () {
             switch (app.ui.GetDropDownNumericValue('#MailForSLAExpiration')) {
                 case 1:
-                    $('#MailForSLAExpirationCustom').val('');
+                    $('#MailForSLAExpirationCustom').val('{roles}');
                     $("#MailForSLAExpirationCustom").prop("disabled", true);
                     $("#MailForSLAExpirationTmpl").prop("disabled", false);
                     break;
