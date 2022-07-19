@@ -25,15 +25,16 @@ namespace Architect.API.Core.Business.General
                     Contracts.General.ProcessSpecFlow spec = Specification(item.FlowId, item.CompanyId);
                     if (spec != null)
                     {
-                        item.Step = spec.ProcessSpecSteps.Where(i=>i.Id == item.StepId).FirstOrDefault();
+                        item.Step = spec.ProcessSpecSteps.Where(i => i.Id == item.StepId).FirstOrDefault();
                         if (item.Step != null)
                         {
                             notify = true;
-                            if(item.LastOverDueNotify.IsNotEmpty())
+                            if (item.LastOverDueNotify.IsNotEmpty())
                             {
                                 notify = (item.LastOverDueNotify.AddHours(EveryTime) <= now);
                             }
-                            if (notify) {
+                            if (notify)
+                            {
                                 DataAccess.General.ProcessInstance.Update(item.ActivityId, now);
                                 Notify_ResponsibleProcess_Progress(item.CaseId, item, spec.MailServer, item.CompanyId, 0, "Process.Mail.Responsible.Notify.OverDue.Template");
                             }
@@ -131,6 +132,12 @@ namespace Architect.API.Core.Business.General
                 UpdateUserCode = userId,
                 UpdateDate = DateTime.Now
             });
+            if (spec.SLALevels?.Count > 0)
+            {
+                instance[0].EarlyDueDate = current.AddHours(spec.SLALevels.First().SLATimeOut);
+                instance[0].DueDate = current.AddHours(spec.SLALevels.Last().SLATimeOut);
+            }
+
             foreach (Contracts.General.ProcessSpecStep stepSource in spec.ProcessSpecSteps)
             {
                 instance.Add(new Contracts.General.ProcessInstance()
@@ -151,9 +158,10 @@ namespace Architect.API.Core.Business.General
                 if (firstTask)
                 {
                     instance[instance.Count - 1].StartDate = current;
-                    if (stepSource.SLATimeOut > 0)
+                    if (stepSource.SLALevels?.Count > 0)
                     {
-                        instance[instance.Count - 1].DueDate = current.AddHours(stepSource.SLATimeOut);
+                        instance[instance.Count - 1].EarlyDueDate = current.AddHours(stepSource.SLALevels.First().SLATimeOut);
+                        instance[instance.Count - 1].DueDate = current.AddHours(stepSource.SLALevels.Last().SLATimeOut);
                     }
                     currentStep = instance[instance.Count - 1];
                 }
@@ -538,9 +546,10 @@ namespace Architect.API.Core.Business.General
                     if (nextStep.IsNotEmpty())
                     {
                         nextStep.StartDate = current;
-                        if (nextStep.Step.SLATimeOut > 0)
+                        if (nextStep.Step?.SLALevels?.Count > 0)
                         {
-                            nextStep.DueDate = current.AddHours(nextStep.Step.SLATimeOut);
+                            nextStep.EarlyDueDate = current.AddHours(nextStep.Step.SLALevels.First().SLATimeOut);
+                            nextStep.DueDate = current.AddHours(nextStep.Step.SLALevels.Last().SLATimeOut);
                         }
                         nextStep.UpdateUserCode = userId;
                         nextStep.PreviousActivityId = currentTask.ActivityId;
@@ -569,9 +578,10 @@ namespace Architect.API.Core.Business.General
                 case 10:
                     nextStep = instance.First(i => i.StepId == Convert.ToInt32(currentTask.Task.Action));
                     nextStep.StartDate = current;
-                    if (nextStep.Step.SLATimeOut > 0)
+                    if (nextStep.Step?.SLALevels?.Count > 0)
                     {
-                        nextStep.DueDate = current.AddHours(nextStep.Step.SLATimeOut);
+                        nextStep.EarlyDueDate = current.AddHours(nextStep.Step.SLALevels.First().SLATimeOut);
+                        nextStep.DueDate = current.AddHours(nextStep.Step.SLALevels.Last().SLATimeOut);
                     }
                     nextStep.UpdateUserCode = userId;
                     nextStep.PreviousActivityId = currentTask.ActivityId;
@@ -713,7 +723,7 @@ namespace Architect.API.Core.Business.General
             }
         }
 
-        private static void Notify_ResponsibleProcess_Progress(int caseId, Contracts.General.ProcessInstance step, int mailServer, int companyId, int userId, string mailTemplateSetting= "Process.Mail.Responsible.Notify.Template")
+        private static void Notify_ResponsibleProcess_Progress(int caseId, Contracts.General.ProcessInstance step, int mailServer, int companyId, int userId, string mailTemplateSetting = "Process.Mail.Responsible.Notify.Template")
         {
             Dictionary<string, string> mailFullList = new Dictionary<string, string>();
             Contracts.General.ProcessCase procCase = null;

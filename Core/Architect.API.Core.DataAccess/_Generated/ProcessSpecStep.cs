@@ -25,14 +25,13 @@ namespace Architect.API.Core.DataAccess.General
             {
                 processspecstepItem.UpdateDate = DateTime.Now;
             }
-            return Database.Insert("INSERT INTO ProcessSpecStep (Id, FlowId, CompanyId, Name, Description, SLATimeOut, StepOrder, ProcessStatus, ProcessLabel, EnableComment, ProgressMode, SLA, MailServer, MailToContact, MailToContactCustom, MailToContactTmpl, MailToStepResponsible, MailToStepResponsibleCustom, MailToStepResponsibleTmpl, MailForSLAExpiration, MailForSLAExpirationCustom, MailForSLAExpirationTmpl, PreScript, PostScript, UpdateUserCode, UpdateDate) " +
-                                                 "VALUES(:Id, :FlowId, :CompanyId, :Name, :Description, :SLATimeOut, :StepOrder, :ProcessStatus, :ProcessLabel, :EnableComment, :ProgressMode, :SLA, :MailServer, :MailToContact, :MailToContactCustom, :MailToContactTmpl, :MailToStepResponsible, :MailToStepResponsibleCustom, :MailToStepResponsibleTmpl, :MailForSLAExpiration, :MailForSLAExpirationCustom, :MailForSLAExpirationTmpl, :PreScript, :PostScript, :UpdateUserCode, :UpdateDate)")
+            return Database.Insert("INSERT INTO ProcessSpecStep (Id, FlowId, CompanyId, Name, Description, StepOrder, ProcessStatus, ProcessLabel, EnableComment, ProgressMode, SLA, MailServer, MailToContact, MailToContactCustom, MailToContactTmpl, MailToStepResponsible, MailToStepResponsibleCustom, MailToStepResponsibleTmpl, PreScript, PostScript, UpdateUserCode, UpdateDate) " +
+                                                 "VALUES(:Id, :FlowId, :CompanyId, :Name, :Description, :StepOrder, :ProcessStatus, :ProcessLabel, :EnableComment, :ProgressMode, :SLA, :MailServer, :MailToContact, :MailToContactCustom, :MailToContactTmpl, :MailToStepResponsible, :MailToStepResponsibleCustom, :MailToStepResponsibleTmpl, :PreScript, :PostScript, :UpdateUserCode, :UpdateDate)")
                             .AddParameter("Id", DbType.Decimal, 9, processspecstepItem.Id)
                             .AddParameter("FlowId", DbType.Decimal, 9, processspecstepItem.FlowId)
                             .AddParameter("CompanyId", DbType.Decimal, 5, processspecstepItem.CompanyId)
                             .AddParameter("Name", DbType.AnsiString, 80, processspecstepItem.Name)
                             .AddParameter("Description", DbType.AnsiString, 256, processspecstepItem.Description)
-                            .AddParameter("SLATimeOut", DbType.Decimal, 9, processspecstepItem.SLATimeOut)
                             .AddParameter("StepOrder", DbType.Decimal, 5, processspecstepItem.StepOrder)
                             .AddParameter("ProcessStatus", DbType.Decimal, 3, processspecstepItem.ProcessStatus)
                             .AddParameter("ProcessLabel", DbType.AnsiString, 80, processspecstepItem.ProcessLabel)
@@ -46,9 +45,6 @@ namespace Architect.API.Core.DataAccess.General
                             .AddParameter("MailToStepResponsible", DbType.Decimal, 5, processspecstepItem.MailToStepResponsible)
                             .AddParameter("MailToStepResponsibleCustom", DbType.AnsiString, 256, processspecstepItem.MailToStepResponsibleCustom)
                             .AddParameter("MailToStepResponsibleTmpl", DbType.Decimal, 5, processspecstepItem.MailToStepResponsibleTmpl)
-                            .AddParameter("MailForSLAExpiration", DbType.Decimal, 5, processspecstepItem.MailForSLAExpiration)
-                            .AddParameter("MailForSLAExpirationCustom", DbType.AnsiString, 256, processspecstepItem.MailForSLAExpirationCustom)
-                            .AddParameter("MailForSLAExpirationTmpl", DbType.Decimal, 5, processspecstepItem.MailForSLAExpirationTmpl)
                             .AddParameter("PreScript", DbType.AnsiString, 9, processspecstepItem.PreScript)
                             .AddParameter("PostScript", DbType.AnsiString, 9, processspecstepItem.PostScript)
                             .AddParameter("UpdateUserCode", DbType.Decimal, 9, processspecstepItem.UpdateUserCode)
@@ -94,7 +90,7 @@ namespace Architect.API.Core.DataAccess.General
         public static Architect.API.Core.Contracts.General.ProcessSpecStep Retrieve(int id, int companyId, IDbConnection connection = null)
         {
             Architect.API.Core.Contracts.General.ProcessSpecStep result = null;
-            Database.Select("SELECT Id, FlowId, ProcessSpecStep.CompanyId, Name, Description, SLATimeOut, StepOrder, ProcessStatus, ProcessLabel, EnableComment, ProgressMode, SLA, MailServer, MailToContact, MailToContactCustom, MailToContactTmpl, MailToStepResponsible, MailToStepResponsibleCustom, MailToStepResponsibleTmpl, MailForSLAExpiration, MailForSLAExpirationCustom, MailForSLAExpirationTmpl, PreScript, PostScript, ProcessSpecStep.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessSpecStep.UpdateDate " +
+            Database.Select("SELECT Id, FlowId, ProcessSpecStep.CompanyId, Name, Description, StepOrder, ProcessStatus, ProcessLabel, EnableComment, ProgressMode, SLA, MailServer, MailToContact, MailToContactCustom, MailToContactTmpl, MailToStepResponsible, MailToStepResponsibleCustom, MailToStepResponsibleTmpl, PreScript, PostScript, ProcessSpecStep.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessSpecStep.UpdateDate " +
                               "FROM ProcessSpecStep LEFT JOIN UserMember um ON um.UserId = ProcessSpecStep.UpdateUserCode " +
                              "WHERE ProcessSpecStep.Id=:Id AND ProcessSpecStep.CompanyId=:CompanyId")
                         .AddParameter("Id", DbType.Decimal, 9, id)
@@ -117,7 +113,7 @@ namespace Architect.API.Core.DataAccess.General
         public static List<Architect.API.Core.Contracts.General.ProcessSpecStep> RetrieveAll(int companyId, string filter, List<DataFactory.Contracts.Parameter> parameters = null, IDbConnection connection = null)
         {
             List<Architect.API.Core.Contracts.General.ProcessSpecStep> result = new List<Architect.API.Core.Contracts.General.ProcessSpecStep>();
-            Database.Select("SELECT Id, FlowId, ProcessSpecStep.CompanyId, Name, Description, SLATimeOut, StepOrder, ProcessStatus, ProcessLabel, EnableComment, ProgressMode, SLA, MailServer, MailToContact, MailToContactCustom, MailToContactTmpl, MailToStepResponsible, MailToStepResponsibleCustom, MailToStepResponsibleTmpl, MailForSLAExpiration, MailForSLAExpirationCustom, MailForSLAExpirationTmpl, PreScript, PostScript, ProcessSpecStep.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessSpecStep.UpdateDate " +
+            Database.Select("SELECT Id, FlowId, ProcessSpecStep.CompanyId, Name, Description, StepOrder, ProcessStatus, ProcessLabel, EnableComment, ProgressMode, SLA, MailServer, MailToContact, MailToContactCustom, MailToContactTmpl, MailToStepResponsible, MailToStepResponsibleCustom, MailToStepResponsibleTmpl, PreScript, PostScript, ProcessSpecStep.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessSpecStep.UpdateDate " +
                               "FROM ProcessSpecStep LEFT JOIN UserMember um ON um.UserId = ProcessSpecStep.UpdateUserCode " +
                              "WHERE ProcessSpecStep.CompanyId=:CompanyId" + filter)
                         .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
@@ -151,7 +147,7 @@ namespace Architect.API.Core.DataAccess.General
                 endIndex = int.MaxValue;
             }
             Database.Select("SELECT * FROM (" +
-                            "SELECT Id, FlowId, ProcessSpecStep.CompanyId, Name, Description, SLATimeOut, StepOrder, ProcessStatus, ProcessLabel, EnableComment, ProgressMode, SLA, MailServer, MailToContact, MailToContactCustom, MailToContactTmpl, MailToStepResponsible, MailToStepResponsibleCustom, MailToStepResponsibleTmpl, MailForSLAExpiration, MailForSLAExpirationCustom, MailForSLAExpirationTmpl, PreScript, PostScript, ProcessSpecStep.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessSpecStep.UpdateDate " +
+                            "SELECT Id, FlowId, ProcessSpecStep.CompanyId, Name, Description, StepOrder, ProcessStatus, ProcessLabel, EnableComment, ProgressMode, SLA, MailServer, MailToContact, MailToContactCustom, MailToContactTmpl, MailToStepResponsible, MailToStepResponsibleCustom, MailToStepResponsibleTmpl, PreScript, PostScript, ProcessSpecStep.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessSpecStep.UpdateDate " +
                                    ", ROW_NUMBER() OVER (ORDER BY ProcessSpecStep.Id DESC) RowNumber " +
                               "FROM ProcessSpecStep LEFT JOIN UserMember um ON um.UserId = ProcessSpecStep.UpdateUserCode " +
                              "WHERE ProcessSpecStep.CompanyId=:CompanyId" + filter +
@@ -232,13 +228,13 @@ namespace Architect.API.Core.DataAccess.General
                 processspecstepItem.UpdateDate = DateTime.Now;
             }
             return Database.Update("UPDATE ProcessSpecStep " +
-                                      "SET FlowId=:FlowId, CompanyId=:CompanyId, Name=:Name, Description=:Description, SLATimeOut=:SLATimeOut, StepOrder=:StepOrder, ProcessStatus=:ProcessStatus, ProcessLabel=:ProcessLabel, EnableComment=:EnableComment, ProgressMode=:ProgressMode, SLA=:SLA, MailServer=:MailServer, MailToContact=:MailToContact, MailToContactCustom=:MailToContactCustom, MailToContactTmpl=:MailToContactTmpl, MailToStepResponsible=:MailToStepResponsible, MailToStepResponsibleCustom=:MailToStepResponsibleCustom, MailToStepResponsibleTmpl=:MailToStepResponsibleTmpl, MailForSLAExpiration=:MailForSLAExpiration, MailForSLAExpirationCustom=:MailForSLAExpirationCustom, MailForSLAExpirationTmpl=:MailForSLAExpirationTmpl, PreScript=:PreScript, PostScript=:PostScript, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
+                                      "SET FlowId=:FlowId, CompanyId=:CompanyId, Name=:Name, Description=:Description, StepOrder=:StepOrder, ProcessStatus=:ProcessStatus, ProcessLabel=:ProcessLabel, EnableComment=:EnableComment, ProgressMode=:ProgressMode, SLA=:SLA, MailServer=:MailServer, MailToContact=:MailToContact, MailToContactCustom=:MailToContactCustom, MailToContactTmpl=:MailToContactTmpl, MailToStepResponsible=:MailToStepResponsible, MailToStepResponsibleCustom=:MailToStepResponsibleCustom, MailToStepResponsibleTmpl=:MailToStepResponsibleTmpl, PreScript=:PreScript, PostScript=:PostScript, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
                                     "WHERE Id=:Id")
                                 .AddParameter("FlowId", DbType.Decimal, 9, processspecstepItem.FlowId)
                                 .AddParameter("CompanyId", DbType.Decimal, 5, processspecstepItem.CompanyId)
                                 .AddParameter("Name", DbType.AnsiString, 80, processspecstepItem.Name)
                                 .AddParameter("Description", DbType.AnsiString, 256, processspecstepItem.Description)
-                                .AddParameter("SLATimeOut", DbType.Decimal, 9, processspecstepItem.SLATimeOut)
+
                                 .AddParameter("StepOrder", DbType.Decimal, 5, processspecstepItem.StepOrder)
                                 .AddParameter("ProcessStatus", DbType.Decimal, 3, processspecstepItem.ProcessStatus)
                                 .AddParameter("ProcessLabel", DbType.AnsiString, 80, processspecstepItem.ProcessLabel)
@@ -252,9 +248,6 @@ namespace Architect.API.Core.DataAccess.General
                                 .AddParameter("MailToStepResponsible", DbType.Decimal, 5, processspecstepItem.MailToStepResponsible)
                                 .AddParameter("MailToStepResponsibleCustom", DbType.AnsiString, 256, processspecstepItem.MailToStepResponsibleCustom)
                                 .AddParameter("MailToStepResponsibleTmpl", DbType.Decimal, 5, processspecstepItem.MailToStepResponsibleTmpl)
-                                .AddParameter("MailForSLAExpiration", DbType.Decimal, 5, processspecstepItem.MailForSLAExpiration)
-                                .AddParameter("MailForSLAExpirationCustom", DbType.AnsiString, 256, processspecstepItem.MailForSLAExpirationCustom)
-                                .AddParameter("MailForSLAExpirationTmpl", DbType.Decimal, 5, processspecstepItem.MailForSLAExpirationTmpl)
                                 .AddParameter("PreScript", DbType.AnsiString, 9, processspecstepItem.PreScript)
                                 .AddParameter("PostScript", DbType.AnsiString, 9, processspecstepItem.PostScript)
                                 .AddParameter("UpdateUserCode", DbType.Decimal, 9, processspecstepItem.UpdateUserCode)
@@ -409,7 +402,6 @@ namespace Architect.API.Core.DataAccess.General
             item.CompanyId = reader.IntegerValue("CompanyId");
             item.Name = reader.StringValue("Name");
             item.Description = reader.StringValue("Description");
-            item.SLATimeOut = reader.IntegerValue("SLATimeOut");
             item.StepOrder = reader.IntegerValue("StepOrder");
             item.ProcessStatus = reader.IntegerValue("ProcessStatus");
             item.ProcessLabel = reader.StringValue("ProcessLabel");
@@ -423,9 +415,6 @@ namespace Architect.API.Core.DataAccess.General
             item.MailToStepResponsible = reader.IntegerValue("MailToStepResponsible");
             item.MailToStepResponsibleCustom = reader.StringValue("MailToStepResponsibleCustom");
             item.MailToStepResponsibleTmpl = reader.IntegerValue("MailToStepResponsibleTmpl");
-            item.MailForSLAExpiration = reader.IntegerValue("MailForSLAExpiration");
-            item.MailForSLAExpirationCustom = reader.StringValue("MailForSLAExpirationCustom");
-            item.MailForSLAExpirationTmpl = reader.IntegerValue("MailForSLAExpirationTmpl");
             item.PreScript = reader.StringValue("PreScript");
             item.PostScript = reader.StringValue("PostScript");
             item.UpdateUserCode = reader.IntegerValue("UpdateUserCode");

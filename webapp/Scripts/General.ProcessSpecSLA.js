@@ -116,7 +116,7 @@ app.GeneralProcessSpecSLA = (function () {
         });
 
         $('#ProcessSpecSLAEdtFormSave').click(function () {
-            if (app.ui.IsValid('#ProcessSpecSLAEdtForm', false)) {
+            if (app.ui.IsValid('#ProcessSpecSLAEdtForm', false) && OtherValidations()) {
                 app.ui.ButtonDoing('#ProcessSpecSLAEdtFormSave');
                 var data = MapInputToObject();
                 if (data.Id === 0)
@@ -128,7 +128,7 @@ app.GeneralProcessSpecSLA = (function () {
         });
 
         $('#ProcessSpecSLAEdtFormSaveContinue').click(function () {
-            if (app.ui.IsValid('#ProcessSpecSLAEdtForm', false)) {
+            if (app.ui.IsValid('#ProcessSpecSLAEdtForm', false) && OtherValidations()) {
                 app.ui.ButtonDoing('#ProcessSpecSLAEdtFormSaveContinue');
                 var data = MapInputToObject();
                 Create(data, 'Continue');
@@ -137,7 +137,7 @@ app.GeneralProcessSpecSLA = (function () {
         });
 
         $('#ProcessSpecSLAEdtFormSaveCopy').click(function () {
-            if (app.ui.IsValid('#ProcessSpecSLAEdtForm', false)) {
+            if (app.ui.IsValid('#ProcessSpecSLAEdtForm', false) && OtherValidations()) {
                 app.ui.ButtonDoing('#ProcessSpecSLAEdtFormSaveCopy');
                 var data = MapInputToObject();
                 Create(data, 'Copy');
@@ -146,7 +146,7 @@ app.GeneralProcessSpecSLA = (function () {
         });
 
         $('#ProcessSpecSLAEdtFormDuplicate').click(function () {
-            if (app.ui.IsValid('#ProcessSpecSLAEdtForm', false)) {
+            if (app.ui.IsValid('#ProcessSpecSLAEdtForm', false) && OtherValidations()) {
                 app.ui.ButtonDoing('#ProcessSpecSLAEdtFormDuplicate');
                 var data = MapInputToObject();
                 data.Id = 0;
@@ -335,6 +335,21 @@ app.GeneralProcessSpecSLA = (function () {
         $('#ProcessSpecSLAGridTblContainer').removeClass('d-none');
         $('#ProcessSpecSLAEdt').addClass('d-none');
         $('.formbtn').addClass('d-none');
+    }
+
+    function OtherValidations() {
+        let levels = app.GeneralProcessSpecSLALevel.GetData();
+        let result = true;
+        if (levels.length === 0) {
+            result = false;
+            $('#ProcessSpecSLALevelGridTbl-error').text('Debe existir al menos un nivel para el acuerdo de servicio');
+            $('#ProcessSpecSLALevelGridTbl-error').removeClass('d-none');
+        }
+        else {
+            $('#ProcessSpecSLALevelGridTbl-error').text('');
+            $('#ProcessSpecSLALevelGridTbl-error').addClass('d-none');
+        }
+        return result;
     }
 
     return {

@@ -25,8 +25,8 @@ namespace Architect.API.Core.DataAccess.General
             {
                 processinstanceItem.UpdateDate = DateTime.Now;
             }
-            return Database.Insert("INSERT INTO ProcessInstance (ActivityId, InstanceId, CompanyId, EntityType, EntityId, CaseId, FlowId, StepId, TaskId, Created, StartDate, DueDate, FinishDate, PreviousActivityId, UserId, Comments, LastOverDueNotify, UpdateUserCode, UpdateDate) " +
-                                                 "VALUES(:ActivityId, :InstanceId, :CompanyId, :EntityType, :EntityId, :CaseId, :FlowId, :StepId, :TaskId, :Created, :StartDate, :DueDate, :FinishDate, :PreviousActivityId, :UserId, :Comments, :LastOverDueNotify, :UpdateUserCode, :UpdateDate)")
+            return Database.Insert("INSERT INTO ProcessInstance (ActivityId, InstanceId, CompanyId, EntityType, EntityId, CaseId, FlowId, StepId, TaskId, Created, StartDate, EarlyDueDate, DueDate, FinishDate, PreviousActivityId, UserId, Comments, LastOverDueNotify, UpdateUserCode, UpdateDate) " +
+                                                 "VALUES(:ActivityId, :InstanceId, :CompanyId, :EntityType, :EntityId, :CaseId, :FlowId, :StepId, :TaskId, :Created, :StartDate, :EarlyDueDate, :DueDate, :FinishDate, :PreviousActivityId, :UserId, :Comments, :LastOverDueNotify, :UpdateUserCode, :UpdateDate)")
                             .AddParameter("ActivityId", DbType.Decimal, 9, processinstanceItem.ActivityId)
                             .AddParameter("InstanceId", DbType.Decimal, 9, processinstanceItem.InstanceId)
                             .AddParameter("CompanyId", DbType.Decimal, 5, processinstanceItem.CompanyId)
@@ -38,6 +38,7 @@ namespace Architect.API.Core.DataAccess.General
                             .AddParameter("TaskId", DbType.Decimal, 9, processinstanceItem.TaskId)
                             .AddParameter("Created", DbType.DateTime, 9, processinstanceItem.Created)
                             .AddParameter("StartDate", DbType.DateTime, 9, processinstanceItem.StartDate)
+                            .AddParameter("EarlyDueDate", DbType.DateTime, 9, processinstanceItem.EarlyDueDate)
                             .AddParameter("DueDate", DbType.DateTime, 9, processinstanceItem.DueDate)
                             .AddParameter("FinishDate", DbType.DateTime, 9, processinstanceItem.FinishDate)
                             .AddParameter("PreviousActivityId", DbType.Decimal, 9, processinstanceItem.PreviousActivityId)
@@ -87,7 +88,7 @@ namespace Architect.API.Core.DataAccess.General
         public static Architect.API.Core.Contracts.General.ProcessInstance Retrieve(int activityid, int companyId, IDbConnection connection = null)
         {
             Architect.API.Core.Contracts.General.ProcessInstance result = null;
-            Database.Select("SELECT ActivityId, InstanceId, ProcessInstance.CompanyId, EntityType, EntityId, CaseId, FlowId, StepId, TaskId, Created, StartDate, DueDate, FinishDate, PreviousActivityId, ProcessInstance.UserId, Comments, LastOverDueNotify, ProcessInstance.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessInstance.UpdateDate " +
+            Database.Select("SELECT ActivityId, InstanceId, ProcessInstance.CompanyId, EntityType, EntityId, CaseId, FlowId, StepId, TaskId, Created, StartDate, EarlyDueDate, DueDate, FinishDate, PreviousActivityId, ProcessInstance.UserId, Comments, LastOverDueNotify, ProcessInstance.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessInstance.UpdateDate " +
                               "FROM ProcessInstance LEFT JOIN UserMember um ON um.UserId = ProcessInstance.UpdateUserCode " +
                              "WHERE ProcessInstance.ActivityId=:ActivityId AND ProcessInstance.CompanyId=:CompanyId")
                         .AddParameter("ActivityId", DbType.Decimal, 9, activityid)
@@ -110,7 +111,7 @@ namespace Architect.API.Core.DataAccess.General
         public static List<Architect.API.Core.Contracts.General.ProcessInstance> RetrieveAll(int companyId, string filter, List<DataFactory.Contracts.Parameter> parameters = null, IDbConnection connection = null)
         {
             List<Architect.API.Core.Contracts.General.ProcessInstance> result = new List<Architect.API.Core.Contracts.General.ProcessInstance>();
-            Database.Select("SELECT ActivityId, InstanceId, ProcessInstance.CompanyId, EntityType, EntityId, CaseId, FlowId, StepId, TaskId, Created, StartDate, DueDate, FinishDate, PreviousActivityId, ProcessInstance.UserId, Comments, LastOverDueNotify, ProcessInstance.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessInstance.UpdateDate " +
+            Database.Select("SELECT ActivityId, InstanceId, ProcessInstance.CompanyId, EntityType, EntityId, CaseId, FlowId, StepId, TaskId, Created, StartDate, EarlyDueDate, DueDate, FinishDate, PreviousActivityId, ProcessInstance.UserId, Comments, LastOverDueNotify, ProcessInstance.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessInstance.UpdateDate " +
                               "FROM ProcessInstance LEFT JOIN UserMember um ON um.UserId = ProcessInstance.UpdateUserCode " +
                              "WHERE ProcessInstance.CompanyId=:CompanyId" + filter)
                         .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
@@ -144,7 +145,7 @@ namespace Architect.API.Core.DataAccess.General
                 endIndex = int.MaxValue;
             }
             Database.Select("SELECT * FROM (" +
-                            "SELECT ActivityId, InstanceId, ProcessInstance.CompanyId, EntityType, EntityId, CaseId, FlowId, StepId, TaskId, Created, StartDate, DueDate, FinishDate, PreviousActivityId, ProcessInstance.UserId, Comments, LastOverDueNotify, ProcessInstance.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessInstance.UpdateDate " +
+                            "SELECT ActivityId, InstanceId, ProcessInstance.CompanyId, EntityType, EntityId, CaseId, FlowId, StepId, TaskId, Created, StartDate, EarlyDueDate, DueDate, FinishDate, PreviousActivityId, ProcessInstance.UserId, Comments, LastOverDueNotify, ProcessInstance.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessInstance.UpdateDate " +
                                    ", ROW_NUMBER() OVER (ORDER BY ProcessInstance.ActivityId DESC) RowNumber " +
                               "FROM ProcessInstance LEFT JOIN UserMember um ON um.UserId = ProcessInstance.UpdateUserCode " +
                              "WHERE ProcessInstance.CompanyId=:CompanyId" + filter +
@@ -200,7 +201,7 @@ namespace Architect.API.Core.DataAccess.General
                 processinstanceItem.UpdateDate = DateTime.Now;
             }
             return Database.Update("UPDATE ProcessInstance " +
-                                      "SET InstanceId=:InstanceId, CompanyId=:CompanyId, EntityType=:EntityType, EntityId=:EntityId, CaseId=:CaseId, FlowId=:FlowId, StepId=:StepId, TaskId=:TaskId, Created=:Created, StartDate=:StartDate, DueDate=:DueDate, FinishDate=:FinishDate, PreviousActivityId=:PreviousActivityId, UserId=:UserId, Comments=:Comments, LastOverDueNotify=:LastOverDueNotify, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
+                                      "SET InstanceId=:InstanceId, CompanyId=:CompanyId, EntityType=:EntityType, EntityId=:EntityId, CaseId=:CaseId, FlowId=:FlowId, StepId=:StepId, TaskId=:TaskId, Created=:Created, StartDate=:StartDate, EarlyDueDate=:EarlyDueDate, DueDate=:DueDate, FinishDate=:FinishDate, PreviousActivityId=:PreviousActivityId, UserId=:UserId, Comments=:Comments, LastOverDueNotify=:LastOverDueNotify, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
                                     "WHERE ActivityId=:ActivityId")
                                 .AddParameter("InstanceId", DbType.Decimal, 9, processinstanceItem.InstanceId)
                                 .AddParameter("CompanyId", DbType.Decimal, 5, processinstanceItem.CompanyId)
@@ -212,6 +213,7 @@ namespace Architect.API.Core.DataAccess.General
                                 .AddParameter("TaskId", DbType.Decimal, 9, processinstanceItem.TaskId)
                                 .AddParameter("Created", DbType.DateTime, 9, processinstanceItem.Created)
                                 .AddParameter("StartDate", DbType.DateTime, 9, processinstanceItem.StartDate)
+                                .AddParameter("EarlyDueDate", DbType.DateTime, 9, processinstanceItem.EarlyDueDate)
                                 .AddParameter("DueDate", DbType.DateTime, 9, processinstanceItem.DueDate)
                                 .AddParameter("FinishDate", DbType.DateTime, 9, processinstanceItem.FinishDate)
                                 .AddParameter("PreviousActivityId", DbType.Decimal, 9, processinstanceItem.PreviousActivityId)
@@ -353,6 +355,7 @@ namespace Architect.API.Core.DataAccess.General
             item.TaskId = reader.IntegerValue("TaskId");
             item.Created = reader.DateTimeValue("Created");
             item.StartDate = reader.DateTimeValue("StartDate");
+            item.EarlyDueDate = reader.DateTimeValue("EarlyDueDate");
             item.DueDate = reader.DateTimeValue("DueDate");
             item.FinishDate = reader.DateTimeValue("FinishDate");
             item.PreviousActivityId = reader.IntegerValue("PreviousActivityId");

@@ -46,6 +46,7 @@ namespace Architect.API.Core.Contracts.General
         [DataMember(), JsonProperty()] public int TaskId { get; set; }
         [DataMember(), JsonProperty()] public DateTime Created { get; set; }
         [DataMember(), JsonProperty()] public DateTime StartDate { get; set; }
+        [DataMember(), JsonProperty()] public DateTime EarlyDueDate { get; set; }
         [DataMember(), JsonProperty()] public DateTime DueDate { get; set; }
         [DataMember(), JsonProperty()] public DateTime FinishDate { get; set; }
         [DataMember(), JsonProperty()] public int PreviousActivityId { get; set; }

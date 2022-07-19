@@ -16,12 +16,22 @@ namespace Architect.API.Core.DataAccess.General.Process
 
             if (result.IsNotEmpty())
             {
+                if (result.SLA.IsNotEmpty())
+                {
+                    result.SLALevels = ProcessSpecSLALevel.RetrieveAll(companyId, result.SLA, currentConnection);
+                    result.SLALevels = result.SLALevels.OrderBy(s => s.SLATimeOut).ToList();
+                }
                 result.ProcessSpecSteps = ProcessSpecStep.RetrieveByFlowId(companyId, flowId, currentConnection);
                 if (result.ProcessSpecSteps.IsNotEmpty())
                 {
                     result.ProcessSpecSteps = result.ProcessSpecSteps.OrderBy(s => s.StepOrder).ToList();
                     foreach (Contracts.General.ProcessSpecStep item in result.ProcessSpecSteps)
                     {
+                        if (item.SLA.IsNotEmpty())
+                        {
+                            item.SLALevels = ProcessSpecSLALevel.RetrieveAll(companyId, item.SLA, currentConnection);
+                            item.SLALevels = item.SLALevels.OrderBy(s => s.SLATimeOut).ToList();
+                        }
                         item.ProcessSpecStepRoles = ProcessSpecStepRole.RetrieveByStepId(item.Id, currentConnection);
                         item.ProcessSpecTasks = ProcessSpecTask.RetrieveByStepId(companyId, item.Id, currentConnection);
                         item.ProcessSpecTasks = item.ProcessSpecTasks.OrderBy(s => s.TaskOrder).ToList();
@@ -84,7 +94,8 @@ namespace Architect.API.Core.DataAccess.General.Process
             if (current.IsEmpty())
             {
                 ProcessCase.Update(processInstance.First().CaseId, processInstance.First().InstanceId, 0, string.Empty, currentTask.Task.SubStatus, currentTask.Task.SubLabel, 0, currentConnection);
-            } else
+            }
+            else
             {
                 ProcessCase.Update(processInstance.First().CaseId, processInstance.First().InstanceId, current.Step.ProcessStatus, current.Step.ProcessLabel, currentTask.Task.SubStatus, currentTask.Task.SubLabel, current.StepId, currentConnection);
             }

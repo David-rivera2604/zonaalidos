@@ -19,6 +19,8 @@ namespace Architect.API.Core.Contracts.General
 
         [DataMember(), JsonProperty()] public List<Utilities.Contracts.LookUpValue> Roles { get; set; }
 
+        [DataMember(), JsonProperty()] public List<ProcessSpecSLALevel> SLALevels { get; set; }
+
     }
 }
 

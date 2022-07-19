@@ -235,5 +235,91 @@ namespace Architect.API.Core.Business.General
 
         }
 
+
+
+        /// <summary>
+        /// Validaciones para los campos de la tabla ProcessSpecStep.
+        /// </summary>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
+        /// <param name="source">Instancia de ProcessSpecStep</param>
+        /// <param name="isnew">Indicador de registro nuevo.</param>
+        /// <param name="isdelete">Indicador que se quiere eliminar el registro.</param>
+        /// <returns>Lista de errores/notificaciones resultantes de las validaciones.</returns>
+        public static List<Core.Contracts.General.Error> Validate22(int companyId, Architect.API.Core.Contracts.General.ProcessSpecSLALevel source, bool isnew, bool isdelete)
+        {
+            string group = "ProcessSpecStep";
+            List<Core.Contracts.General.Error> result = new List<Core.Contracts.General.Error>();
+
+            //Id:
+            if ((!isnew || isdelete) && source.Id.IsEmpty())
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "Id", Message = "Debe indicar el paso" });
+            }
+            if ((!isnew || isdelete) && source.Id.IsNotEmpty() && Architect.API.Core.DataAccess.General.ProcessSpecStep.Count(source.Id, companyId) == 0)
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "Id", Message = "La paso no está registrada" });
+            }
+            if (isnew && source.Id.IsNotEmpty() && Architect.API.Core.DataAccess.General.ProcessSpecStep.Count(source.Id, companyId) > 0)
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "Id", Message = "La paso ya está registrada" });
+            }
+            if (!isdelete)
+            {
+
+
+
+                //Description:
+
+                //SLATimeOut:
+
+
+
+                //SLA:
+
+
+
+                //MailToStepResponsibleCustom:
+
+
+                //MailForSLAExpiration:
+                if (source.MailForSLAExpiration.IsNotEmpty() && !Core.Business.Common.LkpExist(companyId, "MailSendOptions", source.MailForSLAExpiration.ToString()))
+                {
+                    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "MailForSLAExpiration", Message = "El valor indicado para el mail for sla expiration no es valido" });
+                }
+
+                //MailForSLAExpirationCustom:
+
+                //MailForSLAExpirationTmpl:
+                if (source.MailForSLAExpirationTmpl.IsNotEmpty() && !Core.Business.Common.LkpExist(companyId, "MailTemplate", source.MailForSLAExpirationTmpl.ToString()))
+                {
+                    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "MailForSLAExpirationTmpl", Message = "El valor indicado para el mail for slae xpiration tmpl no es valido" });
+                }
+
+                //PreScript:
+
+                //PostScript:
+            }
+
+            return result;
+        }
+        /// <summary>
+        /// Realiza la lectura de las descripciones asociadas a columnas que posean una lista de valores.
+        /// </summary>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
+        /// <param name="item">Instancia de ProcessSpecStep</param>
+        private static void MapLookups2(int companyId, Architect.API.Core.Contracts.General.ProcessSpecSLALevel item)
+        {
+            if (item.IsEmpty())
+            {
+                return;
+            }
+
+            if (item.MailForSLAExpiration.IsNotEmpty())
+                item.MailForSLAExpirationDesc = Core.Business.Common.LkpDescription(companyId, "MailSendOptions", item.MailForSLAExpiration.ToString());
+            if (item.MailForSLAExpirationTmpl.IsNotEmpty())
+                item.MailForSLAExpirationTmplDesc = Core.Business.Common.LkpDescription(companyId, "MailTemplate", item.MailForSLAExpirationTmpl.ToString());
+
+        }
+
     }
 }

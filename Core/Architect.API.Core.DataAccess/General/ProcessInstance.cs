@@ -35,7 +35,7 @@ namespace Architect.API.Core.DataAccess.General
         public static List<Architect.API.Core.Contracts.General.ProcessInstance> RetrieveOverDueSteps(DateTime dueDate, IDbConnection connection = null)
         {
             List<Architect.API.Core.Contracts.General.ProcessInstance> result = new();
-            Database.Select("SELECT ActivityId, InstanceId, CaseId, CompanyId, EntityType, EntityId, FlowId, StepId, TaskId, Created, StartDate, DueDate, FinishDate, PreviousActivityId, UserId, Comments, UpdateUserCode, UpdateDate, LastOverDueNotify " +
+            Database.Select("SELECT ActivityId, InstanceId, CaseId, CompanyId, EntityType, EntityId, FlowId, StepId, TaskId, Created, StartDate, EarlyDueDate, DueDate, FinishDate, PreviousActivityId, UserId, Comments, UpdateUserCode, UpdateDate, LastOverDueNotify " +
                               "FROM ProcessInstance " +
                              "WHERE FinishDate IS NULL AND NOT DueDate IS NULL AND DueDate < :DueDate " +
                              "ORDER BY DueDate")
@@ -56,6 +56,7 @@ namespace Architect.API.Core.DataAccess.General
                                 Created = reader.DateTimeValue("Created"),
                                 StartDate = reader.DateTimeValue("StartDate"),
                                 DueDate = reader.DateTimeValue("DueDate"),
+                                EarlyDueDate = reader.DateTimeValue("EarlyDueDate"),
                                 FinishDate = reader.DateTimeValue("FinishDate"),
                                 PreviousActivityId = reader.IntegerValue("PreviousActivityId"),
                                 UserId = reader.IntegerValue("UserId"),
@@ -69,7 +70,7 @@ namespace Architect.API.Core.DataAccess.General
         public static List<Architect.API.Core.Contracts.General.ProcessInstance> RetrieveByEntity(int entityType, long entityId, int companyId, IDbConnection connection = null)
         {
             List<Architect.API.Core.Contracts.General.ProcessInstance> result = new List<Architect.API.Core.Contracts.General.ProcessInstance>();
-            Database.Select("SELECT ActivityId, InstanceId, CaseId, ProcessInstance.CompanyId, EntityType, EntityId, FlowId, StepId, TaskId, Created, StartDate, DueDate, FinishDate, PreviousActivityId, ProcessInstance.UserId, Comments, ProcessInstance.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessInstance.UpdateDate " +
+            Database.Select("SELECT ActivityId, InstanceId, CaseId, ProcessInstance.CompanyId, EntityType, EntityId, FlowId, StepId, TaskId, Created, StartDate, EarlyDueDate, DueDate, FinishDate, PreviousActivityId, ProcessInstance.UserId, Comments, ProcessInstance.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessInstance.UpdateDate " +
                               "FROM ProcessInstance " +
                               "LEFT JOIN UserMember um ON um.UserId = ProcessInstance.UserId " +
                              "WHERE ProcessInstance.CompanyId=:CompanyId AND EntityType=:EntityType AND EntityId=:EntityId " +
@@ -91,8 +92,9 @@ namespace Architect.API.Core.DataAccess.General
                                 StepId = reader.IntegerValue("StepId"),
                                 TaskId = reader.IntegerValue("TaskId"),
                                 Created = reader.DateTimeValue("Created"),
-                                StartDate = reader.DateTimeValue("StartDate"),
+                                StartDate = reader.DateTimeValue("StartDate"),                                
                                 DueDate = reader.DateTimeValue("DueDate"),
+                                EarlyDueDate = reader.DateTimeValue("EarlyDueDate"),
                                 FinishDate = reader.DateTimeValue("FinishDate"),
                                 PreviousActivityId = reader.IntegerValue("PreviousActivityId"),
                                 UserId = reader.IntegerValue("UserId"),
@@ -106,7 +108,7 @@ namespace Architect.API.Core.DataAccess.General
         public static List<Architect.API.Core.Contracts.General.ProcessInstance> RetrieveByInstanceId(int instanceId, int companyId, IDbConnection connection = null)
         {
             List<Architect.API.Core.Contracts.General.ProcessInstance> result = new List<Architect.API.Core.Contracts.General.ProcessInstance>();
-            Database.Select("SELECT ActivityId, InstanceId, CaseId, ProcessInstance.CompanyId, EntityType, EntityId, FlowId, StepId, TaskId, Created, StartDate, DueDate, FinishDate, PreviousActivityId, ProcessInstance.UserId, Comments, ProcessInstance.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessInstance.UpdateDate " +
+            Database.Select("SELECT ActivityId, InstanceId, CaseId, ProcessInstance.CompanyId, EntityType, EntityId, FlowId, StepId, TaskId, Created, StartDate, EarlyDueDate, DueDate, FinishDate, PreviousActivityId, ProcessInstance.UserId, Comments, ProcessInstance.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessInstance.UpdateDate " +
                               "FROM ProcessInstance " +
                               "LEFT JOIN UserMember um ON um.UserId = ProcessInstance.UserId " +
                              "WHERE ProcessInstance.CompanyId=:CompanyId AND ProcessInstance.InstanceId=:InstanceId " +
@@ -127,8 +129,9 @@ namespace Architect.API.Core.DataAccess.General
                                 StepId = reader.IntegerValue("StepId"),
                                 TaskId = reader.IntegerValue("TaskId"),
                                 Created = reader.DateTimeValue("Created"),
-                                StartDate = reader.DateTimeValue("StartDate"),
+                                StartDate = reader.DateTimeValue("StartDate"),                                
                                 DueDate = reader.DateTimeValue("DueDate"),
+                                EarlyDueDate = reader.DateTimeValue("EarlyDueDate"),
                                 FinishDate = reader.DateTimeValue("FinishDate"),
                                 PreviousActivityId = reader.IntegerValue("PreviousActivityId"),
                                 UserId = reader.IntegerValue("UserId"),

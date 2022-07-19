@@ -308,19 +308,6 @@ namespace Architect.API.Core.Business.General
                     result.Add(new Core.Contracts.General.Error() { Group = group, Key = "MailToStepResponsibleTmpl", Message = "El valor indicado para el mail to step responsible tmpl no es valido" });
                 }
 
-                //MailForSLAExpiration:
-                if (source.MailForSLAExpiration.IsNotEmpty() && !Core.Business.Common.LkpExist(companyId, "MailSendOptions", source.MailForSLAExpiration.ToString()))
-                {
-                    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "MailForSLAExpiration", Message = "El valor indicado para el mail for sla expiration no es valido" });
-                }
-
-                //MailForSLAExpirationCustom:
-
-                //MailForSLAExpirationTmpl:
-                if (source.MailForSLAExpirationTmpl.IsNotEmpty() && !Core.Business.Common.LkpExist(companyId, "MailTemplate", source.MailForSLAExpirationTmpl.ToString()))
-                {
-                    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "MailForSLAExpirationTmpl", Message = "El valor indicado para el mail for slae xpiration tmpl no es valido" });
-                }
 
                 //PreScript:
 
@@ -357,11 +344,6 @@ namespace Architect.API.Core.Business.General
                 item.MailToStepResponsibleDesc = Core.Business.Common.LkpDescription(companyId, "MailSendOptions", item.MailToStepResponsible.ToString());
             if (item.MailToStepResponsibleTmpl.IsNotEmpty())
                 item.MailToStepResponsibleTmplDesc = Core.Business.Common.LkpDescription(companyId, "MailTemplate", item.MailToStepResponsibleTmpl.ToString());
-            if (item.MailForSLAExpiration.IsNotEmpty())
-                item.MailForSLAExpirationDesc = Core.Business.Common.LkpDescription(companyId, "MailSendOptions", item.MailForSLAExpiration.ToString());
-            if (item.MailForSLAExpirationTmpl.IsNotEmpty())
-                item.MailForSLAExpirationTmplDesc = Core.Business.Common.LkpDescription(companyId, "MailTemplate", item.MailForSLAExpirationTmpl.ToString());
-
         }
 
         private static void SynchronizeRoles(int companyId, int userId, int id, List<Utilities.Contracts.LookUpValue> currentRoles)
@@ -409,4 +391,5 @@ namespace Architect.API.Core.Business.General
         }
 
     }
+
 }
