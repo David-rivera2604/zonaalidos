@@ -167,6 +167,7 @@ app.ViewerQuery = (function () {
         spec.clickToSelect = true;
         spec.showColumnsToggleAll = true;
         spec.searchAlign = 'left';
+        spec.maintainMetaData = true;
         spec.rowStyle = function (row, index) {
             return {
                 css: {
@@ -194,6 +195,7 @@ app.ViewerQuery = (function () {
                 var parentKey = '';
                 var key = '';
                 var parameters = this.detailParameters.split(":");
+                var id = `tbl${this.detailId}${index}`;
                 for (i = 0; i < parameters.length; i++) {
                     url += ':' + parameters[i].split("=")[0] + '=';
                     if (parameters[i].split("=")[1].startsWith("const.")) {
@@ -206,9 +208,9 @@ app.ViewerQuery = (function () {
                 }
 
                 $detail.append('<span class="detail-title">...</span>');
-                $detail.append('<div class="table-responsive" style="background-color: white; margin: 0px 0px 0px 10px;"><table style="font-size: 11px"></table></div>');
+                $detail.append('<div class="table-responsive" style="background-color: white; margin: 0px 0px 0px 10px;"><table style="font-size: 11px" id="' + id + '"></table></div>');
 
-                Child($detail.find('span'), $detail.find('table'), this.detailId, url);
+                Child($detail.find('span'), $detail.find('table'), this.detailId, url, id);
             };
         }
         else {
@@ -256,6 +258,9 @@ app.ViewerQuery = (function () {
                     if (column.events != undefined) {
                         column.events = 'Local_Events';
                     }
+                    if (column.colorstate != undefined) {
+                        app.ViewerQuery.state[column.field] = column.colorstate;
+                    }
                 });
             });
         }
@@ -272,6 +277,9 @@ app.ViewerQuery = (function () {
                 if (column.events != undefined) {
                     column.events = 'Local_Events';
                 }
+                if (column.colorstate != undefined) {
+                    app.ViewerQuery.state[column.field] = column.colorstate;
+                }
             });
         }
 
@@ -286,6 +294,9 @@ app.ViewerQuery = (function () {
             detailOpen: 'fa-angle-double-right',
             detailClose: 'fa-angle-double-down',
             export: 'fa-download'
+        };
+        spec.onPostBody = function (data) {
+            app.ui.CommonBehaviour();
         };
         $(gridControlName).bootstrapTable(spec);
         if (spec.searchStyle != undefined) {
@@ -395,7 +406,7 @@ app.ViewerQuery = (function () {
         });
     };
 
-    function Child(title, $el, id, url) {
+    function Child(title, $el, id, url, tableId) {
         app.core.Get(app.setting.apipath + 'v1/Viewer/QuerySpecification?id=' + id + '&url=' + window.location.search.slice(1).replace(/&/g, ':'))
             .done(function (data, textStatus, jqXHR) {
                 var spec = data.table;
@@ -426,11 +437,17 @@ app.ViewerQuery = (function () {
                 spec.showRefresh = false;
                 spec.showColumns = false;
                 spec.showColumnsToggleAll = false;
-
+                spec.maintainMetaData = true;
+                spec.onPostBody = function (data) {
+                    app.ui.CommonBehaviour();
+                };
                 //spec.onRefresh = function (params) {
                 //    app.ViewerQuery.Refresh(params, $el);
                 //};
 
+                if (spec.onAll != undefined) {
+                    spec.onAll = new Function(["name", "args"], "{ " + spec.onAll + "('" + tableId + "', name, args); }");
+                }
                 $.each(spec.columns, function (key, column) {
                     if (column.formatter != undefined && column.formatter.startsWith('function ')) {
                         column.formatter = column.formatter.replace(/@_/g, '\\\'').parseFunction();
@@ -442,6 +459,9 @@ app.ViewerQuery = (function () {
                     }
                     if (column.events != undefined) {
                         column.events = 'Local_Events';
+                    }
+                    if (column.colorstate != undefined) {
+                        app.ViewerQuery.state[column.field] = column.colorstate;
                     }
                 });
 
@@ -606,7 +626,11 @@ app.ViewerQuery = (function () {
                     break;
 
                 case 'printr':
-                    app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/ImprimirRecibo/' + row.NUM_RECIBO, false, 'Mapfre Recibo.pdf')
+                    let reportPath = 'Recibo';
+                    if (row.TIP_SITUACION == 'CT') {
+                        reportPath = 'DepositoPrima';
+                    }
+                    app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/Imprimir' + reportPath + '/' + row.NUM_RECIBO, false, 'Mapfre ' + reportPath + '.pdf')
                         .done(function (data, textStatus, jqXHR) {
                             window.open(data);
                         });
@@ -629,7 +653,7 @@ app.ViewerQuery = (function () {
         }
     };
 })();
-
+app.ViewerQuery.state = {};
 window.Local_Events = {
     'click .event': function (e, value, row, index) {
         e.stopPropagation();

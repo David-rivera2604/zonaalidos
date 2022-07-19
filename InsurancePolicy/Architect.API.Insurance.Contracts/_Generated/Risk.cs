@@ -166,6 +166,14 @@ namespace Architect.API.Insurance.Contracts.Policy
         /// Fecha que se actualizo por última vez el registro.
         /// </summary>
         [DataMember(), JsonProperty()] public DateTime UpdateDate { get; set; }
+
+        /// <summary>
+        /// Indica si el usuario puede firma de forma electrónica.
+        /// </summary>
+        [DataMember(), JsonProperty()] public bool HasDigitalSignature { get; set; }
+
+        [DataMember(), JsonProperty()] public int Subsidiary { get; set; }
+        [DataMember(), JsonProperty()] public string MainPolicyId { get; set; }
     }
 }
 

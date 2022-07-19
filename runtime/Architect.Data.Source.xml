@@ -267,6 +267,16 @@
             Acciones relacionas con la seguridad de la aplicación.
             </summary>
         </member>
+        <member name="M:Architect.Data.Source.Controllers.DataSourceController.DataFactory(System.String,System.String,System.String)">
+            <summary>
+            Permite recuperar la información generada desde cualquier consulta de datos configurable
+            </summary>
+            <param name="id">Id de query</param>
+            <param name="sequence">Secuencia a usar</param>
+            <param name="url">Url raw</param>
+            <param name="parameters">parameters en consulta</param>
+            <returns></returns>
+        </member>
         <member name="M:Architect.Data.Source.Controllers.DataSourceController.Build(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Boolean)">
             <summary>
             Permite la construcción de fuentes de datos.
@@ -277,16 +287,6 @@
         <member name="M:Architect.Data.Source.Controllers.DataSourceController.ExportToExcel(System.String,System.Int32,System.String)">
             <summary>
             Method para obtener puntumente la consulta
-            </summary>
-            <param name="id">Id de query</param>
-            <param name="sequence">Secuencia a usar</param>
-            <param name="url">Url raw</param>
-            <param name="parameters">parameters en consulta</param>
-            <returns></returns>
-        </member>
-        <member name="M:Architect.Data.Source.Controllers.DataSourceController.DataFactory(System.String,System.String,System.String)">
-            <summary>
-            Permite recuperar la información generada desde cualquier consulta de datos configurable
             </summary>
             <param name="id">Id de query</param>
             <param name="sequence">Secuencia a usar</param>
@@ -337,6 +337,11 @@
         <member name="T:Architect.Data.Source.DataAccess.Visualizations">
             <summary>
             Visualizaciones de datos en forma de widget, reportes, dashboard.
+            </summary>
+        </member>
+        <member name="M:Architect.Data.Source.DataAccess.Visualizations.RetrieveWithCache(System.String,System.Int32)">
+            <summary>
+            Recupera un registro en la tabla Visualizations por medio de su clave primaria.
             </summary>
         </member>
         <member name="M:Architect.Data.Source.DataAccess.Visualizations.RetrieveWithCache(System.Int32,System.Int32)">

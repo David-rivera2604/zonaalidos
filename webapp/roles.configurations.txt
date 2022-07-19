@@ -12,3 +12,11 @@ ALIADO: BAYER, CATURIX
 				Notificados por la plantilla Notify_RequestOnReview({UserRoleList.Revisor}) setting "Mapfre.Notify.Revisor.RoleName"
   + Empleado  - Indica que el usuario es empleado de Bayer
 	Seguridad - Acceso a opciones de seguridad del sistema.
+
+
+ALIADO: ALIADO
+--------------------------------
+  + Empleado  - Avisos de cobro. Indica que el usuario es empleado de Mapfre.
+				En la creación de avisos de cobro, permite indicar el agente al cual se quieres generar el aviso.
+  + Pago      - Botón de pago. Indica que el botón de pago debe estar visible para su uso.
+				En la consulta de recibos pendientes, permite que se haga visible el botón de pago.

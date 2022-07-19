@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Architect.API.Insurance.Business.Bayer
 {
@@ -294,7 +293,7 @@ namespace Architect.API.Insurance.Business.Bayer
             inclusionInfo.RefundBankAccountType = riskBayer.RefundBankAccountType;
             inclusionInfo.RefundBankAccountCurrency = riskBayer.RefundBankAccountCurrency;
             inclusionInfo.EmployeeNumber = riskBayer.EmployeeNumber;
-            
+
 
             return inclusionInfo;
 

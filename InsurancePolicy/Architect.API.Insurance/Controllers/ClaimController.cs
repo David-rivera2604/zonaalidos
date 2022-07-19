@@ -1,14 +1,7 @@
-﻿using Architect.Utilities.Extensions;
-using Architect.API.Insurance.Contracts.Product;
-using Microsoft.Web.Http;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
+﻿using Microsoft.Web.Http;
 using System.Threading.Tasks;
-using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web;
 
 namespace Architect.API.Insurance.Controllers
 {

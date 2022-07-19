@@ -3,17 +3,17 @@
   ],
   "Comportamientos": [
     {
-      "Condicion": "{La edad del asegurado} sea mayor o igual a 61 y {Aliado} es igual a {Coope}",
+      "Condicion": "{Aliado} es igual a {Coope} y {La edad del asegurado} sea mayor o igual a 61",
       "Descripcion": "Debe indicar el cuestionario de Covid",
       "Accion": "Show.CV"
     },
     {
-      "Condicion": "{La edad del asegurado} sea mayor o igual a 65 y ({Aliado} no es igual a {Credecoop} y {Aliado} no es igual a {CarroFácil})",
+      "Condicion": "{Aliado} es igual a {Coope} y {La edad del asegurado} sea mayor o igual a 65",
       "Descripcion": "Debe indicar la declaración de salud",
       "Accion": "Show.DS,Mode.Underwriting"
     },
     {
-      "Condicion": "({La edad del asegurado} sea mayor o igual a 65 o {La suma asegurada} sea mayor a 140000) y {Aliado} es igual a {CarroFácil}",
+      "Condicion": "{Aliado} es igual a {CarroFácil} y ({La edad del asegurado} sea mayor o igual a 65 o {La suma asegurada} sea mayor a 140000)",
       "Descripcion": "Debe indicar la declaración de salud",
       "Accion": "Show.DS,Mode.Underwriting"
     },

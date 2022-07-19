@@ -55,6 +55,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architect.Utilities.Excel",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architect.Payment.Integrations", "Core\Architect.Payment.Integrations\Architect.Payment.Integrations.csproj", "{4950C088-7A09-4E2B-B4DE-D2381D0739C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architect.DocuSign.Integrations", "Core\Architect.DocuSign.Integrations\Architect.DocuSign.Integrations.csproj", "{41B3F1C8-FDB5-4DB4-BE61-6BF1576A09E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -145,6 +147,10 @@ Global
 		{4950C088-7A09-4E2B-B4DE-D2381D0739C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4950C088-7A09-4E2B-B4DE-D2381D0739C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4950C088-7A09-4E2B-B4DE-D2381D0739C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41B3F1C8-FDB5-4DB4-BE61-6BF1576A09E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41B3F1C8-FDB5-4DB4-BE61-6BF1576A09E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41B3F1C8-FDB5-4DB4-BE61-6BF1576A09E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41B3F1C8-FDB5-4DB4-BE61-6BF1576A09E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -170,6 +176,7 @@ Global
 		{ADE9E68B-134E-0D88-34F0-07A5AAD11285} = {A55F4A46-8E3E-4F3B-B23F-E13DC75C5D8C}
 		{231F38EE-E067-4A51-9195-FB5A3E0D337D} = {5588463B-D9C9-4CF3-AE4F-254F40C2C106}
 		{4950C088-7A09-4E2B-B4DE-D2381D0739C6} = {A55F4A46-8E3E-4F3B-B23F-E13DC75C5D8C}
+		{41B3F1C8-FDB5-4DB4-BE61-6BF1576A09E7} = {A55F4A46-8E3E-4F3B-B23F-E13DC75C5D8C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {015441FD-3714-4C1E-95CE-938D26A638AF}

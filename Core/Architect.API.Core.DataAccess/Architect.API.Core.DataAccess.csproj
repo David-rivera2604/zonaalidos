@@ -81,7 +81,9 @@
     <Compile Include="General\ProcessInstance.cs" />
     <Compile Include="General\ProcessSpecFlow.cs" />
     <Compile Include="General\ProcessSpecLink.cs" />
+    <Compile Include="General\ProcessSpecSLALevel.cs" />
     <Compile Include="General\ProcessSpecStep.cs" />
+    <Compile Include="General\ProcessSpecFlowRole.cs" />
     <Compile Include="General\ProcessSpecStepRole.cs" />
     <Compile Include="General\ProcessSpecTask.cs" />
     <Compile Include="Process\Specification.cs" />
@@ -106,7 +108,10 @@
     <Compile Include="_Generated\ProcessCaseComplement.cs" />
     <Compile Include="_Generated\ProcessInstance.cs" />
     <Compile Include="_Generated\ProcessSpecFlow.cs" />
+    <Compile Include="_Generated\ProcessSpecFlowRole.cs" />
     <Compile Include="_Generated\ProcessSpecLink.cs" />
+    <Compile Include="_Generated\ProcessSpecSLA.cs" />
+    <Compile Include="_Generated\ProcessSpecSLALevel.cs" />
     <Compile Include="_Generated\ProcessSpecStep.cs" />
     <Compile Include="_Generated\ProcessSpecStepRole.cs" />
     <Compile Include="_Generated\ProcessSpecTask.cs" />

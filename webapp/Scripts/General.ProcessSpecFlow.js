@@ -21,6 +21,7 @@ app.GeneralProcessSpecFlow = (function () {
     function Init_Controls() {
 
         $('#StatusFlt').select2({ width: '100%', theme: 'bootstrap4' });
+        $('#Roles').select2({ width: '100%', theme: 'bootstrap4' });
         $(".formbtn").appendTo("#GenericToolBar");
     }
 
@@ -296,12 +297,13 @@ app.GeneralProcessSpecFlow = (function () {
     }
 
     function Init_Lookups() {
-        app.core.Lookups(['MailServer.MailServer', 'EstadoRegistro.Status', 'EstadoRegistro.StatusFlt'], Dynamic_Event_Controls);
+        app.core.Lookups(['MailServer.MailServer', 'EstadoRegistro.Status', 'EstadoRegistro.StatusFlt', 'SLA.SLA.'], Dynamic_Event_Controls);
         // Dependencies
     }
 
     function Dynamic_Event_Controls() {
         $('#StatusFlt').select2({ width: '100%', theme: 'bootstrap4' });
+        app.core.LoadLookup(app.setting.apipath + 'v1/RoleMember/Lookup', 'Roles');
 
     }
 
@@ -322,8 +324,9 @@ app.GeneralProcessSpecFlow = (function () {
             ReferenceLookupList4: $('#ReferenceLookupList4').val(),
             ReferenceCaption5: $('#ReferenceCaption5').val(),
             ReferenceLookupList5: $('#ReferenceLookupList5').val(),
-            Status: $('#Status').val()
-
+            Status: $('#Status').val(),
+            Roles: app.ui.GetDropDownMultiValues('Roles'),
+            SLA: app.ui.GetDropDownNumericValue('#SLA')
         };
     }
 
@@ -344,8 +347,8 @@ app.GeneralProcessSpecFlow = (function () {
         $('#ReferenceCaption5').val(data.ReferenceCaption5);
         $('#ReferenceLookupList5').val(data.ReferenceLookupList5);
         $('#Status').val(data.Status);
-
-        
+        app.ui.SetDropDownMultiValues('Roles', data.Roles);
+        $('#SLA').val(data.SLA);
     }
 
     function Setup_Validations() {
@@ -465,15 +468,6 @@ app.GeneralProcessSpecFlow = (function () {
                     sortable: true,
                     halign: 'center'
                 }, {
-                    field: 'SLATimeOut',
-                    title: 'SLA Time Out',
-                    titleTooltip: 'Define el tiempo maximo en minutos para que el paso o estado se de por procesado.',
-                    sortable: true,
-                    halign: 'center',
-                    align: 'right',
-                    formatter: 'app.ui.IntegerFormatter',
-                    visible: false
-                }, {
                     field: 'ProcessStatusDesc',
                     title: 'Estado',
                     sortable: true,
@@ -550,24 +544,6 @@ app.GeneralProcessSpecFlow = (function () {
                     halign: 'center',
                     visible: false
                 }, {
-                    field: 'MailForSLAExpirationDesc',
-                    title: 'Mail for SLA Expiration',
-                    sortable: true,
-                    halign: 'center',
-                    visible: false
-                }, {
-                    field: 'MailForSLAExpirationCustom',
-                    title: 'Mail for SLA Expiration',
-                    sortable: true,
-                    halign: 'center',
-                    visible: false
-                }, {
-                    field: 'MailForSLAExpirationTmplDesc',
-                    title: 'Mail for SLAE xpiration Tmpl',
-                    sortable: true,
-                    halign: 'center',
-                    visible: false
-                }, {
                     field: 'PreScript',
                     title: 'Pre Script',
                     sortable: true,
@@ -640,15 +616,6 @@ app.GeneralProcessSpecFlow = (function () {
                     title: 'Descripción',
                     sortable: true,
                     halign: 'center'
-                }, {
-                    field: 'SLATimeOut',
-                    title: 'SLA Time Out',
-                    titleTooltip: 'Define el tiempo maximo en minutos para que el paso o estado se de por procesado.',
-                    sortable: true,
-                    halign: 'center',
-                    align: 'right',
-                    formatter: 'app.ui.IntegerFormatter',
-                    visible: false
                 }, {
                     field: 'IsRequired',
                     title: 'Is Required',

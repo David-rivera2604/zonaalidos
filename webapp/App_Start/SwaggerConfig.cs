@@ -15,8 +15,6 @@ namespace aliados
         {
             if (ConfigurationManager.AppSettings["API.Swagger.Enable"] == "True")
             {
-                var thisAssembly = typeof(SwaggerConfig).Assembly;
-
                 GlobalConfiguration.Configuration
                     .EnableSwagger(c =>
                         {
@@ -114,15 +112,16 @@ namespace aliados
                             // those comments into the generated docs and UI. You can enable this by providing the path to one or
                             // more Xml comment files.
                             //
-                            c.IncludeXmlComments(System.AppDomain.CurrentDomain.BaseDirectory + @"\bin\Architect.API.Core.xml");
-                            c.IncludeXmlComments(System.AppDomain.CurrentDomain.BaseDirectory + @"\bin\Architect.API.Core.Contracts.xml");
-                            c.IncludeXmlComments(System.AppDomain.CurrentDomain.BaseDirectory + @"\bin\Architect.API.Insurance.xml");
-                            c.IncludeXmlComments(System.AppDomain.CurrentDomain.BaseDirectory + @"\bin\Architect.API.Insurance.Contracts.xml");
+                            c.IncludeXmlComments($@"{System.AppDomain.CurrentDomain.BaseDirectory}\bin\Architect.API.Core.xml");
+                            c.IncludeXmlComments($@"{System.AppDomain.CurrentDomain.BaseDirectory}\bin\Architect.API.Core.Contracts.xml");
+                            c.IncludeXmlComments($@"{System.AppDomain.CurrentDomain.BaseDirectory}\bin\Architect.API.Insurance.xml");
+                            c.IncludeXmlComments($@"{System.AppDomain.CurrentDomain.BaseDirectory}\bin\Architect.API.Insurance.Contracts.xml");
                             //c.IncludeXmlComments(System.AppDomain.CurrentDomain.BaseDirectory + @"\bin\Architect.API.Product.xml");
                             //c.IncludeXmlComments(System.AppDomain.CurrentDomain.BaseDirectory + @"\bin\Architect.API.Product.Contracts.xml");
-                            c.IncludeXmlComments(System.AppDomain.CurrentDomain.BaseDirectory + @"\bin\Architect.API.TRON.xml");
-                            c.IncludeXmlComments(System.AppDomain.CurrentDomain.BaseDirectory + @"\bin\Architect.API.Tron.Contracts.xml");
-                            c.IncludeXmlComments(System.AppDomain.CurrentDomain.BaseDirectory + @"\bin\Architect.Data.Source.xml");
+                            c.IncludeXmlComments($@"{System.AppDomain.CurrentDomain.BaseDirectory}\bin\Architect.API.TRON.xml");
+                            c.IncludeXmlComments($@"{System.AppDomain.CurrentDomain.BaseDirectory}\bin\Architect.API.Tron.Contracts.xml");
+                            c.IncludeXmlComments($@"{System.AppDomain.CurrentDomain.BaseDirectory}\bin\Architect.Data.Source.xml");
+                            c.IncludeXmlComments($@"{System.AppDomain.CurrentDomain.BaseDirectory}\bin\Architect.Payment.Integrations.xml");
 
                             //c.IncludeXmlComments(System.AppDomain.CurrentDomain.BaseDirectory + @"\bin\Architect.Data.Source.xml");
 

@@ -11,12 +11,12 @@ namespace Architect.DataFactory
     public static class Utils
     {
 
-        public static System.Data.DataTable StatementExecute(string statement, int statementType, string connectionName, Dictionary<string, string> values, bool withCache, string prefix= null)
+        public static System.Data.DataTable StatementExecute(string statement, int statementType, string connectionName, Dictionary<string, string> values, bool withCache, string prefix = null)
         {
             System.Data.DataTable records = null;
             MatchCollection parameterMatches = Regex.Matches(statement, @"{(.+?)}"); // ([^)]*)
 
-            if(ConfigurationManager.AppSettings["Working.Mode"] == "Development")
+            if (Utilities.Helpers.Settings.StringValue("Working.Mode") == "Development")
             {
                 withCache = false;
             }
@@ -102,7 +102,9 @@ namespace Architect.DataFactory
                             case "app.cod_docum":
                                 dataManager.AddParameter(paremeter.Groups[1].Value, Architect.DataFactory.Enumerations.DbType.String, 0, values["Token.Identification"]);
                                 break;
-
+                            case "app.roles":
+                                dataManager.AddParameter(paremeter.Groups[1].Value, Architect.DataFactory.Enumerations.DbType.String, 0, "," + values["Token.Roles"] + ",");
+                                break;
                         }
                     }
                     else if (paremeter.Groups[1].Value.StartsWith("const.", StringComparison.CurrentCultureIgnoreCase))

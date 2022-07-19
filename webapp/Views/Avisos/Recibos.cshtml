@@ -32,14 +32,21 @@
                             <!-- datosdelapoliza Zone -->
                             <div class="form-row">
                                 <div class="col-lg-12">
-
                                     <div class="form-row">
+                                        <!-- Cod_Agt DropDownList -->
+                                        <div class='col-sm-3 col-md-3 d-none role-Empleado-visible'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='Cod_Agt'>Agente<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <select id='Cod_Agt' name='Cod_Agt' class='form-control' data-event='clear.grid'>
+                                                </select>
+                                            </div>
+                                        </div>
                                         <!-- desde DatePicker -->
                                         <div class='col-sm-3 col-md-3'>
                                             <div class='form-group'>
                                                 <label class='control-label' for='desde'>Desde<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                 <div class='input-group date' id='desde_group'>
-                                                    <input type='text' id='desde' name='desde' class='form-control' size='10' maxlength='10' placeholder='día/mes/año'  data-event='clear.grid'/>
+                                                    <input type='text' id='desde' name='desde' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' data-event='clear.grid' />
                                                     <span class='input-group-addon'>
                                                         <span class='glyphicon glyphicon-calendar'></span>
                                                     </span>
@@ -53,7 +60,7 @@
                                             <div class='form-group'>
                                                 <label class='control-label' for='hasta'>Hasta<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                 <div class='input-group date' id='hasta_group'>
-                                                    <input type='text' id='hasta' name='hasta' class='form-control' size='10' maxlength='10' placeholder='día/mes/año'  data-event='clear.grid' />
+                                                    <input type='text' id='hasta' name='hasta' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' data-event='clear.grid' />
                                                     <span class='input-group-addon'>
                                                         <span class='glyphicon glyphicon-calendar'></span>
                                                     </span>
@@ -102,6 +109,7 @@
                                         <div class='col-sm-3 col-md-3'>
                                             <div class='form-group'>
                                                 <label class='control-label' for='DocumentNumber'>Tomador</label>
+                                                <label class='control-label float-right' for='DocumentNumber' id="Name"></label>
                                                 <div class='input-group'>
                                                     <span class='input-group-addon'>
                                                         <span class='glyphicon glyphicon-barcode'></span>
@@ -119,8 +127,7 @@
                                                     </div>
                                                     <input id='DocumentNumber' name='DocumentNumber'
                                                            type='text' class='form-control' size='20'
-                                                           maxlength='20' placeholder='0X-XXXX-XXXX'  data-event='clear.grid'>
-
+                                                           maxlength='20' placeholder='0X-XXXX-XXXX' data-event='clear.grid'>
                                                 </div>
                                                 <div id='DocumentNumber_validate'></div>
                                             </div>

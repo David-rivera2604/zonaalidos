@@ -89,330 +89,7 @@
         <div class="tab-content" style="padding-top: 10px">
 
             <!-- Asegurado -->
-            <div id="aseguradoTab" class="tab-pane active show fade">
-                <form id='PrimaryInsuredEdtFrm' data-toggle='validator'>
-                    <fieldset disabled>
-
-                        <!-- Datos generales -->
-                        <div class="form-row">
-                            <!-- DocumentNumber -->
-                            <div class='col-sm-4 col-md-3'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='DocumentNumber'>
-                                        Identificación<span class='required-mark'
-                                                            title='Este campo debe ser llenado de forma obligatoria'>*</span>
-                                    </label>
-                                    <div class='input-group'>
-                                        <span class='input-group-addon'>
-                                            <span class='glyphicon glyphicon-barcode'></span>
-                                        </span>
-
-                                        <div class="input-group-prepend">
-                                            <button class="btn btn-default dropdown-toggle"
-                                                    type="button" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false" data-value='1' id="DocumentType">
-                                                Cédula
-                                            </button>
-                                            <div class="dropdown-menu" id="DocumentTypeMenu">
-                                                <a class="dropdown-item active" href="#" data-value='1'>Cédula</a>
-                                                <a class="dropdown-item" href="#" data-value='2'>DIMEX</a>
-                                                <a class="dropdown-item" href="#" data-value='3'>Pasaporte</a>
-                                                <a class="dropdown-item" href="#" data-value='4'>Cédula jurídica</a>
-                                            </div>
-                                        </div>
-
-                                        <input id='DocumentNumber' name='DocumentNumber'
-                                               type='text' class='form-control' size='20'
-                                               maxlength='20' placeholder="0X-XXXX-XXXX">
-
-                                    </div>
-                                    <div id='DocumentNumber_validate'></div>
-                                </div>
-                            </div>
-                            <!-- FirstName -->
-                            <div class='col-sm-4 col-md-3'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='FirstName'>
-                                        Nombres<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
-                                    </label>
-                                    <div class='input-group'>
-                                        <span class='input-group-addon'>
-                                            <span class='glyphicon glyphicon-user'></span>
-                                        </span>
-                                        <input id='FirstName' name='FirstName' type='text'
-                                               class='form-control' size='40' maxlength='40'>
-                                        <input id='MiddleName' name='MiddleName' type='text'
-                                               class='form-control' size='40' maxlength='40'>
-                                    </div>
-                                    <div id='FirstName_validate'></div>
-                                </div>
-                            </div>
-                            <!-- LastName -->
-                            <div class='col-sm-4 col-md-3'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='LastName'>
-                                        Apellidos<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
-                                    </label>
-                                    <div class='input-group'>
-                                        <span class='input-group-addon'>
-                                            <span class='glyphicon glyphicon-user'></span>
-                                        </span>
-                                        <input id='LastName' name='LastName' type='text'
-                                               class='form-control' size='40' maxlength='40'>
-                                        <input id='SecondLastName' name='SecondLastName'
-                                               type='text' class='form-control' size='40'
-                                               maxlength='40'>
-                                    </div>
-                                    <div id='LastName_validate'></div>
-                                </div>
-                            </div>
-                            <!-- BirthDate -->
-                            <div class='col-sm-4 col-md-3'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='BirthDate'>
-                                        Fecha de
-                                        nacimiento<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
-                                    </label>
-                                    <div class='input-group date' id='BirthDate_group'>
-                                        <input id='BirthDate' name='BirthDate' type='text'
-                                               class='form-control' size='10' maxlength='10'
-                                               placeholder='día/mes/año'>
-                                        <span class='input-group-addon'>
-                                            <span class='glyphicon glyphicon-calendar'></span>
-                                        </span>
-                                    </div>
-                                    <div id='BirthDate_validate'></div>
-                                </div>
-                            </div>
-                            <!-- Gender -->
-                            <div class='col-sm-4 col-md-3'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='Gender'>
-                                        Sexo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
-                                    </label>
-                                    <select id='Gender' name='Gender'
-                                            class='form-control'></select>
-                                    <div id='Gender_validate'></div>
-                                </div>
-                            </div>
-                            <!-- CivilStatus -->
-                            <div class='col-sm-4 col-md-3'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='CivilStatus'>
-                                        Estado civil<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
-                                    </label>
-                                    <select id='CivilStatus' name='CivilStatus'
-                                            class='form-control'></select>
-                                </div>
-                            </div>
-                            <!-- Height -->
-                            <div class='col-sm-4 col-md-3'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='Height'>Estatura</label>
-                                    <div class='input-group'>
-                                        <input id='Height' name='Height' type='text'
-                                               class='form-control text-right' size='5'
-                                               maxlength='5'>
-                                        <span class='input-group-addon'>
-                                            <small class="text-muted" title="Metros">mts</small>
-                                        </span>
-                                    </div>
-                                    <div id='Height_validate'></div>
-                                </div>
-                            </div>
-                            <!-- Weight -->
-                            <div class='col-sm-4 col-md-3'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='Weight'>Peso</label>
-                                    <div class='input-group'>
-                                        <input id='Weight' name='Weight' type='text'
-                                               class='form-control text-right' size='5'
-                                               maxlength='5'>
-                                        <span class='input-group-addon'>
-                                            <small class="text-muted" title="Libras">lbs</small>
-                                        </span>
-                                    </div>
-                                    <div id='Weight_validate'></div>
-                                </div>
-                            </div>
-                            <!-- BloodPressureSystolic / BloodPressureDiastolic -->
-                            <div class='col-sm-4 col-md-3'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='Weight'>Presión arterial</label>
-                                    <div class='input-group'>
-                                        <input id='BloodPressureSystolic' name='BloodPressureSystolic' type='text' class='form-control text-right' size='3' maxlength='3'>
-                                        <span class='input-group-addon'>
-                                            /
-                                        </span>
-                                        <input id='BloodPressureDiastolic' name='BloodPressureDiastolic' type='text' class='form-control text-left' size='3' maxlength='3'>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <!-- PhoneNumber -->
-                            <div class='col-sm-4 col-md-3'>
-                                <div class='form-group'>
-                                    <label class='control-label'
-                                           for='PhoneNumber'>Teléfono</label>
-                                    <div class='input-group'>
-
-                                        <span class='input-group-addon'>
-                                            <span class='glyphicon glyphicon-earphone'></span>
-                                        </span>
-
-                                        <div class="input-group-prepend">
-                                            <button class="btn btn-default dropdown-toggle"
-                                                    type="button" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false" id="PhoneType" data-value='1'>
-                                                Celular
-                                            </button>
-                                            <div class="dropdown-menu" id="PhoneTypeMenu">
-                                                <a class="dropdown-item active" data-value='1'
-                                                   href="#">Celular</a>
-                                                <a class="dropdown-item" data-value='2' href="#">Habitación</a>
-                                                <a class="dropdown-item" data-value='3' href="#">Oficina</a>
-                                                <a class="dropdown-item" data-value='4' href="#">Fax</a>
-                                            </div>
-                                        </div>
-
-                                        <input id='PhoneNumber' name='PhoneNumber' type='text'
-                                               class='form-control' size='9' maxlength='9'>
-
-                                    </div>
-                                    <div id='PhoneNumber_validate'></div>
-                                </div>
-                            </div>
-                            <!-- PrimaryEmailAddress -->
-                            <div class='col-sm-4 col-md-3'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='PrimaryEmailAddress'>
-                                        Correo
-                                        electrónico<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
-                                    </label>
-                                    <div class='input-group'>
-                                        <span class='input-group-addon'>
-                                            <span class='glyphicon glyphicon-envelope'></span>
-                                        </span>
-                                        <input id='PrimaryEmailAddress'
-                                               name='PrimaryEmailAddress' type='text'
-                                               class='form-control' size='80' maxlength='80'>
-                                    </div>
-                                    <div id='PrimaryEmailAddress_validate'></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Dirección -->
-                        <div class="form-row">
-
-
-                            <div class="col-lg-12">
-
-                                <h4><i class="fa fa-map-marker"></i> Dirección</h4>
-                                <div class="hr-line-dashed"
-                                     style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-
-                                <div class="form-row">
-
-                                    <!-- Sequence -->
-                                    <input id='Sequence' name='Sequence' type='hidden' value=''>
-
-                                    <!-- Province -->
-                                    <div class='col-sm-2 col-md-2'>
-                                        <div class='form-group'>
-                                            <label class='control-label'
-                                                   for='Province'>
-                                                Provincia<span class='required-mark'
-                                                               title='Este campo debe ser llenado de forma obligatoria'>*</span>
-                                            </label>
-                                            <select id='Province' name='Province'
-                                                    class='form-control'></select>
-                                        </div>
-                                    </div>
-                                    <!-- Canton -->
-                                    <div class='col-sm-2 col-md-2'>
-                                        <div class='form-group'>
-                                            <label class='control-label'
-                                                   for='Canton'>
-                                                Cantón<span class='required-mark'
-                                                            title='Este campo debe ser llenado de forma obligatoria'>*</span>
-                                            </label>
-                                            <select id='Canton' name='Canton'
-                                                    class='form-control'></select>
-                                        </div>
-                                    </div>
-                                    <!-- District -->
-                                    <div class='col-sm-2 col-md-2'>
-                                        <div class='form-group'>
-                                            <label class='control-label'
-                                                   for='District'>
-                                                Distrito<span class='required-mark'
-                                                              title='Este campo debe ser llenado de forma obligatoria'>*</span>
-                                            </label>
-                                            <select id='District' name='District'
-                                                    class='form-control'></select>
-                                        </div>
-                                    </div>
-
-                                    <!-- AddressDetail -->
-                                    <div class='col-sm-6 col-md-6'>
-                                        <div class='form-group'>
-                                            <label class='control-label'
-                                                   for='AddressDetail'>
-                                                Dirección<span class='required-mark'
-                                                               title='Este campo debe ser llenado de forma obligatoria'>*</span>
-                                            </label>
-                                            <input id='AddressDetail' name='AddressDetail'
-                                                   type='text' class='form-control' size='120'
-                                                   maxlength='120'>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <!-- Otros datos -->
-                        <div class="form-row">
-
-
-                            <div class="col-lg-12">
-
-                                <h4>Otros datos</h4>
-                                <div class="hr-line-dashed"
-                                     style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-
-                                <div class="form-row">
-
-                                    <!-- Occupation -->
-                                    <div class='col-sm-4 col-md-3'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='Occupation'>Ocupación</label>
-                                            <input id='Occupation' name='Occupation' type='text' class='form-control' size='40' maxlength='40'>
-                                        </div>
-                                    </div>
-                                    <!-- RetirementModality -->
-                                    <div class='col-sm-4 col-md-3'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='RetirementModality'>Condición</label>
-                                            <select id='RetirementModality' name='RetirementModality' class='form-control'>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <!-- RetirementCause -->
-                                    <div class='col-sm-4 col-md-3'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='RetirementCause'>Causa de pensión</label>
-                                            <input id='RetirementCause' name='RetirementCause' type='text' class='form-control' size='40' maxlength='40' disabled="disabled">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </fieldset>
-                </form>
-            </div>
+            @Html.Partial("_asegurado")
 
             <!-- Beneficiarios -->
             <div id="beneficiariosTab" class="tab-pane">
@@ -446,7 +123,7 @@
                 </table>
                 <div id="beneficiariosEdt" class="animated fadeInRight">
                     @*<h4>Información del beneficiario</h4>
-                        <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>*@
+                <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>*@
                     <form id='beneficiaryEdtFrm' class='form-horizontal' data-toggle='validator'>
                         <fieldset disabled>
 
@@ -721,7 +398,7 @@
                 </div>
             </div>
 
-            <!-- Cuestionario de Salud-->
+            <!-- Cuestionario de Salud -->
             <div id="cuestionarioTab" class="tab-pane fade">
                 <form id='QuestionaryEdtFrm'>
                     <fieldset>
@@ -1503,7 +1180,7 @@
                 </form>
             </div>
 
-            <!-- Cuestionario Covid-->
+            <!-- Cuestionario Covid -->
             <div id="cuestionarioCovidTab" class="tab-pane fade">
                 <form id='QuestionaryCovidEdtFrm'>
                     <fieldset>
@@ -1606,7 +1283,7 @@
                                 <div id="question_54" class="form-row d-none" style="margin-left: 15px;">
                                     <div class='col-md-12'>
                                         <div class='form-group'>
-                                            <div class="custom-control custom-checkbox" >
+                                            <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" class="custom-control-input" id="Diagnosis_54_1">
                                                 <label class="custom-control-label control-label" for="Diagnosis_54_1" style="padding-top: 4px;">¿Fiebre de cualquier tipo?</label>
                                             </div>
@@ -1614,7 +1291,7 @@
                                     </div>
                                     <div class='col-md-12'>
                                         <div class='form-group'>
-                                            <div class="custom-control custom-checkbox" >
+                                            <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" class="custom-control-input" id="Diagnosis_54_2">
                                                 <label class="custom-control-label control-label" for="Diagnosis_54_2" style="padding-top: 4px;">¿Malestar general, cansancio dolor de cuerpo?</label>
                                             </div>
@@ -1622,7 +1299,7 @@
                                     </div>
                                     <div class='col-md-12'>
                                         <div class='form-group'>
-                                            <div class="custom-control custom-checkbox" >
+                                            <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" class="custom-control-input" id="Diagnosis_54_3">
                                                 <label class="custom-control-label control-label" for="Diagnosis_54_3" style="padding-top: 4px;">¿Tos? ¿Con o sin flema?</label>
                                             </div>
@@ -1638,7 +1315,7 @@
                                     </div>
                                     <div class='col-md-12'>
                                         <div class='form-group'>
-                                            <div class="custom-control custom-checkbox" >
+                                            <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" class="custom-control-input" id="Diagnosis_54_5">
                                                 <label class="custom-control-label control-label" for="Diagnosis_54_5" style="padding-top: 4px;">¿Dolor de garganta?</label>
                                             </div>
@@ -1809,7 +1486,7 @@
                                     <div class='col-md-6'>
                                         <div class='form-group'>
                                             <label class='control-label' for='Doctor_59'>¿Cuántas dosis posee?<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                            <input id='Doctor_59' name='Doctor_59' type='text' class='form-control' size='2' maxlength='2'  disabled>
+                                            <input id='Doctor_59' name='Doctor_59' type='text' class='form-control' size='2' maxlength='2' disabled>
                                         </div>
                                     </div>
                                 </div>
@@ -1822,298 +1499,7 @@
             </div>
 
             <!-- Póliza -->
-            <div id="polizaTab" class="tab-pane fade">
-                <form id='RiskEdtFrm' data-toggle='validator'>
-                    <fieldset>
-                        <!-- Datos generales de la póliza -->
-                        <div class="form-row">
-                            <!-- Id -->
-                            <input id='Id' name='Id' type='hidden' value=''>
-                            <!-- Currency -->
-                            <div class='col-sm-4 col-md-3'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='Currency'>Moneda<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                    <select id='Currency' name='Currency'
-                                            class='form-control'></select>
-                                </div>
-                            </div>
-                            <!-- ModuleCode -->
-                            <div class='col-sm-4 col-md-3'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='ModuleCode'>Plan<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                    <select id='ModuleCode' name='ModuleCode'
-                                            class='form-control'></select>
-                                </div>
-                            </div>
-                            <!-- PaymentFrequency -->
-                            <div class='col-sm-4 col-md-3'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='PaymentFrequency'>
-                                        Frecuencia de
-                                        pago<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
-                                    </label>
-                                    <select id='PaymentFrequency' name='PaymentFrequency'
-                                            class='form-control'></select>
-                                </div>
-                            </div>
-                            <!-- IssueDate -->
-                            <div class='col-sm-4 col-md-3'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='IssueDate'>
-                                        Fecha de
-                                        alta<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
-                                    </label>
-                                    <div class='input-group date' id='IssueDate_group'>
-                                        <input id='IssueDate' name='IssueDate' type='text'
-                                               class='form-control' size='10' maxlength='10'
-                                               placeholder='día/mes/año' disabled>
-                                        <span class='input-group-addon'>
-                                            <span class='glyphicon glyphicon-calendar'></span>
-                                        </span>
-                                    </div>
-                                    <div id='IssueDate_validate'></div>
-
-                                </div>
-                            </div>
-                            <!-- EffectiveDate -->
-                            <div class='col-sm-4 col-md-3'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='EffectiveDate'>
-                                        Inicio de
-                                        vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
-                                    </label>
-                                    <div class='input-group date' id='EffectiveDate_group'>
-                                        <input id='EffectiveDate' name='EffectiveDate'
-                                               type='text' class='form-control' size='10'
-                                               maxlength='10' placeholder='día/mes/año'>
-                                        <span class='input-group-addon'>
-                                            <span class='glyphicon glyphicon-calendar'></span>
-                                        </span>
-                                    </div>
-                                    <div id='EffectiveDate_validate'></div>
-
-                                </div>
-                            </div>
-                            <!-- EndingDate -->
-                            <div class='col-sm-4 col-md-3'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='EndingDate'>
-                                        Fin de
-                                        vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
-                                    </label>
-                                    <div class='input-group date' id='EndingDate_group'>
-                                        <input id='EndingDate' name='EndingDate' type='text'
-                                               class='form-control' size='10' maxlength='10'
-                                               placeholder='día/mes/año'>
-                                        <span class='input-group-addon'>
-                                            <span class='glyphicon glyphicon-calendar'></span>
-                                        </span>
-                                    </div>
-                                    <div id='EndingDate_validate'></div>
-
-                                </div>
-                            </div>
-
-                            <!-- InsuredAmountBase -->
-                            <div class='col-sm-4 col-md-3'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='InsuredAmountBase'>
-                                        Suma
-                                        asegurada<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
-                                    </label>
-                                    <input id='InsuredAmountBase' name='InsuredAmountBase' type='text'
-                                           class='form-control text-right' size='18'
-                                           maxlength='18'>
-                                </div>
-                            </div>
-                            <!-- InsuredAmountComplement -->
-                            <div class='col-sm-4 col-md-3'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='InsuredAmountComplement'>
-                                        Suma
-                                        asegurada a refundir<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
-                                    </label>
-                                    <input id='InsuredAmountComplement' name='InsuredAmountComplement' type='text'
-                                           class='form-control text-right' size='18'
-                                           maxlength='18' disabled>
-                                </div>
-                            </div>
-
-
-                            <!-- AnnualPremium -->
-                            <div class='col-sm-4 col-md-3'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='AnnualPremium'>
-                                        Prima
-                                        anual
-                                    </label>
-                                    <input id='AnnualPremium' name='AnnualPremium' type='text'
-                                           class='form-control text-right' size='18'
-                                           maxlength='18'>
-                                </div>
-                            </div>
-                            <!-- MonthlyPremium -->
-                            <div class='col-sm-4 col-md-3'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='MonthlyPremium'>
-                                        Prima
-                                        mensual
-                                    </label>
-                                    <input id='MonthlyPremium' name='MonthlyPremium' type='text'
-                                           class='form-control text-right' size='18'
-                                           maxlength='18'>
-                                </div>
-                            </div>
-                            <!-- Surcharge -->
-                            <div class='col-sm-4 col-md-3'>
-                                <div class='form-group d-none'>
-                                    <label class='control-label' for='Surcharge'>
-                                        Recargo
-                                    </label>
-                                    <div class='input-group'>
-                                        <input id='Surcharge' name='Surcharge' type='text'
-                                               class='form-control text-right' size='8'
-                                               maxlength='8' disabled>
-                                        <span class='input-group-addon'>
-                                            <small class="text-muted" title="Porcentaje">%</small>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <!-- InsuredAmount -->
-                            <div class='col-sm-4 offset-sm-8 col-md-3 offset-md-3'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='InsuredAmount'>
-                                        <b>Total de suma asegurada </b>
-                                    </label>
-                                    <input id='InsuredAmount' name='InsuredAmount' type='text'
-                                           class='form-control text-right' size='18'
-                                           maxlength='18' style="font-weight: bold;" disabled>
-                                </div>
-                            </div>
-                            <!-- TotalAnnualPremium col-sm-4 offset-sm-4 col-md-3 offset-md-3-->
-                            <div class='col-sm-4 offset-sm-8 col-md-3 offset-md-0'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='TotalAnnualPremium'>
-                                        <b>Total de prima anual</b>
-                                    </label>
-                                    <input id='TotalAnnualPremium' name='TotalAnnualPremium' type='text'
-                                           class='form-control text-right' size='18'
-                                           maxlength='18' style="font-weight: bold;" disabled>
-                                </div>
-                            </div>
-                            <!-- MonthlyPremium col-sm-4 offset-sm-4 col-md-3 offset-md-3-->
-                            <div class='col-sm-4 offset-sm-8 col-md-3 offset-md-0'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='TotalPremium'>
-                                        <b>Total de prima</b>
-                                    </label>
-                                    <input id='TotalPremium' name='TotalPremium' type='text'
-                                           class='form-control text-right' size='18'
-                                           maxlength='18' style="font-weight: bold;" disabled>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <!-- Annotation -->
-                            <div class='col-sm-4 col-md-12'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='Surcharge'>
-                                        Anotaciones
-                                    </label>
-
-
-                                    <div class='form-group'>
-                                        <textarea id='Annotation' name='Annotation' class='form-control' size='350' maxlength='350' rows="2"></textarea>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Estado de la póliza -->
-                        <div id="policyStatusZone" class="form-row d-none">
-                            <div class="col-lg-12">
-                                <h4>Estado de la póliza</h4>
-                                <div class="hr-line-dashed"
-                                     style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-                                <div class="form-row">
-                                    <!-- Status -->
-                                    <div class='col-sm-4 col-md-3'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='Status'>
-                                                Estado
-                                            </label>
-                                            <select id='Status' name='Status'
-                                                    class='form-control'></select>
-                                        </div>
-                                    </div>
-                                    <!-- CancellationDate -->
-                                    <div class='col-sm-4 col-md-3 offset-md-3'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='CancellationDate'>
-                                                Fecha de baja<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
-                                            </label>
-                                            <div class='input-group date' id='CancellationDate_group'>
-                                                <input id='CancellationDate' name='CancellationDate' type='text'
-                                                       class='form-control' size='10' maxlength='10'
-                                                       placeholder='día/mes/año' disabled>
-                                                <span class='input-group-addon'>
-                                                    <span class='glyphicon glyphicon-calendar'></span>
-                                                </span>
-                                            </div>
-                                            <div id='CancellationDate_validate'></div>
-
-                                        </div>
-                                    </div>
-                                    <!-- ReasonForStatus -->
-                                    <div class='col-sm-4 col-md-3'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='ReasonForStatus'>
-                                                Causa de la baja<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
-                                            </label>
-                                            <select id='ReasonForStatus' name='ReasonForStatus'
-                                                    class='form-control' disabled></select>
-                                        </div>
-                                    </div>
-                                    <div class='col-md-12 text-right'>
-                                        <a id="AcceptCancellation" href="" class="btn btn-danger btn-xs d-none" title="Cancela la póliza"><i class="fa fa-times"></i> Cancelar la póliza</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Comentarios -->
-                        <div id="policyComment" class="form-row d-none">
-                            <div class="col-lg-12">
-                                <h4>Observaciones</h4>
-                                <div class="hr-line-dashed"
-                                     style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-
-                                <div class="form-row">
-                                    <!-- Comments -->
-                                    <div class='col-md-12'>
-                                        <div class='form-group'>
-                                            <textarea id='Comments' name='Comments' class='form-control' size='350' maxlength='350' rows="3" disabled></textarea>
-                                        </div>
-                                    </div>
-                                    <div class='col-md-12 text-right'>
-                                        <a id="ReviewAccept" href="" class="btn btn-primary btn-xs d-none" title="Aceptar la solicitud"><i class="fa fa-thumbs-up"></i> Aceptar</a>
-                                        <a id="ReviewCondition" href="" class="btn btn-primary btn-xs d-none" title="Define condiciones para ser aceptadas por el aliado"><i class="fa fa-comments"></i> Condicionar</a>
-                                        <a id="ReviewDecline" href="" class="btn btn-danger btn-xs d-none" title="Declinar la solicitud"><i class="fa fa-times"></i> Declinar</a>
-                                        <a id="ReviewComplement" href="" class="btn btn-warning btn-xs d-none" title="Solicitar complementos"><i class="fa fa-files-o"></i> Solicitar complementos</a>
-
-                                        <a id="AcceptCondition" href="" class="btn btn-primary btn-xs d-none" title="Aceptar las condiciones definidas"><i class="fa fa-thumbs-up"></i> Aceptar</a>
-                                        <a id="AcceptDecline" href="" class="btn btn-danger btn-xs d-none" title="Declinar la solicitud"><i class="fa fa-times"></i> Declinar</a>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
-            </div>
+            @Html.Partial("_poliza")
 
             <!-- Prestamos -->
             <div id="prestamosTab" class="tab-pane ">
@@ -2350,7 +1736,7 @@
                 </table>
                 <div id="AttachmentsEdt" class="animated fadeInRight">
                     @*<h4>Información del adjunto</h4>
-                        <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>*@
+                <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>*@
                     <form id='AttachmentsEdtForm' class='form-horizontal' data-toggle='validator'>
                         <fieldset>
                             <div class="form-row">

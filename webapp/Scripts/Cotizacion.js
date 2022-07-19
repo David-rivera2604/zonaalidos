@@ -5,7 +5,6 @@ app.Cotizacion = (function () {
     return {
         Imprimir: function (name, data) {
             var urlServer = app.setting.apibase + '/AliadoServReports/api/Report/Build';
-            //urlServer = 'https://www.inmotiontools.com:8083/Report.Services/api/Report/Build';
             //urlServer = 'http://216.177.200.23/Report.Services/api/Report/Build';
             var data2 = {
                 Source: JSON.stringify(data),
@@ -57,6 +56,12 @@ app.Cotizacion = (function () {
             if (disabled) {
                 $(element + '-error').html('');
                 $(element).removeClass('error');
+            }
+            else {
+                if ($(element).children().length == 1) {
+                    $(element).val($(element + ' option:first').val());
+                    $(element).change();
+                }
             }
         }
     };

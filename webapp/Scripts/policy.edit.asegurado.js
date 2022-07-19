@@ -59,8 +59,8 @@ app.asegurado = (function () {
     };
 
     function Init_Lookups() {
-        app.core.Lookups(['@Gender', 'CivilStatus', 'CR_Provincia.Province.',
-            '@RetirementModality'], Dynamic_Event_Controls);
+        app.core.Lookups(['@Gender', 'CivilStatus', 'Pais.CountryOfNationality.', 'CR_Provincia.Province.',
+            'RetirementModality.RetirementModality.'], Dynamic_Event_Controls);
 
         // Dependencies
         $('#Province').on('change', function () {
@@ -102,7 +102,7 @@ app.asegurado = (function () {
         });
 
         $("#DocumentNumber").on('blur', function () {
-            if (app.policy_common.IsDocumentNumberValida($("#DocumentType").data("value"), $('#DocumentNumber').val())) {
+            if (app.ui.IsDocumentNumberValid($("#DocumentType").data("value"), $('#DocumentNumber').val())) {
                 var value = $('#DocumentNumber').val().replace(/-/g, '');
                 if (value !== null && parseInt(0 + value, 10) !== 0 && parseInt(0 + value, 10) <= 999999999) {
                     $('#DocumentNumber').addClass('loading');
@@ -127,6 +127,7 @@ app.asegurado = (function () {
                                         app.core.LookupDependency($('select#Canton').val(), 'District', 'CR_Distritos', '', data.District, false);
                                     });
                                 $('#AddressDetail').val(data.AddressDetail);
+                                $('#CountryOfNationality').val(data.CountryOfNationality);
                                 Event_Handler();
                             }
                         }).always(function () {
@@ -222,8 +223,9 @@ app.asegurado = (function () {
             Event_Handler();
         });
 
-        $('input:radio[name=RetirementModality]').on('change', function () {
-            $('#RetirementCause').prop("disabled", (this.value !== '2'));
+        $('#RetirementModality').on('change', function () {
+
+            $('#RetirementCause').prop("disabled", (app.ui.GetDropDownNumericValue('#RetirementModality') !== 2));
 
 
             //var formInstance1 = $("#PrimaryInsuredEdtFrm");
@@ -252,18 +254,14 @@ app.asegurado = (function () {
         app.cuestionario.UIBehavior($('input:radio[name=Gender]:checked').val(), $('#BirthDate_group').data('DateTimePicker').date());
     };
 
-
     function Setup_Validations() {
         app.ui.DateValidators();
 
         $.validator.addMethod("AgeGreaterThan64",
             function (value, element) {
                 var notError = true;
-                var age = moment().diff($('#BirthDate_group').data('DateTimePicker').date(), 'years');
-                if (!Number.isNaN(age)) {
-                    if (age > 64 && app.ui.GetNumericValue('#' + element.id) === 0) {
-                        notError = false;
-                    }
+                if (app.ui.GetNumericValue('#' + element.id) === 0 && app.poliza.EvalBehavior().Behavior.includes("Mode.Underwriting")) {
+                    notError = false;
                 }
                 return notError;
             }
@@ -271,7 +269,7 @@ app.asegurado = (function () {
 
         $.validator.addMethod("InsuredHasPolicies",
             function (value, element, params) {
-                if (app.policy_common.IsDocumentNumberValida($("#DocumentType").data("value"), value)) {
+                if (app.ui.IsDocumentNumberValid($("#DocumentType").data("value"), value)) {
                     var validator = this;
                     validator.startRequest(element);
                     app.core.Get(app.setting.apipath + 'v1/Policy/InsuredHasPolicies?productAlias=' + app.PolicyEdit.ProductAlias() + '&recordId=' + app.PolicyEdit.Id() + '&documentType=' + $("#DocumentType").data("value") + '&documentNumber=' + value)
@@ -293,7 +291,7 @@ app.asegurado = (function () {
         //   $('#RePassword').rules('add', { messages: { RePassword_Validate2: messageRePassword }});
         $.validator.addMethod("DocumentNumberLength",
             function (value, element, params) {
-                return app.policy_common.IsDocumentNumberValida($("#DocumentType").data("value"), value);
+                return app.ui.IsDocumentNumberValid($("#DocumentType").data("value"), value);
             }
         );
 
@@ -391,10 +389,10 @@ app.asegurado = (function () {
                     required: 'Debe indicar el estado civil'
                 },
                 Height: {
-                    AgeGreaterThan64: 'Para mayores de 65 años se debe indicar la estatura'
+                    AgeGreaterThan64: 'Debe indicar la estatura'
                 },
                 Weight: {
-                    AgeGreaterThan64: 'Para mayores de 65 años se debe indicar la peso'
+                    AgeGreaterThan64: 'Debe indicar la peso'
                 },
                 PhoneNumber: {
                     minlength: 'Debe indicar 8 dígitos'
@@ -442,8 +440,11 @@ app.asegurado = (function () {
             District: $('#District').val(),
             AddressDetail: $('#AddressDetail').val(),
             Occupation: $('#Occupation').val(),
-            RetirementModality: $('input:radio[name=RetirementModality]:checked').val(),
-            RetirementCause: $('#RetirementCause').val()
+            RetirementModality: app.ui.GetDropDownNumericValue('#RetirementModality'),
+            RetirementCause: $('#RetirementCause').val(),
+            HasDigitalSignature: $('input:radio[name=HasDigitalSignature]:checked').val() === "1",
+            CountryOfNationality: app.ui.GetDropDownNumericValue('#CountryOfNationality'),
+            CountryOfNationalityDesc: $("#CountryOfNationality option:selected").text()
         };
         return data;
     };
@@ -476,8 +477,11 @@ app.asegurado = (function () {
             app.core.LookupDependency(data.Canton, 'District', 'CR_Distritos', '', data.District, false);
             $('#AddressDetail').val(data.AddressDetail);
             $('#Occupation').val(data.Occupation);
-            $($('input:radio[name=RetirementModality][value=' + data.RetirementModality + ']')).prop('checked', true);
+            $('#RetirementModality').val(data.RetirementModality);
+            $('#RetirementModality').change();
             $('#RetirementCause').val(data.RetirementCause);
+            $('input:radio[name=HasDigitalSignature][value=' + (data.HasDigitalSignature ? 1 : 2) + ']').prop('checked', true);
+            $('#CountryOfNationality').val(data.CountryOfNationality);
         }
     };
 

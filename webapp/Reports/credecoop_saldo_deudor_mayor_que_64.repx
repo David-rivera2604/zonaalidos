@@ -822,7 +822,7 @@
         </Item1>
       </Bands>
       <ExpressionBindings>
-        <Item1 Ref="399" EventName="BeforePrint" PropertyName="Visible" Expression="[PrimaryInsured].[AgeAtInclusion]&gt;=60&#xA;" />
+        <Item1 Ref="399" EventName="BeforePrint" PropertyName="Visible" Expression="Contains([Behavior], 'Show.CV')" />
       </ExpressionBindings>
     </Item4>
     <Item5 Ref="400" ControlType="DetailReportBand" Name="Firma_Gerente_General" Level="6" Expanded="false" Font="Calibri, 9pt">
@@ -1494,7 +1494,7 @@
         </Item2>
       </Bands>
       <ExpressionBindings>
-        <Item1 Ref="708" EventName="BeforePrint" PropertyName="Visible" Expression="[PrimaryInsured].[AgeAtInclusion]&gt;=65&#xA;" />
+        <Item1 Ref="708" EventName="BeforePrint" PropertyName="Visible" Expression="Contains([Behavior], 'Show.DS')" />
       </ExpressionBindings>
     </Item6>
     <Item7 Ref="709" ControlType="DetailReportBand" Name="Coberturas" Level="4" Expanded="false" Font="Calibri, 9pt">

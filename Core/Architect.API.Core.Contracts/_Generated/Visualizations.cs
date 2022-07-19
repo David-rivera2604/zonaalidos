@@ -15,11 +15,15 @@ namespace Architect.API.Core.Contracts.General
         /// </summary>
         [DataMember(), JsonProperty()] public int Id { get; set; }
         /// <summary>
+        /// Identificación secuencial asociada al identificador único del registro.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int Sequence { get; set; }
+        /// <summary>
         /// Clave que identificac la lista.
         /// </summary>
         [DataMember(), JsonProperty()] public string Key { get; set; }
         /// <summary>
-        /// Identificación de la compañía propietaria.
+        /// Identificación de la compañia propietaria.
         /// </summary>
         [DataMember(), JsonProperty()] public int CompanyId { get; set; }
         /// <summary>
@@ -30,10 +34,6 @@ namespace Architect.API.Core.Contracts.General
         /// Descripción para tipo de entidad u objeto que genera el registro.
         /// </summary>
         [DataMember(), JsonProperty()] public string EntityTypeDesc { get; set; }
-        /// <summary>
-        /// Identificación secuencial asociada al identificador único del registro.
-        /// </summary>
-        [DataMember(), JsonProperty()] public int Sequence { get; set; }
         /// <summary>
         /// Tipo de visualizacion, 1 consultas.
         /// </summary>
@@ -63,10 +63,6 @@ namespace Architect.API.Core.Contracts.General
         /// </summary>
         [DataMember(), JsonProperty()] public string Statement { get; set; }
         /// <summary>
-        /// Statement Extend
-        /// </summary>
-        [DataMember(), JsonProperty()] public string StatementExtend { get; set; }
-        /// <summary>
         /// Especificación. (CLOB)
         /// </summary>
         [DataMember(), JsonProperty()] public string Specification { get; set; }
@@ -90,6 +86,7 @@ namespace Architect.API.Core.Contracts.General
         /// Nombre de la cadena de conexión.
         /// </summary>
         [DataMember(), JsonProperty()] public string ConnectionName { get; set; }
+        [DataMember(), JsonProperty()] public string JavaScriptToInclude { get; set; }
         /// <summary>
         /// Estado general del registro.
         /// </summary>

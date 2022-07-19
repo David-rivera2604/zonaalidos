@@ -97,7 +97,10 @@ app.poliza = (function () {
     };
 
     function Init_Lookups() {
-        app.core.Lookups(['PolicyStatus.Status', 'ReasonForStatus']);
+        app.core.Lookups(['PolicyStatus.Status',
+            'ReasonForStatus',
+            'BayerPolizas.Subsidiary',
+            'BayerNumeroPoliza.MainPolicyId']);
     };
 
     function ProductDefinition(callback) {
@@ -189,6 +192,11 @@ app.poliza = (function () {
                     AutoNumeric.set("#MonthlyPremium", 0);
                 }
 
+                if (data.AllowDigitalSign) {
+                    $('.DigitalSign-visible').removeClass('d-none');
+                    $('.DigitalSign-enable').prop("disabled", false);
+                }
+
                 if (callback !== undefined)
                     callback();
             });
@@ -269,6 +277,9 @@ app.poliza = (function () {
             }
         });
 
+        $('#Subsidiary').change(function () {
+            $('#MainPolicyId').val($('#Subsidiary').val());
+        });
     };
 
     function Calculate() {
@@ -409,7 +420,8 @@ app.poliza = (function () {
                 },
                 ReasonForStatus: {
                     required: true
-                }
+                },
+                Subsidiary: { required: true }
             },
             messages: {
                 ModuleCode: {
@@ -431,7 +443,8 @@ app.poliza = (function () {
                 },
                 ReasonForStatus: {
                     required: 'Debe indicar la causa de la baja'
-                }
+                },
+                Subsidiary: { required: 'Debe indicar la filial' }
             }
 
         });
@@ -454,7 +467,10 @@ app.poliza = (function () {
             Status: app.ui.GetDropDownNumericValue('#Status'),
             Surcharge: app.ui.GetNumericValue('#Surcharge'),
             Comments: $('#Comments').val(),
-            Annotation: $('#Annotation').val()
+            Annotation: $('#Annotation').val(),
+            MainPolicyId: $('#MainPolicyId').val(),
+            Subsidiary: app.ui.GetDropDownNumericValue('#Subsidiary'),
+            SubsidiaryDesc: $("#Subsidiary option:selected").text(),
         };
         return data;
     };
@@ -479,6 +495,9 @@ app.poliza = (function () {
             $('#Annotation').val(data.Annotation);
             app.ui.SetDateValue('#CancellationDate', data.CancellationDate);
             $('#ReasonForStatus').val(data.ReasonForStatus);
+
+            $('#MainPolicyId').val(data.MainPolicyId);
+            app.ui.SetDropDownNumericValue('#Subsidiary', data.SubsidiaryDesc, true);
 
             if (data.Surcharge > 0) {
                 let Annualvalue = data.AnnualPremium * (1 + data.Surcharge / 100);
@@ -654,10 +673,14 @@ app.poliza = (function () {
             ProductDefinition(callback);
         },
         PageBehavior: function () {
+            let data = null;
             let ds = app.poliza.EntryAllowed().includes(";Questionnaires;");
             let cv = app.poliza.EntryAllowed().includes(";Covid;");
-            if (ds || cv) {
+
+            if (typeof app.poliza.EvalBehavior === "function") {
                 data = app.poliza.EvalBehavior();
+            }
+            if (ds || cv) {
                 if (ds && data.Behavior.includes("Show.DS")) {
                     $('#saludTabHeader').removeClass('d-none');
                 } else {
@@ -669,8 +692,12 @@ app.poliza = (function () {
                 } else {
                     $('#covidTabHeader').addClass('d-none');
                 }
-            }
 
+            }
+            if (data != null) {
+                app.ui.RequiredMark("Height", data.Behavior.includes("Mode.Underwriting"));
+                app.ui.RequiredMark("Weight", data.Behavior.includes("Mode.Underwriting"));
+            }
         }
     };
 })();

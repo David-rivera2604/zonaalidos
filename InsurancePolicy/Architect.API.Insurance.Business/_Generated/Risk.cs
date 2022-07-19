@@ -30,6 +30,11 @@ namespace Architect.API.Insurance.Business.Policy
             target.Annotation = source.Annotation;
             target.InsuredAmountBase = source.InsuredAmountBase;
             target.InsuredAmountComplement = source.InsuredAmountComplement;
+
+            target.Subsidiary = source.Subsidiary;
+            target.MainPolicyId = source.MainPolicyId;
+            target.HasDigitalSignature = source.HasDigitalSignature;
+
             //target.OwnerId = source.OwnerId;
             //target.UpdateUserCode = source.UpdateUserCode;
             //target.UpdateDate = source.UpdateDate;

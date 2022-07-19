@@ -205,6 +205,12 @@ namespace Architect.API.Tron.Business.Emision
                 var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, ConfigurationManager.AppSettings["Warranty.Dealer.Comercial"]);
                 resultQuoteInfo.envio_asistencia = envio_poliza_panama;
             }
+
+            if (resultQuoteInfo.envio_asistencia.IsNotEmpty())
+            {
+                Utilities.Log.WarningLog("Asistencia_Panama", resultQuoteInfo.envio_asistencia, "asistencia.panama");
+            }
+
             return resultQuoteInfo;
         }
     }

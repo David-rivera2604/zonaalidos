@@ -338,4 +338,49 @@
                      2) Habilitar a los usuarios de revisor la modificación de salario mensual, fecha de ingreso a trabajar, fecha de ingreso a la póliza		
                      3) Incluir el botón de impresión de la solicitud de inclusión		
                    Fix. Clientes. Falla la tratar de verificar el correo del cliente.
-
+1.6.1   07/06/2022 Clientes. Pasarela de cobro para clientes.
+                   Aliados. Cambios en consulta de estado de transacciones para que funcione de forma genérica.
+                   Aliados. Cambio a la consulta de recibos pendientes para no mostrar recibos negativo por número o monto.
+                   Aliados. Visualización de imágenes cargadas por PWA en la consultas de cotizaciones de un agente.
+                   Aliados. Avisos de cobro.
+                   Fix. Login. Ignorar mayúsculas y minúsculas en el nombre del usuario.
+1.6.2   10/06/2022 Fix. Viajero. No permite cambiar cual asegurado es el mismo contratante.
+                   Fix. Viajero. No almacena información de los beneficiarios.
+                   Viajero. Ajuste para copiar los beneficiarios por cada riesgo directo en la página.
+                   Registro. Manejo de rol por defecto por nombre.
+                   Pasarela de pago. Se cambia el query para evitar casos donde el tomar tiene mas de un tipo de actividad.
+                   Clientes. Consulta Mis Pólizas. Se crea query que filtre por tomador.
+                   Clientes. Consulta Mis Pólizas -> Recibos. Se crea query para mostrar el estado y fechas del recibo.
+1.6.3   20/06/2022 Fix. Login. Ignorar espacios antes y después en el nombre del usuario.
+                   Fix. Lentitud en consultas asociadas al cliente.
+                   Sur Química. Agregar firma electrónica		
+                   Mapfremas dropdown ruptura con un solo valor no se auto-selecciona.
+                   Aviso de cobros recuerdas de poder seleccionar un agente.
+                   Consulta Aviso de cobros recuerdas de poder seleccionar un agente.
+                   Nueva consulta para que los empleados puedan visualización de imágenes cargadas por PWA por un agente.		
+                   viajero. Se quita texto de asistencia panamá y se general log con dicho texto.
+1.6.4   21/06/2022 Monitoreo de fallos en el procedure de pago de tron.
+                   EndPoint para ejecución de job de monitoreo de pagos.
+                   CreedeCoop. Manejo de condiciones para mostrar los cuestionarios en los reportes.		
+                   Sur Química. Certificado.
+                   Credecoop. Fix. Error de validación al emitir.
+                   Aviso de cobros. No se ve el detalle de los recibos de un aviso de cobro por agente indicado.
+                   Aviso de cobros. Pólizas grupos y contratos por agente indicado.
+1.6.5   22/06/2022 Impresión de reporte para recibo cobrado "deposito  de prima".
+1.6.6   30/06/2022 Sur Química. Validaciones de los campos altura y peso.
+                   Condicionar botón de pago para agente por rol.
+                   Aviso de cobro. Mantener selección y seleccionar todo los registros.
+                   Sur Química. Carga de información de asegurados y rutina para auto completado.
+                   Campo nacionalidad en información del asegurado.
+                   Google Analytic. Aplicar cambios enviado por royner.
+                   Incidentes con el número de documento.
+                   Impresión de certificados para el ramo 205.
+1.6.7   18/07/2022 CreedeCoop. Falla al eliminar un beneficiario.
+                   Export Vida Saldo Deudor en Aliados, agregar género, nacimiento y dirección para el asegurado y los 3 beneficiarios.
+                   CreedeCoop. Se pierde información del Covid al Guardar y Emitir.
+                   CreedeCoop. Cambiar Radio buttons de Condición (Jubilado/Pensionado) por un dropdown con valor en blanco.
+                   Aliados. Agergar botón para la impresión del deposito de prima en la consulta 318.
+                   Trazabilidad. No permite trabajar en un caso basado en un proceso duplicado.
+                   Trazabilidad. Definición de proceso agrandar lista a 4000 el máx de una varchar.
+                   Trazabilidad. Permitir acceso al uso del proceso por rol.
+                   Trazabilidad. SLA a nivel del proceso.

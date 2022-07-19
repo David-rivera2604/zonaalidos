@@ -1,23 +1,24 @@
-﻿using Architect.Utilities.Extensions;
+﻿using Architect.API.Core.Contracts.Security;
+using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Architect.API.Insurance.Business.Policy
 {
+    /// <summary>
+    /// Opciones para la emisión de las pólizas
+    /// </summary>
     public static partial class Risk
     {
         /// <summary>
         /// Permite realizar los cambios de estado a una póliza que se encuentra en modo de suscripción.
         /// </summary>
-        /// <param name="item">Datos para el cambio de estado.</param>
-        /// <param name="companyId">Identificación de la compañía propietaria.</param>
-        /// <param name="userId">Identificación del usuario.</param>
-        /// <param name="roles">Lista de roles permitidos del usuario que solicita el cambio.</param>
-        /// <param name="message">Descripción del cambio realizado.</param>
-        /// <returns>Póliza con los cambios aplicados.</returns>
-        public static Contracts.Policy.Risk ChangeStatus(Contracts.Policy.RiskStatus item, int companyId, int userId, string roles, ref string message)
+        public static Contracts.Policy.Risk ChangeStatus(Contracts.Policy.RiskStatus item, Core.Contracts.Security.Token tokenInfo, ref string message)
         {
+            int companyId = tokenInfo.CompanyId;
+            int userId = tokenInfo.UserId;
+            string roles = tokenInfo.Roles;
             Enumerations.PolicyStatus status = (Enumerations.PolicyStatus)item.NewStatus;
             Contracts.Policy.Risk result = Risk.RetrievePolicyByKey(item.Id, companyId);
             Enumerations.PolicyStatus currentStatus = (Enumerations.PolicyStatus)result.Status;
@@ -29,7 +30,15 @@ namespace Architect.API.Insurance.Business.Policy
                     break;
 
                 case Enumerations.PolicyStatus.InForce:
-                    result = ChangeStatusInForce(result, status, currentStatus, item, companyId, userId, roles, ref message);
+                    if (Products.Specification.SettingBoolValue(result.ProductAlias, "Allow.DigitalSign"))
+                    {
+                        DigitalSignature.Submit(result, tokenInfo, true);
+                        result = ChangeStatusPendingBySignature(result, Enumerations.PolicyStatus.PendingBySignature, item, companyId, userId, ref message);
+                    }
+                    else
+                    {
+                        result = ChangeStatusInForce(result, status, currentStatus, item, companyId, userId, roles, ref message);
+                    }
                     break;
 
                 case Enumerations.PolicyStatus.Declined:
@@ -50,6 +59,24 @@ namespace Architect.API.Insurance.Business.Policy
             }
 
             item.NewStatusDesc = Core.Business.Common.Lkp("PolicyStatus", companyId).Find(x => x.Code == result.Status.ToString()).Description;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Cancela una póliza en vigor.
+        /// </summary>
+        private static Contracts.Policy.Risk ChangeStatusPendingBySignature(Contracts.Policy.Risk result, Enumerations.PolicyStatus status, Contracts.Policy.RiskStatus item, int companyId, int userId, ref string message)
+        {
+            result.Status = (int)status;
+            result.UpdateUserCode = userId;
+            result.UpdateDate = DateTime.Now;
+
+            DataAccess.Policy.Risk.Update(result);
+
+            Core.Business.General.ChangeSet.Create(2000, item.Id, companyId, "Pendiente por firma.", null, userId, item);
+
+            message = "Póliza enviada para su firma electrónica";
 
             return result;
         }
@@ -171,6 +198,8 @@ namespace Architect.API.Insurance.Business.Policy
             return result;
         }
 
+
+
         /// <summary>
         /// Condiciona una póliza en suscripción para ser aceptada.
         /// </summary>
@@ -205,7 +234,6 @@ namespace Architect.API.Insurance.Business.Policy
 
             return result;
         }
-
 
         /// <summary>
         /// Retorna la póliza en suscripción para que se complemente.
@@ -303,13 +331,18 @@ namespace Architect.API.Insurance.Business.Policy
         /// <summary>
         /// Información para la impresión de una póliza.
         /// </summary>
-        /// <param name="id">Identificación interna de una póliza.</param>
-        /// <param name="companyId">Identificación de la compañía propietaria.</param>
-        /// <returns>Información de una póliza</returns>
-        public static Contracts.Policy.RiskView Information(int id, int companyId)
+        public static Contracts.Policy.RiskView Information(int id, Core.Contracts.Security.Token tokenInfo)
         {
-            Contracts.Policy.Risk resultInternal = RetrievePolicyByKey(id, companyId);
+            Contracts.Policy.Risk risk = RetrievePolicyByKey(id, tokenInfo.CompanyId);
+            Contracts.Policy.RiskView result = Mapper_Information(risk, tokenInfo.CompanyId);
+            result.Behavior = Reglas.research.Apply_Comportamientos("policy", risk, tokenInfo);
+            return result;
+        }
+
+        internal static Contracts.Policy.RiskView Mapper_Information(Contracts.Policy.Risk resultInternal, int companyId)
+        {
             Contracts.Policy.RiskView result = null;
+            List<Core.Contracts.General.LookupValue> values = null;
 
             if (resultInternal.IsNotEmpty())
             {
@@ -332,13 +365,17 @@ namespace Architect.API.Insurance.Business.Policy
                 result.ProductAlias = Core.Business.Common.LkpChildFull("ProductByLineOfBusiness", result.LineOfBusinessCode, companyId).Find(x => x.Code == result.ProductCode).ExtendStringValue1;
                 if (result.ProductAlias.IsNotEmpty())
                 {
-                    result.OwnerName = Architect.API.Insurance.Business.Products.Specification.SettingStringValue(result.ProductAlias, "Parent.Policy.Owner.Name");
-                    result.OwnerId = Architect.API.Insurance.Business.Products.Specification.SettingStringValue(result.ProductAlias, "Parent.Policy.Owner.Id");
+                    result.OwnerName = Products.Specification.SettingStringValue(result.ProductAlias, "Parent.Policy.Owner.Name");
+                    result.OwnerId = Products.Specification.SettingStringValue(result.ProductAlias, "Parent.Policy.Owner.Id");
                 }
-
+                if (resultInternal.Subsidiary.IsNotEmpty())
+                {
+                    result.OwnerName = Core.Business.Common.LkpDescription(companyId, "BayerPolizas", resultInternal.Subsidiary.ToString());
+                    result.OwnerId = Core.Business.Common.LkpDescription(companyId, "BayerNumeroPoliza", resultInternal.MainPolicyId);
+                }
             }
 
-            List<Core.Contracts.General.LookupValue> values = null;
+
             if (result.IsNotEmpty())
             {
                 if (result.CancellationDate == DateTime.MinValue)
@@ -425,7 +462,6 @@ namespace Architect.API.Insurance.Business.Policy
             result.Prefix = string.Empty;
             if (result.PrimaryInsured.IsNotEmpty() && result.PrimaryInsured.BirthDate.Age() > 64)
                 result.Prefix = "_mayor_que_64";
-
             return result;
         }
 
@@ -447,7 +483,8 @@ namespace Architect.API.Insurance.Business.Policy
             item.ExecutiveUserCode = tokenInfo.UserId;
             result.Errors = Business.Policy.Risk.PolicyStorage(item, orignalStatus, tokenInfo, source);
 
-            if (item.DraftStorage == "enabled" || (item.DraftStorage != "enabled" && result.Errors.Count == 0))
+            bool digitalSignFail = result.Errors.Find(r => r.Group == "DigitalSignFail") != null;
+            if (digitalSignFail || item.DraftStorage == "enabled" || (item.DraftStorage != "enabled" && result.Errors.Count == 0))
             {
                 switch (source)
                 {
@@ -628,7 +665,7 @@ namespace Architect.API.Insurance.Business.Policy
         /// <returns>Verdadero en caso de necesitar suscripción, falso en el caso contrario</returns>
         internal static bool Rule_Underwriting(Contracts.Policy.Risk riskToBeEvaluated, Core.Contracts.Security.Token tokenInfo)
         {
-           return riskToBeEvaluated.Behavior.Contains("Mode.Underwriting"); 
+            return riskToBeEvaluated.Behavior.Contains("Mode.Underwriting");
         }
 
         /// <summary>
@@ -681,7 +718,6 @@ namespace Architect.API.Insurance.Business.Policy
             return result;
         }
 
-
         private static List<Contracts.Policy.RiskRoles> SynchronizeBeneficiaries(List<Contracts.Policy.RiskRoles> currentList, List<Contracts.Policy.RiskRoles> newList, int companyId, int userId, int policyId)
         {
             Contracts.Policy.RiskRoles toAdd = null;
@@ -733,7 +769,7 @@ namespace Architect.API.Insurance.Business.Policy
                 {
                     if (newList.Find(r => r.DocumentNumber == curentRole.DocumentNumber).IsEmpty())
                     {
-                        DataAccess.Policy.RiskRoles.Delete(curentRole.RoleId);
+                        DataAccess.Policy.RiskRoles.Delete(curentRole.RoleId, companyId);
                     }
                 }
             }
@@ -763,12 +799,27 @@ namespace Architect.API.Insurance.Business.Policy
                     {
                         item.PolicyId = DataAccess.Policy.Risk.RetrieveLastPolicyId(tokenInfo.CompanyId) + 1;
                         item.Status = status;
+
+                        if (Products.Specification.SettingBoolValue(item.ProductAlias, "Allow.DigitalSign"))
+                        {
+                            item.Status = (int)Enumerations.PolicyStatus.PendingBySignature;
+                            if (!DigitalSignature.Submit(item, tokenInfo, true))
+                            {
+                                item.Status = status;
+                                errors = new List<Core.Contracts.General.Error>() {
+                                    new Core.Contracts.General.Error() {
+                                        Group="DigitalSignFail"
+                                    } };
+                            };
+                        }
                     }
                 }
             }
 
             return errors;
         }
+
+
 
         private static Contracts.Policy.Risk Setup(Contracts.Policy.Risk item, int companyId)
         {
@@ -913,13 +964,28 @@ namespace Architect.API.Insurance.Business.Policy
 
                 if (result.Questionary.IsNotEmpty() && result.Questionary.Count > 0)
                 {
-                    for (int index = 0; index < result.Questionary.Count; index++)
+                    int countUpd = item.Questionary.Count;
+                    int countCurr = result.Questionary.Count;
+                    int countMax = countUpd > countCurr ? countUpd : countCurr;
+                    for (int index = 0; index < countMax; index++)
                     {
-                        result.Questionary[index] = Business.Policy.RiskQuestionnaires.Mapper(result.Questionary[index], item.Questionary[index]);
-                        result.Questionary[index].CompanyId = companyId;
-                        result.Questionary[index].UpdateUserCode = userId;
-                        result.Questionary[index].UpdateDate = DateTime.Now;
-                        DataAccess.Policy.RiskQuestionnaires.Update(result.Questionary[index]);
+                        if (index < countCurr)
+                        {
+                            result.Questionary[index] = Business.Policy.RiskQuestionnaires.Mapper(result.Questionary[index], item.Questionary[index]);
+                            result.Questionary[index].CompanyId = companyId;
+                            result.Questionary[index].UpdateUserCode = userId;
+                            result.Questionary[index].UpdateDate = DateTime.Now;
+                            DataAccess.Policy.RiskQuestionnaires.Update(result.Questionary[index]);
+                        }
+                        else
+                        {
+                            item.Questionary[index].Id = DataAccess.Policy.RiskQuestionnaires.RetrieveLastKey() + 1;
+                            item.Questionary[index].PolicyId = item.Id;
+                            item.Questionary[index].CompanyId = companyId;
+                            item.Questionary[index].UpdateUserCode = userId;
+                            item.Questionary[index].UpdateDate = DateTime.Now;
+                            DataAccess.Policy.RiskQuestionnaires.Create(item.Questionary[index]);
+                        }
                     }
                 }
                 if (result.Overdraft.IsNotEmpty())

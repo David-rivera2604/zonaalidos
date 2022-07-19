@@ -14,6 +14,11 @@ namespace Architect.API.Tron.Contracts.AvisosDeCobro.Parameters
     public class AvisoCobroBaseParametros
     {
         /// <summary>
+        ///  Código del agente
+        /// </summary>
+        [Required(ErrorMessage = "Debe indicar el agent")]
+        public int Cod_Agt { get; set; }
+        /// <summary>
         /// Fecha desde
         /// </summary>
         [Required(ErrorMessage = "Debe indicar la fecha desde")]

@@ -1,9 +1,6 @@
 ﻿using Architect.Utilities.Extensions;
 using Microsoft.Web.Http;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -39,7 +36,7 @@ namespace Architect.API.Insurance.Controllers
             {
                 return BadRequest("Debe indicar la identificación");
             }
-            
+
             if (result == null)
             {
                 Task<Contracts.GastosMedicos.AseguradoGastosMedicos> gastosMedicos = Architect.Extend.Integrations.GastosMedicos.ConsultaAsegurado.PersonaPorIdentificacion(id);
@@ -55,7 +52,7 @@ namespace Architect.API.Insurance.Controllers
                     {
                         verbose += "->gastosMedicos";
                     }
-                   
+
 
                     if (ready.Result != null)
                     {
@@ -72,7 +69,7 @@ namespace Architect.API.Insurance.Controllers
                 {
                     Utilities.Log.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, "no encontrado"), "integrations");
                 }
-               
+
             }
 
             return Ok(result);

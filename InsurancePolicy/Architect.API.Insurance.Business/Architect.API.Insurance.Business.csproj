@@ -45,14 +45,14 @@
     <Reference Include="ClosedXML, Version=0.95.4.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ClosedXML.Signed.0.95.4\lib\net46\ClosedXML.dll</HintPath>
     </Reference>
-    <Reference Include="DocumentFormat.OpenXml, Version=2.16.0.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DocumentFormat.OpenXml.2.16.0\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.17.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DocumentFormat.OpenXml.2.17.1\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
     <Reference Include="ExcelNumberFormat, Version=1.1.0.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ExcelNumberFormat.1.1.0\lib\net20\ExcelNumberFormat.dll</HintPath>
     </Reference>
-    <Reference Include="Hangfire.Core, Version=1.7.29.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Hangfire.Core.1.7.29\lib\net46\Hangfire.Core.dll</HintPath>
+    <Reference Include="Hangfire.Core, Version=1.7.30.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Hangfire.Core.1.7.30\lib\net46\Hangfire.Core.dll</HintPath>
     </Reference>
     <Reference Include="itextsharp, Version=5.5.13.3, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\..\packages\iTextSharp.5.5.13.3\lib\itextsharp.dll</HintPath>
@@ -88,6 +88,7 @@
     <Compile Include="Helpers\DocumentManager.cs" />
     <Compile Include="ManualClaims\Claim.cs" />
     <Compile Include="ManualPolicies\Certificate.cs" />
+    <Compile Include="Policy\DigitalSignature.cs" />
     <Compile Include="Policy\ThirdParty.cs" />
     <Compile Include="ManualPolicies\Policy.cs" />
     <Compile Include="Policy\Notify.cs" />
@@ -119,6 +120,10 @@
     <ProjectReference Include="..\..\Core\Architect.API.Core.Contracts\Architect.API.Core.Contracts.csproj">
       <Project>{29b21bef-8c87-4a9d-8b37-fecc57cd03c7}</Project>
       <Name>Architect.API.Core.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Architect.DocuSign.Integrations\Architect.DocuSign.Integrations.csproj">
+      <Project>{41b3f1c8-fdb5-4db4-be61-6bf1576a09e7}</Project>
+      <Name>Architect.DocuSign.Integrations</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\InsuranceRating\Architect.Insurance.Contracts\Architect.Insurance.Contracts.csproj">
       <Project>{92937331-3ec2-45c0-879e-de7186cca4ae}</Project>

@@ -34,7 +34,8 @@ namespace Architect.API.Insurance.Business.Products
                     SubTitle = product.SubTitle,
                     Currencies = new List<LookupSimple>(),
                     PaymentFrequencies = new List<LookupSimple>(),
-                    Modules = new List<LookupModules>()
+                    Modules = new List<LookupModules>(),
+                    AllowDigitalSign = Products.Specification.SettingBoolValue(productAlias, "Allow.DigitalSign")
                 };
 
                 result.OwnerName = SettingStringValue(productAlias, "Parent.Policy.Owner.Name");
@@ -88,6 +89,13 @@ namespace Architect.API.Insurance.Business.Products
                             item.FixedInsuredAmount = fixCover.FixedInsuredAmount;
                             item.FixedPremium = fixCover.FixedPremium;
                             item.FixedMonthlyPremium = fixCover.FixedPremium / 12;
+                        }
+                        Architect.Insurance.Contracts.Policy.Risk rk = Business.Policy.Rating.Asegurado(productAlias, result.Currencies.First().Code, result.Modules.First().Code, result.PaymentFrequencies.First().Code, (double)fixCover.FixedInsuredAmount, DateTime.Now);
+
+                        if (rk.IsNotEmpty())
+                        {
+                            item.FixedPremium = rk.Premium.AnnualPremium;
+                            item.FixedMonthlyPremium = rk.Premium.BillPremium;
                         }
                     }
                 }
@@ -202,7 +210,7 @@ namespace Architect.API.Insurance.Business.Products
                     if (entry.Name == name)
                     {
                         result = DateTime.ParseExact(entry.Value, "yyyy-MM-ddTHH:mm:ss", CultureInfo.CurrentCulture);
-                      
+
                         break;
                     }
                 }
@@ -212,7 +220,7 @@ namespace Architect.API.Insurance.Business.Products
 
         public static bool SettingBoolValue(string alias, string name, bool defaultValue = false)
         {
-            bool result = defaultValue ;
+            bool result = defaultValue;
             Architect.Insurance.Contracts.Product.ProductMaster product = Definition(alias);
             if (product != null && product?.Settings != null)
             {
@@ -221,8 +229,8 @@ namespace Architect.API.Insurance.Business.Products
                 {
                     if (entry.Name == name)
                     {
-                        result = (entry.Value.ToLower() == "true" || 
-                                  entry.Value.ToLower() == "verdadero" || 
+                        result = (entry.Value.ToLower() == "true" ||
+                                  entry.Value.ToLower() == "verdadero" ||
                                   entry.Value.ToLower() == "yes" ||
                                   entry.Value.ToLower() == "si");
                         break;

@@ -25,8 +25,8 @@ namespace Architect.API.Core.DataAccess.General
             {
                 processspecflowItem.UpdateDate = DateTime.Now;
             }
-            return Database.Insert("INSERT INTO ProcessSpecFlow (Id, CompanyId, Name, Description, Alias, MailServer, ReferenceCaption1, ReferenceLookupList1, ReferenceCaption2, ReferenceLookupList2, ReferenceCaption3, ReferenceLookupList3, ReferenceCaption4, ReferenceLookupList4, ReferenceCaption5, ReferenceLookupList5, Status, UpdateUserCode, UpdateDate) " +
-                                                 "VALUES(:Id, :CompanyId, :Name, :Description, :Alias, :MailServer, :ReferenceCaption1, :ReferenceLookupList1, :ReferenceCaption2, :ReferenceLookupList2, :ReferenceCaption3, :ReferenceLookupList3, :ReferenceCaption4, :ReferenceLookupList4, :ReferenceCaption5, :ReferenceLookupList5, :Status, :UpdateUserCode, :UpdateDate)")
+            return Database.Insert("INSERT INTO ProcessSpecFlow (Id, CompanyId, Name, Description, Alias, MailServer, ReferenceCaption1, ReferenceLookupList1, ReferenceCaption2, ReferenceLookupList2, ReferenceCaption3, ReferenceLookupList3, ReferenceCaption4, ReferenceLookupList4, ReferenceCaption5, ReferenceLookupList5, SLA, Status, UpdateUserCode, UpdateDate) " +
+                                                 "VALUES(:Id, :CompanyId, :Name, :Description, :Alias, :MailServer, :ReferenceCaption1, :ReferenceLookupList1, :ReferenceCaption2, :ReferenceLookupList2, :ReferenceCaption3, :ReferenceLookupList3, :ReferenceCaption4, :ReferenceLookupList4, :ReferenceCaption5, :ReferenceLookupList5, :SLA, :Status, :UpdateUserCode, :UpdateDate)")
                             .AddParameter("Id", DbType.Decimal, 9, processspecflowItem.Id)
                             .AddParameter("CompanyId", DbType.Decimal, 5, processspecflowItem.CompanyId)
                             .AddParameter("Name", DbType.AnsiString, 80, processspecflowItem.Name)
@@ -34,15 +34,16 @@ namespace Architect.API.Core.DataAccess.General
                             .AddParameter("Alias", DbType.AnsiString, 30, processspecflowItem.Alias)
                             .AddParameter("MailServer", DbType.Decimal, 5, processspecflowItem.MailServer)
                             .AddParameter("ReferenceCaption1", DbType.AnsiString, 80, processspecflowItem.ReferenceCaption1)
-                            .AddParameter("ReferenceLookupList1", DbType.AnsiString, 400, processspecflowItem.ReferenceLookupList1)
+                            .AddParameter("ReferenceLookupList1", DbType.AnsiString, 4000, processspecflowItem.ReferenceLookupList1)
                             .AddParameter("ReferenceCaption2", DbType.AnsiString, 80, processspecflowItem.ReferenceCaption2)
-                            .AddParameter("ReferenceLookupList2", DbType.AnsiString, 400, processspecflowItem.ReferenceLookupList2)
+                            .AddParameter("ReferenceLookupList2", DbType.AnsiString, 4000, processspecflowItem.ReferenceLookupList2)
                             .AddParameter("ReferenceCaption3", DbType.AnsiString, 80, processspecflowItem.ReferenceCaption3)
-                            .AddParameter("ReferenceLookupList3", DbType.AnsiString, 400, processspecflowItem.ReferenceLookupList3)
+                            .AddParameter("ReferenceLookupList3", DbType.AnsiString, 4000, processspecflowItem.ReferenceLookupList3)
                             .AddParameter("ReferenceCaption4", DbType.AnsiString, 80, processspecflowItem.ReferenceCaption4)
-                            .AddParameter("ReferenceLookupList4", DbType.AnsiString, 400, processspecflowItem.ReferenceLookupList4)
+                            .AddParameter("ReferenceLookupList4", DbType.AnsiString, 4000, processspecflowItem.ReferenceLookupList4)
                             .AddParameter("ReferenceCaption5", DbType.AnsiString, 80, processspecflowItem.ReferenceCaption5)
-                            .AddParameter("ReferenceLookupList5", DbType.AnsiString, 400, processspecflowItem.ReferenceLookupList5)
+                            .AddParameter("ReferenceLookupList5", DbType.AnsiString, 4000, processspecflowItem.ReferenceLookupList5)
+                            .AddParameter("SLA", DbType.Decimal, 5, processspecflowItem.SLA)
                             .AddParameter("Status", DbType.Decimal, 3, processspecflowItem.Status)
                             .AddParameter("UpdateUserCode", DbType.Decimal, 9, processspecflowItem.UpdateUserCode)
                             .AddParameter("UpdateDate", DbType.DateTime, 0, processspecflowItem.UpdateDate)
@@ -87,7 +88,7 @@ namespace Architect.API.Core.DataAccess.General
         public static Architect.API.Core.Contracts.General.ProcessSpecFlow Retrieve(int id, int companyId, IDbConnection connection = null)
         {
             Architect.API.Core.Contracts.General.ProcessSpecFlow result = null;
-            Database.Select("SELECT Id, ProcessSpecFlow.CompanyId, Name, Description, Alias, MailServer, ReferenceCaption1, ReferenceLookupList1, ReferenceCaption2, ReferenceLookupList2, ReferenceCaption3, ReferenceLookupList3, ReferenceCaption4, ReferenceLookupList4, ReferenceCaption5, ReferenceLookupList5, Status, ProcessSpecFlow.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessSpecFlow.UpdateDate " +
+            Database.Select("SELECT Id, ProcessSpecFlow.CompanyId, Name, Description, Alias, MailServer, ReferenceCaption1, ReferenceLookupList1, ReferenceCaption2, ReferenceLookupList2, ReferenceCaption3, ReferenceLookupList3, ReferenceCaption4, ReferenceLookupList4, ReferenceCaption5, ReferenceLookupList5, SLA, Status, ProcessSpecFlow.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessSpecFlow.UpdateDate " +
                               "FROM ProcessSpecFlow LEFT JOIN UserMember um ON um.UserId = ProcessSpecFlow.UpdateUserCode " +
                              "WHERE ProcessSpecFlow.Id=:Id AND ProcessSpecFlow.CompanyId=:CompanyId")
                         .AddParameter("Id", DbType.Decimal, 9, id)
@@ -110,7 +111,7 @@ namespace Architect.API.Core.DataAccess.General
         public static List<Architect.API.Core.Contracts.General.ProcessSpecFlow> RetrieveAll(int companyId, string filter, List<DataFactory.Contracts.Parameter> parameters = null, IDbConnection connection = null)
         {
             List<Architect.API.Core.Contracts.General.ProcessSpecFlow> result = new List<Architect.API.Core.Contracts.General.ProcessSpecFlow>();
-            Database.Select("SELECT Id, ProcessSpecFlow.CompanyId, Name, Description, Alias, MailServer, ReferenceCaption1, ReferenceLookupList1, ReferenceCaption2, ReferenceLookupList2, ReferenceCaption3, ReferenceLookupList3, ReferenceCaption4, ReferenceLookupList4, ReferenceCaption5, ReferenceLookupList5, Status, ProcessSpecFlow.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessSpecFlow.UpdateDate " +
+            Database.Select("SELECT Id, ProcessSpecFlow.CompanyId, Name, Description, Alias, MailServer, ReferenceCaption1, ReferenceLookupList1, ReferenceCaption2, ReferenceLookupList2, ReferenceCaption3, ReferenceLookupList3, ReferenceCaption4, ReferenceLookupList4, ReferenceCaption5, ReferenceLookupList5, SLA, Status, ProcessSpecFlow.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessSpecFlow.UpdateDate " +
                               "FROM ProcessSpecFlow LEFT JOIN UserMember um ON um.UserId = ProcessSpecFlow.UpdateUserCode " +
                              "WHERE ProcessSpecFlow.CompanyId=:CompanyId" + filter)
                         .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
@@ -144,7 +145,7 @@ namespace Architect.API.Core.DataAccess.General
                 endIndex = int.MaxValue;
             }
             Database.Select("SELECT * FROM (" +
-                            "SELECT Id, ProcessSpecFlow.CompanyId, Name, Description, Alias, MailServer, ReferenceCaption1, ReferenceLookupList1, ReferenceCaption2, ReferenceLookupList2, ReferenceCaption3, ReferenceLookupList3, ReferenceCaption4, ReferenceLookupList4, ReferenceCaption5, ReferenceLookupList5, Status, ProcessSpecFlow.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessSpecFlow.UpdateDate " +
+                            "SELECT Id, ProcessSpecFlow.CompanyId, Name, Description, Alias, MailServer, ReferenceCaption1, ReferenceLookupList1, ReferenceCaption2, ReferenceLookupList2, ReferenceCaption3, ReferenceLookupList3, ReferenceCaption4, ReferenceLookupList4, ReferenceCaption5, ReferenceLookupList5, SLA, Status, ProcessSpecFlow.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessSpecFlow.UpdateDate " +
                                    ", ROW_NUMBER() OVER (ORDER BY ProcessSpecFlow.Id DESC) RowNumber " +
                               "FROM ProcessSpecFlow LEFT JOIN UserMember um ON um.UserId = ProcessSpecFlow.UpdateUserCode " +
                              "WHERE ProcessSpecFlow.CompanyId=:CompanyId" + filter +
@@ -225,7 +226,7 @@ namespace Architect.API.Core.DataAccess.General
                 processspecflowItem.UpdateDate = DateTime.Now;
             }
             return Database.Update("UPDATE ProcessSpecFlow " +
-                                      "SET CompanyId=:CompanyId, Name=:Name, Description=:Description, Alias=:Alias, MailServer=:MailServer, ReferenceCaption1=:ReferenceCaption1, ReferenceLookupList1=:ReferenceLookupList1, ReferenceCaption2=:ReferenceCaption2, ReferenceLookupList2=:ReferenceLookupList2, ReferenceCaption3=:ReferenceCaption3, ReferenceLookupList3=:ReferenceLookupList3, ReferenceCaption4=:ReferenceCaption4, ReferenceLookupList4=:ReferenceLookupList4, ReferenceCaption5=:ReferenceCaption5, ReferenceLookupList5=:ReferenceLookupList5, Status=:Status, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
+                                      "SET CompanyId=:CompanyId, Name=:Name, Description=:Description, Alias=:Alias, MailServer=:MailServer, ReferenceCaption1=:ReferenceCaption1, ReferenceLookupList1=:ReferenceLookupList1, ReferenceCaption2=:ReferenceCaption2, ReferenceLookupList2=:ReferenceLookupList2, ReferenceCaption3=:ReferenceCaption3, ReferenceLookupList3=:ReferenceLookupList3, ReferenceCaption4=:ReferenceCaption4, ReferenceLookupList4=:ReferenceLookupList4, ReferenceCaption5=:ReferenceCaption5, ReferenceLookupList5=:ReferenceLookupList5, SLA=:SLA, Status=:Status, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
                                     "WHERE Id=:Id")
                                 .AddParameter("CompanyId", DbType.Decimal, 5, processspecflowItem.CompanyId)
                                 .AddParameter("Name", DbType.AnsiString, 80, processspecflowItem.Name)
@@ -233,15 +234,16 @@ namespace Architect.API.Core.DataAccess.General
                                 .AddParameter("Alias", DbType.AnsiString, 30, processspecflowItem.Alias)
                                 .AddParameter("MailServer", DbType.Decimal, 5, processspecflowItem.MailServer)
                                 .AddParameter("ReferenceCaption1", DbType.AnsiString, 80, processspecflowItem.ReferenceCaption1)
-                                .AddParameter("ReferenceLookupList1", DbType.AnsiString, 400, processspecflowItem.ReferenceLookupList1)
+                                .AddParameter("ReferenceLookupList1", DbType.AnsiString, 4000, processspecflowItem.ReferenceLookupList1)
                                 .AddParameter("ReferenceCaption2", DbType.AnsiString, 80, processspecflowItem.ReferenceCaption2)
-                                .AddParameter("ReferenceLookupList2", DbType.AnsiString, 400, processspecflowItem.ReferenceLookupList2)
+                                .AddParameter("ReferenceLookupList2", DbType.AnsiString, 4000, processspecflowItem.ReferenceLookupList2)
                                 .AddParameter("ReferenceCaption3", DbType.AnsiString, 80, processspecflowItem.ReferenceCaption3)
-                                .AddParameter("ReferenceLookupList3", DbType.AnsiString, 400, processspecflowItem.ReferenceLookupList3)
+                                .AddParameter("ReferenceLookupList3", DbType.AnsiString, 4000, processspecflowItem.ReferenceLookupList3)
                                 .AddParameter("ReferenceCaption4", DbType.AnsiString, 80, processspecflowItem.ReferenceCaption4)
-                                .AddParameter("ReferenceLookupList4", DbType.AnsiString, 400, processspecflowItem.ReferenceLookupList4)
+                                .AddParameter("ReferenceLookupList4", DbType.AnsiString, 4000, processspecflowItem.ReferenceLookupList4)
                                 .AddParameter("ReferenceCaption5", DbType.AnsiString, 80, processspecflowItem.ReferenceCaption5)
-                                .AddParameter("ReferenceLookupList5", DbType.AnsiString, 400, processspecflowItem.ReferenceLookupList5)
+                                .AddParameter("ReferenceLookupList5", DbType.AnsiString, 4000, processspecflowItem.ReferenceLookupList5)
+                                .AddParameter("SLA", DbType.Decimal, 5, processspecflowItem.SLA)
                                 .AddParameter("Status", DbType.Decimal, 3, processspecflowItem.Status)
                                 .AddParameter("UpdateUserCode", DbType.Decimal, 9, processspecflowItem.UpdateUserCode)
                                 .AddParameter("UpdateDate", DbType.DateTime, 0, processspecflowItem.UpdateDate)
@@ -406,6 +408,7 @@ namespace Architect.API.Core.DataAccess.General
             item.ReferenceLookupList4 = reader.StringValue("ReferenceLookupList4");
             item.ReferenceCaption5 = reader.StringValue("ReferenceCaption5");
             item.ReferenceLookupList5 = reader.StringValue("ReferenceLookupList5");
+            item.SLA = reader.IntegerValue("SLA");
             item.Status = reader.IntegerValue("Status");
             item.UpdateUserCode = reader.IntegerValue("UpdateUserCode");
             item.UpdateUserName = reader.StringValue("UpdateUserName");

@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProductMaster xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" description="Seguro colectivo de vida colones" title="Seguro colectivo vida Mapfre " subtitle="Colones">
+	<CurrenciesAllowed>
+		<CurrencyAllowed currencycode="1" description="Colón costarricense" />
+	</CurrenciesAllowed>
+	<Modules>
+		<Module modulecode="1" description="7.500.000" selected="true">
+			<Coverages>
+				<Coverage coveragecode="1" description="Cobertura A - Muerte por Cualquier Causa" insuredamountcalculationtype="2" fixedinsuredamount="7500000" premiumcalculationtype="4" fixedpremium="27000" billingcode="1" />
+				<Coverage coveragecode="2" description="Cobertura B - Muerte Accidental y Desmembramiento" coveragecodecontainspremium="1" billingcode="1" />
+				<Coverage coveragecode="3" description="Cobertura C - Incapacidad Total y Permanente." insuredamountcalculationtype="2" fixedinsuredamount="7500000" coveragecodecontainspremium="1" billingcode="1" />
+				<Coverage coveragecode="4" description="Cobertura D - Gastos Funerarios" insuredamountcalculationtype="2" fixedinsuredamount="2000000" coveragecodecontainspremium="1" billingcode="1" />
+				<Coverage coveragecode="5" description="Cobertura H - Adelanto de Suma Asegurada por Enfermedad Terminal" coveragecodecontainspremium="1" billingcode="1" />
+				<Coverage coveragecode="6" description="Cobertura I - Servicios de Asistencia (Paquete Gold Individual)" coveragecodecontainspremium="1" billingcode="1" />
+			</Coverages>
+		</Module>
+	</Modules>
+	<PaymentFrequenciesAllowed>
+		<PaymentFrequencyAllowed paymentfrequencycode="1" description="Mensual" />
+	</PaymentFrequenciesAllowed>
+	<BillingConcepts>
+		<BillingConcept billingcode="1" description="Prima" />
+		<BillingConcept billingcode="2" description="Impuestos">
+			<Details>
+				<BillingDetail code="1" description="IVA" type="3" percentage="2">
+					<Conditions>
+						<BillingDetailCondition applieson="1" applyoncode="1" />
+					</Conditions>
+				</BillingDetail>
+			</Details>
+		</BillingConcept>
+	</BillingConcepts>
+	<DataEntrySectionsAllowed>
+		<DataEntrySection code="Insured" description="Asegurado" required="true" />
+		<DataEntrySection code="Questionnaires" description="Cuestionario de Salud" active="false" />
+		<DataEntrySection code="Covid" description="Cuestionario de Covid" active="false" />
+		<DataEntrySection code="Beneficiaries" description="Beneficiarios" required="true" />
+		<DataEntrySection code="Policy" description="Póliza" required="true"/>
+		<DataEntrySection code="Attachments" description="Adjuntos" active="false" />
+	</DataEntrySectionsAllowed>
+	<Settings>
+		<Setting name="Parent.Policy.Effective" description="Fecha de efecto de la póliza matriz" value="2022-06-15T00:00:00"/>
+		<Setting name="Allow.DigitalSign" description="Indica que es necesario la firma del documento previo a su emisión" value="true"/>
+	</Settings>
+</ProductMaster>

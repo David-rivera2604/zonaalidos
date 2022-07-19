@@ -1,5 +1,6 @@
 ﻿var app = app || {};
 
+
 app.ViewerQuery = (function () {
     let _handler = null;
     var _id = null;
@@ -110,6 +111,7 @@ app.ViewerQuery = (function () {
         spec.clickToSelect = true;
         spec.showColumnsToggleAll = true;
         spec.searchAlign = 'left';
+        spec.maintainMetaData = true;
         spec.rowStyle = function (row, index) {
             return {
                 css: {
@@ -224,6 +226,9 @@ app.ViewerQuery = (function () {
             if (column.events != undefined) {
                 column.events = 'Local_Events';
             }
+            if (column.colorstate != undefined) {
+                app.ViewerQuery.state[column.field] = column.colorstate;
+            }
         });
 
         spec.icons = {
@@ -237,6 +242,9 @@ app.ViewerQuery = (function () {
             detailOpen: 'fa-angle-double-right',
             detailClose: 'fa-angle-double-down',
             export: 'fa-download'
+        };
+        spec.onPostBody = function (data) {
+            app.ui.CommonBehaviour();
         };
         //spec.onAll = function (name, args) {
         //    console.log(name, args);
@@ -388,6 +396,11 @@ app.ViewerQuery = (function () {
                 spec.showRefresh = false;
                 spec.showColumns = false;
                 spec.showColumnsToggleAll = false;
+                spec.maintainMetaData = true;
+
+                spec.onPostBody = function (data) {
+                    app.ui.CommonBehaviour();
+                };
 
                 //spec.onRefresh = function (params) {
                 //    app.ViewerQuery.Refresh(params, $el);
@@ -404,6 +417,9 @@ app.ViewerQuery = (function () {
                     }
                     if (column.events != undefined) {
                         column.events = 'Local_Events';
+                    }
+                    if (column.colorstate != undefined) {
+                        app.ViewerQuery.state[column.field] = column.colorstate;
                     }
                 });
 
@@ -461,7 +477,7 @@ app.ViewerQuery = (function () {
                         }
 
                     }).always(function () {
-             
+
                     });
             else
                 $("#QueryTitle").html('Consulta no indicada');
@@ -530,7 +546,11 @@ app.ViewerQuery = (function () {
                     break;
 
                 case 'printr':
-                    app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/ImprimirRecibo/' + row.NUM_RECIBO, false, 'Mapfre Recibo.pdf')
+                    let reportPath = 'Recibo';
+                    if (row.TIP_SITUACION == 'CT') {
+                        reportPath = 'DepositoPrima';
+                    }
+                    app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/Imprimir' + reportPath + '/' + row.NUM_RECIBO, false, 'Mapfre ' + reportPath + '.pdf')
                         .done(function (data, textStatus, jqXHR) {
                             window.open(data);
                         });
@@ -550,6 +570,7 @@ app.ViewerQuery = (function () {
         }
     }
 })();
+app.ViewerQuery.state = {};
 
 window.Local_Events = {
     'click .event': function (e, value, row, index) {

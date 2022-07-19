@@ -34,10 +34,10 @@ namespace Architect.API.Core.Contracts.General
         /// Descripción del paso o estado.
         /// </summary>
         [DataMember(), JsonProperty()] public string Description { get; set; }
-        /// <summary>
-        /// Define el tiempo maximo en minutos para que el paso o estado se de por procesado.
-        /// </summary>
-        [DataMember(), JsonProperty()] public int SLATimeOut { get; set; }
+        ///// <summary>
+        ///// Define el tiempo maximo en minutos para que el paso o estado se de por procesado.
+        ///// </summary>
+        //[DataMember(), JsonProperty()] public int SLATimeOut { get; set; }
         /// <summary>
         /// Orden en que se procesan los pasos para un proceso.
         /// </summary>
@@ -94,11 +94,11 @@ namespace Architect.API.Core.Contracts.General
         [DataMember(), JsonProperty()] public string MailToStepResponsibleCustom { get; set; }
         [DataMember(), JsonProperty()] public int MailToStepResponsibleTmpl { get; set; }
         [DataMember(), JsonProperty()] public string MailToStepResponsibleTmplDesc { get; set; }
-        [DataMember(), JsonProperty()] public int MailForSLAExpiration { get; set; }
-        [DataMember(), JsonProperty()] public string MailForSLAExpirationDesc { get; set; }
-        [DataMember(), JsonProperty()] public string MailForSLAExpirationCustom { get; set; }
-        [DataMember(), JsonProperty()] public int MailForSLAExpirationTmpl { get; set; }
-        [DataMember(), JsonProperty()] public string MailForSLAExpirationTmplDesc { get; set; }
+        //[DataMember(), JsonProperty()] public int MailForSLAExpiration { get; set; }
+        //[DataMember(), JsonProperty()] public string MailForSLAExpirationDesc { get; set; }
+        //[DataMember(), JsonProperty()] public string MailForSLAExpirationCustom { get; set; }
+        //[DataMember(), JsonProperty()] public int MailForSLAExpirationTmpl { get; set; }
+        //[DataMember(), JsonProperty()] public string MailForSLAExpirationTmplDesc { get; set; }
         /// <summary>
         /// Establece un script que es ejecutado al activarse el paso (Script).
         /// </summary>

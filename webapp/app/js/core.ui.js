@@ -366,6 +366,142 @@ app.ui = (function () {
                 message +
                 "</div>");
         },
+        GetExtentValue: function () {
+            var data = {};
+            $('[data-custom]').each(function (index, element) {
+                data[element.id] = $(element).val();
+            });
+            return data;
+        },
+        SetExtentValue: function (data) {
+            $('[data-custom]').each(function (index, element) {
+                if (data == null) {
+                    $(element).val(data);
+                }
+                else {
+                    $(element).val(data[element.id]);
+                }
+            });
+        },
+        ErrorPlacement: function (error, element) {
+            var name = $(element).attr("name");
+            var $obj = $("#" + name + "_validate");
+            if ($obj.length) {
+                error.appendTo($obj);
+            }
+            else {
+                error.insertAfter(element);
+            }
+        },
+        Yesterday: function () {
+            var value = new Date();
+            value.setDate(value.getDate() - 1);
+            return value;
+        },
+        DocumentTypeHandler: function (el, element, type, callbackDocumentType) {
+            var btn = $(el).parent().parent().find('.btn');
+            var value = $(el).data('value');
+            btn.text($(el).text());
+            btn.data('value', value);
+            event.preventDefault();
+
+            if (type == 'Identification') {
+                switch (value) {
+                    case 1: //Cédula física 9 
+                        $(element).val('');
+                        $(element).formatter().resetPattern('0{{9}}-{{9999}}-{{9999}}');
+                        $(element).attr('placeholder', '0X-XXXX-XXXX');
+                        break;
+                    case 2: //DIME 11 o 12  12 DÍGITOS Y DEBE INICIAR CON “1”: 1XXX-XXXXXX-XX
+                        $(element).val('');
+                        $(element).formatter().resetPattern('{{9999}}-{{999999}}-{{99}}');
+                        $(element).attr('placeholder', 'XXXX-XXXXXX-XX');
+                        break;
+                    case 3: //Pasaporte 14 DÍGITOS: XXXXXXXXXXXXXX
+                        $(element).val('');
+                        $(element).formatter().resetPattern('{{**************}}');
+                        $(element).attr('placeholder', 'XXXXXXXXXXXXXX');
+                        break;
+                    case 4: // Cédula jurídica 10
+                        $(element).val('');
+                        $(element).formatter().resetPattern('{{9999999999}}');
+                        $(element).attr('placeholder', 'XXXXXXXXXX');
+                        break;
+                }
+            }
+            if (callbackDocumentType !== undefined && callbackDocumentType !== null) {
+                callbackDocumentType(value);
+            }
+        },
+        DocumentNumberHandler: function (documentNumberElement, callbackDone, callbackDocumentType) {
+            $(documentNumberElement).formatter({
+                pattern: '0{{9}}-{{9999}}-{{9999}}',
+                persistent: false
+            });
+            $(documentNumberElement + 'TypeMenu a').click(function () {
+                app.ui.DocumentTypeHandler(this, documentNumberElement, 'Identification', callbackDocumentType);
+            });
+            $(documentNumberElement).on('blur', function () {
+                if (app.ui.IsDocumentNumberValid($(documentNumberElement + 'Type').data('value'), $(documentNumberElement).val())) {
+                    var value = $(documentNumberElement).val().replace(/-/g, '');
+                    if (value !== null && parseInt(0 + value, 10) !== 0 && parseInt(0 + value, 10) <= 999999999) {
+                        $(documentNumberElement).addClass('loading');
+                        app.core.Get(app.setting.apipath + 'v1/Insured/' + parseInt(0 + value, 10))
+                            .done(function (data, textStatus, jqXHR) {
+                                if (data != null) {
+                                    if (data.FirstName === null) {
+                                        data = null;
+                                    }
+                                    else {
+                                        if (data.MiddleName === null) {
+                                            data.MiddleName = '';
+                                        }
+                                        if (data.LastName === null) {
+                                            data.LastName = '';
+                                        }
+                                        if (data.SecondLastName === null) {
+                                            data.SecondLastName = '';
+                                        }
+                                    }
+                                }
+                                if (callbackDone !== undefined && callbackDone !== null) {
+                                    callbackDone(data);
+                                }
+                            }).always(function () {
+                                $(documentNumberElement).removeClass('loading');
+                            });
+                    }
+                }
+            });
+
+        },
+        IsDocumentNumberValid: function (documentType, documentNumber) {
+            var result = false;
+            var length = documentNumber.length;
+
+            switch (documentType) {
+                case 1: //10 DIGITOS Y DEBE INICIAR CON “0”: 0X-XXXX-XXXX
+                    result = (length === 12);
+                    break;
+                case 2: //12 DÍGITOS Y DEBE INICIAR CON “1”: 1XXX-XXXXXX-XX
+                    result = (length === 14);
+                    break;
+                case 3: //14 DÍGITOS: PASXXXXXXXXXXXXXX
+                    result = (length === 17);
+                    break;
+                case 4:
+                    result = (length >= 7 && length <= 14);
+                    break;
+            }
+            return result;
+        },
+        DocumentNumberValidators: function () {
+            $.validator.addMethod("DocumentNumberLength",
+                function (value, element, params) {
+                    return app.ui.IsDocumentNumberValid($("#DocumentType").data("value"), value);
+                }
+            );
+        },
         DateValidators: function () {
             $.validator.addMethod("localDate",
                 function (value, element) {
@@ -433,131 +569,6 @@ app.ui = (function () {
                     }
                 }
             );
-        },
-        GetExtentValue: function () {
-            var data = {};
-            $('[data-custom]').each(function (index, element) {
-                data[element.id] = $(element).val();
-            });
-            return data;
-        },
-        SetExtentValue: function (data) {
-            $('[data-custom]').each(function (index, element) {
-                if (data == null) {
-                    $(element).val(data);
-                }
-                else {
-                    $(element).val(data[element.id]);
-                }
-            });
-        },
-        ErrorPlacement: function (error, element) {
-            var name = $(element).attr("name");
-            var $obj = $("#" + name + "_validate");
-            if ($obj.length) {
-                error.appendTo($obj);
-            }
-            else {
-                error.insertAfter(element);
-            }
-        },
-        DocumentTypeHandler: function (el, element, type, callbackDocumentType) {
-            var btn = $(el).parent().parent().find('.btn');
-            var value = $(el).data('value');
-            btn.text($(el).text());
-            btn.data('value', value);
-            event.preventDefault();
-
-            if (type == 'Identification') {
-                switch (value) {
-                    case 1: //10 DIGITOS Y DEBE INICIAR CON “0”: 0X-XXXX-XXXX
-                        $(element).formatter().resetPattern('0{{9}}-{{9999}}-{{9999}}');
-                        $(element).attr('placeholder', '0X-XXXX-XXXX');
-                        break;
-                    case 2: //12 DÍGITOS Y DEBE INICIAR CON “1”: 1XXX-XXXXXX-XX
-                        $(element).formatter().resetPattern('1{{999}}-{{999999}}-{{99}}');
-                        $(element).attr('placeholder', '1XXX-XXXXXX-XX');
-                        break;
-                    case 3: //14 DÍGITOS: XXXXXXXXXXXXXX
-                        $(element).formatter().resetPattern('{{*************}}');
-                        $('#identificacion').attr('placeholder', 'XXXXXXXXXXXXXX');
-                        break;
-                    case 4:
-                        $(element).formatter().resetPattern('{{99999999999999999}}');
-                        $(element).attr('placeholder', 'XXXXXXXXXXXXXXXXX');
-                        break;
-                }
-            }
-            if (callbackDocumentType !== undefined && callbackDocumentType !== null) {
-                callbackDocumentType(value);
-            }
-        },
-        Yesterday: function () {
-            var value = new Date();
-            value.setDate(value.getDate() - 1);
-            return value;
-        },
-        IsDocumentNumberValid: function (documentType, documentNumber) {
-            var result = false;
-            var length = documentNumber.length;
-
-            switch (documentType) {
-                case 1: //10 DIGITOS Y DEBE INICIAR CON “0”: 0X-XXXX-XXXX
-                    result = (length === 12);
-                    break;
-                case 2: //12 DÍGITOS Y DEBE INICIAR CON “1”: 1XXX-XXXXXX-XX
-                    result = (length === 14);
-                    break;
-                case 3: //14 DÍGITOS: PASXXXXXXXXXXXXXX
-                    result = (length === 17);
-                    break;
-                case 4:
-                    result = (length >= 7 && length <= 14);
-                    break;
-            }
-            return result;
-        },
-        DocumentNumberHandler: function (documentNumberElement, callbackDone, callbackDocumentType) {
-            $(documentNumberElement).formatter({
-                pattern: '0{{9}}-{{9999}}-{{9999}}',
-                persistent: false
-            });
-            $(documentNumberElement + 'TypeMenu a').click(function () {
-                app.ui.DocumentTypeHandler(this, documentNumberElement, 'Identification', callbackDocumentType);
-            });
-            $(documentNumberElement).on('blur', function () {
-                if (app.ui.IsDocumentNumberValid($(documentNumberElement + 'Type').data('value'), $(documentNumberElement).val())) {
-                    var value = $(documentNumberElement).val().replace(/-/g, '');
-                    if (value !== null && parseInt(0 + value, 10) !== 0 && parseInt(0 + value, 10) <= 999999999) {
-                        $(documentNumberElement).addClass('loading');
-                        app.core.Get(app.setting.apipath + 'v1/Insured/' + parseInt(0 + value, 10))
-                            .done(function (data, textStatus, jqXHR) {
-                                if (data != null) {
-                                    if (data.FirstName === null) {
-                                        data = null;
-                                    }
-                                    else {
-                                        if (data.MiddleName === null) {
-                                            data.MiddleName = '';
-                                        }
-                                        if (data.LastName === null) {
-                                            data.LastName = '';
-                                        }
-                                        if (data.SecondLastName === null) {
-                                            data.SecondLastName = '';
-                                        }
-                                    }
-                                }
-                                if (callbackDone !== undefined && callbackDone !== null) {
-                                    callbackDone(data);
-                                }
-                            }).always(function () {
-                                $(documentNumberElement).removeClass('loading');
-                            });
-                    }
-                }
-            });
-
         },
         NotifyErrors: function (message, errors, formName) {
 
@@ -883,5 +894,37 @@ app.ui = (function () {
                     app.ui.CloseSideBar()
                 });
         },
+        TextColorFormatter: function (value, row, index, field) {
+            return '<span class="text-' + (app.ViewerQuery.state[field][value] || app.ViewerQuery.state[field]['_']) + '">' + app.ui.StringCapitalizeFormatter(value) + '</span>';
+        },
+        BadgeColorFormatter: function (value, row, index, field) {
+            return '<span class="badge badge-' + (app.ViewerQuery.state[field][value] || app.ViewerQuery.state[field]['_']) + '">' + app.ui.StringCapitalizeFormatter(value) + '</span>';
+        },
+        LabelColorFormatter: function (value, row, index, field) {
+            return '<span class="label label-' + (app.ViewerQuery.state[field][value] || app.ViewerQuery.state[field]['_']) + '">' + app.ui.StringCapitalizeFormatter(value) + '</span>';
+        },
+        CommonBehaviour: function () {
+            let roles = JSON.parse(localStorage.getItem('Roles'));
+            let tenant = localStorage.getItem('Tenant');
+            roles.forEach(function (item) {
+                $(`.role-${item}-visible`).removeClass('d-none');
+                $(`.role-${item}-enable`).prop("disabled", false);
+                $(`.role-${item}-${tenant}-visible`).removeClass('d-none');
+                $(`.role-${item}-${tenant}-enable`).prop("disabled", false);
+            })
+        },
+        RequiredMark: function (ctrlId, add) {
+            const mark = ' <span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span>';
+            let ctrl = $("[for=" + ctrlId + "]");
+            if (add) {
+                if (!ctrl.html().includes(mark)) {
+                    ctrl.html(ctrl.html() + mark);
+                }
+            } else {
+                if (ctrl.html().includes(mark)) {
+                    ctrl.html(ctrl.html().replace(mark, ''));
+                }
+            }
+        }
     };
 })();

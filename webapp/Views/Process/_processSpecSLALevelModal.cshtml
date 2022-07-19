@@ -1,0 +1,74 @@
+﻿<div class="modal inmodal" id="ProcessSpecSLALevelModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                <h4 class="modal-title">Niveles del acuerdo de servicio (SLA)</h4>
+                <small class="font-bold">Permite agregar un nivel para el acuerdo de servicio (SLA) o editar uno ya existente</small>
+            </div>
+            <div class="modal-body">
+                <!-- Edit Form -->
+                <div class='form-row'>
+                    <div class='col-md-12'>
+                        <div id="ProcessSpecSLALevelEdt" class="animated fadeInRight">
+                            <form id='ProcessSpecSLALevelEdtForm' class='form-horizontal' data-toggle='validator'>
+                                <fieldset>
+                                    <div class="form-row">
+                                        <!-- Id -->
+                                        <input id='ProcessSpecSLALevel_Id' name='ProcessSpecSLALevel_Id' type='hidden' value=''>
+                                        <!-- SLAId -->
+                                        <input id='SLAId' name='SLAId' type='hidden' value=''>
+                                        <!-- SLA -->
+                                        <div class='col-sm-6 col-md-6'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='SLATimeOut' title="Acuerdo de nivel de servicio expresado en horas">Tiempo máximo para la atención (SLA)<span class='required-mark'>*</span></label>
+                                                <div class="input-group">
+                                                    <input id='SLATimeOut' name='SLATimeOut' type='text' class='form-control text-right' size='9' maxlength='9' title="Acuerdo de nivel de servicio expresado en horas">
+                                                    <span class="input-group-addon">
+                                                        <small class="text-muted" title="Minutos">hora(s)</small>
+                                                    </span>
+                                                </div>
+                                                <div id='SLATimeOut_validate'></div>
+                                            </div>
+                                        </div>
+                                        <!-- MailForSLAExpiration -->
+                                        <div class='col-sm-6 col-md-6'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='MailForSLAExpiration'>Notificar<span class='required-mark'>*</span></label>
+                                                <select id='MailForSLAExpiration' name='MailForSLAExpiration' class='form-control'></select>
+                                            </div>
+                                        </div>
+                                        <!-- MailForSLAExpirationCustom -->
+                                        <div class='col-sm-6 col-md-6'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='MailForSLAExpirationCustom'>Personalización<span class='required-mark'>*</span></label>
+                                                <input id='MailForSLAExpirationCustom' name='MailForSLAExpirationCustom' type='text' class='form-control' size='256' maxlength='256' disabled>
+                                                <small class="form-text text-muted">Se puede indicar una lista de correo separado por coma, también se pueden usar las variables especiales {contact}, {user} y {roles} para hacer referencia a la dirección de correo del contacto, así como la del usuario que está realizando el cambio o a los usuarios que asociados al rol o roles de la etapa o el proceso.</small>
+                                            </div>
+                                        </div>
+                                        <!-- MailForSLAExpirationTmpl -->
+                                        <div class='col-sm-6 col-md-6'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='MailForSLAExpirationTmpl'>Plantilla de correo<span class='required-mark'>*</span></label>
+                                                <select id='MailForSLAExpirationTmpl' name='MailForSLAExpirationTmpl' class='form-control'></select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="ProcessSpecSLALevelEdtFormSave" type="button" class="btn btn-primary btn-sm" data-doing="Guardando cambios..." title="Guardar cambios">Guardar</button>
+                <button id="ProcessSpecSLALevelEdtFormSaveContinue" type="button" class="btn btn-primary btn-sm" data-doing="Guardando cambios..." title="Guardar cambios y continuar">Guardar y continuar</button>
+                <button id="ProcessSpecSLALevelEdtFormSaveCopy" type="button" class="btn btn-primary btn-sm" data-doing="Guardando cambios..." title="Guardar cambios y continuar">Guardar y copiar</button>
+                <button id="ProcessSpecSLALevelEdtFormDuplicate" type="button" class="btn btn-info btn-sm d-none" data-doing="Duplicando..." title="Duplica la información actual">Duplicar</button>
+                <button id="ProcessSpecSLALevelEdtFormDelete" type="button" class="btn btn-danger btn-sm d-none" data-doing="Eliminando..." title="Elimina la información actual">Eliminar</button>
+                <button id="ProcessSpecSLALevelEdtFormCancel" type="button" class="btn btn-white btn-sm" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>

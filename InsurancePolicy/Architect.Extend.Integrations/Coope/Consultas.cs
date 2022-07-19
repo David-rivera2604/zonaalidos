@@ -1,5 +1,5 @@
-﻿using Architect.Utilities.Extensions;
-using Architect.Extend.Integrations.cr.fi.cs.crm;
+﻿using Architect.Extend.Integrations.cr.fi.cs.crm;
+using Architect.Utilities.Extensions;
 using System;
 using System.Globalization;
 
@@ -82,7 +82,7 @@ namespace Architect.Extend.Integrations.Coope
                         }
                         result.PhoneNumber = result.PhoneNumber.Substring(0, 4) + "-" + result.PhoneNumber.Substring(4, 4);
                     }
-                }                
+                }
             }
             catch (Exception ex)
             {

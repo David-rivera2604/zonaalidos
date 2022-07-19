@@ -46,7 +46,7 @@ namespace Architect.API.Tron.Controllers
             List<Contracts.AvisosDeCobro.ReciboRespose> result = null;
             await Task.Run(() =>
             {
-                result = Business.Backoffice.AvisoCobro.ConsultaRecibos(item, tokenInfo.AgentCode);
+                result = Business.Backoffice.AvisoCobro.ConsultaRecibos(item, tokenInfo);
             }).ConfigureAwait(false);
             return Ok(result);
         }
@@ -63,7 +63,7 @@ namespace Architect.API.Tron.Controllers
 
             await Task.Run(() =>
             {
-                result = Business.Backoffice.AvisoCobro.Generar(item, tokenInfo.AgentCode);
+                result = Business.Backoffice.AvisoCobro.Generar(item, tokenInfo);
             }).ConfigureAwait(false);
 
             return Ok(result);

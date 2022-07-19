@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
 {
-    public class NameValuePair
+    internal class NameValuePair
     {
         public string keyword { get; set; }
         public string value { get; set; }

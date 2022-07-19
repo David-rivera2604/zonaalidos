@@ -1,13 +1,23 @@
 ﻿var app = app || {};
 
 app.AvisosRecibos = (function () {
-
+    const estado = { EP: "Pendiente" };
     let changedCallback = null;
 
     function Setup() {
-        app.core.Lookups(['MonedasPorRamo.cod_mon', 'FrecuenciaDePagoPorRamo.cod_fracc_pago.', 'PolizaGrupo.polizagrupo.', 'Contratos.contratos.'],
+        let lks = ['MonedasPorRamo.cod_mon', 'FrecuenciaDePagoPorRamo.cod_fracc_pago.'];
+
+        if (localStorage.getItem('Roles').includes('Empleado')) {
+            lks.push('Agents.Cod_Agt');
+        } else {
+            lks.push('PolizaGrupo.polizagrupo.');
+            lks.push('Contratos.contratos.');
+        }
+
+        app.core.Lookups(lks,
             function () {
                 data = {
+                    Cod_Agt: null,
                     desde: new Date(),
                     hasta: new Date(),
                     cod_mon: 1,
@@ -18,11 +28,13 @@ app.AvisosRecibos = (function () {
                     recibos: null,
                 };
                 MapObjectToInput(data);
+
             }, `cod_ramo=302:cod_mon=1`);
     };
 
     function MapInputToObject() {
         let data = {
+            Cod_Agt: app.ui.GetDropDownNumericValue('#Cod_Agt'),
             Fec_Efec_Rec_Desde: app.ui.GetDateValue('#desde'),
             Fec_Efec_Rec_Hasta: app.ui.GetDateValue('#hasta'),
             Cod_Mon: app.ui.GetDropDownNumericValue('#cod_mon'),
@@ -42,6 +54,7 @@ app.AvisosRecibos = (function () {
     };
 
     function MapObjectToInput(data) {
+        app.ui.SetDropDownNumericValue('#Cod_Agt', data.Cod_Agt, true);
         app.ui.SetDateValue('#desde', data.desde);
         $('#hasta_group').data("DateTimePicker").minDate($('#desde_group').data("DateTimePicker").date());
         app.ui.SetDateValue('#hasta', data.hasta);
@@ -74,10 +87,6 @@ app.AvisosRecibos = (function () {
             defaultDate: new Date()
 
         });
-        $('#DocumentNumber').formatter({
-            pattern: '0{{9}}-{{9999}}-{{9999}}',
-            persistent: false
-        });
         $("#PrototypeEdtFormSave").appendTo("#GenericToolBar");
         $("#PrototypeEdtFormCancel").appendTo("#GenericToolBar");
     };
@@ -99,27 +108,6 @@ app.AvisosRecibos = (function () {
             $('#hasta_group').data("DateTimePicker").minDate(minDate);
         });
 
-        $('#DocumentNumberTypeMenu a').click(function () {
-            app.ui.DocumentTypeHandler(this, '#DocumentNumber', 'Identification');
-        });
-
-        $('#DocumentNumber').on('blur', function () {
-            if (app.ui.IsDocumentNumberValid($('#DocumentNumberType').data('value'), $('#DocumentNumber').val())) {
-                var value = $('#DocumentNumber').val().replace(/-/g, '');
-                if (value !== null && parseInt(0 + value, 10) !== 0 && parseInt(0 + value, 10) <= 999999999) {
-                    $('#DocumentNumber').addClass('loading');
-                    app.core.GetExt('https://www.inmotiontools.com:8083/logic/api/padron/personaporcedula?cedula=' + parseInt(0 + value, 10))
-                        .done(function (data, textStatus, jqXHR) {
-                            if (data.Nombre !== null) {
-                                alert(data.Nombre);
-                            }
-                        }).always(function () {
-                            $('#DocumentNumber').removeClass('loading');
-                        });
-                }
-            }
-        });
-
         $('#GeneraAvisos').click(function () {
 
             if (app.ui.IsValid('#PrototypeEdtForm', false)) {
@@ -132,7 +120,7 @@ app.AvisosRecibos = (function () {
                     function (data) {
                         console.log(data);
                         if (data?.length > 0) {
-                            app.ui.ShowAlert('generalNotify', 'alert-success', `<b> <i class="fa fa-check"></i> El aviso de cobro #${data[0].Num_Aviso} por un total de ${data[0].Total_Importe_Aviso.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }, fue creado de forma existosa.</b> Se procesaron con exito ${data[0].Cantidad_Recibos} recibos y los no procesados fueron ${data[0].Cantidad_Recibos_No_Procesados}.`);
+                            app.ui.ShowAlert('generalNotify', 'alert-success', `<b> <i class="fa fa-check"></i> El aviso de cobro #${data[0].Num_Aviso} por un total de ${data[0].Total_Importe_Aviso.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}, fue creado de forma existosa.</b> Se procesaron con exito ${data[0].Cantidad_Recibos} recibos y los no procesados fueron ${data[0].Cantidad_Recibos_No_Procesados}.`);
                         } else {
                             app.ui.ShowAlert('quoteNotify', 'alert-danger', 'Ha ocurrido un error al tratar de generar el aviso de cobro, por favor intente nuevamente y en caso de persistir el problema contacte el personal de soporte');
                         }
@@ -142,7 +130,7 @@ app.AvisosRecibos = (function () {
                     }).always(function () {
                         app.ui.ButtonDone('#GeneraAvisos');
                     });
-                
+
 
             }
             event.preventDefault();
@@ -179,9 +167,18 @@ app.AvisosRecibos = (function () {
             event.preventDefault();
         });
 
+        $('#Cod_Agt').on('change', function () {
+            app.core.LookupDependency($('select#Cod_Agt').val(), 'polizagrupo', 'PolizaGrupoPorAgente', '', null, true, null, `cod_ramo=302:cod_mon=${app.ui.GetDropDownNumericValue('#cod_mon')}:Cod_Agt=`);
+            app.core.LookupDependency($('select#Cod_Agt').val(), 'contratos', 'ContratosPorAgente', '', null, true, null, `cod_ramo=302:cod_mon=${app.ui.GetDropDownNumericValue('#cod_mon')}:Cod_Agt=`);
+        });
+
+        app.ui.DocumentNumberHandler('#DocumentNumber', function (data) {
+            $("#Name").html(data != null ? data.FullName : '');
+        });
     };
 
     function data_changed(e) {
+
         let event = $(e).data('event');
         switch (event) {
             case 'clear.grid':
@@ -197,6 +194,14 @@ app.AvisosRecibos = (function () {
 
         if (changedCallback !== undefined && changedCallback !== null)
             changedCallback(MapInputToObject());
+
+        if (e != null && e.name == 'btSelectAllX') {
+            console.log(e);
+            let checked = $("[name='btSelectAll']").is(":checked");
+            $('#recibosTbl').bootstrapTable('getData').forEach(function (item) {
+                item.seleccionado = checked;
+            })
+        }
     };
 
     function Setup_Validations() {
@@ -204,11 +209,13 @@ app.AvisosRecibos = (function () {
         $("#PrototypeEdtForm").validate({
             errorPlacement: app.ui.ErrorPlacement,
             rules: {
+                Cod_Agt: { required: true },
                 desde: { required: true },
                 hasta: { required: true },
                 cod_mon: { required: true },
             },
             messages: {
+                Cod_Agt: { required: 'Debe indicar el agente' },
                 desde: { required: 'Debe indicar el Desde' },
                 hasta: { required: 'Debe indicar el Hasta' },
                 cod_mon: { required: 'Debe indicar el Moneda' },
@@ -225,6 +232,8 @@ app.AvisosRecibos = (function () {
             smartDisplay: true,
             search: true,
             searchAlign: 'left',
+            maintainMetaData: true,
+            clickToSelect: true,
             columns: [
                 {
                     field: 'seleccionado',
@@ -271,7 +280,13 @@ app.AvisosRecibos = (function () {
                     sortable: false,
                     halign: 'center',
                     align: 'center',
-                    formatter: 'app.ui.StringFormatter'
+                    formatter: function (value, row, index, field) {
+                        if (value === null)
+                            value = '';
+                        else
+                            value = estado[value] || value
+                        return app.ui.BadgeColorFormatter(value, row, index, field)
+                    }
                 }, {
                     field: 'Nom_Riesgo',
                     title: 'Riesgo',
@@ -300,11 +315,29 @@ app.AvisosRecibos = (function () {
         $('#recibosTbl').on('uncheck.bs.table', function () {
             data_changed('#recibosTbl');
         });
+
+        $('#recibosTbl').on('check-all.bs.table', function () {
+            $('#recibosTbl').bootstrapTable('getData').forEach(function (item) {
+                item.seleccionado = true;
+            })
+        });
+        $('#recibosTbl').on('uncheck-all.bs.table', function () {
+            $('#recibosTbl').bootstrapTable('getData').forEach(function (item) {
+                item.seleccionado = false;
+            })
+        });
+
     };
 
     return {
         Init: function () {
             try {
+                app.ui.CommonBehaviour();
+
+                app.ViewerQuery.state = {
+                    Estatus: { "VIGENTE": "primary", "_": "danger", "Cobrado": "success", "Pendiente": "warning" }
+                };
+
                 Controls_setup();
                 Setup_Validations();
                 recibos_table_setup();
@@ -329,3 +362,5 @@ app.AvisosRecibos = (function () {
         }
     };
 })();
+app.ViewerQuery = {};
+app.ViewerQuery.state = {};

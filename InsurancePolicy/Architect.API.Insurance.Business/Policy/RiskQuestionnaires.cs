@@ -1,9 +1,6 @@
 ﻿using Architect.Utilities.Extensions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Architect.API.Insurance.Business.Policy
 {
@@ -94,7 +91,16 @@ namespace Architect.API.Insurance.Business.Policy
             {
                 //QuestionId
                 if (underwriting && source.Confirmation.IsEmpty())
-                    result.Add(new Core.Contracts.General.Error() { Group = group, Key = string.Format("Confirmation_{0}", source.QuestionId), Message = string.Format("Para mayores de 65 años debe responder la pregunta {0} del {1}", source.QuestionId > 50 ? source.QuestionId - 50 : source.QuestionId, name) });
+                {
+                    bool skipQ = false;
+                    if (risk.PrimaryInsured.Gender == 1 && source.QuestionId == 10) {
+                        skipQ = true;
+                    }
+                    if (!skipQ)
+                    {
+                        result.Add(new Core.Contracts.General.Error() { Group = group, Key = string.Format("Confirmation_{0}", source.QuestionId), Message = string.Format("Se debe responder la pregunta {0} del {1}", source.QuestionId > 50 ? source.QuestionId - 50 : source.QuestionId, name) });
+                    }
+                }
 
                 //Diagnosis:
                 if (source.Confirmation == 1 && source.Diagnosis.IsEmpty())

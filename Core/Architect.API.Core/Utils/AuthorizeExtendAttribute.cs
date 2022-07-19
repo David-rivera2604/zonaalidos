@@ -25,7 +25,6 @@ namespace Architect.API.Core.Utils
         /// <param name="actionContext">Contexto.</param>
         public override void OnAuthorization(HttpActionContext actionContext)
         {
-            bool expired = false;
 
             if(actionContext.ControllerContext.Request.RequestUri.AbsolutePath.EndsWith("v1/Security/IsLive"))
             {
@@ -47,9 +46,9 @@ namespace Architect.API.Core.Utils
                     try
                     {
                         authenticationToken = actionContext.Request.Headers.Authorization.Parameter;
-                        tokenInfo = Core.Business.Security.Token.Info(authenticationToken);
+                        tokenInfo =Business.Security.Token.Info(authenticationToken);
                     }
-                    catch (Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException exExpiration)
+                    catch (Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException )
                     {
                         actionContext.Response = new HttpResponseMessage(HttpStatusCode.Unauthorized) { ReasonPhrase = "El token ha expirado" };
                     }
@@ -78,13 +77,13 @@ namespace Architect.API.Core.Utils
                     Contracts.Security.Activity session = Business.Security.Session.Get(authenticationToken); 
                     if (!skip && !actionContext.Request.RequestUri.LocalPath.EndsWith("/IsLive") && tokenInfo.Expires < DateTime.Now)
                     {
-                        expired = true;
+                       
                         if (session.IsNotEmpty())
                         {
                             DateTime expDateTime = session.LastDateTime.AddMinutes(Convert.ToDouble(ConfigurationManager.AppSettings["Session.Timeout"]));
                             //En caso que la session halla expirado, es decir si el time del últimos respuesta mas la duración de session es
-                            if (DateTime.Now < expDateTime)
-                                expired = false;
+                            //if (DateTime.Now < expDateTime)
+                                
                         }
                     } 
                     if (!ValidationRole(tokenInfo, actionContext))

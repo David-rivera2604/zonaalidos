@@ -1,9 +1,6 @@
 ﻿using Architect.Utilities.Extensions;
-using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Globalization;
-using System.Linq;
 
 namespace Architect.API.Insurance.Business.Policy
 {
@@ -23,7 +20,7 @@ namespace Architect.API.Insurance.Business.Policy
             Core.Business.General.ChangeSet.Create(2000, item.Id, companyId, "Notificación",
                 string.Format("Los usuarios del grupo '{0}' fueron notificados que la póliza queda pendiente para su revisión", ConfigurationManager.AppSettings["Mapfre.Notify.Subscription.RoleName"]), userId, item);
 
-            API.Core.Business.General.Mail.SendByTemplate(currentStatus == Enumerations.PolicyStatus.ComplementRequest ? "Notify_Completed" : "Notify_InReviewStatus", 
+            API.Core.Business.General.Mail.SendByTemplate(currentStatus == Enumerations.PolicyStatus.ComplementRequest ? "Notify_Completed" : "Notify_InReviewStatus",
                                                           companyId, userId, 0, item);
         }
 

@@ -66,7 +66,7 @@ namespace Architect.API.Core.DataAccess.General
                 endIndex = int.MaxValue;
             }
             Database.Select("SELECT * FROM (" +
-                            "SELECT ProcessSpecStep.Id, FlowId, ProcessSpecStep.CompanyId, ProcessSpecStep.Name, ProcessSpecStep.Description, SLATimeOut, StepOrder, ProcessStatus, ProcessLabel, EnableComment, ProgressMode, SLA, ProcessSpecStep.MailServer, MailToContact, MailToContactCustom, MailToContactTmpl, MailToStepResponsible, MailToStepResponsibleCustom, MailToStepResponsibleTmpl, MailForSLAExpiration, MailForSLAExpirationCustom, MailForSLAExpirationTmpl, PreScript, PostScript, ProcessSpecStep.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessSpecStep.UpdateDate " +
+                            "SELECT ProcessSpecStep.Id, FlowId, ProcessSpecStep.CompanyId, ProcessSpecStep.Name, ProcessSpecStep.Description, StepOrder, ProcessStatus, ProcessLabel, EnableComment, ProgressMode, ProcessSpecStep.SLA, ProcessSpecStep.MailServer, MailToContact, MailToContactCustom, MailToContactTmpl, MailToStepResponsible, MailToStepResponsibleCustom, MailToStepResponsibleTmpl, PreScript, PostScript, ProcessSpecStep.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessSpecStep.UpdateDate " +
                                    ", Flow.Name FlowIdDesc" +
                                    ", ROW_NUMBER() OVER (ORDER BY StepOrder) RowNumber " +
                               "FROM ProcessSpecStep LEFT JOIN UserMember um ON um.UserId = ProcessSpecStep.UpdateUserCode " +
@@ -98,7 +98,7 @@ namespace Architect.API.Core.DataAccess.General
         public static Architect.API.Core.Contracts.General.ProcessSpecStep RetrieveFull(int id, int companyId, IDbConnection connection = null)
         {
             Architect.API.Core.Contracts.General.ProcessSpecStep result = null;
-            Database.Select("SELECT ProcessSpecStep.Id, FlowId, ProcessSpecStep.CompanyId, ProcessSpecStep.Name, ProcessSpecStep.Description, SLATimeOut, StepOrder, ProcessStatus, ProcessLabel, EnableComment, ProgressMode, SLA, ProcessSpecStep.MailServer, MailToContact, MailToContactCustom, MailToContactTmpl, MailToStepResponsible, MailToStepResponsibleCustom, MailToStepResponsibleTmpl, MailForSLAExpiration, MailForSLAExpirationCustom, MailForSLAExpirationTmpl, PreScript, PostScript, ProcessSpecStep.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessSpecStep.UpdateDate " +
+            Database.Select("SELECT ProcessSpecStep.Id, FlowId, ProcessSpecStep.CompanyId, ProcessSpecStep.Name, ProcessSpecStep.Description, StepOrder, ProcessStatus, ProcessLabel, EnableComment, ProgressMode, ProcessSpecStep.SLA, ProcessSpecStep.MailServer, MailToContact, MailToContactCustom, MailToContactTmpl, MailToStepResponsible, MailToStepResponsibleCustom, MailToStepResponsibleTmpl, PreScript, PostScript, ProcessSpecStep.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessSpecStep.UpdateDate " +
                                  ", Flow.Name FlowIdDesc " +
                               "FROM ProcessSpecStep LEFT JOIN UserMember um ON um.UserId = ProcessSpecStep.UpdateUserCode " +
                               "LEFT JOIN ProcessSpecFlow flow ON flow.Id=ProcessSpecStep.FlowId " +

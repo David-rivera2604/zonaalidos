@@ -1,9 +1,6 @@
 ﻿using Architect.DataFactory;
-using Architect.Utilities.Extensions;
-using System;
-using System.Linq;
-using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using DbType = Architect.DataFactory.Enumerations.DbType;
 
 namespace Architect.API.Insurance.DataAccess.Policy

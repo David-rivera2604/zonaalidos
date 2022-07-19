@@ -42,7 +42,7 @@ namespace Architect.API.Insurance.Contracts.Others
         [DataMember(), JsonProperty()] public double DeducibleMaximoVitalicio { get; set; }
         [DataMember(), JsonProperty()] public double StopLost { get; set; }
         [DataMember(), JsonProperty()] public string EmployeeNumber { get; set; }
-        
+
 
         [DataMember(), JsonProperty()] public List<InclusionesExtra> Extras { get; set; }
     }

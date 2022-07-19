@@ -1,5 +1,5 @@
-﻿using Architect.Utilities.Extensions;
-using Architect.Utilities.Excel.Extensions;
+﻿using Architect.Utilities.Excel.Extensions;
+using Architect.Utilities.Extensions;
 using ClosedXML.Excel;
 using System;
 using System.Collections.Generic;

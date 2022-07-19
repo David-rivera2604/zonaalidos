@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using System.Threading.Tasks;
 using Architect.Utilities.Extensions;
 using Newtonsoft.Json;
@@ -16,13 +15,22 @@ namespace Architect.API.Tron.Business.Backoffice
 
         public static void Monitor()
         {
+            Utilities.Log.WarningLog("Payment.Monitor", "Inicio - Proceso de sondeo", "payment");
+
             try
             {
 
-                List<Payment.Integrations.Contracts.OnlinePayment> pendings = Payment.Integrations.DataAccess.OnlinePayment.RetrievePendings(2);
-                if (pendings.IsNotEmpty())
+                List<Payment.Integrations.Contracts.OnlinePayment> pendingOnlinePayment = Payment.Integrations.DataAccess.OnlinePayment.RetrievePendings();
+                if (pendingOnlinePayment.IsNotEmpty())
                 {
-                    Task.Run(() => VerifiyOnlinePaymentPending(pendings));
+                    Utilities.Log.WarningLog("Payment.Monitor", $"  {pendingOnlinePayment.Count} Pending Online Payment", "payment");
+                    Task.Run(() => VerifiyOnlinePaymentPending(pendingOnlinePayment));
+                }
+                List<Payment.Integrations.Contracts.OnlinePayment> pendingPaymentInTron = Payment.Integrations.DataAccess.OnlinePayment.RetrieveByTronCode(500);
+                if (pendingPaymentInTron.IsNotEmpty())
+                {
+                    Utilities.Log.WarningLog("Payment.Monitor", $"  {pendingOnlinePayment.Count} Pending Payment In Tron", "payment");
+                    Task.Run(() => VerifiyOnlinePaymentPending(pendingPaymentInTron));
                 }
             }
             catch (Exception ex)
@@ -30,6 +38,7 @@ namespace Architect.API.Tron.Business.Backoffice
                 Utilities.Log.ErrorLog("Payment", "Monitor", ex);
                 throw ex;
             }
+            Utilities.Log.WarningLog("Payment.Monitor", "Fin - Proceso de sondeo", "payment");
         }
 
         private static void VerifiyOnlinePaymentPending(List<Payment.Integrations.Contracts.OnlinePayment> pendings)
@@ -51,10 +60,10 @@ namespace Architect.API.Tron.Business.Backoffice
 
         private static async Task Verify(Payment.Integrations.Contracts.OnlinePayment currentRecord)
         {
-            Payment.Integrations.Providers.Placetopay.Contracts.InformationRequest result = await Payment.Integrations.Payment.VerifyUpdateStatus(currentRecord, currentRecord.UpdateUserCode, true);
+            Architect.Payment.Integrations.Contracts.InformationRequest result = await Payment.Integrations.Payment.VerifyUpdateStatus(currentRecord, currentRecord.UpdateUserCode, true);
 
             // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
-            if (result.changed && result.status.status == "APPROVED")
+            if (result.changed && result.status == "APPROVED")
             {
                 bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode);
             }
@@ -63,31 +72,32 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Procesa y valida una notificación de pago.
         /// </summary>
-        public async static Task Notificacion(int companyId, Payment.Integrations.Providers.Placetopay.Contracts.NotifyRequest notify)
+        public async static Task Notificacion(Architect.Payment.Integrations.Contracts.NotifyRequest notify)
         {
-            Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveByRequestID(companyId, Convert.ToInt64(notify.requestId));
-            if (currentRecord != null)
+            if (Utilities.Helpers.Settings.BoolValue("Payment.Placetopay.Notify.Enabled", true))
             {
-                string signature = Payment.Integrations.Providers.Placetopay.Webcheckout.NotifySignature(notify, currentRecord.Currency);
-
-                if (signature == notify.signature)
+                Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveByRequestID(Convert.ToInt64(notify.requestId));
+                if (currentRecord != null)
                 {
-                    await Verify(currentRecord);
+                    string signature = Payment.Integrations.Payment.NotifySignature(notify, currentRecord.Currency);
+
+                    if (signature == notify.signature)
+                    {
+                        await Verify(currentRecord);
+                    }
                 }
             }
         }
 
-
-
         /// <summary>
         /// Permite la creación de un sesión para realizar un pago.
         /// </summary>
-        public async static Task<Payment.Integrations.Contracts.SessionInformation> CrearSesion(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent,  string num_poliza, Int64 num_recibo)
+        public async static Task<Payment.Integrations.Contracts.SessionInformation> CrearSesion(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo)
         {
             Payment.Integrations.Contracts.SessionInformation session = await Payment.Integrations.Payment.VerifySession(tokenInfo.CompanyId, num_poliza, num_recibo);
             if (session == null)
             {
-                Contracts.Vistas.Recibo recibo = DataAccess.PorRamo.Informacion_de_un_Recibo(Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1), tokenInfo.AgentCode, tokenInfo.IdentificationType.IdentificationType(), tokenInfo.Identification.OnlyNumbers(), num_poliza, num_recibo);
+                Contracts.Vistas.Recibo recibo = DataAccess.PorRamo.Informacion_de_un_Recibo(Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1), tokenInfo.AgentCode, tokenInfo.IdentificationType.IdentificationType(), tokenInfo.Identification.DocumentNumber(tokenInfo.IdentificationType), num_poliza, num_recibo);
 
                 if (recibo != null)
                 {
@@ -122,57 +132,69 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Recupera la información de una sesión de pago, en caso de haber algún cambio de estado, se actualiza la tabla interna.
         /// </summary>
-        public async static Task<Payment.Integrations.Providers.Placetopay.Contracts.InformationRequest> GetRequestInformation(int companyId, int userId, Int64 requestId, string reference)
+        public async static Task<Payment.Integrations.Contracts.InformationRequest> GetRequestInformation(int companyId, int userId, Int64 requestId, string reference)
         {
 
-            Payment.Integrations.Providers.Placetopay.Contracts.InformationRequest result;
+            Architect.Payment.Integrations.Contracts.InformationRequest result;
 
             if (requestId.IsNotEmpty())
             {
-                result = await Payment.Integrations.Payment.GetRequestInformation(companyId, userId, requestId, true);
+                result = await Payment.Integrations.Payment.GetRequestInformation(userId, requestId, true);
             }
             else
             {
                 result = await Payment.Integrations.Payment.GetRequestInformation(companyId, userId, reference, true);
             }
             // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
-            if (result.changed && result.status.status == "APPROVED")
+            if (result.changed && result.status == "APPROVED")
             {
                 bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode);
             }
+
             return result;
         }
 
         /// <summary>
         /// Procesa el pago de un recibo en tron.
         /// </summary>
-        public async static Task<bool> TronPayment(Payment.Integrations.Providers.Placetopay.Contracts.InformationRequest request, int agentCode)
+        public async static Task<bool> TronPayment(Architect.Payment.Integrations.Contracts.InformationRequest request, int agentCode)
         {
+            string tipoPagador = "A";
+            string pagador = agentCode.ToString();
 
-            //tipoPagador A / C. pagador = codigo de cliente o agente
-            var payment = request.payment.FirstOrDefault();
+            //En el caso de que no se trate de un agente, se asume que es un cliente tomador
+            if (agentCode.IsEmpty() && request.OnlinePayment.UpdateUserCode.IsNotEmpty())
+            {
+                tipoPagador = "C";
+                var userInfo = Core.Business.Security.UserMember.RetrieveById(request.OnlinePayment.CompanyId, request.OnlinePayment.UpdateUserCode);
+                if (userInfo.IsNotEmpty())
+                {
+                    pagador = userInfo.IdentificationType.ToString().IdentificationType() + "-" + userInfo.Identification.DocumentNumber(userInfo.IdentificationType.ToString());
+                }
+            }
+
             string data = JsonConvert.SerializeObject(
                 new
                 {
                     guid = request.OnlinePayment.RequestID.ToString(),
                     canal = "ALI",
-                    fechaPago = payment.status.date,
-                    tipoPagador = "A",
-                    pagador = agentCode.ToString(),
+                    fechaPago = request.date,
+                    tipoPagador = tipoPagador,
+                    pagador = pagador,
                     tipoPago = string.Empty,
-                    referenciaPago = payment.authorization,
-                    montoTotal = payment.amount.to.total,
-                    moneda = payment.amount.to.currency,
-                    direccionIP = request.request.ipAddress,
+                    referenciaPago = request.authorization,
+                    montoTotal = request.total,
+                    moneda = request.currency,
+                    direccionIP = request.ipAddress,
                     huellaNavegador = (string)null,
                     tarjeta = new
                     {
                         bin = string.Empty,
-                        terminacion = payment.processorFields.Find(f => f.keyword == "lastDigits").value,
-                        nombre = string.Format("{0} {1}", request.request.payer.name, request.request.payer.surname),
+                        terminacion = request.lastDigits,
+                        nombre = string.Format("{0} {1}", request.payerName, request.payerSurname),
                         mesExpira = string.Empty,
                         annioExpira = string.Empty,
-                        marcaTarjeta = payment.paymentMethodName
+                        marcaTarjeta = request.paymentMethodName
                     },
                     recibos = new[] {
                         new {
@@ -184,7 +206,12 @@ namespace Architect.API.Tron.Business.Backoffice
                     }
                 });
 
-            return (DataAccess.PorRamo.p_proceso_cobro(1, Guid.NewGuid().ToString(), data).codigo_respuesta == "200");
+            Contracts.Batch.Respuesta tronCobro = DataAccess.PorRamo.p_proceso_cobro(1, Guid.NewGuid().ToString(), data);
+
+            Payment.Integrations.DataAccess.OnlinePayment.UpdateTronInformation(request.OnlinePayment.Id, Convert.ToInt16(tronCobro.codigo_respuesta), tronCobro.mensaje_respuesta);
+            Utilities.Log.WarningLog("Pagos.TronPayment", string.Format("codigo_respuesta={0}, mensaje_respuesta={1}, recibo={2}", tronCobro.codigo_respuesta, tronCobro.mensaje_respuesta, request.OnlinePayment.BillNumber), "payment");
+            return (tronCobro.codigo_respuesta == "200");
         }
+
     }
 }

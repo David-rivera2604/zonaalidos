@@ -216,7 +216,7 @@ namespace Architect.DataFactory
                 case Enumerations.DbType.DateTimeOffset:
                 case Enumerations.DbType.Single:
                 case Enumerations.DbType.SByte:
-                    Exception currentException2 = new Exception(string.Format("The data '{0}' type is not typed for conversion", parameter.Type.ToString()));
+                    Exception currentException2 = new Exception($"The data '{parameter.Type.ToString()}' type is not typed for conversion");
                     throw currentException2;
                 case Enumerations.DbType.Binary:
                     result = OracleDbType.Blob;
@@ -254,7 +254,7 @@ namespace Architect.DataFactory
                 case Enumerations.DbType.AnsiString:
                 case Enumerations.DbType.String:
                 case Enumerations.DbType.StringArray:
-                    result = OracleDbType.NVarchar2;
+                    result = OracleDbType.Varchar2;
                     break;
 
                 case Enumerations.DbType.RefCursor:
@@ -266,7 +266,7 @@ namespace Architect.DataFactory
                     break;
 
                 default:
-                    Exception currentException = new Exception(string.Format("The data '{0}' type is not typed for conversion", parameter.Type.ToString()));
+                    Exception currentException = new Exception($"The data '{parameter.Type.ToString()}' type is not typed for conversion");
                     throw currentException;
             }
             return result;
@@ -931,7 +931,7 @@ namespace Architect.DataFactory
                                 if (magicMethod.IsNotEmpty())
                                     magicMethod.Invoke(connection, new Object[] { });
 
-                                Log.WarningLog("DataAccessLayer", String.Format("Retry due to disconnection for query on table '{2}' ({0}/{3}). {1}", attempts, exOracle.Message, result.TableName, connectAttempts), "datafactory");
+                                Log.WarningLog("DataAccessLayer", $"Retry due to disconnection for query on table '{result.TableName}' ({attempts}/{connectAttempts}). {exOracle.Message}", "datafactory");
                                 Thread.Sleep(1000);
 
                                 try
@@ -1000,7 +1000,7 @@ namespace Architect.DataFactory
 
                 Log.TraceLog("DataAccessLayer",
                     Handlers.UtilityHandler.MakeCommandSummary(cmmd) +
-                    String.Format("  {0} Rows in {1} ms{2}\n", result.Rows.Count, watch.ElapsedMilliseconds, (database.IsCaching ? " (Cache)" : "")), "datafactory");
+                    $"  {result.Rows.Count} Rows in {watch.ElapsedMilliseconds} ms{((database.IsCaching ? " (Cache)" : ""))}\n", "datafactory");
             }
             return result;
         }
@@ -1177,7 +1177,7 @@ namespace Architect.DataFactory
                             {
                                 connection.Open();
                             }
-                            catch (Exception ex2)
+                            catch (Exception )
                             {
                                 temporalException = Exceptions.DataAccessException.Factory(ex, cmmd, string.Empty, "Query");
                                 ClosedConnection(cmmd, connection);
@@ -1352,7 +1352,7 @@ namespace Architect.DataFactory
                                 if (magicMethod.IsNotEmpty())
                                     magicMethod.Invoke(connection, new Object[] { });
 
-                                Log.WarningLog("DataAccessLayer", String.Format("Retry due to disconnection for query on table '{2}' ({0}/{3}). {1}", attempts, exOracle.Message, string.Empty, connectAttempts), "datafactory");
+                                Log.WarningLog("DataAccessLayer", $"Retry due to disconnection for query on table '{string.Empty}' ({attempts}/{connectAttempts}). {exOracle.Message}", "datafactory");
                                 Thread.Sleep(1000);
 
                                 try
@@ -1394,7 +1394,7 @@ namespace Architect.DataFactory
                             {
                                 connection.Open();
                             }
-                            catch (Exception ex2)
+                            catch (Exception )
                             {
                                 temporalException = Exceptions.DataAccessException.Factory(ex, cmmd, string.Empty, "Query");
                                 ClosedConnection(cmmd, connection);
@@ -1413,7 +1413,7 @@ namespace Architect.DataFactory
                 {
                     Log.TraceLog("DataAccessLayer",
                        Handlers.UtilityHandler.MakeCommandSummary(cmmd) +
-                       String.Format("  {0} Rows in {1} ms{2}\n", rows, watch.ElapsedMilliseconds, (database.IsCaching ? " (Cache)" : "")), "datafactory");
+                       $"  {rows} Rows in {watch.ElapsedMilliseconds} ms{(database.IsCaching ? " (Cache)" : "")}\n", "datafactory");
                 }
             }
             else
@@ -1432,7 +1432,7 @@ namespace Architect.DataFactory
             var key = "";
             Stopwatch watch = null;
             T result = default(T);
-            var method = string.Format("ExecuteQueryScalar<{0}>", typeof(T).FullName);
+            var method = $"ExecuteQueryScalar<{typeof(T).FullName}>";
             if (Handlers.UtilityHandler.AppSettingsCheck("Architect.DataFactory.Trace.Enabled"))
             {
                 watch = new Stopwatch();
@@ -1442,7 +1442,7 @@ namespace Architect.DataFactory
 
             if (database.IsCaching)
             {
-                key = string.Format("{1}.{0}", Architect.DataFactory.Handlers.UtilityHandler.GetMd5Hash(database.ConnectionStringName, Statement, database.Parameters), database.CachePrefix);
+                key = $"{database.CachePrefix}.{Handlers.UtilityHandler.GetMd5Hash(database.ConnectionStringName, Statement, database.Parameters)}";
             }
             if (Parameters?.Count > 0)
             {
@@ -1563,8 +1563,7 @@ namespace Architect.DataFactory
             if (Handlers.UtilityHandler.AppSettingsCheck("Architect.DataFactory.Trace.Enabled"))
             {
                 Log.TraceLog("DataAccessLayer",
-                    Handlers.UtilityHandler.MakeCommandSummary(cmmd) +
-                    String.Format("  Result {0} in {1} ms{2}\n", result, watch.ElapsedMilliseconds, (database.IsCaching ? " (Cache)" : "")), "datafactory");
+                    $"{Handlers.UtilityHandler.MakeCommandSummary(cmmd)}{(string.Format("  Result {0} in {1} ms{2}\n", result, watch.ElapsedMilliseconds, database.IsCaching ? " (Cache)" : ""))}", "datafactory");
             }
             return result;
         }

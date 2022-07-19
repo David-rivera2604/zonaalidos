@@ -42,6 +42,7 @@ namespace Architect.API.Core.Contracts.General
         [DataMember(), JsonProperty()] public string ReferenceLookupList4 { get; set; }
         [DataMember(), JsonProperty()] public string ReferenceCaption5 { get; set; }
         [DataMember(), JsonProperty()] public string ReferenceLookupList5 { get; set; }
+        [DataMember(), JsonProperty()] public int SLA { get; set; }
         /// <summary>
         /// Estado (Activo/Inactivo)
         /// </summary>

@@ -31,7 +31,7 @@ namespace Architect.API.Core.Business.Security
                 result.Reason = "Debe indicar la compañía";
             if (result.Reason.IsEmpty())
             {
-                Core.Contracts.General.LookupValue companyItem = TenantInformation(authenticationRequest.Tenant);
+                Core.Contracts.General.LookupValue companyItem = TenantInformation(authenticationRequest.Tenant.Trim());
 
                 if (companyItem.IsNotEmpty())
                 {
@@ -55,11 +55,11 @@ namespace Architect.API.Core.Business.Security
 
             if (result.Reason.IsEmpty())
             {
-                track.UserName = authenticationRequest.Email;
+                track.UserName = authenticationRequest.Email.Trim();
                 if (authenticationRequest.Email.Contains("@"))
-                    user = DataAccess.Security.UserMember.RetrieveByEMail(authenticationRequest.Email.ToLower(), companyId);
+                    user = DataAccess.Security.UserMember.RetrieveByEMail(authenticationRequest.Email.Trim().ToLower(), companyId);
                 else
-                    user = DataAccess.Security.UserMember.RetrieveByUserName(authenticationRequest.Email.ToLower(), companyId);
+                    user = DataAccess.Security.UserMember.RetrieveByUserName(authenticationRequest.Email.Trim().ToLower(), companyId);
 
                 if (user.IsNotEmpty())
                 {
@@ -127,7 +127,7 @@ namespace Architect.API.Core.Business.Security
                             agentInfo.tip_docum = agentInfo.tip_docum.IdentificationType();
                             if (agentInfo.cod_docum.IsNotEmpty())
                             {
-                                agentInfo.cod_docum = Convert.ToInt64(agentInfo.cod_docum.OnlyNumbers()).ToString();
+                                agentInfo.cod_docum = agentInfo.cod_docum.DocumentNumber(agentInfo.tip_docum);
                             }
                         }
                         Contracts.Security.Token tokenItem = new Contracts.Security.Token()
@@ -587,7 +587,7 @@ namespace Architect.API.Core.Business.Security
                 internalUserId = Utilities.Helpers.Settings.IntegerValue(string.Format("Tenant.Settings.{0}.External.UserId", companyId));
                 result.UserMember.CompanyId = companyId;
 
-                result.Errors = Architect.API.Core.Business.Security.UserMember.Validate(result.UserMember, true);
+                result.Errors = UserMember.Validate(result.UserMember, true);
                 if (result.Errors.Count == 0)
                 {
                     Contracts.Security.UserMember user = DataAccess.Security.UserMember.RetrieveByEMail(result.UserMember.EMail, companyId);
@@ -598,7 +598,7 @@ namespace Architect.API.Core.Business.Security
                     else
                         if (companyId == 3)
                     {
-                        Contracts.Security.ClientInformation clientInfo = Tron.RetrieveClientInformationByDocument(result.UserMember.IdentificationType.ToString().IdentificationType(), result.UserMember.Identification.DocumentNumber(result.UserMember.IdentificationType.ToString().IdentificationType()));
+                        ClientInformation clientInfo = Tron.RetrieveClientInformationByDocument(result.UserMember.IdentificationType.ToString().IdentificationType(), result.UserMember.Identification.DocumentNumber(result.UserMember.IdentificationType.ToString().IdentificationType()));
 
                         if (clientInfo.IsEmpty())
                         {
@@ -618,8 +618,23 @@ namespace Architect.API.Core.Business.Security
 
             if (result.Errors.Count == 0)
             {
-                result.UserMember.Roles = new List<Utilities.Contracts.LookUpValue> { new Utilities.Contracts.LookUpValue() { Code = Utilities.Helpers.Settings.StringValue(string.Format("Tenant.Settings.{0}.External.RoleId", companyId)) } };
-                result.UserMember = Architect.API.Core.Business.Security.UserMember.Create(companyId, internalUserId, result.UserMember);
+                string roleId = "";
+                string roleName = Utilities.Helpers.Settings.StringValue(string.Format("Tenant.Settings.{0}.External.RoleName", companyId));
+                if (roleName.IsNotEmpty())
+                {
+                    Contracts.General.LookupValue rolInfo = Common.Lkp("Roles", companyId).Where(r => r.Description == roleName).FirstOrDefault();
+                    if (rolInfo.IsNotEmpty())
+                    {
+                        roleId = rolInfo.Code;
+                    }
+                }
+                if (roleId.IsEmpty())
+                {
+                    roleId = Utilities.Helpers.Settings.StringValue(string.Format("Tenant.Settings.{0}.External.RoleId", companyId));
+                }
+
+                result.UserMember.Roles = new List<Utilities.Contracts.LookUpValue> { new Utilities.Contracts.LookUpValue() { Code = roleId } };
+                result.UserMember = UserMember.Create(companyId, internalUserId, result.UserMember);
             }
 
             return result;

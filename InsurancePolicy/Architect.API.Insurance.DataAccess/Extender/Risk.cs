@@ -1,6 +1,5 @@
 ﻿using Architect.DataFactory;
 using Architect.Utilities.Extensions;
-using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -72,8 +71,8 @@ namespace Architect.API.Insurance.DataAccess.Policy
         /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="filter">Permite filtrar por póliza o por la identificación, nombre, apellido, teléfono o correo electrónico del asegurado.</param>
         /// <param name="lineOfBusiness">Opción para filtrar por ramo o linea de negocio.</param>
-        /// <param name="product">Opción para filtrar por producto vincaulado a un ramo.</param>
-        /// <param name="status">Opción para filtrar por multiples esta de las pólizas.</param>
+        /// <param name="product">Opción para filtrar por producto vinculado a un ramo.</param>
+        /// <param name="status">Opción para filtrar por múltiples esta de las pólizas.</param>
         /// <returns>Lista de pólizas según los criterio definidos en el filtro.</returns>
         public static List<Contracts.Policy.PolicyView> RetrieveView(int companyId, string filter, int lineOfBusiness, int product, string status, IDbConnection connection = null)
         {
@@ -117,7 +116,7 @@ namespace Architect.API.Insurance.DataAccess.Policy
         public static Contracts.Policy.Risk RetrieveByKey(int id, int companyId, IDbConnection connection = null)
         {
             Architect.API.Insurance.Contracts.Policy.Risk result = null;
-            Database.Select("SELECT Id, Risk.CompanyId, OriginType, LineOfBusinessCode, ProductCode, PolicyId, Currency, ModuleCode, PaymentFrequency, IssueDate, EffectiveDate, EndingDate, InsuredAmountBase, InsuredAmountComplement, InsuredAmount, AnnualPremium, MonthlyPremium, Surcharge, Status, CancellationDate, ReasonForStatus, CertificateId, Comments, Annotation, Risk.Reference, Risk.BranchOffice, ExecutiveUserCode, Risk.CustomData, Risk.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, Risk.UpdateDate " +
+            Database.Select("SELECT Id, Risk.CompanyId, OriginType, LineOfBusinessCode, ProductCode, PolicyId, Currency, ModuleCode, PaymentFrequency, IssueDate, EffectiveDate, EndingDate, InsuredAmountBase, InsuredAmountComplement, InsuredAmount, AnnualPremium, MonthlyPremium, Surcharge, Status, CancellationDate, ReasonForStatus, CertificateId, Comments, Annotation, Risk.Reference, Risk.BranchOffice, ExecutiveUserCode, HasDigitalSignature, Subsidiary, MainPolicyId, Risk.CustomData, Risk.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, Risk.UpdateDate " +
                               "FROM Risk LEFT JOIN UserMember um ON um.UserId = Risk.UpdateUserCode " +
                              "WHERE Risk.Id=:Id AND Risk.CompanyId=:CompanyId")
                         .AddParameter("Id", DbType.Decimal, 9, id)
@@ -160,10 +159,10 @@ namespace Architect.API.Insurance.DataAccess.Policy
             return (int)Database.Update(@"UPDATE Risk 
                                              SET Reference=:Reference 
                                            WHERE Id=:Id AND CompanyId=:CompanyId")
-                            .AddParameter("Reference", DbType.AnsiString, 36,  reference)
-                            .AddParameter("Id", DbType.Decimal, 9,  Id)
-                            .AddParameter("CompanyId", DbType.Decimal, 5,  companyId)
-                            .Execute(connection, "Research"); 
+                            .AddParameter("Reference", DbType.AnsiString, 36, reference)
+                            .AddParameter("Id", DbType.Decimal, 9, Id)
+                            .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                            .Execute(connection, "Research");
         }
 
         /// <summary>
@@ -174,18 +173,54 @@ namespace Architect.API.Insurance.DataAccess.Policy
         /// <returns>Lista de id</returns>
         public static List<Utilities.Contracts.LookUpValue> RetrieveByStatus(int companyid, int status, IDbConnection connection = null)
         {
-
             var result = new List<Utilities.Contracts.LookUpValue>();
-            Database.Select(@"SELECT Risk.Id, Risk.Reference  
-                                FROM Risk  
-                                JOIN RiskBayer ON RiskBayer.Id=Risk.Id AND NVL(RiskBayer.HasDigitalSignature,0)=0  
-                               WHERE Risk.CompanyId=:CompanyId AND Risk.Status=:Status ")
-                    .AddParameter("CompanyId", DbType.Decimal, 5,  companyid)
-                    .AddParameter("Status", DbType.Decimal, 5, status)
-                    .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
-                     {
-                         result.Add(new Utilities.Contracts.LookUpValue() { Code = reader.NumericValue("Id").ToString(), Description = reader.StringValue("Reference") });
-                     })); 
+            string query = "SELECT Risk.Id, Risk.Reference FROM Risk";
+            if (companyid == 4 || companyid == 8)
+            {
+                query += " JOIN RiskBayer ON RiskBayer.Id=Risk.Id AND NVL(RiskBayer.HasDigitalSignature,0)=0";
+            }
+
+            query += " WHERE Risk.CompanyId=:CompanyId AND Risk.Status=:Status";
+            if (companyid != 4 && companyid != 8)
+            {
+                query += " AND NVL(Risk.HasDigitalSignature,0)=0";
+            }
+
+            Database.Select(query)
+                .AddParameter("CompanyId", DbType.Decimal, 5, companyid)
+                .AddParameter("Status", DbType.Decimal, 5, status)
+                .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
+                 {
+                     result.Add(new Utilities.Contracts.LookUpValue() { Code = reader.NumericValue("Id").ToString(), Description = reader.StringValue("Reference") });
+                 }));
+            return result;
+        }
+
+        /// <summary>
+        /// Recupera la información básica de una póliza por medio de una referencia.
+        /// </summary>
+        public static Contracts.Policy.Risk RetrieveByReference(string reference, IDbConnection connection = null)
+        {
+            Contracts.Policy.Risk result = null;
+
+            Database.Select(@"SELECT Id, CompanyId, PolicyId, UpdateUserCode, UpdateDate, Reference, Status
+                                FROM Risk 
+                               WHERE Reference=:Reference AND NVL(HasDigitalSignature,0)=0")
+                .AddParameter("Reference", DbType.AnsiString, 36, reference)
+
+                .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
+                {
+                    result = new Contracts.Policy.Risk()
+                    {
+                        Id = reader.IntegerValue("Id"),
+                        CompanyId = reader.IntegerValue("CompanyId"),
+                        PolicyId = reader.IntegerValue("PolicyId"),
+                        UpdateUserCode = reader.IntegerValue("UpdateUserCode"),
+                        UpdateDate = reader.DateTimeValue("UpdateDate"),
+                        Reference = reader.StringValue("Reference"),
+                        Status = reader.IntegerValue("Status")
+                };
+                }));
             return result;
         }
 
@@ -198,7 +233,7 @@ namespace Architect.API.Insurance.DataAccess.Policy
         public static List<Contracts.Policy.Risk> RetrieveByIdCompanyId(int id, int companyId, IDbConnection connection = null)
         {
             var result = new List<Contracts.Policy.Risk>();
-            Database.Select("SELECT Id, Risk.CompanyId, OriginType, LineOfBusinessCode, ProductCode, PolicyId, Currency, ModuleCode, PaymentFrequency, IssueDate, EffectiveDate, EndingDate, InsuredAmountBase, InsuredAmountComplement, InsuredAmount, AnnualPremium, MonthlyPremium, Surcharge, Status, CancellationDate, ReasonForStatus, CertificateId, Comments, Annotation, Risk.Reference, Risk.BranchOffice, ExecutiveUserCode, Risk.CustomData, Risk.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, Risk.UpdateDate " +
+            Database.Select("SELECT Id, Risk.CompanyId, OriginType, LineOfBusinessCode, ProductCode, PolicyId, Currency, ModuleCode, PaymentFrequency, IssueDate, EffectiveDate, EndingDate, InsuredAmountBase, InsuredAmountComplement, InsuredAmount, AnnualPremium, MonthlyPremium, Surcharge, Status, CancellationDate, ReasonForStatus, CertificateId, Comments, Annotation, Risk.Reference, Risk.BranchOffice, ExecutiveUserCode, HasDigitalSignature, Subsidiary, MainPolicyId, Risk.CustomData, Risk.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, Risk.UpdateDate " +
                               "FROM Risk LEFT JOIN UserMember um ON um.UserId = Risk.UpdateUserCode " +
                              "WHERE Risk.Id=:Id AND Risk.CompanyId=:CompanyId")
                         .AddParameter("Id", DbType.Decimal, 9, id)
@@ -207,7 +242,7 @@ namespace Architect.API.Insurance.DataAccess.Policy
                         {
                             result.Add(DataReaderToRisk(reader));
                         }));
-            return result; 
+            return result;
         }
 
         /// <summary>
@@ -222,7 +257,7 @@ namespace Architect.API.Insurance.DataAccess.Policy
                                      WHERE Id=:Id AND CompanyId=:CompanyId")
                               .AddParameter("Id", DbType.Decimal, 9, id)
                               .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
-                              .Execute(connection, "Research"); 
+                              .Execute(connection, "Research");
         }
     }
 }

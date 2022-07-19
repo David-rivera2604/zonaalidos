@@ -6,7 +6,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
     /// <summary>
     /// Estructura que contiene la información de la respuesta sobre una solicitud o pago, e informa el estado actual de la misma.
     /// </summary>
-    public class Status
+    internal class Status
     {
         /// <summary>
         /// Estado de una petición o pago

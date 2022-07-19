@@ -153,6 +153,12 @@ namespace Architect.API.Insurance.Contracts.Policy
         /// Información de los beneficiarios vinculados a una póliza.
         /// </summary>
         [DataMember(), JsonProperty()] public RiskBeneficiaryInfoView Beneficiaries { get; set; }
+
+        /// <summary>
+        /// Uso interno.
+        /// </summary>
+        [DataMember(), JsonProperty()] public string Behavior { get; set; }
+
     }
 }
 

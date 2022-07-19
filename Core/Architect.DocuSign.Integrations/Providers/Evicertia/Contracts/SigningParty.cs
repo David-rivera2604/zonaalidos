@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Architect.API.Core.Contracts.EviSign
+namespace Architect.DocuSign.Integrations.Providers.Evicertia.Contracts
 {
     /// <summary>
     /// firmantes del documento

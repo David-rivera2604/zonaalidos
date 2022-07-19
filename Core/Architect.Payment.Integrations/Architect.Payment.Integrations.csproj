@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Architect.Payment.Integrations.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -44,9 +45,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Business\OnlinePayment.cs" />
+    <Compile Include="Contracts\InformationRequest.cs" />
+    <Compile Include="Contracts\NotifyRequest.cs" />
     <Compile Include="Contracts\OnlinePayment.cs" />
     <Compile Include="Contracts\PaymentInformation.cs" />
-    <Compile Include="Contracts\SessionResponse.cs" />
+    <Compile Include="Contracts\SessionInformation.cs" />
     <Compile Include="DataAccess\OnlinePayment.cs" />
     <Compile Include="Payment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

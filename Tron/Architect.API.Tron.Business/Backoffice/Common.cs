@@ -186,6 +186,9 @@ namespace Architect.API.Tron.Business.Backoffice
                 case "202":
                     procedureName = "em_k_jrp_cuadropoliza202_mcr.p_lista";
                     break;
+                case "205":
+                    procedureName = "em_k_jrp_certificado_205_mcr.p_lista";
+                    break;
                 case "288":
                     procedureName = "em_k_jrp_condiciones_288_mcr.p_lista";
                     break;
@@ -253,6 +256,29 @@ namespace Architect.API.Tron.Business.Backoffice
             {
                 string failDetail = System.Text.Encoding.Default.GetString(result);
                 Architect.Utilities.Log.ErrorLog("ImprimirRecibo", failDetail);
+                throw new Exception(failDetail);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Descarga el Deposito De Prima de tron.
+        /// </summary>
+        public static byte[] DepositoDePrima(int num_recibo)
+        {
+            byte[] result = null;
+
+            string id = string.Format("{0}/prd/servlet/mapfre.srv.SVJspool?otxtAccion=11&id={1}&format=pdf",
+                                        ConfigurationManager.AppSettings["Mapfre.Tron.RutaImpresion"],
+                                        Architect.API.Tron.DataAccess.Impresion.DepositoDePrima(1, num_recibo));
+            using (WebClient client = new WebClient())
+            {
+                result = client.DownloadData(id);
+            }
+            if (result.Length < 200)
+            {
+                string failDetail = System.Text.Encoding.Default.GetString(result);
+                Architect.Utilities.Log.ErrorLog("DepositoDePrima", failDetail);
                 throw new Exception(failDetail);
             }
             return result;

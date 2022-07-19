@@ -122,7 +122,7 @@ namespace Architect.API.Insurance.Business.Policy
                 }
 
                 Core.Business.General.ChangeSet.Create(2007, processId, tokenInfo.CompanyId, "Inicio",
-                    string.Format("El proceso #{3} termino de forma exitosa, se cargaron {2} asegurados de {1}. <a href='../files/{4}' download='{5}'>Descargar el archivo original con comentarios y errores</a>.", originalFileName, riskSuccessful + riskWithError, riskSuccessful, processId, System.IO.Path.GetFileName( excelFilename), originalFileName), tokenInfo.UserId, new { FileName = originalFileName, Rows = riskSuccessful + riskWithError });
+                    string.Format("El proceso #{3} termino de forma exitosa, se cargaron {2} asegurados de {1}. <a href='../files/{4}' download='{5}'>Descargar el archivo original con comentarios y errores</a>.", originalFileName, riskSuccessful + riskWithError, riskSuccessful, processId, System.IO.Path.GetFileName(excelFilename), originalFileName), tokenInfo.UserId, new { FileName = originalFileName, Rows = riskSuccessful + riskWithError });
 
                 ExcelUpdateResult(excelFilename, reportResult);
             }

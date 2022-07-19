@@ -1,6 +1,4 @@
 ﻿using Architect.Utilities.Extensions;
-using System;
-using System.Collections.Generic;
 
 namespace Architect.API.Insurance.Business.ManualPolicies
 {

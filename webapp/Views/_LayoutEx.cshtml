@@ -7,11 +7,25 @@
     <title>Zona de Aliados</title>
 
     @Styles.Render("~/Content/cssMaster")
+	@Scripts.Render("~/bundles/jsMaster")
     <link rel="shortcut icon" href="~/images/favicon.png" />
+	
+	<!-- Google Tag Manager -->
+		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-NL4F2ZN');</script>
+	<!-- End Google Tag Manager -->
 </head>
 
 <body class="fixed-sidebar fixed-nav fixed-nav-basic @ViewBag.theme">
 
+	<!-- Google Tag Manager (noscript) -->
+		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NL4F2ZN"
+		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+	<!-- End Google Tag Manager (noscript) -->
+	
     <div id="wrapper">
         <nav class="navbar-default navbar-static-side " role="navigation">
             <div class="sidebar-collapse">
@@ -70,7 +84,7 @@
 
             <div class="footer">
                 <div>
-                    <strong>
+                    <strong title="1.6.7">
                         &copy;
                     </strong> 2020 MAPFRE. Todos los derechos reservados.
                 </div>
@@ -101,7 +115,7 @@
             </div>
         </div>
     </div>
-    @Scripts.Render("~/bundles/jsMaster")
+    <!-- @Scripts.Render("~/bundles/jsMaster") -->
     <!-- Handler for local scripts -->
     @RenderSection("scripts", required: false)
 </body>

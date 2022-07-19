@@ -1,14 +1,14 @@
-﻿using Architect.Utilities.Extensions;
-using Architect.API.Insurance.Contracts.Product;
+﻿using Architect.API.Insurance.Contracts.Product;
+using Architect.Utilities.Extensions;
 using Microsoft.Web.Http;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web;
 
 namespace Architect.API.Insurance.Controllers
 {
@@ -34,7 +34,7 @@ namespace Architect.API.Insurance.Controllers
             Contracts.Policy.RiskView result = null;
             await Task.Run(() =>
             {
-                result = Business.Policy.Risk.Information(id, tokenInfo.CompanyId);
+                result = Business.Policy.Risk.Information(id, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -125,8 +125,16 @@ namespace Architect.API.Insurance.Controllers
 
             if (result.Errors.Count > 0)
             {
-                message = string.Format("No se puede emitir la póliza ya que existen {0} error(es) que ameritan su atención",
-                                        result.Errors.Count);
+                if (result.Errors.Find(r => r.Group == "DigitalSignFail") == null)
+                {
+
+                    message = string.Format("No se puede emitir la póliza ya que existen {0} error(es) que ameritan su atención",
+                                            result.Errors.Count);
+                }
+                else
+                {
+                    message = "Hubo un problema al tratar de enviar el documento para su firma, por favor intente nuevamente, si el problema persiste, vuelva a intentar en 10 minutos.";
+                }
             }
             else
             {
@@ -178,8 +186,16 @@ namespace Architect.API.Insurance.Controllers
 
             if (result.Errors.Count > 0)
             {
-                message = string.Format("No se puede emitir la póliza ya que existen {0} error(es) que ameritan su atención",
+                if (result.Errors.Find(r => r.Group == "DigitalSignFail") == null)
+                {
+
+                    message = string.Format("No se puede emitir la póliza ya que existen {0} error(es) que ameritan su atención",
                                         result.Errors.Count);
+                }
+                else
+                {
+                    message = "Hubo un problema al tratar de enviar el documento para su firma, por favor intente nuevamente, si el problema persiste, vuelva a intentar en 10 minutos.";
+                }
             }
             else
             {
@@ -262,7 +278,7 @@ namespace Architect.API.Insurance.Controllers
             await Task.Run(() =>
             {
                 Business.Policy.Risk
-                    .ChangeStatus(item, tokenInfo.CompanyId, tokenInfo.UserId, tokenInfo.Roles, ref message);
+                    .ChangeStatus(item, tokenInfo, ref message);
             })
                 .ConfigureAwait(false);
 
@@ -376,10 +392,10 @@ namespace Architect.API.Insurance.Controllers
         public IHttpActionResult Import([FromUri] string excelFilename, [FromUri] string originalFileName, [FromUri] string specificaction)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
-            Core.Contracts.General.GenericResponse result = Business.Policy.RiskImport.Import(HttpContext.Current.Server.MapPath(@"~\bin"), 
+            Core.Contracts.General.GenericResponse result = Business.Policy.RiskImport.Import(HttpContext.Current.Server.MapPath(@"~\bin"),
                                                                                                 Path.Combine(HostingEnvironment.MapPath(ConfigurationManager.AppSettings["Files.Path"]), excelFilename),
                                                                                               originalFileName,
-                                                                                              Path.Combine(ConfigurationManager.AppSettings["Product.Definition.Path"],  specificaction + ".import.json"),
+                                                                                              Path.Combine(ConfigurationManager.AppSettings["Product.Definition.Path"], specificaction + ".import.json"),
                                                                                               tokenInfo);
 
             if (result.IsNotEmpty())

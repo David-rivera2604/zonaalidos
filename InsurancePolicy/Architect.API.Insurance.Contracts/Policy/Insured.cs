@@ -41,6 +41,10 @@ namespace Architect.API.Insurance.Contracts.Policy
         /// </summary>
         [DataMember(), JsonProperty()] public string SecondLastName { get; set; }
         /// <summary>
+        /// Nombre completo.
+        /// </summary>
+        [DataMember(), JsonProperty()] public string FullName { get; set; }
+        /// <summary>
         /// Fecha de nacimiento
         /// </summary>
         [DataMember(), JsonProperty()] public DateTime BirthDate { get; set; }
@@ -101,6 +105,11 @@ namespace Architect.API.Insurance.Contracts.Policy
         /// Número de teléfono.
         /// </summary>
         [DataMember(), JsonProperty()] public string PhoneNumber { get; set; }
+
+        /// <summary>
+        /// País de nacionalidad.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int CountryOfNationality { get; set; }
 
         [DataMember(), JsonProperty()] public string Source { get; set; }
     }

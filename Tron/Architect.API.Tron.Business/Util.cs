@@ -335,31 +335,6 @@ namespace Architect.API.Tron.Business
             };
         }
 
-        internal static string IdentificationTypeConvert(int identificationType)
-        {
-            string type = "";
-
-            switch (identificationType)
-            {
-                case 1: //Cédula
-                    type = "CNA";
-                    break;
-                case 2: //Residencia
-                    type = "CRE";
-                    break;
-                case 3: //Pasaporte
-                    type = "PAS";
-                    break;
-                case 4: //Cédula jurídica
-                    type = "CJU";
-                    break;
-                    //CIN
-                    //EEX
-            }
-
-            return type;
-        }
-
         internal static int IdentificationTypeConvert(string identificationType)
         {
             int type = 0;
@@ -673,7 +648,7 @@ namespace Architect.API.Tron.Business
                 num_riesgo = 1,
                 tip_benef = tipodetercero.ToString(),
                 num_secu = 1,
-                tip_docum = Util.IdentificationTypeConvert(item.DocumentNumberType),
+                tip_docum = item.DocumentNumberType.ToString().IdentificationType(),
                 cod_docum = Util.IdentificationFormat(item.DocumentNumberType, item.DocumentNumber),
                 mca_principal = "N",
                 mca_calculo = "N",
@@ -715,7 +690,7 @@ namespace Architect.API.Tron.Business
                 cod_cia = datosFijos.cod_cia,
                 fec_tratamiento = DateTime.Today,
                 tip_mvto_batch = "3",
-                tip_docum = Util.IdentificationTypeConvert(item.DocumentNumberType),
+                tip_docum = item.DocumentNumberType.ToString().IdentificationType(),
                 cod_docum = Util.IdentificationFormat(item.DocumentNumberType, item.DocumentNumber),
                 nom_tercero = item.nombre,
                 ape1_tercero = item.apellido1,
@@ -760,8 +735,6 @@ namespace Architect.API.Tron.Business
             }
             return result;
         }
-
-
 
     }
 }

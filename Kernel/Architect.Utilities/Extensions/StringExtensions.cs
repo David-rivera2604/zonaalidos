@@ -423,7 +423,7 @@ namespace Architect.Utilities.Extensions
                 }
             }
 
-            return value;
+            return value.Trim();
         }
 
     }

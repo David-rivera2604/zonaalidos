@@ -94,6 +94,7 @@ app.PolicyEdit = (function () {
                     $('#ReviewAccept').addClass('d-none');
                     $('#ReviewCondition').addClass('d-none');
                     $('#ReviewDecline').addClass('d-none');
+                    $('#ReviewComplement').addClass('d-none');
 
                     $('#AcceptCondition').addClass('d-none');
                     $('#AcceptDecline').addClass('d-none');
@@ -259,6 +260,9 @@ app.PolicyEdit = (function () {
                 }
                 else
                     switch (data.Status) {
+                        case 6:
+                            toastr.success("Póliza enviada para su firma electrónica", "", { timeOut: 5000, closeButton: true, progressBar: true });
+                            break;
                         case 2:
                             app.ui.ShowAlert('generalNotify', 'alert-warning', data.Message);
                             toastr.success("Póliza emitida para su revisión", "", { timeOut: 5000, closeButton: true, progressBar: true });
@@ -270,6 +274,7 @@ app.PolicyEdit = (function () {
                             else
                                 toastr.success("Póliza emitida", "", { timeOut: 5000, closeButton: true, progressBar: true });
                             break;
+
                     }
             }).always(function () {
                 $(ctrolId).html(currentCaption);

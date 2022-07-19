@@ -6,8 +6,8 @@ app.ManualSiniestro = (function () {
     var changedCallback = null;
 
     function Setup() {
-	
-app.core.Get(app.setting.apipath + 'v1/Quote/SiniestroSetup', null,
+
+        app.core.Get(app.setting.apipath + 'v1/Quote/SiniestroSetup', null,
             function (data) {
                 app.core.Lookups([],
                     function () {
@@ -17,7 +17,7 @@ app.core.Get(app.setting.apipath + 'v1/Quote/SiniestroSetup', null,
 
             });
     };
-    
+
     function ReadOnly() {
         $('#StatementDate_group').replaceWith('<div>' + $('#StatementDate').val() + '</div>');
         $('#OccurrenceDate_group').replaceWith('<div>' + $('#OccurrenceDate').val() + '</div>');
@@ -25,9 +25,9 @@ app.core.Get(app.setting.apipath + 'v1/Quote/SiniestroSetup', null,
         $('#PaidAmount').replaceWith('<div>' + $('#PaidAmount').val() + '</div>');
         $('#PaidDate_group').replaceWith('<div>' + $('#PaidDate').val() + '</div>');
         $('#DeclinedDate_group').replaceWith('<div>' + $('#DeclinedDate').val() + '</div>');
-        $('label[for=AssociateIsTheInsured').next().replaceWith('<div>' + $('label[for=AssociateIsTheInsured_'+app.ui.GetRadioNumericValue('AssociateIsTheInsured')+'').html() + '</div>');
+        $('label[for=AssociateIsTheInsured').next().replaceWith('<div>' + $('label[for=AssociateIsTheInsured_' + app.ui.GetRadioNumericValue('AssociateIsTheInsured') + '').html() + '</div>');
         $('#DisabilityDate_group').replaceWith('<div>' + $('#DisabilityDate').val() + '</div>');
-        $('label[for=Disputability').next().replaceWith('<div>' + $('label[for=Disputability_'+app.ui.GetRadioNumericValue('Disputability')+'').html() + '</div>');
+        $('label[for=Disputability').next().replaceWith('<div>' + $('label[for=Disputability_' + app.ui.GetRadioNumericValue('Disputability') + '').html() + '</div>');
         $('#ClaimId').replaceWith('<div>' + $('#ClaimId').val() + '</div>');
         $('#Status').replaceWith('<div>' + $('#Status option:selected').text() + '</div>');
         $('#IncidentDetail').replaceWith('<div>' + $('#IncidentDetail').val() + '</div>');
@@ -45,8 +45,8 @@ app.core.Get(app.setting.apipath + 'v1/Quote/SiniestroSetup', null,
         $('#documentosrequeridosTbl').bootstrapTable('hideColumn', 'Actions');
 
     };
-    
-  function MapInputToObject() {
+
+    function MapInputToObject() {
         var data = {
             StatementDate: app.ui.GetDateValue('#StatementDate'),
             OccurrenceDate: app.ui.GetDateValue('#OccurrenceDate'),
@@ -114,108 +114,104 @@ app.core.Get(app.setting.apipath + 'v1/Quote/SiniestroSetup', null,
             $('#documentosrequeridosTbl').bootstrapTable('load', {});
 
     };
-    
+
     function Controls_setup() {
-$('#StatementDate_group').datetimepicker({
+        $('#StatementDate_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es',
             defaultDate: new Date()
 
         });
-$('#OccurrenceDate_group').datetimepicker({
+        $('#OccurrenceDate_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es',
             defaultDate: new Date()
 
         });
-new AutoNumeric('#ReserveAmount', {
+        new AutoNumeric('#ReserveAmount', {
             decimalCharacter: ',',
-			decimalCharacterAlternative: '.',
+            decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
             maximumValue: '999999999',
             minimumValue: '0',
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-new AutoNumeric('#PaidAmount', {
+        new AutoNumeric('#PaidAmount', {
             decimalCharacter: ',',
-			decimalCharacterAlternative: '.',
+            decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
             maximumValue: '999999999',
             minimumValue: '0',
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-$('#PaidDate_group').datetimepicker({
+        $('#PaidDate_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
-$('#DeclinedDate_group').datetimepicker({
+        $('#DeclinedDate_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
-$('#DisabilityDate_group').datetimepicker({
+        $('#DisabilityDate_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
-new AutoNumeric('#Sector', {
+        new AutoNumeric('#Sector', {
             decimalCharacter: ',',
-			decimalCharacterAlternative: '.',
+            decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
             maximumValue: '999999999',
             minimumValue: '0',
             decimalPlaces: '0',
             emptyInputBehavior: 'null'
         });
-new AutoNumeric('#LineOfBusiness', {
+        new AutoNumeric('#LineOfBusiness', {
             decimalCharacter: ',',
-			decimalCharacterAlternative: '.',
+            decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
             maximumValue: '999999999',
             minimumValue: '0',
             decimalPlaces: '0',
             emptyInputBehavior: 'null'
         });
-$('#IssueDate_group').datetimepicker({
+        $('#IssueDate_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
-$('#EffectiveDate_group').datetimepicker({
+        $('#EffectiveDate_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
-$('#EndingDate_group').datetimepicker({
+        $('#EndingDate_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
-new AutoNumeric('#ProducerId', {
+        new AutoNumeric('#ProducerId', {
             decimalCharacter: ',',
-			decimalCharacterAlternative: '.',
+            decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
             maximumValue: '999999999',
             minimumValue: '0',
             decimalPlaces: '0',
             emptyInputBehavior: 'null'
         });
-$('#EffectiveOtherPolicyDate_group').datetimepicker({
+        $('#EffectiveOtherPolicyDate_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
-$('#DocumentNumber').formatter({
-            pattern: '0{{9}}-{{9999}}-{{9999}}',
-            persistent: false
-        });
-$('#numerodetelefono').formatter({
+        $('#numerodetelefono').formatter({
             pattern: '{{9999}}-{{9999}}',
             persistent: false
         });
-$('#DFecha_group').datetimepicker({
+        $('#DFecha_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
-new AutoNumeric('#DTamano', {
+        new AutoNumeric('#DTamano', {
             decimalCharacter: ',',
-			decimalCharacterAlternative: '.',
+            decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
             maximumValue: '9999',
             minimumValue: '0',
@@ -232,27 +228,12 @@ new AutoNumeric('#DTamano', {
         $("#PrototypeEdtForm :input").change(function () {
             data_changed();
         });
-        
-$('#DocumentNumberTypeMenu a').click(function () {
-            app.ui.DocumentTypeHandler(this, '#DocumentNumber', 'Identification');
-        });
 
-        $('#DocumentNumber').on('blur', function () {
-            if (app.ui.IsDocumentNumberValid($('#DocumentNumberType').data('value'), $('#DocumentNumber').val())) {
-                var value = $('#DocumentNumber').val().replace(/-/g, '');
-                if (value !== null && parseInt(0 + value, 10) !== 0 && parseInt(0 + value, 10) <= 999999999) {
-                    $('#DocumentNumber').addClass('loading');
-                    app.core.GetExt('https://www.inmotiontools.com:8083/logic/api/padron/personaporcedula?cedula=' + parseInt(0 + value, 10))
-                        .done(function (data, textStatus, jqXHR) {
-                            if (data.Nombre !== null) {
-                                alert(data.Nombre);
-                            }
-                        }).always(function () {
-                            $('#DocumentNumber').removeClass('loading');
-                        });
-                }
+        app.ui.DocumentNumberHandler('#DocumentNumber', function (data) {
+            if (data != null) {
+                alert((data.FirstName + ' ' + data.MiddleName).trim());
             }
-        });		
+        });
 
         $('#PrototypeEdtFormSave').click(function () {
 
@@ -268,7 +249,7 @@ $('#DocumentNumberTypeMenu a').click(function () {
                             app.ui.ShowAlert('quoteNotify', 'alert-danger', data.Mensaje);
                         }
                         else {
-                        
+
                         }
 
                     }).always(function () {
@@ -290,7 +271,7 @@ $('#DocumentNumberTypeMenu a').click(function () {
         if (changedCallback !== undefined && changedCallback !== null)
             changedCallback(MapInputToObject());
     };
-    
+
     function Setup_Validations() {
         app.ui.DateValidators();
         $("#PrototypeEdtForm").validate({
@@ -300,7 +281,7 @@ $('#DocumentNumberTypeMenu a').click(function () {
         });
     };
 
-function terceros_table_setup() {
+    function terceros_table_setup() {
 
         $('#tercerosTbl').bootstrapTable({
             uniqueId: 'tercerosId',
@@ -310,88 +291,88 @@ function terceros_table_setup() {
             detailView: false,
             detailFormatter: 'app.ui.GenericDetailFormatter',
             columns: [
-{
-	field: 'tipodetercero',
-	title: 'Tipo de tercero',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'left',
-    formatter: 'app.ui.StringFormatter',
-    visible: true
-},{
-	field: 'DocumentNumber',
-	title: 'Identificación',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'left',
-    formatter: 'app.ui.StringFormatter',
-    visible: true
-},{
-	field: 'nombre',
-	title: 'Nombre',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'left',
-    formatter: 'app.ui.StringFormatter',
-    visible: true
-},{
-	field: 'apellido1',
-	title: 'Apellido',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'left',
-    formatter: 'app.ui.StringFormatter',
-    visible: true
-},{
-	field: 'apellido2',
-	title: 'Apellido 2',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'left',
-    formatter: 'app.ui.StringFormatter',
-    visible: false
-},{
-	field: 'fechadenacimiento',
-	title: 'Nacimiento',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'center',
-    formatter: 'app.ui.DateFormatter',
-    visible: true
-},{
-	field: 'mca_sexo',
-	title: 'Sexo',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'left',
-    formatter: 'app.ui.StringFormatter',
-    visible: true
-},{
-	field: 'numerodetelefono',
-	title: 'Teléfono',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'left',
-    formatter: 'app.ui.StringFormatter',
-    visible: true
-},{
-	field: 'correoelectronico',
-	title: 'Correo electrónico',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'left',
-    formatter: 'app.ui.StringFormatter',
-    visible: true
-},]
+                {
+                    field: 'tipodetercero',
+                    title: 'Tipo de tercero',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
+                    field: 'DocumentNumber',
+                    title: 'Identificación',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
+                    field: 'nombre',
+                    title: 'Nombre',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
+                    field: 'apellido1',
+                    title: 'Apellido',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
+                    field: 'apellido2',
+                    title: 'Apellido 2',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: false
+                }, {
+                    field: 'fechadenacimiento',
+                    title: 'Nacimiento',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    formatter: 'app.ui.DateFormatter',
+                    visible: true
+                }, {
+                    field: 'mca_sexo',
+                    title: 'Sexo',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
+                    field: 'numerodetelefono',
+                    title: 'Teléfono',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
+                    field: 'correoelectronico',
+                    title: 'Correo electrónico',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                },]
         });
 
 
@@ -400,7 +381,7 @@ function terceros_table_setup() {
 
 
 
-function documentosrequeridos_table_setup() {
+    function documentosrequeridos_table_setup() {
 
         $('#documentosrequeridosTbl').bootstrapTable({
             uniqueId: 'documentosrequeridosId',
@@ -410,70 +391,70 @@ function documentosrequeridos_table_setup() {
             detailView: false,
             detailFormatter: 'app.ui.GenericDetailFormatter',
             columns: [
-{
-	field: 'DStored',
-	title: 'Estado',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'left',
-    formatter: 'app.ui.StringFormatter',
-    visible: true
-},{
-	field: 'tipo',
-	title: 'Tipo de documento',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'left',
-    formatter: 'app.ui.StringFormatter',
-    visible: true
-},{
-	field: 'DNombre',
-	title: 'Archivo',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'left',
-    formatter: 'app.ui.StringFormatter',
-    visible: true
-},{
-	field: 'DArchivoEsperado',
-	title: 'Archivoeseperado',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'left',
-    formatter: 'app.ui.StringFormatter',
-    visible: true
-},{
-	field: 'Grupo',
-	title: 'Grupo',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'left',
-    formatter: 'app.ui.StringFormatter',
-    visible: true
-},{
-	field: 'DFecha',
-	title: 'Fecha',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'center',
-    formatter: 'app.ui.DateFormatter',
-    visible: true
-},{
-	field: 'DTamano',
-	title: 'Tamaño',
-	titleTooltip: '',
-	sortable: false,
-	halign: 'center',
-	align: 'right',
-    formatter: 'app.ui.IntegerFormatter',
-    visible: true
-},{
+                {
+                    field: 'DStored',
+                    title: 'Estado',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
+                    field: 'tipo',
+                    title: 'Tipo de documento',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
+                    field: 'DNombre',
+                    title: 'Archivo',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
+                    field: 'DArchivoEsperado',
+                    title: 'Archivoeseperado',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
+                    field: 'Grupo',
+                    title: 'Grupo',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
+                    field: 'DFecha',
+                    title: 'Fecha',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    formatter: 'app.ui.DateFormatter',
+                    visible: true
+                }, {
+                    field: 'DTamano',
+                    title: 'Tamaño',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.IntegerFormatter',
+                    visible: true
+                }, {
                     field: 'Actions',
                     title: 'Acciones',
                     class: 'd-none d-sm-table-cell',
@@ -483,7 +464,7 @@ function documentosrequeridos_table_setup() {
                     align: 'center',
                     width: 10,
                     widthUnit: "%",
-                    visible: true,					
+                    visible: true,
                     events: 'documentosrequeridosTbl_Events',
                     formatter: function (value, row, index, field) {
                         return '<button type="button" class="btn btn-sm btn-white edit" title="Al hacer click permite la edición de los datos del visualizations de la fila"> <i class="fa fa-pencil"></i> </button>' +
@@ -500,7 +481,7 @@ function documentosrequeridos_table_setup() {
                 }]
         });
 
-$('#documentosrequeridosNew').click(function () {
+        $('#documentosrequeridosNew').click(function () {
             documentosrequeridos_table_row_edit();
         });
 
@@ -527,7 +508,7 @@ $('#documentosrequeridosNew').click(function () {
 
     };
 
-function documentosrequeridos_table_row(mode) {
+    function documentosrequeridos_table_row(mode) {
         if (mode == null) {
             return {
                 documentosrequeridosId: null,
@@ -576,8 +557,8 @@ function documentosrequeridos_table_row(mode) {
 
     function documentosrequeridos_table_row_delete(row) {
         $('#documentosrequeridosTbl').bootstrapTable('removeByUniqueId', row.documentosrequeridosId);
-    };	
-	
+    };
+
     function documentosrequeridos_table_Validations() {
         app.ui.DateValidators();
         $("#documentosrequeridosEdtForm").validate({
@@ -591,21 +572,21 @@ function documentosrequeridos_table_row(mode) {
 
     return {
         Init: function () {
-			try {
-				Controls_setup();
-				Setup_Validations();
-	terceros_table_setup();
-documentosrequeridos_table_setup();
-documentosrequeridos_table_Validations();
+            try {
+                Controls_setup();
+                Setup_Validations();
+                terceros_table_setup();
+                documentosrequeridos_table_setup();
+                documentosrequeridos_table_Validations();
 
-				Controls_Events();
-				Setup();
-				console.log("Inicio");
-			}
-			catch(err) {
-			  console.error("Error Init");
-			  console.error(err);
-			}
+                Controls_Events();
+                Setup();
+                console.log("Inicio");
+            }
+            catch (err) {
+                console.error("Error Init");
+                console.error(err);
+            }
         },
         Data: function () {
             return MapInputToObject();

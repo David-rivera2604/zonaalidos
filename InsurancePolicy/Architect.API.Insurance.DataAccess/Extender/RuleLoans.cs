@@ -1,5 +1,4 @@
 ﻿using Architect.DataFactory;
-using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -23,18 +22,18 @@ namespace Architect.API.Insurance.DataAccess.Policy
                                FROM RuleLoans 
                               WHERE DocumentNumber=:DocumentNumber AND CompanyId=:CompanyId ORDER BY EndTerm")
                         .AddParameter("DocumentNumber", DbType.AnsiString, 20, documentNumber)
-                        .AddParameter("CompanyId", DbType.Decimal, 5,  companyId)
+                        .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
                         .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
                         {
-                            result.Add( DataReaderToRuleLoans(reader));
+                            result.Add(DataReaderToRuleLoans(reader));
                         }));
             return result;
         }
 
         public static int Truncate(IDbConnection connection = null)
         {
-            return Database.Command("TRUNCATE TABLE RuleLoans") 
-                    .Execute(connection, "Research"); 
+            return Database.Command("TRUNCATE TABLE RuleLoans")
+                    .Execute(connection, "Research");
         }
     }
 }

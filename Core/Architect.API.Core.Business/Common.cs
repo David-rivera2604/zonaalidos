@@ -381,6 +381,7 @@ namespace Architect.API.Core.Business
             values.Add("Token.SubAgentCode", tokenInfo.SubAgentCode.ToString());
             values.Add("Token.IdentificationType", tokenInfo.IdentificationType);
             values.Add("Token.Identification", tokenInfo.Identification);
+            values.Add("Token.Roles", tokenInfo.Roles);
             return values;
         }
 

@@ -25,8 +25,8 @@ namespace Architect.API.Core.DataAccess.General
             {
                 visualizationsItem.UpdateDate = DateTime.Now;
             }
-            return Database.Insert("INSERT INTO Visualizations (Id, Key, CompanyId, EntityType, Sequence, Type, Caption, Description, StatementType, Statement, StatementExtend, Specification, Dialog, Icon, IconClass, ValueFormat, ConnectionName, RecordStatus, UpdateUserCode, UpdateDate) " +
-                                                 "VALUES(:Id, :Key, :CompanyId, :EntityType, :Sequence, :Type, :Caption, :Description, :StatementType, :Statement, :StatementExtend, :Specification, :Dialog, :Icon, :IconClass, :ValueFormat, :ConnectionName, :RecordStatus, :UpdateUserCode, :UpdateDate)")
+            return Database.Insert("INSERT INTO Visualizations (Id, Key, CompanyId, EntityType, Sequence, Type, Caption, Description, StatementType, Statement, Specification, Dialog, Icon, IconClass, ValueFormat, ConnectionName, RecordStatus, UpdateUserCode, UpdateDate) " +
+                                                 "VALUES(:Id, :Key, :CompanyId, :EntityType, :Sequence, :Type, :Caption, :Description, :StatementType, :Statement, :Specification, :Dialog, :Icon, :IconClass, :ValueFormat, :ConnectionName, :RecordStatus, :UpdateUserCode, :UpdateDate)")
                             .AddParameter("Id", DbType.Decimal, 9, visualizationsItem.Id)
                             .AddParameter("Key", DbType.AnsiString, 40, visualizationsItem.Key)
                             .AddParameter("CompanyId", DbType.Decimal, 5, visualizationsItem.CompanyId)
@@ -37,7 +37,6 @@ namespace Architect.API.Core.DataAccess.General
                             .AddParameter("Description", DbType.AnsiString, 120, visualizationsItem.Description)
                             .AddParameter("StatementType", DbType.Decimal, 5, visualizationsItem.StatementType)
                             .AddParameter("Statement", DbType.AnsiString, 4000, visualizationsItem.Statement)
-                            .AddParameter("StatementExtend", DbType.AnsiString, 4000, visualizationsItem.StatementExtend)
                             .AddParameter("Specification", DbType.AnsiString, 4000, visualizationsItem.Specification)
                             .AddParameter("Dialog", DbType.AnsiString, 4000, visualizationsItem.Dialog)
                             .AddParameter("Icon", DbType.AnsiString, 80, visualizationsItem.Icon)
@@ -88,7 +87,7 @@ namespace Architect.API.Core.DataAccess.General
         public static Architect.API.Core.Contracts.General.Visualizations Retrieve(int id, int companyId, IDbConnection connection = null)
         {
             Architect.API.Core.Contracts.General.Visualizations result = null;
-            Database.Select("SELECT Id, Key, Visualizations.CompanyId, EntityType, Sequence, Type, Caption, Description, StatementType, Statement, StatementExtend, Specification, Dialog, Icon, IconClass, ValueFormat, ConnectionName, Visualizations.RecordStatus, Visualizations.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, Visualizations.UpdateDate " +
+            Database.Select("SELECT Id, Key, Visualizations.CompanyId, EntityType, Sequence, Type, Caption, Description, StatementType, Statement, Specification, Dialog, Icon, IconClass, ValueFormat, ConnectionName, Visualizations.RecordStatus, Visualizations.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, Visualizations.UpdateDate " +
                               "FROM Visualizations LEFT JOIN UserMember um ON um.UserId = Visualizations.UpdateUserCode " +
                              "WHERE Visualizations.Id=:Id AND Visualizations.CompanyId=:CompanyId")
                         .AddParameter("Id", DbType.Decimal, 9, id)
@@ -111,7 +110,7 @@ namespace Architect.API.Core.DataAccess.General
         public static List<Architect.API.Core.Contracts.General.Visualizations> RetrieveAll(int companyId, string filter, List<DataFactory.Contracts.Parameter> parameters = null, IDbConnection connection = null)
         {
             List<Architect.API.Core.Contracts.General.Visualizations> result = new List<Architect.API.Core.Contracts.General.Visualizations>();
-            Database.Select("SELECT Id, Key, Visualizations.CompanyId, EntityType, Sequence, Type, Caption, Description, StatementType, Statement, StatementExtend, Specification, Dialog, Icon, IconClass, ValueFormat, ConnectionName, Visualizations.RecordStatus, Visualizations.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, Visualizations.UpdateDate " +
+            Database.Select("SELECT Id, Key, Visualizations.CompanyId, EntityType, Sequence, Type, Caption, Description, StatementType, Statement, Specification, Dialog, Icon, IconClass, ValueFormat, ConnectionName, Visualizations.RecordStatus, Visualizations.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, Visualizations.UpdateDate " +
                               "FROM Visualizations LEFT JOIN UserMember um ON um.UserId = Visualizations.UpdateUserCode " +
                              "WHERE Visualizations.CompanyId=:CompanyId" + filter)
                         .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
@@ -145,7 +144,7 @@ namespace Architect.API.Core.DataAccess.General
                 endIndex = int.MaxValue;
             }
             Database.Select("SELECT * FROM (" +
-                            "SELECT Id, Key, Visualizations.CompanyId, EntityType, Sequence, Type, Caption, Description, StatementType, Statement, StatementExtend, Specification, Dialog, Icon, IconClass, ValueFormat, ConnectionName, Visualizations.RecordStatus, Visualizations.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, Visualizations.UpdateDate " +
+                            "SELECT Id, Key, Visualizations.CompanyId, EntityType, Sequence, Type, Caption, Description, StatementType, Statement, Specification, Dialog, Icon, IconClass, ValueFormat, ConnectionName, Visualizations.RecordStatus, Visualizations.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, Visualizations.UpdateDate " +
                                    ", ROW_NUMBER() OVER (ORDER BY Visualizations.Id DESC) RowNumber " +
                               "FROM Visualizations LEFT JOIN UserMember um ON um.UserId = Visualizations.UpdateUserCode " +
                              "WHERE Visualizations.CompanyId=:CompanyId" + filter +
@@ -201,7 +200,7 @@ namespace Architect.API.Core.DataAccess.General
                 visualizationsItem.UpdateDate = DateTime.Now;
             }
             return Database.Update("UPDATE Visualizations " +
-                                      "SET Key=:Key, CompanyId=:CompanyId, EntityType=:EntityType, Sequence=:Sequence, Type=:Type, Caption=:Caption, Description=:Description, StatementType=:StatementType, Statement=:Statement, StatementExtend=:StatementExtend, Specification=:Specification, Dialog=:Dialog, Icon=:Icon, IconClass=:IconClass, ValueFormat=:ValueFormat, ConnectionName=:ConnectionName, RecordStatus=:RecordStatus, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
+                                      "SET Key=:Key, CompanyId=:CompanyId, EntityType=:EntityType, Sequence=:Sequence, Type=:Type, Caption=:Caption, Description=:Description, StatementType=:StatementType, Statement=:Statement, Specification=:Specification, Dialog=:Dialog, Icon=:Icon, IconClass=:IconClass, ValueFormat=:ValueFormat, ConnectionName=:ConnectionName, RecordStatus=:RecordStatus, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
                                     "WHERE Id=:Id")
                                 .AddParameter("Key", DbType.AnsiString, 40, visualizationsItem.Key)
                                 .AddParameter("CompanyId", DbType.Decimal, 5, visualizationsItem.CompanyId)
@@ -212,7 +211,6 @@ namespace Architect.API.Core.DataAccess.General
                                 .AddParameter("Description", DbType.AnsiString, 120, visualizationsItem.Description)
                                 .AddParameter("StatementType", DbType.Decimal, 5, visualizationsItem.StatementType)
                                 .AddParameter("Statement", DbType.AnsiString, 4000, visualizationsItem.Statement)
-                                .AddParameter("StatementExtend", DbType.AnsiString, 4000, visualizationsItem.StatementExtend)
                                 .AddParameter("Specification", DbType.AnsiString, 4000, visualizationsItem.Specification)
                                 .AddParameter("Dialog", DbType.AnsiString, 4000, visualizationsItem.Dialog)
                                 .AddParameter("Icon", DbType.AnsiString, 80, visualizationsItem.Icon)
@@ -377,7 +375,6 @@ namespace Architect.API.Core.DataAccess.General
             item.Description = reader.StringValue("Description");
             item.StatementType = reader.IntegerValue("StatementType");
             item.Statement = reader.StringValue("Statement");
-            item.StatementExtend = reader.StringValue("StatementExtend");
             item.Specification = reader.StringValue("Specification");
             item.Dialog = reader.StringValue("Dialog");
             item.Icon = reader.StringValue("Icon");

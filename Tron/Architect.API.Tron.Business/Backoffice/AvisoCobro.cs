@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Architect.Utilities.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,21 +23,31 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Consulta Recibos para incluir en aviso de cobro
         /// </summary>
-        public static List<Contracts.AvisosDeCobro.ReciboRespose> ConsultaRecibos(Contracts.AvisosDeCobro.Parameters.RecibosParametros item, int cod_Agt)
+        public static List<Contracts.AvisosDeCobro.ReciboRespose> ConsultaRecibos(Contracts.AvisosDeCobro.Parameters.RecibosParametros item, Core.Contracts.Security.Token tokenInfo)
         {
+            int cod_agt = tokenInfo.AgentCode;
             if (item.Num_Contrato == 0)
             {
                 item.Num_Contrato = int.MinValue;
             }
-            return DataAccess.AvisoCobro.ConsultaRecibos(item, cod_Agt);
+            if (tokenInfo.Roles.Contain("Empleado"))
+            {
+                cod_agt = item.Cod_Agt;
+            }
+            return DataAccess.AvisoCobro.ConsultaRecibos(item, cod_agt);
         }
 
         /// <summary>
         /// Genera Aviso de Cobro
         /// </summary>
-        public static List<Contracts.AvisosDeCobro.AvisoResponse> Generar(Contracts.AvisosDeCobro.Parameters.AvisoCobroGenerarParametros item, int cod_Agt)
+        public static List<Contracts.AvisosDeCobro.AvisoResponse> Generar(Contracts.AvisosDeCobro.Parameters.AvisoCobroGenerarParametros item, Core.Contracts.Security.Token tokenInfo)
         {
-            return DataAccess.AvisoCobro.Generar(item, cod_Agt);
+            int cod_agt = tokenInfo.AgentCode;
+            if (tokenInfo.Roles.Contain("Empleado"))
+            {
+                cod_agt = item.Cod_Agt;
+            }
+            return DataAccess.AvisoCobro.Generar(item, cod_agt);
         }
 
         /// <summary>

@@ -37,6 +37,12 @@ namespace Architect.API.Insurance.Controllers
             {
                 return BadRequest("Debe indicar la identificación");
             }
+            if (result == null && tokenInfo.CompanyId == 11)   //Sur Química
+            {
+                verbose += "->thirdparty";
+                result = await Architect.Extend.Integrations.Aliados.Consultas.ThirdParty(id);
+            }
+
             if (result == null)
             {
                 verbose += "->Aliados";
@@ -128,6 +134,10 @@ namespace Architect.API.Insurance.Controllers
 
             //LogHandler.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, result == null ? "no encontrado" : "encontrado"), "integrations");
 
+            if (result != null)
+            {
+                result.FullName = result.FirstName.CompleteFullName(result.MiddleName, result.LastName, result.SecondLastName);
+            }
             return Ok(result);
         }
 

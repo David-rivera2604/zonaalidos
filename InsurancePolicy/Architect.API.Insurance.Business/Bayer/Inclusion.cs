@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Architect.API.Insurance.Business.Bayer
 {
@@ -15,15 +14,18 @@ namespace Architect.API.Insurance.Business.Bayer
     public static partial class Inclusion
     {
 
+        /// <summary>
+        /// Verifica que la firma electrónica de un PDF corresponda con el número de documento de identificación del usuario responsable.
+        /// </summary>
         public static bool VerifySignature(int id, string fileName, int size, string originalFileName, Core.Contracts.Security.Token tokenInfo)
         {
             string fullFileName = Path.Combine(ConfigurationManager.AppSettings["Attachments.Path"], fileName);
             bool result = false;
 
-            Dictionary<string, string> pdfInfo = Architect.API.Insurance.Business.Helpers.DocumentManager.Information(fullFileName);
+            Dictionary<string, string> pdfInfo = Helpers.DocumentManager.Information(fullFileName);
             if (pdfInfo.ContainsKey("SERIALNUMBER"))
             {
-                Contracts.Bayer.InclusionRequest request = Business.Bayer.Inclusion.Retrieve(id, tokenInfo);
+                Contracts.Bayer.InclusionRequest request = Retrieve(id, tokenInfo);
                 result = request.DocumentNumber.OnlyNumbers() == pdfInfo["SERIALNUMBER"].OnlyNumbers();
                 if (result)
                 {
@@ -39,7 +41,7 @@ namespace Architect.API.Insurance.Business.Bayer
                         FileSize = size,
                         FileContent = fullFileName
                     };
-                    Architect.API.Core.Business.General.Attachment.SyncUp(attachment);
+                    Core.Business.General.Attachment.SyncUp(attachment);
 
                     Signed(tokenInfo.CompanyId, id);
                 }
@@ -47,28 +49,27 @@ namespace Architect.API.Insurance.Business.Bayer
             return result;
         }
 
-
         /// <summary>
         /// Verificar si las inclusiones pendiente por firma, ya fueron procesadas.
         /// </summary>
         public static void EvicertiaSigned()
         {
             try
-            {              
-                Architect.API.Core.Contracts.EviSign.EviSignQueryResult eviSignInf = null;
+            {
+                DocuSign.Integrations.Contracts.QueryResult eviSignInf = null;
 
                 foreach (string companyIdForReview in ConfigurationManager.AppSettings["Evicertia.Request.Company.Review"].ToString().Split(','))
                 {
                     int companyId = Convert.ToInt32(companyIdForReview);
                     Utilities.Log.TraceLog("Bayer.Inclusion.EvicertiaSigned", string.Format("{0} CompanyId {1}", DateTime.Now.ToString(), companyId), "Evicertia");
 
-                    foreach (Utilities.Contracts.LookUpValue item in Architect.API.Insurance.DataAccess.Policy.Risk.RetrieveByStatus(companyId, 4))
+                    foreach (Utilities.Contracts.LookUpValue item in DataAccess.Policy.Risk.RetrieveByStatus(companyId, 4))
                     {
-                        eviSignInf = API.Core.Business.General.Evicertia.EviSignQuery(item.Description).GetAwaiter().GetResult();
-                        if (eviSignInf?.results?.Length > 0)
+                        eviSignInf = DocuSign.Integrations.DocuSign.Query(item.Description).GetAwaiter().GetResult();
+                        if (eviSignInf != null)
                         {
-                            Utilities.Log.TraceLog(" Bayer.Inclusion.EvicertiaSigned", item.Description + " outcome " + eviSignInf.results[0].outcome, "Evicertia");
-                            switch (eviSignInf.results[0].outcome)
+                            Utilities.Log.TraceLog(" Bayer.Inclusion.EvicertiaSigned", item.Description + " outcome " + eviSignInf.outcome, "Evicertia");
+                            switch (eviSignInf.outcome)
                             {
                                 case "Signed":
                                     Signed(companyId, Convert.ToInt32(item.Code));
@@ -97,12 +98,15 @@ namespace Architect.API.Insurance.Business.Bayer
             }
         }
 
+        /// <summary>
+        /// Procesa una inclusión como firmada.
+        /// </summary>
         private static void Signed(int companyId, int id)
         {
-            Risk risk = Architect.API.Insurance.Business.Policy.Risk.RetrievePolicyByKey(id, companyId);
+            Risk risk = Policy.Risk.RetrievePolicyByKey(id, companyId);
             risk.Bayer = DataAccess.Policy.RiskBayer.Retrieve(id, companyId);
             risk.LineOfBusinessDesc = Core.Business.Common.LkpDescription(companyId, "LineOfBusiness", risk.LineOfBusinessCode.ToString());
-            risk.Status = 10;
+            risk.Status = (int)Enumerations.PolicyStatus.InForce;
             DataAccess.Policy.Risk.Update(risk);
             Core.Business.General.ChangeSet.Create(2000, risk.Id, companyId, "Aceptada", null, risk.ExecutiveUserCode, risk);
             int medicalId = DataAccess.Others.Inclusiones.Create(
@@ -110,29 +114,35 @@ namespace Architect.API.Insurance.Business.Bayer
                                     Retrieve(risk.Id, new Core.Contracts.Security.Token() { CompanyId = companyId }), companyId), 1);
             risk.Annotation = medicalId.ToString();
             DataAccess.Policy.Risk.Update(risk);
-            API.Core.Business.General.Mail.SendByTemplate("Notify_InclusionInMedical", companyId, risk.ExecutiveUserCode, risk.ExecutiveUserCode, risk);
+            Core.Business.General.Mail.SendByTemplate("Notify_InclusionInMedical", companyId, risk.ExecutiveUserCode, risk.ExecutiveUserCode, risk);
         }
 
+        /// <summary>
+        /// Procesa una inclusión como expirada.
+        /// </summary>
         private static void Expired(int companyId, int id)
         {
-            Risk risk = Architect.API.Insurance.Business.Policy.Risk.RetrievePolicyByKey(id, companyId);
+            Risk risk = Policy.Risk.RetrievePolicyByKey(id, companyId);
             risk.Bayer = DataAccess.Policy.RiskBayer.Retrieve(id, companyId);
             risk.LineOfBusinessDesc = Core.Business.Common.LkpDescription(companyId, "LineOfBusiness", risk.LineOfBusinessCode.ToString());
-            risk.Status = 31;
+            risk.Status = (int)Enumerations.PolicyStatus.DeclinedDuToSignatureExpiration;
             DataAccess.Policy.Risk.Update(risk);
             Core.Business.General.ChangeSet.Create(2000, risk.Id, companyId, "Declinada por expiracíon", null, risk.ExecutiveUserCode, risk);
-            API.Core.Business.General.Mail.SendByTemplate("Notify_RequestOnTimeOutDeclined", companyId, risk.ExecutiveUserCode, risk.ExecutiveUserCode, risk);
+            Core.Business.General.Mail.SendByTemplate("Notify_RequestOnTimeOutDeclined", companyId, risk.ExecutiveUserCode, risk.ExecutiveUserCode, risk);
         }
 
+        /// <summary>
+        /// Procesa una inclusión como rechazada.
+        /// </summary>
         private static void Rejected(int companyId, int id)
         {
-            Risk risk = Architect.API.Insurance.Business.Policy.Risk.RetrievePolicyByKey(id, companyId);
+            Risk risk = Policy.Risk.RetrievePolicyByKey(id, companyId);
             risk.Bayer = DataAccess.Policy.RiskBayer.Retrieve(id, companyId);
             risk.LineOfBusinessDesc = Core.Business.Common.LkpDescription(companyId, "LineOfBusiness", risk.LineOfBusinessCode.ToString());
-            risk.Status = 32;
+            risk.Status = (int)Enumerations.PolicyStatus.RejectedBySigner;
             DataAccess.Policy.Risk.Update(risk);
             Core.Business.General.ChangeSet.Create(2000, risk.Id, companyId, "Rechazada", null, risk.ExecutiveUserCode, risk);
-            API.Core.Business.General.Mail.SendByTemplate("Notify_RequestOnUserDeclined", companyId, risk.ExecutiveUserCode, risk.ExecutiveUserCode, risk);
+            Core.Business.General.Mail.SendByTemplate("Notify_RequestOnUserDeclined", companyId, risk.ExecutiveUserCode, risk.ExecutiveUserCode, risk);
         }
 
         /// <summary>
@@ -172,7 +182,7 @@ namespace Architect.API.Insurance.Business.Bayer
             }
             else
             {
-                Architect.API.Core.Contracts.Security.UserMember currentUserInfo = Architect.API.Core.Business.Security.UserMember.RetrieveById(tokenInfo.CompanyId, tokenInfo.UserId);
+                Architect.API.Core.Contracts.Security.UserMember currentUserInfo = Core.Business.Security.UserMember.RetrieveById(tokenInfo.CompanyId, tokenInfo.UserId);
                 if (currentUserInfo.IsNotEmpty())
                 {
                     result.DocumentType = currentUserInfo.IdentificationType;
@@ -187,13 +197,14 @@ namespace Architect.API.Insurance.Business.Bayer
 
             return result;
         }
+
         /// <summary>
         /// Recupera la informacion de una planilla por su identificación.
         /// </summary>
         public static Contracts.Bayer.InclusionRequest Retrieve(int id, Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.Bayer.InclusionRequest result = null;
-            Contracts.Policy.Risk risk = Business.Policy.Risk.RetrievePolicyByKey(id, tokenInfo.CompanyId);
+            Contracts.Policy.Risk risk = Policy.Risk.RetrievePolicyByKey(id, tokenInfo.CompanyId);
             if (risk.IsNotEmpty())
             {
                 result = Convertions.RiskToInclusion(risk);
@@ -219,6 +230,9 @@ namespace Architect.API.Insurance.Business.Bayer
             return result;
         }
 
+        /// <summary>
+        /// Busca y asigna las descripciones de los campos asoiados a lista de valores.
+        /// </summary>
         private static Contracts.Bayer.InclusionRequest MapLookups(int companyId, Contracts.Bayer.InclusionRequest item)
         {
             if (item.IsEmpty())
@@ -329,12 +343,12 @@ namespace Architect.API.Insurance.Business.Bayer
                     }
                 }
 
-                
+
 
                 if (risk.Id.IsEmpty())
-                    risk = Business.Policy.Risk.CreatePolicy(risk, tokenInfo.UserId, tokenInfo.CompanyId);
+                    risk = Policy.Risk.CreatePolicy(risk, tokenInfo.UserId, tokenInfo.CompanyId);
                 else
-                    risk = Business.Policy.Risk.UpdatePolicy(risk, tokenInfo.UserId, tokenInfo.CompanyId, string.Empty);
+                    risk = Policy.Risk.UpdatePolicy(risk, tokenInfo.UserId, tokenInfo.CompanyId, string.Empty);
 
                 risk.Bayer = Convertions.InclusionToRiskBayer(tokenInfo.CompanyId, inclusionInfo);
                 risk.Bayer.Id = risk.Id;
@@ -371,36 +385,35 @@ namespace Architect.API.Insurance.Business.Bayer
                             if (inclusionInfo.Mode == "back")
                             {
                                 inclusionInfo.Message = "La inclusión fue rechaza, se envió una notificación para que se proceda a su revisión";
-                                API.Core.Business.General.Mail.SendByTemplate("Notify_RequestReject", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk);
+                                Core.Business.General.Mail.SendByTemplate("Notify_RequestReject", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk);
                             }
                             break;
                         case 2:
                             inclusionInfo.Message = "La inclusión fue debidamente almacenada y enviada a RRHH, queda pendiente de revisión";
-                            API.Core.Business.General.Mail.SendByTemplate("Notify_RequestOnReview", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk);
+                            Core.Business.General.Mail.SendByTemplate("Notify_RequestOnReview", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk);
                             break;
                         case 4:
                             string name = inclusionInfo.FirstName + " " + inclusionInfo.LastName;
                             inclusionInfo.Message = string.Format("La inclusión fue aceptada de forma exitosa bajo el número #{0}, la misma fue enviada {1} para su firma.", inclusionInfo.Id, name);
 
 
-                            string archivo = API.Core.Business.General.Report.GeneratePDFFile("bayer", inclusionInfo).GetAwaiter().GetResult();
+                            string archivo = Core.Business.General.Report.GeneratePDFFile("bayer", inclusionInfo).GetAwaiter().GetResult();
 
                             if (!inclusionInfo.HasDigitalSignature)
                             {
-
                                 // Se enviar documento para su firma por medio de EviCertia
-                                string uniqueId = API.Core.Business.General.Evicertia.EviSignSubmit(
+                                DocuSign.Integrations.Contracts.SubmitResult submit = DocuSign.Integrations.DocuSign.Submit(
                                                     string.Format("{0} - Solicitud de inclusión", Core.Business.Common.LkpDescription(tokenInfo.CompanyId, "Company", tokenInfo.CompanyId.ToString())),
                                                     string.Format("{0} - Solicitud de inclusión #{1}", Core.Business.Common.LkpDescription(tokenInfo.CompanyId, "Company", tokenInfo.CompanyId.ToString()), inclusionInfo.Id),
                                                       name,
                                                       inclusionInfo.PrimaryEmailAddress,
                                                       archivo).GetAwaiter().GetResult();
-                                DataAccess.Policy.Risk.UpdateReference(tokenInfo.CompanyId, inclusionInfo.Id, uniqueId);
+                                DataAccess.Policy.Risk.UpdateReference(tokenInfo.CompanyId, inclusionInfo.Id, submit.UniqueId);
                             }
                             else
                             {
                                 // Se enviar documento directo al empleado para su firma digital
-                                API.Core.Business.General.Mail.SendByTemplate("Notify_RequestReviewed", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk, null, new string[] { archivo });
+                                Core.Business.General.Mail.SendByTemplate("Notify_RequestReviewed", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk, null, new string[] { archivo });
                             }
 
                             break;
@@ -539,6 +552,10 @@ namespace Architect.API.Insurance.Business.Bayer
 
             return result;
         }
+
+        /// <summary>
+        /// Mapea el tipo de documento usando en aliados al equivalente en medical.
+        /// </summary>
         private static string MedicalTipoDeIdentificacion(int documentType)
         {
             string result = "";
@@ -559,5 +576,6 @@ namespace Architect.API.Insurance.Business.Bayer
             }
             return result;
         }
+
     }
 }

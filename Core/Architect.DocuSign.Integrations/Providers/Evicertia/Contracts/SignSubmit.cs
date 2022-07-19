@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Architect.API.Core.Contracts.EviSign
+namespace Architect.DocuSign.Integrations.Providers.Evicertia.Contracts
 {
     /// <summary>
     /// Permite la remisión a EVICERTIA de un contrato EviSign 
@@ -29,7 +29,13 @@ namespace Architect.API.Core.Contracts.EviSign
         /// <summary>
         /// Opciones de envío/procesamiento del mensaje
         /// </summary>
-        public object Options { get; set; } = new object();
+        public Options Options { get; set; }
 
     }
+
+    public class Options
+    {
+        public string signedRedirectUrl { get; set; }
+    }
+
 }

@@ -1,5 +1,4 @@
 ﻿using Architect.DataFactory;
-using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -40,8 +39,8 @@ namespace Architect.API.Insurance.DataAccess.Policy
         {
             return Database.Delete(@"DELETE FROM RiskRoles 
                                       WHERE PolicyId=:PolicyId")
-                               .AddParameter("PolicyId", DbType.Decimal, 9,  policyid)
-                                .Execute(connection, "Research");             
+                               .AddParameter("PolicyId", DbType.Decimal, 9, policyid)
+                                .Execute(connection, "Research");
         }
 
         /// <summary>
@@ -50,19 +49,19 @@ namespace Architect.API.Insurance.DataAccess.Policy
         /// <param name="policyid"></param>
         /// <param name="companyid"></param>
         /// <returns>Lista de instancias de RiskRoles</returns>
-        public static List<Contracts.Policy.RiskRoles> RetrieveByPolicyIdCompanyId(int policyid, int companyid,IDbConnection connection = null)
+        public static List<Contracts.Policy.RiskRoles> RetrieveByPolicyIdCompanyId(int policyid, int companyid, IDbConnection connection = null)
         {
             var result = new List<Contracts.Policy.RiskRoles>();
             Database.Select(@"Select RoleId, PolicyId, Type, DocumentType, DocumentNumber, RiskRoles.FirstName, MiddleName, RiskRoles.LastName, SecondLastName, RiskRoles.BirthDate, Gender, CivilStatus, Height, Weight, BloodPressureSystolic, BloodPressureDiastolic, Occupation, RetirementModality, RetirementCause, CountryOfNationality, CountryOfBirth, ClientType, Relationship, ParticipationRate, PrimaryEmailAddress, TypeOfAddress, Province, Canton, District, AddressDetail, PhoneType, RiskRoles.PhoneNumber, RiskRoles.CompanyId, RiskRoles.CustomData, RiskRoles.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, RiskRoles.UpdateDate, BankAccount, InclusionDate, ExclusionDate, AgeAtInclusion 
                                 FROM RiskRoles LEFT JOIN UserMember um ON um.UserId = RiskRoles.UpdateUserCode 
                                WHERE PolicyId=:PolicyId AND RiskRoles.CompanyId=:CompanyId")
-                        .AddParameter("PolicyId", DbType.Decimal, 9,  policyid)
-                        .AddParameter("CompanyId", DbType.Decimal, 5,  companyid)
+                        .AddParameter("PolicyId", DbType.Decimal, 9, policyid)
+                        .AddParameter("CompanyId", DbType.Decimal, 5, companyid)
                        .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
                        {
                            result.Add(DataReaderToRiskRoles(reader));
                        }));
-            return result; 
+            return result;
         }
 
         /// <summary>
@@ -76,8 +75,8 @@ namespace Architect.API.Insurance.DataAccess.Policy
             return Database.Delete(@"DELETE FROM RiskRoles 
                                       WHERE PolicyId=:PolicyId AND CompanyId=:CompanyId")
                                 .AddParameter("PolicyId", DbType.Decimal, 9, policyid)
-                                .AddParameter("CompanyId", DbType.Decimal, 5,  companyid)
-                               .Execute(connection, "Research"); 
+                                .AddParameter("CompanyId", DbType.Decimal, 5, companyid)
+                               .Execute(connection, "Research");
         }
 
         /// <summary>
@@ -89,7 +88,7 @@ namespace Architect.API.Insurance.DataAccess.Policy
         {
             return Database.Delete(@"DELETE FROM RiskRoles 
                                       WHERE PolicyId=:PolicyId ")
-                                .AddParameter("PolicyId", DbType.Decimal, 9, policyid) 
+                                .AddParameter("PolicyId", DbType.Decimal, 9, policyid)
                                .Execute(connection, "Research");
         }
     }

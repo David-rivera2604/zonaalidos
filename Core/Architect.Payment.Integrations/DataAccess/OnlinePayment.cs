@@ -81,7 +81,7 @@ namespace Architect.Payment.Integrations.DataAccess
         /// <summary>
         /// Recupera un registro en la tabla OnlinePayment por el campo RequestID.
         /// </summary>
-        public static Contracts.OnlinePayment RetrieveByRequestID(Int64 requestID, int companyId, bool full = false, IDbConnection connection = null)
+        public static Contracts.OnlinePayment RetrieveByRequestID(Int64 requestID, bool full = false, IDbConnection connection = null)
         {
             Contracts.OnlinePayment result = null;
             string complement = ", NULL ResponseData";
@@ -91,9 +91,8 @@ namespace Architect.Payment.Integrations.DataAccess
             }
             Database.Select("SELECT Id, OnlinePayment.CompanyId, DocumentType, DocumentNumber, OnlinePayment.FirstName, OnlinePayment.LastName, PrimaryEmailAddress, PhoneNumberMobile, AgentCode, PolicyId, BillNumber, Currency, Amount, OnlinePayment.Reference, Description, IssueDate, StatusDate, RequestID, ProcessUrl, ProviderStatus" + complement + ", Status, Reason, Authorization, Receipt, OnlinePayment.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, OnlinePayment.UpdateDate " +
                               "FROM OnlinePayment LEFT JOIN UserMember um ON um.UserId = OnlinePayment.UpdateUserCode " +
-                             "WHERE OnlinePayment.RequestID=:RequestID AND OnlinePayment.CompanyId=:CompanyId")
+                             "WHERE OnlinePayment.RequestID=:RequestID")
                         .AddParameter("RequestID", DbType.Decimal, 11, requestID)
-                        .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
                         .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
                         {
                             result = DataReaderToOnlinePayment(reader);
@@ -142,7 +141,7 @@ namespace Architect.Payment.Integrations.DataAccess
         /// <summary>
         /// 
         /// </summary>
-        /// <remarks>Este metodo de actualizacion debido a su naturaleza no actualiza el código el usuario que actualiza.</remarks>
+        /// <remarks>Este método de actualización debido a su naturaleza no actualiza el código el usuario que actualiza.</remarks>
         public static int UpdateNewSession(Contracts.OnlinePayment onlinepaymentItem, IDbConnection connection = null)
         {
             if (onlinepaymentItem.UpdateDate.IsEmpty())
@@ -169,7 +168,7 @@ namespace Architect.Payment.Integrations.DataAccess
         /// <summary>
         /// Actualiza un registro en la tabla OnlinePayment por medio de su clave primaria.
         /// </summary>
-        /// <remarks>Este metodo de actualizacion debido a su naturaleza no actualiza el código el usuario que actualiza.</remarks>
+        /// <remarks>Este método de actualización debido a su naturaleza no actualiza el código el usuario que actualiza.</remarks>
         public static int Update(Contracts.OnlinePayment onlinepaymentItem, IDbConnection connection = null)
         {
             if (onlinepaymentItem.UpdateDate.IsEmpty())
@@ -188,6 +187,22 @@ namespace Architect.Payment.Integrations.DataAccess
                                 .AddParameter("Receipt", DbType.AnsiString, 128, onlinepaymentItem.Receipt)
                                 .AddParameter("UpdateDate", DbType.DateTime, 0, onlinepaymentItem.UpdateDate)
                                 .AddParameter("Id", DbType.Decimal, 9, onlinepaymentItem.Id)
+                                .Execute(connection, "Research");
+        }
+
+        /// <summary>
+        /// Actualiza la información retornada por el package de pago en tron.
+        /// </summary>
+        /// <remarks>Este método de actualización debido a su naturaleza no actualiza el código el usuario que actualiza.</remarks>
+        public static int UpdateTronInformation(int id, int tronCode, string tronMessage, IDbConnection connection = null)
+        {
+            return Database.Update("UPDATE OnlinePayment " +
+                                      "SET TronCode=:TronCode, TronMessage=:TronMessage, UpdateDate=:UpdateDate " +
+                                    "WHERE Id=:Id")
+                                .AddParameter("TronCode", DbType.Decimal, 5, tronCode)
+                                .AddParameter("TronMessage", DbType.AnsiString, 256, tronMessage)
+                                .AddParameter("UpdateDate", DbType.DateTime, 0, DateTime.Now)
+                                .AddParameter("Id", DbType.Decimal, 9, id)
                                 .Execute(connection, "Research");
         }
 
@@ -234,20 +249,32 @@ namespace Architect.Payment.Integrations.DataAccess
             return item;
         }
 
-
         /// <summary>
         /// Recupera una lista de registros en la tabla OnlinePayment.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañía propietaria.</param>
-        /// <param name="connection">Instancia de una conexión compartida</param>
-        /// <returns>Lista de instancias de OnlinePayment</returns>
-        public static List<Contracts.OnlinePayment> RetrievePendings(int companyId, IDbConnection connection = null)
+        public static List<Contracts.OnlinePayment> RetrievePendings(IDbConnection connection = null)
         {
             List<Contracts.OnlinePayment> result = new List<Contracts.OnlinePayment>();
             Database.Select("SELECT Id, OnlinePayment.CompanyId, RequestID, ProviderStatus, Reason, Authorization, Receipt, NULL ResponseData, DocumentType, DocumentNumber, OnlinePayment.FirstName, OnlinePayment.LastName, PrimaryEmailAddress, PhoneNumberMobile, AgentCode, PolicyId, BillNumber, Currency, Amount, OnlinePayment.Reference, Description, IssueDate, StatusDate, ProcessUrl, Status, OnlinePayment.UpdateUserCode, NULL UpdateUserName, OnlinePayment.UpdateDate " +
                               "FROM OnlinePayment " +
-                             "WHERE OnlinePayment.CompanyId=:CompanyId AND OnlinePayment.ProviderStatus IN ('INIT', 'PENDING')")
-                        .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                             "WHERE OnlinePayment.ProviderStatus IN ('INIT', 'PENDING')")
+                        .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
+                        {
+                            result.Add(DataReaderToOnlinePayment(reader));
+                        }));
+            return result;
+        }
+
+        /// <summary>
+        /// Recupera una lista de registros en la tabla OnlinePayment que cumplan con el criterio del campo TronCode.
+        /// </summary>
+        public static List<Contracts.OnlinePayment> RetrieveByTronCode(int tronCode, IDbConnection connection = null)
+        {
+            List<Contracts.OnlinePayment> result = new List<Contracts.OnlinePayment>();
+            Database.Select("SELECT Id, OnlinePayment.CompanyId, RequestID, ProviderStatus, Reason, Authorization, Receipt, NULL ResponseData, DocumentType, DocumentNumber, OnlinePayment.FirstName, OnlinePayment.LastName, PrimaryEmailAddress, PhoneNumberMobile, AgentCode, PolicyId, BillNumber, Currency, Amount, OnlinePayment.Reference, Description, IssueDate, StatusDate, ProcessUrl, Status, OnlinePayment.UpdateUserCode, NULL UpdateUserName, OnlinePayment.UpdateDate " +
+                              "FROM OnlinePayment " +
+                             "WHERE NVL(OnlinePayment.TronCode,0) = :TronCode")
+                        .AddParameter("TronCode", DbType.Decimal, 5, tronCode)
                         .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
                         {
                             result.Add(DataReaderToOnlinePayment(reader));

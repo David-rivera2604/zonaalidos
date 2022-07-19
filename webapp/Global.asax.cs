@@ -6,8 +6,11 @@ using System.Web.Routing;
 using System.Web.Optimization;
 using Hangfire;
 using Hangfire.MemoryStorage;
+using Hangfire.Storage;
 using Newtonsoft.Json.Serialization;
 using System.Configuration;
+using Architect.Utilities.Extensions;
+using System.Linq;
 
 namespace aliados
 {
@@ -70,11 +73,27 @@ namespace aliados
             }
 
             //Monitor de transacciones de pago pendientes
-            if (Architect.Utilities.Helpers.Settings.IntegerValue("Payment.Placetopay.Sonda.ExecutionTime") > 0)
+            if (Architect.Utilities.Helpers.Settings.StringValue("Payment.Placetopay.Sonda.ExecutionTime").IsNotEmpty())
             {
-                int sondaHour = Architect.Utilities.Helpers.Settings.IntegerValue("Payment.Placetopay.Sonda.ExecutionTime");
-                RecurringJob.AddOrUpdate(() => Architect.API.Tron.Business.Backoffice.Pagos.Monitor(), Cron.Daily(sondaHour));
+                
+                RecurringJob.AddOrUpdate("Payment.Sonda", 
+                    () => Architect.API.Tron.Business.Backoffice.Pagos.Monitor(),
+                    Architect.Utilities.Helpers.Settings.StringValue("Payment.Placetopay.Sonda.ExecutionTime"), TimeZoneInfo.Local);
             }
+
+           // Architect.API.Insurance.Business.Policy.DigitalSignature.VerifyDocuSigned();
+            int docuSignInterval = Convert.ToInt32(ConfigurationManager.AppSettings["DocuSign.Interval.Review"]);
+            if (docuSignInterval > 0)
+            {
+                RecurringJob.AddOrUpdate(() =>
+                    Architect.API.Insurance.Business.Policy.DigitalSignature.VerifyDocuSigned(),
+                    Cron.MinuteInterval(docuSignInterval));
+            }
+
+
+
+            //var recurringJobs = Hangfire.JobStorage.Current.GetConnection().GetRecurringJobs().ToList();
+
 
         }
 

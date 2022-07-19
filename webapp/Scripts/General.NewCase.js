@@ -97,7 +97,7 @@ app.GeneralNewCase = (function () {
     }
 
     function Init_Lookups() {
-        app.core.Lookups(['CasePriority.Priority', 'ProcessStatus.Status', 'Process.FlowId', 'Users.UserId.'],
+        app.core.Lookups(['CasePriority.Priority', 'ProcessStatus.Status', 'ProcessByRol.FlowId', 'Users.UserId.'],
             function () {
                 app.GeneralNewCase.New();
             });

@@ -152,21 +152,21 @@ namespace Architect.API.Tron.Business.Emision
             try
             {
                 Utilities.Log.TraceLog("MapfreMas.EvicertiaSigned", DateTime.Now.ToString(), "Evicertia");
-                Architect.API.Core.Contracts.EviSign.EviSignQueryResult eviSignInf = null;
+                DocuSign.Integrations.Contracts.QueryResult eviSignInf = null;
                 int companyId = 2;
                 int userId = 666;
                 foreach (Contracts.PolicyProposal item in DataAccess.PolicyProposal.RetrieveByStatus(companyId, 4))
                 {
-                    eviSignInf = API.Core.Business.General.Evicertia.EviSignQuery(item.SigningRequestId, true).GetAwaiter().GetResult();
-                    if (eviSignInf?.results?.Length > 0)
+                    eviSignInf = DocuSign.Integrations.DocuSign.Query(item.SigningRequestId, true).GetAwaiter().GetResult();
+                    if (eviSignInf != null)
                     {
-                        Utilities.Log.TraceLog("MapfreMas.EvicertiaSigned", item.Id + ' ' + item.SigningRequestId + " outcome " + eviSignInf.results[0].outcome, "Evicertia");
-                        switch (eviSignInf.results[0].outcome)
+                        Utilities.Log.TraceLog("MapfreMas.EvicertiaSigned", item.Id + ' ' + item.SigningRequestId + " outcome " + eviSignInf.outcome, "Evicertia");
+                        switch (eviSignInf.outcome)
                         {
                             case "Signed":
                                 DataAccess.PolicyProposal.Update_Status(item.Id, 33, item.SigningRequestId, userId);
 
-                                foreach (Core.Contracts.EviSign.affidavits affidavit in eviSignInf.results[0].affidavits)
+                                foreach (DocuSign.Integrations.Contracts.affidavits affidavit in eviSignInf.affidavits)
                                 {
                                     if (affidavit.description.Equals("documento firmado", StringComparison.CurrentCultureIgnoreCase))
                                     {
@@ -224,7 +224,7 @@ namespace Architect.API.Tron.Business.Emision
 
         private static string EnviarSolicitud(string tip_firma, string correoenvio, Contracts.Emision.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
-            string uniqueId = string.Empty;
+            DocuSign.Integrations.Contracts.SubmitResult submit = new DocuSign.Integrations.Contracts.SubmitResult();
             string solicitudPDF = General_PDF_Solicitud(quoteInfo, tokenInfo);
             Contracts.Comun.tercero primaryInsured = (from t in quoteInfo.terceros where t.tipodetercero == 2 select t).First();
 
@@ -236,7 +236,7 @@ namespace Architect.API.Tron.Business.Emision
             }
             else
             {
-                uniqueId = Core.Business.General.Evicertia.EviSignSubmit(
+                submit = DocuSign.Integrations.DocuSign.Submit(
                                 quoteInfo.presupuesto,
                                 "Envío solicitud " + quoteInfo.presupuesto,
                                 primaryInsured.nombre.CompleteFullName(primaryInsured.apellido1, primaryInsured.apellido2),
@@ -244,7 +244,7 @@ namespace Architect.API.Tron.Business.Emision
                                 solicitudPDF, quoteInfo.tip_firma == Contracts.TipoDeFirma.Tablet ? "Handwriting" : "WebClick").GetAwaiter().GetResult();
 
             }
-            return uniqueId;
+            return submit.UniqueId;
         }
 
         private static string General_PDF_Solicitud(Contracts.Emision.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
