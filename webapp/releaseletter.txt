@@ -384,3 +384,4 @@
                    Trazabilidad. Definición de proceso agrandar lista a 4000 el máx de una varchar.
                    Trazabilidad. Permitir acceso al uso del proceso por rol.
                    Trazabilidad. SLA a nivel del proceso.
+ 1.6.8  31/07/2022 Trazabilidad. Nuevo reporte reporte. filtros fecha, proceso, estado, contacto.

@@ -16,6 +16,16 @@ namespace Architect.API.Core.DataAccess.General.Process
 
             if (result.IsNotEmpty())
             {
+                List<Architect.API.Core.Contracts.General.ProcessSpecFlowRole> internalRoles = Core.DataAccess.General.ProcessSpecFlowRole.RetrieveByStepId(flowId, currentConnection);
+                if (internalRoles.Count > 0)
+                {
+                    result.Roles = new List<Utilities.Contracts.LookUpValue>();
+                    foreach (Architect.API.Core.Contracts.General.ProcessSpecFlowRole item in internalRoles)
+                    {
+                        result.Roles.Add(new Utilities.Contracts.LookUpValue() { Code = item.RoleId.ToString(), Description = item.RoleName });
+                    }
+                }
+
                 if (result.SLA.IsNotEmpty())
                 {
                     result.SLALevels = ProcessSpecSLALevel.RetrieveAll(companyId, result.SLA, currentConnection);

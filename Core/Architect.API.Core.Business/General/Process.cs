@@ -8,7 +8,7 @@ using System.Linq;
 namespace Architect.API.Core.Business.General
 {
     /// <summary>
-    /// Logíca relacionada con el seguimiento de cambios.
+    /// Lógica relacionada con el seguimiento de cambios.
     /// </summary>
     public static class Process
     {
@@ -18,6 +18,7 @@ namespace Architect.API.Core.Business.General
             int EveryTime = Convert.ToInt16(ConfigurationManager.AppSettings["Process.Mail.Responsible.Notify.OverDue.EveryTime"]);
             DateTime now = DateTime.Now;
             bool notify = false;
+            Contracts.General.ProcessSpecSLALevel sla = null;
             try
             {
                 foreach (Contracts.General.ProcessInstance item in DataAccess.General.ProcessInstance.RetrieveOverDueSteps(now))
@@ -28,16 +29,23 @@ namespace Architect.API.Core.Business.General
                         item.Step = spec.ProcessSpecSteps.Where(i => i.Id == item.StepId).FirstOrDefault();
                         if (item.Step != null)
                         {
-                            notify = true;
-                            if (item.LastOverDueNotify.IsNotEmpty())
-                            {
-                                notify = (item.LastOverDueNotify.AddHours(EveryTime) <= now);
-                            }
-                            if (notify)
-                            {
-                                DataAccess.General.ProcessInstance.Update(item.ActivityId, now);
-                                Notify_ResponsibleProcess_Progress(item.CaseId, item, spec.MailServer, item.CompanyId, 0, "Process.Mail.Responsible.Notify.OverDue.Template");
-                            }
+                            sla = item.Step.SLALevels.Last();
+                        }
+                        else {
+                            sla = spec.SLALevels.Last();
+                        }
+                        
+                        notify = true;
+                        if (item.LastOverDueNotify.IsNotEmpty())
+                        {
+                            notify = (item.LastOverDueNotify.AddHours(EveryTime) <= now);
+                        }
+                        if (notify && sla.IsNotEmpty())
+                        {
+                            DataAccess.General.ProcessInstance.Update(item.ActivityId, now);
+                            Notify(item.CaseId,
+                                sla.MailForSLAExpiration, sla.MailForSLAExpirationCustom, sla.MailForSLAExpirationTmpl, item.Step.MailServer,
+                                spec.MailServer, item.Step, null, item.CompanyId, 0, "Process.Mail.Responsible.Notify.OverDue.Template");
                         }
                     }
                 }
@@ -215,6 +223,7 @@ namespace Architect.API.Core.Business.General
         {
             return CurrentStep(InstanceRuntime(entityType, entityId, tokenInfo.CompanyId), level, tokenInfo);
         }
+        
         public static Contracts.General.InstanceInformation CurrentByInstance(int instanceId, int level, Core.Contracts.Security.Token tokenInfo)
         {
             return CurrentStep(InstanceRuntime(instanceId, tokenInfo.CompanyId), level, tokenInfo);
@@ -234,7 +243,6 @@ namespace Architect.API.Core.Business.General
         {
             return Architect.API.Core.DataAccess.General.ProcessInstance.CountByEntity(entityType, entityId, companyId) > 0;
         }
-
 
         private static Contracts.General.InstanceInformation CurrentStep(List<Contracts.General.ProcessInstance> instance, int level, Core.Contracts.Security.Token tokenInfo)
         {
@@ -463,7 +471,6 @@ namespace Architect.API.Core.Business.General
             return instance;
         }
 
-
         private static Contracts.General.ProcessInstance GetNextStep(List<Contracts.General.ProcessInstance> instance, int stepId)
         {
             Contracts.General.ProcessInstance result = null;
@@ -482,7 +489,6 @@ namespace Architect.API.Core.Business.General
             }
             return result;
         }
-
 
         private static Contracts.General.ProcessInstance TaskCompleted(List<Contracts.General.ProcessInstance> instance, Contracts.General.TaskChecked checkedInformation, int userId)
         {
@@ -653,7 +659,6 @@ namespace Architect.API.Core.Business.General
             return nextStep;
         }
 
-
         private static void Notify_ContactProcess_Progress(int caseId, Contracts.General.ProcessInstance step, int mailServer, int companyId, int userId, bool notify, string[] attachments)
         {
             Dictionary<string, string> mailFullList = new Dictionary<string, string>();
@@ -728,24 +733,26 @@ namespace Architect.API.Core.Business.General
             Dictionary<string, string> mailFullList = new Dictionary<string, string>();
             Contracts.General.ProcessCase procCase = null;
 
-            if (step.Step.MailToStepResponsible == 1 && step.Step.ProcessSpecStepRoles?.Count > 0) //Si
+            if (step.Step.MailToStepResponsible == 1 || step.Step.MailToStepResponsible == 3)
             {
-                foreach (Contracts.General.ProcessSpecStepRole stepRole in step.Step.ProcessSpecStepRoles)
+                string templList = step.Step.MailToStepResponsibleCustom;
+                if (templList.IndexOf("{Roles}", StringComparison.CurrentCultureIgnoreCase )>-1 && step.Step.ProcessSpecStepRoles?.Count > 0)
                 {
-                    foreach (KeyValuePair<string, string> entry in Architect.API.Core.Business.Security.UserMember.EmailListByRolename(companyId, stepRole.RoleName))
+                    foreach (Contracts.General.ProcessSpecStepRole stepRole in step.Step.ProcessSpecStepRoles)
                     {
-                        if (!mailFullList.ContainsKey(entry.Key))
+                        foreach (KeyValuePair<string, string> entry in Security.UserMember.EmailListByRolename(companyId, stepRole.RoleName))
                         {
-                            mailFullList.Add(entry.Key, entry.Value);
+                            if (!mailFullList.ContainsKey(entry.Key))
+                            {
+                                mailFullList.Add(entry.Key, entry.Value);
+                            }
                         }
                     }
+                    templList = templList.Replace("{Roles", string.Empty);
                 }
-            }
-            else if (step.Step.MailToStepResponsible == 3) //Custom
-            {
-                foreach (string entry in step.Step.MailToStepResponsibleCustom.Split(','))
+                foreach (string entry in templList.Split(','))
                 {
-                    if (!mailFullList.ContainsKey(entry))
+                    if (entry.IsNotEmpty() && !mailFullList.ContainsKey(entry))
                     {
                         mailFullList.Add(entry, string.Empty);
                     }
@@ -765,9 +772,59 @@ namespace Architect.API.Core.Business.General
                 }
                 if (procCase == null)
                 {
-                    procCase = Business.General.ProcessCase.RetrieveById(companyId, caseId);
+                    procCase = ProcessCase.RetrieveById(companyId, caseId);
                 }
                 Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = step }, mailFullList);
+            }
+        }
+
+        private static void Notify(int caseId, int responsible, string custom, int mailTmpl, int customMailServer, int mailServer, object entity, List<Contracts.General.LookupValue> roles, int companyId, int userId, string mailTemplateSetting = "Process.Mail.Responsible.Notify.Template")
+        {
+            Dictionary<string, string> mailFullList = new Dictionary<string, string>();
+            Contracts.General.ProcessCase procCase = null;
+
+            if (responsible == 1 || responsible == 3)
+            {
+                string templList = custom;
+                if (templList.IndexOf("{Roles}", StringComparison.CurrentCultureIgnoreCase) > -1 && roles?.Count > 0)
+                {
+                    foreach (Contracts.General.LookupValue stepRole in roles)
+                    {
+                        foreach (KeyValuePair<string, string> entry in Security.UserMember.EmailListByRolename(companyId, stepRole.Description))
+                        {
+                            if (!mailFullList.ContainsKey(entry.Key))
+                            {
+                                mailFullList.Add(entry.Key, entry.Value);
+                            }
+                        }
+                    }
+                    templList = templList.Replace("{Roles", string.Empty);
+                }
+                foreach (string entry in templList.Split(','))
+                {
+                    if (entry.IsNotEmpty() && !mailFullList.ContainsKey(entry))
+                    {
+                        mailFullList.Add(entry, string.Empty);
+                    }
+                }
+            }
+
+            if (mailFullList.Count > 0)
+            {
+                string mailTemplate = ConfigurationManager.AppSettings[mailTemplateSetting];
+                if (mailTmpl != 1)
+                {
+                    mailTemplate = Common.LkpDescription(companyId, "MailTemplateKey", mailTmpl.ToString());
+                }
+                if (customMailServer != 1)
+                {
+                    mailServer = customMailServer;
+                }
+                if (procCase == null)
+                {
+                    procCase = ProcessCase.RetrieveById(companyId, caseId);
+                }
+                Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = entity }, mailFullList);
             }
         }
 
