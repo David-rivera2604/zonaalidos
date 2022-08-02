@@ -1227,6 +1227,7 @@
     <Content Include="Scripts\Cotizacion.HogarTotal.js" />
     <Content Include="Scripts\Cotizacion.PolizaLider.js" />
     <Content Include="Scripts\Emision.Viajero.js" />
+    <Content Include="Scripts\Extend.CaseDetail.js" />
     <Content Include="Scripts\Extend.AvisosCobro.js" />
     <Content Include="Scripts\General.Case.js" />
     <Content Include="Scripts\General.NewCase.js" />
