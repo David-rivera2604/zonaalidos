@@ -386,3 +386,5 @@
                    Trazabilidad. SLA a nivel del proceso.
  1.6.8  31/07/2022 Trazabilidad. No permite trabajar en un caso basado en un proceso duplicado.
                    Trazabilidad. Nuevo reporte. filtros fecha, proceso, estado.
+ 1.6.8a 02/08/2022 Fix. Trazabilidad. Nuevo reporte. filtros fecha, proceso, estado.
+                   Fix. Trazabilidad. No permite trabajar en un caso basado en un proceso duplicado.
