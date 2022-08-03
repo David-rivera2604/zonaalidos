@@ -477,12 +477,12 @@ app.CotizacionMapfreMas = (function () {
                 let cod_tip_vehi = app.ui.GetDropDownNumericValue('#cod_tip_vehi');
                 let cod_plan_auto = app.ui.GetDropDownNumericValue('#COD_PLAN_AUTO');
 
-                if (cod_tip_vehi === 2 && cod_plan_auto != 32 && cod_plan_auto != 33){
-					return true;
-				}
-				else if(cod_plan_auto == 35){
-					return true;
-				}
+                if (cod_tip_vehi === 2 && cod_plan_auto != 32 && cod_plan_auto != 33) {
+                    return true;
+                }
+                else if (cod_plan_auto == 35) {
+                    return true;
+                }
                 else {
                     return (value != '0');
                 }
@@ -559,8 +559,8 @@ app.CotizacionMapfreMas = (function () {
                 IMP_AUTO_MECA: { required: true },
                 IMP_AUTO_CRI: { required: true },
                 DED_AUTO_CRI: { required: true },
-                contrato: { required: true },
-                subcontrato: { required: true }
+                contrato: { required: false },
+                subcontrato: { required: false }
             },
             messages: {
                 edad: { required: 'Debe indicar el edad' },
@@ -816,9 +816,9 @@ app.CotizacionMapfreMas = (function () {
         if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
             app.ui.DropDownDisabled('#DED_AUTO_RAD', $('#IMP_AUTO_RAD').prop('disabled') && app.ui.GetNumericValue('#IMP_AUTO_RAD') === 0);
         } else {
-           // if (!$('#DED_AUTO_RAD').prop('disabled')) {
-                app.ui.SelectDropDownByText('#DED_AUTO_RAD', app.ui.GetDropDownSelectedText('#DED_AUTO_CYV'));
-           // }
+            // if (!$('#DED_AUTO_RAD').prop('disabled')) {
+            app.ui.SelectDropDownByText('#DED_AUTO_RAD', app.ui.GetDropDownSelectedText('#DED_AUTO_CYV'));
+            // }
         }
 
         let cod_marca = app.ui.GetDropDownNumericValue('#cod_marca');
