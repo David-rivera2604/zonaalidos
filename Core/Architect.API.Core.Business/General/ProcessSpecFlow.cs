@@ -104,6 +104,8 @@ namespace Architect.API.Core.Business.General
             }
 
             currentConnection.Close();
+            Utilities.Cache.RemoveStartWith("Process");
+            Utilities.Cache.RemoveStartWith("SpecFlow");
             return new Contracts.General.ProcessSpecFlowResult()
             {
                 ProcessSpecFlow = result,
