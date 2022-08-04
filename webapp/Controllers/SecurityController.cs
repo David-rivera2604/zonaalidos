@@ -6,6 +6,12 @@ namespace aliados.Controllers
     public class SecurityController : Controller
     {
 
+        public ActionResult Mapfre()
+        {
+            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
+            return View("Login");
+        }
+
         public ActionResult Carrofácil()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];

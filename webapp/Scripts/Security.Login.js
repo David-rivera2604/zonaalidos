@@ -1,6 +1,8 @@
 ﻿var app = app || {};
 app.login = (function () {
 
+    let employeeMode = window.location.href.toLowerCase().endsWith("/mapfre");
+
     function Init_Controls() {
     };
 
@@ -300,7 +302,8 @@ app.login = (function () {
         var data = {
             Tenant: $('#Tenant').val(),
             Email: $('#Username').val(),
-            Password: $('#Password').val()
+            Password: $('#Password').val(),
+            EmployeeMode: employeeMode
         };
         return data;
     };
@@ -330,6 +333,10 @@ app.login = (function () {
                 $('.wellcome-info').addClass('d-none');
             }
             $('#Tenant').val(_tenant);
+            if (employeeMode) {
+                $('#forgotlink').addClass('d-none');
+                
+            }
         }
     };
 })();
