@@ -20,14 +20,22 @@ namespace Architect.API.Tron.Business.Emision
         public static Contracts.Emision.MapfreMas Setup(string presupuesto, string mode, Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.Emision.MapfreMas result = null;
+            bool tryOnTron = false;
             string key = string.Format("mapfremas.{0}", presupuesto);
 
             if (mode == "continue")
             {
                 Contracts.PolicyProposal proposal = DataAccess.PolicyProposal.RetrieveByProposalId(presupuesto, tokenInfo.CompanyId);
-                Utilities.Cache.SetItem(key, proposal.ProposalData, -1);
+                if (proposal != null)
+                {
+                    Utilities.Cache.SetItem(key, proposal.ProposalData, -1);
+                }
+                else
+                {
+                    tryOnTron = true;
+                }
             }
-            if (mode == "resume")
+            if (mode == "resume" || tryOnTron)
             {
                 //Contracts.PolicyProposal proposal = DataAccess.PolicyProposal.RetrieveByProposalId(presupuesto, tokenInfo.CompanyId);
 
@@ -42,7 +50,7 @@ namespace Architect.API.Tron.Business.Emision
 
                 result.Modo = mode;
 
-                if (mode.IsEmpty() || mode == "draft" || mode == "resume")
+                if (mode.IsEmpty() || mode == "draft" || mode == "resume" || tryOnTron)
                 {
                     result.terceros = Reglas.research.Apply_Terceros("MapfreMas", result.terceros, result.Fuente_Tomador, tokenInfo);
                 }

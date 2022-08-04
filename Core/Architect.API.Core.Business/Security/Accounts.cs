@@ -4,6 +4,7 @@ using Architect.Utilities.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -640,5 +641,54 @@ namespace Architect.API.Core.Business.Security
             return result;
         }
 
+        /// <summary>
+        /// Permite verificar las credenciales de un usuario en el Active Directory.
+        /// </summary>
+        public static int AuthenticationByLDAP(string userName, string password)
+        {
+            int response = 0;
+            string domain = Utilities.Helpers.Settings.StringValue("LDAP.Domain", "mapfre.com.cr");
+            string _path = "LDAP://" + domain;
+
+            DirectoryEntry entry = new DirectoryEntry(_path, domain + @"\" + userName, password);
+
+            try
+            {
+                DirectorySearcher search = new DirectorySearcher(entry)
+                {
+                    Filter = "(SAMAccountName=" + userName + ")"
+                };
+                search.PropertiesToLoad.Add("cn");
+                search.PropertiesToLoad.Add("userAccountControl");
+                SearchResult result = search.FindOne();
+                if (result == null)
+                {
+                    response = 1;
+                }
+                else
+                {
+                    switch (result.Properties["userAccountControl"][0])
+                    {
+                        case 512: //Clave correcta
+                            response = 0;
+                            break;
+                        case 514: //AccountDisable (Normal_Account: 512 + AccountDisable: 2)
+                            response = 5;
+                            break;
+                        case 528: //Lockout (Normal_Account: 512 + Lockout: 16)
+                            response = 6;
+                            break;
+                        case 8389120: //PasswordExpired (Normal_Account: 512 + Password_Expired: 8388608)
+                            response = 99;
+                            break;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                response = 1;
+            }
+            return response;
+        }
     }
 }
