@@ -509,19 +509,21 @@ app.CotizacionMapfreMas = (function () {
         );
         $.validator.addMethod("AjustePorAnoFabricacion",
             function (value, element, params) {
-                let nvalue = parseInt('0' + value, 10);
-                let yearVeh = app.ui.GetNumericValue('#ANIO_SUB_MODELO');
-                let year = new Date().getFullYear();
-                let minYear = year - 5;
+                let nvalue = Number(value);
                 if (nvalue === 0) {
                     return true;
                 }
-                else if (yearVeh > minYear && nvalue >= -10) {
-                    return true;
-                }
                 else {
-                    $('#PCT_AJUSTE_GEN').rules('add', { messages: { AjustePorAnoFabricacion: 'Si el vehículo esta entre 0-5 años de antigüedad, el porcentaje de ajuste comercial no debe exceder el 10%' } });
-                    return false;
+                    let yearVeh = app.ui.GetNumericValue('#ANIO_SUB_MODELO');
+                    let year = new Date().getFullYear();
+                    let minYear = year - 5;
+                    if (yearVeh >= minYear && nvalue < -10) {
+                        $('#PCT_AJUSTE_GEN').rules('add', { messages: { AjustePorAnoFabricacion: 'Si el vehículo esta entre 0-5 años de antigüedad, el porcentaje de ajuste comercial no debe exceder el 10%' } });
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }
                 }
             }
         );
