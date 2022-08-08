@@ -490,7 +490,7 @@ app.CotizacionMapfreMas = (function () {
         );
         $.validator.addMethod("AnoFabricacion",
             function (value, element, params) {
-                if (localStorage.getItem('Roles').includes('Privilegios') || localStorage.getItem('Roles').includes('Purdy'))
+                if (localStorage.getItem('Roles').includes('Privilegios') || localStorage.getItem('Roles').includes('Purdy') || localStorage.getItem('Roles').includes('Red_Afecta'))
                     return true;
                 else {
                     let nvalue = parseInt(value, 10);
