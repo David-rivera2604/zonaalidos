@@ -487,7 +487,7 @@ app.ui = (function () {
                     result = (length === 14);
                     break;
                 case 3: //14 DÍGITOS: PASXXXXXXXXXXXXXX
-                    result = (length === 17);
+                    result = (length >= 3 && length <= 14);
                     break;
                 case 4:
                     result = (length >= 7 && length <= 14);
