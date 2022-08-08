@@ -686,8 +686,8 @@ namespace Architect.API.Core.Business.Security
             int response = 0;
             string domain = Utilities.Helpers.Settings.StringValue("LDAP.Domain", "mapfre.com.cr");
             string _path = "LDAP://" + domain;
-
-            DirectoryEntry entry = new DirectoryEntry(_path, domain + @"\" + userName, password);
+            string _username = domain + @"\" + userName;
+            DirectoryEntry entry = new DirectoryEntry(_path, _username, password);
 
             try
             {
@@ -721,8 +721,9 @@ namespace Architect.API.Core.Business.Security
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Utilities.Log.ErrorLog("AuthenticationByLDAP", $"path: {_path}, username: {_username}", ex);
                 response = 1;
             }
             return response;
