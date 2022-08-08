@@ -335,7 +335,7 @@ app.CotizacionMapfreMas = (function () {
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
             maximumValue: '0',
-            minimumValue: '-25',
+            minimumValue: '-15',
             decimalPlaces: '0',
             emptyInputBehavior: 'null'
         });
@@ -517,8 +517,8 @@ app.CotizacionMapfreMas = (function () {
                     let yearVeh = app.ui.GetNumericValue('#ANIO_SUB_MODELO');
                     let year = new Date().getFullYear();
                     let minYear = year - 5;
-                    if (yearVeh >= minYear && nvalue < -10) {
-                        $('#PCT_AJUSTE_GEN').rules('add', { messages: { AjustePorAnoFabricacion: 'Si el vehículo esta entre 0-5 años de antigüedad, el porcentaje de ajuste comercial no debe exceder el 10%' } });
+                    if (yearVeh >= minYear && nvalue < -4) {
+                        $('#PCT_AJUSTE_GEN').rules('add', { messages: { AjustePorAnoFabricacion: 'Si el vehículo esta entre 0-5 años de antigüedad, el porcentaje de ajuste comercial no debe exceder el 4%' } });
                         return false;
                     }
                     else {
@@ -545,7 +545,7 @@ app.CotizacionMapfreMas = (function () {
                 cod_tip_vehi: { required: true },
                 cod_uso_vehi: { required: true },
                 IMP_VR: { required: true, Numeric: true },
-                PCT_AJUSTE_GEN: { min: -25, max: 0, AjustePorAnoFabricacion: true },
+                PCT_AJUSTE_GEN: { min: -15, max: 0, AjustePorAnoFabricacion: true },
                 IMP_AUTO_RC: { required: true },
                 DED_AUTO_RC: { required: true },
                 IMP_AUTO_GMO: { ValorRequeridoSegunVechiculoPlan: true },
@@ -579,7 +579,7 @@ app.CotizacionMapfreMas = (function () {
                 cod_tip_vehi: { required: 'Debe indicar el clase del vehículo' },
                 cod_uso_vehi: { required: 'Debe indicar el uso del vehículo' },
                 IMP_VR: { required: 'Debe indicar el valor del vehículo asegurado', Numeric: 'Debe indicar el valor del vehículo asegurado' },
-                PCT_AJUSTE_GEN: { min: 'El porcentaje de ajuste comercial debe estar entre el 0 y el -25 %', max: 'El porcentaje de ajuste comercial debe estar entre el 0 y el -25 %', AjustePorAnoFabricacion: '' },
+                PCT_AJUSTE_GEN: { min: 'El porcentaje de ajuste comercial debe estar entre el 0 y el -15 %', max: 'El porcentaje de ajuste comercial debe estar entre el 0 y el -15 %', AjustePorAnoFabricacion: '' },
                 IMP_AUTO_RC: { required: 'Debe indicar el responsabilidad civil' },
                 DED_AUTO_RC: { required: 'Debe indicar el deducible responsabilidad civil' },
                 IMP_AUTO_GMO: { ValorRequeridoSegunVechiculoPlan: 'Debe indicar el monto de gastos médicos de ocupantes para el plan seleccionado' },
