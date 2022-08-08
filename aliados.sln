@@ -57,10 +57,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architect.Payment.Integrati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architect.DocuSign.Integrations", "Core\Architect.DocuSign.Integrations\Architect.DocuSign.Integrations.csproj", "{41B3F1C8-FDB5-4DB4-BE61-6BF1576A09E7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_External", "_External", "{CA9D3BF8-7A16-4295-9D92-4626A4D18A99}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architect.Data.Source", "..\Kernel\Architect.Data.Source\Architect.Data.Source.csproj", "{7427EC41-EE41-4DC5-9BB6-D7FDECDF451B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -155,10 +151,6 @@ Global
 		{41B3F1C8-FDB5-4DB4-BE61-6BF1576A09E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41B3F1C8-FDB5-4DB4-BE61-6BF1576A09E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41B3F1C8-FDB5-4DB4-BE61-6BF1576A09E7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7427EC41-EE41-4DC5-9BB6-D7FDECDF451B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7427EC41-EE41-4DC5-9BB6-D7FDECDF451B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7427EC41-EE41-4DC5-9BB6-D7FDECDF451B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7427EC41-EE41-4DC5-9BB6-D7FDECDF451B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -185,7 +177,6 @@ Global
 		{231F38EE-E067-4A51-9195-FB5A3E0D337D} = {5588463B-D9C9-4CF3-AE4F-254F40C2C106}
 		{4950C088-7A09-4E2B-B4DE-D2381D0739C6} = {A55F4A46-8E3E-4F3B-B23F-E13DC75C5D8C}
 		{41B3F1C8-FDB5-4DB4-BE61-6BF1576A09E7} = {A55F4A46-8E3E-4F3B-B23F-E13DC75C5D8C}
-		{7427EC41-EE41-4DC5-9BB6-D7FDECDF451B} = {CA9D3BF8-7A16-4295-9D92-4626A4D18A99}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {015441FD-3714-4C1E-95CE-938D26A638AF}
