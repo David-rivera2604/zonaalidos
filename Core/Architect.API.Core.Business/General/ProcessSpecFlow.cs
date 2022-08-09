@@ -86,7 +86,7 @@ namespace Architect.API.Core.Business.General
                 {
                     foreach (Contracts.General.ProcessSpecTask task in step.ProcessSpecTasks)
                     {
-                        if (task.Type == 10)
+                        if (task.Type == 10 && task.Action != "0" && mapper.ContainsKey(Convert.ToInt32(task.Action)))
                         {
                             task.Action = mapper[Convert.ToInt32(task.Action)].ToString();
                             DataAccess.General.ProcessSpecTask.Update(task, currentConnection);
