@@ -15,5 +15,7 @@ namespace Architect.API.Core.Contracts.General
         /// Descripción para identificación única del proceso.
         /// </summary>
         [DataMember(), JsonProperty()] public string FlowIdDesc { get; set; }
+
+        [DataMember(), JsonProperty()] public string ActionDesc { get; set; }
     }
 }

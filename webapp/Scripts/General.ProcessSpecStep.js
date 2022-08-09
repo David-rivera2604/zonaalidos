@@ -633,7 +633,7 @@ app.GeneralProcessSpecStep = (function () {
                     sortable: true,
                     halign: 'center'
                 }, {
-                    field: 'Action',
+                    field: 'ActionDesc',
                     title: 'Acción',
                     sortable: true,
                     halign: 'center'

@@ -130,7 +130,7 @@ app.GeneralProcessSpecTask = (function () {
                     sortable: true,
                     halign: 'center'
                 }, {
-                    field: 'Action',
+                    field: 'ActionDesc',
                     title: 'Acción',
                     sortable: true,
                     halign: 'center'
@@ -396,6 +396,7 @@ app.GeneralProcessSpecTask = (function () {
 
         if (data.Type === 10) {
             data.Action = app.ui.GetDropDownNumericValue('#ActionGoto');
+            data.ActionDesc = app.ui.GetDropDownSelectedText("#ActionGoto");
         }
 
         return data;

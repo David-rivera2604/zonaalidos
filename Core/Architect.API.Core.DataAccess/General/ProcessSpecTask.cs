@@ -67,7 +67,7 @@ namespace Architect.API.Core.DataAccess.General
                 endIndex = int.MaxValue;
             }
             Database.Select("SELECT * FROM (" +
-                            "SELECT ProcessSpecTask.Id, StepId, ProcessSpecTask.CompanyId, ProcessSpecTask.Name, ProcessSpecTask.Description, ProcessSpecTask.SLATimeOut, IsRequired, IsSelected, TaskOrder, Type, Action, ProcessSpecTask.PreScript, ProcessSpecTask.PostScript, SubStatus, SubLabel, ProcessSpecTask.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessSpecTask.UpdateDate" +
+                            "SELECT ProcessSpecTask.Id, StepId, ProcessSpecTask.CompanyId, ProcessSpecTask.Name, ProcessSpecTask.Description, ProcessSpecTask.SLATimeOut, IsRequired, IsSelected, TaskOrder, Type, Action, (select astep.name from ProcessSpecStep astep where astep.Id=Action) ActionDesc, ProcessSpecTask.PreScript, ProcessSpecTask.PostScript, SubStatus, SubLabel, ProcessSpecTask.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessSpecTask.UpdateDate" +
                                    ", Flow.Id FlowId, Flow.Name FlowIdDesc, step.Name StepIdDesc" +
                                    ", ROW_NUMBER() OVER (ORDER BY Flow.Name, step.StepOrder, TaskOrder) RowNumber " +
                               "FROM ProcessSpecTask LEFT JOIN UserMember um ON um.UserId = ProcessSpecTask.UpdateUserCode " +
@@ -86,7 +86,8 @@ namespace Architect.API.Core.DataAccess.General
                                     {
                                         StepIdDesc = reader.StringValue("StepIdDesc"),
                                         FlowId = reader.IntegerValue("FlowId"),
-                                        FlowIdDesc = reader.StringValue("FlowIdDesc")
+                                        FlowIdDesc = reader.StringValue("FlowIdDesc"),
+                                        ActionDesc = reader.StringValue("ActionDesc")
                                     }));
                         }));
             return result;
