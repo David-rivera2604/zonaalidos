@@ -38,6 +38,7 @@ app.CotizacionMapfreMas = (function () {
             function (data) {
                 quoteData = data;
                 if (!app.ui.NotifyErrors(data.Mensaje, data.Errors, '#VisualizationsEdtForm')) {
+                    $('#presupuesto').html(data.presupuesto);
                     $('#coberturasRow').removeClass('d-none');
                     $('#coberturasTbl').bootstrapTable('load', data.coberturas);
                     Coberturas_Fijas(data.coberturas);

@@ -142,7 +142,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                         break;
                     case "COD_PLAN_AUTO":
                         quoteInfo.COD_PLAN_AUTO = Convert.ToInt32(item.val_campo);
-                        quoteInfo.COD_PLAN_AUTODesc =  item.txt_campo;
+                        quoteInfo.COD_PLAN_AUTODesc = item.txt_campo;
                         break;
                     case "MCA_VR":
                         quoteInfo.MCA_VR = item.val_campo == "N" ? 2 : 1;
@@ -231,7 +231,10 @@ namespace Architect.API.Tron.Business.Cotizacion
                     case "TIP_BENEFICIO":
                         break;
                     case "PCT_AJUSTE_GEN":
-                        quoteInfo.PCT_AJUSTE_GEN = Convert.ToInt32(item.val_campo);
+                        if (item.val_campo != string.Empty)
+                        {
+                            quoteInfo.PCT_AJUSTE_GEN = Convert.ToInt32(Convert.ToDecimal(item.val_campo));
+                        }
                         break;
                     case "MCA_REEMISION":
                         break;

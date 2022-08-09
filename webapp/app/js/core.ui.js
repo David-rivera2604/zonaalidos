@@ -161,7 +161,13 @@ app.ui = (function () {
                 value = 0;
             return parseInt(value, 10);
         },
-        SetNumericValue: function (selector, value) {
+        SetNumericValue: function (selector, value, min, max) {
+            if (min != undefined && value < min) {
+                value = min;
+            }
+            if (max != undefined && value > max) {
+                value = max;
+            }
             AutoNumeric.set(selector, value);
         },
         SetRadioNumericValue: function (name, value) {
