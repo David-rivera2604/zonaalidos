@@ -393,3 +393,7 @@
                    Aliados MapferMas, mejoras para retomar las cotizaciones no guardadas como presupuesto.
                    Aliados MapferMas, ajuste de validación en porcentaje de descuento comercial.
                    Fix. Se ajusta verificación del pasaporte para que permita mínimo 3 dígitos y máximo 14.
+
+                   Fix. Trazabilidad. Se reincorpora la columna rol a la consulta.
+                   Fix. Trazabilidad. Se agregar campos personalizado en el reporte.
+                   Fix. Trazabilidad. Se agregan validaciones al agregar un adjunto.

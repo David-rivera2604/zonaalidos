@@ -31,10 +31,11 @@ namespace Architect.API.Core.Business.General
                         {
                             sla = item.Step.SLALevels.Last();
                         }
-                        else {
+                        else
+                        {
                             sla = spec.SLALevels.Last();
                         }
-                        
+
                         notify = true;
                         if (item.LastOverDueNotify.IsNotEmpty())
                         {
@@ -223,7 +224,7 @@ namespace Architect.API.Core.Business.General
         {
             return CurrentStep(InstanceRuntime(entityType, entityId, tokenInfo.CompanyId), level, tokenInfo);
         }
-        
+
         public static Contracts.General.InstanceInformation CurrentByInstance(int instanceId, int level, Core.Contracts.Security.Token tokenInfo)
         {
             return CurrentStep(InstanceRuntime(instanceId, tokenInfo.CompanyId), level, tokenInfo);
@@ -578,36 +579,38 @@ namespace Architect.API.Core.Business.General
                     }
                 }
             }
-
-            switch (currentTask.Task.Type)
+            if (currentStep.Step.ProgressMode == 1)
             {
-                case 10:
-                    nextStep = instance.First(i => i.StepId == Convert.ToInt32(currentTask.Task.Action));
-                    nextStep.StartDate = current;
-                    if (nextStep.Step?.SLALevels?.Count > 0)
-                    {
-                        nextStep.EarlyDueDate = current.AddHours(nextStep.Step.SLALevels.First().SLATimeOut);
-                        nextStep.DueDate = current.AddHours(nextStep.Step.SLALevels.Last().SLATimeOut);
-                    }
-                    nextStep.UpdateUserCode = userId;
-                    nextStep.PreviousActivityId = currentTask.ActivityId;
-                    nextStep.Comments = checkedInformation.Comment;
-                    nextStep.UpdateDate = DateTime.Now;
-                    toUpdate.Add(nextStep);
-                    foreach (Contracts.General.ProcessInstance nextSubTask in instance.Where(i => i.StepId == nextStep.StepId && i.TaskId > 0))
-                    {
-                        nextSubTask.StartDate = current;
-                        if (nextSubTask.Task.SLATimeOut > 0)
+                switch (currentTask.Task.Type)
+                {
+                    case 10:
+                        nextStep = instance.First(i => i.StepId == Convert.ToInt32(currentTask.Task.Action));
+                        nextStep.StartDate = current;
+                        if (nextStep.Step?.SLALevels?.Count > 0)
                         {
-                            nextSubTask.DueDate = current.AddHours(nextSubTask.Task.SLATimeOut);
+                            nextStep.EarlyDueDate = current.AddHours(nextStep.Step.SLALevels.First().SLATimeOut);
+                            nextStep.DueDate = current.AddHours(nextStep.Step.SLALevels.Last().SLATimeOut);
                         }
-                        nextSubTask.UpdateUserCode = userId;
-                        nextSubTask.PreviousActivityId = currentTask.ActivityId;
-                        nextSubTask.UpdateDate = DateTime.Now;
-                        toUpdate.Add(nextSubTask);
-                    }
-                    break;
+                        nextStep.UpdateUserCode = userId;
+                        nextStep.PreviousActivityId = currentTask.ActivityId;
+                        nextStep.Comments = checkedInformation.Comment;
+                        nextStep.UpdateDate = DateTime.Now;
+                        toUpdate.Add(nextStep);
+                        foreach (Contracts.General.ProcessInstance nextSubTask in instance.Where(i => i.StepId == nextStep.StepId && i.TaskId > 0))
+                        {
+                            nextSubTask.StartDate = current;
+                            if (nextSubTask.Task.SLATimeOut > 0)
+                            {
+                                nextSubTask.DueDate = current.AddHours(nextSubTask.Task.SLATimeOut);
+                            }
+                            nextSubTask.UpdateUserCode = userId;
+                            nextSubTask.PreviousActivityId = currentTask.ActivityId;
+                            nextSubTask.UpdateDate = DateTime.Now;
+                            toUpdate.Add(nextSubTask);
+                        }
+                        break;
 
+                }
             }
             // 3=Finalizado, 6= Cerrado, 7=Aprobado, 8=Rechazado, 90=?
             if (nextStep?.Step?.ProcessStatus == 3 ||
@@ -736,7 +739,7 @@ namespace Architect.API.Core.Business.General
             if (step.Step.MailToStepResponsible == 1 || step.Step.MailToStepResponsible == 3)
             {
                 string templList = step.Step.MailToStepResponsibleCustom;
-                if (templList.IndexOf("{Roles}", StringComparison.CurrentCultureIgnoreCase )>-1 && step.Step.ProcessSpecStepRoles?.Count > 0)
+                if (templList.IndexOf("{Roles}", StringComparison.CurrentCultureIgnoreCase) > -1 && step.Step.ProcessSpecStepRoles?.Count > 0)
                 {
                     foreach (Contracts.General.ProcessSpecStepRole stepRole in step.Step.ProcessSpecStepRoles)
                     {
