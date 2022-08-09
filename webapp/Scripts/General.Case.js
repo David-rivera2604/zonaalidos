@@ -85,6 +85,7 @@ app.GeneralCase = (function () {
 
         $('#PriorityDesc').html(data.PriorityDesc);
 
+        $('#SLADesc').html(data.SLADesc);
 
         app.core.Get(app.setting.apipath + 'v1/ProcessSpecFlow/' + data.FlowId)
             .done(function (dataFlow, textStatus, jqXHR) {
