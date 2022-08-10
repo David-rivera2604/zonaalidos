@@ -305,9 +305,9 @@ namespace Architect.API.Tron.Business.Reglas
                                 eltomadoreselmismoasegurado = 2,
                                 elaseguradoeselconductorhabitual = 0,
                                 numerodeprestamo = null,
-                                importedecesion = 0,
+                                importedecesion = detail.importedecesion,
                                 vencimientodecesion = DateTime.MinValue,
-                                porcentajeacredor = 0,
+                                porcentajeacredor = detail.porcentajeacredor,
                                 parentesco = 0,
                                 porcentaje = 0,
                                 NoEditable = true

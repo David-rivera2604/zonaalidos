@@ -25,7 +25,9 @@
           "cod_estado": 1,
           "cod_prov": 101,
           "cod_localidad": 10101,
-          "nom_domicilio1": "SAN JOSE"
+          "nom_domicilio1": "SAN JOSE",
+          "importedecesion": 8000000,
+          "porcentajeacredor": 100
         }
       ]
     },

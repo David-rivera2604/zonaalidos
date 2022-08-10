@@ -43,32 +43,32 @@ namespace Architect.API.Tron.Contracts.Especificacion
         public string ape2_tercero { get; set; }
 
         /// <summary>
-        ///  Direccion de correo electronico
+        ///  Dirección de correo electrónico
         /// </summary>
         public string email { get; set; }
 
         /// <summary>
-        ///  Número de telefono
+        ///  Número de teléfono
         /// </summary>
         public string tlf_numero { get; set; }
 
         /// <summary>
-        ///  Pais, primer nivel de la estructura geografica
+        ///  País, primer nivel de la estructura geográfica
         /// </summary>
         public string cod_pais { get; set; }
 
         /// <summary>
-        ///  Segundo nivel de la estructura geografica
+        ///  Segundo nivel de la estructura geográfica
         /// </summary>
         public int cod_estado { get; set; }
 
         /// <summary>
-        ///  Tercer nivel de la estructura geografica
+        ///  Tercer nivel de la estructura geográfica
         /// </summary>
         public int cod_prov { get; set; }
 
         /// <summary>
-        ///  Cuarto nivel de la estructura geografica
+        ///  Cuarto nivel de la estructura geográfica
         /// </summary>
         public int cod_localidad { get; set; }
 
@@ -76,6 +76,16 @@ namespace Architect.API.Tron.Contracts.Especificacion
         ///  Domicilio (primera linea)
         /// </summary>
         public string nom_domicilio1 { get; set; }
+
+        /// <summary>
+        /// Importe de cesión.
+        /// </summary>
+        public double importedecesion { get; set; }
+
+        /// <summary>
+        /// Porcentaje acreedor.
+        /// </summary>
+        public int porcentajeacredor { get; set; }
 
     }
 }
