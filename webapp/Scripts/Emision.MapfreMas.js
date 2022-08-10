@@ -295,7 +295,7 @@ app.EmisionMapfreMas = (function () {
         app.ui.SetNumericValue('#IMP_VR', data.IMP_VR);
         app.ui.SetRadioStringValue('Vehiculo_Otra_Poliza', data.Vehiculo_Otra_Poliza);
         app.ui.SetRadioNumericValue('MCA_DESC_CLIENTE_NUEVO', data.MCA_DESC_CLIENTE_NUEVO);
-        app.ui.SetNumericValue('#PCT_AJUSTE_GEN', data.PCT_AJUSTE_GEN, -15, 0);
+        app.ui.SetNumericValue('#PCT_AJUSTE_GEN', data.PCT_AJUSTE_GEN);
 
         if (data.terceros != null)
             $('#tercerosTbl').bootstrapTable('load', data.terceros);
@@ -404,7 +404,7 @@ app.EmisionMapfreMas = (function () {
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
             maximumValue: '0',
-            minimumValue: '-15',
+            minimumValue: '-99',
             decimalPlaces: '0',
             emptyInputBehavior: 'null'
         });
@@ -538,26 +538,6 @@ app.EmisionMapfreMas = (function () {
 
     function Setup_Validations() {
         app.ui.DateValidators();
-        $.validator.addMethod("AjustePorAnoFabricacion",
-            function (value, element, params) {
-                let nvalue = Number(value);
-                if (nvalue === 0) {
-                    return true;
-                }
-                else {
-                    let yearVeh = app.ui.GetNumericValue('#ANIO_SUB_MODELO');
-                    let year = new Date().getFullYear();
-                    let minYear = year - 5;
-                    if (yearVeh >= minYear && nvalue < -4) {
-                        $('#PCT_AJUSTE_GEN').rules('add', { messages: { AjustePorAnoFabricacion: 'Si el vehículo esta entre 0-5 años de antigüedad, el porcentaje de ajuste comercial no debe exceder el 4%' } });
-                        return false;
-                    }
-                    else {
-                        return true;
-                    }
-                }
-            }
-        );
         $("#VisualizationsEdtForm").validate({
             errorPlacement: app.ui.ErrorPlacement,
             rules: {
@@ -584,7 +564,6 @@ app.EmisionMapfreMas = (function () {
                 NUM_MOTOR: { required: true },
                 VAL_CAPACIDAD: { required: true },
                 IMP_VR: { required: true },
-                PCT_AJUSTE_GEN: { min: -15, max: 0, AjustePorAnoFabricacion: true },
                 IMP_AUTO_RC: { required: true },
                 DED_AUTO_RC: { required: true },
                 IMP_AUTO_GMO: { required: true },
@@ -625,7 +604,6 @@ app.EmisionMapfreMas = (function () {
                 cod_tip_vehi: { required: 'Debe indicar el Clase del vehículo' },
                 cod_uso_vehi: { required: 'Debe indicar el Uso del vehículo' },
                 IMP_VR: { required: 'Debe indicar el Valor del vehículo asegurado' },
-                PCT_AJUSTE_GEN: { min: 'El porcentaje de ajuste comercial debe estar entre el 0 y el -15 %', max: 'El porcentaje de ajuste comercial debe estar entre el 0 y el -15 %', AjustePorAnoFabricacion: '' },
                 IMP_AUTO_RC: { required: 'Debe indicar el Responsabilidad civil' },
                 DED_AUTO_RC: { required: 'Debe indicar el Deducible responsabilidad civil' },
                 IMP_AUTO_GMO: { required: 'Debe indicar el Gastos médicos de ocupantes' },
