@@ -1,11 +1,14 @@
 ﻿var app = {};
 
+// CONSERVAR DEL ORIGINAL DESDE AQUI
 app.setting = {
     apibase: 'http://localhost:8082',
     apipath: 'http://localhost:8082/aliados/api/',
     basepath: '/Aliados/',
     viewpath: 'http://localhost:8082/aliados/'
 };
+// CONSERVAR DEL ORIGINAL HASTA AQUI
+
 app.state = { entityType: 0 };
 
 app.DateEmpty = '0001-01-01T00:00:00';
