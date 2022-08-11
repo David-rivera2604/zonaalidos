@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
 
 namespace Architect.API.Tron.Contracts.Emision
 {
@@ -72,6 +73,7 @@ namespace Architect.API.Tron.Contracts.Emision
 
         [DataMember(), JsonProperty()] public string Modo { get; set; }
 
+
     }
 
     public class MapfreMasSolicitud : MapfreMas
@@ -85,6 +87,15 @@ namespace Architect.API.Tron.Contracts.Emision
 
         [DataMember(), JsonProperty()] public string mainrole { get; set; }
         
+    }
+
+    public class EconomicData
+    {
+        [DataMember(), JsonProperty()] public double annualnetpremium { get; set; }
+        [DataMember(), JsonProperty()] public double tax { get; set; }
+        [DataMember(), JsonProperty()] public double annualgrosspremium { get; set; }
+        [DataMember(), JsonProperty()] public double monthlygrosspremium { get; set; }
+
     }
 
 }
