@@ -1,6 +1,7 @@
 ﻿using Microsoft.Web.Http;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -16,6 +17,29 @@ namespace Architect.API.Tron.Controllers
     [RoutePrefix("api/v{version:apiVersion}/TronCommon")]
     public class TronCommonController : ApiController
     {
+
+        [HttpGet]
+        [Route("Lkps")]
+        [Authorize]
+        public List<Architect.API.Core.Contracts.General.LookupValues> Lkps([FromUri] string keys, [FromUri] string url = "")
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+
+            List<Core.Contracts.General.LookupValues> values = Architect.API.Tron.Business.Cotizacion.MapfreMas.LksExclude(keys, url, tokenInfo);
+            return values;
+        }
+
+        [HttpGet]
+        [Route("LkpChild")]
+        [Authorize]
+        public List<Core.Contracts.General.LookupValue> LkpChild([FromUri] string key, [FromUri] int parentId, [FromUri] string url = "")
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+
+            List<Core.Contracts.General.LookupValue> values = Architect.API.Tron.Business.Cotizacion.MapfreMas.LkpChildExclude(key, parentId, url, tokenInfo);
+            return values;
+        }
+
         /// <summary>
         /// Descarga el reporte para un aviso de cobro
         /// </summary>

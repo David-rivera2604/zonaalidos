@@ -98,11 +98,11 @@ app.CotizacionMapfreMas = (function () {
                     MapObjectToInput(data);
                     data_changed();
                 });
-            }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}`);
+            }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}`, 'v1/TronCommon/Lkps');
 
         // Dependencies events
         $('#cod_marca').on('change', function () {
-            app.core.LookupDependency($('select#cod_marca').val(), 'cod_modelo', 'MM_ModelosVehiculos', '', null, true, null, `cod_marca=`);
+            app.core.LookupDependency($('select#cod_marca').val(), 'cod_modelo', 'MM_ModelosVehiculos', '', null, true, null, `cod_marca=`, 'v1/TronCommon/LkpChild');
         });
 
         $('#contrato').on('change', function () {

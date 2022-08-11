@@ -402,31 +402,36 @@
       "Condicion": "(({El Tipo de producto} sea igual a {Oro}) o ({El Tipo de producto} sea igual a {Trébol}) )",
       "Exclusion": "5"
     },
-    { 
+    {
       "Nombre": "MM_ClaseVehiculos",
       "Condicion": "(({El Tipo de producto} sea igual a {Trébol RC}))",
       "Exclusion": "5,17,18"
     },
-	{
-	  "Nombre": "MM_CAPITAL_GM",
+    {
+      "Nombre": "MM_CAPITAL_GM",
       "Condicion": "(({El Tipo de producto} sea igual a {Plata} y {La Moneda} sea igual a {Colones}))",
       "Exclusion": "2500000,5000000,7500000,10000000"
-	},
-	{
-	  "Nombre": "MM_CAPITAL_AC",
+    },
+    {
+      "Nombre": "MM_CAPITAL_AC",
       "Condicion": "(({El Tipo de producto} sea igual a {Plata} y {La Moneda} sea igual a {Colones}))",
       "Exclusion": "2500000,5000000,7500000,10000000"
-	},
-	{
-	  "Nombre": "MM_CAPITAL_GM",
+    },
+    {
+      "Nombre": "MM_CAPITAL_GM",
       "Condicion": "(({El Tipo de producto} sea igual a {Plata} y {La Moneda} sea igual a {Dólares}))",
       "Exclusion": "4700,9400,14100,18800"
-	},
-	{
-	  "Nombre": "MM_CAPITAL_AC",
+    },
+    {
+      "Nombre": "MM_CAPITAL_AC",
       "Condicion": "(({El Tipo de producto} sea igual a {Plata} y {La Moneda} sea igual a {Dólares}))",
       "Exclusion": "4700,9400,14100,18800"
-	}
+    },
+    {
+      "Nombre": "MM_MarcasVehiculos",
+      "Condicion": "({El Rol del usuario sea igual a Cotizadores})",
+      "Exclusion": "3,14,37,46,57,58,63,81,87,92,105,181,217,273,354,367,384,392,440,565,701,704,706,709,713"
+    }
   ],
   "Reglas": [
     {
@@ -439,12 +444,12 @@
       "Mensaje": "El valor del vehículo debe ser menor o igual a 175.000 dólares",
       "Campo": "IMP_VR"
     },
-	{
+    {
       "Condicion": "{El Rol del usuario sea igual a Davivienda_Prendarios}  y {El Año del vehículo} sea menor a {2 años de antigüedad}",
       "Mensaje": "Solo se deben cotizar autos de 2 años de antiguedad como máximo",
       "Campo": "ANIO_SUB_MODELO"
     },
-	{
+    {
       "Condicion": "{El Rol del usuario sea igual a Davivienda_Leasing}  y {El Año del vehículo} sea menor a {5 años de antigüedad}",
       "Mensaje": "Solo se deben cotizar autos de 5 años de antiguedad como máximo",
       "Campo": "ANIO_SUB_MODELO"
@@ -486,13 +491,13 @@
       "Campo": "ANIO_SUB_MODELO"
     },
     {
-	  "Descripcion": "Condicion de Valor Vehiculo para usuarios Agentes-Corredores Dolares",
+      "Descripcion": "Condicion de Valor Vehiculo para usuarios Agentes-Corredores Dolares",
       "Condicion": "{El Rol del usuario sea igual a Cotizadores} y {El Rol del usuario no sea igual a Privilegios} y {El Rol del usuario no sea igual a Arrend_Leasing} y {El Rol del usuario no sea igual a Davivienda_Prendarios} y {El Rol no sea igual a Davivienda_Leasing} y {La Moneda} sea igual a {Dólares} y {El Valor del vehículo} sea mayor a 70000",
       "Mensaje": "El valor del vehículo debe ser menor o igual a 70.000 dólares",
       "Campo": "IMP_VR"
     },
     {
-	  "Descripcion": "Condicion de Valor Vehiculo para usuarios Agentes-Corredores Colones",
+      "Descripcion": "Condicion de Valor Vehiculo para usuarios Agentes-Corredores Colones",
       "Condicion": "{El Rol del usuario sea igual a Cotizadores} y {El Rol del usuario no sea igual a Privilegios} y {El Rol del usuario no sea igual a Arrend_Leasing} y {El Rol del usuario no sea igual a Davivienda_Prendarios} y {El Rol no sea igual a Davivienda_Leasing} y {La Moneda} sea igual a {Colones} y {El Valor del vehículo} sea mayor a 45500000",
       "Mensaje": "El valor del vehículo debe ser menor o igual a 45 500 000 colones",
       "Campo": "IMP_VR"
@@ -504,35 +509,37 @@
       "Grupo": "Table"
     },
     {
-	  "Descripcion": "Condicion de Valor Vehiculo para usuarios con rol Arrend Leasing Dolares",
+      "Descripcion": "Condicion de Valor Vehiculo para usuarios con rol Arrend Leasing Dolares",
       "Condicion": "{El Rol del usuario sea igual a Arrend_Leasing}  y {La Moneda} sea igual a {Dólares} y {El Valor del vehículo} sea mayor a 100000",
       "Mensaje": "El valor del vehículo debe ser menor o igual a 100.000 dólares",
       "Campo": "IMP_VR"
     },
     {
-	  "Descripcion": "Condicion de Valor Vehiculo para usuarios con rol Arrend Leasing Colones",
+      "Descripcion": "Condicion de Valor Vehiculo para usuarios con rol Arrend Leasing Colones",
       "Condicion": "{El Rol del usuario sea igual a Arrend_Leasing} y {La Moneda} sea igual a {Colones} y {El Valor del vehículo} sea mayor a 65000000",
       "Mensaje": "El valor del vehículo debe ser menor o igual a 65 000 000 colones",
       "Campo": "IMP_VR"
     },
-	{ "Descripcion": "Año del Vehiculo Permitido para usuario con Privilegios",
+    {
+      "Descripcion": "Año del Vehiculo Permitido para usuario con Privilegios",
       "Condicion": "{El Rol del usuario sea igual a Privilegios} y {El Año del vehículo} sea menor a {20 años de antigüedad}",
       "Mensaje": "El año del vehículo no debe superior a 20 años de antigüedad",
       "Campo": "ANIO_SUB_MODELO"
     },
     {
-	  "Descripcion": "Condicion de Valor Vehiculo Dolares para usuarios con rol Privilegios",
+      "Descripcion": "Condicion de Valor Vehiculo Dolares para usuarios con rol Privilegios",
       "Condicion": "{El Rol del usuario sea igual a Privilegios}  y {La Moneda} sea igual a {Dólares} y {El Valor del vehículo} sea mayor a 200000",
       "Mensaje": "El valor del vehículo debe ser menor o igual a 200.000 dólares",
       "Campo": "IMP_VR"
     },
     {
-	  "Descripcion": "Condicion de Valor Vehiculo Colones para usuarios con rol Privilegios",
+      "Descripcion": "Condicion de Valor Vehiculo Colones para usuarios con rol Privilegios",
       "Condicion": "{El Rol del usuario sea igual a Privilegios}  y {La Moneda} sea igual a {Colones} y {El Valor del vehículo} sea mayor a 136000000",
       "Mensaje": "El valor del vehículo debe ser menor o igual a 136 000 000 colones",
       "Campo": "IMP_VR"
     },
-	{ "Descripcion": "Año del Vehiculo Permitido para usuario con Red_Afecta",
+    {
+      "Descripcion": "Año del Vehiculo Permitido para usuario con Red_Afecta",
       "Condicion": "{El Rol del usuario sea igual a Red_Afecta} y {El Año del vehículo} sea menor a {17 años de antigüedad}",
       "Mensaje": "El año del vehículo no debe ser superior a 17 años de antigüedad",
       "Campo": "ANIO_SUB_MODELO"

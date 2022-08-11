@@ -1,4 +1,8 @@
-﻿using Architect.Utilities.Extensions;
+﻿using Architect.API.Core.Contracts.General;
+using Architect.API.Core.Contracts.Security;
+using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
+using Architect.Utilities.Extensions;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -131,7 +135,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 {
                     List<Contracts.Ramo.G2990026> coberturaGrupo = DataAccess.PorRamo.Coberturas_por_contrato2(COD_RAMO, num_contrato);
                     cod_cobIncludeFilter = Util.Convert_CoverageListToString(coberturaGrupo);
-                    
+
                     if (cod_cobIncludeFilter.IsNotEmpty())
                     {
                         switch (cod_tip_vehi)
@@ -185,7 +189,8 @@ namespace Architect.API.Tron.Business.Cotizacion
                         polizagrupo = num_poliza_grupo
                     }, tokenInfo);
 
-                if (cod_cobExcludeFilter.IsNotEmpty()) { 
+                if (cod_cobExcludeFilter.IsNotEmpty())
+                {
                     Architect.Utilities.Log.TraceLog("Coverage", $"Excluir '{cod_cobExcludeFilter}' las coberturas", "Decision");
                 }
 
@@ -394,5 +399,73 @@ namespace Architect.API.Tron.Business.Cotizacion
             }
         }
 
+        public static List<Core.Contracts.General.LookupValues> LksExclude(string keys, string url, Core.Contracts.Security.Token tokenInfo)
+        {
+            Contracts.Cotizacion.MapfreMas data = MapfreMasLookUpData(url);
+
+            List<Core.Contracts.General.LookupValues> values = Core.Business.Common.Lkps(keys, url, tokenInfo);
+
+            return Exclude(values, data, tokenInfo);
+        }
+
+        public static List<Core.Contracts.General.LookupValue> LkpChildExclude(string key, int parentId, string url, Core.Contracts.Security.Token tokenInfo)
+        {
+            Contracts.Cotizacion.MapfreMas data = MapfreMasLookUpData(url);
+
+            List<Core.Contracts.General.LookupValue> values = Core.Business.Common.LkpChild(key, parentId, url, tokenInfo);
+
+            return NewMethod(data, tokenInfo, key, values);
+        }
+
+        private static List<Core.Contracts.General.LookupValues> Exclude(List<Core.Contracts.General.LookupValues> values, Contracts.Cotizacion.MapfreMas data, Core.Contracts.Security.Token tokenInfo)
+        {
+            foreach (Core.Contracts.General.LookupValues itemValues in values)
+            {
+                itemValues.Lkp = NewMethod(data, tokenInfo, itemValues.Key, itemValues.Lkp);
+            }
+            return values;
+        }
+
+        private static List<Core.Contracts.General.LookupValue> NewMethod(Contracts.Cotizacion.MapfreMas data, Token tokenInfo, string key, List<Core.Contracts.General.LookupValue> values)
+        {
+            string exclude = string.Empty;
+            exclude = Reglas.research.Apply_Listas("MapfreMas", data, key, tokenInfo);
+
+            if (exclude.IsNotEmpty())
+            {
+                Utilities.Log.TraceLog("Lookups", $"Excluir '{exclude}' de la lista '{key}'", "Decision");
+
+                foreach (string item in exclude.Split(','))
+                {
+                    values.Remove(values.Find(r => r.Code == item));
+                }
+            }
+
+            return values;
+        }
+
+        private static Contracts.Cotizacion.MapfreMas MapfreMasLookUpData(string url)
+        {
+            Dictionary<string, string> urlValues = url.ToDictionary(':', '=');
+            Contracts.Cotizacion.MapfreMas data = new Contracts.Cotizacion.MapfreMas()
+            {
+                cod_ramo = 0,
+                cod_mon = 0,
+                cod_marca = 0,
+                tipo_prod = "",
+                edad = 0
+            };
+            if (urlValues.ContainsKey("cod_ramo"))
+                data.cod_ramo = Convert.ToInt32(urlValues["cod_ramo"]);
+            if (urlValues.ContainsKey("cod_mon"))
+                data.cod_mon = Convert.ToInt32(urlValues["cod_mon"]);
+            if (urlValues.ContainsKey("edad"))
+                data.cod_mon = Convert.ToInt32(urlValues["edad"]);
+            if (urlValues.ContainsKey("plan"))
+                data.tipo_prod = urlValues["plan"];
+            if (urlValues.ContainsKey("cod_marca"))
+                data.cod_marca = Convert.ToInt32(urlValues["cod_marca"]);
+            return data;
+        }
     }
 }
