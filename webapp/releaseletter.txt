@@ -388,12 +388,16 @@
                    Trazabilidad. Nuevo reporte. filtros fecha, proceso, estado.
  1.6.8a 02/08/2022 Fix. Trazabilidad. Nuevo reporte. filtros fecha, proceso, estado.
                    Fix. Trazabilidad. No permite trabajar en un caso basado en un proceso duplicado.
- 1.6.9  08/08/2022 Aliados MapferMas Reporte se debe totalizar la columna de prima.
+ 1.6.9  08/08/2022 Aliados MapfreMas Reporte se debe totalizar la columna de prima.
                    Se habilita verificación de credenciales por Active Directory (Falta prueba desde el servidor)
                    Aliados MapferMas, mejoras para retomar las cotizaciones no guardadas como presupuesto.
                    Aliados MapferMas, ajuste de validación en porcentaje de descuento comercial.
                    Fix. Se ajusta verificación del pasaporte para que permita mínimo 3 dígitos y máximo 14.
-
-                   Fix. Trazabilidad. Se reincorpora la columna rol a la consulta.
+ 1.6.10 11/08/2022 Fix. Trazabilidad. Se reincorpora la columna rol a la consulta.
                    Fix. Trazabilidad. Se agregar campos personalizado en el reporte.
                    Fix. Trazabilidad. Se agregan validaciones al agregar un adjunto.
+                   Trazabilidad. SLA a nivel del caso.
+                   MapfreMas. Se agrega la opción para considerar los campos importedecesion y porcentajeacredor para terceros por default.
+                   MapfreMas. Ajustes de condiciones para descuento comercial.                   
+                   MapfreMas. Se agrega el manejo dinámico de exclusión de lista para las listas no asociadas a los grupos.
+                   MapfreMas. Reporte de solicitud. Formato para campos importedecesion y porcentajeacredor más check.
