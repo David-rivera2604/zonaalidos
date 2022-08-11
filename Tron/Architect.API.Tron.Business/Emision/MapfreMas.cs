@@ -88,6 +88,10 @@ namespace Architect.API.Tron.Business.Emision
             //Utilities.Cache.SetItem(string.Format("mapfremas.proposal.{0}", presupuesto),
             //                        Newtonsoft.Json.JsonConvert.SerializeObject(result), -1);
 
+            if(tryOnTron)
+            {
+                result.Modo = "draft";
+            }
             return result;
         }
 
