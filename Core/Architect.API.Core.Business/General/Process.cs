@@ -23,7 +23,7 @@ namespace Architect.API.Core.Business.General
             {
                 foreach (Contracts.General.ProcessInstance item in DataAccess.General.ProcessInstance.RetrieveOverDueSteps(now))
                 {
-                    Contracts.General.ProcessSpecFlow spec = Specification(item.FlowId, item.CompanyId);
+                    Contracts.General.ProcessSpecFlow spec = Specification(item.FlowId, item.CompanyId, item.SLA);
                     if (spec != null)
                     {
                         item.Step = spec.ProcessSpecSteps.Where(i => i.Id == item.StepId).FirstOrDefault();
@@ -61,24 +61,21 @@ namespace Architect.API.Core.Business.General
         /// <summary>
         /// Recupera la especificación de un proceso.
         /// </summary>
-        /// <param name="flowId">Identificación única del proceso.</param>
-        /// <param name="companyId">Identificación de la compañía propietaria.</param>
-        /// <returns>Especificación de un proceso.</returns>
-        public static Contracts.General.ProcessSpecFlow Specification(int flowId, int companyId)
+        public static Contracts.General.ProcessSpecFlow Specification(int flowId, int companyId, int customSLA)
         {
             Contracts.General.ProcessSpecFlow result = null;
-            string key = string.Format("SpecFlow.{0}", flowId);
-            if (Architect.Utilities.Cache.NotExist(key))
+            string key = string.Format("SpecFlow.{0}.{1}", flowId, customSLA);
+            if (Utilities.Cache.NotExist(key))
             {
-                result = Architect.API.Core.DataAccess.General.Process.Specification.Retrieve(flowId, companyId);
+                result = DataAccess.General.Process.Specification.Retrieve(flowId, companyId, customSLA);
                 if (result != null)
                 {
-                    Architect.Utilities.Cache.SetItem(key, result);
+                    Utilities.Cache.SetItem(key, result);
                 }
             }
             else
             {
-                result = (Contracts.General.ProcessSpecFlow)Architect.Utilities.Cache.GetItem(key);
+                result = (Contracts.General.ProcessSpecFlow)Utilities.Cache.GetItem(key);
             }
             return result;
         }
@@ -106,7 +103,7 @@ namespace Architect.API.Core.Business.General
 
         public static Contracts.General.ProcessInstance CreateInstance(Contracts.General.CreateProcessInstance newInstance, int userId, int companyId, int caseId = 0)
         {
-            Contracts.General.ProcessSpecFlow spec = Specification(newInstance.FlowId, companyId);
+            Contracts.General.ProcessSpecFlow spec = Specification(newInstance.FlowId, companyId, newInstance.SLA);
             List<Contracts.General.ProcessInstance> instance = new List<Contracts.General.ProcessInstance>();
             Contracts.General.ProcessInstance currentStep = null;
             DateTime current = DateTime.Now;
@@ -125,7 +122,8 @@ namespace Architect.API.Core.Business.General
                     ContactMainName = newInstance.ContactName,
                     Status = spec.ProcessSpecSteps.First().ProcessStatus,
                     Label = spec.ProcessSpecSteps.First().ProcessLabel,
-                    FlowId = newInstance.FlowId
+                    FlowId = newInstance.FlowId,
+                    SLA = newInstance.SLA
                 });
                 caseId = caseInstance.Id;
             }
@@ -427,7 +425,7 @@ namespace Architect.API.Core.Business.General
         private static List<Contracts.General.ProcessInstance> InstanceComplement(List<Contracts.General.ProcessInstance> instance, int companyId)
         {
 
-            Contracts.General.ProcessSpecFlow spec = Specification(instance.First().FlowId, companyId);
+            Contracts.General.ProcessSpecFlow spec = Specification(instance.First().FlowId, companyId, instance.First().SLA);
             if (spec == null)
             {
                 Architect.Utilities.Log.ErrorLog("InstanceComplement", "El proceso fue eliminado");
@@ -631,12 +629,12 @@ namespace Architect.API.Core.Business.General
             }
             DataAccess.General.Process.Specification.UpdateInstance(toUpdate, currentTask);
 
-            Contracts.General.ProcessSpecFlow spec = Specification(currentFlow.FlowId, currentFlow.CompanyId);
+            Contracts.General.ProcessSpecFlow spec = Specification(currentFlow.FlowId, currentFlow.CompanyId, currentFlow.SLA);
             List<string> attachments = new List<string>();
 
             if (checkedInformation.Attachments.IsNotEmpty())
             {
-                foreach (Architect.API.Core.Contracts.General.Attachment attachment in checkedInformation.Attachments)
+                foreach (Contracts.General.Attachment attachment in checkedInformation.Attachments)
                 {
                     attachments.Add(Path.Combine(ConfigurationManager.AppSettings["Attachments.Path"], attachment.StoredFileName) + ";" + attachment.FileName);
                 }

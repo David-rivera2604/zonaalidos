@@ -94,6 +94,9 @@ namespace Architect.API.Core.Business
                         customValues = DataAccess.General.LookupCustom.RetrieveByLookupMasterKey(tenantLkpMaster.LookupId, 1, tenantLkpMaster.CompanyId);
                         break;
                 }
+
+                // !Empleado(1,2,4,6,12);Coopeservidores(12);Davivienda(1);
+
                 if (tenantLkpMaster.IncludeByRole.IsNotEmpty() && tenantLkpMaster.IncludeByRole.IndexOf('!') > -1)
                 {
                     List<LookupValue> newList = new List<LookupValue>();

@@ -25,7 +25,7 @@ namespace Architect.API.Core.Controllers
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
 
-            Contracts.General.ProcessSpecFlow result = Business.General.Process.Specification(flowId, tokenInfo.CompanyId);
+            Contracts.General.ProcessSpecFlow result = Business.General.Process.Specification(flowId, tokenInfo.CompanyId, 0);
             if (result.IsEmpty())
                 return NotFound();
             else
@@ -48,7 +48,7 @@ namespace Architect.API.Core.Controllers
         {
             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
 
-            Contracts.General.ProcessInstance result = Business.General.Process.CreateInstance(instance,  tokenInfo.UserId, tokenInfo.CompanyId);
+            Contracts.General.ProcessInstance result = Business.General.Process.CreateInstance(instance, tokenInfo.UserId, tokenInfo.CompanyId);
             return Ok(new { InstanceId = result.InstanceId, currentActivityId = result.ActivityId, currentActivityDesc = result.TaskDesc });
         }
 
@@ -66,12 +66,12 @@ namespace Architect.API.Core.Controllers
         [Route("Instance/{instanceId:int}/{level:int?}")]
         public IHttpActionResult CurrentByInstance([FromUri] int instanceId, [FromUri] int level = 2)
         {
-             Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
 
             Contracts.General.InstanceInformation result = Business.General.Process.CurrentByInstance(instanceId, level, tokenInfo);
             return Ok(result);
         }
-        
+
         [HttpGet]
         [Route("Instance/Entity/{entityType:int}/{entityId:long}/{level:int?}")]
         public IHttpActionResult CurrentStep([FromUri] int entityType, [FromUri] long entityId, [FromUri] int level = 2)

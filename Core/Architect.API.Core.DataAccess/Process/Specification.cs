@@ -8,8 +8,9 @@ namespace Architect.API.Core.DataAccess.General.Process
     public static class Specification
     {
 
-        public static Contracts.General.ProcessSpecFlow Retrieve(int flowId, int companyId)
+        public static Contracts.General.ProcessSpecFlow Retrieve(int flowId, int companyId, int customSLA)
         {
+            int currentSLA = customSLA;
             IDbConnection currentConnection = DataFactory.Database.OpenConnection("Research");
 
             Contracts.General.ProcessSpecFlow result = ProcessSpecFlow.Retrieve(flowId, companyId, currentConnection);
@@ -26,9 +27,13 @@ namespace Architect.API.Core.DataAccess.General.Process
                     }
                 }
 
-                if (result.SLA.IsNotEmpty())
+                if (currentSLA.IsEmpty() && result.SLA.IsNotEmpty())
                 {
-                    result.SLALevels = ProcessSpecSLALevel.RetrieveAll(companyId, result.SLA, currentConnection);
+                    currentSLA = result.SLA;
+                }
+                if (currentSLA.IsNotEmpty())
+                {
+                    result.SLALevels = ProcessSpecSLALevel.RetrieveAll(companyId, currentSLA, currentConnection);
                     result.SLALevels = result.SLALevels.OrderBy(s => s.SLATimeOut).ToList();
                 }
                 result.ProcessSpecSteps = ProcessSpecStep.RetrieveByFlowId(companyId, flowId, currentConnection);

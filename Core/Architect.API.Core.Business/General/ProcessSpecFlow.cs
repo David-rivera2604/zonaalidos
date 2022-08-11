@@ -24,7 +24,7 @@ namespace Architect.API.Core.Business.General
         {
             Dictionary<int, int> mapper = new Dictionary<int, int>();
             int currentStepId;
-            Contracts.General.ProcessSpecFlow result = DataAccess.General.Process.Specification.Retrieve(id, companyId);
+            Contracts.General.ProcessSpecFlow result = DataAccess.General.Process.Specification.Retrieve(id, companyId, 0);
 
             IDbConnection currentConnection = DataFactory.Database.OpenConnection("Research");
 

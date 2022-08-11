@@ -32,7 +32,10 @@ app.GeneralNewCase = (function () {
         });
 
         $('#FlowId').change(function () {
-            app.core.Get(app.setting.apipath + 'v1/ProcessSpecFlow/' + $('#FlowId').val())
+            let flowId = $('#FlowId').val();
+            let sla = app.core.Data().lookups.filter(i => i.Key === 'ProcessByRol')[0].Lkp.filter(l => l.Code === flowId + '')[0].SLA;
+            $('#SLA').val(sla);
+            app.core.Get(app.setting.apipath + 'v1/ProcessSpecFlow/' + flowId)
                 .done(function (data, textStatus, jqXHR) {
                     ReferenceHandler(data.ReferenceCaption1, data.ReferenceLookupList1, 'Reference1');
                     ReferenceHandler(data.ReferenceCaption2, data.ReferenceLookupList2, 'Reference2');
@@ -122,7 +125,8 @@ app.GeneralNewCase = (function () {
             SubStatus: app.ui.GetNumericValue('#SubStatus'),
             SubLabel: $('#SubLabel').val(),
             FlowId: $('#FlowId').val(),
-            UserId: $('#UserId').val()
+            UserId: $('#UserId').val(),
+            SLA: $('#SLA').val()
         };
     }
 
@@ -145,6 +149,7 @@ app.GeneralNewCase = (function () {
         $('#SubLabel').val(data.SubLabel);
         $('#FlowId').val(data.FlowId);
         $('#UserId').val(data.UserId);
+        $('#SLA').val(data.SLA);
     }
 
     function Setup_Validations() {

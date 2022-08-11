@@ -4,12 +4,12 @@ using System.Collections.Generic;
 namespace Architect.API.Core.Contracts.General
 {
     /// <summary>
-    /// Controla el flujo de procesamiento para ProcessCase
+    /// Controla el flujo de procesamiento para Casos asociados a los procesos.
     /// </summary>
     public partial class ProcessCaseResult
     {
         /// <summary>
-        /// ProcessCase
+        /// Casos asociados a los procesos.
         /// </summary>
         public ProcessCase ProcessCase { get; set; }
         /// <summary>
