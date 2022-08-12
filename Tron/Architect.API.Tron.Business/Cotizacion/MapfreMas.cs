@@ -237,8 +237,6 @@ namespace Architect.API.Tron.Business.Cotizacion
                 resultInfo = MapfreMasConvertFrom.Quote(quoteInfo, resultTron);
 
 
-                resultInfo.DatosEconomicos = EconomicDataCalculate(resultInfo, COD_RAMO);
-
                 //Utilities.SerializeHandler<Contracts.Presupuesto.DatoFijo>.SerializeToFile(resultTron, @"C:\temp\resultTron.xml");
                 //Utilities.SerializeHandler<Contracts.Cotizacion.MapfreMas>.SerializeToFile(resultInfo, @"C:\temp\resultInfo.xml");
 
@@ -471,32 +469,5 @@ namespace Architect.API.Tron.Business.Cotizacion
             return data;
         }
 
-        private static Contracts.Emision.EconomicData EconomicDataCalculate(Contracts.Cotizacion.MapfreMas quoteInfo, int cod_ramo)
-        {
-            Contracts.Emision.EconomicData result = new Contracts.Emision.EconomicData();
-            int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia");
-            double importeAnual = 0;
-
-            foreach (Contracts.Comun.Cobertura itemQuote in quoteInfo.coberturas)
-            {
-                importeAnual += itemQuote.primatotal;
-            }
-            result.annualgrosspremium = importeAnual;
-            result.tax = importeAnual * .13;
-            result.annualnetpremium = importeAnual - result.tax;
-
-            List<Contracts.Ramo.A1001403> xxx = DataAccess.PorRamo.FrecuenciaDePago(cod_cia, cod_ramo, quoteInfo.cod_mon);
-
-            if (xxx?.Count > 0)
-            {
-                Contracts.Ramo.A1001403 yyy = (from r in xxx where r.cod_fracc_pago == quoteInfo.cod_fracc_pago select r).FirstOrDefault();
-                if (yyy != null)
-                {
-                    result.monthlygrosspremium = (importeAnual / quoteInfo.cod_fracc_pago) + ((importeAnual / quoteInfo.cod_fracc_pago) * (yyy.pct_fracc_pago / 100));
-                }
-            }
-
-            return result;
-        }
     }
 }

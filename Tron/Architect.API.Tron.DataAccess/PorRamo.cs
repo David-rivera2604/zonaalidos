@@ -239,6 +239,54 @@ namespace Architect.API.Tron.DataAccess
             return result;
         }
 
+        public static List<Contracts.Ramo.A1001403> MM_FrecuenciaDePago(double primaAnual, string num_poliza_grupo, int num_contrato)
+        {
+            List<Contracts.Ramo.A1001403> result = new List<Contracts.Ramo.A1001403>();
+
+            if (num_poliza_grupo == null)
+                num_poliza_grupo = string.Empty;
+            if (num_contrato == 0)
+                num_contrato = int.MinValue;
+
+            Database.Select(@"
+      SELECT a.cod_ramo,
+             a.cod_mon,
+             a.num_poliza_grupo,
+             a.num_contrato,
+             a.cod_fracc_pago,
+             b.nom_fracc_pago,
+             a.pct_fracc_pago,
+             :P_PRIMA_ANUAL * a.pct_fracc_pago / 100 MONTO_RECARGO
+      FROM   a2990020_mcr a, A1001402 b
+      WHERE  a.cod_cia = 1
+      AND    (a.num_poliza_grupo IN
+            (nvl(:P_NUM_POLIZA_GRUPO, '9999999999999')))
+      AND    (a.num_contrato IN (nvl(:NUM_CONTRATO, 99999)))
+      AND    a.cod_ramo = 302
+      AND    a.cod_mon = 1 --OR  a.cod_mon = 99 or  a.cod_mon = 2)
+      AND    a.cod_fracc_pago IN (1, 2, 4, 6, 12)
+      AND    a.mca_colectivo = 'N'
+      AND    nvl(a.mca_inh, 'N') = 'N'
+      AND    a.cod_cia = b.cod_cia
+      AND    a.cod_fracc_pago = b.cod_fracc_pago
+      ORDER  BY a.cod_fracc_pago, a.cod_mon ASC")
+                    .AddParameter("P_PRIMA_ANUAL", DbType.Double, 22, primaAnual)
+                    .AddParameter("P_NUM_POLIZA_GRUPO", DbType.String, 13, num_poliza_grupo)
+                    .AddParameter("NUM_CONTRATO", DbType.Int32, 22, num_contrato)
+                    .Query("Tron", new Action<IDataReader>((reader) =>
+                    {
+                        result.Add(new Contracts.Ramo.A1001403()
+                        {
+                            cod_fracc_pago = reader.IntegerValue("cod_fracc_pago"),
+                            nom_fracc_pago = reader.StringValue("nom_fracc_pago"),
+                            pct_fracc_pago = reader.DoubleValue("pct_fracc_pago"),
+                            monto_recargo = reader.DoubleValue("monto_recargo")
+                        });
+                    }));
+
+            return result;
+        }
+
         public static List<Architect.API.Tron.Contracts.Ramo.ta301003> AutomobileCoverageSelection(int cod_cia, string num_poliza_grupo, int num_contrato, int num_subcontrato, int cod_ramo, int cod_mon, int cod_marca, int cod_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int tip_valoracion)
         {
             List<Architect.API.Tron.Contracts.Ramo.ta301003> result = new List<Architect.API.Tron.Contracts.Ramo.ta301003>();

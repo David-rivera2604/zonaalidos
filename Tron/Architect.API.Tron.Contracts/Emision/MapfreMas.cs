@@ -73,6 +73,7 @@ namespace Architect.API.Tron.Contracts.Emision
 
         [DataMember(), JsonProperty()] public string Modo { get; set; }
 
+        [DataMember(), JsonProperty()] public EconomicData DatosEconomicos { get; set; }
 
     }
 

@@ -202,8 +202,6 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         [DataMember(), JsonProperty()] public int subcontrato { get; set; }
         [DataMember(), JsonProperty()] public string polizagrupo { get; set; }
 
-        [DataMember(), JsonProperty()] public EconomicData DatosEconomicos { get; set; }
-
     }
 
 }

@@ -52,5 +52,8 @@ namespace Architect.API.Tron.Contracts.Ramo
         /// </summary>
         public double pct_fracc_pago { get; set; }
 
+        public double monto_recargo { get; set; }
+
+
     }
 }
