@@ -403,3 +403,6 @@
                    MapfreMas. Ajustes de condiciones para descuento comercial.                   
                    MapfreMas. Se agrega el manejo dinámico de exclusión de lista para las listas no asociadas a los grupos.
                    MapfreMas. Reporte de solicitud. Formato para campos importedecesion y porcentajeacredor más check.
+ 1.6.10 11/08/2022 MapfreMas. Reporte de solicitud. Calcular datos económicos.
+                   MapfreMas. Reporte de solicitud. Nueva sección datos económicos.
+                   MapfreMas. Retomar un presupuesto desde una cotización debe habilitarse como solicitud.
