@@ -87,5 +87,10 @@ namespace Architect.API.Tron.Contracts.Especificacion
         /// </summary>
         public int porcentajeacredor { get; set; }
 
+        /// <summary>
+        /// Indica si el tercero es editable.
+        /// </summary>
+        public bool editable { get; set; }
+
     }
 }

@@ -406,3 +406,4 @@
  1.6.10 11/08/2022 MapfreMas. Reporte de solicitud. Calcular datos económicos.
                    MapfreMas. Reporte de solicitud. Nueva sección datos económicos.
                    MapfreMas. Retomar un presupuesto desde una cotización debe habilitarse como solicitud.
+ 1.6.11 18/08/2022 MapfreMas. Se habilita la posibilidad de indicar si el tercero por default es editable.

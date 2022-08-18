@@ -310,7 +310,7 @@ namespace Architect.API.Tron.Business.Reglas
                                 porcentajeacredor = detail.porcentajeacredor,
                                 parentesco = 0,
                                 porcentaje = 0,
-                                NoEditable = true
+                                NoEditable = !detail.editable
                             };
                             terceros.Add(newTercero);
 
