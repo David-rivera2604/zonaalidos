@@ -155,7 +155,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                         {
                             coberturas.Add(new Contracts.Comun.Cobertura()
                             {
-                                seleccionado = string.Format(",{0},", cod_cobIncludeFilter).IndexOf(string.Format(",{0},", item.COD_COB)) > -1,
+                                seleccionado = false,
                                 requerida = coberturaGrupo.Any(r => r.COD_COB == item.COD_COB && r.MCA_OBLIGATORIO == "S"),
                                 codigo = item.COD_COB,
                                 nombre = item.NOM_COB,
@@ -163,6 +163,10 @@ namespace Architect.API.Tron.Business.Cotizacion
                                 primatotal = item.IMP_TOTAL,
                                 deducible = item.NOM_FRANQUICIA
                             });
+                            if (coberturas.Last().requerida)
+                            {
+                                coberturas.Last().seleccionado = true;
+                            }
                         }
                     }
 
