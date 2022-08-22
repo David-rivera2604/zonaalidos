@@ -407,3 +407,6 @@
                    MapfreMas. Reporte de solicitud. Nueva sección datos económicos.
                    MapfreMas. Retomar un presupuesto desde una cotización debe habilitarse como solicitud.
  1.6.11 18/08/2022 MapfreMas. Se habilita la posibilidad de indicar si el tercero por default es editable.
+                   MapfreMas. Cuando una cobertura tiene la marca obligatoria en "N" no se debe marcar por default
+                   MapfreMas. Ajuste al query para obtener frecuencia de pago para calcular datos económicos.
+                   Credecoop. Diagnostico por falla al declinar una revisión.

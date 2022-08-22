@@ -10,10 +10,10 @@ namespace Architect.API.Core.Business.Security
         public static int IsLive(string authenticationToken)
         {
             int result = 0;
-            Contracts.Security.Activity session = (from s in Session.Sessions(string.Empty) where s.Token.Equals(authenticationToken) select s).FirstOrDefault();
+            Contracts.Security.Activity session = (from s in Architect.API.Core.Security.Session.Sessions(string.Empty) where s.Token.Equals(authenticationToken) select s).FirstOrDefault();
             if (session.IsNotEmpty())
             {
-                DateTime expDateTime = session.LastDateTime.AddMinutes( Utilities.Helpers.Settings.IntegerValue("Session.Timeout", 30));
+                DateTime expDateTime = session.LastDateTime.AddMinutes(Architect.Utilities.Helpers.Settings.IntegerValue("Session.Timeout", 30));
                 result = Convert.ToInt32(expDateTime.Subtract(DateTime.Now).TotalSeconds);
             }
             return result;
@@ -32,9 +32,9 @@ namespace Architect.API.Core.Business.Security
         /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="urlPath">Ruta física de la página a ser ejecutada.</param>
         /// <returns>Instancia de Navigation</returns>
-        public static List<Utilities.Contracts.LookUpValue> RetrieveByURLPath(int companyId, string urlPath)
+        public static List<Architect.Utilities.Contracts.LookUpValue> RetrieveByURLPath(int companyId, string urlPath)
         {
-            List<Utilities.Contracts.LookUpValue> result = new List<Utilities.Contracts.LookUpValue>();
+            List<Architect.Utilities.Contracts.LookUpValue> result = new List<Architect.Utilities.Contracts.LookUpValue>();
             Contracts.General.Navigation nav =DataAccess.General.Navigation.RetrieveByURLPath(urlPath, companyId);
 
             if (nav.IsNotEmpty() && nav.Code.IsNotEmpty())

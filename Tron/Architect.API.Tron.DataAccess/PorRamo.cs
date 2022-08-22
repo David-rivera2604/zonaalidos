@@ -248,6 +248,8 @@ namespace Architect.API.Tron.DataAccess
             if (num_contrato == 0)
                 num_contrato = int.MinValue;
 
+            //em_k_cotizador_web_302_mcr.p_genera_fraccionamiento_pago
+
             Database.Select(@"
       SELECT a.cod_ramo,
              a.cod_mon,
@@ -259,9 +261,8 @@ namespace Architect.API.Tron.DataAccess
              :P_PRIMA_ANUAL * a.pct_fracc_pago / 100 MONTO_RECARGO
       FROM   a2990020_mcr a, A1001402 b
       WHERE  a.cod_cia = 1
-      AND    (a.num_poliza_grupo IN
-            (nvl(:P_NUM_POLIZA_GRUPO, '9999999999999')))
-      AND    (a.num_contrato IN (nvl(:NUM_CONTRATO, 99999)))
+      AND    (a.num_poliza_grupo IN (:P_NUM_POLIZA_GRUPO, '9999999999999'))
+      AND    (a.num_contrato IN (:NUM_CONTRATO, 99999))
       AND    a.cod_ramo = 302
       AND    a.cod_mon = 1 --OR  a.cod_mon = 99 or  a.cod_mon = 2)
       AND    a.cod_fracc_pago IN (1, 2, 4, 6, 12)

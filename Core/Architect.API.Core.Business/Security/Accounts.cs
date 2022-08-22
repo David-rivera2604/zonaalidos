@@ -138,12 +138,12 @@ namespace Architect.API.Core.Business.Security
 
                     if (accessAllowed)
                     {
-                        tokenExpiresIn = Utilities.Helpers.Settings.IntegerValue("Session.Timeout", 30);
+                        tokenExpiresIn = Architect.Utilities.Helpers.Settings.IntegerValue("Session.Timeout", 30);
                         track.TraceType = 2;
                         result.ExpiresIn = tokenExpiresIn;
                         result.UserName = string.Format("{0} {1}", user.FirstName, user.LastName).Trim();
 
-                        tokenExpiresIn = Utilities.Helpers.Settings.IntegerValue("Token.Timeout", (int)(tokenExpiresIn * 2.5));
+                        tokenExpiresIn = Architect.Utilities.Helpers.Settings.IntegerValue("Token.Timeout", (int)(tokenExpiresIn * 2.5));
 
                         rols = DataAccess.Security.UserRoleMember.RetrieveLookByUserId(user.UserId, user.CompanyId);
                         result.Roles = rols.Select(x => x.Description).ToArray();
@@ -182,7 +182,7 @@ namespace Architect.API.Core.Business.Security
                             UserName = result.UserName
                         };
 
-                        result.Token = GeneratorToken(tokenItem);
+                        result.Token = Architect.API.Core.Security.Accounts.GeneratorToken(tokenItem);
                         user.LoginDate = DateTime.Now;
                         user.IsLockedOut = false;
                         user.LockedOutDate = DateTime.MinValue;
@@ -263,9 +263,9 @@ namespace Architect.API.Core.Business.Security
                             if (user.Password.Equals("."))
                                 result.MustChangePassword = true;
                             else
-                                result.MustChangePassword = (user.PasswordChangedDate.AddDays(Utilities.Helpers.Settings.IntegerValue("Security.Password.Expiration", 90)) <= DateTime.Today);
+                                result.MustChangePassword = (user.PasswordChangedDate.AddDays(Architect.Utilities.Helpers.Settings.IntegerValue("Security.Password.Expiration", 90)) <= DateTime.Today);
                         }
-                        Session.Create(new Contracts.Security.Activity()
+                        Architect.API.Core.Security.Session.Create(new Contracts.Security.Activity()
                         {
                             Token = result.Token,
                             CompanyId = user.CompanyId,
@@ -317,25 +317,6 @@ namespace Architect.API.Core.Business.Security
                 CreateOTP(new ResetPasswordRequest() { Tenant = authenticationRequest.Tenant, EMail = user.EMail }, user);
             }
             return result;
-        }
-
-        public static string GeneratorToken(Contracts.Security.Token userInfo)
-        {
-            var securityKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(Utilities.Helpers.Settings.StringValue("Jwt:SecretKey")));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-            var claims = new[] {
-                                    new Claim(JwtRegisteredClaimNames.Sub, userInfo.UserName),
-                                    new Claim("UserId", userInfo.UserId.ToString()),
-                                    new Claim("Body",Architect.Utilities.Helpers.CryptSupport.EncryptString(Architect.Utilities.SerializeHandler<Contracts.Security.Token>.Serialize(userInfo).CompressString())),
-                                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                                };
-            var token = new JwtSecurityToken(
-                                            issuer: Utilities.Helpers.Settings.StringValue("Jwt:Issuer"),
-                                            audience: Utilities.Helpers.Settings.StringValue("Jwt:Audience"),
-                                            claims: claims,
-                                            expires: userInfo.Expires,
-                                            signingCredentials: credentials);
-            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         private static Core.Contracts.General.LookupValue TenantInformation(string tenant)
@@ -622,7 +603,7 @@ namespace Architect.API.Core.Business.Security
             if (companyItem.IsNotEmpty())
             {
                 companyId = Int32.Parse(companyItem.Code);
-                internalUserId = Utilities.Helpers.Settings.IntegerValue(string.Format("Tenant.Settings.{0}.External.UserId", companyId));
+                internalUserId = Architect.Utilities.Helpers.Settings.IntegerValue(string.Format("Tenant.Settings.{0}.External.UserId", companyId));
                 result.UserMember.CompanyId = companyId;
 
                 result.Errors = UserMember.Validate(result.UserMember, true);
@@ -657,7 +638,7 @@ namespace Architect.API.Core.Business.Security
             if (result.Errors.Count == 0)
             {
                 string roleId = "";
-                string roleName = Utilities.Helpers.Settings.StringValue(string.Format("Tenant.Settings.{0}.External.RoleName", companyId));
+                string roleName = Architect.Utilities.Helpers.Settings.StringValue(string.Format("Tenant.Settings.{0}.External.RoleName", companyId));
                 if (roleName.IsNotEmpty())
                 {
                     Contracts.General.LookupValue rolInfo = Common.Lkp("Roles", companyId).Where(r => r.Description == roleName).FirstOrDefault();
@@ -668,10 +649,10 @@ namespace Architect.API.Core.Business.Security
                 }
                 if (roleId.IsEmpty())
                 {
-                    roleId = Utilities.Helpers.Settings.StringValue(string.Format("Tenant.Settings.{0}.External.RoleId", companyId));
+                    roleId = Architect.Utilities.Helpers.Settings.StringValue(string.Format("Tenant.Settings.{0}.External.RoleId", companyId));
                 }
 
-                result.UserMember.Roles = new List<Utilities.Contracts.LookUpValue> { new Utilities.Contracts.LookUpValue() { Code = roleId } };
+                result.UserMember.Roles = new List<Architect.Utilities.Contracts.LookUpValue> { new Architect.Utilities.Contracts.LookUpValue() { Code = roleId } };
                 result.UserMember = UserMember.Create(companyId, internalUserId, result.UserMember);
             }
 
@@ -684,7 +665,7 @@ namespace Architect.API.Core.Business.Security
         public static int AuthenticationByLDAP(string userName, string password)
         {
             int response = 0;
-            string domain = Utilities.Helpers.Settings.StringValue("LDAP.Domain", "mapfre.com.cr");
+            string domain = Architect.Utilities.Helpers.Settings.StringValue("LDAP.Domain", "mapfre.com.cr");
             string _path = "LDAP://" + domain;
             string _username = domain + @"\" + userName;
             DirectoryEntry entry = new DirectoryEntry(_path, _username, password);
@@ -723,7 +704,7 @@ namespace Architect.API.Core.Business.Security
             }
             catch (Exception ex)
             {
-                Utilities.Log.ErrorLog("AuthenticationByLDAP", $"path: {_path}, username: {_username}", ex);
+                Architect.Utilities.Log.ErrorLog("AuthenticationByLDAP", $"path: {_path}, username: {_username}", ex);
                 response = 1;
             }
             return response;

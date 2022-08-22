@@ -20,7 +20,7 @@ namespace Architect.API.Core.Controllers
         [Route("post")]
         public async Task<IHttpActionResult> Post([FromBody] Architect.API.Core.Contracts.Security.UserMember item)
         {
-            Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Contracts.Security.Token tokenInfo = Security.Token.Info();
 
             List<Contracts.General.Error> errors = null;
             if (item.IsEmpty())
@@ -71,7 +71,7 @@ namespace Architect.API.Core.Controllers
         [Authorize]
         public async Task<IHttpActionResult> Get(string filter = "", string recordStatus = "")
         {
-            Contracts.Security.Token tokenInfo = Business.Security.Token.Info();
+            Contracts.Security.Token tokenInfo = Security.Token.Info();
 
             List<Architect.API.Core.Contracts.Security.UserMember> result = null;
 
@@ -92,7 +92,7 @@ namespace Architect.API.Core.Controllers
         [Authorize]
         public async Task<IHttpActionResult> GetById(int id)
         {
-            Contracts.Security.Token tokenInfo = Business.Security.Token.Info();
+            Contracts.Security.Token tokenInfo = Security.Token.Info();
             IHttpActionResult result = null;
             Architect.API.Core.Contracts.Security.UserMember data = null;
 
@@ -130,7 +130,7 @@ namespace Architect.API.Core.Controllers
             }
             else
             {
-                Contracts.Security.Token tokenInfo = Business.Security.Token.Info();
+                Contracts.Security.Token tokenInfo = Security.Token.Info();
 
                 List<Contracts.General.Error> errors = null;
                 await Task.Run(() =>
@@ -176,7 +176,7 @@ namespace Architect.API.Core.Controllers
             }
             else
             {
-                Contracts.Security.Token tokenInfo = Business.Security.Token.Info();
+                Contracts.Security.Token tokenInfo = Security.Token.Info();
                 bool deleted;
                 await Task.Run(() =>
                 {
@@ -192,7 +192,7 @@ namespace Architect.API.Core.Controllers
         [Route("sendcredentials")]
         public async Task<IHttpActionResult> SendCredentials([FromUri] int id)
         {
-            Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Contracts.Security.Token tokenInfo = Security.Token.Info();
 
             if (id.IsEmpty())
             {

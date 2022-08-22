@@ -40,7 +40,7 @@ namespace Architect.API.Core.Business.General
             {
                 if (result.Roles?.Count > 0)
                 {
-                    foreach (Utilities.Contracts.LookUpValue flowRol in result.Roles)
+                    foreach (Architect.Utilities.Contracts.LookUpValue flowRol in result.Roles)
                     {
                         DataAccess.General.ProcessSpecFlowRole.Create(new Contracts.General.ProcessSpecFlowRole()
                         {
@@ -104,8 +104,8 @@ namespace Architect.API.Core.Business.General
             }
 
             currentConnection.Close();
-            Utilities.Cache.RemoveStartWith("Process");
-            Utilities.Cache.RemoveStartWith("SpecFlow");
+            Architect.Utilities.Cache.RemoveStartWith("Process");
+            Architect.Utilities.Cache.RemoveStartWith("SpecFlow");
             return new Contracts.General.ProcessSpecFlowResult()
             {
                 ProcessSpecFlow = result,
@@ -113,7 +113,7 @@ namespace Architect.API.Core.Business.General
             };
         }
 
-        private static void SynchronizeRoles(int companyId, int userId, int id, List<Utilities.Contracts.LookUpValue> currentRoles)
+        private static void SynchronizeRoles(int companyId, int userId, int id, List<Architect.Utilities.Contracts.LookUpValue> currentRoles)
         {
             List<Architect.API.Core.Contracts.General.ProcessSpecFlowRole> roles = Core.DataAccess.General.ProcessSpecFlowRole.RetrieveByStepId(id);
             if (roles.IsEmpty())
@@ -124,7 +124,7 @@ namespace Architect.API.Core.Business.General
             {
                 //Agrega un nuevo registro o se cambia uno existente                
                 Architect.API.Core.Contracts.General.ProcessSpecFlowRole toAdd = null;
-                foreach (Utilities.Contracts.LookUpValue newItem in currentRoles)
+                foreach (Architect.Utilities.Contracts.LookUpValue newItem in currentRoles)
                 {
                     toAdd = roles.Find(r => r.RoleId.ToString() == newItem.Code);
 

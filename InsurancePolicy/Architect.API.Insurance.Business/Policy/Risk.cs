@@ -411,11 +411,7 @@ namespace Architect.API.Insurance.Business.Policy
                 //    values = Core.Business.General.Lookup.Lkp("PolicyStatus");
                 //    result.StatusDesc = values.Find(x => x.Code == result.Status.ToString()).Description;
                 //}
-                if (result.ReasonForStatus.IsNotEmpty())
-                {
-                    values = Core.Business.Common.LkpChild("ReasonForStatus", result.Status, 0, companyId);
-                    result.ReasonForStatusDesc = values.Find(x => x.Code == result.ReasonForStatus.ToString()).Description.ToUpper();
-                }
+                result.ReasonForStatusDesc = Core.Business.Common.LkpDescription(companyId, "ReasonForStatus", result.Status, result.ReasonForStatus.ToString());
             }
             if (result.IsNotEmpty() && result.PrimaryInsured.IsNotEmpty())
             {

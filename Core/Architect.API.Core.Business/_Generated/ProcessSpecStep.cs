@@ -61,8 +61,8 @@ namespace Architect.API.Core.Business.General
                     SynchronizeRoles(companyId, userId, result.Id, result.Roles);
                     MapLookups(companyId, result);
                     Core.Business.General.ChangeSet.Create(1301, result.Id, companyId, "Creación", string.Format("Se creó el process spec step '{0}'", result.Name), userId, result);
-                    Utilities.Cache.RemoveStartWith("Steps");
-                    Utilities.Cache.RemoveStartWith("SpecFlow");
+                    Architect.Utilities.Cache.RemoveStartWith("Steps");
+                    Architect.Utilities.Cache.RemoveStartWith("SpecFlow");
                 }
             }
             return new Architect.API.Core.Contracts.General.ProcessSpecStepResult() { ProcessSpecStep = result, Errors = errors };
@@ -104,10 +104,10 @@ namespace Architect.API.Core.Business.General
                 result.ProcessSpecStepRoles = Core.DataAccess.General.ProcessSpecStepRole.RetrieveByStepId(id, currentConnection);
                 if (result.ProcessSpecStepRoles.Count > 0)
                 {
-                    result.Roles = new List<Utilities.Contracts.LookUpValue>();
+                    result.Roles = new List<Architect.Utilities.Contracts.LookUpValue>();
                     foreach (Architect.API.Core.Contracts.General.ProcessSpecStepRole item in result.ProcessSpecStepRoles)
                     {
-                        result.Roles.Add(new Utilities.Contracts.LookUpValue() { Code = item.RoleId.ToString(), Description = item.RoleName });
+                        result.Roles.Add(new Architect.Utilities.Contracts.LookUpValue() { Code = item.RoleId.ToString(), Description = item.RoleName });
                     }
                 }
 
@@ -145,8 +145,8 @@ namespace Architect.API.Core.Business.General
                     SynchronizeRoles(companyId, userId, result.Id, result.Roles);
                     MapLookups(companyId, result);
                     Core.Business.General.ChangeSet.Create(1301, item.Id, companyId, "Modificación", string.Format("Se modificó el process spec step '{0}'", result.Name), userId, result);
-                    Utilities.Cache.RemoveStartWith("Steps");
-                    Utilities.Cache.RemoveStartWith("SpecFlow");
+                    Architect.Utilities.Cache.RemoveStartWith("Steps");
+                    Architect.Utilities.Cache.RemoveStartWith("SpecFlow");
                 }
             }
             return new Architect.API.Core.Contracts.General.ProcessSpecStepResult() { ProcessSpecStep = result, Errors = errors };
@@ -171,8 +171,8 @@ namespace Architect.API.Core.Business.General
                 if (result.IsNotEmpty() && Architect.API.Core.DataAccess.General.ProcessSpecStep.Delete(id, companyId) > 0)
                 {
                     Core.Business.General.ChangeSet.Create(1301, id, companyId, "Eliminar", string.Format("Se eliminó el process spec step '{0}'", result.Name), userId, result);
-                    Utilities.Cache.RemoveStartWith("Steps");
-                    Utilities.Cache.RemoveStartWith("SpecFlow");
+                    Architect.Utilities.Cache.RemoveStartWith("Steps");
+                    Architect.Utilities.Cache.RemoveStartWith("SpecFlow");
                 }
             }
             return new Architect.API.Core.Contracts.General.ProcessSpecStepResult() { ProcessSpecStep = result, Errors = errors };
@@ -346,7 +346,7 @@ namespace Architect.API.Core.Business.General
                 item.MailToStepResponsibleTmplDesc = Core.Business.Common.LkpDescription(companyId, "MailTemplate", item.MailToStepResponsibleTmpl.ToString());
         }
 
-        private static void SynchronizeRoles(int companyId, int userId, int id, List<Utilities.Contracts.LookUpValue> currentRoles)
+        private static void SynchronizeRoles(int companyId, int userId, int id, List<Architect.Utilities.Contracts.LookUpValue> currentRoles)
         {
             List<Architect.API.Core.Contracts.General.ProcessSpecStepRole> roles = Core.DataAccess.General.ProcessSpecStepRole.RetrieveByStepId(id);
             if (roles.IsEmpty())
@@ -357,7 +357,7 @@ namespace Architect.API.Core.Business.General
             {
                 //Agrega un nuevo registro o se cambia uno existente                
                 Architect.API.Core.Contracts.General.ProcessSpecStepRole toAdd = null;
-                foreach (Utilities.Contracts.LookUpValue newItem in currentRoles)
+                foreach (Architect.Utilities.Contracts.LookUpValue newItem in currentRoles)
                 {
                     toAdd = roles.Find(r => r.RoleId.ToString() == newItem.Code);
 

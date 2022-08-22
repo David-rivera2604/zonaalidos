@@ -328,7 +328,7 @@ app.CotizacionMapfreMas = (function () {
             digitGroupSeparator: '.',
             maximumValue: '99999999999999',
             minimumValue: '0',
-            decimalPlaces: '0',
+            decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
         new AutoNumeric('#PCT_AJUSTE_GEN', {

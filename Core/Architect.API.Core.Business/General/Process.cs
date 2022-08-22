@@ -53,7 +53,7 @@ namespace Architect.API.Core.Business.General
             }
             catch (Exception ex)
             {
-                Utilities.Log.ErrorLog("Process", "OverDueSteps", ex);
+                Architect.Utilities.Log.ErrorLog("Process", "OverDueSteps", ex);
                 throw ex;
             }
         }
@@ -65,17 +65,17 @@ namespace Architect.API.Core.Business.General
         {
             Contracts.General.ProcessSpecFlow result = null;
             string key = string.Format("SpecFlow.{0}.{1}", flowId, customSLA);
-            if (Utilities.Cache.NotExist(key))
+            if (Architect.Utilities.Cache.NotExist(key))
             {
                 result = DataAccess.General.Process.Specification.Retrieve(flowId, companyId, customSLA);
                 if (result != null)
                 {
-                    Utilities.Cache.SetItem(key, result);
+                    Architect.Utilities.Cache.SetItem(key, result);
                 }
             }
             else
             {
-                result = (Contracts.General.ProcessSpecFlow)Utilities.Cache.GetItem(key);
+                result = (Contracts.General.ProcessSpecFlow)Architect.Utilities.Cache.GetItem(key);
             }
             return result;
         }

@@ -23,7 +23,7 @@ namespace Architect.API.Tron.Controllers
         [Route("HogarTotalSetup/{presupuesto}")]
         public async Task<IHttpActionResult> HogarTotalSetup(string presupuesto)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Emision.HogarTotal result = null;
             await Task.Run(() =>
             {
@@ -42,7 +42,7 @@ namespace Architect.API.Tron.Controllers
         [Route("HogarTotal")]
         public async Task<IHttpActionResult> HogarTotalIssue([FromBody] Tron.Contracts.Emision.HogarTotal quoteInfo)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Cotizacion.HogarTotal result = null;
             await Task.Run(() =>
             {
@@ -62,7 +62,7 @@ namespace Architect.API.Tron.Controllers
         [Route("MapfreMasSetup/{presupuesto}")]
         public async Task<IHttpActionResult> MapfreMasSetup(string presupuesto, string mode)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Emision.MapfreMas result = null;
             await Task.Run(() =>
             {
@@ -81,7 +81,7 @@ namespace Architect.API.Tron.Controllers
         [Route("MapfreMas")]
         public async Task<IHttpActionResult> MapfreMasIssue([FromBody] Tron.Contracts.Emision.MapfreMas quoteInfo)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Cotizacion.MapfreMas result = null;
             await Task.Run(() =>
             {
@@ -101,7 +101,7 @@ namespace Architect.API.Tron.Controllers
         [Route("MapfreMas/EnviarSolicitud")]
         public async Task<IHttpActionResult> ReEnviarSolicitud(string presupuesto, string correoenvio)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             string result = string.Empty;
             await Task.Run(() =>
             {
@@ -121,7 +121,7 @@ namespace Architect.API.Tron.Controllers
         [Route("MapfreMas/Terceros/{fuente_Tomador}")]
         public async Task<IHttpActionResult> Tercero_Complement([FromUri] string fuente_Tomador, [FromBody] List<Contracts.Comun.tercero> terceros)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             List<Contracts.Comun.tercero> result = null;
             await Task.Run(() =>
             {
@@ -140,7 +140,7 @@ namespace Architect.API.Tron.Controllers
         [Route("MultirriesgoSetup/{presupuesto}")]
         public async Task<IHttpActionResult> MultirriesgoSetup(string presupuesto)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Emision.Multirriesgo result = null;
             await Task.Run(() =>
             {
@@ -159,7 +159,7 @@ namespace Architect.API.Tron.Controllers
         [Route("Multirriesgo")]
         public async Task<IHttpActionResult> MultirriesgoIssue([FromBody] Tron.Contracts.Emision.Multirriesgo quoteInfo)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Cotizacion.Multirriesgo result = null;
             await Task.Run(() =>
             {
@@ -178,7 +178,7 @@ namespace Architect.API.Tron.Controllers
         [Route("Viajero/{presupuesto}")]
         public async Task<IHttpActionResult> ViajeroSetup(string presupuesto, string mode)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Emision.Viajero result = null;
             await Task.Run(() =>
             {
@@ -197,7 +197,7 @@ namespace Architect.API.Tron.Controllers
         [Route("Viajero")]
         public async Task<IHttpActionResult> ViajeroIssue([FromBody] Tron.Contracts.Emision.Viajero quoteInfo)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Cotizacion.Viajero result = null;
             await Task.Run(() =>
             {
@@ -214,7 +214,7 @@ namespace Architect.API.Tron.Controllers
         [Route("SaldoDeudor/{presupuesto}")]
         public async Task<IHttpActionResult> SaldoDeudorSetup(string presupuesto, string mode)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Emision.SaldoDeudor result = null;
             await Task.Run(() =>
             {
@@ -231,7 +231,7 @@ namespace Architect.API.Tron.Controllers
         [Route("SaldoDeudor")]
         public async Task<IHttpActionResult> SaldoDeudorIssue([FromBody] Tron.Contracts.Emision.SaldoDeudor quoteInfo)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Cotizacion.SaldoDeudor result = null;
             await Task.Run(() =>
             {

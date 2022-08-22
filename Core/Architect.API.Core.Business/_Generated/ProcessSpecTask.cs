@@ -59,7 +59,7 @@ namespace Architect.API.Core.Business.General
                 {
                     MapLookups(companyId, result);
                     Core.Business.General.ChangeSet.Create(1302, result.Id, companyId, "Creación", string.Format("Se creó el process spec task '{0}'", result.Name), userId, result);
-                    Utilities.Cache.RemoveStartWith("SpecFlow");
+                    Architect.Utilities.Cache.RemoveStartWith("SpecFlow");
                 }
             }
             return new Architect.API.Core.Contracts.General.ProcessSpecTaskResult() { ProcessSpecTask = result, Errors = errors };
@@ -124,7 +124,7 @@ namespace Architect.API.Core.Business.General
                 {
                     MapLookups(companyId, result);
                     Core.Business.General.ChangeSet.Create(1302, item.Id, companyId, "Modificación", string.Format("Se modificó el process spec task '{0}'", result.Name), userId, result);
-                    Utilities.Cache.RemoveStartWith("SpecFlow");
+                    Architect.Utilities.Cache.RemoveStartWith("SpecFlow");
                 }
             }
             return new Architect.API.Core.Contracts.General.ProcessSpecTaskResult() { ProcessSpecTask = result, Errors = errors };
@@ -148,7 +148,7 @@ namespace Architect.API.Core.Business.General
                 if (result.IsNotEmpty() && Architect.API.Core.DataAccess.General.ProcessSpecTask.Delete(id, companyId) > 0)
                 {
                     Core.Business.General.ChangeSet.Create(1302, id, companyId, "Eliminar", string.Format("Se eliminó el process spec task '{0}'", result.Name), userId, result);
-                    Utilities.Cache.RemoveStartWith("SpecFlow");
+                    Architect.Utilities.Cache.RemoveStartWith("SpecFlow");
                 }
             }
             return new Architect.API.Core.Contracts.General.ProcessSpecTaskResult() { ProcessSpecTask = result, Errors = errors };

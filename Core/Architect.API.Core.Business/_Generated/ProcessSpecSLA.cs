@@ -57,7 +57,7 @@ namespace Architect.API.Core.Business.General
                     Core.Business.General.ChangeSet.Create(0000, result.Id, companyId, "Creación", string.Format("Se creó el processspecsla '{0}'", result.Name), userId, result);
 
                     ProcessSpecSLALevel.Create(companyId, userId, result.Id, item.Levels);
-                    Utilities.Cache.RemoveStartWith("SLA");
+                    Architect.Utilities.Cache.RemoveStartWith("SLA");
                 }
             }
             return new Architect.API.Core.Contracts.General.ProcessSpecSLAResult() { ProcessSpecSLA = result, Errors = errors };
@@ -125,7 +125,7 @@ namespace Architect.API.Core.Business.General
                     Core.Business.General.ChangeSet.Create(0000, item.Id, companyId, "Modificación", string.Format("Se modificó el processspecsla '{0}'", result.Name), userId, result);
 
                     ProcessSpecSLALevel.Update(companyId, userId, result.Id, item.Levels);
-                    Utilities.Cache.RemoveStartWith("SLA");
+                    Architect.Utilities.Cache.RemoveStartWith("SLA");
                 }
             }
             return new Architect.API.Core.Contracts.General.ProcessSpecSLAResult() { ProcessSpecSLA = result, Errors = errors };
@@ -146,7 +146,7 @@ namespace Architect.API.Core.Business.General
             if (errors.Count == 0)
             {
                 ProcessSpecSLALevel.Delete(companyId, id);
-                Utilities.Cache.RemoveStartWith("SLA");
+                Architect.Utilities.Cache.RemoveStartWith("SLA");
 
                 result = Architect.API.Core.DataAccess.General.ProcessSpecSLA.Retrieve(id, companyId);
                 if (result.IsNotEmpty() && Architect.API.Core.DataAccess.General.ProcessSpecSLA.Delete(id, companyId) > 0)

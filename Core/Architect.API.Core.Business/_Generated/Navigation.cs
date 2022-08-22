@@ -275,7 +275,7 @@ namespace Architect.API.Core.Business.General
         }
 
 
-        private static void SynchronizeRoles(int companyId, int userId, string code, List<Utilities.Contracts.LookUpValue> currentRoles)
+        private static void SynchronizeRoles(int companyId, int userId, string code, List<Architect.Utilities.Contracts.LookUpValue> currentRoles)
         {
             List<Contracts.Security.RoleMemberNavigation> roleNavigation = Architect.API.Core.DataAccess.Security.RoleMemberNavigation.RetrieveByCode(companyId, code);
             if (roleNavigation.IsEmpty())
@@ -286,7 +286,7 @@ namespace Architect.API.Core.Business.General
             {
                 //Agrega un nuevo registro o se cambia uno existente                
                 Contracts.Security.RoleMemberNavigation toAdd = null;
-                foreach (Utilities.Contracts.LookUpValue newItem in currentRoles)
+                foreach (Architect.Utilities.Contracts.LookUpValue newItem in currentRoles)
                 {
                     toAdd = roleNavigation.Find(r => r.RoleId.ToString() == newItem.Code);
 

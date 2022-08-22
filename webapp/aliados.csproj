@@ -77,8 +77,8 @@
     <Reference Include="Hangfire.AspNet, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hangfire.AspNet.0.2.0\lib\net45\Hangfire.AspNet.dll</HintPath>
     </Reference>
-    <Reference Include="Hangfire.Core, Version=1.7.30.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hangfire.Core.1.7.30\lib\net46\Hangfire.Core.dll</HintPath>
+    <Reference Include="Hangfire.Core, Version=1.7.31.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.Core.1.7.31\lib\net46\Hangfire.Core.dll</HintPath>
     </Reference>
     <Reference Include="Hangfire.MemoryStorage, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hangfire.MemoryStorage.1.7.0\lib\net40\Hangfire.MemoryStorage.dll</HintPath>
@@ -1678,6 +1678,10 @@
     <ProjectReference Include="..\Core\Architect.API.Core.Business\Architect.API.Core.Business.csproj">
       <Project>{579105b3-776b-4094-a301-87a9c42962c5}</Project>
       <Name>Architect.API.Core.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Architect.API.Core.Utilities\Architect.API.Core.Security.csproj">
+      <Project>{3d406267-4a50-4e87-842a-553e3d222cf1}</Project>
+      <Name>Architect.API.Core.Security</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core\Architect.API.Core\Architect.API.Core.csproj">
       <Project>{c3df159d-24f2-48f6-ab4c-1480a47626f0}</Project>

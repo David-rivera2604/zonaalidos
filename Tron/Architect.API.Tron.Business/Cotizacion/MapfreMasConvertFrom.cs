@@ -148,7 +148,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                         quoteInfo.MCA_VR = item.val_campo == "N" ? 2 : 1;
                         break;
                     case "IMP_VR":
-                        quoteInfo.IMP_VR = Convert.ToInt32(item.val_campo);
+                        quoteInfo.IMP_VR = Convert.ToDouble(item.val_campo);
                         break;
                     case "MCA_PRA":
                         quoteInfo.MCA_PRA = item.val_campo == "N" ? 2 : 1;
