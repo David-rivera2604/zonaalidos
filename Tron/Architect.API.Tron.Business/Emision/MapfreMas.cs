@@ -152,6 +152,8 @@ namespace Architect.API.Tron.Business.Emision
             Contracts.PolicyProposal proposal = DataAccess.PolicyProposal.RetrieveByProposalId(presupuesto, tokenInfo.CompanyId);
             Contracts.Emision.MapfreMas quoteInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<Contracts.Emision.MapfreMas>(proposal.ProposalData);
 
+            quoteInfo.DatosEconomicos = EconomicDataCalculate(quoteInfo);
+
             string uniqueId = EnviarSolicitud(proposal.SigningType, correoenvio, quoteInfo, tokenInfo);
             if (proposal.SigningType != Contracts.TipoDeFirma.Manual)
             {
