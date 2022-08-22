@@ -94,6 +94,9 @@ namespace Architect.API.Core.Business
                         customValues = DataAccess.General.LookupCustom.RetrieveByLookupMasterKey(tenantLkpMaster.LookupId, 1, tenantLkpMaster.CompanyId);
                         break;
                 }
+
+                // !Empleado(1,2,4,6,12);Coopeservidores(12);Davivienda(1);
+
                 if (tenantLkpMaster.IncludeByRole.IsNotEmpty() && tenantLkpMaster.IncludeByRole.IndexOf('!') > -1)
                 {
                     List<LookupValue> newList = new List<LookupValue>();
@@ -359,18 +362,18 @@ namespace Architect.API.Core.Business
         }
 
 
-        public static List<Utilities.Contracts.LookUpValue> Cache(string prefix)
+        public static List<Architect.Utilities.Contracts.LookUpValue> Cache(string prefix)
         {
             if (prefix.Equals("all", System.StringComparison.CurrentCultureIgnoreCase))
             {
-                Utilities.Cache.Clean();
+                Architect.Utilities.Cache.Clean();
             }
             else if (prefix != "")
             {
-                Utilities.Cache.RemoveStartWith(prefix);
+                Architect.Utilities.Cache.RemoveStartWith(prefix);
             }
 
-            return Utilities.Cache.CacheCatalog();
+            return Architect.Utilities.Cache.CacheCatalog();
         }
 
         public static Dictionary<string, string> TokenToToDictionary(Dictionary<string, string> values, Core.Contracts.Security.Token tokenInfo)

@@ -36,7 +36,7 @@ namespace aliados
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-            config.Filters.Add(new Architect.API.Core.Utils.AuthorizeExtendAttribute());
+            config.Filters.Add(new Architect.API.Core.Security.AuthorizeExtendAttribute());
 
             //var appXmlType = config.Formatters.XmlFormatter.SupportedMediaTypes.FirstOrDefault(t => t.MediaType == "application/xml");
             //config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(appXmlType);

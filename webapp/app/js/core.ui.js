@@ -161,7 +161,13 @@ app.ui = (function () {
                 value = 0;
             return parseInt(value, 10);
         },
-        SetNumericValue: function (selector, value) {
+        SetNumericValue: function (selector, value, min, max) {
+            if (min != undefined && value < min) {
+                value = min;
+            }
+            if (max != undefined && value > max) {
+                value = max;
+            }
             AutoNumeric.set(selector, value);
         },
         SetRadioNumericValue: function (name, value) {
@@ -487,7 +493,7 @@ app.ui = (function () {
                     result = (length === 14);
                     break;
                 case 3: //14 DÍGITOS: PASXXXXXXXXXXXXXX
-                    result = (length === 17);
+                    result = (length >= 3 && length <= 14);
                     break;
                 case 4:
                     result = (length >= 7 && length <= 14);

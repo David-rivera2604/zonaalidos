@@ -38,14 +38,14 @@ namespace Architect.API.Core.Business.General
         /// <returns>Instancia de ProcessCase creada.</returns>
         public static Architect.API.Core.Contracts.General.ProcessCaseResult Create(int companyId, int userId, Architect.API.Core.Contracts.General.ProcessCase item)
         {
-            Architect.API.Core.Contracts.General.ProcessCase result = item;
-            List<Contracts.General.Error> errors = Architect.API.Core.Business.General.ProcessCase.Validate(companyId, item, true, false);
+            Contracts.General.ProcessCase result = item;
+            List<Contracts.General.Error> errors = ProcessCase.Validate(companyId, item, true, false);
 
             if (errors.Count == 0)
             {
                 if (result.Id.IsEmpty())
                 {
-                    result.Id = Architect.API.Core.DataAccess.General.ProcessCase.RetrieveLastKey() + 1;
+                    result.Id = DataAccess.General.ProcessCase.RetrieveLastKey() + 1;
                 }
                 result.CompanyId = companyId;
                 result.UpdateUserCode = userId;
@@ -54,7 +54,7 @@ namespace Architect.API.Core.Business.General
                 if (Architect.API.Core.DataAccess.General.ProcessCase.Create(result) > 0)
                 {
                     MapLookups(companyId, result);
-                    Core.Business.General.ChangeSet.Create(1304, result.Id, companyId, "Creación", string.Format("Se creó el processcase '{0}'", result.Title), userId, result);
+                    ChangeSet.Create(1304, result.Id, companyId, "Creación", string.Format("Se creó el processcase '{0}'", result.Title), userId, result);
 
                     Process.CreateInstance(
                         new Contracts.General.CreateProcessInstance()
@@ -69,11 +69,12 @@ namespace Architect.API.Core.Business.General
                             Reference3 = result.Reference3,
                             Reference4 = result.Reference4,
                             EntityType = 1304,
-                            EntityId = result.Id
+                            EntityId = result.Id,
+                            SLA = result.SLA
                         }, userId, companyId, result.Id);
                 }
             }
-            return new Architect.API.Core.Contracts.General.ProcessCaseResult() { ProcessCase = result, Errors = errors };
+            return new Contracts.General.ProcessCaseResult() { ProcessCase = result, Errors = errors };
         }
 
         /// <summary>
@@ -294,6 +295,8 @@ namespace Architect.API.Core.Business.General
                 item.FlowIdDesc = Core.Business.Common.LkpDescription(companyId, "Process", item.FlowId.ToString());
             if (item.UserId.IsNotEmpty())
                 item.UserIdDesc = Core.Business.Common.LkpDescription(companyId, "Users", item.UserId.ToString());
+            if (item.SLA.IsNotEmpty())
+                item.SLADesc = Core.Business.Common.LkpDescription(companyId, "SLA", item.SLA.ToString());
 
         }
 

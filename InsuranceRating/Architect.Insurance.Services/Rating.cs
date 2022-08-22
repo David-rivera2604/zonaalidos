@@ -40,7 +40,8 @@ namespace Architect.Insurance.Services
                             riskCov.InsuredAmount = riskCov.CoverageDefinition.FixedInsuredAmount;
                             break;
                         case 3:
-                            riskCov.InsuredAmount = (riskCov.CoverageDefinition.PercentageOnOtherCoverage / 100) * (from c in riskMod.Coverages where c.CoverageCode == riskCov.CoverageDefinition.BaseCoverageForInsuredAmount select c.InsuredAmount).FirstOrDefault();
+                            riskCov.InsuredAmount = (riskCov.CoverageDefinition.PercentageOnOtherCoverage / 100) * 
+                                                    (from c in riskMod.Coverages where c.CoverageCode == riskCov.CoverageDefinition.BaseCoverageForInsuredAmount select c.InsuredAmount).FirstOrDefault();
                             break;
                         case 10:
                             riskCov.InsuredAmount = risk.ParticularData.Data.InsuredAmount + risk.ParticularData.Data.InsuredAmountComplement;
@@ -52,7 +53,7 @@ namespace Architect.Insurance.Services
                     Rule_MinimumInsuredAmount(risk, riskCov);
                     Rule_MaximumInsuredAmount(risk, riskCov);
 
-                    //Se verifica la prima mínima
+                    //Se verifica la suma asegurada mínima
                     if (riskCov.InsuredAmount < riskCov.CoverageDefinition.MinimumInsuredAmount)
                         riskCov.InsuredAmount = riskCov.CoverageDefinition.MinimumInsuredAmount;
                 }
@@ -62,8 +63,7 @@ namespace Architect.Insurance.Services
 
         static List<Contracts.Policy.Module> CalculatePremium(Contracts.Policy.Risk risk, Contracts.Product.ProductMaster product)
         {
-            decimal rate = 0;
-            decimal premium = 0;
+    
             foreach (Contracts.Policy.Module riskMod in risk.Modules)
             {
                 foreach (Contracts.Policy.Coverage riskCov in riskMod.Coverages)
@@ -88,9 +88,8 @@ namespace Architect.Insurance.Services
                             riskCov.Premium = riskCov.CoverageDefinition.FixedPremium;
                             break;
                         case 11:
-                            rate = 0;
-                            premium = 0;
-                            //TODO: Proceso de busqueda para entidades inteligentes
+                            decimal rate = 0;
+                            decimal premium = 0;
                             ProcessSmartEntity(risk, product, riskMod, riskCov, ref rate, ref premium);
                             riskCov.Rate = rate;
                             riskCov.Premium = ((rate / 1000) * riskCov.InsuredAmount) + premium;

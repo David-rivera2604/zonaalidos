@@ -28,7 +28,7 @@ namespace Architect.API.Insurance.Controllers
         [Route("bayer/{idFrom:int}/{idTo:int}")]
         public async Task<IHttpActionResult> BayerGetPorSolictud([FromUri] int idFrom, [FromUri] int idTo)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             List<Contracts.Bayer.InclusionView> result = null;
 
             await Task.Run(() =>
@@ -53,7 +53,7 @@ namespace Architect.API.Insurance.Controllers
         [Route("bayer/{issueDateFrom:datetime}/{issueDateTo:datetime}")]
         public async Task<IHttpActionResult> BayerGetPorFechaInclusion([FromUri] DateTime issueDateFrom, [FromUri] DateTime issueDateTo)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             List<Contracts.Bayer.InclusionView> result = null;
 
             await Task.Run(() =>
@@ -77,7 +77,7 @@ namespace Architect.API.Insurance.Controllers
         [Route("bayer/{id:int}")]
         public async Task<IHttpActionResult> BayerGet([FromUri] int id)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             Contracts.Bayer.InclusionRequest result = null;
             await Task.Run(() =>
@@ -107,7 +107,7 @@ namespace Architect.API.Insurance.Controllers
         [Route("bayer")]
         public async Task<IHttpActionResult> BayerPost([FromBody] Contracts.Bayer.InclusionRequest item)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Architect.API.Insurance.Contracts.Bayer.InclusionRequest result = null;
 
             await Task.Run(() =>
@@ -134,7 +134,7 @@ namespace Architect.API.Insurance.Controllers
         [Route("VerifySignature")]
         public async Task<IHttpActionResult> VerifySignature([FromUri] int id, [FromUri] string fileName, [FromUri] int size, [FromUri] string originalFileName)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             bool result = false;
             await Task.Run(() =>

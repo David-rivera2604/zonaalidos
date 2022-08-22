@@ -1,6 +1,7 @@
 ﻿using Microsoft.Web.Http;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -16,6 +17,29 @@ namespace Architect.API.Tron.Controllers
     [RoutePrefix("api/v{version:apiVersion}/TronCommon")]
     public class TronCommonController : ApiController
     {
+
+        [HttpGet]
+        [Route("Lkps")]
+        [Authorize]
+        public List<Architect.API.Core.Contracts.General.LookupValues> Lkps([FromUri] string keys, [FromUri] string url = "")
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+
+            List<Core.Contracts.General.LookupValues> values = Architect.API.Tron.Business.Cotizacion.MapfreMas.LksExclude(keys, url, tokenInfo);
+            return values;
+        }
+
+        [HttpGet]
+        [Route("LkpChild")]
+        [Authorize]
+        public List<Core.Contracts.General.LookupValue> LkpChild([FromUri] string key, [FromUri] int parentId, [FromUri] string url = "")
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+
+            List<Core.Contracts.General.LookupValue> values = Architect.API.Tron.Business.Cotizacion.MapfreMas.LkpChildExclude(key, parentId, url, tokenInfo);
+            return values;
+        }
+
         /// <summary>
         /// Descarga el reporte para un aviso de cobro
         /// </summary>
@@ -23,7 +47,7 @@ namespace Architect.API.Tron.Controllers
         [Route("ImprimirAviso/{num_aviso}")]
         public HttpResponseMessage ImprimirAviso([FromUri] int num_aviso)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
             var dataStream = new MemoryStream(Business.Backoffice.Common.ImprimirAviso(num_aviso));
@@ -44,7 +68,7 @@ namespace Architect.API.Tron.Controllers
         [Route("ImprimirAvisoDetalle/{num_aviso}")]
         public HttpResponseMessage ImprimirAvisoDetalle([FromUri] int num_aviso)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
             var dataStream = new MemoryStream(Business.Backoffice.Common.ImprimirAvisoDetalle(num_aviso));
@@ -62,7 +86,7 @@ namespace Architect.API.Tron.Controllers
         [Route("Ramo")]
         public async Task<IHttpActionResult> Ramo([FromUri] int cod_ramo)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Contracts.Ramo.A1001800 result = null;
             await Task.Run(() =>
             {
@@ -76,7 +100,7 @@ namespace Architect.API.Tron.Controllers
         [Route("vocabulario")]
         public async Task<IHttpActionResult> vocabulario([FromUri] string alias)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             List<Architect.Decision.Vocabulary.Vocabulary> result = null;
             await Task.Run(() =>
             {
@@ -90,7 +114,7 @@ namespace Architect.API.Tron.Controllers
         [Route("Producto")]
         public async Task<IHttpActionResult> Producto([FromUri] string alias, [FromBody] Contracts.Especificacion.Producto def)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Contracts.Especificacion.Producto result = null;
             await Task.Run(() =>
             {
@@ -107,7 +131,7 @@ namespace Architect.API.Tron.Controllers
         [Route("EnviarCertificado")]
         public async Task<IHttpActionResult> EnviarCertificado([FromUri] string num_poliza, [FromUri] int num_riesgo, [FromUri] string correoprincipal, [FromUri] string correocopia1, [FromUri] string correocopia2)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             string result = string.Empty;
             await Task.Run(() =>
             {
@@ -127,7 +151,7 @@ namespace Architect.API.Tron.Controllers
         [Route("ImprimirPoliza/{num_poliza}/{num_riesgo}")]
         public HttpResponseMessage ImprimirPoliza([FromUri] string num_poliza, int num_riesgo = 1)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
             var dataStream = new MemoryStream(Business.Backoffice.Common.ImprimirPoliza(num_poliza, num_riesgo));
@@ -150,7 +174,7 @@ namespace Architect.API.Tron.Controllers
         [Route("ImprimirRecibo/{num_recibo}")]
         public HttpResponseMessage ImprimirRecibo([FromUri] int num_recibo)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
             var dataStream = new MemoryStream(Business.Backoffice.Common.ImprimirRecibo(num_recibo));
@@ -170,7 +194,7 @@ namespace Architect.API.Tron.Controllers
         [Route("ImprimirDepositoPrima/{num_recibo}")]
         public HttpResponseMessage ImprimirDepositoPrima([FromUri] int num_recibo)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
             var dataStream = new MemoryStream(Business.Backoffice.Common.DepositoDePrima(num_recibo));

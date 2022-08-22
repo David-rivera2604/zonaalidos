@@ -20,14 +20,22 @@ namespace Architect.API.Tron.Business.Emision
         public static Contracts.Emision.MapfreMas Setup(string presupuesto, string mode, Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.Emision.MapfreMas result = null;
+            bool tryOnTron = false;
             string key = string.Format("mapfremas.{0}", presupuesto);
 
             if (mode == "continue")
             {
                 Contracts.PolicyProposal proposal = DataAccess.PolicyProposal.RetrieveByProposalId(presupuesto, tokenInfo.CompanyId);
-                Utilities.Cache.SetItem(key, proposal.ProposalData, -1);
+                if (proposal != null)
+                {
+                    Utilities.Cache.SetItem(key, proposal.ProposalData, -1);
+                }
+                else
+                {
+                    tryOnTron = true;
+                }
             }
-            if (mode == "resume")
+            if (mode == "resume" || tryOnTron)
             {
                 //Contracts.PolicyProposal proposal = DataAccess.PolicyProposal.RetrieveByProposalId(presupuesto, tokenInfo.CompanyId);
 
@@ -42,7 +50,7 @@ namespace Architect.API.Tron.Business.Emision
 
                 result.Modo = mode;
 
-                if (mode.IsEmpty() || mode == "draft" || mode == "resume")
+                if (mode.IsEmpty() || mode == "draft" || mode == "resume" || tryOnTron)
                 {
                     result.terceros = Reglas.research.Apply_Terceros("MapfreMas", result.terceros, result.Fuente_Tomador, tokenInfo);
                 }
@@ -80,24 +88,38 @@ namespace Architect.API.Tron.Business.Emision
             //Utilities.Cache.SetItem(string.Format("mapfremas.proposal.{0}", presupuesto),
             //                        Newtonsoft.Json.JsonConvert.SerializeObject(result), -1);
 
+            if (tryOnTron)
+            {
+                result.Modo = "draft";
+            }
             return result;
         }
-
-
 
         public static Contracts.Emision.MapfreMas Issue(Contracts.Emision.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.Emision.MapfreMas resultQuoteInfo = null;
             if (quoteInfo.Modo == "draft")
             {
+
                 //TODO: Se debe incluir la validación de que de haber un Tomador, Asegurado y Conductor Habitual, pero faltan las básicas.
+                quoteInfo.DatosEconomicos = EconomicDataCalculate(quoteInfo);
+
                 string uniqueId = EnviarSolicitud(quoteInfo.tip_firma, quoteInfo.correoenvio, quoteInfo, tokenInfo);
                 AlmacenarSolicitud(quoteInfo, quoteInfo.tip_firma == Contracts.TipoDeFirma.Manual ? 33 : 4, tokenInfo, uniqueId);
                 GuardaDatosVariables(quoteInfo.presupuesto, quoteInfo.cod_ramo, quoteInfo.tip_firma, quoteInfo.tip_firmaDesc, uniqueId);
+                string message = string.Empty;
+                if (uniqueId.IsNotEmpty())
+                {
+                    message = string.Format("La solicitud fue enviada de forma exitosa usando el tipo de envío indicado ({0})", quoteInfo.tip_firmaDesc);
+                }
+                else
+                {
+                    message = "Ha ocurrido un error tratando de comunicarnos con el sistema de firma, por favor intente nuevamente y si el problema persiste comuníquese con MAPFRE Costa Rica.";
+                }
 
                 resultQuoteInfo = new Contracts.Emision.MapfreMas()
                 {
-                    Mensaje = string.Format("La solicitud fue enviada de forma exitosa usando el tipo de envío indicado ({0})", quoteInfo.tip_firmaDesc)
+                    Mensaje = message
                 };
             }
             else
@@ -139,12 +161,32 @@ namespace Architect.API.Tron.Business.Emision
             Contracts.PolicyProposal proposal = DataAccess.PolicyProposal.RetrieveByProposalId(presupuesto, tokenInfo.CompanyId);
             Contracts.Emision.MapfreMas quoteInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<Contracts.Emision.MapfreMas>(proposal.ProposalData);
 
+            quoteInfo.DatosEconomicos = EconomicDataCalculate(quoteInfo);
+
             string uniqueId = EnviarSolicitud(proposal.SigningType, correoenvio, quoteInfo, tokenInfo);
-            if (proposal.SigningType != Contracts.TipoDeFirma.Manual)
+            string message = string.Empty;
+
+            if (proposal.SigningType != Contracts.TipoDeFirma.Manual && uniqueId.IsNotEmpty())
             {
                 DataAccess.PolicyProposal.Update_Status(proposal.Id, 4, uniqueId, tokenInfo.UserId);
             }
-            return "El presupuesto fue enviado a la dirección '" + correoenvio + "' de forma exitosa.";
+            if (proposal.SigningType == Contracts.TipoDeFirma.Manual)
+            {
+                message = "El presupuesto fue enviado a la dirección '" + correoenvio + "' de forma exitosa.";
+            }
+            else
+            {
+                if (uniqueId.IsNotEmpty())
+                {
+                    message = string.Format("La solicitud fue enviada de forma exitosa usando el tipo de envío indicado ({0}).", quoteInfo.tip_firmaDesc);
+                }
+                else
+                {
+                    message = "Ha ocurrido un error tratando de comunicarnos con el sistema de firma, por favor intente nuevamente y si el problema persiste comuníquese con MAPFRE Costa Rica.";
+                }
+
+            }
+            return message;
         }
 
         public static void EvicertiaSigned()
@@ -351,6 +393,36 @@ namespace Architect.API.Tron.Business.Emision
             }, currentConnection);
 
             currentConnection.Close();
+        }
+
+        private static Contracts.Emision.EconomicData EconomicDataCalculate(Contracts.Cotizacion.MapfreMas quoteInfo)
+        {
+            Contracts.Emision.EconomicData result = new Contracts.Emision.EconomicData();
+            int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia");
+            double importeAnual = 0;
+
+            foreach (Contracts.Comun.Cobertura itemQuote in quoteInfo.coberturas)
+            {
+                importeAnual += itemQuote.primatotal;
+            }
+            result.annualgrosspremium = importeAnual;
+            result.tax = importeAnual * .13;
+            result.annualnetpremium = importeAnual - result.tax;
+
+            if (quoteInfo.cod_fracc_pago != 1)
+            {
+                List<Contracts.Ramo.A1001403> xxx = DataAccess.PorRamo.MM_FrecuenciaDePago(importeAnual, quoteInfo.polizagrupo, quoteInfo.contrato);
+
+                if (xxx?.Count > 0)
+                {
+                    Contracts.Ramo.A1001403 yyy = (from r in xxx where r.cod_fracc_pago == quoteInfo.cod_fracc_pago select r).FirstOrDefault();
+                    if (yyy != null)
+                    {
+                        result.monthlygrosspremium = (importeAnual / quoteInfo.cod_fracc_pago) + ((importeAnual / quoteInfo.cod_fracc_pago) * (yyy.pct_fracc_pago / 100));
+                    }
+                }
+            }
+            return result;
         }
 
     }

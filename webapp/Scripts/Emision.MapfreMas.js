@@ -17,28 +17,28 @@ app.EmisionMapfreMas = (function () {
         if (_id != '') {
             workMode = app.core.URLStringValue('mode');
 
-            if (localStorage.getItem('Roles').includes('Purdy')) {
-                $('.Purdy').removeClass('d-none');
-                $('#Fuente_Tomador').prop("disabled", workMode != 'draft');
-            }
-
-            if (workMode === 'draft') {
-                $('#guardarenviar').removeClass('d-none');
-                $("#guardarenviar").appendTo("#GenericToolBar");
-                $('.documentosrequeridosGrid').addClass('d-none');
-
-                $('.datosgeneralesZone').removeClass('col-md-12');
-                $('.datosgeneralesZone').addClass('col-md-7');
-                $('.enviosolicitudZone').removeClass('d-none');
-            } else {
-                $('#cotizar').removeClass('d-none');
-                $("#cotizar").appendTo("#GenericToolBar");
-            }
-
-
             $('#coberturasTbl').bootstrapTable('showLoading');
             app.core.Get(app.setting.apipath + 'v1/Issue/MapfreMasSetup/' + _id + '?mode=' + workMode)
                 .done(function (data, textStatus, jqXHR) {
+                    workMode = data.Modo;
+                    if (localStorage.getItem('Roles').includes('Purdy')) {
+                        $('.Purdy').removeClass('d-none');
+                        $('#Fuente_Tomador').prop("disabled", workMode != 'draft');
+                    }
+
+                    if (workMode === 'draft') {
+                        $('#guardarenviar').removeClass('d-none');
+                        $("#guardarenviar").appendTo("#GenericToolBar");
+                        $('.documentosrequeridosGrid').addClass('d-none');
+
+                        $('.datosgeneralesZone').removeClass('col-md-12');
+                        $('.datosgeneralesZone').addClass('col-md-7');
+                        $('.enviosolicitudZone').removeClass('d-none');
+                    } else {
+                        $('#cotizar').removeClass('d-none');
+                        $("#cotizar").appendTo("#GenericToolBar");
+                    }
+
                     Init_Lookups(data);
                 });
         }
@@ -260,6 +260,7 @@ app.EmisionMapfreMas = (function () {
     }
 
     function MapObjectToInput_First(data) {
+        
         //app.ui.SetNumericValue('#edad', data.edad);
         //$('#mca_sexo').val(data.mca_sexo);
         $('#Fuente_Tomador').val(data.Fuente_Tomador);
@@ -396,7 +397,7 @@ app.EmisionMapfreMas = (function () {
             digitGroupSeparator: '.',
             maximumValue: '99999999999999',
             minimumValue: '0',
-            decimalPlaces: '0',
+            decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
         new AutoNumeric('#PCT_AJUSTE_GEN', {
@@ -404,7 +405,7 @@ app.EmisionMapfreMas = (function () {
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
             maximumValue: '0',
-            minimumValue: '-25',
+            minimumValue: '-99',
             decimalPlaces: '0',
             emptyInputBehavior: 'null'
         });

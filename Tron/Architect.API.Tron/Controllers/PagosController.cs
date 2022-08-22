@@ -28,7 +28,7 @@ namespace Architect.API.Tron.Controllers
         [ResponseType(typeof(Payment.Integrations.Contracts.SessionInformation))]        
         public async Task<IHttpActionResult> postPayment([FromBody] Contracts.CreateSession sessionRequest)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             string ipAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
             string userAgent = Request.Headers.UserAgent.ToString();
 
@@ -46,7 +46,7 @@ namespace Architect.API.Tron.Controllers
         [ResponseType(typeof(Payment.Integrations.Contracts.InformationRequest))]
         public async Task<IHttpActionResult> Refresh([FromUri] Int64 requestId)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Payment.Integrations.Contracts.InformationRequest result = await Business.Backoffice.Pagos.GetRequestInformation(tokenInfo.CompanyId, tokenInfo.UserId, requestId, string.Empty);
 
             return Ok(result);
@@ -61,7 +61,7 @@ namespace Architect.API.Tron.Controllers
         [ResponseType(typeof(Payment.Integrations.Contracts.InformationRequest))]
         public async Task<IHttpActionResult> Refresh([FromUri] string reference)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Payment.Integrations.Contracts.InformationRequest result = await Business.Backoffice.Pagos.GetRequestInformation(tokenInfo.CompanyId, tokenInfo.UserId, 0, reference);
 
             return Ok(result);

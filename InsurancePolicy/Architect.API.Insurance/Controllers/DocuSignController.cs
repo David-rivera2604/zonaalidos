@@ -23,7 +23,7 @@ namespace Architect.API.Insurance.Controllers
         [AllowAnonymous]
         public async Task<IHttpActionResult> Verify([FromUri] string uniqueId)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             string result = string.Empty;
 

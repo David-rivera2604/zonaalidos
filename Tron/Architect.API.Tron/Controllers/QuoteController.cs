@@ -21,7 +21,7 @@ namespace Architect.API.Tron.Controllers
         [Route("{num_presupuesto}")]
         public async Task<IHttpActionResult> Informacion([FromUri] string num_presupuesto)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = null;
             await Task.Run(() =>
             {
@@ -40,7 +40,7 @@ namespace Architect.API.Tron.Controllers
         [Route("HogarTotalSetup")]
         public async Task<IHttpActionResult> HogarTotalSetup()
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Cotizacion.HogarTotal result = null;
             await Task.Run(() =>
             {
@@ -63,7 +63,7 @@ namespace Architect.API.Tron.Controllers
         [Route("HogarTotalSettings")]
         public async Task<IHttpActionResult> HogarTotalSettings(int cod_ramo, int num_contrato, int num_subcontrato, string num_poliza_grupo, int cod_mon)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Cotizacion.HogarTotalSettings result = null;
             await Task.Run(() =>
             {
@@ -82,7 +82,7 @@ namespace Architect.API.Tron.Controllers
         [Route("HogarTotalQuote")]
         public async Task<IHttpActionResult> HogarTotalQuote([FromBody] Tron.Contracts.Cotizacion.HogarTotal quoteInfo)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Cotizacion.HogarTotal result = null;
             await Task.Run(() =>
             {
@@ -104,7 +104,7 @@ namespace Architect.API.Tron.Controllers
         [Route("MultirriesgoSetup")]
         public async Task<IHttpActionResult> MultirriesgoSetup()
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Architect.API.Tron.Contracts.Cotizacion.Multirriesgo result = null;
             await Task.Run(() =>
             {
@@ -123,7 +123,7 @@ namespace Architect.API.Tron.Controllers
         [Route("MultirriesgoQuote")]
         public async Task<IHttpActionResult> MultirriesgoQuote([FromBody] Tron.Contracts.Cotizacion.Multirriesgo quoteInfo)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Cotizacion.Multirriesgo result = null;
             await Task.Run(() =>
             {
@@ -145,7 +145,7 @@ namespace Architect.API.Tron.Controllers
         [Route("PolizaLiderSetup")]
         public async Task<IHttpActionResult> PolizaLiderSetup()
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Architect.API.Tron.Contracts.Cotizacion.PolizaLider result = null;
             await Task.Run(() =>
             {
@@ -164,7 +164,7 @@ namespace Architect.API.Tron.Controllers
         [Route("PolizaLiderQuote")]
         public async Task<IHttpActionResult> PolizaLiderQuote([FromBody] Tron.Contracts.Cotizacion.PolizaLider quoteInfo)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Cotizacion.PolizaLider result = null;
             await Task.Run(() =>
             {
@@ -185,7 +185,7 @@ namespace Architect.API.Tron.Controllers
         [Route("MapfreMasSetup")]
         public async Task<IHttpActionResult> MapfreMasSetup()
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Architect.API.Tron.Contracts.Cotizacion.MapfreMas result = null;
             await Task.Run(() =>
             {
@@ -205,7 +205,7 @@ namespace Architect.API.Tron.Controllers
         [Route("MapfreMasSettings")]
         public async Task<IHttpActionResult> MapfreMasSettings(int cod_ramo, int cod_mon, int edad, string tipo_prod, int cod_marca, int num_contrato, int num_subcontrato)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Cotizacion.MapfreMasSettings result = null;
             await Task.Run(() =>
             {
@@ -236,7 +236,7 @@ namespace Architect.API.Tron.Controllers
         [Route("MapfreMasCoverages")]
         public async Task<IHttpActionResult> MapfreMasCoverages(int cod_mon, int cod_marca, int cod_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int num_contrato, int num_subcontrato, string num_poliza_grupo)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             List<Tron.Contracts.Comun.Cobertura> result = null;
             await Task.Run(() =>
             {
@@ -253,7 +253,7 @@ namespace Architect.API.Tron.Controllers
         [Route("MapfreMasQuote")]
         public async Task<IHttpActionResult> MapfreMasQuote([FromBody] Tron.Contracts.Cotizacion.MapfreMas quoteInfo)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Cotizacion.MapfreMas result = null;
             await Task.Run(() =>
             {
@@ -275,7 +275,7 @@ namespace Architect.API.Tron.Controllers
         [Route("ViajeroSetup")]
         public async Task<IHttpActionResult> ViajeroSetup()
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Architect.API.Tron.Contracts.Cotizacion.Viajero result = null;
             await Task.Run(() =>
             {
@@ -294,7 +294,7 @@ namespace Architect.API.Tron.Controllers
         [Route("ViajeroQuote")]
         public async Task<IHttpActionResult> ViajeroQuote([FromBody] Tron.Contracts.Cotizacion.Viajero quoteInfo)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Cotizacion.Viajero result = null;
             await Task.Run(() =>
             {
@@ -315,7 +315,7 @@ namespace Architect.API.Tron.Controllers
         [Route("SaldoDeudorSetup")]
         public async Task<IHttpActionResult> SaldoDeudorSetup()
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Contracts.Cotizacion.SaldoDeudor result = null;
             await Task.Run(() =>
             {
@@ -334,7 +334,7 @@ namespace Architect.API.Tron.Controllers
         [Route("SaldoDeudorQuote")]
         public async Task<IHttpActionResult> SaldoDeudorQuote([FromBody] Tron.Contracts.Cotizacion.SaldoDeudor quoteInfo)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Cotizacion.SaldoDeudor result = null;
             await Task.Run(() =>
             {

@@ -1,11 +1,14 @@
 ﻿var app = {};
 
+// CONSERVAR DEL ORIGINAL DESDE AQUI
 app.setting = {
     apibase: 'http://localhost:8082',
     apipath: 'http://localhost:8082/aliados/api/',
     basepath: '/Aliados/',
     viewpath: 'http://localhost:8082/aliados/'
 };
+// CONSERVAR DEL ORIGINAL HASTA AQUI
+
 app.state = { entityType: 0 };
 
 app.DateEmpty = '0001-01-01T00:00:00';
@@ -328,7 +331,7 @@ app.core = (function () {
         }
     }
 
-    function Lookups(keys, callback, url) {
+    function Lookups(keys, callback, url, path) {
         var onlyKeys = [];
         var ctrls = [];
         var ctrlName = [];
@@ -372,7 +375,7 @@ app.core = (function () {
             url = '';
         }
 
-        ajaxCall('GET', app.setting.apipath + 'v1/Common/Lkps?keys=' + onlyKeys.toString() + '&url=' + url, null,
+        ajaxCall('GET', app.setting.apipath + path + '?keys=' + onlyKeys.toString() + '&url=' + url, null,
             function (data) {
                 var key = '', ctrl = '';
                 lookupData = data;
@@ -405,7 +408,7 @@ app.core = (function () {
             }, true);
     };
 
-    function LookupDependency(parentValue, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url) {
+    function LookupDependency(parentValue, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url, path) {
         var childElement = $('select#' + childId);
         if (parentValue !== null && parentValue !== '0') {
             childElement.children().remove();
@@ -417,7 +420,7 @@ app.core = (function () {
                 url = url + parentValue;
             }
 
-            ajaxCall('GET', app.setting.apipath + 'v1/Common/LkpChild?key=' + lookupKey + '&parentId=' + parentValue + '&url=' + url, null,
+            ajaxCall('GET', app.setting.apipath + path + '?key=' + lookupKey + '&parentId=' + parentValue + '&url=' + url, null,
                 function (data) {
                     childElement.children().remove();
                     if (emptyValue !== null) {
@@ -576,11 +579,11 @@ app.core = (function () {
         LoadLookup: function (url, key) {
             return LoadLookup(url, key);
         },
-        Lookups: function (keys, callback, url) {
-            return Lookups(keys, callback, url);
+        Lookups: function (keys, callback, url, path = 'v1/Common/Lkps') {
+            return Lookups(keys, callback, url, path);
         },
-        LookupDependency: function (parentId, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url) {
-            return LookupDependency(parentId, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url);
+        LookupDependency: function (parentId, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url, path = 'v1/Common/LkpChild') {
+            return LookupDependency(parentId, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url, path);
         },
         URLNumericValue: function (key) {
             return URLNumericValue(key);

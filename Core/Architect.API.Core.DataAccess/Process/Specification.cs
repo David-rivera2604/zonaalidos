@@ -8,17 +8,32 @@ namespace Architect.API.Core.DataAccess.General.Process
     public static class Specification
     {
 
-        public static Contracts.General.ProcessSpecFlow Retrieve(int flowId, int companyId)
+        public static Contracts.General.ProcessSpecFlow Retrieve(int flowId, int companyId, int customSLA)
         {
+            int currentSLA = customSLA;
             IDbConnection currentConnection = DataFactory.Database.OpenConnection("Research");
 
             Contracts.General.ProcessSpecFlow result = ProcessSpecFlow.Retrieve(flowId, companyId, currentConnection);
 
             if (result.IsNotEmpty())
             {
-                if (result.SLA.IsNotEmpty())
+                List<Architect.API.Core.Contracts.General.ProcessSpecFlowRole> internalRoles = Core.DataAccess.General.ProcessSpecFlowRole.RetrieveByStepId(flowId, currentConnection);
+                if (internalRoles.Count > 0)
                 {
-                    result.SLALevels = ProcessSpecSLALevel.RetrieveAll(companyId, result.SLA, currentConnection);
+                    result.Roles = new List<Utilities.Contracts.LookUpValue>();
+                    foreach (Architect.API.Core.Contracts.General.ProcessSpecFlowRole item in internalRoles)
+                    {
+                        result.Roles.Add(new Utilities.Contracts.LookUpValue() { Code = item.RoleId.ToString(), Description = item.RoleName });
+                    }
+                }
+
+                if (currentSLA.IsEmpty() && result.SLA.IsNotEmpty())
+                {
+                    currentSLA = result.SLA;
+                }
+                if (currentSLA.IsNotEmpty())
+                {
+                    result.SLALevels = ProcessSpecSLALevel.RetrieveAll(companyId, currentSLA, currentConnection);
                     result.SLALevels = result.SLALevels.OrderBy(s => s.SLATimeOut).ToList();
                 }
                 result.ProcessSpecSteps = ProcessSpecStep.RetrieveByFlowId(companyId, flowId, currentConnection);

@@ -82,7 +82,7 @@ namespace Architect.API.Core.Controllers
                 string responseItem = null;
                 string ipAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
 
-                await Task.Run(() => responseItem = Business.Security.Token.AccessKeyInfo2(accessKey, ipAddress)).ConfigureAwait(false);
+                await Task.Run(() => responseItem = Security.Token.AccessKeyInfo2(accessKey, ipAddress)).ConfigureAwait(false);
 
                 if (responseItem.IsEmpty())
                 {
@@ -108,7 +108,7 @@ namespace Architect.API.Core.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         public IHttpActionResult NavegationAllowed()
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Security.Token.Info();
 
             List<Architect.API.Core.Contracts.Security.NavAllowed> result = Business.Security.Navigation.RetrieveNavigationAllowed(tokenInfo.Roles, tokenInfo.CompanyId);
 
@@ -130,10 +130,10 @@ namespace Architect.API.Core.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         public IHttpActionResult IsLive(bool force = false)
         {
-            string token = Core.Business.Security.Token.Value();
+            string token = Security.Token.Value();
 
             if (force)
-                Business.Security.Session.Refresh(token, Request.Headers.Referrer.AbsoluteUri);
+                Security.Session.Refresh(token, Request.Headers.Referrer.AbsoluteUri);
 
             int result = Business.Security.Navigation.IsLive(token);
 
@@ -212,7 +212,7 @@ namespace Architect.API.Core.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IHttpActionResult> ChangePassword(Contracts.Security.ResetPasswordRequest resetRequest)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Security.Token.Info();
             resetRequest.IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
             Core.Contracts.General.GenericResponse result = null;
 
@@ -275,7 +275,7 @@ namespace Architect.API.Core.Controllers
         {
             List<Contracts.Security.Activity> result = null;
 
-            await Task.Run(() => result = Architect.API.Core.Business.Security.Session.Sessions(filter)).ConfigureAwait(false);
+            await Task.Run(() => result = Security.Session.Sessions(filter)).ConfigureAwait(false);
 
             return Ok(result);
         }
@@ -293,7 +293,7 @@ namespace Architect.API.Core.Controllers
         {
             Contracts.Security.Activity result = null;
 
-            await Task.Run(() => result = Architect.API.Core.Business.Security.Session.SessionById(id)).ConfigureAwait(false);
+            await Task.Run(() => result = Security.Session.SessionById(id)).ConfigureAwait(false);
 
             return Ok(result);
         }

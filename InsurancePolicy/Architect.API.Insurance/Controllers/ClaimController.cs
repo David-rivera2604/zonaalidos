@@ -26,7 +26,7 @@ namespace Architect.API.Insurance.Controllers
         [Authorize]
         public async Task<IHttpActionResult> Get([FromUri] int id, [FromUri] string include = "")
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             Contracts.ManualClaims.Claim result = null;
 
@@ -56,7 +56,7 @@ namespace Architect.API.Insurance.Controllers
         [Authorize]
         public async Task<IHttpActionResult> GetByClaimId([FromUri] string claimId, [FromUri] string include = "")
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             Contracts.ManualClaims.Claim result = null;
 
@@ -85,7 +85,7 @@ namespace Architect.API.Insurance.Controllers
         [Authorize]
         public async Task<IHttpActionResult> GetPolicy([FromUri] int id, [FromUri] string include = "")
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             Contracts.ManualPolicies.Policy result = null;
 
@@ -113,7 +113,7 @@ namespace Architect.API.Insurance.Controllers
         [Authorize]
         public async Task<IHttpActionResult> GetCertificate([FromUri] int id, [FromUri] string include = "")
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             Contracts.ManualPolicies.Certificate result = null;
 
@@ -140,7 +140,7 @@ namespace Architect.API.Insurance.Controllers
         [Authorize]
         public async Task<IHttpActionResult> GetThirdParty([FromUri] int id)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             Contracts.Policy.ThirdParty result = null;
 

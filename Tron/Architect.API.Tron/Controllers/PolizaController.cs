@@ -22,7 +22,7 @@ namespace Architect.API.Tron.Controllers
         [Authorize]
         public async Task<IHttpActionResult> Emitir([FromBody] Architect.API.Tron.Contracts.Presupuesto.API.Presupuesto presupuesto)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Contracts.Poliza.API.Poliza result = null;
             await Task.Run(() =>
             {
@@ -39,7 +39,7 @@ namespace Architect.API.Tron.Controllers
         [Route("{num_poliza}")]
         public async Task<IHttpActionResult> Informacion([FromUri] string num_poliza)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Architect.API.Tron.Contracts.Poliza.DatoFijo result = null;
             await Task.Run(() =>
             {
@@ -55,7 +55,7 @@ namespace Architect.API.Tron.Controllers
         [Route("{num_poliza}/DatosVariables")]
         public async Task<IHttpActionResult> DatosVariables([FromUri] string num_poliza)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             List<Contracts.Poliza.DatoVariacion> result = null;
             await Task.Run(() =>
             {
@@ -71,7 +71,7 @@ namespace Architect.API.Tron.Controllers
         [Route("{num_poliza}/Variaciones")]
         public async Task<IHttpActionResult> Variaciones([FromUri] string num_poliza, [FromBody] Contracts.Poliza.Variacion variacion)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             bool result = false;
             await Task.Run(() =>
             {

@@ -85,6 +85,7 @@ app.GeneralCase = (function () {
 
         $('#PriorityDesc').html(data.PriorityDesc);
 
+        $('#SLADesc').html(data.SLADesc);
 
         app.core.Get(app.setting.apipath + 'v1/ProcessSpecFlow/' + data.FlowId)
             .done(function (dataFlow, textStatus, jqXHR) {
@@ -516,6 +517,43 @@ app.GeneralCase = (function () {
 
     }
 
+    function Setup_Attachment_Validations() {
+        $("#AttachmentEdtForm").validate({
+            errorPlacement: function (error, element) {
+                var name = $(element).attr("name");
+                var $obj = $("#" + name + "_validate");
+                if ($obj.length) {
+                    error.appendTo($obj);
+                }
+                else {
+                    error.insertAfter(element);
+                }
+            },
+            rules: {
+                AttachmentDescription: {
+                    required: true
+                },
+                AttachmentDocumentType: {
+                    required: true
+                },
+                AttachmentFileName: {
+                    required: true
+                }
+            },
+            messages: {
+                AttachmentDescription: {
+                    required: 'Debe indicar una descripción del archivo'
+                },
+                AttachmentDocumentType: {
+                    required: 'Debe indicar el tipo de documento'
+                },
+                AttachmentFileName: {
+                    required: 'Debe indicar un archivo'
+                }
+            }
+        });
+    };
+
     function AttachmentDraw(entityId) {
         $('#AttachmentGridTbl').bootstrapTable('showLoading');
         app.core.Get(app.setting.apipath + `v1/Common/Attachments?entityType=1304&entityId=${entityId}`)
@@ -576,6 +614,7 @@ app.GeneralCase = (function () {
             Setup_Validations();
             Init_Lookups();
             Attachment_List_Setup();
+            Setup_Attachment_Validations();
         },
         EditRow: function (row) {
             EditMode(row);

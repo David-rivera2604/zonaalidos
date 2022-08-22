@@ -77,13 +77,13 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Architect.API.Core.Business\Architect.API.Core.Business.csproj">
-      <Project>{579105b3-776b-4094-a301-87a9c42962c5}</Project>
-      <Name>Architect.API.Core.Business</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Core\Architect.API.Core.Contracts\Architect.API.Core.Contracts.csproj">
       <Project>{29b21bef-8c87-4a9d-8b37-fecc57cd03c7}</Project>
       <Name>Architect.API.Core.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Architect.API.Core.Utilities\Architect.API.Core.Security.csproj">
+      <Project>{3d406267-4a50-4e87-842a-553e3d222cf1}</Project>
+      <Name>Architect.API.Core.Security</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Kernel\Architect.DataFactory\Architect.DataFactory.csproj">
       <Project>{011157f4-8e96-46fe-8ff6-2b36ae9f20c9}</Project>
