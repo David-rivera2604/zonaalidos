@@ -13,7 +13,8 @@
           "cod_estado": 1,
           "cod_prov": 101,
           "cod_localidad": 10101,
-          "nom_domicilio1": "SAN JOSE"
+          "nom_domicilio1": "SAN JOSE",
+          "editable": true
         },
         {
           "tip_benef": "8",
@@ -27,7 +28,8 @@
           "cod_localidad": 10101,
           "nom_domicilio1": "SAN JOSE",
           "importedecesion": 8000000,
-          "porcentajeacredor": 100
+          "porcentajeacredor": 100,
+          "editable": true
         }
       ]
     },
@@ -45,7 +47,8 @@
           "cod_estado": 1,
           "cod_prov": 102,
           "cod_localidad": 10203,
-          "nom_domicilio1": "125 SUR MULTIPLAZA ESCAZÚ, EDIFICIO MERIDIANO, PISO 9"
+          "nom_domicilio1": "125 SUR MULTIPLAZA ESCAZÚ, EDIFICIO MERIDIANO, PISO 9",
+          "editable": true
         },
         {
           "tip_benef": "2",
@@ -58,7 +61,8 @@
           "cod_estado": 1,
           "cod_prov": 102,
           "cod_localidad": 10203,
-          "nom_domicilio1": "125 SUR MULTIPLAZA ESCAZÚ, EDIFICIO MERIDIANO, PISO 9"
+          "nom_domicilio1": "125 SUR MULTIPLAZA ESCAZÚ, EDIFICIO MERIDIANO, PISO 9",
+          "editable": true
         },
         {
           "tip_benef": "8",
@@ -71,7 +75,8 @@
           "cod_estado": 1,
           "cod_prov": 102,
           "cod_localidad": 10203,
-          "nom_domicilio1": "125 SUR MULTIPLAZA ESCAZÚ, EDIFICIO MERIDIANO, PISO 9"
+          "nom_domicilio1": "125 SUR MULTIPLAZA ESCAZÚ, EDIFICIO MERIDIANO, PISO 9",
+          "editable": true
         }
       ]
     },
@@ -90,7 +95,8 @@
           "cod_estado": 1,
           "cod_prov": 101,
           "cod_localidad": 10102,
-          "nom_domicilio1": "DETRAS DE PURDY MOTOR EN PASEO COLON"
+          "nom_domicilio1": "DETRAS DE PURDY MOTOR EN PASEO COLON",
+          "editable": true
         }
       ]
     },
@@ -107,7 +113,8 @@
           "cod_estado": 1,
           "cod_prov": 101,
           "cod_localidad": 10102,
-          "nom_domicilio1": "EDIFICIO PURDY MOTOR PASEO COLON"
+          "nom_domicilio1": "EDIFICIO PURDY MOTOR PASEO COLON",
+          "editable": true
         }
       ]
     },
@@ -126,7 +133,8 @@
           "cod_estado": 1,
           "cod_prov": 101,
           "cod_localidad": 10108,
-          "nom_domicilio1": "FINAL AVENIDA LAS AMERICAS, COSTADO N ESTADIO NACIONAL"
+          "nom_domicilio1": "FINAL AVENIDA LAS AMERICAS, COSTADO N ESTADIO NACIONAL",
+          "editable": true
         }
       ]
     },
@@ -144,7 +152,8 @@
           "cod_estado": 1,
           "cod_prov": 102,
           "cod_localidad": 10203,
-          "nom_domicilio1": "ESCAZU CORPORATE CENTER PISO 4 OFICINA NORFOUND"
+          "nom_domicilio1": "ESCAZU CORPORATE CENTER PISO 4 OFICINA NORFOUND",
+          "editable": true
         },
         {
           "tip_benef": "2",
@@ -156,7 +165,8 @@
           "cod_estado": 1,
           "cod_prov": 102,
           "cod_localidad": 10203,
-          "nom_domicilio1": "ESCAZU CORPORATE CENTER PISO 4 OFICINA NORFOUND"
+          "nom_domicilio1": "ESCAZU CORPORATE CENTER PISO 4 OFICINA NORFOUND",
+          "editable": true
         },
         {
           "tip_benef": "3",
@@ -168,7 +178,8 @@
           "cod_estado": 1,
           "cod_prov": 102,
           "cod_localidad": 10203,
-          "nom_domicilio1": "ESCAZU CORPORATE CENTER PISO 4 OFICINA NORFOUND"
+          "nom_domicilio1": "ESCAZU CORPORATE CENTER PISO 4 OFICINA NORFOUND",
+          "editable": true
         }
       ]
     }
