@@ -107,10 +107,19 @@ namespace Architect.API.Tron.Business.Emision
                 string uniqueId = EnviarSolicitud(quoteInfo.tip_firma, quoteInfo.correoenvio, quoteInfo, tokenInfo);
                 AlmacenarSolicitud(quoteInfo, quoteInfo.tip_firma == Contracts.TipoDeFirma.Manual ? 33 : 4, tokenInfo, uniqueId);
                 GuardaDatosVariables(quoteInfo.presupuesto, quoteInfo.cod_ramo, quoteInfo.tip_firma, quoteInfo.tip_firmaDesc, uniqueId);
+                string message = string.Empty;
+                if (uniqueId.IsNotEmpty())
+                {
+                    message = string.Format("La solicitud fue enviada de forma exitosa usando el tipo de envío indicado ({0})", quoteInfo.tip_firmaDesc);
+                }
+                else
+                {
+                    message = "Ha ocurrido un error tratando de comunicarnos con el sistema de firma, por favor intente nuevamente y si el problema persiste comuníquese con MAPFRE Costa Rica.";
+                }
 
                 resultQuoteInfo = new Contracts.Emision.MapfreMas()
                 {
-                    Mensaje = string.Format("La solicitud fue enviada de forma exitosa usando el tipo de envío indicado ({0})", quoteInfo.tip_firmaDesc)
+                    Mensaje = message
                 };
             }
             else
@@ -155,11 +164,29 @@ namespace Architect.API.Tron.Business.Emision
             quoteInfo.DatosEconomicos = EconomicDataCalculate(quoteInfo);
 
             string uniqueId = EnviarSolicitud(proposal.SigningType, correoenvio, quoteInfo, tokenInfo);
-            if (proposal.SigningType != Contracts.TipoDeFirma.Manual)
+            string message = string.Empty;
+
+            if (proposal.SigningType != Contracts.TipoDeFirma.Manual && uniqueId.IsNotEmpty())
             {
                 DataAccess.PolicyProposal.Update_Status(proposal.Id, 4, uniqueId, tokenInfo.UserId);
             }
-            return "El presupuesto fue enviado a la dirección '" + correoenvio + "' de forma exitosa.";
+            if (proposal.SigningType == Contracts.TipoDeFirma.Manual)
+            {
+                message = "El presupuesto fue enviado a la dirección '" + correoenvio + "' de forma exitosa.";
+            }
+            else
+            {
+                if (uniqueId.IsNotEmpty())
+                {
+                    message = string.Format("La solicitud fue enviada de forma exitosa usando el tipo de envío indicado ({0}).", quoteInfo.tip_firmaDesc);
+                }
+                else
+                {
+                    message = "Ha ocurrido un error tratando de comunicarnos con el sistema de firma, por favor intente nuevamente y si el problema persiste comuníquese con MAPFRE Costa Rica.";
+                }
+
+            }
+            return message;
         }
 
         public static void EvicertiaSigned()
