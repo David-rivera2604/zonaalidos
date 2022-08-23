@@ -411,3 +411,4 @@
                    MapfreMas. Ajuste al query para obtener frecuencia de pago para calcular datos económicos.
                    Credecoop. Diagnostico por falla al declinar una revisión.
                    MapfreMas. Manejo de decimales para el valor del vehículo.
+ 1.6.12a 23/8/2022 Avisos de Cobro. En la consulta de recibos a incluir en un aviso se agrega los datos del tomador

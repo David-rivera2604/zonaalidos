@@ -306,7 +306,18 @@ app.AvisosRecibos = (function () {
                     formatter: function (value, row, index, field) {
                         return `<span>${row.Tip_Docum_Aseg} ${row.Cod_Docum_Aseg} - ${row.Nom_Asegurado}</span>`;
                     }
-                }]
+                },
+                {
+                    field: 'Tip_Docum_Tom',
+                    title: 'Tomador',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: function (value, row, index, field) {
+                        return `<span>${row.Tip_Docum_Tom} ${row.Cod_Docum_Tom} - ${row.Nom_Tomador}</span>`;
+                    }
+                }            ]
         });
 
         $('#recibosTbl').on('check.bs.table', function () {

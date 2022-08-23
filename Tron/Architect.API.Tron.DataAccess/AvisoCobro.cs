@@ -115,7 +115,11 @@ namespace Architect.API.Tron.DataAccess
                                     Nom_Riesgo = reader.StringValue("nom_riesgo"),
                                     Tip_Docum_Aseg = reader.StringValue("tip_docum_aseg"),
                                     Cod_Docum_Aseg = reader.StringValue("cod_docum_aseg"),
-                                    Nom_Asegurado = reader.StringValue("nom_asegurado")
+                                    Nom_Asegurado = reader.StringValue("nom_asegurado"),
+                                    Tip_Docum_Tom = reader.StringValue("tip_docum_tom"),
+                                    Cod_Docum_Tom = reader.StringValue("cod_docum_tom"),
+                                    Nom_Tomador = reader.StringValue("nom_tomador"),
+
                                 });
                                 break;
                             case "P_ERRORES":
