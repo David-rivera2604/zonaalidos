@@ -134,7 +134,7 @@ app.ViewerQuery = (function () {
                     data.table.Direct = data.Direct;
                 Table_Render(data.table, data.index);
             }
-        }      
+        }
     }
 
     function Template_Render(template, data) {
@@ -426,12 +426,11 @@ app.ViewerQuery = (function () {
                 spec.smartDisplay = true;
                 spec.clickToSelect = true;
                 spec.showColumnsToggleAll = true;
-
-                spec.toolbar = undefined;
-                spec.showExport = false;
-                spec.showPaginationSwitch = false;
-                spec.exportDataType = null;
                 //spec.search = false;
+                //spec.showExport = false;
+                //spec.exportDataType = null;
+                spec.toolbar = undefined;
+                spec.showPaginationSwitch = false;
                 spec.searchAlign = 'left';
                 spec.showToggle = false;
                 spec.showRefresh = false;
