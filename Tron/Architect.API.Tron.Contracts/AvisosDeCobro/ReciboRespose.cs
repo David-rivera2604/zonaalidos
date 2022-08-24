@@ -65,5 +65,20 @@ namespace Architect.API.Tron.Contracts.AvisosDeCobro
         /// Moneda
         /// </summary>
         public int Cod_Mon { get; set; }
+
+        /// <summary>
+        /// Tipo de documento del asegurado
+        /// </summary>
+        public string Tip_Docum_Tom { get; set; }
+
+        /// <summary>
+        /// Documento del asegurado
+        /// </summary>
+        public string Cod_Docum_Tom { get; set; }
+
+        /// <summary>
+        /// Nombre del asegurado
+        /// </summary>
+        public string Nom_Tomador { get; set; }
     }
 }
