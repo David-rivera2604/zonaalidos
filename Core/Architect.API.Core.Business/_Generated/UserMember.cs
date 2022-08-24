@@ -34,7 +34,7 @@ namespace Architect.API.Core.Business.Security
                 MapLookups(companyId, result);
                 Core.Business.General.ChangeSet.Create(1002, result.UserId, companyId, "Creación", string.Format("Se creó el usuario '{0}'", result.UserName), userId, result);
 
-                Utilities.Cache.RemoveStartWith("SpecFlow");
+                Architect.Utilities.Cache.RemoveStartWith("SpecFlow");
             }
             return result;
         }
@@ -60,15 +60,18 @@ namespace Architect.API.Core.Business.Security
             {
                 List<Architect.API.Core.Contracts.Security.RoleMember> rols = DataAccess.Security.UserRoleMember.RetrieveLookByUserId(id, companyId);
                 result.Roles = (from r in rols
-                                select new Utilities.Contracts.LookUpValue() { Code = r.RoleId.ToString(), Description = r.Description }).ToList();
+                                select new Architect.Utilities.Contracts.LookUpValue() { Code = r.RoleId.ToString(), Description = r.Description }).ToList();
             }
 
-            if (result.CustomData.IsNotEmpty())
+            if (result.IsNotEmpty())
             {
-                result.Extent = Newtonsoft.Json.Linq.JObject.Parse(result.CustomData);
-                result.CustomData = string.Empty;
+                if (result.CustomData.IsNotEmpty())
+                {
+                    result.Extent = Newtonsoft.Json.Linq.JObject.Parse(result.CustomData);
+                    result.CustomData = string.Empty;
+                }
+                result.Password = "XXXX";
             }
-            result.Password = "XXXX";
             return result;
         }
 
@@ -134,12 +137,12 @@ namespace Architect.API.Core.Business.Security
                 MapLookups(companyId, result);
                 Core.Business.General.ChangeSet.Create(1002, item.UserId, companyId, "Modificación", string.Format("Se modificó el usuario '{0}'", result.UserName), userId, result);
 
-                Utilities.Cache.RemoveStartWith("SpecFlow");
+                Architect.Utilities.Cache.RemoveStartWith("SpecFlow");
             }
             return result;
         }
 
-        private static void SynchronizeUserRoleMember(int companyId, int userId, int id, List<Utilities.Contracts.LookUpValue> currentRoles)
+        private static void SynchronizeUserRoleMember(int companyId, int userId, int id, List<Architect.Utilities.Contracts.LookUpValue> currentRoles)
         {
             List<Architect.API.Core.Contracts.Security.UserRoleMember> roles = DataAccess.Security.UserRoleMember.RetrieveByUserId(id, companyId);
             if (roles.IsEmpty())
@@ -150,7 +153,7 @@ namespace Architect.API.Core.Business.Security
             {
                 //Agrega un nuevo registro o se cambia uno existente                
                 Architect.API.Core.Contracts.Security.UserRoleMember toAdd = null;
-                foreach (Utilities.Contracts.LookUpValue newItem in currentRoles)
+                foreach (Architect.Utilities.Contracts.LookUpValue newItem in currentRoles)
                 {
                     toAdd = roles.Find(r => r.RoleId.ToString() == newItem.Code);
 
@@ -204,7 +207,7 @@ namespace Architect.API.Core.Business.Security
                 if (affectedRows > 0)
                 {
                     Core.Business.General.ChangeSet.Create(1002, id, companyId, "Eliminar", string.Format("Se eliminó el usuario '{0}'", result.UserName), userId, result);
-                    Utilities.Cache.RemoveStartWith("SpecFlow");
+                    Architect.Utilities.Cache.RemoveStartWith("SpecFlow");
                 }
             }
             return affectedRows > 0;

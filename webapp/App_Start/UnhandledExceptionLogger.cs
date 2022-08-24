@@ -23,8 +23,8 @@ namespace aliados.App_Start
 
             Architect.Utilities.Log.ErrorLog("UnhandledExceptionLogger", "LogAsync", context.Exception, string.Empty, true, code);
             try
-            {                
-                Architect.API.Core.Business.Security.Session.TrackError(context.Request?.Headers?.Authorization?.Parameter, code, context.Exception);
+            {
+                Architect.API.Core.Security.Session.TrackError(context.Request?.Headers?.Authorization?.Parameter, code, context.Exception);
             }
             catch (Exception ex)
             {

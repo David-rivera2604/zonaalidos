@@ -26,6 +26,8 @@ namespace Architect.API.Core.Contracts.General
 
         [JsonIgnore]
         public ProcessSpecTask Task { get; set; }
+
+        [DataMember(), JsonProperty()] public int SLA { get; set; }
     }
 }
 

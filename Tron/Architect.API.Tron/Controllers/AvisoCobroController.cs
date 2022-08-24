@@ -26,7 +26,7 @@ namespace Architect.API.Tron.Controllers
         [Route("")]
         public async Task<IHttpActionResult> Modifica([FromBody] Contracts.AvisosDeCobro.Parameters.AvisoCobroModificaParametros item)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             bool result = false;
             await Task.Run(() =>
             {
@@ -42,7 +42,7 @@ namespace Architect.API.Tron.Controllers
         [Route("ConsultaRecibos")]
         public async Task<IHttpActionResult> ConsultaRecibos([FromBody] Contracts.AvisosDeCobro.Parameters.RecibosParametros item)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             List<Contracts.AvisosDeCobro.ReciboRespose> result = null;
             await Task.Run(() =>
             {
@@ -58,7 +58,7 @@ namespace Architect.API.Tron.Controllers
         [Route("Generar")]
         public async Task<IHttpActionResult> Generar([FromBody] Contracts.AvisosDeCobro.Parameters.AvisoCobroGenerarParametros item)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             List<Contracts.AvisosDeCobro.AvisoResponse> result = new List<Contracts.AvisosDeCobro.AvisoResponse>();
 
             await Task.Run(() =>
@@ -76,7 +76,7 @@ namespace Architect.API.Tron.Controllers
         [Route("{numAviso}")]
         public async Task<IHttpActionResult> Delete([FromUri] string numAviso)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             bool result = false;
 
             await Task.Run(() =>

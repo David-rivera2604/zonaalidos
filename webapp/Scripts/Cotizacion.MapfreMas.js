@@ -38,6 +38,7 @@ app.CotizacionMapfreMas = (function () {
             function (data) {
                 quoteData = data;
                 if (!app.ui.NotifyErrors(data.Mensaje, data.Errors, '#VisualizationsEdtForm')) {
+                    $('#presupuesto').html(data.presupuesto);
                     $('#coberturasRow').removeClass('d-none');
                     $('#coberturasTbl').bootstrapTable('load', data.coberturas);
                     Coberturas_Fijas(data.coberturas);
@@ -97,11 +98,11 @@ app.CotizacionMapfreMas = (function () {
                     MapObjectToInput(data);
                     data_changed();
                 });
-            }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}`);
+            }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}`, 'v1/TronCommon/Lkps');
 
         // Dependencies events
         $('#cod_marca').on('change', function () {
-            app.core.LookupDependency($('select#cod_marca').val(), 'cod_modelo', 'MM_ModelosVehiculos', '', null, true, null, `cod_marca=`);
+            app.core.LookupDependency($('select#cod_marca').val(), 'cod_modelo', 'MM_ModelosVehiculos', '', null, true, null, `cod_marca=`, 'v1/TronCommon/LkpChild');
         });
 
         $('#contrato').on('change', function () {
@@ -327,7 +328,7 @@ app.CotizacionMapfreMas = (function () {
             digitGroupSeparator: '.',
             maximumValue: '99999999999999',
             minimumValue: '0',
-            decimalPlaces: '0',
+            decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
         new AutoNumeric('#PCT_AJUSTE_GEN', {
@@ -335,7 +336,7 @@ app.CotizacionMapfreMas = (function () {
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
             maximumValue: '0',
-            minimumValue: '-25',
+            minimumValue: '-15',
             decimalPlaces: '0',
             emptyInputBehavior: 'null'
         });
@@ -477,12 +478,12 @@ app.CotizacionMapfreMas = (function () {
                 let cod_tip_vehi = app.ui.GetDropDownNumericValue('#cod_tip_vehi');
                 let cod_plan_auto = app.ui.GetDropDownNumericValue('#COD_PLAN_AUTO');
 
-                if (cod_tip_vehi === 2 && cod_plan_auto != 32 && cod_plan_auto != 33){
-					return true;
-				}
-				else if(cod_plan_auto == 35){
-					return true;
-				}
+                if (cod_tip_vehi === 2 && cod_plan_auto != 32 && cod_plan_auto != 33) {
+                    return true;
+                }
+                else if (cod_plan_auto == 35) {
+                    return true;
+                }
                 else {
                     return (value != '0');
                 }
@@ -490,7 +491,7 @@ app.CotizacionMapfreMas = (function () {
         );
         $.validator.addMethod("AnoFabricacion",
             function (value, element, params) {
-                if (localStorage.getItem('Roles').includes('Privilegios') || localStorage.getItem('Roles').includes('Purdy'))
+                if (localStorage.getItem('Roles').includes('Privilegios') || localStorage.getItem('Roles').includes('Purdy') || localStorage.getItem('Roles').includes('Red_Afecta'))
                     return true;
                 else {
                     let nvalue = parseInt(value, 10);
@@ -509,19 +510,21 @@ app.CotizacionMapfreMas = (function () {
         );
         $.validator.addMethod("AjustePorAnoFabricacion",
             function (value, element, params) {
-                let nvalue = parseInt('0' + value, 10);
-                let yearVeh = app.ui.GetNumericValue('#ANIO_SUB_MODELO');
-                let year = new Date().getFullYear();
-                let minYear = year - 5;
+                let nvalue = Number(value);
                 if (nvalue === 0) {
                     return true;
                 }
-                else if (yearVeh > minYear && nvalue >= -10) {
-                    return true;
-                }
                 else {
-                    $('#PCT_AJUSTE_GEN').rules('add', { messages: { AjustePorAnoFabricacion: 'Si el vehículo esta entre 0-5 años de antigüedad, el porcentaje de ajuste comercial no debe exceder el 10%' } });
-                    return false;
+                    let yearVeh = app.ui.GetNumericValue('#ANIO_SUB_MODELO');
+                    let year = new Date().getFullYear();
+                    let minYear = year - 5;
+                    if (yearVeh >= minYear && nvalue < -4) {
+                        $('#PCT_AJUSTE_GEN').rules('add', { messages: { AjustePorAnoFabricacion: 'Si el vehículo esta entre 0-5 años de antigüedad, el porcentaje de ajuste comercial no debe exceder el 4%' } });
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }
                 }
             }
         );
@@ -543,7 +546,7 @@ app.CotizacionMapfreMas = (function () {
                 cod_tip_vehi: { required: true },
                 cod_uso_vehi: { required: true },
                 IMP_VR: { required: true, Numeric: true },
-                PCT_AJUSTE_GEN: { min: -25, max: 0, AjustePorAnoFabricacion: true },
+                PCT_AJUSTE_GEN: { min: -15, max: 0, AjustePorAnoFabricacion: true },
                 IMP_AUTO_RC: { required: true },
                 DED_AUTO_RC: { required: true },
                 IMP_AUTO_GMO: { ValorRequeridoSegunVechiculoPlan: true },
@@ -559,8 +562,8 @@ app.CotizacionMapfreMas = (function () {
                 IMP_AUTO_MECA: { required: true },
                 IMP_AUTO_CRI: { required: true },
                 DED_AUTO_CRI: { required: true },
-                contrato: { required: true },
-                subcontrato: { required: true }
+                contrato: { required: false },
+                subcontrato: { required: false }
             },
             messages: {
                 edad: { required: 'Debe indicar el edad' },
@@ -577,7 +580,7 @@ app.CotizacionMapfreMas = (function () {
                 cod_tip_vehi: { required: 'Debe indicar el clase del vehículo' },
                 cod_uso_vehi: { required: 'Debe indicar el uso del vehículo' },
                 IMP_VR: { required: 'Debe indicar el valor del vehículo asegurado', Numeric: 'Debe indicar el valor del vehículo asegurado' },
-                PCT_AJUSTE_GEN: { min: 'El porcentaje de ajuste comercial debe estar entre el 0 y el -25 %', max: 'El porcentaje de ajuste comercial debe estar entre el 0 y el -25 %', AjustePorAnoFabricacion: '' },
+                PCT_AJUSTE_GEN: { min: 'El porcentaje de ajuste comercial debe estar entre el 0 y el -15 %', max: 'El porcentaje de ajuste comercial debe estar entre el 0 y el -15 %', AjustePorAnoFabricacion: '' },
                 IMP_AUTO_RC: { required: 'Debe indicar el responsabilidad civil' },
                 DED_AUTO_RC: { required: 'Debe indicar el deducible responsabilidad civil' },
                 IMP_AUTO_GMO: { ValorRequeridoSegunVechiculoPlan: 'Debe indicar el monto de gastos médicos de ocupantes para el plan seleccionado' },
@@ -816,9 +819,9 @@ app.CotizacionMapfreMas = (function () {
         if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
             app.ui.DropDownDisabled('#DED_AUTO_RAD', $('#IMP_AUTO_RAD').prop('disabled') && app.ui.GetNumericValue('#IMP_AUTO_RAD') === 0);
         } else {
-           // if (!$('#DED_AUTO_RAD').prop('disabled')) {
-                app.ui.SelectDropDownByText('#DED_AUTO_RAD', app.ui.GetDropDownSelectedText('#DED_AUTO_CYV'));
-           // }
+            // if (!$('#DED_AUTO_RAD').prop('disabled')) {
+            app.ui.SelectDropDownByText('#DED_AUTO_RAD', app.ui.GetDropDownSelectedText('#DED_AUTO_CYV'));
+            // }
         }
 
         let cod_marca = app.ui.GetDropDownNumericValue('#cod_marca');

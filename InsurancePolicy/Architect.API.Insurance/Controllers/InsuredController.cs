@@ -29,7 +29,7 @@ namespace Architect.API.Insurance.Controllers
         [ResponseType(typeof(Contracts.Policy.Insured))]
         public async Task<IHttpActionResult> InsuredByIdentification([FromUri] string id)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Contracts.Policy.Insured result = null;
             string verbose = string.Empty;
 
@@ -152,7 +152,7 @@ namespace Architect.API.Insurance.Controllers
         [ResponseType(typeof(List<Architect.API.Insurance.Contracts.Policy.RiskQuestionnaires>))]
         public async Task<IHttpActionResult> QuestionnairyByIdentification([FromUri] string id, [FromUri] string name)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             List<Architect.API.Insurance.Contracts.Policy.RiskQuestionnaires> result = null;
             string verbose = string.Empty;
 

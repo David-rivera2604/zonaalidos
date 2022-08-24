@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace Architect.API.Core.Contracts.Security
 {
     /// <summary>
-    /// Solitud de acceso
+    /// Solicitud de acceso
     /// </summary>
     [Serializable(), DataContract()]
     public class AuthenticationRequest
@@ -15,7 +15,7 @@ namespace Architect.API.Core.Contracts.Security
         /// </summary>
         [DataMember(), JsonProperty()] public string Tenant { get; set; }
         /// <summary>
-        /// Usuario o correo electronico
+        /// Usuario o correo electrónico
         /// </summary>
         [DataMember(), JsonProperty()] public string Email { get; set; }
         /// <summary>
@@ -31,5 +31,12 @@ namespace Architect.API.Core.Contracts.Security
         /// Información sobre el dispositivo de consulta que efectúa una petición de red.
         /// </summary>
         [DataMember(), JsonProperty()] public string UserAgent { get; set; }
+
+        /// <summary>
+        /// Indica si el acceso es por medio de una cuenta de empleado de Mapfre
+        /// </summary>
+        [DataMember(), JsonProperty()] public bool EmployeeMode { get; set; }
+
+        
     }
 }

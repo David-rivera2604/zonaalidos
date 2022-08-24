@@ -85,6 +85,8 @@ namespace Architect.API.Core.Contracts.General
         [DataMember(), JsonProperty()] public string FlowIdDesc { get; set; }
         [DataMember(), JsonProperty()] public int UserId { get; set; }
         [DataMember(), JsonProperty()] public string UserIdDesc { get; set; }
+        [DataMember(), JsonProperty()] public int SLA { get; set; }
+        [DataMember(), JsonProperty()] public string SLADesc { get; set; }
         /// <summary>
         /// Usuario que actualizo por última vez el registro.
         /// </summary>

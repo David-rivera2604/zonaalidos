@@ -384,3 +384,31 @@
                    Trazabilidad. Definición de proceso agrandar lista a 4000 el máx de una varchar.
                    Trazabilidad. Permitir acceso al uso del proceso por rol.
                    Trazabilidad. SLA a nivel del proceso.
+ 1.6.8  31/07/2022 Trazabilidad. No permite trabajar en un caso basado en un proceso duplicado.
+                   Trazabilidad. Nuevo reporte. filtros fecha, proceso, estado.
+ 1.6.8a 02/08/2022 Fix. Trazabilidad. Nuevo reporte. filtros fecha, proceso, estado.
+                   Fix. Trazabilidad. No permite trabajar en un caso basado en un proceso duplicado.
+ 1.6.9  08/08/2022 Aliados MapfreMas Reporte se debe totalizar la columna de prima.
+                   Se habilita verificación de credenciales por Active Directory (Falta prueba desde el servidor)
+                   Aliados MapferMas, mejoras para retomar las cotizaciones no guardadas como presupuesto.
+                   Aliados MapferMas, ajuste de validación en porcentaje de descuento comercial.
+                   Fix. Se ajusta verificación del pasaporte para que permita mínimo 3 dígitos y máximo 14.
+ 1.6.10 11/08/2022 Fix. Trazabilidad. No permite finalizar procesos con checklist.
+                   Fix. Trazabilidad. Errores intermitentes al duplicar un proceso.
+                   Fix. Trazabilidad. Se reincorpora la columna rol a la consulta.
+                   Fix. Trazabilidad. Se agregar campos personalizado en el reporte.
+                   Fix. Trazabilidad. Se agregan validaciones al agregar un adjunto.
+                   Trazabilidad. SLA a nivel del caso.
+                   MapfreMas. Se agrega la opción para considerar los campos importedecesion y porcentajeacredor para terceros por default.
+                   MapfreMas. Ajustes de condiciones para descuento comercial.                   
+                   MapfreMas. Se agrega el manejo dinámico de exclusión de lista para las listas no asociadas a los grupos.
+                   MapfreMas. Reporte de solicitud. Formato para campos importedecesion y porcentajeacredor más check.
+ 1.6.11 11/08/2022 MapfreMas. Reporte de solicitud. Calcular datos económicos.
+                   MapfreMas. Reporte de solicitud. Nueva sección datos económicos.
+                   MapfreMas. Retomar un presupuesto desde una cotización debe habilitarse como solicitud.
+ 1.6.12 22/08/2022 MapfreMas. Se habilita la posibilidad de indicar si el tercero por default es editable.
+                   MapfreMas. Cuando una cobertura tiene la marca obligatoria en "N" no se debe marcar por default
+                   MapfreMas. Ajuste al query para obtener frecuencia de pago para calcular datos económicos.
+                   Credecoop. Diagnostico por falla al declinar una revisión.
+                   MapfreMas. Manejo de decimales para el valor del vehículo.
+ 1.6.12a 23/8/2022 Avisos de Cobro. En la consulta de recibos a incluir en un aviso se agrega los datos del tomador

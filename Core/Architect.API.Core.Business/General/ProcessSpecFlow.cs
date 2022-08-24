@@ -22,7 +22,9 @@ namespace Architect.API.Core.Business.General
         /// <returns>Instancia de ProcessSpecFlow</returns>
         public static Contracts.General.ProcessSpecFlowResult DuplicateById(int companyId, int userId, int id)
         {
-            Contracts.General.ProcessSpecFlow result = DataAccess.General.Process.Specification.Retrieve(id, companyId);
+            Dictionary<int, int> mapper = new Dictionary<int, int>();
+            int currentStepId;
+            Contracts.General.ProcessSpecFlow result = DataAccess.General.Process.Specification.Retrieve(id, companyId, 0);
 
             IDbConnection currentConnection = DataFactory.Database.OpenConnection("Research");
 
@@ -36,9 +38,25 @@ namespace Architect.API.Core.Business.General
 
             if (DataAccess.General.ProcessSpecFlow.Create(result, currentConnection) > 0)
             {
+                if (result.Roles?.Count > 0)
+                {
+                    foreach (Architect.Utilities.Contracts.LookUpValue flowRol in result.Roles)
+                    {
+                        DataAccess.General.ProcessSpecFlowRole.Create(new Contracts.General.ProcessSpecFlowRole()
+                        {
+                            Id = result.Id,
+                            CompanyId = result.CompanyId,
+                            RoleId = Convert.ToInt32(flowRol.Code),
+                            UpdateUserCode = userId,
+                            UpdateDate = DateTime.Now
+                        }, currentConnection);
+                    }
+                }
                 foreach (Contracts.General.ProcessSpecStep step in result.ProcessSpecSteps)
                 {
-                    step.Id = DataAccess.General.ProcessSpecStep.RetrieveLastKey(currentConnection) + 1;
+                    currentStepId = DataAccess.General.ProcessSpecStep.RetrieveLastKey(currentConnection) + 1;
+                    mapper.Add(step.Id, currentStepId);
+                    step.Id = currentStepId;
                     step.FlowId = result.Id;
                     step.UpdateUserCode = userId;
                     step.UpdateDate = DateTime.Now;
@@ -64,6 +82,17 @@ namespace Architect.API.Core.Business.General
                         }
                     }
                 }
+                foreach (Contracts.General.ProcessSpecStep step in result.ProcessSpecSteps)
+                {
+                    foreach (Contracts.General.ProcessSpecTask task in step.ProcessSpecTasks)
+                    {
+                        if (task.Type == 10 && task.Action != "0" && mapper.ContainsKey(Convert.ToInt32(task.Action)))
+                        {
+                            task.Action = mapper[Convert.ToInt32(task.Action)].ToString();
+                            DataAccess.General.ProcessSpecTask.Update(task, currentConnection);
+                        }
+                    }
+                }
                 foreach (Contracts.General.ProcessSpecLink link in result.ProcessSpecLinks)
                 {
                     link.Id = DataAccess.General.ProcessSpecLink.RetrieveLastKey(currentConnection) + 1;
@@ -75,6 +104,8 @@ namespace Architect.API.Core.Business.General
             }
 
             currentConnection.Close();
+            Architect.Utilities.Cache.RemoveStartWith("Process");
+            Architect.Utilities.Cache.RemoveStartWith("SpecFlow");
             return new Contracts.General.ProcessSpecFlowResult()
             {
                 ProcessSpecFlow = result,
@@ -82,7 +113,7 @@ namespace Architect.API.Core.Business.General
             };
         }
 
-        private static void SynchronizeRoles(int companyId, int userId, int id, List<Utilities.Contracts.LookUpValue> currentRoles)
+        private static void SynchronizeRoles(int companyId, int userId, int id, List<Architect.Utilities.Contracts.LookUpValue> currentRoles)
         {
             List<Architect.API.Core.Contracts.General.ProcessSpecFlowRole> roles = Core.DataAccess.General.ProcessSpecFlowRole.RetrieveByStepId(id);
             if (roles.IsEmpty())
@@ -93,7 +124,7 @@ namespace Architect.API.Core.Business.General
             {
                 //Agrega un nuevo registro o se cambia uno existente                
                 Architect.API.Core.Contracts.General.ProcessSpecFlowRole toAdd = null;
-                foreach (Utilities.Contracts.LookUpValue newItem in currentRoles)
+                foreach (Architect.Utilities.Contracts.LookUpValue newItem in currentRoles)
                 {
                     toAdd = roles.Find(r => r.RoleId.ToString() == newItem.Code);
 

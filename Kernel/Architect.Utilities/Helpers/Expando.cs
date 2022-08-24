@@ -395,7 +395,6 @@ namespace Architect.Utilities.Helpers
                 {
                     yield return new KeyValuePair<string, object>(prop.Name, prop.GetValue(this.Instance, null));
                 }
-                PropertyInfo[] array = null;
             }
             foreach (string key in this.Properties.Keys)
             {

@@ -71,6 +71,7 @@ namespace aliados
                        Architect.API.Core.Business.General.Process.OverDueSteps(),
                        Cron.MinuteInterval(processReviewEveryTime));
             }
+           // Architect.API.Core.Business.General.Process.OverDueSteps();
 
             //Monitor de transacciones de pago pendientes
             if (Architect.Utilities.Helpers.Settings.StringValue("Payment.Placetopay.Sonda.ExecutionTime").IsNotEmpty())

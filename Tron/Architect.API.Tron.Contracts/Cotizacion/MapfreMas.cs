@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Architect.API.Tron.Contracts.Emision;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -115,7 +116,7 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// <summary>
         /// Valor del vehículo asegurado.
         /// </summary>
-        [DataMember(), JsonProperty()] public int IMP_VR { get; set; }
+        [DataMember(), JsonProperty()] public double IMP_VR { get; set; }
         /// <summary>
         /// ¿Es cliente nuevo?.
         /// </summary>

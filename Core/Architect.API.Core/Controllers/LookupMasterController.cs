@@ -31,7 +31,7 @@ namespace Architect.API.Core.Controllers
             {
                 return BadRequest("Debe indicar un lookup master");
             }
-            Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Contracts.Security.Token tokenInfo = Security.Token.Info();
             await Task.Run(() =>
             {
                 Architect.API.Core.Contracts.General.LookupMasterResult created = Architect.API.Core.Business.General.LookupMaster.Create(tokenInfo.CompanyId, tokenInfo.UserId, item);
@@ -59,7 +59,7 @@ namespace Architect.API.Core.Controllers
         [Authorize]
         public async Task<IHttpActionResult> Get([FromUri] string filter = "", int beginIndex = 1, int endIndex = int.MaxValue)
         {
-            Contracts.Security.Token tokenInfo = Business.Security.Token.Info();
+            Contracts.Security.Token tokenInfo = Security.Token.Info();
 
             List<Architect.API.Core.Contracts.General.LookupMaster> result = null;
 
@@ -88,7 +88,7 @@ namespace Architect.API.Core.Controllers
         [Authorize]
         public async Task<IHttpActionResult> Count([FromUri] string filter = "")
         {
-            Contracts.Security.Token tokenInfo = Business.Security.Token.Info();
+            Contracts.Security.Token tokenInfo = Security.Token.Info();
             int result = 0;
 
             await Task.Run(() =>
@@ -108,7 +108,7 @@ namespace Architect.API.Core.Controllers
         [Authorize]
         public async Task<IHttpActionResult> GetById([FromUri] int id)
         {
-            Contracts.Security.Token tokenInfo = Business.Security.Token.Info();
+            Contracts.Security.Token tokenInfo = Security.Token.Info();
             IHttpActionResult result = null;
             Architect.API.Core.Contracts.General.LookupMaster data = null;
 
@@ -152,7 +152,7 @@ namespace Architect.API.Core.Controllers
                 return BadRequest("Debe indicar el identificador y una instancia de lookup master");
             }
 
-            Contracts.Security.Token tokenInfo = Business.Security.Token.Info();
+            Contracts.Security.Token tokenInfo = Security.Token.Info();
             await Task.Run(() =>
             {
                 item.LookupId = id;
@@ -190,7 +190,7 @@ namespace Architect.API.Core.Controllers
                 return BadRequest("Debe indicar el identificador del lookup master");
             }
 
-            Contracts.Security.Token tokenInfo = Business.Security.Token.Info();
+            Contracts.Security.Token tokenInfo = Security.Token.Info();
             await Task.Run(() =>
             {
                 Architect.API.Core.Contracts.General.LookupMasterResult deleted = Architect.API.Core.Business.General.LookupMaster.Delete(tokenInfo.CompanyId, tokenInfo.UserId, id);

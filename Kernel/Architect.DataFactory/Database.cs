@@ -1022,9 +1022,9 @@ namespace Architect.DataFactory
 
             if (database.IsCaching)
             {
-                key = string.Format("{1}.{0}", Architect.DataFactory.Handlers.UtilityHandler.GetMd5Hash(database.ConnectionStringName, Statement, database.Parameters), database.CachePrefix);
+                key = string.Format("{1}.{0}", Handlers.UtilityHandler.GetMd5Hash(database.ConnectionStringName, Statement, database.Parameters), database.CachePrefix);
             }
-            if (!database.IsCaching || Architect.Utilities.Cache.NotExist(key))
+            if (!database.IsCaching || Utilities.Cache.NotExist(key))
             {
                 for (int attempts = 1; attempts <= 3; attempts++)
                 {
@@ -1053,7 +1053,7 @@ namespace Architect.DataFactory
                                 }
                                 else
                                 {
-                                    parameter = new OracleParameter(item.Name, DBParameterTypeConvert(item), item.Size, item.Value, DBParameterDirectionConvert(item));
+                                    parameter = new OracleParameter(item.Name, DBParameterTypeConvert(item), item.Size, DBParameterValueConvert(item.Value), DBParameterDirectionConvert(item));
                                 }
                                 cmmd.Parameters.Add(parameter);
                                 if (item.Type == Enumerations.DbType.RefCursor)

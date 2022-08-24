@@ -59,8 +59,8 @@ namespace Architect.API.Core.Business.General
                     MapLookups(companyId, result);
                     Core.Business.General.ChangeSet.Create(1300, result.Id, companyId, "Creación", string.Format("Se creó el process spec flow '{0}'", result.Name), userId, result);
 
-                    Utilities.Cache.RemoveStartWith("Process");
-                    Utilities.Cache.RemoveStartWith("SpecFlow");
+                    Architect.Utilities.Cache.RemoveStartWith("Process");
+                    Architect.Utilities.Cache.RemoveStartWith("SpecFlow");
                     
                 }
             }
@@ -102,10 +102,10 @@ namespace Architect.API.Core.Business.General
                 List<Architect.API.Core.Contracts.General.ProcessSpecFlowRole> internalRoles = Core.DataAccess.General.ProcessSpecFlowRole.RetrieveByStepId(id, currentConnection);
                 if (internalRoles.Count > 0)
                 {
-                    result.Roles = new List<Utilities.Contracts.LookUpValue>();
+                    result.Roles = new List<Architect.Utilities.Contracts.LookUpValue>();
                     foreach (Architect.API.Core.Contracts.General.ProcessSpecFlowRole item in internalRoles)
                     {
-                        result.Roles.Add(new Utilities.Contracts.LookUpValue() { Code = item.RoleId.ToString(), Description = item.RoleName });
+                        result.Roles.Add(new Architect.Utilities.Contracts.LookUpValue() { Code = item.RoleId.ToString(), Description = item.RoleName });
                     }
                 }
             }
@@ -143,8 +143,8 @@ namespace Architect.API.Core.Business.General
 
                     MapLookups(companyId, result);
                     Core.Business.General.ChangeSet.Create(1300, item.Id, companyId, "Modificación", string.Format("Se modificó el process spec flow '{0}'", result.Name), userId, result);
-                    Utilities.Cache.RemoveStartWith("Process");
-                    Utilities.Cache.RemoveStartWith("SpecFlow");
+                    Architect.Utilities.Cache.RemoveStartWith("Process");
+                    Architect.Utilities.Cache.RemoveStartWith("SpecFlow");
                 }
             }
             return new Architect.API.Core.Contracts.General.ProcessSpecFlowResult() { ProcessSpecFlow = result, Errors = errors };
@@ -168,8 +168,8 @@ namespace Architect.API.Core.Business.General
                 if (result.IsNotEmpty() && Architect.API.Core.DataAccess.General.ProcessSpecFlow.Delete(id, companyId) > 0)
                 {
                     Core.Business.General.ChangeSet.Create(1300, id, companyId, "Eliminar", string.Format("Se eliminó el process spec flow '{0}'", result.Name), userId, result);
-                    Utilities.Cache.RemoveStartWith("Process");
-                    Utilities.Cache.RemoveStartWith("SpecFlow");
+                    Architect.Utilities.Cache.RemoveStartWith("Process");
+                    Architect.Utilities.Cache.RemoveStartWith("SpecFlow");
                 }
             }
             return new Architect.API.Core.Contracts.General.ProcessSpecFlowResult() { ProcessSpecFlow = result, Errors = errors };

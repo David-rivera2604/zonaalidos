@@ -22,9 +22,9 @@ namespace Architect.API.Core.Business.General
             string key = "WhiteList";
             List<string> items = new List<string>();
 
-            if (Utilities.Cache.Exist(key))
+            if (Architect.Utilities.Cache.Exist(key))
             {
-                items = (List<string>)Utilities.Cache.GetItem(key);
+                items = (List<string>)Architect.Utilities.Cache.GetItem(key);
             }
             if (!items.Any(c => c.EqualIgnoringCase(host)))
             {
@@ -32,7 +32,7 @@ namespace Architect.API.Core.Business.General
                 if (result)
                 {
                     items.Add(host);
-                    Utilities.Cache.SetItem(key, items);
+                    Architect.Utilities.Cache.SetItem(key, items);
                 }
             }
             else

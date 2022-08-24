@@ -9,12 +9,12 @@ namespace Architect.Utilities.Extensions
     {
         public static bool IsEmpty(this double value)
         {
-            return (value == null || value == 0);
+            return (value == 0);
         }
 
         public static bool IsNotEmpty(this double value)
         {
-            return (value != null && value != 0);
+            return (value != 0);
         }
     }
 }

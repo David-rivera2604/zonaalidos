@@ -19,7 +19,7 @@ namespace Architect.API.Tron.Controllers
         [Route("Setup")]
         public async Task<IHttpActionResult> Setup()
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             object result = null;
             await Task.Run(() =>
             {

@@ -30,7 +30,7 @@ namespace Architect.API.Insurance.Controllers
         [Route("Information")]
         public async Task<IHttpActionResult> Information([FromUri] int id)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Contracts.Policy.RiskView result = null;
             await Task.Run(() =>
             {
@@ -58,7 +58,7 @@ namespace Architect.API.Insurance.Controllers
                                                   int product = 0,
                                                   string status = "")
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             List<Contracts.Policy.PolicyView> result = null;
             await Task.Run(() =>
             {
@@ -76,7 +76,7 @@ namespace Architect.API.Insurance.Controllers
         [Route("get")]
         public async Task<IHttpActionResult> Get([FromUri] int id)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             Contracts.Policy.Risk result = null;
             await Task.Run(() =>
@@ -98,7 +98,7 @@ namespace Architect.API.Insurance.Controllers
         [Route("post")]
         public async Task<IHttpActionResult> Post([FromBody] Contracts.Policy.Risk item)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             string message = "";
             Contracts.Structure.IssuePolicyResult result = null;
 
@@ -174,7 +174,7 @@ namespace Architect.API.Insurance.Controllers
         [Route("put")]
         public async Task<IHttpActionResult> Put([FromBody] Contracts.Policy.Risk item)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Contracts.Structure.IssuePolicyResult result = null;
             string message = "";
             await Task.Run(() =>
@@ -230,7 +230,7 @@ namespace Architect.API.Insurance.Controllers
         [Route("Modify")]
         public async Task<IHttpActionResult> Modify([FromBody] Contracts.Policy.Risk item)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Contracts.Structure.IssuePolicyResult result = null;
             string message = "";
             await Task.Run(() =>
@@ -271,7 +271,7 @@ namespace Architect.API.Insurance.Controllers
         [Route("ChangeStatus")]
         public async Task<IHttpActionResult> ChangeStatus([FromBody] Contracts.Policy.RiskStatus item)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             List<Core.Contracts.General.Error> errors = null;
             string message = string.Empty;
 
@@ -307,7 +307,7 @@ namespace Architect.API.Insurance.Controllers
                                                                 [FromUri] int documentType,
                                                                 [FromUri] string documentNumber)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             Utilities.Contracts.LookUpValue result = null;
             await Task.Run(() =>
@@ -331,7 +331,7 @@ namespace Architect.API.Insurance.Controllers
         [Route("Loans")]
         public async Task<IHttpActionResult> Loans([FromUri] string documentNumber)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             List<Contracts.Policy.RuleLoans> result = null;
             await Task.Run(() =>
@@ -357,7 +357,7 @@ namespace Architect.API.Insurance.Controllers
         [Authorize(Roles = "Préstamos")]
         public async Task<IHttpActionResult> LoadLoans([FromUri] string fileName, [FromUri] string originalFileName)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             string message = string.Empty;
 
             await Task.Run(() =>
@@ -391,7 +391,7 @@ namespace Architect.API.Insurance.Controllers
         [Route("import")]
         public IHttpActionResult Import([FromUri] string excelFilename, [FromUri] string originalFileName, [FromUri] string specificaction)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Core.Contracts.General.GenericResponse result = Business.Policy.RiskImport.Import(HttpContext.Current.Server.MapPath(@"~\bin"),
                                                                                                 Path.Combine(HostingEnvironment.MapPath(ConfigurationManager.AppSettings["Files.Path"]), excelFilename),
                                                                                               originalFileName,
@@ -409,7 +409,7 @@ namespace Architect.API.Insurance.Controllers
         [Route("Behavior")]
         public async Task<IHttpActionResult> Behavior([FromBody] Contracts.Policy.Risk item)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Contracts.Structure.BehaviorResult result = null;
 
             await Task.Run(() =>

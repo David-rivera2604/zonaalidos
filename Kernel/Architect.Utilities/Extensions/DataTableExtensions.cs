@@ -16,7 +16,6 @@ namespace Architect.Utilities.Extensions
     {
         public static bool IsEmpty(this DataTable value)
         {
-            bool result = true;
             return !Information.IsNothing(value) && !Information.IsNothing(value.Rows) && value.Rows.Count > 0;
         }
 
@@ -142,7 +141,6 @@ namespace Architect.Utilities.Extensions
             // As Byte()
             var sb = new StringBuilder();
             int columnCount = 0;
-            int index = 0;
             if (columnList.IsEmpty())
             {
                 foreach (DataColumn colItem in dTable.Columns)

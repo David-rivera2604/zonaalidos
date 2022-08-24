@@ -29,7 +29,7 @@ namespace Architect.API.Tron.Controllers
         [ResponseType(typeof(List<Contracts.Siniestro.Purdy.Siniestro>))]
         public async Task<IHttpActionResult> Informacion([FromUri] DateTime startDate, [FromUri]  DateTime endDate)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Business.Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             List<Contracts.Siniestro.Purdy.Siniestro> result = null;
             await Task.Run(() =>
             {
