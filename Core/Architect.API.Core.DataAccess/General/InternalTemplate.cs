@@ -9,6 +9,12 @@ namespace Architect.API.Core.DataAccess.General
 {
     public sealed class InternalTemplate
     {
+        /// <summary>
+        /// Recupera una plantilla por medio de la clave de la misma para la compañía en tratamiento o para la compañía 0.
+        /// </summary>
+        /// <param name="companyId"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public static Contracts.General.InternalTemplate Retrieve(int companyId, string key)
         {
             Contracts.General.InternalTemplate result = new Contracts.General.InternalTemplate()
