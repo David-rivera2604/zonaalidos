@@ -10,7 +10,7 @@ namespace Architect.API.Tron.Contracts.Poliza
         public int NUM_CUOTA { get; set; }
 
         /// <summary>
-        ///
+        /// Número de recibo
         /// </summary>
         public int NUM_RECIBO { get; set; }
 

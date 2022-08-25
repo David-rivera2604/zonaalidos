@@ -917,6 +917,8 @@ app.ui = (function () {
                 $(`.role-${item}-enable`).prop("disabled", false);
                 $(`.role-${item}-${tenant}-visible`).removeClass('d-none');
                 $(`.role-${item}-${tenant}-enable`).prop("disabled", false);
+                $(`.role--${tenant}-visible`).removeClass('d-none');
+                $(`.role--${tenant}-enable`).prop("disabled", false);
             })
         },
         RequiredMark: function (ctrlId, add) {

@@ -172,6 +172,9 @@ app.BayerInclusion = (function () {
             case 1:
                 $('#VisualizationsEdtFormDraft').removeClass('d-none');
                 $('#VisualizationsEdtFormSave').removeClass('d-none');
+                if (localStorage.getItem('Tenant') === 'Bayer') {
+                    $('#DateEntryWork').prop("disabled", false);
+                }
                 break;
             case 2:
                 app.ui.DataEntryBehavior('#VisualizationsEdtForm', 'disabled');
