@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Aliados.Monge.Domain.Poliza.Cancelacion
 {
-    public class RespuestaDetalle
+    public class RespuestaCancelacionDetalle
     {
         public string num_poliza_cancelada { get; set; }
     }

@@ -415,4 +415,5 @@
 1.6.13  24/08/2022 Aliados. Consulta de avisos de cobro. Se habilita la posibilidad de exportar a nivel de las sub-consultas.
                    Aliados. Al emitir la póliza, se debe retornar el número de recibo.
                    Caturix. La fecha de Ingreso a trabajar, debe estar deshabilitado para el empleado y habitado solo para el revisor.
+                   Aliados. Se prepara script para poder actualizar todos los template usado para los correos.
         

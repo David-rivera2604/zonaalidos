@@ -24,7 +24,7 @@ namespace Aliados.Monge.WebApi.Controllers
         [HttpPost]
         [Route("Token")]
         [AllowAnonymous]
-        [ResponseType(typeof(Domain.Seguridad.Respuesta))]
+        [ResponseType(typeof(Domain.Seguridad.RespuestaSeguridad))]
         public async Task<IHttpActionResult> Token()
         {
             string clienteID = string.Empty;
@@ -39,7 +39,7 @@ namespace Aliados.Monge.WebApi.Controllers
             if (values != null && values.Count() > 0)
                 secretID = values.FirstOrDefault();
  
-            Domain.Seguridad.Respuesta x1 = Application.Seguridad.SeguridadHandler.Autorizacion(clienteID, secretID).Result;
+            Domain.Seguridad.RespuestaSeguridad x1 = Application.Seguridad.SeguridadHandler.Autorizacion(clienteID, secretID).Result;
 
             if (x1!= null)
             {

@@ -9,7 +9,7 @@ namespace Aliados.Monge.Domain.Seguridad
     /// <summary>
     /// Estructura de Respuesta – Generación Token
     /// </summary>
-    public sealed class Respuesta
+    public sealed class RespuestaSeguridad
     {
         /// <summary>
         /// Token de acceso

@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aliados.Monge.Domain.Poliza.Consulta
+namespace Aliados.Monge.Domain.Poliza.Cancelacion
 {
 
-    public class Respuesta : Comun.RespuestaBase
+    public class RespuestaCancelacion : Comun.RespuestaBase
     {
         /// <summary>
         /// Cuerpo y detalle de la respuesta
         /// </summary>
-        public RespuestaDetalle message_body { get; set; }
+        public RespuestaCancelacionDetalle message_body { get; set; }
     }
 }
