@@ -1,9 +1,6 @@
 ﻿using Microsoft.Web.Http;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -38,17 +35,18 @@ namespace Aliados.Monge.WebApi.Controllers
             Request.Headers.TryGetValues("secretID", out values);
             if (values != null && values.Count() > 0)
                 secretID = values.FirstOrDefault();
- 
+
             Domain.Seguridad.RespuestaSeguridad x1 = Application.Seguridad.SeguridadHandler.Autorizacion(clienteID, secretID).Result;
 
-            if (x1!= null)
+            if (x1 != null)
             {
                 return Ok(x1);
-            } else
+            }
+            else
             {
                 return Unauthorized();
             }
-            
+
         }
     }
 }

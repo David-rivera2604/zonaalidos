@@ -55,9 +55,25 @@
     <Compile Include="Seguridad\SeguridadHandler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Architect.API.Core.Business\Architect.API.Core.Business.csproj">
+      <Project>{579105b3-776b-4094-a301-87a9c42962c5}</Project>
+      <Name>Architect.API.Core.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Architect.API.Core.Contracts\Architect.API.Core.Contracts.csproj">
+      <Project>{29b21bef-8c87-4a9d-8b37-fecc57cd03c7}</Project>
+      <Name>Architect.API.Core.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Kernel\Architect.Utilities\Architect.Utilities.csproj">
       <Project>{e8317ab3-7807-4fcf-8520-b80340b4eb7d}</Project>
       <Name>Architect.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tron\Architect.API.Tron.Business\Architect.API.Tron.Business.csproj">
+      <Project>{6a906932-7049-4dbd-88f6-2b3f5b3b0f94}</Project>
+      <Name>Architect.API.Tron.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tron\Architect.API.Tron.Contracts\Architect.API.Tron.Contracts.csproj">
+      <Project>{e45fc69a-0702-4a98-885e-f43dd79a424e}</Project>
+      <Name>Architect.API.Tron.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Aliados.Monge.Domain\Aliados.Monge.Domain.csproj">
       <Project>{4adbd7d8-8677-4543-b525-2f99e815faf1}</Project>
