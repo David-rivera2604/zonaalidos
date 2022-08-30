@@ -48,15 +48,15 @@ namespace Aliados.Monge.Application.Poliza
             return result;
         }
 
-        public static async Task<Domain.Poliza.Documentos.Respuesta> Documentos(Domain.Poliza.Documentos.Documentos documentos)
+        public static async Task<Domain.Poliza.Documentos.RespuestaDocumentos> Documentos(Domain.Poliza.Documentos.Documentos documentos)
         {
-            Domain.Poliza.Documentos.Respuesta result = new Domain.Poliza.Documentos.Respuesta()
+            Domain.Poliza.Documentos.RespuestaDocumentos result = new Domain.Poliza.Documentos.RespuestaDocumentos()
             {
                 message_status = 200,
                 message_text = "Envio Exitoso de documentos",
                 message_id = "5847845734-3738473432-47847263",
                 document_id = documentos.document_id,
-                message_body = new Domain.Poliza.Documentos.RespuestaDetalle()
+                message_body = new Domain.Poliza.Documentos.RespuestaDocumentosDetalle()
                 {
                     cantidad_documentos_recibidos = 1
                 }
@@ -65,15 +65,15 @@ namespace Aliados.Monge.Application.Poliza
             return result;
         }
 
-        public static async Task<Domain.Poliza.Certificado.Respuesta> Certificado(Domain.Poliza.Certificado.Certificado certificado)
+        public static async Task<Domain.Poliza.Certificado.RespuestaCertificado> Certificado(Domain.Poliza.Certificado.Certificado certificado)
         {
-            Domain.Poliza.Certificado.Respuesta result = new Domain.Poliza.Certificado.Respuesta()
+            Domain.Poliza.Certificado.RespuestaCertificado result = new Domain.Poliza.Certificado.RespuestaCertificado()
             {
                 message_status = 200,
                 message_text = "Generacion Exitosa de Certificado",
                 message_id = "5847845734-3738473432-47847263",
                 document_id = certificado.document_id,
-                message_body = new Domain.Poliza.Certificado.RespuestaDetalle()
+                message_body = new Domain.Poliza.Certificado.RespuestaCertificadoDetalle()
                 {
                     certificado = "BASE64"
                 }
@@ -81,15 +81,15 @@ namespace Aliados.Monge.Application.Poliza
             return result;
         }
 
-        public static async Task<Domain.Poliza.Cancelacion.Respuesta> Cancelacion(Domain.Poliza.Cancelacion.SolicitudDeCancelacion solicitud)
+        public static async Task<Domain.Poliza.Cancelacion.RespuestaCancelacion> Cancelacion(Domain.Poliza.Cancelacion.SolicitudDeCancelacion solicitud)
         {
-            Domain.Poliza.Cancelacion.Respuesta result = new Domain.Poliza.Cancelacion.Respuesta()
+            Domain.Poliza.Cancelacion.RespuestaCancelacion result = new Domain.Poliza.Cancelacion.RespuestaCancelacion()
             {
                 message_status = 200,
                 message_text = "Cancelacion Exitosa de Poliza",
                 message_id = "5847845734-3738473432-47847263",
                 document_id = solicitud.document_id,
-                message_body = new Domain.Poliza.Cancelacion.RespuestaDetalle()
+                message_body = new Domain.Poliza.Cancelacion.RespuestaCancelacionDetalle()
                 {
                     num_poliza_cancelada = "4412210103630"
                 }
@@ -97,15 +97,15 @@ namespace Aliados.Monge.Application.Poliza
             return result;
         }
 
-        public static async Task<Domain.Poliza.Consulta.Respuesta> Consulta(Domain.Poliza.Consulta.Solicitud solicitud)
+        public static async Task<Domain.Poliza.Consulta.RespuestaConsulta> Consulta(Domain.Poliza.Consulta.Solicitud solicitud)
         {
-            Domain.Poliza.Consulta.Respuesta result = new Domain.Poliza.Consulta.Respuesta()
+            Domain.Poliza.Consulta.RespuestaConsulta result = new Domain.Poliza.Consulta.RespuestaConsulta()
             {
                 message_status = 200,
                 message_text = "Consulta Exitosa",
                 message_id = "5847845734-3738473432-47847263",
                 document_id = solicitud.document_id,
-                message_body = new Domain.Poliza.Consulta.RespuestaDetalle()
+                message_body = new Domain.Poliza.Consulta.RespuestaConsultaDetalle()
                 {
                 }
             };

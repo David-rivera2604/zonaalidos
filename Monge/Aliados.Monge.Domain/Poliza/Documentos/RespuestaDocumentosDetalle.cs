@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Aliados.Monge.Domain.Poliza.Documentos
 {
-    public class RespuestaDetalle
+    public class RespuestaDocumentosDetalle
     {
         public int cantidad_documentos_recibidos { get; set; }
     }

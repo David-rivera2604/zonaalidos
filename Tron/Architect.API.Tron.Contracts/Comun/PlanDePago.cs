@@ -13,6 +13,10 @@ namespace Architect.API.Tron.Contracts.Comun
         /// </summary>
         [DataMember(), JsonProperty()] public int cuota { get; set; }
         /// <summary>
+        /// Número de recibo
+        /// </summary>
+        public int recibo { get; set; }
+        /// <summary>
         /// Fecha desde.
         /// </summary>
         [DataMember(), JsonProperty()] public DateTime fechadesde { get; set; }

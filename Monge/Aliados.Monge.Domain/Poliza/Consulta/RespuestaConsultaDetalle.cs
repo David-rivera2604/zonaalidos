@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aliados.Monge.Domain.Poliza.Certificado
+namespace Aliados.Monge.Domain.Poliza.Consulta
 {
-    public class RespuestaDetalle
+    public class RespuestaConsultaDetalle
     {
-        public string certificado { get; set; }
+
     }
 }

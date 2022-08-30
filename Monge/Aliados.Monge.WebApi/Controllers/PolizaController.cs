@@ -33,7 +33,7 @@ namespace Aliados.Monge.WebApi.Controllers
 
         [HttpPost]
         [Route("Documentos")]
-        [ResponseType(typeof(Domain.Poliza.Documentos.Respuesta))]
+        [ResponseType(typeof(Domain.Poliza.Documentos.RespuestaDocumentos))]
         public async Task<IHttpActionResult> Documentos(Domain.Poliza.Documentos.Documentos documentos)
         {
             Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info();
@@ -42,7 +42,7 @@ namespace Aliados.Monge.WebApi.Controllers
 
         [HttpPost]
         [Route("Certificado")]
-        [ResponseType(typeof(Domain.Poliza.Certificado.Respuesta))]
+        [ResponseType(typeof(Domain.Poliza.Certificado.RespuestaCertificado))]
         public async Task<IHttpActionResult> Certificado(Domain.Poliza.Certificado.Certificado certificado)
         {
             Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info();
@@ -51,7 +51,7 @@ namespace Aliados.Monge.WebApi.Controllers
 
         [HttpPost]
         [Route("Cancelacion")]
-        [ResponseType(typeof(Domain.Poliza.Cancelacion.Respuesta))]
+        [ResponseType(typeof(Domain.Poliza.Cancelacion.RespuestaCancelacion))]
         public async Task<IHttpActionResult> Cancelacion(Domain.Poliza.Cancelacion.SolicitudDeCancelacion solicitud)
         {
             Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info();
@@ -60,7 +60,7 @@ namespace Aliados.Monge.WebApi.Controllers
 
         [HttpPost]
         [Route("Consulta")]
-        [ResponseType(typeof(Domain.Poliza.Consulta.Respuesta))]
+        [ResponseType(typeof(Domain.Poliza.Consulta.RespuestaConsulta))]
         public async Task<IHttpActionResult> Consulta(Domain.Poliza.Consulta.Solicitud solicitud)
         {
             Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info();
