@@ -5,6 +5,8 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>C:\publish\viajero</_PublishTargetUrl>
+    <History>True|2022-08-31T18:39:52.0783144Z;True|2022-08-31T12:39:17.3135817-06:00;</History>
+    <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
     <File Include="Areas/HelpPage/HelpPage.css">
@@ -71,34 +73,34 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>08/22/2022 13:02:56</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.Application.dll">
-      <publishTime>08/31/2022 08:05:31</publishTime>
+      <publishTime>08/31/2022 12:39:47</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.Application.dll.config">
       <publishTime>08/31/2022 07:59:03</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.Application.pdb">
-      <publishTime>08/31/2022 08:05:31</publishTime>
+      <publishTime>08/31/2022 12:39:47</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.dll">
-      <publishTime>08/31/2022 08:05:32</publishTime>
+      <publishTime>08/31/2022 12:39:48</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.Domain.dll">
-      <publishTime>08/31/2022 08:05:27</publishTime>
+      <publishTime>08/31/2022 12:39:10</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.Domain.pdb">
-      <publishTime>08/31/2022 08:05:27</publishTime>
+      <publishTime>08/31/2022 12:39:10</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.pdb">
-      <publishTime>08/31/2022 08:05:32</publishTime>
+      <publishTime>08/31/2022 12:39:48</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.WebApi.dll">
-      <publishTime>08/31/2022 08:05:32</publishTime>
+      <publishTime>08/31/2022 12:39:48</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.WebApi.dll.config">
       <publishTime>08/31/2022 07:59:03</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.WebApi.pdb">
-      <publishTime>08/31/2022 08:05:32</publishTime>
+      <publishTime>08/31/2022 12:39:48</publishTime>
     </File>
     <File Include="bin/Antlr3.Runtime.dll">
       <publishTime>09/10/2013 10:29:20</publishTime>
@@ -107,55 +109,55 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>09/10/2013 10:29:20</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Business.dll">
-      <publishTime>08/31/2022 08:05:29</publishTime>
+      <publishTime>08/31/2022 12:39:46</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Business.dll.config">
       <publishTime>08/31/2022 07:59:03</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Business.pdb">
-      <publishTime>08/31/2022 08:05:29</publishTime>
+      <publishTime>08/31/2022 12:39:46</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Contracts.dll">
-      <publishTime>08/31/2022 08:05:28</publishTime>
+      <publishTime>08/31/2022 12:39:11</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Contracts.dll.config">
       <publishTime>07/19/2022 07:41:08</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Contracts.pdb">
-      <publishTime>08/31/2022 08:05:28</publishTime>
+      <publishTime>08/31/2022 12:39:11</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.DataAccess.dll">
-      <publishTime>08/31/2022 08:05:28</publishTime>
+      <publishTime>08/31/2022 12:39:45</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.DataAccess.dll.config">
       <publishTime>08/08/2022 13:05:57</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.DataAccess.pdb">
-      <publishTime>08/31/2022 08:05:28</publishTime>
+      <publishTime>08/31/2022 12:39:45</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Security.dll">
-      <publishTime>08/31/2022 08:05:28</publishTime>
+      <publishTime>08/31/2022 12:39:45</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Security.dll.config">
       <publishTime>08/31/2022 07:59:00</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Security.pdb">
-      <publishTime>08/31/2022 08:05:28</publishTime>
+      <publishTime>08/31/2022 12:39:45</publishTime>
     </File>
     <File Include="bin/Architect.DataFactory.dll">
-      <publishTime>08/31/2022 08:05:27</publishTime>
+      <publishTime>08/31/2022 12:39:11</publishTime>
     </File>
     <File Include="bin/Architect.DataFactory.dll.config">
       <publishTime>08/08/2022 13:05:56</publishTime>
     </File>
     <File Include="bin/Architect.DataFactory.pdb">
-      <publishTime>08/31/2022 08:05:27</publishTime>
+      <publishTime>08/31/2022 12:39:11</publishTime>
     </File>
     <File Include="bin/Architect.Utilities.dll">
-      <publishTime>08/31/2022 08:05:27</publishTime>
+      <publishTime>08/31/2022 12:39:10</publishTime>
     </File>
     <File Include="bin/Architect.Utilities.pdb">
-      <publishTime>08/31/2022 08:05:27</publishTime>
+      <publishTime>08/31/2022 12:39:10</publishTime>
     </File>
     <File Include="bin/ca/Hangfire.Core.resources.dll">
       <publishTime>08/19/2022 01:09:44</publishTime>

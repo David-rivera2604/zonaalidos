@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Aliados.Monge.Domain.Seguridad
 {
     /// <summary>
-    /// Estructura de Respuesta – Generación Token
+    /// Información de acceso.
     /// </summary>
     public sealed class RespuestaSeguridad
     {

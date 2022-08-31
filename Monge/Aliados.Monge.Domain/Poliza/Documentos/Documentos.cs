@@ -6,19 +6,21 @@ using System.Threading.Tasks;
 
 namespace Aliados.Monge.Domain.Poliza.Documentos
 {
-
+    /// <summary>
+    /// Documentos a ser asociados a una póliza.
+    /// </summary>
     public class Documentos
     {
         /// <summary>
-        /// identificador único de MONGE enviado en la solicitud
+        /// Identificador único de la solicitud.
         /// </summary>
         public string document_id { get; set; }
         /// <summary>
-        /// número de póliza que se relacionan los documentos a enviar
+        /// Número de póliza que se relaciona con los documentos.
         /// </summary>
         public string num_poliza { get; set; }
         /// <summary>
-        /// arreglo de documentos a enviar
+        /// Lista de documentos.
         /// </summary>
         public Documento[] documentos { get; set; }
     }

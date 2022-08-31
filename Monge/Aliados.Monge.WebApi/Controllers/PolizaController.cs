@@ -20,7 +20,7 @@ namespace Aliados.Monge.WebApi.Controllers
     public class PolizaController : ApiController
     {
         /// <summary>
-        /// Método que realizara la emisión de la póliza en MAPFRE, se enviara datos generales y datos variables según el producto.
+        /// Emite una póliza.
         /// </summary>
         [HttpPost]
         [Route("Emision")]
@@ -31,6 +31,9 @@ namespace Aliados.Monge.WebApi.Controllers
             return Ok(Application.Poliza.PolizaHandler.Emision(risk).Result);
         }
 
+        /// <summary>
+        /// Recibe documentos a ser asociados a una póliza emitida.
+        /// </summary>
         [HttpPost]
         [Route("Documentos")]
         [ResponseType(typeof(Domain.Poliza.Documentos.RespuestaDocumentos))]
@@ -40,6 +43,9 @@ namespace Aliados.Monge.WebApi.Controllers
             return Ok(Application.Poliza.PolizaHandler.Documentos(documentos).Result);
         }
 
+        /// <summary>
+        /// Recuperar el certificado asociado a una póliza.
+        /// </summary>
         [HttpPost]
         [Route("Certificado")]
         [ResponseType(typeof(Domain.Poliza.Certificado.RespuestaCertificado))]
@@ -49,6 +55,9 @@ namespace Aliados.Monge.WebApi.Controllers
             return Ok(Application.Poliza.PolizaHandler.Certificado(certificado).Result);
         }
 
+        /// <summary>
+        /// Cancela o anula una póliza emitida.
+        /// </summary>
         [HttpPost]
         [Route("Cancelacion")]
         [ResponseType(typeof(Domain.Poliza.Cancelacion.RespuestaCancelacion))]
@@ -58,6 +67,9 @@ namespace Aliados.Monge.WebApi.Controllers
             return Ok(Application.Poliza.PolizaHandler.Cancelacion(solicitud).Result);
         }
 
+        /// <summary>
+        /// Recupera el estado de una solicitud.
+        /// </summary>
         [HttpPost]
         [Route("Consulta")]
         [ResponseType(typeof(Domain.Poliza.Consulta.RespuestaConsulta))]

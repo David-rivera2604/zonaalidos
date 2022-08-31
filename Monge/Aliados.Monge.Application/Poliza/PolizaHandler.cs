@@ -13,14 +13,14 @@ namespace Aliados.Monge.Application.Poliza
         public static async Task<Domain.Poliza.Emision.Respuesta> Emision(Domain.Poliza.Emision.Poliza risk)
         {
             Domain.Poliza.Emision.Respuesta result;
-            if (risk.Document_id == "GMG-CR-12345")
+            if (risk.document_id == "GMG-CR-12345")
             {
                 result = new Domain.Poliza.Emision.Respuesta()
                 {
                     message_status = 200,
                     message_text = "Emision Exitosa",
                     message_id = Guid.NewGuid().ToString(),
-                    document_id = risk.Document_id,
+                    document_id = risk.document_id,
                     message_body = new Domain.Poliza.Emision.RespuestaDetalle()
                     {
                         num_poliza = "4412210103630",
@@ -56,7 +56,7 @@ namespace Aliados.Monge.Application.Poliza
                     message_status = 11,
                     message_text = "No existe tarifa para los datos colocados",
                     message_id = Guid.NewGuid().ToString(),
-                    document_id = risk.Document_id
+                    document_id = risk.document_id
                 };
             }
             return result;

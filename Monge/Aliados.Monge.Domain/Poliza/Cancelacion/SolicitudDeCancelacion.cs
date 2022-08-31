@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace Aliados.Monge.Domain.Poliza.Cancelacion
 {
-
+    /// <summary>
+    /// Datos necesarios para procesar una cancelación o anulación de una póliza emitida.
+    /// </summary>
     public class SolicitudDeCancelacion
     {
         /// <summary>
-        /// identificador único de MONGE enviado en la solicitud
+        /// Identificador único de la solicitud.
         /// </summary>
         public string document_id { get; set; }
         /// <summary>

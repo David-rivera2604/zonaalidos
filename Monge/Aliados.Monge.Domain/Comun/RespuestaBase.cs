@@ -17,11 +17,11 @@ namespace Aliados.Monge.Domain.Comun
         /// </summary>
         public string message_text { get; set; }
         /// <summary>
-        /// Identificador único en MAPRE de la solicitud
+        /// Identificador único de la respuesta.
         /// </summary>
         public string message_id { get; set; }
         /// <summary>
-        /// Identificador único de MONGE enviado en la solicitud
+        /// Identificador único de la solicitud.
         /// </summary>
         public string document_id { get; set; }
 

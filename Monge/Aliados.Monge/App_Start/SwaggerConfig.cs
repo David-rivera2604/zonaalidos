@@ -111,7 +111,7 @@ namespace Aliados.Monge
                         //
                         //c.IncludeXmlComments(GetXmlCommentsPath());
                         c.IncludeXmlComments($@"{System.AppDomain.CurrentDomain.BaseDirectory}\bin\Aliados.Monge.Domain.xml");
-                        c.IncludeXmlComments($@"{System.AppDomain.CurrentDomain.BaseDirectory}\bin\Aliados.Monge.Application.xml");
+                        c.IncludeXmlComments($@"{System.AppDomain.CurrentDomain.BaseDirectory}\bin\Aliados.Monge.WebApi.xml");
 
                         // Swashbuckle makes a best attempt at generating Swagger compliant JSON schemas for the various types
                         // exposed in your API. However, there may be occasions when more control of the output is needed.
