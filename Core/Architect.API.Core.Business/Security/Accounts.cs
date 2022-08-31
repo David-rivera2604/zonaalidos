@@ -279,26 +279,30 @@ namespace Architect.API.Core.Business.Security
                     }
                     else if (!bypass)
                     {
-                        track.TraceType = 3;
-                        result.Reason = "Clave invalida";
-                        user.FailedPasswordCount++;
-                        if (user.FailedPasswordCount > 3)
+                        if (!authenticationRequest.EmployeeMode)
                         {
-                            Random random = new Random();
-                            int timeValue = random.Next(3, 10);
+                            track.TraceType = 3;
+                            result.Reason = "Clave invalida";
 
-                            track.TraceType = 4;
-                            result.Reason = "La cuenta fue bloqueada por intentos fallidos";
-                            user.IsLockedOut = true;
-                            user.LockedOutDate = DateTime.Now.AddMinutes(timeValue);
-                            user.FailedPasswordCount = 0;
-                            API.Core.Business.General.Mail.SendByTemplate("Notify_AccountLocked", user.CompanyId, new { User = user, Request = authenticationRequest, LockedForMinute = timeValue }, new Dictionary<string, string> { { user.EMail, string.Empty } });
+                            user.FailedPasswordCount++;
+                            if (user.FailedPasswordCount > 3)
+                            {
+                                Random random = new Random();
+                                int timeValue = random.Next(3, 10);
+
+                                track.TraceType = 4;
+                                result.Reason = "La cuenta fue bloqueada por intentos fallidos";
+                                user.IsLockedOut = true;
+                                user.LockedOutDate = DateTime.Now.AddMinutes(timeValue);
+                                user.FailedPasswordCount = 0;
+                                API.Core.Business.General.Mail.SendByTemplate("Notify_AccountLocked", user.CompanyId, new { User = user, Request = authenticationRequest, LockedForMinute = timeValue }, new Dictionary<string, string> { { user.EMail, string.Empty } });
+                            }
+                            else
+                            {
+                                API.Core.Business.General.Mail.SendByTemplate("Notify_InvalidPassword", user.CompanyId, new { User = user, Request = authenticationRequest }, new Dictionary<string, string> { { user.EMail, string.Empty } });
+                            }
+                            DataAccess.Security.UserMember.InternalUpdate(user);
                         }
-                        else
-                        {
-                            API.Core.Business.General.Mail.SendByTemplate("Notify_InvalidPassword", user.CompanyId, new { User = user, Request = authenticationRequest }, new Dictionary<string, string> { { user.EMail, string.Empty } });
-                        }
-                        DataAccess.Security.UserMember.InternalUpdate(user);
                     }
                 }
                 else
