@@ -1748,12 +1748,13 @@ app.EmisionMapfreMas = (function () {
                         xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
                     }
                 }).done(function (data, textStatus, jqXHR) {
-
+                    let oldId = rowDocumentosrequeridos.documentosrequeridosId;
+                    rowDocumentosrequeridos.documentosrequeridosId = data[0].Id;
                     rowDocumentosrequeridos.DNombre = data[0].FileName;
                     rowDocumentosrequeridos.DStored = data[0].StoredFileName;
                     rowDocumentosrequeridos.DTamano = data[0].Size;
                     rowDocumentosrequeridos.DFecha = new Date();
-                    $('#documentosrequeridosTbl').bootstrapTable('updateByUniqueId', { id: rowDocumentosrequeridos.documentosrequeridosId, row: rowDocumentosrequeridos });
+                    $('#documentosrequeridosTbl').bootstrapTable('updateByUniqueId', { id: oldId, row: rowDocumentosrequeridos });
 
                 }).fail(function (jqXHR, textStatus, errorThrown) {
                     console.log("ERROR : ", jqXHR);
