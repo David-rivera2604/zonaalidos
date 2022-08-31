@@ -108,7 +108,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                         }
                     }
                 }
-
+                result.cod_fracc_pago = Architect.API.Tron.DataAccess.PorRamo.FrecuenciaDePagoPorContrato(1, cod_ramo, num_contrato, tokenInfo.AgentCode);
             }
 
             LookUps(result, values, data, tokenInfo);

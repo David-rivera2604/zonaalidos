@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Aliados.Monge.Domain.Poliza.Emision
 {
+    /// <summary>
+    /// Coberturas a incluir en la póliza
+    /// </summary>
     public class Cobertura
     {
         public int codigo { get; set; }

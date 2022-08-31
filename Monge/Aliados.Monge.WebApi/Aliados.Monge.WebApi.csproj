@@ -70,6 +70,10 @@
       <Project>{011157f4-8e96-46fe-8ff6-2b36ae9f20c9}</Project>
       <Name>Architect.DataFactory</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Kernel\Architect.Utilities\Architect.Utilities.csproj">
+      <Project>{e8317ab3-7807-4fcf-8520-b80340b4eb7d}</Project>
+      <Name>Architect.Utilities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Aliados.Monge.Application\Aliados.Monge.Application.csproj">
       <Project>{8f1d4348-314c-40a9-8b9d-c485e5819cae}</Project>
       <Name>Aliados.Monge.Application</Name>

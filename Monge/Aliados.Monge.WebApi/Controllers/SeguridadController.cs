@@ -1,4 +1,5 @@
-﻿using Microsoft.Web.Http;
+﻿using Architect.API.Core.Contracts.Security;
+using Microsoft.Web.Http;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace Aliados.Monge.WebApi.Controllers
     public class SeguridadController : ApiController
     {
         /// <summary>
-        /// Método que autentica y genera un token para poder utilizar los métodos disponibles, se colocara un cliente id para generar el token.
+        /// Permite validar las credenciales de acceso para la generar y generar un token que permite el consumo de las APIs.
         /// </summary>
         [HttpPost]
         [Route("Token")]
@@ -36,7 +37,10 @@ namespace Aliados.Monge.WebApi.Controllers
             if (values != null && values.Count() > 0)
                 secretID = values.FirstOrDefault();
 
-            Domain.Seguridad.RespuestaSeguridad x1 = Application.Seguridad.SeguridadHandler.Autorizacion(clienteID, secretID).Result;
+            string IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
+            string useragent = Request.Headers.UserAgent.ToString();
+
+            Domain.Seguridad.RespuestaSeguridad x1 = Application.Seguridad.SeguridadHandler.Autorizacion(clienteID, secretID, IPAddress, useragent).Result;
 
             if (x1 != null)
             {
@@ -48,5 +52,6 @@ namespace Aliados.Monge.WebApi.Controllers
             }
 
         }
+
     }
 }
