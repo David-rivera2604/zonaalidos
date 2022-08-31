@@ -9,8 +9,10 @@ namespace Architect.API.Tron.Contracts.Cotizacion
     {
 
         /// <summary>
-        /// Fin de vigencia.
+        /// Código de frecuencia de pago.
         /// </summary>
+        [DataMember(), JsonProperty()] public int cod_fracc_pago { get; set; }
+
         [DataMember(), JsonProperty()] public DateTime fec_vcto_poliza { get; set; }
 
         /// <summary>
