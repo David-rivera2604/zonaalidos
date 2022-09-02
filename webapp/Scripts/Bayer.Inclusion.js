@@ -112,7 +112,7 @@ app.BayerInclusion = (function () {
             ContinuityDate: app.ui.GetDateValue('#ContinuityDate')
         };
         if (localStorage.getItem('Tenant') === 'Bayer') {
-            _data.HasDigitalSignature = false;
+            //_data.HasDigitalSignature = false;
         }
         return _data;
     }
