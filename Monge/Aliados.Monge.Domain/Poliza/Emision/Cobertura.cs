@@ -11,7 +11,9 @@ namespace Aliados.Monge.Domain.Poliza.Emision
     /// </summary>
     public class Cobertura
     {
+        /// <summary>
+        /// Código de cobertura.
+        /// </summary>
         public int codigo { get; set; }
-        public string nombre { get; set; }
     }
 }

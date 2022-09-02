@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Aliados.Monge.Domain.Poliza.Cancelacion
 {
-
+    /// <summary>
+    /// Estructura de Respuesta - Cancelación Póliza
+    /// </summary>
     public class RespuestaCancelacion : Comun.RespuestaBase
     {
         /// <summary>

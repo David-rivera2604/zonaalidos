@@ -33,6 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,7 +50,6 @@
     <Compile Include="Poliza\Certificado\RespuestaCertificadoDetalle.cs" />
     <Compile Include="Comun\RespuestaBase.cs" />
     <Compile Include="Poliza\Consulta\RespuestaConsulta.cs" />
-    <Compile Include="Poliza\Consulta\RespuestaConsultaDetalle.cs" />
     <Compile Include="Poliza\Consulta\Solicitud.cs" />
     <Compile Include="Poliza\Documentos\Documentos.cs" />
     <Compile Include="Poliza\Documentos\Documento.cs" />
@@ -58,7 +58,6 @@
     <Compile Include="Poliza\Emision\Poliza.cs" />
     <Compile Include="Poliza\Emision\Cobertura.cs" />
     <Compile Include="Poliza\Emision\DatosGenerales.cs" />
-    <Compile Include="Poliza\Emision\DatosPais.cs" />
     <Compile Include="Poliza\Emision\DatosVariables.cs" />
     <Compile Include="Poliza\Emision\Domicilio.cs" />
     <Compile Include="Poliza\Emision\RespuestaDetalle.cs" />

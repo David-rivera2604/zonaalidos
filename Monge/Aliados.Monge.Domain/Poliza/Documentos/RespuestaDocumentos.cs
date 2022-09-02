@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Aliados.Monge.Domain.Poliza.Documentos
 {
-        public class RespuestaDocumentos : Comun.RespuestaBase
+    /// <summary>
+    /// Estructura de Respuesta - Envío Documentos
+    /// </summary>
+    public class RespuestaDocumentos : Comun.RespuestaBase
     {
         /// <summary>
         /// Cuerpo y detalle de la respuesta
