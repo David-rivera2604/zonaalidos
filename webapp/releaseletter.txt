@@ -411,4 +411,15 @@
                    MapfreMas. Ajuste al query para obtener frecuencia de pago para calcular datos económicos.
                    Credecoop. Diagnostico por falla al declinar una revisión.
                    MapfreMas. Manejo de decimales para el valor del vehículo.
- 1.6.12a 23/8/2022 Avisos de Cobro. En la consulta de recibos a incluir en un aviso se agrega los datos del tomador
+1.6.12a 23/08/2022 Avisos de Cobro. En la consulta de recibos a incluir en un aviso se agrega los datos del tomador
+1.6.13  24/08/2022 Aliados. Consulta de avisos de cobro. Se habilita la posibilidad de exportar a nivel de las sub-consultas.
+                   Aliados. Al emitir la póliza, se debe retornar el número de recibo.
+                   Caturix. La fecha de Ingreso a trabajar, debe estar deshabilitado para el empleado y habitado solo para el revisor.
+                   Aliados. Se prepara script para poder actualizar todos los template usado para los correos.
+1.6.14  31/08/2022 Bayer. Ocultar sección de firma digital.
+                   Bayer. Cambiar el titulo de la sección de Beneficiarios.
+                   Bayer. Cambiar el titulo de la sección de Dependientes.
+                   Bayer. Script para ajustar estado para solicitudes de bayer.
+                   Aliados. No se puede visualizar un documento recién cargado.
+                   Aliados. Fraccionamiento de pago por default según contrato.
+                   Aliados. Active Directory. Maneja posibles estado de una cuenta.

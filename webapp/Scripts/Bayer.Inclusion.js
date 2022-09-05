@@ -2,6 +2,7 @@
 
 app.BayerInclusion = (function () {
 
+    let timer;
     var id = 0;
     var mode = '';
 
@@ -10,6 +11,7 @@ app.BayerInclusion = (function () {
 
         if (localStorage.getItem('Tenant') === 'Bayer') {
             $('.tenant-bayer-visible').removeClass('d-none');
+            $('.HasDigitalSignature').addClass('d-none');
         }
 
         if (localStorage.getItem('Tenant') === 'Caturix') {
@@ -59,7 +61,7 @@ app.BayerInclusion = (function () {
     }
 
     function MapInputToObject() {
-        return {
+        let _data = {
             Id: id,
             Mode: mode,
             MainPolicyId: $('#MainPolicyId').val(),
@@ -109,6 +111,10 @@ app.BayerInclusion = (function () {
             HasDigitalSignature: $('input:radio[name=HasDigitalSignature]:checked').val() === "1",
             ContinuityDate: app.ui.GetDateValue('#ContinuityDate')
         };
+        if (localStorage.getItem('Tenant') === 'Bayer') {
+            _data.HasDigitalSignature = false;
+        }
+        return _data;
     }
 
     function MapObjectToInput(data) {
@@ -172,6 +178,9 @@ app.BayerInclusion = (function () {
             case 1:
                 $('#VisualizationsEdtFormDraft').removeClass('d-none');
                 $('#VisualizationsEdtFormSave').removeClass('d-none');
+                if (localStorage.getItem('Tenant') === 'Bayer') {
+                    $('#DateEntryWork').prop("disabled", false);
+                }
                 break;
             case 2:
                 app.ui.DataEntryBehavior('#VisualizationsEdtForm', 'disabled');
@@ -190,8 +199,12 @@ app.BayerInclusion = (function () {
                 let data = MapInputToObject();
                 if (data.HasDigitalSignature) {
                     $('#acceptedNotify').removeClass('d-none');
-                    $('#VisualizationsEdtFormUpLoad').removeClass('d-none');
                     $('#print').removeClass('d-none');
+                    app.BayerInclusion.timer = setInterval(function () {
+                        $('#VisualizationsEdtFormUpLoad').removeClass('d-none');
+                        $('#fileUpload').prop("disabled", false);
+                        clearInterval(app.BayerInclusion.timer);
+                    }, 500);
                 }
             case 32:
                 if (statusmode === 'Review') {

@@ -910,6 +910,15 @@ app.CotizacionMapfreMas = (function () {
                 if (settingData.PLAN_AUTO.length == 1) {
                     $("#COD_PLAN_AUTO").val(settingData.PLAN_AUTO[0].Code);
                 }
+
+                
+                if (settingData.cod_fracc_pago > 0) {
+                    $('#cod_fracc_pago').val(settingData.cod_fracc_pago);  
+                    $('#cod_fracc_pago').prop('disabled', true);
+                } else {
+                    $('#cod_fracc_pago').prop('disabled', false);
+                }
+
                 if (callback !== undefined && callback !== null) {
                     callback();
                 }

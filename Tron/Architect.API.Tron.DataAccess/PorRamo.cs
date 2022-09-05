@@ -1,4 +1,5 @@
-﻿using Architect.DataFactory;
+﻿using Architect.API.Tron.Contracts.Integraciones.PanamaAsistencia;
+using Architect.DataFactory;
 using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
@@ -394,6 +395,28 @@ namespace Architect.API.Tron.DataAccess
             //                                .Query(null, "Tron");
 
             //currentConnection.Close();
+        }
+
+        /// </summary>
+        public static int FrecuenciaDePagoPorContrato(int cod_cia, int cod_ramo, int num_contrato, int cod_agt)
+        {
+            int result = 0;
+
+            Database.Select("SELECT cod_fracc_pago" +
+                             " FROM g2990000" +
+                            " WHERE cod_cia = :cod_cia" +
+                            "   AND cod_ramo = :cod_ramo" +
+                            "   AND num_contrato = :num_contrato" +
+                            "   AND cod_agt = :cod_agt")
+                    .AddParameter("cod_cia", Architect.DataFactory.Enumerations.DbType.Int32, 22, cod_cia)
+                    .AddParameter("cod_ramo", Architect.DataFactory.Enumerations.DbType.Int32, 22, cod_ramo)
+                    .AddParameter("num_contrato", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_contrato)
+                    .AddParameter("cod_agt", DbType.Decimal, 5, cod_agt)
+                    .Query("Tron", new Action<IDataReader>((reader) =>
+                    {
+                        result= reader.IntegerValue("cod_fracc_pago");
+                    }));
+            return result;
         }
 
     }

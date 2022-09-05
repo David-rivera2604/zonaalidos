@@ -21,7 +21,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Aliados.Monge.Application.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,8 +33,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.9\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.5.2.9\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
@@ -46,9 +56,25 @@
     <Compile Include="Seguridad\SeguridadHandler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Architect.API.Core.Business\Architect.API.Core.Business.csproj">
+      <Project>{579105b3-776b-4094-a301-87a9c42962c5}</Project>
+      <Name>Architect.API.Core.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Architect.API.Core.Contracts\Architect.API.Core.Contracts.csproj">
+      <Project>{29b21bef-8c87-4a9d-8b37-fecc57cd03c7}</Project>
+      <Name>Architect.API.Core.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Kernel\Architect.Utilities\Architect.Utilities.csproj">
       <Project>{e8317ab3-7807-4fcf-8520-b80340b4eb7d}</Project>
       <Name>Architect.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tron\Architect.API.Tron.Business\Architect.API.Tron.Business.csproj">
+      <Project>{6a906932-7049-4dbd-88f6-2b3f5b3b0f94}</Project>
+      <Name>Architect.API.Tron.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tron\Architect.API.Tron.Contracts\Architect.API.Tron.Contracts.csproj">
+      <Project>{e45fc69a-0702-4a98-885e-f43dd79a424e}</Project>
+      <Name>Architect.API.Tron.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Aliados.Monge.Domain\Aliados.Monge.Domain.csproj">
       <Project>{4adbd7d8-8677-4543-b525-2f99e815faf1}</Project>
@@ -59,6 +85,9 @@
       <Name>Aliados.Monge.Infrastructure.Data</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

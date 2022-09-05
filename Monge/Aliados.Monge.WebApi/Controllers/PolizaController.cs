@@ -20,7 +20,7 @@ namespace Aliados.Monge.WebApi.Controllers
     public class PolizaController : ApiController
     {
         /// <summary>
-        /// Método que realizara la emisión de la póliza en MAPFRE, se enviara datos generales y datos variables según el producto.
+        /// Emite una póliza.
         /// </summary>
         [HttpPost]
         [Route("Emision")]
@@ -31,36 +31,48 @@ namespace Aliados.Monge.WebApi.Controllers
             return Ok(Application.Poliza.PolizaHandler.Emision(risk).Result);
         }
 
+        /// <summary>
+        /// Recibe documentos a ser asociados a una póliza emitida.
+        /// </summary>
         [HttpPost]
         [Route("Documentos")]
-        [ResponseType(typeof(Domain.Poliza.Documentos.Respuesta))]
+        [ResponseType(typeof(Domain.Poliza.Documentos.RespuestaDocumentos))]
         public async Task<IHttpActionResult> Documentos(Domain.Poliza.Documentos.Documentos documentos)
         {
             Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info();
             return Ok(Application.Poliza.PolizaHandler.Documentos(documentos).Result);
         }
 
+        /// <summary>
+        /// Recuperar el certificado asociado a una póliza.
+        /// </summary>
         [HttpPost]
         [Route("Certificado")]
-        [ResponseType(typeof(Domain.Poliza.Certificado.Respuesta))]
+        [ResponseType(typeof(Domain.Poliza.Certificado.RespuestaCertificado))]
         public async Task<IHttpActionResult> Certificado(Domain.Poliza.Certificado.Certificado certificado)
         {
             Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info();
             return Ok(Application.Poliza.PolizaHandler.Certificado(certificado).Result);
         }
 
+        /// <summary>
+        /// Cancela o anula una póliza emitida.
+        /// </summary>
         [HttpPost]
         [Route("Cancelacion")]
-        [ResponseType(typeof(Domain.Poliza.Cancelacion.Respuesta))]
+        [ResponseType(typeof(Domain.Poliza.Cancelacion.RespuestaCancelacion))]
         public async Task<IHttpActionResult> Cancelacion(Domain.Poliza.Cancelacion.SolicitudDeCancelacion solicitud)
         {
             Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info();
             return Ok(Application.Poliza.PolizaHandler.Cancelacion(solicitud).Result);
         }
 
+        /// <summary>
+        /// Recupera el estado de una solicitud.
+        /// </summary>
         [HttpPost]
         [Route("Consulta")]
-        [ResponseType(typeof(Domain.Poliza.Consulta.Respuesta))]
+        [ResponseType(typeof(Domain.Poliza.Consulta.RespuestaConsulta))]
         public async Task<IHttpActionResult> Consulta(Domain.Poliza.Consulta.Solicitud solicitud)
         {
             Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info();

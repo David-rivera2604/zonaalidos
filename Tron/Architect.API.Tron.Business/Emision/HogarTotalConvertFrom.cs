@@ -59,6 +59,7 @@ namespace Architect.API.Tron.Business.Emision
                     quoteInfo.plandepago.Add(new Contracts.Comun.PlanDePago()
                     {
                         cuota = item.NUM_CUOTA,
+                        recibo = item.NUM_RECIBO,
                         fechadesde = item.FEC_EFEC_RECIBO,
                         fechahasta = item.FEC_VCTO_RECIBO,
                         primaneta = item.IMP_NETA,
