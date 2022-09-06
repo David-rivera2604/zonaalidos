@@ -423,5 +423,3 @@
                    Aliados. No se puede visualizar un documento recién cargado.
                    Aliados. Fraccionamiento de pago por default según contrato.
                    Aliados. Active Directory. Maneja posibles estado de una cuenta.
-1.6.15  06/09/2022 Proveedores. Actualizacion del listado Beneficios
-                   Proveedores. Manejo de texto descriptivo de pre autorizacion segun el rol Proveedores_Exclusivos
