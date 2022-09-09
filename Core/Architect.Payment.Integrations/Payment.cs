@@ -12,9 +12,9 @@ namespace Architect.Payment.Integrations
     public static class Payment
     {
 
-        public static string NotifySignature(Architect.Payment.Integrations.Contracts.NotifyRequest notify, int currency)
+        public static string NotifySignature(Architect.Payment.Integrations.Contracts.NotifyRequest notify, int currency, int settingId)
         {
-            return Architect.Payment.Integrations.Providers.Placetopay.Webcheckout.NotifySignature(notify, currency);
+            return Architect.Payment.Integrations.Providers.Placetopay.Webcheckout.NotifySignature(notify, currency, settingId);
 
         }
 
@@ -44,7 +44,7 @@ namespace Architect.Payment.Integrations
         /// <summary>
         /// Permite la creación de un sesión para realizar un pago.
         /// </summary>
-        public async static Task<Contracts.SessionInformation> NewSession(int companyId, int userId, int cod_agt, Contracts.PaymentInformation payInfo, string ipAddress, string userAgent)
+        public async static Task<Contracts.SessionInformation> NewSession(int companyId, int userId, int cod_agt, Contracts.PaymentInformation payInfo, string ipAddress, string userAgent, string userName)
         {
             Contracts.OnlinePayment track = Business.OnlinePayment.Create(companyId, userId, new Contracts.OnlinePayment()
             {
@@ -69,7 +69,7 @@ namespace Architect.Payment.Integrations
 
             payInfo.Reference = string.Format("{0}-{1}-{2}", payInfo.PolicyId, payInfo.BillNumber, track.Id);
 
-            Contracts.SessionInformation result = await Providers.Placetopay.Webcheckout.CreateRequest(payInfo, ipAddress, userAgent);
+            Contracts.SessionInformation result = await Providers.Placetopay.Webcheckout.CreateRequest(payInfo, ipAddress, userAgent, userName);
             result.Reference = payInfo.Reference;
 
             track.Reference = string.Format("{0}-{1}-{2}", payInfo.PolicyId, payInfo.BillNumber, track.Id);
@@ -122,7 +122,7 @@ namespace Architect.Payment.Integrations
             Architect.Payment.Integrations.Contracts.InformationRequest result;
             if (currentRecord != null)
             {
-                result = await Providers.Placetopay.Webcheckout.GetRequestInformation(currentRecord.RequestID, currentRecord.Currency);
+                result = await Providers.Placetopay.Webcheckout.GetRequestInformation(currentRecord.RequestID, currentRecord.Currency, currentRecord.SettingId);
                 result.OnlinePayment = currentRecord;
                 Utilities.Log.WarningLog("Payment.VerifyUpdateStatus", string.Format("requestId={0}, currency={1}, currentStatus={2}, newStatus={3}, recibo={4}", currentRecord.RequestID, currentRecord.Currency, currentRecord.ProviderStatus, result.status, currentRecord.BillNumber), "payment");
 

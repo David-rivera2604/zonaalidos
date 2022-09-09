@@ -45,12 +45,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Business\OnlinePayment.cs" />
+    <Compile Include="Business\PaymentSettings.cs" />
     <Compile Include="Contracts\InformationRequest.cs" />
     <Compile Include="Contracts\NotifyRequest.cs" />
     <Compile Include="Contracts\OnlinePayment.cs" />
     <Compile Include="Contracts\PaymentInformation.cs" />
+    <Compile Include="Contracts\PaymentSettings.cs" />
     <Compile Include="Contracts\SessionInformation.cs" />
     <Compile Include="DataAccess\OnlinePayment.cs" />
+    <Compile Include="DataAccess\PaymentSettings.cs" />
     <Compile Include="Payment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\Placetopay\Contracts\AmountConversion.cs" />

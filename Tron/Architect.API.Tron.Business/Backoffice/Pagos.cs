@@ -79,7 +79,7 @@ namespace Architect.API.Tron.Business.Backoffice
                 Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveByRequestID(Convert.ToInt64(notify.requestId));
                 if (currentRecord != null)
                 {
-                    string signature = Payment.Integrations.Payment.NotifySignature(notify, currentRecord.Currency);
+                    string signature = Payment.Integrations.Payment.NotifySignature(notify, currentRecord.Currency, currentRecord.SettingId);
 
                     if (signature == notify.signature)
                     {
@@ -115,7 +115,7 @@ namespace Architect.API.Tron.Business.Backoffice
                         Currency = recibo.COD_MON.ToString(),
                         Amount = recibo.IMP_RECIBO
                     };
-                    session = await Payment.Integrations.Payment.NewSession(tokenInfo.CompanyId, tokenInfo.UserId, tokenInfo.AgentCode, payInfo, ipAddress, userAgent);
+                    session = await Payment.Integrations.Payment.NewSession(tokenInfo.CompanyId, tokenInfo.UserId, tokenInfo.AgentCode, payInfo, ipAddress, userAgent, tokenInfo.UserName);
                 }
                 else
                 {
