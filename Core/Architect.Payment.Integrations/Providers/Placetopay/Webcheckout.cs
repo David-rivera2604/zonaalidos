@@ -31,13 +31,13 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
 
         public static string NotifySignature(Architect.Payment.Integrations.Contracts.NotifyRequest notify, int currency, int settingId)
         {
-            return ByteArrayToString(Sha1(notify.requestId + notify.status.status + notify.status.date + SecretKey(string.Empty,CurrencyConvert(currency.ToString()), settingId)));
+            return ByteArrayToString(Sha1(notify.requestId + notify.status.status + notify.status.date + SecretKey(0,CurrencyConvert(currency.ToString()), settingId)));
         }
 
         /// <summary>
         /// Solicita la creación de la sesión retorna el identificador y la URL de procesamiento.
         /// </summary>
-        public async static Task<Integrations.Contracts.SessionInformation> CreateRequest(Integrations.Contracts.PaymentInformation payInfo, string ipAddress, string userAgent, string userName)
+        public async static Task<Integrations.Contracts.SessionInformation> CreateRequest(Integrations.Contracts.PaymentInformation payInfo, string ipAddress, string userAgent, int userId)
         {
             Contracts.SessionResponse session;
             string currency = CurrencyConvert(payInfo.Currency.ToString());
@@ -74,7 +74,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
                 userAgent = userAgent,
                 paymentMethod = null,
                 locale = "es_CR",
-                auth = BuildAuth(userName, currency, 0)
+                auth = BuildAuth(userId, currency, 0)
             };
 
             var data = new StringContent(JsonConvert.SerializeObject(sessionRequest), Encoding.UTF8, "application/json");
@@ -103,7 +103,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
                 Reason = session.status.reason,
                 RequestId = session.requestId,
                 ProcessUrl = session.processUrl,
-                SettingId = Business.PaymentSettings.Retrieve(userName, currency).Id,
+                SettingId = Business.PaymentSettings.Retrieve(userId, currency).Id,
                 rawData = resultResponse
             };
         }
@@ -115,7 +115,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
         {
             Architect.Payment.Integrations.Contracts.InformationRequest result = null;
             string resultResponse = string.Empty;
-            string json = JsonConvert.SerializeObject(new { auth = BuildAuth(string.Empty, CurrencyConvert(currency.ToString()), settingId) });
+            string json = JsonConvert.SerializeObject(new { auth = BuildAuth(0, CurrencyConvert(currency.ToString()), settingId) });
             var data = new StringContent(json, Encoding.UTF8, "application/json");
             HttpClient client = new HttpClient() { Timeout = new TimeSpan(0, 0, 2) };
             var response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("Payment.Placetopay.PaymentUrl") + "api/session/" + requestId.ToString(), data);
@@ -174,7 +174,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
             return result;
         }
 
-        public static string IdentificationTypeConvert(string identificationType)
+        internal static string IdentificationTypeConvert(string identificationType)
         {
             string type = string.Empty;
 
@@ -248,14 +248,14 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
             return result;
         }
 
-        internal static string Login(string userName, string currency, int settingId)
+        internal static string Login(int userId, string currency, int settingId)
         {
 
             Integrations.Contracts.PaymentSettings setting = null;
 
             if (settingId == 0)
             {
-                setting = Business.PaymentSettings.Retrieve(userName, currency);
+                setting = Business.PaymentSettings.Retrieve(userId, currency);
             }
             else
             {
@@ -270,14 +270,14 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
             return login;
         }
 
-        internal static string SecretKey(string userName, string currency, int settingId)
+        internal static string SecretKey(int userId, string currency, int settingId)
         {
 
             Integrations.Contracts.PaymentSettings setting;
 
             if (settingId == 0)
             {
-                setting = Business.PaymentSettings.Retrieve(userName, currency);
+                setting = Business.PaymentSettings.Retrieve(userId, currency);
             }
             else
             {
@@ -300,15 +300,15 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
             return hex.ToString();
         }
 
-        internal static Contracts.Auth BuildAuth(string userName, string currency, int settingId)
+        internal static Contracts.Auth BuildAuth(int userId, string currency, int settingId)
         {
             string seed = DateTime.Now.ToString("yyyy-MM-ddTHH\\:mm\\:sszzz");
             string nonceRaw = Guid.NewGuid().ToString() + DateTime.Now.ToString("yyyyMMddHHmmsszzz");
 
             return new Contracts.Auth()
             {
-                login = Login(userName, currency, settingId),
-                tranKey = Convert.ToBase64String(Sha1(nonceRaw + seed + SecretKey(userName, currency, settingId))),
+                login = Login(userId, currency, settingId),
+                tranKey = Convert.ToBase64String(Sha1(nonceRaw + seed + SecretKey(userId, currency, settingId))),
                 nonce = Convert.ToBase64String(Encoding.ASCII.GetBytes(nonceRaw)),
                 seed = seed
             };

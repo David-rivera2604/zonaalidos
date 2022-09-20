@@ -208,6 +208,7 @@ namespace Architect.API.Insurance.Business.Bayer
             if (risk.IsNotEmpty())
             {
                 result = Convertions.RiskToInclusion(risk);
+                result.CompanyId = tokenInfo.CompanyId;
                 if (risk.PrimaryInsured.IsNotEmpty())
                 {
                     result = Convertions.PrimaryInsuredToInclusion(risk, result);

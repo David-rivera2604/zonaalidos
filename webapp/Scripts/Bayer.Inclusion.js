@@ -114,6 +114,16 @@ app.BayerInclusion = (function () {
         if (localStorage.getItem('Tenant') === 'Bayer') {
             //_data.HasDigitalSignature = false;
         }
+        if (localStorage.getItem('Tenant') === 'Caturix') {
+            switch (_data.IsHealth) {
+                case 'A':
+                    _data.InsuredAmount = 100000;
+                    break;
+                case 'B':
+                    _data.InsuredAmount = 150000;
+                    break;
+            }
+        }
         return _data;
     }
 
@@ -469,6 +479,16 @@ app.BayerInclusion = (function () {
             event.preventDefault();
             app.core.Get(app.setting.apipath + 'v1/Inclusion/bayer/' + id)
                 .done(function (data) {
+                    if (localStorage.getItem('Tenant') === 'Caturix') {
+                        switch (data.IsHealth) {
+                            case 'A':
+                                data.InsuredAmount = 100000;
+                                break;
+                            case 'B':
+                                data.InsuredAmount = 150000;
+                                break;
+                        }
+                    }
                     var urlServer = app.setting.apibase + '/AliadoServReports/api/Report/Build';
                     var data2 = {
                         Source: JSON.stringify(data),
