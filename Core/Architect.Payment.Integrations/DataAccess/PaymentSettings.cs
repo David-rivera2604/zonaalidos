@@ -19,14 +19,14 @@ namespace Architect.Payment.Integrations.DataAccess
         public static List<Contracts.PaymentSettings> RetrieveAll(IDbConnection connection = null)
         {
             List<Contracts.PaymentSettings> result = new List<Contracts.PaymentSettings>();
-            Database.Select("SELECT Id, UserName, Currency, ClientId, SecretKey " +
+            Database.Select("SELECT Id, UserId, Currency, ClientId, SecretKey " +
                               "FROM PaymentSettings")
                         .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
                         {
                             result.Add(new Contracts.PaymentSettings()
                             {
                                 Id = reader.IntegerValue("Id"),
-                                UserName = reader.StringValue("UserName"),
+                                UserId = reader.IntegerValue("UserId"),
                                 Currency = reader.IntegerValue("Currency"),
                                 ClientId = reader.StringValue("ClientId"),
                                 SecretKey = reader.StringValue("SecretKey")

@@ -12,7 +12,7 @@ namespace Architect.Payment.Integrations.Business
     public static partial class PaymentSettings
     {
         /// <summary>
-        /// Recupera una configuración asociada a un username.
+        /// Recupera una configuración asociada a un userId.
         /// </summary>
         public static Contracts.PaymentSettings Retrieve(int userId, string currency)
         {
@@ -21,7 +21,7 @@ namespace Architect.Payment.Integrations.Business
             int current = currency == "CRC" ? 1 : 2;
             if (paymentSettings != null)
             {
-                result = paymentSettings.Where(r => r.UserName == userId.ToString() && r.Currency == current).FirstOrDefault();
+                result = paymentSettings.Where(r => r.UserId == userId && r.Currency == current).FirstOrDefault();
             }
             if (result == null)
             {

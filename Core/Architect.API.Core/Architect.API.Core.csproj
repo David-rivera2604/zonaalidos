@@ -118,6 +118,7 @@
     <Compile Include="Controllers\LookupController.cs" />
     <Compile Include="Controllers\LookupMasterController.cs" />
     <Compile Include="Controllers\NavigationController.cs" />
+    <Compile Include="Controllers\PaymentSettingsController.cs" />
     <Compile Include="Controllers\ProcessCaseController.cs" />
     <Compile Include="Controllers\ProcessSpecFlowController.cs" />
     <Compile Include="Controllers\ProcessSpecLinkController.cs" />

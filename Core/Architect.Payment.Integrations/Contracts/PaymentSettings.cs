@@ -16,7 +16,11 @@ namespace Architect.Payment.Integrations.Contracts
         /// <summary>
         /// Nombre Usuario.
         /// </summary>
-        public string UserName { get; set; }
+        public int UserId { get; set; }
+        /// <summary>
+        /// Descripción para nombre usuario.
+        /// </summary>
+        public string UserIdDesc { get; set; }
         /// <summary>
         /// Moneda.
         /// </summary>

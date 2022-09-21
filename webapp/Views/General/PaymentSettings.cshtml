@@ -1,0 +1,144 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<!-- PaymentSettings -->
+<div class="ibox">
+    <div class="ibox-title">
+        <h5>Acceso a la pasarela de pago por usuario</h5>
+        <!-- Opciones -->
+        <div class="ibox-tools">
+            <a class="tool-filter">
+                <i class="fa fa-filter" title="Visualiza el filtro avanzado..."></i>
+            </a>
+            <a class="tool-new">
+                <i class="fa fa-plus" title="Crear un nuevo acceso"></i>
+            </a>
+            <a class="fullscreen-link">
+                <i class="fa fa-expand" title="Expande la zona de trabajo"></i>
+            </a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="Opciones adicionales...">
+                <i class="fa fa-wrench"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                <li>
+                    <a href="#" class="dropdown-item tool-new"><i class="fa fa-plus"></i> Crear un nuevo acceso</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-filter"></i> Despliega el filtro avanzado...</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar los table0s</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-audit" data-toggle="modal" data-target="#myModal5"><i class="fa fa-clock-o"></i> Historial...</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+            <div class="sk-rect4"></div>
+            <div class="sk-rect5"></div>
+        </div>
+        <div id="generalNotify">
+        </div>
+        <!-- Filtro -->
+        <div class='form-row filter-row'>
+            <div class='form-group col-md-12'>
+                <div class="input-group placeholder-small">
+                    <input id="PaymentSettingsSearch" type="text" placeholder="Permite filtrar por nombre de usuario" title="Permite filtrar por nombre del rol o descripción" class="form-control form-control-sm" maxlength="40">
+                    <span class="input-group-append">
+                        <button type="button" class="btn btn btn-primary btn-xs" id="ApplyFilter"> <i class="fa fa-search"></i> Filtrar</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- Filtro avanzado -->
+        <div class='form-row d-none advancefilter-row animated fadeInDown'>
+            <div class="form-group col-md-6">
+                <label class="control-label" for="UserIdFlt">Usuario</label>
+                <select id="UserIdFlt" name="UserIdFlt" title="" multiple class="form-control form-control-sm">
+                </select>
+            </div>
+
+        </div>
+        <!-- Grid -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div class="table-responsive animated bounceInRight">
+                    <table id="PaymentSettingsGridTbl" style="font-size: 11px;"></table>
+                </div>
+            </div>
+        </div>
+        <!-- Edit Form -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div id="PaymentSettingsEdt" class="animated fadeInRight d-none">
+                    <form id='PaymentSettingsEdtForm' class='form-horizontal' data-toggle='validator'>
+                        <fieldset>
+                            <div class="form-row">
+                                <!-- Id -->
+                                <input id='Id' name='Id' type='hidden' value=''>
+                                <!-- UserId -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='UserId'>Usuario<span class='required-mark'>*</span></label>
+                                        <select id='UserId' name='UserId' class='form-control'></select>
+                                    </div>
+                                </div>
+                                <!-- Currency -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Currency'>Moneda<span class='required-mark'>*</span></label>
+                                        <select id='Currency' name='Currency' class='form-control'></select>
+                                    </div>
+                                </div>
+                                <!-- ClientId -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='ClientId'>Client Id<span class='required-mark'>*</span></label>
+                                        <input id='ClientId' name='ClientId' type='text' class='form-control' size='80' maxlength='80'>
+                                    </div>
+                                </div>
+                                <!-- SecretKey -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='SecretKey'>Secret Key<span class='required-mark'>*</span></label>
+                                        <input id='SecretKey' name='SecretKey' type='text' class='form-control' size='80' maxlength='80'>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-row">
+                                <div class='col-md-12'>
+                                    <button id="PaymentSettingsEdtFormSave" type="button" class="btn btn-primary btn-sm d-none formbtn" data-doing="Guardando cambios..." title="Guardar cambios">Guardar</button>
+                                    <button id="PaymentSettingsEdtFormSaveContinue" type="button" class="btn btn-primary btn-sm d-none formbtn" data-doing="Guardando cambios..." title="Guardar cambios y continuar">Guardar y continuar</button>
+                                    <button id="PaymentSettingsEdtFormSaveCopy" type="button" class="btn btn-primary btn-sm d-none formbtn" data-doing="Guardando cambios..." title="Guardar cambios y continuar">Guardar y copiar</button>
+                                    <button id="PaymentSettingsEdtFormDuplicate" type="button" class="btn btn-info btn-sm d-none formbtn" data-doing="Duplicando..." title="Duplica la información actual">Duplicar</button>
+                                    <button id="PaymentSettingsEdtFormDelete" type="button" class="btn btn-danger btn-sm d-none formbtn" data-doing="Eliminando..." title="Elimina la información actual">Eliminar</button>
+                                    <button id="PaymentSettingsEdtFormCancel" type="button" class="btn btn-white btn-sm d-none formbtn">Cancelar</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/General.PaymentSettings.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.GeneralPaymentSettings.Init();
+        });
+    </script>
+}
