@@ -12,9 +12,9 @@ namespace Architect.Payment.Integrations
     public static class Payment
     {
 
-        public static string NotifySignature(Architect.Payment.Integrations.Contracts.NotifyRequest notify, int currency, int settingId)
+        public static string NotifySignature(Architect.Payment.Integrations.Contracts.NotifyRequest notify, int currency, int settingId, int companyId)
         {
-            return Architect.Payment.Integrations.Providers.Placetopay.Webcheckout.NotifySignature(notify, currency, settingId);
+            return Architect.Payment.Integrations.Providers.Placetopay.Webcheckout.NotifySignature(notify, currency, settingId, companyId);
 
         }
 
@@ -69,7 +69,7 @@ namespace Architect.Payment.Integrations
 
             payInfo.Reference = string.Format("{0}-{1}-{2}", payInfo.PolicyId, payInfo.BillNumber, track.Id);
 
-            Contracts.SessionInformation result = await Providers.Placetopay.Webcheckout.CreateRequest(payInfo, ipAddress, userAgent, userId);
+            Contracts.SessionInformation result = await Providers.Placetopay.Webcheckout.CreateRequest(payInfo, ipAddress, userAgent, userId, companyId);
             result.Reference = payInfo.Reference;
 
             track.Reference = string.Format("{0}-{1}-{2}", payInfo.PolicyId, payInfo.BillNumber, track.Id);
@@ -122,7 +122,7 @@ namespace Architect.Payment.Integrations
             Architect.Payment.Integrations.Contracts.InformationRequest result;
             if (currentRecord != null)
             {
-                result = await Providers.Placetopay.Webcheckout.GetRequestInformation(currentRecord.RequestID, currentRecord.Currency, currentRecord.SettingId);
+                result = await Providers.Placetopay.Webcheckout.GetRequestInformation(currentRecord.RequestID, currentRecord.Currency, currentRecord.SettingId, currentRecord.CompanyId);
                 result.OnlinePayment = currentRecord;
                 Utilities.Log.WarningLog("Payment.VerifyUpdateStatus", string.Format("requestId={0}, currency={1}, currentStatus={2}, newStatus={3}, recibo={4}", currentRecord.RequestID, currentRecord.Currency, currentRecord.ProviderStatus, result.status, currentRecord.BillNumber), "payment");
 

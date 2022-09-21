@@ -16,11 +16,13 @@ namespace Architect.Payment.Integrations.DataAccess
         /// <summary>
         /// Recupera una lista de registros en la tabla PaymentSettings.
         /// </summary>
-        public static List<Contracts.PaymentSettings> RetrieveAll(IDbConnection connection = null)
+        public static List<Contracts.PaymentSettings> RetrieveAll(int companyId, IDbConnection connection = null)
         {
             List<Contracts.PaymentSettings> result = new List<Contracts.PaymentSettings>();
             Database.Select("SELECT Id, UserId, Currency, ClientId, SecretKey " +
-                              "FROM PaymentSettings")
+                              "FROM PaymentSettings " +
+                              "WHERE CompanyId=:CompanyId")
+                        .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
                         .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
                         {
                             result.Add(new Contracts.PaymentSettings()

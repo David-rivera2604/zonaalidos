@@ -14,10 +14,10 @@ namespace Architect.Payment.Integrations.Business
         /// <summary>
         /// Recupera una configuración asociada a un userId.
         /// </summary>
-        public static Contracts.PaymentSettings Retrieve(int userId, string currency)
+        public static Contracts.PaymentSettings Retrieve(int companyId, int userId, string currency)
         {
             Contracts.PaymentSettings result = null;
-            List<Contracts.PaymentSettings> paymentSettings = Load();
+            List<Contracts.PaymentSettings> paymentSettings = Load(companyId);
             int current = currency == "CRC" ? 1 : 2;
             if (paymentSettings != null)
             {
@@ -33,10 +33,10 @@ namespace Architect.Payment.Integrations.Business
         /// <summary>
         /// Recupera una configuración asociada a un id.
         /// </summary>
-        public static Contracts.PaymentSettings Retrieve(int id)
+        public static Contracts.PaymentSettings Retrieve(int companyId, int id)
         {
             Contracts.PaymentSettings result = null;
-            List<Contracts.PaymentSettings> paymentSettings = Load();
+            List<Contracts.PaymentSettings> paymentSettings = Load(companyId);
 
             if (paymentSettings != null)
             {
@@ -49,18 +49,19 @@ namespace Architect.Payment.Integrations.Business
             return result;
         }
 
-        internal static List<Contracts.PaymentSettings> Load()
+        internal static List<Contracts.PaymentSettings> Load(int companyId)
         {
+            string key = string.Format("PaymentSettings.{0}", companyId);
             List<Contracts.PaymentSettings> result = null;
 
-            if (Utilities.Cache.NotExist("PaymentSettings"))
+            if (Utilities.Cache.NotExist(key))
             {
-                result = DataAccess.PaymentSettings.RetrieveAll();
-                Utilities.Cache.SetItem("PaymentSettings", result);
+                result = DataAccess.PaymentSettings.RetrieveAll(companyId);
+                Utilities.Cache.SetItem(key, result);
             }
             else
             {
-                result = (List<Contracts.PaymentSettings>)Utilities.Cache.GetItem("PaymentSettings");
+                result = (List<Contracts.PaymentSettings>)Utilities.Cache.GetItem(key);
             }
 
             return result;
