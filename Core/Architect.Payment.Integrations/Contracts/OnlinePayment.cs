@@ -103,6 +103,13 @@ namespace Architect.Payment.Integrations.Contracts
         /// Fecha que se actualizo por última vez el registro.
         /// </summary>
         public DateTime UpdateDate { get; set; }
+
+        /// <summary>
+        /// Identifica la configuración de acceso usada por la sesión.
+        /// </summary>
+        public int SettingId { get; set; }
+        
+
     }
 }
 

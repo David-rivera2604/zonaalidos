@@ -100,6 +100,8 @@
     <Compile Include="_Generated\NavigationTrace.cs" />
     <Compile Include="_Generated\Notes.cs" />
     <Compile Include="_Generated\NotesResult.cs" />
+    <Compile Include="_Generated\PaymentSettings.cs" />
+    <Compile Include="_Generated\PaymentSettingsResult.cs" />
     <Compile Include="_Generated\ProcessCase.cs" />
     <Compile Include="_Generated\ProcessCaseComplement.cs" />
     <Compile Include="_Generated\ProcessInstance.cs" />

@@ -17,5 +17,4 @@ namespace Aliados.Monge.Domain.Poliza.Emision
         public RespuestaDetalle message_body { get; set; }
     }
 
-
 }
