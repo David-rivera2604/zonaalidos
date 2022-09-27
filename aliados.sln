@@ -71,10 +71,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aliados.Monge.Infrastructur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architect.API.Core.Security", "Core\Architect.API.Core.Utilities\Architect.API.Core.Security.csproj", "{3D406267-4A50-4E87-842A-553E3D222CF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architect.Data.Source", "..\Kernel\Architect.Data.Source\Architect.Data.Source.csproj", "{7427EC41-EE41-4DC5-9BB6-D7FDECDF451B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mark3", "..\Kernel\mark3\mark3.csproj", "{FD68E763-D3FD-4737-9AB2-66816DD2894E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -193,14 +189,6 @@ Global
 		{3D406267-4A50-4E87-842A-553E3D222CF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D406267-4A50-4E87-842A-553E3D222CF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D406267-4A50-4E87-842A-553E3D222CF1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7427EC41-EE41-4DC5-9BB6-D7FDECDF451B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7427EC41-EE41-4DC5-9BB6-D7FDECDF451B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7427EC41-EE41-4DC5-9BB6-D7FDECDF451B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7427EC41-EE41-4DC5-9BB6-D7FDECDF451B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FD68E763-D3FD-4737-9AB2-66816DD2894E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FD68E763-D3FD-4737-9AB2-66816DD2894E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FD68E763-D3FD-4737-9AB2-66816DD2894E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FD68E763-D3FD-4737-9AB2-66816DD2894E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
