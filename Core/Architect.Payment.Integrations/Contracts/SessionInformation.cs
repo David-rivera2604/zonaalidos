@@ -35,5 +35,11 @@ namespace Architect.Payment.Integrations.Contracts
 
         [JsonIgnore]
         public string rawData { get; set; }
+
+        /// <summary>
+        /// Identifica la configuración de acceso usada por la sesión.
+        /// </summary>
+        [JsonIgnore]
+        public int SettingId { get; set; }
     }
 }

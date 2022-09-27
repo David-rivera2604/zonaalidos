@@ -33,7 +33,7 @@ app.GeneralNewCase = (function () {
 
         $('#FlowId').change(function () {
             let flowId = $('#FlowId').val();
-            let sla = app.core.Data().lookups.filter(i => i.Key === 'ProcessByRol')[0].Lkp.filter(l => l.Code === flowId + '')[0].SLA;
+            let sla = app.core.Data().lookups.filter(i => i.Key === 'ProcessByRolDetail')[0].Lkp.filter(l => l.Code === flowId + '')[0].SLA;
             $('#SLA').val(sla);
             app.core.Get(app.setting.apipath + 'v1/ProcessSpecFlow/' + flowId)
                 .done(function (data, textStatus, jqXHR) {
@@ -100,7 +100,7 @@ app.GeneralNewCase = (function () {
     }
 
     function Init_Lookups() {
-        app.core.Lookups(['CasePriority.Priority', 'ProcessStatus.Status', 'ProcessByRol.FlowId', 'Users.UserId.', 'SLA.SLA.'],
+        app.core.Lookups(['CasePriority.Priority', 'ProcessStatus.Status', 'ProcessByRolDetail.FlowId' , 'ProcessByRol.FlowId', 'Users.UserId.', 'SLA.SLA.'],
             function () {
                 app.GeneralNewCase.New();
             });

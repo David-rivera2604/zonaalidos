@@ -16,15 +16,15 @@ namespace Aliados.Monge.Domain.Poliza.Cancelacion
         /// </summary>
         public string document_id { get; set; }
         /// <summary>
-        /// número de póliza que se relacionan los documentos a enviar
+        /// Número de póliza que se relacionan los documentos a enviar
         /// </summary>
         public string num_poliza { get; set; }
         /// <summary>
-        /// código correspondiente a la causa de anulación
+        /// Código correspondiente a la causa de anulación
         /// </summary>
         public string codigo_causa { get; set; }
         /// <summary>
-        /// descripción del motivo de anulación
+        /// Descripción del motivo de anulación
         /// </summary>
         public string descripcion_causa { get; set; }
         /// <summary>
@@ -32,7 +32,7 @@ namespace Aliados.Monge.Domain.Poliza.Cancelacion
         /// </summary>
         public string nombre_vendedor { get; set; }
         /// <summary>
-        /// identificación del usuario que hace la anulación
+        /// Identificación del usuario que hace la anulación
         /// </summary>
         public string identificacion_vendedor { get; set; }
   

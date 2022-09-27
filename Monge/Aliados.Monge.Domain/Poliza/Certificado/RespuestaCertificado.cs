@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Aliados.Monge.Domain.Poliza.Certificado
 {
-
+    /// <summary>
+    /// Estructura de Respuesta - PDF Certificado Póliza
+    /// </summary>
     public class RespuestaCertificado : Comun.RespuestaBase
     {
         /// <summary>

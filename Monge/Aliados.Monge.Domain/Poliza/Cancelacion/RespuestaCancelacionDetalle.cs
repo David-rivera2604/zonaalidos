@@ -8,6 +8,9 @@ namespace Aliados.Monge.Domain.Poliza.Cancelacion
 {
     public class RespuestaCancelacionDetalle
     {
+        /// <summary>
+        /// Número de póliza cancelada.
+        /// </summary>
         public string num_poliza_cancelada { get; set; }
     }
 }

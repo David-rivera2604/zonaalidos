@@ -12,6 +12,7 @@ app.BayerInclusion = (function () {
         if (localStorage.getItem('Tenant') === 'Bayer') {
             $('.tenant-bayer-visible').removeClass('d-none');
             $('.HasDigitalSignature').addClass('d-none');
+            app.ui.RequiredMark("EmployeeNumber", true);
         }
 
         if (localStorage.getItem('Tenant') === 'Caturix') {
@@ -112,7 +113,17 @@ app.BayerInclusion = (function () {
             ContinuityDate: app.ui.GetDateValue('#ContinuityDate')
         };
         if (localStorage.getItem('Tenant') === 'Bayer') {
-            _data.HasDigitalSignature = false;
+            //_data.HasDigitalSignature = false;
+        }
+        if (localStorage.getItem('Tenant') === 'Caturix') {
+            switch (_data.IsHealth) {
+                case 'A':
+                    _data.InsuredAmount = 100000;
+                    break;
+                case 'B':
+                    _data.InsuredAmount = 150000;
+                    break;
+            }
         }
         return _data;
     }
@@ -469,6 +480,16 @@ app.BayerInclusion = (function () {
             event.preventDefault();
             app.core.Get(app.setting.apipath + 'v1/Inclusion/bayer/' + id)
                 .done(function (data) {
+                    if (localStorage.getItem('Tenant') === 'Caturix') {
+                        switch (data.IsHealth) {
+                            case 'A':
+                                data.InsuredAmount = 100000;
+                                break;
+                            case 'B':
+                                data.InsuredAmount = 150000;
+                                break;
+                        }
+                    }
                     var urlServer = app.setting.apibase + '/AliadoServReports/api/Report/Build';
                     var data2 = {
                         Source: JSON.stringify(data),
@@ -615,6 +636,12 @@ app.BayerInclusion = (function () {
 
     function Setup_Validations() {
         app.ui.DateValidators();
+        $.validator.addMethod("bayerrequired",
+            function (value, element) {
+                return localStorage.getItem('Tenant') != 'Bayer' || (value != null && value != "");
+            }, 'Debe indicar un valor'
+        );
+
         $("#VisualizationsEdtForm").validate({
             errorPlacement: app.ui.ErrorPlacement,
             rules: {
@@ -631,7 +658,7 @@ app.BayerInclusion = (function () {
                 CountryOfNationality: { required: true },
                 DominantMember: { required: true },
                 DateEntryWork: { required: true },
-                EmployeeNumber: { required: true },
+                EmployeeNumber: { bayerrequired: true },
                 MonthlySalary: { required: true },
                 InsuredAmount: { required: true },
                 PhoneNumber: { minlength: 9 },
@@ -663,7 +690,7 @@ app.BayerInclusion = (function () {
                 CountryOfNationality: { required: 'Debe indicar la nacionalidad' },
                 DominantMember: { required: 'Debe indicar el miembro dominante' },
                 DateEntryWork: { required: 'Debe indicar la fecha de ingreso a trabajar' },
-                EmployeeNumber: { required: 'Debe indicar el número de empleado' },
+                EmployeeNumber: { bayerrequired: 'Debe indicar el número de empleado' },
                 MonthlySalary: { required: 'Debe indicar el salario mensual' },
                 InsuredAmount: { required: 'Debe indicar la suma asegurada' },
                 PhoneNumber: { minlength: 'Debe indicar 8 dígitos' },
