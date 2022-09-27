@@ -164,6 +164,7 @@
     <Compile Include="Security\RoleMember.cs" />
     <Compile Include="_Generated\Lookup.cs" />
     <Compile Include="_Generated\Notes.cs" />
+    <Compile Include="_Generated\PaymentSettings.cs" />
     <Compile Include="_Generated\ProcessCase.cs" />
     <Compile Include="General\Rules.cs" />
     <Compile Include="General\Mail.cs" />

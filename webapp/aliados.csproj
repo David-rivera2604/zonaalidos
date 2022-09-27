@@ -1228,6 +1228,7 @@
     <Content Include="Scripts\Extend.AvisosCobro.js" />
     <Content Include="Scripts\General.Case.js" />
     <Content Include="Scripts\General.NewCase.js" />
+    <Content Include="Scripts\General.PaymentSettings.js" />
     <Content Include="Scripts\General.ProcessCase.js" />
     <Content Include="Scripts\General.ProcessEditor.js" />
     <Content Include="Scripts\General.ProcessSpecFlow.js" />
@@ -1660,6 +1661,7 @@
     <Content Include="Views\Process\ProcessSpecSLA.cshtml" />
     <Content Include="Views\Process\_processSpecSLALevelGrid.cshtml" />
     <Content Include="Views\Process\_processSpecSLALevelModal.cshtml" />
+    <Content Include="Views\General\PaymentSettings.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

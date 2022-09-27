@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -29,15 +30,15 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
         public static readonly string[] STATUSES = new string[] { ST_OK, ST_INIT, ST_FAILED, ST_APPROVED, ST_APPROVED_PARTIAL, ST_REJECTED, ST_PENDING, ST_PENDING_VALIDATION, ST_REFUNDED, ST_ERROR, ST_UNKNOWN };
 
 
-        public static string NotifySignature(Architect.Payment.Integrations.Contracts.NotifyRequest notify, int currency, int settingId)
+        public static string NotifySignature(Architect.Payment.Integrations.Contracts.NotifyRequest notify, int currency, int settingId, int companyId)
         {
-            return ByteArrayToString(Sha1(notify.requestId + notify.status.status + notify.status.date + SecretKey(0,CurrencyConvert(currency.ToString()), settingId)));
+            return ByteArrayToString(Sha1(notify.requestId + notify.status.status + notify.status.date + SecretKey(0,CurrencyConvert(currency.ToString()), settingId, companyId)));
         }
 
         /// <summary>
         /// Solicita la creación de la sesión retorna el identificador y la URL de procesamiento.
         /// </summary>
-        public async static Task<Integrations.Contracts.SessionInformation> CreateRequest(Integrations.Contracts.PaymentInformation payInfo, string ipAddress, string userAgent, int userId)
+        public async static Task<Integrations.Contracts.SessionInformation> CreateRequest(Integrations.Contracts.PaymentInformation payInfo, string ipAddress, string userAgent, int userId, int companyId)
         {
             Contracts.SessionResponse session;
             string currency = CurrencyConvert(payInfo.Currency.ToString());
@@ -74,7 +75,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
                 userAgent = userAgent,
                 paymentMethod = null,
                 locale = "es_CR",
-                auth = BuildAuth(userId, currency, 0)
+                auth = BuildAuth(userId, currency, 0, companyId)
             };
 
             var data = new StringContent(JsonConvert.SerializeObject(sessionRequest), Encoding.UTF8, "application/json");
@@ -103,7 +104,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
                 Reason = session.status.reason,
                 RequestId = session.requestId,
                 ProcessUrl = session.processUrl,
-                SettingId = Business.PaymentSettings.Retrieve(userId, currency).Id,
+                SettingId = Business.PaymentSettings.Retrieve(companyId, userId, currency).Id,
                 rawData = resultResponse
             };
         }
@@ -111,11 +112,11 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
         /// <summary>
         /// Obtiene la información de la sesión, si en la sesión hay transacciones se muestra el detalle de las mismas.
         /// </summary>
-        public async static Task<Architect.Payment.Integrations.Contracts.InformationRequest> GetRequestInformation(Int64 requestId, int currency, int settingId)
+        public async static Task<Architect.Payment.Integrations.Contracts.InformationRequest> GetRequestInformation(Int64 requestId, int currency, int settingId, int companyId)
         {
             Architect.Payment.Integrations.Contracts.InformationRequest result = null;
             string resultResponse = string.Empty;
-            string json = JsonConvert.SerializeObject(new { auth = BuildAuth(0, CurrencyConvert(currency.ToString()), settingId) });
+            string json = JsonConvert.SerializeObject(new { auth = BuildAuth(0, CurrencyConvert(currency.ToString()), settingId, companyId) });
             var data = new StringContent(json, Encoding.UTF8, "application/json");
             HttpClient client = new HttpClient() { Timeout = new TimeSpan(0, 0, 2) };
             var response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("Payment.Placetopay.PaymentUrl") + "api/session/" + requestId.ToString(), data);
@@ -248,18 +249,18 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
             return result;
         }
 
-        internal static string Login(int userId, string currency, int settingId)
+        internal static string Login(int userId, string currency, int settingId, int companyId)
         {
 
             Integrations.Contracts.PaymentSettings setting = null;
 
             if (settingId == 0)
             {
-                setting = Business.PaymentSettings.Retrieve(userId, currency);
+                setting = Business.PaymentSettings.Retrieve(companyId, userId, currency);
             }
             else
             {
-                setting = Business.PaymentSettings.Retrieve(settingId);
+                setting = Business.PaymentSettings.Retrieve(companyId, settingId);
             }
 
             string login = setting.ClientId;
@@ -270,18 +271,18 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
             return login;
         }
 
-        internal static string SecretKey(int userId, string currency, int settingId)
+        internal static string SecretKey(int userId, string currency, int settingId, int companyId)
         {
 
             Integrations.Contracts.PaymentSettings setting;
 
             if (settingId == 0)
             {
-                setting = Business.PaymentSettings.Retrieve(userId, currency);
+                setting = Business.PaymentSettings.Retrieve(companyId, userId, currency);
             }
             else
             {
-                setting = Business.PaymentSettings.Retrieve(settingId);
+                setting = Business.PaymentSettings.Retrieve(companyId, settingId);
             }
             string secret = setting.SecretKey;
             if (secret.IsEmpty())
@@ -300,15 +301,15 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
             return hex.ToString();
         }
 
-        internal static Contracts.Auth BuildAuth(int userId, string currency, int settingId)
+        internal static Contracts.Auth BuildAuth(int userId, string currency, int settingId, int companyId)
         {
             string seed = DateTime.Now.ToString("yyyy-MM-ddTHH\\:mm\\:sszzz");
             string nonceRaw = Guid.NewGuid().ToString() + DateTime.Now.ToString("yyyyMMddHHmmsszzz");
 
             return new Contracts.Auth()
             {
-                login = Login(userId, currency, settingId),
-                tranKey = Convert.ToBase64String(Sha1(nonceRaw + seed + SecretKey(userId, currency, settingId))),
+                login = Login(userId, currency, settingId, companyId),
+                tranKey = Convert.ToBase64String(Sha1(nonceRaw + seed + SecretKey(userId, currency, settingId, companyId))),
                 nonce = Convert.ToBase64String(Encoding.ASCII.GetBytes(nonceRaw)),
                 seed = seed
             };
