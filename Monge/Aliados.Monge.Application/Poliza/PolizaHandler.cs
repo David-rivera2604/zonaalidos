@@ -19,29 +19,29 @@ namespace Aliados.Monge.Application.Poliza
             {
                 result = Viajero.Emision(risk, tokenInfo.AgentCode, tokenInfo.UserName).Result;
             }
-
-
-            if (risk.document_id == "GMG-CR-12345")
+            else
             {
-                result = new Domain.Poliza.Emision.Respuesta()
+                if (risk.document_id == "GMG-CR-12345")
                 {
-                    message_status = 200,
-                    message_text = "Emision Exitosa",
-                    message_id = Guid.NewGuid().ToString(),
-                    document_id = risk.document_id,
-                    message_body = new Domain.Poliza.Emision.RespuestaDetalle()
+                    result = new Domain.Poliza.Emision.Respuesta()
                     {
-                        num_poliza = "4412210103630",
-                        num_certificado_phx = "",
-                        resumen = new Domain.Poliza.Emision.Resumen()
+                        message_status = 200,
+                        message_text = "Emision Exitosa",
+                        message_id = Guid.NewGuid().ToString(),
+                        document_id = risk.document_id,
+                        message_body = new Domain.Poliza.Emision.RespuestaDetalle()
                         {
-                            primaneta = 81.01F,
-                            iVA = 1.62F,
-                            recargoporfraccionamiento = 0.0F,
-                            importetotal = 82.63F,
-                            cuotas = 1
-                        },
-                        plandepago = new List<Domain.Poliza.Emision.Plandepago>()
+                            num_poliza = "4412210103630",
+                            num_certificado_phx = "",
+                            resumen = new Domain.Poliza.Emision.Resumen()
+                            {
+                                primaneta = 81.01F,
+                                iVA = 1.62F,
+                                recargoporfraccionamiento = 0.0F,
+                                importetotal = 82.63F,
+                                cuotas = 1
+                            },
+                            plandepago = new List<Domain.Poliza.Emision.Plandepago>()
                     {
                         new Domain.Poliza.Emision.Plandepago()
                         {
@@ -54,18 +54,19 @@ namespace Aliados.Monge.Application.Poliza
                             importetotal= 82.63F
                         }
                     }
-                    }
-                };
-            }
-            else
-            {
-                result = new Domain.Poliza.Emision.Respuesta()
+                        }
+                    };
+                }
+                else
                 {
-                    message_status = 11,
-                    message_text = "No existe tarifa para los datos colocados",
-                    message_id = Guid.NewGuid().ToString(),
-                    document_id = risk.document_id
-                };
+                    result = new Domain.Poliza.Emision.Respuesta()
+                    {
+                        message_status = 11,
+                        message_text = "No existe tarifa para los datos colocados",
+                        message_id = Guid.NewGuid().ToString(),
+                        document_id = risk.document_id
+                    };
+                }
             }
             return result;
         }

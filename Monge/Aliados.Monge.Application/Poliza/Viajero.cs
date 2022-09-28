@@ -24,8 +24,60 @@ namespace Aliados.Monge.Application.Poliza
             Architect.API.Tron.Contracts.Presupuesto.DatoFijo result2 = ViajeroConvert.ToTron(quote, cod_ramo, agentCode, userName);
             result2 = MapperTerceros(risk, result2);
 
-            result2 = Architect.API.Tron.Business.Backoffice.Cotizacion.Generico.Calcular(result2, 3, "Riesgo emitido desde ZA Web");
+            result2.tip_docum = result2.Terceros.FirstOrDefault().tip_docum;
+            result2.cod_docum = result2.Terceros.FirstOrDefault().cod_docum;
 
+            result2 = Architect.API.Tron.Business.Backoffice.Cotizacion.Generico.Calcular(result2, 3, "Riesgo emitido desde ZA Web");
+            if (result2.DatosDelProceso.txt_error == "")
+            {
+
+                Architect.API.Tron.Contracts.Poliza.DatoFijo data = null;
+                data = Architect.API.Tron.Business.Backoffice.Common.InformacionDePoliza(result2.DatosDelProceso.num_poliza_definitivo);
+
+
+                result = new Domain.Poliza.Emision.Respuesta()
+                {
+                    message_status = 200,
+                    message_text = "Emision Exitosa",
+                    message_id = Guid.NewGuid().ToString(),
+                    document_id = risk.document_id,
+                    message_body = new Domain.Poliza.Emision.RespuestaDetalle()
+                    {
+                        num_poliza = result2.DatosDelProceso.num_poliza_definitivo,
+                        num_certificado_phx = "",
+                        resumen = new Domain.Poliza.Emision.Resumen()
+                        {
+                            primaneta = data.Recibos.First().imp_neta,
+                            iVA = data.Recibos.First().imp_imptos,
+                            recargoporfraccionamiento = data.Recibos.First().imp_recargo,
+                            importetotal = data.Recibos.First().imp_recibo,
+                            cuotas = 1
+                        },
+                        plandepago = new List<Domain.Poliza.Emision.Plandepago>()
+                    {
+                        new Domain.Poliza.Emision.Plandepago()
+                        {
+                            cuota= 0,
+                            fechadesde = new DateTime(2022, 07, 11),
+                            fechahasta= new DateTime(2022, 07, 27),
+                            primaneta= data.Recibos.First().imp_neta,
+                            iVA= data.Recibos.First().imp_imptos,
+                            recargoporfraccionamiento= data.Recibos.First().imp_recargo,
+                            importetotal= data.Recibos.First().imp_recibo
+                        }
+                    }
+                    }
+                };
+            } else
+            {
+                result = new Domain.Poliza.Emision.Respuesta()
+                {
+                    message_status = 11,
+                    message_text = result2.DatosDelProceso.txt_error,
+                    message_id = Guid.NewGuid().ToString(),
+                    document_id = risk.document_id
+                };
+            }
             return result;
         }
 
@@ -105,8 +157,8 @@ namespace Aliados.Monge.Application.Poliza
             List<Domain.Poliza.Emision.DatosVariables> datosvariables = risk.Datos_Variables;
 
             string cod_producto = risk.Datos_Generales.cod_producto;
-            string tip_plan = cod_producto.Substring(cod_producto.IndexOf("-") + 1, 1);
-            string tip_viaje = cod_producto.Substring(cod_producto.IndexOf("-") + 2, 1);
+            string tip_viaje = cod_producto.Substring(cod_producto.IndexOf("-") + 1, 1);
+            string tip_plan = cod_producto.Substring(cod_producto.IndexOf("-") + 2, 1);
 
 
             Architect.API.Tron.Contracts.Cotizacion.Viajero quote = new Architect.API.Tron.Contracts.Cotizacion.Viajero()
