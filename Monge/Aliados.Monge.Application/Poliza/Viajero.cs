@@ -24,7 +24,6 @@ namespace Aliados.Monge.Application.Poliza
             Architect.API.Tron.Contracts.Presupuesto.DatoFijo result2 = ViajeroConvert.ToTron(quote, cod_ramo, agentCode, userName);
             result2 = MapperTerceros(risk, result2);
 
-
             result2 = Architect.API.Tron.Business.Backoffice.Cotizacion.Generico.Calcular(result2, 3, "Riesgo emitido desde ZA Web");
 
             return result;
@@ -145,21 +144,32 @@ namespace Aliados.Monge.Application.Poliza
 
         internal static int IntegerValue(List<Domain.Poliza.Emision.DatosVariables> datosvariables, string name)
         {
-            int result = Convert.ToInt32(datosvariables.Find(r => r.nombre == name).valor);
-
+            int result = 0;
+            if (datosvariables.Exists(r => r.nombre == name))
+            {
+                result = Convert.ToInt32(datosvariables.Find(r => r.nombre == name).valor);
+            }
             return result;
 
         }
         internal static string StringValue(List<Domain.Poliza.Emision.DatosVariables> datosvariables, string name)
         {
-            string result = datosvariables.Find(r => r.nombre == name).valor;
-
+            string result = String.Empty;
+            if (datosvariables.Exists(r => r.nombre == name))
+            {
+                result = datosvariables.Find(r => r.nombre == name).valor;
+            }
             return result;
 
         }
         internal static DateTime DateTimeValue(List<Domain.Poliza.Emision.DatosVariables> datosvariables, string name)
         {
-            DateTime result = Convert.ToDateTime(datosvariables.Find(r => r.nombre == name).valor);
+            DateTime result = DateTime.MinValue;
+
+            if (datosvariables.Exists(r => r.nombre == name))
+            {
+                result = Convert.ToDateTime(datosvariables.Find(r => r.nombre == name).valor);
+            }
 
             return result;
 
@@ -168,14 +178,20 @@ namespace Aliados.Monge.Application.Poliza
         internal static int IntegerValue(List<Domicilio> detalleDomicilio, int nivel)
         {
             int result = Convert.ToInt32(detalleDomicilio.Find(r => r.nivel == nivel).valor);
-
+            if (detalleDomicilio.Exists(r => r.nivel == nivel))
+            {
+                result = Convert.ToInt32(detalleDomicilio.Find(r => r.nivel == nivel).valor);
+            }
             return result;
 
         }
         internal static string StringValue(List<Domicilio> detalleDomicilio, int nivel)
         {
-            string result = detalleDomicilio.Find(r => r.nivel == nivel).valor;
-
+            string result = String.Empty;
+            if (detalleDomicilio.Exists(r => r.nivel == nivel))
+            {
+                result = detalleDomicilio.Find(r => r.nivel == nivel).valor;
+            }
             return result;
 
         }

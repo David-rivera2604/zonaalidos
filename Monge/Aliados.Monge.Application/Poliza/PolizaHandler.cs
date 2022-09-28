@@ -15,7 +15,7 @@ namespace Aliados.Monge.Application.Poliza
             Domain.Poliza.Emision.Respuesta result;
 
             // Viajero - Costa Rica
-            if (risk?.Datos_Generales?.pais == "CRI" && risk.Datos_Generales.cod_producto.StartsWith("441-"))
+            if (risk?.Datos_Generales?.pais == "CR" && risk.Datos_Generales.cod_producto.StartsWith("441-"))
             {
                 result = Viajero.Emision(risk, tokenInfo.AgentCode, tokenInfo.UserName).Result;
             }
