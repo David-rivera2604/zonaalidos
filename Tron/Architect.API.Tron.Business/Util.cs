@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace Architect.API.Tron.Business
 {
-    internal static class Util
+    public static class Util
     {
 
         internal static Contracts.Presupuesto.DatoFijo DatosFijos(Contracts.Cotizacion.GenericQuote quoteInfo, int branch, int agentCode, string userName, int cod_sector)
@@ -314,7 +314,7 @@ namespace Architect.API.Tron.Business
             return terceros;
         }
 
-        internal static Contracts.Presupuesto.Tercero Tercero(Contracts.Presupuesto.DatoFijo datosFijos, string tip_docum, string cod_docum, int tip_benef)
+        public static Contracts.Presupuesto.Tercero Tercero(Contracts.Presupuesto.DatoFijo datosFijos, string tip_docum, string cod_docum, int tip_benef, int num_riesgo = 1)
         {
             return new Contracts.Presupuesto.Tercero()
             {
@@ -323,7 +323,7 @@ namespace Architect.API.Tron.Business
                 num_spto = datosFijos.num_spto,
                 num_apli = datosFijos.num_apli,
                 num_spto_apli = datosFijos.num_spto_apli,
-                num_riesgo = 1,
+                num_riesgo = num_riesgo,
                 tip_benef = tip_benef.ToString(),
                 num_secu = 1,
                 tip_docum = tip_docum,

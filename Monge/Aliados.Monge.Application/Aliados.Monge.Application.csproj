@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Poliza\PolizaHandler.cs" />
+    <Compile Include="Poliza\Viajero.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Seguridad\SeguridadHandler.cs" />
   </ItemGroup>

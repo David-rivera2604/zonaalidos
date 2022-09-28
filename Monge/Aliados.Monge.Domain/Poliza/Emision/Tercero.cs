@@ -19,7 +19,7 @@ namespace Aliados.Monge.Domain.Poliza.Emision
         /// <summary>
         /// Número de Riesgo
         /// </summary>
-        [Required()] public string numeroderiesgo { get; set; }
+        [Required()] public int numeroderiesgo { get; set; }
         /// <summary>
         /// Tipo de identificación. Lista de valores: 1	Cédula, 2 DIMEX, 3 Pasaporte, 4 Cédula jurídica
         /// </summary>

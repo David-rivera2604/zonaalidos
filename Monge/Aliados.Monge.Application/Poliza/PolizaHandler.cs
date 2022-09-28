@@ -10,9 +10,17 @@ namespace Aliados.Monge.Application.Poliza
 {
     public sealed class PolizaHandler
     {
-        public static async Task<Domain.Poliza.Emision.Respuesta> Emision(Domain.Poliza.Emision.Poliza risk)
+        public static async Task<Domain.Poliza.Emision.Respuesta> Emision(Domain.Poliza.Emision.Poliza risk, Architect.API.Core.Contracts.Security.Token tokenInfo)
         {
             Domain.Poliza.Emision.Respuesta result;
+
+            // Viajero - Costa Rica
+            if (risk?.Datos_Generales?.pais == "CRI" && risk.Datos_Generales.cod_producto.StartsWith("441-"))
+            {
+                result = Viajero.Emision(risk, tokenInfo.AgentCode, tokenInfo.UserName).Result;
+            }
+
+
             if (risk.document_id == "GMG-CR-12345")
             {
                 result = new Domain.Poliza.Emision.Respuesta()

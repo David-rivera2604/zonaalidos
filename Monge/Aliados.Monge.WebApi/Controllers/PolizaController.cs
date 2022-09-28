@@ -28,7 +28,7 @@ namespace Aliados.Monge.WebApi.Controllers
         public async Task<IHttpActionResult> Emision(Domain.Poliza.Emision.Poliza risk)
         {
             Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info();
-            return Ok(Application.Poliza.PolizaHandler.Emision(risk).Result);
+            return Ok(Application.Poliza.PolizaHandler.Emision(risk, tokenInfo).Result);
         }
 
         /// <summary>

@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Architect.API.Tron.Business.Cotizacion
 {
-    internal static class ViajeroConvert
+    public static class ViajeroConvert
     {
 
-        internal static Contracts.Presupuesto.DatoFijo ToTron(Contracts.Cotizacion.Viajero quoteInfo, int branch, int agentCode, string userName)
+        public static Contracts.Presupuesto.DatoFijo ToTron(Contracts.Cotizacion.Viajero quoteInfo, int branch, int agentCode, string userName)
         {
 
             Contracts.Presupuesto.DatoFijo datosFijos = Util.DatosFijos(quoteInfo, branch, agentCode, userName, 4);
