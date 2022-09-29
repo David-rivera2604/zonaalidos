@@ -47,27 +47,28 @@ namespace Aliados.Monge.Application.Poliza
                         num_certificado_phx = "",
                         resumen = new Domain.Poliza.Emision.Resumen()
                         {
-                            primaneta = data.Recibos.First().imp_neta,
-                            iVA = data.Recibos.First().imp_imptos,
-                            recargoporfraccionamiento = data.Recibos.First().imp_recargo,
-                            importetotal = data.Recibos.First().imp_recibo,
-                            cuotas = 1
+                            primaneta = data.Recibos.Sum(p => p.imp_neta) + data.Recibos.Sum(p => p.imp_recargo),
+                            iVA = data.Recibos.Sum(p => p.imp_imptos),
+                            recargoporfraccionamiento = data.Recibos.Sum(p => p.imp_interes),
+                            importetotal = data.Recibos.Sum(p => p.imp_recibo),
+                            cuotas = data.Recibos.Count
                         },
                         plandepago = new List<Domain.Poliza.Emision.Plandepago>()
-                    {
-                        new Domain.Poliza.Emision.Plandepago()
-                        {
-                            cuota= 0,
-                            fechadesde = new DateTime(2022, 07, 11),
-                            fechahasta= new DateTime(2022, 07, 27),
-                            primaneta= data.Recibos.First().imp_neta,
-                            iVA= data.Recibos.First().imp_imptos,
-                            recargoporfraccionamiento= data.Recibos.First().imp_recargo,
-                            importetotal= data.Recibos.First().imp_recibo
-                        }
-                    }
                     }
                 };
+                foreach (Architect.API.Tron.Contracts.Poliza.Recibo item in data.Recibos)
+                {
+                    result.message_body.plandepago.Add(new Domain.Poliza.Emision.Plandepago()
+                    {
+                        cuota = item.num_cuota,
+                        fechadesde = item.fec_efec_recibo,
+                        fechahasta = item.fec_vcto_recibo,
+                        primaneta = item.imp_neta + item.imp_recargo,
+                        iVA = item.imp_imptos,
+                        recargoporfraccionamiento = item.imp_interes,
+                        importetotal = item.imp_recibo
+                    });
+                }
             }
             else
             {
@@ -226,7 +227,7 @@ namespace Aliados.Monge.Application.Poliza
                     cod_causa_inh_trc = int.MinValue,
                     cod_exp_carnet_con = int.MinValue
                 };
-                //Si es tipo de documento es cédula jurida
+                //Si es tipo de documento es cédula juridica
                 if (detalle.tip_docum == "CJU")
                 {
                     detalle.mca_fisico = "N";
