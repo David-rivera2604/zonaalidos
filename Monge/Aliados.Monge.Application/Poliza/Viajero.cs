@@ -38,7 +38,7 @@ namespace Aliados.Monge.Application.Poliza
                 result = new Domain.Poliza.Emision.Respuesta()
                 {
                     message_status = 200,
-                    message_text = "Emision Exitosa",
+                    message_text = "Emisión exitosa",
                     message_id = Guid.NewGuid().ToString(),
                     document_id = risk.document_id,
                     message_body = new Domain.Poliza.Emision.RespuestaDetalle()
@@ -68,11 +68,12 @@ namespace Aliados.Monge.Application.Poliza
                     }
                     }
                 };
-            } else
+            }
+            else
             {
                 result = new Domain.Poliza.Emision.Respuesta()
                 {
-                    message_status = 11,
+                    message_status = 400,
                     message_text = result2.DatosDelProceso.txt_error,
                     message_id = Guid.NewGuid().ToString(),
                     document_id = risk.document_id
@@ -81,6 +82,92 @@ namespace Aliados.Monge.Application.Poliza
             return result;
         }
 
+        internal static Architect.API.Tron.Contracts.Cotizacion.Viajero MapperBase(Domain.Poliza.Emision.Poliza risk)
+        {
+            List<Domain.Poliza.Emision.DatosVariables> datosvariables = risk.Datos_Variables;
+
+            string cod_producto = risk.Datos_Generales.cod_producto;
+            string tip_viaje = cod_producto.Substring(cod_producto.IndexOf("-") + 1, 1);
+            string tip_plan = cod_producto.Substring(cod_producto.IndexOf("-") + 2, 1);
+            int cantidadRiesgos = risk.Terceros.Where(c => c.tipodetercero == 2).Max(r => r.numeroderiesgo);
+
+            Architect.API.Tron.Contracts.Cotizacion.Viajero quote = new Architect.API.Tron.Contracts.Cotizacion.Viajero()
+            {
+                cod_mon = risk.Datos_Generales.moneda,
+                cod_fracc_pago = risk.Datos_Generales.cod_fracc_pago,
+                fec_efec_poliza = risk.Datos_Generales.fec_efec_poliza,
+                fec_vcto_poliza = risk.Datos_Generales.fec_vcto_poliza,
+                TIP_PLAN = tip_plan,
+                TIP_VIAJE = tip_viaje,
+                FEC_VIAJE = risk.Datos_Generales.fec_efec_poliza,
+                DES_DESTINO = StringValue(datosvariables, "DES_DESTINO"),
+                COD_MODALIDAD = risk.Datos_Generales.cod_modalidad,
+                cantidad_riesgos = cantidadRiesgos,
+                coberturas = new List<Architect.API.Tron.Contracts.Comun.Cobertura>()
+            };
+
+            MapperFechaDeNacimientoAsegurados(risk, quote);
+
+            MapperCoberturas(risk, quote);
+
+            return quote;
+        }
+
+        private static void MapperCoberturas(Domain.Poliza.Emision.Poliza risk, Architect.API.Tron.Contracts.Cotizacion.Viajero quote)
+        {
+            if (risk.Coberturas == null || risk.Coberturas.Count == 0)
+            {
+                quote.coberturas.Add(new Architect.API.Tron.Contracts.Comun.Cobertura() { codigo = 4457 });
+                quote.coberturas.Add(new Architect.API.Tron.Contracts.Comun.Cobertura() { codigo = 4460 });
+            }
+            else
+            {
+                foreach (Domain.Poliza.Emision.Cobertura riskCover in risk.Coberturas)
+                {
+                    quote.coberturas.Add(new Architect.API.Tron.Contracts.Comun.Cobertura() { codigo = riskCover.codigo });
+                }
+            }
+        }
+        private static void MapperFechaDeNacimientoAsegurados(Domain.Poliza.Emision.Poliza risk, Architect.API.Tron.Contracts.Cotizacion.Viajero quote)
+        {
+            foreach (Tercero item in risk.Terceros?.Where(c => c.tipodetercero == 2))
+            {
+                switch (item.numeroderiesgo)
+                {
+                    case 1:
+                        quote.FEC_NACIMIENTO = item.fechadenacimiento;
+                        break;
+                    case 2:
+                        quote.FEC_NACIMIENTO2 = item.fechadenacimiento;
+                        break;
+                    case 3:
+                        quote.FEC_NACIMIENTO3 = item.fechadenacimiento;
+                        break;
+                    case 4:
+                        quote.FEC_NACIMIENTO4 = item.fechadenacimiento;
+                        break;
+                    case 5:
+                        quote.FEC_NACIMIENTO5 = item.fechadenacimiento;
+                        break;
+                    case 6:
+                        quote.FEC_NACIMIENTO6 = item.fechadenacimiento;
+                        break;
+                    case 7:
+                        quote.FEC_NACIMIENTO7 = item.fechadenacimiento;
+                        break;
+                    case 8:
+                        quote.FEC_NACIMIENTO8 = item.fechadenacimiento;
+                        break;
+                    case 9:
+                        quote.FEC_NACIMIENTO9 = item.fechadenacimiento;
+                        break;
+                    case 10:
+                        quote.FEC_NACIMIENTO10 = item.fechadenacimiento;
+                        break;
+                }
+
+            }
+        }
         internal static Architect.API.Tron.Contracts.Presupuesto.DatoFijo MapperTerceros(Domain.Poliza.Emision.Poliza risk, Architect.API.Tron.Contracts.Presupuesto.DatoFijo datoFijo)
         {
             datoFijo.Terceros = new List<Architect.API.Tron.Contracts.Presupuesto.Tercero>();
@@ -152,59 +239,8 @@ namespace Aliados.Monge.Application.Poliza
             return datoFijo;
         }
 
-        internal static Architect.API.Tron.Contracts.Cotizacion.Viajero MapperBase(Domain.Poliza.Emision.Poliza risk)
-        {
-            List<Domain.Poliza.Emision.DatosVariables> datosvariables = risk.Datos_Variables;
 
-            string cod_producto = risk.Datos_Generales.cod_producto;
-            string tip_viaje = cod_producto.Substring(cod_producto.IndexOf("-") + 1, 1);
-            string tip_plan = cod_producto.Substring(cod_producto.IndexOf("-") + 2, 1);
-
-
-            Architect.API.Tron.Contracts.Cotizacion.Viajero quote = new Architect.API.Tron.Contracts.Cotizacion.Viajero()
-            {
-                cod_mon = risk.Datos_Generales.moneda,
-                cod_fracc_pago = risk.Datos_Generales.cod_fracc_pago,
-                fec_efec_poliza = risk.Datos_Generales.fec_efec_poliza,
-                fec_vcto_poliza = risk.Datos_Generales.fec_vcto_poliza,
-                TIP_PLAN = tip_plan,
-                TIP_VIAJE = tip_viaje,
-                FEC_VIAJE = DateTimeValue(datosvariables, "FEC_VIAJE"),
-                DES_DESTINO = StringValue(datosvariables, "DES_DESTINO"),
-                FEC_NACIMIENTO = DateTimeValue(datosvariables, "FEC_NACIMIENTO"),
-                FEC_NACIMIENTO2 = DateTimeValue(datosvariables, "FEC_NACIMIENTO2"),
-                FEC_NACIMIENTO3 = DateTimeValue(datosvariables, "FEC_NACIMIENTO3"),
-                FEC_NACIMIENTO4 = DateTimeValue(datosvariables, "FEC_NACIMIENTO4"),
-                FEC_NACIMIENTO5 = DateTimeValue(datosvariables, "FEC_NACIMIENTO5"),
-                FEC_NACIMIENTO6 = DateTimeValue(datosvariables, "FEC_NACIMIENTO6"),
-                FEC_NACIMIENTO7 = DateTimeValue(datosvariables, "FEC_NACIMIENTO7"),
-                FEC_NACIMIENTO8 = DateTimeValue(datosvariables, "FEC_NACIMIENTO8"),
-                FEC_NACIMIENTO9 = DateTimeValue(datosvariables, "FEC_NACIMIENTO9"),
-                FEC_NACIMIENTO10 = DateTimeValue(datosvariables, "FEC_NACIMIENTO10"),
-                COD_MODALIDAD = risk.Datos_Generales.cod_modalidad,
-                cantidad_riesgos = IntegerValue(datosvariables, "CANTIDAD_RIEGOS"),
-                coberturas = new List<Architect.API.Tron.Contracts.Comun.Cobertura>()
-            };
-
-            foreach (Domain.Poliza.Emision.Cobertura riskCover in risk.Coberturas)
-            {
-                quote.coberturas.Add(new Architect.API.Tron.Contracts.Comun.Cobertura() { codigo = riskCover.codigo });
-            }
-
-            return quote;
-        }
-
-        internal static int IntegerValue(List<Domain.Poliza.Emision.DatosVariables> datosvariables, string name)
-        {
-            int result = 0;
-            if (datosvariables.Exists(r => r.nombre == name))
-            {
-                result = Convert.ToInt32(datosvariables.Find(r => r.nombre == name).valor);
-            }
-            return result;
-
-        }
-        internal static string StringValue(List<Domain.Poliza.Emision.DatosVariables> datosvariables, string name)
+        private static string StringValue(List<Domain.Poliza.Emision.DatosVariables> datosvariables, string name)
         {
             string result = String.Empty;
             if (datosvariables.Exists(r => r.nombre == name))
@@ -214,7 +250,7 @@ namespace Aliados.Monge.Application.Poliza
             return result;
 
         }
-        internal static DateTime DateTimeValue(List<Domain.Poliza.Emision.DatosVariables> datosvariables, string name)
+        private static DateTime DateTimeValue(List<Domain.Poliza.Emision.DatosVariables> datosvariables, string name)
         {
             DateTime result = DateTime.MinValue;
 
@@ -226,8 +262,18 @@ namespace Aliados.Monge.Application.Poliza
             return result;
 
         }
+        private static int IntegerValue(List<Domain.Poliza.Emision.DatosVariables> datosvariables, string name)
+        {
+            int result = 0;
+            if (datosvariables.Exists(r => r.nombre == name))
+            {
+                result = Convert.ToInt32(datosvariables.Find(r => r.nombre == name).valor);
+            }
+            return result;
 
-        internal static int IntegerValue(List<Domicilio> detalleDomicilio, int nivel)
+        }
+
+        private static int IntegerValue(List<Domicilio> detalleDomicilio, int nivel)
         {
             int result = Convert.ToInt32(detalleDomicilio.Find(r => r.nivel == nivel).valor);
             if (detalleDomicilio.Exists(r => r.nivel == nivel))
@@ -237,7 +283,7 @@ namespace Aliados.Monge.Application.Poliza
             return result;
 
         }
-        internal static string StringValue(List<Domicilio> detalleDomicilio, int nivel)
+        private static string StringValue(List<Domicilio> detalleDomicilio, int nivel)
         {
             string result = String.Empty;
             if (detalleDomicilio.Exists(r => r.nivel == nivel))

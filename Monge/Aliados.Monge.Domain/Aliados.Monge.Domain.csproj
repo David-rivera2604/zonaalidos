@@ -68,6 +68,7 @@
     <Compile Include="Poliza\Emision\Tienda.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Seguridad\RespuestaSeguridad.cs" />
+    <Compile Include="Traza\TrackRequest.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
