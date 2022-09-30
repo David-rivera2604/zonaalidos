@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Aliados.Monge.Domain.Poliza.Documentos
 {
+    /// <summary>
+    /// Documento a ser asociados a una póliza.
+    /// </summary>
     public class Documento
     {
         /// <summary>
@@ -13,7 +16,7 @@ namespace Aliados.Monge.Domain.Poliza.Documentos
         /// </summary>
         public int codigo_documento { get; set; }
         /// <summary>
-        /// Nombre del archivo original. Ejemplo cédula.pdf.
+        /// Nombre del archivo original, el mismo debe posee la extensión del archivo. Ejemplo cédula.pdf.
         /// </summary>
         public string nombre_documento { get; set; }
         /// <summary>

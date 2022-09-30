@@ -30,13 +30,13 @@ namespace Aliados.Monge.Application.Poliza
                 switch (item.RequestType)
                 {
                     case "Emision":
-                        result.message_body = Newtonsoft.Json.JsonConvert.DeserializeObject<Domain.Poliza.Emision.Respuesta>(item.ResponseBody);
+                        result.message_body = Newtonsoft.Json.JsonConvert.DeserializeObject<Domain.Poliza.Emision.Respuesta>(item.ResponseBody).message_body;
                         break;
                     case "Documentos":
-                        result.message_body = Newtonsoft.Json.JsonConvert.DeserializeObject<Domain.Poliza.Documentos.RespuestaDocumentos>(item.ResponseBody);
+                        result.message_body = Newtonsoft.Json.JsonConvert.DeserializeObject<Domain.Poliza.Documentos.RespuestaDocumentos>(item.ResponseBody).message_body;
                         break;
                     case "Certificado":
-                        result.message_body = Newtonsoft.Json.JsonConvert.DeserializeObject<Domain.Poliza.Certificado.RespuestaCertificado>(item.ResponseBody);
+                        result.message_body = Newtonsoft.Json.JsonConvert.DeserializeObject<Domain.Poliza.Certificado.RespuestaCertificado>(item.ResponseBody).message_body;
                         break;
                 }
             }

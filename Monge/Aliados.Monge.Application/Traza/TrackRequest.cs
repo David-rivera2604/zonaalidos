@@ -32,6 +32,7 @@ namespace Aliados.Monge.Application.Traza
 
         public static void Update(int companyId, int userId, int id, Domain.Traza.TrackRequest item)
         {
+            item.Id = id;
             item.CompanyId = companyId;
             item.UpdateUserCode = userId;
             item.UpdateDate = DateTime.Now;

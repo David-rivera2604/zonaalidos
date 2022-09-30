@@ -1,6 +1,8 @@
 ﻿using Aliados.Monge.Domain.Poliza.Certificado;
 using Aliados.Monge.Domain.Poliza.Documentos;
+using Architect.API.Tron.Contracts.Especificacion;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Aliados.Monge.Application.Poliza
@@ -29,8 +31,18 @@ namespace Aliados.Monge.Application.Poliza
 
             try
             {
-                foreach (Documento documento in documentos.documentos)
+                
+
+                foreach (Domain.Poliza.Documentos.Documento documento in documentos.documentos)
                 {
+                    byte[] bytes = Convert.FromBase64String(documento.documento_base64);
+                    string filename = string.Format("{0}{1}", Architect.Utilities.Helpers.Settings.StringValue("Attachments.Path"), documento.nombre_documento);
+                    using (var stream = new FileStream(filename, FileMode.Create))
+                    {
+                        stream.Write(bytes, 0, bytes.Length);
+                        stream.Flush();
+                    }
+
                     attachment = new Architect.API.Core.Contracts.General.Attachments()
                     {
                         EntityType = 3000,
@@ -42,8 +54,9 @@ namespace Aliados.Monge.Application.Poliza
                         Description = "General",
                         FileName = documento.nombre_documento,
                         FileSize = Int32.Parse(documento.peso_documento),
-                        FileContent = documento.documento_base64
+                        FileContent = filename
                     };
+                    Architect.API.Core.Business.General.Attachment.SyncUp(attachment);
                 }
 
                 result.message_status = 200;
@@ -58,7 +71,7 @@ namespace Aliados.Monge.Application.Poliza
             {
                 Architect.Utilities.Log.ErrorLog(ex);
                 result.message_status = 400;
-                result.message_text = "Envío exitoso de documentos";
+                result.message_text = ex.Message;
 
                 result = new Domain.Poliza.Documentos.RespuestaDocumentos()
                 {
