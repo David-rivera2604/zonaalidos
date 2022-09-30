@@ -347,6 +347,51 @@ namespace Aliados.Monge.Infrastructure.Data.Traza
             return item;
         }
 
+
+        /// <summary>
+        /// Actualiza un registro en la tabla TrackRequest por medio de su clave primaria.
+        /// </summary>
+        /// <returns>Cantidad de registros actualizados.</returns>
+        public static int Update2(Aliados.Monge.Domain.Traza.TrackRequest trackrequestItem, IDbConnection connection = null)
+        {
+            if (trackrequestItem.UpdateDate.IsEmpty())
+            {
+                trackrequestItem.UpdateDate = DateTime.Now;
+            }
+            return Database.Update("UPDATE TrackRequest " +
+                                      "SET MessageId=:MessageId, ResponseStatus=:ResponseStatus, ResponseText=:ResponseText, ResponseBody=:ResponseBody, ResponseTimeStamp=:ResponseTimeStamp, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
+                                    "WHERE Id=:Id")
+                                .AddParameter("MessageId", DbType.AnsiString, 40, trackrequestItem.MessageId)
+                                .AddParameter("ResponseStatus", DbType.Decimal, 5, trackrequestItem.ResponseStatus)
+                                .AddParameter("ResponseText", DbType.AnsiString, 512, trackrequestItem.ResponseText)
+                                .AddParameter("ResponseBody", DbType.AnsiString, 4000, trackrequestItem.ResponseBody)
+                                .AddParameter("ResponseTimeStamp", DbType.DateTime, 9, trackrequestItem.ResponseTimeStamp)
+                                .AddParameter("UpdateUserCode", DbType.Decimal, 9, trackrequestItem.UpdateUserCode)
+                                .AddParameter("UpdateDate", DbType.DateTime, 0, trackrequestItem.UpdateDate)
+                                .AddParameter("Id", DbType.Decimal, 9, trackrequestItem.Id)
+                                .Execute(connection, "Research");
+        }
+
+        /// <summary>
+        /// Recupera un registro en la tabla TrackRequest por medio de su clave primaria.
+        /// </summary>
+        /// <returns>Instancia de TrackRequest</returns>
+        public static Aliados.Monge.Domain.Traza.TrackRequest Retrieve(string documentId, int companyId, IDbConnection connection = null)
+        {
+            Aliados.Monge.Domain.Traza.TrackRequest result = null;
+            Database.Select("SELECT Id, TrackRequest.CompanyId, DocumentId, RequestType, RequestBody, RequestTimeStamp, MessageId, ResponseStatus, ResponseText, ResponseBody, ResponseTimeStamp, TrackRequest.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, TrackRequest.UpdateDate " +
+                              "FROM TrackRequest LEFT JOIN UserMember um ON um.UserId = TrackRequest.UpdateUserCode " +
+                             "WHERE TrackRequest.DocumentId=:DocumentId AND TrackRequest.CompanyId=:CompanyId")
+                        .AddParameter("DocumentId", DbType.AnsiString, 40, documentId)
+                        .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                        .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
+                        {
+                            result = DataReaderToTrackRequest(reader);
+                        }));
+            return result;
+        }
+
+
     }
 
 }

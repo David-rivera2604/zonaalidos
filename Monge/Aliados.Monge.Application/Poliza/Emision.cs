@@ -5,23 +5,56 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Aliados.Monge.Application.Poliza
 {
-    internal sealed class Viajero
+    public sealed class Emision
     {
 
-        public static async Task<Domain.Poliza.Emision.Respuesta> Emision(Domain.Poliza.Emision.Poliza risk, int agentCode, string userName)
+        public static async Task<Domain.Poliza.Emision.Respuesta> Handler(Domain.Poliza.Emision.Poliza risk, Architect.API.Core.Contracts.Security.Token tokenInfo)
+        {
+            Domain.Poliza.Emision.Respuesta result;
+
+            // Viajero - Costa Rica
+            if (risk?.Datos_Generales?.pais == "CR" && risk.Datos_Generales.cod_producto.StartsWith("441-"))
+            {
+                result = Poliza.Emision.Viajero(risk, tokenInfo).Result;
+            }
+            else
+            {
+                result = new Domain.Poliza.Emision.Respuesta()
+                {
+                    message_status = 400,
+                    message_text = "País y/o producto no permitido",
+                    message_id = Guid.NewGuid().ToString(),
+                    document_id = risk.document_id
+                };
+            }
+            return result;
+        }
+
+        internal static async Task<Domain.Poliza.Emision.Respuesta> Viajero(Domain.Poliza.Emision.Poliza risk, Architect.API.Core.Contracts.Security.Token tokenInfo)
         {
             Domain.Poliza.Emision.Respuesta result = new Domain.Poliza.Emision.Respuesta();
+
+            int trackingId = Traza.TrackRequest.Add(tokenInfo.CompanyId, tokenInfo.UserId,
+                                                     new Domain.Traza.TrackRequest()
+                                                     {
+                                                         DocumentId = risk.document_id,
+                                                         RequestType = "Emision",
+                                                         RequestBody = Newtonsoft.Json.JsonConvert.SerializeObject(risk),
+                                                         RequestTimeStamp = DateTime.Now
+                                                     }).Id;
+
             string cod_producto = risk.Datos_Generales.cod_producto;
             int cod_ramo = Convert.ToInt32(cod_producto.Substring(0, cod_producto.IndexOf("-")));
 
             Architect.API.Tron.Contracts.Cotizacion.Viajero quote = MapperBase(risk);
 
-            Architect.API.Tron.Contracts.Presupuesto.DatoFijo result2 = ViajeroConvert.ToTron(quote, cod_ramo, agentCode, userName);
+            Architect.API.Tron.Contracts.Presupuesto.DatoFijo result2 = ViajeroConvert.ToTron(quote, cod_ramo, tokenInfo.AgentCode, tokenInfo.UserName);
             result2 = MapperTerceros(risk, result2);
 
             result2.tip_docum = result2.Terceros.FirstOrDefault().tip_docum;
@@ -80,10 +113,20 @@ namespace Aliados.Monge.Application.Poliza
                     document_id = risk.document_id
                 };
             }
+
+            Traza.TrackRequest.Update(tokenInfo.CompanyId, tokenInfo.UserId, trackingId,
+                                      new Domain.Traza.TrackRequest()
+                                      {
+                                          MessageId = result.message_id,
+                                          ResponseStatus = result.message_status,
+                                          ResponseText = result.message_text,
+                                          ResponseBody = Newtonsoft.Json.JsonConvert.SerializeObject(result),
+                                          ResponseTimeStamp = DateTime.Now
+                                      });
             return result;
         }
 
-        internal static Architect.API.Tron.Contracts.Cotizacion.Viajero MapperBase(Domain.Poliza.Emision.Poliza risk)
+        private static Architect.API.Tron.Contracts.Cotizacion.Viajero MapperBase(Domain.Poliza.Emision.Poliza risk)
         {
             List<Domain.Poliza.Emision.DatosVariables> datosvariables = risk.Datos_Variables;
 
@@ -169,7 +212,7 @@ namespace Aliados.Monge.Application.Poliza
 
             }
         }
-        internal static Architect.API.Tron.Contracts.Presupuesto.DatoFijo MapperTerceros(Domain.Poliza.Emision.Poliza risk, Architect.API.Tron.Contracts.Presupuesto.DatoFijo datoFijo)
+        private static Architect.API.Tron.Contracts.Presupuesto.DatoFijo MapperTerceros(Domain.Poliza.Emision.Poliza risk, Architect.API.Tron.Contracts.Presupuesto.DatoFijo datoFijo)
         {
             datoFijo.Terceros = new List<Architect.API.Tron.Contracts.Presupuesto.Tercero>();
             datoFijo.DetalleDeTerceros = new List<Architect.API.Tron.Contracts.Presupuesto.DetalleDeTercero>();

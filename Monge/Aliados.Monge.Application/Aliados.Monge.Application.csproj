@@ -51,10 +51,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Poliza\PolizaHandler.cs" />
-    <Compile Include="Poliza\Viajero.cs" />
+    <Compile Include="Poliza\Consulta.cs" />
+    <Compile Include="Poliza\Documentos.cs" />
+    <Compile Include="Poliza\Certificado.cs" />
+    <Compile Include="Poliza\Cancelacion.cs" />
+    <Compile Include="Poliza\Emision.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Seguridad\SeguridadHandler.cs" />
+    <Compile Include="Traza\TrackRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Architect.API.Core.Business\Architect.API.Core.Business.csproj">

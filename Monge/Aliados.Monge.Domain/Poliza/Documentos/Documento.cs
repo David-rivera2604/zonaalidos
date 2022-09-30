@@ -11,7 +11,7 @@ namespace Aliados.Monge.Domain.Poliza.Documentos
         /// <summary>
         /// Código del documento. Lista de valores:
         /// </summary>
-        public string codigo_documento { get; set; }
+        public int codigo_documento { get; set; }
         /// <summary>
         /// Nombre del archivo original. Ejemplo cédula.pdf.
         /// </summary>
