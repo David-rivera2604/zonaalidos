@@ -429,9 +429,8 @@
                    Aliados. Manejo de cuentas de acceso para la pasarela de pago.
                    Caturix. Manejo de suma asegurada según plan.
                    Caturix. Fecha de ingreso se muestre la que esta en el campo de fecha de ingreso y no la del día en que generan el documento.
-                   Trazabilidad. Procesas duplicados cuando se crea un caso.
-                   Trazabilidad. Export e Import para las definición de procesos.
+                   Trazabilidad. Procesas duplicados cuando se crea un caso.                   
                    Bayer. Script para limpiar solicitudes fallidas en bayer.
                    Caturix. El campo número de empleado es opcional.
 1.6.16  03/10/2022 Aliados. ESPH. Ajuste en la fecha de inicio de vigencia en el reporte. 
-                   Viajero Regional. Emisión, Documentos, Certificado.
+                   Trazabilidad. Export e Import para las definición de procesos.
