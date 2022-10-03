@@ -433,4 +433,5 @@
                    Trazabilidad. Export e Import para las definición de procesos.
                    Bayer. Script para limpiar solicitudes fallidas en bayer.
                    Caturix. El campo número de empleado es opcional.
-                   Aliados. ESPH. Ajuste en la fecha de inicio de vigencia en el reporte. 
+1.6.16  03/10/2022 Aliados. ESPH. Ajuste en la fecha de inicio de vigencia en el reporte. 
+                   Viajero Regional. Emisión, Documentos, Certificado.
