@@ -136,6 +136,10 @@ app.GeneralProcessSpecFlow = (function () {
             Refresh();
         });
 
+        $('.tool-refresh').on('click', function (e) {
+            Refresh();
+        });
+
         $("#ProcessSpecFlowSearch").keyup(function (event) {
             if (event.keyCode == 13)
                 Refresh();
@@ -189,6 +193,16 @@ app.GeneralProcessSpecFlow = (function () {
             event.preventDefault();
         });
 
+        $('#ProcessSpecFlowEdtFormExport').click(function () {
+            app.ui.ButtonDoing('#ProcessSpecFlowEdtFormExport');
+            let uidata = MapInputToObject();
+            app.core.GetPDF(app.setting.apipath + `v1/ProcessSpecFlow/${uidata.Id}/Export`, true, uidata.Name + '.json',
+                function () {
+                    app.ui.ButtonDone('#ProcessSpecFlowEdtFormExport');
+                });
+            event.preventDefault();
+        });
+
         $('#ProcessSpecFlowEdtFormDelete').click(function () {
             if (app.ui.IsValid('#ProcessSpecFlowEdtForm', false)) {
                 app.ui.ButtonDoing('#ProcessSpecFlowEdtFormDelete');
@@ -208,6 +222,69 @@ app.GeneralProcessSpecFlow = (function () {
 
             CustomFields();
 
+        });
+
+        $('#fileUpload').on('change', function () {
+            var index = 0;
+            var arr = $('#fileUpload').prop('files');
+            var message = '';
+            for (index = 0; index < arr.length; index++) {
+                if (arr[index].size >= 31457280) {
+                    if (message != '') {
+                        message = message & ', ';
+                    }
+                    message = message & 'El tamaño del archivo ' + arr[index].fileName + 'es mayor a 30mb';
+                }
+            }
+            if (message != '') {
+                elementInstance.showErrors({ 'FileName': message });
+            }
+            else {
+                app.ui.ButtonDoing('#fileUpload');
+                var fileName = $(this).val().split('\\').pop();
+                var data = new FormData();
+                for (index = 0; index < arr.length; index++) {
+                    data.append('files', arr[index]);
+                }
+                $.ajax({
+                    type: "POST",
+                    enctype: 'multipart/form-data',
+                    url: app.setting.apipath + 'v1/Common/Upload',
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    timeout: 600000,
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                    }
+                }).done(function (data, textStatus, jqXHR) {
+                    $('#Stored').val(data[0].StoredFileName);
+                    $('#FileSize').val(data[0].Size);
+                    $('#FileName').val(fileName);
+                    $('#ImportFile').modal('toggle');
+                    $('#ProcessSpecFlowGridTbl').bootstrapTable('showLoading');
+                    app.core.Post(app.setting.apipath + `v1/ProcessSpecFlow/Import`, JSON.stringify({ Stored: $('#Stored').val(), FileSize: $('#FileSize').val(), FileName: $('#FileName').val() }))
+                        .done(function (data, textStatus, jqXHR) {
+                            ViewMode();
+                            Refresh();
+                        }).always(function () {
+                            $('#ProcessSpecFlowGridTbl').bootstrapTable('hideLoading');
+                            $('#Stored').val('');
+                            $('#FileSize').val('');
+                            $('#FileName').val('');
+
+
+                            $('#fileUpload').prop('files')
+
+                        });
+
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    console.log("ERROR : ", jqXHR);
+                }).always(function () {
+                    app.ui.ButtonDone('#fileUpload')
+                });
+            }
         });
 
     }
@@ -403,6 +480,7 @@ app.GeneralProcessSpecFlow = (function () {
             $('#ProcessSpecFlowEdtFormSaveContinue').removeClass('d-none');
             $('#ProcessSpecFlowEdtFormSaveCopy').removeClass('d-none');
             $('#ProcessSpecFlowEdtFormDuplicate').addClass('d-none');
+            $('#ProcessSpecFlowEdtFormExport').addClass('d-none');
             $('#ProcessSpecFlowEdtFormDelete').addClass('d-none');
             $('#ProcessSpecFlowEdtFormSave').removeClass('d-none');
             $('#ProcessSpecFlowEdtFormCancel').removeClass('d-none');
@@ -417,6 +495,7 @@ app.GeneralProcessSpecFlow = (function () {
                     $('#ProcessSpecFlowEdtFormSaveContinue').addClass('d-none');
                     $('#ProcessSpecFlowEdtFormSaveCopy').addClass('d-none');
                     $('#ProcessSpecFlowEdtFormDuplicate').removeClass('d-none');
+                    $('#ProcessSpecFlowEdtFormExport').removeClass('d-none');
                     $('#ProcessSpecFlowEdtFormDelete').removeClass('d-none');
                     $('#ProcessSpecFlowEdtFormSave').removeClass('d-none');
                     $('#ProcessSpecFlowEdtFormCancel').removeClass('d-none');

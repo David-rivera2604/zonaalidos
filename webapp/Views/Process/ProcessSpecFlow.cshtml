@@ -5,7 +5,7 @@
 <!-- ProcessSpecFlow -->
 <div class="ibox">
     <div class="ibox-title">
-        <h5></h5>
+        <h5>Proceso</h5>
         <!-- Opciones -->
         <div class="ibox-tools">
             <a class="tool-filter">
@@ -22,16 +22,16 @@
             </a>
             <ul class="dropdown-menu dropdown-user">
                 <li>
-                    <a href="#" class="dropdown-item tool-new"><i class="fa fa-plus"></i> Crear un nuevo process spec flow</a>
+                    <a href="#" class="dropdown-item tool-new"><i class="fa fa-plus"></i> Crear un nuevo proceso</a>
                 </li>
                 <li>
                     <a href="#" class="dropdown-item tool-filter"><i class="fa fa-filter"></i> Despliega el filtro avanzado...</a>
                 </li>
                 <li>
-                    <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar los table0s</a>
+                    <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar la lista de procesos</a>
                 </li>
                 <li>
-                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                    <a href="#" class="dropdown-item tool-import" data-toggle="modal" data-target="#ImportFile"><i class="fa fa-file-o"></i> Importar un proceso...</a>
                 </li>
                 <li>
                     <a href="#" class="dropdown-item tool-audit" data-toggle="modal" data-target="#myModal5"><i class="fa fa-clock-o"></i> Historial...</a>
@@ -195,6 +195,7 @@
                                     <button id="ProcessSpecFlowEdtFormSaveContinue" type="button" class="btn btn-primary btn-sm d-none formbtn" data-doing="Guardando cambios..." title="Guardar cambios y continuar">Guardar y continuar</button>
                                     <button id="ProcessSpecFlowEdtFormSaveCopy" type="button" class="btn btn-primary btn-sm d-none formbtn" data-doing="Guardando cambios..." title="Guardar cambios y continuar">Guardar y copiar</button>
                                     <button id="ProcessSpecFlowEdtFormDuplicate" type="button" class="btn btn-info btn-sm d-none formbtn" data-doing="Duplicando..." title="Duplica la información actual">Duplicar</button>
+                                    <button id="ProcessSpecFlowEdtFormExport" type="button" class="btn btn-white btn-sm d-none formbtn" data-doing="Exportando..." title="Exporta toda la información asociada a la definición de un proceso">Exportar</button>
                                     <button id="ProcessSpecFlowEdtFormDelete" type="button" class="btn btn-danger btn-sm d-none formbtn" data-doing="Eliminando..." title="Elimina la información actual">Eliminar</button>
                                     <button id="ProcessSpecFlowEdtFormCancel" type="button" class="btn btn-white btn-sm d-none formbtn">Cancelar</button>
                                 </div>
@@ -204,6 +205,59 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal Import -->
+
+
+        <div class="modal inmodal fade" id="ImportFile" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                        <h2 class="modal-title">Importar un proceso</h2>
+                    </div>
+                    <div class="modal-body">
+
+
+                        <div class='col-md-12'>
+                            <div id="PolicyImportsEdt" class="animated fadeInRight ">
+
+                                <form id='PolicyImportsEdtForm' class='form-horizontal' data-toggle='validator'>
+
+                                    <fieldset>
+
+                                        <div class="form-row">
+                                            <!-- FileName -->
+                                            <div class='col-md-12'>
+                                                <div class='form-group'>
+                                                    <label class='control-label' for='FileName'>Archivo de proceso<span class='required-mark'>*</span></label>
+                                                    <div class="input-group">
+                                                        <input id='FileName' name='FileName' type='text' class='form-control' size='80' maxlength='80' placeholder="Indique el archivo a ser importado..." readonly>
+                                                        <input id="Stored" type="hidden" value="" />
+                                                        <input id="FileSize" type="hidden" value="" />
+                                                        <div class="input-group-append">
+                                                            <span class="btn btn-default fileinput-button" title="Permite seleccionar el archivo a ser importado">
+                                                                <span>Examinar...</span>
+                                                                <input id="fileUpload" type="file" accept=".json" />
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div id='FileName_validate'></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 @section Scripts {

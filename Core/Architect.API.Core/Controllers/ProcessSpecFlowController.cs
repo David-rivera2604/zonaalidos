@@ -1,7 +1,13 @@
 ﻿using Architect.Utilities.Extensions;
 using Microsoft.Web.Http;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 
@@ -256,6 +262,60 @@ namespace Architect.API.Core.Controllers
                     }
                 }).ConfigureAwait(false);
             }
+            return result;
+        }
+
+
+        [HttpGet]
+        [Route("{id:int}/Export")]
+        [Authorize]
+        public async Task<HttpResponseMessage> Export([FromUri] int id)
+        {
+            Contracts.Security.Token tokenInfo = Security.Token.Info();
+            
+            string ou = Architect.API.Core.Business.General.ProcessSpecFlow.Export(tokenInfo.CompanyId, tokenInfo.UserId, id);
+
+            var response = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(ou, Encoding.Default, "application/json")
+
+            };
+            //result.Flush();
+            //result.Close();
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue(MimeMapping.GetMimeMapping("json"));
+            response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+            {
+                FileName = "process_" + id.ToString() + ".json"
+            };
+            return response;
+        }
+
+        [HttpPost]
+        [Route("Import")]
+        [Authorize]
+        public async Task<IHttpActionResult> Post([FromBody] Contracts.FileUploaded item)
+        {
+            IHttpActionResult result = BadRequest();
+            if (item.IsEmpty())
+            {
+                return BadRequest("Debe indicar información del archivo cargado");
+            }
+            Contracts.Security.Token tokenInfo = Security.Token.Info();
+            await Task.Run(() =>
+            {
+                bool imported = Business.General.ProcessSpecFlow.Import(tokenInfo.CompanyId, tokenInfo.UserId, item.Stored, item.FileSize, item.FileName);
+                if (imported)
+                {
+                    result = Ok(new
+                    {
+                        Imported = imported
+                    });
+                }
+                else
+                {
+                    result = BadRequest();
+                }
+            }).ConfigureAwait(false);
             return result;
         }
 

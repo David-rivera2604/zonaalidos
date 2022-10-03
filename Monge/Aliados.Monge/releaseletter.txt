@@ -1,0 +1,6 @@
+﻿1.0.0  31/08/2022 WebAPi. operaciones, contratos, swagger y repuesta dummy.
+1.0.0  27/09/2022 Ajustes de contratos.
+1.0.0  03/10/2022 Emisión, Documentos, Certificado.
+                  Manejo de errores.
+                  Autenticación por swagger y uso de token.
+                  Collección Postman de operaciones disponibles

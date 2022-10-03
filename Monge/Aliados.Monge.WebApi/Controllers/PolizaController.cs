@@ -28,7 +28,7 @@ namespace Aliados.Monge.WebApi.Controllers
         public async Task<IHttpActionResult> Emision(Domain.Poliza.Emision.Poliza risk)
         {
             Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info();
-            return Ok(Application.Poliza.PolizaHandler.Emision(risk).Result);
+            return Ok(Application.Poliza.Emision.Handler(risk, tokenInfo).Result);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace Aliados.Monge.WebApi.Controllers
         public async Task<IHttpActionResult> Documentos(Domain.Poliza.Documentos.Documentos documentos)
         {
             Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info();
-            return Ok(Application.Poliza.PolizaHandler.Documentos(documentos).Result);
+            return Ok(Application.Poliza.Documentos.Handler(documentos, tokenInfo).Result);
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Aliados.Monge.WebApi.Controllers
         public async Task<IHttpActionResult> Certificado(Domain.Poliza.Certificado.Certificado certificado)
         {
             Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info();
-            return Ok(Application.Poliza.PolizaHandler.Certificado(certificado).Result);
+            return Ok(Application.Poliza.Certificado.Handler(certificado, tokenInfo).Result);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Aliados.Monge.WebApi.Controllers
         public async Task<IHttpActionResult> Cancelacion(Domain.Poliza.Cancelacion.SolicitudDeCancelacion solicitud)
         {
             Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info();
-            return Ok(Application.Poliza.PolizaHandler.Cancelacion(solicitud).Result);
+            return Ok(Application.Poliza.Cancelacion.Handler(solicitud, tokenInfo).Result);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Aliados.Monge.WebApi.Controllers
         public async Task<IHttpActionResult> Consulta(Domain.Poliza.Consulta.Solicitud solicitud)
         {
             Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info();
-            return Ok(Application.Poliza.PolizaHandler.Consulta(solicitud).Result);
+            return Ok(Application.Poliza.Consulta.Handler(solicitud, tokenInfo).Result);
         }
     }
 }
