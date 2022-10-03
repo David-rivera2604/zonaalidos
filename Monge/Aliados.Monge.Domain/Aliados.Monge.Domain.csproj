@@ -46,6 +46,7 @@
     <Compile Include="Poliza\Cancelacion\RespuestaCancelacionDetalle.cs" />
     <Compile Include="Poliza\Cancelacion\SolicitudDeCancelacion.cs" />
     <Compile Include="Poliza\Certificado\Certificado.cs" />
+    <Compile Include="Poliza\Certificado\Documento.cs" />
     <Compile Include="Poliza\Certificado\RespuestaCertificado.cs" />
     <Compile Include="Poliza\Certificado\RespuestaCertificadoDetalle.cs" />
     <Compile Include="Comun\RespuestaBase.cs" />

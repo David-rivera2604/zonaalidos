@@ -43,7 +43,9 @@ namespace Aliados.Monge.Application.Poliza
                 result.message_text = "Generación exitosa de certificado";
                 result.message_body = new Domain.Poliza.Certificado.RespuestaCertificadoDetalle()
                 {
-                    certificado = contentBase64
+                    certificados = new List<Domain.Poliza.Certificado.Documento>() {
+                        new Domain.Poliza.Certificado.Documento() {
+                            numeroderiesgo = 1, certificado = contentBase64 } }
                 };
             }
             else

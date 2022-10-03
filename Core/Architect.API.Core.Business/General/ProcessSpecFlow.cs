@@ -1,10 +1,13 @@
 ﻿using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Hosting;
 
 namespace Architect.API.Core.Business.General
 {
@@ -14,25 +17,45 @@ namespace Architect.API.Core.Business.General
     public static partial class ProcessSpecFlow
     {
 
+        public static bool Import(int companyId, int userId, string stored, string fileSize, string fileName)
+        {
+            string fullPath = Path.Combine(HostingEnvironment.MapPath(ConfigurationManager.AppSettings["Files.Path"]), stored);
+
+            Contracts.General.ProcessSpecFlowResult result = Duplicate(Utilities.SerializeHandler<Contracts.General.ProcessSpecFlow>.DeserializeJSONFromFile(fullPath), companyId, userId, String.Empty);
+            return true;
+        }
+        public static string Export(int companyId, int userId, int id)
+        {
+            Contracts.General.ProcessSpecFlow result = DataAccess.General.Process.Specification.Retrieve(id, companyId, 0);
+            return Utilities.SerializeHandler<Contracts.General.ProcessSpecFlow>.SerializeJSON(result, false, false, true, Newtonsoft.Json.TypeNameHandling.None);
+        }
+
         /// <summary>
         /// Duplica un proceso y todas las tablas relacionadas.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañía propietaria.</param>
-        /// <param name="id">Identificación única del registro.</param>
-        /// <returns>Instancia de ProcessSpecFlow</returns>
         public static Contracts.General.ProcessSpecFlowResult DuplicateById(int companyId, int userId, int id)
+        {
+            return Duplicate(DataAccess.General.Process.Specification.Retrieve(id, companyId, 0), companyId, userId, " (copia)");
+        }
+
+        /// <summary>
+        /// Duplica un proceso y todas las tablas relacionadas.
+        /// </summary>
+        public static Contracts.General.ProcessSpecFlowResult Duplicate(Contracts.General.ProcessSpecFlow result, int companyId, int userId, string comment)
         {
             Dictionary<int, int> mapper = new Dictionary<int, int>();
             int currentStepId;
-            Contracts.General.ProcessSpecFlow result = DataAccess.General.Process.Specification.Retrieve(id, companyId, 0);
+
+            List<Utilities.Contracts.LookUpValue> roles = Security.RoleMember.LookUp(companyId, Int32.MaxValue);
 
             IDbConnection currentConnection = DataFactory.Database.OpenConnection("Research");
 
             result.Id = DataAccess.General.ProcessSpecFlow.RetrieveLastKey(currentConnection) + 1;
-            result.Alias += "2";
-            result.Name += " (copia)";
-            result.Description += " (copia)";
+            result.Alias += comment;
+            result.Name += comment;
+            result.Description += comment;
 
+            result.CompanyId = companyId;
             result.UpdateUserCode = userId;
             result.UpdateDate = DateTime.Now;
 
@@ -46,7 +69,7 @@ namespace Architect.API.Core.Business.General
                         {
                             Id = result.Id,
                             CompanyId = result.CompanyId,
-                            RoleId = Convert.ToInt32(flowRol.Code),
+                            RoleId = FindRole(flowRol.Code, flowRol.Description, roles),
                             UpdateUserCode = userId,
                             UpdateDate = DateTime.Now
                         }, currentConnection);
@@ -66,6 +89,7 @@ namespace Architect.API.Core.Business.General
                         foreach (Contracts.General.ProcessSpecStepRole stepRol in step.ProcessSpecStepRoles)
                         {
                             stepRol.Id = step.Id;
+                            stepRol.RoleId = FindRole(stepRol.RoleId.ToString(), stepRol.RoleName, roles);
                             stepRol.UpdateUserCode = userId;
                             stepRol.UpdateDate = DateTime.Now;
                             DataAccess.General.ProcessSpecStepRole.Create(stepRol, currentConnection);
@@ -111,6 +135,17 @@ namespace Architect.API.Core.Business.General
                 ProcessSpecFlow = result,
                 Errors = new List<Contracts.General.Error>()
             };
+        }
+
+        private static int FindRole(string roleId, string roleName, List<Utilities.Contracts.LookUpValue> roles)
+        {
+            int result = Convert.ToInt32(roleId);
+            Utilities.Contracts.LookUpValue item = roles.Find(r => r.Description == roleName);
+            if (item != null)
+            {
+                result = Convert.ToInt32(item.Code);
+            }
+            return result;
         }
 
         private static void SynchronizeRoles(int companyId, int userId, int id, List<Architect.Utilities.Contracts.LookUpValue> currentRoles)
