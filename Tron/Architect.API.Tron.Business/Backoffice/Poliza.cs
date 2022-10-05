@@ -13,9 +13,9 @@ namespace Architect.API.Tron.Business.Backoffice
     /// </summary>
     public static class Poliza
     {
-        public static bool Cancelat(int cod_cia, string alias, string numPoliza, DateTime fecAnulacion, string motSpto)
+        public static string Cancelacion(int cod_cia, string alias, string numPoliza, DateTime fecAnulacion, string motSpto)
         {
-            bool result = false;
+            string result = String.Empty;
             Contracts.Batch.Proceso g2000510Instance = new Contracts.Batch.Proceso
             {
                 fec_tratamiento = DateTime.Today,
@@ -98,7 +98,7 @@ namespace Architect.API.Tron.Business.Backoffice
                 Contracts.Batch.Proceso procesoResult = DataAccess.Batch.G2000510.Execute(g2000510Instance, connection);
                 if (procesoResult.txt_error.IsEmpty())
                 {
-                    result = true;
+                    result = procesoResult.txt_error;
                 }
                 connection.Close();
             }
