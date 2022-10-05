@@ -57,6 +57,7 @@
     <Compile Include="AvisosDeCobro\Parameters\RecibosParametros.cs" />
     <Compile Include="AvisosDeCobro\ReciboAvisoRespose.cs" />
     <Compile Include="AvisosDeCobro\ReciboRespose.cs" />
+    <Compile Include="Batch\a2000500.cs" />
     <Compile Include="Batch\Respuesta.cs" />
     <Compile Include="Comun\PlanDePago.cs" />
     <Compile Include="Comun\DocumentoRequerido.cs" />
