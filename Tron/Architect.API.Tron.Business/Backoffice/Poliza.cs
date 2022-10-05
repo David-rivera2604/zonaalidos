@@ -1,4 +1,5 @@
 ﻿using Architect.Utilities.Extensions;
+using Architect.Utilities.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -13,6 +14,11 @@ namespace Architect.API.Tron.Business.Backoffice
     /// </summary>
     public static class Poliza
     {
+        public static Contracts.Poliza.DatoFijo Leer(int cod_cia, string numPoliza, bool loadChilds)
+        {
+            return DataAccess.LeerPoliza.Poliza(cod_cia, numPoliza, 0, 0, 0, null, loadChilds);
+        }
+
         public static string Cancelacion(int cod_cia, string alias, string numPoliza, DateTime fecAnulacion, string motSpto)
         {
             string result = String.Empty;
@@ -35,7 +41,7 @@ namespace Architect.API.Tron.Business.Backoffice
 
                 DataAccess.Batch.G2000510.Create(g2000510Instance, connection);
 
-                Contracts.Poliza.DatoFijo a2000030Instance = DataAccess.LeerPoliza.Poliza(g2000510Instance.cod_cia, numPoliza, 0, 0, 0, connection, false);
+                Contracts.Poliza.DatoFijo a2000030Instance = Leer(g2000510Instance.cod_cia, numPoliza, false);
 
                 Contracts.Batch.a2000500 a2000500 = new Contracts.Batch.a2000500()
                 {

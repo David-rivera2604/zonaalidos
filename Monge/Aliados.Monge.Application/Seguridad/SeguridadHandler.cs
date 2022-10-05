@@ -17,31 +17,40 @@ namespace Aliados.Monge.Application.Seguridad
         public static async Task<Domain.Seguridad.RespuestaSeguridad> Autorizacion(string clienteID, string secretID, string ipAddress, string userAgent)
         {
             Domain.Seguridad.RespuestaSeguridad result = null;
-            if (string.IsNullOrEmpty(clienteID) || string.IsNullOrEmpty(secretID))
+            try
             {
-                return result;
-            }
-            else
-            {
-                AuthenticationResponse response = Architect.API.Core.Business.Security.Accounts.Authentication(new AuthenticationRequest()
+                if (string.IsNullOrEmpty(clienteID) || string.IsNullOrEmpty(secretID))
                 {
-                    Tenant = "Aliados",
-                    Email = clienteID,
-                    Password = secretID,
-                    IPAddress = ipAddress,
-                    UserAgent = userAgent
-                });
-
-                if (response != null)
+                    return result;
+                }
+                else
                 {
-                    result = new Domain.Seguridad.RespuestaSeguridad()
+                    AuthenticationResponse response = Architect.API.Core.Business.Security.Accounts.Authentication(new AuthenticationRequest()
                     {
-                        access_token = response.Token,
-                        token_type = "Bearer",
-                        expires_in = response.ExpiresIn
-                    };
+                        Tenant = "Aliados",
+                        Email = clienteID,
+                        Password = secretID,
+                        IPAddress = ipAddress,
+                        UserAgent = userAgent
+                    });
+
+                    if (response != null)
+                    {
+                        result = new Domain.Seguridad.RespuestaSeguridad()
+                        {
+                            access_token = response.Token,
+                            token_type = "Bearer",
+                            expires_in = response.ExpiresIn
+                        };
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                Architect.Utilities.Log.ErrorLog(ex);
+            }
+
+
             return result;
         }
 

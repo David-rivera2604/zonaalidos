@@ -12,11 +12,7 @@ namespace Aliados.Monge.Application.Poliza
 
         public static async Task<Domain.Poliza.Documentos.RespuestaDocumentos> Handler(Domain.Poliza.Documentos.Documentos documentos, Architect.API.Core.Contracts.Security.Token tokenInfo)
         {
-            Domain.Poliza.Documentos.RespuestaDocumentos result = new Domain.Poliza.Documentos.RespuestaDocumentos()
-            {
-                message_id = Guid.NewGuid().ToString(),
-                document_id = documentos.document_id
-            };
+            Domain.Poliza.Documentos.RespuestaDocumentos result;
 
             Architect.API.Core.Contracts.General.Attachments attachment;
 
@@ -31,7 +27,7 @@ namespace Aliados.Monge.Application.Poliza
 
             try
             {
-                
+
 
                 foreach (Domain.Poliza.Documentos.Documento documento in documentos.documentos)
                 {
@@ -59,24 +55,28 @@ namespace Aliados.Monge.Application.Poliza
                     Architect.API.Core.Business.General.Attachment.SyncUp(attachment);
                 }
 
-                result.message_status = 200;
-                result.message_text = "Envío exitoso de documentos";
-                result.message_body = new Domain.Poliza.Documentos.RespuestaDocumentosDetalle()
+                result = new Domain.Poliza.Documentos.RespuestaDocumentos()
                 {
-                    cantidad_documentos_recibidos = documentos.documentos.Length
+                    message_status = 200,
+                    message_text = "Envío exitoso de documentos",
+                    message_id = Guid.NewGuid().ToString(),
+                    document_id = documentos.document_id,
+                    message_body = new Domain.Poliza.Documentos.RespuestaDocumentosDetalle()
+                    {
+                        cantidad_documentos_recibidos = documentos.documentos.Length
+                    }
                 };
 
             }
             catch (Exception ex)
             {
                 Architect.Utilities.Log.ErrorLog(ex);
-                result.message_status = 400;
-                result.message_text = ex.Message;
-
                 result = new Domain.Poliza.Documentos.RespuestaDocumentos()
                 {
-                    message_status = 31,
+                    message_status = 400,
                     message_text = ex.Message,
+                    message_id = Guid.NewGuid().ToString(),
+                    document_id = documentos.document_id
                 };
             }
 

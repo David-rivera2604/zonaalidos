@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Http.Results;
 
 namespace Aliados.Monge.Application.Poliza
 {
@@ -16,34 +17,68 @@ namespace Aliados.Monge.Application.Poliza
 
         public static async Task<Domain.Poliza.Cancelacion.RespuestaCancelacion> Handler(Domain.Poliza.Cancelacion.SolicitudDeCancelacion solicitud, Architect.API.Core.Contracts.Security.Token tokenInfo)
         {
+            Domain.Poliza.Cancelacion.RespuestaCancelacion result = new Domain.Poliza.Cancelacion.RespuestaCancelacion();
+            int trackingId = Traza.TrackRequest.Add(tokenInfo.CompanyId, tokenInfo.UserId,
+                             new Domain.Traza.TrackRequest()
+                             {
+                                 DocumentId = solicitud.document_id,
+                                 RequestType = "Cancelacion",
+                                 RequestBody = Newtonsoft.Json.JsonConvert.SerializeObject(solicitud),
+                                 RequestTimeStamp = DateTime.Now
+                             }).Id;
 
-            string tronResult = Architect.API.Tron.Business.Backoffice.Poliza.Cancelacion(1, "Póliza anulada por el servicio viajero regional", solicitud.num_poliza, DateTime.Today, solicitud.descripcion_causa);
-
-            Domain.Poliza.Cancelacion.RespuestaCancelacion result;
-            if (tronResult.IsEmpty())
+            try
             {
-                result = new Domain.Poliza.Cancelacion.RespuestaCancelacion()
+                string tronResult = Architect.API.Tron.Business.Backoffice.Poliza.Cancelacion(1, "Póliza anulada por el servicio viajero regional", solicitud.num_poliza, DateTime.Today, solicitud.descripcion_causa);
+
+                
+                if (tronResult.IsEmpty())
                 {
-                    message_status = 200,
-                    message_text = "Cancelacion Exitosa de Poliza",
-                    message_id = Guid.NewGuid().ToString(),
-                    document_id = solicitud.document_id,
-                    message_body = new Domain.Poliza.Cancelacion.RespuestaCancelacionDetalle()
+                    result = new Domain.Poliza.Cancelacion.RespuestaCancelacion()
                     {
-                        num_poliza_cancelada = solicitud.num_poliza
-                    }
-                };
+                        message_status = 200,
+                        message_text = "Cancelación exitosa de póliza",
+                        message_id = Guid.NewGuid().ToString(),
+                        document_id = solicitud.document_id,
+                        message_body = new Domain.Poliza.Cancelacion.RespuestaCancelacionDetalle()
+                        {
+                            num_poliza_cancelada = solicitud.num_poliza
+                        }
+                    };
+                }
+                else
+                {
+                    result = new Domain.Poliza.Cancelacion.RespuestaCancelacion()
+                    {
+                        message_status = 400,
+                        message_text = tronResult,
+                        message_id = Guid.NewGuid().ToString(),
+                        document_id = solicitud.document_id
+                    };
+                }
             }
-            else
+            catch (Exception ex)
             {
+                Architect.Utilities.Log.ErrorLog(ex);
+
                 result = new Domain.Poliza.Cancelacion.RespuestaCancelacion()
                 {
                     message_status = 400,
-                    message_text = tronResult,
+                    message_text = ex.Message,
                     message_id = Guid.NewGuid().ToString(),
                     document_id = solicitud.document_id
                 };
             }
+
+            Traza.TrackRequest.Update(tokenInfo.CompanyId, tokenInfo.UserId, trackingId,
+              new Domain.Traza.TrackRequest()
+              {
+                  MessageId = result.message_id,
+                  ResponseStatus = result.message_status,
+                  ResponseText = result.message_text,
+                  ResponseBody = Newtonsoft.Json.JsonConvert.SerializeObject(result),
+                  ResponseTimeStamp = DateTime.Now
+              });
 
             return result;
         }
