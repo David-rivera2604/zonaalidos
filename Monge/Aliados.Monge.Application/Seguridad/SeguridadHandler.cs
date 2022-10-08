@@ -36,7 +36,7 @@ namespace Aliados.Monge.Application.Seguridad
                         UserAgent = userAgent
                     },  ref token);
 
-                    if (token != null)
+                    if (response.Token != null && token != null)
                     {
                         result.Add("UserName", token.UserName);
                         result.Add("UserId", token.UserId.ToString());
