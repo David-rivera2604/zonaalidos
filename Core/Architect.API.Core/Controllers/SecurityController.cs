@@ -41,8 +41,9 @@ namespace Architect.API.Core.Controllers
                 Contracts.Security.AuthenticationResponse responseItem = null;
                 authenticationRequest.IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
                 authenticationRequest.UserAgent = Request.Headers.UserAgent.ToString();
+                Architect.API.Core.Contracts.Security.Token token = new Contracts.Security.Token();
 
-                await Task.Run(() => responseItem = Business.Security.Accounts.Authentication(authenticationRequest)).ConfigureAwait(false);
+                await Task.Run(() => responseItem = Business.Security.Accounts.Authentication(authenticationRequest, ref token)).ConfigureAwait(false);
 
                 if (responseItem.Reason.IsNotEmpty())
                 {
