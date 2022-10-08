@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.ExceptionHandling;
 using System.Web.Http.Routing;
 
@@ -28,7 +29,9 @@ namespace Aliados.Monge
             config.Services.Replace(typeof(IExceptionLogger), new App_Start.UnhandledExceptionLogger());
             config.Services.Replace(typeof(IExceptionHandler), new App_Start.GlobalExceptionHandler());
 
-            config.EnableCors();
+            EnableCorsAttribute cors = new EnableCorsAttribute("*", "*", "*");
+
+            config.EnableCors(cors);
             config.AddApiVersioning();
 
             config.Routes.MapHttpRoute(
@@ -37,7 +40,7 @@ namespace Aliados.Monge
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            config.Filters.Add(new Architect.API.Core.Security.AuthorizeExtendAttribute());
+            //config.Filters.Add(new Architect.API.Core.Security.AuthorizeExtendAttribute());
 
         }
     }

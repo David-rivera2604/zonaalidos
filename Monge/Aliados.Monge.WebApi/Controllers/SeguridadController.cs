@@ -1,4 +1,5 @@
 ﻿using Architect.API.Core.Contracts.Security;
+using Architect.Utilities.Extensions;
 using Microsoft.Web.Http;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +43,7 @@ namespace Aliados.Monge.WebApi.Controllers
 
             Domain.Seguridad.RespuestaSeguridad x1 = Application.Seguridad.SeguridadHandler.Autorizacion(clienteID, secretID, IPAddress, useragent).Result;
 
-            if (x1 != null)
+            if (x1 != null && !x1.access_token.IsEmpty())
             {
                 return Ok(x1);
             }

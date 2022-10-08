@@ -24,10 +24,11 @@ namespace Aliados.Monge.WebApi.Controllers
         /// </summary>
         [HttpPost]
         [Route("Emision")]
+        [Authorize]
         [ResponseType(typeof(Domain.Poliza.Emision.Respuesta))]
         public async Task<IHttpActionResult> Emision(Domain.Poliza.Emision.Poliza risk)
         {
-            Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info();
+            Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info_V2();
             return Ok(Application.Poliza.Emision.Handler(risk, tokenInfo).Result);
         }
 
@@ -36,10 +37,11 @@ namespace Aliados.Monge.WebApi.Controllers
         /// </summary>
         [HttpPost]
         [Route("Documentos")]
+        [Authorize]
         [ResponseType(typeof(Domain.Poliza.Documentos.RespuestaDocumentos))]
         public async Task<IHttpActionResult> Documentos(Domain.Poliza.Documentos.Documentos documentos)
         {
-            Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info();
+            Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info_V2();
             return Ok(Application.Poliza.Documentos.Handler(documentos, tokenInfo).Result);
         }
 
@@ -48,10 +50,11 @@ namespace Aliados.Monge.WebApi.Controllers
         /// </summary>
         [HttpPost]
         [Route("Certificado")]
+        [Authorize]
         [ResponseType(typeof(Domain.Poliza.Certificado.RespuestaCertificado))]
         public async Task<IHttpActionResult> Certificado(Domain.Poliza.Certificado.Certificado certificado)
         {
-            Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info();
+            Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info_V2();
             return Ok(Application.Poliza.Certificado.Handler(certificado, tokenInfo).Result);
         }
 
@@ -60,10 +63,11 @@ namespace Aliados.Monge.WebApi.Controllers
         /// </summary>
         [HttpPost]
         [Route("Cancelacion")]
+        [Authorize]
         [ResponseType(typeof(Domain.Poliza.Cancelacion.RespuestaCancelacion))]
         public async Task<IHttpActionResult> Cancelacion(Domain.Poliza.Cancelacion.SolicitudDeCancelacion solicitud)
         {
-            Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info();
+            Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info_V2();
             return Ok(Application.Poliza.Cancelacion.Handler(solicitud, tokenInfo).Result);
         }
 
@@ -72,10 +76,11 @@ namespace Aliados.Monge.WebApi.Controllers
         /// </summary>
         [HttpPost]
         [Route("Consulta")]
+        [Authorize]
         [ResponseType(typeof(Domain.Poliza.Consulta.RespuestaConsulta))]
         public async Task<IHttpActionResult> Consulta(Domain.Poliza.Consulta.Solicitud solicitud)
         {
-            Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info();
+            Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info_V2();
             return Ok(Application.Poliza.Consulta.Handler(solicitud, tokenInfo).Result);
         }
     }

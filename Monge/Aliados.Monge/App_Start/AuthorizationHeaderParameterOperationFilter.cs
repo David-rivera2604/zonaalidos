@@ -38,17 +38,17 @@ namespace Aliados.Monge.App_Start
                     type = "string"
                 });
             }
-            if (isAuthorized && !allowAnonymous)
-            {
-                operation.parameters.Add(new Parameter
-                {
-                    name = "Authorization",
-                    @in = "header",
-                    description = "Bearer token (e.g. BEARER enterbearertokenhere)",
-                    required = true,
-                    type = "string"
-                });
-            }
+            //if (isAuthorized && !allowAnonymous)
+            //{
+            //    operation.parameters.Add(new Parameter
+            //    {
+            //        name = "Authorization",
+            //        @in = "header",
+            //        description = "Bearer token (e.g. BEARER enterbearertokenhere)",
+            //        required = true,
+            //        type = "string"
+            //    });
+            //}
         }
     }
 }
