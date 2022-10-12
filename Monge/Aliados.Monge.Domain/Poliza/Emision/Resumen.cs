@@ -14,19 +14,19 @@ namespace Aliados.Monge.Domain.Poliza.Emision
         /// <summary>
         /// Prima neta.
         /// </summary>
-        public float primaneta { get; set; }
+        public double primaneta { get; set; }
         /// <summary>
         /// IVA.
         /// </summary>
-        public float iVA { get; set; }
+        public double iVA { get; set; }
         /// <summary>
         /// Recargo por fraccionamiento.
         /// </summary>
-        public float recargoporfraccionamiento { get; set; }
+        public double recargoporfraccionamiento { get; set; }
         /// <summary>
         /// Importe total.
         /// </summary>
-        public float importetotal { get; set; }
+        public double importetotal { get; set; }
         /// <summary>
         /// Cuota.
         /// </summary>

@@ -46,6 +46,7 @@
     <Compile Include="Poliza\Cancelacion\RespuestaCancelacionDetalle.cs" />
     <Compile Include="Poliza\Cancelacion\SolicitudDeCancelacion.cs" />
     <Compile Include="Poliza\Certificado\Certificado.cs" />
+    <Compile Include="Poliza\Certificado\Documento.cs" />
     <Compile Include="Poliza\Certificado\RespuestaCertificado.cs" />
     <Compile Include="Poliza\Certificado\RespuestaCertificadoDetalle.cs" />
     <Compile Include="Comun\RespuestaBase.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Poliza\Emision\Tienda.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Seguridad\RespuestaSeguridad.cs" />
+    <Compile Include="Traza\TrackRequest.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

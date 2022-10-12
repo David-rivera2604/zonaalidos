@@ -425,3 +425,13 @@
                    Aliados. Active Directory. Maneja posibles estado de una cuenta.
 1.6.15  06/09/2022 Proveedores. Actualizacion del listado Beneficios
                    Proveedores. Manejo de texto descriptivo de pre autorizacion segun el rol Proveedores_Exclusivos
+1.6.15a 27/09/2022 Viajero Regional. Ajustes de contratos.
+                   Aliados. Manejo de cuentas de acceso para la pasarela de pago.
+                   Caturix. Manejo de suma asegurada según plan.
+                   Caturix. Fecha de ingreso se muestre la que esta en el campo de fecha de ingreso y no la del día en que generan el documento.
+                   Trazabilidad. Procesas duplicados cuando se crea un caso.                   
+                   Bayer. Script para limpiar solicitudes fallidas en bayer.
+                   Caturix. El campo número de empleado es opcional.
+1.6.16  03/10/2022 Aliados. ESPH. Ajuste en la fecha de inicio de vigencia en el reporte. 
+                   Trazabilidad. Export e Import para las definición de procesos.
+1.6.17             Reporte de saldo deudor para coopenae.

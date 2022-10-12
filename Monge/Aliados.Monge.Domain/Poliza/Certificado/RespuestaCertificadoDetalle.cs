@@ -7,13 +7,15 @@ using System.Threading.Tasks;
 namespace Aliados.Monge.Domain.Poliza.Certificado
 {
     /// <summary>
-    /// Detalle del certificado solictado.
+    /// Detalle del certificado solicitado.
     /// </summary>
     public class RespuestaCertificadoDetalle
     {
+
         /// <summary>
-        /// Contenido del documento en formato base64.
+        /// Lista de certificados uno por cada riesgo asegurado.
         /// </summary>
-        public string certificado { get; set; }
+        public List<Documento> certificados { get; set; }
+
     }
 }
