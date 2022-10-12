@@ -1,13 +1,7 @@
 ﻿using Aliados.Monge.Domain.Poliza.Certificado;
-using Aliados.Monge.Domain.Poliza.Documentos;
-using Architect.API.Tron.Contracts.Especificacion;
-using Architect.API.Tron.Contracts.Integraciones.PanamaAsistencia;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
+using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
 
 namespace Aliados.Monge.Application.Poliza
@@ -15,13 +9,9 @@ namespace Aliados.Monge.Application.Poliza
     public sealed class Certificado
     {
 
-        public static async Task<Domain.Poliza.Certificado.RespuestaCertificado> Handler(Domain.Poliza.Certificado.Certificado certificado, Architect.API.Core.Contracts.Security.Token tokenInfo)
+        public static async Task<RespuestaCertificado> Handler(Domain.Poliza.Certificado.Certificado certificado, Architect.API.Core.Contracts.Security.Token tokenInfo)
         {
-            Domain.Poliza.Certificado.RespuestaCertificado result = new Domain.Poliza.Certificado.RespuestaCertificado()
-            {
-                message_id = Guid.NewGuid().ToString(),
-                document_id = certificado.document_id
-            };
+            RespuestaCertificado result;
 
             int trackingId = Traza.TrackRequest.Add(tokenInfo.CompanyId, tokenInfo.UserId,
                              new Domain.Traza.TrackRequest()
@@ -32,27 +22,61 @@ namespace Aliados.Monge.Application.Poliza
                                  RequestTimeStamp = DateTime.Now
                              }).Id;
 
-
-            byte[] content = Architect.API.Tron.Business.Backoffice.Common.ImprimirPoliza(certificado.num_poliza);
-            string contentBase64 = Convert.ToBase64String(content);
-
-            if (true)
+            try
             {
+                Architect.API.Tron.Contracts.Poliza.DatoFijo poliza = Architect.API.Tron.Business.Backoffice.Poliza.Leer(1, certificado.num_poliza, false);
 
-                result.message_status = 200;
-                result.message_text = "Generación exitosa de certificado";
-                result.message_body = new Domain.Poliza.Certificado.RespuestaCertificadoDetalle()
+
+
+                if (poliza != null)
                 {
-                    certificados = new List<Domain.Poliza.Certificado.Documento>() {
-                        new Domain.Poliza.Certificado.Documento() {
-                            numeroderiesgo = 1, certificado = contentBase64 } }
+
+
+                    result = new RespuestaCertificado()
+                    {
+                        message_status = 200,
+                        message_text = "Generación exitosa de certificado",
+                        message_body = new RespuestaCertificadoDetalle()
+                        {
+                            certificados = new List<Domain.Poliza.Certificado.Documento>()
+                        },
+                        message_id = Guid.NewGuid().ToString(),
+                        document_id = certificado.document_id
+                    };
+                   
+                    for (int num_riesgo = 1; num_riesgo <= poliza.num_riesgos; num_riesgo++)
+                    {
+                        byte[] content = Architect.API.Tron.Business.Backoffice.Common.ImprimirPoliza(certificado.num_poliza, num_riesgo);
+                        result.message_body.certificados.Add(new Domain.Poliza.Certificado.Documento()
+                        {
+                            numeroderiesgo = num_riesgo,
+                            certificado = Convert.ToBase64String(content)
+                        });
+                    }
+                }
+                else
+                {
+                    result = new RespuestaCertificado()
+                    {
+                        message_status = 51,
+                        message_text = "No existe certificado para el numero de póliza",
+                        message_id = Guid.NewGuid().ToString(),
+                        document_id = certificado.document_id
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                Architect.Utilities.Log.ErrorLog(ex);
+                result = new Domain.Poliza.Certificado.RespuestaCertificado()
+                {
+                    message_status = 400,
+                    message_text = ex.Message,
+                    message_id = Guid.NewGuid().ToString(),
+                    document_id = certificado.document_id
                 };
             }
-            else
-            {
-                result.message_status = 51;
-                result.message_text = "No existe certificado para el numero de póliza";
-            }
+
 
             Traza.TrackRequest.Update(tokenInfo.CompanyId, tokenInfo.UserId, trackingId,
                           new Domain.Traza.TrackRequest()

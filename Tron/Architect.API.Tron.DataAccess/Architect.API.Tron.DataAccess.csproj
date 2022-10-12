@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="A1001331.cs" />
     <Compile Include="AvisoCobro.cs" />
+    <Compile Include="Batch\A2000500.cs" />
     <Compile Include="Batch\P1001331.cs" />
     <Compile Include="Batch\P2100170.cs" />
     <Compile Include="CotizadorMapfreMasClass.cs" />

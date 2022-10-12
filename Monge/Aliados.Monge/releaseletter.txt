@@ -4,3 +4,8 @@
                   Manejo de errores.
                   Autenticación por swagger y uso de token.
                   Collección Postman de operaciones disponibles
+1.0.0  10/10/2022 Se devuelven un certificado por cada riesgo asociado a la póliza.
+                  Autenticación OAuth 2.0.
+                  Swagger ajustes para autenticación OAuth 2.0.
+                  Cancelación de una póliza.
+                  Consulta del estado de un request.

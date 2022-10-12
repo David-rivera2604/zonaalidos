@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>C:\publish\viajero</_PublishTargetUrl>
-    <History>True|2022-10-03T14:59:02.7615786Z;True|2022-09-02T08:20:42.7559959-06:00;True|2022-08-31T12:39:52.0783144-06:00;True|2022-08-31T12:39:17.3135817-06:00;</History>
+    <History>True|2022-10-10T12:07:56.8204260Z;True|2022-10-03T08:59:02.7615786-06:00;True|2022-09-02T08:20:42.7559959-06:00;True|2022-08-31T12:39:52.0783144-06:00;True|2022-08-31T12:39:17.3135817-06:00;</History>
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
@@ -73,16 +73,16 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>08/22/2022 13:02:56</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.Application.dll">
-      <publishTime>10/03/2022 08:58:57</publishTime>
+      <publishTime>10/10/2022 06:07:54</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.Application.dll.config">
       <publishTime>10/03/2022 08:15:13</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.Application.pdb">
-      <publishTime>10/03/2022 08:58:57</publishTime>
+      <publishTime>10/10/2022 06:07:54</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.dll">
-      <publishTime>10/03/2022 08:58:58</publishTime>
+      <publishTime>10/10/2022 06:07:54</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.Domain.dll">
       <publishTime>10/03/2022 08:58:52</publishTime>
@@ -91,25 +91,25 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>10/03/2022 08:58:52</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.Infrastructure.Data.dll">
-      <publishTime>10/03/2022 08:58:53</publishTime>
+      <publishTime>10/10/2022 06:07:52</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.Infrastructure.Data.dll.config">
       <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.Infrastructure.Data.pdb">
-      <publishTime>10/03/2022 08:58:53</publishTime>
+      <publishTime>10/10/2022 06:07:52</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.pdb">
-      <publishTime>10/03/2022 08:58:58</publishTime>
+      <publishTime>10/10/2022 06:07:54</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.WebApi.dll">
-      <publishTime>10/03/2022 08:58:58</publishTime>
+      <publishTime>10/10/2022 06:07:54</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.WebApi.dll.config">
       <publishTime>10/03/2022 08:15:13</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.WebApi.pdb">
-      <publishTime>10/03/2022 08:58:58</publishTime>
+      <publishTime>10/10/2022 06:07:54</publishTime>
     </File>
     <File Include="bin/Antlr3.Runtime.dll">
       <publishTime>09/10/2013 10:29:20</publishTime>
@@ -118,109 +118,109 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>09/10/2013 10:29:20</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Business.dll">
-      <publishTime>10/03/2022 08:58:56</publishTime>
+      <publishTime>10/10/2022 06:07:53</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Business.dll.config">
       <publishTime>10/03/2022 08:15:13</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Business.pdb">
-      <publishTime>10/03/2022 08:58:56</publishTime>
+      <publishTime>10/10/2022 06:07:53</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Contracts.dll">
-      <publishTime>10/03/2022 08:58:53</publishTime>
+      <publishTime>10/10/2022 06:07:51</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Contracts.dll.config">
       <publishTime>07/19/2022 07:41:08</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Contracts.pdb">
-      <publishTime>10/03/2022 08:58:53</publishTime>
+      <publishTime>10/10/2022 06:07:51</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.DataAccess.dll">
-      <publishTime>10/03/2022 08:58:54</publishTime>
+      <publishTime>10/10/2022 06:07:52</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.DataAccess.dll.config">
       <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.DataAccess.pdb">
-      <publishTime>10/03/2022 08:58:54</publishTime>
+      <publishTime>10/10/2022 06:07:52</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Security.dll">
-      <publishTime>10/03/2022 08:58:54</publishTime>
+      <publishTime>10/10/2022 06:07:52</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Security.dll.config">
       <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Security.pdb">
-      <publishTime>10/03/2022 08:58:54</publishTime>
+      <publishTime>10/10/2022 06:07:52</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.Business.dll">
-      <publishTime>10/03/2022 08:58:57</publishTime>
+      <publishTime>10/10/2022 06:07:53</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.Business.dll.config">
       <publishTime>10/03/2022 08:15:13</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.Business.pdb">
-      <publishTime>10/03/2022 08:58:57</publishTime>
+      <publishTime>10/10/2022 06:07:53</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.Contracts.dll">
-      <publishTime>10/03/2022 08:58:53</publishTime>
+      <publishTime>10/10/2022 06:07:52</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.Contracts.dll.config">
       <publishTime>07/19/2022 07:41:08</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.Contracts.pdb">
-      <publishTime>10/03/2022 08:58:53</publishTime>
+      <publishTime>10/10/2022 06:07:52</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.DataAccess.dll">
-      <publishTime>10/03/2022 08:58:54</publishTime>
+      <publishTime>10/10/2022 06:07:53</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.DataAccess.dll.config">
       <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.DataAccess.pdb">
-      <publishTime>10/03/2022 08:58:54</publishTime>
+      <publishTime>10/10/2022 06:07:53</publishTime>
     </File>
     <File Include="bin/Architect.DataFactory.dll">
-      <publishTime>10/03/2022 08:58:52</publishTime>
+      <publishTime>10/10/2022 06:07:51</publishTime>
     </File>
     <File Include="bin/Architect.DataFactory.dll.config">
       <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="bin/Architect.DataFactory.pdb">
-      <publishTime>10/03/2022 08:58:52</publishTime>
+      <publishTime>10/10/2022 06:07:51</publishTime>
     </File>
     <File Include="bin/Architect.Decision.dll">
       <publishTime>07/19/2022 07:41:08</publishTime>
     </File>
     <File Include="bin/Architect.DocuSign.Integrations.dll">
-      <publishTime>10/03/2022 08:58:53</publishTime>
+      <publishTime>10/10/2022 06:07:51</publishTime>
     </File>
     <File Include="bin/Architect.DocuSign.Integrations.pdb">
-      <publishTime>10/03/2022 08:58:53</publishTime>
+      <publishTime>10/10/2022 06:07:51</publishTime>
     </File>
     <File Include="bin/Architect.Payment.Integrations.dll">
-      <publishTime>10/03/2022 08:58:56</publishTime>
+      <publishTime>10/10/2022 06:07:52</publishTime>
     </File>
     <File Include="bin/Architect.Payment.Integrations.dll.config">
       <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="bin/Architect.Payment.Integrations.pdb">
-      <publishTime>10/03/2022 08:58:56</publishTime>
+      <publishTime>10/10/2022 06:07:52</publishTime>
     </File>
     <File Include="bin/Architect.Utilities.dll">
-      <publishTime>10/03/2022 08:58:52</publishTime>
+      <publishTime>10/10/2022 06:07:51</publishTime>
     </File>
     <File Include="bin/Architect.Utilities.pdb">
-      <publishTime>10/03/2022 08:58:52</publishTime>
+      <publishTime>10/10/2022 06:07:51</publishTime>
     </File>
     <File Include="bin/Architect.WS.Integrations.dll">
-      <publishTime>10/03/2022 08:58:55</publishTime>
+      <publishTime>10/10/2022 06:07:52</publishTime>
     </File>
     <File Include="bin/Architect.WS.Integrations.dll.config">
       <publishTime>07/19/2022 07:41:08</publishTime>
     </File>
     <File Include="bin/Architect.WS.Integrations.pdb">
-      <publishTime>10/03/2022 08:58:55</publishTime>
+      <publishTime>10/10/2022 06:07:52</publishTime>
     </File>
     <File Include="bin/ca/Hangfire.Core.resources.dll">
       <publishTime>08/19/2022 01:09:44</publishTime>
@@ -327,6 +327,12 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="bin/ko/Microsoft.CodeAnalysis.Scripting.resources.dll">
       <publishTime>09/29/2022 21:56:28</publishTime>
     </File>
+    <File Include="bin/Microsoft.AspNet.Identity.Core.dll">
+      <publishTime>11/25/2019 04:57:50</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AspNet.Identity.Owin.dll">
+      <publishTime>11/25/2019 04:57:50</publishTime>
+    </File>
     <File Include="bin/Microsoft.AspNet.WebApi.Versioning.dll">
       <publishTime>02/09/2021 03:14:12</publishTime>
     </File>
@@ -374,6 +380,27 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     </File>
     <File Include="bin/Microsoft.IdentityModel.Tokens.dll">
       <publishTime>09/08/2022 18:05:14</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Cors.dll">
+      <publishTime>05/10/2022 17:31:24</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.dll">
+      <publishTime>05/10/2022 17:31:20</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Host.SystemWeb.dll">
+      <publishTime>05/10/2022 17:31:40</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Security.Cookies.dll">
+      <publishTime>05/10/2022 17:31:50</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Security.dll">
+      <publishTime>05/10/2022 17:31:38</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Security.Jwt.dll">
+      <publishTime>05/10/2022 17:31:54</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Security.OAuth.dll">
+      <publishTime>05/10/2022 17:31:50</publishTime>
     </File>
     <File Include="bin/Microsoft.Web.Infrastructure.dll">
       <publishTime>05/27/2022 17:39:10</publishTime>
@@ -427,7 +454,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>08/19/2022 01:09:44</publishTime>
     </File>
     <File Include="bin/releaseletter.txt">
-      <publishTime>10/03/2022 08:48:44</publishTime>
+      <publishTime>10/10/2022 06:07:08</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>05/18/2020 19:51:56</publishTime>
@@ -612,6 +639,12 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="bin/System.Web.WebPages.Razor.dll">
       <publishTime>05/27/2022 17:42:50</publishTime>
     </File>
+    <File Include="bin/Thinktecture.IdentityModel.Core.dll">
+      <publishTime>02/07/2015 04:32:38</publishTime>
+    </File>
+    <File Include="bin/Thinktecture.IdentityModel.Core.pdb">
+      <publishTime>02/07/2015 04:32:38</publishTime>
+    </File>
     <File Include="bin/tr-TR/Hangfire.Core.resources.dll">
       <publishTime>08/19/2022 01:09:44</publishTime>
     </File>
@@ -769,7 +802,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>08/22/2022 13:02:56</publishTime>
     </File>
     <File Include="releaseletter.txt">
-      <publishTime>10/03/2022 08:48:44</publishTime>
+      <publishTime>10/10/2022 06:07:08</publishTime>
     </File>
     <File Include="Scripts/bootstrap.bundle.js">
       <publishTime>09/27/2022 12:34:24</publishTime>
@@ -844,7 +877,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>08/22/2022 13:02:56</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/03/2022 08:59:00</publishTime>
+      <publishTime>10/10/2022 06:07:55</publishTime>
     </File>
   </ItemGroup>
 </Project>

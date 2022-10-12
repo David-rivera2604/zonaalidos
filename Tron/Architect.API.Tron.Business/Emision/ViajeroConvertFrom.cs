@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace Architect.API.Tron.Business.Emision
 {
-    internal class ViajeroConvertFrom
+    public static class ViajeroConvertFrom
     {
-        internal static Contracts.Emision.Viajero Quote(Contracts.Emision.Viajero quoteInfo, Architect.API.Tron.Contracts.Poliza.DatoFijo tronQuoteInfo)
+        public  static Contracts.Emision.Viajero Quote(Contracts.Emision.Viajero quoteInfo, Architect.API.Tron.Contracts.Poliza.DatoFijo tronQuoteInfo)
         {
 
             if (tronQuoteInfo.Calculado?.Coberturas != null)

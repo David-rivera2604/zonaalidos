@@ -204,7 +204,7 @@ namespace Architect.API.Tron.Business.Backoffice
             {
                 throw new Utilities.Exceptions.ApplicationException(string.Format("No se puede imprimir la póliza {0} del ramo {0}", num_poliza, num_poliza.Substring(0, 3)));
             }
-            string id = string.Format("{0}/prd/servlet/mapfre.srv.SVJspool?otxtAccion=11&id={1}&format=pdf",
+            string id = string.Format("{0}/servlet/mapfre.srv.SVJspool?otxtAccion=11&id={1}&format=pdf",
                                         ConfigurationManager.AppSettings["Mapfre.Tron.RutaImpresion"],
                                         DataAccess.Impresion.Poliza(1, num_poliza, procedureName, num_riesgo));
             using (WebClient client = new WebClient())

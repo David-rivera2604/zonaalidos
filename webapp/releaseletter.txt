@@ -434,3 +434,4 @@
                    Caturix. El campo número de empleado es opcional.
 1.6.16  03/10/2022 Aliados. ESPH. Ajuste en la fecha de inicio de vigencia en el reporte. 
                    Trazabilidad. Export e Import para las definición de procesos.
+1.6.17             Reporte de saldo deudor para coopenae.

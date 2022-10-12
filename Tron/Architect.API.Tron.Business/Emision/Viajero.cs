@@ -118,7 +118,7 @@ namespace Architect.API.Tron.Business.Emision
         /// <summary>
         /// Llamado a Servicio de  Asistencia Panama (Ojo) Credenciales de Monge TEST
         /// </summary>
-        private static Contracts.Emision.Viajero Asistencia_Panama(Contracts.Emision.Viajero quoteInfo, Contracts.Emision.Viajero resultQuoteInfo, Core.Contracts.Security.Token tokenInfo)
+        public static Contracts.Emision.Viajero Asistencia_Panama(Contracts.Emision.Viajero quoteInfo, Contracts.Emision.Viajero resultQuoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
             //
             if (tokenInfo.Roles.Contains("Grupo_Monge"))

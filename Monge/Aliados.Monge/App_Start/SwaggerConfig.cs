@@ -2,6 +2,10 @@ using System.Web.Http;
 using WebActivatorEx;
 using Aliados.Monge;
 using Swashbuckle.Application;
+using Swashbuckle.Swagger;
+using System.Collections.Generic;
+using System.Web.Http.Description;
+using System.Linq;
 
 [assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 
@@ -86,6 +90,16 @@ namespace Aliados.Monge
                         //        scopes.Add("write", "Write access to protected resources");
                         //    });
 
+                        c.OAuth2("oauth2")
+                            .Description("OAuth2 Password Grant")
+                            .Flow("password")
+                            .TokenUrl(Architect.Utilities.Helpers.Settings.StringValue("URL.Base") + "/token")
+                            .Scopes(scopes =>
+                            {
+                                scopes.Add("read", "Read access to protected resources");
+                                scopes.Add("write", "Write access to protected resources");
+                            });
+
                         // Set this flag to omit descriptions for any actions decorated with the Obsolete attribute
                         //c.IgnoreObsoleteActions();
 
@@ -161,7 +175,10 @@ namespace Aliados.Monge
                         // Operation filters.
                         //
                         //c.OperationFilter<AddDefaultResponse>();
+                        
                         c.OperationFilter<App_Start.AuthorizationHeaderParameterOperationFilter>();
+                        c.OperationFilter<App_Start.AuthorizationOAuth2OperationFilter>();
+
                         //
                         // If you've defined an OAuth2 flow as described above, you could use a custom filter
                         // to inspect some attribute on each action and infer which (if any) OAuth2 scopes are required
@@ -256,6 +273,13 @@ namespace Aliados.Monge
                         //    //additionalQueryStringParams: new Dictionary<string, string>() { { "foo", "bar" } }
                         //);
 
+                        c.EnableOAuth2Support(
+                            clientId: "test-client-id",
+                            clientSecret: null,
+                            realm: "test-realm",
+                            appName: "Swagger UI"
+                        );
+
                         // If your API supports ApiKey, you can override the default values.
                         // "apiKeyIn" can either be "query" or "header"
                         //
@@ -263,4 +287,5 @@ namespace Aliados.Monge
                     });
         }
     }
+
 }
