@@ -13,7 +13,6 @@ namespace Aliados.Monge.WebApi.Controllers
     /// Autentica y genera un token
     /// </summary>
     [ApiVersion("1.0")]
-    [Authorize]
     [RoutePrefix("api/v{version:apiVersion}/Seguridad")]
     public class SeguridadController : ApiController
     {
@@ -37,6 +36,15 @@ namespace Aliados.Monge.WebApi.Controllers
             Request.Headers.TryGetValues("secretID", out values);
             if (values != null && values.Count() > 0)
                 secretID = values.FirstOrDefault();
+
+            if (clienteID.IsEmpty())
+            {
+                return BadRequest("Debe indicar un clienteID");
+            }
+            if (secretID.IsEmpty())
+            {
+                return BadRequest("Debe indicar un secretID");
+            }
 
             string IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
             string useragent = Request.Headers.UserAgent.ToString();

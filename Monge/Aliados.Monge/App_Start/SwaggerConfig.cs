@@ -93,7 +93,7 @@ namespace Aliados.Monge
                         c.OAuth2("oauth2")
                             .Description("OAuth2 Password Grant")
                             .Flow("password")
-                            .TokenUrl("/token")
+                            .TokenUrl(Architect.Utilities.Helpers.Settings.StringValue("URL.Base") + "/token")
                             .Scopes(scopes =>
                             {
                                 scopes.Add("read", "Read access to protected resources");

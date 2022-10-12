@@ -46,7 +46,7 @@ namespace Aliados.Monge.App_Start
             var OAuthOptions = new OAuthAuthorizationServerOptions
             {
                 AllowInsecureHttp = true,
-                TokenEndpointPath = new PathString("/token"),
+                TokenEndpointPath = new PathString(Architect.Utilities.Helpers.Settings.StringValue("URL.Base") +  "/token"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30),
                 Provider = new AuthorizationServerProvider(),
                 AccessTokenFormat = new CustomJwtFormat("http://localhost:59822")
