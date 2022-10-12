@@ -204,11 +204,11 @@ app.CotizacionSaldoDeudorEnfermedadesExcluidas = (function () {
 
 window.enfermedadesexcluidasTbl_Events = {
     'click .delete': function (e, value, row, index) {
-        toastr.warning("Si está seguro de querer eliminar el visualizations '" + row.enfermedadesexcluidasId + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.SaldoDeudor.enfermedadesexcluidasDeleteRow(row); } });
+        toastr.warning("Si está seguro de querer eliminar el visualizations '" + row.enfermedadesexcluidasId + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.CotizacionSaldoDeudorEnfermedadesExcluidas.enfermedadesexcluidasDeleteRow(row); } });
         e.stopPropagation();
     },
     'click .edit': function (e, value, row, index) {
-        app.SaldoDeudor.enfermedadesexcluidasEditRow(row);
+        app.CotizacionSaldoDeudorEnfermedadesExcluidas.enfermedadesexcluidasEditRow(row);
         e.stopPropagation();
     }
 };

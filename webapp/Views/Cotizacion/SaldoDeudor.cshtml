@@ -46,6 +46,32 @@
                                     <!-- datosgenerales Zone -->
                                     @Html.Partial("_datosgenerales")
 
+                                    <!-- polizagrupo Zone -->
+                                    <div class="form-row d-none" id="polizagrupoZone">
+                                        <div class="col-lg-12">
+                                            <h4><i class="fa fa-building"></i> Información de póliza grupo</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- contrato DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='contrato'>Contrato<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='contrato' name='contrato' class='form-control'></select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- subcontrato DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='subcontrato'>Sub contrato<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='subcontrato' name='subcontrato' class='form-control' disabled></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <!-- datosdelasegurado Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
@@ -86,7 +112,7 @@
                                                 <!-- NUM_ESTATURA_CM -->
                                                 <div class='col-sm-4 col-md-3'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='NUM_ESTATURA_CM'>Estatura</label>
+                                                        <label class='control-label' for='NUM_ESTATURA_CM'>Estatura<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                         <div class='input-group'>
                                                             <input id='NUM_ESTATURA_CM' name='NUM_ESTATURA_CM' type='text'
                                                                    class='form-control text-right' size='6'
@@ -101,7 +127,7 @@
                                                 <!-- NUM_PESO -->
                                                 <div class='col-sm-4 col-md-3'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='NUM_PESO'>Peso</label>
+                                                        <label class='control-label' for='NUM_PESO'>Peso<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                         <div class='input-group'>
                                                             <input id='NUM_PESO' name='NUM_PESO' type='text'
                                                                    class='form-control text-right' size='6'
@@ -114,7 +140,7 @@
                                                     </div>
                                                 </div>
                                                 <!-- NUM_IMC -->
-                                                <div class='col-sm-4 col-md-3'>
+                                                <div class='col-sm-4 col-md-3'  hidden>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='NUM_IMC'>Índice de masa corporal</label>
                                                         <div class='input-group'>
@@ -192,7 +218,7 @@
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='IMP_MONTO_ORI'>Monto original del préstamo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <input type='text' id='IMP_MONTO_ORI' name='IMP_MONTO_ORI' class='form-control text-right' size='11' maxlength='11' placeholder="OK" />
+                                                        <input type='text' id='IMP_MONTO_ORI' name='IMP_MONTO_ORI' class='form-control text-right' size='50' maxlength='50' placeholder="0" />
                                                     </div>
                                                 </div>
                                                 <!-- IMP_SLD_ACTUAL Numeric -->
@@ -233,7 +259,7 @@
                                                     </div>
                                                 </div>
                                                 <!-- PCT_DTO_COMERCIAL Numeric -->
-                                                <div class='col-sm-3 col-md-3'>
+                                                <div hidden class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='PCT_DTO_COMERCIAL'>% Descuento/recargo comercial</label>
                                                         <div class='input-group'>
@@ -246,7 +272,7 @@
                                                     </div>
                                                 </div>
                                                 <!-- PCT_DCTO_TECNICO Numeric -->
-                                                <div class='col-sm-3 col-md-3'>
+                                                <div hidden class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='PCT_DCTO_TECNICO'>% Porcentaje descuento técnico</label>
                                                         <div class='input-group'>
@@ -269,6 +295,19 @@
                                                             </span>
                                                         </div>
                                                         <div id='FEC_PRIM_FINAN_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- FEC_VCTO_PRESTAMO DatePicker -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='FEC_VCTO_PRESTAMO'>Fecha Vencimiento Préstamo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='FEC_VCTO_PRESTAMO_group'>
+                                                            <input type='text' id='FEC_VCTO_PRESTAMO' name='FEC_VCTO_PRESTAMO' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='FEC_VCTO_PRESTAMO_validate'></div>
                                                     </div>
                                                 </div>
 

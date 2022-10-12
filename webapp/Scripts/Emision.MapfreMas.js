@@ -351,7 +351,7 @@ app.EmisionMapfreMas = (function () {
             $('#tipodetercero option[value="2"]').attr('disabled', 'disabled');
         }
         if (driver.length > 0) {
-            $('#tipodetercero option[value="3"]').attr('disabled', 'disabled');
+            $('#tipodetercero option[value="3"]').attr('enabled', 'enabled');
         }
     }
 

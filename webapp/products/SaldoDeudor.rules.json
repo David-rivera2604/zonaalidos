@@ -1,31 +1,19 @@
 {
   "Terceros": [
     {
-      "Role": "ESPH",
+      "Role": "Coopenae",
       "Detalles": [
         {
           "tip_benef": "0",
           "tip_docum": "CJU",
-          "cod_docum": "3101046008",
-          "nom_tercero": "BANCO DAVIVIENDA (COSTA RICA) SOCIEDAD ANONIMA",
-          "email": "IRIAKNA.HERNANDEZ@DAVIVIENDA.CR",
+          "cod_docum": "3101571319",
+          "nom_tercero": "COOPENAE CORREDURIA SEGUROS S.A",
+          "email": "ROYNER.ACOSTA@MAPFRECR.COM",
           "cod_pais": "CRI",
           "cod_estado": 1,
           "cod_prov": 101,
-          "cod_localidad": 10101,
-          "nom_domicilio1": "SAN JOSE"
-        },
-        {
-          "tip_benef": "8",
-          "tip_docum": "CJU",
-          "cod_docum": "3101046008",
-          "nom_tercero": "BANCO DAVIVIENDA (COSTA RICA) SOCIEDAD ANONIMA",
-          "email": "IRIAKNA.HERNANDEZ@DAVIVIENDA.CR",
-          "cod_pais": "CRI",
-          "cod_estado": 1,
-          "cod_prov": 101,
-          "cod_localidad": 10101,
-          "nom_domicilio1": "SAN JOSE"
+          "cod_localidad": 10104,
+          "nom_domicilio1": "CATEDRAL"
         }
       ]
     }
@@ -35,14 +23,8 @@
       "Role": "_default_asegurado_fisico",
       "Detalles": [
         {
-          "descripcion": "Copia de la cédula de identidad",
-          "archivo": "CEDULA.docx",
-          "requerido": true
-        },
-
-        {
-          "descripcion": "Solicitud de seguro firmada",
-          "archivo": "SOLICITUD.pdf",
+          "descripcion": "Documentacion Digitalizada",
+          "archivo": "documentacion.pdf",
           "requerido": true
         }
       ]
@@ -51,14 +33,8 @@
       "Role": "_default_asegurado_juridico",
       "Detalles": [
         {
-          "descripcion": "Copia de la cédula de identidad",
-          "archivo": "CEDULA.docx",
-          "requerido": true
-        },
-
-        {
-          "descripcion": "Solicitud de seguro firmada",
-          "archivo": "SOLICITUD.pdf",
+          "descripcion": "Documentacion Digitalizada",
+          "archivo": "documentacion.pdf",
           "requerido": true
         }
       ]

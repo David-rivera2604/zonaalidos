@@ -46,10 +46,13 @@ namespace Architect.API.Tron.Business.Cotizacion
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "PCT_DCTO_TECNICO", quoteInfo.PCT_DCTO_TECNICO.ToString(), 2, 17));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_ENF_EXC", quoteInfo.enfermedadesexcluidas.Count().ToString(), 2, 18));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "FEC_PRIM_FINAN", quoteInfo.FEC_PRIM_FINAN.ToString("ddMMyyyy"), 2, 19));
-            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_PESO", quoteInfo.NUM_PESO.ToString(), 2, 20));
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_PESO", quoteInfo.NUM_PESO.ToString(), 2, 22));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_ESTATURA_CM", quoteInfo.NUM_ESTATURA_CM.ToString(), 2, 21));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_IMC", quoteInfo.NUM_IMC.ToString(), 2, 22));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "COD_MODALIDAD", quoteInfo.COD_MODALIDAD_RIESGO.ToString(), 2, 99, quoteInfo.NOM_MODALIDAD_RIESGO));
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "FEC_VCTO_PRESTAMO", quoteInfo.FEC_VCTO_PRESTAMO.ToString("ddMMyyyy"), 2, 12));
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "IMP_CUOTA_PRESTAMO", Convert.ToString((from a in quoteInfo.coberturas where a.codigo == 4003 select a.capital).FirstOrDefault()), 2, 24));
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "IMP_SUMA_ASEG_ITP", Convert.ToString((from a in quoteInfo.coberturas where a.codigo == 4002 select a.capital).FirstOrDefault()), 2, 25));
 
             return datosVariables;
         }

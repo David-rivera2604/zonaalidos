@@ -11,12 +11,28 @@ app.EmisionSaldoDeudor = (function () {
         let _id = app.core.URLStringValue('presupuesto');
         if (_id != '') {
             workMode = app.core.URLStringValue('mode');
+
+            if (workMode === 'draft') {
+                $('#guardarenviar').removeClass('d-none');
+                $("#guardarenviar").appendTo("#GenericToolBar");
+                $('#cotizar').addClass('d-none');
+                $('.documentosrequeridosGrid').addClass('d-none');
+
+                $('.datosgeneralesZone').removeClass('col-md-12');
+                $('.datosgeneralesZone').addClass('col-md-7');
+                $('.enviosolicitudZone').removeClass('d-none');
+            } else {
+                $('#cotizar').removeClass('d-none');
+                $("#cotizar").appendTo("#GenericToolBar");
+            }
+
             app.core.Get(app.setting.apipath + 'v1/Issue/SaldoDeudor/' + _id + '?mode=' + workMode, null,
                 function (data) {
                     setupData = data;
                     app.core.Lookups(['MonedasPorRamo.cod_mon', 'FrecuenciaDePagoPorRamo.cod_fracc_pago', 'TRON_G2990004.COD_MODALIDAD_RIESGO', 'TRON_G2990006:COD_CIA_ORI.COD_CIA_ORI', 'TRON_G2990006:TIP_NEGOCIO.TIP_NEGOCIO', 'TRON_G7000210.COD_ENF_EXC', 'TRON_G1010031:COD_TIP_EXC.COD_TIP_EXC', 'Paises.cod_pais', 'Provincias.TProvincia'],
                         function () {
                             setupData = data;
+                            workMode = data.Modo;
                             MapObjectToInput(data);
                             Dynamic_Event_Controls();
                             ReadOnly();
@@ -25,6 +41,15 @@ app.EmisionSaldoDeudor = (function () {
                         }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:cod_pais=CRI`);
 
                 });
+        }
+
+        $("#tipodetercero option[value=0]").remove();
+        $("#tipodetercero option[value=8]").remove();
+
+        var array_codigo = ["6", "8"];
+        var array_descripcion = ["Beneficiario(a)", "Acreedor(a)"];
+        for (var i in array_codigo) {
+            document.getElementById("tipodetercero").innerHTML += "<option value='" + array_codigo[i] + "'>" + array_descripcion[i] + "</option>";
         }
     };
 
@@ -124,9 +149,27 @@ app.EmisionSaldoDeudor = (function () {
     function MapInputToObject() {
         let data = setupData;
 
+        data.Modo = app.core.URLStringValue('mode');
+        data.tip_firma = $('#tip_firma').val();
+        data.tip_firmaDesc = $("#tip_firma option:selected").text();
+        data.correoenvio = $('#correoenvio').val();
         data.terceros = $('#tercerosTbl').bootstrapTable('getData');
         data.documentosrequeridos = $('#documentosrequeridosTbl').bootstrapTable('getData');
 
+        //Datos Solcitud
+        data.Questionary = [];
+        for (index = 1; index <= 14; index++) {
+            data.Questionary.push({
+                QuestionId: index,
+                Confirmation: $('input:radio[name=Confirmation_' + index + ']:checked').val(),
+                Detail: $('#Diagnosis_' + index).val() + ' ' + $('#Treatment_' + index).val() + ' ' + $('#Doctor_' + index).val(), 
+                Summary: $('#Diagnosis_' + index).val() + ' ' + $('#Treatment_' + index).val() + ' ' + $('#Doctor_' + index).val(),
+                When: app.ui.GetDateValue('#When_' + index),
+                Diagnosis: $('#Diagnosis_' + index).val(),
+                Treatment: $('#Treatment_' + index).val(),
+                Doctor: $('#Doctor_' + index).val(),
+            });
+        };
         return data;
     };
 
@@ -159,6 +202,16 @@ app.EmisionSaldoDeudor = (function () {
         app.ui.SetNumericValue('#PCT_DTO_COMERCIAL', data.PCT_DTO_COMERCIAL);
         app.ui.SetNumericValue('#PCT_DCTO_TECNICO', data.PCT_DCTO_TECNICO);
         app.ui.SetDateValue('#FEC_PRIM_FINAN', data.FEC_PRIM_FINAN);
+
+        if (data.terceros != null)
+            $('#tercerosTbl').bootstrapTable('load', data.terceros);
+        else
+            $('#tercerosTbl').bootstrapTable('load', {});
+        if (data.documentosrequeridos != null)
+            $('#documentosrequeridosTbl').bootstrapTable('load', data.documentosrequeridos);
+        else
+            $('#documentosrequeridosTbl').bootstrapTable('load', {});
+
         if (data.enfermedadesexcluidas != null)
             $('#enfermedadesexcluidasTbl').bootstrapTable('load', data.enfermedadesexcluidas);
         else
@@ -174,6 +227,8 @@ app.EmisionSaldoDeudor = (function () {
             $('#plandepagoTbl').bootstrapTable('load', {});
 
     };
+
+
 
     function Controls_setup() {
         $('#fec_efec_poliza_group').datetimepicker({
@@ -320,6 +375,38 @@ app.EmisionSaldoDeudor = (function () {
             event.preventDefault();
         });
 
+        $('#guardarenviar').click(function () {
+            var others = OtherValidations();
+            if (app.ui.IsValid('#SaldoDeudorEdtForm', false) && others.length === 0) {
+                app.ui.ButtonDoing('#guardarenviar');
+                app.core.Post(app.setting.apipath + 'v1/Issue/SaldoDeudor',
+                    JSON.stringify(MapInputToObject()),
+                    function (data) {
+
+                        $('#guardarenviar').addClass('d-none');
+                        $('#Fuente_Tomador').replaceWith('<div>' + $('#Fuente_Tomador option:selected').text() + '</div>');
+                        $('#Modalidad_Pago').replaceWith('<div>' + $('#Modalidad_Pago option:selected').text() + '</div>');
+                        $('#tip_firma').replaceWith('<div>' + $('#tip_firma option:selected').text() + '</div>');
+                        $('#correoenvio').replaceWith('<div>' + $('#correoenvio').val() + '</div>');
+
+                        //ReadOnly_End();
+
+                    }).always(function () {
+                        app.ui.ButtonDone('#guardarenviar');
+                    });
+            }
+            else {
+                var instance = $('#SaldoDeudorEdtForm');
+                var validate = instance.validate();
+                validate.settings.ignore = '';
+                var result = instance.valid();
+                var count = validate.numberOfInvalids();
+                validate.settings.ignore = ':hidden';
+                toastr.error("Existen " + (count + others) + " error(es), que ameritan su atención.", "", { closeButton: true, progressBar: true });
+            }
+            event.preventDefault();
+        });
+
     };
 
     function OtherValidations() {
@@ -332,13 +419,13 @@ app.EmisionSaldoDeudor = (function () {
             let holder = terceros.filter(i => i.tipodetercero === 0);
             let insured = terceros.filter(i => i.tipodetercero === 2);
 
-            if (holder.length === 0 || holder[0].DocumentNumber === '') {
-                let currentAseguradoTomador = terceros.find(e => e.tipodetercero === 2 && e.elaseguradoeselmismotomador === 1);
-                if (currentAseguradoTomador == null) {
-                    message += ', indique el tomador';
-                    terceroserrors = true;
-                }
-            }
+            //if (holder.length === 0 || holder[0].DocumentNumber === '') {
+            //    let currentAseguradoTomador = terceros.find(e => e.tipodetercero === 2 && e.elaseguradoeselmismotomador === 1);
+            //    if (currentAseguradoTomador == null) {
+            //        message += ', indique el tomador';
+            //        terceroserrors = true;
+            //    }
+            //}
             if (insured.length === 0 || insured[0].DocumentNumber === '') {
                 message += ', indique el asegurado';
                 terceroserrors = true;
@@ -355,7 +442,7 @@ app.EmisionSaldoDeudor = (function () {
         let lista = documentosrequeridos.filter(function (row) {
             return (row.DStored === null || row.DStored === '');
         });
-        if (lista.length > 0) {
+        if (lista.length > 0 && workMode != "draft")  {
             $('#documentosrequeridosTbl-error').html('Debe cargar todos los documentos pendientes');
             $('#documentosrequeridosTbl-error').removeClass('d-none');
             result.push({ id: '#documentosrequeridosTbl-error', message: 'Debe cargar todos los documentos pendientes' });
@@ -782,6 +869,27 @@ app.EmisionSaldoDeudor = (function () {
         $('[name=btSelectAll]').prop('disabled', true);
     };
 
+
+    function cuestionarioCovid_table_setup() {
+
+        $('#cuestionarioCovidNew').click(function () {
+            //$('#tipodetercero').val($('#tipodetercero option[disabled!="disabled"]')[0].value);
+            //$('#tipodetercero').change();
+            cuestionarioCovid_table_row_edit();
+        });
+
+    }
+
+    function cuestionarioCovid_table_row_edit(row) {
+        var md = $('#cuestionarioCovidModal').modal({ show: false });
+        var formInstance = $("#QuestionaryCovidEdtFrm");
+        var fvalidate = formInstance.validate();
+        fvalidate.resetForm();
+
+        md.modal('show');
+    }
+
+//#region Terceros
 
     function terceros_table_setup() {
 
@@ -1334,7 +1442,9 @@ app.EmisionSaldoDeudor = (function () {
         });
 
     }
+//#endregion
 
+//#region Documentos Requeridos
     function documentosrequeridos_table_setup() {
 
         $('#documentosrequeridosTbl').bootstrapTable({
@@ -1538,6 +1648,7 @@ app.EmisionSaldoDeudor = (function () {
     }
 
     function documentosrequeridos_table_row_edit(row) {
+        debugger;
         if (row != null && row.tipo != 'Genérico') {
             rowDocumentosrequeridos = row;
             $('#fileUpload').click();
@@ -1601,6 +1712,7 @@ app.EmisionSaldoDeudor = (function () {
             }
         });
     }
+
 
     function documentosrequeridos_controls_setup() {
     }
@@ -1716,6 +1828,7 @@ app.EmisionSaldoDeudor = (function () {
         });
 
     }
+//#endregion
 
     return {
         Init: function () {
@@ -1730,6 +1843,9 @@ app.EmisionSaldoDeudor = (function () {
 
                 Controls_Events();
 
+                cuestionario_table_setup();
+                cuestionarioCovid_table_setup();
+
                 terceros_controls_setup();
                 terceros_table_setup();
                 terceros_table_Validations();
@@ -1740,6 +1856,18 @@ app.EmisionSaldoDeudor = (function () {
                 documentosrequeridos_table_Validations();
                 documentosrequeridos_controls_Events();
 
+                //Cuestionario Salud
+                Init_Controls_Salud();
+                Init_Lookups_Salud();
+                Event_Controls_Salud();
+                Setup_Validations_Salud();
+
+                //Cuestionario Covid
+                Init_Controls_Covid();
+                Init_Lookups_Covid();
+                Event_Controls_Covid();
+                Setup_Validations_Covid();
+
                 Setup();
                 console.log("Inicio");
             }
@@ -1747,6 +1875,18 @@ app.EmisionSaldoDeudor = (function () {
                 console.error("Error Init");
                 console.error(err);
             }
+        },
+        tercerosEditRow: function (row) {
+            terceros_table_row_edit(row);
+        },
+        tercerosDeleteRow: function (row) {
+            terceros_table_row_delete(row);
+        },
+        documentosrequeridosEditRow: function (row) {
+            documentosrequeridos_table_row_edit(row);
+        },
+        documentosrequeridosDeleteRow: function (row) {
+            documentosrequeridos_table_row_delete(row);
         },
         Data: function () {
             return MapInputToObject();
@@ -1762,39 +1902,653 @@ app.EmisionSaldoDeudor = (function () {
         },
         enfermedadesexcluidasDeleteRow: function (row) {
             enfermedadesexcluidas_table_row_delete(row);
+        },
+        InputToObject_Salud: _inputToObject_Salud,
+        ObjectToInput_Salud: _objectToInput_Salud,
+        IsValid_Salud: function () {
+            var instance = $('#QuestionaryEdtFrm');
+            var validate = instance.validate();
+
+            validate.settings.ignore = '';
+            var result = instance.valid();
+            var count = validate.numberOfInvalids();
+            validate.settings.ignore = ':hidden';
+
+            if (count > 0)
+                $('#cuestionarioHTab .badge').html(count);
+            else
+                $('#cuestionarioHTab .badge').html('');
+            return result;
+        },
+        UIBehavior: function (gender, birthDate) {
+            if (app.poliza.EntryAllowed()?.includes(";Questionnaires;")) {
+
+                /*let age = moment().diff(birthDate, 'years');
+                if (Number.isNaN(age))
+                    age = 0;
+                let enable = !(age >= 40);
+                gender = tercerosMca_sexo.val();
+                if (gender === '1') { //Masculino*/
+                    $('#Confirmation_6a').prop("enabled", true);
+                    $('#Confirmation_6b').prop("enabled", true);
+                    $('#Confirmation_9a').prop("enabled", true);
+                    $('#Confirmation_9b').prop("enabled", true);
+                    $($('input:radio[name=Confirmation_6][value=1]')).prop('checked', false);
+                    $($('input:radio[name=Confirmation_6][value=2]')).prop('checked', false);
+                    $($('input:radio[name=Confirmation_9][value=1]')).prop('checked', false);
+                    $($('input:radio[name=Confirmation_9][value=2]')).prop('checked', false);
+                    let enable = !(age >= 40);
+                    $('#Confirmation_10a').prop("enabled", enable);
+                    $('#Confirmation_10b').prop("enabled", enable);
+                //}
+                //if (gender === '2') { //Femenino
+                    $('#Confirmation_6a').prop("enabled", enable);
+                    $('#Confirmation_6b').prop("enabled", enable);
+                    $('#Confirmation_9a').prop("enabled", enable);
+                    $('#Confirmation_9b').prop("enabled", enable);
+
+                    $($('input:radio[name=Confirmation_10][value=1]')).prop('checked', false);
+                    $($('input:radio[name=Confirmation_10][value=2]')).prop('checked', false);
+
+                    $('#Confirmation_10a').prop("enabled", true);
+                    $('#Confirmation_10b').prop("enabled", true);
+                //}
+            }
+        },
+        InputToObject_Covid: _inputToObject_Covid,
+        ObjectToInput_Covid: _objectToInput_Covid,
+        IsValid_Covid: function () {
+            var instance = $('#QuestionaryCovidEdtFrm');
+            var validate = instance.validate();
+
+            validate.settings.ignore = '';
+            var result = instance.valid();
+            var count = validate.numberOfInvalids();
+            validate.settings.ignore = ':hidden';
+
+            if (count > 0)
+                $('#cuestionarioCovidHTab .badge').html(count);
+            else
+                $('#cuestionarioCovidHTab .badge').html('');
+            return result;
         }
     };
 })();
 
 window.enfermedadesexcluidasTbl_Events = {
     'click .delete': function (e, value, row, index) {
-        toastr.warning("Si está seguro de querer eliminar el visualizations '" + row.enfermedadesexcluidasId + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.SaldoDeudor.enfermedadesexcluidasDeleteRow(row); } });
+        toastr.warning("Si está seguro de querer eliminar el visualizations '" + row.enfermedadesexcluidasId + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionSaldoDeudor.enfermedadesexcluidasDeleteRow(row); } });
         e.stopPropagation();
     },
     'click .edit': function (e, value, row, index) {
-        app.SaldoDeudor.enfermedadesexcluidasEditRow(row);
+        app.EmisionSaldoDeudor.enfermedadesexcluidasEditRow(row);
         e.stopPropagation();
     }
 };
 
 window.tercerosTbl_Events = {
     'click .delete': function (e, value, row, index) {
-        toastr.warning("Si está seguro de querer eliminar el tercero '" + row.nombre + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionMapfreMas.tercerosDeleteRow(row); } });
+        toastr.warning("Si está seguro de querer eliminar el tercero '" + row.nombre + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionSaldoDeudor.tercerosDeleteRow(row); } });
         e.stopPropagation();
     },
     'click .edit': function (e, value, row, index) {
-        app.EmisionViajero.tercerosEditRow(row);
+        app.EmisionSaldoDeudor.tercerosEditRow(row);
         e.stopPropagation();
     }
 };
 
 window.documentosrequeridosTbl_Events = {
     'click .delete': function (e, value, row, index) {
-        toastr.warning("Si está seguro de querer limpiar el documento requerido '" + row.DNombre + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionMapfreMas.documentosrequeridosDeleteRow(row); } });
+        toastr.warning("Si está seguro de querer limpiar el documento requerido '" + row.DNombre + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionSaldoDeudor.documentosrequeridosDeleteRow(row); } });
         e.stopPropagation();
     },
     'click .edit': function (e, value, row, index) {
-        app.EmisionViajero.documentosrequeridosEditRow(row);
+        app.EmisionSaldoDeudor.documentosrequeridosEditRow(row);
         e.stopPropagation();
     }
 };
+
+//#region Cuestionario Salud
+
+function cuestionario_table_setup() {
+
+    $('#cuestionarioNew').click(function () {
+        //$('#tipodetercero').val($('#tipodetercero option[disabled!="disabled"]')[0].value);
+        //$('#tipodetercero').change();
+        cuestionario_table_row_edit();
+    });
+
+}
+
+function cuestionario_table_row_edit(row) {
+    var md = $('#cuestionarioSaludModal').modal({ show: false });
+    var formInstance = $("#QuestionaryEdtFrm");
+    var fvalidate = formInstance.validate();
+    fvalidate.resetForm();
+
+    md.modal('show');
+}
+
+function Init_Controls_Salud() {
+    for (index = 1; index <= 14; index++) {
+        $('#When_' + index + '_group').datetimepicker({
+            format: 'DD/MM/YYYY',
+            locale: 'es'
+        });
+    };
+};
+
+function Init_Lookups_Salud() {
+};
+
+function Event_Controls_Salud() {
+    $("input:radio[name='Confirmation_1'],input:radio[name='Confirmation_2'],input:radio[name='Confirmation_3'],input:radio[name='Confirmation_4'],input:radio[name='Confirmation_5'],input:radio[name='Confirmation_6'],input:radio[name='Confirmation_7'],input:radio[name='Confirmation_8'],input:radio[name='Confirmation_9'],input:radio[name='Confirmation_10'],input:radio[name='Confirmation_11'],input:radio[name='Confirmation_12'],input:radio[name='Confirmation_13'],input:radio[name='Confirmation_14']").on('change', function () {
+        let indexValue = $(this)[0].name.substring(13);
+        let value = this.value;
+
+        if (value === '1') {
+            $('#question_' + indexValue).removeClass('d-none');
+            $('#Diagnosis_' + indexValue).prop("disabled", false)
+            $('#Doctor_' + indexValue).prop("disabled", false)
+            $('#Treatment_' + indexValue).prop("disabled", false)
+            $('#When_' + indexValue).prop("disabled", false)
+        }
+        else {
+            $('#question_' + indexValue).addClass('d-none');
+            $('#Diagnosis_' + indexValue).prop("disabled", true)
+            $('#Doctor_' + indexValue).prop("disabled", true)
+            $('#Treatment_' + indexValue).prop("disabled", true)
+            $('#When_' + indexValue).prop("disabled", true)
+        }
+    });
+};
+
+function Setup_Validations_Salud() {
+
+    $.validator.addMethod("AgeGreaterThan64_radio",
+        function (value, element) {
+            var notError = true;
+            var age = moment().diff($('#BirthDate_group').data('DateTimePicker').date(), 'years');
+            if (!Number.isNaN(age)) {
+                if (age > 64 && $('input:radio[name=' + element.id.substring(0, element.id.length - 1) + ']:checked').val() === undefined) {
+                    notError = false;
+                }
+            }
+            return notError;
+        }
+    );
+
+    $("#QuestionaryEdtFrm").validate({
+        errorPlacement: function (error, element) {
+            var name = $(element).attr("name");
+            var $obj = $("#" + name + "_validate");
+            if ($obj.length) {
+                error.appendTo($obj);
+            }
+            else {
+                error.insertAfter(element);
+            }
+        },
+        rules: {
+            Confirmation_1: {
+                AgeGreaterThan64_radio: true
+            },
+            Diagnosis_1: {
+                required: true
+            },
+            Treatment_1: {
+                required: true,
+            },
+            Doctor_1: {
+                required: true
+            },
+            When_1: {
+                required: true
+            },
+            Confirmation_2: {
+                AgeGreaterThan64_radio: true
+            },
+            Diagnosis_2: {
+                required: true
+            },
+            Confirmation_3: {
+                AgeGreaterThan64_radio: true
+            },
+            Diagnosis_3: {
+                required: true
+            },
+            Treatment_3: {
+                required: true,
+            },
+            Doctor_3: {
+                required: true
+            },
+            When_3: {
+                required: true
+            },
+            Confirmation_4: {
+                AgeGreaterThan64_radio: true
+            },
+            Diagnosis_4: {
+                required: true
+            },
+            Treatment_4: {
+                required: true,
+            },
+            Doctor_4: {
+                required: true
+            },
+            When_4: {
+                required: true
+            },
+            Confirmation_5: {
+                AgeGreaterThan64_radio: true
+            },
+            Diagnosis_5: {
+                required: true
+            },
+            Treatment_5: {
+                required: true,
+            },
+            Doctor_5: {
+                required: true
+            },
+            When_5: {
+                required: true
+            },
+            Confirmation_6: {
+                AgeGreaterThan64_radio: true
+            },
+            Confirmation_7: {
+                AgeGreaterThan64_radio: true
+            },
+            Confirmation_8: {
+                AgeGreaterThan64_radio: true
+            },
+            Confirmation_9: {
+                AgeGreaterThan64_radio: true
+            },
+            Confirmation_10: {
+                AgeGreaterThan64_radio: true
+            },
+            Confirmation_11: {
+                AgeGreaterThan64_radio: true
+            },
+            Confirmation_12: {
+                AgeGreaterThan64_radio: true
+            },
+            Confirmation_13: {
+                AgeGreaterThan64_radio: true
+            },
+            Confirmation_14: {
+                AgeGreaterThan64_radio: true
+            }
+        },
+        messages: {
+            Confirmation_1: {
+                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 1',
+            },
+            Diagnosis_1: {
+                required: 'Debe indicar el diagnóstico'
+            },
+            Treatment_1: {
+                required: 'Debe indicar el tratamiento',
+            },
+            Doctor_1: {
+                required: 'Debe indicar el médico'
+            },
+            When_1: {
+                required: 'Debe indicar la fecha'
+            },
+            Confirmation_2: {
+                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 8',
+            },
+            Diagnosis_2: {
+                required: 'Debe ampliar su respuesta'
+            },
+            Confirmation_3: {
+                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 2',
+            },
+            Diagnosis_3: {
+                required: 'Debe indicar el diagnóstico'
+            },
+            Treatment_3: {
+                required: 'Debe indicar el tratamiento',
+            },
+            Doctor_3: {
+                required: 'Debe indicar el médico'
+            },
+            When_3: {
+                required: 'Debe indicar la fecha'
+            },
+            Confirmation_4: {
+                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 12',
+            },
+            Diagnosis_4: {
+                required: 'Debe indicar el diagnóstico'
+            },
+            Treatment_4: {
+                required: 'Debe indicar el tratamiento',
+            },
+            Doctor_4: {
+                required: 'Debe indicar el médico'
+            },
+            When_4: {
+                required: 'Debe indicar la fecha'
+            },
+            Confirmation_5: {
+                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 5',
+            },
+            Diagnosis_5: {
+                required: 'Debe indicar el diagnóstico'
+            },
+            Treatment_5: {
+                required: 'Debe indicar el tratamiento',
+            },
+            Doctor_5: {
+                required: 'Debe indicar el médico'
+            },
+            When_5: {
+                required: 'Debe indicar la fecha'
+            },
+            Confirmation_6: {
+                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 7',
+            },
+            Confirmation_7: {
+                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 10',
+            },
+            Confirmation_8: {
+                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 3',
+            },
+            Confirmation_9: {
+                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 13',
+            },
+            Confirmation_10: {
+                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 14',
+            },
+            Confirmation_11: {
+                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 4',
+            },
+            Confirmation_12: {
+                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 6',
+            },
+            Confirmation_13: {
+                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 9',
+            },
+            Confirmation_14: {
+                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 11',
+            }
+        }
+    });
+};
+
+var _inputToObject_Salud = function () {
+    var data = [];
+    for (index = 1; index <= 14; index++) {
+        data.push({
+            QuestionId: index,
+            Confirmation: $('input:radio[name=Confirmation_' + index + ']:checked').val(),
+            Diagnosis: $('#Diagnosis_' + index).val(),
+            Treatment: $('#Treatment_' + index).val(),
+            Doctor: $('#Doctor_' + index).val(),
+            When: app.ui.GetDateValue('#When_' + index)
+        });
+    };
+    return data;
+};
+
+var _objectToInput_Salud = function (data) {
+    if (data !== null) {
+        let nindex = 1;
+
+        $.each(data, function (index, row) {
+            if (row.QuestionId >= 1 && row.QuestionId <= 14) {
+                nindex = row.QuestionId;
+                $($('input:radio[name=Confirmation_' + nindex + '][value=' + row.Confirmation + ']')).prop('checked', true);
+                $('input:radio[name=Confirmation_' + nindex + '][value=' + row.Confirmation + ']').change();
+                $('#Diagnosis_' + nindex).val(row.Diagnosis);
+                $('#Treatment_' + nindex).val(row.Treatment);
+                $('#Doctor_' + nindex).val(row.Doctor);
+                app.ui.SetDateValue('#When_' + nindex, row.When);
+            }
+        });
+    }
+};
+//#endregion
+
+//#region Cuestionario Covid
+
+function Init_Controls_Covid() {
+    for (index = 51; index <= 59; index++) {
+        $('#When_' + index + '_group').datetimepicker({
+            format: 'DD/MM/YYYY',
+            locale: 'es'
+        });
+    };
+};
+
+
+
+function Init_Lookups_Covid() {
+};
+
+function Event_Controls_Covid() {
+    $("input:radio[name='Confirmation_51'],input:radio[name='Confirmation_52'],input:radio[name='Confirmation_53'],input:radio[name='Confirmation_54'],input:radio[name='Confirmation_55'],input:radio[name='Confirmation_56'],input:radio[name='Confirmation_57'],input:radio[name='Confirmation_58'],input:radio[name='Confirmation_59']").on('change', function () {
+        let indexValue = $(this)[0].name.substring(13);
+        let value = this.value;
+        if (indexValue === '58') {
+            value = value === '1' ? '2' : '1';
+        }
+        if (value === '1') {
+            $('#question_' + indexValue).removeClass('d-none');
+            $('#Diagnosis_' + indexValue).prop("disabled", false)
+            $('#Doctor_' + indexValue).prop("disabled", false)
+            $('#Treatment_' + indexValue).prop("disabled", false)
+            $('#When_' + indexValue).prop("disabled", false)
+        }
+        else {
+            $('#question_' + indexValue).addClass('d-none');
+            $('#Diagnosis_' + indexValue).prop("disabled", true)
+            $('#Doctor_' + indexValue).prop("disabled", true)
+            $('#Treatment_' + indexValue).prop("disabled", true)
+            $('#When_' + indexValue).prop("disabled", true)
+        }
+    });
+};
+
+function Setup_Validations_Covid() {
+
+    $.validator.addMethod("AgeGreaterThan60_radio",
+        function (value, element) {
+            var notError = true;
+            var age = moment().diff($('#BirthDate_group').data('DateTimePicker').date(), 'years');
+            if (!Number.isNaN(age)) {
+                if (age >= 60 && $('input:radio[name=' + element.id.substring(0, element.id.length - 1) + ']:checked').val() === undefined) {
+                    notError = false;
+                }
+            }
+            return notError;
+        }
+    );
+
+    $.validator.addMethod("Q54",
+        function (value, element) {
+            var notError = false;
+            if ($('input:radio[name=Confirmation_54]:checked').val() === undefined || $('input:radio[name=Confirmation_54]:checked').val() == '2' || $('#Diagnosis_54_1').is(':checked') || $('#Diagnosis_54_2').is(':checked') || $('#Diagnosis_54_3').is(':checked') || $('#Diagnosis_54_4').is(':checked') || $('#Diagnosis_54_5').is(':checked') || $('#Diagnosis_54_6').is(':checked')) {
+                notError = true;
+            }
+            return notError;
+        }
+    )
+
+    $("#QuestionaryCovidEdtFrm").validate({
+        errorPlacement: function (error, element) {
+            var name = $(element).attr("name");
+            var $obj = $("#" + name + "_validate");
+            if ($obj.length) {
+                error.appendTo($obj);
+            }
+            else {
+                error.insertAfter(element);
+            }
+        },
+        rules: {
+            Confirmation_51: {
+                AgeGreaterThan60_radio: true
+            },
+            Diagnosis_51: {
+                required: true
+            },
+            Confirmation_52: {
+                AgeGreaterThan60_radio: true
+            },
+            Confirmation_53: {
+                AgeGreaterThan60_radio: true
+            },
+            Diagnosis_53: {
+                required: true
+            },
+            Confirmation_54: {
+                AgeGreaterThan60_radio: true,
+                Q54: true
+            },
+            Confirmation_55: {
+                AgeGreaterThan60_radio: true
+            },
+            Confirmation_56: {
+                AgeGreaterThan60_radio: true
+            },
+            Diagnosis_56: {
+                required: true
+            },
+            Confirmation_57: {
+                AgeGreaterThan60_radio: true
+            },
+            When_57: {
+                required: true
+            },
+            Confirmation_58: {
+                AgeGreaterThan60_radio: true
+            },
+            Diagnosis_58: {
+                required: true
+            },
+            Confirmation_59: {
+                AgeGreaterThan60_radio: true
+            },
+            Treatment_59: {
+                required: true
+            },
+            When_59: {
+                required: true
+            },
+            Doctor_59: {
+                required: true
+            }
+        },
+        messages: {
+            Confirmation_51: {
+                AgeGreaterThan60_radio: 'Para mayores  de 60 años debe responder la pregunta 1',
+            },
+            Diagnosis_51: {
+                required: 'Debe indicar en qué país o países y las fechas exactas'
+            },
+            Confirmation_52: {
+                AgeGreaterThan60_radio: 'Para mayores de 60 años debe responder la pregunta 2',
+            },
+            Confirmation_53: {
+                AgeGreaterThan60_radio: 'Para mayores de 60 años debe responder la pregunta 3',
+            },
+            Diagnosis_53: {
+                required: 'Debe indicar el detalle'
+            },
+            Confirmation_54: {
+                AgeGreaterThan60_radio: 'Para mayores de 60 años debe responder la pregunta 4',
+                Q54: 'Debe indicar cuales síntomas'
+            },
+            Confirmation_55: {
+                AgeGreaterThan60_radio: 'Para mayores de 60 años debe responder la pregunta 5',
+            },
+            Confirmation_56: {
+                AgeGreaterThan60_radio: 'Para mayores de 60 años debe responder la pregunta 6',
+            },
+            Diagnosis_56: {
+                required: 'Debe indicar el detalle'
+            },
+            Confirmation_57: {
+                AgeGreaterThan60_radio: 'Para mayores de 60 años debe responder la pregunta 7',
+            },
+            When_57: {
+                required: 'Debe indicar la fecha'
+            },
+            Confirmation_58: {
+                AgeGreaterThan60_radio: 'Para mayores de 60 años debe responder la pregunta 8',
+            },
+            Diagnosis_58: {
+                required: 'Debe indicar el motivo'
+            },
+            Confirmation_59: {
+                AgeGreaterThan60_radio: 'Para mayores de 60 años debe responder la pregunta 9',
+            },
+            Treatment_59: {
+                required: 'Debe indicar cual vacuna le aplicaron'
+            },
+            When_59: {
+                required: 'Debe indicar la fecha'
+            },
+            Doctor_59: {
+                required: 'Debe indicar cuántas dosis posee'
+            }
+        }
+    });
+};
+
+var _inputToObject_Covid = function () {
+    let data = [];
+    let row = null;
+    for (index = 51; index <= 59; index++) {
+        row = {
+            QuestionId: index,
+            Confirmation: $('input:radio[name=Confirmation_' + index + ']:checked').val(),
+            Diagnosis: $('#Diagnosis_' + index).val(),
+            Treatment: $('#Treatment_' + index).val(),
+            Doctor: $('#Doctor_' + index).val(),
+            When: null
+        };
+        if (index === 54) {
+            row.Diagnosis = [$('#Diagnosis_54_1').is(':checked'), $('#Diagnosis_54_2').is(':checked'), $('#Diagnosis_54_3').is(':checked'), $('#Diagnosis_54_4').is(':checked'), $('#Diagnosis_54_5').is(':checked'), $('#Diagnosis_54_6').is(':checked')].toString();
+        }
+        if ($('#When_' + index).length > 0) {
+            row.When = app.ui.GetDateValue('#When_' + index);
+        }
+        data.push(row);
+    }
+    return data;
+};
+
+var _objectToInput_Covid = function (data) {
+    if (data !== null) {
+        let nindex = 1;
+
+        $.each(data, function (index, row) {
+            if (row.QuestionId >= 51 && row.QuestionId <= 59) {
+                nindex = row.QuestionId;
+                $($('input:radio[name=Confirmation_' + nindex + '][value=' + row.Confirmation + ']')).prop('checked', true);
+                $('input:radio[name=Confirmation_' + nindex + '][value=' + row.Confirmation + ']').change();
+                $('#Diagnosis_' + nindex).val(row.Diagnosis);
+                $('#Treatment_' + nindex).val(row.Treatment);
+                $('#Doctor_' + nindex).val(row.Doctor);
+                if ($('#When_' + nindex).length > 0)
+                    app.ui.SetDateValue('#When_' + nindex, row.When);
+                if (nindex === 54) {
+                    $.each(row.Diagnosis.split(','), function (indexRow, rowValue) {
+                        $('#Diagnosis_54_' + (indexRow + 1)).prop('checked', rowValue === 'true');
+                    });
+                }
+            }
+        });
+    }
+};
+
+
+//#endregion
