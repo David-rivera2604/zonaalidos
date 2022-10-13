@@ -69,6 +69,7 @@
     <Compile Include="Cotizacion\GenericQuote.cs" />
     <Compile Include="Cotizacion\resumen.cs" />
     <Compile Include="Cotizacion\SaldoDeudor.cs" />
+    <Compile Include="Cotizacion\SaldoDeudorSettings.cs" />
     <Compile Include="Cotizacion\Viajero.cs" />
     <Compile Include="Emision\SaldoDeudor.cs" />
     <Compile Include="Emision\Viajero.cs" />
@@ -148,6 +149,10 @@
     <ProjectReference Include="..\..\Core\Architect.API.Core.Contracts\Architect.API.Core.Contracts.csproj">
       <Project>{29b21bef-8c87-4a9d-8b37-fecc57cd03c7}</Project>
       <Name>Architect.API.Core.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\InsurancePolicy\Architect.API.Insurance.Contracts\Architect.API.Insurance.Contracts.csproj">
+      <Project>{3DA1398D-CCC0-4F4B-A099-72CC3BBD2A9A}</Project>
+      <Name>Architect.API.Insurance.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Kernel\Architect.Utilities\Architect.Utilities.csproj">
       <Project>{e8317ab3-7807-4fcf-8520-b80340b4eb7d}</Project>

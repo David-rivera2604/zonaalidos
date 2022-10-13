@@ -72,7 +72,10 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// Fecha primer financiamiento.
         /// </summary>
         [DataMember(), JsonProperty()] public DateTime FEC_PRIM_FINAN { get; set; }
-
+        /// <summary>
+        /// Fecha vencimiento Prestamo.
+        /// </summary>
+        [DataMember(), JsonProperty()] public DateTime FEC_VCTO_PRESTAMO { get; set; }
 
         /// <summary>
         /// Peso.
@@ -94,7 +97,9 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// </summary>
         [DataMember(), JsonProperty()] public List<enfermedadesexcluidas> enfermedadesexcluidas { get; set; }
 
-
+        /// % Cuadro de Comision
+        /// </summary>
+        [DataMember(), JsonProperty()] public int COD_CUADRO_COMI { get; set; }
     }
 
     /// <summary>
@@ -129,6 +134,7 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// Fecha fin de exclusión.
         /// </summary>
         [DataMember(), JsonProperty()] public DateTime FEC_FIN_EXC { get; set; }
+
 
     }
 }

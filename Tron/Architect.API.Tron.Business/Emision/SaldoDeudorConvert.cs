@@ -32,10 +32,13 @@ namespace Architect.API.Tron.Business.Emision
             {
                 quoteInfo.Error = tronQuoteInfo.Calculado.Coberturas.First().TXT_ERROR;
             }
-            if (tronQuoteInfo.Calculado.Coberturas?.Count > 0)
+            if (tronQuoteInfo.Error_Emision == string.Empty)
             {
-                quoteInfo.num_poliza = tronQuoteInfo.Calculado.Coberturas.First().NUM_POLIZA;
-            }
+                if (tronQuoteInfo.Calculado.Coberturas?.Count > 0)
+                {
+                    quoteInfo.num_poliza = tronQuoteInfo.Calculado.Coberturas.First().NUM_POLIZA;
+                }
+            }          
             if (tronQuoteInfo.DatosDelProceso != null && tronQuoteInfo.DatosDelProceso.txt_error.IsNotEmpty())
             {
                 quoteInfo.Error = tronQuoteInfo.DatosDelProceso.txt_error;

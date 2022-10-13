@@ -345,6 +345,29 @@ namespace Architect.API.Tron.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Recupera lista de valores para sumas aseguradas de coberturas o valores deducibles según el rol del usuario
+        /// </summary>
+        /// <param name="cod_ramo"></param>
+        /// <param name="num_contrato"></param>
+        /// <param name="num_subcontrato"></param>
+        /// <param name="num_poliza_grupo"></param>
+        /// <param name="cod_mon"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("SaldoDeudorSettings")]
+        public async Task<IHttpActionResult> SaldoDeudorSettings(int cod_ramo, int num_contrato, int num_subcontrato, string num_poliza_grupo, int cod_mon)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Tron.Contracts.Cotizacion.SaldoDeudorSettings result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Cotizacion.SaldoDeudor.Settings(cod_ramo, num_contrato, num_subcontrato, num_poliza_grupo, cod_mon, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
         #endregion
 
     }
