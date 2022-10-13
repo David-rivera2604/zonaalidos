@@ -14,6 +14,7 @@ namespace Architect.Payment.Integrations
 
         public static string NotifySignature(Architect.Payment.Integrations.Contracts.NotifyRequest notify, int currency, int settingId, int companyId)
         {
+            Utilities.Log.WarningLog("Payment.NotifySignature", string.Format("requestId={0}, SettingId={1}", notify.requestId, settingId), "payment");
             return Architect.Payment.Integrations.Providers.Placetopay.Webcheckout.NotifySignature(notify, currency, settingId, companyId);
 
         }
@@ -81,8 +82,11 @@ namespace Architect.Payment.Integrations
             track.Reason = result.Reason;
             track.ResponseData = result.rawData;
             track.Status = Providers.Placetopay.Webcheckout.StatusConvert(track.ProviderStatus);
+            track.SettingId = result.SettingId;
 
             Business.OnlinePayment.UpdateNewSession(track);
+
+            Utilities.Log.WarningLog("Payment.NewSession", string.Format("requestId={0}, SettingId={1}", result.RequestId, result.SettingId), "payment");
 
             return result;
         }
