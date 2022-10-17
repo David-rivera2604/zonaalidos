@@ -43,14 +43,14 @@ app.EmisionSaldoDeudor = (function () {
                 });
         }
 
-        $("#tipodetercero option[value=0]").remove();
-        $("#tipodetercero option[value=8]").remove();
+       $("#tipodetercero option[value=0]").remove();
+        /* $("#tipodetercero option[value=8]").remove();
 
         var array_codigo = ["6", "8"];
         var array_descripcion = ["Beneficiario(a)", "Acreedor(a)"];
         for (var i in array_codigo) {
             document.getElementById("tipodetercero").innerHTML += "<option value='" + array_codigo[i] + "'>" + array_descripcion[i] + "</option>";
-        }
+        }*/
     };
 
     function Quote() {
@@ -405,6 +405,16 @@ app.EmisionSaldoDeudor = (function () {
                 toastr.error("Existen " + (count + others) + " error(es), que ameritan su atención.", "", { closeButton: true, progressBar: true });
             }
             event.preventDefault();
+        });
+
+        // Dependencies events
+        $('#TProvincia').on('change', function () {
+            var pais = $('select#cod_pais').val();
+            app.core.LookupDependency($('select#TProvincia').val(), 'TCanton', 'Cantones', '', null, true, null, `cod_pais=${pais}:cod_estado=`);
+        });
+        $('#TCanton').on('change', function () {
+            var pais = $('select#cod_pais').val();
+            app.core.LookupDependency($('select#TCanton').val(), 'TDistrito', 'Distritos', '', null, false, null, `cod_pais=${pais}:cod_prov=`);
         });
 
     };
@@ -1218,7 +1228,7 @@ app.EmisionSaldoDeudor = (function () {
                 porcentajeacredor: app.ui.GetNumericValue('#porcentajeacredor'),
                 parentesco: $('#parentesco').val(),
                 parentescoDesc: $('#parentesco option:selected').text(),
-                //porcentaje: app.ui.GetNumericValue('#porcentaje'),
+                porcentaje: app.ui.GetNumericValue('#porcentaje'),
                 NoEditable: false
             };
         }
@@ -1256,7 +1266,7 @@ app.EmisionSaldoDeudor = (function () {
         app.ui.SetDateValue('#vencimientodecesion', row.vencimientodecesion);
         app.ui.SetNumericValue('#porcentajeacredor', row.porcentajeacredor);
         $('#parentesco').val(row.parentesco);
-        // app.ui.SetNumericValue('#porcentaje', row.porcentaje);
+        app.ui.SetNumericValue('#porcentaje', row.porcentaje);
 
 
         md.modal('show');
@@ -1351,15 +1361,15 @@ app.EmisionSaldoDeudor = (function () {
             decimalPlaces: '0',
             emptyInputBehavior: 'null'
         });
-        //new AutoNumeric('#porcentaje', {
-        //    decimalCharacter: ',',
-        //    decimalCharacterAlternative: '.',
-        //    digitGroupSeparator: '.',
-        //    maximumValue: '999',
-        //    minimumValue: '0',
-        //    decimalPlaces: '0',
-        //    emptyInputBehavior: 'null'
-        //});
+        new AutoNumeric('#porcentaje', {
+            decimalCharacter: ',',
+            decimalCharacterAlternative: '.',
+            digitGroupSeparator: '.',
+            maximumValue: '999',
+            minimumValue: '0',
+            decimalPlaces: '0',
+            emptyInputBehavior: 'null'
+        });
 
     }
 
