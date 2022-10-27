@@ -53,7 +53,7 @@ namespace Architect.Payment.Integrations.DataAccess
                             .AddParameter("Reason", DbType.AnsiString, 256, onlinepaymentItem.Reason)
                             .AddParameter("UpdateUserCode", DbType.Decimal, 9, onlinepaymentItem.UpdateUserCode)
                             .AddParameter("UpdateDate", DbType.DateTime, 0, onlinepaymentItem.UpdateDate)
-                            .AddParameter("SettingId", DbType.Decimal, 9, onlinepaymentItem.SettingId)                            
+                            .AddParameter("SettingId", DbType.Decimal, 9, onlinepaymentItem.SettingId)
                             .Execute(connection, "Research");
         }
 
@@ -152,7 +152,7 @@ namespace Architect.Payment.Integrations.DataAccess
                 onlinepaymentItem.UpdateDate = DateTime.Now;
             }
             return Database.Update("UPDATE OnlinePayment " +
-                                      "SET RequestID=:RequestID, ProviderStatus=:ProviderStatus, Reason=:Reason, ResponseData=:ResponseData, Reference=:Reference, IssueDate=:IssueDate, StatusDate=:StatusDate, ProcessUrl=:ProcessUrl, Status=:Status, UpdateDate=:UpdateDate " +
+                                      "SET RequestID=:RequestID, ProviderStatus=:ProviderStatus, Reason=:Reason, ResponseData=:ResponseData, Reference=:Reference, IssueDate=:IssueDate, StatusDate=:StatusDate, ProcessUrl=:ProcessUrl, Status=:Status, UpdateDate=:UpdateDate, SettingId=:SettingId " +
                                     "WHERE Id=:Id")
                                 .AddParameter("RequestID", DbType.Decimal, 11, onlinepaymentItem.RequestID)
                                 .AddParameter("ProviderStatus", DbType.AnsiString, 20, onlinepaymentItem.ProviderStatus)
@@ -164,6 +164,7 @@ namespace Architect.Payment.Integrations.DataAccess
                                 .AddParameter("ProcessUrl", DbType.AnsiString, 256, onlinepaymentItem.ProcessUrl)
                                 .AddParameter("Status", DbType.Decimal, 5, onlinepaymentItem.Status)
                                 .AddParameter("UpdateDate", DbType.DateTime, 0, onlinepaymentItem.UpdateDate)
+                                .AddParameter("SettingId", DbType.Decimal, 9, onlinepaymentItem.SettingId)
                                 .AddParameter("Id", DbType.Decimal, 9, onlinepaymentItem.Id)
                                 .Execute(connection, "Research");
         }
@@ -249,7 +250,7 @@ namespace Architect.Payment.Integrations.DataAccess
             item.UpdateUserCode = reader.IntegerValue("UpdateUserCode");
             item.UpdateUserName = reader.StringValue("UpdateUserName");
             item.UpdateDate = reader.DateTimeValue("UpdateDate");
-            item.SettingId = reader.IntegerValue("SettingId");            
+            item.SettingId = reader.IntegerValue("SettingId");
             return item;
         }
 

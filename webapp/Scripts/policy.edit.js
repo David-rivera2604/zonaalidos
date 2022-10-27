@@ -155,7 +155,11 @@ app.PolicyEdit = (function () {
     function MapInputToObject() {
         var data = app.poliza.InputToObject();
         data.PrimaryInsured = app.asegurado.InputToObject();
-        data.Questionary = app.cuestionario.InputToObject();
+        data.Questionary = [];
+      
+        if (!$('#saludTabHeader').hasClass('d-none')) {
+            data.Questionary.push(...app.cuestionario.InputToObject());
+        }
         if (!$('#covidTabHeader').hasClass('d-none')) {
             data.Questionary.push(...app.cuestionariocovid.InputToObject());
         }
