@@ -217,6 +217,8 @@ namespace Architect.API.Tron.Business.Backoffice
                 Architect.Utilities.Log.ErrorLog("ImprimirPoliza", failDetail);
                 throw new Exception(failDetail);
             }
+            Utilities.Log.WarningLog("ImprimirPoliza", String.Format("Póliza {0}, Riesgo {1}, Tamaño {2}, URL {3} ", num_poliza, num_riesgo, result.Length, id), "tron");
+
             return result;
         }
 

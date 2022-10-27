@@ -377,13 +377,14 @@ app.BayerInclusion = (function () {
                     app.core.Get(app.setting.apipath + 'v1/Insured/' + value)
                         .done(function (data) {
                             if (data !== null && data.Nombre !== null) {
-                                $('#FirstName').val(data.Nombre);
-                                $('#LastName').val(data.ApellidoPaterno + ' ' + data.ApellidoMaterno);
-                                $('#Gender').val(data.CodigoSexo);
-                                $('#Province').val(data.CodigoProvincia);
-                                app.core.LookupDependency($('select#Province').val(), 'Canton', 'CR_Canton', '', data.CodigoCanton, false,
+                                $('#FirstName').val(data.FirstName);
+                                $('#LastName').val(data.LastName + ' ' + data.SecondLastName);
+                                $('#Gender').val(data.Gender);
+                                $('#Province').val(data.Province);
+                                app.ui.SetDateValue('#BirthDate', data.BirthDate);
+                                app.core.LookupDependency($('select#Province').val(), 'Canton', 'CR_Canton', '', data.Canton, false,
                                     function () {
-                                        app.core.LookupDependency($('select#Canton').val(), 'District', 'CR_Distritos', '', data.CodigoDistrito, false);
+                                        app.core.LookupDependency($('select#Canton').val(), 'District', 'CR_Distritos', '', data.District, false);
                                     });
                             }
                         }).always(function () {
@@ -409,8 +410,9 @@ app.BayerInclusion = (function () {
                     app.core.Get(app.setting.apipath + 'v1/Insured/' + value)
                         .done(function (data, textStatus, jqXHR) {
                             if (data !== null && data.Nombre !== null) {
-                                $('#BFirstName').val(data.Nombre);
-                                $('#BLastName').val(data.ApellidoPaterno + ' ' + data.ApellidoMaterno);
+                                $('#BFirstName').val(data.FirstName);
+                                $('#BLastName').val(data.LastName + ' ' + data.SecondLastName);
+                                app.ui.SetDateValue('#BBirthDate', data.BirthDate);
                             }
                         }).always(function () {
                             $('#BDocumentNumber').removeClass('loading');
@@ -431,8 +433,9 @@ app.BayerInclusion = (function () {
                     app.core.Get(app.setting.apipath + 'v1/Insured/' + value)
                         .done(function (data, textStatus, jqXHR) {
                             if (data.Nombre !== null) {
-                                $('#DFirstName').val(data.Nombre);
-                                $('#DLastName').val(data.ApellidoPaterno + ' ' + data.ApellidoMaterno);
+                                $('#DFirstName').val(data.FirstName);
+                                $('#DLastName').val(data.LastName + ' ' + data.SecondLastName);
+                                app.ui.SetDateValue('#DBirthDate', data.BirthDate);
                             }
                         }).always(function () {
                             $('#DDocumentNumber').removeClass('loading');
@@ -916,6 +919,7 @@ app.BayerInclusion = (function () {
                 $('#beneficiariosTbl-error').removeClass('d-none');
             }
             else if (beneficiarios.reduce((total, item) => total + item.BParticipationRate, 0) != 100) {
+                result = false;
                 $('#beneficiariosTbl-error').text('El total del porcentaje de particupación debe ser el 100%');
                 $('#beneficiariosTbl-error').removeClass('d-none');
             }
