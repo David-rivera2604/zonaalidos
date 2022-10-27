@@ -439,3 +439,5 @@
                    Saldo Deudor. Incorporacion de Datos variables.
                    Saldo Deudor. Proceso de llenado y envio a Firma de Solicitud de Seguro.
                    Multirriesgo. Se cambia listado de documentos requeridos en la emision.
+				   Bayer. Validación del 100% para beneficiarios.
+                   Bayer. Datos del padrón según cédula.
