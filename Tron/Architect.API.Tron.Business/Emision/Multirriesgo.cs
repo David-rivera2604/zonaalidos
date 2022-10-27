@@ -18,17 +18,9 @@ namespace Architect.API.Tron.Business.Emision
                 result = Newtonsoft.Json.JsonConvert.DeserializeObject<Architect.API.Tron.Contracts.Emision.Multirriesgo>(Architect.Utilities.Cache.GetItem(key).ToString());
                 result.documentosrequeridos = new List<Contracts.Comun.DocumentoRequerido>
                 {
-                    new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=1, tipo = "Copia de la cédula de identidad", DArchivoEsperado="CEDULA.docx", Grupo="F"  },
-                    new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=2, tipo = "Comprobante de entrega de condiciones generales" , DArchivoEsperado="CONDICIONES.pdf", Grupo="F" },
-                    new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=3, tipo = "Consentimiento para uso de datos personales", DArchivoEsperado="CONSENTIMIENTO.pdf" , Grupo="F" },
-                    new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=4, tipo = "Formato de validación de domicilio", DArchivoEsperado="DOMICILIO.pdf" , Grupo="F" },
-                    new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=5, tipo = "Conozca a su cliente (KYC)", DArchivoEsperado="KYC.pdf", Grupo="F"  },
-                    new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=6, tipo = "Solicitud de seguro firmada", DArchivoEsperado="SOLICITUD.pdf", Grupo="F"  },
-
-                    new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=7, tipo = "Represéntate legal", DArchivoEsperado="REPRESENTANTE LEGAL.docx", Grupo="J" },
-                    new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=8, tipo = "Participación accionaria", DArchivoEsperado="PARTICIPACION ACCIONARIA.docx", Grupo="J" },
-                    new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=9, tipo = "Certificado de participación", DArchivoEsperado="CERTIFICADO PARTICIPACION.docx", Grupo="J" }
-                };
+                    new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=1, tipo = "Expediente Cliente", DArchivoEsperado="Expediente Cliente.pdf", Grupo="F"  },
+                    new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=2, tipo = "Expediente Póliza" , DArchivoEsperado="Expediente Póliza.pdf", Grupo="F" },
+            };
             }
             return result;
         }
