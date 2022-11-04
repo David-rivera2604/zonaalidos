@@ -54,7 +54,22 @@ namespace Architect.API.Insurance.Business.Policy
             {
                 result.AddRange(RiskQuestionnaires.Validate(item, risk, companyId));
             }
-
+            if (risk.Behavior.Contains("Show.CV"))
+            {
+                if (source.Where(r => r.QuestionId >= 51 && r.QuestionId <= 59).Count() != 9)
+                {
+                    result.Add(new Core.Contracts.General.Error()
+                    { Group = "general", Key = "*", Message = "Se deben responder todas las preguntas de los questionario(s)" });
+                }
+            }
+            if (risk.Behavior.Contains("Show.DS"))
+            {
+                if (source.Where(r => r.QuestionId >= 1 && r.QuestionId <= 14).Count() != 14)
+                {
+                    result.Add(new Core.Contracts.General.Error()
+                    { Group = "general", Key = "*", Message = "Se deben responder todas las preguntas de los questionario(s)" });
+                }
+            }
             return result;
         }
 
@@ -93,7 +108,8 @@ namespace Architect.API.Insurance.Business.Policy
                 if (underwriting && source.Confirmation.IsEmpty())
                 {
                     bool skipQ = false;
-                    if (risk.PrimaryInsured.Gender == 1 && source.QuestionId == 10) {
+                    if (risk.PrimaryInsured.Gender == 1 && source.QuestionId == 10)
+                    {
                         skipQ = true;
                     }
                     if (!skipQ)
@@ -113,7 +129,18 @@ namespace Architect.API.Insurance.Business.Policy
 
                     if (source.QuestionId == 8 || source.QuestionId == 9 || source.QuestionId == 10)
                         result.Add(new Core.Contracts.General.Error() { Group = group, Key = string.Format("Diagnosis_{0}", source.QuestionId), Message = string.Format("Debe indicar el resultado para la pregunta {0} del cuestionario médico", questionId) });
+
+                    if (source.QuestionId == 51)
+                        result.Add(new Core.Contracts.General.Error() { Group = group, Key = string.Format("Diagnosis_{0}", source.QuestionId), Message = "Debe indicar en qué país o países y las fechas exactas para la pregunta 1 del cuestionario Covid" });
+                    if (source.QuestionId == 53 || source.QuestionId == 56)
+                        result.Add(new Core.Contracts.General.Error() { Group = group, Key = string.Format("Diagnosis_{0}", source.QuestionId), Message = string.Format("Debe indicar el detalle para la pregunta {0} del cuestionario Covid", questionId - 50) });
+
                 }
+                if (source.Confirmation == 1 && source.Diagnosis.IsNotEmpty() && source.Diagnosis == "false,false,false,false,false,false")
+                {
+                    result.Add(new Core.Contracts.General.Error() { Group = group, Key = string.Format("Diagnosis_{0}", source.QuestionId), Message = "Debe indicar cuales síntomas para la pregunta 4 del cuestionario Covid" });
+                }
+                //
 
                 //Treatment:
                 if (source.Confirmation == 1 && source.Treatment.IsEmpty())
@@ -123,6 +150,8 @@ namespace Architect.API.Insurance.Business.Policy
                         result.Add(new Core.Contracts.General.Error() { Group = group, Key = string.Format("Treatment_{0}", source.QuestionId), Message = string.Format("Debe indicar el tratamiento para la pregunta {0} del cuestionario médico", questionId) });
                     if (source.QuestionId == 9 || source.QuestionId == 10)
                         result.Add(new Core.Contracts.General.Error() { Group = group, Key = string.Format("Treatment_{0}", source.QuestionId), Message = string.Format("Debe indicar el lugar de atención para la pregunta {0} del cuestionario médico", questionId) });
+                    if (source.QuestionId == 59)
+                        result.Add(new Core.Contracts.General.Error() { Group = group, Key = string.Format("Treatment_{0}", source.QuestionId), Message = string.Format("Debe indicar cual vacuna le aplicaron para la pregunta {0} del cuestionario Covid", questionId) });
                 }
 
                 ////Doctor:
@@ -135,7 +164,8 @@ namespace Architect.API.Insurance.Business.Policy
                         result.Add(new Core.Contracts.General.Error() { Group = group, Key = string.Format("Doctor_{0}", source.QuestionId), Message = string.Format("Debe indicar el motivo para la pregunta {0} del cuestionario médico", questionId) });
                     if (source.QuestionId == 14)
                         result.Add(new Core.Contracts.General.Error() { Group = group, Key = string.Format("Doctor_{0}", source.QuestionId), Message = string.Format("Debe indicar cuantos cigarros al día fuma para la pregunta {0} del cuestionario médico", questionId) });
-
+                    if (source.QuestionId == 59)
+                        result.Add(new Core.Contracts.General.Error() { Group = group, Key = string.Format("Doctor_{0}", source.QuestionId), Message = string.Format("Debe indicar cuántas dosis posee para la pregunta {0} del cuestionario Covid", questionId - 50) });
                 }
 
 
@@ -149,6 +179,9 @@ namespace Architect.API.Insurance.Business.Policy
                         result.Add(new Core.Contracts.General.Error() { Group = group, Key = string.Format("When_{0}", source.QuestionId), Message = string.Format("Debe indicar la fecha probable del alumbramiento para la pregunta {0} del cuestionario médico", questionId) });
                     if (source.QuestionId == 14)
                         result.Add(new Core.Contracts.General.Error() { Group = group, Key = string.Format("When_{0}", source.QuestionId), Message = string.Format("Debe indicar desde cuando para la pregunta {0} del cuestionario médico", questionId) });
+                    if (source.QuestionId == 57 || source.QuestionId == 59)
+                        result.Add(new Core.Contracts.General.Error() { Group = group, Key = string.Format("When_{0}", source.QuestionId), Message = string.Format("Debe indicar la fecha para la pregunta {0} del cuestionario Covid", questionId - 50) });
+
                 }
 
                 //Diagnosis:
