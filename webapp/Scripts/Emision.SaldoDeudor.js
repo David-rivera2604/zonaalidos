@@ -6,13 +6,15 @@ app.EmisionSaldoDeudor = (function () {
     let workMode = '';
     let changedCallback = null;
     let CapitalCtrls = [];
+    let edad_asegurado = 0;
+    let suma_asegurada = 0;
 
     function Setup() {
         let _id = app.core.URLStringValue('presupuesto');
         if (_id != '') {
             workMode = app.core.URLStringValue('mode');
 
-            if (workMode === 'draft') {
+            if (workMode === 'draft' || workMode === 'resume') {
                 $('#guardarenviar').removeClass('d-none');
                 $("#guardarenviar").appendTo("#GenericToolBar");
                 $('#cotizar').addClass('d-none');
@@ -24,6 +26,9 @@ app.EmisionSaldoDeudor = (function () {
             } else {
                 $('#cotizar').removeClass('d-none');
                 $("#cotizar").appendTo("#GenericToolBar");
+                $('#cuestionario_form').addClass('d-none');
+                $('.enviosolicitudZone').addClass('d-none');
+                
             }
 
             app.core.Get(app.setting.apipath + 'v1/Issue/SaldoDeudor/' + _id + '?mode=' + workMode, null,
@@ -33,6 +38,8 @@ app.EmisionSaldoDeudor = (function () {
                         function () {
                             setupData = data;
                             workMode = data.Modo;
+                            edad_asegurado = moment().diff(data.FEC_NACIMIENTO, 'years');
+                            suma_asegurada = data.IMP_SLD_ACTUAL;
                             MapObjectToInput(data);
                             Dynamic_Event_Controls();
                             ReadOnly();
@@ -170,6 +177,8 @@ app.EmisionSaldoDeudor = (function () {
                 Doctor: $('#Doctor_' + index).val(),
             });
         };
+
+        
         return data;
     };
 
@@ -377,7 +386,9 @@ app.EmisionSaldoDeudor = (function () {
 
         $('#guardarenviar').click(function () {
             var others = OtherValidations();
-            if (app.ui.IsValid('#SaldoDeudorEdtForm', false) && others.length === 0) {
+            var cuestionario_validations = Validations_Salud2();
+
+            if (app.ui.IsValid('#SaldoDeudorEdtForm', false) && others.length === 0 && cuestionario_validations.length === 0) {
                 app.ui.ButtonDoing('#guardarenviar');
                 app.core.Post(app.setting.apipath + 'v1/Issue/SaldoDeudor',
                     JSON.stringify(MapInputToObject()),
@@ -402,7 +413,7 @@ app.EmisionSaldoDeudor = (function () {
                 var result = instance.valid();
                 var count = validate.numberOfInvalids();
                 validate.settings.ignore = ':hidden';
-                toastr.error("Existen " + (count + others) + " error(es), que ameritan su atención.", "", { closeButton: true, progressBar: true });
+                toastr.error("Existen " + (count + others.length + cuestionario_validations.length) + " error(es), que ameritan su atención.", "", { closeButton: true, progressBar: true });
             }
             event.preventDefault();
         });
@@ -1870,7 +1881,7 @@ app.EmisionSaldoDeudor = (function () {
                 Init_Controls_Salud();
                 Init_Lookups_Salud();
                 Event_Controls_Salud();
-                Setup_Validations_Salud();
+                //Setup_Validations_Salud();
 
                 //Cuestionario Covid
                 Init_Controls_Covid();
@@ -1983,7 +1994,7 @@ app.EmisionSaldoDeudor = (function () {
             return result;
         }
     };
-})();
+
 
 window.enfermedadesexcluidasTbl_Events = {
     'click .delete': function (e, value, row, index) {
@@ -2073,224 +2084,213 @@ function Event_Controls_Salud() {
     });
 };
 
-function Setup_Validations_Salud() {
 
-    $.validator.addMethod("AgeGreaterThan64_radio",
-        function (value, element) {
-            var notError = true;
-            var age = moment().diff($('#BirthDate_group').data('DateTimePicker').date(), 'years');
-            if (!Number.isNaN(age)) {
-                if (age > 64 && $('input:radio[name=' + element.id.substring(0, element.id.length - 1) + ']:checked').val() === undefined) {
-                    notError = false;
-                }
-            }
-            return notError;
-        }
-    );
+    function Validations_Salud2() {
+        let result = [];
+        let message = '';
 
-    $("#QuestionaryEdtFrm").validate({
-        errorPlacement: function (error, element) {
-            var name = $(element).attr("name");
-            var $obj = $("#" + name + "_validate");
-            if ($obj.length) {
-                error.appendTo($obj);
+        if (edad_asegurado > 64 || suma_asegurada > 100000) {
+
+            if (!document.getElementById('Confirmation_1a').checked && !document.getElementById('Confirmation_1b').checked) {
+                message += 'Es necesario responder la pregunta #1 ';
+                result.push({ id: 'pregunta_1', message: message });
+
             }
             else {
-                error.insertAfter(element);
+                if (document.getElementById('Confirmation_1a').checked) {
+                    if (document.getElementById('Diagnosis_1').value == '' || document.getElementById('Treatment_1').value == '' ||
+                        document.getElementById('Doctor_1').value == '' || document.getElementById('When_1').value == '') {
+                        message += 'Debe responder el detalle de la pregunta #1 ';
+                        result.push({ id: 'pregunta_1', message: message });
+                    }
+                }
             }
-        },
-        rules: {
-            Confirmation_1: {
-                AgeGreaterThan64_radio: true
-            },
-            Diagnosis_1: {
-                required: true
-            },
-            Treatment_1: {
-                required: true,
-            },
-            Doctor_1: {
-                required: true
-            },
-            When_1: {
-                required: true
-            },
-            Confirmation_2: {
-                AgeGreaterThan64_radio: true
-            },
-            Diagnosis_2: {
-                required: true
-            },
-            Confirmation_3: {
-                AgeGreaterThan64_radio: true
-            },
-            Diagnosis_3: {
-                required: true
-            },
-            Treatment_3: {
-                required: true,
-            },
-            Doctor_3: {
-                required: true
-            },
-            When_3: {
-                required: true
-            },
-            Confirmation_4: {
-                AgeGreaterThan64_radio: true
-            },
-            Diagnosis_4: {
-                required: true
-            },
-            Treatment_4: {
-                required: true,
-            },
-            Doctor_4: {
-                required: true
-            },
-            When_4: {
-                required: true
-            },
-            Confirmation_5: {
-                AgeGreaterThan64_radio: true
-            },
-            Diagnosis_5: {
-                required: true
-            },
-            Treatment_5: {
-                required: true,
-            },
-            Doctor_5: {
-                required: true
-            },
-            When_5: {
-                required: true
-            },
-            Confirmation_6: {
-                AgeGreaterThan64_radio: true
-            },
-            Confirmation_7: {
-                AgeGreaterThan64_radio: true
-            },
-            Confirmation_8: {
-                AgeGreaterThan64_radio: true
-            },
-            Confirmation_9: {
-                AgeGreaterThan64_radio: true
-            },
-            Confirmation_10: {
-                AgeGreaterThan64_radio: true
-            },
-            Confirmation_11: {
-                AgeGreaterThan64_radio: true
-            },
-            Confirmation_12: {
-                AgeGreaterThan64_radio: true
-            },
-            Confirmation_13: {
-                AgeGreaterThan64_radio: true
-            },
-            Confirmation_14: {
-                AgeGreaterThan64_radio: true
+            if (!document.getElementById('Confirmation_3a').checked && !document.getElementById('Confirmation_3b').checked) {
+                message += 'Es necesario responder la pregunta #2 ';
+                result.push({ id: 'pregunta_2', message: message });
+
             }
-        },
-        messages: {
-            Confirmation_1: {
-                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 1',
-            },
-            Diagnosis_1: {
-                required: 'Debe indicar el diagnóstico'
-            },
-            Treatment_1: {
-                required: 'Debe indicar el tratamiento',
-            },
-            Doctor_1: {
-                required: 'Debe indicar el médico'
-            },
-            When_1: {
-                required: 'Debe indicar la fecha'
-            },
-            Confirmation_2: {
-                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 8',
-            },
-            Diagnosis_2: {
-                required: 'Debe ampliar su respuesta'
-            },
-            Confirmation_3: {
-                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 2',
-            },
-            Diagnosis_3: {
-                required: 'Debe indicar el diagnóstico'
-            },
-            Treatment_3: {
-                required: 'Debe indicar el tratamiento',
-            },
-            Doctor_3: {
-                required: 'Debe indicar el médico'
-            },
-            When_3: {
-                required: 'Debe indicar la fecha'
-            },
-            Confirmation_4: {
-                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 12',
-            },
-            Diagnosis_4: {
-                required: 'Debe indicar el diagnóstico'
-            },
-            Treatment_4: {
-                required: 'Debe indicar el tratamiento',
-            },
-            Doctor_4: {
-                required: 'Debe indicar el médico'
-            },
-            When_4: {
-                required: 'Debe indicar la fecha'
-            },
-            Confirmation_5: {
-                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 5',
-            },
-            Diagnosis_5: {
-                required: 'Debe indicar el diagnóstico'
-            },
-            Treatment_5: {
-                required: 'Debe indicar el tratamiento',
-            },
-            Doctor_5: {
-                required: 'Debe indicar el médico'
-            },
-            When_5: {
-                required: 'Debe indicar la fecha'
-            },
-            Confirmation_6: {
-                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 7',
-            },
-            Confirmation_7: {
-                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 10',
-            },
-            Confirmation_8: {
-                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 3',
-            },
-            Confirmation_9: {
-                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 13',
-            },
-            Confirmation_10: {
-                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 14',
-            },
-            Confirmation_11: {
-                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 4',
-            },
-            Confirmation_12: {
-                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 6',
-            },
-            Confirmation_13: {
-                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 9',
-            },
-            Confirmation_14: {
-                AgeGreaterThan64_radio: 'Para mayores de 65 años debe responder la pregunta 11',
+            else {
+                if (document.getElementById('Confirmation_3a').checked) {
+                    if (document.getElementById('Diagnosis_3').value == '' || document.getElementById('Treatment_3').value == '' ||
+                        document.getElementById('Doctor_3').value == '' || document.getElementById('When_3').value == '') {
+                        message += 'Debe responder el detalle de la pregunta #2 ';
+                        result.push({ id: 'pregunta_2', message: message });
+                    }
+                }
             }
+            if (!document.getElementById('Confirmation_8a').checked && !document.getElementById('Confirmation_8b').checked) {
+                message += 'Es necesario responder la pregunta #3 ';
+                result.push({ id: 'pregunta_3', message: message });
+
+            }
+            else {
+                if (document.getElementById('Confirmation_8a').checked) {
+                    if (document.getElementById('Diagnosis_8').value == '' || 
+                        document.getElementById('Doctor_8').value == '' || document.getElementById('When_8').value == '') {
+                        message += 'Debe responder el detalle de la pregunta #3 ';
+                        result.push({ id: 'pregunta_3', message: message });
+                    }
+                }
+            }
+            if (!document.getElementById('Confirmation_11a').checked && !document.getElementById('Confirmation_11b').checked) {
+                message += 'Es necesario responder la pregunta #4 ';
+                result.push({ id: 'pregunta_4', message: message });
+
+            }
+            else {
+                if (document.getElementById('Confirmation_11a').checked) {
+                    if (document.getElementById('Diagnosis_11').value == '' || document.getElementById('Treatment_11').value == '' ||
+                        document.getElementById('Doctor_11').value == '' || document.getElementById('When_11').value == '') {
+                        message += 'Debe responder el detalle de la pregunta #4 ';
+                        result.push({ id: 'pregunta_4', message: message });
+                    }
+                }
+            }
+            if (!document.getElementById('Confirmation_5a').checked && !document.getElementById('Confirmation_5b').checked) {
+                message += 'Es necesario responder la pregunta #5 ';
+                result.push({ id: 'pregunta_5', message: message });
+
+            }
+            else {
+                if (document.getElementById('Confirmation_5a').checked) {
+                    if (document.getElementById('Diagnosis_5').value == '' || document.getElementById('Treatment_5').value == '' ||
+                        document.getElementById('Doctor_5').value == '' || document.getElementById('When_5').value == '') {
+                        message += 'Debe responder el detalle de la pregunta #5 ';
+                        result.push({ id: 'pregunta_5', message: message });
+                    }
+                }
+            }
+            if (!document.getElementById('Confirmation_12a').checked && !document.getElementById('Confirmation_12b').checked) {
+                message += 'Es necesario responder la pregunta #6 ';
+                result.push({ id: 'pregunta_6', message: message });
+
+            }
+            else {
+                if (document.getElementById('Confirmation_12a').checked) {
+                    if (document.getElementById('Diagnosis_12').value == '') {
+                        message += 'Debe responder el detalle de la pregunta #6 ';
+                        result.push({ id: 'pregunta_6', message: message });
+                    }
+                }
+            }
+            if (!document.getElementById('Confirmation_6a').checked && !document.getElementById('Confirmation_6b').checked) {
+                message += 'Es necesario responder la pregunta #7 ';
+                result.push({ id: 'pregunta_7', message: message });
+
+            }
+            else {
+                if (document.getElementById('Confirmation_6a').checked) {
+                    if (document.getElementById('When_6').value == '') {
+                        message += 'Debe responder el detalle de la pregunta #7 ';
+                        result.push({ id: 'pregunta_7', message: message });
+                    }
+                }
+            }
+            if (!document.getElementById('Confirmation_2a').checked && !document.getElementById('Confirmation_2b').checked) {
+                message += 'Es necesario responder la pregunta #8 ';
+                result.push({ id: 'pregunta_8', message: message });
+
+            }
+            else {
+                if (document.getElementById('Confirmation_2a').checked) {
+                    if (document.getElementById('Diagnosis_2').value == '') {
+                        message += 'Debe responder el detalle de la pregunta #8 ';
+                        result.push({ id: 'pregunta_8', message: message });
+                    }
+                }
+            }
+            if (!document.getElementById('Confirmation_13a').checked && !document.getElementById('Confirmation_13b').checked) {
+                message += 'Es necesario responder la pregunta #9 ';
+                result.push({ id: 'pregunta_9', message: message });
+
+            }
+            else {
+                if (document.getElementById('Confirmation_13a').checked) {
+                    if (document.getElementById('Diagnosis_13').value == '') {
+                        message += 'Debe responder el detalle de la pregunta #9 ';
+                        result.push({ id: 'pregunta_9', message: message });
+                    }
+                }
+            }
+            if (!document.getElementById('Confirmation_7a').checked && !document.getElementById('Confirmation_7b').checked) {
+                message += 'Es necesario responder la pregunta #10 ';
+                result.push({ id: 'pregunta_10', message: message });
+
+            }
+            else {
+                if (document.getElementById('Confirmation_7a').checked) {
+                    if (document.getElementById('Diagnosis_7').value == '') {
+                        message += 'Debe responder el detalle de la pregunta #10 ';
+                        result.push({ id: 'pregunta_10', message: message });
+                    }
+                }
+            }
+            if (!document.getElementById('Confirmation_14a').checked && !document.getElementById('Confirmation_14b').checked) {
+                message += 'Es necesario responder la pregunta #11 ';
+                result.push({ id: 'pregunta_11', message: message });
+
+            }
+            else {
+                if (document.getElementById('Confirmation_14a').checked) {
+                    if (document.getElementById('Doctor_14').value == '' || document.getElementById('When_14').value == '') {
+                        message += 'Debe responder el detalle de la pregunta #11 ';
+                        result.push({ id: 'pregunta_11', message: message });
+                    }
+                }
+            }
+            if (!document.getElementById('Confirmation_4a').checked && !document.getElementById('Confirmation_4b').checked) {
+                message += 'Es necesario responder la pregunta #12 ';
+                result.push({ id: 'pregunta_12', message: message });
+
+            }
+            else {
+                if (document.getElementById('Confirmation_4a').checked) {
+                    if (document.getElementById('Diagnosis_4').value == '' || document.getElementById('Treatment_4').value == '' ||
+                        document.getElementById('Doctor_4').value == '' || document.getElementById('When_4').value == '') {
+                        message += 'Debe responder el detalle de la pregunta #12 ';
+                        result.push({ id: 'pregunta_12', message: message });
+                    }
+                }
+            }
+            if (!document.getElementById('Confirmation_9a').checked && !document.getElementById('Confirmation_9b').checked) {
+                message += 'Es necesario responder la pregunta #13 ';
+                result.push({ id: 'pregunta_13', message: message });
+
+            }
+            else {
+                if (document.getElementById('Confirmation_9a').checked) {
+                    if (document.getElementById('Diagnosis_9').value == '' || document.getElementById('Treatment_9').value == '' ||
+                        document.getElementById('Doctor_9').value == '' || document.getElementById('When_9').value == '') {
+                        message += 'Debe responder el detalle de la pregunta #13 ';
+                        result.push({ id: 'pregunta_13', message: message });
+                    }
+                }
+            }
+            if (!document.getElementById('Confirmation_10a').checked && !document.getElementById('Confirmation_10b').checked) {
+                message += 'Es necesario responder la pregunta #14 ';
+                result.push({ id: 'pregunta_14', message: message });
+
+            }
+            else {
+                if (document.getElementById('Confirmation_10a').checked) {
+                    if (document.getElementById('Diagnosis_10').value == '' || document.getElementById('Treatment_10').value == '' ||
+                        document.getElementById('Doctor_10').value == '' || document.getElementById('When_10').value == '') {
+                        message += 'Debe responder el detalle de la pregunta #14 ';
+                        result.push({ id: 'pregunta_14', message: message });
+                    }
+                }
+            }
+
+
+            $('#cuestionario-error').html(message);
+            $('#cuestionario-error').removeClass('d-none');
+
         }
-    });
-};
+
+        return result;
+    }
+
 
 var _inputToObject_Salud = function () {
     var data = [];
@@ -2560,5 +2560,6 @@ var _objectToInput_Covid = function (data) {
     }
 };
 
+})();
 
 //#endregion

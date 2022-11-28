@@ -140,11 +140,11 @@
                                                     </div>
                                                 </div>
                                                 <!-- NUM_IMC -->
-                                                <div class='col-sm-4 col-md-3'  hidden>
+                                                <div class='col-sm-4 col-md-3'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='NUM_IMC'>Índice de masa corporal</label>
                                                         <div class='input-group'>
-                                                            <input id='NUM_IMC' name='NUM_IMC' type='text'
+                                                            <input id='NUM_IMC' name='NUM_IMC' type='text' disabled="disabled"
                                                                    class='form-control text-right' size='6'
                                                                    maxlength='6'>
                                                             <span class='input-group-addon'>
@@ -214,6 +214,16 @@
                                                     </div>
                                                 </div>
 
+                                                <!-- NUM_POLIZA_ORI DatePicker -->
+                                                <div class='col-sm-3 col-md-3 MCA_NEGOCIO_MIGRADO_SHOW d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='NUM_POLIZA_ORI'>Número de póliza original</label>
+                                                        <div class='input-group date' id='NUM_POLIZA_ORI_group'>
+                                                            <input type='text' id='NUM_POLIZA_ORI' name='NUM_POLIZA_ORI' class='form-control' size='20' maxlength='20' placeholder='' />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                                 <!-- IMP_MONTO_ORI Numeric -->
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
@@ -224,7 +234,7 @@
                                                 <!-- IMP_SLD_ACTUAL Numeric -->
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='IMP_SLD_ACTUAL'>Saldo actual</label>
+                                                        <label class='control-label' for='IMP_SLD_ACTUAL'>Saldo actual<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                         <input type='text' id='IMP_SLD_ACTUAL' name='IMP_SLD_ACTUAL' class='form-control text-right' size='11' maxlength='11' />
                                                     </div>
                                                 </div>
@@ -287,7 +297,7 @@
                                                 <!-- FEC_PRIM_FINAN DatePicker -->
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='FEC_PRIM_FINAN'>Fecha primer financiamiento</label>
+                                                        <label class='control-label' for='FEC_PRIM_FINAN'>Fecha Inicio Préstamo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                         <div class='input-group date' id='FEC_PRIM_FINAN_group'>
                                                             <input type='text' id='FEC_PRIM_FINAN' name='FEC_PRIM_FINAN' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
                                                             <span class='input-group-addon'>

@@ -57,6 +57,8 @@ app.CotizacionSaldoDeudor = (function () {
             else {
                 //app.core.LookupDependency($('select#moneda').val(), 'sARespcivil', 'SumasAseguradasRC', '', null, false, null, `cod_ramo=${setupData.cod_ramo}:cod_mon=`);
             }
+            app.ui.SetNumericValue('#IMP_SLD_ACTUAL', 0);
+            app.ui.SetNumericValue('#IMP_MONTO_ORI', 0);
         });
 
         $('#contrato').on('change', function () {
@@ -75,6 +77,9 @@ app.CotizacionSaldoDeudor = (function () {
                 },
                 `cod_ramo=${setupData.cod_ramo}:num_contrato=`);
         });
+
+        $('#IMP_GASTOS_EMISION').prop('disabled', true);
+        
     };
 
     function Dynamic_Event_Controls() {
@@ -112,6 +117,7 @@ app.CotizacionSaldoDeudor = (function () {
             NOM_NEGOCIO_MIGRADO: $('label[for=MCA_NEGOCIO_MIGRADO_' + app.ui.GetRadioStringValue('MCA_NEGOCIO_MIGRADO') + ']').html(),
             COD_CIA_ORI: app.ui.GetDropDownStringValue('#COD_CIA_ORI'),
             FEC_EMISION_ORI: app.ui.GetDateValue('#FEC_EMISION_ORI'),
+            NUM_POLIZA_ORI: $('#NUM_POLIZA_ORI').val(),
             IMP_MONTO_ORI: app.ui.GetNumericValue('#IMP_MONTO_ORI'),
             IMP_SLD_ACTUAL: app.ui.GetNumericValue('#IMP_SLD_ACTUAL'),
             NUM_PRESTAMO: $('#NUM_PRESTAMO').val(),
@@ -158,6 +164,7 @@ app.CotizacionSaldoDeudor = (function () {
         $('#COD_CIA_ORI').val(data.COD_CIA_ORI);
         app.ui.SetDropDownNumericValue('#COD_CIA_ORI', data.COD_CIA_ORI, true);
         app.ui.SetDateValue('#FEC_EMISION_ORI', data.FEC_EMISION_ORI);
+        $('#NUM_POLIZA_ORI').val(data.NUM_POLIZA_ORI);
         app.ui.SetNumericValue('#IMP_MONTO_ORI', data.IMP_MONTO_ORI);
         app.ui.SetNumericValue('#IMP_SLD_ACTUAL', data.IMP_SLD_ACTUAL);
         $('#NUM_PRESTAMO').val(data.NUM_PRESTAMO);
@@ -300,10 +307,12 @@ app.CotizacionSaldoDeudor = (function () {
         $("#cotizar").appendTo("#GenericToolBar");
         $("#limpiar").appendTo("#GenericToolBar");
 
-        $('#IMP_MONTO_ORI').change(function () {
-            let value = app.ui.GetNumericValue('#IMP_MONTO_ORI');
+        $('#IMP_SLD_ACTUAL').change(function () {
+            let value = app.ui.GetNumericValue('#IMP_SLD_ACTUAL');
             // 4001	A - MUERTE POR CUALQUIER CAUSA
             app.ui.SetNumericValue('#CapitalRow_0', value);
+            // 4002	INCAPACIDAD TOTAL Y PERMANENTE
+            app.ui.SetNumericValue('#CapitalRow_1', value);
             
         });
 
@@ -383,6 +392,10 @@ app.CotizacionSaldoDeudor = (function () {
                 app.ui.SetDateValue('#fec_vcto_poliza', app.ui.GetDateValue('#fec_efec_poliza'))
                 app.ui.SetDateValue('#fec_vcto_poliza', settingData.fec_vcto_poliza);
 
+                //if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
+                //    $('#fec_vcto_poliza').prop('disabled', true);
+                //}
+
                 //Fraccionamiento
                 if (settingData.cod_fracc_pago > 0) {
                     $('#cod_fracc_pago').val(settingData.cod_fracc_pago);
@@ -430,8 +443,10 @@ app.CotizacionSaldoDeudor = (function () {
                 COD_CIA_ORI: { required: false },
                 FEC_EMISION_ORI: { required: false },
                 IMP_MONTO_ORI: { required: true, Numeric: true },
+                IMP_SLD_ACTUAL: { required: true, Numeric: true },
                 NUM_PRESTAMO: { required: true },
                 TIP_NEGOCIO: { required: true },
+                FEC_PRIM_FINAN: { required: true },
                 FEC_VCTO_PRESTAMO: { required: true },
                 contrato: { required: true },
                 subcontrato: { required: true }
@@ -450,8 +465,10 @@ app.CotizacionSaldoDeudor = (function () {
                 COD_CIA_ORI: { required: 'Debe indicar la compañía original' },
                 FEC_EMISION_ORI: { required: 'Debe indicar la fecha de emisión original' },
                 IMP_MONTO_ORI: { required: 'Debe indicar el monto original del préstamo', Numeric: 'Debe indicar el monto original del préstamo' },
+                IMP_SLD_ACTUAL: { required: 'Debe indicar el monto del saldo actual', Numeric: 'Debe indicar el monto del saldo actual' },
                 NUM_PRESTAMO: { required: 'Debe indicar el número de préstamo' },
                 TIP_NEGOCIO: { required: 'Debe indicar el tipo de negocio' },
+                FEC_PRIM_FINAN: { required: 'Debe indicar el Inicio del Prestamo' },
                 FEC_VCTO_PRESTAMO: { required: "Debe indicar el Vencimiento del Prestamo" },
                 contrato: { required: 'Debe indicar el contrato' },
                 subcontrato: { required: 'Debe indicar el subcontrato' }
@@ -502,7 +519,7 @@ app.CotizacionSaldoDeudor = (function () {
                     visible: true
                 }, {
                     field: 'capital',
-                    title: 'Capital',
+                    title: 'Suma Asegurada',
                     titleTooltip: '',
                     sortable: false,
                     halign: 'center',
@@ -602,7 +619,7 @@ app.CotizacionSaldoDeudor = (function () {
                     visible: true
                 }, {
                     field: 'recardoporfraccionamiento',
-                    title: 'Recardo por fraccionamiento',
+                    title: 'Recargo por fraccionamiento',
                     titleTooltip: '',
                     sortable: false,
                     halign: 'center',
@@ -680,7 +697,7 @@ app.CotizacionSaldoDeudor = (function () {
                 if (!currentValue.requerida)
                     $('#CapitalRow_' + index).prop('disabled', !currentValue.seleccionado);
                 if (currentValue.capital == null || currentValue.capital == 0)
-                    if (index == 0)
+                    if (currentValue.codigo == 4001 || currentValue.codigo == 4002)
                         app.ui.SetNumericValue('#CapitalRow_' + index, app.ui.GetNumericValue('#IMP_MONTO_ORI'));
                     else {
                         app.ui.SetNumericValue('#CapitalRow_' + index, '');
@@ -722,12 +739,15 @@ app.CotizacionSaldoDeudor = (function () {
         $('[name=btSelectAll]').prop('disabled', true);
         Coberturas_ManejoGeneral2();
     };
-
+        
     function Quote() {
         app.core.Post(app.setting.apipath + 'v1/Quote/SaldoDeudorQuote',
             JSON.stringify(MapInputToObject()),
             function (data) {
                 quoteData = data;
+
+                app.ui.SetNumericValue('#NUM_IMC', data.NUM_IMC);
+
                 if (!app.ui.NotifyErrors(data.Mensaje, data.Errors, '#SaldoDeudorEdtForm')) {
                     $('#presupuesto').html(data.presupuesto);
                     $('#coberturasRow').removeClass('d-none');

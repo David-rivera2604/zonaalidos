@@ -68,6 +68,8 @@ namespace Architect.API.Tron.Business.Backoffice.Emision
             if (g2000510Instance.num_poliza_definitivo.IsNotEmpty())
             {
                 a2000030Instance = Architect.API.Tron.DataAccess.LeerPoliza.Poliza(g2000510Instance.cod_cia, g2000510Instance.num_poliza_definitivo, 0, 0, 0, currentConnection, true, "onlyresult");
+                // Se actualiza la información complementaria de terceros (dirección, correo y estado civil)
+                MapfreMas_Terceros_InfoComplementaria(s2000030Instance, currentConnection);
             }
             else
             {
@@ -76,8 +78,7 @@ namespace Architect.API.Tron.Business.Backoffice.Emision
 
             a2000030Instance.DatosDelProceso = g2000510Instance;
 
-            // Se actualiza la información complementaria de terceros (dirección, correo y estado civil)
-            MapfreMas_Terceros_InfoComplementaria(s2000030Instance, currentConnection);
+            
 
             currentConnection.Close();
 

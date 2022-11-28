@@ -36,6 +36,10 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// </summary>
         [DataMember(), JsonProperty()] public DateTime FEC_EMISION_ORI { get; set; }
         /// <summary>
+        /// Numero de poliza original.
+        /// </summary>
+        [DataMember(), JsonProperty()] public string NUM_POLIZA_ORI { get; set; }
+        /// <summary>
         /// Monto original del préstamo.
         /// </summary>
         [DataMember(), JsonProperty()] public double IMP_MONTO_ORI { get; set; }
