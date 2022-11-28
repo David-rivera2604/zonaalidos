@@ -156,7 +156,7 @@ app.PolicyEdit = (function () {
         var data = app.poliza.InputToObject();
         data.PrimaryInsured = app.asegurado.InputToObject();
         data.Questionary = [];
-      
+
         if (!$('#saludTabHeader').hasClass('d-none')) {
             data.Questionary.push(...app.cuestionario.InputToObject());
         }
@@ -198,20 +198,20 @@ app.PolicyEdit = (function () {
                 if (ctrolId !== '#applyChange')
                     window.history.replaceState({}, null, location.pathname + '?alias=' + productAlias + '&id=' + id);
 
-
-                $.each(data.Errors, function () {
+                for (var i = 0; i < data.Errors.length; ++i) {
+                    var err = data.Errors[i];
                     var options = {};
-                    if (this['Key'] !== '*') {
-                        options[this['Key']] = this['Message'];
-                        $('#' + this['Group'] + 'EdtFrm').validate().showErrors(options);
+                    if (err.Key !== '*') {
+                        options[err.Key] = err.Message;
+                        try {
+                            $('#' + err.Group + 'EdtFrm').validate().showErrors(options);
+                        } catch (e) { };
                     } else
-                        app.ui.ShowAlert(this['Group'] + 'Notify', 'alert-danger', this['Message']);
-                });
-
+                        app.ui.ShowAlert(err.Group + 'Notify', 'alert-danger', err.Message);
+                }
 
                 if (data.Status !== 1)
                     _WorkMode(data.Status, data.StatusDesc);
-
 
                 if (data.Errors.length > 0) {
                     var count = 0;

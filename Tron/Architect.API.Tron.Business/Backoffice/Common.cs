@@ -20,7 +20,7 @@ namespace Architect.API.Tron.Business.Backoffice
         {
             byte[] result = null;
 
-            string id = string.Format("{0}/prd/servlet/mapfre.srv.SVJspool?otxtAccion=11&id={1}&format=pdf",
+            string id = string.Format("{0}/servlet/mapfre.srv.SVJspool?otxtAccion=11&id={1}&format=pdf",
                                         ConfigurationManager.AppSettings["Mapfre.Tron.RutaImpresion"],
                                         Architect.API.Tron.DataAccess.Impresion.AvisoDeCobroDetalle(num_aviso));
             using (WebClient client = new WebClient())
@@ -42,7 +42,7 @@ namespace Architect.API.Tron.Business.Backoffice
         {
             byte[] result = null;
 
-            string id = string.Format("{0}/prd/servlet/mapfre.srv.SVJspool?otxtAccion=11&id={1}&format=pdf",
+            string id = string.Format("{0}/servlet/mapfre.srv.SVJspool?otxtAccion=11&id={1}&format=pdf",
                                         ConfigurationManager.AppSettings["Mapfre.Tron.RutaImpresion"],
                                         Architect.API.Tron.DataAccess.Impresion.AvisoDeCobro(1, num_aviso));
             using (WebClient client = new WebClient())
@@ -247,7 +247,7 @@ namespace Architect.API.Tron.Business.Backoffice
         {
             byte[] result = null;
 
-            string id = string.Format("{0}/prd/servlet/mapfre.srv.SVJspool?otxtAccion=11&id={1}&format=pdf",
+            string id = string.Format("{0}/servlet/mapfre.srv.SVJspool?otxtAccion=11&id={1}&format=pdf",
                                         ConfigurationManager.AppSettings["Mapfre.Tron.RutaImpresion"],
                                         Architect.API.Tron.DataAccess.Impresion.Recibo(1, num_recibo));
             using (WebClient client = new WebClient())
@@ -270,7 +270,7 @@ namespace Architect.API.Tron.Business.Backoffice
         {
             byte[] result = null;
 
-            string id = string.Format("{0}/prd/servlet/mapfre.srv.SVJspool?otxtAccion=11&id={1}&format=pdf",
+            string id = string.Format("{0}/servlet/mapfre.srv.SVJspool?otxtAccion=11&id={1}&format=pdf",
                                         ConfigurationManager.AppSettings["Mapfre.Tron.RutaImpresion"],
                                         Architect.API.Tron.DataAccess.Impresion.DepositoDePrima(1, num_recibo));
             using (WebClient client = new WebClient())
