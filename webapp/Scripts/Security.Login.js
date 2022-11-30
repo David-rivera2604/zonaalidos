@@ -55,6 +55,7 @@ app.login = (function () {
                                 localStorage.setItem('Expires', dt);
 
                                 localStorage.setItem('Token', data.Token);
+                                localStorage.setItem('EmployeeMode', employeeMode);
                                 $('#Send').prop("disabled", true);
                                 $('#Send').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Accediendo...');
                                 status = 'redirect';
@@ -333,6 +334,11 @@ app.login = (function () {
                 $('.wellcome-info').addClass('d-none');
             }
             $('#Tenant').val(_tenant);
+            if (!employeeMode && localStorage.getItem('EmployeeMode') == 'true') {
+                employeeMode = true;
+                localStorage.setItem('EmployeeMode', false);
+            }
+            localStorage.removeItem('EmployeeMode');
             if (employeeMode) {
                 $('#forgotlink').addClass('d-none');
                 
