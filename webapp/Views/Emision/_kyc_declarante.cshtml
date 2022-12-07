@@ -1,0 +1,522 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<!-- RoleMember -->
+<div class="form-row">
+							<div class='col-md-12'>
+								<div class="modal-footer">
+									<button id="PrototypeEdtFormSave" type="button" class="btn btn-primary" data-doing="Guardando cambios...">Guardar cambios</button>
+									<button id="PrototypeEdtFormCancel" type="button" class="btn btn-white" data-doing="Cancelando cambios...">Cancelar</button>
+								</div>
+							</div>
+						</div><div class="ibox">
+    <div class="ibox-title">
+        <h5><span id="PageTitle">Formulario anexo para representante declarantes</span><small class="m-l-sm"><span id="PageSubTitle"> Persona jurídica</span></small> </h5>
+        <!-- Opciones -->
+        <div class="ibox-tools">
+            <a class="fullscreen-link">
+                <i class="fa fa-expand"></i>
+            </a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <i class="fa fa-wrench"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                <li>
+                    <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar la información</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+<div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+            <div class="sk-rect4"></div>
+            <div class="sk-rect5"></div>
+        </div>
+        <div id="generalNotify">
+        </div>	
+        <!-- Edit Form -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div id="PrototypeEdt" class="animated fadeInRight">
+                    <form id='PrototypeEdtForm' class='form-horizontal' data-toggle='validator'>
+                        <fieldset>
+<!-- datosdelrepresentantelegal Zone -->
+<div class="form-row">
+<div class="col-lg-12">
+  <h4>Datos del representante legal</h4>
+  <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+  <div class="form-row">
+
+<!-- primerapellido Text -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='primerapellido'>Primer apellido</label>
+    <input type='text' id='primerapellido' name='primerapellido' class='form-control' size='40' maxlength='40'  />
+
+  </div>
+</div>
+<!-- segundoapellido Text -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='segundoapellido'>Segundo apellido</label>
+    <input type='text' id='segundoapellido' name='segundoapellido' class='form-control' size='40' maxlength='40'  />
+
+  </div>
+</div>
+<!-- nombrecompleto Text -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='nombrecompleto'>Nombre completo</label>
+    <input type='text' id='nombrecompleto' name='nombrecompleto' class='form-control' size='40' maxlength='40'  />
+
+  </div>
+</div>
+<!-- posiciondentrodelaempresa Text -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='posiciondentrodelaempresa'>Posición dentro de la empresa</label>
+    <input type='text' id='posiciondentrodelaempresa' name='posiciondentrodelaempresa' class='form-control' size='40' maxlength='40'  />
+
+  </div>
+</div>
+<!-- numerodeidentificacion Text -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='numerodeidentificacion'>Número de identificación</label>
+    <input type='text' id='numerodeidentificacion' name='numerodeidentificacion' class='form-control' size='40' maxlength='40'  />
+
+  </div>
+</div>
+<!-- tipodeidentificacion RadioButtonList -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='tipodeidentificacion'>Tipo de identificación</label>
+	<div style="padding-top: 6px;"><div class="custom-control custom-radio custom-control-inline">
+	<input type="radio" class="custom-control-input" id="tipodeidentificacion_1" name="tipodeidentificacion" value="1">
+	<label class="custom-control-label" for="tipodeidentificacion_1">Cédula</label>
+</div><div class="custom-control custom-radio custom-control-inline">
+	<input type="radio" class="custom-control-input" id="tipodeidentificacion_2" name="tipodeidentificacion" value="2">
+	<label class="custom-control-label" for="tipodeidentificacion_2">Pasaporte</label>
+</div><div class="custom-control custom-radio custom-control-inline">
+	<input type="radio" class="custom-control-input" id="tipodeidentificacion_3" name="tipodeidentificacion" value="3">
+	<label class="custom-control-label" for="tipodeidentificacion_3">Cédula Residencia</label>
+</div><div class="custom-control custom-radio custom-control-inline">
+	<input type="radio" class="custom-control-input" id="tipodeidentificacion_4" name="tipodeidentificacion" value="4">
+	<label class="custom-control-label" for="tipodeidentificacion_4">Otro</label>
+</div></div>
+  </div>
+</div>
+
+<!-- especifique Text -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='especifique'>Especifique</label>
+    <input type='text' id='especifique' name='especifique' class='form-control' size='40' maxlength='40'  />
+
+  </div>
+</div>
+<!-- fechadecaducidad DatePicker -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='fechadecaducidad'>Fecha de caducidad</label>
+    <div class='input-group date' id='fechadecaducidad_group'>
+      <input type='text' id='fechadecaducidad' name='fechadecaducidad' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+        <span class='input-group-addon'>
+          <span class='glyphicon glyphicon-calendar'></span>
+        </span>
+    </div>
+    <div id='fechadecaducidad_validate'></div>
+  </div>
+</div>
+
+<!-- nacionalidad DropDownList -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='nacionalidad'>Nacionalidad</label>
+    <select id='nacionalidad' name='nacionalidad' class='form-control'  >
+    </select>
+  </div>
+</div>
+
+<!-- fechadenacimiento DatePicker -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='fechadenacimiento'>Fecha de nacimiento</label>
+    <div class='input-group date' id='fechadenacimiento_group'>
+      <input type='text' id='fechadenacimiento' name='fechadenacimiento' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+        <span class='input-group-addon'>
+          <span class='glyphicon glyphicon-calendar'></span>
+        </span>
+    </div>
+    <div id='fechadenacimiento_validate'></div>
+  </div>
+</div>
+
+<!-- paisdenacimiento DropDownList -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='paisdenacimiento'>País de nacimiento</label>
+    <select id='paisdenacimiento' name='paisdenacimiento' class='form-control'  >
+    </select>
+  </div>
+</div>
+
+<!-- profesion Text -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='profesion'>Profesión</label>
+    <input type='text' id='profesion' name='profesion' class='form-control' size='40' maxlength='40'  />
+
+  </div>
+</div>
+<!-- estadocivil DropDownList -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='estadocivil'>Estado civil</label>
+    <select id='estadocivil' name='estadocivil' class='form-control'  >
+    </select>
+  </div>
+</div>
+
+<!-- sexo DropDownList -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='sexo'>Sexo</label>
+    <select id='sexo' name='sexo' class='form-control'  >
+    </select>
+  </div>
+</div>
+
+<!-- telefonoresidencia Text -->
+<div class='col-sm-4 col-md-4'>
+	<div class='form-group'>
+		<label class='control-label' for='telefonoresidencia'>Teléfono residencia</label>
+		<div class='input-group'>
+			<span class='input-group-addon'>
+				<span class='glyphicon glyphicon-earphone'></span>
+			</span>
+			<input id='telefonoresidencia' name='telefonoresidencia' type='text' class='form-control' size='9' maxlength='9' >
+		</div>
+		<div id='telefonoresidencia_validate'></div>
+	</div>
+</div>
+<!-- telefonocelular Text -->
+<div class='col-sm-4 col-md-4'>
+	<div class='form-group'>
+		<label class='control-label' for='telefonocelular'>Teléfono celular</label>
+		<div class='input-group'>
+			<span class='input-group-addon'>
+				<span class='glyphicon glyphicon-earphone'></span>
+			</span>
+			<input id='telefonocelular' name='telefonocelular' type='text' class='form-control' size='9' maxlength='9' >
+		</div>
+		<div id='telefonocelular_validate'></div>
+	</div>
+</div>
+<!-- fax Text -->
+<div class='col-sm-4 col-md-4'>
+	<div class='form-group'>
+		<label class='control-label' for='fax'>Fax</label>
+		<div class='input-group'>
+			<span class='input-group-addon'>
+				<span class='glyphicon glyphicon-earphone'></span>
+			</span>
+			<input id='fax' name='fax' type='text' class='form-control' size='9' maxlength='9' >
+		</div>
+		<div id='fax_validate'></div>
+	</div>
+</div>
+<!-- apartadoPostal Text -->
+<div class='col-sm-4 col-md-4'>
+  <div class='form-group'>
+    <label class='control-label' for='apartadoPostal'>Apartado Postal</label>
+    <input type='text' id='apartadoPostal' name='apartadoPostal' class='form-control' size='40' maxlength='40'  />
+
+  </div>
+</div>
+<!-- correoelectronico Text -->
+<div class='col-sm-4 col-md-4'>
+	<div class='form-group'>
+		<label class='control-label' for='correoelectronico'>Correo electrónico</label>
+		<div class='input-group'>
+			<span class='input-group-addon'>
+				<span class='glyphicon glyphicon-envelope'></span>
+			</span>
+			<input id='correoelectronico' name='correoelectronico' type='text' class='form-control' size='80' maxlength='80' >
+		</div>
+		<div id='correoelectronico_validate'></div>
+	</div>
+</div>
+  </div>
+</div>
+  </div>
+
+<!-- domiciliopermanente Zone -->
+<div class="form-row">
+<div class="col-lg-12">
+  <h4>Domicilio permanente</h4>
+  <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+  <div class="form-row">
+
+<!-- pais DropDownList -->
+<div class='col-sm-3 col-md-3'>
+  <div class='form-group'>
+    <label class='control-label' for='pais'>País</label>
+    <select id='pais' name='pais' class='form-control'  >
+    </select>
+  </div>
+</div>
+
+<!-- provincia DropDownList -->
+<div class='col-sm-3 col-md-3'>
+  <div class='form-group'>
+    <label class='control-label' for='provincia'>Provincia</label>
+    <select id='provincia' name='provincia' class='form-control'  >
+    </select>
+  </div>
+</div>
+
+<!-- canton DropDownList -->
+<div class='col-sm-3 col-md-3'>
+  <div class='form-group'>
+    <label class='control-label' for='canton'>Cantón</label>
+    <select id='canton' name='canton' class='form-control'  >
+    </select>
+  </div>
+</div>
+
+<!-- distrito DropDownList -->
+<div class='col-sm-3 col-md-3'>
+  <div class='form-group'>
+    <label class='control-label' for='distrito'>Distrito</label>
+    <select id='distrito' name='distrito' class='form-control'  >
+    </select>
+  </div>
+</div>
+
+<!-- direccionexacta Notes -->
+<div class='col-sm-12 col-md-12'>
+  <div class='form-group'>
+    <label class='control-label' for='direccionexacta'>Dirección exacta</label>
+	<textarea id='direccionexacta' name='direccionexacta' class='form-control' rows="2" ></textarea>
+  </div>
+</div>
+  </div>
+</div>
+  </div>
+
+<!-- origendelosfondos Zone -->
+<div class="form-row">
+<div class="col-lg-12">
+  <h4>Origen de los fondos</h4>
+  <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+  <div class="form-row">
+
+<!-- origendelosFondosDedondeprovienenyenqueforma Text -->
+<div class='col-sm-12 col-md-12'>
+  <div class='form-group'>
+    <label class='control-label' for='origendelosFondosDedondeprovienenyenqueforma'>Origen de los Fondos (¿De dónde provienen y en qué forma?)</label>
+    <input type='text' id='origendelosFondosDedondeprovienenyenqueforma' name='origendelosFondosDedondeprovienenyenqueforma' class='form-control' size='40' maxlength='40'  />
+
+  </div>
+</div>
+<!-- enquepaisdesarrollalamayoriadesusactividadeseconomicas Text -->
+<div class='col-sm-12 col-md-12'>
+  <div class='form-group'>
+    <label class='control-label' for='enquepaisdesarrollalamayoriadesusactividadeseconomicas'>¿En qué país desarrolla la mayoría de sus actividades económicas?</label>
+    <input type='text' id='enquepaisdesarrollalamayoriadesusactividadeseconomicas' name='enquepaisdesarrollalamayoriadesusactividadeseconomicas' class='form-control' size='40' maxlength='40'  />
+
+  </div>
+</div>
+<!-- ingresomensualestimado Text -->
+<div class='col-sm-12 col-md-12'>
+  <div class='form-group'>
+    <label class='control-label' for='ingresomensualestimado'>Ingreso mensual estimado</label>
+    <input type='text' id='ingresomensualestimado' name='ingresomensualestimado' class='form-control' size='40' maxlength='40'  />
+
+  </div>
+</div>
+<!-- losfondospormovilizarsonpropiosodeterceros RadioButtonList -->
+<div class='col-sm-12 col-md-12'>
+  <div class='form-group'>
+    <label class='control-label' for='losfondospormovilizarsonpropiosodeterceros'>Los fondos por movilizar son propios o de terceros?</label>
+	<div style="padding-top: 6px;"><div class="custom-control custom-radio custom-control-inline">
+	<input type="radio" class="custom-control-input" id="losfondospormovilizarsonpropiosodeterceros_1" name="losfondospormovilizarsonpropiosodeterceros" value="1">
+	<label class="custom-control-label" for="losfondospormovilizarsonpropiosodeterceros_1">Propios</label>
+</div><div class="custom-control custom-radio custom-control-inline">
+	<input type="radio" class="custom-control-input" id="losfondospormovilizarsonpropiosodeterceros_2" name="losfondospormovilizarsonpropiosodeterceros" value="2">
+	<label class="custom-control-label" for="losfondospormovilizarsonpropiosodeterceros_2">Terceros</label>
+</div></div>
+  </div>
+</div>
+
+<!-- sedesempenaentrelasactividadescitadasenelArticulo15delaLey8204manejodefondosdetercerosfisicosojuridicos RadioButtonList -->
+<div class='col-sm-12 col-md-12'>
+  <div class='form-group'>
+    <label class='control-label' for='sedesempenaentrelasactividadescitadasenelArticulo15delaLey8204manejodefondosdetercerosfisicosojuridicos'>¿Se desempeña entre las actividades citadas en el Artículo 15 de la Ley 8204 (manejo de fondos de terceros físicos o jurídicos)</label>
+	<div style="padding-top: 6px;"><div class="custom-control custom-radio custom-control-inline">
+	<input type="radio" class="custom-control-input" id="sedesempenaentrelasactividadescitadasenelArticulo15delaLey8204manejodefondosdetercerosfisicosojuridicos_1" name="sedesempenaentrelasactividadescitadasenelArticulo15delaLey8204manejodefondosdetercerosfisicosojuridicos" value="1">
+	<label class="custom-control-label" for="sedesempenaentrelasactividadescitadasenelArticulo15delaLey8204manejodefondosdetercerosfisicosojuridicos_1">Si</label>
+</div><div class="custom-control custom-radio custom-control-inline">
+	<input type="radio" class="custom-control-input" id="sedesempenaentrelasactividadescitadasenelArticulo15delaLey8204manejodefondosdetercerosfisicosojuridicos_2" name="sedesempenaentrelasactividadescitadasenelArticulo15delaLey8204manejodefondosdetercerosfisicosojuridicos" value="2">
+	<label class="custom-control-label" for="sedesempenaentrelasactividadescitadasenelArticulo15delaLey8204manejodefondosdetercerosfisicosojuridicos_2">No</label>
+</div></div>
+  </div>
+</div>
+
+  </div>
+</div>
+  </div>
+
+<!-- tiposdeactivos Zone -->
+<div class="form-row">
+<div class="col-lg-12">
+  <h4>Tipos de activos</h4>
+  <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+  <div class="form-row">
+
+<!-- lamayoriadesusactivoscorrespondena RadioButtonList -->
+<div class='col-sm-12 col-md-12'>
+  <div class='form-group'>
+    <label class='control-label' for='lamayoriadesusactivoscorrespondena'>La mayoría de sus activos corresponden a</label>
+	<div style="padding-top: 6px;"><div class="custom-control custom-radio custom-control-inline">
+	<input type="radio" class="custom-control-input" id="lamayoriadesusactivoscorrespondena_1" name="lamayoriadesusactivoscorrespondena" value="1">
+	<label class="custom-control-label" for="lamayoriadesusactivoscorrespondena_1">Activos fijos muebles e inmuebles dentro del país</label>
+</div><div class="custom-control custom-radio custom-control-inline">
+	<input type="radio" class="custom-control-input" id="lamayoriadesusactivoscorrespondena_2" name="lamayoriadesusactivoscorrespondena" value="2">
+	<label class="custom-control-label" for="lamayoriadesusactivoscorrespondena_2">Activos fijos muebles e inmuebles fuera del país</label>
+</div><div class="custom-control custom-radio custom-control-inline">
+	<input type="radio" class="custom-control-input" id="lamayoriadesusactivoscorrespondena_3" name="lamayoriadesusactivoscorrespondena" value="3">
+	<label class="custom-control-label" for="lamayoriadesusactivoscorrespondena_3">Activos monetarios y/o financieros dentro del país</label>
+</div><div class="custom-control custom-radio custom-control-inline">
+	<input type="radio" class="custom-control-input" id="lamayoriadesusactivoscorrespondena_4" name="lamayoriadesusactivoscorrespondena" value="4">
+	<label class="custom-control-label" for="lamayoriadesusactivoscorrespondena_4">Activos monetarios y/o financieros fuera del país</label>
+</div></div>
+  </div>
+</div>
+
+  </div>
+</div>
+  </div>
+
+<!-- personasexpuestaspoliticamentePEPs Zone -->
+<div class="form-row">
+<div class="col-lg-12">
+  <h4>Personas expuestas políticamente (PEPs)</h4>
+  <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+  <div class="form-row">
+
+<!-- algunSocioDirectoroRepresentantedelaempresadesempenaohadesempenadoalguncargopolitico RadioButtonList -->
+<div class='col-sm-12 col-md-12'>
+  <div class='form-group'>
+    <label class='control-label' for='algunSocioDirectoroRepresentantedelaempresadesempenaohadesempenadoalguncargopolitico'>¿Algún Socio, Director o Representante de la empresa desempeña o ha desempeñado algún cargo político?</label>
+	<div style="padding-top: 6px;"><div class="custom-control custom-radio custom-control-inline">
+	<input type="radio" class="custom-control-input" id="algunSocioDirectoroRepresentantedelaempresadesempenaohadesempenadoalguncargopolitico_1" name="algunSocioDirectoroRepresentantedelaempresadesempenaohadesempenadoalguncargopolitico" value="1">
+	<label class="custom-control-label" for="algunSocioDirectoroRepresentantedelaempresadesempenaohadesempenadoalguncargopolitico_1">Si</label>
+</div><div class="custom-control custom-radio custom-control-inline">
+	<input type="radio" class="custom-control-input" id="algunSocioDirectoroRepresentantedelaempresadesempenaohadesempenadoalguncargopolitico_2" name="algunSocioDirectoroRepresentantedelaempresadesempenaohadesempenadoalguncargopolitico" value="2">
+	<label class="custom-control-label" for="algunSocioDirectoroRepresentantedelaempresadesempenaohadesempenadoalguncargopolitico_2">No</label>
+</div></div>
+  </div>
+</div>
+
+<!-- encasoafirmativoindiqueelperiododuranteelcualdesempenodichasfunciones Text -->
+<div class='col-sm-12 col-md-12'>
+  <div class='form-group'>
+    <label class='control-label' for='encasoafirmativoindiqueelperiododuranteelcualdesempenodichasfunciones'>En caso afirmativo, indique el período durante el cual desempeñó dichas funciones</label>
+    <input type='text' id='encasoafirmativoindiqueelperiododuranteelcualdesempenodichasfunciones' name='encasoafirmativoindiqueelperiododuranteelcualdesempenodichasfunciones' class='form-control' size='40' maxlength='40'  />
+
+  </div>
+</div>
+<!-- algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEP RadioButtonList -->
+<div class='col-sm-12 col-md-12'>
+  <div class='form-group'>
+    <label class='control-label' for='algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEP'>¿Algún Socio, Director o Representante de la empresa tiene relación directa (consanguinidad) o indirecta (afinidad) con alguna persona expuesta políticamente (PEP)?</label>
+	<div style="padding-top: 6px;"><div class="custom-control custom-radio custom-control-inline">
+	<input type="radio" class="custom-control-input" id="algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEP_1" name="algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEP" value="1">
+	<label class="custom-control-label" for="algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEP_1">Si</label>
+</div><div class="custom-control custom-radio custom-control-inline">
+	<input type="radio" class="custom-control-input" id="algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEP_2" name="algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEP" value="2">
+	<label class="custom-control-label" for="algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEP_2">No</label>
+</div></div>
+  </div>
+</div>
+
+<!-- detalleeltipoderelacion Text -->
+<div class='col-sm-12 col-md-12'>
+  <div class='form-group'>
+    <label class='control-label' for='detalleeltipoderelacion'>Detalle el tipo de relación</label>
+    <input type='text' id='detalleeltipoderelacion' name='detalleeltipoderelacion' class='form-control' size='40' maxlength='40'  />
+
+  </div>
+</div>
+  </div>
+</div>
+  </div>
+
+<!-- correspondencia Zone -->
+<div class="form-row">
+<div class="col-lg-12">
+  <h4>Correspondencia</h4>
+  <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+  <div class="form-row">
+
+<!-- favorindicarelmedioporelcualdeseaqueseleenvieinformacion RadioButtonList -->
+<div class='col-sm-6 col-md-6'>
+  <div class='form-group'>
+    <label class='control-label' for='favorindicarelmedioporelcualdeseaqueseleenvieinformacion'>Favor indicar el medio por el cual desea que se le envíe información</label>
+	<div style="padding-top: 6px;"><div class="custom-control custom-radio custom-control-inline">
+	<input type="radio" class="custom-control-input" id="favorindicarelmedioporelcualdeseaqueseleenvieinformacion_1" name="favorindicarelmedioporelcualdeseaqueseleenvieinformacion" value="1">
+	<label class="custom-control-label" for="favorindicarelmedioporelcualdeseaqueseleenvieinformacion_1">Apartado Postal</label>
+</div><div class="custom-control custom-radio custom-control-inline">
+	<input type="radio" class="custom-control-input" id="favorindicarelmedioporelcualdeseaqueseleenvieinformacion_2" name="favorindicarelmedioporelcualdeseaqueseleenvieinformacion" value="2">
+	<label class="custom-control-label" for="favorindicarelmedioporelcualdeseaqueseleenvieinformacion_2">Dirección física</label>
+</div><div class="custom-control custom-radio custom-control-inline">
+	<input type="radio" class="custom-control-input" id="favorindicarelmedioporelcualdeseaqueseleenvieinformacion_3" name="favorindicarelmedioporelcualdeseaqueseleenvieinformacion" value="3">
+	<label class="custom-control-label" for="favorindicarelmedioporelcualdeseaqueseleenvieinformacion_3">Fax</label>
+</div><div class="custom-control custom-radio custom-control-inline">
+	<input type="radio" class="custom-control-input" id="favorindicarelmedioporelcualdeseaqueseleenvieinformacion_4" name="favorindicarelmedioporelcualdeseaqueseleenvieinformacion" value="4">
+	<label class="custom-control-label" for="favorindicarelmedioporelcualdeseaqueseleenvieinformacion_4">Correo electrónico</label>
+</div></div>
+  </div>
+</div>
+
+<!-- correspondenciaEspecifique Text -->
+<div class='col-sm-6 col-md-6'>
+  <div class='form-group'>
+    <label class='control-label' for='correspondenciaEspecifique'>Especifique</label>
+    <input type='text' id='correspondenciaEspecifique' name='correspondenciaEspecifique' class='form-control' size='40' maxlength='40'  />
+
+  </div>
+</div>
+  </div>
+</div>
+  </div>
+
+
+@ibox-content-footer@
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+		<!-- Edit Form End -->
+    </div>	
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/kyc.declarante.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.kycdeclarante.Init();
+        });
+    </script>
+}

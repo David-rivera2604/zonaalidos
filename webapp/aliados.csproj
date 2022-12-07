@@ -1211,6 +1211,9 @@
     <Content Include="Scripts\Clientes.Index.js" />
     <Content Include="Scripts\Cotizacion.Coberturas.js" />
     <Content Include="Scripts\Cotizacion.SaldoDeudor.enfermedadesexcluidas.js" />
+    <Content Include="Scripts\Emision.kyc.declarante.js" />
+    <Content Include="Scripts\Emision.kyc.juridico.js" />
+    <Content Include="Scripts\Emision.kyc.persona.js" />
     <Content Include="Scripts\Emision.SaldoDeudor.js" />
     <Content Include="Scripts\Cotizacion.SaldoDeudor.js" />
     <Content Include="Scripts\Cotizacion.Viajero.js" />
@@ -1664,6 +1667,9 @@
     <Content Include="Views\General\PaymentSettings.cshtml" />
     <Content Include="Reports\coopenae_saldo_deudor.repx" />
     <Content Include="Reports\coopenae_saldo_deudor_mayor_que_64.repx" />
+    <Content Include="Views\Emision\_kyc_declarante.cshtml" />
+    <Content Include="Views\Emision\_kyc_juridico.cshtml" />
+    <Content Include="Views\Emision\_kyc_persona.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
