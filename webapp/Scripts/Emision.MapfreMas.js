@@ -7,6 +7,7 @@
 app.EmisionMapfreMas = (function () {
 
     let fec_vcto_poliza_grupo = null;
+    let formularioRow = null;
     var workMode = '';
     var setupData = null;
     var showCalculate = false;
@@ -260,7 +261,7 @@ app.EmisionMapfreMas = (function () {
     }
 
     function MapObjectToInput_First(data) {
-        
+
         //app.ui.SetNumericValue('#edad', data.edad);
         //$('#mca_sexo').val(data.mca_sexo);
         $('#Fuente_Tomador').val(data.Fuente_Tomador);
@@ -1766,6 +1767,137 @@ app.EmisionMapfreMas = (function () {
 
     }
 
+    function formularios_table_setup() {
+
+        let data = [{ formularioId: 1, name: 'Conozca a su cliente (KYC)', when: null, data: null }];
+        $('#formulariosTbl').bootstrapTable({
+            uniqueId: 'formularioId',
+            data: data,
+            classes: 'table table-bordered table-hover table-index table-in-form',
+            pagination: false,
+            smartDisplay: true,
+            detailView: false,
+            detailFormatter: 'app.ui.GenericDetailFormatter',
+            columns: [
+                {
+                    field: 'status',
+                    title: 'Estado',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    formatter: function (value, row, index, field) {
+
+                        if (row.data === null) {
+                            return '<span class="label label-danger">Pendiente</span>';
+                        }
+                        else {
+                            return '<span class="label label-success">Listo</span>';
+                        }
+
+                    },
+                    visible: true,
+                    width: 10,
+                    widthUnit: '%'
+                }, {
+                    field: 'name',
+                    title: 'Tipo de formulario',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true,
+                    width: 60,
+                    widthUnit: '%'
+                }, {
+                    field: 'when',
+                    title: 'Cuando',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    formatter: 'app.ui.DateAndTimeFormatter',
+                    visible: true,
+                    width: 20,
+                    widthUnit: '%'
+                }, {
+                    field: 'Actions',
+                    title: 'Acciones',
+                    class: 'd-none d-sm-table-cell',
+                    titleTooltip: 'Acciones disponibles para un formulario',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    width: 10,
+                    widthUnit: "%",
+                    visible: true,
+                    events: 'formulariosTbl_Events',
+                    formatter: function (value, row, index, field) {
+                        var html = [];
+                        html.push('<button type="button" class="btn btn-sm btn-white edit" title="Al hacer click permite agregar o editar la información de un formulario"> <i class="fa fa-pencil"></i> </button>');
+                        html.push('<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar la información de un formulario"> <i class="fa fa-recycle"></i> </button>');
+                        return html.join('');
+                    },
+                    cellStyle: function (value, row, index) {
+                        return {
+                            css: {
+                                'white-space': 'nowrap',
+                                'vertical-align': 'top'
+                            }
+                        }
+                    }
+                }]
+        });
+
+    }
+
+    function formularios_table_row_edit(row) {
+        formularioRow = row;
+        if ($("#kycpersonaModal").length == 1) {
+            let md = $('#kycpersonaModal').modal({ show: false });
+            md.modal('show');
+            app.kycpersona.SetDate(formularioRow.Data);
+        } else {
+
+            $('.ibox-content').toggleClass('sk-loading');
+
+            app.core.GetView(app.setting.viewpath + 'Emision/_kyc_persona')
+                .done(function (data, textStatus, jqXHR) {
+                    $("#dynamic").append(data);
+
+                    let md = $('#kycpersonaModal').modal({ show: false });
+ 
+                    md.modal('show');
+
+                    app.core.LoadScriptFile("Emision.kyc.persona.js")
+                        .then(d => {
+                            app.kycpersona.Init();
+                            app.kycpersona.AcceptCallBack(app.EmisionMapfreMas.Accept);
+                            app.kycpersona.SetDate(formularioRow.Data);
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        });
+                }).always(function () {
+                    $('.ibox-content').toggleClass('sk-loading');
+                });
+        }
+    }
+
+    function formularios_table_row_delete(row) {
+        row.when = null;
+        row.data = null;
+        $('#formulariosTbl').bootstrapTable('updateByUniqueId', { id: row.formularioId, row: row });
+    }
+
+    function formularios_table_kycSetData(data) {
+        formularioRow.data = data;
+        formularioRow.when = new Date();
+        $('#formulariosTbl').bootstrapTable('updateByUniqueId', { id: formularioRow.formularioId, row: formularioRow });
+        $('#kycpersonaModal').modal('hide');
+    };
+
     return {
         Data: function () {
             return setupData;
@@ -1787,6 +1919,8 @@ app.EmisionMapfreMas = (function () {
             documentosrequeridos_table_Validations();
             documentosrequeridos_controls_Events();
 
+            formularios_table_setup();
+
             Setup();
         },
         tercerosEditRow: function (row) {
@@ -1800,6 +1934,15 @@ app.EmisionMapfreMas = (function () {
         },
         documentosrequeridosDeleteRow: function (row) {
             documentosrequeridos_table_row_delete(row);
+        },
+        formulariosEditRow: function (row) {
+            formularios_table_row_edit(row);
+        },
+        formulariosDeleteRow: function (row) {
+            formularios_table_row_delete(row);
+        },
+        Accept: function (data) {
+            formularios_table_kycSetData(data);
         }
     };
 })();
@@ -1821,6 +1964,16 @@ window.documentosrequeridosTbl_Events = {
     },
     'click .edit': function (e, value, row, index) {
         app.EmisionMapfreMas.documentosrequeridosEditRow(row);
+        e.stopPropagation();
+    }
+};
+window.formulariosTbl_Events = {
+    'click .delete': function (e, value, row, index) {
+        toastr.warning("Si está seguro de querer limpiar la información del formulario  '" + row.name + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionMapfreMas.formulariosDeleteRow(row); } });
+        e.stopPropagation();
+    },
+    'click .edit': function (e, value, row, index) {
+        app.EmisionMapfreMas.formulariosEditRow(row);
         e.stopPropagation();
     }
 };

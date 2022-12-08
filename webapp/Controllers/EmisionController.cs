@@ -33,5 +33,11 @@ namespace aliados.Controllers
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
+
+        public ActionResult _kyc_persona()
+        {
+            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
+            return View();
+        }
     }
 }
