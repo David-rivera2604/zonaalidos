@@ -273,33 +273,10 @@ app.kycpersona = (function () {
             event.preventDefault();
             if (app.ui.IsValid('#kycpersonaPerEdtForm', false)) {
                 app.ui.ButtonDoing('#kycpersonaPerEdtFormSave');
-
-                //        console.log(MapInputToObject())
-
-                //        app.core.Post(app.setting.apipath + 'v1/kyc/persona',
-                //            JSON.stringify(MapInputToObject()),
-                //            function (data) {
-                //                if (data.Mensaje != null) {
-                //                    app.ui.ShowAlert('quoteNotify', 'alert-danger', data.Mensaje);
-                //                }
-                //                else {
-
-                //                }
-
-                //            }).always(function () {
-                //                app.ui.ButtonDone('#kycpersonaPerEdtFormSave');
-                //            });
-
                 acceptCallback(MapInputToObject());
                 app.ui.ButtonDone('#kycpersonaPerEdtFormSave');
             }
         });
-
-        //$('#kycpersonaPerEdtFormCancel').click(function () {
-        //    app.ui.ButtonDoing('#kycpersonaPerEdtFormCancel');
-        //    setTimeout(() => { app.ui.ButtonDone('#kycpersonaPerEdtFormCancel'); }, 3000);
-        //    event.preventDefault();
-        //});
 
     };
 
