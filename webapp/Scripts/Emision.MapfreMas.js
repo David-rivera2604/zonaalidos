@@ -1769,7 +1769,8 @@ app.EmisionMapfreMas = (function () {
 
     function formularios_table_setup() {
 
-        let data = [{ formularioId: 1, name: 'Conozca a su cliente (KYC)', when: null, data: null }];
+        let data = [{ formularioId: 1, name: 'Conozca a su cliente (KYC)', when: null, data: null },
+        { formularioId: 2, name: 'Conozca a su cliente 2', when: null, data: null }];
         $('#formulariosTbl').bootstrapTable({
             uniqueId: 'formularioId',
             data: data,
@@ -1854,27 +1855,27 @@ app.EmisionMapfreMas = (function () {
 
     function formularios_table_row_edit(row) {
         formularioRow = row;
-        if ($("#kycpersonaModal").length == 1) {
-            let md = $('#kycpersonaModal').modal({ show: false });
+        if ($("#kycjuridicoModal").length == 1) {
+            let md = $('#kycjuridicoModal').modal({ show: false });
             md.modal('show');
-            app.kycpersona.SetDate(formularioRow.Data);
+            app.kycjuridico.SetData(formularioRow.data);
         } else {
 
             $('.ibox-content').toggleClass('sk-loading');
 
-            app.core.GetView(app.setting.viewpath + 'Emision/_kyc_persona')
+            app.core.GetView(app.setting.viewpath + 'Emision/_kyc_juridico')
                 .done(function (data, textStatus, jqXHR) {
                     $("#dynamic").append(data);
 
-                    let md = $('#kycpersonaModal').modal({ show: false });
- 
+                    let md = $('#kycjuridicoModal').modal({ show: false });
+
                     md.modal('show');
 
-                    app.core.LoadScriptFile("Emision.kyc.persona.js")
+                    app.core.LoadScriptFile("Emision.kyc.juridico.js")
                         .then(d => {
-                            app.kycpersona.Init();
-                            app.kycpersona.AcceptCallBack(app.EmisionMapfreMas.Accept);
-                            app.kycpersona.SetDate(formularioRow.Data);
+                            app.kycjuridico.Init();
+                            app.kycjuridico.AcceptCallBack(app.EmisionMapfreMas.Accept);
+                            app.kycjuridico.SetData(formularioRow.data);
                         })
                         .catch(err => {
                             console.error(err);
@@ -1895,7 +1896,7 @@ app.EmisionMapfreMas = (function () {
         formularioRow.data = data;
         formularioRow.when = new Date();
         $('#formulariosTbl').bootstrapTable('updateByUniqueId', { id: formularioRow.formularioId, row: formularioRow });
-        $('#kycpersonaModal').modal('hide');
+        $('#kycjuridicoModal').modal('hide');
     };
 
     return {

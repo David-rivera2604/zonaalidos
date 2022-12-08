@@ -6,67 +6,12 @@ app.kycpersona = (function () {
     let changedCallback = null;
     let acceptCallback = null;
 
-    function Setup(data) {
+    function Setup() {
 
 
-        app.core.Lookups(['Pais.nacionalidadPer', 'Pais.paisdenacimientoPer', 'CivilStatus.estadocivilPer', 'Gender.sexoPer', 'Paises.cod_paisPer', 'Provincias.cod_estadoPer', 'Cantones.cod_provPer', 'Distritos.cod_localidadPer',],
+        app.core.Lookups(['Pais.nacionalidadPer', 'Pais.paisdenacimientoPer', 'CivilStatus.estadocivilPer', 'Gender.sexoPer', 'Paises.cod_paisPer', 'Provincias.cod_estadoPer', 'Cantones.cod_provPer', 'Distritos.cod_localidadPer', 'Paises.domiciliocomercialCod_paisPer', 'Provincias.domiciliocomercialCod_estadoPer', 'Cantones.domiciliocomercialCod_provPer', 'Distritos.domiciliocomercialCod_localidadPer',],
             function () {
             }, `cod_pais=CRI`);
-    };
-
-    function ReadOnly() {
-        $('#primerapellidoPer').replaceWith('<div>' + $('#primerapellidoPer').val() + '</div>');
-        $('#segundoapellidoPer').replaceWith('<div>' + $('#segundoapellidoPer').val() + '</div>');
-        $('#nombrePer').replaceWith('<div>' + $('#nombrePer').val() + '</div>');
-        $('#codigodeclientePer').replaceWith('<div>' + $('#codigodeclientePer').val() + '</div>');
-        $('#numerodeidentificacionPer').replaceWith('<div>' + $('#numerodeidentificacionPer').val() + '</div>');
-        $('#tipodeidentificacionPer').replaceWith('<div>' + $('#tipodeidentificacionPer').val() + '</div>');
-        $('#fechadecaducidadPer_group').replaceWith('<div>' + $('#fechadecaducidadPer').val() + '</div>');
-        $('#nacionalidadPer').replaceWith('<div>' + $('#nacionalidadPer option:selected').text() + '</div>');
-        $('#fechadenacimientoPer_group').replaceWith('<div>' + $('#fechadenacimientoPer').val() + '</div>');
-        $('#paisdenacimientoPer').replaceWith('<div>' + $('#paisdenacimientoPer option:selected').text() + '</div>');
-        $('#profesionPer').replaceWith('<div>' + $('#profesionPer option:selected').text() + '</div>');
-        $('#estadocivilPer').replaceWith('<div>' + $('#estadocivilPer option:selected').text() + '</div>');
-        $('#sexoPer').replaceWith('<div>' + $('#sexoPer option:selected').text() + '</div>');
-        $('#telefonoresidenciaPer').replaceWith('<div>' + $('#telefonoresidenciaPer').val() + '</div>');
-        $('#telefonocelularPer').replaceWith('<div>' + $('#telefonocelularPer').val() + '</div>');
-        $('#faxPer').replaceWith('<div>' + $('#faxPer').val() + '</div>');
-        $('#apartadoPostalPer').replaceWith('<div>' + $('#apartadoPostalPer').val() + '</div>');
-        $('#correoelectronicoPer').replaceWith('<div>' + $('#correoelectronicoPer').val() + '</div>');
-        $('#cod_paisPer').replaceWith('<div>' + $('#cod_paisPer option:selected').text() + '</div>');
-        $('#cod_estadoPer').replaceWith('<div>' + $('#cod_estadoPer option:selected').text() + '</div>');
-        $('#cod_provPer').replaceWith('<div>' + $('#cod_provPer option:selected').text() + '</div>');
-        $('#cod_localidadPer').replaceWith('<div>' + $('#cod_localidadPer option:selected').text() + '</div>');
-        $('#direccionexactaPer').replaceWith('<div>' + $('#direccionexactaPer').val() + '</div>');
-        $('label[for=OcupacionPer').next().replaceWith('<div>' + $('label[for=OcupacionPer_' + app.ui.GetRadioNumericValue('OcupacionPer') + '').html() + '</div>');
-        $('#nombreempresaPer').replaceWith('<div>' + $('#nombreempresaPer').val() + '</div>');
-        $('#actividadempresaPer').replaceWith('<div>' + $('#actividadempresaPer').val() + '</div>');
-        $('#cargoempresaPer').replaceWith('<div>' + $('#cargoempresaPer').val() + '</div>');
-        $('#telefonoempresaPer').replaceWith('<div>' + $('#telefonoempresaPer').val() + '</div>');
-        $('#faxempresaPer').replaceWith('<div>' + $('#faxempresaPer').val() + '</div>');
-        $('#paisPer').replaceWith('<div>' + $('#paisPer option:selected').text() + '</div>');
-        $('#provinciaPer').replaceWith('<div>' + $('#provinciaPer option:selected').text() + '</div>');
-        $('#cantonPer').replaceWith('<div>' + $('#cantonPer option:selected').text() + '</div>');
-        $('#distritoPer').replaceWith('<div>' + $('#distritoPer option:selected').text() + '</div>');
-        $('#domiciliocomercialDireccionexactaPer').replaceWith('<div>' + $('#domiciliocomercialDireccionexactaPer').val() + '</div>');
-        $('#correspondenciaOrigendelosfondosPer').replaceWith('<div>' + $('#correspondenciaOrigendelosfondosPer').val() + '</div>');
-        $('#paismayoractividadPer').replaceWith('<div>' + $('#paismayoractividadPer').val() + '</div>');
-        $('#ingresomensualestimadoPer').replaceWith('<div>' + $('#ingresomensualestimadoPer').val() + '</div>');
-        $('label[for=fondospormivilizarPer').next().replaceWith('<div>' + $('label[for=fondospormivilizarPer_' + app.ui.GetRadioNumericValue('fondospormivilizarPer') + '').html() + '</div>');
-        $('label[for=actividadesart15Per').next().replaceWith('<div>' + $('label[for=actividadesart15Per_' + app.ui.GetRadioNumericValue('actividadesart15Per') + '').html() + '</div>');
-        $('label[for=activoscorrespondenPer').next().replaceWith('<div>' + $('label[for=activoscorrespondenPer_' + app.ui.GetRadioNumericValue('activoscorrespondenPer') + '').html() + '</div>');
-        $('label[for=pepcargoPer').next().replaceWith('<div>' + $('label[for=pepcargoPer_' + app.ui.GetRadioNumericValue('pepcargoPer') + '').html() + '</div>');
-        $('#pepduracionPer').replaceWith('<div>' + $('#pepduracionPer').val() + '</div>');
-        $('label[for=peprelacionPer').next().replaceWith('<div>' + $('label[for=peprelacionPer_' + app.ui.GetRadioNumericValue('peprelacionPer') + '').html() + '</div>');
-        $('#peptiporelacionPer').replaceWith('<div>' + $('#peptiporelacionPer').val() + '</div>');
-        $('#propositorelacioncomercialPer').replaceWith('<div>' + $('#propositorelacioncomercialPer').val() + '</div>');
-        $('#montoprimaPer').replaceWith('<div>' + $('#montoprimaPer').val() + '</div>');
-        $('#tipodeprimaPer').replaceWith('<div>' + $('#tipodeprimaPer').val() + '</div>');
-        $('label[for=periodicidadPer').next().replaceWith('<div>' + $('label[for=periodicidadPer_' + app.ui.GetRadioNumericValue('periodicidadPer') + '').html() + '</div>');
-        $('#montoValoraseguradoPer').replaceWith('<div>' + $('#montoValoraseguradoPer').val() + '</div>');
-        $('label[for=formadepagodelapolizaPer').next().replaceWith('<div>' + $('label[for=formadepagodelapolizaPer_' + app.ui.GetRadioNumericValue('formadepagodelapolizaPer') + '').html() + '</div>');
-        $('label[for=mediodeenvioPer').next().replaceWith('<div>' + $('label[for=mediodeenvioPer_' + app.ui.GetRadioNumericValue('mediodeenvioPer') + '').html() + '</div>');
-        $('#especifiquePer').replaceWith('<div>' + $('#especifiquePer').val() + '</div>');
 
     };
 
@@ -101,10 +46,10 @@ app.kycpersona = (function () {
             cargoempresaPer: $('#cargoempresaPer').val(),
             telefonoempresaPer: $('#telefonoempresaPer').val(),
             faxempresaPer: $('#faxempresaPer').val(),
-            paisPer: app.ui.GetDropDownNumericValue('#paisPer'),
-            provinciaPer: app.ui.GetDropDownNumericValue('#provinciaPer'),
-            cantonPer: app.ui.GetDropDownNumericValue('#cantonPer'),
-            distritoPer: app.ui.GetDropDownNumericValue('#distritoPer'),
+            domiciliocomercialCod_paisPer: app.ui.GetDropDownNumericValue('#domiciliocomercialCod_paisPer'),
+            domiciliocomercialCod_estadoPer: app.ui.GetDropDownNumericValue('#domiciliocomercialCod_estadoPer'),
+            domiciliocomercialCod_provPer: app.ui.GetDropDownNumericValue('#domiciliocomercialCod_provPer'),
+            domiciliocomercialCod_localidadPer: app.ui.GetDropDownNumericValue('#domiciliocomercialCod_localidadPer'),
             domiciliocomercialDireccionexactaPer: $('#domiciliocomercialDireccionexactaPer').val(),
             correspondenciaOrigendelosfondosPer: $('#correspondenciaOrigendelosfondosPer').val(),
             paismayoractividadPer: $('#paismayoractividadPer').val(),
@@ -168,14 +113,14 @@ app.kycpersona = (function () {
         $('#cargoempresaPer').val(data.cargoempresaPer);
         $('#telefonoempresaPer').val(data.telefonoempresaPer);
         $('#faxempresaPer').val(data.faxempresaPer);
-        $('#paisPer').val(data.paisPer);
-        app.ui.SetDropDownNumericValue('#paisPer', data.paisPer, true);
-        $('#provinciaPer').val(data.provinciaPer);
-        app.ui.SetDropDownNumericValue('#provinciaPer', data.provinciaPer, true);
-        $('#cantonPer').val(data.cantonPer);
-        app.ui.SetDropDownNumericValue('#cantonPer', data.cantonPer, true);
-        $('#distritoPer').val(data.distritoPer);
-        app.ui.SetDropDownNumericValue('#distritoPer', data.distritoPer, true);
+        $('#domiciliocomercialCod_paisPer').val(data.domiciliocomercialCod_paisPer);
+        app.ui.SetDropDownNumericValue('#domiciliocomercialCod_paisPer', data.domiciliocomercialCod_paisPer, true);
+        $('#domiciliocomercialCod_estadoPer').val(data.domiciliocomercialCod_estadoPer);
+        app.ui.SetDropDownNumericValue('#domiciliocomercialCod_estadoPer', data.domiciliocomercialCod_estadoPer, true);
+        $('#domiciliocomercialCod_provPer').val(data.domiciliocomercialCod_provPer);
+        app.ui.SetDropDownNumericValue('#domiciliocomercialCod_provPer', data.domiciliocomercialCod_provPer, true);
+        $('#domiciliocomercialCod_localidadPer').val(data.domiciliocomercialCod_localidadPer);
+        app.ui.SetDropDownNumericValue('#domiciliocomercialCod_localidadPer', data.domiciliocomercialCod_localidadPer, true);
         $('#domiciliocomercialDireccionexactaPer').val(data.domiciliocomercialDireccionexactaPer);
         $('#correspondenciaOrigendelosfondosPer').val(data.correspondenciaOrigendelosfondosPer);
         $('#paismayoractividadPer').val(data.paismayoractividadPer);
@@ -268,7 +213,6 @@ app.kycpersona = (function () {
             data_changed();
         });
 
-
         $('#kycpersonaPerEdtFormSave').click(function () {
             event.preventDefault();
             if (app.ui.IsValid('#kycpersonaPerEdtForm', false)) {
@@ -328,10 +272,65 @@ app.kycpersona = (function () {
             acceptCallback = callback;
         },
         SetData: function (data) {
-            if (data != null) {
-                setupData = data;
-                MapObjectToInput(data);
+            if (data == null) {
+                data = {
+                    "primerapellidoPer": "",
+                    "segundoapellidoPer": "",
+                    "nombrePer": "",
+                    "codigodeclientePer": "",
+                    "numerodeidentificacionPer": "",
+                    "tipodeidentificacionPer": "",
+                    "fechadecaducidadPer": "0001-01-01T00:00:00",
+                    "nacionalidadPer": 0,
+                    "fechadenacimientoPer": "0001-01-01T00:00:00",
+                    "paisdenacimientoPer": 0,
+                    "profesionPer": 0,
+                    "estadocivilPer": 0,
+                    "sexoPer": 0,
+                    "telefonoresidenciaPer": "",
+                    "telefonocelularPer": "",
+                    "faxPer": "",
+                    "apartadoPostalPer": "",
+                    "correoelectronicoPer": "",
+                    "cod_paisPer": 0,
+                    "cod_estadoPer": 0,
+                    "cod_provPer": 0,
+                    "cod_localidadPer": 0,
+                    "direccionexactaPer": "",
+                    "OcupacionPer": null,
+                    "nombreempresaPer": "",
+                    "actividadempresaPer": "",
+                    "cargoempresaPer": "",
+                    "telefonoempresaPer": "",
+                    "faxempresaPer": "",
+                    "domiciliocomercialCod_paisPer": 0,
+                    "domiciliocomercialCod_estadoPer": 0,
+                    "domiciliocomercialCod_provPer": 0,
+                    "domiciliocomercialCod_localidadPer": 0,
+                    "domiciliocomercialDireccionexactaPer": "",
+                    "correspondenciaOrigendelosfondosPer": "",
+                    "paismayoractividadPer": "",
+                    "ingresomensualestimadoPer": 0,
+                    "fondospormivilizarPer": null,
+                    "actividadesart15Per": null,
+                    "activoscorrespondenPer": null,
+                    "pepcargoPer": null,
+                    "pepduracionPer": "",
+                    "peprelacionPer": null,
+                    "peptiporelacionPer": "",
+                    "propositorelacioncomercialPer": "",
+                    "montoprimaPer": 0,
+                    "tipodeprimaPer": "",
+                    "periodicidadPer": null,
+                    "montoValoraseguradoPer": 0,
+                    "formadepagodelapolizaPer": null,
+                    "mediodeenvioPer": null,
+                    "especifiquePer": ""
+                };
+
             }
+            setupData = data;
+            MapObjectToInput(data);
         }
     };
 })();
