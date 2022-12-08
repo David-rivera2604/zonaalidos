@@ -7,13 +7,11 @@ app.kycpersona = (function () {
     let acceptCallback = null;
 
     function Setup() {
-
-
         app.core.Lookups(['Pais.nacionalidadPer', 'Pais.paisdenacimientoPer', 'CivilStatus.estadocivilPer', 'Gender.sexoPer', 'Paises.cod_paisPer', 'Provincias.cod_estadoPer', 'Cantones.cod_provPer', 'Distritos.cod_localidadPer', 'Paises.domiciliocomercialCod_paisPer', 'Provincias.domiciliocomercialCod_estadoPer', 'Cantones.domiciliocomercialCod_provPer', 'Distritos.domiciliocomercialCod_localidadPer',],
             function () {
             }, `cod_pais=CRI`);
-
     };
+
 
     function MapInputToObject() {
         var data = {
@@ -213,13 +211,21 @@ app.kycpersona = (function () {
             data_changed();
         });
 
+
         $('#kycpersonaPerEdtFormSave').click(function () {
-            event.preventDefault();
+
             if (app.ui.IsValid('#kycpersonaPerEdtForm', false)) {
                 app.ui.ButtonDoing('#kycpersonaPerEdtFormSave');
                 acceptCallback(MapInputToObject());
                 app.ui.ButtonDone('#kycpersonaPerEdtFormSave');
             }
+            event.preventDefault();
+        });
+
+        $('#kycpersonaPerEdtFormCancel').click(function () {
+            app.ui.ButtonDoing('#kycpersonaPerEdtFormCancel');
+            setTimeout(() => { app.ui.ButtonDone('#kycpersonaPerEdtFormCancel'); }, 3000);
+            event.preventDefault();
         });
 
     };
@@ -252,7 +258,6 @@ app.kycpersona = (function () {
 
                 Controls_Events();
                 Setup();
-                console.log("Inicio");
             }
             catch (err) {
                 console.error("Error Init");

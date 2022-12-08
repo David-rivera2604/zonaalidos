@@ -7,11 +7,13 @@ app.kycjuridico = (function () {
     let acceptCallback = null;
 
     function Setup() {
-        app.core.Lookups(['Pais.paisdeconstitucionJur', 'Pais.paisJur', 'CR_Provincia.provinciaJur', 'CR_Canton.cantonJur', 'CR_Distritos.distritoJur', 'Pais.paisdenacimientoJur', 'CivilStatus.estadocivilJur', 'Gender.sexoJur', 'Pais.domiciliopermanentePaisJur', 'CR_Provincia.domiciliopermanenteProvinciaJur', 'CR_Canton.domiciliopermanenteCantonJur', 'CR_Distritos.domiciliopermanenteDistritoJur',],
+
+        app.core.Lookups(['Pais.paisdeconstitucionJur', 'Paises.cod_paisJur', 'Provincias.cod_estadoJur', 'Cantones.cod_provJur', 'Distritos.cod_localidadJur', 'Pais.paisdenacimientoJur', 'CivilStatus.estadocivilJur', 'Gender.sexoJur', 'Paises.domiciliopermanenteCod_paisJur', 'Provincias.domiciliopermanenteCod_estadoJur', 'Cantones.domiciliopermanenteCod_provJur', 'Distritos.domiciliopermanenteCod_localidadJur',],
             function () {
             }, `cod_pais=CRI`);
 
     };
+
 
     function MapInputToObject() {
         var data = {
@@ -29,10 +31,10 @@ app.kycjuridico = (function () {
             apartadoPostalJur: $('#apartadoPostalJur').val(),
             correoelectronicoJur: $('#correoelectronicoJur').val(),
             paginaWebJur: $('#paginaWebJur').val(),
-            paisJur: app.ui.GetDropDownNumericValue('#paisJur'),
-            provinciaJur: app.ui.GetDropDownNumericValue('#provinciaJur'),
-            cantonJur: app.ui.GetDropDownNumericValue('#cantonJur'),
-            distritoJur: app.ui.GetDropDownNumericValue('#distritoJur'),
+            cod_paisJur: app.ui.GetDropDownNumericValue('#cod_paisJur'),
+            cod_estadoJur: app.ui.GetDropDownNumericValue('#cod_estadoJur'),
+            cod_provJur: app.ui.GetDropDownNumericValue('#cod_provJur'),
+            cod_localidadJur: app.ui.GetDropDownNumericValue('#cod_localidadJur'),
             direccionexactaJur: $('#direccionexactaJur').val(),
             primerapellidoJur: $('#primerapellidoJur').val(),
             segundoapellidoJur: $('#segundoapellidoJur').val(),
@@ -53,10 +55,10 @@ app.kycjuridico = (function () {
             datosdelrepresentantelegalFaxJur: $('#datosdelrepresentantelegalFaxJur').val(),
             datosdelrepresentantelegalApartadoPostalJur: $('#datosdelrepresentantelegalApartadoPostalJur').val(),
             datosdelrepresentantelegalCorreoelectronicoJur: $('#datosdelrepresentantelegalCorreoelectronicoJur').val(),
-            domiciliopermanentePaisJur: app.ui.GetDropDownNumericValue('#domiciliopermanentePaisJur'),
-            domiciliopermanenteProvinciaJur: app.ui.GetDropDownNumericValue('#domiciliopermanenteProvinciaJur'),
-            domiciliopermanenteCantonJur: app.ui.GetDropDownNumericValue('#domiciliopermanenteCantonJur'),
-            domiciliopermanenteDistritoJur: app.ui.GetDropDownNumericValue('#domiciliopermanenteDistritoJur'),
+            domiciliopermanenteCod_paisJur: app.ui.GetDropDownNumericValue('#domiciliopermanenteCod_paisJur'),
+            domiciliopermanenteCod_estadoJur: app.ui.GetDropDownNumericValue('#domiciliopermanenteCod_estadoJur'),
+            domiciliopermanenteCod_provJur: app.ui.GetDropDownNumericValue('#domiciliopermanenteCod_provJur'),
+            domiciliopermanenteCod_localidadJur: app.ui.GetDropDownNumericValue('#domiciliopermanenteCod_localidadJur'),
             domiciliopermanenteDireccionexactaJur: $('#domiciliopermanenteDireccionexactaJur').val(),
             correspondenciaOrigendelosfondosJur: $('#correspondenciaOrigendelosfondosJur').val(),
             paismayoractividadJur: $('#paismayoractividadJur').val(),
@@ -98,14 +100,14 @@ app.kycjuridico = (function () {
         $('#apartadoPostalJur').val(data.apartadoPostalJur);
         $('#correoelectronicoJur').val(data.correoelectronicoJur);
         $('#paginaWebJur').val(data.paginaWebJur);
-        $('#paisJur').val(data.paisJur);
-        app.ui.SetDropDownNumericValue('#paisJur', data.paisJur, true);
-        $('#provinciaJur').val(data.provinciaJur);
-        app.ui.SetDropDownNumericValue('#provinciaJur', data.provinciaJur, true);
-        $('#cantonJur').val(data.cantonJur);
-        app.ui.SetDropDownNumericValue('#cantonJur', data.cantonJur, true);
-        $('#distritoJur').val(data.distritoJur);
-        app.ui.SetDropDownNumericValue('#distritoJur', data.distritoJur, true);
+        $('#cod_paisJur').val(data.cod_paisJur);
+        app.ui.SetDropDownNumericValue('#cod_paisJur', data.cod_paisJur, true);
+        $('#cod_estadoJur').val(data.cod_estadoJur);
+        app.ui.SetDropDownNumericValue('#cod_estadoJur', data.cod_estadoJur, true);
+        $('#cod_provJur').val(data.cod_provJur);
+        app.ui.SetDropDownNumericValue('#cod_provJur', data.cod_provJur, true);
+        $('#cod_localidadJur').val(data.cod_localidadJur);
+        app.ui.SetDropDownNumericValue('#cod_localidadJur', data.cod_localidadJur, true);
         $('#direccionexactaJur').val(data.direccionexactaJur);
         $('#primerapellidoJur').val(data.primerapellidoJur);
         $('#segundoapellidoJur').val(data.segundoapellidoJur);
@@ -130,14 +132,14 @@ app.kycjuridico = (function () {
         $('#datosdelrepresentantelegalFaxJur').val(data.datosdelrepresentantelegalFaxJur);
         $('#datosdelrepresentantelegalApartadoPostalJur').val(data.datosdelrepresentantelegalApartadoPostalJur);
         $('#datosdelrepresentantelegalCorreoelectronicoJur').val(data.datosdelrepresentantelegalCorreoelectronicoJur);
-        $('#domiciliopermanentePaisJur').val(data.domiciliopermanentePaisJur);
-        app.ui.SetDropDownNumericValue('#domiciliopermanentePaisJur', data.domiciliopermanentePaisJur, true);
-        $('#domiciliopermanenteProvinciaJur').val(data.domiciliopermanenteProvinciaJur);
-        app.ui.SetDropDownNumericValue('#domiciliopermanenteProvinciaJur', data.domiciliopermanenteProvinciaJur, true);
-        $('#domiciliopermanenteCantonJur').val(data.domiciliopermanenteCantonJur);
-        app.ui.SetDropDownNumericValue('#domiciliopermanenteCantonJur', data.domiciliopermanenteCantonJur, true);
-        $('#domiciliopermanenteDistritoJur').val(data.domiciliopermanenteDistritoJur);
-        app.ui.SetDropDownNumericValue('#domiciliopermanenteDistritoJur', data.domiciliopermanenteDistritoJur, true);
+        $('#domiciliopermanenteCod_paisJur').val(data.domiciliopermanenteCod_paisJur);
+        app.ui.SetDropDownNumericValue('#domiciliopermanenteCod_paisJur', data.domiciliopermanenteCod_paisJur, true);
+        $('#domiciliopermanenteCod_estadoJur').val(data.domiciliopermanenteCod_estadoJur);
+        app.ui.SetDropDownNumericValue('#domiciliopermanenteCod_estadoJur', data.domiciliopermanenteCod_estadoJur, true);
+        $('#domiciliopermanenteCod_provJur').val(data.domiciliopermanenteCod_provJur);
+        app.ui.SetDropDownNumericValue('#domiciliopermanenteCod_provJur', data.domiciliopermanenteCod_provJur, true);
+        $('#domiciliopermanenteCod_localidadJur').val(data.domiciliopermanenteCod_localidadJur);
+        app.ui.SetDropDownNumericValue('#domiciliopermanenteCod_localidadJur', data.domiciliopermanenteCod_localidadJur, true);
         $('#domiciliopermanenteDireccionexactaJur').val(data.domiciliopermanenteDireccionexactaJur);
         $('#correspondenciaOrigendelosfondosJur').val(data.correspondenciaOrigendelosfondosJur);
         $('#paismayoractividadJur').val(data.paismayoractividadJur);
@@ -246,7 +248,6 @@ app.kycjuridico = (function () {
         $("#kycjuridicoJurEdtForm :input").change(function () {
             data_changed();
         });
-
 
         $('#kycjuridicoJurEdtFormSave').click(function () {
             if (app.ui.IsValid('#kycjuridicoJurEdtForm', false)) {
@@ -436,7 +437,6 @@ app.kycjuridico = (function () {
 
                 Controls_Events();
                 Setup();
-                console.log("Inicio");
             }
             catch (err) {
                 console.error("Error Init");
@@ -463,8 +463,70 @@ app.kycjuridico = (function () {
         },
         SetData: function (data) {
             if (data == null) {
-
-
+                data = {
+                    "nombreComercialJur": "",
+                    "razonSocialJur": "",
+                    "codigodeclienteJur": "",
+                    "tipodeSociedadJur": "",
+                    "numeroCedulaJuridicaJur": "",
+                    "tipodeCedulaJuridicaJur": null,
+                    "paisdeconstitucionJur": 0,
+                    "fechadeconstitucionJur": "0001-01-01T00:00:00",
+                    "actividaddelClientenaturalezadelnegocioJur": "",
+                    "telefonoJur": "",
+                    "faxJur": "",
+                    "apartadoPostalJur": "",
+                    "correoelectronicoJur": "",
+                    "paginaWebJur": "",
+                    "cod_paisJur": 0,
+                    "cod_estadoJur": 0,
+                    "cod_provJur": 0,
+                    "cod_localidadJur": 0,
+                    "direccionexactaJur": "",
+                    "primerapellidoJur": "",
+                    "segundoapellidoJur": "",
+                    "nombrecompletoJur": "",
+                    "posiciondentrodelaempresaJur": "",
+                    "numerodeidentificacionJur": "",
+                    "tipodeidentificacionJur": null,
+                    "especifiqueJur": "",
+                    "fechadecaducidadJur": "0001-01-01T00:00:00",
+                    "nacionalidadJur": 0,
+                    "fechadenacimientoJur": "0001-01-01T00:00:00",
+                    "paisdenacimientoJur": 0,
+                    "profesionJur": "",
+                    "estadocivilJur": 0,
+                    "sexoJur": 0,
+                    "telefonoresidenciaJur": "",
+                    "telefonocelularJur": "",
+                    "datosdelrepresentantelegalFaxJur": "",
+                    "datosdelrepresentantelegalApartadoPostalJur": "",
+                    "datosdelrepresentantelegalCorreoelectronicoJur": "",
+                    "domiciliopermanenteCod_paisJur": 0,
+                    "domiciliopermanenteCod_estadoJur": 0,
+                    "domiciliopermanenteCod_provJur": 0,
+                    "domiciliopermanenteCod_localidadJur": 0,
+                    "domiciliopermanenteDireccionexactaJur": "",
+                    "correspondenciaOrigendelosfondosJur": "",
+                    "paismayoractividadJur": "",
+                    "ingresomensualestimadoJur": 0,
+                    "fondospormivilizarJur": null,
+                    "actividadesart15Jur": null,
+                    "activoscorrespondenJur": null,
+                    "pepcargoJur": null,
+                    "pepduracionJur": "",
+                    "peprelacionJur": null,
+                    "peptiporelacionJur": "",
+                    "participacionaccionariaJur": [],
+                    "propositoderelacioncomercialIndicareltipodeSeguroqueestaadquiriendoJur": "",
+                    "montoprimaJur": 0,
+                    "tipodeprimaJur": "",
+                    "periodicidadJur": null,
+                    "montoValoraseguradoJur": 0,
+                    "formadepagodelapolizaJur": null,
+                    "mediodeenvioJur": null,
+                    "correspondenciaEspecifiqueJur": ""
+                };
             }
             if (data != null) {
                 setupData = data;
@@ -484,3 +546,4 @@ window.participacionaccionariaJurTbl_Events = {
         e.stopPropagation();
     }
 };
+
