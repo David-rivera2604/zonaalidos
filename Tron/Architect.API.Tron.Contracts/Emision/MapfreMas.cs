@@ -75,6 +75,8 @@ namespace Architect.API.Tron.Contracts.Emision
 
         [DataMember(), JsonProperty()] public EconomicData DatosEconomicos { get; set; }
 
+        [DataMember(), JsonProperty()] public object kyc { get; set; }
+
     }
 
     public class MapfreMasSolicitud : MapfreMas
