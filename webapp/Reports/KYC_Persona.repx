@@ -1,0 +1,2127 @@
+/// <XRTypeInfo>
+///   <AssemblyFullName>DevExpress.XtraReports.v22.1, Version=22.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</AssemblyFullName>
+///   <AssemblyLocation>C:\WINDOWS\Microsoft.Net\assembly\GAC_MSIL\DevExpress.XtraReports.v22.1\v4.0_22.1.5.0__b88d1754d700e49a\DevExpress.XtraReports.v22.1.dll</AssemblyLocation>
+///   <TypeName>DevExpress.XtraReports.UI.XtraReport</TypeName>
+///   <Localization>en-US</Localization>
+///   <Version>22.1</Version>
+///   <Resources>
+///     <Resource Name="XtraReportSerialization.KYC_Persona">
+/// zsrvvgEAAACRAAAAbFN5c3RlbS5SZXNvdXJjZXMuUmVzb3VyY2VSZWFkZXIsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSNTeXN0ZW0uUmVzb3VyY2VzLlJ1bnRpbWVSZXNvdXJjZVNldAIAAAAHAAAAAAAAAFBBRFBBRFA5cv2QsVY3kdLIsZOU94Kdg0O/pJx/c22r5+12bgEAADQBAABRAQAAAwEAAKIAAAAAAAAAQwAAAI0CAAA+QQBjAHQAaQB2AG8AcwBGAGkAZQBsAGQALgBFAHgAcAByAGUAcwBzAGkAbwBuAEIAaQBuAGQAaQBuAGcAcwAAAAAAWkYAbwByAG0AYQBEAGUAUABhAGcAbwBEAGUATABhAFAAbwBsAGkAegBhAEYAaQBlAGwAZAAuAEUAeABwAHIAZQBzAHMAaQBv
+/// AG4AQgBpAG4AZABpAG4AZwBzAAYBAABcSQBuAGcAcgBlAHMAbwBNAGUAbgBzAHUAYQBsAEUAcwB0AGkAbQBhAGQAbwBGAGkAZQBsAGQALgBFAHgAcAByAGUAcwBzAGkAbwBuAEIAaQBuAGQAaQBuAGcAcwDpAQAALGMAdQBzAHQAbwBtAEoAcwBvAG4AUwBvAHUAcgBjAGUAMQAuAEoAcwBvAG4A2AIAABhsAGEAYgBlAGwAMQAwAC4AVABlAHgAdAB9CQAAGGwAYQBiAGUAbAAxADMALgBUAGUAeAB0AGIKAAAucABpAGMAdAB1AHIAZQBCAG8AeAAxAC4ASQBtAGEAZwBlAFMAbwB1AHIAYwBlAGkOAAABgwJJaWYoW0FjdGl2b3NdCj0xLCAnQWN0aXZvcyBmaWpvcyBtdWVibGVzIGUgaW5tdWVibGVzIGRlbnRybyBkZWwgcGHDrXMnLFtBY3Rpdm9zXQo9MiwgJ0FjdGl2b3Mg
+/// Zmlqb3MgbXVlYmxlcyBlIGlubXVlYmxlcyBmdWVyYSBkZWwgcGHDrXMnLCBbQWN0aXZvc10KPTMsICdBY3Rpdm9zIG1vbmV0YXJpb3MgeS9vIGZpbmFuY2llcm9zIGRlbnRybyBkZWwgcGHDrXMnLCdBY3Rpdm9zIG1vbmV0YXJpb3MgeS9vIGZpbmFuY2llcm9zIGZ1ZXJhIGRlbCBwYcOtcycpAeABSWlmKFtGb3JtYURlUGFnb0RlTGFQb2xpemFdCj0xLCAnRWZlY3Rpdm8nLFtGb3JtYURlUGFnb0RlTGFQb2xpemFdCj0yLCAnQ2hlcXVlJywgW0Zvcm1hRGVQYWdvRGVMYVBvbGl6YV0KPTMsICdUYXJqZXRhIGRlIGTDqWJpdG8gbyBjcsOpZGl0bycsW0Zvcm1hRGVQYWdvRGVMYVBvbGl6YV0KPTQsICdUcmFuc2ZlcmVuY2lhIG5hY2lvbmFsJywnVHJhbnNmZXJlbmNp
+/// YSBpbnRlcm5hY2lvbmFsJykB7AFJaWYoW0luZ3Jlc29NZW5zdWFsRXN0aW1hZG9dPTEsICckNTAwLDAwIC0gICQyLjAwMCwwMCcsW0luZ3Jlc29NZW5zdWFsRXN0aW1hZG9dPTIsICckMi4wMDEsMDAgLSAgJDUuMDAwLDAwJywgW0luZ3Jlc29NZW5zdWFsRXN0aW1hZG9dPTMsICc1LjAwMSwwMCAtICQxMC4wMDAsMDAnLFtJbmdyZXNvTWVuc3VhbEVzdGltYWRvXT00LCAnJDEwLjAwMSwwMCAtICQyMC4wMDAsMDAnLCdNYXlvciBhICQyMC4wMDAsMDAnKQGiDXsNCiAgICAicHJpbWVyYXBlbGxpZG9QZXIiOiAiU29sZXIiLA0KICAgICJzZWd1bmRvYXBlbGxpZG9QZXIiOiAiUGF6IiwNCiAgICAibm9tYnJlUGVyIjogIk5lbHNvbiIsDQogICAgImNvZGlnb2RlY2xp
+/// ZW50ZVBlciI6ICIiLA0KICAgICJudW1lcm9kZWlkZW50aWZpY2FjaW9uUGVyIjogIiIsDQogICAgInRpcG9kZWlkZW50aWZpY2FjaW9uUGVyIjogIiIsDQogICAgImZlY2hhZGVjYWR1Y2lkYWRQZXIiOiAiMDAwMS0wMS0wMVQwMDowMDowMCIsDQogICAgIm5hY2lvbmFsaWRhZFBlciI6IDAsDQogICAgImZlY2hhZGVuYWNpbWllbnRvUGVyIjogIjAwMDEtMDEtMDFUMDA6MDA6MDAiLA0KICAgICJwYWlzZGVuYWNpbWllbnRvUGVyIjogMCwNCiAgICAicHJvZmVzaW9uUGVyIjogMCwNCiAgICAiZXN0YWRvY2l2aWxQZXIiOiAwLA0KICAgICJzZXhvUGVyIjogMCwNCiAgICAidGVsZWZvbm9yZXNpZGVuY2lhUGVyIjogIiIsDQogICAgInRlbGVmb25vY2VsdWxhclBl
+/// ciI6ICIiLA0KICAgICJmYXhQZXIiOiAiIiwNCiAgICAiYXBhcnRhZG9wb3N0YWxQZXIiOiAiIiwNCiAgICAiY29ycmVvZWxlY3Ryb25pY29QZXIiOiAiIiwNCiAgICAiY29kX3BhaXNQZXIiOiAwLA0KICAgICJjb2RfZXN0YWRvUGVyIjogMCwNCiAgICAiY29kX3Byb3ZQZXIiOiAwLA0KICAgICJjb2RfbG9jYWxpZGFkUGVyIjogMCwNCiAgICAiZGlyZWNjaW9uZXhhY3RhUGVyIjogIiIsDQogICAgIk9jdXBhY2lvblBlciI6IG51bGwsDQogICAgIm5vbWJyZWVtcHJlc2FQZXIiOiAiIiwNCiAgICAiYWN0aXZpZGFkZW1wcmVzYVBlciI6ICIiLA0KICAgICJjYXJnb2VtcHJlc2FQZXIiOiAiIiwNCiAgICAidGVsZWZvbm9lbXByZXNhUGVyIjogIiIsDQogICAgImZh
+/// eGVtcHJlc2FQZXIiOiAiIiwNCiAgICAiZG9taWNpbGlvY29tZXJjaWFsQ29kX3BhaXNQZXIiOiAwLA0KICAgICJkb21pY2lsaW9jb21lcmNpYWxDb2RfZXN0YWRvUGVyIjogMCwNCiAgICAiZG9taWNpbGlvY29tZXJjaWFsQ29kX3Byb3ZQZXIiOiAwLA0KICAgICJkb21pY2lsaW9jb21lcmNpYWxDb2RfbG9jYWxpZGFkUGVyIjogMCwNCiAgICAiZG9taWNpbGlvY29tZXJjaWFsRGlyZWNjaW9uZXhhY3RhUGVyIjogIiIsDQogICAgImNvcnJlc3BvbmRlbmNpYU9yaWdlbmRlbG9zZm9uZG9zUGVyIjogIiIsDQogICAgInBhaXNtYXlvcmFjdGl2aWRhZFBlciI6ICIiLA0KICAgICJpbmdyZXNvbWVuc3VhbGVzdGltYWRvUGVyIjogMCwNCiAgICAiZm9uZG9zcG9ybWl2
+/// aWxpemFyUGVyIjogbnVsbCwNCiAgICAiYWN0aXZpZGFkZXNhcnQxNVBlciI6IG51bGwsDQogICAgImFjdGl2b3Njb3JyZXNwb25kZW5QZXIiOiBudWxsLA0KICAgICJwZXBjYXJnb1BlciI6IG51bGwsDQogICAgInBlcGR1cmFjaW9uUGVyIjogIiIsDQogICAgInBlcHJlbGFjaW9uUGVyIjogbnVsbCwNCiAgICAicGVwdGlwb3JlbGFjaW9uUGVyIjogIiIsDQogICAgInByb3Bvc2l0b3JlbGFjaW9uY29tZXJjaWFsUGVyIjogIiIsDQogICAgIm1vbnRvcHJpbWFQZXIiOiAwLA0KICAgICJ0aXBvZGVwcmltYVBlciI6ICIiLA0KICAgICJwZXJpb2RpY2lkYWRQZXIiOiBudWxsLA0KICAgICJtb250b1ZhbG9yYXNlZ3VyYWRvUGVyIjogMCwNCiAgICAiZm9ybWFkZXBh
+/// Z29kZWxhcG9saXphUGVyIjogbnVsbCwNCiAgICAibWVkaW9kZWVudmlvUGVyIjogbnVsbCwNCiAgICAiZXNwZWNpZmlxdWVQZXIiOiAiIg0KfQHiAUPDqWR1bGEgSnVyw61kaWNhOiAzLTEwMS01NjAxNzkuIFNhbiBKb3PDqSwgQmFycmlvIFRvdXJuw7NuLCBjb3N0YWRvIGVzdGUgZGUNClBlcmlvZGljbyBMYSBSZXB1YmxpY2EuIGVkaWZpY2lvIEFsdmFzYS4gVDogKDUwNikgMjAxMC0zMDAwLiBGOiAoNTA2KSAyMjIxLTQ2NTYuDQpMw61uZWEgR3JhdHVpdGE6IDgwMDAtNjI3MzczLiBpbmZvQG1hcGZyZS5jby5jciAvIHd3dy5tYXBmcmVjci5jb20BhAhQYXJhIGVmZWN0b3MgZGVsIHByZXNlbnRlIGNvbnRyYXRvIGRlY2xhcm8gZXhwcmVzYW1lbnRlIGxvIHNp
+/// Z3VpZW50ZTogMS5UYW50byBtaSBhY3RpdmlkYWQsIGNvbW8gcHJvZmVzacOzbiB1IG9maWNpbywgc29uIGzDrWNpdG9zIHkgbG9zIGVqZXJ6byBkZW50cm8gZGUgbG9zIG1hcmNvcyBsZWdhbGVzLiAyLkxvcyBkaW5lcm9zIGNvbiBsb3MgcXVlIGFkcXVpcsOtIGxvcyBiaWVuZXMgcmVsYWNpb25hZG9zIHkgbG9zIHV0aWxpemFkb3MgcGFyYSBwYWdhciBsYSBwcmltYSBkZWwgcHJlc2VudGUgY29udHJhdG8gbm8gcHJvdmllbmVuIGRlIG5pbmd1bmEgYWN0aXZpZGFkIMOtbGljaXRhIGRlIGxhcyBjb250ZW1wbGFkYXMgZW4gbGEgbGVnaXNsYWNpw7NuIGNvc3RhcnJpY2Vuc2UuIDMuTGFzIGRlY2xhcmFjaW9uZXMgY29udGVuaWRhcyBlbiBlc3RlIGRvY3VtZW50
+/// byBzb24gZXhhY3RhcywgY29tcGxldGFzIHkgdmVyw61kaWNhcyBlbiBsYSBmb3JtYSBxdWUgYXBhcmVjZW4gZGVzY3JpdGFzOyBwb3IgbG8gdGFudG8sIGxhIGZhbHNlZGFkLCBvbWlzacOzbiBvIGVycm9yIGVuIGVsbGFzLCB0ZW5kcsOhbiBsYXMgY29uc2VjdWVuY2lhcyBlc3RpcHVsYWRhcyBwb3IgbGEgbGV5LiA0Lk1lIG9ibGlnbyBjb24gbGEgY29tcGHDscOtYSBhIG1hbnRlbmVyIGFjdHVhbGl6YWRhIGxhIGluZm9ybWFjacOzbiBzdW1pbmlzdHJhZGEsIGRlIGFjdWVyZG8gY29uIGxvcyBwcm9jZWRpbWllbnRvcyBxdWUgcGFyYSB0YWwgZWZlY3RvIHRlbmdhIGRpc3B1ZXN0YSBsYSBjb21wYcOxw61hLiA1LkF1dG9yaXpvIGEgKE5PTUJSRSBERSBMQSBF
+/// TlRJREFEIEFTRUdVUkFET1JBKSwgZW4gZm9ybWEgZXhwcmVzYSwgcGFyYSByZXBvcnRhcixwcm9jZXNhciwgc29saWNpdGFyLCBzdW1pbmlzdHJhciBvIGRpdnVsZ2FyLCDDum5pY2FtZW50ZSBhIGxhcyBlbnRpZGFkZXMgbGVnYWxtZW50ZSBhdXRvcml6YWRhcywgZGUgY29uZm9ybWlkYWQgY29uIGxhIExleSA4MjA0LCB0b2RvIGxvIHJlbGF0aXZvIGEgbWkgaW5mb3JtYWNpw7NuLgG8JGlWQk9SdzBLR2dvQUFBQU5TVWhFVWdBQUFLZ0FBQUFkQ0FJQUFBQ3hMckFsQUFBQUJHZEJUVUVBQUxHUEMveGhCUUFBQUFsd1NGbHpBQUFXSkFBQUZpUUJteFhHRkFBQUFCbDBSVmgwVTI5bWRIZGhjbVVBY0dGcGJuUXVibVYwSURRdU1DNHlNZkVnYVpVQUFBMHBTVVJCVkdo
+/// RDdabjNkMVRYRWNmejM4UTUyTUVFWElKTmpJTkw3RGgyWWg4YkRNYmRnSkRvWUlvQjBUdUVjR2dpOU40Sk5pV1lGcXFvUWh4QW9ra3JyYlRhWFpXVlZydmExVFlwbi92bWNYMTUyaFg4bWtqZjg4NDdjK2ZPTFh1L00zUG5TYjlxN1VTSFJDZnhIUlNkeEhkUWRCTGZRZEZKZkFkRkovRWRGSjNFZDFBOEhmSEpaTUxualZ5K0ZEcjBZK09CZlkwSER6U2RPaG03ZjY4bEdyVU5PdkcvaGljUTM5TFNrbXBxYXRpMnhac3oxRDlwZk4zeVpRMmJOdFRucmFxWlBkTTdiR2p0dkRueGtvZllDT3d4ajVCVzJRNjBjZHBScHJKOVMrRFFtL2FPTG1CcUhMMXRqVFBoaVFORm8vWHR6MnoyT21TektSQ04xcmMxU0l2MmlHZUtSTFhmODhWQXp6ZGZOZCsrMVJLTHRTU1RMYWxVYXlxVmlz
+/// ZVRnYnJBcWhYbHIvOGhmUG9rbHJLZStSYkJJUU5UTmlGbXdHNWJzRlhwaG9zZWFLVittNEpBOTJvNGxNckkwT2kzd0RSNG9xeGhLa1V3M3dMVHdKUkZBTzNvVFVFWldUQTFxanNEMmlNKzduWjdoMmZYTHBpWGFteWttV2FpVkNwODhyaG5RTC93ejhkYUVnblJxY1VOaUJLSW5GYXBvWHRGQUtiUzFBdEVLYkJWajF1SzRHZ0tkSmVKWkRLNWQrOWVsOHVGYlBhMnRjd0ViZG5PRUxxZXhzeUJweG1pNW4yNm1UTVNuNHBFNnBZdXFWMnlTQVc2aFZRczFseGNGTGw0SVhMMWNzTG5zKzFhVytIZU95SW5WdWJTS3lIRVhhN1lnd2M4cVZESUdxMlFxS2l3bFkxQnNVdzFOSWhHbm5ocFNVdXMyVGIyK2N3dTFWdGUxdEtzZXBQMTlZNHVlUkplYnlvYWRTaDU0bVZsK0NpdUdTK3pk
+/// K1Y0VXVHdzdDZVJTQ3hZc0tDd3NCQ1poVVFaaVVUS3lzcnUzYnNYQ0FTc3JTazlXYSsydHZhK2hYQTRySTJSSHo1OGVQZnVYYS9YaXh1aFIvQVlvTWxZd0d3aXkwQnJZaldKMysrM1RUMGVuODhYajhkUk5qYzNZeHkxaWlyTTZ1dnJIeng0d0paQ29aQWFiQUU5YzFaVlZjVmlNVnVWR1JtSko3ZHpyOGRLU3FTSlVEVjBTT1dBZnY2eG82cSsvYXJ5a3cvREozNVdhZDl5RWJKQ1lNMXFzUVFjc2Vlcno4djd2TVlUV0pObi9TSkZwUHVEOTBRWk9ucEVMT3YrOFhmUnlPUCs4NStpMTY2aVo4NmFtZFBMKy9SVytyZjZ1Tjk1VXdsdnYxRXphenBUVVdQcUllWlRuVHM1Y3ZXS2Jyci84bTc1MjMyVS9PYnJ3VjA3NGhYdXl2NTlkYS81TkowL0ovc3hpUmZBN3RLbFM4ZVBIejky
+/// N05nWk0yYmN1blZMZnM3Rml4ZW5UNTgrenNLS0ZTc2dDV05vV0w5Ky9mZmZmNC94MUtsVEwxKytEQWN6Wjg2Y1lHRGV2SGxObEUwTkRXdldyUG5oaHgrZ21ZRk1hSzJtc0hqeFl0dDB3b1NKRXlmdTNyMGJlemllTm0zYTlldlhNU2d2TDJjU1dYclpzbVVWRlJVeW5Ebno4dklZSlp1MEpzdUlqTVFIbGk4ajRyblV1YzRidG0vakVDcysraXZSVHhlVEJuZnZMT3ZWczJidXJHUjlBRTNreW1YUFo1L0NsalcwdFNVZWQ3Ly9ia21YWC9OdzlQSHljZ0xFUDNtaWFIZ2E5KzhUTTdoVW1tZWZLWHU5bDNTSkExRlIra2FQTE9ueURCcTJrYWlzeE9mRUlIVGtjSERQTHBGeGlNRHFsZlhyL2lrUHZoaTVsQzlkcmw0OWs1ekVsczJsTDNTaldmRzM5OGxWZUFCeWFmZXVOZE56OVNn
+/// ZWxVdXNreUs4VE9JNThaVXJWdzRiTm16dDJyVmJ0MjRkUG56NG5EbHppQ3J1Z3FGRGgwNmVQSG5QbmowYk5tekFZUFhxMVNTR2E5ZXVqUmd4WXVQR2pZY1BINlozOXV6WndXQ1FnUXlIcE96c2JOeGkxNjVkV0phVWxJd1pNMmJ3NE1FSERoeGdJWk9uM054Y0ptRUlNK05ibzBlUFpqKzNiOTlHaWJjeEZuZkJFWGZ1M0lsTlRrN085dTNiY1M5bUtDNHVodlVoUTRiUXBSTkpKbVFrdnVxN3I4T25WTlhHYVZabERRcnUzK2QrN3gwSXBpdlZGUFptWndWV0xxOWR2TEI2MmxTeUswZGMrZW5IMFp1RjJDc1l4SFBLOWV2V1JndHZsUFpRQk1nanhFZHZGSlIyN1VLei9JM2VmRGlVUFBjYlpNL0EvaVFTay9oQTNpcFNzVy9zYUJtTHQybmlQVjkrbnJLU3YwYjA2aFhwVXNRSGc2
+/// SERoMXl2dkVTejRzTVBtczZmRmVKZHYzK0JIMklQc0U1YzNrQVRMMTNFR1VjTVcraloxSkVqUjJBUko0U1NVYU5HRVg4b01kdS9mejlOcm9Qang0OFQ3bGV1WElHZUd6ZHVVQzdnT2t4TG9sNjBhQkVVU3ZJSFI0OGVuVFJwa2lRR2ZWUElHK0tCWkhXNGhOb3paODRReEVMOCtmUG44YmxqeDQ2Um5KaU5wWkV4UmtiQW1mQTI4a0YxZGJYTWxna1ppWGUvKzNienZic2NhMFcvajV2Ty9JZnNUZHg3c3dZbDYycUQyN2RXZmZNbEYyMnl0cmJ5cy81TjU4NnhCbDJobzRkbHJFazgwY3k5d08xZ042MEg0aG5DUjRFMC9lUEh4aXNyeWw1N0JSbEhpVmRVbU1RemxYZnd0eTRyY0V0LzkxcytJalR4cmxkZTl1WmtVWUg2aG1mekpuWUphK2txZmY0NXRzVGRnVCtWdnRnZHg0bzl1
+/// RzlIZk5jdXVCZjJNcEFIdjVTZE95TCt3b1VMUkxra1dBQ2RFQWxQSEM2eDJOallLSWQ3NTg0ZGlNL1B6K2QyNStqSno5d09odzRkNG9hV3lET0pwd2xuY0VPOGJ0dTJEVHJGejlETEc5WnhpQk1uVHB3NmRZcEVncXdqSHRhM2JObkNsa3BMUzhXWUxVa1JBUGZMTFp3OWU1WTlzR2N4eUlTTXhKTjd1ZGZKZ1p4NHd1K0R5MlFvQk4vVjA2YVE5bFhFeE9NODFlVE10V3V3OXczUGFUejRMd1RXTTRtM2s3bkZHVHlKcklpUHhjUWJvS0ZoNjJidUF1K3dvZExic0cyclNUd0dqTVVodU96aGorazE4WGlWNm5yMCtNZU40YmEydXhqWTdUa1JYRDFmaWx6T3A4UVQ0bFhYODgrYUE2bFByUi90dk9NSk5kSTRZWWVzenhIaUNWTzRsNkFFMEVCaTRNVGhsYUFrNk1uaGdBc1lZakJ3
+/// RUUvT0lJN2hsUUl0S3l1TFc1eDFyWmtVSUY2R0EvTDJ2bjM3V0FqZkV1SkpQd2hVSHJiMUkxQmtzQWZjaGNzRnp5RFptSE8yUlViaUt6LzlKSkovZ1lpdm1UT3I2dXN2NVBGOFBxRDhqNjlWOXYxSWE2b0dmVXVwVDdibm8wNHVBbUFTVHpYZzZ2a2lRczJNWENvK1VVSjhjM0d4KzUyM2tHRzBldEw0K3J4VnpDYTlWVU8rNCs0d1U3MVVrUnFPVkc5ckxUeVc2dXZyR3padGRMM1lYVmwrMW8reTBVejFHTGVOQ1FmeFZHY2pSNDQ4ZDg0dS9ZaGdxS3FycStPbTU2SkZRTWtrTjIvZUpPSzU0RGw5U01VekNGQXBEcmpMc1hHa2Vsamh2bCt5WkFuVkFEWlVjektWQU9MSkdYQThkKzVjd3AwUEJJWm80aWtSR01LbmhCaXpIN2ZiemJhaG5DdUFUTE41ODJZMncxZ3FITEZKaTR6
+/// RVY4OVFvYXlLdTFpTStPT1c1VWw0cTlCemdscURnSEZ6VVJIRWN3dXdSUVdEK09qMWF3UmlXZTlYU2VDL0VMOXZiK05QUDdwZTdvRmM5dXJMK0pQbnk0RlVDVklIbFBYdTFYem50b040ZTJhTHFyWjNQRXJwZll6NFVJalZ5Uk0wS1ZEQ0o0N2JxZjZGYm9HODFlR1RKeWhpd3FkT0lDUnFxdFZ2YmtNOG9Rd0g1RSs0Sk96Z2toSWRKU21hMHlka3NTZW1wWktIY3ZJd3cyR0NuZUF1MkVBTTg1akVjMEhnTk5nekcxaTRjQ0YxSDhXRXJBalVEWitieTdSc2c4UkEycUNjRk9KSkovZ2lTWUkwUUVISFJ4MHV5SlhCbkdRZ0lwNnRNaWRLdUplbE15RWo4Wkg4aTc0eEl4UFY2bU5EZzgvdW1ybXpZY1Z1VzhBNUtOOXFacy9pN0cyTlFYenNiakhuVzc5K0hjbGNFeC9jc2IxMjBY
+/// eFZ6VDM3akgvU2hHUWdrR3hRbithZWdRTVVNZDI3WW1BU3oxaVpXZkMwRVEveEJRVnkxNWpFcXd1aVJ6ZlhTejMwMDNUbXRBdzNpWWM4cnM4ZE8zWVFTWHpJY1pvSXExYXQ0cHF2cWFuaEhvVklncFd2TE9naHptQ1hzZzZ5b1kxUE5XaWdzSWN6cHRMRU16OWxHdlo4RGtBdElFbVFWQ2dJclBVVmhIaXAxK1JHcDlUUXhSMWJZaWNNd1dNd1l6bEtUbW9MOXNaVzJSdHprZy93TFdwN2U4WjB5RWc4eWRZL1lWeHc5eTZKTmpRcW9HSXhQcFNUZ1RyUkNKcnZGbnV6aHpRWDNVRldOaGFhenAybDF1TlJ1U0VTNFdFZUxscFJ4a3BMcUtlVS9PK2p5RElQeDZ5VnpFYk5ieHMvZkNqemlobUl1OHVsSzNMcEltNkhSbnA1VTI5S2wvb3pBM1Z2WFYzVDZWTTBtODZkU2ZoOElyZDlr
+/// by84VzRvN0NuS1pqVGZueVBmU2xDbFRLTUlKSm5LeTJrcExDemtjTGxGeXhKVDZFSXdTZ3FFQlBzZ1RzMmJOdW5UcGtoUjNST2U2ZGV2bXo1OFBsNmRQbjhhTmRJaERGUWxqMDZaTllza2toRGhnS3BwYzJPd0hyK0x1Z08rQ2dnSU1XQXZIa3FXcEQwS2hFRmNBRVkrLzBzc29FZ0JEMko1YUlBTXlFczhVa1d0WHF3WjkwL2pUd1l6L2hlT24zci9uSHplNllmTkdIWGtNbE9VRldqYVZUNGxNUTlRQzdjN1dmcThEcGpFUlNTRmRWRlJrdHkxZ3dIMEo1Y0tOQnR6dzFVUytOZlVZd3dUVmdQNUlFMkFNME9CYlJMTTVSRFRhV0Z0S2t5NkF4L0JtZTZKRW9MNWphVEhEc2VqVmMrcFZwSmtXN1JGUHhGQUU4ZVZUdTJoQnd1TlJHaFBSYU9PUEJ5djdmUnhZdXlZVnNqOXM3SUdQ
+/// eXhvT1RWb0RVYllWUk5idjltSGE2RkZhcVRYU0ZGajlTdVAzKzRseVVacVFYbmtMVEkxK20xQkdqM2VKeGdGdElFMkJaZjZMWHBvYWxzbGpYYUp4UUxyU29sM2lMU1NEUWE1aFB1dHI1ODRtWWNidTM0c1dGaERpbnY1OUt3ZjBqUmFvNzBXQlk2Q2dyVWFRVm05TmtGNXZTNDlENjAyRHRFcVFkaEtVb25jSXdKUkJXbU9IVXI5RmFLdHhOQVZhYml0b2lJYTM3bkpvSE0wbm9qM2liUWs1Rm11K1dVaVJUMzN1R3pXQ3AzYiszUERQeC9oZVVyM0d3aHBxL1VjYWtZSFoxTEpEQUNJcm8wZUNiZ3FVa1RIRW9SUlpDeVljWGZMT0JOT21yWDFhamNCdVo0WnAwOVplTk9aYkJGTVdBWml5QSsxMGdZekVkK0wvRzUzRWQxQjBFdDlCMFVsOGgwUnI2MzhCMGJZTm1zMHc1ckVBQUFB
+/// QVNVVk9SSzVDWUlJPQ==</Resource>
+///   </Resources>
+/// </XRTypeInfo>
+namespace XtraReportSerialization {
+    
+    public class KYC_Persona : DevExpress.XtraReports.UI.XtraReport {
+        private DevExpress.XtraReports.UI.DetailBand Detail;
+        private DevExpress.XtraReports.UI.XRLabel label14;
+        private DevExpress.XtraReports.UI.XRLabel label13;
+        private DevExpress.XtraReports.UI.XRLabel label11;
+        private DevExpress.XtraReports.UI.XRLabel label10;
+        private DevExpress.XtraReports.UI.XRLabel label9;
+        private DevExpress.XtraReports.UI.XRLabel DatosGeneralesLabel;
+        private DevExpress.XtraReports.UI.XRLabel PrimerApellidoLabel;
+        private DevExpress.XtraReports.UI.XRLabel PrimerApellidoField;
+        private DevExpress.XtraReports.UI.XRLabel SegundoApellidoLabel;
+        private DevExpress.XtraReports.UI.XRLabel SegundoApellidoField;
+        private DevExpress.XtraReports.UI.XRLabel NombreLabel;
+        private DevExpress.XtraReports.UI.XRLabel NombreField;
+        private DevExpress.XtraReports.UI.XRLabel CodigoDeClienteLabel;
+        private DevExpress.XtraReports.UI.XRLabel CodigoDeClienteField;
+        private DevExpress.XtraReports.UI.XRLabel NumeroDeIdentificacionLabel;
+        private DevExpress.XtraReports.UI.XRLabel NumeroDeIdentificacionField;
+        private DevExpress.XtraReports.UI.XRLabel TipoDeIdentificacionLabel;
+        private DevExpress.XtraReports.UI.XRLabel TipoDeIdentificacionField;
+        private DevExpress.XtraReports.UI.XRLabel FechaDeCaducidadLabel;
+        private DevExpress.XtraReports.UI.XRLabel FechaDeCaducidadField;
+        private DevExpress.XtraReports.UI.XRLabel NacionalidadLabel;
+        private DevExpress.XtraReports.UI.XRLabel NacionalidadField;
+        private DevExpress.XtraReports.UI.XRLabel FechaDeNacimientoLabel;
+        private DevExpress.XtraReports.UI.XRLabel FechaDeNacimientoField;
+        private DevExpress.XtraReports.UI.XRLabel PaisDeNacimientoLabel;
+        private DevExpress.XtraReports.UI.XRLabel PaisDeNacimientoField;
+        private DevExpress.XtraReports.UI.XRLabel ProfesionLabel;
+        private DevExpress.XtraReports.UI.XRLabel ProfesionField;
+        private DevExpress.XtraReports.UI.XRLabel EstadoCivilLabel;
+        private DevExpress.XtraReports.UI.XRLabel EstadoCivilField;
+        private DevExpress.XtraReports.UI.XRLabel SexoLabel;
+        private DevExpress.XtraReports.UI.XRLabel SexoField;
+        private DevExpress.XtraReports.UI.XRLabel TelefonoResidenciaLabel;
+        private DevExpress.XtraReports.UI.XRLabel TelefonoResidenciaField;
+        private DevExpress.XtraReports.UI.XRLabel TelefonoCelularLabel;
+        private DevExpress.XtraReports.UI.XRLabel TelefonoCelularField;
+        private DevExpress.XtraReports.UI.XRLabel FaxLabel;
+        private DevExpress.XtraReports.UI.XRLabel FaxField;
+        private DevExpress.XtraReports.UI.XRLabel ApartadoPostalLabel;
+        private DevExpress.XtraReports.UI.XRLabel ApartadoPostalField;
+        private DevExpress.XtraReports.UI.XRLabel CorreoElectronicoLabel;
+        private DevExpress.XtraReports.UI.XRLabel CorreoElectronicoField;
+        private DevExpress.XtraReports.UI.XRLabel DomicilioPermanenteLabel;
+        private DevExpress.XtraReports.UI.XRLabel PaisLabel;
+        private DevExpress.XtraReports.UI.XRLabel PaisField;
+        private DevExpress.XtraReports.UI.XRLabel ProvinciaLabel;
+        private DevExpress.XtraReports.UI.XRLabel ProvinciaField;
+        private DevExpress.XtraReports.UI.XRLabel CantonLabel;
+        private DevExpress.XtraReports.UI.XRLabel CantonField;
+        private DevExpress.XtraReports.UI.XRLabel DistritoLabel;
+        private DevExpress.XtraReports.UI.XRLabel DistritoField;
+        private DevExpress.XtraReports.UI.XRLabel DirecciónExactaLabel;
+        private DevExpress.XtraReports.UI.XRLabel DirecciónExactaField;
+        private DevExpress.XtraReports.UI.XRLabel Label;
+        private DevExpress.XtraReports.UI.XRLabel OcupacionField;
+        private DevExpress.XtraReports.UI.XRLabel TINaturalezaNegocioField;
+        private DevExpress.XtraReports.UI.XRLabel NGDetalleField;
+        private DevExpress.XtraReports.UI.XRLabel label1;
+        private DevExpress.XtraReports.UI.XRLabel NombreEmpresaLabel;
+        private DevExpress.XtraReports.UI.XRLabel NombreEmpresaField;
+        private DevExpress.XtraReports.UI.XRLabel ActividadEmpresaLabel;
+        private DevExpress.XtraReports.UI.XRLabel ActividadEmpresaField;
+        private DevExpress.XtraReports.UI.XRLabel CargoEmpresaLabel;
+        private DevExpress.XtraReports.UI.XRLabel CargoEmpresaField;
+        private DevExpress.XtraReports.UI.XRLabel TelefonoEmpresaLabel;
+        private DevExpress.XtraReports.UI.XRLabel TelefonoEmpresaField;
+        private DevExpress.XtraReports.UI.XRLabel FaxEmpresaLabel;
+        private DevExpress.XtraReports.UI.XRLabel FaxEmpresaField;
+        private DevExpress.XtraReports.UI.XRLabel label2;
+        private DevExpress.XtraReports.UI.XRLabel PaisTrabajoLabel;
+        private DevExpress.XtraReports.UI.XRLabel PaisTrabajoField;
+        private DevExpress.XtraReports.UI.XRLabel ProvinciaTrabajoLabel;
+        private DevExpress.XtraReports.UI.XRLabel ProvinciaTrabajoField;
+        private DevExpress.XtraReports.UI.XRLabel CantonTrabajoLabel;
+        private DevExpress.XtraReports.UI.XRLabel CantonTrabajoField;
+        private DevExpress.XtraReports.UI.XRLabel DistritoTrabajoLabel;
+        private DevExpress.XtraReports.UI.XRLabel DistritoTrabajoField;
+        private DevExpress.XtraReports.UI.XRLabel DireccionExactaTrabajoLabel;
+        private DevExpress.XtraReports.UI.XRLabel DireccionExactaTrabajoField;
+        private DevExpress.XtraReports.UI.XRLabel label3;
+        private DevExpress.XtraReports.UI.XRLabel OrigenFondosLabel;
+        private DevExpress.XtraReports.UI.XRLabel OrigenFondosField;
+        private DevExpress.XtraReports.UI.XRLabel PaisActividadEconomicaLabel;
+        private DevExpress.XtraReports.UI.XRLabel PaisActividadEconomicaField;
+        private DevExpress.XtraReports.UI.XRLabel IngresoMensualEstimadoLabel;
+        private DevExpress.XtraReports.UI.XRLabel IngresoMensualEstimadoField;
+        private DevExpress.XtraReports.UI.XRLabel FondosPorMovilizarLabel;
+        private DevExpress.XtraReports.UI.XRLabel FondosPorMovilizarField;
+        private DevExpress.XtraReports.UI.XRLabel DesempenaActividadesLabel;
+        private DevExpress.XtraReports.UI.XRLabel DesempenaActividadesField;
+        private DevExpress.XtraReports.UI.XRLabel label4;
+        private DevExpress.XtraReports.UI.XRLabel ActivosLabel;
+        private DevExpress.XtraReports.UI.XRLabel ActivosField;
+        private DevExpress.XtraReports.UI.XRLabel label5;
+        private DevExpress.XtraReports.UI.XRLabel FuncionesPublicasLabel;
+        private DevExpress.XtraReports.UI.XRLabel FuncionesPublicasField;
+        private DevExpress.XtraReports.UI.XRLabel PeriodoFuncionesPublicasLabel;
+        private DevExpress.XtraReports.UI.XRLabel PeriodoFuncionesPublicasField;
+        private DevExpress.XtraReports.UI.XRLabel RelacionPersonaPoliticaLabel;
+        private DevExpress.XtraReports.UI.XRLabel RelacionPersonaPoliticaField;
+        private DevExpress.XtraReports.UI.XRLabel DetalleRelacionPersonaPoliticaLabel;
+        private DevExpress.XtraReports.UI.XRLabel DetalleRelacionPersonaPoliticaField;
+        private DevExpress.XtraReports.UI.XRLabel label6;
+        private DevExpress.XtraReports.UI.XRLabel PropositoDeRelacionComercialLabel;
+        private DevExpress.XtraReports.UI.XRLabel PropositoDeRelacionComercialField;
+        private DevExpress.XtraReports.UI.XRLabel MontoPrimaLabel;
+        private DevExpress.XtraReports.UI.XRLabel MontoPrimaField;
+        private DevExpress.XtraReports.UI.XRLabel TipoDePrimaLabel;
+        private DevExpress.XtraReports.UI.XRLabel TipoDePrimaField;
+        private DevExpress.XtraReports.UI.XRLabel PeriodicidadLabel;
+        private DevExpress.XtraReports.UI.XRLabel PeriodicidadField;
+        private DevExpress.XtraReports.UI.XRLabel MontoValorAseguradoLabel;
+        private DevExpress.XtraReports.UI.XRLabel MontoValorAseguradoField;
+        private DevExpress.XtraReports.UI.XRLabel FormaDePagoDeLaPolizaLabel;
+        private DevExpress.XtraReports.UI.XRLabel FormaDePagoDeLaPolizaField;
+        private DevExpress.XtraReports.UI.XRLabel label7;
+        private DevExpress.XtraReports.UI.XRLabel MedioDeEnvioLabel;
+        private DevExpress.XtraReports.UI.XRLabel MedioDeEnvioField;
+        private DevExpress.XtraReports.UI.XRLabel MedioDeEnvioDetalleLabel;
+        private DevExpress.XtraReports.UI.XRLabel MedioDeEnvioDetalleField;
+        private DevExpress.XtraReports.UI.XRLabel label12;
+        private DevExpress.XtraReports.UI.XRLabel label15;
+        private DevExpress.XtraReports.UI.XRLabel label16;
+        private DevExpress.XtraReports.UI.XRShape shape2;
+        private DevExpress.XtraReports.UI.TopMarginBand topMarginBand1;
+        private DevExpress.XtraReports.UI.XRPictureBox pictureBox1;
+        private DevExpress.XtraReports.UI.XRLabel label8;
+        private DevExpress.XtraReports.UI.XRShape shape1;
+        private DevExpress.XtraReports.UI.BottomMarginBand bottomMarginBand1;
+        private DevExpress.DataAccess.Json.JsonDataSource jsonDataSource1;
+        private System.Resources.ResourceManager _resources;
+        private string _resourceString;
+        public KYC_Persona() {
+            this._resourceString = DevExpress.XtraReports.Serialization.XRResourceManager.GetResourceFor("XtraReportSerialization.KYC_Persona");
+            this.InitializeComponent();
+        }
+        private System.Resources.ResourceManager resources {
+            get {
+                if (_resources == null) {
+                    this._resources = new DevExpress.XtraReports.Serialization.XRResourceManager(this._resourceString);
+                }
+                return this._resources;
+            }
+        }
+        private void InitializeComponent() {
+            DevExpress.XtraPrinting.Shape.ShapeRectangle shapeRectangle1 = new DevExpress.XtraPrinting.Shape.ShapeRectangle();
+            DevExpress.XtraPrinting.Shape.ShapeRectangle shapeRectangle2 = new DevExpress.XtraPrinting.Shape.ShapeRectangle();
+            DevExpress.DataAccess.Json.CustomJsonSource customJsonSource1 = new DevExpress.DataAccess.Json.CustomJsonSource();
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode1 = new DevExpress.DataAccess.Json.JsonSchemaNode("root", true);
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode2 = new DevExpress.DataAccess.Json.JsonSchemaNode("primerapellidoPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode3 = new DevExpress.DataAccess.Json.JsonSchemaNode("segundoapellidoPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode4 = new DevExpress.DataAccess.Json.JsonSchemaNode("nombrePer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode5 = new DevExpress.DataAccess.Json.JsonSchemaNode("codigodeclientePer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode6 = new DevExpress.DataAccess.Json.JsonSchemaNode("numerodeidentificacionPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode7 = new DevExpress.DataAccess.Json.JsonSchemaNode("tipodeidentificacionPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode8 = new DevExpress.DataAccess.Json.JsonSchemaNode("fechadecaducidadPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<System.DateTime>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode9 = new DevExpress.DataAccess.Json.JsonSchemaNode("nacionalidadPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode10 = new DevExpress.DataAccess.Json.JsonSchemaNode("fechadenacimientoPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<System.DateTime>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode11 = new DevExpress.DataAccess.Json.JsonSchemaNode("paisdenacimientoPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode12 = new DevExpress.DataAccess.Json.JsonSchemaNode("profesionPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode13 = new DevExpress.DataAccess.Json.JsonSchemaNode("estadocivilPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode14 = new DevExpress.DataAccess.Json.JsonSchemaNode("sexoPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode15 = new DevExpress.DataAccess.Json.JsonSchemaNode("telefonoresidenciaPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode16 = new DevExpress.DataAccess.Json.JsonSchemaNode("telefonocelularPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode17 = new DevExpress.DataAccess.Json.JsonSchemaNode("faxPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode18 = new DevExpress.DataAccess.Json.JsonSchemaNode("apartadopostalPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode19 = new DevExpress.DataAccess.Json.JsonSchemaNode("correoelectronicoPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode20 = new DevExpress.DataAccess.Json.JsonSchemaNode("cod_paisPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode21 = new DevExpress.DataAccess.Json.JsonSchemaNode("cod_estadoPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode22 = new DevExpress.DataAccess.Json.JsonSchemaNode("cod_provPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode23 = new DevExpress.DataAccess.Json.JsonSchemaNode("cod_localidadPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode24 = new DevExpress.DataAccess.Json.JsonSchemaNode("direccionexactaPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode25 = new DevExpress.DataAccess.Json.JsonSchemaNode("OcupacionPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(object));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode26 = new DevExpress.DataAccess.Json.JsonSchemaNode("nombreempresaPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode27 = new DevExpress.DataAccess.Json.JsonSchemaNode("actividadempresaPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode28 = new DevExpress.DataAccess.Json.JsonSchemaNode("cargoempresaPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode29 = new DevExpress.DataAccess.Json.JsonSchemaNode("telefonoempresaPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode30 = new DevExpress.DataAccess.Json.JsonSchemaNode("faxempresaPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode31 = new DevExpress.DataAccess.Json.JsonSchemaNode("domiciliocomercialCod_paisPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode32 = new DevExpress.DataAccess.Json.JsonSchemaNode("domiciliocomercialCod_estadoPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode33 = new DevExpress.DataAccess.Json.JsonSchemaNode("domiciliocomercialCod_provPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode34 = new DevExpress.DataAccess.Json.JsonSchemaNode("domiciliocomercialCod_localidadPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode35 = new DevExpress.DataAccess.Json.JsonSchemaNode("domiciliocomercialDireccionexactaPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode36 = new DevExpress.DataAccess.Json.JsonSchemaNode("correspondenciaOrigendelosfondosPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode37 = new DevExpress.DataAccess.Json.JsonSchemaNode("paismayoractividadPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode38 = new DevExpress.DataAccess.Json.JsonSchemaNode("ingresomensualestimadoPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode39 = new DevExpress.DataAccess.Json.JsonSchemaNode("fondospormivilizarPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(object));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode40 = new DevExpress.DataAccess.Json.JsonSchemaNode("actividadesart15Per", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(object));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode41 = new DevExpress.DataAccess.Json.JsonSchemaNode("activoscorrespondenPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(object));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode42 = new DevExpress.DataAccess.Json.JsonSchemaNode("pepcargoPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(object));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode43 = new DevExpress.DataAccess.Json.JsonSchemaNode("pepduracionPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode44 = new DevExpress.DataAccess.Json.JsonSchemaNode("peprelacionPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(object));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode45 = new DevExpress.DataAccess.Json.JsonSchemaNode("peptiporelacionPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode46 = new DevExpress.DataAccess.Json.JsonSchemaNode("propositorelacioncomercialPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode47 = new DevExpress.DataAccess.Json.JsonSchemaNode("montoprimaPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode48 = new DevExpress.DataAccess.Json.JsonSchemaNode("tipodeprimaPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode49 = new DevExpress.DataAccess.Json.JsonSchemaNode("periodicidadPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(object));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode50 = new DevExpress.DataAccess.Json.JsonSchemaNode("montoValoraseguradoPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode51 = new DevExpress.DataAccess.Json.JsonSchemaNode("formadepagodelapolizaPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(object));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode52 = new DevExpress.DataAccess.Json.JsonSchemaNode("mediodeenvioPer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(object));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode53 = new DevExpress.DataAccess.Json.JsonSchemaNode("especifiquePer", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            this.Detail = new DevExpress.XtraReports.UI.DetailBand();
+            this.label14 = new DevExpress.XtraReports.UI.XRLabel();
+            this.label13 = new DevExpress.XtraReports.UI.XRLabel();
+            this.label11 = new DevExpress.XtraReports.UI.XRLabel();
+            this.label10 = new DevExpress.XtraReports.UI.XRLabel();
+            this.label9 = new DevExpress.XtraReports.UI.XRLabel();
+            this.DatosGeneralesLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.PrimerApellidoLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.PrimerApellidoField = new DevExpress.XtraReports.UI.XRLabel();
+            this.SegundoApellidoLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.SegundoApellidoField = new DevExpress.XtraReports.UI.XRLabel();
+            this.NombreLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.NombreField = new DevExpress.XtraReports.UI.XRLabel();
+            this.CodigoDeClienteLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.CodigoDeClienteField = new DevExpress.XtraReports.UI.XRLabel();
+            this.NumeroDeIdentificacionLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.NumeroDeIdentificacionField = new DevExpress.XtraReports.UI.XRLabel();
+            this.TipoDeIdentificacionLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.TipoDeIdentificacionField = new DevExpress.XtraReports.UI.XRLabel();
+            this.FechaDeCaducidadLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.FechaDeCaducidadField = new DevExpress.XtraReports.UI.XRLabel();
+            this.NacionalidadLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.NacionalidadField = new DevExpress.XtraReports.UI.XRLabel();
+            this.FechaDeNacimientoLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.FechaDeNacimientoField = new DevExpress.XtraReports.UI.XRLabel();
+            this.PaisDeNacimientoLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.PaisDeNacimientoField = new DevExpress.XtraReports.UI.XRLabel();
+            this.ProfesionLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.ProfesionField = new DevExpress.XtraReports.UI.XRLabel();
+            this.EstadoCivilLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.EstadoCivilField = new DevExpress.XtraReports.UI.XRLabel();
+            this.SexoLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.SexoField = new DevExpress.XtraReports.UI.XRLabel();
+            this.TelefonoResidenciaLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.TelefonoResidenciaField = new DevExpress.XtraReports.UI.XRLabel();
+            this.TelefonoCelularLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.TelefonoCelularField = new DevExpress.XtraReports.UI.XRLabel();
+            this.FaxLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.FaxField = new DevExpress.XtraReports.UI.XRLabel();
+            this.ApartadoPostalLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.ApartadoPostalField = new DevExpress.XtraReports.UI.XRLabel();
+            this.CorreoElectronicoLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.CorreoElectronicoField = new DevExpress.XtraReports.UI.XRLabel();
+            this.DomicilioPermanenteLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.PaisLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.PaisField = new DevExpress.XtraReports.UI.XRLabel();
+            this.ProvinciaLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.ProvinciaField = new DevExpress.XtraReports.UI.XRLabel();
+            this.CantonLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.CantonField = new DevExpress.XtraReports.UI.XRLabel();
+            this.DistritoLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.DistritoField = new DevExpress.XtraReports.UI.XRLabel();
+            this.DirecciónExactaLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.DirecciónExactaField = new DevExpress.XtraReports.UI.XRLabel();
+            this.Label = new DevExpress.XtraReports.UI.XRLabel();
+            this.OcupacionField = new DevExpress.XtraReports.UI.XRLabel();
+            this.TINaturalezaNegocioField = new DevExpress.XtraReports.UI.XRLabel();
+            this.NGDetalleField = new DevExpress.XtraReports.UI.XRLabel();
+            this.label1 = new DevExpress.XtraReports.UI.XRLabel();
+            this.NombreEmpresaLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.NombreEmpresaField = new DevExpress.XtraReports.UI.XRLabel();
+            this.ActividadEmpresaLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.ActividadEmpresaField = new DevExpress.XtraReports.UI.XRLabel();
+            this.CargoEmpresaLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.CargoEmpresaField = new DevExpress.XtraReports.UI.XRLabel();
+            this.TelefonoEmpresaLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.TelefonoEmpresaField = new DevExpress.XtraReports.UI.XRLabel();
+            this.FaxEmpresaLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.FaxEmpresaField = new DevExpress.XtraReports.UI.XRLabel();
+            this.label2 = new DevExpress.XtraReports.UI.XRLabel();
+            this.PaisTrabajoLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.PaisTrabajoField = new DevExpress.XtraReports.UI.XRLabel();
+            this.ProvinciaTrabajoLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.ProvinciaTrabajoField = new DevExpress.XtraReports.UI.XRLabel();
+            this.CantonTrabajoLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.CantonTrabajoField = new DevExpress.XtraReports.UI.XRLabel();
+            this.DistritoTrabajoLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.DistritoTrabajoField = new DevExpress.XtraReports.UI.XRLabel();
+            this.DireccionExactaTrabajoLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.DireccionExactaTrabajoField = new DevExpress.XtraReports.UI.XRLabel();
+            this.label3 = new DevExpress.XtraReports.UI.XRLabel();
+            this.OrigenFondosLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.OrigenFondosField = new DevExpress.XtraReports.UI.XRLabel();
+            this.PaisActividadEconomicaLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.PaisActividadEconomicaField = new DevExpress.XtraReports.UI.XRLabel();
+            this.IngresoMensualEstimadoLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.IngresoMensualEstimadoField = new DevExpress.XtraReports.UI.XRLabel();
+            this.FondosPorMovilizarLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.FondosPorMovilizarField = new DevExpress.XtraReports.UI.XRLabel();
+            this.DesempenaActividadesLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.DesempenaActividadesField = new DevExpress.XtraReports.UI.XRLabel();
+            this.label4 = new DevExpress.XtraReports.UI.XRLabel();
+            this.ActivosLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.ActivosField = new DevExpress.XtraReports.UI.XRLabel();
+            this.label5 = new DevExpress.XtraReports.UI.XRLabel();
+            this.FuncionesPublicasLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.FuncionesPublicasField = new DevExpress.XtraReports.UI.XRLabel();
+            this.PeriodoFuncionesPublicasLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.PeriodoFuncionesPublicasField = new DevExpress.XtraReports.UI.XRLabel();
+            this.RelacionPersonaPoliticaLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.RelacionPersonaPoliticaField = new DevExpress.XtraReports.UI.XRLabel();
+            this.DetalleRelacionPersonaPoliticaLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.DetalleRelacionPersonaPoliticaField = new DevExpress.XtraReports.UI.XRLabel();
+            this.label6 = new DevExpress.XtraReports.UI.XRLabel();
+            this.PropositoDeRelacionComercialLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.PropositoDeRelacionComercialField = new DevExpress.XtraReports.UI.XRLabel();
+            this.MontoPrimaLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.MontoPrimaField = new DevExpress.XtraReports.UI.XRLabel();
+            this.TipoDePrimaLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.TipoDePrimaField = new DevExpress.XtraReports.UI.XRLabel();
+            this.PeriodicidadLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.PeriodicidadField = new DevExpress.XtraReports.UI.XRLabel();
+            this.MontoValorAseguradoLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.MontoValorAseguradoField = new DevExpress.XtraReports.UI.XRLabel();
+            this.FormaDePagoDeLaPolizaLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.FormaDePagoDeLaPolizaField = new DevExpress.XtraReports.UI.XRLabel();
+            this.label7 = new DevExpress.XtraReports.UI.XRLabel();
+            this.MedioDeEnvioLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.MedioDeEnvioField = new DevExpress.XtraReports.UI.XRLabel();
+            this.MedioDeEnvioDetalleLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.MedioDeEnvioDetalleField = new DevExpress.XtraReports.UI.XRLabel();
+            this.label12 = new DevExpress.XtraReports.UI.XRLabel();
+            this.label15 = new DevExpress.XtraReports.UI.XRLabel();
+            this.label16 = new DevExpress.XtraReports.UI.XRLabel();
+            this.shape2 = new DevExpress.XtraReports.UI.XRShape();
+            this.topMarginBand1 = new DevExpress.XtraReports.UI.TopMarginBand();
+            this.pictureBox1 = new DevExpress.XtraReports.UI.XRPictureBox();
+            this.label8 = new DevExpress.XtraReports.UI.XRLabel();
+            this.shape1 = new DevExpress.XtraReports.UI.XRShape();
+            this.bottomMarginBand1 = new DevExpress.XtraReports.UI.BottomMarginBand();
+            this.jsonDataSource1 = new DevExpress.DataAccess.Json.JsonDataSource();
+            ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
+            // 
+            // Detail
+            // 
+            this.Detail.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+                        this.label14,
+                        this.label13,
+                        this.label11,
+                        this.label10,
+                        this.label9,
+                        this.DatosGeneralesLabel,
+                        this.PrimerApellidoLabel,
+                        this.PrimerApellidoField,
+                        this.SegundoApellidoLabel,
+                        this.SegundoApellidoField,
+                        this.NombreLabel,
+                        this.NombreField,
+                        this.CodigoDeClienteLabel,
+                        this.CodigoDeClienteField,
+                        this.NumeroDeIdentificacionLabel,
+                        this.NumeroDeIdentificacionField,
+                        this.TipoDeIdentificacionLabel,
+                        this.TipoDeIdentificacionField,
+                        this.FechaDeCaducidadLabel,
+                        this.FechaDeCaducidadField,
+                        this.NacionalidadLabel,
+                        this.NacionalidadField,
+                        this.FechaDeNacimientoLabel,
+                        this.FechaDeNacimientoField,
+                        this.PaisDeNacimientoLabel,
+                        this.PaisDeNacimientoField,
+                        this.ProfesionLabel,
+                        this.ProfesionField,
+                        this.EstadoCivilLabel,
+                        this.EstadoCivilField,
+                        this.SexoLabel,
+                        this.SexoField,
+                        this.TelefonoResidenciaLabel,
+                        this.TelefonoResidenciaField,
+                        this.TelefonoCelularLabel,
+                        this.TelefonoCelularField,
+                        this.FaxLabel,
+                        this.FaxField,
+                        this.ApartadoPostalLabel,
+                        this.ApartadoPostalField,
+                        this.CorreoElectronicoLabel,
+                        this.CorreoElectronicoField,
+                        this.DomicilioPermanenteLabel,
+                        this.PaisLabel,
+                        this.PaisField,
+                        this.ProvinciaLabel,
+                        this.ProvinciaField,
+                        this.CantonLabel,
+                        this.CantonField,
+                        this.DistritoLabel,
+                        this.DistritoField,
+                        this.DirecciónExactaLabel,
+                        this.DirecciónExactaField,
+                        this.Label,
+                        this.OcupacionField,
+                        this.TINaturalezaNegocioField,
+                        this.NGDetalleField,
+                        this.label1,
+                        this.NombreEmpresaLabel,
+                        this.NombreEmpresaField,
+                        this.ActividadEmpresaLabel,
+                        this.ActividadEmpresaField,
+                        this.CargoEmpresaLabel,
+                        this.CargoEmpresaField,
+                        this.TelefonoEmpresaLabel,
+                        this.TelefonoEmpresaField,
+                        this.FaxEmpresaLabel,
+                        this.FaxEmpresaField,
+                        this.label2,
+                        this.PaisTrabajoLabel,
+                        this.PaisTrabajoField,
+                        this.ProvinciaTrabajoLabel,
+                        this.ProvinciaTrabajoField,
+                        this.CantonTrabajoLabel,
+                        this.CantonTrabajoField,
+                        this.DistritoTrabajoLabel,
+                        this.DistritoTrabajoField,
+                        this.DireccionExactaTrabajoLabel,
+                        this.DireccionExactaTrabajoField,
+                        this.label3,
+                        this.OrigenFondosLabel,
+                        this.OrigenFondosField,
+                        this.PaisActividadEconomicaLabel,
+                        this.PaisActividadEconomicaField,
+                        this.IngresoMensualEstimadoLabel,
+                        this.IngresoMensualEstimadoField,
+                        this.FondosPorMovilizarLabel,
+                        this.FondosPorMovilizarField,
+                        this.DesempenaActividadesLabel,
+                        this.DesempenaActividadesField,
+                        this.label4,
+                        this.ActivosLabel,
+                        this.ActivosField,
+                        this.label5,
+                        this.FuncionesPublicasLabel,
+                        this.FuncionesPublicasField,
+                        this.PeriodoFuncionesPublicasLabel,
+                        this.PeriodoFuncionesPublicasField,
+                        this.RelacionPersonaPoliticaLabel,
+                        this.RelacionPersonaPoliticaField,
+                        this.DetalleRelacionPersonaPoliticaLabel,
+                        this.DetalleRelacionPersonaPoliticaField,
+                        this.label6,
+                        this.PropositoDeRelacionComercialLabel,
+                        this.PropositoDeRelacionComercialField,
+                        this.MontoPrimaLabel,
+                        this.MontoPrimaField,
+                        this.TipoDePrimaLabel,
+                        this.TipoDePrimaField,
+                        this.PeriodicidadLabel,
+                        this.PeriodicidadField,
+                        this.MontoValorAseguradoLabel,
+                        this.MontoValorAseguradoField,
+                        this.FormaDePagoDeLaPolizaLabel,
+                        this.FormaDePagoDeLaPolizaField,
+                        this.label7,
+                        this.MedioDeEnvioLabel,
+                        this.MedioDeEnvioField,
+                        this.MedioDeEnvioDetalleLabel,
+                        this.MedioDeEnvioDetalleField,
+                        this.label12,
+                        this.label15,
+                        this.label16,
+                        this.shape2});
+            this.Detail.HeightF = 970.5621F;
+            this.Detail.Name = "Detail";
+            this.Detail.SnapLinePadding = new DevExpress.XtraPrinting.PaddingInfo(5, 5, 5, 5, 100F);
+            // 
+            // label14
+            // 
+            this.label14.Borders = DevExpress.XtraPrinting.BorderSide.Top;
+            this.label14.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.label14.LocationFloat = new DevExpress.Utils.PointFloat(29.05506F, 899.8176F);
+            this.label14.Multiline = true;
+            this.label14.Name = "label14";
+            this.label14.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 3, 0, 100F);
+            this.label14.SizeF = new System.Drawing.SizeF(153.0193F, 16.48962F);
+            this.label14.StylePriority.UseBorders = false;
+            this.label14.StylePriority.UseFont = false;
+            this.label14.StylePriority.UsePadding = false;
+            this.label14.StylePriority.UseTextAlignment = false;
+            this.label14.Text = "Lugar y fecha";
+            this.label14.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopCenter;
+            // 
+            // label13
+            // 
+            this.label13.Font = new System.Drawing.Font("Times New Roman", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.LocationFloat = new DevExpress.Utils.PointFloat(23.3647F, 816.0403F);
+            this.label13.Multiline = true;
+            this.label13.Name = "label13";
+            this.label13.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.label13.SizeF = new System.Drawing.SizeF(698.1105F, 60.95959F);
+            this.label13.StylePriority.UseFont = false;
+            this.label13.StylePriority.UseTextAlignment = false;
+            this.label13.Text = resources.GetString("label13.Text");
+            this.label13.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopJustify;
+            // 
+            // label11
+            // 
+            this.label11.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.label11.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.label11.LocationFloat = new DevExpress.Utils.PointFloat(469.6538F, 522.0403F);
+            this.label11.Multiline = true;
+            this.label11.Name = "label11";
+            this.label11.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.label11.SizeF = new System.Drawing.SizeF(275.3462F, 18.00006F);
+            this.label11.StylePriority.UseBorders = false;
+            this.label11.StylePriority.UseFont = false;
+            this.label11.Text = "En caso afirmativo, aportar inscripción emitida por SUGEF";
+            // 
+            // label10
+            // 
+            this.label10.Font = new System.Drawing.Font("Times New Roman", 6F);
+            this.label10.LocationFloat = new DevExpress.Utils.PointFloat(450.6571F, 1.999995F);
+            this.label10.Multiline = true;
+            this.label10.Name = "label10";
+            this.label10.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.label10.SizeF = new System.Drawing.SizeF(281.343F, 35F);
+            this.label10.StylePriority.UseFont = false;
+            this.label10.StylePriority.UseTextAlignment = false;
+            this.label10.Text = resources.GetString("label10.Text");
+            this.label10.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopRight;
+            // 
+            // label9
+            // 
+            this.label9.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.label9.LocationFloat = new DevExpress.Utils.PointFloat(23.3647F, 5.000005F);
+            this.label9.Multiline = true;
+            this.label9.Name = "label9";
+            this.label9.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.label9.SizeF = new System.Drawing.SizeF(59.11738F, 34.0625F);
+            this.label9.StylePriority.UseFont = false;
+            this.label9.Text = "Número de\r\nSolicitud:";
+            // 
+            // DatosGeneralesLabel
+            // 
+            this.DatosGeneralesLabel.BackColor = System.Drawing.Color.Red;
+            this.DatosGeneralesLabel.ForeColor = System.Drawing.Color.White;
+            this.DatosGeneralesLabel.LocationFloat = new DevExpress.Utils.PointFloat(3.999997F, 39.0625F);
+            this.DatosGeneralesLabel.Name = "DatosGeneralesLabel";
+            this.DatosGeneralesLabel.SizeF = new System.Drawing.SizeF(741F, 18F);
+            this.DatosGeneralesLabel.Text = "DATOS GENERALES";
+            this.DatosGeneralesLabel.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            // 
+            // PrimerApellidoLabel
+            // 
+            this.PrimerApellidoLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.PrimerApellidoLabel.LocationFloat = new DevExpress.Utils.PointFloat(67.31372F, 58.06249F);
+            this.PrimerApellidoLabel.Name = "PrimerApellidoLabel";
+            this.PrimerApellidoLabel.SizeF = new System.Drawing.SizeF(76.21568F, 11.99999F);
+            this.PrimerApellidoLabel.StylePriority.UseFont = false;
+            this.PrimerApellidoLabel.Text = "Primer apellido:";
+            // 
+            // PrimerApellidoField
+            // 
+            this.PrimerApellidoField.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right) 
+                        | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.PrimerApellidoField.CanGrow = false;
+            this.PrimerApellidoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[primerapellidoPer]")});
+            this.PrimerApellidoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.PrimerApellidoField.LocationFloat = new DevExpress.Utils.PointFloat(3.999997F, 70.06248F);
+            this.PrimerApellidoField.Name = "PrimerApellidoField";
+            this.PrimerApellidoField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.PrimerApellidoField.SizeF = new System.Drawing.SizeF(194.5521F, 18.00001F);
+            this.PrimerApellidoField.StylePriority.UseBorders = false;
+            this.PrimerApellidoField.StylePriority.UseFont = false;
+            this.PrimerApellidoField.StylePriority.UsePadding = false;
+            this.PrimerApellidoField.WordWrap = false;
+            // 
+            // SegundoApellidoLabel
+            // 
+            this.SegundoApellidoLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.SegundoApellidoLabel.LocationFloat = new DevExpress.Utils.PointFloat(253.8186F, 57.06247F);
+            this.SegundoApellidoLabel.Name = "SegundoApellidoLabel";
+            this.SegundoApellidoLabel.SizeF = new System.Drawing.SizeF(84.18138F, 12.99998F);
+            this.SegundoApellidoLabel.StylePriority.UseFont = false;
+            this.SegundoApellidoLabel.Text = "Segundo apellido:";
+            // 
+            // SegundoApellidoField
+            // 
+            this.SegundoApellidoField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.SegundoApellidoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[segundoapellidoPer]")});
+            this.SegundoApellidoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.SegundoApellidoField.LocationFloat = new DevExpress.Utils.PointFloat(199F, 70.06248F);
+            this.SegundoApellidoField.Name = "SegundoApellidoField";
+            this.SegundoApellidoField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.SegundoApellidoField.SizeF = new System.Drawing.SizeF(194.5521F, 18.00001F);
+            this.SegundoApellidoField.StylePriority.UseBorders = false;
+            this.SegundoApellidoField.StylePriority.UseFont = false;
+            this.SegundoApellidoField.StylePriority.UsePadding = false;
+            // 
+            // NombreLabel
+            // 
+            this.NombreLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.NombreLabel.LocationFloat = new DevExpress.Utils.PointFloat(469.6538F, 57.0625F);
+            this.NombreLabel.Name = "NombreLabel";
+            this.NombreLabel.SizeF = new System.Drawing.SizeF(46.19119F, 12.99998F);
+            this.NombreLabel.StylePriority.UseFont = false;
+            this.NombreLabel.Text = "Nombre:";
+            // 
+            // NombreField
+            // 
+            this.NombreField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.NombreField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[nombrePer]")});
+            this.NombreField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.NombreField.LocationFloat = new DevExpress.Utils.PointFloat(393.552F, 70.06248F);
+            this.NombreField.Name = "NombreField";
+            this.NombreField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.NombreField.SizeF = new System.Drawing.SizeF(194.552F, 18.00001F);
+            this.NombreField.StylePriority.UseBorders = false;
+            this.NombreField.StylePriority.UseFont = false;
+            this.NombreField.StylePriority.UsePadding = false;
+            // 
+            // CodigoDeClienteLabel
+            // 
+            this.CodigoDeClienteLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.CodigoDeClienteLabel.LocationFloat = new DevExpress.Utils.PointFloat(621.7549F, 57.06245F);
+            this.CodigoDeClienteLabel.Name = "CodigoDeClienteLabel";
+            this.CodigoDeClienteLabel.SizeF = new System.Drawing.SizeF(88.47058F, 13F);
+            this.CodigoDeClienteLabel.StylePriority.UseFont = false;
+            this.CodigoDeClienteLabel.Text = "Código de cliente:";
+            // 
+            // CodigoDeClienteField
+            // 
+            this.CodigoDeClienteField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.CodigoDeClienteField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[CodigoDeCliente]")});
+            this.CodigoDeClienteField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.CodigoDeClienteField.LocationFloat = new DevExpress.Utils.PointFloat(588.104F, 70.06247F);
+            this.CodigoDeClienteField.Name = "CodigoDeClienteField";
+            this.CodigoDeClienteField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.CodigoDeClienteField.SizeF = new System.Drawing.SizeF(156.896F, 18F);
+            this.CodigoDeClienteField.StylePriority.UseBorders = false;
+            this.CodigoDeClienteField.StylePriority.UseFont = false;
+            this.CodigoDeClienteField.StylePriority.UsePadding = false;
+            // 
+            // NumeroDeIdentificacionLabel
+            // 
+            this.NumeroDeIdentificacionLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.NumeroDeIdentificacionLabel.LocationFloat = new DevExpress.Utils.PointFloat(47.31372F, 88.06248F);
+            this.NumeroDeIdentificacionLabel.Name = "NumeroDeIdentificacionLabel";
+            this.NumeroDeIdentificacionLabel.SizeF = new System.Drawing.SizeF(110.5294F, 11.51436F);
+            this.NumeroDeIdentificacionLabel.StylePriority.UseFont = false;
+            this.NumeroDeIdentificacionLabel.Text = "Número de identificación:";
+            // 
+            // NumeroDeIdentificacionField
+            // 
+            this.NumeroDeIdentificacionField.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right) 
+                        | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.NumeroDeIdentificacionField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[NumeroDeIdentificacion]")});
+            this.NumeroDeIdentificacionField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.NumeroDeIdentificacionField.LocationFloat = new DevExpress.Utils.PointFloat(5.000005F, 99.57683F);
+            this.NumeroDeIdentificacionField.Name = "NumeroDeIdentificacionField";
+            this.NumeroDeIdentificacionField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.NumeroDeIdentificacionField.SizeF = new System.Drawing.SizeF(193.5521F, 18F);
+            this.NumeroDeIdentificacionField.StylePriority.UseBorders = false;
+            this.NumeroDeIdentificacionField.StylePriority.UseFont = false;
+            this.NumeroDeIdentificacionField.StylePriority.UsePadding = false;
+            // 
+            // TipoDeIdentificacionLabel
+            // 
+            this.TipoDeIdentificacionLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.TipoDeIdentificacionLabel.LocationFloat = new DevExpress.Utils.PointFloat(324F, 88.06246F);
+            this.TipoDeIdentificacionLabel.Name = "TipoDeIdentificacionLabel";
+            this.TipoDeIdentificacionLabel.SizeF = new System.Drawing.SizeF(91.22647F, 11.51436F);
+            this.TipoDeIdentificacionLabel.StylePriority.UseFont = false;
+            this.TipoDeIdentificacionLabel.Text = "Tipo de identificación:";
+            // 
+            // TipoDeIdentificacionField
+            // 
+            this.TipoDeIdentificacionField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.TipoDeIdentificacionField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif([TipoDeIdentificacion]=1, \'Cédula\',[TipoDeIdentificacion]=2, \'Pasaporte\',[Tip" +
+                                "oDeIdentificacion]=3, \'Cédula Residencia\', \'Otro\')")});
+            this.TipoDeIdentificacionField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.TipoDeIdentificacionField.LocationFloat = new DevExpress.Utils.PointFloat(199F, 99.57683F);
+            this.TipoDeIdentificacionField.Name = "TipoDeIdentificacionField";
+            this.TipoDeIdentificacionField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.TipoDeIdentificacionField.SizeF = new System.Drawing.SizeF(384F, 18F);
+            this.TipoDeIdentificacionField.StylePriority.UseBorders = false;
+            this.TipoDeIdentificacionField.StylePriority.UseFont = false;
+            this.TipoDeIdentificacionField.StylePriority.UsePadding = false;
+            // 
+            // FechaDeCaducidadLabel
+            // 
+            this.FechaDeCaducidadLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.FechaDeCaducidadLabel.LocationFloat = new DevExpress.Utils.PointFloat(594.0768F, 88.06246F);
+            this.FechaDeCaducidadLabel.Name = "FechaDeCaducidadLabel";
+            this.FechaDeCaducidadLabel.SizeF = new System.Drawing.SizeF(140.1528F, 11.51436F);
+            this.FechaDeCaducidadLabel.StylePriority.UseFont = false;
+            this.FechaDeCaducidadLabel.Text = "Fecha de caducidad (día/mes/año):";
+            // 
+            // FechaDeCaducidadField
+            // 
+            this.FechaDeCaducidadField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.FechaDeCaducidadField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[FechaDeCaducidad]")});
+            this.FechaDeCaducidadField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.FechaDeCaducidadField.LocationFloat = new DevExpress.Utils.PointFloat(583F, 99.57687F);
+            this.FechaDeCaducidadField.Name = "FechaDeCaducidadField";
+            this.FechaDeCaducidadField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.FechaDeCaducidadField.SizeF = new System.Drawing.SizeF(162F, 18F);
+            this.FechaDeCaducidadField.StylePriority.UseBorders = false;
+            this.FechaDeCaducidadField.StylePriority.UseFont = false;
+            this.FechaDeCaducidadField.StylePriority.UsePadding = false;
+            this.FechaDeCaducidadField.TextFormatString = "{0:dd/MM/yyyy}";
+            // 
+            // NacionalidadLabel
+            // 
+            this.NacionalidadLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.NacionalidadLabel.LocationFloat = new DevExpress.Utils.PointFloat(35.79179F, 117.5769F);
+            this.NacionalidadLabel.Name = "NacionalidadLabel";
+            this.NacionalidadLabel.SizeF = new System.Drawing.SizeF(61.82057F, 12.01276F);
+            this.NacionalidadLabel.StylePriority.UseFont = false;
+            this.NacionalidadLabel.Text = "Nacionalidad:";
+            // 
+            // NacionalidadField
+            // 
+            this.NacionalidadField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.NacionalidadField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[NacionalidadDesc]")});
+            this.NacionalidadField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.NacionalidadField.LocationFloat = new DevExpress.Utils.PointFloat(5.000004F, 129.5896F);
+            this.NacionalidadField.Name = "NacionalidadField";
+            this.NacionalidadField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.NacionalidadField.SizeF = new System.Drawing.SizeF(125.118F, 18F);
+            this.NacionalidadField.StylePriority.UseBorders = false;
+            this.NacionalidadField.StylePriority.UseFont = false;
+            this.NacionalidadField.StylePriority.UsePadding = false;
+            // 
+            // FechaDeNacimientoLabel
+            // 
+            this.FechaDeNacimientoLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.FechaDeNacimientoLabel.LocationFloat = new DevExpress.Utils.PointFloat(139.3037F, 117.5768F);
+            this.FechaDeNacimientoLabel.Name = "FechaDeNacimientoLabel";
+            this.FechaDeNacimientoLabel.SizeF = new System.Drawing.SizeF(143.559F, 12.01277F);
+            this.FechaDeNacimientoLabel.StylePriority.UseFont = false;
+            this.FechaDeNacimientoLabel.Text = "Fecha de nacimiento (día/mes/año):";
+            // 
+            // FechaDeNacimientoField
+            // 
+            this.FechaDeNacimientoField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.FechaDeNacimientoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[FechaDeNacimiento]")});
+            this.FechaDeNacimientoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.FechaDeNacimientoField.LocationFloat = new DevExpress.Utils.PointFloat(130.118F, 129.5896F);
+            this.FechaDeNacimientoField.Name = "FechaDeNacimientoField";
+            this.FechaDeNacimientoField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.FechaDeNacimientoField.SizeF = new System.Drawing.SizeF(156.496F, 18F);
+            this.FechaDeNacimientoField.StylePriority.UseBorders = false;
+            this.FechaDeNacimientoField.StylePriority.UseFont = false;
+            this.FechaDeNacimientoField.StylePriority.UsePadding = false;
+            this.FechaDeNacimientoField.TextFormatString = "{0:dd/MM/yyyy}";
+            // 
+            // PaisDeNacimientoLabel
+            // 
+            this.PaisDeNacimientoLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.PaisDeNacimientoLabel.LocationFloat = new DevExpress.Utils.PointFloat(305.5973F, 117.5769F);
+            this.PaisDeNacimientoLabel.Name = "PaisDeNacimientoLabel";
+            this.PaisDeNacimientoLabel.SizeF = new System.Drawing.SizeF(80.24323F, 12.01276F);
+            this.PaisDeNacimientoLabel.StylePriority.UseFont = false;
+            this.PaisDeNacimientoLabel.Text = "País de nacimiento:";
+            // 
+            // PaisDeNacimientoField
+            // 
+            this.PaisDeNacimientoField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.PaisDeNacimientoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PaisDeNacimientoDesc]")});
+            this.PaisDeNacimientoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.PaisDeNacimientoField.LocationFloat = new DevExpress.Utils.PointFloat(286.614F, 129.5896F);
+            this.PaisDeNacimientoField.Name = "PaisDeNacimientoField";
+            this.PaisDeNacimientoField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.PaisDeNacimientoField.SizeF = new System.Drawing.SizeF(118.6387F, 18F);
+            this.PaisDeNacimientoField.StylePriority.UseBorders = false;
+            this.PaisDeNacimientoField.StylePriority.UseFont = false;
+            this.PaisDeNacimientoField.StylePriority.UsePadding = false;
+            // 
+            // ProfesionLabel
+            // 
+            this.ProfesionLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.ProfesionLabel.LocationFloat = new DevExpress.Utils.PointFloat(437.2123F, 117.5768F);
+            this.ProfesionLabel.Name = "ProfesionLabel";
+            this.ProfesionLabel.SizeF = new System.Drawing.SizeF(46.19119F, 12.01277F);
+            this.ProfesionLabel.StylePriority.UseFont = false;
+            this.ProfesionLabel.Text = "Profesión:";
+            // 
+            // ProfesionField
+            // 
+            this.ProfesionField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.ProfesionField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[ProfesionDesc]")});
+            this.ProfesionField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.ProfesionField.LocationFloat = new DevExpress.Utils.PointFloat(405.2527F, 129.5896F);
+            this.ProfesionField.Name = "ProfesionField";
+            this.ProfesionField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.ProfesionField.SizeF = new System.Drawing.SizeF(117.2993F, 18F);
+            this.ProfesionField.StylePriority.UseBorders = false;
+            this.ProfesionField.StylePriority.UseFont = false;
+            this.ProfesionField.StylePriority.UsePadding = false;
+            // 
+            // EstadoCivilLabel
+            // 
+            this.EstadoCivilLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.EstadoCivilLabel.LocationFloat = new DevExpress.Utils.PointFloat(553.3541F, 117.5769F);
+            this.EstadoCivilLabel.Name = "EstadoCivilLabel";
+            this.EstadoCivilLabel.SizeF = new System.Drawing.SizeF(53.00003F, 12.01276F);
+            this.EstadoCivilLabel.StylePriority.UseFont = false;
+            this.EstadoCivilLabel.Text = "Estado civil:";
+            // 
+            // EstadoCivilField
+            // 
+            this.EstadoCivilField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.EstadoCivilField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[EstadoCivilDesc]")});
+            this.EstadoCivilField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.EstadoCivilField.LocationFloat = new DevExpress.Utils.PointFloat(522.5521F, 129.5896F);
+            this.EstadoCivilField.Name = "EstadoCivilField";
+            this.EstadoCivilField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.EstadoCivilField.SizeF = new System.Drawing.SizeF(113.149F, 18F);
+            this.EstadoCivilField.StylePriority.UseBorders = false;
+            this.EstadoCivilField.StylePriority.UseFont = false;
+            this.EstadoCivilField.StylePriority.UsePadding = false;
+            // 
+            // SexoLabel
+            // 
+            this.SexoLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.SexoLabel.LocationFloat = new DevExpress.Utils.PointFloat(675.795F, 117.5769F);
+            this.SexoLabel.Name = "SexoLabel";
+            this.SexoLabel.SizeF = new System.Drawing.SizeF(27.4306F, 12.01276F);
+            this.SexoLabel.StylePriority.UseFont = false;
+            this.SexoLabel.Text = "Sexo:";
+            // 
+            // SexoField
+            // 
+            this.SexoField.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right) 
+                        | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.SexoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif([Sexo]=1, \'Femenino\',\'Masculino\')")});
+            this.SexoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.SexoField.LocationFloat = new DevExpress.Utils.PointFloat(635.701F, 129.5896F);
+            this.SexoField.Name = "SexoField";
+            this.SexoField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.SexoField.SizeF = new System.Drawing.SizeF(109.299F, 18F);
+            this.SexoField.StylePriority.UseBorders = false;
+            this.SexoField.StylePriority.UseFont = false;
+            this.SexoField.StylePriority.UsePadding = false;
+            // 
+            // TelefonoResidenciaLabel
+            // 
+            this.TelefonoResidenciaLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.TelefonoResidenciaLabel.LocationFloat = new DevExpress.Utils.PointFloat(35.79179F, 147.5896F);
+            this.TelefonoResidenciaLabel.Name = "TelefonoResidenciaLabel";
+            this.TelefonoResidenciaLabel.SizeF = new System.Drawing.SizeF(87.73761F, 12.01F);
+            this.TelefonoResidenciaLabel.StylePriority.UseFont = false;
+            this.TelefonoResidenciaLabel.Text = "Teléfono residencia:";
+            // 
+            // TelefonoResidenciaField
+            // 
+            this.TelefonoResidenciaField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.TelefonoResidenciaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[TelefonoResidencia]")});
+            this.TelefonoResidenciaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.TelefonoResidenciaField.LocationFloat = new DevExpress.Utils.PointFloat(3.999997F, 159.5996F);
+            this.TelefonoResidenciaField.Name = "TelefonoResidenciaField";
+            this.TelefonoResidenciaField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.TelefonoResidenciaField.SizeF = new System.Drawing.SizeF(153.8431F, 18F);
+            this.TelefonoResidenciaField.StylePriority.UseBorders = false;
+            this.TelefonoResidenciaField.StylePriority.UseFont = false;
+            this.TelefonoResidenciaField.StylePriority.UsePadding = false;
+            // 
+            // TelefonoCelularLabel
+            // 
+            this.TelefonoCelularLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.TelefonoCelularLabel.LocationFloat = new DevExpress.Utils.PointFloat(187.2814F, 147.5896F);
+            this.TelefonoCelularLabel.Name = "TelefonoCelularLabel";
+            this.TelefonoCelularLabel.SizeF = new System.Drawing.SizeF(77.69624F, 12.01F);
+            this.TelefonoCelularLabel.StylePriority.UseFont = false;
+            this.TelefonoCelularLabel.Text = "Teléfono celular:";
+            // 
+            // TelefonoCelularField
+            // 
+            this.TelefonoCelularField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.TelefonoCelularField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[TelefonoCelular]")});
+            this.TelefonoCelularField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.TelefonoCelularField.LocationFloat = new DevExpress.Utils.PointFloat(157.8432F, 159.5996F);
+            this.TelefonoCelularField.Name = "TelefonoCelularField";
+            this.TelefonoCelularField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.TelefonoCelularField.SizeF = new System.Drawing.SizeF(134.0861F, 18F);
+            this.TelefonoCelularField.StylePriority.UseBorders = false;
+            this.TelefonoCelularField.StylePriority.UseFont = false;
+            this.TelefonoCelularField.StylePriority.UsePadding = false;
+            // 
+            // FaxLabel
+            // 
+            this.FaxLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.FaxLabel.LocationFloat = new DevExpress.Utils.PointFloat(335F, 147.5896F);
+            this.FaxLabel.Name = "FaxLabel";
+            this.FaxLabel.SizeF = new System.Drawing.SizeF(27.56091F, 12.00999F);
+            this.FaxLabel.StylePriority.UseFont = false;
+            this.FaxLabel.Text = "Fax:";
+            // 
+            // FaxField
+            // 
+            this.FaxField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.FaxField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[Fax]")});
+            this.FaxField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.FaxField.LocationFloat = new DevExpress.Utils.PointFloat(291.9292F, 159.5996F);
+            this.FaxField.Name = "FaxField";
+            this.FaxField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.FaxField.SizeF = new System.Drawing.SizeF(108.6707F, 18F);
+            this.FaxField.StylePriority.UseBorders = false;
+            this.FaxField.StylePriority.UseFont = false;
+            this.FaxField.StylePriority.UsePadding = false;
+            // 
+            // ApartadoPostalLabel
+            // 
+            this.ApartadoPostalLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.ApartadoPostalLabel.LocationFloat = new DevExpress.Utils.PointFloat(426.2122F, 147.5896F);
+            this.ApartadoPostalLabel.Name = "ApartadoPostalLabel";
+            this.ApartadoPostalLabel.SizeF = new System.Drawing.SizeF(71.29025F, 12.01F);
+            this.ApartadoPostalLabel.StylePriority.UseFont = false;
+            this.ApartadoPostalLabel.Text = "Apartado Postal:";
+            // 
+            // ApartadoPostalField
+            // 
+            this.ApartadoPostalField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.ApartadoPostalField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[ApartadoPostal]")});
+            this.ApartadoPostalField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.ApartadoPostalField.LocationFloat = new DevExpress.Utils.PointFloat(400.5999F, 159.5996F);
+            this.ApartadoPostalField.Name = "ApartadoPostalField";
+            this.ApartadoPostalField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.ApartadoPostalField.SizeF = new System.Drawing.SizeF(121.9521F, 18F);
+            this.ApartadoPostalField.StylePriority.UseBorders = false;
+            this.ApartadoPostalField.StylePriority.UseFont = false;
+            this.ApartadoPostalField.StylePriority.UsePadding = false;
+            // 
+            // CorreoElectronicoLabel
+            // 
+            this.CorreoElectronicoLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.CorreoElectronicoLabel.LocationFloat = new DevExpress.Utils.PointFloat(594.4713F, 147.5896F);
+            this.CorreoElectronicoLabel.Name = "CorreoElectronicoLabel";
+            this.CorreoElectronicoLabel.SizeF = new System.Drawing.SizeF(90.22964F, 12.01F);
+            this.CorreoElectronicoLabel.StylePriority.UseFont = false;
+            this.CorreoElectronicoLabel.Text = "Correo electrónico:";
+            // 
+            // CorreoElectronicoField
+            // 
+            this.CorreoElectronicoField.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right) 
+                        | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.CorreoElectronicoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[CorreoElectronico]")});
+            this.CorreoElectronicoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.CorreoElectronicoField.LocationFloat = new DevExpress.Utils.PointFloat(522.552F, 159.5996F);
+            this.CorreoElectronicoField.Name = "CorreoElectronicoField";
+            this.CorreoElectronicoField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.CorreoElectronicoField.SizeF = new System.Drawing.SizeF(222.448F, 18F);
+            this.CorreoElectronicoField.StylePriority.UseBorders = false;
+            this.CorreoElectronicoField.StylePriority.UseFont = false;
+            this.CorreoElectronicoField.StylePriority.UsePadding = false;
+            // 
+            // DomicilioPermanenteLabel
+            // 
+            this.DomicilioPermanenteLabel.BackColor = System.Drawing.Color.Red;
+            this.DomicilioPermanenteLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.DomicilioPermanenteLabel.ForeColor = System.Drawing.Color.White;
+            this.DomicilioPermanenteLabel.LocationFloat = new DevExpress.Utils.PointFloat(5.000005F, 178.5996F);
+            this.DomicilioPermanenteLabel.Multiline = true;
+            this.DomicilioPermanenteLabel.Name = "DomicilioPermanenteLabel";
+            this.DomicilioPermanenteLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
+            this.DomicilioPermanenteLabel.SizeF = new System.Drawing.SizeF(74.24768F, 30F);
+            this.DomicilioPermanenteLabel.StylePriority.UseFont = false;
+            this.DomicilioPermanenteLabel.StylePriority.UsePadding = false;
+            this.DomicilioPermanenteLabel.StylePriority.UseTextAlignment = false;
+            this.DomicilioPermanenteLabel.Text = "DOMICILIO\r\nPERMANENTE";
+            this.DomicilioPermanenteLabel.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            // 
+            // PaisLabel
+            // 
+            this.PaisLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.PaisLabel.LocationFloat = new DevExpress.Utils.PointFloat(157.5384F, 178.5996F);
+            this.PaisLabel.Name = "PaisLabel";
+            this.PaisLabel.SizeF = new System.Drawing.SizeF(21.99105F, 12F);
+            this.PaisLabel.StylePriority.UseFont = false;
+            this.PaisLabel.Text = "País:";
+            // 
+            // PaisField
+            // 
+            this.PaisField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.PaisField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PaisDesc]")});
+            this.PaisField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.PaisField.LocationFloat = new DevExpress.Utils.PointFloat(79.24769F, 190.5996F);
+            this.PaisField.Name = "PaisField";
+            this.PaisField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.PaisField.SizeF = new System.Drawing.SizeF(168.982F, 18F);
+            this.PaisField.StylePriority.UseBorders = false;
+            this.PaisField.StylePriority.UseFont = false;
+            this.PaisField.StylePriority.UsePadding = false;
+            // 
+            // ProvinciaLabel
+            // 
+            this.ProvinciaLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.ProvinciaLabel.LocationFloat = new DevExpress.Utils.PointFloat(318.8612F, 178.5996F);
+            this.ProvinciaLabel.Name = "ProvinciaLabel";
+            this.ProvinciaLabel.SizeF = new System.Drawing.SizeF(43.69958F, 12F);
+            this.ProvinciaLabel.StylePriority.UseFont = false;
+            this.ProvinciaLabel.Text = "Provincia";
+            // 
+            // ProvinciaField
+            // 
+            this.ProvinciaField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.ProvinciaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[ProvinciaDesc]")});
+            this.ProvinciaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.ProvinciaField.LocationFloat = new DevExpress.Utils.PointFloat(248.2296F, 190.5996F);
+            this.ProvinciaField.Name = "ProvinciaField";
+            this.ProvinciaField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.ProvinciaField.SizeF = new System.Drawing.SizeF(162F, 18F);
+            this.ProvinciaField.StylePriority.UseBorders = false;
+            this.ProvinciaField.StylePriority.UseFont = false;
+            this.ProvinciaField.StylePriority.UsePadding = false;
+            // 
+            // CantonLabel
+            // 
+            this.CantonLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.CantonLabel.LocationFloat = new DevExpress.Utils.PointFloat(437.2123F, 178.5996F);
+            this.CantonLabel.Name = "CantonLabel";
+            this.CantonLabel.SizeF = new System.Drawing.SizeF(38.23209F, 12F);
+            this.CantonLabel.StylePriority.UseFont = false;
+            this.CantonLabel.Text = "Cantón";
+            // 
+            // CantonField
+            // 
+            this.CantonField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.CantonField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[CantonDesc]")});
+            this.CantonField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.CantonField.LocationFloat = new DevExpress.Utils.PointFloat(410.2297F, 190.5996F);
+            this.CantonField.Name = "CantonField";
+            this.CantonField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.CantonField.SizeF = new System.Drawing.SizeF(112.3224F, 18F);
+            this.CantonField.StylePriority.UseBorders = false;
+            this.CantonField.StylePriority.UseFont = false;
+            this.CantonField.StylePriority.UsePadding = false;
+            // 
+            // DistritoLabel
+            // 
+            this.DistritoLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.DistritoLabel.LocationFloat = new DevExpress.Utils.PointFloat(621.7549F, 178.5996F);
+            this.DistritoLabel.Name = "DistritoLabel";
+            this.DistritoLabel.SizeF = new System.Drawing.SizeF(45.51257F, 12F);
+            this.DistritoLabel.StylePriority.UseFont = false;
+            this.DistritoLabel.Text = "Distrito";
+            // 
+            // DistritoField
+            // 
+            this.DistritoField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.DistritoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[DistritoDesc]")});
+            this.DistritoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.DistritoField.LocationFloat = new DevExpress.Utils.PointFloat(522.5521F, 190.5996F);
+            this.DistritoField.Name = "DistritoField";
+            this.DistritoField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.DistritoField.SizeF = new System.Drawing.SizeF(222.4479F, 18F);
+            this.DistritoField.StylePriority.UseBorders = false;
+            this.DistritoField.StylePriority.UseFont = false;
+            this.DistritoField.StylePriority.UsePadding = false;
+            // 
+            // DirecciónExactaLabel
+            // 
+            this.DirecciónExactaLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right) 
+                        | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.DirecciónExactaLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.DirecciónExactaLabel.LocationFloat = new DevExpress.Utils.PointFloat(5.000005F, 209.5997F);
+            this.DirecciónExactaLabel.Name = "DirecciónExactaLabel";
+            this.DirecciónExactaLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
+            this.DirecciónExactaLabel.SizeF = new System.Drawing.SizeF(740F, 16F);
+            this.DirecciónExactaLabel.StylePriority.UseBorders = false;
+            this.DirecciónExactaLabel.StylePriority.UseFont = false;
+            this.DirecciónExactaLabel.StylePriority.UsePadding = false;
+            this.DirecciónExactaLabel.Text = "Dirección exacta (Otras señas):";
+            // 
+            // DirecciónExactaField
+            // 
+            this.DirecciónExactaField.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right) 
+                        | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.DirecciónExactaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[DirecciónExacta]")});
+            this.DirecciónExactaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.DirecciónExactaField.LocationFloat = new DevExpress.Utils.PointFloat(3.999997F, 226.5997F);
+            this.DirecciónExactaField.Name = "DirecciónExactaField";
+            this.DirecciónExactaField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.DirecciónExactaField.SizeF = new System.Drawing.SizeF(741.0001F, 18F);
+            this.DirecciónExactaField.StylePriority.UseBorders = false;
+            this.DirecciónExactaField.StylePriority.UseFont = false;
+            this.DirecciónExactaField.StylePriority.UsePadding = false;
+            // 
+            // Label
+            // 
+            this.Label.BackColor = System.Drawing.Color.Red;
+            this.Label.ForeColor = System.Drawing.Color.White;
+            this.Label.LocationFloat = new DevExpress.Utils.PointFloat(3.999997F, 247.5997F);
+            this.Label.Name = "Label";
+            this.Label.SizeF = new System.Drawing.SizeF(741.0001F, 18F);
+            this.Label.Text = "OCUPACIÓN O ACTIVIDAD ACTUAL";
+            this.Label.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            // 
+            // OcupacionField
+            // 
+            this.OcupacionField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.OcupacionField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif([Ocupacion]=1, \'Asalariado\',[Ocupacion]=2, \'Trabajador independiente\', \'No ge" +
+                                "nerador de ingresos (Ama de casa, Dependiente, Pensionado, etc.)\')")});
+            this.OcupacionField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.OcupacionField.LocationFloat = new DevExpress.Utils.PointFloat(5.000005F, 266.5996F);
+            this.OcupacionField.Name = "OcupacionField";
+            this.OcupacionField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.OcupacionField.SizeF = new System.Drawing.SizeF(212F, 18F);
+            this.OcupacionField.StylePriority.UseBorders = false;
+            this.OcupacionField.StylePriority.UseFont = false;
+            this.OcupacionField.StylePriority.UsePadding = false;
+            // 
+            // TINaturalezaNegocioField
+            // 
+            this.TINaturalezaNegocioField.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
+            this.TINaturalezaNegocioField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[TINaturalezaNegocioDesc]")});
+            this.TINaturalezaNegocioField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.TINaturalezaNegocioField.LocationFloat = new DevExpress.Utils.PointFloat(217F, 266.5997F);
+            this.TINaturalezaNegocioField.Name = "TINaturalezaNegocioField";
+            this.TINaturalezaNegocioField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.TINaturalezaNegocioField.SizeF = new System.Drawing.SizeF(296.3467F, 18F);
+            this.TINaturalezaNegocioField.StylePriority.UseBorders = false;
+            this.TINaturalezaNegocioField.StylePriority.UseFont = false;
+            this.TINaturalezaNegocioField.StylePriority.UsePadding = false;
+            // 
+            // NGDetalleField
+            // 
+            this.NGDetalleField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.NGDetalleField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[NGDetalleDesc]")});
+            this.NGDetalleField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.NGDetalleField.LocationFloat = new DevExpress.Utils.PointFloat(513.3467F, 266.5996F);
+            this.NGDetalleField.Name = "NGDetalleField";
+            this.NGDetalleField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.NGDetalleField.SizeF = new System.Drawing.SizeF(231.6532F, 18F);
+            this.NGDetalleField.StylePriority.UseBorders = false;
+            this.NGDetalleField.StylePriority.UseFont = false;
+            this.NGDetalleField.StylePriority.UsePadding = false;
+            // 
+            // label1
+            // 
+            this.label1.BackColor = System.Drawing.Color.Red;
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.LocationFloat = new DevExpress.Utils.PointFloat(3.999997F, 287.5996F);
+            this.label1.Name = "label1";
+            this.label1.SizeF = new System.Drawing.SizeF(741F, 18.00003F);
+            this.label1.Text = "DATOS DE LA EMPRESA O LUGAR QUE GENERA SUS INGRESOS EN CASO DE SER INDEPENDIENTE";
+            this.label1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            // 
+            // NombreEmpresaLabel
+            // 
+            this.NombreEmpresaLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.NombreEmpresaLabel.LocationFloat = new DevExpress.Utils.PointFloat(133.3037F, 305.5997F);
+            this.NombreEmpresaLabel.Name = "NombreEmpresaLabel";
+            this.NombreEmpresaLabel.SizeF = new System.Drawing.SizeF(156.1647F, 12F);
+            this.NombreEmpresaLabel.StylePriority.UseFont = false;
+            this.NombreEmpresaLabel.Text = "Nombre de la empresa o negocio:";
+            // 
+            // NombreEmpresaField
+            // 
+            this.NombreEmpresaField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.NombreEmpresaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[NombreEmpresa]")});
+            this.NombreEmpresaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.NombreEmpresaField.LocationFloat = new DevExpress.Utils.PointFloat(5.000005F, 317.5996F);
+            this.NombreEmpresaField.Name = "NombreEmpresaField";
+            this.NombreEmpresaField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.NombreEmpresaField.SizeF = new System.Drawing.SizeF(388.5521F, 18F);
+            this.NombreEmpresaField.StylePriority.UseBorders = false;
+            this.NombreEmpresaField.StylePriority.UseFont = false;
+            this.NombreEmpresaField.StylePriority.UsePadding = false;
+            // 
+            // ActividadEmpresaLabel
+            // 
+            this.ActividadEmpresaLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.ActividadEmpresaLabel.LocationFloat = new DevExpress.Utils.PointFloat(496F, 305.5997F);
+            this.ActividadEmpresaLabel.Name = "ActividadEmpresaLabel";
+            this.ActividadEmpresaLabel.SizeF = new System.Drawing.SizeF(146.1256F, 12F);
+            this.ActividadEmpresaLabel.StylePriority.UseFont = false;
+            this.ActividadEmpresaLabel.Text = "Actividad de la empresa o negocio:";
+            // 
+            // ActividadEmpresaField
+            // 
+            this.ActividadEmpresaField.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right) 
+                        | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.ActividadEmpresaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[ActividadEmpresaDesc]")});
+            this.ActividadEmpresaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.ActividadEmpresaField.LocationFloat = new DevExpress.Utils.PointFloat(393.552F, 317.5996F);
+            this.ActividadEmpresaField.Name = "ActividadEmpresaField";
+            this.ActividadEmpresaField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.ActividadEmpresaField.SizeF = new System.Drawing.SizeF(351.448F, 18F);
+            this.ActividadEmpresaField.StylePriority.UseBorders = false;
+            this.ActividadEmpresaField.StylePriority.UseFont = false;
+            this.ActividadEmpresaField.StylePriority.UsePadding = false;
+            // 
+            // CargoEmpresaLabel
+            // 
+            this.CargoEmpresaLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.CargoEmpresaLabel.LocationFloat = new DevExpress.Utils.PointFloat(76.59989F, 335.5996F);
+            this.CargoEmpresaLabel.Name = "CargoEmpresaLabel";
+            this.CargoEmpresaLabel.SizeF = new System.Drawing.SizeF(102.9295F, 12F);
+            this.CargoEmpresaLabel.StylePriority.UseFont = false;
+            this.CargoEmpresaLabel.Text = "Cargo que desempeña:";
+            // 
+            // CargoEmpresaField
+            // 
+            this.CargoEmpresaField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.CargoEmpresaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[CargoEmpresaDesc]")});
+            this.CargoEmpresaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.CargoEmpresaField.LocationFloat = new DevExpress.Utils.PointFloat(3.999997F, 347.5996F);
+            this.CargoEmpresaField.Name = "CargoEmpresaField";
+            this.CargoEmpresaField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.CargoEmpresaField.SizeF = new System.Drawing.SizeF(417F, 18F);
+            this.CargoEmpresaField.StylePriority.UseBorders = false;
+            this.CargoEmpresaField.StylePriority.UseFont = false;
+            this.CargoEmpresaField.StylePriority.UsePadding = false;
+            // 
+            // TelefonoEmpresaLabel
+            // 
+            this.TelefonoEmpresaLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.TelefonoEmpresaLabel.LocationFloat = new DevExpress.Utils.PointFloat(486F, 335.5996F);
+            this.TelefonoEmpresaLabel.Name = "TelefonoEmpresaLabel";
+            this.TelefonoEmpresaLabel.SizeF = new System.Drawing.SizeF(51.67294F, 12F);
+            this.TelefonoEmpresaLabel.StylePriority.UseFont = false;
+            this.TelefonoEmpresaLabel.Text = "Teléfono:";
+            // 
+            // TelefonoEmpresaField
+            // 
+            this.TelefonoEmpresaField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.TelefonoEmpresaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[TelefonoEmpresa]")});
+            this.TelefonoEmpresaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.TelefonoEmpresaField.LocationFloat = new DevExpress.Utils.PointFloat(421F, 347.5996F);
+            this.TelefonoEmpresaField.Name = "TelefonoEmpresaField";
+            this.TelefonoEmpresaField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.TelefonoEmpresaField.SizeF = new System.Drawing.SizeF(162F, 18F);
+            this.TelefonoEmpresaField.StylePriority.UseBorders = false;
+            this.TelefonoEmpresaField.StylePriority.UseFont = false;
+            this.TelefonoEmpresaField.StylePriority.UsePadding = false;
+            // 
+            // FaxEmpresaLabel
+            // 
+            this.FaxEmpresaLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.FaxEmpresaLabel.LocationFloat = new DevExpress.Utils.PointFloat(661.3468F, 335.5996F);
+            this.FaxEmpresaLabel.Name = "FaxEmpresaLabel";
+            this.FaxEmpresaLabel.SizeF = new System.Drawing.SizeF(23.35413F, 12F);
+            this.FaxEmpresaLabel.StylePriority.UseFont = false;
+            this.FaxEmpresaLabel.Text = "Fax:";
+            // 
+            // FaxEmpresaField
+            // 
+            this.FaxEmpresaField.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right) 
+                        | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.FaxEmpresaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[FaxEmpresa]")});
+            this.FaxEmpresaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.FaxEmpresaField.LocationFloat = new DevExpress.Utils.PointFloat(583F, 347.5996F);
+            this.FaxEmpresaField.Name = "FaxEmpresaField";
+            this.FaxEmpresaField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.FaxEmpresaField.SizeF = new System.Drawing.SizeF(162F, 18F);
+            this.FaxEmpresaField.StylePriority.UseBorders = false;
+            this.FaxEmpresaField.StylePriority.UseFont = false;
+            this.FaxEmpresaField.StylePriority.UsePadding = false;
+            // 
+            // label2
+            // 
+            this.label2.BackColor = System.Drawing.Color.Red;
+            this.label2.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.LocationFloat = new DevExpress.Utils.PointFloat(5.000005F, 366.5996F);
+            this.label2.Name = "label2";
+            this.label2.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
+            this.label2.SizeF = new System.Drawing.SizeF(74.24768F, 30.99994F);
+            this.label2.StylePriority.UseFont = false;
+            this.label2.StylePriority.UsePadding = false;
+            this.label2.StylePriority.UseTextAlignment = false;
+            this.label2.Text = "DOMICILIO COMERCIAL";
+            this.label2.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            // 
+            // PaisTrabajoLabel
+            // 
+            this.PaisTrabajoLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.PaisTrabajoLabel.LocationFloat = new DevExpress.Utils.PointFloat(157.8432F, 365.5996F);
+            this.PaisTrabajoLabel.Name = "PaisTrabajoLabel";
+            this.PaisTrabajoLabel.SizeF = new System.Drawing.SizeF(24.23117F, 11.99994F);
+            this.PaisTrabajoLabel.StylePriority.UseFont = false;
+            this.PaisTrabajoLabel.Text = "País:";
+            // 
+            // PaisTrabajoField
+            // 
+            this.PaisTrabajoField.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
+            this.PaisTrabajoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PaisTrabajoDesc]")});
+            this.PaisTrabajoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.PaisTrabajoField.LocationFloat = new DevExpress.Utils.PointFloat(79.24769F, 379.5995F);
+            this.PaisTrabajoField.Name = "PaisTrabajoField";
+            this.PaisTrabajoField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.PaisTrabajoField.SizeF = new System.Drawing.SizeF(179.7523F, 18.00003F);
+            this.PaisTrabajoField.StylePriority.UseBorders = false;
+            this.PaisTrabajoField.StylePriority.UseFont = false;
+            this.PaisTrabajoField.StylePriority.UsePadding = false;
+            // 
+            // ProvinciaTrabajoLabel
+            // 
+            this.ProvinciaTrabajoLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.ProvinciaTrabajoLabel.LocationFloat = new DevExpress.Utils.PointFloat(307.1492F, 365.5996F);
+            this.ProvinciaTrabajoLabel.Name = "ProvinciaTrabajoLabel";
+            this.ProvinciaTrabajoLabel.SizeF = new System.Drawing.SizeF(54F, 12F);
+            this.ProvinciaTrabajoLabel.StylePriority.UseFont = false;
+            this.ProvinciaTrabajoLabel.Text = "Provincia:";
+            // 
+            // ProvinciaTrabajoField
+            // 
+            this.ProvinciaTrabajoField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.ProvinciaTrabajoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[ProvinciaTrabajoDesc]")});
+            this.ProvinciaTrabajoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.ProvinciaTrabajoField.LocationFloat = new DevExpress.Utils.PointFloat(259F, 379.5996F);
+            this.ProvinciaTrabajoField.Name = "ProvinciaTrabajoField";
+            this.ProvinciaTrabajoField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.ProvinciaTrabajoField.SizeF = new System.Drawing.SizeF(162F, 18F);
+            this.ProvinciaTrabajoField.StylePriority.UseBorders = false;
+            this.ProvinciaTrabajoField.StylePriority.UseFont = false;
+            this.ProvinciaTrabajoField.StylePriority.UsePadding = false;
+            // 
+            // CantonTrabajoLabel
+            // 
+            this.CantonTrabajoLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.CantonTrabajoLabel.LocationFloat = new DevExpress.Utils.PointFloat(480.944F, 365.5996F);
+            this.CantonTrabajoLabel.Name = "CantonTrabajoLabel";
+            this.CantonTrabajoLabel.SizeF = new System.Drawing.SizeF(32.40277F, 12F);
+            this.CantonTrabajoLabel.StylePriority.UseFont = false;
+            this.CantonTrabajoLabel.Text = "Cantón:";
+            // 
+            // CantonTrabajoField
+            // 
+            this.CantonTrabajoField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.CantonTrabajoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[CantonDesc]")});
+            this.CantonTrabajoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.CantonTrabajoField.LocationFloat = new DevExpress.Utils.PointFloat(421F, 379.5995F);
+            this.CantonTrabajoField.Name = "CantonTrabajoField";
+            this.CantonTrabajoField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.CantonTrabajoField.SizeF = new System.Drawing.SizeF(162F, 18F);
+            this.CantonTrabajoField.StylePriority.UseBorders = false;
+            this.CantonTrabajoField.StylePriority.UseFont = false;
+            this.CantonTrabajoField.StylePriority.UsePadding = false;
+            // 
+            // DistritoTrabajoLabel
+            // 
+            this.DistritoTrabajoLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.DistritoTrabajoLabel.LocationFloat = new DevExpress.Utils.PointFloat(648.1488F, 367.5996F);
+            this.DistritoTrabajoLabel.Name = "DistritoTrabajoLabel";
+            this.DistritoTrabajoLabel.SizeF = new System.Drawing.SizeF(36.55209F, 11.99994F);
+            this.DistritoTrabajoLabel.StylePriority.UseFont = false;
+            this.DistritoTrabajoLabel.Text = "Distrito:";
+            // 
+            // DistritoTrabajoField
+            // 
+            this.DistritoTrabajoField.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right) 
+                        | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.DistritoTrabajoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[DistritoDesc]")});
+            this.DistritoTrabajoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.DistritoTrabajoField.LocationFloat = new DevExpress.Utils.PointFloat(583.0001F, 379.5995F);
+            this.DistritoTrabajoField.Name = "DistritoTrabajoField";
+            this.DistritoTrabajoField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.DistritoTrabajoField.SizeF = new System.Drawing.SizeF(162F, 18F);
+            this.DistritoTrabajoField.StylePriority.UseBorders = false;
+            this.DistritoTrabajoField.StylePriority.UseFont = false;
+            this.DistritoTrabajoField.StylePriority.UsePadding = false;
+            // 
+            // DireccionExactaTrabajoLabel
+            // 
+            this.DireccionExactaTrabajoLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right) 
+                        | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.DireccionExactaTrabajoLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.DireccionExactaTrabajoLabel.LocationFloat = new DevExpress.Utils.PointFloat(5.000005F, 398.5996F);
+            this.DireccionExactaTrabajoLabel.Name = "DireccionExactaTrabajoLabel";
+            this.DireccionExactaTrabajoLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
+            this.DireccionExactaTrabajoLabel.SizeF = new System.Drawing.SizeF(740F, 16F);
+            this.DireccionExactaTrabajoLabel.StylePriority.UseBorders = false;
+            this.DireccionExactaTrabajoLabel.StylePriority.UseFont = false;
+            this.DireccionExactaTrabajoLabel.StylePriority.UsePadding = false;
+            this.DireccionExactaTrabajoLabel.Text = "Dirección exacta (Otras señas):";
+            // 
+            // DireccionExactaTrabajoField
+            // 
+            this.DireccionExactaTrabajoField.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right) 
+                        | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.DireccionExactaTrabajoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[DireccionExactaTrabajo]")});
+            this.DireccionExactaTrabajoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.DireccionExactaTrabajoField.LocationFloat = new DevExpress.Utils.PointFloat(5.000005F, 415.5995F);
+            this.DireccionExactaTrabajoField.Name = "DireccionExactaTrabajoField";
+            this.DireccionExactaTrabajoField.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.DireccionExactaTrabajoField.SizeF = new System.Drawing.SizeF(740.0001F, 18F);
+            this.DireccionExactaTrabajoField.StylePriority.UseBorders = false;
+            this.DireccionExactaTrabajoField.StylePriority.UseFont = false;
+            this.DireccionExactaTrabajoField.StylePriority.UsePadding = false;
+            // 
+            // label3
+            // 
+            this.label3.BackColor = System.Drawing.Color.Red;
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.LocationFloat = new DevExpress.Utils.PointFloat(5.000005F, 435.5995F);
+            this.label3.Name = "label3";
+            this.label3.SizeF = new System.Drawing.SizeF(740.0001F, 17.99997F);
+            this.label3.Text = "ORIGEN DE LOS FONDOS";
+            this.label3.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            // 
+            // OrigenFondosLabel
+            // 
+            this.OrigenFondosLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.OrigenFondosLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.OrigenFondosLabel.LocationFloat = new DevExpress.Utils.PointFloat(4.999998F, 455.5995F);
+            this.OrigenFondosLabel.Name = "OrigenFondosLabel";
+            this.OrigenFondosLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
+            this.OrigenFondosLabel.SizeF = new System.Drawing.SizeF(305.701F, 16F);
+            this.OrigenFondosLabel.StylePriority.UseBorders = false;
+            this.OrigenFondosLabel.StylePriority.UseFont = false;
+            this.OrigenFondosLabel.StylePriority.UsePadding = false;
+            this.OrigenFondosLabel.Text = "Origen de los Fondos: (¿De dónde provienen y en qué forma?):";
+            // 
+            // OrigenFondosField
+            // 
+            this.OrigenFondosField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.OrigenFondosField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[OrigenFondos]")});
+            this.OrigenFondosField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.OrigenFondosField.LocationFloat = new DevExpress.Utils.PointFloat(310.701F, 456.5995F);
+            this.OrigenFondosField.Name = "OrigenFondosField";
+            this.OrigenFondosField.SizeF = new System.Drawing.SizeF(434.299F, 15F);
+            this.OrigenFondosField.StylePriority.UseBorders = false;
+            this.OrigenFondosField.StylePriority.UseFont = false;
+            // 
+            // PaisActividadEconomicaLabel
+            // 
+            this.PaisActividadEconomicaLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.PaisActividadEconomicaLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.PaisActividadEconomicaLabel.LocationFloat = new DevExpress.Utils.PointFloat(4.999997F, 473.5995F);
+            this.PaisActividadEconomicaLabel.Name = "PaisActividadEconomicaLabel";
+            this.PaisActividadEconomicaLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
+            this.PaisActividadEconomicaLabel.SizeF = new System.Drawing.SizeF(305.701F, 16F);
+            this.PaisActividadEconomicaLabel.StylePriority.UseBorders = false;
+            this.PaisActividadEconomicaLabel.StylePriority.UseFont = false;
+            this.PaisActividadEconomicaLabel.StylePriority.UsePadding = false;
+            this.PaisActividadEconomicaLabel.Text = "¿En qué país desarrolla la mayoría de sus actividades económicas?";
+            // 
+            // PaisActividadEconomicaField
+            // 
+            this.PaisActividadEconomicaField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.PaisActividadEconomicaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PaisActividadEconomicaDesc]")});
+            this.PaisActividadEconomicaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.PaisActividadEconomicaField.LocationFloat = new DevExpress.Utils.PointFloat(310.701F, 473.5995F);
+            this.PaisActividadEconomicaField.Name = "PaisActividadEconomicaField";
+            this.PaisActividadEconomicaField.SizeF = new System.Drawing.SizeF(434.299F, 16.00003F);
+            this.PaisActividadEconomicaField.StylePriority.UseBorders = false;
+            this.PaisActividadEconomicaField.StylePriority.UseFont = false;
+            // 
+            // IngresoMensualEstimadoLabel
+            // 
+            this.IngresoMensualEstimadoLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.IngresoMensualEstimadoLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.IngresoMensualEstimadoLabel.LocationFloat = new DevExpress.Utils.PointFloat(5.000005F, 491.5995F);
+            this.IngresoMensualEstimadoLabel.Name = "IngresoMensualEstimadoLabel";
+            this.IngresoMensualEstimadoLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
+            this.IngresoMensualEstimadoLabel.SizeF = new System.Drawing.SizeF(128.3037F, 16F);
+            this.IngresoMensualEstimadoLabel.StylePriority.UseBorders = false;
+            this.IngresoMensualEstimadoLabel.StylePriority.UseFont = false;
+            this.IngresoMensualEstimadoLabel.StylePriority.UsePadding = false;
+            this.IngresoMensualEstimadoLabel.Text = "Ingreso mensual estimado:";
+            // 
+            // IngresoMensualEstimadoField
+            // 
+            this.IngresoMensualEstimadoField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.IngresoMensualEstimadoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", resources.GetString("IngresoMensualEstimadoField.ExpressionBindings"))});
+            this.IngresoMensualEstimadoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.IngresoMensualEstimadoField.LocationFloat = new DevExpress.Utils.PointFloat(133.3037F, 491.5995F);
+            this.IngresoMensualEstimadoField.Name = "IngresoMensualEstimadoField";
+            this.IngresoMensualEstimadoField.SizeF = new System.Drawing.SizeF(191.6962F, 16F);
+            this.IngresoMensualEstimadoField.StylePriority.UseBorders = false;
+            this.IngresoMensualEstimadoField.StylePriority.UseFont = false;
+            // 
+            // FondosPorMovilizarLabel
+            // 
+            this.FondosPorMovilizarLabel.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
+            this.FondosPorMovilizarLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.FondosPorMovilizarLabel.LocationFloat = new DevExpress.Utils.PointFloat(325F, 491.5995F);
+            this.FondosPorMovilizarLabel.Name = "FondosPorMovilizarLabel";
+            this.FondosPorMovilizarLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.FondosPorMovilizarLabel.SizeF = new System.Drawing.SizeF(239.7393F, 16F);
+            this.FondosPorMovilizarLabel.StylePriority.UseBorders = false;
+            this.FondosPorMovilizarLabel.StylePriority.UseFont = false;
+            this.FondosPorMovilizarLabel.StylePriority.UsePadding = false;
+            this.FondosPorMovilizarLabel.Text = "Los fondos por movilizar son propios o de terceros?";
+            // 
+            // FondosPorMovilizarField
+            // 
+            this.FondosPorMovilizarField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.FondosPorMovilizarField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif([FondosPorMovilizar]=1, \'Propios\',\'Terceros\')")});
+            this.FondosPorMovilizarField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.FondosPorMovilizarField.LocationFloat = new DevExpress.Utils.PointFloat(564.7392F, 491.5995F);
+            this.FondosPorMovilizarField.Name = "FondosPorMovilizarField";
+            this.FondosPorMovilizarField.SizeF = new System.Drawing.SizeF(180.2608F, 16F);
+            this.FondosPorMovilizarField.StylePriority.UseBorders = false;
+            this.FondosPorMovilizarField.StylePriority.UseFont = false;
+            // 
+            // DesempenaActividadesLabel
+            // 
+            this.DesempenaActividadesLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.DesempenaActividadesLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.DesempenaActividadesLabel.LocationFloat = new DevExpress.Utils.PointFloat(5.999995F, 510.5995F);
+            this.DesempenaActividadesLabel.Name = "DesempenaActividadesLabel";
+            this.DesempenaActividadesLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
+            this.DesempenaActividadesLabel.SizeF = new System.Drawing.SizeF(318.9999F, 29.44083F);
+            this.DesempenaActividadesLabel.StylePriority.UseBorders = false;
+            this.DesempenaActividadesLabel.StylePriority.UseFont = false;
+            this.DesempenaActividadesLabel.StylePriority.UsePadding = false;
+            this.DesempenaActividadesLabel.Text = "¿Se desempeña entre las actividades citadas en el Artículo 15 de la Ley 8204 (man" +
+                "ejo de fondos de terceros físicos o jurídicos)?";
+            // 
+            // DesempenaActividadesField
+            // 
+            this.DesempenaActividadesField.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
+            this.DesempenaActividadesField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif([DesempenaActividades]=1, \'Si\',\'No\')")});
+            this.DesempenaActividadesField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.DesempenaActividadesField.LocationFloat = new DevExpress.Utils.PointFloat(325F, 522.0403F);
+            this.DesempenaActividadesField.Name = "DesempenaActividadesField";
+            this.DesempenaActividadesField.SizeF = new System.Drawing.SizeF(144.6538F, 18.00012F);
+            this.DesempenaActividadesField.StylePriority.UseBorders = false;
+            this.DesempenaActividadesField.StylePriority.UseFont = false;
+            // 
+            // label4
+            // 
+            this.label4.BackColor = System.Drawing.Color.Red;
+            this.label4.ForeColor = System.Drawing.Color.White;
+            this.label4.LocationFloat = new DevExpress.Utils.PointFloat(5.999996F, 543.0405F);
+            this.label4.Name = "label4";
+            this.label4.SizeF = new System.Drawing.SizeF(739F, 18F);
+            this.label4.Text = "TIPOS DE ACTIVOS";
+            this.label4.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            // 
+            // ActivosLabel
+            // 
+            this.ActivosLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.ActivosLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.ActivosLabel.LocationFloat = new DevExpress.Utils.PointFloat(6.999995F, 563.0405F);
+            this.ActivosLabel.Name = "ActivosLabel";
+            this.ActivosLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
+            this.ActivosLabel.SizeF = new System.Drawing.SizeF(210F, 15.99994F);
+            this.ActivosLabel.StylePriority.UseBorders = false;
+            this.ActivosLabel.StylePriority.UsePadding = false;
+            this.ActivosLabel.Text = "La mayoría de sus activos corresponden a:";
+            // 
+            // ActivosField
+            // 
+            this.ActivosField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.ActivosField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", resources.GetString("ActivosField.ExpressionBindings"))});
+            this.ActivosField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.ActivosField.LocationFloat = new DevExpress.Utils.PointFloat(217F, 563.0405F);
+            this.ActivosField.Name = "ActivosField";
+            this.ActivosField.SizeF = new System.Drawing.SizeF(528.0001F, 15.99994F);
+            this.ActivosField.StylePriority.UseBorders = false;
+            this.ActivosField.StylePriority.UseFont = false;
+            // 
+            // label5
+            // 
+            this.label5.BackColor = System.Drawing.Color.Red;
+            this.label5.ForeColor = System.Drawing.Color.White;
+            this.label5.LocationFloat = new DevExpress.Utils.PointFloat(6.999995F, 582.0404F);
+            this.label5.Name = "label5";
+            this.label5.SizeF = new System.Drawing.SizeF(738F, 18F);
+            this.label5.Text = "PERSONAS EXPUESTAS POLÍTICAMENTE (PEPs)";
+            this.label5.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            // 
+            // FuncionesPublicasLabel
+            // 
+            this.FuncionesPublicasLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.FuncionesPublicasLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.FuncionesPublicasLabel.LocationFloat = new DevExpress.Utils.PointFloat(7.999995F, 602.0404F);
+            this.FuncionesPublicasLabel.Name = "FuncionesPublicasLabel";
+            this.FuncionesPublicasLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
+            this.FuncionesPublicasLabel.SizeF = new System.Drawing.SizeF(598.3541F, 15.99994F);
+            this.FuncionesPublicasLabel.StylePriority.UseBorders = false;
+            this.FuncionesPublicasLabel.StylePriority.UseFont = false;
+            this.FuncionesPublicasLabel.StylePriority.UsePadding = false;
+            this.FuncionesPublicasLabel.Text = "Manifiesta desempeñar o haber desempeñado algún cargo que implique funciones públ" +
+                "icas destacadas en el país o en el extranjero:";
+            // 
+            // FuncionesPublicasField
+            // 
+            this.FuncionesPublicasField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.FuncionesPublicasField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif([FuncionesPublicas]=1, \'Si\',\'No\')")});
+            this.FuncionesPublicasField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.FuncionesPublicasField.LocationFloat = new DevExpress.Utils.PointFloat(606.3541F, 602.0404F);
+            this.FuncionesPublicasField.Name = "FuncionesPublicasField";
+            this.FuncionesPublicasField.SizeF = new System.Drawing.SizeF(138.6459F, 15.99988F);
+            this.FuncionesPublicasField.StylePriority.UseBorders = false;
+            this.FuncionesPublicasField.StylePriority.UseFont = false;
+            // 
+            // PeriodoFuncionesPublicasLabel
+            // 
+            this.PeriodoFuncionesPublicasLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.PeriodoFuncionesPublicasLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.PeriodoFuncionesPublicasLabel.LocationFloat = new DevExpress.Utils.PointFloat(7.999995F, 620.0403F);
+            this.PeriodoFuncionesPublicasLabel.Name = "PeriodoFuncionesPublicasLabel";
+            this.PeriodoFuncionesPublicasLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
+            this.PeriodoFuncionesPublicasLabel.SizeF = new System.Drawing.SizeF(377.8405F, 16F);
+            this.PeriodoFuncionesPublicasLabel.StylePriority.UseBorders = false;
+            this.PeriodoFuncionesPublicasLabel.StylePriority.UseFont = false;
+            this.PeriodoFuncionesPublicasLabel.StylePriority.UsePadding = false;
+            this.PeriodoFuncionesPublicasLabel.Text = "En caso afirmativo, indique el período durante el cual desempeñó dichas funciones" +
+                ":";
+            // 
+            // PeriodoFuncionesPublicasField
+            // 
+            this.PeriodoFuncionesPublicasField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.PeriodoFuncionesPublicasField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PeriodoFuncionesPublicas]")});
+            this.PeriodoFuncionesPublicasField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.PeriodoFuncionesPublicasField.LocationFloat = new DevExpress.Utils.PointFloat(385.8405F, 620.0403F);
+            this.PeriodoFuncionesPublicasField.Name = "PeriodoFuncionesPublicasField";
+            this.PeriodoFuncionesPublicasField.SizeF = new System.Drawing.SizeF(359.1595F, 16F);
+            this.PeriodoFuncionesPublicasField.StylePriority.UseBorders = false;
+            this.PeriodoFuncionesPublicasField.StylePriority.UseFont = false;
+            // 
+            // RelacionPersonaPoliticaLabel
+            // 
+            this.RelacionPersonaPoliticaLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.RelacionPersonaPoliticaLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.RelacionPersonaPoliticaLabel.LocationFloat = new DevExpress.Utils.PointFloat(8.000001F, 638.0403F);
+            this.RelacionPersonaPoliticaLabel.Name = "RelacionPersonaPoliticaLabel";
+            this.RelacionPersonaPoliticaLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
+            this.RelacionPersonaPoliticaLabel.SizeF = new System.Drawing.SizeF(556.7394F, 16F);
+            this.RelacionPersonaPoliticaLabel.StylePriority.UseBorders = false;
+            this.RelacionPersonaPoliticaLabel.StylePriority.UseFont = false;
+            this.RelacionPersonaPoliticaLabel.StylePriority.UsePadding = false;
+            this.RelacionPersonaPoliticaLabel.Text = "Manifiesta tener relación directa (consaguinidad) o indirecta (afinidad) con una " +
+                "persona expuesta políticamente (PEP):";
+            // 
+            // RelacionPersonaPoliticaField
+            // 
+            this.RelacionPersonaPoliticaField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.RelacionPersonaPoliticaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif([RelacionPersonaPolitica]=1, \'Si\',\'No\')")});
+            this.RelacionPersonaPoliticaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.RelacionPersonaPoliticaField.LocationFloat = new DevExpress.Utils.PointFloat(564.7394F, 638.0404F);
+            this.RelacionPersonaPoliticaField.Name = "RelacionPersonaPoliticaField";
+            this.RelacionPersonaPoliticaField.SizeF = new System.Drawing.SizeF(180.1442F, 15.99994F);
+            this.RelacionPersonaPoliticaField.StylePriority.UseBorders = false;
+            this.RelacionPersonaPoliticaField.StylePriority.UseFont = false;
+            // 
+            // DetalleRelacionPersonaPoliticaLabel
+            // 
+            this.DetalleRelacionPersonaPoliticaLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.DetalleRelacionPersonaPoliticaLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.DetalleRelacionPersonaPoliticaLabel.LocationFloat = new DevExpress.Utils.PointFloat(7.999995F, 656.0403F);
+            this.DetalleRelacionPersonaPoliticaLabel.Name = "DetalleRelacionPersonaPoliticaLabel";
+            this.DetalleRelacionPersonaPoliticaLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
+            this.DetalleRelacionPersonaPoliticaLabel.SizeF = new System.Drawing.SizeF(125.3037F, 16F);
+            this.DetalleRelacionPersonaPoliticaLabel.StylePriority.UseBorders = false;
+            this.DetalleRelacionPersonaPoliticaLabel.StylePriority.UseFont = false;
+            this.DetalleRelacionPersonaPoliticaLabel.StylePriority.UsePadding = false;
+            this.DetalleRelacionPersonaPoliticaLabel.Text = "Detalle el tipo de relación:";
+            // 
+            // DetalleRelacionPersonaPoliticaField
+            // 
+            this.DetalleRelacionPersonaPoliticaField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.DetalleRelacionPersonaPoliticaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[DetalleRelacionPersonaPolitica]")});
+            this.DetalleRelacionPersonaPoliticaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.DetalleRelacionPersonaPoliticaField.LocationFloat = new DevExpress.Utils.PointFloat(133.3037F, 656.0403F);
+            this.DetalleRelacionPersonaPoliticaField.Name = "DetalleRelacionPersonaPoliticaField";
+            this.DetalleRelacionPersonaPoliticaField.SizeF = new System.Drawing.SizeF(611.5798F, 16.00006F);
+            this.DetalleRelacionPersonaPoliticaField.StylePriority.UseBorders = false;
+            this.DetalleRelacionPersonaPoliticaField.StylePriority.UseFont = false;
+            // 
+            // label6
+            // 
+            this.label6.BackColor = System.Drawing.Color.Red;
+            this.label6.ForeColor = System.Drawing.Color.White;
+            this.label6.LocationFloat = new DevExpress.Utils.PointFloat(8.999997F, 676.0403F);
+            this.label6.Name = "label6";
+            this.label6.SizeF = new System.Drawing.SizeF(735.8835F, 18F);
+            this.label6.Text = "DESCRIPCIÓN DE LA PÓLIZA";
+            this.label6.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            // 
+            // PropositoDeRelacionComercialLabel
+            // 
+            this.PropositoDeRelacionComercialLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.PropositoDeRelacionComercialLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.PropositoDeRelacionComercialLabel.LocationFloat = new DevExpress.Utils.PointFloat(9.000015F, 698.0403F);
+            this.PropositoDeRelacionComercialLabel.Name = "PropositoDeRelacionComercialLabel";
+            this.PropositoDeRelacionComercialLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.PropositoDeRelacionComercialLabel.SizeF = new System.Drawing.SizeF(366.1161F, 16F);
+            this.PropositoDeRelacionComercialLabel.StylePriority.UseBorders = false;
+            this.PropositoDeRelacionComercialLabel.StylePriority.UseFont = false;
+            this.PropositoDeRelacionComercialLabel.StylePriority.UsePadding = false;
+            this.PropositoDeRelacionComercialLabel.Text = "Propósito de relación comercial (Indicar el tipo de seguro que está adquiriendo):" +
+                "";
+            // 
+            // PropositoDeRelacionComercialField
+            // 
+            this.PropositoDeRelacionComercialField.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
+            this.PropositoDeRelacionComercialField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PropositoDeRelacionComercialDesc]")});
+            this.PropositoDeRelacionComercialField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.PropositoDeRelacionComercialField.LocationFloat = new DevExpress.Utils.PointFloat(375.1161F, 698.0403F);
+            this.PropositoDeRelacionComercialField.Name = "PropositoDeRelacionComercialField";
+            this.PropositoDeRelacionComercialField.SizeF = new System.Drawing.SizeF(171.8816F, 16.00006F);
+            this.PropositoDeRelacionComercialField.StylePriority.UseBorders = false;
+            this.PropositoDeRelacionComercialField.StylePriority.UseFont = false;
+            // 
+            // MontoPrimaLabel
+            // 
+            this.MontoPrimaLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.MontoPrimaLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.MontoPrimaLabel.LocationFloat = new DevExpress.Utils.PointFloat(546.9977F, 698.0404F);
+            this.MontoPrimaLabel.Name = "MontoPrimaLabel";
+            this.MontoPrimaLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.MontoPrimaLabel.SizeF = new System.Drawing.SizeF(74.7572F, 16F);
+            this.MontoPrimaLabel.StylePriority.UseBorders = false;
+            this.MontoPrimaLabel.StylePriority.UseFont = false;
+            this.MontoPrimaLabel.StylePriority.UsePadding = false;
+            this.MontoPrimaLabel.Text = "Monto prima:";
+            // 
+            // MontoPrimaField
+            // 
+            this.MontoPrimaField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.MontoPrimaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[MontoPrima]")});
+            this.MontoPrimaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.MontoPrimaField.LocationFloat = new DevExpress.Utils.PointFloat(621.7549F, 698.0404F);
+            this.MontoPrimaField.Name = "MontoPrimaField";
+            this.MontoPrimaField.SizeF = new System.Drawing.SizeF(123.1285F, 15.99994F);
+            this.MontoPrimaField.StylePriority.UseBorders = false;
+            this.MontoPrimaField.StylePriority.UseFont = false;
+            // 
+            // TipoDePrimaLabel
+            // 
+            this.TipoDePrimaLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.TipoDePrimaLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.TipoDePrimaLabel.LocationFloat = new DevExpress.Utils.PointFloat(9.000015F, 717.0403F);
+            this.TipoDePrimaLabel.Name = "TipoDePrimaLabel";
+            this.TipoDePrimaLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.TipoDePrimaLabel.SizeF = new System.Drawing.SizeF(73.48206F, 16F);
+            this.TipoDePrimaLabel.StylePriority.UseBorders = false;
+            this.TipoDePrimaLabel.StylePriority.UseFont = false;
+            this.TipoDePrimaLabel.StylePriority.UsePadding = false;
+            this.TipoDePrimaLabel.Text = "Tipo de prima:";
+            // 
+            // TipoDePrimaField
+            // 
+            this.TipoDePrimaField.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
+            this.TipoDePrimaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[TipoDePrimaDesc]")});
+            this.TipoDePrimaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.TipoDePrimaField.LocationFloat = new DevExpress.Utils.PointFloat(82.48208F, 717.0403F);
+            this.TipoDePrimaField.Name = "TipoDePrimaField";
+            this.TipoDePrimaField.SizeF = new System.Drawing.SizeF(165.7476F, 16F);
+            this.TipoDePrimaField.StylePriority.UseBorders = false;
+            this.TipoDePrimaField.StylePriority.UseFont = false;
+            // 
+            // PeriodicidadLabel
+            // 
+            this.PeriodicidadLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.PeriodicidadLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.PeriodicidadLabel.LocationFloat = new DevExpress.Utils.PointFloat(248.2297F, 717.0403F);
+            this.PeriodicidadLabel.Name = "PeriodicidadLabel";
+            this.PeriodicidadLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.PeriodicidadLabel.SizeF = new System.Drawing.SizeF(76.77016F, 16F);
+            this.PeriodicidadLabel.StylePriority.UseBorders = false;
+            this.PeriodicidadLabel.StylePriority.UseFont = false;
+            this.PeriodicidadLabel.StylePriority.UsePadding = false;
+            this.PeriodicidadLabel.Text = "Periodicidad:";
+            // 
+            // PeriodicidadField
+            // 
+            this.PeriodicidadField.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
+            this.PeriodicidadField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif([Periodicidad]\n=1, \'Anual\',[Periodicidad]\n=2, \'Semestral\', [Periodicidad]\n=3," +
+                                " \'Trimestral\',\'Mensual\')")});
+            this.PeriodicidadField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.PeriodicidadField.LocationFloat = new DevExpress.Utils.PointFloat(325F, 717.0403F);
+            this.PeriodicidadField.Name = "PeriodicidadField";
+            this.PeriodicidadField.SizeF = new System.Drawing.SizeF(161F, 16F);
+            this.PeriodicidadField.StylePriority.UseBorders = false;
+            this.PeriodicidadField.StylePriority.UseFont = false;
+            // 
+            // MontoValorAseguradoLabel
+            // 
+            this.MontoValorAseguradoLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.MontoValorAseguradoLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.MontoValorAseguradoLabel.LocationFloat = new DevExpress.Utils.PointFloat(486F, 717.0403F);
+            this.MontoValorAseguradoLabel.Name = "MontoValorAseguradoLabel";
+            this.MontoValorAseguradoLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.MontoValorAseguradoLabel.SizeF = new System.Drawing.SizeF(120.3541F, 16F);
+            this.MontoValorAseguradoLabel.StylePriority.UseBorders = false;
+            this.MontoValorAseguradoLabel.StylePriority.UseFont = false;
+            this.MontoValorAseguradoLabel.StylePriority.UsePadding = false;
+            this.MontoValorAseguradoLabel.Text = "Monto valor asegurado:";
+            // 
+            // MontoValorAseguradoField
+            // 
+            this.MontoValorAseguradoField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.MontoValorAseguradoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[MontoValorAsegurado]")});
+            this.MontoValorAseguradoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.MontoValorAseguradoField.LocationFloat = new DevExpress.Utils.PointFloat(606.3541F, 717.0403F);
+            this.MontoValorAseguradoField.Name = "MontoValorAseguradoField";
+            this.MontoValorAseguradoField.SizeF = new System.Drawing.SizeF(138.5294F, 16F);
+            this.MontoValorAseguradoField.StylePriority.UseBorders = false;
+            this.MontoValorAseguradoField.StylePriority.UseFont = false;
+            // 
+            // FormaDePagoDeLaPolizaLabel
+            // 
+            this.FormaDePagoDeLaPolizaLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.FormaDePagoDeLaPolizaLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.FormaDePagoDeLaPolizaLabel.LocationFloat = new DevExpress.Utils.PointFloat(9.000015F, 736.0403F);
+            this.FormaDePagoDeLaPolizaLabel.Name = "FormaDePagoDeLaPolizaLabel";
+            this.FormaDePagoDeLaPolizaLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.FormaDePagoDeLaPolizaLabel.SizeF = new System.Drawing.SizeF(134.5294F, 16F);
+            this.FormaDePagoDeLaPolizaLabel.StylePriority.UseBorders = false;
+            this.FormaDePagoDeLaPolizaLabel.StylePriority.UseFont = false;
+            this.FormaDePagoDeLaPolizaLabel.StylePriority.UsePadding = false;
+            this.FormaDePagoDeLaPolizaLabel.Text = "Forma de pago de la póliza:";
+            // 
+            // FormaDePagoDeLaPolizaField
+            // 
+            this.FormaDePagoDeLaPolizaField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.FormaDePagoDeLaPolizaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", resources.GetString("FormaDePagoDeLaPolizaField.ExpressionBindings"))});
+            this.FormaDePagoDeLaPolizaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.FormaDePagoDeLaPolizaField.LocationFloat = new DevExpress.Utils.PointFloat(143.5294F, 736.0403F);
+            this.FormaDePagoDeLaPolizaField.Name = "FormaDePagoDeLaPolizaField";
+            this.FormaDePagoDeLaPolizaField.SizeF = new System.Drawing.SizeF(601.354F, 16F);
+            this.FormaDePagoDeLaPolizaField.StylePriority.UseBorders = false;
+            this.FormaDePagoDeLaPolizaField.StylePriority.UseFont = false;
+            // 
+            // label7
+            // 
+            this.label7.BackColor = System.Drawing.Color.Red;
+            this.label7.ForeColor = System.Drawing.Color.White;
+            this.label7.LocationFloat = new DevExpress.Utils.PointFloat(8.999997F, 756.0403F);
+            this.label7.Name = "label7";
+            this.label7.SizeF = new System.Drawing.SizeF(735.8834F, 18F);
+            this.label7.Text = "CORRESPONDENCIA";
+            this.label7.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            // 
+            // MedioDeEnvioLabel
+            // 
+            this.MedioDeEnvioLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.MedioDeEnvioLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.MedioDeEnvioLabel.LocationFloat = new DevExpress.Utils.PointFloat(9.000015F, 778.0403F);
+            this.MedioDeEnvioLabel.Name = "MedioDeEnvioLabel";
+            this.MedioDeEnvioLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
+            this.MedioDeEnvioLabel.SizeF = new System.Drawing.SizeF(315.9999F, 16F);
+            this.MedioDeEnvioLabel.StylePriority.UseBorders = false;
+            this.MedioDeEnvioLabel.StylePriority.UseFont = false;
+            this.MedioDeEnvioLabel.StylePriority.UsePadding = false;
+            this.MedioDeEnvioLabel.Text = "Favor indicar el medio por el cual desea que se le envíe información:";
+            // 
+            // MedioDeEnvioField
+            // 
+            this.MedioDeEnvioField.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
+            this.MedioDeEnvioField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif([MedioDeEnvio]\n=1, \'Apartado Postal\',[MedioDeEnvio]\n=2, \'Dirección física\', [" +
+                                "MedioDeEnvio]\n=3, \'Fax\',\'Correo electrónico\')")});
+            this.MedioDeEnvioField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.MedioDeEnvioField.LocationFloat = new DevExpress.Utils.PointFloat(325F, 778.0403F);
+            this.MedioDeEnvioField.Name = "MedioDeEnvioField";
+            this.MedioDeEnvioField.SizeF = new System.Drawing.SizeF(197.5521F, 16F);
+            this.MedioDeEnvioField.StylePriority.UseBorders = false;
+            this.MedioDeEnvioField.StylePriority.UseFont = false;
+            // 
+            // MedioDeEnvioDetalleLabel
+            // 
+            this.MedioDeEnvioDetalleLabel.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
+            this.MedioDeEnvioDetalleLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.MedioDeEnvioDetalleLabel.LocationFloat = new DevExpress.Utils.PointFloat(522.5521F, 778.0403F);
+            this.MedioDeEnvioDetalleLabel.Name = "MedioDeEnvioDetalleLabel";
+            this.MedioDeEnvioDetalleLabel.SizeF = new System.Drawing.SizeF(62.59988F, 16F);
+            this.MedioDeEnvioDetalleLabel.StylePriority.UseBorders = false;
+            this.MedioDeEnvioDetalleLabel.StylePriority.UseFont = false;
+            this.MedioDeEnvioDetalleLabel.Text = "Especifique:";
+            // 
+            // MedioDeEnvioDetalleField
+            // 
+            this.MedioDeEnvioDetalleField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.MedioDeEnvioDetalleField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[MedioDeEnvioDetalle]")});
+            this.MedioDeEnvioDetalleField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.MedioDeEnvioDetalleField.LocationFloat = new DevExpress.Utils.PointFloat(585.1519F, 778.0403F);
+            this.MedioDeEnvioDetalleField.Name = "MedioDeEnvioDetalleField";
+            this.MedioDeEnvioDetalleField.SizeF = new System.Drawing.SizeF(159.7316F, 16F);
+            this.MedioDeEnvioDetalleField.StylePriority.UseBorders = false;
+            this.MedioDeEnvioDetalleField.StylePriority.UseFont = false;
+            // 
+            // label12
+            // 
+            this.label12.BackColor = System.Drawing.Color.Red;
+            this.label12.ForeColor = System.Drawing.Color.White;
+            this.label12.LocationFloat = new DevExpress.Utils.PointFloat(9.116671F, 798.0403F);
+            this.label12.Name = "label12";
+            this.label12.SizeF = new System.Drawing.SizeF(735.8834F, 18F);
+            this.label12.Text = "DECLARACIÓN JURADA";
+            this.label12.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            // 
+            // label15
+            // 
+            this.label15.Borders = DevExpress.XtraPrinting.BorderSide.Top;
+            this.label15.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.label15.LocationFloat = new DevExpress.Utils.PointFloat(187.2814F, 899.8176F);
+            this.label15.Multiline = true;
+            this.label15.Name = "label15";
+            this.label15.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 3, 0, 100F);
+            this.label15.SizeF = new System.Drawing.SizeF(213.3185F, 16.48962F);
+            this.label15.StylePriority.UseBorders = false;
+            this.label15.StylePriority.UseFont = false;
+            this.label15.StylePriority.UsePadding = false;
+            this.label15.StylePriority.UseTextAlignment = false;
+            this.label15.Text = "Firma del cliente";
+            this.label15.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopCenter;
+            // 
+            // label16
+            // 
+            this.label16.Borders = DevExpress.XtraPrinting.BorderSide.Top;
+            this.label16.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.label16.LocationFloat = new DevExpress.Utils.PointFloat(405.2527F, 899.8176F);
+            this.label16.Multiline = true;
+            this.label16.Name = "label16";
+            this.label16.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 3, 0, 100F);
+            this.label16.SizeF = new System.Drawing.SizeF(322.7843F, 16.48962F);
+            this.label16.StylePriority.UseBorders = false;
+            this.label16.StylePriority.UseFont = false;
+            this.label16.StylePriority.UsePadding = false;
+            this.label16.StylePriority.UseTextAlignment = false;
+            this.label16.Text = "Nombre y firma del asesor que completó el formulario";
+            this.label16.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopCenter;
+            // 
+            // shape2
+            // 
+            this.shape2.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0.7951837F);
+            this.shape2.Name = "shape2";
+            shapeRectangle1.Fillet = 4;
+            this.shape2.Shape = shapeRectangle1;
+            this.shape2.SizeF = new System.Drawing.SizeF(748.3461F, 969.7669F);
+            // 
+            // topMarginBand1
+            // 
+            this.topMarginBand1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+                        this.pictureBox1,
+                        this.label8,
+                        this.shape1});
+            this.topMarginBand1.HeightF = 56.56548F;
+            this.topMarginBand1.Name = "topMarginBand1";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource("img", resources.GetString("pictureBox1.ImageSource"));
+            this.pictureBox1.LocationFloat = new DevExpress.Utils.PointFloat(590.0768F, 7.06248F);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.SizeF = new System.Drawing.SizeF(113.1487F, 29.26581F);
+            // 
+            // label8
+            // 
+            this.label8.LocationFloat = new DevExpress.Utils.PointFloat(13.99999F, 7.06248F);
+            this.label8.Multiline = true;
+            this.label8.Name = "label8";
+            this.label8.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.label8.SizeF = new System.Drawing.SizeF(272.8628F, 38.2658F);
+            this.label8.Text = "FORMULARIO CONOZA A SU CLIENTE\r\nPERSONA FÍSICA";
+            // 
+            // shape1
+            // 
+            this.shape1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
+            this.shape1.Name = "shape1";
+            shapeRectangle2.Fillet = 50;
+            this.shape1.Shape = shapeRectangle2;
+            this.shape1.SizeF = new System.Drawing.SizeF(750F, 54.32829F);
+            // 
+            // bottomMarginBand1
+            // 
+            this.bottomMarginBand1.HeightF = 50F;
+            this.bottomMarginBand1.Name = "bottomMarginBand1";
+            // 
+            // jsonDataSource1
+            // 
+            this.jsonDataSource1.ConnectionName = null;
+            customJsonSource1.Json = resources.GetString("customJsonSource1.Json");
+            this.jsonDataSource1.JsonSource = customJsonSource1;
+            this.jsonDataSource1.Name = "jsonDataSource1";
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode2);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode3);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode4);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode5);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode6);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode7);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode8);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode9);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode10);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode11);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode12);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode13);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode14);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode15);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode16);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode17);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode18);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode19);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode20);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode21);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode22);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode23);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode24);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode25);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode26);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode27);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode28);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode29);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode30);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode31);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode32);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode33);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode34);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode35);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode36);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode37);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode38);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode39);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode40);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode41);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode42);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode43);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode44);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode45);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode46);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode47);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode48);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode49);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode50);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode51);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode52);
+            jsonSchemaNode1.Nodes.Add(jsonSchemaNode53);
+            this.jsonDataSource1.Schema = jsonSchemaNode1;
+            // 
+            // KYC_Persona
+            // 
+            this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
+                        this.Detail,
+                        this.topMarginBand1,
+                        this.bottomMarginBand1});
+            this.ComponentStorage.AddRange(new System.ComponentModel.IComponent[] {
+                        this.jsonDataSource1});
+            this.DataSource = this.jsonDataSource1;
+            this.Margins = new System.Drawing.Printing.Margins(50, 50, 57, 50);
+            this.Name = "KYC_Persona";
+            this.PageHeight = 1100;
+            this.PageWidth = 850;
+            this.Version = "22.1";
+            ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
+        }
+    }
+}
