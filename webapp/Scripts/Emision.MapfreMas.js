@@ -256,6 +256,7 @@ app.EmisionMapfreMas = (function () {
         data.Vehiculo_Otra_Poliza = app.ui.GetRadioStringValue('Vehiculo_Otra_Poliza');
         data.terceros = $('#tercerosTbl').bootstrapTable('getData');
         data.documentosrequeridos = $('#documentosrequeridosTbl').bootstrapTable('getData');
+        data.kyc = $('#formulariosTbl').bootstrapTable('getData');
         setupData = data;
         return data;
     }
