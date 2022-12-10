@@ -7,11 +7,10 @@ app.kycpersona = (function () {
     let acceptCallback = null;
 
     function Setup() {
-        app.core.Lookups(['Pais.nacionalidadPer', 'Pais.paisdenacimientoPer', 'CivilStatus.estadocivilPer', 'Gender.sexoPer', 'Paises.cod_paisPer', 'Provincias.cod_estadoPer', 'Cantones.cod_provPer', 'Distritos.cod_localidadPer', 'Paises.domiciliocomercialCod_paisPer', 'Provincias.domiciliocomercialCod_estadoPer', 'Cantones.domiciliocomercialCod_provPer', 'Distritos.domiciliocomercialCod_localidadPer',],
+        app.core.Lookups(['Pais.nacionalidadPer', 'Pais.paisdenacimientoPer', 'CivilStatus.estadocivilPer', 'Gender.sexoPer', 'Paises.cod_paisPer', 'Provincias.cod_estadoPer', 'Cantones.cod_provPer', 'Distritos.cod_localidadPer', 'Paises.domiciliocomercialCod_paisPer', 'Provincias.domiciliocomercialCod_estadoPer', 'Cantones.domiciliocomercialCod_provPer', 'Distritos.domiciliocomercialCod_localidadPer'],
             function () {
             }, `cod_pais=CRI`);
     };
-
 
     function MapInputToObject() {
         var data = {
@@ -31,7 +30,7 @@ app.kycpersona = (function () {
             telefonoresidenciaPer: $('#telefonoresidenciaPer').val(),
             telefonocelularPer: $('#telefonocelularPer').val(),
             faxPer: $('#faxPer').val(),
-            apartadoPostalPer: $('#apartadoPostalPer').val(),
+            apartadopostalPer: $('#apartadopostalPer').val(),
             correoelectronicoPer: $('#correoelectronicoPer').val(),
             cod_paisPer: app.ui.GetDropDownNumericValue('#cod_paisPer'),
             cod_estadoPer: app.ui.GetDropDownNumericValue('#cod_estadoPer'),
@@ -94,7 +93,7 @@ app.kycpersona = (function () {
         $('#telefonoresidenciaPer').val(data.telefonoresidenciaPer);
         $('#telefonocelularPer').val(data.telefonocelularPer);
         $('#faxPer').val(data.faxPer);
-        $('#apartadoPostalPer').val(data.apartadoPostalPer);
+        $('#apartadopostalPer').val(data.apartadopostalPer);
         $('#correoelectronicoPer').val(data.correoelectronicoPer);
         $('#cod_paisPer').val(data.cod_paisPer);
         app.ui.SetDropDownNumericValue('#cod_paisPer', data.cod_paisPer, true);
@@ -222,11 +221,12 @@ app.kycpersona = (function () {
             event.preventDefault();
         });
 
-        $('#kycpersonaPerEdtFormCancel').click(function () {
-            app.ui.ButtonDoing('#kycpersonaPerEdtFormCancel');
-            setTimeout(() => { app.ui.ButtonDone('#kycpersonaPerEdtFormCancel'); }, 3000);
-            event.preventDefault();
-        });
+
+        //$('#kycpersonaPerEdtFormCancel').click(function () {
+        //    app.ui.ButtonDoing('#kycpersonaPerEdtFormCancel');
+        //    setTimeout(() => { app.ui.ButtonDone('#kycpersonaPerEdtFormCancel'); }, 3000);
+        //    event.preventDefault();
+        //});
 
     };
 
@@ -240,10 +240,112 @@ app.kycpersona = (function () {
         $("#kycpersonaPerEdtForm").validate({
             errorPlacement: app.ui.ErrorPlacement,
             rules: {
-                correoelectronicoPer: { email: true },
+                primerapellidoPer: { required: true },
+                segundoapellidoPer: { required: true },
+                nombrePer: { required: true },
+                codigodeclientePer: { required: true },
+                numerodeidentificacionPer: { required: true },
+                tipodeidentificacionPer: { required: true },
+                fechadecaducidadPer: { required: true },
+                nacionalidadPer: { required: true },
+                fechadenacimientoPer: { required: true },
+                paisdenacimientoPer: { required: true },
+                profesionPer: { required: true },
+                estadocivilPer: { required: true },
+                sexoPer: { required: true },
+                telefonoresidenciaPer: { required: true },
+                telefonocelularPer: { required: true },
+                faxPer: { required: true },
+                apartadopostalPer: { required: true },
+                correoelectronicoPer: { required: true, email: true },
+                cod_paisPer: { required: true },
+                cod_estadoPer: { required: true },
+                cod_provPer: { required: true },
+                cod_localidadPer: { required: true },
+                direccionexactaPer: { required: true },
+                OcupacionPer: { required: true },
+                nombreempresaPer: { required: true },
+                actividadempresaPer: { required: true },
+                cargoempresaPer: { required: true },
+                telefonoempresaPer: { required: true },
+                faxempresaPer: { required: true },
+                domiciliocomercialCod_paisPer: { required: true },
+                domiciliocomercialCod_estadoPer: { required: true },
+                domiciliocomercialCod_provPer: { required: true },
+                domiciliocomercialCod_localidadPer: { required: true },
+                domiciliocomercialDireccionexactaPer: { required: true },
+                correspondenciaOrigendelosfondosPer: { required: true },
+                paismayoractividadPer: { required: true },
+                ingresomensualestimadoPer: { required: true },
+                fondospormivilizarPer: { required: true },
+                actividadesart15Per: { required: true },
+                activoscorrespondenPer: { required: true },
+                pepcargoPer: { required: true },
+                pepduracionPer: { required: true },
+                peprelacionPer: { required: true },
+                peptiporelacionPer: { required: true },
+                propositorelacioncomercialPer: { required: true },
+                montoprimaPer: { required: true },
+                tipodeprimaPer: { required: true },
+                periodicidadPer: { required: true },
+                montoValoraseguradoPer: { required: true },
+                formadepagodelapolizaPer: { required: true },
+                mediodeenvioPer: { required: true },
+                especifiquePer: { required: true },
             },
             messages: {
-                correoelectronicoPer: { email: 'Debe indicar un correo electrónico valido' },
+                primerapellidoPer: { required: 'Debe indicar el Primer apellido' },
+                segundoapellidoPer: { required: 'Debe indicar el Segundo apellido' },
+                nombrePer: { required: 'Debe indicar el Nombre' },
+                codigodeclientePer: { required: 'Debe indicar el Código de cliente' },
+                numerodeidentificacionPer: { required: 'Debe indicar el Número de identificación' },
+                tipodeidentificacionPer: { required: 'Debe indicar el Tipo de identificación' },
+                fechadecaducidadPer: { required: 'Debe indicar el Fecha de caducidad' },
+                nacionalidadPer: { required: 'Debe indicar el Nacionalidad' },
+                fechadenacimientoPer: { required: 'Debe indicar el Fecha de nacimiento' },
+                paisdenacimientoPer: { required: 'Debe indicar el País de nacimiento' },
+                profesionPer: { required: 'Debe indicar el Profesión' },
+                estadocivilPer: { required: 'Debe indicar el Estado civil' },
+                sexoPer: { required: 'Debe indicar el Sexo' },
+                telefonoresidenciaPer: { required: 'Debe indicar el Teléfono residencia' },
+                telefonocelularPer: { required: 'Debe indicar el Teléfono celular' },
+                faxPer: { required: 'Debe indicar el Fax' },
+                apartadopostalPer: { required: 'Debe indicar el Apartado postal' },
+                correoelectronicoPer: { required: 'Debe indicar el Correo electrónico', email: 'Debe indicar un correo electrónico valido' },
+                cod_paisPer: { required: 'Debe indicar el País' },
+                cod_estadoPer: { required: 'Debe indicar el Provincia' },
+                cod_provPer: { required: 'Debe indicar el Cantón' },
+                cod_localidadPer: { required: 'Debe indicar el Distrito' },
+                direccionexactaPer: { required: 'Debe indicar el Dirección exacta' },
+                OcupacionPer: { required: 'Debe indicar el Indique su ocupación o actividad actual' },
+                nombreempresaPer: { required: 'Debe indicar el Nombre de la empresa o negocio' },
+                actividadempresaPer: { required: 'Debe indicar el Actividad de la empresa o negocio' },
+                cargoempresaPer: { required: 'Debe indicar el Cargo que desempeña' },
+                telefonoempresaPer: { required: 'Debe indicar el Teléfono' },
+                faxempresaPer: { required: 'Debe indicar el Fax' },
+                domiciliocomercialCod_paisPer: { required: 'Debe indicar el País' },
+                domiciliocomercialCod_estadoPer: { required: 'Debe indicar el Provincia' },
+                domiciliocomercialCod_provPer: { required: 'Debe indicar el Cantón' },
+                domiciliocomercialCod_localidadPer: { required: 'Debe indicar el Distrito' },
+                domiciliocomercialDireccionexactaPer: { required: 'Debe indicar el Dirección exacta' },
+                correspondenciaOrigendelosfondosPer: { required: 'Debe indicar el Origen de los Fondos (¿De dónde provienen y en qué forma?)' },
+                paismayoractividadPer: { required: 'Debe indicar el ¿En qué país desarrolla la mayoría de sus actividades económicas?' },
+                ingresomensualestimadoPer: { required: 'Debe indicar el Ingreso mensual estimado' },
+                fondospormivilizarPer: { required: 'Debe indicar el Los fondos por movilizar son propios o de terceros?' },
+                actividadesart15Per: { required: 'Debe indicar el ¿Se desempeña entre las actividades citadas en el Artículo 15 de la Ley 8204 (manejo de fondos de terceros físicos o jurídicos)' },
+                activoscorrespondenPer: { required: 'Debe indicar el La mayoría de sus activos corresponden a' },
+                pepcargoPer: { required: 'Debe indicar el Manifiesta desempeñar o haber desempeñado algún cargo que implique funciones públicas destacadas en el país o en el extranjero' },
+                pepduracionPer: { required: 'Debe indicar el En caso afirmativo, indique el período durante el cual desempeñó dichas funciones' },
+                peprelacionPer: { required: 'Debe indicar el Manifiesta tener relación directa (consaguinidad) o indirecta (afinidad) con una persona expuesta políticamente (PEP)' },
+                peptiporelacionPer: { required: 'Debe indicar el Detalle el tipo de relación' },
+                propositorelacioncomercialPer: { required: 'Debe indicar el Propósito de relación comercial (Indicar el tipo de Seguro que está adquiriendo)' },
+                montoprimaPer: { required: 'Debe indicar el Monto prima' },
+                tipodeprimaPer: { required: 'Debe indicar el Tipo de prima' },
+                periodicidadPer: { required: 'Debe indicar el Periodicidad' },
+                montoValoraseguradoPer: { required: 'Debe indicar el Monto Valor asegurado' },
+                formadepagodelapolizaPer: { required: 'Debe indicar el Forma de pago de la póliza' },
+                mediodeenvioPer: { required: 'Debe indicar el Favor indicar el medio por el cual desea que se le envíe información' },
+                especifiquePer: { required: 'Debe indicar el Especifique' },
             }
         });
     };
@@ -254,10 +356,11 @@ app.kycpersona = (function () {
         Init: function () {
             try {
                 Controls_setup();
-                Setup_Validations();
+                //Setup_Validations();
 
                 Controls_Events();
                 Setup();
+                console.log("Inicio");
             }
             catch (err) {
                 console.error("Error Init");
@@ -278,64 +381,66 @@ app.kycpersona = (function () {
         },
         SetData: function (data) {
             if (data == null) {
-                data = {
-                    "primerapellidoPer": "",
-                    "segundoapellidoPer": "",
-                    "nombrePer": "",
-                    "codigodeclientePer": "",
-                    "numerodeidentificacionPer": "",
-                    "tipodeidentificacionPer": "",
-                    "fechadecaducidadPer": "0001-01-01T00:00:00",
-                    "nacionalidadPer": 0,
-                    "fechadenacimientoPer": "0001-01-01T00:00:00",
-                    "paisdenacimientoPer": 0,
-                    "profesionPer": 0,
-                    "estadocivilPer": 0,
-                    "sexoPer": 0,
-                    "telefonoresidenciaPer": "",
-                    "telefonocelularPer": "",
-                    "faxPer": "",
-                    "apartadoPostalPer": "",
-                    "correoelectronicoPer": "",
-                    "cod_paisPer": 0,
-                    "cod_estadoPer": 0,
-                    "cod_provPer": 0,
-                    "cod_localidadPer": 0,
-                    "direccionexactaPer": "",
-                    "OcupacionPer": null,
-                    "nombreempresaPer": "",
-                    "actividadempresaPer": "",
-                    "cargoempresaPer": "",
-                    "telefonoempresaPer": "",
-                    "faxempresaPer": "",
-                    "domiciliocomercialCod_paisPer": 0,
-                    "domiciliocomercialCod_estadoPer": 0,
-                    "domiciliocomercialCod_provPer": 0,
-                    "domiciliocomercialCod_localidadPer": 0,
-                    "domiciliocomercialDireccionexactaPer": "",
-                    "correspondenciaOrigendelosfondosPer": "",
-                    "paismayoractividadPer": "",
-                    "ingresomensualestimadoPer": 0,
-                    "fondospormivilizarPer": null,
-                    "actividadesart15Per": null,
-                    "activoscorrespondenPer": null,
-                    "pepcargoPer": null,
-                    "pepduracionPer": "",
-                    "peprelacionPer": null,
-                    "peptiporelacionPer": "",
-                    "propositorelacioncomercialPer": "",
-                    "montoprimaPer": 0,
-                    "tipodeprimaPer": "",
-                    "periodicidadPer": null,
-                    "montoValoraseguradoPer": 0,
-                    "formadepagodelapolizaPer": null,
-                    "mediodeenvioPer": null,
-                    "especifiquePer": ""
-                };
-
+                data = app.kycpersona.InitData();
             }
             setupData = data;
             MapObjectToInput(data);
+        },
+        InitData: function () {
+            return {
+                "primerapellidoPer": "",
+                "segundoapellidoPer": "",
+                "nombrePer": "",
+                "codigodeclientePer": "",
+                "numerodeidentificacionPer": "",
+                "tipodeidentificacionPer": "",
+                "fechadecaducidadPer": "0001-01-01T00:00:00",
+                "nacionalidadPer": 0,
+                "fechadenacimientoPer": "0001-01-01T00:00:00",
+                "paisdenacimientoPer": 0,
+                "profesionPer": 0,
+                "estadocivilPer": 0,
+                "sexoPer": 0,
+                "telefonoresidenciaPer": "",
+                "telefonocelularPer": "",
+                "faxPer": "",
+                "apartadoPostalPer": "",
+                "correoelectronicoPer": "",
+                "cod_paisPer": 0,
+                "cod_estadoPer": 0,
+                "cod_provPer": 0,
+                "cod_localidadPer": 0,
+                "direccionexactaPer": "",
+                "OcupacionPer": null,
+                "nombreempresaPer": "",
+                "actividadempresaPer": "",
+                "cargoempresaPer": "",
+                "telefonoempresaPer": "",
+                "faxempresaPer": "",
+                "domiciliocomercialCod_paisPer": 0,
+                "domiciliocomercialCod_estadoPer": 0,
+                "domiciliocomercialCod_provPer": 0,
+                "domiciliocomercialCod_localidadPer": 0,
+                "domiciliocomercialDireccionexactaPer": "",
+                "correspondenciaOrigendelosfondosPer": "",
+                "paismayoractividadPer": "",
+                "ingresomensualestimadoPer": 0,
+                "fondospormivilizarPer": null,
+                "actividadesart15Per": null,
+                "activoscorrespondenPer": null,
+                "pepcargoPer": null,
+                "pepduracionPer": "",
+                "peprelacionPer": null,
+                "peptiporelacionPer": "",
+                "propositorelacioncomercialPer": "",
+                "montoprimaPer": 0,
+                "tipodeprimaPer": "",
+                "periodicidadPer": null,
+                "montoValoraseguradoPer": 0,
+                "formadepagodelapolizaPer": null,
+                "mediodeenvioPer": null,
+                "especifiquePer": ""
+            };
         }
     };
 })();

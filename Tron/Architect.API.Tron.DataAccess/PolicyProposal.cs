@@ -84,7 +84,7 @@ namespace Architect.API.Tron.DataAccess
         public static Architect.API.Tron.Contracts.PolicyProposal Retrieve(int id, int companyId, IDbConnection connection = null)
         {
             Architect.API.Tron.Contracts.PolicyProposal result = null;
-            Database.Select("SELECT Id, PolicyProposal.CompanyId, AgentCode, ProposalId, InsuredId, InsuredName, Summary, IssueDate, ProposalData, SigningType, PrimaryEmailAddress, SigningRequestId, PolicyId, Status, PolicyProposal.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, PolicyProposal.UpdateDate " +
+            Database.Select("SELECT Id, PolicyProposal.CompanyId, AgentCode, ProposalId, InsuredId, InsuredName, Summary, IssueDate, ProposalData, SigningType, PrimaryEmailAddress, SigningRequestId, SignedRequest1, SigningRequest2Id, SignedRequest2, SigningRequest3Id, SignedRequest3, PolicyId, Status, PolicyProposal.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, PolicyProposal.UpdateDate " +
                               "FROM PolicyProposal LEFT JOIN UserMember um ON um.UserId = PolicyProposal.UpdateUserCode " +
                              "WHERE PolicyProposal.Id=:Id AND PolicyProposal.CompanyId=:CompanyId")
                         .AddParameter("Id", DbType.Decimal, 9, id)
@@ -99,15 +99,15 @@ namespace Architect.API.Tron.DataAccess
         /// <summary>
         /// Recupera una lista de registros en la tabla PolicyProposal.
         /// </summary>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="filter">Filtro personalizado.</param>
-        /// <param name="parameters">Lista de parametros para complemento.</param>
+        /// <param name="parameters">Lista de parámetros para complemento.</param>
         /// <param name="connection">Instancia de una conexión compartida</param>
         /// <returns>Lista de instancias de PolicyProposal</returns>
         public static List<Architect.API.Tron.Contracts.PolicyProposal> RetrieveAll(int companyId, string filter, List<DataFactory.Contracts.Parameter> parameters = null, IDbConnection connection = null)
         {
             List<Architect.API.Tron.Contracts.PolicyProposal> result = new List<Architect.API.Tron.Contracts.PolicyProposal>();
-            Database.Select("SELECT Id, PolicyProposal.CompanyId, AgentCode, ProposalId, InsuredId, InsuredName, Summary, IssueDate, ProposalData, SigningType, PrimaryEmailAddress, SigningRequestId, PolicyId, Status, PolicyProposal.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, PolicyProposal.UpdateDate " +
+            Database.Select("SELECT Id, PolicyProposal.CompanyId, AgentCode, ProposalId, InsuredId, InsuredName, Summary, IssueDate, ProposalData, SigningType, PrimaryEmailAddress, SigningRequestId, SignedRequest1, SigningRequest2Id, SignedRequest2, SigningRequest3Id, SignedRequest3, PolicyId, Status, PolicyProposal.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, PolicyProposal.UpdateDate " +
                               "FROM PolicyProposal LEFT JOIN UserMember um ON um.UserId = PolicyProposal.UpdateUserCode " +
                              "WHERE PolicyProposal.CompanyId=:CompanyId" + filter)
                         .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
@@ -141,7 +141,7 @@ namespace Architect.API.Tron.DataAccess
                 endIndex = int.MaxValue;
             }
             Database.Select("SELECT * FROM (" +
-                            "SELECT Id, PolicyProposal.CompanyId, AgentCode, ProposalId, InsuredId, InsuredName, Summary, IssueDate, ProposalData, SigningType, PrimaryEmailAddress, SigningRequestId, PolicyId, Status, PolicyProposal.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, PolicyProposal.UpdateDate " +
+                            "SELECT Id, PolicyProposal.CompanyId, AgentCode, ProposalId, InsuredId, InsuredName, Summary, IssueDate, ProposalData, SigningType, PrimaryEmailAddress, SigningRequestId, SignedRequest1, SigningRequest2Id, SignedRequest2, SigningRequest3Id, SignedRequest3, PolicyId, Status, PolicyProposal.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, PolicyProposal.UpdateDate " +
                                    ", ROW_NUMBER() OVER (ORDER BY PolicyProposal.Id DESC) RowNumber " +
                               "FROM PolicyProposal LEFT JOIN UserMember um ON um.UserId = PolicyProposal.UpdateUserCode " +
                              "WHERE PolicyProposal.CompanyId=:CompanyId" + filter +
@@ -158,11 +158,11 @@ namespace Architect.API.Tron.DataAccess
         }
 
         /// <summary>
-        /// Genera complemento del query para habilitar el filtro por columnas establecidas.
+        /// Genera complemento de la consulta para habilitar el filtro por columnas establecidas.
         /// </summary>
         /// <param name="filter">Permite filtrar la lista de registros.</param>
-        /// <param name="where">Indica que el complement debe incluir el WHERE del comando.</param>
-        /// <returns>Complemento del query</returns>
+        /// <param name="includeWhere">Indica que el complemento debe incluir el WHERE del comando.</param>
+        /// <returns>Complemento de la consulta</returns>
         public static string FilterBuilder(string filter, bool includeWhere = true)
         {
             string result = string.Empty;
@@ -172,7 +172,7 @@ namespace Architect.API.Tron.DataAccess
         }
 
         /// <summary>
-        /// Último valor asignado a clave unica de la tabla PolicyProposal.
+        /// Último valor asignado a clave única de la tabla PolicyProposal.
         /// </summary>
         /// <param name="connection">Instancia de una conexión compartida</param>
         /// <returns>Último valor asignado.</returns>
@@ -197,7 +197,7 @@ namespace Architect.API.Tron.DataAccess
                 policyproposalItem.UpdateDate = DateTime.Now;
             }
             return Database.Update("UPDATE PolicyProposal " +
-                                      "SET CompanyId=:CompanyId, AgentCode=:AgentCode, ProposalId=:ProposalId, InsuredId=:InsuredId, InsuredName=:InsuredName, Summary=:Summary, IssueDate=:IssueDate, ProposalData=:ProposalData, SigningType=:SigningType, PrimaryEmailAddress=:PrimaryEmailAddress, SigningRequestId=:SigningRequestId, PolicyId=:PolicyId, Status=:Status, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
+                                      "SET CompanyId=:CompanyId, AgentCode=:AgentCode, ProposalId=:ProposalId, InsuredId=:InsuredId, InsuredName=:InsuredName, Summary=:Summary, IssueDate=:IssueDate, ProposalData=:ProposalData, SigningType=:SigningType, PrimaryEmailAddress=:PrimaryEmailAddress, SigningRequestId=:SigningRequestId, SignedRequest1=:SignedRequest1, SigningRequest2Id=:SigningRequest2Id, SignedRequest2=:SignedRequest2, SigningRequest3Id=:SigningRequest3Id, SignedRequest3=:SignedRequest3, PolicyId=:PolicyId, Status=:Status, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
                                     "WHERE Id=:Id")
                                 .AddParameter("CompanyId", DbType.Decimal, 5, policyproposalItem.CompanyId)
                                 .AddParameter("AgentCode", DbType.Decimal, 9, policyproposalItem.AgentCode)
@@ -210,6 +210,11 @@ namespace Architect.API.Tron.DataAccess
                                 .AddParameter("SigningType", DbType.AnsiString, 3, policyproposalItem.SigningType)
                                 .AddParameter("PrimaryEmailAddress", DbType.AnsiString, 80, policyproposalItem.PrimaryEmailAddress)
                                 .AddParameter("SigningRequestId", DbType.AnsiString, 40, policyproposalItem.SigningRequestId)
+                                .AddParameter("SignedRequest1", DbType.Decimal, 1, policyproposalItem.SignedRequest1 ? 1 : 0)
+                                .AddParameter("SigningRequest2Id", DbType.AnsiString, 40, policyproposalItem.SigningRequest2Id)
+                                .AddParameter("SignedRequest2", DbType.Decimal, 1, policyproposalItem.SignedRequest2 ? 1 : 0)
+                                .AddParameter("SigningRequest3Id", DbType.AnsiString, 40, policyproposalItem.SigningRequest3Id)
+                                .AddParameter("SignedRequest3", DbType.Decimal, 1, policyproposalItem.SignedRequest3 ? 1 : 0)
                                 .AddParameter("PolicyId", DbType.AnsiString, 13, policyproposalItem.PolicyId)
                                 .AddParameter("Status", DbType.Decimal, 5, policyproposalItem.Status)
                                 .AddParameter("UpdateUserCode", DbType.Decimal, 9, policyproposalItem.UpdateUserCode)
@@ -250,7 +255,7 @@ namespace Architect.API.Tron.DataAccess
         /// Elimina un registro en la tabla PolicyProposal por medio de su clave primaria.
         /// </summary>
         /// <param name="id">Identificación única de la solcitud.</param>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="connection">Instancia de una conexión compartida</param>
         /// <returns>Cantidad de registros eliminados.</returns>
         public static int Delete(int id, int companyId, IDbConnection connection = null)
@@ -267,7 +272,7 @@ namespace Architect.API.Tron.DataAccess
         /// </summary>
         /// <remarks>Complemento para procesamiento masivo</remarks>
         /// <param name="idList">Lista de Identificación única de la solcitud.</param>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="connection">Instancia de una conexión compartida</param>
         /// <returns>Lista con el resultado de la creación de cada instancia.</returns>
         public static List<int> Delete(List<int> idList, int companyId, IDbConnection connection = null)
@@ -295,7 +300,7 @@ namespace Architect.API.Tron.DataAccess
         /// Recupera la cantidad de registros existentes en la tabla PolicyProposal por medio de su clave primaria.
         /// </summary>
         /// <param name="id">Identificación única de la solcitud.</param>
-        /// <param name="companyId">Identificación de la compañia propietaria.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="connection">Instancia de una conexión compartida</param>
         /// <returns>Cantidad de registros encontrados.</returns>
         public static int Count(int id, int companyId, IDbConnection connection = null)
@@ -313,7 +318,7 @@ namespace Architect.API.Tron.DataAccess
         /// Recupera la cantidad de registros existentes en la tabla PolicyProposal que cumplen con el filtro.
         /// </summary>
         /// <param name="filter">Permite filtrar la lista de registros</param>
-        /// <param name="parameters">Lista de parametros para complemento.</param>
+        /// <param name="parameters">Lista de parámetros para complemento.</param>
         /// <param name="connection">Instancia de una conexión compartida</param>
         /// <returns>Cantidad de registros encontrados.</returns>
         public static int Count(string filter, List<DataFactory.Contracts.Parameter> parameters = null, IDbConnection connection = null)
@@ -348,6 +353,11 @@ namespace Architect.API.Tron.DataAccess
             item.SigningType = reader.StringValue("SigningType");
             item.PrimaryEmailAddress = reader.StringValue("PrimaryEmailAddress");
             item.SigningRequestId = reader.StringValue("SigningRequestId");
+            item.SignedRequest1 = reader.IntegerValue("SignedRequest1") == 1;
+            item.SigningRequest2Id = reader.StringValue("SigningRequest2Id");
+            item.SignedRequest2 = reader.IntegerValue("SignedRequest2") == 1;
+            item.SigningRequest3Id = reader.StringValue("SigningRequest3Id");
+            item.SignedRequest3 = reader.IntegerValue("SignedRequest3") == 1;
             item.PolicyId = reader.StringValue("PolicyId");
             item.Status = reader.IntegerValue("Status");
             item.UpdateUserCode = reader.IntegerValue("UpdateUserCode");
@@ -359,4 +369,3 @@ namespace Architect.API.Tron.DataAccess
     }
 
 }
-

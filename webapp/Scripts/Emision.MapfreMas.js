@@ -6,6 +6,7 @@
 
 app.EmisionMapfreMas = (function () {
 
+    let mainHolder = null;
     let fec_vcto_poliza_grupo = null;
     let formularioRow = null;
     var workMode = '';
@@ -256,7 +257,11 @@ app.EmisionMapfreMas = (function () {
         data.Vehiculo_Otra_Poliza = app.ui.GetRadioStringValue('Vehiculo_Otra_Poliza');
         data.terceros = $('#tercerosTbl').bootstrapTable('getData');
         data.documentosrequeridos = $('#documentosrequeridosTbl').bootstrapTable('getData');
-        data.kyc = $('#formulariosTbl').bootstrapTable('getData');
+        data.kyc = null;
+        let formulariosData = $('#formulariosTbl').bootstrapTable('getData');
+        if (formulariosData.length > 0) {
+            data.kyc = $('#formulariosTbl').bootstrapTable('getData')[0].data;
+        }
         setupData = data;
         return data;
     }
@@ -355,6 +360,10 @@ app.EmisionMapfreMas = (function () {
         if (driver.length > 0) {
             $('#tipodetercero option[value="3"]').attr('enabled', 'enabled');
         }
+
+
+        formularios_handler();
+
     }
 
     function Controls_setup() {
@@ -1769,12 +1778,9 @@ app.EmisionMapfreMas = (function () {
     }
 
     function formularios_table_setup() {
-
-        let data = [{ formularioId: 1, name: 'Conozca a su cliente persona', when: null, type: 'kycpersona', data: null },
-        { formularioId: 2, name: 'Conozca a su cliente Jurídico', when: null, type: 'kycjuridico', data: null }];
         $('#formulariosTbl').bootstrapTable({
             uniqueId: 'formularioId',
-            data: data,
+            data: [],
             classes: 'table table-bordered table-hover table-index table-in-form',
             pagination: false,
             smartDisplay: true,
@@ -1878,6 +1884,24 @@ app.EmisionMapfreMas = (function () {
                     app.core.LoadScriptFile(formularioRow.type === 'kycpersona' ? 'Emision.kyc.persona.js' : 'Emision.kyc.juridico.js')
                         .then(d => {
                             let ref = formularioRow.type === 'kycpersona' ? app.kycpersona : app.kycjuridico;
+                            formularioRow.data = ref.InitData();
+                            if (formularioRow.type === 'kycpersona') {
+
+                            } else {
+                                formularioRow.data.nombrecomercialJur = mainHolder[0].nombre;
+                                formularioRow.data.razonsocialJur = mainHolder[0].nombre;
+                                formularioRow.data.numerocedulajuridicaJur = mainHolder[0].DocumentNumber;
+                                formularioRow.data.correoelectronicoJur = mainHolder[0].correoelectronico;
+
+
+                                formularioRow.data.cod_paisJur = mainHolder[0].cod_pais;
+                                formularioRow.data.cod_estadoJur = mainHolder[0].TProvincia;
+                                formularioRow.data.cod_provJur = mainHolder[0].TCanton;
+                                formularioRow.data.cod_localidadJur = mainHolder[0].TDistrito;
+                                formularioRow.data.direccionexactaJur = mainHolder[0].otrasenas;
+
+
+                            }
                             ref.Init();
                             ref.AcceptCallBack(app.EmisionMapfreMas.Accept);
                             ref.SetData(formularioRow.data);
@@ -1903,6 +1927,25 @@ app.EmisionMapfreMas = (function () {
         formularioRow.when = new Date();
         $('#formulariosTbl').bootstrapTable('updateByUniqueId', { id: formularioRow.formularioId, row: formularioRow });
         $(name + 'Modal').modal('hide');
+    };
+
+    function formularios_handler() {
+        mainHolder = $('#tercerosTbl').bootstrapTable('getData').filter(i => i.tipodetercero === 0);
+        if (mainHolder.length > 0) {
+            $('.formulariosGrid').removeClass('d-none');
+
+            let row = { formularioId: 1, name: 'Conozca a su cliente persona', when: null, type: 'kycpersona', data: null };
+
+            if (mainHolder[0].DocumentNumberType === 4) {
+                row.name = 'Conozca a su cliente Jurídico';
+                row.type = 'kycjuridico';
+            }
+
+            $('#formulariosTbl').bootstrapTable('load', [row]);
+        } else {
+            $('.formulariosGrid').addClass('d-none');
+        }
+
     };
 
     return {

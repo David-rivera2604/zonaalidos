@@ -11,24 +11,22 @@ app.kycjuridico = (function () {
         app.core.Lookups(['Pais.paisdeconstitucionJur', 'Paises.cod_paisJur', 'Provincias.cod_estadoJur', 'Cantones.cod_provJur', 'Distritos.cod_localidadJur', 'Pais.paisdenacimientoJur', 'CivilStatus.estadocivilJur', 'Gender.sexoJur', 'Paises.domiciliopermanenteCod_paisJur', 'Provincias.domiciliopermanenteCod_estadoJur', 'Cantones.domiciliopermanenteCod_provJur', 'Distritos.domiciliopermanenteCod_localidadJur',],
             function () {
             }, `cod_pais=CRI`);
-
     };
-
 
     function MapInputToObject() {
         var data = {
-            nombreComercialJur: $('#nombreComercialJur').val(),
-            razonSocialJur: $('#razonSocialJur').val(),
+            nombrecomercialJur: $('#nombrecomercialJur').val(),
+            razonsocialJur: $('#razonsocialJur').val(),
             codigodeclienteJur: $('#codigodeclienteJur').val(),
-            tipodeSociedadJur: $('#tipodeSociedadJur').val(),
-            numeroCedulaJuridicaJur: $('#numeroCedulaJuridicaJur').val(),
-            tipodeCedulaJuridicaJur: app.ui.GetRadioNumericValue('tipodeCedulaJuridicaJur'),
+            tipodesociedadJur: $('#tipodesociedadJur').val(),
+            numerocedulajuridicaJur: $('#numerocedulajuridicaJur').val(),
+            tipodecedulajuridicaJur: app.ui.GetRadioNumericValue('tipodecedulajuridicaJur'),
             paisdeconstitucionJur: app.ui.GetDropDownNumericValue('#paisdeconstitucionJur'),
             fechadeconstitucionJur: app.ui.GetDateValue('#fechadeconstitucionJur'),
-            actividaddelClientenaturalezadelnegocioJur: $('#actividaddelClientenaturalezadelnegocioJur').val(),
+            actividaddelclientenaturalezadelnegocioJur: $('#actividaddelclientenaturalezadelnegocioJur').val(),
             telefonoJur: $('#telefonoJur').val(),
             faxJur: $('#faxJur').val(),
-            apartadoPostalJur: $('#apartadoPostalJur').val(),
+            apartadopostalJur: $('#apartadopostalJur').val(),
             correoelectronicoJur: $('#correoelectronicoJur').val(),
             paginaWebJur: $('#paginaWebJur').val(),
             cod_paisJur: app.ui.GetDropDownNumericValue('#cod_paisJur'),
@@ -53,7 +51,7 @@ app.kycjuridico = (function () {
             telefonoresidenciaJur: $('#telefonoresidenciaJur').val(),
             telefonocelularJur: $('#telefonocelularJur').val(),
             datosdelrepresentantelegalFaxJur: $('#datosdelrepresentantelegalFaxJur').val(),
-            datosdelrepresentantelegalApartadoPostalJur: $('#datosdelrepresentantelegalApartadoPostalJur').val(),
+            datosdelrepresentantelegalApartadopostalJur: $('#datosdelrepresentantelegalApartadopostalJur').val(),
             datosdelrepresentantelegalCorreoelectronicoJur: $('#datosdelrepresentantelegalCorreoelectronicoJur').val(),
             domiciliopermanenteCod_paisJur: app.ui.GetDropDownNumericValue('#domiciliopermanenteCod_paisJur'),
             domiciliopermanenteCod_estadoJur: app.ui.GetDropDownNumericValue('#domiciliopermanenteCod_estadoJur'),
@@ -75,7 +73,7 @@ app.kycjuridico = (function () {
             montoprimaJur: app.ui.GetNumericValue('#montoprimaJur'),
             tipodeprimaJur: $('#tipodeprimaJur').val(),
             periodicidadJur: app.ui.GetRadioNumericValue('periodicidadJur'),
-            montoValoraseguradoJur: app.ui.GetNumericValue('#montoValoraseguradoJur'),
+            montovaloraseguradoJur: app.ui.GetNumericValue('#montovaloraseguradoJur'),
             formadepagodelapolizaJur: app.ui.GetRadioNumericValue('formadepagodelapolizaJur'),
             mediodeenvioJur: app.ui.GetRadioNumericValue('mediodeenvioJur'),
             correspondenciaEspecifiqueJur: $('#correspondenciaEspecifiqueJur').val(),
@@ -85,19 +83,19 @@ app.kycjuridico = (function () {
     };
 
     function MapObjectToInput(data) {
-        $('#nombreComercialJur').val(data.nombreComercialJur);
-        $('#razonSocialJur').val(data.razonSocialJur);
+        $('#nombrecomercialJur').val(data.nombrecomercialJur);
+        $('#razonsocialJur').val(data.razonsocialJur);
         $('#codigodeclienteJur').val(data.codigodeclienteJur);
-        $('#tipodeSociedadJur').val(data.tipodeSociedadJur);
-        $('#numeroCedulaJuridicaJur').val(data.numeroCedulaJuridicaJur);
-        app.ui.SetRadioNumericValue('tipodeCedulaJuridicaJur', data.tipodeCedulaJuridicaJur);
+        $('#tipodesociedadJur').val(data.tipodesociedadJur);
+        $('#numerocedulajuridicaJur').val(data.numerocedulajuridicaJur);
+        app.ui.SetRadioNumericValue('tipodecedulajuridicaJur', data.tipodecedulajuridicaJur);
         $('#paisdeconstitucionJur').val(data.paisdeconstitucionJur);
         app.ui.SetDropDownNumericValue('#paisdeconstitucionJur', data.paisdeconstitucionJur, true);
         app.ui.SetDateValue('#fechadeconstitucionJur', data.fechadeconstitucionJur);
-        $('#actividaddelClientenaturalezadelnegocioJur').val(data.actividaddelClientenaturalezadelnegocioJur);
+        $('#actividaddelclientenaturalezadelnegocioJur').val(data.actividaddelclientenaturalezadelnegocioJur);
         $('#telefonoJur').val(data.telefonoJur);
         $('#faxJur').val(data.faxJur);
-        $('#apartadoPostalJur').val(data.apartadoPostalJur);
+        $('#apartadopostalJur').val(data.apartadopostalJur);
         $('#correoelectronicoJur').val(data.correoelectronicoJur);
         $('#paginaWebJur').val(data.paginaWebJur);
         $('#cod_paisJur').val(data.cod_paisJur);
@@ -130,7 +128,7 @@ app.kycjuridico = (function () {
         $('#telefonoresidenciaJur').val(data.telefonoresidenciaJur);
         $('#telefonocelularJur').val(data.telefonocelularJur);
         $('#datosdelrepresentantelegalFaxJur').val(data.datosdelrepresentantelegalFaxJur);
-        $('#datosdelrepresentantelegalApartadoPostalJur').val(data.datosdelrepresentantelegalApartadoPostalJur);
+        $('#datosdelrepresentantelegalApartadopostalJur').val(data.datosdelrepresentantelegalApartadopostalJur);
         $('#datosdelrepresentantelegalCorreoelectronicoJur').val(data.datosdelrepresentantelegalCorreoelectronicoJur);
         $('#domiciliopermanenteCod_paisJur').val(data.domiciliopermanenteCod_paisJur);
         app.ui.SetDropDownNumericValue('#domiciliopermanenteCod_paisJur', data.domiciliopermanenteCod_paisJur, true);
@@ -159,7 +157,7 @@ app.kycjuridico = (function () {
         app.ui.SetNumericValue('#montoprimaJur', data.montoprimaJur);
         $('#tipodeprimaJur').val(data.tipodeprimaJur);
         app.ui.SetRadioNumericValue('periodicidadJur', data.periodicidadJur);
-        app.ui.SetNumericValue('#montoValoraseguradoJur', data.montoValoraseguradoJur);
+        app.ui.SetNumericValue('#montovaloraseguradoJur', data.montovaloraseguradoJur);
         app.ui.SetRadioNumericValue('formadepagodelapolizaJur', data.formadepagodelapolizaJur);
         app.ui.SetRadioNumericValue('mediodeenvioJur', data.mediodeenvioJur);
         $('#correspondenciaEspecifiqueJur').val(data.correspondenciaEspecifiqueJur);
@@ -229,7 +227,7 @@ app.kycjuridico = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-        new AutoNumeric('#montoValoraseguradoJur', {
+        new AutoNumeric('#montovaloraseguradoJur', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -258,11 +256,12 @@ app.kycjuridico = (function () {
             event.preventDefault();
         });
 
-        $('#kycjuridicoJurEdtFormCancel').click(function () {
-            app.ui.ButtonDoing('#kycjuridicoJurEdtFormCancel');
-            setTimeout(() => { app.ui.ButtonDone('#kycjuridicoJurEdtFormCancel'); }, 3000);
-            event.preventDefault();
-        });
+
+        //$('#kycjuridicoJurEdtFormCancel').click(function () {
+        //    app.ui.ButtonDoing('#kycjuridicoJurEdtFormCancel');
+        //    setTimeout(() => { app.ui.ButtonDone('#kycjuridicoJurEdtFormCancel'); }, 3000);
+        //    event.preventDefault();
+        //});
 
     };
 
@@ -276,12 +275,130 @@ app.kycjuridico = (function () {
         $("#kycjuridicoJurEdtForm").validate({
             errorPlacement: app.ui.ErrorPlacement,
             rules: {
-                correoelectronicoJur: { email: true },
-                datosdelrepresentantelegalCorreoelectronicoJur: { email: true },
+                nombrecomercialJur: { required: true },
+                razonsocialJur: { required: true },
+                codigodeclienteJur: { required: true },
+                tipodesociedadJur: { required: true },
+                numerocedulajuridicaJur: { required: true },
+                tipodecedulajuridicaJur: { required: true },
+                paisdeconstitucionJur: { required: true },
+                fechadeconstitucionJur: { required: true },
+                actividaddelclientenaturalezadelnegocioJur: { required: true },
+                telefonoJur: { required: true },
+                faxJur: { required: true },
+                apartadopostalJur: { required: true },
+                correoelectronicoJur: { required: true, email: true },
+                paginaWebJur: { required: true },
+                cod_paisJur: { required: true },
+                cod_estadoJur: { required: true },
+                cod_provJur: { required: true },
+                cod_localidadJur: { required: true },
+                direccionexactaJur: { required: true },
+                primerapellidoJur: { required: true },
+                segundoapellidoJur: { required: true },
+                nombrecompletoJur: { required: true },
+                posiciondentrodelaempresaJur: { required: true },
+                numerodeidentificacionJur: { required: true },
+                tipodeidentificacionJur: { required: true },
+                especifiqueJur: { required: true },
+                fechadecaducidadJur: { required: true },
+                nacionalidadJur: { required: true },
+                fechadenacimientoJur: { required: true },
+                paisdenacimientoJur: { required: true },
+                profesionJur: { required: true },
+                estadocivilJur: { required: true },
+                sexoJur: { required: true },
+                telefonoresidenciaJur: { required: true },
+                telefonocelularJur: { required: true },
+                datosdelrepresentantelegalFaxJur: { required: true },
+                datosdelrepresentantelegalApartadopostalJur: { required: true },
+                datosdelrepresentantelegalCorreoelectronicoJur: { required: true, email: true },
+                domiciliopermanenteCod_paisJur: { required: true },
+                domiciliopermanenteCod_estadoJur: { required: true },
+                domiciliopermanenteCod_provJur: { required: true },
+                domiciliopermanenteCod_localidadJur: { required: true },
+                domiciliopermanenteDireccionexactaJur: { required: true },
+                correspondenciaOrigendelosfondosJur: { required: true },
+                paismayoractividadJur: { required: true },
+                ingresomensualestimadoJur: { required: true },
+                fondospormivilizarJur: { required: true },
+                actividadesart15Jur: { required: true },
+                activoscorrespondenJur: { required: true },
+                pepcargoJur: { required: true },
+                pepduracionJur: { required: true },
+                peprelacionJur: { required: true },
+                peptiporelacionJur: { required: true },
+                propositoderelacioncomercialIndicareltipodeSeguroqueestaadquiriendoJur: { required: true },
+                montoprimaJur: { required: true },
+                tipodeprimaJur: { required: true },
+                periodicidadJur: { required: true },
+                montovaloraseguradoJur: { required: true },
+                formadepagodelapolizaJur: { required: true },
+                mediodeenvioJur: { required: true },
+                correspondenciaEspecifiqueJur: { required: true },
             },
             messages: {
-                correoelectronicoJur: { email: 'Debe indicar un correo electrónico valido' },
-                datosdelrepresentantelegalCorreoelectronicoJur: { email: 'Debe indicar un correo electrónico valido' },
+                nombrecomercialJur: { required: 'Debe indicar el Nombre comercial' },
+                razonsocialJur: { required: 'Debe indicar el Razón social' },
+                codigodeclienteJur: { required: 'Debe indicar el Código de cliente' },
+                tipodesociedadJur: { required: 'Debe indicar el Tipo de sociedad' },
+                numerocedulajuridicaJur: { required: 'Debe indicar el Número cédula jurídica' },
+                tipodecedulajuridicaJur: { required: 'Debe indicar el Tipo de cédula jurídica' },
+                paisdeconstitucionJur: { required: 'Debe indicar el País de constitución' },
+                fechadeconstitucionJur: { required: 'Debe indicar el Fecha de constitución' },
+                actividaddelclientenaturalezadelnegocioJur: { required: 'Debe indicar el Actividad del cliente (naturaleza del negocio)' },
+                telefonoJur: { required: 'Debe indicar el Teléfono' },
+                faxJur: { required: 'Debe indicar el Fax' },
+                apartadopostalJur: { required: 'Debe indicar el Apartado postal' },
+                correoelectronicoJur: { required: 'Debe indicar el Correo electrónico', email: 'Debe indicar un correo electrónico valido' },
+                paginaWebJur: { required: 'Debe indicar el Página Web' },
+                cod_paisJur: { required: 'Debe indicar el País' },
+                cod_estadoJur: { required: 'Debe indicar el Provincia' },
+                cod_provJur: { required: 'Debe indicar el Cantón' },
+                cod_localidadJur: { required: 'Debe indicar el Distrito' },
+                direccionexactaJur: { required: 'Debe indicar el Dirección exacta' },
+                primerapellidoJur: { required: 'Debe indicar el Primer apellido' },
+                segundoapellidoJur: { required: 'Debe indicar el Segundo apellido' },
+                nombrecompletoJur: { required: 'Debe indicar el Nombre completo' },
+                posiciondentrodelaempresaJur: { required: 'Debe indicar el Posición dentro de la empresa' },
+                numerodeidentificacionJur: { required: 'Debe indicar el Número de identificación' },
+                tipodeidentificacionJur: { required: 'Debe indicar el Tipo de identificación' },
+                especifiqueJur: { required: 'Debe indicar el Especifique' },
+                fechadecaducidadJur: { required: 'Debe indicar el Fecha de caducidad' },
+                nacionalidadJur: { required: 'Debe indicar el Nacionalidad' },
+                fechadenacimientoJur: { required: 'Debe indicar el Fecha de nacimiento' },
+                paisdenacimientoJur: { required: 'Debe indicar el País de nacimiento' },
+                profesionJur: { required: 'Debe indicar el Profesión' },
+                estadocivilJur: { required: 'Debe indicar el Estado civil' },
+                sexoJur: { required: 'Debe indicar el Sexo' },
+                telefonoresidenciaJur: { required: 'Debe indicar el Teléfono residencia' },
+                telefonocelularJur: { required: 'Debe indicar el Teléfono celular' },
+                datosdelrepresentantelegalFaxJur: { required: 'Debe indicar el Fax' },
+                datosdelrepresentantelegalApartadopostalJur: { required: 'Debe indicar el Apartado postal' },
+                datosdelrepresentantelegalCorreoelectronicoJur: { required: 'Debe indicar el Correo electrónico', email: 'Debe indicar un correo electrónico valido' },
+                domiciliopermanenteCod_paisJur: { required: 'Debe indicar el País' },
+                domiciliopermanenteCod_estadoJur: { required: 'Debe indicar el Provincia' },
+                domiciliopermanenteCod_provJur: { required: 'Debe indicar el Cantón' },
+                domiciliopermanenteCod_localidadJur: { required: 'Debe indicar el Distrito' },
+                domiciliopermanenteDireccionexactaJur: { required: 'Debe indicar el Dirección exacta' },
+                correspondenciaOrigendelosfondosJur: { required: 'Debe indicar el Origen de los fondos (¿De dónde provienen y en qué forma?)' },
+                paismayoractividadJur: { required: 'Debe indicar el ¿En qué país desarrolla la mayoría de sus actividades económicas?' },
+                ingresomensualestimadoJur: { required: 'Debe indicar el Ingreso mensual estimado' },
+                fondospormivilizarJur: { required: 'Debe indicar el Los fondos por movilizar son propios o de terceros?' },
+                actividadesart15Jur: { required: 'Debe indicar el ¿Se desempeña entre las actividades citadas en el artículo 15 de la Ley 8204 (manejo de fondos de terceros físicos o jurídicos)' },
+                activoscorrespondenJur: { required: 'Debe indicar el La mayoría de sus activos corresponden a' },
+                pepcargoJur: { required: 'Debe indicar el Manifiesta desempeñar o haber desempeñado algún cargo que implique funciones públicas destacadas en el país o en el extranjero' },
+                pepduracionJur: { required: 'Debe indicar el En caso afirmativo, indique el período durante el cual desempeñó dichas funciones' },
+                peprelacionJur: { required: 'Debe indicar el Manifiesta tener relación directa (consanguinidad) o indirecta (afinidad) con una persona expuesta políticamente (PEP)' },
+                peptiporelacionJur: { required: 'Debe indicar el Detalle el tipo de relación' },
+                propositoderelacioncomercialIndicareltipodeSeguroqueestaadquiriendoJur: { required: 'Debe indicar el Propósito de relación comercial (Indicar el tipo de Seguro que está adquiriendo)' },
+                montoprimaJur: { required: 'Debe indicar el Monto prima' },
+                tipodeprimaJur: { required: 'Debe indicar el Tipo de prima' },
+                periodicidadJur: { required: 'Debe indicar el Periodicidad' },
+                montovaloraseguradoJur: { required: 'Debe indicar el Monto valor asegurado' },
+                formadepagodelapolizaJur: { required: 'Debe indicar el Forma de pago de la póliza' },
+                mediodeenvioJur: { required: 'Debe indicar el Favor indicar el medio por el cual desea que se le envíe información' },
+                correspondenciaEspecifiqueJur: { required: 'Debe indicar el Especifique' },
             }
         });
     };
@@ -297,8 +414,8 @@ app.kycjuridico = (function () {
             detailFormatter: 'app.ui.GenericDetailFormatter',
             columns: [
                 {
-                    field: 'participacionaccionariaNombreCompletoJur',
-                    title: 'Nombre Completo',
+                    field: 'participacionaccionariaNombrecompletoJur',
+                    title: 'Nombre completo',
                     titleTooltip: '',
                     sortable: false,
                     halign: 'center',
@@ -381,7 +498,7 @@ app.kycjuridico = (function () {
         if (mode == null) {
             return {
                 participacionaccionariaJurId: null,
-                participacionaccionariaNombreCompletoJur: null,
+                participacionaccionariaNombrecompletoJur: null,
                 porcentajedeparticipacionJur: null,
                 participacionaccionariaNumerodeidentificacionJur: null
             };
@@ -389,7 +506,7 @@ app.kycjuridico = (function () {
         else {
             return {
                 participacionaccionariaJurId: $('#participacionaccionariaJurModal').data('id'),
-                participacionaccionariaNombreCompletoJur: $('#participacionaccionariaNombreCompletoJur').val(),
+                participacionaccionariaNombrecompletoJur: $('#participacionaccionariaNombrecompletoJur').val(),
                 porcentajedeparticipacionJur: app.ui.GetNumericValue('#porcentajedeparticipacionJur'),
                 participacionaccionariaNumerodeidentificacionJur: $('#participacionaccionariaNumerodeidentificacionJur').val()
             };
@@ -404,7 +521,7 @@ app.kycjuridico = (function () {
         row = row || participacionaccionariaJur_table_row();
         md.data('id', row.participacionaccionariaJurId);
 
-        $('#participacionaccionariaNombreCompletoJur').val(row.participacionaccionariaNombreCompletoJur);
+        $('#participacionaccionariaNombrecompletoJur').val(row.participacionaccionariaNombrecompletoJur);
         app.ui.SetNumericValue('#porcentajedeparticipacionJur', row.porcentajedeparticipacionJur);
         $('#participacionaccionariaNumerodeidentificacionJur').val(row.participacionaccionariaNumerodeidentificacionJur);
 
@@ -420,8 +537,16 @@ app.kycjuridico = (function () {
         app.ui.DateValidators();
         $("#participacionaccionariaJurEdtForm").validate({
             errorPlacement: app.ui.ErrorPlacement,
-            rules: {},
-            messages: {}
+            rules: {
+                participacionaccionariaNombrecompletoJur: { required: true },
+                porcentajedeparticipacionJur: { required: true },
+                participacionaccionariaNumerodeidentificacionJur: { required: true },
+            },
+            messages: {
+                participacionaccionariaNombrecompletoJur: { required: 'Debe indicar el Nombre completo' },
+                porcentajedeparticipacionJur: { required: 'Debe indicar el Porcentaje de participación' },
+                participacionaccionariaNumerodeidentificacionJur: { required: 'Debe indicar el Número de identificación' },
+            }
         });
     };
 
@@ -431,12 +556,14 @@ app.kycjuridico = (function () {
         Init: function () {
             try {
                 Controls_setup();
-                Setup_Validations();
+                // Setup_Validations();
                 participacionaccionariaJur_table_setup();
                 participacionaccionariaJur_table_Validations();
 
                 Controls_Events();
                 Setup();
+                console.log("Inicio");
+
             }
             catch (err) {
                 console.error("Error Init");
@@ -463,75 +590,78 @@ app.kycjuridico = (function () {
         },
         SetData: function (data) {
             if (data == null) {
-                data = {
-                    "nombreComercialJur": "",
-                    "razonSocialJur": "",
-                    "codigodeclienteJur": "",
-                    "tipodeSociedadJur": "",
-                    "numeroCedulaJuridicaJur": "",
-                    "tipodeCedulaJuridicaJur": null,
-                    "paisdeconstitucionJur": 0,
-                    "fechadeconstitucionJur": "0001-01-01T00:00:00",
-                    "actividaddelClientenaturalezadelnegocioJur": "",
-                    "telefonoJur": "",
-                    "faxJur": "",
-                    "apartadoPostalJur": "",
-                    "correoelectronicoJur": "",
-                    "paginaWebJur": "",
-                    "cod_paisJur": 0,
-                    "cod_estadoJur": 0,
-                    "cod_provJur": 0,
-                    "cod_localidadJur": 0,
-                    "direccionexactaJur": "",
-                    "primerapellidoJur": "",
-                    "segundoapellidoJur": "",
-                    "nombrecompletoJur": "",
-                    "posiciondentrodelaempresaJur": "",
-                    "numerodeidentificacionJur": "",
-                    "tipodeidentificacionJur": null,
-                    "especifiqueJur": "",
-                    "fechadecaducidadJur": "0001-01-01T00:00:00",
-                    "nacionalidadJur": 0,
-                    "fechadenacimientoJur": "0001-01-01T00:00:00",
-                    "paisdenacimientoJur": 0,
-                    "profesionJur": "",
-                    "estadocivilJur": 0,
-                    "sexoJur": 0,
-                    "telefonoresidenciaJur": "",
-                    "telefonocelularJur": "",
-                    "datosdelrepresentantelegalFaxJur": "",
-                    "datosdelrepresentantelegalApartadoPostalJur": "",
-                    "datosdelrepresentantelegalCorreoelectronicoJur": "",
-                    "domiciliopermanenteCod_paisJur": 0,
-                    "domiciliopermanenteCod_estadoJur": 0,
-                    "domiciliopermanenteCod_provJur": 0,
-                    "domiciliopermanenteCod_localidadJur": 0,
-                    "domiciliopermanenteDireccionexactaJur": "",
-                    "correspondenciaOrigendelosfondosJur": "",
-                    "paismayoractividadJur": "",
-                    "ingresomensualestimadoJur": 0,
-                    "fondospormivilizarJur": null,
-                    "actividadesart15Jur": null,
-                    "activoscorrespondenJur": null,
-                    "pepcargoJur": null,
-                    "pepduracionJur": "",
-                    "peprelacionJur": null,
-                    "peptiporelacionJur": "",
-                    "participacionaccionariaJur": [],
-                    "propositoderelacioncomercialIndicareltipodeSeguroqueestaadquiriendoJur": "",
-                    "montoprimaJur": 0,
-                    "tipodeprimaJur": "",
-                    "periodicidadJur": null,
-                    "montoValoraseguradoJur": 0,
-                    "formadepagodelapolizaJur": null,
-                    "mediodeenvioJur": null,
-                    "correspondenciaEspecifiqueJur": ""
-                };
+                data = app.kycjuridico.InitData();
             }
             if (data != null) {
                 setupData = data;
                 MapObjectToInput(data);
             }
+        },
+        InitData: function () {
+            return {
+                "nombrecomercialJur": "",
+                "razonsocialJur": "",
+                "codigodeclienteJur": "",
+                "tipodesociedadJur": "",
+                "numerocedulajuridicaJur": "",
+                "tipodecedulajuridicaJur": null,
+                "paisdeconstitucionJur": 0,
+                "fechadeconstitucionJur": "0001-01-01T00:00:00",
+                "actividaddelclientenaturalezadelnegocioJur": "",
+                "telefonoJur": "",
+                "faxJur": "",
+                "apartadopostalJur": "",
+                "correoelectronicoJur": "",
+                "paginaWebJur": "",
+                "cod_paisJur": 0,
+                "cod_estadoJur": 0,
+                "cod_provJur": 0,
+                "cod_localidadJur": 0,
+                "direccionexactaJur": "",
+                "primerapellidoJur": "",
+                "segundoapellidoJur": "",
+                "nombrecompletoJur": "",
+                "posiciondentrodelaempresaJur": "",
+                "numerodeidentificacionJur": "",
+                "tipodeidentificacionJur": null,
+                "especifiqueJur": "",
+                "fechadecaducidadJur": "0001-01-01T00:00:00",
+                "nacionalidadJur": 0,
+                "fechadenacimientoJur": "0001-01-01T00:00:00",
+                "paisdenacimientoJur": 0,
+                "profesionJur": "",
+                "estadocivilJur": 0,
+                "sexoJur": 0,
+                "telefonoresidenciaJur": "",
+                "telefonocelularJur": "",
+                "datosdelrepresentantelegalFaxJur": "",
+                "datosdelrepresentantelegalApartadopostalJur": "",
+                "datosdelrepresentantelegalCorreoelectronicoJur": "",
+                "domiciliopermanenteCod_paisJur": 0,
+                "domiciliopermanenteCod_estadoJur": 0,
+                "domiciliopermanenteCod_provJur": 0,
+                "domiciliopermanenteCod_localidadJur": 0,
+                "domiciliopermanenteDireccionexactaJur": "",
+                "correspondenciaOrigendelosfondosJur": "",
+                "paismayoractividadJur": "",
+                "ingresomensualestimadoJur": 0,
+                "fondospormivilizarJur": null,
+                "actividadesart15Jur": null,
+                "activoscorrespondenJur": null,
+                "pepcargoJur": null,
+                "pepduracionJur": "",
+                "peprelacionJur": null,
+                "peptiporelacionJur": "",
+                "participacionaccionariaJur": [],
+                "propositoderelacioncomercialIndicareltipodeSeguroqueestaadquiriendoJur": "",
+                "montoprimaJur": 0,
+                "tipodeprimaJur": "",
+                "periodicidadJur": null,
+                "montovaloraseguradoJur": 0,
+                "formadepagodelapolizaJur": null,
+                "mediodeenvioJur": null,
+                "correspondenciaEspecifiqueJur": ""
+            };
         }
     };
 })();

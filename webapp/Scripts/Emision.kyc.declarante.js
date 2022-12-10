@@ -6,172 +6,174 @@ app.kycdeclarante = (function () {
     var changedCallback = null;
 
     function Setup() {
-	
-app.core.Get(app.setting.apipath + 'v1/Quote/declaranteSetup', null,
-            function (data) {
-                app.core.Lookups(['Pais.paisdenacimiento','CivilStatus.estadocivil','Gender.sexo','Pais.pais','CR_Provincia.provincia','CR_Canton.canton','CR_Distritos.distrito',],
-                    function () {
-                        setupData = data;
-                        MapObjectToInput(data);
-                    }, ``);
-
-            });
+        app.core.Lookups(['Pais.nacionalidadDec', 'Pais.paisdenacimientoDec', 'CivilStatus.estadocivilDec', 'Gender.sexoDec', 'Paises.cod_paisDec', 'Provincias.cod_estadoDec', 'Cantones.cod_provDec', 'Distritos.cod_localidadDec',],
+            function () {
+            }, ``);
     };
-    
+
     function ReadOnly() {
-        $('#primerapellido').replaceWith('<div>' + $('#primerapellido').val() + '</div>');
-        $('#segundoapellido').replaceWith('<div>' + $('#segundoapellido').val() + '</div>');
-        $('#nombrecompleto').replaceWith('<div>' + $('#nombrecompleto').val() + '</div>');
-        $('#posiciondentrodelaempresa').replaceWith('<div>' + $('#posiciondentrodelaempresa').val() + '</div>');
-        $('#numerodeidentificacion').replaceWith('<div>' + $('#numerodeidentificacion').val() + '</div>');
-        $('label[for=tipodeidentificacion').next().replaceWith('<div>' + $('label[for=tipodeidentificacion_'+app.ui.GetRadioNumericValue('tipodeidentificacion')+'').html() + '</div>');
-        $('#especifique').replaceWith('<div>' + $('#especifique').val() + '</div>');
-        $('#fechadecaducidad_group').replaceWith('<div>' + $('#fechadecaducidad').val() + '</div>');
-        $('#nacionalidad').replaceWith('<div>' + $('#nacionalidad option:selected').text() + '</div>');
-        $('#fechadenacimiento_group').replaceWith('<div>' + $('#fechadenacimiento').val() + '</div>');
-        $('#paisdenacimiento').replaceWith('<div>' + $('#paisdenacimiento option:selected').text() + '</div>');
-        $('#profesion').replaceWith('<div>' + $('#profesion').val() + '</div>');
-        $('#estadocivil').replaceWith('<div>' + $('#estadocivil option:selected').text() + '</div>');
-        $('#sexo').replaceWith('<div>' + $('#sexo option:selected').text() + '</div>');
-        $('#telefonoresidencia').replaceWith('<div>' + $('#telefonoresidencia').val() + '</div>');
-        $('#telefonocelular').replaceWith('<div>' + $('#telefonocelular').val() + '</div>');
-        $('#fax').replaceWith('<div>' + $('#fax').val() + '</div>');
-        $('#apartadoPostal').replaceWith('<div>' + $('#apartadoPostal').val() + '</div>');
-        $('#correoelectronico').replaceWith('<div>' + $('#correoelectronico').val() + '</div>');
-        $('#pais').replaceWith('<div>' + $('#pais option:selected').text() + '</div>');
-        $('#provincia').replaceWith('<div>' + $('#provincia option:selected').text() + '</div>');
-        $('#canton').replaceWith('<div>' + $('#canton option:selected').text() + '</div>');
-        $('#distrito').replaceWith('<div>' + $('#distrito option:selected').text() + '</div>');
-        $('#direccionexacta').replaceWith('<div>' + $('#direccionexacta').val() + '</div>');
-        $('#origendelosFondosDedondeprovienenyenqueforma').replaceWith('<div>' + $('#origendelosFondosDedondeprovienenyenqueforma').val() + '</div>');
-        $('#enquepaisdesarrollalamayoriadesusactividadeseconomicas').replaceWith('<div>' + $('#enquepaisdesarrollalamayoriadesusactividadeseconomicas').val() + '</div>');
-        $('#ingresomensualestimado').replaceWith('<div>' + $('#ingresomensualestimado').val() + '</div>');
-        $('label[for=losfondospormovilizarsonpropiosodeterceros').next().replaceWith('<div>' + $('label[for=losfondospormovilizarsonpropiosodeterceros_'+app.ui.GetRadioNumericValue('losfondospormovilizarsonpropiosodeterceros')+'').html() + '</div>');
-        $('label[for=sedesempenaentrelasactividadescitadasenelArticulo15delaLey8204manejodefondosdetercerosfisicosojuridicos').next().replaceWith('<div>' + $('label[for=sedesempenaentrelasactividadescitadasenelArticulo15delaLey8204manejodefondosdetercerosfisicosojuridicos_'+app.ui.GetRadioNumericValue('sedesempenaentrelasactividadescitadasenelArticulo15delaLey8204manejodefondosdetercerosfisicosojuridicos')+'').html() + '</div>');
-        $('label[for=lamayoriadesusactivoscorrespondena').next().replaceWith('<div>' + $('label[for=lamayoriadesusactivoscorrespondena_'+app.ui.GetRadioNumericValue('lamayoriadesusactivoscorrespondena')+'').html() + '</div>');
-        $('label[for=algunSocioDirectoroRepresentantedelaempresadesempenaohadesempenadoalguncargopolitico').next().replaceWith('<div>' + $('label[for=algunSocioDirectoroRepresentantedelaempresadesempenaohadesempenadoalguncargopolitico_'+app.ui.GetRadioNumericValue('algunSocioDirectoroRepresentantedelaempresadesempenaohadesempenadoalguncargopolitico')+'').html() + '</div>');
-        $('#encasoafirmativoindiqueelperiododuranteelcualdesempenodichasfunciones').replaceWith('<div>' + $('#encasoafirmativoindiqueelperiododuranteelcualdesempenodichasfunciones').val() + '</div>');
-        $('label[for=algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEP').next().replaceWith('<div>' + $('label[for=algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEP_'+app.ui.GetRadioNumericValue('algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEP')+'').html() + '</div>');
-        $('#detalleeltipoderelacion').replaceWith('<div>' + $('#detalleeltipoderelacion').val() + '</div>');
-        $('label[for=favorindicarelmedioporelcualdeseaqueseleenvieinformacion').next().replaceWith('<div>' + $('label[for=favorindicarelmedioporelcualdeseaqueseleenvieinformacion_'+app.ui.GetRadioNumericValue('favorindicarelmedioporelcualdeseaqueseleenvieinformacion')+'').html() + '</div>');
-        $('#correspondenciaEspecifique').replaceWith('<div>' + $('#correspondenciaEspecifique').val() + '</div>');
+        $('#primerapellidoDec').replaceWith('<div>' + $('#primerapellidoDec').val() + '</div>');
+        $('#segundoapellidoDec').replaceWith('<div>' + $('#segundoapellidoDec').val() + '</div>');
+        $('#nombrecompletoDec').replaceWith('<div>' + $('#nombrecompletoDec').val() + '</div>');
+        $('#posiciondentrodelaempresaDec').replaceWith('<div>' + $('#posiciondentrodelaempresaDec').val() + '</div>');
+        $('#numerodeidentificacionDec').replaceWith('<div>' + $('#numerodeidentificacionDec').val() + '</div>');
+        $('label[for=tipodeidentificacionDec').next().replaceWith('<div>' + $('label[for=tipodeidentificacionDec_' + app.ui.GetRadioNumericValue('tipodeidentificacionDec') + '').html() + '</div>');
+        $('#especifiqueDec').replaceWith('<div>' + $('#especifiqueDec').val() + '</div>');
+        $('#fechadecaducidadDec_group').replaceWith('<div>' + $('#fechadecaducidadDec').val() + '</div>');
+        $('#nacionalidadDec').replaceWith('<div>' + $('#nacionalidadDec option:selected').text() + '</div>');
+        $('#fechadenacimientoDec_group').replaceWith('<div>' + $('#fechadenacimientoDec').val() + '</div>');
+        $('#paisdenacimientoDec').replaceWith('<div>' + $('#paisdenacimientoDec option:selected').text() + '</div>');
+        $('#profesionDec').replaceWith('<div>' + $('#profesionDec').val() + '</div>');
+        $('#estadocivilDec').replaceWith('<div>' + $('#estadocivilDec option:selected').text() + '</div>');
+        $('#sexoDec').replaceWith('<div>' + $('#sexoDec option:selected').text() + '</div>');
+        $('#telefonoresidenciaDec').replaceWith('<div>' + $('#telefonoresidenciaDec').val() + '</div>');
+        $('#telefonocelularDec').replaceWith('<div>' + $('#telefonocelularDec').val() + '</div>');
+        $('#faxDec').replaceWith('<div>' + $('#faxDec').val() + '</div>');
+        $('#apartadopostalDec').replaceWith('<div>' + $('#apartadopostalDec').val() + '</div>');
+        $('#correoelectronicoDec').replaceWith('<div>' + $('#correoelectronicoDec').val() + '</div>');
+        $('#cod_paisDec').replaceWith('<div>' + $('#cod_paisDec option:selected').text() + '</div>');
+        $('#cod_estadoDec').replaceWith('<div>' + $('#cod_estadoDec option:selected').text() + '</div>');
+        $('#cod_provDec').replaceWith('<div>' + $('#cod_provDec option:selected').text() + '</div>');
+        $('#cod_localidadDec').replaceWith('<div>' + $('#cod_localidadDec option:selected').text() + '</div>');
+        $('#direccionexactaDec').replaceWith('<div>' + $('#direccionexactaDec').val() + '</div>');
+        $('#correspondenciaOrigendelosfondosDec').replaceWith('<div>' + $('#correspondenciaOrigendelosfondosDec').val() + '</div>');
+        $('#paismayoractividadDec').replaceWith('<div>' + $('#paismayoractividadDec').val() + '</div>');
+        $('#ingresomensualestimadoDec').replaceWith('<div>' + $('#ingresomensualestimadoDec').val() + '</div>');
+        $('label[for=fondospormivilizarDec').next().replaceWith('<div>' + $('label[for=fondospormivilizarDec_' + app.ui.GetRadioNumericValue('fondospormivilizarDec') + '').html() + '</div>');
+        $('label[for=actividadesart15Dec').next().replaceWith('<div>' + $('label[for=actividadesart15Dec_' + app.ui.GetRadioNumericValue('actividadesart15Dec') + '').html() + '</div>');
+        $('label[for=activoscorrespondenDec').next().replaceWith('<div>' + $('label[for=activoscorrespondenDec_' + app.ui.GetRadioNumericValue('activoscorrespondenDec') + '').html() + '</div>');
+        $('label[for=pepcargoDec').next().replaceWith('<div>' + $('label[for=pepcargoDec_' + app.ui.GetRadioNumericValue('pepcargoDec') + '').html() + '</div>');
+        $('#pepduracionDec').replaceWith('<div>' + $('#pepduracionDec').val() + '</div>');
+        $('#algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEPDec').replaceWith('<div>' + $('#algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEPDec').val() + '</div>');
+        $('#peptiporelacionDec').replaceWith('<div>' + $('#peptiporelacionDec').val() + '</div>');
+        $('label[for=mediodeenvioDec').next().replaceWith('<div>' + $('label[for=mediodeenvioDec_' + app.ui.GetRadioNumericValue('mediodeenvioDec') + '').html() + '</div>');
+        $('#correspondenciaEspecifiqueDec').replaceWith('<div>' + $('#correspondenciaEspecifiqueDec').val() + '</div>');
 
     };
-    
-  function MapInputToObject() {
+
+    function MapInputToObject() {
         var data = {
-            primerapellido: $('#primerapellido').val(),
-            segundoapellido: $('#segundoapellido').val(),
-            nombrecompleto: $('#nombrecompleto').val(),
-            posiciondentrodelaempresa: $('#posiciondentrodelaempresa').val(),
-            numerodeidentificacion: $('#numerodeidentificacion').val(),
-            tipodeidentificacion: app.ui.GetRadioNumericValue('tipodeidentificacion'),
-            especifique: $('#especifique').val(),
-            fechadecaducidad: app.ui.GetDateValue('#fechadecaducidad'),
-            nacionalidad: app.ui.GetDropDownNumericValue('#nacionalidad'),
-            fechadenacimiento: app.ui.GetDateValue('#fechadenacimiento'),
-            paisdenacimiento: app.ui.GetDropDownNumericValue('#paisdenacimiento'),
-            profesion: $('#profesion').val(),
-            estadocivil: app.ui.GetDropDownNumericValue('#estadocivil'),
-            sexo: app.ui.GetDropDownNumericValue('#sexo'),
-            telefonoresidencia: $('#telefonoresidencia').val(),
-            telefonocelular: $('#telefonocelular').val(),
-            fax: $('#fax').val(),
-            apartadoPostal: $('#apartadoPostal').val(),
-            correoelectronico: $('#correoelectronico').val(),
-            pais: app.ui.GetDropDownNumericValue('#pais'),
-            provincia: app.ui.GetDropDownNumericValue('#provincia'),
-            canton: app.ui.GetDropDownNumericValue('#canton'),
-            distrito: app.ui.GetDropDownNumericValue('#distrito'),
-            direccionexacta: $('#direccionexacta').val(),
-            origendelosFondosDedondeprovienenyenqueforma: $('#origendelosFondosDedondeprovienenyenqueforma').val(),
-            enquepaisdesarrollalamayoriadesusactividadeseconomicas: $('#enquepaisdesarrollalamayoriadesusactividadeseconomicas').val(),
-            ingresomensualestimado: $('#ingresomensualestimado').val(),
-            losfondospormovilizarsonpropiosodeterceros: app.ui.GetRadioNumericValue('losfondospormovilizarsonpropiosodeterceros'),
-            sedesempenaentrelasactividadescitadasenelArticulo15delaLey8204manejodefondosdetercerosfisicosojuridicos: app.ui.GetRadioNumericValue('sedesempenaentrelasactividadescitadasenelArticulo15delaLey8204manejodefondosdetercerosfisicosojuridicos'),
-            lamayoriadesusactivoscorrespondena: app.ui.GetRadioNumericValue('lamayoriadesusactivoscorrespondena'),
-            algunSocioDirectoroRepresentantedelaempresadesempenaohadesempenadoalguncargopolitico: app.ui.GetRadioNumericValue('algunSocioDirectoroRepresentantedelaempresadesempenaohadesempenadoalguncargopolitico'),
-            encasoafirmativoindiqueelperiododuranteelcualdesempenodichasfunciones: $('#encasoafirmativoindiqueelperiododuranteelcualdesempenodichasfunciones').val(),
-            algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEP: app.ui.GetRadioNumericValue('algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEP'),
-            detalleeltipoderelacion: $('#detalleeltipoderelacion').val(),
-            favorindicarelmedioporelcualdeseaqueseleenvieinformacion: app.ui.GetRadioNumericValue('favorindicarelmedioporelcualdeseaqueseleenvieinformacion'),
-            correspondenciaEspecifique: $('#correspondenciaEspecifique').val(),
+            primerapellidoDec: $('#primerapellidoDec').val(),
+            segundoapellidoDec: $('#segundoapellidoDec').val(),
+            nombrecompletoDec: $('#nombrecompletoDec').val(),
+            posiciondentrodelaempresaDec: $('#posiciondentrodelaempresaDec').val(),
+            numerodeidentificacionDec: $('#numerodeidentificacionDec').val(),
+            tipodeidentificacionDec: app.ui.GetRadioNumericValue('tipodeidentificacionDec'),
+            especifiqueDec: $('#especifiqueDec').val(),
+            fechadecaducidadDec: app.ui.GetDateValue('#fechadecaducidadDec'),
+            nacionalidadDec: app.ui.GetDropDownNumericValue('#nacionalidadDec'),
+            fechadenacimientoDec: app.ui.GetDateValue('#fechadenacimientoDec'),
+            paisdenacimientoDec: app.ui.GetDropDownNumericValue('#paisdenacimientoDec'),
+            profesionDec: $('#profesionDec').val(),
+            estadocivilDec: app.ui.GetDropDownNumericValue('#estadocivilDec'),
+            sexoDec: app.ui.GetDropDownNumericValue('#sexoDec'),
+            telefonoresidenciaDec: $('#telefonoresidenciaDec').val(),
+            telefonocelularDec: $('#telefonocelularDec').val(),
+            faxDec: $('#faxDec').val(),
+            apartadopostalDec: $('#apartadopostalDec').val(),
+            correoelectronicoDec: $('#correoelectronicoDec').val(),
+            cod_paisDec: app.ui.GetDropDownNumericValue('#cod_paisDec'),
+            cod_estadoDec: app.ui.GetDropDownNumericValue('#cod_estadoDec'),
+            cod_provDec: app.ui.GetDropDownNumericValue('#cod_provDec'),
+            cod_localidadDec: app.ui.GetDropDownNumericValue('#cod_localidadDec'),
+            direccionexactaDec: $('#direccionexactaDec').val(),
+            correspondenciaOrigendelosfondosDec: $('#correspondenciaOrigendelosfondosDec').val(),
+            paismayoractividadDec: $('#paismayoractividadDec').val(),
+            ingresomensualestimadoDec: app.ui.GetNumericValue('#ingresomensualestimadoDec'),
+            fondospormivilizarDec: app.ui.GetRadioNumericValue('fondospormivilizarDec'),
+            actividadesart15Dec: app.ui.GetRadioNumericValue('actividadesart15Dec'),
+            activoscorrespondenDec: app.ui.GetRadioNumericValue('activoscorrespondenDec'),
+            pepcargoDec: app.ui.GetRadioNumericValue('pepcargoDec'),
+            pepduracionDec: $('#pepduracionDec').val(),
+            algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEPDec: $('#algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEPDec').val(),
+            peptiporelacionDec: $('#peptiporelacionDec').val(),
+            mediodeenvioDec: app.ui.GetRadioNumericValue('mediodeenvioDec'),
+            correspondenciaEspecifiqueDec: $('#correspondenciaEspecifiqueDec').val(),
 
         };
         return data;
     };
 
     function MapObjectToInput(data) {
-        $('#primerapellido').val(data.primerapellido);
-        $('#segundoapellido').val(data.segundoapellido);
-        $('#nombrecompleto').val(data.nombrecompleto);
-        $('#posiciondentrodelaempresa').val(data.posiciondentrodelaempresa);
-        $('#numerodeidentificacion').val(data.numerodeidentificacion);
-        app.ui.SetRadioNumericValue('tipodeidentificacion', data.tipodeidentificacion);
-        $('#especifique').val(data.especifique);
-        app.ui.SetDateValue('#fechadecaducidad', data.fechadecaducidad);
-        $('#nacionalidad').val(data.nacionalidad);
-        app.ui.SetDropDownNumericValue('#nacionalidad', data.nacionalidad, true);
-        app.ui.SetDateValue('#fechadenacimiento', data.fechadenacimiento);
-        $('#paisdenacimiento').val(data.paisdenacimiento);
-        app.ui.SetDropDownNumericValue('#paisdenacimiento', data.paisdenacimiento, true);
-        $('#profesion').val(data.profesion);
-        $('#estadocivil').val(data.estadocivil);
-        app.ui.SetDropDownNumericValue('#estadocivil', data.estadocivil, true);
-        $('#sexo').val(data.sexo);
-        app.ui.SetDropDownNumericValue('#sexo', data.sexo, true);
-        $('#telefonoresidencia').val(data.telefonoresidencia);
-        $('#telefonocelular').val(data.telefonocelular);
-        $('#fax').val(data.fax);
-        $('#apartadoPostal').val(data.apartadoPostal);
-        $('#correoelectronico').val(data.correoelectronico);
-        $('#pais').val(data.pais);
-        app.ui.SetDropDownNumericValue('#pais', data.pais, true);
-        $('#provincia').val(data.provincia);
-        app.ui.SetDropDownNumericValue('#provincia', data.provincia, true);
-        $('#canton').val(data.canton);
-        app.ui.SetDropDownNumericValue('#canton', data.canton, true);
-        $('#distrito').val(data.distrito);
-        app.ui.SetDropDownNumericValue('#distrito', data.distrito, true);
-        $('#direccionexacta').val(data.direccionexacta);
-        $('#origendelosFondosDedondeprovienenyenqueforma').val(data.origendelosFondosDedondeprovienenyenqueforma);
-        $('#enquepaisdesarrollalamayoriadesusactividadeseconomicas').val(data.enquepaisdesarrollalamayoriadesusactividadeseconomicas);
-        $('#ingresomensualestimado').val(data.ingresomensualestimado);
-        app.ui.SetRadioNumericValue('losfondospormovilizarsonpropiosodeterceros', data.losfondospormovilizarsonpropiosodeterceros);
-        app.ui.SetRadioNumericValue('sedesempenaentrelasactividadescitadasenelArticulo15delaLey8204manejodefondosdetercerosfisicosojuridicos', data.sedesempenaentrelasactividadescitadasenelArticulo15delaLey8204manejodefondosdetercerosfisicosojuridicos);
-        app.ui.SetRadioNumericValue('lamayoriadesusactivoscorrespondena', data.lamayoriadesusactivoscorrespondena);
-        app.ui.SetRadioNumericValue('algunSocioDirectoroRepresentantedelaempresadesempenaohadesempenadoalguncargopolitico', data.algunSocioDirectoroRepresentantedelaempresadesempenaohadesempenadoalguncargopolitico);
-        $('#encasoafirmativoindiqueelperiododuranteelcualdesempenodichasfunciones').val(data.encasoafirmativoindiqueelperiododuranteelcualdesempenodichasfunciones);
-        app.ui.SetRadioNumericValue('algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEP', data.algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEP);
-        $('#detalleeltipoderelacion').val(data.detalleeltipoderelacion);
-        app.ui.SetRadioNumericValue('favorindicarelmedioporelcualdeseaqueseleenvieinformacion', data.favorindicarelmedioporelcualdeseaqueseleenvieinformacion);
-        $('#correspondenciaEspecifique').val(data.correspondenciaEspecifique);
+        $('#primerapellidoDec').val(data.primerapellidoDec);
+        $('#segundoapellidoDec').val(data.segundoapellidoDec);
+        $('#nombrecompletoDec').val(data.nombrecompletoDec);
+        $('#posiciondentrodelaempresaDec').val(data.posiciondentrodelaempresaDec);
+        $('#numerodeidentificacionDec').val(data.numerodeidentificacionDec);
+        app.ui.SetRadioNumericValue('tipodeidentificacionDec', data.tipodeidentificacionDec);
+        $('#especifiqueDec').val(data.especifiqueDec);
+        app.ui.SetDateValue('#fechadecaducidadDec', data.fechadecaducidadDec);
+        $('#nacionalidadDec').val(data.nacionalidadDec);
+        app.ui.SetDropDownNumericValue('#nacionalidadDec', data.nacionalidadDec, true);
+        app.ui.SetDateValue('#fechadenacimientoDec', data.fechadenacimientoDec);
+        $('#paisdenacimientoDec').val(data.paisdenacimientoDec);
+        app.ui.SetDropDownNumericValue('#paisdenacimientoDec', data.paisdenacimientoDec, true);
+        $('#profesionDec').val(data.profesionDec);
+        $('#estadocivilDec').val(data.estadocivilDec);
+        app.ui.SetDropDownNumericValue('#estadocivilDec', data.estadocivilDec, true);
+        $('#sexoDec').val(data.sexoDec);
+        app.ui.SetDropDownNumericValue('#sexoDec', data.sexoDec, true);
+        $('#telefonoresidenciaDec').val(data.telefonoresidenciaDec);
+        $('#telefonocelularDec').val(data.telefonocelularDec);
+        $('#faxDec').val(data.faxDec);
+        $('#apartadopostalDec').val(data.apartadopostalDec);
+        $('#correoelectronicoDec').val(data.correoelectronicoDec);
+        $('#cod_paisDec').val(data.cod_paisDec);
+        app.ui.SetDropDownNumericValue('#cod_paisDec', data.cod_paisDec, true);
+        $('#cod_estadoDec').val(data.cod_estadoDec);
+        app.ui.SetDropDownNumericValue('#cod_estadoDec', data.cod_estadoDec, true);
+        $('#cod_provDec').val(data.cod_provDec);
+        app.ui.SetDropDownNumericValue('#cod_provDec', data.cod_provDec, true);
+        $('#cod_localidadDec').val(data.cod_localidadDec);
+        app.ui.SetDropDownNumericValue('#cod_localidadDec', data.cod_localidadDec, true);
+        $('#direccionexactaDec').val(data.direccionexactaDec);
+        $('#correspondenciaOrigendelosfondosDec').val(data.correspondenciaOrigendelosfondosDec);
+        $('#paismayoractividadDec').val(data.paismayoractividadDec);
+        app.ui.SetNumericValue('#ingresomensualestimadoDec', data.ingresomensualestimadoDec);
+        app.ui.SetRadioNumericValue('fondospormivilizarDec', data.fondospormivilizarDec);
+        app.ui.SetRadioNumericValue('actividadesart15Dec', data.actividadesart15Dec);
+        app.ui.SetRadioNumericValue('activoscorrespondenDec', data.activoscorrespondenDec);
+        app.ui.SetRadioNumericValue('pepcargoDec', data.pepcargoDec);
+        $('#pepduracionDec').val(data.pepduracionDec);
+        $('#algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEPDec').val(data.algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEPDec);
+        $('#peptiporelacionDec').val(data.peptiporelacionDec);
+        app.ui.SetRadioNumericValue('mediodeenvioDec', data.mediodeenvioDec);
+        $('#correspondenciaEspecifiqueDec').val(data.correspondenciaEspecifiqueDec);
 
     };
-    
+
     function Controls_setup() {
-$('#fechadecaducidad_group').datetimepicker({
+        $('#fechadecaducidadDec_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
-$('#fechadenacimiento_group').datetimepicker({
+        $('#fechadenacimientoDec_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es',
             maxDate: app.ui.Yesterday(),
             date: null
 
         });
-$('#telefonoresidencia').formatter({
+        $('#telefonoresidenciaDec').formatter({
             pattern: '{{9999}}-{{9999}}',
             persistent: false
         });
-$('#telefonocelular').formatter({
+        $('#telefonocelularDec').formatter({
             pattern: '{{9999}}-{{9999}}',
             persistent: false
         });
-$('#fax').formatter({
+        $('#faxDec').formatter({
             pattern: '{{9999}}-{{9999}}',
             persistent: false
+        });
+        new AutoNumeric('#ingresomensualestimadoDec', {
+            decimalCharacter: ',',
+            decimalCharacterAlternative: '.',
+            digitGroupSeparator: '.',
+            maximumValue: '999999999',
+            minimumValue: '0',
+            decimalPlaces: '2',
+            emptyInputBehavior: 'null'
         });
 
     };
@@ -180,15 +182,15 @@ $('#fax').formatter({
         $(".input-group.date").on('dp.change', function (e) {
             data_changed();
         });
-        $("#PrototypeEdtForm :input").change(function () {
+        $("#kycdeclaranteDecEdtForm :input").change(function () {
             data_changed();
         });
-        
 
-        $('#PrototypeEdtFormSave').click(function () {
 
-            if (app.ui.IsValid('#PrototypeEdtForm', false)) {
-                app.ui.ButtonDoing('#PrototypeEdtFormSave');
+        $('#kycdeclaranteDecEdtFormSave').click(function () {
+
+            if (app.ui.IsValid('#kycdeclaranteDecEdtForm', false)) {
+                app.ui.ButtonDoing('#kycdeclaranteDecEdtFormSave');
 
                 console.log(MapInputToObject())
 
@@ -199,19 +201,19 @@ $('#fax').formatter({
                             app.ui.ShowAlert('quoteNotify', 'alert-danger', data.Mensaje);
                         }
                         else {
-                        
+
                         }
 
                     }).always(function () {
-                        app.ui.ButtonDone('#PrototypeEdtFormSave');
+                        app.ui.ButtonDone('#kycdeclaranteDecEdtFormSave');
                     });
             }
             event.preventDefault();
         });
 
-        $('#PrototypeEdtFormCancel').click(function () {
-            app.ui.ButtonDoing('#PrototypeEdtFormCancel');
-            setTimeout(() => { app.ui.ButtonDone('#PrototypeEdtFormCancel'); }, 3000);
+        $('#kycdeclaranteDecEdtFormCancel').click(function () {
+            app.ui.ButtonDoing('#kycdeclaranteDecEdtFormCancel');
+            setTimeout(() => { app.ui.ButtonDone('#kycdeclaranteDecEdtFormCancel'); }, 3000);
             event.preventDefault();
         });
 
@@ -221,15 +223,91 @@ $('#fax').formatter({
         if (changedCallback !== undefined && changedCallback !== null)
             changedCallback(MapInputToObject());
     };
-    
+
     function Setup_Validations() {
         app.ui.DateValidators();
-        $("#PrototypeEdtForm").validate({
+        $("#kycdeclaranteDecEdtForm").validate({
             errorPlacement: app.ui.ErrorPlacement,
-            rules: {correoelectronico: { email: true },
-},
-            messages: {correoelectronico: { email: 'Debe indicar un correo electrónico valido' },
-}
+            rules: {
+                primerapellidoDec: { required: true },
+                segundoapellidoDec: { required: true },
+                nombrecompletoDec: { required: true },
+                posiciondentrodelaempresaDec: { required: true },
+                numerodeidentificacionDec: { required: true },
+                tipodeidentificacionDec: { required: true },
+                especifiqueDec: { required: true },
+                fechadecaducidadDec: { required: true },
+                nacionalidadDec: { required: true },
+                fechadenacimientoDec: { required: true },
+                paisdenacimientoDec: { required: true },
+                profesionDec: { required: true },
+                estadocivilDec: { required: true },
+                sexoDec: { required: true },
+                telefonoresidenciaDec: { required: true },
+                telefonocelularDec: { required: true },
+                faxDec: { required: true },
+                apartadopostalDec: { required: true },
+                correoelectronicoDec: { required: true, email: true },
+                cod_paisDec: { required: true },
+                cod_estadoDec: { required: true },
+                cod_provDec: { required: true },
+                cod_localidadDec: { required: true },
+                direccionexactaDec: { required: true },
+                correspondenciaOrigendelosfondosDec: { required: true },
+                paismayoractividadDec: { required: true },
+                ingresomensualestimadoDec: { required: true },
+                fondospormivilizarDec: { required: true },
+                actividadesart15Dec: { required: true },
+                tiposdeactivosDec: { required: true },
+                activoscorrespondenDec: { required: true },
+                personasexpuestaspoliticamentePEPsDec: { required: true },
+                pepcargoDec: { required: true },
+                pepduracionDec: { required: true },
+                algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEPDec: { required: true },
+                peptiporelacionDec: { required: true },
+                mediodeenvioDec: { required: true },
+                correspondenciaEspecifiqueDec: { required: true },
+            },
+            messages: {
+                primerapellidoDec: { required: 'Debe indicar el Primer apellido' },
+                segundoapellidoDec: { required: 'Debe indicar el Segundo apellido' },
+                nombrecompletoDec: { required: 'Debe indicar el Nombre completo' },
+                posiciondentrodelaempresaDec: { required: 'Debe indicar el Posición dentro de la empresa' },
+                numerodeidentificacionDec: { required: 'Debe indicar el Número de identificación' },
+                tipodeidentificacionDec: { required: 'Debe indicar el Tipo de identificación' },
+                especifiqueDec: { required: 'Debe indicar el Especifique' },
+                fechadecaducidadDec: { required: 'Debe indicar el Fecha de caducidad' },
+                nacionalidadDec: { required: 'Debe indicar el Nacionalidad' },
+                fechadenacimientoDec: { required: 'Debe indicar el Fecha de nacimiento' },
+                paisdenacimientoDec: { required: 'Debe indicar el País de nacimiento' },
+                profesionDec: { required: 'Debe indicar el Profesión' },
+                estadocivilDec: { required: 'Debe indicar el Estado civil' },
+                sexoDec: { required: 'Debe indicar el Sexo' },
+                telefonoresidenciaDec: { required: 'Debe indicar el Teléfono residencia' },
+                telefonocelularDec: { required: 'Debe indicar el Teléfono celular' },
+                faxDec: { required: 'Debe indicar el Fax' },
+                apartadopostalDec: { required: 'Debe indicar el Apartado postal' },
+                correoelectronicoDec: { required: 'Debe indicar el Correo electrónico', email: 'Debe indicar un correo electrónico valido' },
+                cod_paisDec: { required: 'Debe indicar el País' },
+                cod_estadoDec: { required: 'Debe indicar el Provincia' },
+                cod_provDec: { required: 'Debe indicar el Cantón' },
+                cod_localidadDec: { required: 'Debe indicar el Distrito' },
+                direccionexactaDec: { required: 'Debe indicar el Dirección exacta' },
+                correspondenciaOrigendelosfondosDec: { required: 'Debe indicar el Origen de los Fondos (¿De dónde provienen y en qué forma?)' },
+                paismayoractividadDec: { required: 'Debe indicar el ¿En qué país desarrolla la mayoría de sus actividades económicas?' },
+                ingresomensualestimadoDec: { required: 'Debe indicar el Ingreso mensual estimado' },
+                fondospormivilizarDec: { required: 'Debe indicar el Los fondos por movilizar son propios o de terceros?' },
+                actividadesart15Dec: { required: 'Debe indicar el ¿Se desempeña entre las actividades citadas en el Artículo 15 de la Ley 8204 (manejo de fondos de terceros físicos o jurídicos)' },
+                tiposdeactivosDec: { required: 'Debe indicar el Tipos de activos' },
+                activoscorrespondenDec: { required: 'Debe indicar el La mayoría de sus activos corresponden a' },
+                personasexpuestaspoliticamentePEPsDec: { required: 'Debe indicar el Personas expuestas políticamente (PEPs)' },
+                pepcargoDec: { required: 'Debe indicar el ¿Algún Socio, Director o Representante de la empresa desempeña o ha desempeñado algún cargo político?' },
+                pepduracionDec: { required: 'Debe indicar el En caso afirmativo, indique el período durante el cual desempeñó dichas funciones' },
+                algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEPDec: { required: 'Debe indicar el ¿Algún Socio, Director o Representante de la empresa tiene relación directa (consanguinidad) o indirecta (afinidad) con alguna persona expuesta políticamente (PEP)?' },
+                peptiporelacionDec: { required: 'Debe indicar el Detalle el tipo de relación' },
+                mediodeenvioDec: { required: 'Debe indicar el Favor indicar el medio por el cual desea que se le envíe información' },
+                correspondenciaEspecifiqueDec: { required: 'Debe indicar el Especifique' },
+            }
         });
     };
 
@@ -237,18 +315,18 @@ $('#fax').formatter({
 
     return {
         Init: function () {
-			try {
-				Controls_setup();
-				Setup_Validations();
-	
-				Controls_Events();
-				Setup();
-				console.log("Inicio");
-			}
-			catch(err) {
-			  console.error("Error Init");
-			  console.error(err);
-			}
+            try {
+                Controls_setup();
+                Setup_Validations();
+
+                Controls_Events();
+                Setup();
+                console.log("Inicio");
+            }
+            catch (err) {
+                console.error("Error Init");
+                console.error(err);
+            }
         },
         Data: function () {
             return MapInputToObject();
@@ -257,9 +335,7 @@ $('#fax').formatter({
             changedCallback = callback;
         },
         IsValid: function (showResume) {
-            return app.ui.IsValid('#PrototypeEdtForm', false, showResume);
+            return app.ui.IsValid('#kycdeclaranteDecEdtForm', false, showResume);
         }
     };
 })();
-
-

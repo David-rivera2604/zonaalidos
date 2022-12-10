@@ -1,522 +1,486 @@
-﻿@{
-    Layout = "~/Views/_Layout.cshtml";
-}
-@Styles.Render("~/Content/cssCRUD")
-<!-- RoleMember -->
-<div class="form-row">
-							<div class='col-md-12'>
-								<div class="modal-footer">
-									<button id="PrototypeEdtFormSave" type="button" class="btn btn-primary" data-doing="Guardando cambios...">Guardar cambios</button>
-									<button id="PrototypeEdtFormCancel" type="button" class="btn btn-white" data-doing="Cancelando cambios...">Cancelar</button>
-								</div>
-							</div>
-						</div><div class="ibox">
-    <div class="ibox-title">
-        <h5><span id="PageTitle">Formulario anexo para representante declarantes</span><small class="m-l-sm"><span id="PageSubTitle"> Persona jurídica</span></small> </h5>
-        <!-- Opciones -->
-        <div class="ibox-tools">
-            <a class="fullscreen-link">
-                <i class="fa fa-expand"></i>
-            </a>
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                <i class="fa fa-wrench"></i>
-            </a>
-            <ul class="dropdown-menu dropdown-user">
-                <li>
-                    <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar la información</a>
-                </li>
-                <li>
-                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-<div class="ibox-content">
-        <div class="sk-spinner sk-spinner-wave">
-            <div class="sk-rect1"></div>
-            <div class="sk-rect2"></div>
-            <div class="sk-rect3"></div>
-            <div class="sk-rect4"></div>
-            <div class="sk-rect5"></div>
-        </div>
-        <div id="generalNotify">
-        </div>	
-        <!-- Edit Form -->
-        <div class='form-row'>
-            <div class='col-md-12'>
-                <div id="PrototypeEdt" class="animated fadeInRight">
-                    <form id='PrototypeEdtForm' class='form-horizontal' data-toggle='validator'>
-                        <fieldset>
-<!-- datosdelrepresentantelegal Zone -->
-<div class="form-row">
-<div class="col-lg-12">
-  <h4>Datos del representante legal</h4>
-  <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-  <div class="form-row">
+﻿<!-- kycpersona Grid Modal -->
+<div class="modal inmodal" id="kycpersonaModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                <h4 class="modal-title">Formulario conozca a su cliente - Persona Física</h4>
+            </div>
+            <div class="modal-body">
 
-<!-- primerapellido Text -->
-<div class='col-sm-4 col-md-4'>
-  <div class='form-group'>
-    <label class='control-label' for='primerapellido'>Primer apellido</label>
-    <input type='text' id='primerapellido' name='primerapellido' class='form-control' size='40' maxlength='40'  />
+                <!-- Edit Form -->
+                <div class='form-row'>
+                    <div class='col-md-12'>
+                        <div id="kycdeclaranteDecEdt" class="animated fadeInRight">
+                            <form id='kycdeclaranteDecEdtForm' class='form-horizontal' data-toggle='validator'>
+                                <fieldset>
+                                    <!-- datosdelrepresentantelegalDec Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Datos del representante legal</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
 
-  </div>
-</div>
-<!-- segundoapellido Text -->
-<div class='col-sm-4 col-md-4'>
-  <div class='form-group'>
-    <label class='control-label' for='segundoapellido'>Segundo apellido</label>
-    <input type='text' id='segundoapellido' name='segundoapellido' class='form-control' size='40' maxlength='40'  />
+                                                <!-- primerapellidoDec Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='primerapellidoDec'>Primer apellido<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='primerapellidoDec' name='primerapellidoDec' class='form-control' size='40' maxlength='40' />
 
-  </div>
-</div>
-<!-- nombrecompleto Text -->
-<div class='col-sm-4 col-md-4'>
-  <div class='form-group'>
-    <label class='control-label' for='nombrecompleto'>Nombre completo</label>
-    <input type='text' id='nombrecompleto' name='nombrecompleto' class='form-control' size='40' maxlength='40'  />
+                                                    </div>
+                                                </div>
+                                                <!-- segundoapellidoDec Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='segundoapellidoDec'>Segundo apellido<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='segundoapellidoDec' name='segundoapellidoDec' class='form-control' size='40' maxlength='40' />
 
-  </div>
-</div>
-<!-- posiciondentrodelaempresa Text -->
-<div class='col-sm-4 col-md-4'>
-  <div class='form-group'>
-    <label class='control-label' for='posiciondentrodelaempresa'>Posición dentro de la empresa</label>
-    <input type='text' id='posiciondentrodelaempresa' name='posiciondentrodelaempresa' class='form-control' size='40' maxlength='40'  />
+                                                    </div>
+                                                </div>
+                                                <!-- nombrecompletoDec Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='nombrecompletoDec'>Nombre completo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='nombrecompletoDec' name='nombrecompletoDec' class='form-control' size='40' maxlength='40' />
 
-  </div>
-</div>
-<!-- numerodeidentificacion Text -->
-<div class='col-sm-4 col-md-4'>
-  <div class='form-group'>
-    <label class='control-label' for='numerodeidentificacion'>Número de identificación</label>
-    <input type='text' id='numerodeidentificacion' name='numerodeidentificacion' class='form-control' size='40' maxlength='40'  />
+                                                    </div>
+                                                </div>
+                                                <!-- posiciondentrodelaempresaDec Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='posiciondentrodelaempresaDec'>Posición dentro de la empresa<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='posiciondentrodelaempresaDec' name='posiciondentrodelaempresaDec' class='form-control' size='40' maxlength='40' />
 
-  </div>
-</div>
-<!-- tipodeidentificacion RadioButtonList -->
-<div class='col-sm-4 col-md-4'>
-  <div class='form-group'>
-    <label class='control-label' for='tipodeidentificacion'>Tipo de identificación</label>
-	<div style="padding-top: 6px;"><div class="custom-control custom-radio custom-control-inline">
-	<input type="radio" class="custom-control-input" id="tipodeidentificacion_1" name="tipodeidentificacion" value="1">
-	<label class="custom-control-label" for="tipodeidentificacion_1">Cédula</label>
-</div><div class="custom-control custom-radio custom-control-inline">
-	<input type="radio" class="custom-control-input" id="tipodeidentificacion_2" name="tipodeidentificacion" value="2">
-	<label class="custom-control-label" for="tipodeidentificacion_2">Pasaporte</label>
-</div><div class="custom-control custom-radio custom-control-inline">
-	<input type="radio" class="custom-control-input" id="tipodeidentificacion_3" name="tipodeidentificacion" value="3">
-	<label class="custom-control-label" for="tipodeidentificacion_3">Cédula Residencia</label>
-</div><div class="custom-control custom-radio custom-control-inline">
-	<input type="radio" class="custom-control-input" id="tipodeidentificacion_4" name="tipodeidentificacion" value="4">
-	<label class="custom-control-label" for="tipodeidentificacion_4">Otro</label>
-</div></div>
-  </div>
-</div>
+                                                    </div>
+                                                </div>
+                                                <!-- numerodeidentificacionDec Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='numerodeidentificacionDec'>Número de identificación<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='numerodeidentificacionDec' name='numerodeidentificacionDec' class='form-control' size='40' maxlength='40' />
 
-<!-- especifique Text -->
-<div class='col-sm-4 col-md-4'>
-  <div class='form-group'>
-    <label class='control-label' for='especifique'>Especifique</label>
-    <input type='text' id='especifique' name='especifique' class='form-control' size='40' maxlength='40'  />
+                                                    </div>
+                                                </div>
+                                                <!-- tipodeidentificacionDec RadioButtonList -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='tipodeidentificacionDec'>Tipo de identificación<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="tipodeidentificacionDec_1" name="tipodeidentificacionDec" value="1">
+                                                                <label class="custom-control-label" for="tipodeidentificacionDec_1">Cédula</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="tipodeidentificacionDec_2" name="tipodeidentificacionDec" value="2">
+                                                                <label class="custom-control-label" for="tipodeidentificacionDec_2">Pasaporte</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="tipodeidentificacionDec_3" name="tipodeidentificacionDec" value="3">
+                                                                <label class="custom-control-label" for="tipodeidentificacionDec_3">Cédula Residencia</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="tipodeidentificacionDec_4" name="tipodeidentificacionDec" value="4">
+                                                                <label class="custom-control-label" for="tipodeidentificacionDec_4">Otro</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-  </div>
-</div>
-<!-- fechadecaducidad DatePicker -->
-<div class='col-sm-4 col-md-4'>
-  <div class='form-group'>
-    <label class='control-label' for='fechadecaducidad'>Fecha de caducidad</label>
-    <div class='input-group date' id='fechadecaducidad_group'>
-      <input type='text' id='fechadecaducidad' name='fechadecaducidad' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
-        <span class='input-group-addon'>
-          <span class='glyphicon glyphicon-calendar'></span>
-        </span>
-    </div>
-    <div id='fechadecaducidad_validate'></div>
-  </div>
-</div>
+                                                <!-- especifiqueDec Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='especifiqueDec'>Especifique<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='especifiqueDec' name='especifiqueDec' class='form-control' size='40' maxlength='40' />
 
-<!-- nacionalidad DropDownList -->
-<div class='col-sm-4 col-md-4'>
-  <div class='form-group'>
-    <label class='control-label' for='nacionalidad'>Nacionalidad</label>
-    <select id='nacionalidad' name='nacionalidad' class='form-control'  >
-    </select>
-  </div>
-</div>
+                                                    </div>
+                                                </div>
+                                                <!-- fechadecaducidadDec DatePicker -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='fechadecaducidadDec'>Fecha de caducidad<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='fechadecaducidadDec_group'>
+                                                            <input type='text' id='fechadecaducidadDec' name='fechadecaducidadDec' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='fechadecaducidadDec_validate'></div>
+                                                    </div>
+                                                </div>
 
-<!-- fechadenacimiento DatePicker -->
-<div class='col-sm-4 col-md-4'>
-  <div class='form-group'>
-    <label class='control-label' for='fechadenacimiento'>Fecha de nacimiento</label>
-    <div class='input-group date' id='fechadenacimiento_group'>
-      <input type='text' id='fechadenacimiento' name='fechadenacimiento' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
-        <span class='input-group-addon'>
-          <span class='glyphicon glyphicon-calendar'></span>
-        </span>
-    </div>
-    <div id='fechadenacimiento_validate'></div>
-  </div>
-</div>
+                                                <!-- nacionalidadDec DropDownList -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='nacionalidadDec'>Nacionalidad<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='nacionalidadDec' name='nacionalidadDec' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
 
-<!-- paisdenacimiento DropDownList -->
-<div class='col-sm-4 col-md-4'>
-  <div class='form-group'>
-    <label class='control-label' for='paisdenacimiento'>País de nacimiento</label>
-    <select id='paisdenacimiento' name='paisdenacimiento' class='form-control'  >
-    </select>
-  </div>
-</div>
+                                                <!-- fechadenacimientoDec DatePicker -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='fechadenacimientoDec'>Fecha de nacimiento<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='fechadenacimientoDec_group'>
+                                                            <input type='text' id='fechadenacimientoDec' name='fechadenacimientoDec' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='fechadenacimientoDec_validate'></div>
+                                                    </div>
+                                                </div>
 
-<!-- profesion Text -->
-<div class='col-sm-4 col-md-4'>
-  <div class='form-group'>
-    <label class='control-label' for='profesion'>Profesión</label>
-    <input type='text' id='profesion' name='profesion' class='form-control' size='40' maxlength='40'  />
+                                                <!-- paisdenacimientoDec DropDownList -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='paisdenacimientoDec'>País de nacimiento<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='paisdenacimientoDec' name='paisdenacimientoDec' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
 
-  </div>
-</div>
-<!-- estadocivil DropDownList -->
-<div class='col-sm-4 col-md-4'>
-  <div class='form-group'>
-    <label class='control-label' for='estadocivil'>Estado civil</label>
-    <select id='estadocivil' name='estadocivil' class='form-control'  >
-    </select>
-  </div>
-</div>
+                                                <!-- profesionDec Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='profesionDec'>Profesión<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='profesionDec' name='profesionDec' class='form-control' size='40' maxlength='40' />
 
-<!-- sexo DropDownList -->
-<div class='col-sm-4 col-md-4'>
-  <div class='form-group'>
-    <label class='control-label' for='sexo'>Sexo</label>
-    <select id='sexo' name='sexo' class='form-control'  >
-    </select>
-  </div>
-</div>
+                                                    </div>
+                                                </div>
+                                                <!-- estadocivilDec DropDownList -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='estadocivilDec'>Estado civil<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='estadocivilDec' name='estadocivilDec' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
 
-<!-- telefonoresidencia Text -->
-<div class='col-sm-4 col-md-4'>
-	<div class='form-group'>
-		<label class='control-label' for='telefonoresidencia'>Teléfono residencia</label>
-		<div class='input-group'>
-			<span class='input-group-addon'>
-				<span class='glyphicon glyphicon-earphone'></span>
-			</span>
-			<input id='telefonoresidencia' name='telefonoresidencia' type='text' class='form-control' size='9' maxlength='9' >
-		</div>
-		<div id='telefonoresidencia_validate'></div>
-	</div>
-</div>
-<!-- telefonocelular Text -->
-<div class='col-sm-4 col-md-4'>
-	<div class='form-group'>
-		<label class='control-label' for='telefonocelular'>Teléfono celular</label>
-		<div class='input-group'>
-			<span class='input-group-addon'>
-				<span class='glyphicon glyphicon-earphone'></span>
-			</span>
-			<input id='telefonocelular' name='telefonocelular' type='text' class='form-control' size='9' maxlength='9' >
-		</div>
-		<div id='telefonocelular_validate'></div>
-	</div>
-</div>
-<!-- fax Text -->
-<div class='col-sm-4 col-md-4'>
-	<div class='form-group'>
-		<label class='control-label' for='fax'>Fax</label>
-		<div class='input-group'>
-			<span class='input-group-addon'>
-				<span class='glyphicon glyphicon-earphone'></span>
-			</span>
-			<input id='fax' name='fax' type='text' class='form-control' size='9' maxlength='9' >
-		</div>
-		<div id='fax_validate'></div>
-	</div>
-</div>
-<!-- apartadoPostal Text -->
-<div class='col-sm-4 col-md-4'>
-  <div class='form-group'>
-    <label class='control-label' for='apartadoPostal'>Apartado Postal</label>
-    <input type='text' id='apartadoPostal' name='apartadoPostal' class='form-control' size='40' maxlength='40'  />
+                                                <!-- sexoDec DropDownList -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='sexoDec'>Sexo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='sexoDec' name='sexoDec' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
 
-  </div>
-</div>
-<!-- correoelectronico Text -->
-<div class='col-sm-4 col-md-4'>
-	<div class='form-group'>
-		<label class='control-label' for='correoelectronico'>Correo electrónico</label>
-		<div class='input-group'>
-			<span class='input-group-addon'>
-				<span class='glyphicon glyphicon-envelope'></span>
-			</span>
-			<input id='correoelectronico' name='correoelectronico' type='text' class='form-control' size='80' maxlength='80' >
-		</div>
-		<div id='correoelectronico_validate'></div>
-	</div>
-</div>
-  </div>
-</div>
-  </div>
+                                                <!-- telefonoresidenciaDec Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='telefonoresidenciaDec'>Teléfono residencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group'>
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-earphone'></span>
+                                                            </span>
+                                                            <input id='telefonoresidenciaDec' name='telefonoresidenciaDec' type='text' class='form-control' size='9' maxlength='9'>
+                                                        </div>
+                                                        <div id='telefonoresidenciaDec_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- telefonocelularDec Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='telefonocelularDec'>Teléfono celular<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group'>
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-earphone'></span>
+                                                            </span>
+                                                            <input id='telefonocelularDec' name='telefonocelularDec' type='text' class='form-control' size='9' maxlength='9'>
+                                                        </div>
+                                                        <div id='telefonocelularDec_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- faxDec Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='faxDec'>Fax<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group'>
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-earphone'></span>
+                                                            </span>
+                                                            <input id='faxDec' name='faxDec' type='text' class='form-control' size='9' maxlength='9'>
+                                                        </div>
+                                                        <div id='faxDec_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- apartadopostalDec Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='apartadopostalDec'>Apartado postal<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='apartadopostalDec' name='apartadopostalDec' class='form-control' size='40' maxlength='40' />
 
-<!-- domiciliopermanente Zone -->
-<div class="form-row">
-<div class="col-lg-12">
-  <h4>Domicilio permanente</h4>
-  <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-  <div class="form-row">
+                                                    </div>
+                                                </div>
+                                                <!-- correoelectronicoDec Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='correoelectronicoDec'>Correo electrónico<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group'>
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-envelope'></span>
+                                                            </span>
+                                                            <input id='correoelectronicoDec' name='correoelectronicoDec' type='text' class='form-control' size='80' maxlength='80'>
+                                                        </div>
+                                                        <div id='correoelectronicoDec_validate'></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-<!-- pais DropDownList -->
-<div class='col-sm-3 col-md-3'>
-  <div class='form-group'>
-    <label class='control-label' for='pais'>País</label>
-    <select id='pais' name='pais' class='form-control'  >
-    </select>
-  </div>
-</div>
+                                    <!-- domiciliopermanenteDec Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Domicilio permanente</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
 
-<!-- provincia DropDownList -->
-<div class='col-sm-3 col-md-3'>
-  <div class='form-group'>
-    <label class='control-label' for='provincia'>Provincia</label>
-    <select id='provincia' name='provincia' class='form-control'  >
-    </select>
-  </div>
-</div>
+                                                <!-- cod_paisDec DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cod_paisDec'>País<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='cod_paisDec' name='cod_paisDec' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
 
-<!-- canton DropDownList -->
-<div class='col-sm-3 col-md-3'>
-  <div class='form-group'>
-    <label class='control-label' for='canton'>Cantón</label>
-    <select id='canton' name='canton' class='form-control'  >
-    </select>
-  </div>
-</div>
+                                                <!-- cod_estadoDec DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cod_estadoDec'>Provincia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='cod_estadoDec' name='cod_estadoDec' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
 
-<!-- distrito DropDownList -->
-<div class='col-sm-3 col-md-3'>
-  <div class='form-group'>
-    <label class='control-label' for='distrito'>Distrito</label>
-    <select id='distrito' name='distrito' class='form-control'  >
-    </select>
-  </div>
-</div>
+                                                <!-- cod_provDec DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cod_provDec'>Cantón<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='cod_provDec' name='cod_provDec' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
 
-<!-- direccionexacta Notes -->
-<div class='col-sm-12 col-md-12'>
-  <div class='form-group'>
-    <label class='control-label' for='direccionexacta'>Dirección exacta</label>
-	<textarea id='direccionexacta' name='direccionexacta' class='form-control' rows="2" ></textarea>
-  </div>
-</div>
-  </div>
-</div>
-  </div>
+                                                <!-- cod_localidadDec DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cod_localidadDec'>Distrito<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='cod_localidadDec' name='cod_localidadDec' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
 
-<!-- origendelosfondos Zone -->
-<div class="form-row">
-<div class="col-lg-12">
-  <h4>Origen de los fondos</h4>
-  <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-  <div class="form-row">
+                                                <!-- direccionexactaDec Notes -->
+                                                <div class='col-sm-12 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='direccionexactaDec'>Dirección exacta<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <textarea id='direccionexactaDec' name='direccionexactaDec' class='form-control' rows="2"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-<!-- origendelosFondosDedondeprovienenyenqueforma Text -->
-<div class='col-sm-12 col-md-12'>
-  <div class='form-group'>
-    <label class='control-label' for='origendelosFondosDedondeprovienenyenqueforma'>Origen de los Fondos (¿De dónde provienen y en qué forma?)</label>
-    <input type='text' id='origendelosFondosDedondeprovienenyenqueforma' name='origendelosFondosDedondeprovienenyenqueforma' class='form-control' size='40' maxlength='40'  />
+                                    <!-- origendelosfondosDec Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Origen de los fondos</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
 
-  </div>
-</div>
-<!-- enquepaisdesarrollalamayoriadesusactividadeseconomicas Text -->
-<div class='col-sm-12 col-md-12'>
-  <div class='form-group'>
-    <label class='control-label' for='enquepaisdesarrollalamayoriadesusactividadeseconomicas'>¿En qué país desarrolla la mayoría de sus actividades económicas?</label>
-    <input type='text' id='enquepaisdesarrollalamayoriadesusactividadeseconomicas' name='enquepaisdesarrollalamayoriadesusactividadeseconomicas' class='form-control' size='40' maxlength='40'  />
+                                                <!-- correspondenciaOrigendelosfondosDec Text -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='correspondenciaOrigendelosfondosDec'>Origen de los Fondos (¿De dónde provienen y en qué forma?)<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='correspondenciaOrigendelosfondosDec' name='correspondenciaOrigendelosfondosDec' class='form-control' size='60' maxlength='60' />
 
-  </div>
-</div>
-<!-- ingresomensualestimado Text -->
-<div class='col-sm-12 col-md-12'>
-  <div class='form-group'>
-    <label class='control-label' for='ingresomensualestimado'>Ingreso mensual estimado</label>
-    <input type='text' id='ingresomensualestimado' name='ingresomensualestimado' class='form-control' size='40' maxlength='40'  />
+                                                    </div>
+                                                </div>
+                                                <!-- paismayoractividadDec Text -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='paismayoractividadDec'>¿En qué país desarrolla la mayoría de sus actividades económicas?<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='paismayoractividadDec' name='paismayoractividadDec' class='form-control' size='60' maxlength='60' />
 
-  </div>
-</div>
-<!-- losfondospormovilizarsonpropiosodeterceros RadioButtonList -->
-<div class='col-sm-12 col-md-12'>
-  <div class='form-group'>
-    <label class='control-label' for='losfondospormovilizarsonpropiosodeterceros'>Los fondos por movilizar son propios o de terceros?</label>
-	<div style="padding-top: 6px;"><div class="custom-control custom-radio custom-control-inline">
-	<input type="radio" class="custom-control-input" id="losfondospormovilizarsonpropiosodeterceros_1" name="losfondospormovilizarsonpropiosodeterceros" value="1">
-	<label class="custom-control-label" for="losfondospormovilizarsonpropiosodeterceros_1">Propios</label>
-</div><div class="custom-control custom-radio custom-control-inline">
-	<input type="radio" class="custom-control-input" id="losfondospormovilizarsonpropiosodeterceros_2" name="losfondospormovilizarsonpropiosodeterceros" value="2">
-	<label class="custom-control-label" for="losfondospormovilizarsonpropiosodeterceros_2">Terceros</label>
-</div></div>
-  </div>
-</div>
+                                                    </div>
+                                                </div>
+                                                <!-- ingresomensualestimadoDec Numeric -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ingresomensualestimadoDec'>Ingreso mensual estimado<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='ingresomensualestimadoDec' name='ingresomensualestimadoDec' class='form-control text-right' size='11' maxlength='11' />
+                                                    </div>
+                                                </div>
+                                                <!-- fondospormivilizarDec RadioButtonList -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='fondospormivilizarDec'>Los fondos por movilizar son propios o de terceros?<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="fondospormivilizarDec_1" name="fondospormivilizarDec" value="1">
+                                                                <label class="custom-control-label" for="fondospormivilizarDec_1">Propios</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="fondospormivilizarDec_2" name="fondospormivilizarDec" value="2">
+                                                                <label class="custom-control-label" for="fondospormivilizarDec_2">Terceros</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-<!-- sedesempenaentrelasactividadescitadasenelArticulo15delaLey8204manejodefondosdetercerosfisicosojuridicos RadioButtonList -->
-<div class='col-sm-12 col-md-12'>
-  <div class='form-group'>
-    <label class='control-label' for='sedesempenaentrelasactividadescitadasenelArticulo15delaLey8204manejodefondosdetercerosfisicosojuridicos'>¿Se desempeña entre las actividades citadas en el Artículo 15 de la Ley 8204 (manejo de fondos de terceros físicos o jurídicos)</label>
-	<div style="padding-top: 6px;"><div class="custom-control custom-radio custom-control-inline">
-	<input type="radio" class="custom-control-input" id="sedesempenaentrelasactividadescitadasenelArticulo15delaLey8204manejodefondosdetercerosfisicosojuridicos_1" name="sedesempenaentrelasactividadescitadasenelArticulo15delaLey8204manejodefondosdetercerosfisicosojuridicos" value="1">
-	<label class="custom-control-label" for="sedesempenaentrelasactividadescitadasenelArticulo15delaLey8204manejodefondosdetercerosfisicosojuridicos_1">Si</label>
-</div><div class="custom-control custom-radio custom-control-inline">
-	<input type="radio" class="custom-control-input" id="sedesempenaentrelasactividadescitadasenelArticulo15delaLey8204manejodefondosdetercerosfisicosojuridicos_2" name="sedesempenaentrelasactividadescitadasenelArticulo15delaLey8204manejodefondosdetercerosfisicosojuridicos" value="2">
-	<label class="custom-control-label" for="sedesempenaentrelasactividadescitadasenelArticulo15delaLey8204manejodefondosdetercerosfisicosojuridicos_2">No</label>
-</div></div>
-  </div>
-</div>
+                                                <!-- actividadesart15Dec RadioButtonList -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='actividadesart15Dec'>¿Se desempeña entre las actividades citadas en el Artículo 15 de la Ley 8204 (manejo de fondos de terceros físicos o jurídicos)<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="actividadesart15Dec_1" name="actividadesart15Dec" value="1">
+                                                                <label class="custom-control-label" for="actividadesart15Dec_1">Si</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="actividadesart15Dec_2" name="actividadesart15Dec" value="2">
+                                                                <label class="custom-control-label" for="actividadesart15Dec_2">No</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-  </div>
-</div>
-  </div>
+                                                <!-- tiposdeactivosDec Zone -->
+                                                <div class="form-row">
+                                                    <div class="col-lg-12">
+                                                        <h4>Tipos de activos</h4>
+                                                        <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                                        <div class="form-row">
 
-<!-- tiposdeactivos Zone -->
-<div class="form-row">
-<div class="col-lg-12">
-  <h4>Tipos de activos</h4>
-  <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-  <div class="form-row">
+                                                            <!-- activoscorrespondenDec RadioButtonList -->
+                                                            <div class='col-sm-12 col-md-12'>
+                                                                <div class='form-group'>
+                                                                    <label class='control-label' for='activoscorrespondenDec'>La mayoría de sus activos corresponden a<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                                    <div style="padding-top: 6px;">
+                                                                        <div class="custom-control custom-radio custom-control-inline">
+                                                                            <input type="radio" class="custom-control-input" id="activoscorrespondenDec_1" name="activoscorrespondenDec" value="1">
+                                                                            <label class="custom-control-label" for="activoscorrespondenDec_1">Activos fijos muebles e inmuebles dentro del país</label>
+                                                                        </div><div class="custom-control custom-radio custom-control-inline">
+                                                                            <input type="radio" class="custom-control-input" id="activoscorrespondenDec_2" name="activoscorrespondenDec" value="2">
+                                                                            <label class="custom-control-label" for="activoscorrespondenDec_2">Activos fijos muebles e inmuebles fuera del país</label>
+                                                                        </div><div class="custom-control custom-radio custom-control-inline">
+                                                                            <input type="radio" class="custom-control-input" id="activoscorrespondenDec_3" name="activoscorrespondenDec" value="3">
+                                                                            <label class="custom-control-label" for="activoscorrespondenDec_3">Activos monetarios y/o financieros dentro del país</label>
+                                                                        </div><div class="custom-control custom-radio custom-control-inline">
+                                                                            <input type="radio" class="custom-control-input" id="activoscorrespondenDec_4" name="activoscorrespondenDec" value="4">
+                                                                            <label class="custom-control-label" for="activoscorrespondenDec_4">Activos monetarios y/o financieros fuera del país</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
 
-<!-- lamayoriadesusactivoscorrespondena RadioButtonList -->
-<div class='col-sm-12 col-md-12'>
-  <div class='form-group'>
-    <label class='control-label' for='lamayoriadesusactivoscorrespondena'>La mayoría de sus activos corresponden a</label>
-	<div style="padding-top: 6px;"><div class="custom-control custom-radio custom-control-inline">
-	<input type="radio" class="custom-control-input" id="lamayoriadesusactivoscorrespondena_1" name="lamayoriadesusactivoscorrespondena" value="1">
-	<label class="custom-control-label" for="lamayoriadesusactivoscorrespondena_1">Activos fijos muebles e inmuebles dentro del país</label>
-</div><div class="custom-control custom-radio custom-control-inline">
-	<input type="radio" class="custom-control-input" id="lamayoriadesusactivoscorrespondena_2" name="lamayoriadesusactivoscorrespondena" value="2">
-	<label class="custom-control-label" for="lamayoriadesusactivoscorrespondena_2">Activos fijos muebles e inmuebles fuera del país</label>
-</div><div class="custom-control custom-radio custom-control-inline">
-	<input type="radio" class="custom-control-input" id="lamayoriadesusactivoscorrespondena_3" name="lamayoriadesusactivoscorrespondena" value="3">
-	<label class="custom-control-label" for="lamayoriadesusactivoscorrespondena_3">Activos monetarios y/o financieros dentro del país</label>
-</div><div class="custom-control custom-radio custom-control-inline">
-	<input type="radio" class="custom-control-input" id="lamayoriadesusactivoscorrespondena_4" name="lamayoriadesusactivoscorrespondena" value="4">
-	<label class="custom-control-label" for="lamayoriadesusactivoscorrespondena_4">Activos monetarios y/o financieros fuera del país</label>
-</div></div>
-  </div>
-</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-  </div>
-</div>
-  </div>
+                                                <!-- personasexpuestaspoliticamentePEPsDec Zone -->
+                                                <div class="form-row">
+                                                    <div class="col-lg-12">
+                                                        <h4>Personas expuestas políticamente (PEPs)</h4>
+                                                        <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                                        <div class="form-row">
 
-<!-- personasexpuestaspoliticamentePEPs Zone -->
-<div class="form-row">
-<div class="col-lg-12">
-  <h4>Personas expuestas políticamente (PEPs)</h4>
-  <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-  <div class="form-row">
+                                                            <!-- pepcargoDec RadioButtonList -->
+                                                            <div class='col-sm-6 col-md-6'>
+                                                                <div class='form-group'>
+                                                                    <label class='control-label' for='pepcargoDec'>¿Algún Socio, Director o Representante de la empresa desempeña o ha desempeñado algún cargo político?<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                                    <div style="padding-top: 6px;">
+                                                                        <div class="custom-control custom-radio custom-control-inline">
+                                                                            <input type="radio" class="custom-control-input" id="pepcargoDec_1" name="pepcargoDec" value="1">
+                                                                            <label class="custom-control-label" for="pepcargoDec_1">Si</label>
+                                                                        </div><div class="custom-control custom-radio custom-control-inline">
+                                                                            <input type="radio" class="custom-control-input" id="pepcargoDec_2" name="pepcargoDec" value="2">
+                                                                            <label class="custom-control-label" for="pepcargoDec_2">No</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
 
-<!-- algunSocioDirectoroRepresentantedelaempresadesempenaohadesempenadoalguncargopolitico RadioButtonList -->
-<div class='col-sm-12 col-md-12'>
-  <div class='form-group'>
-    <label class='control-label' for='algunSocioDirectoroRepresentantedelaempresadesempenaohadesempenadoalguncargopolitico'>¿Algún Socio, Director o Representante de la empresa desempeña o ha desempeñado algún cargo político?</label>
-	<div style="padding-top: 6px;"><div class="custom-control custom-radio custom-control-inline">
-	<input type="radio" class="custom-control-input" id="algunSocioDirectoroRepresentantedelaempresadesempenaohadesempenadoalguncargopolitico_1" name="algunSocioDirectoroRepresentantedelaempresadesempenaohadesempenadoalguncargopolitico" value="1">
-	<label class="custom-control-label" for="algunSocioDirectoroRepresentantedelaempresadesempenaohadesempenadoalguncargopolitico_1">Si</label>
-</div><div class="custom-control custom-radio custom-control-inline">
-	<input type="radio" class="custom-control-input" id="algunSocioDirectoroRepresentantedelaempresadesempenaohadesempenadoalguncargopolitico_2" name="algunSocioDirectoroRepresentantedelaempresadesempenaohadesempenadoalguncargopolitico" value="2">
-	<label class="custom-control-label" for="algunSocioDirectoroRepresentantedelaempresadesempenaohadesempenadoalguncargopolitico_2">No</label>
-</div></div>
-  </div>
-</div>
+                                                            <!-- pepduracionDec Text -->
+                                                            <div class='col-sm-6 col-md-6'>
+                                                                <div class='form-group'>
+                                                                    <label class='control-label' for='pepduracionDec'>En caso afirmativo, indique el período durante el cual desempeñó dichas funciones<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                                    <input type='text' id='pepduracionDec' name='pepduracionDec' class='form-control' size='60' maxlength='60' />
 
-<!-- encasoafirmativoindiqueelperiododuranteelcualdesempenodichasfunciones Text -->
-<div class='col-sm-12 col-md-12'>
-  <div class='form-group'>
-    <label class='control-label' for='encasoafirmativoindiqueelperiododuranteelcualdesempenodichasfunciones'>En caso afirmativo, indique el período durante el cual desempeñó dichas funciones</label>
-    <input type='text' id='encasoafirmativoindiqueelperiododuranteelcualdesempenodichasfunciones' name='encasoafirmativoindiqueelperiododuranteelcualdesempenodichasfunciones' class='form-control' size='40' maxlength='40'  />
+                                                                </div>
+                                                            </div>
+                                                            <!-- algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEPDec Text -->
+                                                            <div class='col-sm-6 col-md-6'>
+                                                                <div class='form-group'>
+                                                                    <label class='control-label' for='algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEPDec'>¿Algún Socio, Director o Representante de la empresa tiene relación directa (consanguinidad) o indirecta (afinidad) con alguna persona expuesta políticamente (PEP)?<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                                    <input type='text' id='algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEPDec' name='algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEPDec' class='form-control' size='0' maxlength='0' />
 
-  </div>
-</div>
-<!-- algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEP RadioButtonList -->
-<div class='col-sm-12 col-md-12'>
-  <div class='form-group'>
-    <label class='control-label' for='algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEP'>¿Algún Socio, Director o Representante de la empresa tiene relación directa (consanguinidad) o indirecta (afinidad) con alguna persona expuesta políticamente (PEP)?</label>
-	<div style="padding-top: 6px;"><div class="custom-control custom-radio custom-control-inline">
-	<input type="radio" class="custom-control-input" id="algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEP_1" name="algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEP" value="1">
-	<label class="custom-control-label" for="algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEP_1">Si</label>
-</div><div class="custom-control custom-radio custom-control-inline">
-	<input type="radio" class="custom-control-input" id="algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEP_2" name="algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEP" value="2">
-	<label class="custom-control-label" for="algunSocioDirectoroRepresentantedelaempresatienerelaciondirectaconsanguinidadoindirectaafinidadconalgunapersonaexpuestapoliticamentePEP_2">No</label>
-</div></div>
-  </div>
-</div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- peptiporelacionDec Text -->
+                                                            <div class='col-sm-6 col-md-6'>
+                                                                <div class='form-group'>
+                                                                    <label class='control-label' for='peptiporelacionDec'>Detalle el tipo de relación<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                                    <input type='text' id='peptiporelacionDec' name='peptiporelacionDec' class='form-control' size='60' maxlength='60' />
 
-<!-- detalleeltipoderelacion Text -->
-<div class='col-sm-12 col-md-12'>
-  <div class='form-group'>
-    <label class='control-label' for='detalleeltipoderelacion'>Detalle el tipo de relación</label>
-    <input type='text' id='detalleeltipoderelacion' name='detalleeltipoderelacion' class='form-control' size='40' maxlength='40'  />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-  </div>
-</div>
-  </div>
-</div>
-  </div>
+                                                <!-- correspondenciaDec Zone -->
+                                                <div class="form-row">
+                                                    <div class="col-lg-12">
+                                                        <h4>Correspondencia</h4>
+                                                        <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                                        <div class="form-row">
 
-<!-- correspondencia Zone -->
-<div class="form-row">
-<div class="col-lg-12">
-  <h4>Correspondencia</h4>
-  <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-  <div class="form-row">
+                                                            <!-- mediodeenvioDec RadioButtonList -->
+                                                            <div class='col-sm-6 col-md-6'>
+                                                                <div class='form-group'>
+                                                                    <label class='control-label' for='mediodeenvioDec'>Favor indicar el medio por el cual desea que se le envíe información<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                                    <div style="padding-top: 6px;">
+                                                                        <div class="custom-control custom-radio custom-control-inline">
+                                                                            <input type="radio" class="custom-control-input" id="mediodeenvioDec_1" name="mediodeenvioDec" value="1">
+                                                                            <label class="custom-control-label" for="mediodeenvioDec_1">Apartado postal</label>
+                                                                        </div><div class="custom-control custom-radio custom-control-inline">
+                                                                            <input type="radio" class="custom-control-input" id="mediodeenvioDec_2" name="mediodeenvioDec" value="2">
+                                                                            <label class="custom-control-label" for="mediodeenvioDec_2">Dirección física</label>
+                                                                        </div><div class="custom-control custom-radio custom-control-inline">
+                                                                            <input type="radio" class="custom-control-input" id="mediodeenvioDec_3" name="mediodeenvioDec" value="3">
+                                                                            <label class="custom-control-label" for="mediodeenvioDec_3">Fax</label>
+                                                                        </div><div class="custom-control custom-radio custom-control-inline">
+                                                                            <input type="radio" class="custom-control-input" id="mediodeenvioDec_4" name="mediodeenvioDec" value="4">
+                                                                            <label class="custom-control-label" for="mediodeenvioDec_4">Correo electrónico</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
 
-<!-- favorindicarelmedioporelcualdeseaqueseleenvieinformacion RadioButtonList -->
-<div class='col-sm-6 col-md-6'>
-  <div class='form-group'>
-    <label class='control-label' for='favorindicarelmedioporelcualdeseaqueseleenvieinformacion'>Favor indicar el medio por el cual desea que se le envíe información</label>
-	<div style="padding-top: 6px;"><div class="custom-control custom-radio custom-control-inline">
-	<input type="radio" class="custom-control-input" id="favorindicarelmedioporelcualdeseaqueseleenvieinformacion_1" name="favorindicarelmedioporelcualdeseaqueseleenvieinformacion" value="1">
-	<label class="custom-control-label" for="favorindicarelmedioporelcualdeseaqueseleenvieinformacion_1">Apartado Postal</label>
-</div><div class="custom-control custom-radio custom-control-inline">
-	<input type="radio" class="custom-control-input" id="favorindicarelmedioporelcualdeseaqueseleenvieinformacion_2" name="favorindicarelmedioporelcualdeseaqueseleenvieinformacion" value="2">
-	<label class="custom-control-label" for="favorindicarelmedioporelcualdeseaqueseleenvieinformacion_2">Dirección física</label>
-</div><div class="custom-control custom-radio custom-control-inline">
-	<input type="radio" class="custom-control-input" id="favorindicarelmedioporelcualdeseaqueseleenvieinformacion_3" name="favorindicarelmedioporelcualdeseaqueseleenvieinformacion" value="3">
-	<label class="custom-control-label" for="favorindicarelmedioporelcualdeseaqueseleenvieinformacion_3">Fax</label>
-</div><div class="custom-control custom-radio custom-control-inline">
-	<input type="radio" class="custom-control-input" id="favorindicarelmedioporelcualdeseaqueseleenvieinformacion_4" name="favorindicarelmedioporelcualdeseaqueseleenvieinformacion" value="4">
-	<label class="custom-control-label" for="favorindicarelmedioporelcualdeseaqueseleenvieinformacion_4">Correo electrónico</label>
-</div></div>
-  </div>
-</div>
+                                                            <!-- correspondenciaEspecifiqueDec Text -->
+                                                            <div class='col-sm-6 col-md-6'>
+                                                                <div class='form-group'>
+                                                                    <label class='control-label' for='correspondenciaEspecifiqueDec'>Especifique<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                                    <input type='text' id='correspondenciaEspecifiqueDec' name='correspondenciaEspecifiqueDec' class='form-control' size='40' maxlength='40' />
 
-<!-- correspondenciaEspecifique Text -->
-<div class='col-sm-6 col-md-6'>
-  <div class='form-group'>
-    <label class='control-label' for='correspondenciaEspecifique'>Especifique</label>
-    <input type='text' id='correspondenciaEspecifique' name='correspondenciaEspecifique' class='form-control' size='40' maxlength='40'  />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-  </div>
-</div>
-  </div>
-</div>
-  </div>
-
-
-@ibox-content-footer@
-                        </fieldset>
-                    </form>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- Edit Form End -->
+
+            </div>
+            <div class="modal-footer">
+                <button id="kycdeclaranteDecEdtFormSave" type="button" class="btn btn-primary" data-doing="Guardando cambios...">Guardar cambios</button>
+                <button id="kycdeclaranteDecEdtFormCancel" type="button" class="btn btn-white" data-doing="Cancelando cambios..."  data-dismiss="modal">Cancelar</button>
             </div>
         </div>
-
-		<!-- Edit Form End -->
-    </div>	
+    </div>
 </div>
-@section Scripts {
-    @Scripts.Render("~/bundles/jsCRUD")
-    <script src="@Url.Content("~/Scripts/kyc.declarante.js")"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            app.kycdeclarante.Init();
-        });
-    </script>
-}
