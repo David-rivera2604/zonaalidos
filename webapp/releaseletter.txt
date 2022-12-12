@@ -423,8 +423,8 @@
                    Aliados. No se puede visualizar un documento recién cargado.
                    Aliados. Fraccionamiento de pago por default según contrato.
                    Aliados. Active Directory. Maneja posibles estado de una cuenta.
-1.6.15  06/09/2022 Proveedores. Actualizacion del listado Beneficios
-                   Proveedores. Manejo de texto descriptivo de pre autorizacion segun el rol Proveedores_Exclusivos
+1.6.15  06/09/2022 Proveedores. Actualización del listado Beneficios
+                   Proveedores. Manejo de texto descriptivo de pre autorización según el rol Proveedores_Exclusivos
 1.6.15a 27/09/2022 Viajero Regional. Ajustes de contratos.
                    Aliados. Manejo de cuentas de acceso para la pasarela de pago.
                    Caturix. Manejo de suma asegurada según plan.
@@ -442,3 +442,5 @@
                    Bayer. Validación del 100% para beneficiarios.
                    Bayer. Datos del padrón según cédula.
 1.6.19a 28/10/2022 Aliados. Ajuste en la ruta para llamar los reportes de tron (recibos, avisos).
+1.6.20  12/12/2022 Aliados. EL logout debe mantener el modo Active Directory.
+                   MapfreMas. Cuestionarios conozca a su cliente pero y jurídico.
