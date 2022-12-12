@@ -842,7 +842,9 @@ app.EmisionMapfreMas = (function () {
             }
         }
 
-        result = FormulariosValidations(result);
+        if (formulariosMode()) {
+            result = FormulariosValidations(result);
+        }
         return result;
     }
 
@@ -869,7 +871,7 @@ app.EmisionMapfreMas = (function () {
         }
         return result;
     }
-    
+
 
     function terceros_table_setup() {
 
@@ -1978,25 +1980,30 @@ app.EmisionMapfreMas = (function () {
     };
 
     function formularios_handler() {
-        mainHolder = $('#tercerosTbl').bootstrapTable('getData').filter(i => i.tipodetercero === 0);
-        if (mainHolder.length > 0 && $('#formulariosTbl').bootstrapTable('getData').length == 0) {
+        if (formulariosMode()) {
+            mainHolder = $('#tercerosTbl').bootstrapTable('getData').filter(i => i.tipodetercero === 0);
+            if (mainHolder.length > 0 && $('#formulariosTbl').bootstrapTable('getData').length == 0) {
 
-            $('.formulariosGrid').removeClass('d-none');
+                $('.formulariosGrid').removeClass('d-none');
 
-            let row = { formularioId: 1, name: 'Conozca a su cliente persona', when: null, type: 'kycpersona', data: null };
+                let row = { formularioId: 1, name: 'Conozca a su cliente persona', when: null, type: 'kycpersona', data: null };
 
-            if (mainHolder[0].DocumentNumberType === 4) {
-                row.name = 'Conozca a su cliente Jurídico';
-                row.type = 'kycjuridico';
+                if (mainHolder[0].DocumentNumberType === 4) {
+                    row.name = 'Conozca a su cliente Jurídico';
+                    row.type = 'kycjuridico';
+                }
+
+                $('#formulariosTbl').bootstrapTable('load', [row]);
             }
-
-            $('#formulariosTbl').bootstrapTable('load', [row]);
+            if (mainHolder.length === 0) {
+                $('.formulariosGrid').addClass('d-none');
+            }
         }
-        if (mainHolder.length === 0) {
-            $('.formulariosGrid').addClass('d-none');
-        }
-
     };
+
+    function formulariosMode() {
+        return (workMode === 'draft' && !localStorage.getItem('Roles').includes('Purdy') && !localStorage.getItem('Roles').includes('Davivienda_Prendarios') && !localStorage.getItem('Roles').includes('Davivienda_Leasing'));
+    }
 
     return {
         Data: function () {
