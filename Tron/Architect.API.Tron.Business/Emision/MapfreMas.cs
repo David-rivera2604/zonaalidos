@@ -1,4 +1,5 @@
 ﻿using Architect.Utilities.Extensions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -98,14 +99,19 @@ namespace Architect.API.Tron.Business.Emision
         public static Contracts.Emision.MapfreMas Issue(Contracts.Emision.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.Emision.MapfreMas resultQuoteInfo = null;
-            if (quoteInfo.Modo == "draft")
+            if (quoteInfo.Modo == "draft" || quoteInfo.Modo == "resumen")
             {
 
                 //TODO: Se debe incluir la validación de que de haber un Tomador, Asegurado y Conductor Habitual, pero faltan las básicas.
                 quoteInfo.DatosEconomicos = EconomicDataCalculate(quoteInfo);
 
                 string uniqueId = EnviarSolicitud(quoteInfo.tip_firma, quoteInfo.correoenvio, quoteInfo, tokenInfo);
-                AlmacenarSolicitud(quoteInfo, quoteInfo.tip_firma == Contracts.TipoDeFirma.Manual ? 33 : 4, tokenInfo, uniqueId);
+                string kycUniqueId = String.Empty;
+                if (quoteInfo.kyc != null)
+                {
+                    kycUniqueId = EnviarKYC(quoteInfo.tip_firma, quoteInfo.correoenvio, quoteInfo, tokenInfo);
+                }
+                AlmacenarSolicitud(quoteInfo, quoteInfo.tip_firma == Contracts.TipoDeFirma.Manual ? 33 : 4, tokenInfo, uniqueId, kycUniqueId);
                 GuardaDatosVariables(quoteInfo.presupuesto, quoteInfo.cod_ramo, quoteInfo.tip_firma, quoteInfo.tip_firmaDesc, uniqueId);
                 string message = string.Empty;
                 if (uniqueId.IsNotEmpty())
@@ -158,7 +164,7 @@ namespace Architect.API.Tron.Business.Emision
 
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     resultQuoteInfo = new Contracts.Emision.MapfreMas()
                     {
@@ -167,7 +173,7 @@ namespace Architect.API.Tron.Business.Emision
                     };
 
                 }
-             
+
             }
             return resultQuoteInfo;
         }
@@ -285,7 +291,6 @@ namespace Architect.API.Tron.Business.Emision
             DocuSign.Integrations.Contracts.SubmitResult submit = new DocuSign.Integrations.Contracts.SubmitResult();
             string solicitudPDF = General_PDF_Solicitud(quoteInfo, tokenInfo);
             Contracts.Comun.tercero primaryInsured = (from t in quoteInfo.terceros where t.tipodetercero == 2 select t).First();
-
             if (tip_firma == Contracts.TipoDeFirma.Manual)
             {
                 Core.Business.General.Mail.SendByTemplate("MapfreMas_Solicitud", tokenInfo.CompanyId, tokenInfo.UserId, 0, quoteInfo,
@@ -296,11 +301,43 @@ namespace Architect.API.Tron.Business.Emision
             {
                 submit = DocuSign.Integrations.DocuSign.Submit(
                                 quoteInfo.presupuesto,
-                                "Envío solicitud " + quoteInfo.presupuesto,
+                                "Solicitud " + quoteInfo.presupuesto,
                                 primaryInsured.nombre.CompleteFullName(primaryInsured.apellido1, primaryInsured.apellido2),
                                 correoenvio,
                                 solicitudPDF, quoteInfo.tip_firma == Contracts.TipoDeFirma.Tablet ? "Handwriting" : "WebClick").GetAwaiter().GetResult();
+            }
+            return submit.UniqueId;
+        }
 
+        private static string EnviarKYC(string tip_firma, string correoenvio, Contracts.Emision.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
+        {
+            DocuSign.Integrations.Contracts.SubmitResult submit = new DocuSign.Integrations.Contracts.SubmitResult();
+            string kycPDF = General_PDF_KYC(quoteInfo);
+            Contracts.Comun.tercero primaryInsured = (from t in quoteInfo.terceros where t.tipodetercero == 2 select t).First();
+
+            if (tip_firma == Contracts.TipoDeFirma.Manual)
+            {
+                Core.Business.General.Mail.SendByTemplate("MapfreMas_Solicitud", tokenInfo.CompanyId, tokenInfo.UserId, 0, quoteInfo,
+                    new Dictionary<string, string>() { { correoenvio, string.Empty } },
+                    new string[] { string.Format("{0};Solicitud {1}.pdf", kycPDF, quoteInfo.presupuesto) });
+            }
+            else
+            {
+                submit = DocuSign.Integrations.DocuSign.Submit(
+                                quoteInfo.presupuesto,
+                                "Solicitud " + quoteInfo.presupuesto,
+                                primaryInsured.nombre.CompleteFullName(primaryInsured.apellido1, primaryInsured.apellido2),
+                                correoenvio,
+                                kycPDF, quoteInfo.tip_firma == Contracts.TipoDeFirma.Tablet ? "Handwriting" : "WebClick").GetAwaiter().GetResult();
+                if (quoteInfo.kyc != null)
+                {
+                    submit = DocuSign.Integrations.DocuSign.Submit(
+                                quoteInfo.presupuesto,
+                                "Conozca a su cliente " + quoteInfo.presupuesto,
+                                primaryInsured.nombre.CompleteFullName(primaryInsured.apellido1, primaryInsured.apellido2),
+                                correoenvio,
+                                kycPDF, quoteInfo.tip_firma == Contracts.TipoDeFirma.Tablet ? "Handwriting" : "WebClick").GetAwaiter().GetResult();
+                }
             }
             return submit.UniqueId;
         }
@@ -340,7 +377,19 @@ namespace Architect.API.Tron.Business.Emision
             return Core.Business.General.Report.GeneratePDFFile("mapfremas_solicitud", data).GetAwaiter().GetResult();
         }
 
-        private static void AlmacenarSolicitud(Contracts.Emision.MapfreMas quoteInfo, int status, Core.Contracts.Security.Token tokenInfo, string uniqueId)
+        private static string General_PDF_KYC(Contracts.Emision.MapfreMas quoteInfo)
+        {
+            string pdf_FileName = "KYC_Persona";
+            Contracts.Comun.tercero titular = (from t in quoteInfo.terceros where t.tipodetercero == 0 select t).FirstOrDefault();
+
+            if (titular.DocumentNumberType == 4)
+            {
+                pdf_FileName = "KYC_Juridico";
+            }
+            return Core.Business.General.Report.GeneratePDFFile(pdf_FileName, quoteInfo.kyc).GetAwaiter().GetResult();
+        }
+
+        private static void AlmacenarSolicitud(Contracts.Emision.MapfreMas quoteInfo, int status, Core.Contracts.Security.Token tokenInfo, string uniqueId, string signingRequest2Id = "")
         {
             Contracts.Comun.tercero primaryInsured = (from t in quoteInfo.terceros where t.tipodetercero == 2 select t).First();
             DataAccess.PolicyProposal.Create(new Contracts.PolicyProposal()
@@ -354,6 +403,8 @@ namespace Architect.API.Tron.Business.Emision
                 Summary = string.Format("Placa: {0}, Chasis: {1}, Motor: {2}, Color: {3}", quoteInfo.NUM_MATRICULA, quoteInfo.COD_CHASSIS, quoteInfo.NUM_MOTOR, quoteInfo.COD_COLORDesc),
                 IssueDate = DateTime.Now,
                 SigningRequestId = uniqueId,
+                SigningRequest2Id = signingRequest2Id,
+                SignedRequest2 = false,
                 SigningType = quoteInfo.tip_firma,
                 PrimaryEmailAddress = quoteInfo.correoenvio,
                 Status = status,

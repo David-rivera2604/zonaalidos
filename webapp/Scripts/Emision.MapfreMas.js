@@ -114,6 +114,8 @@ app.EmisionMapfreMas = (function () {
         $('#tercerosTbl').bootstrapTable('hideColumn', 'Actions');
         $('#documentosrequeridosNew').addClass('d-none');
         $('#documentosrequeridosTbl').bootstrapTable('hideColumn', 'Actions');
+        $('#formulariosNew').addClass('d-none');
+        $('#formulariosTbl').bootstrapTable('hideColumn', 'Actions');
     }
 
     function Quote() {
