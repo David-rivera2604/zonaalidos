@@ -381,19 +381,24 @@
                                     </div>
 
                                     <!-- Cuestionario Grid -->
-                                    <div class="form-row">
+                                    <div class="form-row" id="cuestionario_form">
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
                                                     <h4><i class="fa fa-user-o"></i> Cuestionario Salud<label id="cuestionarioSaludTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
                                                 </div>
-                                                <div class='col-auto'>
-                                                    <button type="button" class="btn btn-sm btn-white"  title="Al hacer click permite responder a las preguntas del Cuestionario Salud" data-toggle="modal" id="cuestionarioNew"><i class="fa fa-plus"></i> RESPONDER PREGUNTAS </button>
-                                                </div>
                                             </div>
-                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="hr-line-dashed" style="border-top: 2px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class='col-auto'>
+                                                    <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite responder a las preguntas del Cuestionario Salud" data-toggle="modal" id="cuestionarioNew"><i class="fa fa-plus"></i> Responder Cuestionario de Salud </button>
+                                                    <label id="cuestionario-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;">
+                                                </div>
+                                                <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 2px solid #e7eaec; margin: 10px 0;"></div>
                                         </div>
-                                    </div>
+                                     </div>
 
                                     <!-- Cuestionario  Covid Grid -->
                                     <div class="form-row" hidden>
@@ -421,7 +426,7 @@
                                                     <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo documento pendiente" data-toggle="modal" id="documentosrequeridosNew"> <i class="fa fa-plus"></i> </button>
                                                 </div>
                                             </div>
-                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="hr-line-dashed" style="border-top: 2px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
                                                 <div class='col-md-12' style="padding-bottom: 20px">
                                                     <div class="table-responsive">
@@ -434,33 +439,33 @@
                                     </div>
 
                                     <!-- enviosolicitud Zone -->
-                                    <div class="col-md-5 d-none enviosolicitudZone">
-                                        <h4><i class="fa fa-envelope-o"></i> Destinatario para envío de solicitud</h4>
-                                        <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-                                        <div class="form-row">
 
-                                            <!-- tipoenvio DropDownList -->
-                                            <div class='col-md-12'>
-                                                <div class='form-group'>
-                                                    <label class='control-label' for='tip_firma'>Tipo de envío<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                    <select id='tip_firma' name='tip_firma' class='form-control'>
-                                                        <option value="M">Manual</option>
-                                                        <option value="F">Digital Evicertia</option>
-                                                    </select>
+                                    <div class="form-row enviosolicitudZone">
+                                        <div class="hr-line-dashed" style="border-top: 2px solid #e7eaec; margin: 10px 0;"></div>
+                                        <h4><i class="fa fa-envelope-o"></i> Envío de Solicitud de Seguro</h4>
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <!-- tipoenvio DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='tip_firma'>Tipo de envío<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='tip_firma' name='tip_firma' class='form-control'>
+                                                            <option value="M">Manual</option>
+                                                            <option value="F">Digital Evicertia</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!-- correoenvio Text -->
+                                                <div class='col-sm-5 col-md-5'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='correoenvio'>Correo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input id='correoenvio' name='correoenvio' type='text' autocomplete="off" class='form-control' size='80' maxlength='80'>
+                                                    </div>
                                                 </div>
                                             </div>
-
-                                            <!-- correoenvio Text -->
-                                            <div class='col-md-12'>
-                                                <div class='form-group'>
-                                                    <label class='control-label' for='correoenvio'>Correo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                    <input id='correoenvio' name='correoenvio' type='text' class='form-control' size='80' maxlength='80'>
-                                                </div>
-                                            </div>
-
-
+                                            <div class="hr-line-dashed" style="border-top: 2px solid #e7eaec; margin: 10px 0;"></div>
                                         </div>
-                                    </div>
+                                        </div>
 
                                     <!-- Notificaciones  -->
                                     <div id="quoteNotify">

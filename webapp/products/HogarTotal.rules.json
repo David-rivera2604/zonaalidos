@@ -1,33 +1,50 @@
 {
   "Terceros": [
     {
-      "Role": "ESPH",
-      "Detalles": [
-        {
-          "tip_benef": "0",
-          "tip_docum": "CJU",
-          "cod_docum": "3101046008",
-          "nom_tercero": "BANCO DAVIVIENDA (COSTA RICA) SOCIEDAD ANONIMA",
-          "email": "IRIAKNA.HERNANDEZ@DAVIVIENDA.CR",
-          "cod_pais": "CRI",
-          "cod_estado": 1,
-          "cod_prov": 101,
-          "cod_localidad": 10101,
-          "nom_domicilio1": "SAN JOSE"
-        },
-        {
-          "tip_benef": "8",
-          "tip_docum": "CJU",
-          "cod_docum": "3101046008",
-          "nom_tercero": "BANCO DAVIVIENDA (COSTA RICA) SOCIEDAD ANONIMA",
-          "email": "IRIAKNA.HERNANDEZ@DAVIVIENDA.CR",
-          "cod_pais": "CRI",
-          "cod_estado": 1,
-          "cod_prov": 101,
-          "cod_localidad": 10101,
-          "nom_domicilio1": "SAN JOSE"
-        }
-      ]
+        "Role": "ESPH",
+        "Detalles": [
+            {
+                "tip_benef": "0",
+                "tip_docum": "CJU",
+                "cod_docum": "3101046008",
+                "nom_tercero": "BANCO DAVIVIENDA (COSTA RICA) SOCIEDAD ANONIMA",
+                "email": "IRIAKNA.HERNANDEZ@DAVIVIENDA.CR",
+                "cod_pais": "CRI",
+                "cod_estado": 1,
+                "cod_prov": 101,
+                "cod_localidad": 10101,
+                "nom_domicilio1": "SAN JOSE"
+            },
+            {
+                "tip_benef": "8",
+                "tip_docum": "CJU",
+                "cod_docum": "3101046008",
+                "nom_tercero": "BANCO DAVIVIENDA (COSTA RICA) SOCIEDAD ANONIMA",
+                "email": "IRIAKNA.HERNANDEZ@DAVIVIENDA.CR",
+                "cod_pais": "CRI",
+                "cod_estado": 1,
+                "cod_prov": 101,
+                "cod_localidad": 10101,
+                "nom_domicilio1": "SAN JOSE"
+            }
+        ]
+    },
+    {
+        "Role": "Coopenae-Credecoop",
+        "Detalles": [
+            {
+                "tip_benef": "0",
+                "tip_docum": "CJU",
+                "cod_docum": "3004161481",
+                "nom_tercero": "COOPERATIVA DE AHORRO Y CREDITO PARA EL DESARROLLO R.L",
+                "email": "servicioalcliente@credecoop.fi.cr",
+                "cod_pais": "CRI",
+                "cod_estado": 1,
+                "cod_prov": 119,
+                "cod_localidad": 11901,
+                "nom_domicilio1": "150 MTS SUR DEL MERCADO MUNICIPAL"
+            }
+        ]
     }
   ],
   "DocumentosRequeridos": [
@@ -35,33 +52,13 @@
       "Role": "_default_asegurado_fisico",
       "Detalles": [
         {
-          "descripcion": "Copia de la cédula de identidad",
-          "archivo": "CEDULA.docx",
+          "descripcion": "Expediente Cliente",
+          "archivo": "ExpedienteCliente.pdf",
           "requerido": true
         },
         {
-          "descripcion": "Comprobante de entrega de condiciones generales",
-          "archivo": "CONDICIONES.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Consentimiento para uso de datos personales",
-          "archivo": "CONSENTIMIENTO.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Formato de validación de domicilio",
-          "archivo": "DOMICILIO.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Conozca a su cliente (KYC)",
-          "archivo": "KYC.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Solicitud de seguro firmada",
-          "archivo": "SOLICITUD.pdf",
+          "descripcion": "Expediente Póliza",
+          "archivo": "ExpedientePoliza.pdf",
           "requerido": true
         }
       ]
@@ -70,48 +67,33 @@
       "Role": "_default_asegurado_juridico",
       "Detalles": [
         {
-          "descripcion": "Copia de la cédula de identidad",
-          "archivo": "CEDULA.docx",
+          "descripcion": "Expediente Cliente",
+          "archivo": "ExpedienteCliente.pdf",
           "requerido": true
         },
         {
-          "descripcion": "Represéntate legal",
-          "archivo": "REPRESENTANTE LEGAL.docx",
+          "descripcion": "Expediente Póliza",
+          "archivo": "ExpedientePoliza.pdf",
+          "requerido": true
+        }
+      ]
+    },
+	    {
+      "Role": "Coopenae-Credecoop",
+      "Detalles": [
+        {
+          "descripcion": "Solicitud de Seguro",
+          "archivo": "SolicitudSeguro.pdf",
           "requerido": true
         },
         {
-          "descripcion": "Participación accionaria",
-          "archivo": "PARTICIPACION ACCIONARIA.docx",
+          "descripcion": "Avalúo",
+          "archivo": "Avaluo.pdf",
           "requerido": true
         },
-        {
-          "descripcion": "Certificado de participación",
-          "archivo": "CERTIFICADO PARTICIPACION.docx",
-          "requerido": true
-        },
-        {
-          "descripcion": "Comprobante de entrega de condiciones generales",
-          "archivo": "CONDICIONES.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Consentimiento para uso de datos personales",
-          "archivo": "CONSENTIMIENTO.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Formato de validación de domicilio",
-          "archivo": "DOMICILIO.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Conozca a su cliente (KYC)",
-          "archivo": "KYC.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Solicitud de seguro firmada",
-          "archivo": "SOLICITUD.pdf",
+		{
+          "descripcion": "Cédula del Cliente",
+          "archivo": "Cedula.pdf",
           "requerido": true
         }
       ]

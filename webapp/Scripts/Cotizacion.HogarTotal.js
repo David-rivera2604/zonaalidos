@@ -12,6 +12,10 @@ app.HogarTotal = (function () {
             $('.role-esph-visible').removeClass('d-none');
         }
 
+        if (localStorage.getItem('Roles').includes('Coopenae-Credecoop')) {
+            $('#descuento').prop("disabled", true);
+        } 
+
         $('#coberturasTbl').bootstrapTable('showLoading');
         app.core.Get(app.setting.apipath + 'v1/Quote/HogarTotalSetup')
             .done(function (data, textStatus, jqXHR) {

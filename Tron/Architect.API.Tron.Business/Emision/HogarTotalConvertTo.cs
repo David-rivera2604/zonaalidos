@@ -115,7 +115,7 @@ namespace Architect.API.Tron.Business.Emision
             }
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "ALTURA_EDIF", quoteInfo.alturaedificio.ToString(), 2, 16));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "MCA_SUB_ROB", "N", 2, 65));
-            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "TIP_PLAN_ASIST", "1", 3, 99, "PLAN CLÁSICO"));
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "TIP_PLAN_ASIST",Convert.ToString(quoteInfo.tipoplan) , 3, 99, ""));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "MCA_COLECTIVO", "N", 1, 900, "INDIVIDUAL"));
 
             return datosVariables;

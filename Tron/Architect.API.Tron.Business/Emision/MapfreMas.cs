@@ -124,34 +124,50 @@ namespace Architect.API.Tron.Business.Emision
             }
             else
             {
-                //Architect.Common.Helpers.Serialize.SerializeToFile<Contracts.Cotizacion.MapfreMas>(quoteInfo,
-                //    ConfigurationManager.AppSettings["Path.Logs"] + @"\MapfreMas.emision.in.xml", true);
-
-                Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = MapfreMasConvertTo.Tron(quoteInfo);
-
-                //Architect.Common.Helpers.Serialize.SerializeToFile<Architect.API.Tron.Contracts.Batch.p2000030>(result,
-                //    ConfigurationManager.AppSettings["Path.Logs"] + @"\MapfreMas.emision.in.raw.xml", true);
-
-                Architect.API.Tron.Contracts.Poliza.DatoFijo result2 = Backoffice.Emision.MapfreMas.Emitir(result, false, tokenInfo);
-
-                //Architect.Common.Helpers.Serialize.SerializeToFile<Architect.API.Tron.Contracts.Batch.a2000030>(result2,
-                //    ConfigurationManager.AppSettings["Path.Logs"] + @"\MapfreMas.out.raw.xml", true);
-
-                resultQuoteInfo = MapfreMasConvertFrom.Quote(quoteInfo, result2);
-
-                if (resultQuoteInfo.num_poliza.IsNotEmpty())
+                try
                 {
-                    Core.Business.General.ChangeSet.Create(3000, Convert.ToInt32(resultQuoteInfo.num_poliza.Substring(4)), tokenInfo.CompanyId, "Emisión MapfreMas", "Póliza #" + resultQuoteInfo.num_poliza, tokenInfo.UserId, resultQuoteInfo);
+                    //Architect.Common.Helpers.Serialize.SerializeToFile<Contracts.Cotizacion.MapfreMas>(quoteInfo,
+                    //    ConfigurationManager.AppSettings["Path.Logs"] + @"\MapfreMas.emision.in.xml", true);
 
-                    //Se cambian los adjuntos creados al número de presupuesto al número de póliza generado
-                    Core.Business.General.Attachment.ChangeEntityId(tokenInfo.CompanyId, 3000, Convert.ToInt64(resultQuoteInfo.presupuesto), 3000, Convert.ToInt64(resultQuoteInfo.num_poliza), tokenInfo.UserId);
+                    Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = MapfreMasConvertTo.Tron(quoteInfo);
 
-                    if (tokenInfo.Roles.Contain("Purdy") || tokenInfo.Roles.Contain("Davivienda_Prendarios") || tokenInfo.Roles.Contain("Davivienda_Leasing"))
+                    //Architect.Common.Helpers.Serialize.SerializeToFile<Architect.API.Tron.Contracts.Batch.p2000030>(result,
+                    //    ConfigurationManager.AppSettings["Path.Logs"] + @"\MapfreMas.emision.in.raw.xml", true);
+
+                    Architect.API.Tron.Contracts.Poliza.DatoFijo result2 = Backoffice.Emision.MapfreMas.Emitir(result, false, tokenInfo);
+
+                    //Architect.Common.Helpers.Serialize.SerializeToFile<Architect.API.Tron.Contracts.Batch.a2000030>(result2,
+                    //    ConfigurationManager.AppSettings["Path.Logs"] + @"\MapfreMas.out.raw.xml", true);
+
+                    resultQuoteInfo = MapfreMasConvertFrom.Quote(quoteInfo, result2);
+
+                    if (resultQuoteInfo.num_poliza.IsNotEmpty())
                     {
-                        DataAccess.PolicyProposal.Update_Status(resultQuoteInfo.presupuesto, resultQuoteInfo.num_poliza, tokenInfo.CompanyId, 10, tokenInfo.UserId);
+                        Core.Business.General.ChangeSet.Create(3000, Convert.ToInt32(resultQuoteInfo.num_poliza.Substring(4)), tokenInfo.CompanyId, "Emisión MapfreMas", "Póliza #" + resultQuoteInfo.num_poliza, tokenInfo.UserId, resultQuoteInfo);
+
+                        //Se cambian los adjuntos creados al número de presupuesto al número de póliza generado
+                        Core.Business.General.Attachment.ChangeEntityId(tokenInfo.CompanyId, 3000, Convert.ToInt64(resultQuoteInfo.presupuesto), 3000, Convert.ToInt64(resultQuoteInfo.num_poliza), tokenInfo.UserId);
+
+                        if (tokenInfo.Roles.Contain("Purdy") || tokenInfo.Roles.Contain("Davivienda_Prendarios") || tokenInfo.Roles.Contain("Davivienda_Leasing"))
+                        {
+                            DataAccess.PolicyProposal.Update_Status(resultQuoteInfo.presupuesto, resultQuoteInfo.num_poliza, tokenInfo.CompanyId, 10, tokenInfo.UserId);
+                        }
+
+                        resultQuoteInfo.Mensaje = null;
+                        resultQuoteInfo.Error = null;
+
                     }
+                }
+                catch(Exception ex)
+                {
+                    resultQuoteInfo = new Contracts.Emision.MapfreMas()
+                    {
+                        Mensaje = ex.Message,
+                        Error = ex.Message,
+                    };
 
                 }
+             
             }
             return resultQuoteInfo;
         }
