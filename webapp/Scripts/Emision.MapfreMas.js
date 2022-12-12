@@ -825,24 +825,8 @@ app.EmisionMapfreMas = (function () {
             $('#tercerosTbl-error').html(message);
             $('#tercerosTbl-error').removeClass('d-none');
             result = result + 1;
-        }
-
-        let formularios = $('#formulariosTbl').bootstrapTable('getData');
-        let formularioserrors = (formularios.length === 0);
-
-        if (formularioserrors) {
-            result = result + 1;
-            message = 'Debe responder los formularios requeridos';
         } else {
-            if (formularios[0].when === null) {
-                message = 'Debe responder el formulario ' + formularios[0].name.toLowerCase();
-                formularioserrors = true;
-            }
-        }
-        if (formularioserrors) {
-            $('#formulariosTbl-error').html(message);
-            $('#formulariosTbl-error').removeClass('d-none');
-            result = result + 1;
+            $('#tercerosTbl-error').addClass('d-none');
         }
 
         if (workMode != 'draft') {
@@ -857,8 +841,35 @@ app.EmisionMapfreMas = (function () {
                 result = result + 1;
             }
         }
+
+        result = FormulariosValidations(result);
         return result;
     }
+
+    function FormulariosValidations(result) {
+        let formularios = $('#formulariosTbl').bootstrapTable('getData');
+        let formularioserrors = (formularios.length === 0);
+        let message = '';
+
+        if (formularioserrors) {
+            message = 'Debe responder los formularios requeridos';
+        } else {
+            if (formularios[0].when === null) {
+                message = 'Debe responder el formulario ' + formularios[0].name.toLowerCase();
+                formularioserrors = true;
+            }
+        }
+        if (formularioserrors) {
+            $('#formulariosTbl-error').html(message);
+            $('#formulariosTbl-error').removeClass('d-none');
+            result = result + 1;
+
+        } else {
+            $('#formulariosTbl-error').addClass('d-none');
+        }
+        return result;
+    }
+    
 
     function terceros_table_setup() {
 
@@ -1963,6 +1974,7 @@ app.EmisionMapfreMas = (function () {
         formularioRow.when = new Date();
         $('#formulariosTbl').bootstrapTable('updateByUniqueId', { id: formularioRow.formularioId, row: formularioRow });
         $(name + 'Modal').modal('hide');
+        FormulariosValidations(0);
     };
 
     function formularios_handler() {
