@@ -19,7 +19,7 @@ app.kycpersona = (function () {
             nombrePer: $('#nombrePer').val(),
             codigodeclientePer: $('#codigodeclientePer').val(),
             numerodeidentificacionPer: $('#numerodeidentificacionPer').val(),
-            tipodeidentificacionPer: $('#tipodeidentificacionPer').val(),
+            tipodeidentificacionPer: app.ui.GetRadioNumericValue('tipodeidentificacionPer'),
             fechadecaducidadPer: app.ui.GetDateValue('#fechadecaducidadPer'),
             nacionalidadPer: app.ui.GetDropDownNumericValue('#nacionalidadPer'),
             fechadenacimientoPer: app.ui.GetDateValue('#fechadenacimientoPer'),
@@ -77,7 +77,7 @@ app.kycpersona = (function () {
         $('#nombrePer').val(data.nombrePer);
         $('#codigodeclientePer').val(data.codigodeclientePer);
         $('#numerodeidentificacionPer').val(data.numerodeidentificacionPer);
-        $('#tipodeidentificacionPer').val(data.tipodeidentificacionPer);
+        app.ui.SetRadioNumericValue('tipodeidentificacionPer', data.tipodeidentificacionPer);
         app.ui.SetDateValue('#fechadecaducidadPer', data.fechadecaducidadPer);
         $('#nacionalidadPer').val(data.nacionalidadPer);
         app.ui.SetDropDownNumericValue('#nacionalidadPer', data.nacionalidadPer, true);
@@ -356,7 +356,7 @@ app.kycpersona = (function () {
         Init: function () {
             try {
                 Controls_setup();
-                //Setup_Validations();
+                Setup_Validations();
 
                 Controls_Events();
                 Setup();
@@ -393,7 +393,7 @@ app.kycpersona = (function () {
                 "nombrePer": "",
                 "codigodeclientePer": "",
                 "numerodeidentificacionPer": "",
-                "tipodeidentificacionPer": "",
+                "tipodeidentificacionPer": 0,
                 "fechadecaducidadPer": "0001-01-01T00:00:00",
                 "nacionalidadPer": 0,
                 "fechadenacimientoPer": "0001-01-01T00:00:00",
