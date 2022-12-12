@@ -1951,9 +1951,8 @@ app.EmisionMapfreMas = (function () {
                                 formularioRow.data.direccionexactaJur = mainHolder[0].otrasenas;
 
                             }
-                            ref.Init();
+                            ref.Init(formularioRow.data);
                             ref.AcceptCallBack(app.EmisionMapfreMas.Accept);
-                            ref.SetData(formularioRow.data);
                         })
                         .catch(err => {
                             console.error(err);

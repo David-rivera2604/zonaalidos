@@ -6,11 +6,32 @@ app.kycjuridico = (function () {
     let changedCallback = null;
     let acceptCallback = null;
 
-    function Setup() {
+    function Setup(data) {
 
-        app.core.Lookups(['Pais.paisdeconstitucionJur', 'Paises.cod_paisJur', 'Provincias.cod_estadoJur', 'Cantones.cod_provJur', 'Distritos.cod_localidadJur', 'Pais.paisdenacimientoJur', 'CivilStatus.estadocivilJur', 'Gender.sexoJur', 'Paises.domiciliopermanenteCod_paisJur', 'Provincias.domiciliopermanenteCod_estadoJur', 'Cantones.domiciliopermanenteCod_provJur', 'Distritos.domiciliopermanenteCod_localidadJur',],
+        app.core.Lookups(['Pais.paisdeconstitucionJur', 'Paises.cod_paisJur', 'Provincias.cod_estadoJur', 'Pais.paisdenacimientoJur', 'CivilStatus.estadocivilJur', 'Gender.sexoJur', 'Paises.domiciliopermanenteCod_paisJur', 'Provincias.domiciliopermanenteCod_estadoJur'],
             function () {
+                setupData = data;
+                MapObjectToInput(data);
             }, `cod_pais=CRI`);
+
+        // Dependencies events
+        $('#cod_estadoJur').on('change', function () {
+            var pais = $('select#cod_paisJur').val();
+            app.core.LookupDependency($('select#cod_estadoJur').val(), 'cod_provJur', 'Cantones', '', null, true, null, `cod_pais=${pais}:cod_estado=`);
+        });
+        $('#cod_provJur').on('change', function () {
+            var pais = $('select#cod_paisJur').val();
+            app.core.LookupDependency($('select#cod_provJur').val(), 'cod_localidadJur', 'Distritos', '', null, true, null, `cod_pais=${pais}:cod_prov=`);
+        });
+
+        $('#domiciliopermanenteCod_estadoJur').on('change', function () {
+            var pais = $('select#domiciliopermanenteCod_paisJur').val();
+            app.core.LookupDependency($('select#domiciliopermanenteCod_estadoJur').val(), 'domiciliopermanenteCod_provJur', 'Cantones', '', null, true, null, `cod_pais=${pais}:cod_estado=`);
+        });
+        $('#domiciliopermanenteCod_provJur').on('change', function () {
+            var pais = $('select#domiciliopermanenteCod_paisJur').val();
+            app.core.LookupDependency($('select#domiciliopermanenteCod_provJur').val(), 'domiciliopermanenteCod_localidadJur', 'Distritos', '', null, false, null, `cod_pais=${pais}:cod_prov=`);
+        });
     };
 
     function MapInputToObject() {
@@ -29,7 +50,7 @@ app.kycjuridico = (function () {
             apartadopostalJur: $('#apartadopostalJur').val(),
             correoelectronicoJur: $('#correoelectronicoJur').val(),
             paginaWebJur: $('#paginaWebJur').val(),
-            cod_paisJur: app.ui.GetDropDownNumericValue('#cod_paisJur'),
+            cod_paisJur: app.ui.GetDropDownStringValue('#cod_paisJur'),
             cod_estadoJur: app.ui.GetDropDownNumericValue('#cod_estadoJur'),
             cod_provJur: app.ui.GetDropDownNumericValue('#cod_provJur'),
             cod_localidadJur: app.ui.GetDropDownNumericValue('#cod_localidadJur'),
@@ -53,7 +74,7 @@ app.kycjuridico = (function () {
             datosdelrepresentantelegalFaxJur: $('#datosdelrepresentantelegalFaxJur').val(),
             datosdelrepresentantelegalApartadopostalJur: $('#datosdelrepresentantelegalApartadopostalJur').val(),
             datosdelrepresentantelegalCorreoelectronicoJur: $('#datosdelrepresentantelegalCorreoelectronicoJur').val(),
-            domiciliopermanenteCod_paisJur: app.ui.GetDropDownNumericValue('#domiciliopermanenteCod_paisJur'),
+            domiciliopermanenteCod_paisJur: app.ui.GetDropDownStringValue('#domiciliopermanenteCod_paisJur'),
             domiciliopermanenteCod_estadoJur: app.ui.GetDropDownNumericValue('#domiciliopermanenteCod_estadoJur'),
             domiciliopermanenteCod_provJur: app.ui.GetDropDownNumericValue('#domiciliopermanenteCod_provJur'),
             domiciliopermanenteCod_localidadJur: app.ui.GetDropDownNumericValue('#domiciliopermanenteCod_localidadJur'),
@@ -98,14 +119,11 @@ app.kycjuridico = (function () {
         $('#apartadopostalJur').val(data.apartadopostalJur);
         $('#correoelectronicoJur').val(data.correoelectronicoJur);
         $('#paginaWebJur').val(data.paginaWebJur);
-        $('#cod_paisJur').val(data.cod_paisJur);
-        app.ui.SetDropDownNumericValue('#cod_paisJur', data.cod_paisJur, true);
-        $('#cod_estadoJur').val(data.cod_estadoJur);
+        app.ui.SetDropDownStringValue('#cod_paisJur', data.cod_paisJur, true);
         app.ui.SetDropDownNumericValue('#cod_estadoJur', data.cod_estadoJur, true);
-        $('#cod_provJur').val(data.cod_provJur);
-        app.ui.SetDropDownNumericValue('#cod_provJur', data.cod_provJur, true);
-        $('#cod_localidadJur').val(data.cod_localidadJur);
-        app.ui.SetDropDownNumericValue('#cod_localidadJur', data.cod_localidadJur, true);
+        app.core.LookupDependency(data.cod_estadoJur, 'cod_provJur', 'Cantones', '', data.cod_provJur, false, null, `cod_pais=${data.cod_paisJur}:cod_estado=`);
+        app.core.LookupDependency(data.cod_provJur, 'cod_localidadJur', 'Distritos', '', data.cod_localidadJur, false, null, `cod_pais=${data.cod_paisJur}:cod_prov=`);
+
         $('#direccionexactaJur').val(data.direccionexactaJur);
         $('#primerapellidoJur').val(data.primerapellidoJur);
         $('#segundoapellidoJur').val(data.segundoapellidoJur);
@@ -115,29 +133,24 @@ app.kycjuridico = (function () {
         app.ui.SetRadioNumericValue('tipodeidentificacionJur', data.tipodeidentificacionJur);
         $('#especifiqueJur').val(data.especifiqueJur);
         app.ui.SetDateValue('#fechadecaducidadJur', data.fechadecaducidadJur);
-        $('#nacionalidadJur').val(data.nacionalidadJur);
         app.ui.SetDropDownNumericValue('#nacionalidadJur', data.nacionalidadJur, true);
         app.ui.SetDateValue('#fechadenacimientoJur', data.fechadenacimientoJur);
-        $('#paisdenacimientoJur').val(data.paisdenacimientoJur);
         app.ui.SetDropDownNumericValue('#paisdenacimientoJur', data.paisdenacimientoJur, true);
         $('#profesionJur').val(data.profesionJur);
         $('#estadocivilJur').val(data.estadocivilJur);
         app.ui.SetDropDownNumericValue('#estadocivilJur', data.estadocivilJur, true);
-        $('#sexoJur').val(data.sexoJur);
         app.ui.SetDropDownNumericValue('#sexoJur', data.sexoJur, true);
         $('#telefonoresidenciaJur').val(data.telefonoresidenciaJur);
         $('#telefonocelularJur').val(data.telefonocelularJur);
         $('#datosdelrepresentantelegalFaxJur').val(data.datosdelrepresentantelegalFaxJur);
         $('#datosdelrepresentantelegalApartadopostalJur').val(data.datosdelrepresentantelegalApartadopostalJur);
         $('#datosdelrepresentantelegalCorreoelectronicoJur').val(data.datosdelrepresentantelegalCorreoelectronicoJur);
-        $('#domiciliopermanenteCod_paisJur').val(data.domiciliopermanenteCod_paisJur);
-        app.ui.SetDropDownNumericValue('#domiciliopermanenteCod_paisJur', data.domiciliopermanenteCod_paisJur, true);
-        $('#domiciliopermanenteCod_estadoJur').val(data.domiciliopermanenteCod_estadoJur);
+        
+        app.ui.SetDropDownStringValue('#domiciliopermanenteCod_paisJur', data.domiciliopermanenteCod_paisJur, true);
         app.ui.SetDropDownNumericValue('#domiciliopermanenteCod_estadoJur', data.domiciliopermanenteCod_estadoJur, true);
-        $('#domiciliopermanenteCod_provJur').val(data.domiciliopermanenteCod_provJur);
-        app.ui.SetDropDownNumericValue('#domiciliopermanenteCod_provJur', data.domiciliopermanenteCod_provJur, true);
-        $('#domiciliopermanenteCod_localidadJur').val(data.domiciliopermanenteCod_localidadJur);
-        app.ui.SetDropDownNumericValue('#domiciliopermanenteCod_localidadJur', data.domiciliopermanenteCod_localidadJur, true);
+        app.core.LookupDependency(data.domiciliopermanenteCod_estadoJur, 'domiciliopermanenteCod_provJur', 'Cantones', '', data.domiciliopermanenteCod_provJur, false, null, `cod_pais=${data.domiciliopermanenteCod_paisJur}:cod_estado=`);
+        app.core.LookupDependency(data.domiciliopermanenteCod_provJur, 'domiciliopermanenteCod_localidadJur', 'Distritos', '', data.domiciliopermanenteCod_localidadJur, false, null, `cod_pais=${data.domiciliopermanenteCod_paisJur}:cod_prov=`);
+
         $('#domiciliopermanenteDireccionexactaJur').val(data.domiciliopermanenteDireccionexactaJur);
         $('#correspondenciaOrigendelosfondosJur').val(data.correspondenciaOrigendelosfondosJur);
         $('#paismayoractividadJur').val(data.paismayoractividadJur);
@@ -553,7 +566,7 @@ app.kycjuridico = (function () {
 
 
     return {
-        Init: function () {
+        Init: function (data) {
             try {
                 Controls_setup();
                 Setup_Validations();
@@ -561,7 +574,7 @@ app.kycjuridico = (function () {
                 participacionaccionariaJur_table_Validations();
 
                 Controls_Events();
-                Setup();
+                Setup(data);
                 console.log("Inicio");
 
             }
@@ -613,7 +626,7 @@ app.kycjuridico = (function () {
                 "apartadopostalJur": "",
                 "correoelectronicoJur": "",
                 "paginaWebJur": "",
-                "cod_paisJur": 0,
+                "cod_paisJur": "CRI",
                 "cod_estadoJur": 0,
                 "cod_provJur": 0,
                 "cod_localidadJur": 0,
@@ -637,7 +650,7 @@ app.kycjuridico = (function () {
                 "datosdelrepresentantelegalFaxJur": "",
                 "datosdelrepresentantelegalApartadopostalJur": "",
                 "datosdelrepresentantelegalCorreoelectronicoJur": "",
-                "domiciliopermanenteCod_paisJur": 0,
+                "domiciliopermanenteCod_paisJur": "CRI",
                 "domiciliopermanenteCod_estadoJur": 0,
                 "domiciliopermanenteCod_provJur": 0,
                 "domiciliopermanenteCod_localidadJur": 0,
