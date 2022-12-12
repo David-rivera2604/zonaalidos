@@ -25,10 +25,10 @@ app.EmisionMapfreMas = (function () {
                     workMode = data.Modo;
                     if (localStorage.getItem('Roles').includes('Purdy')) {
                         $('.Purdy').removeClass('d-none');
-                        $('#Fuente_Tomador').prop("disabled", workMode != 'draft');
+                        $('#Fuente_Tomador').prop("disabled", (workMode != 'draft' && workMode != 'resume') );
                     }
 
-                    if (workMode === 'draft') {
+                    if (workMode === 'draft' || workMode === 'resume') {
                         $('#guardarenviar').removeClass('d-none');
                         $("#guardarenviar").appendTo("#GenericToolBar");
                         $('.documentosrequeridosGrid').addClass('d-none');
@@ -803,7 +803,7 @@ app.EmisionMapfreMas = (function () {
         let terceros = $('#tercerosTbl').bootstrapTable('getData');
         let terceroserrors = (terceros.length === 0);
 
-        if (!terceroserrors && workMode === 'draft') {
+        if (!terceroserrors && (workMode === 'draft' || workMode === 'resume')) {
             let holder = terceros.filter(i => i.tipodetercero === 0);
             let insured = terceros.filter(i => i.tipodetercero === 2);
             let driver = terceros.filter(i => i.tipodetercero === 3);
@@ -829,7 +829,7 @@ app.EmisionMapfreMas = (function () {
             $('#tercerosTbl-error').addClass('d-none');
         }
 
-        if (workMode != 'draft') {
+        if (workMode != 'draft' && workMode != 'resume') {
             var grupo = 'F';
             let documentosrequeridos = $('#documentosrequeridosTbl').bootstrapTable('getData');
             let lista = documentosrequeridos.filter(function (row) {
@@ -2001,7 +2001,7 @@ app.EmisionMapfreMas = (function () {
     };
 
     function formulariosMode() {
-        return (workMode === 'draft' && !localStorage.getItem('Roles').includes('Purdy') && !localStorage.getItem('Roles').includes('Davivienda_Prendarios') && !localStorage.getItem('Roles').includes('Davivienda_Leasing'));
+        return ((workMode === 'draft' || workMode === 'resume') && !localStorage.getItem('Roles').includes('Purdy') && !localStorage.getItem('Roles').includes('Davivienda_Prendarios') && !localStorage.getItem('Roles').includes('Davivienda_Leasing'));
     }
 
     return {
