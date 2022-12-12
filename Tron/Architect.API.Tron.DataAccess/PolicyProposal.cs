@@ -25,8 +25,8 @@ namespace Architect.API.Tron.DataAccess
             {
                 policyproposalItem.UpdateDate = DateTime.Now;
             }
-            return Database.Insert("INSERT INTO PolicyProposal (Id, CompanyId, AgentCode, ProposalId, InsuredId, InsuredName, Summary, IssueDate, ProposalData, SigningType, PrimaryEmailAddress, SigningRequestId, PolicyId, Status, UpdateUserCode, UpdateDate) " +
-                                                 "VALUES(:Id, :CompanyId, :AgentCode, :ProposalId, :InsuredId, :InsuredName, :Summary, :IssueDate, :ProposalData, :SigningType, :PrimaryEmailAddress, :SigningRequestId, :PolicyId, :Status, :UpdateUserCode, :UpdateDate)")
+            return Database.Insert("INSERT INTO PolicyProposal (Id, CompanyId, AgentCode, ProposalId, InsuredId, InsuredName, Summary, IssueDate, ProposalData, SigningType, PrimaryEmailAddress, SigningRequestId, SignedRequest1, SigningRequest2Id, SignedRequest2, SigningRequest3Id, SignedRequest3, PolicyId, Status, UpdateUserCode, UpdateDate) " +
+                                                 "VALUES(:Id, :CompanyId, :AgentCode, :ProposalId, :InsuredId, :InsuredName, :Summary, :IssueDate, :ProposalData, :SigningType, :PrimaryEmailAddress, :SigningRequestId, :SignedRequest1, :SigningRequest2Id, :SignedRequest2, :SigningRequest3Id, :SignedRequest3, :PolicyId, :Status, :UpdateUserCode, :UpdateDate)")
                             .AddParameter("Id", DbType.Decimal, 9, policyproposalItem.Id)
                             .AddParameter("CompanyId", DbType.Decimal, 5, policyproposalItem.CompanyId)
                             .AddParameter("AgentCode", DbType.Decimal, 9, policyproposalItem.AgentCode)
@@ -39,6 +39,11 @@ namespace Architect.API.Tron.DataAccess
                             .AddParameter("SigningType", DbType.AnsiString, 3, policyproposalItem.SigningType)
                             .AddParameter("PrimaryEmailAddress", DbType.AnsiString, 80, policyproposalItem.PrimaryEmailAddress)
                             .AddParameter("SigningRequestId", DbType.AnsiString, 40, policyproposalItem.SigningRequestId)
+                            .AddParameter("SignedRequest1", DbType.Decimal, 1, policyproposalItem.SignedRequest1 ? 1 : 0)
+                            .AddParameter("SigningRequest2Id", DbType.AnsiString, 40, policyproposalItem.SigningRequest2Id)
+                            .AddParameter("SignedRequest2", DbType.Decimal, 1, policyproposalItem.SignedRequest2 ? 1 : 0)
+                            .AddParameter("SigningRequest3Id", DbType.AnsiString, 40, policyproposalItem.SigningRequest3Id)
+                            .AddParameter("SignedRequest3", DbType.Decimal, 1, policyproposalItem.SignedRequest3 ? 1 : 0)
                             .AddParameter("PolicyId", DbType.AnsiString, 13, policyproposalItem.PolicyId)
                             .AddParameter("Status", DbType.Decimal, 5, policyproposalItem.Status)
                             .AddParameter("UpdateUserCode", DbType.Decimal, 9, policyproposalItem.UpdateUserCode)
