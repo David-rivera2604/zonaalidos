@@ -827,6 +827,24 @@ app.EmisionMapfreMas = (function () {
             result = result + 1;
         }
 
+        let formularios = $('#formulariosTbl').bootstrapTable('getData');
+        let formularioserrors = (formularios.length === 0);
+
+        if (formularioserrors) {
+            result = result + 1;
+            message = 'Debe responder los formularios requeridos';
+        } else {
+            if (formularios[0].when === null) {
+                message = 'Debe responder el formulario ' + formularios[0].name.toLowerCase();
+                formularioserrors = true;
+            }
+        }
+        if (formularioserrors) {
+            $('#formulariosTbl-error').html(message);
+            $('#formulariosTbl-error').removeClass('d-none');
+            result = result + 1;
+        }
+
         if (workMode != 'draft') {
             var grupo = 'F';
             let documentosrequeridos = $('#documentosrequeridosTbl').bootstrapTable('getData');
