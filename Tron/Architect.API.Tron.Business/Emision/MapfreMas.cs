@@ -324,20 +324,12 @@ namespace Architect.API.Tron.Business.Emision
             else
             {
                 submit = DocuSign.Integrations.DocuSign.Submit(
-                                quoteInfo.presupuesto,
-                                "Solicitud " + quoteInfo.presupuesto,
-                                primaryInsured.nombre.CompleteFullName(primaryInsured.apellido1, primaryInsured.apellido2),
-                                correoenvio,
-                                kycPDF, quoteInfo.tip_firma == Contracts.TipoDeFirma.Tablet ? "Handwriting" : "WebClick").GetAwaiter().GetResult();
-                if (quoteInfo.kyc != null)
-                {
-                    submit = DocuSign.Integrations.DocuSign.Submit(
-                                quoteInfo.presupuesto,
-                                "Conozca a su cliente " + quoteInfo.presupuesto,
-                                primaryInsured.nombre.CompleteFullName(primaryInsured.apellido1, primaryInsured.apellido2),
-                                correoenvio,
-                                kycPDF, quoteInfo.tip_firma == Contracts.TipoDeFirma.Tablet ? "Handwriting" : "WebClick").GetAwaiter().GetResult();
-                }
+                            quoteInfo.presupuesto,
+                            "Conozca a su cliente " + quoteInfo.presupuesto,
+                            primaryInsured.nombre.CompleteFullName(primaryInsured.apellido1, primaryInsured.apellido2),
+                            correoenvio,
+                            kycPDF, quoteInfo.tip_firma == Contracts.TipoDeFirma.Tablet ? "Handwriting" : "WebClick").GetAwaiter().GetResult();
+
             }
             return submit.UniqueId;
         }
@@ -345,11 +337,13 @@ namespace Architect.API.Tron.Business.Emision
         private static string General_PDF_Solicitud(Contracts.Emision.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.Emision.MapfreMasSolicitud data = Newtonsoft.Json.JsonConvert.DeserializeObject<Contracts.Emision.MapfreMasSolicitud>(Newtonsoft.Json.JsonConvert.SerializeObject(quoteInfo));
-
+            
+            data.kyc = quoteInfo.kyc;
             data.titular = (from t in data.terceros where t.tipodetercero == 0 select t).FirstOrDefault();
             data.asegurado = (from a in data.terceros where a.tipodetercero == 2 select a).FirstOrDefault();
             data.conductor = (from c in data.terceros where c.tipodetercero == 3 select c).FirstOrDefault();
             data.acredor = (from c in data.terceros where c.tipodetercero == 8 select c).FirstOrDefault();
+            
             int index = 1;
             foreach (Contracts.Comun.tercero item in from b in data.terceros where b.tipodetercero == 6 select b)
             {
