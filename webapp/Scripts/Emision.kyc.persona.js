@@ -369,7 +369,7 @@ app.kycpersona = (function () {
         Init: function (data) {
             try {
                 Controls_setup();
-                //Setup_Validations();
+                Setup_Validations();
 
                 Controls_Events();
                 Setup(data);

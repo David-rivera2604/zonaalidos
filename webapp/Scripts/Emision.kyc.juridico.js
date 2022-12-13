@@ -570,7 +570,7 @@ app.kycjuridico = (function () {
         Init: function (data) {
             try {
                 Controls_setup();
-                //Setup_Validations();
+                Setup_Validations();
                 participacionaccionariaJur_table_setup();
                 participacionaccionariaJur_table_Validations();
 
