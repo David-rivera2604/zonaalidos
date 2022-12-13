@@ -7,7 +7,7 @@ app.kycpersona = (function () {
     let acceptCallback = null;
 
     function Setup(data) {
-        app.core.Lookups(['Pais.nacionalidadPer', 'Pais.paisdenacimientoPer', 'CivilStatus.estadocivilPer', 'Gender.sexoPer', 'Paises.cod_paisPer', 'Provincias.cod_estadoPer', 'Paises.domiciliocomercialCod_paisPer', 'Provincias.domiciliocomercialCod_estadoPer'],
+        app.core.Lookups(['Pais.nacionalidadPer', 'Pais.paisdenacimientoPer','TRON_G1000100.profesionPer', 'CivilStatus.estadocivilPer', 'Gender.sexoPer', 'Paises.cod_paisPer', 'Provincias.cod_estadoPer', 'Paises.domiciliocomercialCod_paisPer', 'Provincias.domiciliocomercialCod_estadoPer'],
             function () {
                 setupData = data;
                 MapObjectToInput(data);
@@ -189,7 +189,7 @@ app.kycpersona = (function () {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
-            maximumValue: '999999999',
+            maximumValue: '999999999999999999',
             minimumValue: '0',
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
@@ -198,7 +198,7 @@ app.kycpersona = (function () {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
-            maximumValue: '999999999',
+            maximumValue: '999999999999999999',
             minimumValue: '0',
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
@@ -207,7 +207,7 @@ app.kycpersona = (function () {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
-            maximumValue: '999999999',
+            maximumValue: '999999999999999999',
             minimumValue: '0',
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
@@ -369,7 +369,7 @@ app.kycpersona = (function () {
         Init: function (data) {
             try {
                 Controls_setup();
-                Setup_Validations();
+                //Setup_Validations();
 
                 Controls_Events();
                 Setup(data);
