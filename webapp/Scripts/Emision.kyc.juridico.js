@@ -8,7 +8,8 @@ app.kycjuridico = (function () {
 
     function Setup(data) {
 
-        app.core.Lookups(['Pais.paisdeconstitucionJur', 'Paises.cod_paisJur', 'Provincias.cod_estadoJur', 'Pais.paisdenacimientoJur', 'CivilStatus.estadocivilJur', 'Gender.sexoJur', 'Paises.domiciliopermanenteCod_paisJur', 'Provincias.domiciliopermanenteCod_estadoJur'],
+
+        app.core.Lookups(['Pais.paisdeconstitucionJur', 'Paises.cod_paisJur', 'Provincias.cod_estadoJur', 'Pais.nacionalidadJur', 'Pais.paisdenacimientoJur', 'TRON_G1000100.profesionJur', 'CivilStatus.estadocivilJur', 'Gender.sexoJur', 'Paises.domiciliopermanenteCod_paisJur', 'Provincias.domiciliopermanenteCod_estadoJur'],
             function () {
                 setupData = data;
                 MapObjectToInput(data);
@@ -145,7 +146,7 @@ app.kycjuridico = (function () {
         $('#datosdelrepresentantelegalFaxJur').val(data.datosdelrepresentantelegalFaxJur);
         $('#datosdelrepresentantelegalApartadopostalJur').val(data.datosdelrepresentantelegalApartadopostalJur);
         $('#datosdelrepresentantelegalCorreoelectronicoJur').val(data.datosdelrepresentantelegalCorreoelectronicoJur);
-        
+
         app.ui.SetDropDownStringValue('#domiciliopermanenteCod_paisJur', data.domiciliopermanenteCod_paisJur, true);
         app.ui.SetDropDownNumericValue('#domiciliopermanenteCod_estadoJur', data.domiciliopermanenteCod_estadoJur, true);
         app.core.LookupDependency(data.domiciliopermanenteCod_estadoJur, 'domiciliopermanenteCod_provJur', 'Cantones', '', data.domiciliopermanenteCod_provJur, false, null, `cod_pais=${data.domiciliopermanenteCod_paisJur}:cod_estado=`);
@@ -217,7 +218,7 @@ app.kycjuridico = (function () {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
-            maximumValue: '999999999',
+            maximumValue: '999999999999999999',
             minimumValue: '0',
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
@@ -235,7 +236,7 @@ app.kycjuridico = (function () {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
-            maximumValue: '999999999',
+            maximumValue: '999999999999999999',
             minimumValue: '0',
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
@@ -244,7 +245,7 @@ app.kycjuridico = (function () {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
-            maximumValue: '999999999',
+            maximumValue: '999999999999999999',
             minimumValue: '0',
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
