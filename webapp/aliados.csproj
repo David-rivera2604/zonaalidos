@@ -1670,6 +1670,8 @@
     <Content Include="Views\Emision\_kyc_declarante.cshtml" />
     <Content Include="Views\Emision\_kyc_juridico.cshtml" />
     <Content Include="Views\Emision\_kyc_persona.cshtml" />
+    <Content Include="Reports\KYC_Juridico.repx" />
+    <Content Include="Reports\KYC_Persona.repx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
