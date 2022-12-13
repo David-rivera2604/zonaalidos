@@ -444,3 +444,6 @@
 1.6.19a 28/10/2022 Aliados. Ajuste en la ruta para llamar los reportes de tron (recibos, avisos).
 1.6.20  12/12/2022 Aliados. EL logout debe mantener el modo Active Directory.
                    MapfreMas. Cuestionarios conozca a su cliente pero y jurídico.
+1.6.20a 12/12/2022 MapfreMas. Se corrigen las dependencia en todas las direcciones.
+                   MapfreMas. Después de cotizar siempre se debe llenar la solicitud.
+                   MapfreMas. El cuestionario kyc no aplica para Purdy o Davivienda.
