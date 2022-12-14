@@ -185,6 +185,9 @@ app.ui = (function () {
         GetRadioStringValue: function (name) {
             return $('input:radio[name=' + name + ']:checked').val();
         },
+        GetRadioSelectedText: function (name) {
+            return $('label[for=' + name + '_' + app.ui.GetRadioNumericValue(name) + ']').text();
+        },
         SetDocumentTypeValue: function (name, value) {
             if (value == null || value == 0) {
                 value = 1;

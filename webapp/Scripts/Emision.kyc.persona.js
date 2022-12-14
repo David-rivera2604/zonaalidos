@@ -41,6 +41,7 @@ app.kycpersona = (function () {
             codigodeclientePer: $('#codigodeclientePer').val(),
             numerodeidentificacionPer: $('#numerodeidentificacionPer').val(),
             tipodeidentificacionPer: app.ui.GetRadioNumericValue('tipodeidentificacionPer'),
+            tipodeidentificacionPerDesc: app.ui.GetRadioSelectedText('tipodeidentificacionPer'),
             fechadecaducidadPer: app.ui.GetDateValue('#fechadecaducidadPer'),
             nacionalidadPer: app.ui.GetDropDownNumericValue('#nacionalidadPer'),
             nacionalidadPerDesc: app.ui.GetDropDownSelectedText('#nacionalidadPer'),
@@ -68,6 +69,7 @@ app.kycpersona = (function () {
             cod_localidadPerDesc: app.ui.GetDropDownSelectedText('#cod_localidadPer'),
             direccionexactaPer: $('#direccionexactaPer').val(),
             OcupacionPer: app.ui.GetRadioNumericValue('OcupacionPer'),
+            OcupacionPerDesc: app.ui.GetRadioSelectedText('OcupacionPer'),
             nombreempresaPer: $('#nombreempresaPer').val(),
             actividadempresaPer: $('#actividadempresaPer').val(),
             cargoempresaPer: $('#cargoempresaPer').val(),
@@ -86,21 +88,28 @@ app.kycpersona = (function () {
             paismayoractividadPer: $('#paismayoractividadPer').val(),
             ingresomensualestimadoPer: app.ui.GetNumericValue('#ingresomensualestimadoPer'),
             fondospormivilizarPer: app.ui.GetRadioNumericValue('fondospormivilizarPer'),
+            fondospormivilizarPerDesc: app.ui.GetRadioSelectedText('fondospormivilizarPer'),
             actividadesart15Per: app.ui.GetRadioNumericValue('actividadesart15Per'),
+            actividadesart15PerDesc: app.ui.GetRadioSelectedText('actividadesart15Per'),
             activoscorrespondenPer: app.ui.GetRadioNumericValue('activoscorrespondenPer'),
+            activoscorrespondenPerDesc: app.ui.GetRadioSelectedText('activoscorrespondenPer'),
             pepcargoPer: app.ui.GetRadioNumericValue('pepcargoPer'),
+            pepcargoPerDesc: app.ui.GetRadioSelectedText('pepcargoPer'),
             pepduracionPer: $('#pepduracionPer').val(),
             peprelacionPer: app.ui.GetRadioNumericValue('peprelacionPer'),
+            peprelacionPerDesc: app.ui.GetRadioSelectedText('peprelacionPer'),
             peptiporelacionPer: $('#peptiporelacionPer').val(),
             propositorelacioncomercialPer: $('#propositorelacioncomercialPer').val(),
             montoprimaPer: app.ui.GetNumericValue('#montoprimaPer'),
             tipodeprimaPer: $('#tipodeprimaPer').val(),
             periodicidadPer: app.ui.GetRadioNumericValue('periodicidadPer'),
+            periodicidadPerDesc: app.ui.GetRadioSelectedText('periodicidadPer'),
             montoValoraseguradoPer: app.ui.GetNumericValue('#montoValoraseguradoPer'),
             formadepagodelapolizaPer: app.ui.GetRadioNumericValue('formadepagodelapolizaPer'),
+            formadepagodelapolizaPerDesc: app.ui.GetRadioSelectedText('formadepagodelapolizaPer'),
             mediodeenvioPer: app.ui.GetRadioNumericValue('mediodeenvioPer'),
-            especifiquePer: $('#especifiquePer').val(),
-
+            mediodeenvioPerDesc: app.ui.GetRadioSelectedText('mediodeenvioPer'),
+            especifiquePer: $('#especifiquePer').val()
         };
         return data;
     };
@@ -255,13 +264,13 @@ app.kycpersona = (function () {
         if (changedCallback !== undefined && changedCallback !== null)
             changedCallback(MapInputToObject());
         if (app.ui.GetRadioNumericValue('pepcargoPer') === 1)
-            $('.pepduracionPerVisible').addClass('d-none');
-        else
             $('.pepduracionPerVisible').removeClass('d-none');
-        if (app.ui.GetRadioNumericValue('peprelacionPer') === 1)
-            $('.peptiporelacionPerVisible').addClass('d-none');
         else
+            $('.pepduracionPerVisible').addClass('d-none');
+        if (app.ui.GetRadioNumericValue('peprelacionPer') === 1)
             $('.peptiporelacionPerVisible').removeClass('d-none');
+        else
+            $('.peptiporelacionPerVisible').addClass('d-none');
     };
 
     function Setup_Validations() {
@@ -385,7 +394,7 @@ app.kycpersona = (function () {
         Init: function (data) {
             try {
                 Controls_setup();
-                Setup_Validations();
+                //Setup_Validations();
 
                 Controls_Events();
                 Setup(data);

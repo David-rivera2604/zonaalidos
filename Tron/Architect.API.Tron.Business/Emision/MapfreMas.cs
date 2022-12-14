@@ -99,7 +99,7 @@ namespace Architect.API.Tron.Business.Emision
         public static Contracts.Emision.MapfreMas Issue(Contracts.Emision.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.Emision.MapfreMas resultQuoteInfo = null;
-            if (quoteInfo.Modo == "draft" || quoteInfo.Modo == "resumen")
+            if (quoteInfo.Modo == "draft" || quoteInfo.Modo == "resume")
             {
 
                 //TODO: Se debe incluir la validación de que de haber un Tomador, Asegurado y Conductor Habitual, pero faltan las básicas.
@@ -107,10 +107,10 @@ namespace Architect.API.Tron.Business.Emision
 
                 string uniqueId = EnviarSolicitud(quoteInfo.tip_firma, quoteInfo.correoenvio, quoteInfo, tokenInfo);
                 string kycUniqueId = String.Empty;
-                if (quoteInfo.kyc != null)
-                {
-                    kycUniqueId = EnviarKYC(quoteInfo.tip_firma, quoteInfo.correoenvio, quoteInfo, tokenInfo);
-                }
+                //if (quoteInfo.kyc != null)
+                //{
+                //    kycUniqueId = EnviarKYC(quoteInfo.tip_firma, quoteInfo.correoenvio, quoteInfo, tokenInfo);
+                //}
                 AlmacenarSolicitud(quoteInfo, quoteInfo.tip_firma == Contracts.TipoDeFirma.Manual ? 33 : 4, tokenInfo, uniqueId, kycUniqueId);
                 GuardaDatosVariables(quoteInfo.presupuesto, quoteInfo.cod_ramo, quoteInfo.tip_firma, quoteInfo.tip_firmaDesc, uniqueId);
                 string message = string.Empty;
