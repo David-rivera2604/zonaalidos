@@ -8,7 +8,6 @@ app.kycjuridico = (function () {
 
     function Setup(data) {
 
-
         app.core.Lookups(['Pais.paisdeconstitucionJur', 'Paises.cod_paisJur', 'Provincias.cod_estadoJur', 'Pais.nacionalidadJur', 'Pais.paisdenacimientoJur', 'TRON_G1000100.profesionJur', 'CivilStatus.estadocivilJur', 'Gender.sexoJur', 'Paises.domiciliopermanenteCod_paisJur', 'Provincias.domiciliopermanenteCod_estadoJur'],
             function () {
                 setupData = data;
@@ -33,6 +32,7 @@ app.kycjuridico = (function () {
             var pais = $('select#domiciliopermanenteCod_paisJur').val();
             app.core.LookupDependency($('select#domiciliopermanenteCod_provJur').val(), 'domiciliopermanenteCod_localidadJur', 'Distritos', '', null, false, null, `cod_pais=${pais}:cod_prov=`);
         });
+
     };
 
     function MapInputToObject() {
@@ -44,6 +44,7 @@ app.kycjuridico = (function () {
             numerocedulajuridicaJur: $('#numerocedulajuridicaJur').val(),
             tipodecedulajuridicaJur: app.ui.GetRadioNumericValue('tipodecedulajuridicaJur'),
             paisdeconstitucionJur: app.ui.GetDropDownNumericValue('#paisdeconstitucionJur'),
+            paisdeconstitucionJurDesc: app.ui.GetDropDownSelectedText('#paisdeconstitucionJur'),
             fechadeconstitucionJur: app.ui.GetDateValue('#fechadeconstitucionJur'),
             actividaddelclientenaturalezadelnegocioJur: $('#actividaddelclientenaturalezadelnegocioJur').val(),
             telefonoJur: $('#telefonoJur').val(),
@@ -52,9 +53,13 @@ app.kycjuridico = (function () {
             correoelectronicoJur: $('#correoelectronicoJur').val(),
             paginaWebJur: $('#paginaWebJur').val(),
             cod_paisJur: app.ui.GetDropDownStringValue('#cod_paisJur'),
+            cod_paisJurDesc: app.ui.GetDropDownSelectedText('#cod_paisJur'),
             cod_estadoJur: app.ui.GetDropDownNumericValue('#cod_estadoJur'),
+            cod_estadoJurDesc: app.ui.GetDropDownSelectedText('#cod_estadoJur'),
             cod_provJur: app.ui.GetDropDownNumericValue('#cod_provJur'),
+            cod_provJurDesc: app.ui.GetDropDownSelectedText('#cod_provJur'),
             cod_localidadJur: app.ui.GetDropDownNumericValue('#cod_localidadJur'),
+            cod_localidadJurDesc: app.ui.GetDropDownSelectedText('#cod_localidadJur'),
             direccionexactaJur: $('#direccionexactaJur').val(),
             primerapellidoJur: $('#primerapellidoJur').val(),
             segundoapellidoJur: $('#segundoapellidoJur').val(),
@@ -65,20 +70,29 @@ app.kycjuridico = (function () {
             especifiqueJur: $('#especifiqueJur').val(),
             fechadecaducidadJur: app.ui.GetDateValue('#fechadecaducidadJur'),
             nacionalidadJur: app.ui.GetDropDownNumericValue('#nacionalidadJur'),
+            nacionalidadJurDesc: app.ui.GetDropDownSelectedText('#nacionalidadJur'),
             fechadenacimientoJur: app.ui.GetDateValue('#fechadenacimientoJur'),
             paisdenacimientoJur: app.ui.GetDropDownNumericValue('#paisdenacimientoJur'),
-            profesionJur: $('#profesionJur').val(),
+            paisdenacimientoJurDesc: app.ui.GetDropDownSelectedText('#paisdenacimientoJur'),
+            profesionJur: app.ui.GetDropDownNumericValue('#profesionJur'),
+            profesionJurDesc: app.ui.GetDropDownSelectedText('#profesionJur'),
             estadocivilJur: app.ui.GetDropDownNumericValue('#estadocivilJur'),
+            estadocivilJurDesc: app.ui.GetDropDownSelectedText('#estadocivilJur'),
             sexoJur: app.ui.GetDropDownNumericValue('#sexoJur'),
+            sexoJurDesc: app.ui.GetDropDownSelectedText('#sexoJur'),
             telefonoresidenciaJur: $('#telefonoresidenciaJur').val(),
             telefonocelularJur: $('#telefonocelularJur').val(),
             datosdelrepresentantelegalFaxJur: $('#datosdelrepresentantelegalFaxJur').val(),
             datosdelrepresentantelegalApartadopostalJur: $('#datosdelrepresentantelegalApartadopostalJur').val(),
             datosdelrepresentantelegalCorreoelectronicoJur: $('#datosdelrepresentantelegalCorreoelectronicoJur').val(),
             domiciliopermanenteCod_paisJur: app.ui.GetDropDownStringValue('#domiciliopermanenteCod_paisJur'),
+            domiciliopermanenteCod_paisJurDesc: app.ui.GetDropDownSelectedText('#domiciliopermanenteCod_paisJur'),
             domiciliopermanenteCod_estadoJur: app.ui.GetDropDownNumericValue('#domiciliopermanenteCod_estadoJur'),
+            domiciliopermanenteCod_estadoJurDesc: app.ui.GetDropDownSelectedText('#domiciliopermanenteCod_estadoJur'),
             domiciliopermanenteCod_provJur: app.ui.GetDropDownNumericValue('#domiciliopermanenteCod_provJur'),
+            domiciliopermanenteCod_provJurDesc: app.ui.GetDropDownSelectedText('#domiciliopermanenteCod_provJur'),
             domiciliopermanenteCod_localidadJur: app.ui.GetDropDownNumericValue('#domiciliopermanenteCod_localidadJur'),
+            domiciliopermanenteCod_localidadJurDesc: app.ui.GetDropDownSelectedText('#domiciliopermanenteCod_localidadJur'),
             domiciliopermanenteDireccionexactaJur: $('#domiciliopermanenteDireccionexactaJur').val(),
             correspondenciaOrigendelosfondosJur: $('#correspondenciaOrigendelosfondosJur').val(),
             paismayoractividadJur: $('#paismayoractividadJur').val(),
@@ -111,7 +125,6 @@ app.kycjuridico = (function () {
         $('#tipodesociedadJur').val(data.tipodesociedadJur);
         $('#numerocedulajuridicaJur').val(data.numerocedulajuridicaJur);
         app.ui.SetRadioNumericValue('tipodecedulajuridicaJur', data.tipodecedulajuridicaJur);
-        $('#paisdeconstitucionJur').val(data.paisdeconstitucionJur);
         app.ui.SetDropDownNumericValue('#paisdeconstitucionJur', data.paisdeconstitucionJur, true);
         app.ui.SetDateValue('#fechadeconstitucionJur', data.fechadeconstitucionJur);
         $('#actividaddelclientenaturalezadelnegocioJur').val(data.actividaddelclientenaturalezadelnegocioJur);
@@ -124,7 +137,6 @@ app.kycjuridico = (function () {
         app.ui.SetDropDownNumericValue('#cod_estadoJur', data.cod_estadoJur, true);
         app.core.LookupDependency(data.cod_estadoJur, 'cod_provJur', 'Cantones', '', data.cod_provJur, false, null, `cod_pais=${data.cod_paisJur}:cod_estado=`);
         app.core.LookupDependency(data.cod_provJur, 'cod_localidadJur', 'Distritos', '', data.cod_localidadJur, false, null, `cod_pais=${data.cod_paisJur}:cod_prov=`);
-
         $('#direccionexactaJur').val(data.direccionexactaJur);
         $('#primerapellidoJur').val(data.primerapellidoJur);
         $('#segundoapellidoJur').val(data.segundoapellidoJur);
@@ -137,8 +149,7 @@ app.kycjuridico = (function () {
         app.ui.SetDropDownNumericValue('#nacionalidadJur', data.nacionalidadJur, true);
         app.ui.SetDateValue('#fechadenacimientoJur', data.fechadenacimientoJur);
         app.ui.SetDropDownNumericValue('#paisdenacimientoJur', data.paisdenacimientoJur, true);
-        $('#profesionJur').val(data.profesionJur);
-        $('#estadocivilJur').val(data.estadocivilJur);
+        app.ui.SetDropDownNumericValue('#profesionJur', data.profesionJur, true);
         app.ui.SetDropDownNumericValue('#estadocivilJur', data.estadocivilJur, true);
         app.ui.SetDropDownNumericValue('#sexoJur', data.sexoJur, true);
         $('#telefonoresidenciaJur').val(data.telefonoresidenciaJur);
@@ -146,12 +157,10 @@ app.kycjuridico = (function () {
         $('#datosdelrepresentantelegalFaxJur').val(data.datosdelrepresentantelegalFaxJur);
         $('#datosdelrepresentantelegalApartadopostalJur').val(data.datosdelrepresentantelegalApartadopostalJur);
         $('#datosdelrepresentantelegalCorreoelectronicoJur').val(data.datosdelrepresentantelegalCorreoelectronicoJur);
-
         app.ui.SetDropDownStringValue('#domiciliopermanenteCod_paisJur', data.domiciliopermanenteCod_paisJur, true);
         app.ui.SetDropDownNumericValue('#domiciliopermanenteCod_estadoJur', data.domiciliopermanenteCod_estadoJur, true);
         app.core.LookupDependency(data.domiciliopermanenteCod_estadoJur, 'domiciliopermanenteCod_provJur', 'Cantones', '', data.domiciliopermanenteCod_provJur, false, null, `cod_pais=${data.domiciliopermanenteCod_paisJur}:cod_estado=`);
         app.core.LookupDependency(data.domiciliopermanenteCod_provJur, 'domiciliopermanenteCod_localidadJur', 'Distritos', '', data.domiciliopermanenteCod_localidadJur, false, null, `cod_pais=${data.domiciliopermanenteCod_paisJur}:cod_prov=`);
-
         $('#domiciliopermanenteDireccionexactaJur').val(data.domiciliopermanenteDireccionexactaJur);
         $('#correspondenciaOrigendelosfondosJur').val(data.correspondenciaOrigendelosfondosJur);
         $('#paismayoractividadJur').val(data.paismayoractividadJur);
@@ -261,6 +270,7 @@ app.kycjuridico = (function () {
             data_changed();
         });
 
+
         $('#kycjuridicoJurEdtFormSave').click(function () {
             if (app.ui.IsValid('#kycjuridicoJurEdtForm', false)) {
                 app.ui.ButtonDoing('#kycjuridicoJurEdtFormSave');
@@ -282,6 +292,14 @@ app.kycjuridico = (function () {
     function data_changed() {
         if (changedCallback !== undefined && changedCallback !== null)
             changedCallback(MapInputToObject());
+        if (app.ui.GetRadioNumericValue('pepcargoJur') === 1)
+            $('.pepduracionJurVisible').addClass('d-none');
+        else
+            $('.pepduracionJurVisible').removeClass('d-none');
+        if (app.ui.GetRadioNumericValue('peprelacionJur') === 1)
+            $('.peptiporelacionJurVisible').addClass('d-none');
+        else
+            $('.peptiporelacionJurVisible').removeClass('d-none');
     };
 
     function Setup_Validations() {
@@ -577,7 +595,6 @@ app.kycjuridico = (function () {
                 Controls_Events();
                 Setup(data);
                 console.log("Inicio");
-
             }
             catch (err) {
                 console.error("Error Init");

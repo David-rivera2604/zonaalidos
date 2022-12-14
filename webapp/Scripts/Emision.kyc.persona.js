@@ -7,7 +7,7 @@ app.kycpersona = (function () {
     let acceptCallback = null;
 
     function Setup(data) {
-        app.core.Lookups(['Pais.nacionalidadPer', 'Pais.paisdenacimientoPer','TRON_G1000100.profesionPer', 'CivilStatus.estadocivilPer', 'Gender.sexoPer', 'Paises.cod_paisPer', 'Provincias.cod_estadoPer', 'Paises.domiciliocomercialCod_paisPer', 'Provincias.domiciliocomercialCod_estadoPer'],
+        app.core.Lookups(['Pais.nacionalidadPer', 'Pais.paisdenacimientoPer', 'TRON_G1000100.profesionPer', 'CivilStatus.estadocivilPer', 'Gender.sexoPer', 'Paises.cod_paisPer', 'Provincias.cod_estadoPer', 'Paises.domiciliocomercialCod_paisPer', 'Provincias.domiciliocomercialCod_estadoPer'],
             function () {
                 setupData = data;
                 MapObjectToInput(data);
@@ -43,20 +43,29 @@ app.kycpersona = (function () {
             tipodeidentificacionPer: app.ui.GetRadioNumericValue('tipodeidentificacionPer'),
             fechadecaducidadPer: app.ui.GetDateValue('#fechadecaducidadPer'),
             nacionalidadPer: app.ui.GetDropDownNumericValue('#nacionalidadPer'),
+            nacionalidadPerDesc: app.ui.GetDropDownSelectedText('#nacionalidadPer'),
             fechadenacimientoPer: app.ui.GetDateValue('#fechadenacimientoPer'),
             paisdenacimientoPer: app.ui.GetDropDownNumericValue('#paisdenacimientoPer'),
+            paisdenacimientoPerDesc: app.ui.GetDropDownSelectedText('#paisdenacimientoPer'),
             profesionPer: app.ui.GetDropDownNumericValue('#profesionPer'),
+            profesionPerDesc: app.ui.GetDropDownSelectedText('#profesionPer'),
             estadocivilPer: app.ui.GetDropDownNumericValue('#estadocivilPer'),
+            estadocivilPerDesc: app.ui.GetDropDownSelectedText('#estadocivilPer'),
             sexoPer: app.ui.GetDropDownNumericValue('#sexoPer'),
+            sexoPerDesc: app.ui.GetDropDownSelectedText('#sexoPer'),
             telefonoresidenciaPer: $('#telefonoresidenciaPer').val(),
             telefonocelularPer: $('#telefonocelularPer').val(),
             faxPer: $('#faxPer').val(),
             apartadopostalPer: $('#apartadopostalPer').val(),
             correoelectronicoPer: $('#correoelectronicoPer').val(),
             cod_paisPer: app.ui.GetDropDownStringValue('#cod_paisPer'),
+            cod_paisPerDesc: app.ui.GetDropDownSelectedText('#cod_paisPer'),
             cod_estadoPer: app.ui.GetDropDownNumericValue('#cod_estadoPer'),
+            cod_estadoPerDesc: app.ui.GetDropDownSelectedText('#cod_estadoPer'),
             cod_provPer: app.ui.GetDropDownNumericValue('#cod_provPer'),
+            cod_provPerDesc: app.ui.GetDropDownSelectedText('#cod_provPer'),
             cod_localidadPer: app.ui.GetDropDownNumericValue('#cod_localidadPer'),
+            cod_localidadPerDesc: app.ui.GetDropDownSelectedText('#cod_localidadPer'),
             direccionexactaPer: $('#direccionexactaPer').val(),
             OcupacionPer: app.ui.GetRadioNumericValue('OcupacionPer'),
             nombreempresaPer: $('#nombreempresaPer').val(),
@@ -65,9 +74,13 @@ app.kycpersona = (function () {
             telefonoempresaPer: $('#telefonoempresaPer').val(),
             faxempresaPer: $('#faxempresaPer').val(),
             domiciliocomercialCod_paisPer: app.ui.GetDropDownStringValue('#domiciliocomercialCod_paisPer'),
+            domiciliocomercialCod_paisPerDesc: app.ui.GetDropDownSelectedText('#domiciliocomercialCod_paisPer'),
             domiciliocomercialCod_estadoPer: app.ui.GetDropDownNumericValue('#domiciliocomercialCod_estadoPer'),
+            domiciliocomercialCod_estadoPerDesc: app.ui.GetDropDownSelectedText('#domiciliocomercialCod_estadoPer'),
             domiciliocomercialCod_provPer: app.ui.GetDropDownNumericValue('#domiciliocomercialCod_provPer'),
+            domiciliocomercialCod_provPerDesc: app.ui.GetDropDownSelectedText('#domiciliocomercialCod_provPer'),
             domiciliocomercialCod_localidadPer: app.ui.GetDropDownNumericValue('#domiciliocomercialCod_localidadPer'),
+            domiciliocomercialCod_localidadPerDesc: app.ui.GetDropDownSelectedText('#domiciliocomercialCod_localidadPer'),
             domiciliocomercialDireccionexactaPer: $('#domiciliocomercialDireccionexactaPer').val(),
             correspondenciaOrigendelosfondosPer: $('#correspondenciaOrigendelosfondosPer').val(),
             paismayoractividadPer: $('#paismayoractividadPer').val(),
@@ -111,12 +124,10 @@ app.kycpersona = (function () {
         $('#faxPer').val(data.faxPer);
         $('#apartadopostalPer').val(data.apartadopostalPer);
         $('#correoelectronicoPer').val(data.correoelectronicoPer);
-
         app.ui.SetDropDownStringValue('#cod_paisPer', data.cod_paisPer, true);
         app.ui.SetDropDownNumericValue('#cod_estadoPer', data.cod_estadoPer, true);
         app.core.LookupDependency(data.cod_estadoPer, 'cod_provPer', 'Cantones', '', data.cod_provPer, false, null, `cod_pais=${data.cod_paisPer}:cod_estado=`);
         app.core.LookupDependency(data.cod_provPer, 'cod_localidadPer', 'Distritos', '', data.cod_localidadPer, false, null, `cod_pais=${data.cod_paisPer}:cod_prov=`);
-
         $('#direccionexactaPer').val(data.direccionexactaPer);
         app.ui.SetRadioNumericValue('OcupacionPer', data.OcupacionPer);
         $('#nombreempresaPer').val(data.nombreempresaPer);
@@ -124,13 +135,10 @@ app.kycpersona = (function () {
         $('#cargoempresaPer').val(data.cargoempresaPer);
         $('#telefonoempresaPer').val(data.telefonoempresaPer);
         $('#faxempresaPer').val(data.faxempresaPer);
-
         app.ui.SetDropDownStringValue('#domiciliocomercialCod_paisPer', data.domiciliocomercialCod_paisPer, true);
         app.ui.SetDropDownNumericValue('#domiciliocomercialCod_estadoPer', data.domiciliocomercialCod_estadoPer, true);
         app.core.LookupDependency(data.domiciliocomercialCod_estadoPer, 'domiciliocomercialCod_provPer', 'Cantones', '', data.domiciliocomercialCod_provPer, false, null, `cod_pais=${data.cod_paisPer}:cod_estado=`);
         app.core.LookupDependency(data.domiciliocomercialCod_provPer, 'domiciliocomercialCod_localidadPer', 'Distritos', '', data.domiciliocomercialCod_localidadPer, false, null, `cod_pais=${data.cod_paisPer}:cod_prov=`);
-
-
         $('#domiciliocomercialDireccionexactaPer').val(data.domiciliocomercialDireccionexactaPer);
         $('#correspondenciaOrigendelosfondosPer').val(data.correspondenciaOrigendelosfondosPer);
         $('#paismayoractividadPer').val(data.paismayoractividadPer);
@@ -246,6 +254,14 @@ app.kycpersona = (function () {
     function data_changed() {
         if (changedCallback !== undefined && changedCallback !== null)
             changedCallback(MapInputToObject());
+        if (app.ui.GetRadioNumericValue('pepcargoPer') === 1)
+            $('.pepduracionPerVisible').addClass('d-none');
+        else
+            $('.pepduracionPerVisible').removeClass('d-none');
+        if (app.ui.GetRadioNumericValue('peprelacionPer') === 1)
+            $('.peptiporelacionPerVisible').addClass('d-none');
+        else
+            $('.peptiporelacionPerVisible').removeClass('d-none');
     };
 
     function Setup_Validations() {

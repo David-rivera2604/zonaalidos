@@ -7,9 +7,6 @@
                 <h4 class="modal-title">Formulario conozca a su cliente - Persona Jurídica</h4>
             </div>
             <div class="modal-body">
-
-
-
                 <!-- Edit Form -->
                 <div class='form-row'>
                     <div class='col-md-12'>
@@ -346,14 +343,15 @@
                                                     </div>
                                                 </div>
 
-                                                <!-- profesionJur Text -->
+                                                <!-- profesionJur DropDownList -->
                                                 <div class='col-sm-4 col-md-4'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='profesionJur'>Profesión<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <input type='text' id='profesionJur' name='profesionJur' class='form-control' size='40' maxlength='40' />
-
+                                                        <select id='profesionJur' name='profesionJur' class='form-control'>
+                                                        </select>
                                                     </div>
                                                 </div>
+
                                                 <!-- estadocivilJur DropDownList -->
                                                 <div class='col-sm-4 col-md-4'>
                                                     <div class='form-group'>
@@ -517,7 +515,7 @@
                                                 <div class='col-sm-6 col-md-6'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='ingresomensualestimadoJur'>Ingreso mensual estimado<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <input type='text' id='ingresomensualestimadoJur' name='ingresomensualestimadoJur' class='form-control text-right' size='27' maxlength='27' />
+                                                        <input type='text' id='ingresomensualestimadoJur' name='ingresomensualestimadoJur' class='form-control text-right' size='26' maxlength='26' />
                                                     </div>
                                                 </div>
                                                 <!-- fondospormivilizarJur RadioButtonList -->
@@ -613,7 +611,7 @@
                                                 </div>
 
                                                 <!-- pepduracionJur Text -->
-                                                <div class='col-sm-6 col-md-6'>
+                                                <div class='col-sm-6 col-md-6 pepduracionJurVisible d-none'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='pepduracionJur'>En caso afirmativo, indique el período durante el cual desempeñó dichas funciones<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                         <input type='text' id='pepduracionJur' name='pepduracionJur' class='form-control' size='60' maxlength='60' />
@@ -637,7 +635,7 @@
                                                 </div>
 
                                                 <!-- peptiporelacionJur Text -->
-                                                <div class='col-sm-6 col-md-6'>
+                                                <div class='col-sm-6 col-md-6 peptiporelacionJurVisible d-none'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='peptiporelacionJur'>Detalle el tipo de relación<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                         <input type='text' id='peptiporelacionJur' name='peptiporelacionJur' class='form-control' size='60' maxlength='60' />
@@ -690,7 +688,7 @@
                                                 <div class='col-sm-6 col-md-6'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='montoprimaJur'>Monto prima<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <input type='text' id='montoprimaJur' name='montoprimaJur' class='form-control text-right' size='27' maxlength='27' />
+                                                        <input type='text' id='montoprimaJur' name='montoprimaJur' class='form-control text-right' size='26' maxlength='26' />
                                                     </div>
                                                 </div>
                                                 <!-- tipodeprimaJur Text -->
@@ -727,7 +725,7 @@
                                                 <div class='col-sm-6 col-md-6'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='montovaloraseguradoJur'>Monto valor asegurado<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <input type='text' id='montovaloraseguradoJur' name='montovaloraseguradoJur' class='form-control text-right' size='27' maxlength='27' />
+                                                        <input type='text' id='montovaloraseguradoJur' name='montovaloraseguradoJur' class='form-control text-right' size='26' maxlength='26' />
                                                     </div>
                                                 </div>
                                                 <!-- formadepagodelapolizaJur RadioButtonList -->
@@ -800,13 +798,14 @@
                                         </div>
                                     </div>
 
+
                                 </fieldset>
                             </form>
                         </div>
                     </div>
                 </div>
                 <!-- participacionaccionariaJur Grid Modal -->
-                <div class="modal inmodal" id="participacionaccionariaJurModal" tabindex="-1" role="dialog" aria-hidden="true" >
+                <div class="modal inmodal" id="participacionaccionariaJurModal" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content animated bounceInRight">
                             <div class="modal-header">
@@ -845,7 +844,6 @@
                                                             <div class='form-group'>
                                                                 <label class='control-label' for='participacionaccionariaNumerodeidentificacionJur'>Número de identificación<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                                 <input type='text' id='participacionaccionariaNumerodeidentificacionJur' name='participacionaccionariaNumerodeidentificacionJur' class='form-control' size='40' maxlength='40' />
-
                                                             </div>
                                                         </div>
                                                     </div>
@@ -864,8 +862,6 @@
                 </div>
 
                 <!-- Edit Form End -->
-
-
 
 
             </div>
