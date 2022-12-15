@@ -104,6 +104,8 @@ namespace Architect.API.Tron.Business.Emision
             if (quoteInfo.Modo == "draft" || quoteInfo.Modo == "resume")
             {
 
+
+
                 //TODO: Se debe incluir la validación de que de haber un Tomador, Asegurado y Conductor Habitual, pero faltan las básicas.
                 quoteInfo.DatosEconomicos = EconomicDataCalculate(quoteInfo);
 
@@ -174,6 +176,18 @@ namespace Architect.API.Tron.Business.Emision
                         Error = ex.Message,
                     };
 
+                }
+                try
+                {
+                    if (resultQuoteInfo.num_poliza.IsNotEmpty())
+                    {
+                        Compliance(quoteInfo, tokenInfo);
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Utilities.Log.ErrorLog("Issue.Compliance", "Fail send compliance information", ex);
                 }
 
             }
@@ -509,7 +523,28 @@ namespace Architect.API.Tron.Business.Emision
                 esApnfd = "N",
                 tipoApnfd = "0",
                 esCpe = "N",
-                pagaImpuestos = "N"
+                pagaImpuestos = "N",
+                //faltaban
+                esPep = "N",
+                tipoPep = "N",
+                residente = "S",
+                articulo15 = "N",
+                esEmpleado = "N",
+                fechaValor = DateTime.Now,
+                tipoCuenta = "1",
+                descripcionCuenta = "X",
+                fechaSalida = new DateTime(1900, 1, 1),
+                fechaIngreso = DateTime.Now,
+                fechaRegistro = DateTime.Now,
+                sectorPublico = "N",
+                fechaInactividad = new DateTime(1900, 1, 1),
+                fechaVinculacion = DateTime.Now,
+                fechaCargaCliente = DateTime.Now,
+                institucionLabora = "0",
+                fechaRegistroApnfd = new DateTime(1900, 1, 1),
+                numeroIdentificacionEntidad = "X",
+                lugarExpedicionIdentificacion = "Costa Rica",
+                fechaVencimientoIdentificacion = new DateTime(1900, 1, 1)
             };
 
 
@@ -539,28 +574,23 @@ namespace Architect.API.Tron.Business.Emision
             else
             {
                 mapInfo.genero = titular.tercerosMca_sexo == 1 ? "M" : "F";
-                switch (titular.estadoCivil)
-                {
-                    case "C":
-                    case "D":
-                    case "S":
-                    case "V":
-                        mapInfo.estadoCivil = titular.estadoCivil;
-                        break;
-                }
+                mapInfo.estadoCivil = titular.estadoCivil;
             }
 
             mapInfo.clientesPolizas = new List<Compliance.Integrations.Contracts.Clientespoliza>()
             {
                 new Compliance.Integrations.Contracts.Clientespoliza()
                 {
-                    numeroPoliza = "1234",
+                    numeroPoliza = quoteInfo.presupuesto,
                     descripcionPoliza = "MapfreMas",
                     fechaInicio = quoteInfo.fec_efec_poliza,
                     fechaFinalizacion = quoteInfo.fec_vcto_poliza,
                     moneda  = quoteInfo.cod_mon,
-                    prima = (int)quoteInfo.DatosEconomicos.annualnetpremium,
-                    estado="A"
+                   // prima = (int)quoteInfo.DatosEconomicos.annualnetpremium,
+                    estado="A",
+                    //faltaban
+                    tipoPrima = "A" ,
+                    tipoPoliza= "C"
 
                 }
             };
