@@ -1697,7 +1697,7 @@
             <Item3 Ref="762" ControlType="XRLabel" Name="label12" Text="DECLARACIÓN JURADA" TextAlignment="MiddleCenter" SizeF="806.3691,18" LocationFloat="2.22341371,851.5737" ForeColor="White" BackColor="Red" />
             <Item4 Ref="763" ControlType="XRLabel" Name="MedioDeEnvioDetalleField" SizeF="159.7316,16" LocationFloat="650.2684,831.573364" Font="Times New Roman, 8pt" Borders="Right, Bottom">
               <ExpressionBindings>
-                <Item1 Ref="764" EventName="BeforePrint" PropertyName="Text" Expression="[MedioDeEnvioDetalle]" />
+                <Item1 Ref="764" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[especifiquePer]" />
               </ExpressionBindings>
               <StylePriority Ref="765" UseFont="false" UseBorders="false" />
             </Item4>
@@ -1706,7 +1706,7 @@
             </Item5>
             <Item6 Ref="768" ControlType="XRLabel" Name="MedioDeEnvioField" SizeF="269.5618,16" LocationFloat="318.106659,831.573364" Font="Times New Roman, 8pt" Borders="Bottom">
               <ExpressionBindings>
-                <Item1 Ref="769" EventName="BeforePrint" PropertyName="Text" Expression="Iif([MedioDeEnvio]&#xA;=1, 'Apartado Postal',[MedioDeEnvio]&#xA;=2, 'Dirección física', [MedioDeEnvio]&#xA;=3, 'Fax','Correo electrónico')" />
+                <Item1 Ref="769" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[mediodeenvioPerDesc]" />
               </ExpressionBindings>
               <StylePriority Ref="770" UseFont="false" UseBorders="false" />
             </Item6>
@@ -1716,7 +1716,7 @@
             <Item8 Ref="773" ControlType="XRLabel" Name="label6" Text="CORRESPONDENCIA" TextAlignment="MiddleCenter" SizeF="806.4854,18" LocationFloat="2.10674167,809.5726" ForeColor="White" BackColor="Red" />
             <Item9 Ref="774" ControlType="XRLabel" Name="FormaDePagoDeLaPolizaField" SizeF="671.9564,16" LocationFloat="136.636169,789.5734" Font="Times New Roman, 8pt" Borders="Right, Bottom">
               <ExpressionBindings>
-                <Item1 Ref="775" EventName="BeforePrint" PropertyName="Text" Expression="Iif([FormaDePagoDeLaPoliza]&#xA;=1, 'Efectivo',[FormaDePagoDeLaPoliza]&#xA;=2, 'Cheque', [FormaDePagoDeLaPoliza]&#xA;=3, 'Tarjeta de débito o crédito',[FormaDePagoDeLaPoliza]&#xA;=4, 'Transferencia nacional','Transferencia internacional')" />
+                <Item1 Ref="775" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[formadepagodelapolizaPerDesc]" />
               </ExpressionBindings>
               <StylePriority Ref="776" UseFont="false" UseBorders="false" />
             </Item9>
@@ -1725,7 +1725,7 @@
             </Item10>
             <Item11 Ref="779" ControlType="XRLabel" Name="MontoValorAseguradoField" SizeF="138.5294,16" LocationFloat="670.063232,770.5732" Font="Times New Roman, 8pt" Borders="Right, Bottom">
               <ExpressionBindings>
-                <Item1 Ref="780" EventName="BeforePrint" PropertyName="Text" Expression="[MontoValorAsegurado]" />
+                <Item1 Ref="780" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[montoValoraseguradoPer]" />
               </ExpressionBindings>
               <StylePriority Ref="781" UseFont="false" UseBorders="false" />
             </Item11>
@@ -1734,7 +1734,7 @@
             </Item12>
             <Item13 Ref="784" ControlType="XRLabel" Name="PeriodicidadField" SizeF="231.602325,16" LocationFloat="318.106659,770.5733" Font="Times New Roman, 8pt" Borders="Bottom">
               <ExpressionBindings>
-                <Item1 Ref="785" EventName="BeforePrint" PropertyName="Text" Expression="Iif([Periodicidad]&#xA;=1, 'Anual',[Periodicidad]&#xA;=2, 'Semestral', [Periodicidad]&#xA;=3, 'Trimestral','Mensual')" />
+                <Item1 Ref="785" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[periodicidadPerDesc]" />
               </ExpressionBindings>
               <StylePriority Ref="786" UseFont="false" UseBorders="false" />
             </Item13>
@@ -1743,7 +1743,7 @@
             </Item14>
             <Item15 Ref="789" ControlType="XRLabel" Name="TipoDePrimaField" SizeF="165.7476,16" LocationFloat="75.58884,770.5732" Font="Times New Roman, 8pt" Borders="Bottom">
               <ExpressionBindings>
-                <Item1 Ref="790" EventName="BeforePrint" PropertyName="Text" Expression="[TipoDePrimaDesc]" />
+                <Item1 Ref="790" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[tipodeprimaPer]" />
               </ExpressionBindings>
               <StylePriority Ref="791" UseFont="false" UseBorders="false" />
             </Item15>
@@ -1752,7 +1752,7 @@
             </Item16>
             <Item17 Ref="794" ControlType="XRLabel" Name="MontoPrimaField" SizeF="123.1285,15.99994" LocationFloat="685.463562,751.5731" Font="Times New Roman, 8pt" Borders="Right, Bottom">
               <ExpressionBindings>
-                <Item1 Ref="795" EventName="BeforePrint" PropertyName="Text" Expression="[MontoPrima]" />
+                <Item1 Ref="795" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[montoprimaPer]" />
               </ExpressionBindings>
               <StylePriority Ref="796" UseFont="false" UseBorders="false" />
             </Item17>
@@ -1761,7 +1761,7 @@
             </Item18>
             <Item19 Ref="799" ControlType="XRLabel" Name="PropositoDeRelacionComercialField" SizeF="242.4838,16.000061" LocationFloat="368.22287,751.5732" Font="Times New Roman, 8pt" Borders="Bottom">
               <ExpressionBindings>
-                <Item1 Ref="800" EventName="BeforePrint" PropertyName="Text" Expression="[PropositoDeRelacionComercialDesc]" />
+                <Item1 Ref="800" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[propositorelacioncomercialPer]" />
               </ExpressionBindings>
               <StylePriority Ref="801" UseFont="false" UseBorders="false" />
             </Item19>
@@ -1771,7 +1771,7 @@
             <Item21 Ref="804" ControlType="XRLabel" Name="label10" Text="DESCRIPCIÓN DE LA PÓLIZA" TextAlignment="MiddleCenter" SizeF="806.4854,18" LocationFloat="2.10674167,729.573242" ForeColor="White" BackColor="Red" />
             <Item22 Ref="805" ControlType="XRLabel" Name="DetalleRelacionPersonaPoliticaField" SizeF="682.1816,16.000061" LocationFloat="126.410446,709.5737" Font="Times New Roman, 8pt" Borders="Right, Bottom">
               <ExpressionBindings>
-                <Item1 Ref="806" EventName="BeforePrint" PropertyName="Text" Expression="[DetalleRelacionPersonaPolitica]" />
+                <Item1 Ref="806" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[peptiporelacionPer]" />
               </ExpressionBindings>
               <StylePriority Ref="807" UseFont="false" UseBorders="false" />
             </Item22>
@@ -1780,7 +1780,7 @@
             </Item23>
             <Item24 Ref="810" ControlType="XRLabel" Name="RelacionPersonaPoliticaField" SizeF="250.745972,16" LocationFloat="557.846069,691.574" Font="Times New Roman, 8pt" Borders="Right, Bottom">
               <ExpressionBindings>
-                <Item1 Ref="811" EventName="BeforePrint" PropertyName="Text" Expression="Iif([RelacionPersonaPolitica]=1, 'Si','No')" />
+                <Item1 Ref="811" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[peprelacionPerDesc]" />
               </ExpressionBindings>
               <StylePriority Ref="812" UseFont="false" UseBorders="false" />
             </Item24>
@@ -1789,7 +1789,7 @@
             </Item25>
             <Item26 Ref="815" ControlType="XRLabel" Name="PeriodoFuncionesPublicasField" SizeF="429.644836,15.999939" LocationFloat="378.947327,673.5729" Font="Times New Roman, 8pt" Borders="Right, Bottom">
               <ExpressionBindings>
-                <Item1 Ref="816" EventName="BeforePrint" PropertyName="Text" Expression="[PeriodoFuncionesPublicas]" />
+                <Item1 Ref="816" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[pepduracionPer]" />
               </ExpressionBindings>
               <StylePriority Ref="817" UseFont="false" UseBorders="false" />
             </Item26>
@@ -1808,7 +1808,7 @@
             <Item30 Ref="825" ControlType="XRLabel" Name="label11" Text="PERSONAS EXPUESTAS POLÍTICAMENTE (PEPs)" TextAlignment="MiddleCenter" SizeF="807.7652,18" LocationFloat="0.8269719,635.5737" ForeColor="White" BackColor="Red" />
             <Item31 Ref="826" ControlType="XRLabel" Name="ActivosField" SizeF="528.0001,15.99994" LocationFloat="210.106735,616.573547" Font="Times New Roman, 8pt" Borders="Right, Bottom">
               <ExpressionBindings>
-                <Item1 Ref="827" EventName="BeforePrint" PropertyName="Text" Expression="Iif([Activos]&#xA;=1, 'Activos fijos muebles e inmuebles dentro del país',[Activos]&#xA;=2, 'Activos fijos muebles e inmuebles fuera del país', [Activos]&#xA;=3, 'Activos monetarios y/o financieros dentro del país','Activos monetarios y/o financieros fuera del país')" />
+                <Item1 Ref="827" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[activoscorrespondenPerDesc]" />
               </ExpressionBindings>
               <StylePriority Ref="828" UseFont="false" UseBorders="false" />
             </Item31>
@@ -1818,7 +1818,7 @@
             <Item33 Ref="831" ControlType="XRLabel" Name="label13" Text="TIPOS DE ACTIVOS" TextAlignment="MiddleCenter" SizeF="807.7652,18" LocationFloat="0.8269719,596.5732" ForeColor="White" BackColor="Red" />
             <Item34 Ref="832" ControlType="XRLabel" Name="DesempenaActividadesField" SizeF="144.6538,18.00012" LocationFloat="318.106659,575.5736" Font="Times New Roman, 8pt" Borders="Bottom">
               <ExpressionBindings>
-                <Item1 Ref="833" EventName="BeforePrint" PropertyName="Text" Expression="Iif([DesempenaActividades]=1, 'Si','No')" />
+                <Item1 Ref="833" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[actividadesart15PerDesc]" />
               </ExpressionBindings>
               <StylePriority Ref="834" UseFont="false" UseBorders="false" />
             </Item34>
@@ -1827,7 +1827,7 @@
             </Item35>
             <Item36 Ref="837" ControlType="XRLabel" Name="FondosPorMovilizarField" SizeF="250.7461,16" LocationFloat="557.845947,545.1325" Font="Times New Roman, 8pt" Borders="Right, Bottom">
               <ExpressionBindings>
-                <Item1 Ref="838" EventName="BeforePrint" PropertyName="Text" Expression="Iif([FondosPorMovilizar]=1, 'Propios','Terceros')" />
+                <Item1 Ref="838" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[fondospormivilizarPer]" />
               </ExpressionBindings>
               <StylePriority Ref="839" UseFont="false" UseBorders="false" />
             </Item36>
@@ -1836,7 +1836,7 @@
             </Item37>
             <Item38 Ref="842" ControlType="XRLabel" Name="IngresoMensualEstimadoField" SizeF="191.6962,16" LocationFloat="126.410446,545.1325" Font="Times New Roman, 8pt" Borders="Right, Bottom">
               <ExpressionBindings>
-                <Item1 Ref="843" EventName="BeforePrint" PropertyName="Text" Expression="Iif([IngresoMensualEstimado]=1, '$500,00 -  $2.000,00',[IngresoMensualEstimado]=2, '$2.001,00 -  $5.000,00', [IngresoMensualEstimado]=3, '5.001,00 - $10.000,00',[IngresoMensualEstimado]=4, '$10.001,00 - $20.000,00','Mayor a $20.000,00')" />
+                <Item1 Ref="843" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[ingresomensualestimadoPer]" />
               </ExpressionBindings>
               <StylePriority Ref="844" UseFont="false" UseBorders="false" />
             </Item38>
@@ -1958,13 +1958,13 @@
             <Item66 Ref="910" ControlType="XRLabel" Name="label18" Text="DATOS DE LA EMPRESA O LUGAR QUE GENERA SUS INGRESOS EN CASO DE SER INDEPENDIENTE" TextAlignment="MiddleCenter" SizeF="807.7655,18" LocationFloat="0.8269719,341.1328" ForeColor="White" BackColor="Red" />
             <Item67 Ref="911" ControlType="XRLabel" Name="NGDetalleField" SizeF="231.6532,18" LocationFloat="506.4535,320.1329" Font="Times New Roman, 8pt" Padding="3,0,0,0,100" Borders="Right, Bottom">
               <ExpressionBindings>
-                <Item1 Ref="912" EventName="BeforePrint" PropertyName="Text" Expression="[NGDetalleDesc]" />
+                <Item1 Ref="912" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[OcupacionDetalleDesc]" />
               </ExpressionBindings>
               <StylePriority Ref="913" UseFont="false" UsePadding="false" UseBorders="false" />
             </Item67>
             <Item68 Ref="914" ControlType="XRLabel" Name="TINaturalezaNegocioField" SizeF="296.3467,18" LocationFloat="210.106735,320.1329" Font="Times New Roman, 8pt" Padding="3,0,0,0,100" Borders="Bottom">
               <ExpressionBindings>
-                <Item1 Ref="915" EventName="BeforePrint" PropertyName="Text" Expression="[TINaturalezaNegocioDesc]" />
+                <Item1 Ref="915" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[OcupacionPerDesc]" />
               </ExpressionBindings>
               <StylePriority Ref="916" UseFont="false" UsePadding="false" UseBorders="false" />
             </Item68>
@@ -2133,7 +2133,7 @@
             </Item105>
             <Item106 Ref="1008" ControlType="XRLabel" Name="TipoDeIdentificacionField" SizeF="384,18" LocationFloat="192.106812,153.1101" Font="Times New Roman, 8pt" Padding="3,0,0,0,100" Borders="Right, Bottom">
               <ExpressionBindings>
-                <Item1 Ref="1009" EventName="BeforePrint" PropertyName="Text" Expression="Iif([TipoDeIdentificacion]=1, 'Cédula',[TipoDeIdentificacion]=2, 'Pasaporte',[TipoDeIdentificacion]=3, 'Cédula Residencia', 'Otro')" />
+                <Item1 Ref="1009" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[tipodeidentificacionPerDesc]" />
               </ExpressionBindings>
               <StylePriority Ref="1010" UseFont="false" UsePadding="false" UseBorders="false" />
             </Item106>
@@ -2217,7 +2217,7 @@
         <Item1 Ref="1056" EventName="BeforePrint" PropertyName="Visible" Expression="[titular].[DocumentNumberType]!=4" />
       </ExpressionBindings>
     </Item4>
-    <Item5 Ref="1057" ControlType="DetailReportBand" Name="KYCJuridico" Level="1" Expanded="false" PageBreak="BeforeBand">
+    <Item5 Ref="1057" ControlType="DetailReportBand" Name="KYCJuridico" Level="1" PageBreak="BeforeBand">
       <Bands>
         <Item1 Ref="1058" ControlType="DetailBand" Name="Detail2" HeightF="1064.11011">
           <Controls>
@@ -2233,7 +2233,7 @@
             </Item4>
             <Item5 Ref="1066" ControlType="XRLabel" Name="label28" SizeF="239.608978,16.0001221" LocationFloat="371.097626,811.9652" Font="Times New Roman, 8pt" Borders="Bottom">
               <ExpressionBindings>
-                <Item1 Ref="1067" EventName="BeforePrint" PropertyName="Text" Expression="[PropositoDeRelacionComercialDesc]" />
+                <Item1 Ref="1067" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[propositoderelacioncomercialIndicareltipodeSeguroqueestaadquiriendoJur]" />
               </ExpressionBindings>
               <StylePriority Ref="1068" UseFont="false" UseBorders="false" />
             </Item5>
@@ -2242,7 +2242,7 @@
             </Item6>
             <Item7 Ref="1071" ControlType="XRLabel" Name="label30" SizeF="123.1285,15.99994" LocationFloat="685.4633,811.9653" Font="Times New Roman, 8pt" Borders="Right, Bottom">
               <ExpressionBindings>
-                <Item1 Ref="1072" EventName="BeforePrint" PropertyName="Text" Expression="[MontoPrima]" />
+                <Item1 Ref="1072" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[montoprimaJur]" />
               </ExpressionBindings>
               <StylePriority Ref="1073" UseFont="false" UseBorders="false" />
             </Item7>
@@ -2251,7 +2251,7 @@
             </Item8>
             <Item9 Ref="1076" ControlType="XRLabel" Name="label32" SizeF="165.7476,16" LocationFloat="78.46358,830.9651" Font="Times New Roman, 8pt" Borders="Bottom">
               <ExpressionBindings>
-                <Item1 Ref="1077" EventName="BeforePrint" PropertyName="Text" Expression="[TipoDePrimaDesc]" />
+                <Item1 Ref="1077" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[tipodeprimaJur]" />
               </ExpressionBindings>
               <StylePriority Ref="1078" UseFont="false" UseBorders="false" />
             </Item9>
@@ -2260,7 +2260,7 @@
             </Item10>
             <Item11 Ref="1081" ControlType="XRLabel" Name="label34" SizeF="229.993958,16.000061" LocationFloat="320.981384,830.965" Font="Times New Roman, 8pt" Borders="Bottom">
               <ExpressionBindings>
-                <Item1 Ref="1082" EventName="BeforePrint" PropertyName="Text" Expression="Iif([Periodicidad]&#xA;=1, 'Anual',[Periodicidad]&#xA;=2, 'Semestral', [Periodicidad]&#xA;=3, 'Trimestral','Mensual')" />
+                <Item1 Ref="1082" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[periodicidadJurDesc]" />
               </ExpressionBindings>
               <StylePriority Ref="1083" UseFont="false" UseBorders="false" />
             </Item11>
@@ -2269,7 +2269,7 @@
             </Item12>
             <Item13 Ref="1086" ControlType="XRLabel" Name="label36" SizeF="137.120667,16" LocationFloat="671.470642,830.964966" Font="Times New Roman, 8pt" Borders="Right, Bottom">
               <ExpressionBindings>
-                <Item1 Ref="1087" EventName="BeforePrint" PropertyName="Text" Expression="[MontoValorAsegurado]" />
+                <Item1 Ref="1087" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[montovaloraseguradoJur]" />
               </ExpressionBindings>
               <StylePriority Ref="1088" UseFont="false" UseBorders="false" />
             </Item13>
@@ -2278,7 +2278,7 @@
             </Item14>
             <Item15 Ref="1091" ControlType="XRLabel" Name="label38" SizeF="669.0809,16" LocationFloat="139.510925,849.964966" Font="Times New Roman, 8pt" Borders="Right, Bottom">
               <ExpressionBindings>
-                <Item1 Ref="1092" EventName="BeforePrint" PropertyName="Text" Expression="Iif([FormaDePagoDeLaPoliza]&#xA;=1, 'Efectivo',[FormaDePagoDeLaPoliza]&#xA;=2, 'Cheque', [FormaDePagoDeLaPoliza]&#xA;=3, 'Tarjeta de débito o crédito',[FormaDePagoDeLaPoliza]&#xA;=4, 'Transferencia nacional','Transferencia internacional')" />
+                <Item1 Ref="1092" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[formadepagodelapolizaJurDesc]" />
               </ExpressionBindings>
               <StylePriority Ref="1093" UseFont="false" UseBorders="false" />
             </Item15>
@@ -2288,7 +2288,7 @@
             </Item17>
             <Item18 Ref="1097" ControlType="XRLabel" Name="label41" SizeF="265.2791,16" LocationFloat="320.981384,891.9651" Font="Times New Roman, 8pt" Borders="Bottom">
               <ExpressionBindings>
-                <Item1 Ref="1098" EventName="BeforePrint" PropertyName="Text" Expression="Iif([MedioDeEnvio]&#xA;=1, 'Apartado Postal',[MedioDeEnvio]&#xA;=2, 'Dirección física', [MedioDeEnvio]&#xA;=3, 'Fax','Correo electrónico')" />
+                <Item1 Ref="1098" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[mediodeenvioJurDesc]" />
               </ExpressionBindings>
               <StylePriority Ref="1099" UseFont="false" UseBorders="false" />
             </Item18>
@@ -2297,7 +2297,7 @@
             </Item19>
             <Item20 Ref="1102" ControlType="XRLabel" Name="label43" SizeF="159.7316,16" LocationFloat="648.860168,891.9651" Font="Times New Roman, 8pt" Borders="Right, Bottom">
               <ExpressionBindings>
-                <Item1 Ref="1103" EventName="BeforePrint" PropertyName="Text" Expression="[MedioDeEnvioDetalle]" />
+                <Item1 Ref="1103" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[correspondenciaEspecifiqueJur]" />
               </ExpressionBindings>
               <StylePriority Ref="1104" UseFont="false" UseBorders="false" />
             </Item20>
@@ -2344,7 +2344,7 @@
             <Item35 Ref="1132" ControlType="XRLabel" Name="AccionariaLabel" Text="PARTICIPACIÓN ACCIONARIA" TextAlignment="MiddleCenter" SizeF="808.5927,17.999939" LocationFloat="0,722.7323" ForeColor="White" BackColor="Red" />
             <Item36 Ref="1133" ControlType="XRLabel" Name="DetRelacionPersonaPoliticaField" SizeF="674.41864,15" LocationFloat="134.173157,705.732239" Font="Times New Roman, 8pt" Borders="Right, Bottom">
               <ExpressionBindings>
-                <Item1 Ref="1134" EventName="BeforePrint" PropertyName="Text" Expression="[DetRelacionPersonaPolitica]" />
+                <Item1 Ref="1134" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[peptiporelacionJur]" />
               </ExpressionBindings>
               <StylePriority Ref="1135" UseFont="false" UseBorders="false" />
             </Item36>
@@ -2353,7 +2353,7 @@
             </Item37>
             <Item38 Ref="1138" ControlType="XRLabel" Name="label58" SizeF="235.026184,15" LocationFloat="573.5656,688.398" Font="Times New Roman, 8pt" Borders="Right, Bottom">
               <ExpressionBindings>
-                <Item1 Ref="1139" EventName="BeforePrint" PropertyName="Text" Expression="[RelacionPersonaPolitica]" />
+                <Item1 Ref="1139" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[peprelacionJurDesc]" />
               </ExpressionBindings>
               <StylePriority Ref="1140" UseFont="false" UseBorders="false" />
             </Item38>
@@ -2362,7 +2362,7 @@
             </Item39>
             <Item40 Ref="1143" ControlType="XRLabel" Name="label60" SizeF="429.3849,15" LocationFloat="379.2069,658.3977" Font="Times New Roman, 8pt" Borders="Right, Bottom">
               <ExpressionBindings>
-                <Item1 Ref="1144" EventName="BeforePrint" PropertyName="Text" Expression="[PeriodoFuncionesPublicas]" />
+                <Item1 Ref="1144" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[pepduracionJur]" />
               </ExpressionBindings>
               <StylePriority Ref="1145" UseFont="false" UseBorders="false" />
             </Item40>
@@ -2371,7 +2371,7 @@
             </Item41>
             <Item42 Ref="1148" ControlType="XRLabel" Name="label62" SizeF="320.4187,15" LocationFloat="488.1731,641.398" Font="Times New Roman, 8pt" Borders="Right, Bottom">
               <ExpressionBindings>
-                <Item1 Ref="1149" EventName="BeforePrint" PropertyName="Text" Expression="Iif([FuncionesPublicas]=1, 'Si','No')" />
+                <Item1 Ref="1149" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[pepcargoJurDesc]" />
               </ExpressionBindings>
               <StylePriority Ref="1150" UseFont="false" UseBorders="false" />
             </Item42>
@@ -2381,7 +2381,7 @@
             <Item44 Ref="1153" ControlType="XRLabel" Name="PEPLabel" Text="Personas expuestas políticamente (PEPs)" TextAlignment="MiddleCenter" SizeF="808.4187,18" LocationFloat="0.173157066,621.3978" ForeColor="White" BackColor="Red" />
             <Item45 Ref="1154" ControlType="XRLabel" Name="label64" SizeF="608.419556,15.0001221" LocationFloat="200.173141,602.397949" Font="Times New Roman, 8pt" Borders="Right, Bottom">
               <ExpressionBindings>
-                <Item1 Ref="1155" EventName="BeforePrint" PropertyName="Text" Expression="[Activos]" />
+                <Item1 Ref="1155" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[activoscorrespondenJurDesc]" />
               </ExpressionBindings>
               <StylePriority Ref="1156" UseFont="false" UseBorders="false" />
             </Item45>
@@ -2391,7 +2391,7 @@
             <Item47 Ref="1159" ControlType="XRLabel" Name="TiposActivosLabel" Text="TIPOS DE ACTIVOS" TextAlignment="MiddleCenter" SizeF="808.4187,18" LocationFloat="0.173157066,582.397766" ForeColor="White" BackColor="Red" />
             <Item48 Ref="1160" ControlType="XRLabel" Name="label66" SizeF="119.2547,15.00006" LocationFloat="313.9184,563.3979" Font="Times New Roman, 8pt" Borders="Bottom">
               <ExpressionBindings>
-                <Item1 Ref="1161" EventName="BeforePrint" PropertyName="Text" Expression="Iif([DesempenaActividades]=1, 'Si','No')" />
+                <Item1 Ref="1161" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[actividadesart15JurDesc]" />
               </ExpressionBindings>
               <StylePriority Ref="1162" UseFont="false" UseBorders="false" />
             </Item48>
@@ -2400,7 +2400,7 @@
             </Item49>
             <Item50 Ref="1165" ControlType="XRLabel" Name="label68" SizeF="246.393616,15" LocationFloat="562.1982,532.3982" Font="Times New Roman, 8pt" Borders="Right, Bottom">
               <ExpressionBindings>
-                <Item1 Ref="1166" EventName="BeforePrint" PropertyName="Text" Expression="Iif([FondosPorMovilizar]=1, 'Propios','Terceros')" />
+                <Item1 Ref="1166" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[fondospormivilizarJurDesc]" />
               </ExpressionBindings>
               <StylePriority Ref="1167" UseFont="false" UseBorders="false" />
             </Item50>
@@ -2409,7 +2409,7 @@
             </Item51>
             <Item52 Ref="1170" ControlType="XRLabel" Name="label70" SizeF="194,15" LocationFloat="130.173126,532.3982" Font="Times New Roman, 8pt" Borders="Right, Bottom">
               <ExpressionBindings>
-                <Item1 Ref="1171" EventName="BeforePrint" PropertyName="Text" Expression="Iif([IngresoMensualEstimado]=1, '$500,00 -  $2.000,00',[IngresoMensualEstimado]=2, '$2.001,00 -  $5.000,00', [IngresoMensualEstimado]=3, '5.001,00 - $10.000,00',[IngresoMensualEstimado]=4, '$10.001,00 - $20.000,00','Mayor a $20.000,00')" />
+                <Item1 Ref="1171" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[ingresomensualestimadoJur]" />
               </ExpressionBindings>
               <StylePriority Ref="1172" UseFont="false" UseBorders="false" />
             </Item52>

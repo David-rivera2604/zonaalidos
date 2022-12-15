@@ -1,11 +1,13 @@
 ﻿using Architect.Utilities.Extensions;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 
 namespace Architect.API.Tron.Business.Emision
 {
@@ -337,13 +339,13 @@ namespace Architect.API.Tron.Business.Emision
         private static string General_PDF_Solicitud(Contracts.Emision.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.Emision.MapfreMasSolicitud data = Newtonsoft.Json.JsonConvert.DeserializeObject<Contracts.Emision.MapfreMasSolicitud>(Newtonsoft.Json.JsonConvert.SerializeObject(quoteInfo));
-            
+
             data.kyc = quoteInfo.kyc;
             data.titular = (from t in data.terceros where t.tipodetercero == 0 select t).FirstOrDefault();
             data.asegurado = (from a in data.terceros where a.tipodetercero == 2 select a).FirstOrDefault();
             data.conductor = (from c in data.terceros where c.tipodetercero == 3 select c).FirstOrDefault();
             data.acredor = (from c in data.terceros where c.tipodetercero == 8 select c).FirstOrDefault();
-            
+
             int index = 1;
             foreach (Contracts.Comun.tercero item in from b in data.terceros where b.tipodetercero == 6 select b)
             {
@@ -486,5 +488,131 @@ namespace Architect.API.Tron.Business.Emision
             return result;
         }
 
+        private static void Compliance(Contracts.Emision.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
+        {
+            Contracts.Comun.tercero titular = (from t in quoteInfo.terceros where t.tipodetercero == 0 select t).FirstOrDefault();
+            Architect.Compliance.Integrations.Contracts.Clientes mapInfo = new Compliance.Integrations.Contracts.Clientes()
+            {
+                tipoIdentificacion = titular.DocumentNumberType,
+                numeroIdentificacion = titular.DocumentNumber,
+                nombreCliente = titular.nombre,
+                primerApellido = titular.apellido1,
+                segundoApellido = titular.apellido2,
+                fechaUltimaActualizacion = DateTime.Now,
+                fechaNacimiento = titular.fechadenacimiento,
+                ejecutivo = tokenInfo.AgentCode.ToString(),
+                estado = "A",
+                estadoXML = "X",
+                usuarioRegistro = tokenInfo.UserId.ToString(),
+                administFondosTercero = "N",
+                usuario = tokenInfo.UserId,
+                esApnfd = "N",
+                tipoApnfd = "0",
+                esCpe = "N",
+                pagaImpuestos = "N"
+            };
+
+
+            //KYC
+            //administFondosTercero
+            //actividadEconomica
+            //montoIngresoMensual
+            //esPep
+            //tipoPep
+            //articulo15
+            //origenFondos
+            //paisOrigen = "111111"
+            //profesion
+
+            if (titular.DocumentNumberType == 4)
+            {
+                mapInfo.razonSocial = titular.nombre;
+                mapInfo.nombreComercial = titular.nombre;
+                mapInfo.nombreCliente = string.Empty;
+                mapInfo.primerApellido = string.Empty;
+                mapInfo.segundoApellido = string.Empty;
+                mapInfo.genero = "X";
+                mapInfo.estadoCivil = "X";
+
+
+            }
+            else
+            {
+                mapInfo.genero = titular.tercerosMca_sexo == 1 ? "M" : "F";
+                switch (titular.estadoCivil)
+                {
+                    case "C":
+                    case "D":
+                    case "S":
+                    case "V":
+                        mapInfo.estadoCivil = titular.estadoCivil;
+                        break;
+                }
+            }
+
+            mapInfo.clientesPolizas = new List<Compliance.Integrations.Contracts.Clientespoliza>()
+            {
+                new Compliance.Integrations.Contracts.Clientespoliza()
+                {
+                    numeroPoliza = "1234",
+                    descripcionPoliza = "MapfreMas",
+                    fechaInicio = quoteInfo.fec_efec_poliza,
+                    fechaFinalizacion = quoteInfo.fec_vcto_poliza,
+                    moneda  = quoteInfo.cod_mon,
+                    prima = (int)quoteInfo.DatosEconomicos.annualnetpremium,
+                    estado="A"
+
+                }
+            };
+            mapInfo.clientesUbicaciones = new List<Compliance.Integrations.Contracts.Clientesubicacione>()
+            {
+                new Compliance.Integrations.Contracts.Clientesubicacione()
+                {
+                    tipoUbicacion = 1,
+                    divisionTerritorial = 1,
+                    descripcionUbicacion = "Costa Rica"
+                },
+                new Compliance.Integrations.Contracts.Clientesubicacione()
+                {
+                    tipoUbicacion = 2,
+                    divisionTerritorial = titular.TProvincia,
+                    descripcionUbicacion = titular.TProvinciaDesc
+                },
+                new Compliance.Integrations.Contracts.Clientesubicacione()
+                {
+                    tipoUbicacion = 3,
+                    divisionTerritorial = titular.TCanton,
+                    descripcionUbicacion = titular.TCantonDesc
+                },
+                new Compliance.Integrations.Contracts.Clientesubicacione()
+                {
+                    tipoUbicacion = 4,
+                    divisionTerritorial = titular.TDistrito,
+                    descripcionUbicacion = titular.TDistritoDesc
+                },
+                new Compliance.Integrations.Contracts.Clientesubicacione()
+                {
+                    tipoUbicacion = 5,
+                    divisionTerritorial = 0,
+                    descripcionUbicacion = titular.otrasenas
+                },
+                new Compliance.Integrations.Contracts.Clientesubicacione()
+                {
+                    tipoUbicacion = 6,
+                    divisionTerritorial = 0,
+                    descripcionUbicacion = titular.correoelectronico
+                },
+                new Compliance.Integrations.Contracts.Clientesubicacione()
+                {
+                    tipoUbicacion = 7,
+                    divisionTerritorial = 0,
+                    descripcionUbicacion = titular.numerodetelefono
+                }
+
+            };
+
+
+            int result = Architect.Compliance.Integrations.Business.Customers.SendCustomers(mapInfo).Result;
+        }
     }
 }

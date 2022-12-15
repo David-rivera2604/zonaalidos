@@ -106,6 +106,10 @@
       <Project>{29b21bef-8c87-4a9d-8b37-fecc57cd03c7}</Project>
       <Name>Architect.API.Core.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Core\Architect.Compliance.Integrations\Architect.Compliance.Integrations.csproj">
+      <Project>{1a9f7166-6c86-44a6-8920-cd52422a2044}</Project>
+      <Name>Architect.Compliance.Integrations</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Architect.DocuSign.Integrations\Architect.DocuSign.Integrations.csproj">
       <Project>{41b3f1c8-fdb5-4db4-be61-6bf1576a09e7}</Project>
       <Name>Architect.DocuSign.Integrations</Name>
