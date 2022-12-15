@@ -317,7 +317,7 @@ namespace Architect.API.Tron.Business.Emision
             {
                 submit = DocuSign.Integrations.DocuSign.Submit(
                                 quoteInfo.presupuesto,
-                                "Solicitud " + quoteInfo.presupuesto,
+                                "Solicitud de seguro, presupuesto " + quoteInfo.presupuesto,
                                 primaryInsured.nombre.CompleteFullName(primaryInsured.apellido1, primaryInsured.apellido2),
                                 correoenvio,
                                 solicitudPDF, quoteInfo.tip_firma == Contracts.TipoDeFirma.Tablet ? "Handwriting" : "WebClick").GetAwaiter().GetResult();
