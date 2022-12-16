@@ -641,7 +641,7 @@ namespace Architect.API.Tron.Business.Emision
             };
 
 
-            int result = Architect.Compliance.Integrations.Business.Customers.SendCustomers(mapInfo).Result;
+            string result = Architect.Compliance.Integrations.Business.Customers.SendCustomers(mapInfo).Result;
         }
     }
 }
