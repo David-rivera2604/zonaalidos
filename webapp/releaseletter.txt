@@ -447,3 +447,4 @@
 1.6.20a 12/12/2022 MapfreMas. Se corrigen las dependencia en todas las direcciones.
                    MapfreMas. Después de cotizar siempre se debe llenar la solicitud.
                    MapfreMas. El cuestionario kyc no aplica para Purdy o Davivienda.
+1.6.20c 15/12/2022 MapfreMas. Uso del servicio SNAP Compliance.	

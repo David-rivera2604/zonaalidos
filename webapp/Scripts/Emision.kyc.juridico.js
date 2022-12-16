@@ -709,11 +709,11 @@ app.kycjuridico = (function () {
 
 window.participacionaccionariaJurTbl_Events = {
     'click .delete': function (e, value, row, index) {
-        toastr.warning("Si está seguro de querer eliminar el visualizations '" + row.participacionaccionariaJurId + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.juridico.participacionaccionariaJurDeleteRow(row); } });
+        toastr.warning("Si está seguro de querer eliminar el visualizations '" + row.participacionaccionariaJurId + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.kycjuridico.participacionaccionariaJurDeleteRow(row); } });
         e.stopPropagation();
     },
     'click .edit': function (e, value, row, index) {
-        app.juridico.participacionaccionariaJurEditRow(row);
+        app.kycjuridico.participacionaccionariaJurEditRow(row);
         e.stopPropagation();
     }
 };
