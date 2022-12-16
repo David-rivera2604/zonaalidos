@@ -103,9 +103,6 @@ namespace Architect.API.Tron.Business.Emision
             Contracts.Emision.MapfreMas resultQuoteInfo = null;
             if (quoteInfo.Modo == "draft" || quoteInfo.Modo == "resume")
             {
-
-
-
                 //TODO: Se debe incluir la validación de que de haber un Tomador, Asegurado y Conductor Habitual, pero faltan las básicas.
                 quoteInfo.DatosEconomicos = EconomicDataCalculate(quoteInfo);
 
@@ -544,7 +541,9 @@ namespace Architect.API.Tron.Business.Emision
                 fechaRegistroApnfd = new DateTime(1900, 1, 1),
                 numeroIdentificacionEntidad = "X",
                 lugarExpedicionIdentificacion = "Costa Rica",
-                fechaVencimientoIdentificacion = new DateTime(1900, 1, 1)
+                fechaVencimientoIdentificacion = new DateTime(1900, 1, 1),
+                fechaProximaActualizacion = new DateTime(1900, 1, 1),
+                descripcionInversionInicial = String.Empty
             };
 
 

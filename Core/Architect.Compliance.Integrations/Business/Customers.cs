@@ -13,10 +13,10 @@ namespace Architect.Compliance.Integrations.Business
     public static class Customers
     {
 
-        public async static Task<int> SendCustomers(Contracts.Clientes clientInformation)
+        public async static Task<string> SendCustomers(Contracts.Clientes clientInformation)
         {
             string token = await Login.GenerateToken();
-            int result = 0;
+            string result = String.Empty;
 
             string json = JsonConvert.SerializeObject(clientInformation);
 
@@ -32,7 +32,7 @@ namespace Architect.Compliance.Integrations.Business
             if (response.IsSuccessStatusCode)
             {
                 JObject jsonvalues = JObject.Parse(resultResponse);
-                result = jsonvalues.SelectToken("statusCode").Value<int>();
+                result = jsonvalues.SelectToken("status").Value<string>();
             }
             else
             {
