@@ -809,6 +809,7 @@ app.EmisionMapfreMas = (function () {
             let holder = terceros.filter(i => i.tipodetercero === 0);
             let insured = terceros.filter(i => i.tipodetercero === 2);
             let driver = terceros.filter(i => i.tipodetercero === 3);
+            let bene = terceros.filter(i => i.tipodetercero === 6);
 
             if (holder.length === 0) {
                 message += ', indique el tomador';
@@ -821,6 +822,12 @@ app.EmisionMapfreMas = (function () {
             if (driver.length === 0) {
                 message += ', indique el conductor habitual';
                 terceroserrors = true;
+            }
+            if (bene.length > 0) {
+                if (bene.reduce((total, item) => total + item.porcentaje, 0) != 100) {
+                    message += ', El total del porcentaje de participación para los beneficiarios debe ser el 100%';
+                    terceroserrors = true;
+                }
             }
         }
         if (terceroserrors) {
@@ -873,7 +880,6 @@ app.EmisionMapfreMas = (function () {
         }
         return result;
     }
-
 
     function terceros_table_setup() {
 
@@ -1231,8 +1237,10 @@ app.EmisionMapfreMas = (function () {
         $('#correoelectronico').val(row.correoelectronico);
         $('#cod_pais').val(row.cod_pais);
         $('#TProvincia').val(row.TProvincia);
-        $('#TCanton').val(row.TCanton);
-        $('#TDistrito').val(row.TDistrito);
+
+        app.core.LookupDependency(row.TProvincia, 'TCanton', 'Cantones', '', row.TCanton, false, null, `cod_pais=${row.cod_pais}:cod_estado=`);
+        app.core.LookupDependency(row.TCanton, 'TDistrito', 'Distritos', '', row.TDistrito, false, null, `cod_pais=${row.cod_pais}:cod_prov=`);
+
         $('#otrasenas').val(row.otrasenas);
         app.ui.SetRadioNumericValue('eltomadoreselmismoasegurado', row.eltomadoreselmismoasegurado)
         app.ui.SetRadioNumericValue('elaseguradoeselconductorhabitual', row.elaseguradoeselconductorhabitual)
@@ -1331,7 +1339,7 @@ app.EmisionMapfreMas = (function () {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
-            maximumValue: '999',
+            maximumValue: '100',
             minimumValue: '0',
             decimalPlaces: '0',
             emptyInputBehavior: 'null'
@@ -1340,7 +1348,7 @@ app.EmisionMapfreMas = (function () {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
-            maximumValue: '999',
+            maximumValue: '100',
             minimumValue: '0',
             decimalPlaces: '0',
             emptyInputBehavior: 'null'

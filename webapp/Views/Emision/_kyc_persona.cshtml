@@ -80,6 +80,7 @@
                                                                 <label class="custom-control-label" for="tipodeidentificacionPer_4">Otro</label>
                                                             </div>
                                                         </div>
+                                                        <div id='tipodeidentificacionPer_validate'></div>
                                                     </div>
                                                 </div>
 
@@ -297,6 +298,7 @@
                                                                 <label class="custom-control-label" for="OcupacionPer_3">No generador de ingresos</label>
                                                             </div>
                                                         </div>
+                                                        <div id='OcupacionPer_validate'></div>
                                                     </div>
                                                 </div>
 
@@ -462,6 +464,7 @@
                                                                 <label class="custom-control-label" for="fondospormivilizarPer_2">Terceros</label>
                                                             </div>
                                                         </div>
+                                                        <div id='fondospormivilizarPer_validate'></div>
                                                     </div>
                                                 </div>
 
@@ -478,6 +481,7 @@
                                                                 <label class="custom-control-label" for="actividadesart15Per_2">No</label>
                                                             </div>
                                                         </div>
+                                                        <div id='actividadesart15Per_validate'></div>
                                                     </div>
                                                 </div>
 
@@ -511,6 +515,7 @@
                                                                 <label class="custom-control-label" for="activoscorrespondenPer_4">Activos monetarios y/o financieros fuera del país</label>
                                                             </div>
                                                         </div>
+                                                        <div id='activoscorrespondenPer_validate'></div>
                                                     </div>
                                                 </div>
 
@@ -529,50 +534,48 @@
                                                 <div class='col-sm-6 col-md-6'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='pepcargoPer'>Manifiesta desempeñar o haber desempeñado algún cargo que implique funciones públicas destacadas en el país o en el extranjero<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <div style="padding-top: 6px;">
-                                                            <div class="custom-control custom-radio custom-control-inline">
-                                                                <input type="radio" class="custom-control-input" id="pepcargoPer_1" name="pepcargoPer" value="1">
-                                                                <label class="custom-control-label" for="pepcargoPer_1">Si</label>
-                                                            </div><div class="custom-control custom-radio custom-control-inline">
-                                                                <input type="radio" class="custom-control-input" id="pepcargoPer_2" name="pepcargoPer" value="2">
-                                                                <label class="custom-control-label" for="pepcargoPer_2">No</label>
+                                                        <div class="form-row">
+                                                            <div class="col-auto" style="padding-top: 6px;">
+                                                                <div class="custom-control custom-radio custom-control-inline">
+                                                                    <input type="radio" class="custom-control-input" id="pepcargoPer_1" name="pepcargoPer" value="1">
+                                                                    <label class="custom-control-label" for="pepcargoPer_1">Si</label>
+                                                                </div><div class="custom-control custom-radio custom-control-inline">
+                                                                    <input type="radio" class="custom-control-input" id="pepcargoPer_2" name="pepcargoPer" value="2">
+                                                                    <label class="custom-control-label" for="pepcargoPer_2">No</label>
+                                                                </div>
+                                                                <div id='pepcargoPer_validate'></div>
+                                                            </div>
+                                                            <!-- pepduracionPer Text -->
+                                                            <div class="col pepduracionPerVisible d-none" style="padding-top: 6px;">
+                                                                <input type='text' id='pepduracionPer' name='pepduracionPer' class='form-control' size='60' maxlength='60' placeholder="Período durante el cual desempeñó dichas funciones" />
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <!-- pepduracionPer Text -->
-                                                <div class='col-sm-6 col-md-6 pepduracionPerVisible d-none'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='pepduracionPer'>En caso afirmativo, indique el período durante el cual desempeñó dichas funciones<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <input type='text' id='pepduracionPer' name='pepduracionPer' class='form-control' size='60' maxlength='60' />
-
-                                                    </div>
-                                                </div>
                                                 <!-- peprelacionPer RadioButtonList -->
                                                 <div class='col-sm-6 col-md-6'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='peprelacionPer'>Manifiesta tener relación directa (consaguinidad) o indirecta (afinidad) con una persona expuesta políticamente (PEP)<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <div style="padding-top: 6px;">
-                                                            <div class="custom-control custom-radio custom-control-inline">
-                                                                <input type="radio" class="custom-control-input" id="peprelacionPer_1" name="peprelacionPer" value="1">
-                                                                <label class="custom-control-label" for="peprelacionPer_1">Si</label>
-                                                            </div><div class="custom-control custom-radio custom-control-inline">
-                                                                <input type="radio" class="custom-control-input" id="peprelacionPer_2" name="peprelacionPer" value="2">
-                                                                <label class="custom-control-label" for="peprelacionPer_2">No</label>
+                                                        <div class="form-row">
+                                                            <div class="col-auto" style="padding-top: 6px;">
+                                                                <div class="custom-control custom-radio custom-control-inline">
+                                                                    <input type="radio" class="custom-control-input" id="peprelacionPer_1" name="peprelacionPer" value="1">
+                                                                    <label class="custom-control-label" for="peprelacionPer_1">Si</label>
+                                                                </div><div class="custom-control custom-radio custom-control-inline">
+                                                                    <input type="radio" class="custom-control-input" id="peprelacionPer_2" name="peprelacionPer" value="2">
+                                                                    <label class="custom-control-label" for="peprelacionPer_2">No</label>
+                                                                </div>
+                                                                <div id='peprelacionPer_validate'></div>
+                                                            </div>
+                                                            <!-- peptiporelacionPer Text -->
+                                                            <div class="col peptiporelacionPerVisible d-none" style="padding-top: 6px;">
+                                                                <input type='text' id='peptiporelacionPer' name='peptiporelacionPer' class='form-control' size='60' maxlength='60' placeholder="Detalle el tipo de relación" />
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <!-- peptiporelacionPer Text -->
-                                                <div class='col-sm-6 col-md-6 peptiporelacionPerVisible d-none'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='peptiporelacionPer'>Detalle el tipo de relación<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <input type='text' id='peptiporelacionPer' name='peptiporelacionPer' class='form-control' size='60' maxlength='60' />
-
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -626,6 +629,7 @@
                                                                 <label class="custom-control-label" for="periodicidadPer_4">Mensual</label>
                                                             </div>
                                                         </div>
+                                                        <div id='periodicidadPer_validate'></div>
                                                     </div>
                                                 </div>
 
@@ -658,6 +662,7 @@
                                                                 <label class="custom-control-label" for="formadepagodelapolizaPer_5">Transferencia del exterior</label>
                                                             </div>
                                                         </div>
+                                                        <div id='formadepagodelapolizaPer_validate'></div>
                                                     </div>
                                                 </div>
 
@@ -691,6 +696,7 @@
                                                                 <label class="custom-control-label" for="mediodeenvioPer_4">Correo electrónico</label>
                                                             </div>
                                                         </div>
+                                                        <div id='mediodeenvioPer_validate'></div>
                                                     </div>
                                                 </div>
 

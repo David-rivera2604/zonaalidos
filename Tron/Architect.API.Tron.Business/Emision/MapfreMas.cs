@@ -309,6 +309,7 @@ namespace Architect.API.Tron.Business.Emision
                 Core.Business.General.Mail.SendByTemplate("MapfreMas_Solicitud", tokenInfo.CompanyId, tokenInfo.UserId, 0, quoteInfo,
                     new Dictionary<string, string>() { { correoenvio, string.Empty } },
                     new string[] { string.Format("{0};Solicitud {1}.pdf", solicitudPDF, quoteInfo.presupuesto) });
+                submit.UniqueId = quoteInfo.presupuesto;
             }
             else
             {

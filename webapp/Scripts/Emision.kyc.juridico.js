@@ -246,7 +246,7 @@ app.kycjuridico = (function () {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
-            maximumValue: '999',
+            maximumValue: '100',
             minimumValue: '0',
             decimalPlaces: '0',
             emptyInputBehavior: 'null'
@@ -282,7 +282,9 @@ app.kycjuridico = (function () {
 
 
         $('#kycjuridicoJurEdtFormSave').click(function () {
-            if (app.ui.IsValid('#kycjuridicoJurEdtForm', false)) {
+            let other = participacionaccionariaJur_table_OtherValidations();
+            let all = app.ui.IsValid('#kycjuridicoJurEdtForm', false);
+            if (other && all) {
                 app.ui.ButtonDoing('#kycjuridicoJurEdtFormSave');
                 acceptCallback(MapInputToObject());
                 app.ui.ButtonDone('#kycjuridicoJurEdtFormSave');
@@ -303,17 +305,18 @@ app.kycjuridico = (function () {
         if (changedCallback !== undefined && changedCallback !== null)
             changedCallback(MapInputToObject());
         if (app.ui.GetRadioNumericValue('pepcargoJur') === 1)
-            $('.pepduracionJurVisible').addClass('d-none');
-        else
             $('.pepduracionJurVisible').removeClass('d-none');
-        if (app.ui.GetRadioNumericValue('peprelacionJur') === 1)
-            $('.peptiporelacionJurVisible').addClass('d-none');
         else
+            $('.pepduracionJurVisible').addClass('d-none');
+        if (app.ui.GetRadioNumericValue('peprelacionJur') === 1)
             $('.peptiporelacionJurVisible').removeClass('d-none');
+        else
+            $('.peptiporelacionJurVisible').addClass('d-none');
     };
 
     function Setup_Validations() {
         app.ui.DateValidators();
+        app.ui.NumericValidators();
         $("#kycjuridicoJurEdtForm").validate({
             errorPlacement: app.ui.ErrorPlacement,
             rules: {
@@ -371,10 +374,10 @@ app.kycjuridico = (function () {
                 peprelacionJur: { required: true },
                 peptiporelacionJur: { required: true },
                 propositoderelacioncomercialIndicareltipodeSeguroqueestaadquiriendoJur: { required: true },
-                montoprimaJur: { required: true },
+                montoprimaJur: { required: true, Numeric: true },
                 tipodeprimaJur: { required: true },
                 periodicidadJur: { required: true },
-                montovaloraseguradoJur: { required: true },
+                montovaloraseguradoJur: { required: true, Numeric: true },
                 formadepagodelapolizaJur: { required: true },
                 mediodeenvioJur: { required: true },
                 correspondenciaEspecifiqueJur: { required: true },
@@ -434,10 +437,10 @@ app.kycjuridico = (function () {
                 peprelacionJur: { required: 'Debe indicar el Manifiesta tener relación directa (consanguinidad) o indirecta (afinidad) con una persona expuesta políticamente (PEP)' },
                 peptiporelacionJur: { required: 'Debe indicar el Detalle el tipo de relación' },
                 propositoderelacioncomercialIndicareltipodeSeguroqueestaadquiriendoJur: { required: 'Debe indicar el Propósito de relación comercial (Indicar el tipo de Seguro que está adquiriendo)' },
-                montoprimaJur: { required: 'Debe indicar el Monto prima' },
+                montoprimaJur: { required: 'Debe indicar el Monto prima', Numeric: 'Debe indicar el Monto prima' },
                 tipodeprimaJur: { required: 'Debe indicar el Tipo de prima' },
                 periodicidadJur: { required: 'Debe indicar el Periodicidad' },
-                montovaloraseguradoJur: { required: 'Debe indicar el Monto valor asegurado' },
+                montovaloraseguradoJur: { required: 'Debe indicar el Monto valor asegurado', Numeric: 'Debe indicar el Monto valor asegurado' },
                 formadepagodelapolizaJur: { required: 'Debe indicar el Forma de pago de la póliza' },
                 mediodeenvioJur: { required: 'Debe indicar el Favor indicar el medio por el cual desea que se le envíe información' },
                 correspondenciaEspecifiqueJur: { required: 'Debe indicar el Especifique' },
@@ -531,6 +534,7 @@ app.kycjuridico = (function () {
 
                 app.ui.ButtonDone('#participacionaccionariaJurEdtFormSave')
                 $('#participacionaccionariaJurModal').modal('hide');
+                participacionaccionariaJur_table_OtherValidations();
             }
         });
 
@@ -592,7 +596,26 @@ app.kycjuridico = (function () {
         });
     };
 
+    function participacionaccionariaJur_table_OtherValidations() {
+        let rows = $('#participacionaccionariaJurTbl').bootstrapTable('getData');
+        let result = false;
 
+        if (rows.length === 0) {
+            $('#participacionaccionariaJurTbl-error').text('Debe existir al menos un socio');
+            $('#participacionaccionariaJurTbl-error').removeClass('d-none');
+        }
+        else if (rows.reduce((total, item) => total + item.porcentajedeparticipacionJur, 0) != 100) {
+            $('#participacionaccionariaJurTbl-error').text('El total del porcentaje de participación debe ser el 100%');
+            $('#participacionaccionariaJurTbl-error').removeClass('d-none');
+        }
+        else {
+            $('#participacionaccionariaJurTbl-error').text('');
+            $('#participacionaccionariaJurTbl-error').addClass('d-none');
+            result = true;
+        }
+
+        return result;
+    }
 
     return {
         Init: function (data) {

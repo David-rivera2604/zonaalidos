@@ -73,6 +73,7 @@
                                                                 <label class="custom-control-label" for="tipodecedulajuridicaJur_2">Extranjera</label>
                                                             </div>
                                                         </div>
+                                                        <div id='tipodecedulajuridicaJur_validate'></div>
                                                     </div>
                                                 </div>
 
@@ -286,6 +287,7 @@
                                                                 <label class="custom-control-label" for="tipodeidentificacionJur_4">Otro</label>
                                                             </div>
                                                         </div>
+                                                        <div id='tipodeidentificacionJur_validate'></div>
                                                     </div>
                                                 </div>
 
@@ -531,6 +533,7 @@
                                                                 <label class="custom-control-label" for="fondospormivilizarJur_2">Terceros</label>
                                                             </div>
                                                         </div>
+                                                        <div id='fondospormivilizarJur_validate'></div>
                                                     </div>
                                                 </div>
 
@@ -547,6 +550,7 @@
                                                                 <label class="custom-control-label" for="actividadesart15Jur_2">No</label>
                                                             </div>
                                                         </div>
+                                                        <div id='actividadesart15Jur_validate'></div>
                                                     </div>
                                                 </div>
 
@@ -580,6 +584,7 @@
                                                                 <label class="custom-control-label" for="activoscorrespondenJur_4">Activos monetarios y/o financieros fuera del país</label>
                                                             </div>
                                                         </div>
+                                                        <div id='activoscorrespondenJur_validate'></div>
                                                     </div>
                                                 </div>
 
@@ -598,48 +603,49 @@
                                                 <div class='col-sm-6 col-md-6'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='pepcargoJur'>Manifiesta desempeñar o haber desempeñado algún cargo que implique funciones públicas destacadas en el país o en el extranjero<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <div style="padding-top: 6px;">
-                                                            <div class="custom-control custom-radio custom-control-inline">
-                                                                <input type="radio" class="custom-control-input" id="pepcargoJur_1" name="pepcargoJur" value="1">
-                                                                <label class="custom-control-label" for="pepcargoJur_1">Si</label>
-                                                            </div><div class="custom-control custom-radio custom-control-inline">
-                                                                <input type="radio" class="custom-control-input" id="pepcargoJur_2" name="pepcargoJur" value="2">
-                                                                <label class="custom-control-label" for="pepcargoJur_2">No</label>
+
+                                                        <div class="form-row">
+                                                            <div class="col-auto" style="padding-top: 6px;">
+                                                                <div class="custom-control custom-radio custom-control-inline">
+                                                                    <input type="radio" class="custom-control-input" id="pepcargoJur_1" name="pepcargoJur" value="1">
+                                                                    <label class="custom-control-label" for="pepcargoJur_1">Si</label>
+                                                                </div><div class="custom-control custom-radio custom-control-inline">
+                                                                    <input type="radio" class="custom-control-input" id="pepcargoJur_2" name="pepcargoJur" value="2">
+                                                                    <label class="custom-control-label" for="pepcargoJur_2">No</label>
+                                                                </div>
+                                                                <div id='pepcargoJur_validate'></div>
+                                                            </div>
+                                                            <!-- pepduracionJur Text -->
+                                                            <div class="col pepduracionJurVisible d-none" style="padding-top: 6px;">
+                                                                <input type='text' id='pepduracionJur' name='pepduracionJur' class='form-control' size='60' maxlength='60' placeholder="Período durante el cual desempeñó dichas funciones" />
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-
-                                                <!-- pepduracionJur Text -->
-                                                <div class='col-sm-6 col-md-6 pepduracionJurVisible d-none'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='pepduracionJur'>En caso afirmativo, indique el período durante el cual desempeñó dichas funciones<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <input type='text' id='pepduracionJur' name='pepduracionJur' class='form-control' size='60' maxlength='60' />
 
                                                     </div>
                                                 </div>
+
+
+
                                                 <!-- peprelacionJur RadioButtonList -->
                                                 <div class='col-sm-6 col-md-6'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='peprelacionJur'>Manifiesta tener relación directa (consanguinidad) o indirecta (afinidad) con una persona expuesta políticamente (PEP)<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <div style="padding-top: 6px;">
-                                                            <div class="custom-control custom-radio custom-control-inline">
-                                                                <input type="radio" class="custom-control-input" id="peprelacionJur_1" name="peprelacionJur" value="1">
-                                                                <label class="custom-control-label" for="peprelacionJur_1">Si</label>
-                                                            </div><div class="custom-control custom-radio custom-control-inline">
-                                                                <input type="radio" class="custom-control-input" id="peprelacionJur_2" name="peprelacionJur" value="2">
-                                                                <label class="custom-control-label" for="peprelacionJur_2">No</label>
+                                                        <div class="form-row">
+                                                            <div class="col-auto" style="padding-top: 6px;">
+                                                                <div class="custom-control custom-radio custom-control-inline">
+                                                                    <input type="radio" class="custom-control-input" id="peprelacionJur_1" name="peprelacionJur" value="1">
+                                                                    <label class="custom-control-label" for="peprelacionJur_1">Si</label>
+                                                                </div><div class="custom-control custom-radio custom-control-inline">
+                                                                    <input type="radio" class="custom-control-input" id="peprelacionJur_2" name="peprelacionJur" value="2">
+                                                                    <label class="custom-control-label" for="peprelacionJur_2">No</label>
+                                                                </div>
+                                                                <div id='peprelacionJur_validate'></div>
+                                                            </div>
+                                                            <!-- peptiporelacionJur Text -->
+                                                            <div class="col peptiporelacionJurVisible d-none" style="padding-top: 6px;">
+                                                                <input type='text' id='peptiporelacionJur' name='peptiporelacionJur' class='form-control' size='60' maxlength='60' placeholder="Detalle el tipo de relación" />
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-
-                                                <!-- peptiporelacionJur Text -->
-                                                <div class='col-sm-6 col-md-6 peptiporelacionJurVisible d-none'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='peptiporelacionJur'>Detalle el tipo de relación<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <input type='text' id='peptiporelacionJur' name='peptiporelacionJur' class='form-control' size='60' maxlength='60' />
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -718,6 +724,7 @@
                                                                 <label class="custom-control-label" for="periodicidadJur_4">Mensual</label>
                                                             </div>
                                                         </div>
+                                                        <div id='periodicidadJur_validate'></div>
                                                     </div>
                                                 </div>
 
@@ -750,6 +757,7 @@
                                                                 <label class="custom-control-label" for="formadepagodelapolizaJur_5">Transferencia del exterior</label>
                                                             </div>
                                                         </div>
+                                                        <div id='formadepagodelapolizaJur_validate'></div>
                                                     </div>
                                                 </div>
 
@@ -783,6 +791,7 @@
                                                                 <label class="custom-control-label" for="mediodeenvioJur_4">Correo electrónico</label>
                                                             </div>
                                                         </div>
+                                                        <div id='mediodeenvioJur_validate'></div>
                                                     </div>
                                                 </div>
 

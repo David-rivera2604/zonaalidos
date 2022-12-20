@@ -275,6 +275,7 @@ app.kycpersona = (function () {
 
     function Setup_Validations() {
         app.ui.DateValidators();
+        app.ui.NumericValidators();
         $("#kycpersonaPerEdtForm").validate({
             errorPlacement: app.ui.ErrorPlacement,
             rules: {
@@ -323,10 +324,10 @@ app.kycpersona = (function () {
                 peprelacionPer: { required: true },
                 peptiporelacionPer: { required: true },
                 propositorelacioncomercialPer: { required: true },
-                montoprimaPer: { required: true },
+                montoprimaPer: { required: true, Numeric: true },
                 tipodeprimaPer: { required: true },
                 periodicidadPer: { required: true },
-                montoValoraseguradoPer: { required: true },
+                montoValoraseguradoPer: { required: true, Numeric: true },
                 formadepagodelapolizaPer: { required: true },
                 mediodeenvioPer: { required: true },
                 especifiquePer: { required: true },
@@ -377,10 +378,10 @@ app.kycpersona = (function () {
                 peprelacionPer: { required: 'Debe indicar el Manifiesta tener relación directa (consaguinidad) o indirecta (afinidad) con una persona expuesta políticamente (PEP)' },
                 peptiporelacionPer: { required: 'Debe indicar el Detalle el tipo de relación' },
                 propositorelacioncomercialPer: { required: 'Debe indicar el Propósito de relación comercial (Indicar el tipo de Seguro que está adquiriendo)' },
-                montoprimaPer: { required: 'Debe indicar el Monto prima' },
+                montoprimaPer: { required: 'Debe indicar el Monto prima', Numeric: 'Debe indicar el Monto prima' },
                 tipodeprimaPer: { required: 'Debe indicar el Tipo de prima' },
                 periodicidadPer: { required: 'Debe indicar el Periodicidad' },
-                montoValoraseguradoPer: { required: 'Debe indicar el Monto Valor asegurado' },
+                montoValoraseguradoPer: { required: 'Debe indicar el Monto Valor asegurado', Numeric: 'Debe indicar el Monto Valor asegurado' },
                 formadepagodelapolizaPer: { required: 'Debe indicar el Forma de pago de la póliza' },
                 mediodeenvioPer: { required: 'Debe indicar el Favor indicar el medio por el cual desea que se le envíe información' },
                 especifiquePer: { required: 'Debe indicar el Especifique' },
