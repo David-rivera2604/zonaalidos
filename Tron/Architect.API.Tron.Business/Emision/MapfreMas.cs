@@ -382,7 +382,16 @@ namespace Architect.API.Tron.Business.Emision
                 data.mainrole = "Purdy";
             }
 
-            return Core.Business.General.Report.GeneratePDFFile("mapfremas_solicitud", data).GetAwaiter().GetResult();
+            if (tokenInfo.Roles.Contain("PolizaGrupo"))
+            {
+                return Core.Business.General.Report.GeneratePDFFile("mapfremas_solicitud", data).GetAwaiter().GetResult();
+            }
+            else
+            {
+                return Core.Business.General.Report.GeneratePDFFile("mapfremas_solicitud_individual", data).GetAwaiter().GetResult();
+            }
+
+
         }
 
         private static string General_PDF_KYC(Contracts.Emision.MapfreMas quoteInfo)
