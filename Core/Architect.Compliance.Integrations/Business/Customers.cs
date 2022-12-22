@@ -20,6 +20,8 @@ namespace Architect.Compliance.Integrations.Business
 
             string json = JsonConvert.SerializeObject(clientInformation);
 
+            Utilities.Log.WarningLog("load.payload", json, "compliance");
+
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -33,6 +35,7 @@ namespace Architect.Compliance.Integrations.Business
             {
                 JObject jsonvalues = JObject.Parse(resultResponse);
                 result = jsonvalues.SelectToken("status").Value<string>();
+                Utilities.Log.WarningLog("load.result", resultResponse, "compliance");
             }
             else
             {
