@@ -201,6 +201,10 @@ namespace Architect.API.Insurance.Contracts.Bayer
         /// </summary>
         [DataMember(), JsonProperty()] public string EmployeeNumber { get; set; }
 
+        /// <summary>
+        /// Identificación de la compañía propietaria.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int CompanyId { get; set; }
     }
 
     /// <summary>

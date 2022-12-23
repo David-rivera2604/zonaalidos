@@ -118,7 +118,7 @@ namespace Architect.API.Tron.Business.Emision
         /// <summary>
         /// Llamado a Servicio de  Asistencia Panama (Ojo) Credenciales de Monge TEST
         /// </summary>
-        private static Contracts.Emision.Viajero Asistencia_Panama(Contracts.Emision.Viajero quoteInfo, Contracts.Emision.Viajero resultQuoteInfo, Core.Contracts.Security.Token tokenInfo)
+        public static Contracts.Emision.Viajero Asistencia_Panama(Contracts.Emision.Viajero quoteInfo, Contracts.Emision.Viajero resultQuoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
             //
             if (tokenInfo.Roles.Contains("Grupo_Monge"))
@@ -205,6 +205,13 @@ namespace Architect.API.Tron.Business.Emision
                 var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, ConfigurationManager.AppSettings["Warranty.Dealer.Comercial"]);
                 resultQuoteInfo.envio_asistencia = envio_poliza_panama;
             }
+            if (tokenInfo.Roles.Contains("BCR"))
+            {
+                var token_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.login(ConfigurationManager.AppSettings["Warranty.User.BCR"], ConfigurationManager.AppSettings["Warranty.Pass.BCR"]);
+                var envio_poliza_panama = Architect.WS.Integrations.PanamaAsistencia.Envio_Poliza_441.envio_XML(token_panama, quoteInfo, resultQuoteInfo, ConfigurationManager.AppSettings["Warranty.Dealer.BCR"]);
+                resultQuoteInfo.envio_asistencia = envio_poliza_panama;
+            }
+
 
             if (resultQuoteInfo.envio_asistencia.IsNotEmpty())
             {

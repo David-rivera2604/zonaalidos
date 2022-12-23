@@ -3,15 +3,33 @@ using Architect.Utilities.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Web;
+using System.Web.Security;
 
 namespace Architect.API.Core.Security
 {
     public static class Token
     {
+        public static Contracts.Security.Token Info_V2()
+        {
+            Contracts.Security.Token result = new Contracts.Security.Token() { CompanyId = 0, BranchOffice = 0, Roles = string.Empty, ManagerId = 0, SecurityLevel = 0, UserId = 0 };
+
+            if (HttpContext.Current?.User != null )
+            {
+                System.Security.Claims.ClaimsPrincipal user = (System.Security.Claims.ClaimsPrincipal)HttpContext.Current.User;
+
+                result = Architect.Utilities.SerializeHandler<Contracts.Security.Token>.Deserialize(Architect.Utilities.Helpers.CryptSupport.DecryptString(user.Claims.FirstOrDefault(c => c.Type == "Body").Value).DecompressString());
+
+            }
+
+            return result;
+        }
+
         public static Contracts.Security.Token Info()
         {
             Contracts.Security.Token result = new Contracts.Security.Token() { CompanyId = 0, BranchOffice = 0, Roles = string.Empty, ManagerId = 0, SecurityLevel = 0, UserId = 0 };

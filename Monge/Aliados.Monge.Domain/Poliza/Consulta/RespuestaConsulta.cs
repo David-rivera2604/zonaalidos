@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace Aliados.Monge.Domain.Poliza.Consulta
 {
-
+    /// <summary>
+    /// Estructura de Respuesta - Consulta Estatus de Solicitud
+    /// </summary>
     public class RespuestaConsulta : Comun.RespuestaBase
     {
         /// <summary>
         /// Cuerpo y detalle de la respuesta
         /// </summary>
-        public RespuestaConsultaDetalle message_body { get; set; }
+        public object message_body { get; set; }
     }
 }

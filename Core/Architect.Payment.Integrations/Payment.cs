@@ -12,9 +12,10 @@ namespace Architect.Payment.Integrations
     public static class Payment
     {
 
-        public static string NotifySignature(Architect.Payment.Integrations.Contracts.NotifyRequest notify, int currency)
+        public static string NotifySignature(Architect.Payment.Integrations.Contracts.NotifyRequest notify, int currency, int settingId, int companyId)
         {
-            return Architect.Payment.Integrations.Providers.Placetopay.Webcheckout.NotifySignature(notify, currency);
+            Utilities.Log.WarningLog("Payment.NotifySignature", string.Format("requestId={0}, SettingId={1}", notify.requestId, settingId), "payment");
+            return Architect.Payment.Integrations.Providers.Placetopay.Webcheckout.NotifySignature(notify, currency, settingId, companyId);
 
         }
 
@@ -69,7 +70,7 @@ namespace Architect.Payment.Integrations
 
             payInfo.Reference = string.Format("{0}-{1}-{2}", payInfo.PolicyId, payInfo.BillNumber, track.Id);
 
-            Contracts.SessionInformation result = await Providers.Placetopay.Webcheckout.CreateRequest(payInfo, ipAddress, userAgent);
+            Contracts.SessionInformation result = await Providers.Placetopay.Webcheckout.CreateRequest(payInfo, ipAddress, userAgent, userId, companyId);
             result.Reference = payInfo.Reference;
 
             track.Reference = string.Format("{0}-{1}-{2}", payInfo.PolicyId, payInfo.BillNumber, track.Id);
@@ -81,8 +82,11 @@ namespace Architect.Payment.Integrations
             track.Reason = result.Reason;
             track.ResponseData = result.rawData;
             track.Status = Providers.Placetopay.Webcheckout.StatusConvert(track.ProviderStatus);
+            track.SettingId = result.SettingId;
 
             Business.OnlinePayment.UpdateNewSession(track);
+
+            Utilities.Log.WarningLog("Payment.NewSession", string.Format("requestId={0}, SettingId={1}", result.RequestId, result.SettingId), "payment");
 
             return result;
         }
@@ -122,7 +126,7 @@ namespace Architect.Payment.Integrations
             Architect.Payment.Integrations.Contracts.InformationRequest result;
             if (currentRecord != null)
             {
-                result = await Providers.Placetopay.Webcheckout.GetRequestInformation(currentRecord.RequestID, currentRecord.Currency);
+                result = await Providers.Placetopay.Webcheckout.GetRequestInformation(currentRecord.RequestID, currentRecord.Currency, currentRecord.SettingId, currentRecord.CompanyId);
                 result.OnlinePayment = currentRecord;
                 Utilities.Log.WarningLog("Payment.VerifyUpdateStatus", string.Format("requestId={0}, currency={1}, currentStatus={2}, newStatus={3}, recibo={4}", currentRecord.RequestID, currentRecord.Currency, currentRecord.ProviderStatus, result.status, currentRecord.BillNumber), "payment");
 

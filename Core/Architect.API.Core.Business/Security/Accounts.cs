@@ -18,7 +18,7 @@ namespace Architect.API.Core.Business.Security
         /// </summary>
         /// <param name="authenticationRequest">Credenciales de uso.</param>
         /// <returns>Contexto de autenticación incluyendo el token que identifica la sesión del usuario.</returns>
-        public static Contracts.Security.AuthenticationResponse Authentication(Contracts.Security.AuthenticationRequest authenticationRequest)
+        public static Contracts.Security.AuthenticationResponse Authentication(Contracts.Security.AuthenticationRequest authenticationRequest, ref Contracts.Security.Token token)
         {
             Contracts.Security.AuthenticationResponse result = new Contracts.Security.AuthenticationResponse();
             Contracts.Security.UserMember user = null;
@@ -181,7 +181,7 @@ namespace Architect.API.Core.Business.Security
                             Identification = agentInfo.cod_docum,
                             UserName = result.UserName
                         };
-
+                        token = tokenItem;
                         result.Token = Architect.API.Core.Security.Accounts.GeneratorToken(tokenItem);
                         user.LoginDate = DateTime.Now;
                         user.IsLockedOut = false;

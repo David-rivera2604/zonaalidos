@@ -137,12 +137,11 @@ namespace Architect.Extend.Integrations.GastosMedicos
                                 }
                                 
                                 //Se llena listado de beneficios
-                                  String[] beneficios = { "URGENCIAS SIN HOSPITALIZACION: CO-PAGO 25%",
-                                                          "URGENCIAS CON HOSPITALIZACION CO-PAGO: 20% DESPUES DE CUBIERTO EL DEDUCIBLE ",
-                                                          "LABORATORIOS Y RAYOS X: POR REEMBOLSO ",
-                                                          "MEDICAMENTOS: POR REEMBOLSO ",
-                                                          "Máximo por consulta Externa en clínica ₡50,400.00"
-                                                        };
+                                  String[] beneficios = { "CONSULTA GENERAL - ESPECIALISTA: LIMITE MAXIMO HASTA ₵50.400 CO-PAGO 20%",
+                                                          "URGENCIAS: CO-PAGO 25%",
+                                                          "LABORATORIOS Y RAYOS X:  CO-PAGO 20%",
+                                                          "MEDICAMENTOS: POR REEMBOLSO"
+                                                         };
 
                                 for (int benef = 0; benef < beneficios.Length; benef++)
                                 {

@@ -44,7 +44,13 @@ app.ConsultasGastosMedicos = (function () {
                         else {
                             $('#beneficiosTbl').empty();
                         }
-                        
+
+                        if (localStorage.getItem('Roles').includes('Proveedor_Exclusivo')) {
+                            $('#preautorizar').html('TODA ATENCION MAYOR A $700 SE DEBE DE PRE AUTORIZAR, O BIEN EXAMENES ESPECIALES (TAC, RESONANCIAS MAGNETICAS, GASTROSCOPIA, COLONOSCOPIA), BENEFICIOS ADICIONALES DE LAS POLIZAS (CHEQUEOS MEDICOS, TERAPIAS, BENEFICIOS DENTALES, BENEFICIO DE ATENCION MEDICO PRIMARIA) AUNQUE NO SUPEREN LOS $700.');
+                        }
+                        else {
+                            $('#preautorizar').html('TODA ATENCION MAYOR A $500 SE DEBE DE PRE AUTORIZAR, O BIEN EXAMENES ESPECIALES (TAC, RESONANCIAS MAGNETICAS, GASTROSCOPIA, COLONOSCOPIA), BENEFICIOS ADICIONALES DE LAS POLIZAS (CHEQUEOS MEDICOS, TERAPIAS, BENEFICIOS DENTALES, BENEFICIO DE ATENCION MEDICO PRIMARIA) AUNQUE NO SUPEREN LOS $500.');
+                        }       
                         $("#exitoso").attr("hidden", false);
                     }
                     else {

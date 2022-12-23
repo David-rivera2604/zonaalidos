@@ -1,5 +1,6 @@
 ﻿using Microsoft.Web.Http;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -340,6 +341,49 @@ namespace Architect.API.Tron.Controllers
             {
                 //tokenInfo.AgentCode = 180;
                 result = Architect.API.Tron.Business.Cotizacion.SaldoDeudor.Quote(quoteInfo, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Recupera lista de valores para sumas aseguradas de coberturas o valores deducibles según el rol del usuario
+        /// </summary>
+        /// <param name="cod_ramo"></param>
+        /// <param name="num_contrato"></param>
+        /// <param name="num_subcontrato"></param>
+        /// <param name="num_poliza_grupo"></param>
+        /// <param name="cod_mon"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("SaldoDeudorSettings")]
+        public async Task<IHttpActionResult> SaldoDeudorSettings(int cod_ramo, int num_contrato, int num_subcontrato, string num_poliza_grupo, int cod_mon)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Tron.Contracts.Cotizacion.SaldoDeudorSettings result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Cotizacion.SaldoDeudor.Settings(cod_ramo, num_contrato, num_subcontrato, num_poliza_grupo, cod_mon, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Recupera calculo del imc de acuerdo al peso y estatura del asegurado
+        /// </summary>
+        /// <param name="estatura"></param>
+        /// <param name="peso"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("SaldoDeudorPreIMC")]
+        public async Task<IHttpActionResult> SaldoDeudorPreIMC(string estatura, string peso)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Tron.Contracts.Cotizacion.SaldoDeudor result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Cotizacion.SaldoDeudor.calcula_imc(estatura, peso, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);

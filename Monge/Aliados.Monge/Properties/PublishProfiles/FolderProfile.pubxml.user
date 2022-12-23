@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>C:\publish\viajero</_PublishTargetUrl>
-    <History>True|2022-08-31T18:39:52.0783144Z;True|2022-08-31T12:39:17.3135817-06:00;</History>
+    <History>True|2022-10-10T12:07:56.8204260Z;True|2022-10-03T08:59:02.7615786-06:00;True|2022-09-02T08:20:42.7559959-06:00;True|2022-08-31T12:39:52.0783144-06:00;True|2022-08-31T12:39:17.3135817-06:00;</History>
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
@@ -73,34 +73,43 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>08/22/2022 13:02:56</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.Application.dll">
-      <publishTime>08/31/2022 12:39:47</publishTime>
+      <publishTime>10/10/2022 06:07:54</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.Application.dll.config">
-      <publishTime>08/31/2022 07:59:03</publishTime>
+      <publishTime>10/03/2022 08:15:13</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.Application.pdb">
-      <publishTime>08/31/2022 12:39:47</publishTime>
+      <publishTime>10/10/2022 06:07:54</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.dll">
-      <publishTime>08/31/2022 12:39:48</publishTime>
+      <publishTime>10/10/2022 06:07:54</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.Domain.dll">
-      <publishTime>08/31/2022 12:39:10</publishTime>
+      <publishTime>10/03/2022 08:58:52</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.Domain.pdb">
-      <publishTime>08/31/2022 12:39:10</publishTime>
+      <publishTime>10/03/2022 08:58:52</publishTime>
+    </File>
+    <File Include="bin/Aliados.Monge.Infrastructure.Data.dll">
+      <publishTime>10/10/2022 06:07:52</publishTime>
+    </File>
+    <File Include="bin/Aliados.Monge.Infrastructure.Data.dll.config">
+      <publishTime>09/27/2022 12:34:24</publishTime>
+    </File>
+    <File Include="bin/Aliados.Monge.Infrastructure.Data.pdb">
+      <publishTime>10/10/2022 06:07:52</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.pdb">
-      <publishTime>08/31/2022 12:39:48</publishTime>
+      <publishTime>10/10/2022 06:07:54</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.WebApi.dll">
-      <publishTime>08/31/2022 12:39:48</publishTime>
+      <publishTime>10/10/2022 06:07:54</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.WebApi.dll.config">
-      <publishTime>08/31/2022 07:59:03</publishTime>
+      <publishTime>10/03/2022 08:15:13</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.WebApi.pdb">
-      <publishTime>08/31/2022 12:39:48</publishTime>
+      <publishTime>10/10/2022 06:07:54</publishTime>
     </File>
     <File Include="bin/Antlr3.Runtime.dll">
       <publishTime>09/10/2013 10:29:20</publishTime>
@@ -109,100 +118,154 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>09/10/2013 10:29:20</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Business.dll">
-      <publishTime>08/31/2022 12:39:46</publishTime>
+      <publishTime>10/10/2022 06:07:53</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Business.dll.config">
-      <publishTime>08/31/2022 07:59:03</publishTime>
+      <publishTime>10/03/2022 08:15:13</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Business.pdb">
-      <publishTime>08/31/2022 12:39:46</publishTime>
+      <publishTime>10/10/2022 06:07:53</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Contracts.dll">
-      <publishTime>08/31/2022 12:39:11</publishTime>
+      <publishTime>10/10/2022 06:07:51</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Contracts.dll.config">
       <publishTime>07/19/2022 07:41:08</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Contracts.pdb">
-      <publishTime>08/31/2022 12:39:11</publishTime>
+      <publishTime>10/10/2022 06:07:51</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.DataAccess.dll">
-      <publishTime>08/31/2022 12:39:45</publishTime>
+      <publishTime>10/10/2022 06:07:52</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.DataAccess.dll.config">
-      <publishTime>08/08/2022 13:05:57</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.DataAccess.pdb">
-      <publishTime>08/31/2022 12:39:45</publishTime>
+      <publishTime>10/10/2022 06:07:52</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Security.dll">
-      <publishTime>08/31/2022 12:39:45</publishTime>
+      <publishTime>10/10/2022 06:07:52</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Security.dll.config">
-      <publishTime>08/31/2022 07:59:00</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Security.pdb">
-      <publishTime>08/31/2022 12:39:45</publishTime>
+      <publishTime>10/10/2022 06:07:52</publishTime>
+    </File>
+    <File Include="bin/Architect.API.Tron.Business.dll">
+      <publishTime>10/10/2022 06:07:53</publishTime>
+    </File>
+    <File Include="bin/Architect.API.Tron.Business.dll.config">
+      <publishTime>10/03/2022 08:15:13</publishTime>
+    </File>
+    <File Include="bin/Architect.API.Tron.Business.pdb">
+      <publishTime>10/10/2022 06:07:53</publishTime>
+    </File>
+    <File Include="bin/Architect.API.Tron.Contracts.dll">
+      <publishTime>10/10/2022 06:07:52</publishTime>
+    </File>
+    <File Include="bin/Architect.API.Tron.Contracts.dll.config">
+      <publishTime>07/19/2022 07:41:08</publishTime>
+    </File>
+    <File Include="bin/Architect.API.Tron.Contracts.pdb">
+      <publishTime>10/10/2022 06:07:52</publishTime>
+    </File>
+    <File Include="bin/Architect.API.Tron.DataAccess.dll">
+      <publishTime>10/10/2022 06:07:53</publishTime>
+    </File>
+    <File Include="bin/Architect.API.Tron.DataAccess.dll.config">
+      <publishTime>09/27/2022 12:34:24</publishTime>
+    </File>
+    <File Include="bin/Architect.API.Tron.DataAccess.pdb">
+      <publishTime>10/10/2022 06:07:53</publishTime>
     </File>
     <File Include="bin/Architect.DataFactory.dll">
-      <publishTime>08/31/2022 12:39:11</publishTime>
+      <publishTime>10/10/2022 06:07:51</publishTime>
     </File>
     <File Include="bin/Architect.DataFactory.dll.config">
-      <publishTime>08/08/2022 13:05:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="bin/Architect.DataFactory.pdb">
-      <publishTime>08/31/2022 12:39:11</publishTime>
+      <publishTime>10/10/2022 06:07:51</publishTime>
+    </File>
+    <File Include="bin/Architect.Decision.dll">
+      <publishTime>07/19/2022 07:41:08</publishTime>
+    </File>
+    <File Include="bin/Architect.DocuSign.Integrations.dll">
+      <publishTime>10/10/2022 06:07:51</publishTime>
+    </File>
+    <File Include="bin/Architect.DocuSign.Integrations.pdb">
+      <publishTime>10/10/2022 06:07:51</publishTime>
+    </File>
+    <File Include="bin/Architect.Payment.Integrations.dll">
+      <publishTime>10/10/2022 06:07:52</publishTime>
+    </File>
+    <File Include="bin/Architect.Payment.Integrations.dll.config">
+      <publishTime>09/27/2022 12:34:24</publishTime>
+    </File>
+    <File Include="bin/Architect.Payment.Integrations.pdb">
+      <publishTime>10/10/2022 06:07:52</publishTime>
     </File>
     <File Include="bin/Architect.Utilities.dll">
-      <publishTime>08/31/2022 12:39:10</publishTime>
+      <publishTime>10/10/2022 06:07:51</publishTime>
     </File>
     <File Include="bin/Architect.Utilities.pdb">
-      <publishTime>08/31/2022 12:39:10</publishTime>
+      <publishTime>10/10/2022 06:07:51</publishTime>
+    </File>
+    <File Include="bin/Architect.WS.Integrations.dll">
+      <publishTime>10/10/2022 06:07:52</publishTime>
+    </File>
+    <File Include="bin/Architect.WS.Integrations.dll.config">
+      <publishTime>07/19/2022 07:41:08</publishTime>
+    </File>
+    <File Include="bin/Architect.WS.Integrations.pdb">
+      <publishTime>10/10/2022 06:07:52</publishTime>
     </File>
     <File Include="bin/ca/Hangfire.Core.resources.dll">
       <publishTime>08/19/2022 01:09:44</publishTime>
     </File>
     <File Include="bin/cs/Microsoft.CodeAnalysis.CSharp.resources.dll">
-      <publishTime>05/13/2022 00:22:42</publishTime>
+      <publishTime>09/29/2022 22:02:20</publishTime>
     </File>
     <File Include="bin/cs/Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll">
-      <publishTime>05/13/2022 00:23:22</publishTime>
+      <publishTime>09/29/2022 22:02:32</publishTime>
     </File>
     <File Include="bin/cs/Microsoft.CodeAnalysis.resources.dll">
-      <publishTime>05/13/2022 00:17:54</publishTime>
+      <publishTime>09/29/2022 21:53:32</publishTime>
     </File>
     <File Include="bin/cs/Microsoft.CodeAnalysis.Scripting.resources.dll">
-      <publishTime>05/13/2022 00:18:40</publishTime>
+      <publishTime>09/29/2022 21:56:28</publishTime>
     </File>
     <File Include="bin/de/Hangfire.Core.resources.dll">
       <publishTime>08/19/2022 01:09:44</publishTime>
     </File>
     <File Include="bin/de/Microsoft.CodeAnalysis.CSharp.resources.dll">
-      <publishTime>05/13/2022 00:22:42</publishTime>
+      <publishTime>09/29/2022 22:02:20</publishTime>
     </File>
     <File Include="bin/de/Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll">
-      <publishTime>05/13/2022 00:23:24</publishTime>
+      <publishTime>09/29/2022 22:02:32</publishTime>
     </File>
     <File Include="bin/de/Microsoft.CodeAnalysis.resources.dll">
-      <publishTime>05/13/2022 00:17:54</publishTime>
+      <publishTime>09/29/2022 21:53:32</publishTime>
     </File>
     <File Include="bin/de/Microsoft.CodeAnalysis.Scripting.resources.dll">
-      <publishTime>05/13/2022 00:18:40</publishTime>
+      <publishTime>09/29/2022 21:56:28</publishTime>
     </File>
     <File Include="bin/es/Hangfire.Core.resources.dll">
       <publishTime>08/19/2022 01:09:44</publishTime>
     </File>
     <File Include="bin/es/Microsoft.CodeAnalysis.CSharp.resources.dll">
-      <publishTime>05/13/2022 00:22:42</publishTime>
+      <publishTime>09/29/2022 22:02:20</publishTime>
     </File>
     <File Include="bin/es/Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll">
-      <publishTime>05/13/2022 00:23:24</publishTime>
+      <publishTime>09/29/2022 22:02:32</publishTime>
     </File>
     <File Include="bin/es/Microsoft.CodeAnalysis.resources.dll">
-      <publishTime>05/13/2022 00:17:54</publishTime>
+      <publishTime>09/29/2022 21:53:32</publishTime>
     </File>
     <File Include="bin/es/Microsoft.CodeAnalysis.Scripting.resources.dll">
-      <publishTime>05/13/2022 00:18:40</publishTime>
+      <publishTime>09/29/2022 21:56:28</publishTime>
     </File>
     <File Include="bin/fa/Hangfire.Core.resources.dll">
       <publishTime>08/19/2022 01:09:44</publishTime>
@@ -214,55 +277,61 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>08/19/2022 01:09:44</publishTime>
     </File>
     <File Include="bin/fr/Microsoft.CodeAnalysis.CSharp.resources.dll">
-      <publishTime>05/13/2022 00:22:42</publishTime>
+      <publishTime>09/29/2022 22:02:20</publishTime>
     </File>
     <File Include="bin/fr/Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll">
-      <publishTime>05/13/2022 00:23:24</publishTime>
+      <publishTime>09/29/2022 22:02:32</publishTime>
     </File>
     <File Include="bin/fr/Microsoft.CodeAnalysis.resources.dll">
-      <publishTime>05/13/2022 00:17:54</publishTime>
+      <publishTime>09/29/2022 21:53:32</publishTime>
     </File>
     <File Include="bin/fr/Microsoft.CodeAnalysis.Scripting.resources.dll">
-      <publishTime>05/13/2022 00:18:40</publishTime>
+      <publishTime>09/29/2022 21:56:28</publishTime>
     </File>
     <File Include="bin/Hangfire.Core.dll">
       <publishTime>08/19/2022 01:10:16</publishTime>
     </File>
     <File Include="bin/it/Microsoft.CodeAnalysis.CSharp.resources.dll">
-      <publishTime>05/13/2022 00:22:42</publishTime>
+      <publishTime>09/29/2022 22:02:20</publishTime>
     </File>
     <File Include="bin/it/Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll">
-      <publishTime>05/13/2022 00:23:24</publishTime>
+      <publishTime>09/29/2022 22:02:32</publishTime>
     </File>
     <File Include="bin/it/Microsoft.CodeAnalysis.resources.dll">
-      <publishTime>05/13/2022 00:17:56</publishTime>
+      <publishTime>09/29/2022 21:53:32</publishTime>
     </File>
     <File Include="bin/it/Microsoft.CodeAnalysis.Scripting.resources.dll">
-      <publishTime>05/13/2022 00:18:40</publishTime>
+      <publishTime>09/29/2022 21:56:28</publishTime>
     </File>
     <File Include="bin/ja/Microsoft.CodeAnalysis.CSharp.resources.dll">
-      <publishTime>05/13/2022 00:22:42</publishTime>
+      <publishTime>09/29/2022 22:02:20</publishTime>
     </File>
     <File Include="bin/ja/Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll">
-      <publishTime>05/13/2022 00:23:24</publishTime>
+      <publishTime>09/29/2022 22:02:32</publishTime>
     </File>
     <File Include="bin/ja/Microsoft.CodeAnalysis.resources.dll">
-      <publishTime>05/13/2022 00:17:56</publishTime>
+      <publishTime>09/29/2022 21:53:32</publishTime>
     </File>
     <File Include="bin/ja/Microsoft.CodeAnalysis.Scripting.resources.dll">
-      <publishTime>05/13/2022 00:18:40</publishTime>
+      <publishTime>09/29/2022 21:56:28</publishTime>
     </File>
     <File Include="bin/ko/Microsoft.CodeAnalysis.CSharp.resources.dll">
-      <publishTime>05/13/2022 00:22:44</publishTime>
+      <publishTime>09/29/2022 22:02:20</publishTime>
     </File>
     <File Include="bin/ko/Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll">
-      <publishTime>05/13/2022 00:23:24</publishTime>
+      <publishTime>09/29/2022 22:02:32</publishTime>
     </File>
     <File Include="bin/ko/Microsoft.CodeAnalysis.resources.dll">
-      <publishTime>05/13/2022 00:17:56</publishTime>
+      <publishTime>09/29/2022 21:53:32</publishTime>
     </File>
     <File Include="bin/ko/Microsoft.CodeAnalysis.Scripting.resources.dll">
-      <publishTime>05/13/2022 00:18:40</publishTime>
+      <publishTime>09/29/2022 21:56:28</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AspNet.Identity.Core.dll">
+      <publishTime>11/25/2019 04:57:50</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AspNet.Identity.Owin.dll">
+      <publishTime>11/25/2019 04:57:50</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.WebApi.Versioning.dll">
       <publishTime>02/09/2021 03:14:12</publishTime>
@@ -274,43 +343,64 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>10/22/2021 17:42:08</publishTime>
     </File>
     <File Include="bin/Microsoft.CodeAnalysis.CSharp.dll">
-      <publishTime>05/13/2022 00:22:42</publishTime>
+      <publishTime>09/29/2022 22:02:18</publishTime>
     </File>
     <File Include="bin/Microsoft.CodeAnalysis.CSharp.pdb">
-      <publishTime>05/13/2022 00:21:34</publishTime>
+      <publishTime>09/29/2022 22:00:48</publishTime>
     </File>
     <File Include="bin/Microsoft.CodeAnalysis.CSharp.Scripting.dll">
-      <publishTime>05/13/2022 00:23:22</publishTime>
+      <publishTime>09/29/2022 22:02:32</publishTime>
     </File>
     <File Include="bin/Microsoft.CodeAnalysis.CSharp.Scripting.pdb">
-      <publishTime>05/13/2022 00:23:22</publishTime>
+      <publishTime>09/29/2022 22:02:32</publishTime>
     </File>
     <File Include="bin/Microsoft.CodeAnalysis.dll">
-      <publishTime>05/13/2022 00:17:50</publishTime>
+      <publishTime>09/29/2022 21:53:26</publishTime>
     </File>
     <File Include="bin/Microsoft.CodeAnalysis.pdb">
-      <publishTime>05/13/2022 00:05:54</publishTime>
+      <publishTime>09/29/2022 21:41:38</publishTime>
     </File>
     <File Include="bin/Microsoft.CodeAnalysis.Scripting.dll">
-      <publishTime>05/13/2022 00:18:40</publishTime>
+      <publishTime>09/29/2022 21:56:28</publishTime>
     </File>
     <File Include="bin/Microsoft.CodeAnalysis.Scripting.pdb">
-      <publishTime>05/13/2022 00:18:40</publishTime>
+      <publishTime>09/29/2022 21:56:28</publishTime>
     </File>
     <File Include="bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll">
       <publishTime>07/08/2020 15:52:58</publishTime>
     </File>
     <File Include="bin/Microsoft.IdentityModel.Abstractions.dll">
-      <publishTime>08/25/2022 13:54:22</publishTime>
+      <publishTime>09/08/2022 18:05:14</publishTime>
     </File>
     <File Include="bin/Microsoft.IdentityModel.JsonWebTokens.dll">
-      <publishTime>08/25/2022 13:31:40</publishTime>
+      <publishTime>09/08/2022 18:05:14</publishTime>
     </File>
     <File Include="bin/Microsoft.IdentityModel.Logging.dll">
-      <publishTime>08/25/2022 13:33:30</publishTime>
+      <publishTime>09/08/2022 18:05:14</publishTime>
     </File>
     <File Include="bin/Microsoft.IdentityModel.Tokens.dll">
-      <publishTime>08/25/2022 13:40:34</publishTime>
+      <publishTime>09/08/2022 18:05:14</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Cors.dll">
+      <publishTime>05/10/2022 17:31:24</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.dll">
+      <publishTime>05/10/2022 17:31:20</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Host.SystemWeb.dll">
+      <publishTime>05/10/2022 17:31:40</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Security.Cookies.dll">
+      <publishTime>05/10/2022 17:31:50</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Security.dll">
+      <publishTime>05/10/2022 17:31:38</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Security.Jwt.dll">
+      <publishTime>05/10/2022 17:31:54</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Security.OAuth.dll">
+      <publishTime>05/10/2022 17:31:50</publishTime>
     </File>
     <File Include="bin/Microsoft.Web.Infrastructure.dll">
       <publishTime>05/27/2022 17:39:10</publishTime>
@@ -331,37 +421,40 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/13/2012 12:19:34</publishTime>
     </File>
     <File Include="bin/pl/Microsoft.CodeAnalysis.CSharp.resources.dll">
-      <publishTime>05/13/2022 00:22:44</publishTime>
+      <publishTime>09/29/2022 22:02:20</publishTime>
     </File>
     <File Include="bin/pl/Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll">
-      <publishTime>05/13/2022 00:23:24</publishTime>
+      <publishTime>09/29/2022 22:02:32</publishTime>
     </File>
     <File Include="bin/pl/Microsoft.CodeAnalysis.resources.dll">
-      <publishTime>05/13/2022 00:17:56</publishTime>
+      <publishTime>09/29/2022 21:53:32</publishTime>
     </File>
     <File Include="bin/pl/Microsoft.CodeAnalysis.Scripting.resources.dll">
-      <publishTime>05/13/2022 00:18:40</publishTime>
+      <publishTime>09/29/2022 21:56:28</publishTime>
     </File>
     <File Include="bin/pt-BR/Hangfire.Core.resources.dll">
       <publishTime>08/19/2022 01:09:44</publishTime>
     </File>
     <File Include="bin/pt-BR/Microsoft.CodeAnalysis.CSharp.resources.dll">
-      <publishTime>05/13/2022 00:22:44</publishTime>
+      <publishTime>09/29/2022 22:02:20</publishTime>
     </File>
     <File Include="bin/pt-BR/Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll">
-      <publishTime>05/13/2022 00:23:24</publishTime>
+      <publishTime>09/29/2022 22:02:32</publishTime>
     </File>
     <File Include="bin/pt-BR/Microsoft.CodeAnalysis.resources.dll">
-      <publishTime>05/13/2022 00:17:56</publishTime>
+      <publishTime>09/29/2022 21:53:32</publishTime>
     </File>
     <File Include="bin/pt-BR/Microsoft.CodeAnalysis.Scripting.resources.dll">
-      <publishTime>05/13/2022 00:18:40</publishTime>
+      <publishTime>09/29/2022 21:56:28</publishTime>
     </File>
     <File Include="bin/pt-PT/Hangfire.Core.resources.dll">
       <publishTime>08/19/2022 01:09:44</publishTime>
     </File>
     <File Include="bin/pt/Hangfire.Core.resources.dll">
       <publishTime>08/19/2022 01:09:44</publishTime>
+    </File>
+    <File Include="bin/releaseletter.txt">
+      <publishTime>10/10/2022 06:07:08</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>05/18/2020 19:51:56</publishTime>
@@ -454,22 +547,22 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>05/18/2020 19:52:02</publishTime>
     </File>
     <File Include="bin/ru/Microsoft.CodeAnalysis.CSharp.resources.dll">
-      <publishTime>05/13/2022 00:22:44</publishTime>
+      <publishTime>09/29/2022 22:02:20</publishTime>
     </File>
     <File Include="bin/ru/Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll">
-      <publishTime>05/13/2022 00:23:24</publishTime>
+      <publishTime>09/29/2022 22:02:32</publishTime>
     </File>
     <File Include="bin/ru/Microsoft.CodeAnalysis.resources.dll">
-      <publishTime>05/13/2022 00:17:56</publishTime>
+      <publishTime>09/29/2022 21:53:32</publishTime>
     </File>
     <File Include="bin/ru/Microsoft.CodeAnalysis.Scripting.resources.dll">
-      <publishTime>05/13/2022 00:18:40</publishTime>
+      <publishTime>09/29/2022 21:56:28</publishTime>
     </File>
     <File Include="bin/SmartFormat.dll">
-      <publishTime>05/17/2022 14:42:42</publishTime>
+      <publishTime>09/18/2022 15:26:46</publishTime>
     </File>
     <File Include="bin/SmartFormat.ZString.dll">
-      <publishTime>05/17/2022 14:42:38</publishTime>
+      <publishTime>09/18/2022 15:26:42</publishTime>
     </File>
     <File Include="bin/Swashbuckle.Core.dll">
       <publishTime>07/08/2017 01:30:56</publishTime>
@@ -481,7 +574,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>10/22/2021 17:41:20</publishTime>
     </File>
     <File Include="bin/System.IdentityModel.Tokens.Jwt.dll">
-      <publishTime>08/25/2022 13:29:38</publishTime>
+      <publishTime>09/08/2022 18:05:14</publishTime>
     </File>
     <File Include="bin/System.Memory.dll">
       <publishTime>05/07/2022 21:31:02</publishTime>
@@ -505,7 +598,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>10/22/2021 17:41:14</publishTime>
     </File>
     <File Include="bin/System.Text.Json.dll">
-      <publishTime>05/17/2022 11:25:06</publishTime>
+      <publishTime>08/19/2022 13:51:26</publishTime>
     </File>
     <File Include="bin/System.Threading.Tasks.Extensions.dll">
       <publishTime>02/19/2020 10:05:18</publishTime>
@@ -546,20 +639,26 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="bin/System.Web.WebPages.Razor.dll">
       <publishTime>05/27/2022 17:42:50</publishTime>
     </File>
+    <File Include="bin/Thinktecture.IdentityModel.Core.dll">
+      <publishTime>02/07/2015 04:32:38</publishTime>
+    </File>
+    <File Include="bin/Thinktecture.IdentityModel.Core.pdb">
+      <publishTime>02/07/2015 04:32:38</publishTime>
+    </File>
     <File Include="bin/tr-TR/Hangfire.Core.resources.dll">
       <publishTime>08/19/2022 01:09:44</publishTime>
     </File>
     <File Include="bin/tr/Microsoft.CodeAnalysis.CSharp.resources.dll">
-      <publishTime>05/13/2022 00:22:44</publishTime>
+      <publishTime>09/29/2022 22:02:20</publishTime>
     </File>
     <File Include="bin/tr/Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll">
-      <publishTime>05/13/2022 00:23:24</publishTime>
+      <publishTime>09/29/2022 22:02:32</publishTime>
     </File>
     <File Include="bin/tr/Microsoft.CodeAnalysis.resources.dll">
-      <publishTime>05/13/2022 00:17:56</publishTime>
+      <publishTime>09/29/2022 21:53:32</publishTime>
     </File>
     <File Include="bin/tr/Microsoft.CodeAnalysis.Scripting.resources.dll">
-      <publishTime>05/13/2022 00:18:40</publishTime>
+      <publishTime>09/29/2022 21:56:28</publishTime>
     </File>
     <File Include="bin/WebActivatorEx.dll">
       <publishTime>10/05/2016 07:11:52</publishTime>
@@ -568,28 +667,28 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>01/23/2014 07:57:34</publishTime>
     </File>
     <File Include="bin/zh-Hans/Microsoft.CodeAnalysis.CSharp.resources.dll">
-      <publishTime>05/13/2022 00:22:44</publishTime>
+      <publishTime>09/29/2022 22:02:20</publishTime>
     </File>
     <File Include="bin/zh-Hans/Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll">
-      <publishTime>05/13/2022 00:23:24</publishTime>
+      <publishTime>09/29/2022 22:02:32</publishTime>
     </File>
     <File Include="bin/zh-Hans/Microsoft.CodeAnalysis.resources.dll">
-      <publishTime>05/13/2022 00:17:56</publishTime>
+      <publishTime>09/29/2022 21:53:32</publishTime>
     </File>
     <File Include="bin/zh-Hans/Microsoft.CodeAnalysis.Scripting.resources.dll">
-      <publishTime>05/13/2022 00:18:40</publishTime>
+      <publishTime>09/29/2022 21:56:28</publishTime>
     </File>
     <File Include="bin/zh-Hant/Microsoft.CodeAnalysis.CSharp.resources.dll">
-      <publishTime>05/13/2022 00:22:44</publishTime>
+      <publishTime>09/29/2022 22:02:20</publishTime>
     </File>
     <File Include="bin/zh-Hant/Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll">
-      <publishTime>05/13/2022 00:23:24</publishTime>
+      <publishTime>09/29/2022 22:02:32</publishTime>
     </File>
     <File Include="bin/zh-Hant/Microsoft.CodeAnalysis.resources.dll">
-      <publishTime>05/13/2022 00:17:56</publishTime>
+      <publishTime>09/29/2022 21:53:32</publishTime>
     </File>
     <File Include="bin/zh-Hant/Microsoft.CodeAnalysis.Scripting.resources.dll">
-      <publishTime>05/13/2022 00:18:40</publishTime>
+      <publishTime>09/29/2022 21:56:28</publishTime>
     </File>
     <File Include="bin/zh-TW/Hangfire.Core.resources.dll">
       <publishTime>08/19/2022 01:09:44</publishTime>
@@ -598,100 +697,100 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>08/19/2022 01:09:46</publishTime>
     </File>
     <File Include="Content/bootstrap-grid.css">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap-grid.css.map">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap-grid.min.css">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap-grid.min.css.map">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap-grid.rtl.css">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap-grid.rtl.css.map">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap-grid.rtl.min.css">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap-grid.rtl.min.css.map">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap-reboot.css">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap-reboot.css.map">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap-reboot.min.css">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap-reboot.min.css.map">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap-reboot.rtl.css">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap-reboot.rtl.css.map">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap-reboot.rtl.min.css">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap-reboot.rtl.min.css.map">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap-utilities.css">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap-utilities.css.map">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap-utilities.min.css">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap-utilities.min.css.map">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap-utilities.rtl.css">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap-utilities.rtl.css.map">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap-utilities.rtl.min.css">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap-utilities.rtl.min.css.map">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap.css.map">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap.min.css">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap.min.css.map">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap.rtl.css">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap.rtl.css.map">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap.rtl.min.css">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/bootstrap.rtl.min.css.map">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Content/Site.css">
       <publishTime>08/22/2022 13:02:56</publishTime>
@@ -702,41 +801,44 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="Global.asax">
       <publishTime>08/22/2022 13:02:56</publishTime>
     </File>
+    <File Include="releaseletter.txt">
+      <publishTime>10/10/2022 06:07:08</publishTime>
+    </File>
     <File Include="Scripts/bootstrap.bundle.js">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Scripts/bootstrap.bundle.js.map">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Scripts/bootstrap.bundle.min.js">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Scripts/bootstrap.bundle.min.js.map">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Scripts/bootstrap.esm.js">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Scripts/bootstrap.esm.js.map">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Scripts/bootstrap.esm.min.js">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Scripts/bootstrap.esm.min.js.map">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Scripts/bootstrap.js">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Scripts/bootstrap.js.map">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Scripts/bootstrap.min.js">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Scripts/bootstrap.min.js.map">
-      <publishTime>08/22/2022 13:02:56</publishTime>
+      <publishTime>09/27/2022 12:34:24</publishTime>
     </File>
     <File Include="Scripts/jquery-3.6.0.js">
       <publishTime>08/22/2022 13:02:56</publishTime>
@@ -775,7 +877,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>08/22/2022 13:02:56</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>08/31/2022 08:05:33</publishTime>
+      <publishTime>10/10/2022 06:07:55</publishTime>
     </File>
   </ItemGroup>
 </Project>

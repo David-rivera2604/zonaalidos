@@ -423,3 +423,22 @@
                    Aliados. No se puede visualizar un documento recién cargado.
                    Aliados. Fraccionamiento de pago por default según contrato.
                    Aliados. Active Directory. Maneja posibles estado de una cuenta.
+1.6.15  06/09/2022 Proveedores. Actualizacion del listado Beneficios
+                   Proveedores. Manejo de texto descriptivo de pre autorizacion segun el rol Proveedores_Exclusivos
+1.6.15a 27/09/2022 Viajero Regional. Ajustes de contratos.
+                   Aliados. Manejo de cuentas de acceso para la pasarela de pago.
+                   Caturix. Manejo de suma asegurada según plan.
+                   Caturix. Fecha de ingreso se muestre la que esta en el campo de fecha de ingreso y no la del día en que generan el documento.
+                   Trazabilidad. Procesas duplicados cuando se crea un caso.                   
+                   Bayer. Script para limpiar solicitudes fallidas en bayer.
+                   Caturix. El campo número de empleado es opcional.
+1.6.16  03/10/2022 Aliados. ESPH. Ajuste en la fecha de inicio de vigencia en el reporte. 
+                   Trazabilidad. Export e Import para las definición de procesos.
+1.6.17  13/10/2022 Reporte de saldo deudor para coopenae.
+1.6.18  13/10/2022 Saldo Deudor. Cotización por Póliza Grupo.
+                   Saldo Deudor. Incorporación de Datos variables.
+                   Saldo Deudor. Proceso de llenado y envío a Firma de Solicitud de Seguro.
+                   Multirriesgo. Se cambia listado de documentos requeridos en la emisión.
+                   Bayer. Validación del 100% para beneficiarios.
+                   Bayer. Datos del padrón según cédula.
+1.6.19a 28/10/2022 Aliados. Ajuste en la ruta para llamar los reportes de tron (recibos, avisos).

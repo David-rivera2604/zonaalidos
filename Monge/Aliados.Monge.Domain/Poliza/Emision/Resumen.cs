@@ -6,12 +6,30 @@ using System.Threading.Tasks;
 
 namespace Aliados.Monge.Domain.Poliza.Emision
 {
+    /// <summary>
+    /// Resumen de información asociada al póliza.
+    /// </summary>
     public class Resumen
     {
-        public float primaneta { get; set; }
-        public float iVA { get; set; }
-        public float recargoporfraccionamiento { get; set; }
-        public float importetotal { get; set; }
+        /// <summary>
+        /// Prima neta.
+        /// </summary>
+        public double primaneta { get; set; }
+        /// <summary>
+        /// IVA.
+        /// </summary>
+        public double iVA { get; set; }
+        /// <summary>
+        /// Recargo por fraccionamiento.
+        /// </summary>
+        public double recargoporfraccionamiento { get; set; }
+        /// <summary>
+        /// Importe total.
+        /// </summary>
+        public double importetotal { get; set; }
+        /// <summary>
+        /// Cuota.
+        /// </summary>
         public int cuotas { get; set; }
     }
 }

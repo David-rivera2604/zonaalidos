@@ -14,6 +14,7 @@ app.Extend = (function () {
                     break;
                 case 401:
                     quote = 'saldodeudor';
+                    mode = 'resume';
                     break;
                 case 441:
                     quote = 'viajero';

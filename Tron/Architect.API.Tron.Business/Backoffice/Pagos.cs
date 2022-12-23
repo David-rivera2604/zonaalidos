@@ -79,7 +79,7 @@ namespace Architect.API.Tron.Business.Backoffice
                 Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveByRequestID(Convert.ToInt64(notify.requestId));
                 if (currentRecord != null)
                 {
-                    string signature = Payment.Integrations.Payment.NotifySignature(notify, currentRecord.Currency);
+                    string signature = Payment.Integrations.Payment.NotifySignature(notify, currentRecord.Currency, currentRecord.SettingId, currentRecord.CompanyId);
 
                     if (signature == notify.signature)
                     {

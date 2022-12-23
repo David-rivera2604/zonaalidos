@@ -46,6 +46,10 @@ namespace Architect.API.Core.Security
                     try
                     {
                         authenticationToken = actionContext.Request.Headers.Authorization.Parameter;
+                        if (authenticationToken == null) {
+                            authenticationToken = actionContext.Request.Headers.Authorization.Scheme;
+                        }
+
                         tokenInfo = Token.Info(authenticationToken);
                     }
                     catch (Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException )

@@ -5,12 +5,37 @@ app.CotizacionSaldoDeudor = (function () {
     let setupData = null;
     let changedCallback = null;
     let CapitalCtrls = [];
+    var workMode = '';
 
-    function Setup() {
+    function Setup()
+    {
+
+        if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
+            $('#emitir').html("<i class='fa fa-check'></i> Completar solicitud");
+            workMode = '&mode=draft';
+        }
+
         app.core.Get(app.setting.apipath + 'v1/Quote/SaldoDeudorSetup', null,
             function (data) {
                 setupData = data;
-                app.core.Lookups(['MonedasPorRamo.cod_mon', 'FrecuenciaDePagoPorRamo.cod_fracc_pago', 'TRON_G2990004.COD_MODALIDAD_RIESGO', 'TRON_G2990006:COD_CIA_ORI.COD_CIA_ORI', 'TRON_G2990006:TIP_NEGOCIO.TIP_NEGOCIO', 'TRON_G7000210.COD_ENF_EXC', 'TRON_G1010031:COD_TIP_EXC.COD_TIP_EXC'],
+
+                let lookupList = [
+                    'MonedasPorRamo.cod_mon',
+                    'FrecuenciaDePagoPorRamo.cod_fracc_pago',
+                    'TRON_G2990004.COD_MODALIDAD_RIESGO',
+                    'TRON_G2990006:COD_CIA_ORI.COD_CIA_ORI',
+                    'TRON_G2990006:TIP_NEGOCIO.TIP_NEGOCIO',
+                    'TRON_G7000210.COD_ENF_EXC',
+                    'TRON_G1010031:COD_TIP_EXC.COD_TIP_EXC'];
+
+                if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
+                    lookupList.push('MM_POLIZA_GRUPO.contrato');
+                    $('#polizagrupoZone').removeClass('d-none');
+                }
+
+                setupData = JSON.parse(JSON.stringify(data));
+
+                app.core.Lookups(lookupList,
                     function () {
                         setupData = data;
                         MapObjectToInput(data);
@@ -18,6 +43,43 @@ app.CotizacionSaldoDeudor = (function () {
                     }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}`);
 
             });
+
+        $('#cod_mon').on('change', function () {
+            if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
+                let cod_mon = app.ui.GetDropDownNumericValue('#cod_mon');
+                let lookupList = ['MM_POLIZA_GRUPO.contrato'];
+                app.ui.DropDownDisabled('#subcontrato', true, true);
+                app.core.Lookups(lookupList,
+                    function () {
+                        SettingReload();
+                    }, `cod_ramo=${setupData.cod_ramo}:cod_mon=${cod_mon}`);
+            }
+            else {
+                //app.core.LookupDependency($('select#moneda').val(), 'sARespcivil', 'SumasAseguradasRC', '', null, false, null, `cod_ramo=${setupData.cod_ramo}:cod_mon=`);
+            }
+            app.ui.SetNumericValue('#IMP_SLD_ACTUAL', 0);
+            app.ui.SetNumericValue('#IMP_MONTO_ORI', 0);
+        });
+
+        $('#contrato').on('change', function () {
+            let contracto = app.ui.GetDropDownNumericValue('#contrato');
+
+            if (contracto > 0) {
+                setupData.polizagrupo = app.core.Data().lookups.filter(i => i.Key === 'MM_POLIZA_GRUPO')[0].Lkp.filter(l => l.Code === contracto + '')[0].NUM_POLIZA;
+            }
+
+            SettingReload();
+
+            app.core.LookupDependency($('select#contrato').val(), 'subcontrato', 'MM_SUB_CONTRATOS', '', null, true,
+                function (lkpData) {
+
+                    app.ui.DropDownDisabled('#subcontrato', lkpData && lkpData.length == 0);
+                },
+                `cod_ramo=${setupData.cod_ramo}:num_contrato=`);
+        });
+
+        $('#IMP_GASTOS_EMISION').prop('disabled', true);
+        
     };
 
     function Dynamic_Event_Controls() {
@@ -55,6 +117,7 @@ app.CotizacionSaldoDeudor = (function () {
             NOM_NEGOCIO_MIGRADO: $('label[for=MCA_NEGOCIO_MIGRADO_' + app.ui.GetRadioStringValue('MCA_NEGOCIO_MIGRADO') + ']').html(),
             COD_CIA_ORI: app.ui.GetDropDownStringValue('#COD_CIA_ORI'),
             FEC_EMISION_ORI: app.ui.GetDateValue('#FEC_EMISION_ORI'),
+            NUM_POLIZA_ORI: $('#NUM_POLIZA_ORI').val(),
             IMP_MONTO_ORI: app.ui.GetNumericValue('#IMP_MONTO_ORI'),
             IMP_SLD_ACTUAL: app.ui.GetNumericValue('#IMP_SLD_ACTUAL'),
             NUM_PRESTAMO: $('#NUM_PRESTAMO').val(),
@@ -65,11 +128,15 @@ app.CotizacionSaldoDeudor = (function () {
             PCT_DTO_COMERCIAL: app.ui.GetNumericValue('#PCT_DTO_COMERCIAL'),
             PCT_DCTO_TECNICO: app.ui.GetNumericValue('#PCT_DCTO_TECNICO'),
             FEC_PRIM_FINAN: app.ui.GetDateValue('#FEC_PRIM_FINAN'),
+            FEC_VCTO_PRESTAMO: app.ui.GetDateValue('#FEC_VCTO_PRESTAMO'),
             enfermedadesexcluidas: $('#enfermedadesexcluidasTbl').bootstrapTable('getData'),
             coberturas: $('#coberturasTbl').bootstrapTable('getData'),
             plandepago: $('#plandepagoTbl').bootstrapTable('getData'),
+            num_contrato: app.ui.GetDropDownNumericValue('#contrato'),
+            num_subcontrato: app.ui.GetDropDownNumericValue('#subcontrato'),
+            num_poliza_grupo: setupData.polizagrupo
         };
-
+        
         data.coberturas.forEach(function (currentValue, index) {
             if (currentValue.edtCapital)
                 currentValue.capital = app.ui.GetNumericValue('#CapitalRow_' + index);
@@ -97,6 +164,7 @@ app.CotizacionSaldoDeudor = (function () {
         $('#COD_CIA_ORI').val(data.COD_CIA_ORI);
         app.ui.SetDropDownNumericValue('#COD_CIA_ORI', data.COD_CIA_ORI, true);
         app.ui.SetDateValue('#FEC_EMISION_ORI', data.FEC_EMISION_ORI);
+        $('#NUM_POLIZA_ORI').val(data.NUM_POLIZA_ORI);
         app.ui.SetNumericValue('#IMP_MONTO_ORI', data.IMP_MONTO_ORI);
         app.ui.SetNumericValue('#IMP_SLD_ACTUAL', data.IMP_SLD_ACTUAL);
         $('#NUM_PRESTAMO').val(data.NUM_PRESTAMO);
@@ -107,6 +175,7 @@ app.CotizacionSaldoDeudor = (function () {
         app.ui.SetNumericValue('#PCT_DTO_COMERCIAL', data.PCT_DTO_COMERCIAL);
         app.ui.SetNumericValue('#PCT_DCTO_TECNICO', data.PCT_DCTO_TECNICO);
         app.ui.SetDateValue('#FEC_PRIM_FINAN', data.FEC_PRIM_FINAN);
+        app.ui.SetDateValue('#FEC_VCTO_PRESTAMO', data.FEC_VCTO_PRESTAMO);
         if (data.enfermedadesexcluidas != null)
             $('#enfermedadesexcluidasTbl').bootstrapTable('load', data.enfermedadesexcluidas);
         else
@@ -115,7 +184,7 @@ app.CotizacionSaldoDeudor = (function () {
             $('#coberturasTbl').bootstrapTable('load', data.coberturas);
         else
             $('#coberturasTbl').bootstrapTable('load', {});
-        Coberturas_ManejoGeneral();
+            Coberturas_ManejoGeneral();
         if (data.plandepago != null)
             $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
         else
@@ -222,6 +291,10 @@ app.CotizacionSaldoDeudor = (function () {
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
+        $('#FEC_VCTO_PRESTAMO_group').datetimepicker({
+            format: 'DD/MM/YYYY',
+            locale: 'es'
+        });
         $('#FEC_INI_EXC_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es'
@@ -234,16 +307,21 @@ app.CotizacionSaldoDeudor = (function () {
         $("#cotizar").appendTo("#GenericToolBar");
         $("#limpiar").appendTo("#GenericToolBar");
 
-        $('#IMP_MONTO_ORI').change(function () {
-            let value = app.ui.GetNumericValue('#IMP_MONTO_ORI');
+        $('#IMP_SLD_ACTUAL').change(function () {
+            let value = app.ui.GetNumericValue('#IMP_SLD_ACTUAL');
             // 4001	A - MUERTE POR CUALQUIER CAUSA
             app.ui.SetNumericValue('#CapitalRow_0', value);
+            // 4002	INCAPACIDAD TOTAL Y PERMANENTE
+            app.ui.SetNumericValue('#CapitalRow_1', value);
+            
         });
 
         $('#COD_ENF_EXC').select2({
             width: '100%', theme: 'bootstrap4', dropdownParent: $("#enfermedadesexcluidasModal .modal-content"),
             language: { noResults: function () { return "No hay resultado"; }, searching: function () { return "Buscando.."; } }
         });
+
+      
     };
 
     function Controls_Events() {
@@ -288,7 +366,7 @@ app.CotizacionSaldoDeudor = (function () {
 
         $('#emitir').click(function () {
             event.preventDefault();
-            window.location.replace(app.setting.basepath + 'emision/SaldoDeudor?presupuesto=' + quoteData.presupuesto);
+            window.location.replace(app.setting.basepath + 'emision/SaldoDeudor?presupuesto=' + quoteData.presupuesto + workMode);
         });
     };
 
@@ -296,6 +374,55 @@ app.CotizacionSaldoDeudor = (function () {
         if (changedCallback !== undefined && changedCallback !== null)
             changedCallback(MapInputToObject());
     };
+
+    function SettingReload() {
+        var data = {
+            cod_ramo: setupData.cod_ramo,
+            num_contrato: app.ui.GetDropDownNumericValue('#contrato'),
+            num_subcontrato: app.ui.GetDropDownNumericValue('#subcontrato'),
+            num_poliza_grupo: setupData.polizagrupo,
+            cod_mon: app.ui.GetDropDownNumericValue('#cod_mon')
+        };
+
+        $('#coberturasTbl').bootstrapTable('showLoading');
+
+        app.core.Get(app.setting.apipath + 'v1/Quote/SaldoDeudorSettings?' + `cod_ramo=${data.cod_ramo}&num_contrato=${data.num_contrato}&num_subcontrato=${data.num_subcontrato}&num_poliza_grupo=${data.num_poliza_grupo}&cod_mon=${data.cod_mon}`)
+            .done(function (settingData) {
+
+                app.ui.SetDateValue('#fec_vcto_poliza', app.ui.GetDateValue('#fec_efec_poliza'))
+                app.ui.SetDateValue('#fec_vcto_poliza', settingData.fec_vcto_poliza);
+
+                //if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
+                //    $('#fec_vcto_poliza').prop('disabled', true);
+                //}
+
+                //Fraccionamiento
+                if (settingData.cod_fracc_pago > 0) {
+                    $('#cod_fracc_pago').val(settingData.cod_fracc_pago);
+                    $('#cod_fracc_pago').prop('disabled', true);
+                } else {
+                    $('#cod_fracc_pago').prop('disabled', false);
+                }
+                //Modalidad
+                app.ui.LookupLoad('COD_MODALIDAD_RIESGO', settingData.COD_MODALIDAD_RIESGO);
+
+                //Tipo Negocio
+                app.ui.LookupLoad('TIP_NEGOCIO', settingData.TIP_NEGOCIO);
+                
+                if (settingData.coberturas != null) {
+                    $('#coberturasTbl').bootstrapTable('load', settingData.coberturas);
+                    Coberturas_ManejoGeneral();
+                }
+                else {
+                    $('#coberturasTbl').bootstrapTable('load', {});
+                    Coberturas_ManejoGeneral();
+                }
+                
+                }).always(function () {
+                    $('#coberturasTbl').bootstrapTable('hideLoading');
+                });
+            }
+               
 
     function Setup_Validations() {
         app.ui.DateValidators();
@@ -309,13 +436,20 @@ app.CotizacionSaldoDeudor = (function () {
                 fec_vcto_poliza: { required: true },
                 FEC_NACIMIENTO: { required: true },
                 MCA_SEXO: { required: true },
+                NUM_ESTATURA_CM: { required: true, Numeric: true },
+                NUM_PESO: { required: true, Numeric: true },
                 COD_MODALIDAD_RIESGO: { required: true },
                 MCA_NEGOCIO_MIGRADO: { required: true },
-                COD_CIA_ORI: { required: true },
-                FEC_EMISION_ORI: { required: true },
+                COD_CIA_ORI: { required: false },
+                FEC_EMISION_ORI: { required: false },
                 IMP_MONTO_ORI: { required: true, Numeric: true },
+                IMP_SLD_ACTUAL: { required: true, Numeric: true },
                 NUM_PRESTAMO: { required: true },
                 TIP_NEGOCIO: { required: true },
+                FEC_PRIM_FINAN: { required: true },
+                FEC_VCTO_PRESTAMO: { required: true },
+                contrato: { required: true },
+                subcontrato: { required: true }
             },
             messages: {
                 cod_mon: { required: 'Debe indicar la moneda' },
@@ -325,12 +459,19 @@ app.CotizacionSaldoDeudor = (function () {
                 FEC_NACIMIENTO: { required: 'Debe indicar la fecha de nacimiento' },
                 MCA_SEXO: { required: 'Debe indicar el sexo' },
                 COD_MODALIDAD_RIESGO: { required: 'Debe indicar la modalidad de riesgo' },
+                NUM_ESTATURA_CM: { required: 'Debe indicar la estatura en centímetros', Numeric: 'Debe indicar la estatura en centímetros' },
+                NUM_PESO: { required: 'Debe indicar el peso', Numeric: 'Debe indicar el peso' },
                 MCA_NEGOCIO_MIGRADO: { required: 'Debe indicar si es un negocio migrado' },
                 COD_CIA_ORI: { required: 'Debe indicar la compañía original' },
                 FEC_EMISION_ORI: { required: 'Debe indicar la fecha de emisión original' },
                 IMP_MONTO_ORI: { required: 'Debe indicar el monto original del préstamo', Numeric: 'Debe indicar el monto original del préstamo' },
+                IMP_SLD_ACTUAL: { required: 'Debe indicar el monto del saldo actual', Numeric: 'Debe indicar el monto del saldo actual' },
                 NUM_PRESTAMO: { required: 'Debe indicar el número de préstamo' },
                 TIP_NEGOCIO: { required: 'Debe indicar el tipo de negocio' },
+                FEC_PRIM_FINAN: { required: 'Debe indicar el Inicio del Prestamo' },
+                FEC_VCTO_PRESTAMO: { required: "Debe indicar el Vencimiento del Prestamo" },
+                contrato: { required: 'Debe indicar el contrato' },
+                subcontrato: { required: 'Debe indicar el subcontrato' }
             }
         });
     };
@@ -378,7 +519,7 @@ app.CotizacionSaldoDeudor = (function () {
                     visible: true
                 }, {
                     field: 'capital',
-                    title: 'Capital',
+                    title: 'Suma Asegurada',
                     titleTooltip: '',
                     sortable: false,
                     halign: 'center',
@@ -478,7 +619,7 @@ app.CotizacionSaldoDeudor = (function () {
                     visible: true
                 }, {
                     field: 'recardoporfraccionamiento',
-                    title: 'Recardo por fraccionamiento',
+                    title: 'Recargo por fraccionamiento',
                     titleTooltip: '',
                     sortable: false,
                     halign: 'center',
@@ -556,7 +697,12 @@ app.CotizacionSaldoDeudor = (function () {
                 if (!currentValue.requerida)
                     $('#CapitalRow_' + index).prop('disabled', !currentValue.seleccionado);
                 if (currentValue.capital == null || currentValue.capital == 0)
-                    app.ui.SetNumericValue('#CapitalRow_' + index, '');
+                    if (currentValue.codigo == 4001 || currentValue.codigo == 4002)
+                        app.ui.SetNumericValue('#CapitalRow_' + index, app.ui.GetNumericValue('#IMP_MONTO_ORI'));
+                    else {
+                        app.ui.SetNumericValue('#CapitalRow_' + index, '');
+                        document.getElementById("CapitalRow_"+ index).disabled = false;
+                    }
                 else
                     app.ui.SetNumericValue('#CapitalRow_' + index, currentValue.capital);
             }
@@ -593,12 +739,15 @@ app.CotizacionSaldoDeudor = (function () {
         $('[name=btSelectAll]').prop('disabled', true);
         Coberturas_ManejoGeneral2();
     };
-
+        
     function Quote() {
         app.core.Post(app.setting.apipath + 'v1/Quote/SaldoDeudorQuote',
             JSON.stringify(MapInputToObject()),
             function (data) {
                 quoteData = data;
+
+                app.ui.SetNumericValue('#NUM_IMC', data.NUM_IMC);
+
                 if (!app.ui.NotifyErrors(data.Mensaje, data.Errors, '#SaldoDeudorEdtForm')) {
                     $('#presupuesto').html(data.presupuesto);
                     $('#coberturasRow').removeClass('d-none');
@@ -639,6 +788,45 @@ app.CotizacionSaldoDeudor = (function () {
             });
     }
 
+    function pre_imc_change_peso() {
+
+        $('#NUM_PESO').on('change', function () {
+
+            let estatura = $('#NUM_ESTATURA_CM').val();
+            let peso = $('#NUM_PESO').val();
+
+            app.core.Get(app.setting.apipath + 'v1/Quote/SaldoDeudorPreIMC?' + `estatura=${estatura}&peso=${peso}`)
+                .done(function (settingData) {
+                    app.ui.SetNumericValue('#NUM_IMC', settingData.NUM_IMC);
+                });
+        });
+
+    };
+
+    function pre_imc_change_estatura() {
+
+        $('#NUM_ESTATURA_CM').on('change', function () {
+
+            let estatura = $('#NUM_ESTATURA_CM').val();
+            let peso = $('#NUM_PESO').val();
+
+            app.core.Get(app.setting.apipath + 'v1/Quote/SaldoDeudorPreIMC?' + `estatura=${estatura}&peso=${peso}`)
+                .done(function (settingData) {
+                    app.ui.SetNumericValue('#NUM_IMC', settingData.NUM_IMC);
+                });
+        });
+
+    };
+
+    function suma_aseg_lim() {
+        if (localStorage.getItem('Roles').includes('Coopenae-Credecoop')) {
+
+            if ((val_moneda = 1 && suma_asegurada > 60000000) || (val_moneda = 2 && suma_asegurada > 100000)) {
+
+            }
+        }
+    }
+
     return {
         Init: function () {
             try {
@@ -650,7 +838,8 @@ app.CotizacionSaldoDeudor = (function () {
                 plandepagoporfrecuencia_table_setup();
 
                 Controls_Events();
-
+                pre_imc_change_peso();
+                pre_imc_change_estatura();
                 app.core.LoadScriptFile("Cotizacion.SaldoDeudor.enfermedadesexcluidas.js")
                     .then(d => {
                         app.CotizacionSaldoDeudorEnfermedadesExcluidas.Init();

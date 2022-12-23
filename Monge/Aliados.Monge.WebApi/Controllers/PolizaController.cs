@@ -1,4 +1,5 @@
-﻿using Aliados.Monge.Domain.Poliza.Certificado;
+﻿using Aliados.Monge.Application.Poliza;
+using Aliados.Monge.Domain.Poliza.Certificado;
 using Aliados.Monge.Domain.Poliza.Documentos;
 using Microsoft.Web.Http;
 using System;
@@ -24,11 +25,16 @@ namespace Aliados.Monge.WebApi.Controllers
         /// </summary>
         [HttpPost]
         [Route("Emision")]
+        [Authorize]
         [ResponseType(typeof(Domain.Poliza.Emision.Respuesta))]
         public async Task<IHttpActionResult> Emision(Domain.Poliza.Emision.Poliza risk)
         {
-            Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info();
-            return Ok(Application.Poliza.PolizaHandler.Emision(risk).Result);
+            Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info_V2();
+            if (risk == null)
+            {
+                return BadRequest("Debe indicar un objeto Poliza");
+            }
+            return Ok(Application.Poliza.Emision.Handler(risk, tokenInfo).Result);
         }
 
         /// <summary>
@@ -36,11 +42,16 @@ namespace Aliados.Monge.WebApi.Controllers
         /// </summary>
         [HttpPost]
         [Route("Documentos")]
+        [Authorize]
         [ResponseType(typeof(Domain.Poliza.Documentos.RespuestaDocumentos))]
         public async Task<IHttpActionResult> Documentos(Domain.Poliza.Documentos.Documentos documentos)
         {
-            Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info();
-            return Ok(Application.Poliza.PolizaHandler.Documentos(documentos).Result);
+            Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info_V2();
+            if (documentos == null)
+            {
+                return BadRequest("Debe indicar un objeto Documentos");
+            }
+            return Ok(Application.Poliza.Documentos.Handler(documentos, tokenInfo).Result);
         }
 
         /// <summary>
@@ -48,11 +59,16 @@ namespace Aliados.Monge.WebApi.Controllers
         /// </summary>
         [HttpPost]
         [Route("Certificado")]
+        [Authorize]
         [ResponseType(typeof(Domain.Poliza.Certificado.RespuestaCertificado))]
         public async Task<IHttpActionResult> Certificado(Domain.Poliza.Certificado.Certificado certificado)
         {
-            Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info();
-            return Ok(Application.Poliza.PolizaHandler.Certificado(certificado).Result);
+            Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info_V2();
+            if (certificado == null)
+            {
+                return BadRequest("Debe indicar un objeto Certificado");
+            }
+            return Ok(Application.Poliza.Certificado.Handler(certificado, tokenInfo).Result);
         }
 
         /// <summary>
@@ -60,11 +76,16 @@ namespace Aliados.Monge.WebApi.Controllers
         /// </summary>
         [HttpPost]
         [Route("Cancelacion")]
+        [Authorize]
         [ResponseType(typeof(Domain.Poliza.Cancelacion.RespuestaCancelacion))]
         public async Task<IHttpActionResult> Cancelacion(Domain.Poliza.Cancelacion.SolicitudDeCancelacion solicitud)
         {
-            Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info();
-            return Ok(Application.Poliza.PolizaHandler.Cancelacion(solicitud).Result);
+            Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info_V2();
+            if (solicitud == null)
+            {
+                return BadRequest("Debe indicar un objeto SolicitudDeCancelacion");
+            }
+            return Ok(Application.Poliza.Cancelacion.Handler(solicitud, tokenInfo).Result);
         }
 
         /// <summary>
@@ -72,11 +93,16 @@ namespace Aliados.Monge.WebApi.Controllers
         /// </summary>
         [HttpPost]
         [Route("Consulta")]
+        [Authorize]
         [ResponseType(typeof(Domain.Poliza.Consulta.RespuestaConsulta))]
         public async Task<IHttpActionResult> Consulta(Domain.Poliza.Consulta.Solicitud solicitud)
         {
-            Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info();
-            return Ok(Application.Poliza.PolizaHandler.Consulta(solicitud).Result);
+            Architect.API.Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info_V2();
+            if (solicitud == null)
+            {
+                return BadRequest("Debe indicar un objeto Solicitud");
+            }
+            return Ok(Application.Poliza.Consulta.Handler(solicitud, tokenInfo).Result);
         }
     }
 }

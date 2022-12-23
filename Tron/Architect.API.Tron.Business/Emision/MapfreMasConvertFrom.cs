@@ -9,6 +9,7 @@ namespace Architect.API.Tron.Business.Emision
     {
         internal static Contracts.Emision.MapfreMas Quote(Contracts.Emision.MapfreMas quoteInfo, Architect.API.Tron.Contracts.Poliza.DatoFijo tronQuoteInfo)
         {
+            quoteInfo.num_poliza = tronQuoteInfo.num_poliza;
 
             if (tronQuoteInfo.Calculado?.Coberturas != null)
             {

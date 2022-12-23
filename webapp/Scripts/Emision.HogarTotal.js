@@ -7,6 +7,14 @@ app.HogarTotal = (function () {
     var rowDocumentosrequeridos = null;
 
     function Setup() {
+
+        if (localStorage.getItem('Roles').includes('Coopenae-Credecoop')) {
+            $('#tipoplan option[value="2"]').prop("selected", true);
+            $('#tipoplan').prop("disabled", true);
+            $("#tipodetercero option[value=0]").remove();
+            $('#tipodetercero option[value="2"]').prop("selected", true);
+        } 
+
         var _id = app.core.URLStringValue('presupuesto');
         if (_id != '') {
             $('#coberturasTbl').bootstrapTable('showLoading');

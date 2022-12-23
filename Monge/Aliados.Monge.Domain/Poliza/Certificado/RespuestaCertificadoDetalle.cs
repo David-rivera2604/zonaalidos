@@ -6,8 +6,16 @@ using System.Threading.Tasks;
 
 namespace Aliados.Monge.Domain.Poliza.Certificado
 {
+    /// <summary>
+    /// Detalle del certificado solicitado.
+    /// </summary>
     public class RespuestaCertificadoDetalle
     {
-        public string certificado { get; set; }
+
+        /// <summary>
+        /// Lista de certificados uno por cada riesgo asegurado.
+        /// </summary>
+        public List<Documento> certificados { get; set; }
+
     }
 }

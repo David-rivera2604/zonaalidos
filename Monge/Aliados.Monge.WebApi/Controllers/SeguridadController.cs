@@ -1,4 +1,5 @@
 ﻿using Architect.API.Core.Contracts.Security;
+using Architect.Utilities.Extensions;
 using Microsoft.Web.Http;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,6 @@ namespace Aliados.Monge.WebApi.Controllers
     /// Autentica y genera un token
     /// </summary>
     [ApiVersion("1.0")]
-    [Authorize]
     [RoutePrefix("api/v{version:apiVersion}/Seguridad")]
     public class SeguridadController : ApiController
     {
@@ -37,12 +37,21 @@ namespace Aliados.Monge.WebApi.Controllers
             if (values != null && values.Count() > 0)
                 secretID = values.FirstOrDefault();
 
+            if (clienteID.IsEmpty())
+            {
+                return BadRequest("Debe indicar un clienteID");
+            }
+            if (secretID.IsEmpty())
+            {
+                return BadRequest("Debe indicar un secretID");
+            }
+
             string IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
             string useragent = Request.Headers.UserAgent.ToString();
 
             Domain.Seguridad.RespuestaSeguridad x1 = Application.Seguridad.SeguridadHandler.Autorizacion(clienteID, secretID, IPAddress, useragent).Result;
 
-            if (x1 != null)
+            if (x1 != null && !x1.access_token.IsEmpty())
             {
                 return Ok(x1);
             }
