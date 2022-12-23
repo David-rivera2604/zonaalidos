@@ -22,7 +22,8 @@ namespace Architect.API.Tron.Business.Cotizacion
         public static Contracts.Cotizacion.SaldoDeudor Setup(Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.Cotizacion.SaldoDeudor result = (Contracts.Cotizacion.SaldoDeudor)Generico.ValoresIniciales(new Contracts.Cotizacion.SaldoDeudor(), COD_RAMO, NOM_PROD, tokenInfo);
-            if(result.coberturas.Where(r => r.codigo==4001) != null){
+            if (result.coberturas.Where(r => r.codigo == 4001) != null)
+            {
                 result.coberturas.Where(r => r.codigo == 4001).First().edtCapital = true;
             }
             if (result.coberturas.Where(r => r.codigo == 4002) != null)
@@ -64,7 +65,7 @@ namespace Architect.API.Tron.Business.Cotizacion
 
             if (tokenInfo.Roles.Contain("PolizaGrupo"))
             {
-                
+
                 Core.Contracts.General.LookupValues contratosMaster = values.Find(x => x.Key == "MM_POLIZA_GRUPO");
                 if (contratosMaster != null)
                 {
@@ -86,7 +87,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 //Coberturas
                 if (num_contrato > 0)
                 {
-                   List<Contracts.Ramo.G2990026> coberturaGrupo = DataAccess.PorRamo.Coberturas_por_contrato2(COD_RAMO, num_contrato);
+                    List<Contracts.Ramo.G2990026> coberturaGrupo = DataAccess.PorRamo.Coberturas_por_contrato2(COD_RAMO, num_contrato);
                     string cod_cobIncludeFilter = Util.Convert_CoverageListToString(coberturaGrupo);
                     result.coberturas = CoverageByDefault(num_contrato, num_subcontrato, num_poliza_grupo, tokenInfo);
                 }
@@ -102,10 +103,10 @@ namespace Architect.API.Tron.Business.Cotizacion
         }
 
 
-            /// <summary>
-            /// Realiza la validación de datos y cálculo necesarios para obtener una cotización o presupuesto de un producto de tipo saldo deudor.
-            /// </summary>
-            public static Contracts.Cotizacion.SaldoDeudor Quote(Contracts.Cotizacion.SaldoDeudor quoteInfo, Core.Contracts.Security.Token tokenInfo)
+        /// <summary>
+        /// Realiza la validación de datos y cálculo necesarios para obtener una cotización o presupuesto de un producto de tipo saldo deudor.
+        /// </summary>
+        public static Contracts.Cotizacion.SaldoDeudor Quote(Contracts.Cotizacion.SaldoDeudor quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.Cotizacion.SaldoDeudor resultInfo = quoteInfo;
 
@@ -136,7 +137,7 @@ namespace Architect.API.Tron.Business.Cotizacion
         /// </summary>
         private static Contracts.Cotizacion.SaldoDeudor LookupComplements(Contracts.Cotizacion.SaldoDeudor quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
-            
+
             return quoteInfo;
         }
 
@@ -172,14 +173,14 @@ namespace Architect.API.Tron.Business.Cotizacion
                                 capital = item.SUMA_ASEG,
                                 primatotal = item.IMP_TOTAL,
                                 deducible = item.NOM_FRANQUICIA
-                                
+
 
                             });
                             if (coberturas.Last().requerida)
                             {
                                 coberturas.Last().seleccionado = true;
                                 coberturas.Last().edtCapital = true;
-                                
+
                             }
                             coberturas.Last().edtCapital = true;
                         }
@@ -196,5 +197,31 @@ namespace Architect.API.Tron.Business.Cotizacion
             return coberturas;
         }
 
+        /// <summary>
+        /// Recupera Calculo de IMC
+        /// </summary>
+        public static Tron.Contracts.Cotizacion.SaldoDeudor calcula_imc(string estatura, string peso, Core.Contracts.Security.Token tokenInfo)
+        {
+            List<Architect.API.Core.Contracts.General.LookupValue> imc_obj;
+            Tron.Contracts.Cotizacion.SaldoDeudor result = new Contracts.Cotizacion.SaldoDeudor();
+
+            estatura = estatura.Replace(".", ",");
+            peso = peso.Replace(".", ",");
+
+            List<string> keys = new List<string> { "PRE_IMC_401" };
+            string url = $"estatura={estatura}:peso={peso}";
+            List<Core.Contracts.General.LookupValues> values = Core.Business.Common.Lkps(string.Join(",", keys), url, tokenInfo);
+
+            imc_obj = values.Find(x => x.Key == "PRE_IMC_401").Lkp;
+
+            foreach (Architect.API.Core.Contracts.General.LookupValue item in imc_obj)
+            {
+                result.NUM_IMC = Convert.ToDouble(item.Code);
+
+            }
+
+            return result;
+
+        }
     }
 }

@@ -788,6 +788,45 @@ app.CotizacionSaldoDeudor = (function () {
             });
     }
 
+    function pre_imc_change_peso() {
+
+        $('#NUM_PESO').on('change', function () {
+
+            let estatura = $('#NUM_ESTATURA_CM').val();
+            let peso = $('#NUM_PESO').val();
+
+            app.core.Get(app.setting.apipath + 'v1/Quote/SaldoDeudorPreIMC?' + `estatura=${estatura}&peso=${peso}`)
+                .done(function (settingData) {
+                    app.ui.SetNumericValue('#NUM_IMC', settingData.NUM_IMC);
+                });
+        });
+
+    };
+
+    function pre_imc_change_estatura() {
+
+        $('#NUM_ESTATURA_CM').on('change', function () {
+
+            let estatura = $('#NUM_ESTATURA_CM').val();
+            let peso = $('#NUM_PESO').val();
+
+            app.core.Get(app.setting.apipath + 'v1/Quote/SaldoDeudorPreIMC?' + `estatura=${estatura}&peso=${peso}`)
+                .done(function (settingData) {
+                    app.ui.SetNumericValue('#NUM_IMC', settingData.NUM_IMC);
+                });
+        });
+
+    };
+
+    function suma_aseg_lim() {
+        if (localStorage.getItem('Roles').includes('Coopenae-Credecoop')) {
+
+            if ((val_moneda = 1 && suma_asegurada > 60000000) || (val_moneda = 2 && suma_asegurada > 100000)) {
+
+            }
+        }
+    }
+
     return {
         Init: function () {
             try {
@@ -799,7 +838,8 @@ app.CotizacionSaldoDeudor = (function () {
                 plandepagoporfrecuencia_table_setup();
 
                 Controls_Events();
-
+                pre_imc_change_peso();
+                pre_imc_change_estatura();
                 app.core.LoadScriptFile("Cotizacion.SaldoDeudor.enfermedadesexcluidas.js")
                     .then(d => {
                         app.CotizacionSaldoDeudorEnfermedadesExcluidas.Init();

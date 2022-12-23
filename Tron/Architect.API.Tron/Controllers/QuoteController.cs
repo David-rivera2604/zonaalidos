@@ -1,5 +1,6 @@
 ﻿using Microsoft.Web.Http;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -363,6 +364,26 @@ namespace Architect.API.Tron.Controllers
             await Task.Run(() =>
             {
                 result = Architect.API.Tron.Business.Cotizacion.SaldoDeudor.Settings(cod_ramo, num_contrato, num_subcontrato, num_poliza_grupo, cod_mon, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Recupera calculo del imc de acuerdo al peso y estatura del asegurado
+        /// </summary>
+        /// <param name="estatura"></param>
+        /// <param name="peso"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("SaldoDeudorPreIMC")]
+        public async Task<IHttpActionResult> SaldoDeudorPreIMC(string estatura, string peso)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Tron.Contracts.Cotizacion.SaldoDeudor result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Cotizacion.SaldoDeudor.calcula_imc(estatura, peso, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
