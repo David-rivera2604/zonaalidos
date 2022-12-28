@@ -29,57 +29,59 @@
 		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	<!-- End Google Tag Manager (noscript) -->
 	
-    <div id="wrapper">
-        <nav class="navbar-default navbar-static-side " role="navigation">
-            <div class="sidebar-collapse">
-                <ul class="nav metismenu" id="side-menu">
-                    <li class="nav-header">
-                        <div class="dropdown profile-element">
-                            <img alt="image" src="~/logos/logo-core-alt.svg" id="tenantLogo">
-                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                                <span class="block m-t-xs font-bold" id="UserNameMaster"></span>
-                                <span class="text-muted text-xs block"><span id="TenantMaster">menu</span> <b class="caret"></b></span>
-                            </a>
-                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                                <li><a class="dropdown-item" href="~/Security/ChangePassword" title="Permite el cambio de la clave de acceso del usuario conectado">Cambio de clave de acceso</a></li>
-                                <li><a class="dropdown-item" href="~/Security/Login" title="Permite terminar la sesión del usuario">Desconectar</a></li>
-                            </ul>
-                        </div>
-                        <div class="logo-element">
-                            IN+
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-
+        <div id="wrapper">
         <div id="page-wrapper" class="gray-bg">
-            <div class="row border-bottom">
-                <nav class="navbar navbar-fixed-top white-bg" role="navigation" style="margin-bottom: 0">
-                    <div class="navbar-header">
-                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#">
-                            <i class="fa fa-bars"></i>
+            <div class="head_prin">
+                <div class="head_line">
+                    <div id="imgHead" class="imgHeadMapfre">
+                        <img src="../app/img/logohorizontal.jpg"
+                             style="width: 190px; height: auto;" alt="logoMAPFRE">
+                        <a href="#" class="quest_mob" id="showHelp" title="Despliega la ayuda de la aplicación" style="
+						position: absolute;
+						right: 25px;
+						top:10px;">
+                            <i class="fa fa-question"></i>
                         </a>
                     </div>
+                    <div class="hList" id="side-menu" role="navigation" style="margin-bottom: 0">
+					</div>
+                </div>
+                <div class="rig_head">
+                    <div class="aliados">
+                        <div class="usua_head">
+                            <span class="block m-t-xs font-bold" id="UserNameMaster"></span>
+                            <ul class="hList rh">
+                                <nav id="megamenu" class="megamenu megamenu_desktop">
+                                    <div href="#click" class="menu dropdown">
+                                        <ul id="megamenu_level__1" class="level_1 sf-js-enabled sf-arrows">
+                                            <li class="level_1__item level_2__small" style="display: inline-block;">
+                                                <a data-toggle="dropdown" class="level_1__link sf-with-ul " href="#">
+                                                    <span class="block dropdown-toggle"><span id="TenantMaster">menu</span></span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <ul class="menu-dropdown">
+                                            <li>
+                                                <a href="~/Security/Login" title="Permite terminar la sesión del usuario">
+                                                    <i class="fa fa-sign-out"></i> <span class="d-none d-sm-inline">Desconectar </span>
+                                                </a>
+                                            </li>
+                                            <li><a class="dropdown-item" href="~/Security/ChangePassword" title="Permite el cambio de la clave de acceso del usuario conectado">Cambio de clave de acceso</a></li>
+                                        </ul>
+                                    </div>
+                                </nav>
+                            </ul>
 
-                    <ul class="nav navbar-top-links navbar-right">
-                        <li>
-                            <span id="GenericToolBar">
-                            </span>
-                        </li>
-                        <li>
-                            <a href="#" id="showHelp" title="Despliega la ayuda de la aplicación">
-                                <i class="fa fa-question"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="~/Security/Login" title="Permite terminar la sesión del usuario">
-                                <i class="fa fa-sign-out"></i> <span class="d-none d-sm-inline">Desconectar </span>
-                            </a>
-                        </li>
-                    </ul>
+                        </div>
 
-                </nav>
+                        <div class="circulo">
+                            <div class="dropdown profile-element">
+                                <img alt="image" src="~/logos/logo-core-alt.svg" id="tenantLogo">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
             <div class="wrapper wrapper-content animated fadeInRight">
                 <div class="row">
@@ -93,7 +95,7 @@
                 <div>
                     <strong title="1.6.7">
                         &copy;
-                    </strong> 2020 MAPFRE. Todos los derechos reservados.
+                    </strong> 2023 MAPFRE. Todos los derechos reservados.
                 </div>
             </div>
             <div id="right-sidebar" class="animated slideInRight ">
@@ -104,7 +106,7 @@
                             </div>
                             <div class="ibox-tools">
                                 <a class="close-link-sidebar" href="">
-                                    <i class="fa fa-times"></i>
+                                    <i class="fa fa-times-circle"></i>
                                 </a>
                             </div>
                         </div>

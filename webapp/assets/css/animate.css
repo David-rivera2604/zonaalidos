@@ -1050,9 +1050,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 .fadeInDown {
+
     -webkit-animation-name: fadeInDown;
     animation-name: fadeInDown;
 }
+
 
 @-webkit-keyframes fadeInDownBig {
     0% {

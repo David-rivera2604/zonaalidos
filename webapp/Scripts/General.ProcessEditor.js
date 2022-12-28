@@ -74,9 +74,7 @@ app.GeneralProcessEditor = (function () {
                     }
                 });
 
-                $('.full-height-scroll').slimscroll({
-                    height: '100%'
-                })
+
             });
     };
 

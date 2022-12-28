@@ -3,33 +3,6 @@
     border-bottom: 1px solid #e7eaec !important;
 }
 
-.ibox-title {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    background-color: #ffffff;
-    border-color: #e7eaec;
-    border-image: none;
-    border-style: solid solid none;
-    border-width: 1px;
-    color: inherit;
-    margin-bottom: 0;
-    padding: 15px 90px 8px 15px;
-    min-height: 48px;
-    position: relative;
-    clear: both;
-}
-
-.ibox-content {
-    background-color: #ffffff;
-    color: inherit;
-    padding: 15px 20px 20px 20px;
-    border-color: #e7eaec;
-    border-image: none;
-    border-style: solid solid none;
-    border-width: 1px;
-}
 
 .required-mark {
     font-size: 11px;
@@ -249,7 +222,6 @@ fieldset[disabled] {
 
 
 .loginBackground {
-    background-image: url('/aliados/images/landing.jpg');
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -288,13 +260,6 @@ fieldset[disabled] {
     font-weight: bold;
 }
 
-#forgotlink > small {
-    color: black;
-}
-
-.m-t > small {
-    color: black;
-}
 
 .table-in-form thead th {
     color: #676a6c;
@@ -658,3 +623,143 @@ span.columnBtn {
         .grid-control:disabled::placeholder {
             color: transparent;
         }
+
+
+
+/*Contenido agregado por practicante*/
+
+
+html, body {
+    flex-direction: column;
+    height: 100%;
+}
+
+html {
+    padding: 10px;
+    padding-left: 0;
+}
+
+#cont_log {
+    flex: 1;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.caja_prin {
+    display: flex;
+    background: #33394400;
+    width: 100%;
+    height: 100%;
+}
+
+.caja {
+    background: #33394400;
+    width: 50%;
+    height: 100%;
+}
+
+.img {
+    background-color: #a5a5a5
+}
+
+.control-label-content {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.control-label {
+    font-size: 13px;
+    top: -10px !important;
+    border-radius: 5px;
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    left: 15px;
+    top: 11px;
+    padding: 0 5px;
+    background: #fff;
+    transition: 0.2s ease all;
+    z-index: 3;
+}
+
+
+#MCA_VR {
+    position: relative;
+    top: 6px;
+}
+
+#CLIENTE_NUEVO {
+    position: relative;
+    top: 6px;
+}
+
+#CERO_KM {
+    position: relative;
+    top: 6px;
+}
+
+#AUTO_GPS {
+    position: relative;
+    top: 6px;
+}
+
+#HogarTotal {
+    position: relative;
+    top: 6px;
+}
+
+#AUTO_GPS_CMS {
+    position: relative;
+    top: 6px;
+}
+
+#EXTIN_INC {
+    position: relative;
+    top: -7px;
+}
+
+#tipo_producto {
+    position: relative;
+    top: -7px;
+}
+
+#KM {
+    position: relative;
+    top: -7px;
+}
+
+#GPS {
+    position: relative;
+    top: -7px;
+}
+
+#MONITOREO_GPS {
+    position: relative;
+    top: -7px;
+}
+
+#MCA_PRA {
+    position: relative;
+    top: -7px;
+}
+
+#VR {
+    position: relative;
+    top: -7px;
+}
+
+#DESC_CLIENTE_NUEVO {
+    position: relative;
+    top: -7px;
+}
+
+#GPS_CMS {
+    position: relative;
+    top: -7px;
+}

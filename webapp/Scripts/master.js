@@ -52,7 +52,7 @@ app.master = (function () {
             });
 
             if (menuItems.length > 0) {
-                sideMenu.append('<li id="' + itemParent.Code + '"' + isActiveClass + '><a href="#" aria-expanded="false"><i class="' + itemParent.SmallImage + '"></i><span class="nav-label">' + itemParent.Title + '</span><span class="fa arrow"></span></a><ul class="nav nav-second-level collapse" aria-expanded="false"></ul></li>');
+                sideMenu.append('<nav class="megamenu megamenu_desktop" id="' + itemParent.Code + '"' + isActiveClass + '><div class="menu dropdown"><ul class="level_1 sf-js-enabled sf-arrows" >  <li class="level_1__item level_2__small" style="display: inline-block;"> <a class="level_1__link  dropdown-toggle"' + '" title="' + itemParent.Description + '">' + '<i class="' + itemParent.SmallImage + '"></i> ' + (itemParent.MenuTitle === '' ? itemParent.Title : itemParent.MenuTitle) + '</a></li></ul><ul class="menu-dropdown" aria-expanded="false"></ul></div></nav>');
             }
             else {
                 if (path === app.setting.basepath + itemParent.URLPath)
@@ -66,7 +66,7 @@ app.master = (function () {
                 } else {
                     href = app.setting.basepath + itemParent.URLPath;
                 }
-                sideMenu.append('<li id="' + itemParent.Code + '"' + isActiveClass + '><a href="' + href + '" title="' + itemParent.Description + '">' + '<i class="' + itemParent.SmallImage + '"></i>' + (itemParent.MenuTitle === '' ? itemParent.Title : itemParent.MenuTitle) + '</a></li>');
+                sideMenu.append('<nav class="megamenu megamenu_desktop" id="' + itemParent.Code + '"' + isActiveClass + '><div class="menu"><ul class="level_1 sf-js-enabled sf-arrows" >  <li class="level_1__item level_2__small" style="display: inline-block;"> <a class="level_1__link" href="' + href + '" title="' + itemParent.Description + '">' + '<i class="' + itemParent.SmallImage + '"></i> '+ (itemParent.MenuTitle === '' ? itemParent.Title : itemParent.MenuTitle) + '</a></li></ul></div></nav>');
             }
             var itemObj = sideMenu.find('#' + itemParent.Code + ' ul');
 
@@ -88,7 +88,7 @@ app.master = (function () {
                 } else {
                     href = app.setting.basepath + item.URLPath;
                 }
-                itemObj.append('<li id="' + item.Code + '"' + isActiveClass + '><a href="' + href + '" title="' + item.Description + '">' + '<i class="' + item.SmallImage + '"></i>' + (item.MenuTitle === '' ? item.Title : item.MenuTitle) + '</a></li>');
+                itemObj.append('<li id="' + item.Code + '"' + isActiveClass + '><a  href="' + href + '" title="' + item.Description + '">' + '<i class="' + item.SmallImage + '"></i> ' + (item.MenuTitle === '' ? item.Title : item.MenuTitle) + '</a></li>');
             });
         });
         sideMenu.metisMenu();
