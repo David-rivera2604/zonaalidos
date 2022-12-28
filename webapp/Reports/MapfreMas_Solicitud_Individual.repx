@@ -2405,7 +2405,7 @@
       </Controls>
       <StylePriority Ref="1241" UseFont="false" UsePadding="false" />
     </Item3>
-    <Item4 Ref="1242" ControlType="DetailReportBand" Name="KYCPersona" Level="1" DataSource="#Ref-0" PageBreak="BeforeBand">
+    <Item4 Ref="1242" ControlType="DetailReportBand" Name="KYCPersona" Level="1" DataSource="#Ref-0" Expanded="false" PageBreak="BeforeBand">
       <Bands>
         <Item1 Ref="1243" ControlType="DetailBand" Name="Detail1" Expanded="false" HeightF="992.8452">
           <Controls>
@@ -2938,7 +2938,7 @@
         <Item1 Ref="1542" EventName="BeforePrint" PropertyName="Visible" Expression="[titular].[DocumentNumberType]!=4" />
       </ExpressionBindings>
     </Item4>
-    <Item5 Ref="1543" ControlType="DetailReportBand" Name="KYCJuridico" Level="2" PageBreak="BeforeBand">
+    <Item5 Ref="1543" ControlType="DetailReportBand" Name="KYCJuridico" Level="2" Expanded="false" PageBreak="BeforeBand">
       <Bands>
         <Item1 Ref="1544" ControlType="DetailBand" Name="Detail2" HeightF="1049.22241">
           <Controls>
