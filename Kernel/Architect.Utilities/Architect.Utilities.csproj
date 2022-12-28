@@ -57,6 +57,7 @@
     <Compile Include="Extensions\DataTableExtensions.cs" />
     <Compile Include="Extensions\DecimalExtensions.cs" />
     <Compile Include="Extensions\DoubleExtensions.cs" />
+    <Compile Include="Extensions\JObjectExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\Int64Extensions.cs" />
     <Compile Include="Extensions\IntExtensions.cs" />
