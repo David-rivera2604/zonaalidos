@@ -50,7 +50,7 @@ namespace Architect.API.Tron.DataAccess
             if (cod_agt > 0)
             {
                 filter = " AND a30.COD_AGT = :COD_AGT";
-                parameters = Database.ParameterList().AddParameter("COD_AGT", DbType.Decimal, 5, cod_agt).Parameters;
+                parameters = Database.ParameterList().AddParameter("COD_AGT", DbType.Decimal, 7, cod_agt).Parameters;
             }
             else
             {
