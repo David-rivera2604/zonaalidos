@@ -730,7 +730,7 @@ namespace Architect.API.Tron.Business.Emision
             {
                 new Compliance.Integrations.Contracts.Clientespoliza()
                 {
-                    numeroPoliza = quoteInfo.presupuesto,
+                    numeroPoliza = quoteInfo.num_poliza,
                     descripcionPoliza = "MapfreMas",
                     fechaInicio = quoteInfo.fec_efec_poliza,
                     fechaFinalizacion = quoteInfo.fec_vcto_poliza,
