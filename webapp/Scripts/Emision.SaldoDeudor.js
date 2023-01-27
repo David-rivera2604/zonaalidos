@@ -461,6 +461,15 @@ app.EmisionSaldoDeudor = (function () {
                 }
             }
 
+            for (let i = 0; i < benef.length; i++) {
+                if (insured[0].DocumentNumber === benef[i].DocumentNumber) {
+                    message += ', El asegurado no puede ser un beneficiario';
+                    terceroserrors = true;
+                }
+
+            }
+
+            
         }
         if (terceroserrors) {
             $('#tercerosTbl-error').html(message);
@@ -823,7 +832,7 @@ app.EmisionSaldoDeudor = (function () {
                     visible: true
                 }, {
                     field: 'recardoporfraccionamiento',
-                    title: 'Recardo por fraccionamiento',
+                    title: 'Recargo por fraccionamiento',
                     titleTooltip: '',
                     sortable: false,
                     halign: 'center',

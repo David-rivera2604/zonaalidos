@@ -1,7 +1,7 @@
 {
   "Terceros": [
     {
-      "Role": "Coopenae",
+      "Role": "Coopenae-Credecoop",
       "Detalles": [
         {
           "tip_benef": "0",
@@ -19,26 +19,7 @@
     }
   ],
   "DocumentosRequeridos": [
-    {
-      "Role": "_default_asegurado_fisico",
-      "Detalles": [
-        {
-          "descripcion": "Documentacion Digitalizada",
-          "archivo": "documentacion.pdf",
-          "requerido": true
-        }
-      ]
-    },
-    {
-      "Role": "_default_asegurado_juridico",
-      "Detalles": [
-        {
-          "descripcion": "Documentacion Digitalizada",
-          "archivo": "documentacion.pdf",
-          "requerido": true
-        }
-      ]
-    }
+    
   ],
   "Coberturas": [
     {
