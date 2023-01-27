@@ -737,6 +737,10 @@ namespace Architect.API.Core.Business.General
             if (step.Step.MailToStepResponsible == 1 || step.Step.MailToStepResponsible == 3)
             {
                 string templList = step.Step.MailToStepResponsibleCustom;
+                if (templList.IsEmpty())
+                {
+                    templList = "{Roles}";
+                }
                 if (templList.IndexOf("{Roles}", StringComparison.CurrentCultureIgnoreCase) > -1 && step.Step.ProcessSpecStepRoles?.Count > 0)
                 {
                     foreach (Contracts.General.ProcessSpecStepRole stepRole in step.Step.ProcessSpecStepRoles)
@@ -749,7 +753,7 @@ namespace Architect.API.Core.Business.General
                             }
                         }
                     }
-                    templList = templList.Replace("{Roles", string.Empty);
+                    templList = templList.Replace("{Roles}", string.Empty);
                 }
                 foreach (string entry in templList.Split(','))
                 {
