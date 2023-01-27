@@ -110,6 +110,20 @@ namespace Architect.API.Tron.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("Producto")]
+        public async Task<IHttpActionResult> Producto([FromUri] string alias)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Contracts.Especificacion.Producto result = null;
+            await Task.Run(() =>
+            {
+                result = Business.Reglas.research.GetProducto(alias);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
         [HttpPost]
         [Route("Producto")]
         public async Task<IHttpActionResult> Producto([FromUri] string alias, [FromBody] Contracts.Especificacion.Producto def)
