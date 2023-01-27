@@ -435,25 +435,41 @@ app.EmisionSaldoDeudor = (function () {
 
     function OtherValidations() {
         let result = [];
-        let message = 'Debe indicar la información de terceros';
+        let message = 'Complete correctamente  la información de terceros ';
         let terceros = $('#tercerosTbl').bootstrapTable('getData');
         let terceroserrors = (terceros.length === 0);
 
         if (!terceroserrors) {
             let holder = terceros.filter(i => i.tipodetercero === 0);
             let insured = terceros.filter(i => i.tipodetercero === 2);
+            let benef = terceros.filter(i => i.tipodetercero === 6);
 
-            //if (holder.length === 0 || holder[0].DocumentNumber === '') {
-            //    let currentAseguradoTomador = terceros.find(e => e.tipodetercero === 2 && e.elaseguradoeselmismotomador === 1);
-            //    if (currentAseguradoTomador == null) {
-            //        message += ', indique el tomador';
-            //        terceroserrors = true;
-            //    }
-            //}
+
             if (insured.length === 0 || insured[0].DocumentNumber === '') {
                 message += ', indique el asegurado';
                 terceroserrors = true;
             }
+
+            if (benef.length > 0) {
+                if (benef.length === 1 && benef[0].porcentaje !== 100) {
+                    message += ', El total del porcentaje de participación del beneficiario debe ser el 100%';
+                    terceroserrors = true;
+                }
+                else if (benef.reduce((total, item) => total + item.porcentaje, 0) != 100) {
+                    message += ', El total del porcentaje de participación de los beneficiarios debe ser el 100%';
+                    terceroserrors = true;
+                }
+            }
+
+            for (let i = 0; i < benef.length; i++) {
+                if (insured[0].DocumentNumber === benef[i].DocumentNumber) {
+                    message += ', El asegurado no puede ser un beneficiario';
+                    terceroserrors = true;
+                }
+
+            }
+
+            
         }
         if (terceroserrors) {
             $('#tercerosTbl-error').html(message);
@@ -466,11 +482,13 @@ app.EmisionSaldoDeudor = (function () {
         let lista = documentosrequeridos.filter(function (row) {
             return (row.DStored === null || row.DStored === '');
         });
-        if (lista.length > 0 && workMode != "draft")  {
+        if ((lista.length > 0) && (workMode !== "draft" && workMode !== "resume"))  {
             $('#documentosrequeridosTbl-error').html('Debe cargar todos los documentos pendientes');
             $('#documentosrequeridosTbl-error').removeClass('d-none');
             result.push({ id: '#documentosrequeridosTbl-error', message: 'Debe cargar todos los documentos pendientes' });
         }
+
+        message = null;
         return result;
     }
 
@@ -814,7 +832,7 @@ app.EmisionSaldoDeudor = (function () {
                     visible: true
                 }, {
                     field: 'recardoporfraccionamiento',
-                    title: 'Recardo por fraccionamiento',
+                    title: 'Recargo por fraccionamiento',
                     titleTooltip: '',
                     sortable: false,
                     halign: 'center',
@@ -1998,40 +2016,6 @@ app.EmisionSaldoDeudor = (function () {
         }
     };
 
-
-window.enfermedadesexcluidasTbl_Events = {
-    'click .delete': function (e, value, row, index) {
-        toastr.warning("Si está seguro de querer eliminar el visualizations '" + row.enfermedadesexcluidasId + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionSaldoDeudor.enfermedadesexcluidasDeleteRow(row); } });
-        e.stopPropagation();
-    },
-    'click .edit': function (e, value, row, index) {
-        app.EmisionSaldoDeudor.enfermedadesexcluidasEditRow(row);
-        e.stopPropagation();
-    }
-};
-
-window.tercerosTbl_Events = {
-    'click .delete': function (e, value, row, index) {
-        toastr.warning("Si está seguro de querer eliminar el tercero '" + row.nombre + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionSaldoDeudor.tercerosDeleteRow(row); } });
-        e.stopPropagation();
-    },
-    'click .edit': function (e, value, row, index) {
-        app.EmisionSaldoDeudor.tercerosEditRow(row);
-        e.stopPropagation();
-    }
-};
-
-window.documentosrequeridosTbl_Events = {
-    'click .delete': function (e, value, row, index) {
-        toastr.warning("Si está seguro de querer limpiar el documento requerido '" + row.DNombre + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionSaldoDeudor.documentosrequeridosDeleteRow(row); } });
-        e.stopPropagation();
-    },
-    'click .edit': function (e, value, row, index) {
-        app.EmisionSaldoDeudor.documentosrequeridosEditRow(row);
-        e.stopPropagation();
-    }
-};
-
 //#region Cuestionario Salud
 
 function cuestionario_table_setup() {
@@ -2623,5 +2607,40 @@ var _objectToInput_Covid = function (data) {
 };
 
 })();
+
+
+
+window.enfermedadesexcluidasTbl_Events = {
+    'click .delete': function (e, value, row, index) {
+        toastr.warning("Si está seguro de querer eliminar el visualizations '" + row.enfermedadesexcluidasId + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionSaldoDeudor.enfermedadesexcluidasDeleteRow(row); } });
+        e.stopPropagation();
+    },
+    'click .edit': function (e, value, row, index) {
+        app.EmisionSaldoDeudor.enfermedadesexcluidasEditRow(row);
+        e.stopPropagation();
+    }
+};
+
+window.tercerosTbl_Events = {
+    'click .delete': function (e, value, row, index) {
+        toastr.warning("Si está seguro de querer eliminar el tercero '" + row.nombre + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionSaldoDeudor.tercerosDeleteRow(row); } });
+        e.stopPropagation();
+    },
+    'click .edit': function (e, value, row, index) {
+        app.EmisionSaldoDeudor.tercerosEditRow(row);
+        e.stopPropagation();
+    }
+};
+
+window.documentosrequeridosTbl_Events = {
+    'click .delete': function (e, value, row, index) {
+        toastr.warning("Si está seguro de querer limpiar el documento requerido '" + row.DNombre + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionSaldoDeudor.documentosrequeridosDeleteRow(row); } });
+        e.stopPropagation();
+    },
+    'click .edit': function (e, value, row, index) {
+        app.EmisionSaldoDeudor.documentosrequeridosEditRow(row);
+        e.stopPropagation();
+    }
+};
 
 //#endregion

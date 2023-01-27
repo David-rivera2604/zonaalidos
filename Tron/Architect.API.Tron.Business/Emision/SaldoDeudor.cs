@@ -282,7 +282,7 @@ namespace Architect.API.Tron.Business.Emision
             }
             //
             data.InsuredAmount = quoteInfo.IMP_MONTO_ORI;
-            data.MonthlyPremium = (from t in quoteInfo.plandepago select t.importetotal).FirstOrDefault();
+            data.MonthlyPremium = (from t in quoteInfo.plandepago select t.importetotal).LastOrDefault();
             //
             data.Questionary = MapperQuestionary(quoteInfo.Questionary);
             data.Behavior = "Show.DS";  ///Show.CV

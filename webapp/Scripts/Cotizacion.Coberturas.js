@@ -147,7 +147,7 @@ app.CotizacionCoberturas = (function () {
                     visible: true
                 }, {
                     field: 'recardoporfraccionamiento',
-                    title: 'Recardo por fraccionamiento',
+                    title: 'Recargo por fraccionamiento',
                     titleTooltip: '',
                     sortable: false,
                     halign: 'center',

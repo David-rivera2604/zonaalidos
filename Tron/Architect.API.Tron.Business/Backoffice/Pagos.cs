@@ -12,6 +12,7 @@ namespace Architect.API.Tron.Business.Backoffice
     /// </summary>
     public class Pagos
     {
+        public static bool IsEmployee  { get; private set; }
 
         public static void Monitor()
         {
@@ -65,7 +66,12 @@ namespace Architect.API.Tron.Business.Backoffice
             // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
             if (result.changed && result.status == "APPROVED")
             {
+                if (IsEmployee)
+                {
+                    result.OnlinePayment.AgentCode = 999999;
+                }
                 bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode);
+                
             }
         }
 
@@ -97,7 +103,13 @@ namespace Architect.API.Tron.Business.Backoffice
             Payment.Integrations.Contracts.SessionInformation session = await Payment.Integrations.Payment.VerifySession(tokenInfo.CompanyId, num_poliza, num_recibo);
             if (session == null)
             {
-                Contracts.Vistas.Recibo recibo = DataAccess.PorRamo.Informacion_de_un_Recibo(Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1), tokenInfo.AgentCode, tokenInfo.IdentificationType.IdentificationType(), tokenInfo.Identification.DocumentNumber(tokenInfo.IdentificationType), num_poliza, num_recibo);
+                IsEmployee = tokenInfo.Roles.Contain("Empleado");
+                Contracts.Vistas.Recibo recibo;
+                if (IsEmployee)
+                {
+                    tokenInfo.AgentCode = 999999;
+                }                
+                     recibo = DataAccess.PorRamo.Informacion_de_un_Recibo(Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1), tokenInfo.AgentCode, tokenInfo.IdentificationType.IdentificationType(), tokenInfo.Identification.DocumentNumber(tokenInfo.IdentificationType), num_poliza, num_recibo);
 
                 if (recibo != null)
                 {
@@ -148,7 +160,12 @@ namespace Architect.API.Tron.Business.Backoffice
             // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
             if (result.changed && result.status == "APPROVED")
             {
+                if (IsEmployee)
+                {
+                    result.OnlinePayment.AgentCode = 999999;
+                }
                 bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode);
+
             }
 
             return result;

@@ -6,7 +6,8 @@ app.Payment = (function () {
         Recibo: function (row, id, sequence, lightbox = true) {
             let data = { num_poliza: '', num_recibo: 0 };
             if ((id == 310 && sequence == 2) ||
-                (id == 3001 && sequence == 1)) {
+                (id == 3001 && sequence == 1) ||
+                (id == 410 && sequence == 1)) {
                 data = { num_poliza: row.NUM_POLIZA, num_recibo: row.NUM_RECIBO }
             }
             $("#generalNotify").html("");
