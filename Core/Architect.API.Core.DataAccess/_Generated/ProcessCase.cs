@@ -25,8 +25,9 @@ namespace Architect.API.Core.DataAccess.General
             {
                 processcaseItem.UpdateDate = DateTime.Now;
             }
-            return Database.Insert("INSERT INTO ProcessCase (Id, CompanyId, Title, Description, Priority, InstanceId, CurrentStepId, Reference1, Reference2, Reference3, Reference4, Reference5, ContactMainName, ContactMainEmail, Status, Label, SubStatus, SubLabel, FlowId, UserId, SLA, UpdateUserCode, UpdateDate) " +
-                                                 "VALUES(:Id, :CompanyId, :Title, :Description, :Priority, :InstanceId, :CurrentStepId, :Reference1, :Reference2, :Reference3, :Reference4, :Reference5, :ContactMainName, :ContactMainEmail, :Status, :Label, :SubStatus, :SubLabel, :FlowId, :UserId, :SLA, :UpdateUserCode, :UpdateDate)")
+            //Agregado provisional Sebastian UserSend
+            return Database.Insert("INSERT INTO ProcessCase (Id, CompanyId, Title, Description, Priority, InstanceId, CurrentStepId, Reference1, Reference2, Reference3, Reference4, Reference5, ContactMainName, ContactMainEmail, Status, Label, SubStatus, SubLabel, FlowId, UserId, SLA, UpdateUserCode, UpdateDate , UserSend) " +
+                                                 "VALUES(:Id, :CompanyId, :Title, :Description, :Priority, :InstanceId, :CurrentStepId, :Reference1, :Reference2, :Reference3, :Reference4, :Reference5, :ContactMainName, :ContactMainEmail, :Status, :Label, :SubStatus, :SubLabel, :FlowId, :UserId, :SLA, :UpdateUserCode, :UpdateDate, :UserSend)")
                             .AddParameter("Id", DbType.Decimal, 9, processcaseItem.Id)
                             .AddParameter("CompanyId", DbType.Decimal, 5, processcaseItem.CompanyId)
                             .AddParameter("Title", DbType.AnsiString, 120, processcaseItem.Title)
@@ -50,6 +51,9 @@ namespace Architect.API.Core.DataAccess.General
                             .AddParameter("SLA", DbType.Decimal, 5, processcaseItem.SLA)
                             .AddParameter("UpdateUserCode", DbType.Decimal, 9, processcaseItem.UpdateUserCode)
                             .AddParameter("UpdateDate", DbType.DateTime, 0, processcaseItem.UpdateDate)
+
+                            //Añadido extra solo para detectar el usuario que envio el caso
+                            .AddParameter("UserSend", DbType.Decimal, 9, processcaseItem.UserSend)
                             .Execute(connection, "Research");
         }
 
@@ -91,7 +95,8 @@ namespace Architect.API.Core.DataAccess.General
         public static Architect.API.Core.Contracts.General.ProcessCase Retrieve(int id, int companyId, IDbConnection connection = null)
         {
             Architect.API.Core.Contracts.General.ProcessCase result = null;
-            Database.Select("SELECT Id, ProcessCase.CompanyId, Title, Description, Priority, InstanceId, CurrentStepId, Reference1, Reference2, Reference3, Reference4, Reference5, ContactMainName, ContactMainEmail, Status, Label, SubStatus, SubLabel, FlowId, ProcessCase.UserId, SLA, ProcessCase.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessCase.UpdateDate " +
+            //Agregado provisional Sebastian UserSend
+            Database.Select("SELECT Id, ProcessCase.CompanyId, Title, Description, Priority, InstanceId, UserSend, CurrentStepId, Reference1, Reference2, Reference3, Reference4, Reference5, ContactMainName, ContactMainEmail, Status, Label, SubStatus, SubLabel, FlowId, ProcessCase.UserId, SLA, ProcessCase.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessCase.UpdateDate " +
                               "FROM ProcessCase LEFT JOIN UserMember um ON um.UserId = ProcessCase.UpdateUserCode " +
                              "WHERE ProcessCase.Id=:Id AND ProcessCase.CompanyId=:CompanyId")
                         .AddParameter("Id", DbType.Decimal, 9, id)
@@ -125,7 +130,18 @@ namespace Architect.API.Core.DataAccess.General
                         }));
             return result;
         }
-
+        public static List<Architect.API.Core.Contracts.Security.ColoresResponse> RetrieveAllColors(IDbConnection connection = null)
+        {
+            List<Architect.API.Core.Contracts.Security.ColoresResponse> result = new List<Architect.API.Core.Contracts.Security.ColoresResponse>();
+            Database.Select("SELECT DESCRIPTION, COLOR1TENANT, COLOR2TENANT , LOGO  " +
+                              "FROM LOOKUP " +
+                             "WHERE LOOKUPID = 4")
+                        .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
+                        {
+                            result.Add(DataReaderToColorData(reader));
+                        }));
+            return result;
+        }
         /// <summary>
         /// Recupera una lista de registros en la tabla ProcessCase.
         /// </summary>
@@ -148,7 +164,7 @@ namespace Architect.API.Core.DataAccess.General
                 endIndex = int.MaxValue;
             }
             Database.Select("SELECT * FROM (" +
-                            "SELECT Id, ProcessCase.CompanyId, Title, Description, Priority, InstanceId, CurrentStepId, Reference1, Reference2, Reference3, Reference4, Reference5, ContactMainName, ContactMainEmail, Status, Label, SubStatus, SubLabel, FlowId, ProcessCase.UserId, SLA, ProcessCase.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessCase.UpdateDate " +
+                            "SELECT Id, ProcessCase.CompanyId, Title, Description, Priority, InstanceId, CurrentStepId, Reference1, Reference2, Reference3, Reference4, Reference5, ContactMainName, ContactMainEmail, Status, Label, SubStatus, ProcessCase.UserSend, SubLabel, FlowId, ProcessCase.UserId, SLA, ProcessCase.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessCase.UpdateDate " +
                                    ", ROW_NUMBER() OVER (ORDER BY ProcessCase.Id DESC) RowNumber " +
                               "FROM ProcessCase LEFT JOIN UserMember um ON um.UserId = ProcessCase.UpdateUserCode " +
                              "WHERE ProcessCase.CompanyId=:CompanyId" + filter +
@@ -397,6 +413,22 @@ namespace Architect.API.Core.DataAccess.General
             item.UpdateUserCode = reader.IntegerValue("UpdateUserCode");
             item.UpdateUserName = reader.StringValue("UpdateUserName");
             item.UpdateDate = reader.DateTimeValue("UpdateDate");
+
+            //Agregado para la lectura del usuario que envio el caso
+            item.UserSend = reader.IntegerValue("UserSend");
+            return item;
+        }
+
+        public static Architect.API.Core.Contracts.Security.ColoresResponse DataReaderToColorData(System.Data.IDataReader reader, Architect.API.Core.Contracts.Security.ColoresResponse item = null)
+        {
+            if (item == null)
+            {
+                item = new Architect.API.Core.Contracts.Security.ColoresResponse();
+            }
+            item.Tenant = reader.StringValue("Description");
+            item.Color1 = reader.StringValue("Color1Tenant");
+            item.Color2 = reader.StringValue("Color2Tenant");
+            item.Logo = reader.StringValue("LOGO");
             return item;
         }
 

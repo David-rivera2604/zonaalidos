@@ -10,7 +10,7 @@
 
             <div class="part_noticias">
                 <div id="fb-root"></div>
-                <script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_ES/sdk.js#xfbml=1&version=v15.0" nonce="8mjIHbv4"></script>
+                <script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_ES/sdk.js#xfbml=1&version=v15.0" nonce="JPoqWEfD"></script>
 
                 <button class="btn boton" id="boton"><i class="fa fa-2x fa-newspaper-o" aria-hidden="true"></i></button>
 
@@ -19,7 +19,7 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-10 p-0">
-                                <h3>Nueva página de inicio</h3>
+                                <h3>Manténgase al tanto de las últimas noticias</h3>
                             </div>
                             <div class="col-2">
                                 <button class="btn equis" id="equis">
@@ -30,34 +30,30 @@
                         </div>
                     </div>
 
-                    <h4>Noticias <i class="fa fa-clock-o"></i> 1 Nov 2021</h4>
+                    <div class="row">
+                        <div class="col">
+                            <div class="fb-page m-2" data-href="https://www.facebook.com/MAPFREcr/"
+                                 data-tabs="timeline"
+                                 data-width="500"
+                                 data-height="430"
+                                 data-small-header="true"
+                                 data-adapt-container-width="false"
+                                 data-hide-cover="false"
+                                 data-show-facepile="true">
+                                <blockquote cite="https://www.facebook.com/MAPFREcr/" class="fb-xfbml-parse-ignore">
+                                    <a href="https://www.facebook.com/MAPFREcr/">FACEBOOK MAPFRE</a>
+                                </blockquote>
+                            </div>
+                        </div>
 
-                    <p>
-                        MAPFRE fiel a su compromiso de brindar herramientas que apoyen en la gestión de venta y el cumplimiento de
-                        objetivos, incorpora una nueva funcionalidad a su zona de aliados.
-                    </p>
-                    <p>
-                        La nueva funcionalidad consiste en una página inicial con un resumen de información relevan de su gestión
-                        como aliado.
-                    </p>
+                        <div class="col">
+                                <iframe class="m-2" width="500" height="430" src="https://www.instagram.com/mapfrecr/?hl=es" frameborder="0"></iframe>
+                        </div>
 
-                    <iframe style="display: none;" src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FMAPFREcr&tabs=timeline&width=380&height=400&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false&appId" width="380" height="400" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-
-                    <div class="fb-page facebook" data-href="https://www.facebook.com/MAPFREcr"
-                         data-tabs="timeline"
-                         data-width="400" data-height="280"
-                         data-small-header="true"
-                         data-adapt-container-width="true"
-                         data-hide-cover="false"
-                         data-show-facepile="false">
-                        <blockquote cite="https://www.facebook.com/MAPFREcr" class="fb-xfbml-parse-ignore">
-                            <a href="https://www.facebook.com/MAPFREcr">MAPFRE</a>
-                        </blockquote>
                     </div>
+                  
                 </div>
             </div>
-
-
 
 
             <div class="col-sm-6 col-md-6">
@@ -263,7 +259,6 @@
 
                     </tbody>
                 </table>
-
             </div>
         </div>
         <div class="row">
@@ -321,7 +316,22 @@
                 </div>
             </div>
         </div>
-
+        <!--<div class="row discapacityZone" id="wheelChair">
+        <div class="btnWC ml-2">
+            <i class="fa fa-wheelchair" aria-hidden="true"></i>
+        </div>
+        <div id="buttonsToDisplay" style="display: none;">-->
+        <!--<button class="btnContraste">
+        <i class="fa fa-adjust" aria-hidden="true"></i> Contraste
+    </button>-->
+        <!--<button class="btnTexto">
+                <i class="fa fa-font" aria-hidden="true"></i> Tamaño de Texto <i class="fa fa-plus" id="font-up"></i> <i class="fa fa-minus" id="font-down"></i>
+            </button>
+            <button class="btnEspaciado">
+                <i class="fa fa-text-width" aria-hidden="true"></i> Espaciado de Texto
+            </button>
+        </div>
+    </div>-->
     </div>
 </div>
 
@@ -457,32 +467,18 @@
 
     <script>
         $(document).ready(function () {
-            //ALL THE FUNCTION THAT THE BUTTON WILL DO
             $("#boton").click(function () {
-                $("#noticias").show(1000); // or fadeOut()
+                $("#noticias").fadeIn(1000); // or fadeOut()
                 $("#boton").attr('disable', true)
                 $("#equis").attr('disable', false)
             });
 
-            //ALL THE FUNCTION THAT THE BUTTON X WILL DO
+
             $("#equis").click(function () {
-                $("#noticias").hide(1000);
+                $("#noticias").fadeOut(1000);
 
             });
 
-            /*
-            $(document).on("click", ".cerrarNoticias", function () {
-                $("#noticias").hide(1000);
-                $(".cerrarNoticias").attr("class", "")
-            })
-
-            $("#boton").click(function () {
-                $("#noticias").fadeIn();
-                setTimeout(function () {
-                    $("body").addClass("cerrarNoticias");
-                }, 10);
-            })
-*/
         });
     </script>
 

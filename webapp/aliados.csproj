@@ -379,7 +379,9 @@
     <Content Include="app\img\img2.jpg" />
     <Content Include="app\img\img3.jpg" />
     <Content Include="app\img\img4.jpg" />
+    <Content Include="app\img\logo-AENOR.png" />
     <Content Include="app\img\logohorizontal.jpg" />
+    <Content Include="app\img\viajero_cs.png" />
     <Content Include="app\js\core.ui.components.js" />
     <Content Include="app\js\core.ui.js" />
     <Content Include="app\js\core.js" />
@@ -1216,8 +1218,11 @@
     <Content Include="releaseletter.txt" />
     <Content Include="Scripts\AvisosCobro.Recibos.js" />
     <Content Include="Scripts\Clientes.Index.js" />
+    <Content Include="Scripts\ColoresTenant.js" />
+    <Content Include="Scripts\CompraSegurosClients.js" />
     <Content Include="Scripts\Cotizacion.Coberturas.js" />
     <Content Include="Scripts\Cotizacion.SaldoDeudor.enfermedadesexcluidas.js" />
+    <Content Include="Scripts\CreateCase_Aliados.js" />
     <Content Include="Scripts\Emision.SaldoDeudor.js" />
     <Content Include="Scripts\Cotizacion.SaldoDeudor.js" />
     <Content Include="Scripts\Cotizacion.Viajero.js" />
@@ -1255,6 +1260,7 @@
     <Content Include="Scripts\Pagos.Resultado.js" />
     <Content Include="Scripts\Prototype.Payment.js" />
     <Content Include="Scripts\Prototype.Producto.js" />
+    <Content Include="Scripts\Seguimiento_Aliados.js" />
     <Content Include="Scripts\Siniestros.Panel.js" />
     <Content Include="Scripts\Security.Integrate.js" />
     <Content Include="Scripts\process.instance.js" />
@@ -1299,6 +1305,7 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\UnhandledExceptionLogger.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\ColorsController.cs" />
     <Compile Include="Controllers\DocuSignController.cs" />
     <Compile Include="Controllers\AvisosController.cs" />
     <Compile Include="Controllers\ManualController.cs" />
@@ -1671,6 +1678,9 @@
     <Content Include="Views\General\PaymentSettings.cshtml" />
     <Content Include="Reports\coopenae_saldo_deudor.repx" />
     <Content Include="Reports\coopenae_saldo_deudor_mayor_que_64.repx" />
+    <Content Include="Views\Cases\Seguimiento_Al.cshtml" />
+    <Content Include="Views\Cases\CasesAliados.cshtml" />
+    <Content Include="Views\General\ColorTenant.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1689,6 +1699,10 @@
     <ProjectReference Include="..\Core\Architect.API.Core.Business\Architect.API.Core.Business.csproj">
       <Project>{579105b3-776b-4094-a301-87a9c42962c5}</Project>
       <Name>Architect.API.Core.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Architect.API.Core.Contracts\Architect.API.Core.Contracts.csproj">
+      <Project>{29B21BEF-8C87-4A9D-8B37-FECC57CD03C7}</Project>
+      <Name>Architect.API.Core.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core\Architect.API.Core.Utilities\Architect.API.Core.Security.csproj">
       <Project>{3d406267-4a50-4e87-842a-553e3d222cf1}</Project>

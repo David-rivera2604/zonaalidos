@@ -94,9 +94,9 @@ namespace Architect.API.Tron.Business.Cotizacion
                     int cod_cia = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_cia"]);
                     DateTime fec_validez = DateTime.Today;
 
-                    List<Contracts.Ramo.G2990026> coberturaGrupo = DataAccess.PorRamo.Coberturas_por_contrato2(COD_RAMO, num_contrato);
+                    List<Contracts.Ramo.G2990026> coberturaGrupo = DataAccess.PorRamo.Coberturas_por_contrato2(cod_ramo, num_contrato);
                     string cod_cobIncludeFilter = Util.Convert_CoverageListToString(coberturaGrupo);
-                    result.coberturas = CoverageByDefault(IsCoope, cod_cia, COD_RAMO, fec_validez, cod_cobIncludeFilter, coberturaGrupo);
+                    result.coberturas = CoverageByDefault(IsCoope, cod_cia, cod_ramo, fec_validez, cod_cobIncludeFilter, coberturaGrupo);
                 }
             }
 
@@ -173,7 +173,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = HogarTotalConvertTo.Tron(quoteInfo, IsCoope, COD_RAMO, tokenInfo.AgentCode, tokenInfo.UserName);
 
 
-//                Utilities.SerializeHandler<Architect.API.Tron.Contracts.Presupuesto.DatoFijo>.SerializeJSONToFile(result, string.Format(@"c:\temp\hogar.total.proposal.json"), true, false, false);
+                //                Utilities.SerializeHandler<Architect.API.Tron.Contracts.Presupuesto.DatoFijo>.SerializeJSONToFile(result, string.Format(@"c:\temp\hogar.total.proposal.json"), true, false, false);
 
 
                 //Architect.Common.Helpers.Serialize.SerializeToFile<Architect.API.Tron.Contracts.Batch.p2000030>(result,

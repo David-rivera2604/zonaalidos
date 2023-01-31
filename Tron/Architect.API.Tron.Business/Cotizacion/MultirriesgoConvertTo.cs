@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Architect.Utilities.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -35,14 +36,16 @@ namespace Architect.API.Tron.Business.Cotizacion
                 cod_nivel1 = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_nivel1"]),
                 cod_nivel2 = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_nivel2"]),
                 cod_nivel3 = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_nivel3"]),
-                num_poliza_grupo = string.Empty,
-                num_contrato = int.MinValue,
+                num_poliza_grupo = quoteInfo.polizagrupo,
+                num_subcontrato = quoteInfo.subcontrato,
+                num_contrato = quoteInfo.contrato,
                 cod_agt = agentCode,
                 cod_cuadro_com = 0,
                 cod_fracc_pago = quoteInfo.cod_fracc_pago,
                 cod_mon = quoteInfo.cod_mon,
                 fec_efec_poliza = quoteInfo.fec_efec_poliza,
                 fec_vcto_poliza = quoteInfo.fec_vcto_poliza,
+
                 //fec_validez = DateTime.MinValue,
                 //fec_emision = DateTime.MinValue,
                 //fec_emision_spto = DateTime.MinValue,
@@ -114,6 +117,19 @@ namespace Architect.API.Tron.Business.Cotizacion
             }
             else
             {
+                if (quoteInfo.polizagrupo.IsNotEmpty())
+                {
+                    datosFijos.num_poliza_grupo = quoteInfo.polizagrupo;
+                    datosFijos.num_contrato = quoteInfo.contrato;
+                    datosFijos.num_subcontrato = quoteInfo.subcontrato;
+                }
+                else
+                {
+                    datosFijos.num_poliza_grupo = String.Empty;
+                    datosFijos.num_contrato = int.MinValue;
+                    datosFijos.num_subcontrato = 0;
+                }
+
                 if (agentCode == 999999)
                 {
                     datosFijos.cod_cuadro_com = 0;
@@ -251,7 +267,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             Util.Ocurrencias(datosVariables, num_riesgo, "NUM_TIP_BR", datosFijos, "COD_TIP_BR", string.Empty);
             Util.Ocurrencias(datosVariables, num_riesgo, "NUM_MED_BR", datosFijos, "COD_TIP_MED_BR", quoteInfo.cod_tip_med_rob);
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "IMP_BIE_REF", "0"));
-            
+
 
             //2020 Cobertura de Mercancía en tránsito
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "MCA_COB_MET",

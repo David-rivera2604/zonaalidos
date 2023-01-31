@@ -655,13 +655,11 @@ html {
     display: flex;
     background: #33394400;
     width: 100%;
-    height: 100%;
 }
 
 .caja {
     background: #33394400;
     width: 50%;
-    height: 100%;
 }
 
 .img {
@@ -675,15 +673,10 @@ html {
 
 .control-label {
     font-size: 13px;
-    top: -10px !important;
     border-radius: 5px;
     font-weight: normal;
-    position: absolute;
     pointer-events: none;
-    left: 15px;
-    top: 11px;
     padding: 0 5px;
-    background: #fff;
     transition: 0.2s ease all;
     z-index: 3;
 }

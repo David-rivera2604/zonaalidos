@@ -74,6 +74,20 @@ namespace Architect.API.Tron.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("MultirriesgoSettings")]
+        public async Task<IHttpActionResult> MultiriesgoSettings(int cod_ramo, int num_contrato, int num_subcontrato, string num_poliza_grupo, int cod_mon)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Tron.Contracts.Cotizacion.HogarTotalSettings result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Cotizacion.HogarTotal.Settings(cod_ramo, num_contrato, num_subcontrato, num_poliza_grupo, cod_mon, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
         /// <summary>
         /// Realiza la validación de datos y cálculo necesarios para obtener una cotización o presupuesto de un producto de tipo Hogar Total
         /// </summary>
@@ -320,7 +334,7 @@ namespace Architect.API.Tron.Controllers
             Contracts.Cotizacion.SaldoDeudor result = null;
             await Task.Run(() =>
             {
-               // tokenInfo.AgentCode = 180;
+                // tokenInfo.AgentCode = 180;
                 result = Business.Cotizacion.SaldoDeudor.Setup(tokenInfo);
             }).ConfigureAwait(false);
             return Ok(result);
