@@ -53,6 +53,7 @@ namespace Architect.DataFactory
                                 break;
                         }
                     }
+                    statement = statement.Replace(paremeter.Value, name);
                 }
                 using (DataFactory.Database db = Architect.DataFactory.Database.Select(statement).Cache(withCache, prefix))
                 {
@@ -113,6 +114,8 @@ namespace Architect.DataFactory
                                 break;
                             case "app.roles":
                                 dataManager.AddParameter(paremeter.Groups[1].Value, Architect.DataFactory.Enumerations.DbType.String, 0, "," + values["Token.Roles"] + ",");
+                                break;
+                            case "app.userrolenamelist":
                                 break;
                         }
                     }
