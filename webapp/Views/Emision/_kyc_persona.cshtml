@@ -1,0 +1,731 @@
+﻿<!-- kycpersona Grid Modal -->
+<div class="modal inmodal" id="kycpersonaModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                <h4 class="modal-title">Formulario conozca a su cliente - Persona Física</h4>
+            </div>
+            <div class="modal-body">
+
+                <!-- Edit Form -->
+                <div class='form-row'>
+                    <div class='col-md-12'>
+                        <div id="kycpersonaPerEdt" class="animated fadeInRight">
+                            <form id='kycpersonaPerEdtForm' class='form-horizontal' data-toggle='validator'>
+                                <fieldset>
+                                    <!-- datosgeneralesPer Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Datos generales</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- primerapellidoPer Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='primerapellidoPer'>Primer apellido<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='primerapellidoPer' name='primerapellidoPer' class='form-control' size='40' maxlength='40' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- segundoapellidoPer Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='segundoapellidoPer'>Segundo apellido<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='segundoapellidoPer' name='segundoapellidoPer' class='form-control' size='40' maxlength='40' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- nombrePer Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='nombrePer'>Nombre<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='nombrePer' name='nombrePer' class='form-control' size='40' maxlength='40' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- codigodeclientePer Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='codigodeclientePer'>Código de cliente<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='codigodeclientePer' name='codigodeclientePer' class='form-control' size='40' maxlength='40' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- numerodeidentificacionPer Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='numerodeidentificacionPer'>Número de identificación<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='numerodeidentificacionPer' name='numerodeidentificacionPer' class='form-control' size='40' maxlength='40' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- tipodeidentificacionPer RadioButtonList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='tipodeidentificacionPer'>Tipo de identificación<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="tipodeidentificacionPer_1" name="tipodeidentificacionPer" value="1">
+                                                                <label class="custom-control-label" for="tipodeidentificacionPer_1">Cédula</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="tipodeidentificacionPer_2" name="tipodeidentificacionPer" value="2">
+                                                                <label class="custom-control-label" for="tipodeidentificacionPer_2">Pasaporte</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="tipodeidentificacionPer_3" name="tipodeidentificacionPer" value="3">
+                                                                <label class="custom-control-label" for="tipodeidentificacionPer_3">Cédula Residencia</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="tipodeidentificacionPer_4" name="tipodeidentificacionPer" value="4">
+                                                                <label class="custom-control-label" for="tipodeidentificacionPer_4">Otro</label>
+                                                            </div>
+                                                        </div>
+                                                        <div id='tipodeidentificacionPer_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- fechadecaducidadPer DatePicker -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='fechadecaducidadPer'>Fecha de caducidad<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='fechadecaducidadPer_group'>
+                                                            <input type='text' id='fechadecaducidadPer' name='fechadecaducidadPer' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='fechadecaducidadPer_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- nacionalidadPer DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='nacionalidadPer'>Nacionalidad<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='nacionalidadPer' name='nacionalidadPer' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- fechadenacimientoPer DatePicker -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='fechadenacimientoPer'>Fecha de nacimiento<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='fechadenacimientoPer_group'>
+                                                            <input type='text' id='fechadenacimientoPer' name='fechadenacimientoPer' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='fechadenacimientoPer_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- paisdenacimientoPer DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='paisdenacimientoPer'>País de nacimiento<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='paisdenacimientoPer' name='paisdenacimientoPer' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- profesionPer DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='profesionPer'>Profesión<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='profesionPer' name='profesionPer' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- estadocivilPer DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='estadocivilPer'>Estado civil<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='estadocivilPer' name='estadocivilPer' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- sexoPer DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='sexoPer'>Sexo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='sexoPer' name='sexoPer' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- telefonoresidenciaPer Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='telefonoresidenciaPer'>Teléfono residencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group'>
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-earphone'></span>
+                                                            </span>
+                                                            <input id='telefonoresidenciaPer' name='telefonoresidenciaPer' type='text' class='form-control' size='9' maxlength='9'>
+                                                        </div>
+                                                        <div id='telefonoresidenciaPer_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- telefonocelularPer Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='telefonocelularPer'>Teléfono celular<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group'>
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-earphone'></span>
+                                                            </span>
+                                                            <input id='telefonocelularPer' name='telefonocelularPer' type='text' class='form-control' size='9' maxlength='9'>
+                                                        </div>
+                                                        <div id='telefonocelularPer_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- faxPer Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='faxPer'>Fax<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group'>
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-earphone'></span>
+                                                            </span>
+                                                            <input id='faxPer' name='faxPer' type='text' class='form-control' size='9' maxlength='9'>
+                                                        </div>
+                                                        <div id='faxPer_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- apartadopostalPer Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='apartadopostalPer'>Apartado postal<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='apartadopostalPer' name='apartadopostalPer' class='form-control' size='40' maxlength='40' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- correoelectronicoPer Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='correoelectronicoPer'>Correo electrónico<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group'>
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-envelope'></span>
+                                                            </span>
+                                                            <input id='correoelectronicoPer' name='correoelectronicoPer' type='text' class='form-control' size='80' maxlength='80'>
+                                                        </div>
+                                                        <div id='correoelectronicoPer_validate'></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- domiciliopermanentePer Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Domicilio permanente</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- cod_paisPer DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cod_paisPer'>País<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='cod_paisPer' name='cod_paisPer' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- cod_estadoPer DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cod_estadoPer'>Provincia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='cod_estadoPer' name='cod_estadoPer' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- cod_provPer DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cod_provPer'>Cantón<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='cod_provPer' name='cod_provPer' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- cod_localidadPer DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cod_localidadPer'>Distrito<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='cod_localidadPer' name='cod_localidadPer' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- direccionexactaPer Notes -->
+                                                <div class='col-sm-12 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='direccionexactaPer'>Dirección exacta<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <textarea id='direccionexactaPer' name='direccionexactaPer' class='form-control' rows="2"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ocupacionoactividadactualPer Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Ocupación o actividad actual</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- OcupacionPer RadioButtonList -->
+                                                <div class='col-sm-12 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='OcupacionPer'>Indique su ocupación o actividad actual<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="OcupacionPer_1" name="OcupacionPer" value="1">
+                                                                <label class="custom-control-label" for="OcupacionPer_1">Asalariado</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="OcupacionPer_2" name="OcupacionPer" value="2">
+                                                                <label class="custom-control-label" for="OcupacionPer_2">Trabajador independiente</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="OcupacionPer_3" name="OcupacionPer" value="3">
+                                                                <label class="custom-control-label" for="OcupacionPer_3">No generador de ingresos</label>
+                                                            </div>
+                                                        </div>
+                                                        <div id='OcupacionPer_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- datosdelaempresaolugarquegenerasusingresosencasodeserindependientePer Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Datos de la empresa o lugar que genera sus ingresos en caso de ser independiente</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- nombreempresaPer Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='nombreempresaPer'>Nombre de la empresa o negocio<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='nombreempresaPer' name='nombreempresaPer' class='form-control' size='60' maxlength='60' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- actividadempresaPer Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='actividadempresaPer'>Actividad de la empresa o negocio<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='actividadempresaPer' name='actividadempresaPer' class='form-control' size='60' maxlength='60' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- cargoempresaPer Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cargoempresaPer'>Cargo que desempeña<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='cargoempresaPer' name='cargoempresaPer' class='form-control' size='60' maxlength='60' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- telefonoempresaPer Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='telefonoempresaPer'>Teléfono<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group'>
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-earphone'></span>
+                                                            </span>
+                                                            <input id='telefonoempresaPer' name='telefonoempresaPer' type='text' class='form-control' size='9' maxlength='9'>
+                                                        </div>
+                                                        <div id='telefonoempresaPer_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- faxempresaPer Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='faxempresaPer'>Fax<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group'>
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-earphone'></span>
+                                                            </span>
+                                                            <input id='faxempresaPer' name='faxempresaPer' type='text' class='form-control' size='9' maxlength='9'>
+                                                        </div>
+                                                        <div id='faxempresaPer_validate'></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- domiciliocomercialPer Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Domicilio comercial</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- domiciliocomercialCod_paisPer DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='domiciliocomercialCod_paisPer'>País<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='domiciliocomercialCod_paisPer' name='domiciliocomercialCod_paisPer' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- domiciliocomercialCod_estadoPer DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='domiciliocomercialCod_estadoPer'>Provincia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='domiciliocomercialCod_estadoPer' name='domiciliocomercialCod_estadoPer' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- domiciliocomercialCod_provPer DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='domiciliocomercialCod_provPer'>Cantón<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='domiciliocomercialCod_provPer' name='domiciliocomercialCod_provPer' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- domiciliocomercialCod_localidadPer DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='domiciliocomercialCod_localidadPer'>Distrito<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='domiciliocomercialCod_localidadPer' name='domiciliocomercialCod_localidadPer' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- domiciliocomercialDireccionexactaPer Notes -->
+                                                <div class='col-sm-12 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='domiciliocomercialDireccionexactaPer'>Dirección exacta<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <textarea id='domiciliocomercialDireccionexactaPer' name='domiciliocomercialDireccionexactaPer' class='form-control' rows="2"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- origendelosfondosPer Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Origen de los fondos</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- correspondenciaOrigendelosfondosPer Text -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='correspondenciaOrigendelosfondosPer'>Origen de los Fondos (¿De dónde provienen y en qué forma?)<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='correspondenciaOrigendelosfondosPer' name='correspondenciaOrigendelosfondosPer' class='form-control' size='60' maxlength='60' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- paismayoractividadPer Text -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='paismayoractividadPer'>¿En qué país desarrolla la mayoría de sus actividades económicas?<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='paismayoractividadPer' name='paismayoractividadPer' class='form-control' size='60' maxlength='60' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- ingresomensualestimadoPer Numeric -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ingresomensualestimadoPer'>Ingreso mensual estimado<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='ingresomensualestimadoPer' name='ingresomensualestimadoPer' class='form-control text-right' size='26' maxlength='26' />
+                                                    </div>
+                                                </div>
+                                                <!-- fondospormivilizarPer RadioButtonList -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='fondospormivilizarPer'>Los fondos por movilizar son propios o de terceros?<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="fondospormivilizarPer_1" name="fondospormivilizarPer" value="1">
+                                                                <label class="custom-control-label" for="fondospormivilizarPer_1">Propios</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="fondospormivilizarPer_2" name="fondospormivilizarPer" value="2">
+                                                                <label class="custom-control-label" for="fondospormivilizarPer_2">Terceros</label>
+                                                            </div>
+                                                        </div>
+                                                        <div id='fondospormivilizarPer_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- actividadesart15Per RadioButtonList -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='actividadesart15Per'>¿Se desempeña entre las actividades citadas en el Artículo 15 de la Ley 8204 (manejo de fondos de terceros físicos o jurídicos)<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="actividadesart15Per_1" name="actividadesart15Per" value="1">
+                                                                <label class="custom-control-label" for="actividadesart15Per_1">Si</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="actividadesart15Per_2" name="actividadesart15Per" value="2">
+                                                                <label class="custom-control-label" for="actividadesart15Per_2">No</label>
+                                                            </div>
+                                                        </div>
+                                                        <div id='actividadesart15Per_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- tiposdeactivosPer Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Tipos de activos</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- activoscorrespondenPer RadioButtonList -->
+                                                <div class='col-sm-12 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='activoscorrespondenPer'>La mayoría de sus activos corresponden a<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="activoscorrespondenPer_1" name="activoscorrespondenPer" value="1">
+                                                                <label class="custom-control-label" for="activoscorrespondenPer_1">Activos fijos muebles e inmuebles dentro del país</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="activoscorrespondenPer_2" name="activoscorrespondenPer" value="2">
+                                                                <label class="custom-control-label" for="activoscorrespondenPer_2">Activos fijos muebles e inmuebles fuera del país</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="activoscorrespondenPer_3" name="activoscorrespondenPer" value="3">
+                                                                <label class="custom-control-label" for="activoscorrespondenPer_3">Activos monetarios y/o financieros dentro del país</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="activoscorrespondenPer_4" name="activoscorrespondenPer" value="4">
+                                                                <label class="custom-control-label" for="activoscorrespondenPer_4">Activos monetarios y/o financieros fuera del país</label>
+                                                            </div>
+                                                        </div>
+                                                        <div id='activoscorrespondenPer_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- personasexpuestaspoliticamentePEPsPer Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Personas expuestas políticamente (PEPs)</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- pepcargoPer RadioButtonList -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='pepcargoPer'>Manifiesta desempeñar o haber desempeñado algún cargo que implique funciones públicas destacadas en el país o en el extranjero<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class="form-row">
+                                                            <div class="col-auto" style="padding-top: 6px;">
+                                                                <div class="custom-control custom-radio custom-control-inline">
+                                                                    <input type="radio" class="custom-control-input" id="pepcargoPer_1" name="pepcargoPer" value="1">
+                                                                    <label class="custom-control-label" for="pepcargoPer_1">Si</label>
+                                                                </div><div class="custom-control custom-radio custom-control-inline">
+                                                                    <input type="radio" class="custom-control-input" id="pepcargoPer_2" name="pepcargoPer" value="2">
+                                                                    <label class="custom-control-label" for="pepcargoPer_2">No</label>
+                                                                </div>
+                                                                <div id='pepcargoPer_validate'></div>
+                                                            </div>
+                                                            <!-- pepduracionPer Text -->
+                                                            <div class="col pepduracionPerVisible d-none" style="padding-top: 6px;">
+                                                                <input type='text' id='pepduracionPer' name='pepduracionPer' class='form-control' size='60' maxlength='60' placeholder="Período durante el cual desempeñó dichas funciones" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- peprelacionPer RadioButtonList -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='peprelacionPer'>Manifiesta tener relación directa (consaguinidad) o indirecta (afinidad) con una persona expuesta políticamente (PEP)<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class="form-row">
+                                                            <div class="col-auto" style="padding-top: 6px;">
+                                                                <div class="custom-control custom-radio custom-control-inline">
+                                                                    <input type="radio" class="custom-control-input" id="peprelacionPer_1" name="peprelacionPer" value="1">
+                                                                    <label class="custom-control-label" for="peprelacionPer_1">Si</label>
+                                                                </div><div class="custom-control custom-radio custom-control-inline">
+                                                                    <input type="radio" class="custom-control-input" id="peprelacionPer_2" name="peprelacionPer" value="2">
+                                                                    <label class="custom-control-label" for="peprelacionPer_2">No</label>
+                                                                </div>
+                                                                <div id='peprelacionPer_validate'></div>
+                                                            </div>
+                                                            <!-- peptiporelacionPer Text -->
+                                                            <div class="col peptiporelacionPerVisible d-none" style="padding-top: 6px;">
+                                                                <input type='text' id='peptiporelacionPer' name='peptiporelacionPer' class='form-control' size='60' maxlength='60' placeholder="Detalle el tipo de relación" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- descripciondelapolizaPer Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Descripción de la póliza</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- propositorelacioncomercialPer Text -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='propositorelacioncomercialPer'>Propósito de relación comercial (Indicar el tipo de Seguro que está adquiriendo)<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='propositorelacioncomercialPer' name='propositorelacioncomercialPer' class='form-control' size='60' maxlength='60' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- montoprimaPer Numeric -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='montoprimaPer'>Monto prima<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='montoprimaPer' name='montoprimaPer' class='form-control text-right' size='26' maxlength='26' />
+                                                    </div>
+                                                </div>
+                                                <!-- tipodeprimaPer Text -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='tipodeprimaPer'>Tipo de prima<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='tipodeprimaPer' name='tipodeprimaPer' class='form-control' size='40' maxlength='40' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- periodicidadPer RadioButtonList -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='periodicidadPer'>Periodicidad<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="periodicidadPer_1" name="periodicidadPer" value="1">
+                                                                <label class="custom-control-label" for="periodicidadPer_1">Anual</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="periodicidadPer_2" name="periodicidadPer" value="2">
+                                                                <label class="custom-control-label" for="periodicidadPer_2">Semestral</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="periodicidadPer_3" name="periodicidadPer" value="3">
+                                                                <label class="custom-control-label" for="periodicidadPer_3">Trimestral</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="periodicidadPer_4" name="periodicidadPer" value="4">
+                                                                <label class="custom-control-label" for="periodicidadPer_4">Mensual</label>
+                                                            </div>
+                                                        </div>
+                                                        <div id='periodicidadPer_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- montoValoraseguradoPer Numeric -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='montoValoraseguradoPer'>Monto Valor asegurado<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='montoValoraseguradoPer' name='montoValoraseguradoPer' class='form-control text-right' size='26' maxlength='26' />
+                                                    </div>
+                                                </div>
+                                                <!-- formadepagodelapolizaPer RadioButtonList -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='formadepagodelapolizaPer'>Forma de pago de la póliza<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="formadepagodelapolizaPer_1" name="formadepagodelapolizaPer" value="1">
+                                                                <label class="custom-control-label" for="formadepagodelapolizaPer_1">Efectivo</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="formadepagodelapolizaPer_2" name="formadepagodelapolizaPer" value="2">
+                                                                <label class="custom-control-label" for="formadepagodelapolizaPer_2">Cheque</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="formadepagodelapolizaPer_3" name="formadepagodelapolizaPer" value="3">
+                                                                <label class="custom-control-label" for="formadepagodelapolizaPer_3">Tarjeta de Crédito</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="formadepagodelapolizaPer_4" name="formadepagodelapolizaPer" value="4">
+                                                                <label class="custom-control-label" for="formadepagodelapolizaPer_4">Transferencia nacional</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="formadepagodelapolizaPer_5" name="formadepagodelapolizaPer" value="5">
+                                                                <label class="custom-control-label" for="formadepagodelapolizaPer_5">Transferencia del exterior</label>
+                                                            </div>
+                                                        </div>
+                                                        <div id='formadepagodelapolizaPer_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- correspondenciaPer Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Correspondencia</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- mediodeenvioPer RadioButtonList -->
+                                                <div class='col-sm-12 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='mediodeenvioPer'>Favor indicar el medio por el cual desea que se le envíe información<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="mediodeenvioPer_1" name="mediodeenvioPer" value="1">
+                                                                <label class="custom-control-label" for="mediodeenvioPer_1">Apartado postal</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="mediodeenvioPer_2" name="mediodeenvioPer" value="2">
+                                                                <label class="custom-control-label" for="mediodeenvioPer_2">Dirección física</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="mediodeenvioPer_3" name="mediodeenvioPer" value="3">
+                                                                <label class="custom-control-label" for="mediodeenvioPer_3">Fax</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="mediodeenvioPer_4" name="mediodeenvioPer" value="4">
+                                                                <label class="custom-control-label" for="mediodeenvioPer_4">Correo electrónico</label>
+                                                            </div>
+                                                        </div>
+                                                        <div id='mediodeenvioPer_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- especifiquePer Text -->
+                                                <div class='col-sm-12 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='especifiquePer'>Especifique<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='especifiquePer' name='especifiquePer' class='form-control' size='40' maxlength='40' />
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Form End -->
+
+
+            </div>
+            <div class="modal-footer">
+                <button id="kycpersonaPerEdtFormSave" type="button" class="btn btn-primary" data-doing="Guardando cambios...">Guardar cambios</button>
+                <button id="kycpersonaPerEdtFormCancel" type="button" class="btn btn-white" data-doing="Cancelando cambios..." data-dismiss="modal">Cancelar</button>
+
+            </div>
+        </div>
+    </div>
+</div>

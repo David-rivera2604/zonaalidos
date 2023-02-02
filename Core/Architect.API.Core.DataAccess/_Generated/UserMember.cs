@@ -203,6 +203,7 @@ namespace Architect.API.Core.DataAccess.Security
                 result += " OR UPPER(UserMember.EMail) LIKE '%" + filter.ToUpper() + "%' ";
                 result += " OR UPPER(UserMember.FirstName) LIKE '%" + filter.ToUpper() + "%' ";
                 result += " OR UPPER(UserMember.LastName) LIKE '%" + filter.ToUpper() + "%' ";
+                result += " OR UPPER(roleinfo.RoleList) LIKE '%" + filter.ToUpper() + "%' ";
 
                 result += ")";
                 if (condition.IsNotEmpty())
@@ -463,7 +464,21 @@ namespace Architect.API.Core.DataAccess.Security
         {
             List<Architect.API.Core.Contracts.Security.UserMember> result = new List<Architect.API.Core.Contracts.Security.UserMember>();
             Architect.API.Core.Contracts.Security.UserMember item = null;
-            Database.Select("SELECT UserMember.UserId, UserMember.CompanyId, UserMember.UserName, UserMember.EMail, UserMember.Password, UserMember.OldPassword, UserMember.IdentificationType, UserMember.Identification, UserMember.FirstName, UserMember.LastName, UserMember.BirthDate, UserMember.FailedPasswordCount, UserMember.SecurityLevel, UserMember.IsLockedOut, UserMember.LockedOutDate, UserMember.PasswordChangedDate, UserMember.OneTimePassword, UserMember.LoginDate, UserMember.ManagerId, UserMember.AccessKey, UserMember.BranchOffice, UserMember.Reference, UserMember.Position, UserMember.PhoneNumber, UserMember.SalesChannel, UserMember.InitialNavigationCode, UserMember.CustomData, UserMember.RecordStatus, UserMember.UpdateUserCode, UserMember.UpdateDate, um.FirstName || ' ' || um.LastName AS UpdateUserName, (SELECT LISTAGG(RM.ROLENAME , ', ') WITHIN GROUP (ORDER BY RM.ROLENAME ) FROM USERROLEMEMBER urm LEFT JOIN ROLEMEMBER rm ON rm.RoleId = urm.RoleId WHERE urm.UserId = UserMember.UserId) RoleList FROM UserMember LEFT JOIN UserMember um ON um.UserId = UserMember.UpdateUserCode  WHERE UserMember.CompanyId=:CompanyId AND UserMember.SecurityLevel<=:SecurityLevel" + filter)
+            string selectCommand = @"
+WITH roleinfo AS (
+SELECT urm.USERID USERID, LISTAGG(RM.ROLENAME , ', ') WITHIN GROUP (ORDER BY  RM.ROLENAME ) ROLELIST
+FROM USERROLEMEMBER urm 
+LEFT JOIN ROLEMEMBER rm ON rm.RoleId = urm.RoleId
+group by urm.USERID
+order by urm.USERID
+)
+SELECT UserMember.UserId, UserMember.CompanyId, UserMember.UserName, UserMember.EMail, UserMember.Password, UserMember.OldPassword, UserMember.IdentificationType, UserMember.Identification, UserMember.FirstName, UserMember.LastName, UserMember.BirthDate, UserMember.FailedPasswordCount, UserMember.SecurityLevel, UserMember.IsLockedOut, UserMember.LockedOutDate, UserMember.PasswordChangedDate, UserMember.OneTimePassword, UserMember.LoginDate, UserMember.ManagerId, UserMember.AccessKey, UserMember.BranchOffice, UserMember.Reference, UserMember.Position, UserMember.PhoneNumber, UserMember.SalesChannel, UserMember.InitialNavigationCode, UserMember.CustomData, UserMember.RecordStatus, UserMember.UpdateUserCode, UserMember.UpdateDate, um.FirstName || ' ' || um.LastName AS UpdateUserName, roleinfo.RoleList 
+FROM UserMember 
+LEFT JOIN UserMember um ON um.UserId = UserMember.UpdateUserCode  
+LEFT JOIN roleinfo ON roleinfo.USERID = UserMember.UserId  
+WHERE UserMember.CompanyId=:CompanyId AND UserMember.SecurityLevel<=:SecurityLevel" + filter;
+
+            Database.Select(selectCommand)
                 .AddParameter("CompanyId", DbType.Decimal, 5, companyid)
                 .AddParameter("SecurityLevel", DbType.Decimal, 3, securitylevel)
                 .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>

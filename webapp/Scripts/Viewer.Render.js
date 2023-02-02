@@ -165,6 +165,9 @@ app.ViewerQuery = (function () {
                             return column.format.supplant(row);
                         }
                     }
+                    if (column.events != undefined) {
+                        column.events = 'Local_Events';
+                    }
                 });
             });
         }
@@ -177,6 +180,9 @@ app.ViewerQuery = (function () {
                     column.formatter = function (value, row, index, field) {
                         return column.format.supplant(row);
                     }
+                }
+                if (column.events != undefined) {
+                    column.events = 'Local_Events';
                 }
             });
         }
@@ -356,6 +362,9 @@ app.ViewerQuery = (function () {
                             return column.format.supplant(row);
                         }
                     }
+                    if (column.events != undefined) {
+                        column.events = 'Local_Events';
+                    }
                 });
 
                 $el.bootstrapTable(spec);
@@ -451,12 +460,25 @@ app.ViewerQuery = (function () {
         Data: function () {
             return _data;
         },
+        ButtonClick: function (tbl, e, name, row, index) {
+            $.each(tbl.columns, function (key, column) {
+                if (typeof column['action_' + name] != "undefined") {
+                    eval(column['action_' + name].supplant(row));
+                }
+            })
+        },
         EventHandler: function (handler) {
             _handler = handler;
         }
     };
 })();
-
+app.ViewerQuery.state = {};
+window.Local_Events = {
+    'click .event': function (e, value, row, index) {
+        e.stopPropagation();
+        app.ViewerQuery.ButtonClick(this, e, e.currentTarget.name, row, index)
+    }
+};
 //app.ui.ShowSideBar({
 //    isExternal: true,
 //    url: '/Aliados/viewer/render?id=666',

@@ -83,6 +83,7 @@ namespace Architect.API.Tron.Controllers
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Cotizacion.MapfreMas result = null;
+
             await Task.Run(() =>
             {
                 result = Architect.API.Tron.Business.Emision.MapfreMas.Issue(quoteInfo, tokenInfo);

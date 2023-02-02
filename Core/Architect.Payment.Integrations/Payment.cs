@@ -127,13 +127,16 @@ namespace Architect.Payment.Integrations
             if (currentRecord != null)
             {
                 result = await Providers.Placetopay.Webcheckout.GetRequestInformation(currentRecord.RequestID, currentRecord.Currency, currentRecord.SettingId, currentRecord.CompanyId);
-                result.OnlinePayment = currentRecord;
-                Utilities.Log.WarningLog("Payment.VerifyUpdateStatus", string.Format("requestId={0}, currency={1}, currentStatus={2}, newStatus={3}, recibo={4}", currentRecord.RequestID, currentRecord.Currency, currentRecord.ProviderStatus, result.status, currentRecord.BillNumber), "payment");
-
-                if (updateStatus && result.status != currentRecord.ProviderStatus)
+                if (result != null)
                 {
-                    result.OnlinePayment = UpdateStatus(userId, currentRecord, result);
-                    result.changed = true;
+                    result.OnlinePayment = currentRecord;
+                    Utilities.Log.WarningLog("Payment.VerifyUpdateStatus", string.Format("requestId={0}, currency={1}, currentStatus={2}, newStatus={3}, recibo={4}", currentRecord.RequestID, currentRecord.Currency, currentRecord.ProviderStatus, result.status, currentRecord.BillNumber), "payment");
+
+                    if (updateStatus && result.status != currentRecord.ProviderStatus)
+                    {
+                        result.OnlinePayment = UpdateStatus(userId, currentRecord, result);
+                        result.changed = true;
+                    }
                 }
             }
             else
