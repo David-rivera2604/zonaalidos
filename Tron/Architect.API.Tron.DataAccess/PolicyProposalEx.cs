@@ -22,7 +22,7 @@ namespace Architect.API.Tron.DataAccess
         public static List<Architect.API.Tron.Contracts.PolicyProposal> RetrieveByStatus(int companyId, int status)
         {
             List<Architect.API.Tron.Contracts.PolicyProposal> result = new List<Architect.API.Tron.Contracts.PolicyProposal>();
-            Database.Select("SELECT Id, SigningRequestId, ProposalId" +
+            Database.Select("SELECT Id, SigningRequestId, ProposalId, SignedRequest1, SigningRequest2Id, SignedRequest2, SigningRequest3Id, SignedRequest3" +
                              " FROM PolicyProposal " +
                              "WHERE CompanyId=:CompanyId AND Status=:Status")
                         .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
@@ -33,7 +33,12 @@ namespace Architect.API.Tron.DataAccess
                             {
                                 Id = reader.IntegerValue("Id"),
                                 SigningRequestId = reader.StringValue("SigningRequestId"),
-                                ProposalId = reader.StringValue("ProposalId")
+                                ProposalId = reader.StringValue("ProposalId"),
+                                SignedRequest1 = reader.IntegerValue("SignedRequest1") == 1,
+                                SigningRequest2Id = reader.StringValue("SigningRequest2Id"),
+                                SignedRequest2 = reader.IntegerValue("SignedRequest2") == 1,
+                                SigningRequest3Id = reader.StringValue("SigningRequest3Id"),
+                                SignedRequest3 = reader.IntegerValue("SignedRequest3") == 1
                             }
                             );
                         }));

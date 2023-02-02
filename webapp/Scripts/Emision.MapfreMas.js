@@ -6,7 +6,9 @@
 
 app.EmisionMapfreMas = (function () {
 
+    let mainHolder = null;
     let fec_vcto_poliza_grupo = null;
+    let formularioRow = null;
     var workMode = '';
     var setupData = null;
     var showCalculate = false;
@@ -23,10 +25,10 @@ app.EmisionMapfreMas = (function () {
                     workMode = data.Modo;
                     if (localStorage.getItem('Roles').includes('Purdy')) {
                         $('.Purdy').removeClass('d-none');
-                        $('#Fuente_Tomador').prop("disabled", workMode != 'draft');
+                        $('#Fuente_Tomador').prop("disabled", (workMode != 'draft' && workMode != 'resume') );
                     }
 
-                    if (workMode === 'draft') {
+                    if (workMode === 'draft' || workMode === 'resume') {
                         $('#guardarenviar').removeClass('d-none');
                         $("#guardarenviar").appendTo("#GenericToolBar");
                         $('.documentosrequeridosGrid').addClass('d-none');
@@ -112,6 +114,8 @@ app.EmisionMapfreMas = (function () {
         $('#tercerosTbl').bootstrapTable('hideColumn', 'Actions');
         $('#documentosrequeridosNew').addClass('d-none');
         $('#documentosrequeridosTbl').bootstrapTable('hideColumn', 'Actions');
+        $('#formulariosNew').addClass('d-none');
+        $('#formulariosTbl').bootstrapTable('hideColumn', 'Actions');
     }
 
     function Quote() {
@@ -255,12 +259,17 @@ app.EmisionMapfreMas = (function () {
         data.Vehiculo_Otra_Poliza = app.ui.GetRadioStringValue('Vehiculo_Otra_Poliza');
         data.terceros = $('#tercerosTbl').bootstrapTable('getData');
         data.documentosrequeridos = $('#documentosrequeridosTbl').bootstrapTable('getData');
+        data.kyc = null;
+        let formulariosData = $('#formulariosTbl').bootstrapTable('getData');
+        if (formulariosData.length > 0) {
+            data.kyc = $('#formulariosTbl').bootstrapTable('getData')[0].data;
+        }
         setupData = data;
         return data;
     }
 
     function MapObjectToInput_First(data) {
-        
+
         //app.ui.SetNumericValue('#edad', data.edad);
         //$('#mca_sexo').val(data.mca_sexo);
         $('#Fuente_Tomador').val(data.Fuente_Tomador);
@@ -353,6 +362,10 @@ app.EmisionMapfreMas = (function () {
         if (driver.length > 0) {
             $('#tipodetercero option[value="3"]').attr('enabled', 'enabled');
         }
+
+
+        formularios_handler();
+
     }
 
     function Controls_setup() {
@@ -792,10 +805,11 @@ app.EmisionMapfreMas = (function () {
         let terceros = $('#tercerosTbl').bootstrapTable('getData');
         let terceroserrors = (terceros.length === 0);
 
-        if (!terceroserrors && workMode === 'draft') {
+        if (!terceroserrors && (workMode === 'draft' || workMode === 'resume')) {
             let holder = terceros.filter(i => i.tipodetercero === 0);
             let insured = terceros.filter(i => i.tipodetercero === 2);
             let driver = terceros.filter(i => i.tipodetercero === 3);
+            let bene = terceros.filter(i => i.tipodetercero === 6);
 
             if (holder.length === 0) {
                 message += ', indique el tomador';
@@ -809,14 +823,22 @@ app.EmisionMapfreMas = (function () {
                 message += ', indique el conductor habitual';
                 terceroserrors = true;
             }
+            if (bene.length > 0) {
+                if (bene.reduce((total, item) => total + item.porcentaje, 0) != 100) {
+                    message += ', El total del porcentaje de participación para los beneficiarios debe ser el 100%';
+                    terceroserrors = true;
+                }
+            }
         }
         if (terceroserrors) {
             $('#tercerosTbl-error').html(message);
             $('#tercerosTbl-error').removeClass('d-none');
             result = result + 1;
+        } else {
+            $('#tercerosTbl-error').addClass('d-none');
         }
 
-        if (workMode != 'draft') {
+        if (workMode != 'draft' && workMode != 'resume') {
             var grupo = 'F';
             let documentosrequeridos = $('#documentosrequeridosTbl').bootstrapTable('getData');
             let lista = documentosrequeridos.filter(function (row) {
@@ -827,6 +849,34 @@ app.EmisionMapfreMas = (function () {
                 $('#documentosrequeridosTbl-error').removeClass('d-none');
                 result = result + 1;
             }
+        }
+
+        if (formulariosMode()) {
+            result = FormulariosValidations(result);
+        }
+        return result;
+    }
+
+    function FormulariosValidations(result) {
+        let formularios = $('#formulariosTbl').bootstrapTable('getData');
+        let formularioserrors = (formularios.length === 0);
+        let message = '';
+
+        if (formularioserrors) {
+            message = 'Debe responder los formularios requeridos';
+        } else {
+            if (formularios[0].when === null) {
+                message = 'Debe responder el formulario ' + formularios[0].name.toLowerCase();
+                formularioserrors = true;
+            }
+        }
+        if (formularioserrors) {
+            $('#formulariosTbl-error').html(message);
+            $('#formulariosTbl-error').removeClass('d-none');
+            result = result + 1;
+
+        } else {
+            $('#formulariosTbl-error').addClass('d-none');
         }
         return result;
     }
@@ -1089,6 +1139,7 @@ app.EmisionMapfreMas = (function () {
 
                 app.ui.ButtonDone('#tercerosEdtFormSave')
                 $('#tercerosModal').modal('hide');
+                formularios_handler();
             }
         });
 
@@ -1186,8 +1237,10 @@ app.EmisionMapfreMas = (function () {
         $('#correoelectronico').val(row.correoelectronico);
         $('#cod_pais').val(row.cod_pais);
         $('#TProvincia').val(row.TProvincia);
-        $('#TCanton').val(row.TCanton);
-        $('#TDistrito').val(row.TDistrito);
+
+        app.core.LookupDependency(row.TProvincia, 'TCanton', 'Cantones', '', row.TCanton, false, null, `cod_pais=${row.cod_pais}:cod_estado=`);
+        app.core.LookupDependency(row.TCanton, 'TDistrito', 'Distritos', '', row.TDistrito, false, null, `cod_pais=${row.cod_pais}:cod_prov=`);
+
         $('#otrasenas').val(row.otrasenas);
         app.ui.SetRadioNumericValue('eltomadoreselmismoasegurado', row.eltomadoreselmismoasegurado)
         app.ui.SetRadioNumericValue('elaseguradoeselconductorhabitual', row.elaseguradoeselconductorhabitual)
@@ -1286,7 +1339,7 @@ app.EmisionMapfreMas = (function () {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
-            maximumValue: '999',
+            maximumValue: '100',
             minimumValue: '0',
             decimalPlaces: '0',
             emptyInputBehavior: 'null'
@@ -1295,7 +1348,7 @@ app.EmisionMapfreMas = (function () {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
-            maximumValue: '999',
+            maximumValue: '100',
             minimumValue: '0',
             decimalPlaces: '0',
             emptyInputBehavior: 'null'
@@ -1766,6 +1819,201 @@ app.EmisionMapfreMas = (function () {
 
     }
 
+    function formularios_table_setup() {
+        $('#formulariosTbl').bootstrapTable({
+            uniqueId: 'formularioId',
+            data: [],
+            classes: 'table table-bordered table-hover table-index table-in-form',
+            pagination: false,
+            smartDisplay: true,
+            detailView: false,
+            detailFormatter: 'app.ui.GenericDetailFormatter',
+            columns: [
+                {
+                    field: 'status',
+                    title: 'Estado',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    formatter: function (value, row, index, field) {
+
+                        if (row.data === null) {
+                            return '<span class="label label-danger">Pendiente</span>';
+                        }
+                        else {
+                            return '<span class="label label-success">Listo</span>';
+                        }
+
+                    },
+                    visible: true,
+                    width: 10,
+                    widthUnit: '%'
+                }, {
+                    field: 'name',
+                    title: 'Tipo de formulario',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true,
+                    width: 60,
+                    widthUnit: '%'
+                }, {
+                    field: 'when',
+                    title: 'Cuando',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    formatter: 'app.ui.DateAndTimeFormatter',
+                    visible: true,
+                    width: 20,
+                    widthUnit: '%'
+                }, {
+                    field: 'Actions',
+                    title: 'Acciones',
+                    class: 'd-none d-sm-table-cell',
+                    titleTooltip: 'Acciones disponibles para un formulario',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    width: 10,
+                    widthUnit: "%",
+                    visible: true,
+                    events: 'formulariosTbl_Events',
+                    formatter: function (value, row, index, field) {
+                        var html = [];
+                        html.push('<button type="button" class="btn btn-sm btn-white edit" title="Al hacer click permite agregar o editar la información de un formulario"> <i class="fa fa-pencil"></i> </button>');
+                        html.push('<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar la información de un formulario"> <i class="fa fa-recycle"></i> </button>');
+                        return html.join('');
+                    },
+                    cellStyle: function (value, row, index) {
+                        return {
+                            css: {
+                                'white-space': 'nowrap',
+                                'vertical-align': 'top'
+                            }
+                        }
+                    }
+                }]
+        });
+
+    }
+
+    function formularios_table_row_edit(row) {
+        formularioRow = row;
+        let name = "#" + formularioRow.type;
+
+        if ($(name + 'Modal').length == 1) {
+            let md = $(name + 'Modal').modal({ show: false });
+            let ref = formularioRow.type === 'kycpersona' ? app.kycpersona : app.kycjuridico;
+            md.modal('show');
+            ref.SetData(formularioRow.data);
+        } else {
+
+            $('.ibox-content').toggleClass('sk-loading');
+
+            app.core.GetView(app.setting.viewpath + (formularioRow.type === 'kycpersona' ? 'Emision/_kyc_persona' : 'Emision/_kyc_juridico'))
+                .done(function (data, textStatus, jqXHR) {
+                    $("#dynamic").append(data);
+
+                    let md = $(name + 'Modal').modal({ show: false });
+
+                    md.modal('show');
+
+                    app.core.LoadScriptFile(formularioRow.type === 'kycpersona' ? 'Emision.kyc.persona.js' : 'Emision.kyc.juridico.js')
+                        .then(d => {
+                            let ref = formularioRow.type === 'kycpersona' ? app.kycpersona : app.kycjuridico;
+                            formularioRow.data = ref.InitData();
+                            if (formularioRow.type === 'kycpersona') {
+
+
+
+                                formularioRow.data.primerapellidoPer = mainHolder[0].apellido1;
+                                formularioRow.data.segundoapellidoPer = mainHolder[0].apellido2;
+                                formularioRow.data.nombrePer = mainHolder[0].nombre;
+                                formularioRow.data.fechadenacimientoPer = mainHolder[0].fechadenacimiento;
+                                formularioRow.data.correoelectronicoPer = mainHolder[0].correoelectronico;
+                                formularioRow.data.tercerosMca_sexo = mainHolder[0].tercerosMca_sexo;
+                                formularioRow.data.numerodeidentificacionPer = mainHolder[0].DocumentNumber;
+                                formularioRow.data.tipodeidentificacionPer = mainHolder[0].DocumentNumberType;
+                                formularioRow.data.estadocivilPer = mainHolder[0].estadoCivil;
+                                formularioRow.data.telefonoresidenciaPer = mainHolder[0].numerodetelefono;
+
+                                formularioRow.data.cod_paisPer = mainHolder[0].cod_pais;
+                                formularioRow.data.cod_estadoPer = mainHolder[0].TProvincia;
+                                formularioRow.data.cod_provPer = mainHolder[0].TCanton;
+                                formularioRow.data.cod_localidadPer = mainHolder[0].TDistrito;
+                                formularioRow.data.direccionexactaPer = mainHolder[0].otrasenas;
+
+                            } else {
+                                formularioRow.data.nombrecomercialJur = mainHolder[0].nombre;
+                                formularioRow.data.razonsocialJur = mainHolder[0].nombre;
+                                formularioRow.data.numerocedulajuridicaJur = mainHolder[0].DocumentNumber;
+                                formularioRow.data.correoelectronicoJur = mainHolder[0].correoelectronico;
+
+                                formularioRow.data.cod_paisJur = mainHolder[0].cod_pais;
+                                formularioRow.data.cod_estadoJur = mainHolder[0].TProvincia;
+                                formularioRow.data.cod_provJur = mainHolder[0].TCanton;
+                                formularioRow.data.cod_localidadJur = mainHolder[0].TDistrito;
+                                formularioRow.data.direccionexactaJur = mainHolder[0].otrasenas;
+
+                            }
+                            ref.Init(formularioRow.data);
+                            ref.AcceptCallBack(app.EmisionMapfreMas.Accept);
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        });
+                }).always(function () {
+                    $('.ibox-content').toggleClass('sk-loading');
+                });
+        }
+    }
+
+    function formularios_table_row_delete(row) {
+        row.when = null;
+        row.data = null;
+        $('#formulariosTbl').bootstrapTable('updateByUniqueId', { id: row.formularioId, row: row });
+    }
+
+    function formularios_table_kycSetData(data) {
+        let name = "#" + formularioRow.type;
+        formularioRow.data = data;
+        formularioRow.when = new Date();
+        $('#formulariosTbl').bootstrapTable('updateByUniqueId', { id: formularioRow.formularioId, row: formularioRow });
+        $(name + 'Modal').modal('hide');
+        FormulariosValidations(0);
+    };
+
+    function formularios_handler() {
+        if (formulariosMode()) {
+            mainHolder = $('#tercerosTbl').bootstrapTable('getData').filter(i => i.tipodetercero === 0);
+            if (mainHolder.length > 0 && $('#formulariosTbl').bootstrapTable('getData').length == 0) {
+
+                $('.formulariosGrid').removeClass('d-none');
+
+                let row = { formularioId: 1, name: 'Conozca a su cliente persona', when: null, type: 'kycpersona', data: null };
+
+                if (mainHolder[0].DocumentNumberType === 4) {
+                    row.name = 'Conozca a su cliente Jurídico';
+                    row.type = 'kycjuridico';
+                }
+
+                $('#formulariosTbl').bootstrapTable('load', [row]);
+            }
+            if (mainHolder.length === 0) {
+                $('.formulariosGrid').addClass('d-none');
+            }
+        }
+    };
+
+    function formulariosMode() {
+        return ((workMode === 'draft' || workMode === 'resume') && !localStorage.getItem('Roles').includes('Purdy') && !localStorage.getItem('Roles').includes('Davivienda_Prendarios') && !localStorage.getItem('Roles').includes('Davivienda_Leasing'));
+    }
+
     return {
         Data: function () {
             return setupData;
@@ -1787,6 +2035,8 @@ app.EmisionMapfreMas = (function () {
             documentosrequeridos_table_Validations();
             documentosrequeridos_controls_Events();
 
+            formularios_table_setup();
+
             Setup();
         },
         tercerosEditRow: function (row) {
@@ -1800,6 +2050,15 @@ app.EmisionMapfreMas = (function () {
         },
         documentosrequeridosDeleteRow: function (row) {
             documentosrequeridos_table_row_delete(row);
+        },
+        formulariosEditRow: function (row) {
+            formularios_table_row_edit(row);
+        },
+        formulariosDeleteRow: function (row) {
+            formularios_table_row_delete(row);
+        },
+        Accept: function (data) {
+            formularios_table_kycSetData(data);
         }
     };
 })();
@@ -1821,6 +2080,16 @@ window.documentosrequeridosTbl_Events = {
     },
     'click .edit': function (e, value, row, index) {
         app.EmisionMapfreMas.documentosrequeridosEditRow(row);
+        e.stopPropagation();
+    }
+};
+window.formulariosTbl_Events = {
+    'click .delete': function (e, value, row, index) {
+        toastr.warning("Si está seguro de querer limpiar la información del formulario  '" + row.name + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionMapfreMas.formulariosDeleteRow(row); } });
+        e.stopPropagation();
+    },
+    'click .edit': function (e, value, row, index) {
+        app.EmisionMapfreMas.formulariosEditRow(row);
         e.stopPropagation();
     }
 };

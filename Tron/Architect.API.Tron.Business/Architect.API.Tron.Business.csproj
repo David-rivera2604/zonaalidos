@@ -35,7 +35,7 @@
       <HintPath>..\..\runtime\Architect.Decision.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -105,6 +105,10 @@
     <ProjectReference Include="..\..\Core\Architect.API.Core.Contracts\Architect.API.Core.Contracts.csproj">
       <Project>{29b21bef-8c87-4a9d-8b37-fecc57cd03c7}</Project>
       <Name>Architect.API.Core.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Architect.Compliance.Integrations\Architect.Compliance.Integrations.csproj">
+      <Project>{1a9f7166-6c86-44a6-8920-cd52422a2044}</Project>
+      <Name>Architect.Compliance.Integrations</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Core\Architect.DocuSign.Integrations\Architect.DocuSign.Integrations.csproj">
       <Project>{41b3f1c8-fdb5-4db4-be61-6bf1576a09e7}</Project>

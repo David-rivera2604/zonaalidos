@@ -1,10 +1,15 @@
-﻿using Architect.Utilities.Extensions;
+﻿using Architect.API.Insurance.Contracts.Bayer;
+using Architect.Compliance.Integrations.Contracts;
+using Architect.Utilities.Extensions;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 
 namespace Architect.API.Tron.Business.Emision
 {
@@ -98,14 +103,20 @@ namespace Architect.API.Tron.Business.Emision
         public static Contracts.Emision.MapfreMas Issue(Contracts.Emision.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.Emision.MapfreMas resultQuoteInfo = null;
-            if (quoteInfo.Modo == "draft")
+            if (quoteInfo.Modo == "draft" || quoteInfo.Modo == "resume")
             {
-
                 //TODO: Se debe incluir la validación de que de haber un Tomador, Asegurado y Conductor Habitual, pero faltan las básicas.
                 quoteInfo.DatosEconomicos = EconomicDataCalculate(quoteInfo);
 
+                //Compliance(quoteInfo, tokenInfo);
+
                 string uniqueId = EnviarSolicitud(quoteInfo.tip_firma, quoteInfo.correoenvio, quoteInfo, tokenInfo);
-                AlmacenarSolicitud(quoteInfo, quoteInfo.tip_firma == Contracts.TipoDeFirma.Manual ? 33 : 4, tokenInfo, uniqueId);
+                string kycUniqueId = String.Empty;
+                //if (quoteInfo.kyc != null)
+                //{
+                //    kycUniqueId = EnviarKYC(quoteInfo.tip_firma, quoteInfo.correoenvio, quoteInfo, tokenInfo);
+                //}
+                AlmacenarSolicitud(quoteInfo, quoteInfo.tip_firma == Contracts.TipoDeFirma.Manual ? 33 : 4, tokenInfo, uniqueId, kycUniqueId);
                 GuardaDatosVariables(quoteInfo.presupuesto, quoteInfo.cod_ramo, quoteInfo.tip_firma, quoteInfo.tip_firmaDesc, uniqueId);
                 string message = string.Empty;
                 if (uniqueId.IsNotEmpty())
@@ -158,7 +169,7 @@ namespace Architect.API.Tron.Business.Emision
 
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     resultQuoteInfo = new Contracts.Emision.MapfreMas()
                     {
@@ -167,7 +178,19 @@ namespace Architect.API.Tron.Business.Emision
                     };
 
                 }
-             
+                try
+                {
+                    if (resultQuoteInfo.num_poliza.IsNotEmpty())
+                    {
+                        Compliance(quoteInfo, tokenInfo);
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Utilities.Log.ErrorLog("Issue.Compliance", "Fail send compliance information", ex);
+                }
+
             }
             return resultQuoteInfo;
         }
@@ -285,21 +308,45 @@ namespace Architect.API.Tron.Business.Emision
             DocuSign.Integrations.Contracts.SubmitResult submit = new DocuSign.Integrations.Contracts.SubmitResult();
             string solicitudPDF = General_PDF_Solicitud(quoteInfo, tokenInfo);
             Contracts.Comun.tercero primaryInsured = (from t in quoteInfo.terceros where t.tipodetercero == 2 select t).First();
-
             if (tip_firma == Contracts.TipoDeFirma.Manual)
             {
                 Core.Business.General.Mail.SendByTemplate("MapfreMas_Solicitud", tokenInfo.CompanyId, tokenInfo.UserId, 0, quoteInfo,
                     new Dictionary<string, string>() { { correoenvio, string.Empty } },
                     new string[] { string.Format("{0};Solicitud {1}.pdf", solicitudPDF, quoteInfo.presupuesto) });
+                submit.UniqueId = quoteInfo.presupuesto;
             }
             else
             {
                 submit = DocuSign.Integrations.DocuSign.Submit(
                                 quoteInfo.presupuesto,
-                                "Envío solicitud " + quoteInfo.presupuesto,
+                                "Solicitud de seguro, presupuesto " + quoteInfo.presupuesto,
                                 primaryInsured.nombre.CompleteFullName(primaryInsured.apellido1, primaryInsured.apellido2),
                                 correoenvio,
                                 solicitudPDF, quoteInfo.tip_firma == Contracts.TipoDeFirma.Tablet ? "Handwriting" : "WebClick").GetAwaiter().GetResult();
+            }
+            return submit.UniqueId;
+        }
+
+        private static string EnviarKYC(string tip_firma, string correoenvio, Contracts.Emision.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
+        {
+            DocuSign.Integrations.Contracts.SubmitResult submit = new DocuSign.Integrations.Contracts.SubmitResult();
+            string kycPDF = General_PDF_KYC(quoteInfo);
+            Contracts.Comun.tercero primaryInsured = (from t in quoteInfo.terceros where t.tipodetercero == 2 select t).First();
+
+            if (tip_firma == Contracts.TipoDeFirma.Manual)
+            {
+                Core.Business.General.Mail.SendByTemplate("MapfreMas_Solicitud", tokenInfo.CompanyId, tokenInfo.UserId, 0, quoteInfo,
+                    new Dictionary<string, string>() { { correoenvio, string.Empty } },
+                    new string[] { string.Format("{0};Solicitud {1}.pdf", kycPDF, quoteInfo.presupuesto) });
+            }
+            else
+            {
+                submit = DocuSign.Integrations.DocuSign.Submit(
+                            quoteInfo.presupuesto,
+                            "Conozca a su cliente " + quoteInfo.presupuesto,
+                            primaryInsured.nombre.CompleteFullName(primaryInsured.apellido1, primaryInsured.apellido2),
+                            correoenvio,
+                            kycPDF, quoteInfo.tip_firma == Contracts.TipoDeFirma.Tablet ? "Handwriting" : "WebClick").GetAwaiter().GetResult();
 
             }
             return submit.UniqueId;
@@ -309,10 +356,12 @@ namespace Architect.API.Tron.Business.Emision
         {
             Contracts.Emision.MapfreMasSolicitud data = Newtonsoft.Json.JsonConvert.DeserializeObject<Contracts.Emision.MapfreMasSolicitud>(Newtonsoft.Json.JsonConvert.SerializeObject(quoteInfo));
 
+            data.kyc = quoteInfo.kyc;
             data.titular = (from t in data.terceros where t.tipodetercero == 0 select t).FirstOrDefault();
             data.asegurado = (from a in data.terceros where a.tipodetercero == 2 select a).FirstOrDefault();
             data.conductor = (from c in data.terceros where c.tipodetercero == 3 select c).FirstOrDefault();
             data.acredor = (from c in data.terceros where c.tipodetercero == 8 select c).FirstOrDefault();
+
             int index = 1;
             foreach (Contracts.Comun.tercero item in from b in data.terceros where b.tipodetercero == 6 select b)
             {
@@ -337,10 +386,31 @@ namespace Architect.API.Tron.Business.Emision
                 data.mainrole = "Purdy";
             }
 
-            return Core.Business.General.Report.GeneratePDFFile("mapfremas_solicitud", data).GetAwaiter().GetResult();
+            if (tokenInfo.Roles.Contain("PolizaGrupo"))
+            {
+                return Core.Business.General.Report.GeneratePDFFile("mapfremas_solicitud", data).GetAwaiter().GetResult();
+            }
+            else
+            {
+                return Core.Business.General.Report.GeneratePDFFile("mapfremas_solicitud_individual", data).GetAwaiter().GetResult();
+            }
+
+
         }
 
-        private static void AlmacenarSolicitud(Contracts.Emision.MapfreMas quoteInfo, int status, Core.Contracts.Security.Token tokenInfo, string uniqueId)
+        private static string General_PDF_KYC(Contracts.Emision.MapfreMas quoteInfo)
+        {
+            string pdf_FileName = "KYC_Persona";
+            Contracts.Comun.tercero titular = (from t in quoteInfo.terceros where t.tipodetercero == 0 select t).FirstOrDefault();
+
+            if (titular.DocumentNumberType == 4)
+            {
+                pdf_FileName = "KYC_Juridico";
+            }
+            return Core.Business.General.Report.GeneratePDFFile(pdf_FileName, quoteInfo.kyc).GetAwaiter().GetResult();
+        }
+
+        private static void AlmacenarSolicitud(Contracts.Emision.MapfreMas quoteInfo, int status, Core.Contracts.Security.Token tokenInfo, string uniqueId, string signingRequest2Id = "")
         {
             Contracts.Comun.tercero primaryInsured = (from t in quoteInfo.terceros where t.tipodetercero == 2 select t).First();
             DataAccess.PolicyProposal.Create(new Contracts.PolicyProposal()
@@ -354,6 +424,8 @@ namespace Architect.API.Tron.Business.Emision
                 Summary = string.Format("Placa: {0}, Chasis: {1}, Motor: {2}, Color: {3}", quoteInfo.NUM_MATRICULA, quoteInfo.COD_CHASSIS, quoteInfo.NUM_MOTOR, quoteInfo.COD_COLORDesc),
                 IssueDate = DateTime.Now,
                 SigningRequestId = uniqueId,
+                SigningRequest2Id = signingRequest2Id,
+                SignedRequest2 = false,
                 SigningType = quoteInfo.tip_firma,
                 PrimaryEmailAddress = quoteInfo.correoenvio,
                 Status = status,
@@ -441,5 +513,246 @@ namespace Architect.API.Tron.Business.Emision
             return result;
         }
 
+        private static void Compliance(Contracts.Emision.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
+        {
+            JObject jsonvalues = null;
+            Contracts.Comun.tercero titular = (from t in quoteInfo.terceros where t.tipodetercero == 0 select t).FirstOrDefault();
+
+            if (quoteInfo.kyc != null)
+            {
+                jsonvalues = (JObject)quoteInfo.kyc;
+            }
+
+
+            Architect.Compliance.Integrations.Contracts.Clientes mapInfo = new Compliance.Integrations.Contracts.Clientes()
+            {
+                tipoIdentificacion = titular.DocumentNumberType,
+                numeroIdentificacion = titular.DocumentNumber,
+                nombreCliente = titular.nombre,
+                primerApellido = titular.apellido1,
+                segundoApellido = titular.apellido2,
+                conocidoComo = String.Empty,
+                razonSocial = String.Empty,
+                nombreComercial = String.Empty,
+                fechaUltimaActualizacion = DateTime.Now,
+                descripcionCuenta = titular.nombre.CompleteFullName(titular.apellido1, titular.apellido2),
+                numeroIdentificacionEntidad = titular.DocumentNumber,
+                fechaNacimiento = titular.fechadenacimiento,
+                ejecutivo = tokenInfo.AgentCode.ToString(),
+                estado = "A",
+                estadoXML = "X",
+                usuarioRegistro = tokenInfo.UserId.ToString(),
+                administFondosTercero = "N",
+                usuario = tokenInfo.UserId,
+                esApnfd = "N",
+                tipoApnfd = "0",
+                esCpe = "N",
+                pagaImpuestos = "N",
+                //faltaban
+                esPep = "N",
+                tipoPep = "N",
+                residente = "S",
+                articulo15 = "N",
+                esEmpleado = "N",
+                fechaValor = DateTime.Now,
+                tipoCuenta = "1",
+                fechaSalida = new DateTime(1900, 1, 1),
+                fechaIngreso = DateTime.Now,
+                fechaRegistro = DateTime.Now,
+                sectorPublico = "N",
+                fechaInactividad = new DateTime(1900, 1, 1),
+                fechaVinculacion = DateTime.Now,
+                fechaCargaCliente = DateTime.Now,
+                institucionLabora = "0",
+                fechaRegistroApnfd = new DateTime(1900, 1, 1),
+                lugarExpedicionIdentificacion = "Costa Rica",
+                fechaVencimientoIdentificacion = new DateTime(1900, 1, 1),
+                fechaProximaActualizacion = new DateTime(1900, 1, 1),
+                descripcionInversionInicial = String.Empty
+            };
+
+
+            //KYC
+            //administFondosTercero
+            //
+            //montoIngresoMensual
+            //esPep
+            //tipoPep
+            //articulo15
+            //origenFondos
+            //paisOrigen = "111111"
+            //profesion
+            mapInfo.clientesUbicaciones = new List<Compliance.Integrations.Contracts.Clientesubicacione>()
+            {
+                new Compliance.Integrations.Contracts.Clientesubicacione()
+                {
+                    tipoUbicacion = 1,
+                    divisionTerritorial = 99999,
+                    descripcionUbicacion = titular.numerodetelefono
+                },
+                new Compliance.Integrations.Contracts.Clientesubicacione()
+                {
+                    tipoUbicacion = 3,
+                    divisionTerritorial = 99999,
+                    descripcionUbicacion = titular.correoelectronico
+                },
+                new Compliance.Integrations.Contracts.Clientesubicacione()
+                {
+                    tipoUbicacion = 4,
+                    divisionTerritorial = titular.TDistrito,
+                    descripcionUbicacion = String.Format("{0}, {1}, {2}, {3}. {4}.", titular.TProvinciaDesc , titular.TCantonDesc,titular.TDistritoDesc,titular.otrasenas, "Costa Rica")
+                }
+            };
+
+            if (titular.DocumentNumberType == 4)
+            {
+                mapInfo.razonSocial = titular.nombre;
+                mapInfo.nombreComercial = titular.nombre;
+                mapInfo.nombreCliente = string.Empty;
+                mapInfo.primerApellido = string.Empty;
+                mapInfo.segundoApellido = string.Empty;
+                mapInfo.genero = "X";
+                mapInfo.estadoCivil = "X";
+
+                if (jsonvalues != null)
+                {
+                    mapInfo.paisOrigen = jsonvalues.TokenInt32Value("paisdeconstitucionJur");
+                    mapInfo.actividadEconomica = 1;
+
+                    mapInfo.articulo15 = jsonvalues.TokenStringValue("actividadesart15Jur") == "1" ? "S" : "N";
+                    if (jsonvalues.TokenStringValue("peprelacionJur") == "1")
+                    {
+                        mapInfo.esPep = "S";
+                        mapInfo.tipoPep = "R";
+                    }
+                    if (jsonvalues.TokenStringValue("pepcargoJur") == "1")
+                    {
+                        mapInfo.esPep = "S";
+                        mapInfo.tipoPep = "D";
+                    }
+                    Clientesrepresentante representante = new Clientesrepresentante()
+                    {
+
+                        tipoIdentificacionRepresentante = jsonvalues.TokenInt32Value("tipodeidentificacionJur"),
+                        numeroIdentificacionRepresentante = jsonvalues.TokenStringValue("numerodeidentificacionJur"),
+                        nombre = jsonvalues.TokenStringValue("nombrecompletoJur"),
+                        segundoNombre = string.Empty,
+                        primerApellido = jsonvalues.TokenStringValue("primerapellidoJur"),
+                        segundoApellido = jsonvalues.TokenStringValue("segundoapellidoJur"),
+                        conocidoComo = String.Empty,
+                        genero = jsonvalues.TokenStringValue("sexoJur") == "1" ? "M" : "F",
+                        fechaNacimiento = jsonvalues.TokenDateTimeValue("fechadenacimientoJur"),
+                        estadoCivil = jsonvalues.TokenStringValue("estadocivilJur", "X"),
+                        paisOrigen = jsonvalues.TokenInt32Value("paisdenacimientoJur"),
+                        profesion = jsonvalues.TokenInt32Value("profesionJur"),
+                        actividadEconomica = 1,
+                        esPep = "N",
+                        tipoPep = "N",
+                        descripcionPep = "No aplica",
+                        articulo15 = jsonvalues.TokenStringValue("actividadesart15Jur") == "1" ? "S" : "N",
+                        cargo = jsonvalues.TokenStringValue("posiciondentrodelaempresaJur", "No aplica"),
+                        fechaVencimiento = new DateTime(1900, 1, 1)
+                    };
+
+                    switch (representante.estadoCivil)
+                    {
+                        case "1": //casado
+                            representante.estadoCivil = "C";
+                            break;
+                        case "2": //divorciado
+                            representante.estadoCivil = "D";
+                            break;
+                        case "3": //soltero
+                            representante.estadoCivil = "S";
+                            break;
+                        case "4": //viudo
+                            representante.estadoCivil = "V";
+                            break;
+                        case "5": //otro
+                            representante.estadoCivil = "X";
+                            break;
+                        case "7": //acompañado
+                            representante.estadoCivil = "U";
+                            break;
+                        default:
+                            representante.estadoCivil = "X";
+                            break;
+                    }
+                    if (jsonvalues.TokenStringValue("peprelacionJur") == "1")
+                    {
+                        representante.esPep = "S";
+                        representante.tipoPep = "R";
+                    }
+                    if (jsonvalues.TokenStringValue("pepcargoJur") == "1")
+                    {
+                        representante.esPep = "S";
+                        representante.tipoPep = "D";
+                    }
+                    mapInfo.clientesRepresentantes = new[] { representante };
+                }
+            }
+            else
+            {
+                mapInfo.genero = titular.tercerosMca_sexo == 1 ? "M" : "F";
+                mapInfo.estadoCivil = titular.estadoCivil;
+                if (jsonvalues != null)
+                {
+
+                    mapInfo.profesion = jsonvalues.TokenInt32Value("profesionPer");
+                    mapInfo.paisOrigen = jsonvalues.TokenInt32Value("paisdenacimientoPer");
+                    mapInfo.actividadEconomica = 1;
+                    mapInfo.clientesNacionalidades = new[] { new Clientesnacionalidade() { nacionalidad = jsonvalues.TokenInt32Value("nacionalidadPer") } };
+                    string telefonocelularPer = jsonvalues.TokenStringValue("telefonocelularPer");
+                    if (telefonocelularPer.IsNotEmpty())
+                    {
+                        mapInfo.clientesUbicaciones.Add(new Compliance.Integrations.Contracts.Clientesubicacione()
+                        {
+                            tipoUbicacion = 2,
+                            divisionTerritorial = 99999,
+                            descripcionUbicacion = telefonocelularPer
+                        });
+                    }
+                    mapInfo.articulo15 = jsonvalues.TokenStringValue("actividadesart15Per") == "1" ? "S" : "N";
+                    if (jsonvalues.TokenStringValue("peprelacionPer") == "1")
+                    {
+                        mapInfo.esPep = "S";
+                        mapInfo.tipoPep = "R";
+                    }
+                    if (jsonvalues.TokenStringValue("pepcargoPer") == "1")
+                    {
+                        mapInfo.esPep = "S";
+                        mapInfo.tipoPep = "D";
+                    }
+                }
+            }
+
+            mapInfo.clientesPolizas = new List<Compliance.Integrations.Contracts.Clientespoliza>()
+            {
+                new Compliance.Integrations.Contracts.Clientespoliza()
+                {
+                    numeroPoliza = quoteInfo.num_poliza,
+                    descripcionPoliza = "MapfreMas",
+                    fechaInicio = quoteInfo.fec_efec_poliza,
+                    fechaFinalizacion = quoteInfo.fec_vcto_poliza,
+                    moneda  = quoteInfo.cod_mon,
+                   // prima = (int)quoteInfo.DatosEconomicos.annualnetpremium,
+                    estado="A",
+                    //faltaban
+                    tipoPrima = "A",
+                    tipoPoliza= "C",
+                    tipoProducto = 302,
+
+
+                }
+            };
+            if (quoteInfo.DatosEconomicos != null)
+            {
+                mapInfo.clientesPolizas[0].prima = (int)quoteInfo.DatosEconomicos.annualgrosspremium;
+            }
+
+
+
+            string result = Architect.Compliance.Integrations.Business.Customers.SendCustomers(mapInfo).Result;
+        }
     }
 }

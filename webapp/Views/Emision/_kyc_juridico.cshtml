@@ -1,0 +1,883 @@
+﻿<!-- kycjuridico Grid Modal -->
+<div class="modal inmodal" id="kycjuridicoModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                <h4 class="modal-title">Formulario conozca a su cliente - Persona Jurídica</h4>
+            </div>
+            <div class="modal-body">
+                <!-- Edit Form -->
+                <div class='form-row'>
+                    <div class='col-md-12'>
+                        <div id="kycjuridicoJurEdt" class="animated fadeInRight">
+                            <form id='kycjuridicoJurEdtForm' class='form-horizontal' data-toggle='validator'>
+                                <fieldset>
+                                    <!-- datosdelaempresaJur Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Datos de la empresa</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- nombrecomercialJur Text -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='nombrecomercialJur'>Nombre comercial<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='nombrecomercialJur' name='nombrecomercialJur' class='form-control' size='60' maxlength='60' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- razonsocialJur Text -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='razonsocialJur'>Razón social<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='razonsocialJur' name='razonsocialJur' class='form-control' size='60' maxlength='60' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- codigodeclienteJur Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='codigodeclienteJur'>Código de cliente<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='codigodeclienteJur' name='codigodeclienteJur' class='form-control' size='40' maxlength='40' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- tipodesociedadJur Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='tipodesociedadJur'>Tipo de sociedad<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='tipodesociedadJur' name='tipodesociedadJur' class='form-control' size='40' maxlength='40' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- numerocedulajuridicaJur Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='numerocedulajuridicaJur'>Número cédula jurídica<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='numerocedulajuridicaJur' name='numerocedulajuridicaJur' class='form-control' size='40' maxlength='40' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- tipodecedulajuridicaJur RadioButtonList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='tipodecedulajuridicaJur'>Tipo de cédula jurídica<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="tipodecedulajuridicaJur_1" name="tipodecedulajuridicaJur" value="1">
+                                                                <label class="custom-control-label" for="tipodecedulajuridicaJur_1">Nacional</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="tipodecedulajuridicaJur_2" name="tipodecedulajuridicaJur" value="2">
+                                                                <label class="custom-control-label" for="tipodecedulajuridicaJur_2">Extranjera</label>
+                                                            </div>
+                                                        </div>
+                                                        <div id='tipodecedulajuridicaJur_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- paisdeconstitucionJur DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='paisdeconstitucionJur'>País de constitución<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='paisdeconstitucionJur' name='paisdeconstitucionJur' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- fechadeconstitucionJur DatePicker -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='fechadeconstitucionJur'>Fecha de constitución<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='fechadeconstitucionJur_group'>
+                                                            <input type='text' id='fechadeconstitucionJur' name='fechadeconstitucionJur' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='fechadeconstitucionJur_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- actividaddelclientenaturalezadelnegocioJur Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='actividaddelclientenaturalezadelnegocioJur'>Actividad del cliente (naturaleza del negocio)<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='actividaddelclientenaturalezadelnegocioJur' name='actividaddelclientenaturalezadelnegocioJur' class='form-control' size='40' maxlength='40' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- telefonoJur Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='telefonoJur'>Teléfono<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group'>
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-earphone'></span>
+                                                            </span>
+                                                            <input id='telefonoJur' name='telefonoJur' type='text' class='form-control' size='9' maxlength='9'>
+                                                        </div>
+                                                        <div id='telefonoJur_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- faxJur Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='faxJur'>Fax<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group'>
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-earphone'></span>
+                                                            </span>
+                                                            <input id='faxJur' name='faxJur' type='text' class='form-control' size='9' maxlength='9'>
+                                                        </div>
+                                                        <div id='faxJur_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- apartadopostalJur Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='apartadopostalJur'>Apartado postal<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='apartadopostalJur' name='apartadopostalJur' class='form-control' size='40' maxlength='40' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- correoelectronicoJur Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='correoelectronicoJur'>Correo electrónico<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group'>
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-envelope'></span>
+                                                            </span>
+                                                            <input id='correoelectronicoJur' name='correoelectronicoJur' type='text' class='form-control' size='80' maxlength='80'>
+                                                        </div>
+                                                        <div id='correoelectronicoJur_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- paginaWebJur Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='paginaWebJur'>Página Web<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='paginaWebJur' name='paginaWebJur' class='form-control' size='40' maxlength='40' />
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- domiciliocomercialJur Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Domicilio comercial</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- cod_paisJur DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cod_paisJur'>País<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='cod_paisJur' name='cod_paisJur' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- cod_estadoJur DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cod_estadoJur'>Provincia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='cod_estadoJur' name='cod_estadoJur' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- cod_provJur DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cod_provJur'>Cantón<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='cod_provJur' name='cod_provJur' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- cod_localidadJur DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cod_localidadJur'>Distrito<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='cod_localidadJur' name='cod_localidadJur' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- direccionexactaJur Notes -->
+                                                <div class='col-sm-12 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='direccionexactaJur'>Dirección exacta<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <textarea id='direccionexactaJur' name='direccionexactaJur' class='form-control' rows="2"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- datosdelrepresentantelegalJur Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Datos del representante legal</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- primerapellidoJur Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='primerapellidoJur'>Primer apellido<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='primerapellidoJur' name='primerapellidoJur' class='form-control' size='40' maxlength='40' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- segundoapellidoJur Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='segundoapellidoJur'>Segundo apellido<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='segundoapellidoJur' name='segundoapellidoJur' class='form-control' size='40' maxlength='40' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- nombrecompletoJur Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='nombrecompletoJur'>Nombre completo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='nombrecompletoJur' name='nombrecompletoJur' class='form-control' size='40' maxlength='40' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- posiciondentrodelaempresaJur Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='posiciondentrodelaempresaJur'>Posición dentro de la empresa<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='posiciondentrodelaempresaJur' name='posiciondentrodelaempresaJur' class='form-control' size='40' maxlength='40' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- numerodeidentificacionJur Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='numerodeidentificacionJur'>Número de identificación<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='numerodeidentificacionJur' name='numerodeidentificacionJur' class='form-control' size='40' maxlength='40' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- tipodeidentificacionJur RadioButtonList -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='tipodeidentificacionJur'>Tipo de identificación<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="tipodeidentificacionJur_1" name="tipodeidentificacionJur" value="1">
+                                                                <label class="custom-control-label" for="tipodeidentificacionJur_1">Cédula</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="tipodeidentificacionJur_2" name="tipodeidentificacionJur" value="2">
+                                                                <label class="custom-control-label" for="tipodeidentificacionJur_2">Pasaporte</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="tipodeidentificacionJur_3" name="tipodeidentificacionJur" value="3">
+                                                                <label class="custom-control-label" for="tipodeidentificacionJur_3">Cédula Residencia</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="tipodeidentificacionJur_4" name="tipodeidentificacionJur" value="4">
+                                                                <label class="custom-control-label" for="tipodeidentificacionJur_4">Otro</label>
+                                                            </div>
+                                                        </div>
+                                                        <div id='tipodeidentificacionJur_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- especifiqueJur Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='especifiqueJur'>Especifique<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='especifiqueJur' name='especifiqueJur' class='form-control' size='40' maxlength='40' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- fechadecaducidadJur DatePicker -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='fechadecaducidadJur'>Fecha de caducidad<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='fechadecaducidadJur_group'>
+                                                            <input type='text' id='fechadecaducidadJur' name='fechadecaducidadJur' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='fechadecaducidadJur_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- nacionalidadJur DropDownList -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='nacionalidadJur'>Nacionalidad<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='nacionalidadJur' name='nacionalidadJur' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- fechadenacimientoJur DatePicker -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='fechadenacimientoJur'>Fecha de nacimiento<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='fechadenacimientoJur_group'>
+                                                            <input type='text' id='fechadenacimientoJur' name='fechadenacimientoJur' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='fechadenacimientoJur_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- paisdenacimientoJur DropDownList -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='paisdenacimientoJur'>País de nacimiento<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='paisdenacimientoJur' name='paisdenacimientoJur' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- profesionJur DropDownList -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='profesionJur'>Profesión<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='profesionJur' name='profesionJur' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- estadocivilJur DropDownList -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='estadocivilJur'>Estado civil<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='estadocivilJur' name='estadocivilJur' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- sexoJur DropDownList -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='sexoJur'>Sexo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='sexoJur' name='sexoJur' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- telefonoresidenciaJur Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='telefonoresidenciaJur'>Teléfono residencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group'>
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-earphone'></span>
+                                                            </span>
+                                                            <input id='telefonoresidenciaJur' name='telefonoresidenciaJur' type='text' class='form-control' size='9' maxlength='9'>
+                                                        </div>
+                                                        <div id='telefonoresidenciaJur_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- telefonocelularJur Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='telefonocelularJur'>Teléfono celular<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group'>
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-earphone'></span>
+                                                            </span>
+                                                            <input id='telefonocelularJur' name='telefonocelularJur' type='text' class='form-control' size='9' maxlength='9'>
+                                                        </div>
+                                                        <div id='telefonocelularJur_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- datosdelrepresentantelegalFaxJur Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='datosdelrepresentantelegalFaxJur'>Fax<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group'>
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-earphone'></span>
+                                                            </span>
+                                                            <input id='datosdelrepresentantelegalFaxJur' name='datosdelrepresentantelegalFaxJur' type='text' class='form-control' size='9' maxlength='9'>
+                                                        </div>
+                                                        <div id='datosdelrepresentantelegalFaxJur_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- datosdelrepresentantelegalApartadopostalJur Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='datosdelrepresentantelegalApartadopostalJur'>Apartado postal<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='datosdelrepresentantelegalApartadopostalJur' name='datosdelrepresentantelegalApartadopostalJur' class='form-control' size='40' maxlength='40' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- datosdelrepresentantelegalCorreoelectronicoJur Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='datosdelrepresentantelegalCorreoelectronicoJur'>Correo electrónico<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group'>
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-envelope'></span>
+                                                            </span>
+                                                            <input id='datosdelrepresentantelegalCorreoelectronicoJur' name='datosdelrepresentantelegalCorreoelectronicoJur' type='text' class='form-control' size='80' maxlength='80'>
+                                                        </div>
+                                                        <div id='datosdelrepresentantelegalCorreoelectronicoJur_validate'></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- domiciliopermanenteJur Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Domicilio permanente</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- domiciliopermanenteCod_paisJur DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='domiciliopermanenteCod_paisJur'>País<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='domiciliopermanenteCod_paisJur' name='domiciliopermanenteCod_paisJur' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- domiciliopermanenteCod_estadoJur DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='domiciliopermanenteCod_estadoJur'>Provincia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='domiciliopermanenteCod_estadoJur' name='domiciliopermanenteCod_estadoJur' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- domiciliopermanenteCod_provJur DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='domiciliopermanenteCod_provJur'>Cantón<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='domiciliopermanenteCod_provJur' name='domiciliopermanenteCod_provJur' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- domiciliopermanenteCod_localidadJur DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='domiciliopermanenteCod_localidadJur'>Distrito<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='domiciliopermanenteCod_localidadJur' name='domiciliopermanenteCod_localidadJur' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- domiciliopermanenteDireccionexactaJur Notes -->
+                                                <div class='col-sm-12 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='domiciliopermanenteDireccionexactaJur'>Dirección exacta<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <textarea id='domiciliopermanenteDireccionexactaJur' name='domiciliopermanenteDireccionexactaJur' class='form-control' rows="2"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- origendelosfondosJur Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Origen de los fondos</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- correspondenciaOrigendelosfondosJur Text -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='correspondenciaOrigendelosfondosJur'>Origen de los fondos (¿De dónde provienen y en qué forma?)<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='correspondenciaOrigendelosfondosJur' name='correspondenciaOrigendelosfondosJur' class='form-control' size='60' maxlength='60' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- paismayoractividadJur Text -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='paismayoractividadJur'>¿En qué país desarrolla la mayoría de sus actividades económicas?<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='paismayoractividadJur' name='paismayoractividadJur' class='form-control' size='60' maxlength='60' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- ingresomensualestimadoJur Numeric -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ingresomensualestimadoJur'>Ingreso mensual estimado<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='ingresomensualestimadoJur' name='ingresomensualestimadoJur' class='form-control text-right' size='26' maxlength='26' />
+                                                    </div>
+                                                </div>
+                                                <!-- fondospormivilizarJur RadioButtonList -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='fondospormivilizarJur'>Los fondos por movilizar son propios o de terceros?<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="fondospormivilizarJur_1" name="fondospormivilizarJur" value="1">
+                                                                <label class="custom-control-label" for="fondospormivilizarJur_1">Propios</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="fondospormivilizarJur_2" name="fondospormivilizarJur" value="2">
+                                                                <label class="custom-control-label" for="fondospormivilizarJur_2">Terceros</label>
+                                                            </div>
+                                                        </div>
+                                                        <div id='fondospormivilizarJur_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- actividadesart15Jur RadioButtonList -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='actividadesart15Jur'>¿Se desempeña entre las actividades citadas en el artículo 15 de la Ley 8204 (manejo de fondos de terceros físicos o jurídicos)<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="actividadesart15Jur_1" name="actividadesart15Jur" value="1">
+                                                                <label class="custom-control-label" for="actividadesart15Jur_1">Si</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="actividadesart15Jur_2" name="actividadesart15Jur" value="2">
+                                                                <label class="custom-control-label" for="actividadesart15Jur_2">No</label>
+                                                            </div>
+                                                        </div>
+                                                        <div id='actividadesart15Jur_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- tiposdeactivosJur Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Tipos de activos</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- activoscorrespondenJur RadioButtonList -->
+                                                <div class='col-sm-12 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='activoscorrespondenJur'>La mayoría de sus activos corresponden a<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="activoscorrespondenJur_1" name="activoscorrespondenJur" value="1">
+                                                                <label class="custom-control-label" for="activoscorrespondenJur_1">Activos fijos muebles e inmuebles dentro del país</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="activoscorrespondenJur_2" name="activoscorrespondenJur" value="2">
+                                                                <label class="custom-control-label" for="activoscorrespondenJur_2">Activos fijos muebles e inmuebles fuera del país</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="activoscorrespondenJur_3" name="activoscorrespondenJur" value="3">
+                                                                <label class="custom-control-label" for="activoscorrespondenJur_3">Activos monetarios y/o financieros dentro del país</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="activoscorrespondenJur_4" name="activoscorrespondenJur" value="4">
+                                                                <label class="custom-control-label" for="activoscorrespondenJur_4">Activos monetarios y/o financieros fuera del país</label>
+                                                            </div>
+                                                        </div>
+                                                        <div id='activoscorrespondenJur_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- personasexpuestaspoliticamentePEPsJur Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Personas expuestas políticamente (PEPs)</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- pepcargoJur RadioButtonList -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='pepcargoJur'>Manifiesta desempeñar o haber desempeñado algún cargo que implique funciones públicas destacadas en el país o en el extranjero<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+
+                                                        <div class="form-row">
+                                                            <div class="col-auto" style="padding-top: 6px;">
+                                                                <div class="custom-control custom-radio custom-control-inline">
+                                                                    <input type="radio" class="custom-control-input" id="pepcargoJur_1" name="pepcargoJur" value="1">
+                                                                    <label class="custom-control-label" for="pepcargoJur_1">Si</label>
+                                                                </div><div class="custom-control custom-radio custom-control-inline">
+                                                                    <input type="radio" class="custom-control-input" id="pepcargoJur_2" name="pepcargoJur" value="2">
+                                                                    <label class="custom-control-label" for="pepcargoJur_2">No</label>
+                                                                </div>
+                                                                <div id='pepcargoJur_validate'></div>
+                                                            </div>
+                                                            <!-- pepduracionJur Text -->
+                                                            <div class="col pepduracionJurVisible d-none" style="padding-top: 6px;">
+                                                                <input type='text' id='pepduracionJur' name='pepduracionJur' class='form-control' size='60' maxlength='60' placeholder="Período durante el cual desempeñó dichas funciones" />
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+
+
+                                                <!-- peprelacionJur RadioButtonList -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='peprelacionJur'>Manifiesta tener relación directa (consanguinidad) o indirecta (afinidad) con una persona expuesta políticamente (PEP)<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class="form-row">
+                                                            <div class="col-auto" style="padding-top: 6px;">
+                                                                <div class="custom-control custom-radio custom-control-inline">
+                                                                    <input type="radio" class="custom-control-input" id="peprelacionJur_1" name="peprelacionJur" value="1">
+                                                                    <label class="custom-control-label" for="peprelacionJur_1">Si</label>
+                                                                </div><div class="custom-control custom-radio custom-control-inline">
+                                                                    <input type="radio" class="custom-control-input" id="peprelacionJur_2" name="peprelacionJur" value="2">
+                                                                    <label class="custom-control-label" for="peprelacionJur_2">No</label>
+                                                                </div>
+                                                                <div id='peprelacionJur_validate'></div>
+                                                            </div>
+                                                            <!-- peptiporelacionJur Text -->
+                                                            <div class="col peptiporelacionJurVisible d-none" style="padding-top: 6px;">
+                                                                <input type='text' id='peptiporelacionJur' name='peptiporelacionJur' class='form-control' size='60' maxlength='60' placeholder="Detalle el tipo de relación" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- participacionaccionariaJur Grid -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <div class='col'>
+                                                    <h4>Participación accionaria<label id="participacionaccionariaJurTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                                </div>
+                                                <div class='col-auto'>
+                                                    <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo Participación accionaria" data-toggle="modal" id="participacionaccionariaJurNew"> <i class="fa fa-plus"></i> </button>
+                                                </div>
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class='col-md-12' style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="participacionaccionariaJurTbl" style="font-size: 11px; background-color: white;">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- descripciondelapolizaJur Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Descripción de la póliza</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- propositoderelacioncomercialIndicareltipodeSeguroqueestaadquiriendoJur Text -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='propositoderelacioncomercialIndicareltipodeSeguroqueestaadquiriendoJur'>Propósito de relación comercial (Indicar el tipo de Seguro que está adquiriendo)<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='propositoderelacioncomercialIndicareltipodeSeguroqueestaadquiriendoJur' name='propositoderelacioncomercialIndicareltipodeSeguroqueestaadquiriendoJur' class='form-control' size='40' maxlength='40' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- montoprimaJur Numeric -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='montoprimaJur'>Monto prima<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='montoprimaJur' name='montoprimaJur' class='form-control text-right' size='26' maxlength='26' />
+                                                    </div>
+                                                </div>
+                                                <!-- tipodeprimaJur Text -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='tipodeprimaJur'>Tipo de prima<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='tipodeprimaJur' name='tipodeprimaJur' class='form-control' size='40' maxlength='40' />
+
+                                                    </div>
+                                                </div>
+                                                <!-- periodicidadJur RadioButtonList -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='periodicidadJur'>Periodicidad<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="periodicidadJur_1" name="periodicidadJur" value="1">
+                                                                <label class="custom-control-label" for="periodicidadJur_1">Anual</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="periodicidadJur_2" name="periodicidadJur" value="2">
+                                                                <label class="custom-control-label" for="periodicidadJur_2">Semestral</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="periodicidadJur_3" name="periodicidadJur" value="3">
+                                                                <label class="custom-control-label" for="periodicidadJur_3">Trimestral</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="periodicidadJur_4" name="periodicidadJur" value="4">
+                                                                <label class="custom-control-label" for="periodicidadJur_4">Mensual</label>
+                                                            </div>
+                                                        </div>
+                                                        <div id='periodicidadJur_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- montovaloraseguradoJur Numeric -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='montovaloraseguradoJur'>Monto valor asegurado<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='montovaloraseguradoJur' name='montovaloraseguradoJur' class='form-control text-right' size='26' maxlength='26' />
+                                                    </div>
+                                                </div>
+                                                <!-- formadepagodelapolizaJur RadioButtonList -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='formadepagodelapolizaJur'>Forma de pago de la póliza<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="formadepagodelapolizaJur_1" name="formadepagodelapolizaJur" value="1">
+                                                                <label class="custom-control-label" for="formadepagodelapolizaJur_1">Efectivo</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="formadepagodelapolizaJur_2" name="formadepagodelapolizaJur" value="2">
+                                                                <label class="custom-control-label" for="formadepagodelapolizaJur_2">Cheque</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="formadepagodelapolizaJur_3" name="formadepagodelapolizaJur" value="3">
+                                                                <label class="custom-control-label" for="formadepagodelapolizaJur_3">Tarjeta de Crédito</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="formadepagodelapolizaJur_4" name="formadepagodelapolizaJur" value="4">
+                                                                <label class="custom-control-label" for="formadepagodelapolizaJur_4">Transferencia nacional</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="formadepagodelapolizaJur_5" name="formadepagodelapolizaJur" value="5">
+                                                                <label class="custom-control-label" for="formadepagodelapolizaJur_5">Transferencia del exterior</label>
+                                                            </div>
+                                                        </div>
+                                                        <div id='formadepagodelapolizaJur_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- correspondenciaJur Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Correspondencia</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- mediodeenvioJur RadioButtonList -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='mediodeenvioJur'>Favor indicar el medio por el cual desea que se le envíe información<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="mediodeenvioJur_1" name="mediodeenvioJur" value="1">
+                                                                <label class="custom-control-label" for="mediodeenvioJur_1">Apartado Postal</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="mediodeenvioJur_2" name="mediodeenvioJur" value="2">
+                                                                <label class="custom-control-label" for="mediodeenvioJur_2">Dirección física</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="mediodeenvioJur_3" name="mediodeenvioJur" value="3">
+                                                                <label class="custom-control-label" for="mediodeenvioJur_3">Fax</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="mediodeenvioJur_4" name="mediodeenvioJur" value="4">
+                                                                <label class="custom-control-label" for="mediodeenvioJur_4">Correo electrónico</label>
+                                                            </div>
+                                                        </div>
+                                                        <div id='mediodeenvioJur_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- correspondenciaEspecifiqueJur Text -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='correspondenciaEspecifiqueJur'>Especifique<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='correspondenciaEspecifiqueJur' name='correspondenciaEspecifiqueJur' class='form-control' size='40' maxlength='40' />
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- participacionaccionariaJur Grid Modal -->
+                <div class="modal inmodal" id="participacionaccionariaJurModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content animated bounceInRight">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                                <h4 class="modal-title">Participación accionaria</h4>
+                                <small class="font-bold">Permite agregar un nuevo Participación accionaria o editar uno ya existente</small>
+                            </div>
+                            <div class="modal-body">
+                                <!-- participacionaccionariaJur Grid Edit Form -->
+                                <div class='form-row'>
+                                    <div class='col-md-12'>
+                                        <div id="participacionaccionariaJurEdt" class="animated fadeInRight">
+                                            <form id='participacionaccionariaJurEdtForm' class='form-horizontal' data-toggle='validator'>
+                                                <fieldset>
+                                                    <div class='form-row'>
+                                                        <!-- participacionaccionariaNombrecompletoJur Text -->
+                                                        <div class='col-sm-6 col-md-6'>
+                                                            <div class='form-group'>
+                                                                <label class='control-label' for='participacionaccionariaNombrecompletoJur'>Nombre completo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                                <input type='text' id='participacionaccionariaNombrecompletoJur' name='participacionaccionariaNombrecompletoJur' class='form-control' size='40' maxlength='40' />
+                                                            </div>
+                                                        </div><!-- porcentajedeparticipacionJur Numeric -->
+                                                        <div class='col-sm-6 col-md-6'>
+                                                            <div class='form-group'>
+                                                                <label class='control-label' for='porcentajedeparticipacionJur'>Porcentaje de participación<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                                <div class='input-group'>
+                                                                    <input type='text' id='porcentajedeparticipacionJur' name='porcentajedeparticipacionJur' class='form-control text-right' size='3' maxlength='3' />
+                                                                    <span class='input-group-addon'>
+                                                                        <small class="text-muted">%</small>
+                                                                    </span>
+                                                                </div>
+                                                                <div id='porcentajedeparticipacionJur_validate'></div>
+                                                            </div>
+                                                        </div><!-- participacionaccionariaNumerodeidentificacionJur Text -->
+                                                        <div class='col-sm-6 col-md-6'>
+                                                            <div class='form-group'>
+                                                                <label class='control-label' for='participacionaccionariaNumerodeidentificacionJur'>Número de identificación<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                                <input type='text' id='participacionaccionariaNumerodeidentificacionJur' name='participacionaccionariaNumerodeidentificacionJur' class='form-control' size='40' maxlength='40' />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="participacionaccionariaJurEdtFormSave" data-doing="Guardando...">Guardar cambios</button>
+                                <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Form End -->
+
+
+            </div>
+            <div class="modal-footer">
+                <button id="kycjuridicoJurEdtFormSave" type="button" class="btn btn-primary" data-doing="Guardando cambios...">Guardar cambios</button>
+                <button id="kycjuridicoJurEdtFormCancel" type="button" class="btn btn-white" data-doing="Cancelando cambios..." data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -64,7 +64,7 @@ namespace Architect.API.Tron.Business.Backoffice
             Architect.Payment.Integrations.Contracts.InformationRequest result = await Payment.Integrations.Payment.VerifyUpdateStatus(currentRecord, currentRecord.UpdateUserCode, true);
 
             // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
-            if (result.changed && result.status == "APPROVED")
+            if (result != null && result.changed && result.status == "APPROVED")
             {
                 if (IsEmployee)
                 {

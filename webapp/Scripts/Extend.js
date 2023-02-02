@@ -8,13 +8,9 @@ app.Extend = (function () {
             switch (row.COD_RAMO) {
                 case 302:
                     quote = 'mapfremas';
-                    mode = localStorage.getItem('Roles').includes('Purdy') ||
-                           localStorage.getItem('Roles').includes('Davivienda_Prendarios') ||
-                           localStorage.getItem('Roles').includes('Davivienda_Leasing') ? 'continue' : 'resume';
                     break;
                 case 401:
                     quote = 'saldodeudor';
-                    mode = 'resume';
                     break;
                 case 441:
                     quote = 'viajero';

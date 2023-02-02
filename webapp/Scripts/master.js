@@ -106,7 +106,7 @@ app.master = (function () {
             if (Math.floor(remaining / 1000) <= 0) {
                 clearInterval(timerId);
                 localStorage.setItem('reason', 'session-expired');
-                window.location.replace(app.setting.basepath + 'Security/Login');
+                window.location.replace(app.setting.basepath + 'Security/Login?logout=y');
             }
             else if (stimeout <= 90) {
                 timeout_verify('');
@@ -120,7 +120,7 @@ app.master = (function () {
             .done(function (data, textStatus, jqXHR) {
                 if (data <= 30) {
                     localStorage.setItem('reason', 'session-expired');
-                    window.location.replace(app.setting.basepath + 'Security/Login');
+                    window.location.replace(app.setting.basepath + 'Security/Login?logout=y');
                 } else if (data <= 90) {
                     data = 60;
                     var iinterval = parseInt(data) * 1000;

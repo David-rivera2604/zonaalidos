@@ -21,10 +21,10 @@ app.CotizacionMapfreMas = (function () {
 
             $("label[for='nombredelcontratante']").html($("label[for='nombredelcontratante']").html() + "<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>")
         }
-        if (localStorage.getItem('Roles').includes('Purdy') || localStorage.getItem('Roles').includes('Davivienda_Prendarios') || localStorage.getItem('Roles').includes('Davivienda_Leasing')) {
-            $('#emitir').html("<i class='fa fa-check'></i> Completar solicitud");
-            workMode = '&mode=draft';
-        }
+
+        $('#emitir').html("<i class='fa fa-check'></i> Completar solicitud");
+        workMode = '&mode=draft';
+
         $('#coberturasTbl').bootstrapTable('showLoading');
         app.core.Get(app.setting.apipath + 'v1/Quote/MapfreMasSetup')
             .done(function (data, textStatus, jqXHR) {
@@ -911,9 +911,9 @@ app.CotizacionMapfreMas = (function () {
                     $("#COD_PLAN_AUTO").val(settingData.PLAN_AUTO[0].Code);
                 }
 
-                
+
                 if (settingData.cod_fracc_pago > 0) {
-                    $('#cod_fracc_pago').val(settingData.cod_fracc_pago);  
+                    $('#cod_fracc_pago').val(settingData.cod_fracc_pago);
                     $('#cod_fracc_pago').prop('disabled', true);
                 } else {
                     $('#cod_fracc_pago').prop('disabled', false);

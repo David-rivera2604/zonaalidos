@@ -34,6 +34,11 @@ namespace Architect.API.Tron.Contracts
         /// </summary>
         [DataMember(), JsonProperty()] public string PrimaryEmailAddress { get; set; }
         [DataMember(), JsonProperty()] public string SigningRequestId { get; set; }
+        [DataMember(), JsonProperty()] public bool SignedRequest1 { get; set; }
+        [DataMember(), JsonProperty()] public string SigningRequest2Id { get; set; }
+        [DataMember(), JsonProperty()] public bool SignedRequest2 { get; set; }
+        [DataMember(), JsonProperty()] public string SigningRequest3Id { get; set; }
+        [DataMember(), JsonProperty()] public bool SignedRequest3 { get; set; }
         [DataMember(), JsonProperty()] public string PolicyId { get; set; }
         /// <summary>
         /// Estado de la póliza.
