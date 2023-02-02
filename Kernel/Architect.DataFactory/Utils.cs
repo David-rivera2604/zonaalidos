@@ -5,13 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web.Security;
 
 namespace Architect.DataFactory
 {
     public static class Utils
     {
 
-        public static System.Data.DataTable StatementExecute(string statement, int statementType, string connectionName, Dictionary<string, string> values, bool withCache, string prefix = null)
+        public static System.Data.DataTable StatementExecute(string statement, int statementType, string connectionName, Dictionary<string, string> values, bool withCache, string prefix = null, string roleList = "")
         {
             System.Data.DataTable records = null;
             MatchCollection parameterMatches = Regex.Matches(statement, @"{(.+?)}"); // ([^)]*)
@@ -43,7 +44,15 @@ namespace Architect.DataFactory
                     name = name.Replace(":varchar", string.Empty);
                     name = name.Replace(".", "_");
                     name = name.Replace("{", ":").Replace("}", "");
-                    statement = statement.Replace(paremeter.Value, name);
+                    if (name.StartsWith(":app_", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        switch (name.ToLower())
+                        {
+                            case ":app_userrolenamelist":
+                                statement = statement.Replace(paremeter.Value, ("'" + string.Join("','", roleList.Split(',')) + "'").ToLower());
+                                break;
+                        }
+                    }
                 }
                 using (DataFactory.Database db = Architect.DataFactory.Database.Select(statement).Cache(withCache, prefix))
                 {
