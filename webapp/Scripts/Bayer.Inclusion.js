@@ -920,7 +920,7 @@ app.BayerInclusion = (function () {
             }
             else if (beneficiarios.reduce((total, item) => total + item.BParticipationRate, 0) != 100) {
                 result = false;
-                $('#beneficiariosTbl-error').text('El total del porcentaje de particupación debe ser el 100%');
+                $('#beneficiariosTbl-error').text('El total del porcentaje de participación debe ser el 100%');
                 $('#beneficiariosTbl-error').removeClass('d-none');
             }
             else {

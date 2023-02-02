@@ -1,5 +1,6 @@
 ﻿using Architect.API.Insurance.Contracts.Policy;
 using Architect.Utilities.Extensions;
+using DocumentFormat.OpenXml.Bibliography;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -425,7 +426,7 @@ namespace Architect.API.Insurance.Business.Bayer
         }
 
         /// <summary>
-        /// Valida la informacion de una planilla por su identificación.
+        /// Valida la información de una planilla por su identificación.
         /// </summary>
         private static List<Core.Contracts.General.Error> Validate(Contracts.Bayer.InclusionRequest inclusionInfo)
         {
@@ -436,6 +437,21 @@ namespace Architect.API.Insurance.Business.Bayer
             //DocumentNumber:
             if (inclusionInfo.DocumentNumber.IsEmpty())
                 result.Add(new Core.Contracts.General.Error() { Group = group, Key = "DocumentNumber", Message = "Debe indicar la identificación" });
+
+
+            if (inclusionInfo.beneficiarios == null || inclusionInfo.beneficiarios.Count == 0)
+                result.Add(new Core.Contracts.General.Error() { Group = "beneficiarios", Key = "*", Message = "Debe existir al menos un beneficiario" });
+            else
+            {
+                if (inclusionInfo.beneficiarios.Sum(e => e.BParticipationRate) != 100)
+                    result.Add(new Core.Contracts.General.Error()
+                    {
+                        Group = "beneficiarios",
+                        Key = "*",
+                        Message = "total del porcentaje de participación debe ser el 100%"
+                    });
+            }
+
 
             return result;
         }
