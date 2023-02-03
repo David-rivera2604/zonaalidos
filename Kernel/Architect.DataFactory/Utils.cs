@@ -44,6 +44,16 @@ namespace Architect.DataFactory
                     name = name.Replace(".", "_");
                     name = name.Replace("{", ":").Replace("}", "");
                     statement = statement.Replace(paremeter.Value, name);
+                    if (name.StartsWith(":app_", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        switch (name.ToLower())
+                        {
+                            case ":app_userrolenamelist":
+                                statement = statement.Replace(paremeter.Value, ("'" + string.Join("','", roleList.Split(',')) + "'").ToLower());
+                                break;
+                        }
+                    }
+                    statement = statement.Replace(paremeter.Value, name);
                 }
                 using (DataFactory.Database db = Architect.DataFactory.Database.Select(statement).Cache(withCache, prefix))
                 {
@@ -104,6 +114,8 @@ namespace Architect.DataFactory
                                 break;
                             case "app.roles":
                                 dataManager.AddParameter(paremeter.Groups[1].Value, Architect.DataFactory.Enumerations.DbType.String, 0, "," + values["Token.Roles"] + ",");
+                                break;
+                            case "app.userrolenamelist":
                                 break;
                         }
                     }
