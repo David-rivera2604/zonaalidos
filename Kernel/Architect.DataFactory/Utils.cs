@@ -11,7 +11,7 @@ namespace Architect.DataFactory
     public static class Utils
     {
 
-        public static System.Data.DataTable StatementExecute(string statement, int statementType, string connectionName, Dictionary<string, string> values, bool withCache, string prefix = null)
+        public static System.Data.DataTable StatementExecute(string statement, int statementType, string connectionName, Dictionary<string, string> values, bool withCache, string prefix = null, string roleList = "")
         {
             System.Data.DataTable records = null;
             MatchCollection parameterMatches = Regex.Matches(statement, @"{(.+?)}"); // ([^)]*)
