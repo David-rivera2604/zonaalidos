@@ -30,6 +30,16 @@ namespace aliados.Controllers
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return this.RedirectToAction("Register", "Security", new { tenant = "Clientes" });
         }
+        public ActionResult CompraSegurosC()
+        {
+            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
+            return View();
+        }
+        public ActionResult CompraSegurosE()
+        {
+            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
+            return View();
+        }
 
     }
 }

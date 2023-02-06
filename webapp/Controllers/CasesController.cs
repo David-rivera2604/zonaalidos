@@ -24,6 +24,18 @@ namespace aliados.Controllers
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
+        public ActionResult CasesAliados()
+        {
+            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
+            return View();
+        }
+
+
+        public ActionResult Seguimiento_Al()
+        {
+            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
+            return View();
+        }
 
     }
 }
