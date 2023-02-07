@@ -70,6 +70,7 @@
     <Compile Include="General\ProcessSpecStep.cs" />
     <Compile Include="Security\ClientInformation.cs" />
     <Compile Include="Security\AgentInformation.cs" />
+	<Compile Include="Security\ColoresResponse.cs" />
     <Compile Include="Security\UserRoleMember.cs" />
     <Compile Include="General\AttachmentView.cs" />
     <Compile Include="General\ChangeSetView.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Security\UserMember.cs" />
     <Compile Include="_Generated\Attachments.cs" />
     <Compile Include="_Generated\AuthenticationTrace.cs" />
+	<Compile Include="_Generated\ChangeColorResult.cs" />
     <Compile Include="_Generated\ChangeSet.cs" />
     <Compile Include="_Generated\CustomFields.cs" />
     <Compile Include="_Generated\DataSource.cs" />

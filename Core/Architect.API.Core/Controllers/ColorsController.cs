@@ -18,9 +18,9 @@ namespace aliados.Controllers
     {
 
         [HttpGet]
-        [Route("")]
+        [Route("GetColor")]
         [AllowAnonymous]
-        public async Task<IHttpActionResult> GetColors()
+        public async Task<IHttpActionResult> GetColor()
         {
             IHttpActionResult result = null;
 
@@ -29,6 +29,25 @@ namespace aliados.Controllers
             await Task.Run(() => colores = Architect.API.Core.Business.Security.Accounts.ReadColor()).ConfigureAwait(false);
 
             result = Ok(colores);
+
+            return result;
+        }
+
+        [HttpPost]
+        [Route("PostColor")]
+        [Authorize]
+        public async Task<IHttpActionResult> PostColor([FromBody] Architect.API.Core.Contracts.Security.ColoresResponse item)
+        {
+
+            IHttpActionResult result = null;
+
+
+            await Task.Run(() =>
+            {
+                Architect.API.Core.Contracts.General.ChangeColorResult created = Architect.API.Core.Business.General.ChangeColor.Update(item);
+                result = Ok(created);
+            })
+                .ConfigureAwait(false);
 
             return result;
         }
