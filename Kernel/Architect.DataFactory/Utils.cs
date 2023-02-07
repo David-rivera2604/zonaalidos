@@ -43,7 +43,7 @@ namespace Architect.DataFactory
                     name = name.Replace(":varchar", string.Empty);
                     name = name.Replace(".", "_");
                     name = name.Replace("{", ":").Replace("}", "");
-                    statement = statement.Replace(paremeter.Value, name);
+                    
                     if (name.StartsWith(":app_", StringComparison.CurrentCultureIgnoreCase))
                     {
                         switch (name.ToLower())
