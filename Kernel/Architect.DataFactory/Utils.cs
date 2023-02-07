@@ -53,17 +53,7 @@ namespace Architect.DataFactory
                                 break;
                         }
                     }
-                    statement = statement.Replace(paremeter.Value, name);
-                    if (name.StartsWith(":app_", StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        switch (name.ToLower())
-                        {
-                            case ":app_userrolenamelist":
-                                statement = statement.Replace(paremeter.Value, ("'" + string.Join("','", roleList.Split(',')) + "'").ToLower());
-                                break;
-                        }
-                    }
-                    statement = statement.Replace(paremeter.Value, name);
+                    statement = statement.Replace(paremeter.Value, name); 
                 }
                 using (DataFactory.Database db = Architect.DataFactory.Database.Select(statement).Cache(withCache, prefix))
                 {
