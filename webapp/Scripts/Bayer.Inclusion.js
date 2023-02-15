@@ -194,7 +194,7 @@ app.BayerInclusion = (function () {
                 }
                 break;
             case 2:
-                app.ui.DataEntryBehavior('#VisualizationsEdtForm', 'disabled');
+                //app.ui.DataEntryBehavior('#VisualizationsEdtForm', 'disabled');
                 if (statusmode === 'Review') {
                     $('.role-Revisor-visible').removeClass('d-none');
                     if (localStorage.getItem('Tenant') === 'Caturix') {
@@ -251,7 +251,7 @@ app.BayerInclusion = (function () {
             locale: 'es'
         });
         $('#DocumentNumber').formatter({
-            pattern: '0{{9}}-{{9999}}-{{9999}}',
+            pattern: '{{9}}{{9999}}{{9999}}',
             persistent: false
         });
         $('#BirthDate_group').datetimepicker({
@@ -306,7 +306,7 @@ app.BayerInclusion = (function () {
             emptyInputBehavior: 'null'
         });
         $('#BDocumentNumber').formatter({
-            pattern: '0{{9}}-{{9999}}-{{9999}}',
+            pattern: '{{9}}{{9999}}{{9999}}',
             persistent: false
         });
         $('#BBirthDate_group').datetimepicker({
@@ -326,7 +326,7 @@ app.BayerInclusion = (function () {
             emptyInputBehavior: 'null'
         });
         $('#DDocumentNumber').formatter({
-            pattern: '0{{9}}-{{9999}}-{{9999}}',
+            pattern: '{{9}}{{9999}}{{9999}}',
             persistent: false
         });
         $('#DBirthDate_group').datetimepicker({
@@ -366,11 +366,11 @@ app.BayerInclusion = (function () {
         });
 
         $('#DocumentNumberTypeMenu a').click(function () {
-            app.ui.DocumentTypeHandler(this, '#DocumentNumber', 'Identification');
+            DocumentTypeHandler(this, '#DocumentNumber', 'Identification');
         });
 
         $('#DocumentNumber').on('blur', function () {
-            if (app.ui.IsDocumentNumberValid($('#DocumentNumberType').data('value'), $('#DocumentNumber').val())) {
+            if (IsDocumentNumberValid($('#DocumentNumberType').data('value'), $('#DocumentNumber').val())) {
                 var value = $('#DocumentNumber').val().replace(/-/g, '');
                 if (value !== null && parseInt(0 + value, 10) !== 0 && parseInt(0 + value, 10) <= 999999999) {
                     $('#DocumentNumber').addClass('loading');
@@ -395,15 +395,15 @@ app.BayerInclusion = (function () {
         });
 
         $('#PhoneNumberTypeMenu a').click(function () {
-            app.ui.DocumentTypeHandler(this, '#PhoneNumber', 'Phone');
+            DocumentTypeHandler(this, '#PhoneNumber', 'Phone');
         });
 
         $('#BDocumentNumberTypeMenu a').click(function () {
-            app.ui.DocumentTypeHandler(this, '#BDocumentNumber', 'Identification');
+            DocumentTypeHandler(this, '#BDocumentNumber', 'Identification');
         });
 
         $('#BDocumentNumber').on('blur', function () {
-            if (app.ui.IsDocumentNumberValid($('#BDocumentNumberType').data('value'), $('#BDocumentNumber').val())) {
+            if (IsDocumentNumberValid($('#BDocumentNumberType').data('value'), $('#BDocumentNumber').val())) {
                 var value = $('#BDocumentNumber').val().replace(/-/g, '');
                 if (value !== null && parseInt(0 + value, 10) !== 0 && parseInt(0 + value, 10) <= 999999999) {
                     $('#BDocumentNumber').addClass('loading');
@@ -422,11 +422,11 @@ app.BayerInclusion = (function () {
         });
 
         $('#DDocumentNumberTypeMenu a').click(function () {
-            app.ui.DocumentTypeHandler(this, '#DDocumentNumber', 'Identification');
+            DocumentTypeHandler(this, '#DDocumentNumber', 'Identification');
         });
 
         $('#DDocumentNumber').on('blur', function () {
-            if (app.ui.IsDocumentNumberValid($('#DDocumentNumberType').data('value'), $('#DDocumentNumber').val())) {
+            if (IsDocumentNumberValid($('#DDocumentNumberType').data('value'), $('#DDocumentNumber').val())) {
                 var value = $('#DDocumentNumber').val().replace(/-/g, '');
                 if (value !== null && parseInt(0 + value, 10) !== 0 && parseInt(0 + value, 10) <= 999999999) {
                     $('#DDocumentNumber').addClass('loading');
@@ -1150,6 +1150,64 @@ app.BayerInclusion = (function () {
             app.ui.SetNumericValue('#InsuredAmount', insuredAmount);
         }
     }
+
+    function DocumentTypeHandler(el, element, type, callbackDocumentType) {
+        var btn = $(el).parent().parent().find('.btn');
+        var value = $(el).data('value');
+        btn.text($(el).text());
+        btn.data('value', value);
+        event.preventDefault();
+
+        if (type == 'Identification') {
+            switch (value) {
+                case 1: //Cédula física 9 
+                    $(element).val('');
+                    $(element).formatter().resetPattern('{{9}}{{9999}}{{9999}}');
+                    $(element).attr('placeholder', 'XXXXXXXXX');
+                    break;
+                case 2: //DIME 11 o 12  12 DÍGITOS Y DEBE INICIAR CON “1”: 1XXX-XXXXXX-XX
+                    $(element).val('');
+                    $(element).formatter().resetPattern('{{9999}}{{999999}}{{99}}');
+                    $(element).attr('placeholder', 'XXXXXXXXXXXX');
+                    break;
+                case 3: //Pasaporte 14 DÍGITOS: XXXXXXXXXXXXXX
+                    $(element).val('');
+                    $(element).formatter().resetPattern('{{**************}}');
+                    $(element).attr('placeholder', 'XXXXXXXXXXXXXX');
+                    break;
+                case 4: // Cédula jurídica 10
+                    $(element).val('');
+                    $(element).formatter().resetPattern('{{9999999999}}');
+                    $(element).attr('placeholder', 'XXXXXXXXXX');
+                    break;
+            }
+        }
+        if (callbackDocumentType !== undefined && callbackDocumentType !== null) {
+            callbackDocumentType(value);
+        }
+    }
+
+    function IsDocumentNumberValid (documentType, documentNumber) {
+        var result = false;
+        var length = documentNumber.length;
+
+        switch (documentType) {
+            case 1: //9 DIGITOS: XXXXXXXXX
+                result = (length === 9);
+                break;
+            case 2: //12 DÍGITOS Y DEBE INICIAR CON “1”: 1XXX-XXXXXX-XX
+                result = (length === 12);
+                break;
+            case 3: //14 DÍGITOS: PASXXXXXXXXXXXXXX
+                result = (length >= 3 && length <= 14);
+                break;
+            case 4:
+                result = (length >= 7 && length <= 14);
+                break;
+        }
+        return result;
+    }
+
 
     return {
         Init: function () {
