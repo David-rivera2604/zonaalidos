@@ -917,7 +917,9 @@ app.ui = (function () {
             let tenant = localStorage.getItem('Tenant');
             roles.forEach(function (item) {
                 $(`.role-${item}-visible`).removeClass('d-none');
+                $(`.role-${item}-notvisible`).addClass('d-none');
                 $(`.role-${item}-enable`).prop("disabled", false);
+                $(`.role-${item}-disable`).prop("disabled", true);
                 $(`.role-${item}-${tenant}-visible`).removeClass('d-none');
                 $(`.role-${item}-${tenant}-enable`).prop("disabled", false);
                 $(`.role--${tenant}-visible`).removeClass('d-none');

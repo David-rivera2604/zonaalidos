@@ -14,8 +14,8 @@ app.CotizacionMapfreMas = (function () {
     var coberturas = null;
 
     function Setup() {
+        app.ui.CommonBehaviour();
         if (localStorage.getItem('Roles').includes('Purdy')) {
-            $('.tipodeproductoZone').addClass('d-none');
             $('.contratanteZone').removeClass('col-md-8');
             $('.contratanteZone').addClass('col-md-12');
 
