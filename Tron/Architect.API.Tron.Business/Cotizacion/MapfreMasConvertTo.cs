@@ -5,7 +5,7 @@ namespace Architect.API.Tron.Business.Cotizacion
 {
     internal static class MapfreMasConvertTo
     {
-        const int COD_SUBMODELO = 999;
+
         const int TIPBENEF_SUBAGENTE = 37;
         const bool C_IsSubAgent = false; //ROL
 
@@ -47,7 +47,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 Auto_NeumSA = quoteInfo.IMP_AUTO_NEUM,
                 Auto_MecaSA = quoteInfo.IMP_AUTO_MECA,
                 cod_zona_circul = quoteInfo.cod_zona_circul,
-                cod_sub_modelo = COD_SUBMODELO,
+                cod_sub_modelo = quoteInfo.cod_sub_modelo,
                 edad = quoteInfo.edad,
                 mca_auto_gps_cms = quoteInfo.MCA_AUTO_GPS_CMS == 1 ? "SS" : "SN",
                 mca_vr = quoteInfo.MCA_VR == 1 ? "SS" : "SN",
@@ -73,7 +73,8 @@ namespace Architect.API.Tron.Business.Cotizacion
                 txt_motivo = "Cotización realizada desde la zona de aliados, por: " + userName,
                 num_matricula= quoteInfo.NUM_MATRICULA,
                 num_motor = quoteInfo.NUM_MOTOR,
-                cod_chassis = quoteInfo.COD_CHASSIS
+                cod_chassis = quoteInfo.COD_CHASSIS,
+                p_ext_garantia = quoteInfo.ext_garantia == 1 ? "S" : "N"
             };
 
             //result.tip_docum = tip_documComboBox.Value

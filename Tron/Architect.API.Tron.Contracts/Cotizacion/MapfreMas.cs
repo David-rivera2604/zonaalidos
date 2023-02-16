@@ -63,6 +63,17 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// </summary>
         [DataMember(), JsonProperty()] public int cod_modelo { get; set; }
         [DataMember(), JsonProperty()] public string cod_modeloDesc { get; set; }
+
+
+        
+        /// <summary>
+        /// Sub Modelo.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int cod_sub_modelo { get; set; }
+        [DataMember(), JsonProperty()] public string cod_sub_modeloDesc { get; set; }
+
+
+
         /// <summary>
         /// Año del vehículo.
         /// </summary>
@@ -201,7 +212,10 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         [DataMember(), JsonProperty()] public int contrato { get; set; }
         [DataMember(), JsonProperty()] public int subcontrato { get; set; }
         [DataMember(), JsonProperty()] public string polizagrupo { get; set; }
-
+        /// <summary>
+        /// Extensión de garantía.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int ext_garantia { get; set; }
     }
 
 }
