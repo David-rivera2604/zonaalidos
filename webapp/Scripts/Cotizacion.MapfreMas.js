@@ -105,6 +105,21 @@ app.CotizacionMapfreMas = (function () {
             app.core.LookupDependency($('select#cod_marca').val(), 'cod_modelo', 'MM_ModelosVehiculos', '', null, true, null, `cod_marca=`, 'v1/TronCommon/LkpChild');
         });
 
+        // Dependencies events
+        $('#cod_modelo').on('change', function () {
+            let data = {
+                cod_marca: app.ui.GetDropDownNumericValue('#cod_marca'),
+                cod_modelo: app.ui.GetDropDownNumericValue('#cod_modelo'),
+                contrato: app.ui.GetDropDownNumericValue('#contrato'),
+                subcontrato: app.ui.GetDropDownNumericValue('#subcontrato'),
+                polizagrupo: setupData.polizagrupo,
+                p_fec_validez: moment().format('YYYYMMDD')
+            }
+            app.core.Lookups(['MM_SubModelosVehiculos.cod_sub_modelo'], null,
+                `cod_marca=${data.cod_marca}:cod_modelo=${data.cod_modelo}:p_fec_validez=${data.p_fec_validez}:polizagrupo=${data.polizagrupo}:contrato=${data.contrato}`, 'v1/TronCommon/Lkps');
+
+        });
+
         $('#contrato').on('change', function () {
             let contracto = app.ui.GetDropDownNumericValue('#contrato');
 
@@ -174,8 +189,7 @@ app.CotizacionMapfreMas = (function () {
     }
 
     function MapInputToObject() {
-        let contracto = app.ui.GetDropDownNumericValue('#contrato');
-        return {
+         return {
             cod_ramo: setupData.cod_ramo,
             edad: app.ui.GetNumericValue('#edad'),
             nombredelcontratante: $('#nombredelcontratante').val(),
@@ -234,7 +248,7 @@ app.CotizacionMapfreMas = (function () {
             DED_AUTO_CRI: app.ui.GetDropDownNumericValue('#DED_AUTO_CRI'),
             coberturas: $('#coberturasTbl').bootstrapTable('getData'),
             plandepago: $('#plandepagoTbl').bootstrapTable('getData'),
-            contrato: contracto,
+            contrato: app.ui.GetDropDownNumericValue('#contrato'),
             subcontrato: app.ui.GetDropDownNumericValue('#subcontrato'),
             polizagrupo: setupData.polizagrupo
         };

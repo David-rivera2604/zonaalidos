@@ -179,7 +179,7 @@
                                                 </div>
 
                                                 <!-- cod_zona_circul DropDownList -->
-                                                <div class='col-sm-3 col-md-3'>
+                                                <div class='col-sm-3 col-md-3 role-Purdy-notvisible'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='cod_zona_circul'>Zona de circulación</label>
                                                         <select id='cod_zona_circul' name='cod_zona_circul' class='form-control'></select>
@@ -199,6 +199,14 @@
                                                     <div class='form-group'>
                                                         <label class='control-label' for='cod_modelo'>Modelo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                         <select id='cod_modelo' name='cod_modelo' class='form-control'></select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- cod_sub_modelo DropDownList -->
+                                                <div class='col-sm-3 col-md-3 d-none role-Purdy-visible'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cod_sub_modelo'>Sub modelo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='cod_sub_modelo' name='cod_sub_modelo' class='form-control'></select>
                                                     </div>
                                                 </div>
 
@@ -235,7 +243,7 @@
                                                 </div>
 
                                                 <!-- PCT_AJUSTE_GEN Numeric -->
-                                                <div class='col-sm-3 col-md-3'>
+                                                <div class='col-sm-3 col-md-3 role-Purdy-notvisible'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='PCT_AJUSTE_GEN'>Porcentaje de ajuste comercial</label>
                                                         <div class='input-group'>
@@ -338,7 +346,7 @@
                                                 </div>
 
                                                 <!-- MCA_AUTO_GPS RadioButtonList -->
-                                                <div class='col-sm-3 col-md-3'>
+                                                <div class='col-sm-3 col-md-3 role-Purdy-notvisible'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='MCA_AUTO_GPS'>¿Tiene GPS?</label>
                                                         <div style="padding-top: 6px;">
@@ -354,7 +362,7 @@
                                                 </div>
 
                                                 <!-- MCA_AUTO_GPS_CMS RadioButtonList -->
-                                                <div class='col-sm-3 col-md-3'>
+                                                <div class='col-sm-3 col-md-3 role-Purdy-notvisible'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='MCA_AUTO_GPS_CMS'>¿GPS con convenio del ministerio?</label>
                                                         <div style="padding-top: 6px;">
@@ -370,7 +378,7 @@
                                                 </div>
 
                                                 <!-- MCA_MONITOREO_GPS RadioButtonList -->
-                                                <div class='col-sm-3 col-md-3'>
+                                                <div class='col-sm-3 col-md-3 role-Purdy-notvisible'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='MCA_MONITOREO_GPS'>¿GPS con monitoreo?</label>
                                                         <div style="padding-top: 6px;">
@@ -386,7 +394,7 @@
                                                 </div>
 
                                                 <!-- MCA_PRA RadioButtonList -->
-                                                <div class='col-sm-3 col-md-3'>
+                                                <div class='col-sm-3 col-md-3 role-Purdy-notvisible'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='MCA_PRA'>¿Asegurar a primer riesgo ABS?</label>
                                                         <div style="padding-top: 6px;">
@@ -433,6 +441,21 @@
                                                     </div>
                                                 </div>
 
+                                                <!-- ext_garantia RadioButtonList -->
+                                                <div class='col-sm-3 col-md-3 d-none role-Purdy-visible'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ext_garantia'>¿Extensión de garantía?</label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="ext_garantia_1" name="ext_garantia" value="1">
+                                                                <label class="custom-control-label" for="ext_garantia_1">Si</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="ext_garantia_2" name="ext_garantia" value="2">
+                                                                <label class="custom-control-label" for="ext_garantia_2">No</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
                                             </div>
                                         </div>
