@@ -1,4 +1,7 @@
 ﻿var app = app || {};
+
+
+
 app.login = (function () {
 
     let employeeMode = window.location.href.toLowerCase().endsWith("/mapfre");
@@ -46,6 +49,8 @@ app.login = (function () {
                             if (!data.MustChangePassword) {
                                 localStorage.setItem('Username', data.UserName);
                                 localStorage.setItem('Tenant', data.Tenant);
+                                localStorage.setItem('Color1Tenant', data.Color1Tenant);
+                                localStorage.setItem('Color2Tenant', data.Color2Tenant);
                                 localStorage.setItem('Roles', JSON.stringify(data.Roles));
 
                                 var dta = new Date();
@@ -55,13 +60,12 @@ app.login = (function () {
                                 localStorage.setItem('Expires', dt);
 
                                 localStorage.setItem('Token', data.Token);
-                                localStorage.setItem('EmployeeMode', employeeMode);
                                 $('#Send').prop("disabled", true);
                                 $('#Send').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Accediendo...');
                                 status = 'redirect';
                                 window.location.replace(app.setting.basepath + data.InitialPath);
                             } else {
-  
+
                                 $('#ForgotMail').val(data.EMail);
                                 $('#login').addClass('d-none');
 
@@ -334,14 +338,9 @@ app.login = (function () {
                 $('.wellcome-info').addClass('d-none');
             }
             $('#Tenant').val(_tenant);
-            if (!employeeMode && localStorage.getItem('EmployeeMode') == 'true') {
-                employeeMode = true;
-                localStorage.setItem('EmployeeMode', false);
-            }
-            localStorage.removeItem('EmployeeMode');
             if (employeeMode) {
                 $('#forgotlink').addClass('d-none');
-                
+
             }
         }
     };

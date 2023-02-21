@@ -1,0 +1,180 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+
+<div class="form-row mt-4">
+    <!-- Tenant -->
+    <div class='col-sm-4 col-md-2'>
+        <div class='form-group'>
+            <label class='control-label' for='tenant'><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Aliados</label>
+            <select id='tenant' name='tenant' class='form-control'>
+                <option selected disabled>Seleccione un aliado...</option>
+            </select>
+        </div>
+    </div>
+    <!-- Color1 -->
+    <div class='col-sm-4 col-md-2 ml-2'>
+        <div class='form-group'>
+            <label class='control-label' for='color1'><i class="fa fa-tint" aria-hidden="true"></i> Color 1</label>
+            <input id='color1' name='color1' type='color' class='form-control' value="">
+        </div>
+    </div>
+    <!-- Color2 -->
+    <div class='col-sm-4 col-md-2'>
+        <div class='form-group'>
+            <label class='control-label' for='color2'><i class="fa fa-tint" aria-hidden="true"></i> Color 2</label>
+            <input id='color2' name='color2' type='color' class='form-control' value="">
+        </div>
+    </div>
+    <!-- Logo File -->
+    <div class="col-sm-4 col-md-2">
+        <div class='form-group'>
+            <label class="control-label"><i class="fa fa-picture-o" aria-hidden="true"></i> Logo</label>
+            <input type="file" name="formFile" id="formFile" class="inputfile inputfile-2" />
+            <label for="formFile" class="form-control">
+                <span class="iborrainputfile">Seleccionar imagen</span>
+            </label>
+            <label style="width: 220px;">Dimensiones recomendadas 25 x 25</label>
+        </div>
+    </div>
+
+    <div class="form-row ml-5 mt-2">
+        <div class='col-md-12 mt-3'>
+            <button id="resetear" type="button" class="btn btn-primary">Reset</button>
+            <button id="cambiarcolor" type="button" class="btn btn-primary" data-doing="Guardando cambios..." title="Guardar">Guardar y aplicar cambios</button>
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="preview_page animated fadeInDown">
+
+    <h3>Previsualización</h3>
+
+    <div class="head_prin_preview">
+    </div>
+
+
+    <!--//////////////////////////////////////////////////////////////////////////////////-->
+
+    <div class="container text-center ad">
+        <div class="row align-items-start">
+
+
+            <div class="col-4">
+                <h4 class="title-preview">Buttons, Titles</h4>
+                <hr/>
+
+                <div class='col prev_scroll' id="prev_scroll">
+
+                    <div class='col'>
+                        <div class='form-group d-flex align-items-center justify-content-center'>
+                            <button id="b2" type="button" class="btn btn-default btn-default-preview">
+                                Button
+                            </button>
+                            <button id="b1" type="button" class="btn btn-primary btn-primary-preview">
+                                Button
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class='col'>
+                        <button type="button" class="btn btn-sm btn-white btn-white-preview print"><i class="fa fa-print"></i> </button>
+                        <button type="button" class="btn btn-sm btn-white btn-white-preview print"><i class="fa fa-handshake-o"></i> </button>
+                        <button type="button" class="btn btn-sm btn-white btn-white-preview print"><i class="fa fa-pencil"></i> </button>
+                    </div>
+
+
+                    <div class='col'>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input checked type="radio" class="custom-control-input custom-control-input-preview" id="r1" name="r" value="1">
+                            <label class="custom-control-label-preview custom-control-label" for="r1">Radio 1</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input custom-control-input-preview" id="r2" name="r" value="2">
+                            <label class="custom-control-label-preview custom-control-label" for="r2">Radio 2</label>
+                        </div>
+                    </div>
+
+                    <div class='col'>
+                        <h1 class="title-preview">Preview Title 1</h1>
+                        <h2 class="title-preview">Preview Title 2</h2>
+                        <h3 class="title-preview">Preview Title 3</h3>
+                        <h4 class="title-preview">Preview Title 4</h4>
+                        <h5 class="title-preview">Preview Title 5</h5>
+                        <h6 class="title-preview">Preview Title 6</h6>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+            <!--//////////////////////////////////////////////////////////////////////////////////-->
+
+            <div class="col-4">
+                <h4 class="title-preview">Inputs</h4>
+                <hr />
+
+                <div class='col'>
+                    <div class='form-group'>
+                        <label class='control-label' for='preview_select'>Select</label>
+                        <select id='preview_select' name='preview_select' class='form-control form-control-preview'>
+                            <option>...</option>
+                            <option>...</option>
+                            <option>...</option>
+                            <option>...</option>
+                            <option>...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class='col'>
+                    <div class='form-group'>
+                        <label class='control-label preview' for=''>Text</label>
+                        <input id='' name='' type='text' class='form-control form-control-preview' value="">
+                    </div>
+                </div>
+
+                <div class='col'>
+                    <div class='form-group'>
+                        <label class='control-label preview' for=''>Number</label>
+                        <input id='' name='' type='number' class='form-control form-control-preview' value="10">
+                    </div>
+                </div>
+
+                <div class='col'>
+                    <div class='form-group'>
+                        <label class='control-label preview' for=''>Date</label>
+                        <input id='' name='' type='date' class='form-control form-control-preview' value="10">
+                    </div>
+                </div>
+
+                <!--//////////////////////////////////////////////////////////////////////////////////-->
+
+            </div>
+            <div class="col-4">
+                <h4 class="title-preview">Logo</h4>
+                <hr/>
+
+                <div class="col justify-content-center d-flex animated fadeInRight">
+                    <output class="circulo_preview animated fadeInRight" id="logotenant">
+                    </output>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/ColoresTenant.js")"></script>
+    <script>
+       
+    </script>
+}

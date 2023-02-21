@@ -14,6 +14,11 @@ namespace Architect.API.Core.Contracts.General
         /// Identificación única del proceso.
         /// </summary>
         [DataMember(), JsonProperty()] public int Id { get; set; }
+
+        /// <summary>
+        /// ID del usuario enviando el caso.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int UserSend { get; set; }
         /// <summary>
         /// Identificación de la compañía propietaria.
         /// </summary>

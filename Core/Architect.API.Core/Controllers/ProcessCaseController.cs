@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Architect.API.Core.Business.Security;
+using Architect.API.Core.Contracts.Security;
+using System;
 
 namespace Architect.API.Core.Controllers
 {
@@ -17,6 +20,12 @@ namespace Architect.API.Core.Controllers
     public class ProcessCaseController : ApiController
     {
         /// <summary>
+        /// Usuario actual que ingreso desde el login.
+        /// </summary>
+        public static Contracts.Security.Token UsuaActual = Accounts.ReturnUser();
+
+
+        /// <summary>
         /// Crea un registro en la tabla ProcessCase.
         /// </summary>
         /// <param name="item">Instancia del objecto ProcessCase.</param>
@@ -26,7 +35,13 @@ namespace Architect.API.Core.Controllers
         [Authorize]
         public async Task<IHttpActionResult> Post([FromBody] Architect.API.Core.Contracts.General.ProcessCase item)
         {
+            //usuario que envio la solicitud del caso.   
+            UsuaActual = Accounts.ReturnUser();
+
+            item.UserSend = UsuaActual.UserId;
+
             IHttpActionResult result = BadRequest();
+
             if (item.IsEmpty())
             {
                 return BadRequest("Debe indicar un processcase");
@@ -59,6 +74,9 @@ namespace Architect.API.Core.Controllers
         [Authorize]
         public async Task<IHttpActionResult> Get([FromUri] string filter = "", int beginIndex = 1, int endIndex = int.MaxValue)
         {
+            //Usuario actual para filtrar la informacion
+            UsuaActual = Accounts.ReturnUser();
+
             Contracts.Security.Token tokenInfo = Security.Token.Info();
 
             List<Architect.API.Core.Contracts.General.ProcessCase> result = null;
@@ -67,6 +85,13 @@ namespace Architect.API.Core.Controllers
             {
                 result = Architect.API.Core.Business.General.ProcessCase.Retrieve(tokenInfo.CompanyId, filter, beginIndex, endIndex);
             }).ConfigureAwait(false);
+
+            //Filtro para cuando la api es llamada con CaseAliados
+            if (filter == "CaseAliados")
+            {
+                result.RemoveAll(s => s.UserSend != UsuaActual.UserId);
+            }
+
 
             if (result.IsEmpty())
             {
