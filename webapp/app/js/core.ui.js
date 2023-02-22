@@ -865,7 +865,7 @@ app.ui = (function () {
                 }
             });
         },
-        LookupLoad: function (ctrl, lkpData) {
+        LookupLoad: function (ctrl, lkpData, autoSelect) {
             let selectedOptions = $('select#' + ctrl);
             selectedOptions.children().remove();
             $.each(lkpData, function () {
@@ -874,7 +874,16 @@ app.ui = (function () {
             if (lkpData.length == 1 && !selectedOptions.is(':disabled')) {
                 selectedOptions.val(lkpData[0]['Code']);
             } else {
-                selectedOptions.val(-1);
+                if (!selectedOptions.is(':disabled') && autoSelect != undefined && autoSelect != null && autoSelect) {
+                    selectedOptions.val($('select#' + ctrl + ' option:first').val());
+                } else {
+                    if (!selectedOptions.is(':disabled') && selectedOptions.data("autoselect") === true) {
+                        selectedOptions.val($('select#' + ctrl + ' option:first').val());
+                    } else {
+                        selectedOptions.val(-1);
+                    }
+                }
+
             }
         },
         DropDownDisabled: function (element, disabled, clean) {

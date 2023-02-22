@@ -201,6 +201,14 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// </summary>
         [DataMember(), JsonProperty()] public int DED_AUTO_CRI { get; set; }
         /// <summary>
+        /// Auto sustituto.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int AutoSust { get; set; }
+        /// <summary>
+        /// Deducible auto sustituto.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int DedudAutoSust { get; set; }
+        /// <summary>
         /// Coberturas
         /// </summary>
         [DataMember(), JsonProperty()] public List<Comun.Cobertura> coberturas { get; set; }

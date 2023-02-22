@@ -45,6 +45,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 MCA_CERO_KM = 2,
                 MCA_AUTO_GPS = 2,
                 MCA_MONITOREO_GPS = 2,
+                ext_garantia = 2,
                 MCA_AUTO_GPS_CMS = 2,
                 MCA_PRA = 2,
                 MCA_VR = 1,
@@ -82,7 +83,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             if (tokenInfo.Roles.Contain("PolizaGrupo"))
             {
                 keys.AddRange(new List<string> {
-                    "MM_CAPITAL_RC_G", "MM_CAPITAL_GM_G", "MM_CAPITAL_AC_G", "MM_CAPITAL_ROTCRI_G",
+                    "TRON_TA301001:3001", "MM_CAPITAL_GM_G", "MM_CAPITAL_AC_G", "MM_CAPITAL_ROTCRI_G",
                     "MM_DEDU_RC_G", "MM_DEDU_CV_G", "MM_DEDU_ROTCRI_G", "MM_DEDU_EE_G", "MM_DEDU_RA_G", "MM_DEDU_ROBO_G", "MM_POLIZA_GRUPO"});
             }
 
@@ -234,12 +235,26 @@ namespace Architect.API.Tron.Business.Cotizacion
             {
                 quoteInfo.presupuesto = string.Empty;
                 quoteInfo.resumen = null;
-                Contracts.Batch.CotizadorMapfreMasClass quoteTron = MapfreMasConvertTo.Tron(quoteInfo, COD_RAMO, tokenInfo.AgentCode, tokenInfo.UserName, tokenInfo.IdentificationType, tokenInfo.Identification);
+                Contracts.Batch.CotizadorMapfreMasClass quoteTron = MapfreMasConvertTo.Tron(quoteInfo, COD_RAMO, tokenInfo.AgentCode, tokenInfo.UserName, tokenInfo.IdentificationType, tokenInfo.Identification, tokenInfo.Roles);
                 //Architect.Common.Helpers.Serialize.SerializeToFile<Architect.API.Tron.Contracts.Batch.CotizadorMapfreMasClass>(result, @"C:\temp\mapfremas.in.xml");
 
                 Contracts.Presupuesto.DatoFijo resultTron = Backoffice.Cotizacion.MapfreMas.Calcular(quoteTron);
                 resultInfo = MapfreMasConvertFrom.Quote(quoteInfo, resultTron);
 
+                if (tokenInfo.Roles.Contain("PolizaGrupo"))
+                {
+                    DateTime fecha_validar = quoteTron.fec_vcto_poliza.AddMonths(-1);
+
+                    if (quoteTron.fec_efec_poliza >= fecha_validar)
+                    {
+                        // creaDatoVariable(_dataTable.num_poliza, "MCA_RENUEVA_EMI", "S", 105)
+                        quoteTron.fec_efec_poliza = quoteTron.fec_vcto_poliza;
+                        quoteTron.fec_efec_spto = quoteTron.fec_efec_poliza;
+                        quoteTron.fec_vcto_poliza = quoteTron.fec_vcto_poliza.AddYears(1);
+
+                        Contracts.Presupuesto.DatoFijo resultTron2 = Backoffice.Cotizacion.MapfreMas.Calcular(quoteTron);
+                    }
+                }
 
                 //Utilities.SerializeHandler<Contracts.Presupuesto.DatoFijo>.SerializeToFile(resultTron, @"C:\temp\resultTron.xml");
                 //Utilities.SerializeHandler<Contracts.Cotizacion.MapfreMas>.SerializeToFile(resultInfo, @"C:\temp\resultInfo.xml");
@@ -271,7 +286,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             {
                 switch (itemValues.Key)
                 {
-                    case "MM_CAPITAL_RC_G":
+                    case "TRON_TA301001:3001":
                         result.IMP_AUTO_RC = itemValues.Lkp;
                         break;
                     case "MM_CAPITAL_GM_G":

@@ -3,6 +3,8 @@ using Architect.DataFactory.Handlers;
 using System;
 using System.Data;
 using Architect.API.Tron.Contracts.Presupuesto;
+using Architect.API.Tron.Contracts.Presupuesto.API;
+using System.Collections.Generic;
 
 namespace Architect.API.Tron.Business.Backoffice.Cotizacion
 {
@@ -45,7 +47,7 @@ namespace Architect.API.Tron.Business.Backoffice.Cotizacion
 
                 Crea_Riesgos(quoteInfo, currentConnection);
 
-                Crea_DatosVariables(quoteInfo, currentConnection);
+                Crea_DatosVariables(quoteInfo.num_poliza, quoteInfo.DatosVariables, currentConnection);
 
                 Crea_Ocurrencias(quoteInfo, currentConnection);
 
@@ -66,7 +68,8 @@ namespace Architect.API.Tron.Business.Backoffice.Cotizacion
                         quoteInfo = DataAccess.LeerPresupuesto.Presupuesto(quoteInfo.cod_cia, g2000510Instance.num_poliza_definitivo, 0, 0, 0, currentConnection, true, "onlyresult");
                     }
                 }
-                else {
+                else
+                {
                     Utilities.Log.WarningLog("Cotizacion.Generico.txt_error", g2000510Instance.txt_error, "tron");
                     Utilities.Log.WarningLog("Cotizacion.Generico.txt_ruta_error", g2000510Instance.txt_ruta_error, "tron");
                 }
@@ -80,7 +83,7 @@ namespace Architect.API.Tron.Business.Backoffice.Cotizacion
 
         private static void Crea_Coberturas(DatoFijo quoteInfo, IDbConnection currentConnection)
         {
-            foreach (Cobertura p2000030Instance40 in quoteInfo.Coberturas)
+            foreach (Contracts.Presupuesto.Cobertura p2000030Instance40 in quoteInfo.Coberturas)
             {
                 p2000030Instance40.num_poliza = quoteInfo.num_poliza;
                 DataAccess.CrearPresupuesto.PP_Insert_P2000040(p2000030Instance40, currentConnection);
@@ -89,7 +92,7 @@ namespace Architect.API.Tron.Business.Backoffice.Cotizacion
 
         private static void Crea_Terceros(DatoFijo quoteInfo, IDbConnection currentConnection)
         {
-            foreach (Tercero p2000030Instance60 in quoteInfo.Terceros)
+            foreach (Contracts.Presupuesto.Tercero p2000030Instance60 in quoteInfo.Terceros)
             {
                 p2000030Instance60.num_poliza = quoteInfo.num_poliza;
                 DataAccess.CrearPresupuesto.PP_Insert_P2000060(p2000030Instance60, currentConnection);
@@ -98,7 +101,7 @@ namespace Architect.API.Tron.Business.Backoffice.Cotizacion
 
         private static void Crea_Ocurrencias(DatoFijo quoteInfo, IDbConnection currentConnection)
         {
-            foreach (Ocurrencia p2000030Instance25 in quoteInfo.Ocurrencias)
+            foreach (Contracts.Presupuesto.Ocurrencia p2000030Instance25 in quoteInfo.Ocurrencias)
             {
                 p2000030Instance25.num_poliza = quoteInfo.num_poliza;
                 DataAccess.CrearPresupuesto.PP_Insert_P2000025(p2000030Instance25, currentConnection);
@@ -129,22 +132,37 @@ namespace Architect.API.Tron.Business.Backoffice.Cotizacion
                     {
                         DataAccess.Batch.P1001331.Create(p2000030Instance1331, currentConnection);
                     }
-                    
+
                 }
             }
         }
-        private static void Crea_DatosVariables(DatoFijo quoteInfo, IDbConnection currentConnection)
+        private static void Crea_DatosVariables(string num_poliza, List<Contracts.Presupuesto.DatoVariable> datosVariables, IDbConnection currentConnection)
         {
-            foreach (DatoVariable p2000030Instance20 in quoteInfo.DatosVariables)
+            bool local = false;
+            if(currentConnection==null)
             {
-                p2000030Instance20.num_poliza = quoteInfo.num_poliza;
-                DataAccess.CrearPresupuesto.PP_Insert_P2000020(p2000030Instance20, currentConnection);
+                currentConnection = Architect.DataFactory.Database.OpenConnection("Tron");
+                local = true;
             }
+            foreach (Contracts.Presupuesto.DatoVariable p2000030Instance20 in datosVariables)
+            {
+                Crea_DatosVariable(num_poliza, p2000030Instance20, currentConnection);
+            }
+            if(local)
+            {
+                Architect.DataFactory.Database.ClosedConnection(null, currentConnection);
+            }
+        }
+
+        public static void Crea_DatosVariable(string num_poliza, Contracts.Presupuesto.DatoVariable p2000030Instance20, IDbConnection currentConnection)
+        {
+            p2000030Instance20.num_poliza = num_poliza;
+            DataAccess.CrearPresupuesto.PP_Insert_P2000020(p2000030Instance20, currentConnection);
         }
 
         private static void Crea_Riesgos(DatoFijo quoteInfo, IDbConnection currentConnection)
         {
-            foreach (Riesgo item31 in quoteInfo.Riesgos)
+            foreach (Contracts.Presupuesto.Riesgo item31 in quoteInfo.Riesgos)
             {
                 item31.num_poliza = quoteInfo.num_poliza;
                 DataAccess.CrearPresupuesto.PP_Insert_P2000031(item31, currentConnection);

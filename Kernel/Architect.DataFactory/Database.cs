@@ -1177,7 +1177,7 @@ namespace Architect.DataFactory
                             {
                                 connection.Open();
                             }
-                            catch (Exception )
+                            catch (Exception)
                             {
                                 temporalException = Exceptions.DataAccessException.Factory(ex, cmmd, string.Empty, "Query");
                                 ClosedConnection(cmmd, connection);
@@ -1306,7 +1306,7 @@ namespace Architect.DataFactory
                             else
                             {
                                 var index = 1;
-                                var currsors = Parameters.Where(c => c.Type ==  Enumerations.DbType.RefCursor && c.direction == ParameterDirection.Output).ToList<Architect.DataFactory.Contracts.Parameter>();
+                                var currsors = Parameters.Where(c => c.Type == Enumerations.DbType.RefCursor && c.direction == ParameterDirection.Output).ToList<Architect.DataFactory.Contracts.Parameter>();
 
                                 if (reader.HasRows)
                                 {
@@ -1394,7 +1394,7 @@ namespace Architect.DataFactory
                             {
                                 connection.Open();
                             }
-                            catch (Exception )
+                            catch (Exception)
                             {
                                 temporalException = Exceptions.DataAccessException.Factory(ex, cmmd, string.Empty, "Query");
                                 ClosedConnection(cmmd, connection);
@@ -1608,9 +1608,10 @@ namespace Architect.DataFactory
             }
         }
 
-        private static void ClosedConnection(DbCommand Command, IDbConnection currentConnection)
+        public static void ClosedConnection(DbCommand command, IDbConnection currentConnection)
         {
-            Command.Connection = null;
+            if (command != null)
+                command.Connection = null;
             if (currentConnection.State == ConnectionState.Open)
                 currentConnection.Close();
         }

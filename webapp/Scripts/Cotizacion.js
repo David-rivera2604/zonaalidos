@@ -52,15 +52,21 @@ app.Cotizacion = (function () {
             return result;
         },
         Coberturas_ComportamientoDependencia: function (element, disabled) {
-            $(element).prop("disabled", disabled);
+            let ctrol = $(element);
+            ctrol.prop("disabled", disabled);
             if (disabled) {
                 $(element + '-error').html('');
-                $(element).removeClass('error');
+                ctrol.removeClass('error');
             }
             else {
-                if ($(element).children().length == 1) {
-                    $(element).val($(element + ' option:first').val());
-                    $(element).change();
+                if (ctrol.children().length == 1) {
+                    ctrol.val($(element + ' option:first').val());
+                    ctrol.change();
+                } else {
+                    if (!disabled && ctrol.data("autoselect") === true) {
+                        ctrol.val($(element + ' option:first').val());
+                        ctrol.change();
+                    }
                 }
             }
         }
