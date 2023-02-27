@@ -895,6 +895,10 @@ app.ui = (function () {
             if (clean != undefined && clean) {
                 $(element).prop("selectedIndex", -1);
             }
+            if (current && !disabled && $(element).data("autoselect") === true) {
+                $(element).val($('select' + element + ' option:first').val());
+            }
+            
         },
         Download: function (fileName, id) {
             fileName = fileName.toLowerCase();

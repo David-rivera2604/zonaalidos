@@ -138,26 +138,26 @@ namespace Architect.API.Tron.Business.Backoffice.Cotizacion
         }
         private static void Crea_DatosVariables(string num_poliza, List<Contracts.Presupuesto.DatoVariable> datosVariables, IDbConnection currentConnection)
         {
-            bool local = false;
-            if(currentConnection==null)
-            {
-                currentConnection = Architect.DataFactory.Database.OpenConnection("Tron");
-                local = true;
-            }
             foreach (Contracts.Presupuesto.DatoVariable p2000030Instance20 in datosVariables)
             {
                 Crea_DatosVariable(num_poliza, p2000030Instance20, currentConnection);
             }
-            if(local)
+        }
+
+        public static void Crea_DatosVariable(string num_poliza, Contracts.Presupuesto.DatoVariable p2000030Instance20, IDbConnection currentConnection = null)
+        {
+            bool local = false;
+            if (currentConnection == null)
+            {
+                currentConnection = Architect.DataFactory.Database.OpenConnection("Tron");
+                local = true;
+            }
+            p2000030Instance20.num_poliza = num_poliza;
+            DataAccess.CrearPresupuesto.PP_Insert_P2000020(p2000030Instance20, currentConnection);
+            if (local)
             {
                 Architect.DataFactory.Database.ClosedConnection(null, currentConnection);
             }
-        }
-
-        public static void Crea_DatosVariable(string num_poliza, Contracts.Presupuesto.DatoVariable p2000030Instance20, IDbConnection currentConnection)
-        {
-            p2000030Instance20.num_poliza = num_poliza;
-            DataAccess.CrearPresupuesto.PP_Insert_P2000020(p2000030Instance20, currentConnection);
         }
 
         private static void Crea_Riesgos(DatoFijo quoteInfo, IDbConnection currentConnection)

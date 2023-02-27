@@ -247,12 +247,49 @@ namespace Architect.API.Tron.Business.Cotizacion
 
                     if (quoteTron.fec_efec_poliza >= fecha_validar)
                     {
-                        // creaDatoVariable(_dataTable.num_poliza, "MCA_RENUEVA_EMI", "S", 105)
+
+                        // Guarda dato Variable MCA_RENUEVA_EMI
+                        Backoffice.Cotizacion.Generico.Crea_DatosVariable(resultInfo.presupuesto,
+                            new Contracts.Presupuesto.DatoVariable()
+                            {
+                                cod_cia = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_cia"]),
+                                num_poliza = resultInfo.presupuesto,
+                                num_spto = 0,
+                                num_spto_apli = 0,
+                                num_riesgo = 1,
+                                num_periodo = 1,
+                                tip_nivel = 2,
+                                cod_campo = "MCA_RENUEVA_EMI",
+                                val_campo = "S",
+                                txt_campo = "S",
+                                cod_ramo = COD_RAMO,
+                                num_secu = 105,
+                                mca_baja_riesgo = "N",
+                                mca_vigente = "S",
+                                mca_vigente_apli = "S"
+                            });
+
                         quoteTron.fec_efec_poliza = quoteTron.fec_vcto_poliza;
                         quoteTron.fec_efec_spto = quoteTron.fec_efec_poliza;
                         quoteTron.fec_vcto_poliza = quoteTron.fec_vcto_poliza.AddYears(1);
 
-                        Contracts.Presupuesto.DatoFijo resultTron2 = Backoffice.Cotizacion.MapfreMas.Calcular(quoteTron);
+                        // Cotiza Vigencia completa
+                        Contracts.Presupuesto.DatoFijo resultTronFull = Backoffice.Cotizacion.MapfreMas.Calcular(quoteTron);
+
+                        quoteInfo.plandepagoFull = new List<Contracts.Comun.PlanDePago>();
+                        foreach (Architect.API.Tron.Contracts.Presupuesto.Recibo item in resultTronFull.Recibos)
+                        {
+                            quoteInfo.plandepagoFull.Add(new Contracts.Comun.PlanDePago()
+                            {
+                                cuota = item.num_cuota,
+                                fechadesde = item.fec_efec_recibo,
+                                fechahasta = item.fec_vcto_recibo,
+                                primaneta = item.imp_neta + item.imp_recargo,
+                                iVA = item.imp_imptos,
+                                recargoporfraccionamiento = item.imp_interes,
+                                importetotal = item.imp_recibo
+                            });
+                        }
                     }
                 }
 
@@ -287,34 +324,34 @@ namespace Architect.API.Tron.Business.Cotizacion
                 switch (itemValues.Key)
                 {
                     case "TRON_TA301001:3001":
-                        result.IMP_AUTO_RC = itemValues.Lkp;
+                        result.IMP_AUTO_RC = CleanEmptyValue(itemValues.Lkp);
                         break;
                     case "MM_CAPITAL_GM_G":
-                        result.IMP_AUTO_GMO = itemValues.Lkp;
+                        result.IMP_AUTO_GMO = CleanEmptyValue(itemValues.Lkp);
                         break;
                     case "MM_CAPITAL_AC_G":
-                        result.IMP_AUTO_ACO = itemValues.Lkp;
+                        result.IMP_AUTO_ACO = CleanEmptyValue(itemValues.Lkp);
                         break;
                     case "MM_CAPITAL_ROTCRI_G":
-                        result.IMP_AUTO_CRI = itemValues.Lkp;
+                        result.IMP_AUTO_CRI = CleanEmptyValue(itemValues.Lkp);
                         break;
                     case "MM_DEDU_RC_G":
-                        result.DED_AUTO_RC = itemValues.Lkp;
+                        result.DED_AUTO_RC = CleanEmptyValue(itemValues.Lkp);
                         break;
                     case "MM_DEDU_CV_G":
-                        result.DED_AUTO_CYV = itemValues.Lkp;
+                        result.DED_AUTO_CYV = CleanEmptyValue(itemValues.Lkp);
                         break;
                     case "MM_DEDU_ROTCRI_G":
-                        result.DED_AUTO_CRI = itemValues.Lkp;
+                        result.DED_AUTO_CRI = CleanEmptyValue(itemValues.Lkp);
                         break;
                     case "MM_DEDU_EE_G":
-                        result.DED_AUTO_EQESP = itemValues.Lkp;
+                        result.DED_AUTO_EQESP = CleanEmptyValue(itemValues.Lkp);
                         break;
                     case "MM_DEDU_RA_G":
-                        result.DED_AUTO_RAD = itemValues.Lkp;
+                        result.DED_AUTO_RAD = CleanEmptyValue(itemValues.Lkp);
                         break;
                     case "MM_DEDU_ROBO_G":
-                        result.DED_AUTO_ROB = itemValues.Lkp;
+                        result.DED_AUTO_ROB = CleanEmptyValue(itemValues.Lkp);
                         break;
                 }
             }
@@ -352,71 +389,80 @@ namespace Architect.API.Tron.Business.Cotizacion
                     case "MM_CAPITAL_RC":
                         if (result.IMP_AUTO_RC.IsEmpty() || result.IMP_AUTO_RC.Count == 0)
                         {
-                            result.IMP_AUTO_RC = itemValues.Lkp;
+                            result.IMP_AUTO_RC = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
                     case "MM_CAPITAL_GM":
                         if (result.IMP_AUTO_GMO.IsEmpty() || result.IMP_AUTO_GMO.Count == 0)
                         {
-                            result.IMP_AUTO_GMO = itemValues.Lkp;
+                            result.IMP_AUTO_GMO = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
                     case "MM_CAPITAL_AC":
                         if (result.IMP_AUTO_ACO.IsEmpty() || result.IMP_AUTO_ACO.Count == 0)
                         {
-                            result.IMP_AUTO_ACO = itemValues.Lkp;
+                            result.IMP_AUTO_ACO = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
                     case "MM_CAPITAL_GN":
-                        result.IMP_AUTO_NEUM = itemValues.Lkp;
+                        result.IMP_AUTO_NEUM = CleanEmptyValue(itemValues.Lkp);
                         break;
                     case "MM_CAPITAL_AM":
-                        result.IMP_AUTO_MECA = itemValues.Lkp;
+                        result.IMP_AUTO_MECA = CleanEmptyValue(itemValues.Lkp);
                         break;
                     case "MM_CAPITAL_ROTCRI":
                         if (result.IMP_AUTO_CRI.IsEmpty() || result.IMP_AUTO_CRI.Count == 0)
                         {
-                            result.IMP_AUTO_CRI = itemValues.Lkp;
+                            result.IMP_AUTO_CRI = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
                     case "MM_DEDU_RC":
                         if (result.DED_AUTO_RC.IsEmpty() || result.DED_AUTO_RC.Count == 0)
                         {
-                            result.DED_AUTO_RC = itemValues.Lkp;
+                            result.DED_AUTO_RC = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
                     case "MM_DEDU_CV":
                         if (result.DED_AUTO_CYV.IsEmpty() || result.DED_AUTO_CYV.Count == 0)
                         {
-                            result.DED_AUTO_CYV = itemValues.Lkp;
+                            result.DED_AUTO_CYV = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
                     case "MM_DEDU_RA":
                         if (result.DED_AUTO_RAD.IsEmpty() || result.DED_AUTO_RAD.Count == 0)
                         {
-                            result.DED_AUTO_RAD = itemValues.Lkp;
+                            result.DED_AUTO_RAD = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
                     case "MM_DEDU_ROBO":
                         if (result.DED_AUTO_ROB.IsEmpty() || result.DED_AUTO_ROB.Count == 0)
                         {
-                            result.DED_AUTO_ROB = itemValues.Lkp;
+                            result.DED_AUTO_ROB = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
                     case "MM_DEDU_EE":
                         if (result.DED_AUTO_EQESP.IsEmpty() || result.DED_AUTO_EQESP.Count == 0)
                         {
-                            result.DED_AUTO_EQESP = itemValues.Lkp;
+                            result.DED_AUTO_EQESP = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
                     case "MM_DEDU_ROTCRI":
                         if (result.DED_AUTO_CRI.IsEmpty() || result.DED_AUTO_CRI.Count == 0)
                         {
-                            result.DED_AUTO_CRI = itemValues.Lkp;
+                            result.DED_AUTO_CRI = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
                 }
             }
+        }
+
+        private static List<Core.Contracts.General.LookupValue> CleanEmptyValue(List<Core.Contracts.General.LookupValue> values)
+        {
+            if (values != null && values.Count > 0 && values.First().Code== "0")
+            {
+                values.Remove(values.First());
+            }
+            return values;
         }
 
         public static List<Core.Contracts.General.LookupValues> LksExclude(string keys, string url, Core.Contracts.Security.Token tokenInfo)

@@ -45,6 +45,11 @@ app.CotizacionMapfreMas = (function () {
                     $('#plandepagoRow').removeClass('d-none');
                     $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
 
+                    if (data.plandepagoFull != null && data.plandepagoFull.length > 0) {
+                        $('#plandepagoFullRow').removeClass('d-none');
+                        $('#plandepagoFullTbl').bootstrapTable('load', data.plandepagoFull);
+                    }
+
 
                     if (data.plandepagoporfrecuencia != null)
                         $('#plandepagoporfrecuenciaTbl').bootstrapTable('load', data.plandepagoporfrecuencia);
@@ -254,6 +259,7 @@ app.CotizacionMapfreMas = (function () {
             DedudAutoSust: app.ui.GetDropDownNumericValue('#DedudAutoSust'),
             coberturas: $('#coberturasTbl').bootstrapTable('getData'),
             plandepago: $('#plandepagoTbl').bootstrapTable('getData'),
+            plandepagoFull: $('#plandepagoFullTbl').bootstrapTable('getData'),
             contrato: app.ui.GetDropDownNumericValue('#contrato'),
             subcontrato: app.ui.GetDropDownNumericValue('#subcontrato'),
             polizagrupo: setupData.polizagrupo
@@ -446,6 +452,7 @@ app.CotizacionMapfreMas = (function () {
             $('#mainBlock').addClass('col-md-12');
             $('#quoteBlock').addClass('d-none');
             $('#plandepagoRow').addClass('d-none');
+            $('#plandepagoRowFull').addClass('d-none');
             MapObjectToInput_First(setupData);
             MapObjectToInput(setupData);
             $("#VisualizationsEdtForm").validate().resetForm();
@@ -791,6 +798,84 @@ app.CotizacionMapfreMas = (function () {
         });
     }
 
+    function plandepagoFull_table_setup() {
+
+        $('#plandepagoFullTbl').bootstrapTable({
+            uniqueId: 'plandepagoId',
+            classes: 'table table-bordered table-hover table-index table-in-form',
+            pagination: false,
+            smartDisplay: true,
+            detailView: false,
+            detailFormatter: 'app.ui.GenericDetailFormatter',
+            columns: [
+                {
+                    field: 'cuota',
+                    title: 'Cuota',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.IntegerFormatter',
+                    visible: true
+                }, {
+                    field: 'fechadesde',
+                    title: 'Fecha desde',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    formatter: 'app.ui.DateFormatter',
+                    visible: true
+                }, {
+                    field: 'fechahasta',
+                    title: 'Fecha hasta',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    formatter: 'app.ui.DateFormatter',
+                    visible: true
+                }, {
+                    field: 'primaneta',
+                    title: 'Prima neta',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }, {
+                    field: 'iVA',
+                    title: 'IVA',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }, {
+                    field: 'recargoporfraccionamiento',
+                    title: 'Recargo por fraccionamiento',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalWithZeroFormatter',
+                    visible: true
+                }, {
+                    field: 'importetotal',
+                    title: 'Importe total',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                },]
+        });
+    }
+
+
     function plandepagoporfrecuencia_table_setup() {
 
         $('#plandepagoporfrecuenciaTbl').bootstrapTable({
@@ -885,6 +970,7 @@ app.CotizacionMapfreMas = (function () {
 
         if (showCalculate) {
             $('#plandepagoRow').addClass('d-none');
+            $('#plandepagoRowFull').addClass('d-none');
 
             $('#mainBlock').addClass('col-md-12');
             $('#mainBlock').removeClass('col-md-9');
@@ -1001,7 +1087,7 @@ app.CotizacionMapfreMas = (function () {
             app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_CYV', true);
             app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_CYV', true);
             app.ui.SetNumericValue('#IMP_AUTO_CYV', 0);
-            app.ui.SetDropDownNumericValue('#DED_AUTO_CYV', 0);
+            app.ui.SetDropDownNumericValue('#DED_AUTO_CYV', -1);
         }
         if (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3005)) {
             app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_RAD', true);
@@ -1012,7 +1098,7 @@ app.CotizacionMapfreMas = (function () {
             app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_RAD', true);
             app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_RAD', true);
             app.ui.SetNumericValue('#IMP_AUTO_RAD', 0);
-            app.ui.SetDropDownNumericValue('#DED_AUTO_RAD', 0);
+            app.ui.SetDropDownNumericValue('#DED_AUTO_RAD', -1);
         }
         if (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3006)) {
             app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_ROB', true);
@@ -1023,7 +1109,7 @@ app.CotizacionMapfreMas = (function () {
             app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_ROB', true);
             app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_ROB', true);
             app.ui.SetNumericValue('#IMP_AUTO_ROB', 0);
-            app.ui.SetDropDownNumericValue('#DED_AUTO_ROB', 0);
+            app.ui.SetDropDownNumericValue('#DED_AUTO_ROB', -1);
         }
         if (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3009)) {
             app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_CRI', false);
@@ -1032,8 +1118,8 @@ app.CotizacionMapfreMas = (function () {
         else {
             app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_CRI', true);
             app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_CRI', true);
-            app.ui.SetNumericValue('#IMP_AUTO_CRI', 0);
-            app.ui.SetDropDownNumericValue('#DED_AUTO_CRI', 0);
+            app.ui.SetDropDownNumericValue('#IMP_AUTO_CRI', -1);
+            app.ui.SetDropDownNumericValue('#DED_AUTO_CRI', -1);
         }
         if (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3007)) {
             app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_EQESP', false);
@@ -1043,6 +1129,7 @@ app.CotizacionMapfreMas = (function () {
             app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_EQESP', true);
             app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_EQESP', true);
             app.ui.SetNumericValue('#IMP_AUTO_EQESP', 0);
+            app.ui.SetDropDownNumericValue('#DED_AUTO_EQESP', 0);
             app.ui.SetDropDownNumericValue('#DED_AUTO_EQESP', 0);
         }
         if (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3017)) {
@@ -1072,6 +1159,7 @@ app.CotizacionMapfreMas = (function () {
             Setup_Validations();
             coberturas_table_setup();
             plandepago_table_setup();
+            plandepagoFull_table_setup();
             plandepagoporfrecuencia_table_setup();
 
             Controls_Events();
