@@ -87,6 +87,7 @@
     <Compile Include="Poliza\API\Poliza.cs" />
     <Compile Include="Poliza\API\Recibo.cs" />
     <Compile Include="Poliza\DesgloseEconomico.cs" />
+    <Compile Include="Poliza\Cancelacion.cs" />
     <Compile Include="Poliza\Variacion.cs" />
     <Compile Include="Presupuesto\API\Cobertura.cs" />
     <Compile Include="Presupuesto\API\Presupuesto.cs" />
