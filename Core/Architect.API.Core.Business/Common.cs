@@ -56,7 +56,7 @@ namespace Architect.API.Core.Business
                 switch (tenantLkpMaster.Type)
                 {
                     case 2: //Custom Select 
-                        DataTable table = Architect.DataFactory.Utils.StatementExecute(tenantLkpMaster.Statement, tenantLkpMaster.StatementType, tenantLkpMaster.ConnectionName, urlParameters, tenantLkpMaster.IsCached, keyValue);
+                        DataTable table = Architect.DataFactory.Utils.StatementExecute(tenantLkpMaster.Statement, tenantLkpMaster.StatementType, tenantLkpMaster.ConnectionName, urlParameters, tenantLkpMaster.IsCached, keyValue, tokenInfo.Roles);
                         LookupValue itemLook;
                         foreach (DataRow row in table.Rows)
                         {

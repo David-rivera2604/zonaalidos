@@ -201,6 +201,14 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// </summary>
         [DataMember(), JsonProperty()] public int DED_AUTO_CRI { get; set; }
         /// <summary>
+        /// Auto sustituto.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int AutoSust { get; set; }
+        /// <summary>
+        /// Deducible auto sustituto.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int DedudAutoSust { get; set; }
+        /// <summary>
         /// Coberturas
         /// </summary>
         [DataMember(), JsonProperty()] public List<Comun.Cobertura> coberturas { get; set; }
@@ -208,7 +216,10 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// plan de pago
         /// </summary>
         [DataMember(), JsonProperty()] public List<Comun.PlanDePago> plandepago { get; set; }
-
+        /// <summary>
+        /// plan de pago vigencia completa
+        /// </summary>
+        [DataMember(), JsonProperty()] public List<Comun.PlanDePago> plandepagoFull { get; set; }
         [DataMember(), JsonProperty()] public int contrato { get; set; }
         [DataMember(), JsonProperty()] public int subcontrato { get; set; }
         [DataMember(), JsonProperty()] public string polizagrupo { get; set; }

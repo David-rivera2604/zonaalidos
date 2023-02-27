@@ -9,7 +9,7 @@ namespace Architect.API.Tron.Business.Cotizacion
         const int TIPBENEF_SUBAGENTE = 37;
         const bool C_IsSubAgent = false; //ROL
 
-        internal static Architect.API.Tron.Contracts.Batch.CotizadorMapfreMasClass Tron(Contracts.Cotizacion.MapfreMas quoteInfo, int branch, int agentCode, string userName, string identificationType, string identification)
+        internal static Architect.API.Tron.Contracts.Batch.CotizadorMapfreMasClass Tron(Contracts.Cotizacion.MapfreMas quoteInfo, int branch, int agentCode, string userName, string identificationType, string identification, string roles)
         {
 
             Architect.API.Tron.Contracts.Batch.CotizadorMapfreMasClass result = new Architect.API.Tron.Contracts.Batch.CotizadorMapfreMasClass()
@@ -47,7 +47,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 Auto_NeumSA = quoteInfo.IMP_AUTO_NEUM,
                 Auto_MecaSA = quoteInfo.IMP_AUTO_MECA,
                 cod_zona_circul = quoteInfo.cod_zona_circul,
-                cod_sub_modelo = quoteInfo.cod_sub_modelo,
+                cod_sub_modelo = quoteInfo.cod_sub_modelo == 0 ? 999 : quoteInfo.cod_sub_modelo,
                 edad = quoteInfo.edad,
                 mca_auto_gps_cms = quoteInfo.MCA_AUTO_GPS_CMS == 1 ? "SS" : "SN",
                 mca_vr = quoteInfo.MCA_VR == 1 ? "SS" : "SN",
@@ -71,7 +71,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 num_subcontrato = quoteInfo.subcontrato,
                 num_poliza_grupo = quoteInfo.polizagrupo,
                 txt_motivo = "Cotización realizada desde la zona de aliados, por: " + userName,
-                num_matricula= quoteInfo.NUM_MATRICULA,
+                num_matricula = quoteInfo.NUM_MATRICULA,
                 num_motor = quoteInfo.NUM_MOTOR,
                 cod_chassis = quoteInfo.COD_CHASSIS,
                 p_ext_garantia = quoteInfo.ext_garantia == 1 ? "S" : "N"
@@ -81,6 +81,19 @@ namespace Architect.API.Tron.Business.Cotizacion
             //result.cod_docum = cod_documTextBox.Value
             //result.nom_tercero = IIf(String.IsNullOrEmpty(HiddenCotizador("nom_tercero")), " ", HiddenCotizador("nom_tercero"))
             //result.fec_nacimiento = fec_nacimientoDateEdit.Value
+
+            if (roles.Contain("Purdy"))
+            {
+                if (result.cod_tip_vehi == 5 || result.cod_tip_vehi == 17 || result.cod_tip_vehi == 18)
+                {
+                    result.p_mca_auto_sust = "N";
+                }
+                else
+                {
+                    result.p_mca_auto_sust = "S";
+                    result.p_ded_auto_sust = quoteInfo.DedudAutoSust.ToString();
+                }
+            }
 
             if (quoteInfo.coberturas.IsNotEmpty())
             {

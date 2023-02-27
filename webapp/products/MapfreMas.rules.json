@@ -408,8 +408,8 @@
     },
     {
       "Nombre": "MM_ClaseVehiculos",
-	  "Descripcion":"Exclusion de Clase Vehiculos para plan Basico, Amplio, Plus y Plata",
-      "Condicion": "((({El Tipo de producto} sea igual a {Básico}) o ({El Tipo de producto} sea igual a {Amplio}) o ({El Tipo de producto} sea igual a {Plus}) o ({El Tipo de producto} sea igual a {Plata})) y ({El Rol del usuario no sea igual a Privilegios}))",
+      "Descripcion": "Exclusion de Clase Vehiculos para plan Basico, Amplio, Plus y Plata",
+      "Condicion": "((({El Tipo de producto} sea igual a {Básico}) o ({El Tipo de producto} sea igual a {Amplio}) o ({El Tipo de producto} sea igual a {Plus}) o ({El Tipo de producto} sea igual a {Plata})) y ({El Rol del usuario no sea igual a Privilegios}) y ({El Rol del usuario no sea igual a Purdy}))",
       "Exclusion": "5,17,18"
     },
     {
