@@ -7,6 +7,7 @@
 app.CotizacionMapfreMas = (function () {
 
     let fec_vcto_poliza_grupo = null;
+    let modelHelper = [];
     var workMode = '';
     var setupData = null;
     var quoteData = null;
@@ -122,7 +123,6 @@ app.CotizacionMapfreMas = (function () {
             }
             app.core.Lookups(['MM_SubModelosVehiculos.cod_sub_modelo'], null,
                 `cod_marca=${data.cod_marca}:cod_modelo=${data.cod_modelo}:p_fec_validez=${data.p_fec_validez}:polizagrupo=${data.polizagrupo}:contrato=${data.contrato}`, 'v1/TronCommon/Lkps');
-
         });
 
         $('#contrato').on('change', function () {
@@ -312,7 +312,7 @@ app.CotizacionMapfreMas = (function () {
         app.ui.SetNumericValue('#IMP_AUTO_ROB', data.IMP_AUTO_ROB);
         $('#DED_AUTO_ROB').val(data.DED_AUTO_ROB);
         app.ui.SetNumericValue('#IMP_AUTO_EQESP', data.IMP_AUTO_EQESP);
-        
+
         $('#DED_AUTO_EQESP').val(data.DED_AUTO_EQESP);
         $('#IMP_AUTO_NEUM').val(data.IMP_AUTO_NEUM);
         $('#IMP_AUTO_MECA').val(data.IMP_AUTO_MECA);
@@ -494,6 +494,55 @@ app.CotizacionMapfreMas = (function () {
             data_changed();
 
             $("#VisualizationsEdtForm").validate().resetForm();
+        });
+        $('#VehicleModelHelper').click(function () {
+            if (modelHelper.length === 0) {
+                app.core.Get(app.setting.apipath + 'v1/datasource/VehicleModelHelper')
+                    .done(function (data) {
+                        modelHelper = data;
+                        let source = [];
+                        data.forEach(function (value, index, array) {
+                            source.push({ "name": value.TITULO, "code": value });
+                        });
+                        $('#cod_marcaHelper').typeahead({
+                            highlight: true,
+                            source: source,
+                            afterSelect: function (item) {
+                                console.log(item);
+                                $('#cod_marca').val(item.code.COD_MARCA);
+                                app.core.LookupDependency(item.code.COD_MARCA, 'cod_modelo', 'MM_ModelosVehiculos', '', item.code.COD_MODELO, false, function () {
+                                    if (localStorage.getItem('Roles').includes('Purdy')) {
+                                        let data = {
+                                            cod_marca: app.ui.GetDropDownNumericValue('#cod_marca'),
+                                            cod_modelo: app.ui.GetDropDownNumericValue('#cod_modelo'),
+                                            contrato: app.ui.GetDropDownNumericValue('#contrato'),
+                                            subcontrato: app.ui.GetDropDownNumericValue('#subcontrato'),
+                                            polizagrupo: setupData.polizagrupo,
+                                            p_fec_validez: moment().format('YYYYMMDD')
+                                        }
+                                        app.core.Lookups(['MM_SubModelosVehiculos.cod_sub_modelo'], function () {
+                                            $('#cod_sub_modelo').val(item.code.COD_SUB_MODELO);
+                                        }, `cod_marca=${data.cod_marca}:cod_modelo=${data.cod_modelo}:p_fec_validez=${data.p_fec_validez}:polizagrupo=${data.polizagrupo}:contrato=${data.contrato}`, 'v1/TronCommon/Lkps');
+                                    }
+                                }, `cod_marca=`, 'v1/TronCommon/LkpChild');
+                                $('.handler-marcaHelper').addClass('d-none');
+                                $('.handler-marca').removeClass('d-none');
+                            }
+                        });
+                        $('.handler-marcaHelper').removeClass('d-none');
+                        $('.handler-marca').addClass('d-none');
+
+                    })
+            } else {
+                $('.handler-marcaHelper').removeClass('d-none');
+                $('.handler-marca').addClass('d-none');
+            }
+            event.preventDefault();
+        });
+        $('#VehicleModelHelperCancel').click(function () {
+            $('.handler-marcaHelper').addClass('d-none');
+            $('.handler-marca').removeClass('d-none');
+            event.preventDefault();
         });
     }
 
