@@ -834,9 +834,11 @@ app.ui = (function () {
                 app.core.Get(app.setting.apipath + `v1/Viewer/Dialog?id=${options.id}`)
                     .done(function (data, textStatus, jqXHR) {
                         let html = data.HTML.supplant(options.data);
+                        html = app.core.ReplaceAll(html, '@_eqg', '>=');
                         html = app.core.ReplaceAll(html, '@_eq', '=');
                         html = app.core.ReplaceAll(html, '@_qt', '\'');
                         html = app.core.ReplaceAll(html, '@_sc', ';');
+                        
                         //html = html.replace(/@_/g, '\'');
                         $('.sidebar-content').replaceWith(html.replace('ibox-content', 'ibox-content sidebar-content'));
                         eval(data.Code);
