@@ -182,5 +182,13 @@ namespace Architect.API.Tron.Business.Backoffice
             return result;
         }
 
+        /// <summary>
+        /// Control técnico de una póliza, permite su aprobación o rechazo
+        /// </summary>
+        public static string ControlTecnico(string numPoliza, Contracts.Poliza.Parameters.ControlTecnicoParametros controlTecnico)
+        {
+            DataAccess.ControlesTecnicos.Autorizar(numPoliza, controlTecnico);
+            return "Control técnico procesado correctamente";
+        }
     }
 }
