@@ -101,6 +101,8 @@ namespace Architect.API.Tron.Business.Backoffice
 
                 DataAccess.Batch.A2000500.Create(a2000500, connection);
 
+
+
                 Contracts.Batch.Proceso procesoResult = DataAccess.Batch.G2000510.Execute(g2000510Instance, connection);
                 if (procesoResult.txt_error.IsEmpty())
                 {
