@@ -22,7 +22,7 @@ namespace Architect.API.Tron.DataAccess
 
                 Database.Procedure("EM_K_GEN_CT_MCR.P_AUTORIZA_CT_INDIVIDUAL")
                       .AddParameter("P_COD_CIA", Architect.DataFactory.Enumerations.DbType.Int32, 5, cod_cia)
-                      .AddParameter("P_ID_PROCESO", Architect.DataFactory.Enumerations.DbType.Int32, 13, 0)
+                      .AddParameter("P_ID_PROCESO", Architect.DataFactory.Enumerations.DbType.Int32, 13, int.MinValue)
                       .AddParameter("P_COD_RAMO", Architect.DataFactory.Enumerations.DbType.Int32, 5, policy.cod_ramo)
                       .AddParameter("P_COD_NIVEL1", Architect.DataFactory.Enumerations.DbType.Int32, 22, policy.cod_nivel1)
                       .AddParameter("P_COD_NIVEL2", Architect.DataFactory.Enumerations.DbType.Int32, 22, policy.cod_nivel2)

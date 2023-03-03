@@ -286,6 +286,15 @@ app.ui = (function () {
             else
                 return value.toLocaleString('ES', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         },
+        IntegerWithZeroFormatter: function (value, row, index, field) {
+            if (value === null)
+                value = 0;
+            else if (value === undefined) {
+                console.log("IntegerFormatter", field, value);
+                value = 0;
+            }
+            return value.toLocaleString('ES', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+        },
         DecimalFormatter: function (value, row, index, field) {
             if (value == undefined || value === null || value === 0)
                 return '';
@@ -838,10 +847,16 @@ app.ui = (function () {
                         html = app.core.ReplaceAll(html, '@_eq', '=');
                         html = app.core.ReplaceAll(html, '@_qt', '\'');
                         html = app.core.ReplaceAll(html, '@_sc', ';');
-                        
+
                         //html = html.replace(/@_/g, '\'');
                         $('.sidebar-content').replaceWith(html.replace('ibox-content', 'ibox-content sidebar-content'));
+                        if (options.callback != undefined) {
+                            data.Code = data.Code.replace("//Custom.Extend", options.callback + "(this, JSON.parse(localStorage.getItem('current')));");
+                        }
                         eval(data.Code);
+                        //if (options.callback != undefined) {
+                        //    eval(options.callback + '(app.Prototype, options.data)');
+                        //}
                     });
             }
             else {
@@ -900,7 +915,7 @@ app.ui = (function () {
             if (current && !disabled && $(element).data("autoselect") === true) {
                 $(element).val($('select' + element + ' option:first').val());
             }
-            
+
         },
         Download: function (fileName, id) {
             fileName = fileName.toLowerCase();
