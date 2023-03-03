@@ -460,3 +460,10 @@
                    Aliados.Cotizacion Poliza Grupo Multirriesgo
                    Clientes.Compra Seguros Viajero
                    Bayer. Cambio en la expresion regular para los input de  cedulas (se quitan 0 y -)
+1.6.24  03/03/2023 Aliados. Manejo de información del agente por tenant,
+                   MapfreMas. Nuevos campos y condiciones de visibilidad parar Purdy.
+                   MapfreMas. Manejo de cotización por vigencia completa.
+                   MapfreMas. Autoselección de dropdown para facilitar el llenado de la cotización.
+                   Aliados. Cancelación de póliza desde la consulta de pólizas activas,
+                   MapfreMas. Ayuda para la selección de la marca, modelo y submodelo.
+                   Aliados. Gestiones de aprobación -> Controles técnicos.
