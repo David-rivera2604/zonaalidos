@@ -389,7 +389,11 @@ app.core = (function () {
                         $.each(values.Lkp, function () {
                             selectedOptions.append($('<option />').val(this['Code']).text(this['Description']));
                         });
-                        selectedOptions.val(-1);
+                        if (selectedOptions.data("autoselect") === true) {
+                            selectedOptions.val($('select#' + 'ctrl' + ' option:first').val());
+                        } else {
+                            selectedOptions.val(-1);
+                        }
                     }
                     else {
                         selectedOptions.replaceWith('<div id="radio' + ctrlName[index] + '"></div>');

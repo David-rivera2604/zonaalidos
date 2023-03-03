@@ -286,6 +286,15 @@ app.ui = (function () {
             else
                 return value.toLocaleString('ES', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         },
+        IntegerWithZeroFormatter: function (value, row, index, field) {
+            if (value === null)
+                value = 0;
+            else if (value === undefined) {
+                console.log("IntegerFormatter", field, value);
+                value = 0;
+            }
+            return value.toLocaleString('ES', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+        },
         DecimalFormatter: function (value, row, index, field) {
             if (value == undefined || value === null || value === 0)
                 return '';
@@ -834,12 +843,20 @@ app.ui = (function () {
                 app.core.Get(app.setting.apipath + `v1/Viewer/Dialog?id=${options.id}`)
                     .done(function (data, textStatus, jqXHR) {
                         let html = data.HTML.supplant(options.data);
+                        html = app.core.ReplaceAll(html, '@_eqg', '>=');
                         html = app.core.ReplaceAll(html, '@_eq', '=');
                         html = app.core.ReplaceAll(html, '@_qt', '\'');
                         html = app.core.ReplaceAll(html, '@_sc', ';');
+
                         //html = html.replace(/@_/g, '\'');
                         $('.sidebar-content').replaceWith(html.replace('ibox-content', 'ibox-content sidebar-content'));
+                        if (options.callback != undefined) {
+                            data.Code = data.Code.replace("//Custom.Extend", options.callback + "(this, JSON.parse(localStorage.getItem('current')));");
+                        }
                         eval(data.Code);
+                        //if (options.callback != undefined) {
+                        //    eval(options.callback + '(app.Prototype, options.data)');
+                        //}
                     });
             }
             else {
@@ -865,7 +882,7 @@ app.ui = (function () {
                 }
             });
         },
-        LookupLoad: function (ctrl, lkpData) {
+        LookupLoad: function (ctrl, lkpData, autoSelect) {
             let selectedOptions = $('select#' + ctrl);
             selectedOptions.children().remove();
             $.each(lkpData, function () {
@@ -874,7 +891,16 @@ app.ui = (function () {
             if (lkpData.length == 1 && !selectedOptions.is(':disabled')) {
                 selectedOptions.val(lkpData[0]['Code']);
             } else {
-                selectedOptions.val(-1);
+                if (!selectedOptions.is(':disabled') && autoSelect != undefined && autoSelect != null && autoSelect) {
+                    selectedOptions.val($('select#' + ctrl + ' option:first').val());
+                } else {
+                    if (!selectedOptions.is(':disabled') && selectedOptions.data("autoselect") === true) {
+                        selectedOptions.val($('select#' + ctrl + ' option:first').val());
+                    } else {
+                        selectedOptions.val(-1);
+                    }
+                }
+
             }
         },
         DropDownDisabled: function (element, disabled, clean) {
@@ -886,6 +912,10 @@ app.ui = (function () {
             if (clean != undefined && clean) {
                 $(element).prop("selectedIndex", -1);
             }
+            if (current && !disabled && $(element).data("autoselect") === true) {
+                $(element).val($('select' + element + ' option:first').val());
+            }
+
         },
         Download: function (fileName, id) {
             fileName = fileName.toLowerCase();
@@ -917,7 +947,9 @@ app.ui = (function () {
             let tenant = localStorage.getItem('Tenant');
             roles.forEach(function (item) {
                 $(`.role-${item}-visible`).removeClass('d-none');
+                $(`.role-${item}-notvisible`).addClass('d-none');
                 $(`.role-${item}-enable`).prop("disabled", false);
+                $(`.role-${item}-disable`).prop("disabled", true);
                 $(`.role-${item}-${tenant}-visible`).removeClass('d-none');
                 $(`.role-${item}-${tenant}-enable`).prop("disabled", false);
                 $(`.role--${tenant}-visible`).removeClass('d-none');

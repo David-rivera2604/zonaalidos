@@ -101,6 +101,8 @@ namespace Architect.API.Tron.Business.Backoffice
 
                 DataAccess.Batch.A2000500.Create(a2000500, connection);
 
+
+
                 Contracts.Batch.Proceso procesoResult = DataAccess.Batch.G2000510.Execute(g2000510Instance, connection);
                 if (procesoResult.txt_error.IsEmpty())
                 {
@@ -154,5 +156,41 @@ namespace Architect.API.Tron.Business.Backoffice
             return result;
         }
 
+        /// <summary>
+        /// Aplica variaciones a una póliza
+        /// </summary>
+        public static bool Cancelacion(string num_poliza, Contracts.Poliza.Variacion variacion)
+        {
+            bool result = false;
+            IDbConnection currentConnection = DataFactory.Database.OpenConnection("Tron");
+            try
+            {
+                foreach (Contracts.Poliza.DatoVariacion item in variacion.Detalle)
+                {
+                    if (item.val_campo_ant != item.val_campo_act)
+                    {
+                        DataAccess.DatosVariables.AplicarVariacion(variacion.cod_ramo, num_poliza, variacion.num_riesgo,
+                            item.cod_campo, item.val_campo_ant, item.val_campo_act, variacion.fec_validez, "ZA: " + variacion.txt_obs, currentConnection);
+                    }
+                }
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                Utilities.Log.ErrorLog("Falla al tratar de procesar las variaciones", "Póliza " + num_poliza, ex);
+            }
+
+            currentConnection.Close();
+            return result;
+        }
+
+        /// <summary>
+        /// Control técnico de una póliza, permite su aprobación o rechazo
+        /// </summary>
+        public static string ControlTecnico(string numPoliza, Contracts.Poliza.Parameters.ControlTecnicoParametros controlTecnico)
+        {
+            DataAccess.ControlesTecnicos.Autorizar(numPoliza, controlTecnico);
+            return "Control técnico procesado correctamente";
+        }
     }
 }

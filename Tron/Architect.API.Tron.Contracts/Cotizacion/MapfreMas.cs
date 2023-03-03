@@ -63,6 +63,17 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// </summary>
         [DataMember(), JsonProperty()] public int cod_modelo { get; set; }
         [DataMember(), JsonProperty()] public string cod_modeloDesc { get; set; }
+
+
+        
+        /// <summary>
+        /// Sub Modelo.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int cod_sub_modelo { get; set; }
+        [DataMember(), JsonProperty()] public string cod_sub_modeloDesc { get; set; }
+
+
+
         /// <summary>
         /// Año del vehículo.
         /// </summary>
@@ -190,6 +201,14 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// </summary>
         [DataMember(), JsonProperty()] public int DED_AUTO_CRI { get; set; }
         /// <summary>
+        /// Auto sustituto.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int AutoSust { get; set; }
+        /// <summary>
+        /// Deducible auto sustituto.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int DedudAutoSust { get; set; }
+        /// <summary>
         /// Coberturas
         /// </summary>
         [DataMember(), JsonProperty()] public List<Comun.Cobertura> coberturas { get; set; }
@@ -197,11 +216,17 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// plan de pago
         /// </summary>
         [DataMember(), JsonProperty()] public List<Comun.PlanDePago> plandepago { get; set; }
-
+        /// <summary>
+        /// plan de pago vigencia completa
+        /// </summary>
+        [DataMember(), JsonProperty()] public List<Comun.PlanDePago> plandepagoFull { get; set; }
         [DataMember(), JsonProperty()] public int contrato { get; set; }
         [DataMember(), JsonProperty()] public int subcontrato { get; set; }
         [DataMember(), JsonProperty()] public string polizagrupo { get; set; }
-
+        /// <summary>
+        /// Extensión de garantía.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int ext_garantia { get; set; }
     }
 
 }

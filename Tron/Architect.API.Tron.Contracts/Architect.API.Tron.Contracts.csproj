@@ -63,6 +63,7 @@
     <Compile Include="Comun\DocumentoRequerido.cs" />
     <Compile Include="Comun\Cobertura.cs" />
     <Compile Include="Comun\Tercero.cs" />
+    <Compile Include="Poliza\Parameters\ControlTecnicoParametros.cs" />
     <Compile Include="Cotizacion\HogarTotalSettings.cs" />
     <Compile Include="Cotizacion\plandepagoporfrecuencia.cs" />
     <Compile Include="Cotizacion\MapfreMasSettings.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Poliza\API\Poliza.cs" />
     <Compile Include="Poliza\API\Recibo.cs" />
     <Compile Include="Poliza\DesgloseEconomico.cs" />
+    <Compile Include="Poliza\Cancelacion.cs" />
     <Compile Include="Poliza\Variacion.cs" />
     <Compile Include="Presupuesto\API\Cobertura.cs" />
     <Compile Include="Presupuesto\API\Presupuesto.cs" />

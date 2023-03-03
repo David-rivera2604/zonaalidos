@@ -107,7 +107,7 @@ namespace Architect.API.Core.Security
             result.Expires = DateTime.Now.AddMinutes(Architect.Utilities.Helpers.Settings.IntegerValue("Session.Timeout", 30));
 
             //Este bloque esta duplicado en la clase account
-            if (user.CompanyId == 2)
+            if (Utilities.Helpers.Settings.StringValue("Tenant.Tron.Agent.Information").Contain(user.CompanyId.ToString()))
             {
                 Contracts.Security.AgentInformation agentInfo = Tron.RetrieveAgentInformationByEmail(user.CompanyId, user.EMail);
                 if (agentInfo != null)

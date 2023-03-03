@@ -78,6 +78,7 @@
     <Compile Include="Batch\P2100170.cs" />
     <Compile Include="CotizadorMapfreMasClass.cs" />
     <Compile Include="CotizadorPolizaLiderClass.cs" />
+    <Compile Include="ControlesTecnicos.cs" />
     <Compile Include="CrearPresupuesto.cs" />
     <Compile Include="DatosVariables.cs" />
     <Compile Include="LeerPoliza.cs" />

@@ -451,7 +451,7 @@ app.ViewerQuery = (function () {
                                     app.core.LoadScriptFile(item.include)
                                         .then(d => {
                                             Render(item);
-                                            if (app.Extend.EventHandler !== null) {
+                                            if (app.Extend !== undefined && app.Extend.EventHandler !== undefined && app.Extend.EventHandler !== null) {
                                                 app.Extend.EventHandler(_id, item.index, 'loaded');
                                             }
                                         })

@@ -56,6 +56,7 @@ app.EmisionMapfreMas = (function () {
         $('#cod_zona_circul').replaceWith('<div>' + $('#cod_zona_circul option:selected').text() + '</div>');
         $('#cod_marca').replaceWith('<div>' + $('#cod_marca option:selected').text() + '</div>');
         $('#cod_modelo').replaceWith('<div>' + $('#cod_modelo option:selected').text() + '</div>');
+        $('#cod_sub_modelo').replaceWith('<div>' + $('#cod_sub_modelo option:selected').text() + '</div>');
         $('#ANIO_SUB_MODELO').replaceWith('<div>' + $('#ANIO_SUB_MODELO').val() + '</div>');
         $('#cod_tip_vehi').replaceWith('<div>' + $('#cod_tip_vehi option:selected').text() + '</div>');
         $('#cod_uso_vehi').replaceWith('<div>' + $('#cod_uso_vehi option:selected').text() + '</div>');
@@ -74,6 +75,7 @@ app.EmisionMapfreMas = (function () {
         $('label[for=MCA_VR').next().replaceWith('<div>' + $('label[for=MCA_VR_' + app.ui.GetRadioNumericValue('MCA_VR') + '').html() + '</div>');
         $('#IMP_VR').replaceWith('<div>' + $('#IMP_VR').val() + '</div>');
         $('label[for=MCA_DESC_CLIENTE_NUEVO').next().replaceWith('<div>' + $('label[for=MCA_DESC_CLIENTE_NUEVO_' + app.ui.GetRadioNumericValue('MCA_DESC_CLIENTE_NUEVO') + '').html() + '</div>');
+        $('label[for=ext_garantia').next().replaceWith('<div>' + $('label[for=ext_garantia_' + app.ui.GetRadioNumericValue('ext_garantia') + '').html() + '</div>');
         $('#PCT_AJUSTE_GEN').parent().replaceWith('<div>' + $('#PCT_AJUSTE_GEN').val() + ' %</div>');
         $('#IMP_AUTO_RC').replaceWith('<div>' + $('#IMP_AUTO_RC option:selected').text() + '</div>');
         $('#DED_AUTO_RC').replaceWith('<div>' + $('#DED_AUTO_RC option:selected').text() + '</div>');
@@ -286,6 +288,7 @@ app.EmisionMapfreMas = (function () {
         app.ui.DropDownValueWithOption('#cod_zona_circul', data.cod_zona_circul, data.cod_zona_circulDesc);
         $('#cod_marca').val(data.cod_marca);
         $('#cod_modelo').val(data.cod_modelo);
+        $('#cod_sub_modelo').val(data.cod_sub_modelo);
         app.ui.SetNumericValue('#ANIO_SUB_MODELO', data.ANIO_SUB_MODELO);
         $('#cod_tip_vehi').val(data.cod_tip_vehi);
         $('#cod_uso_vehi').val(data.cod_uso_vehi);
@@ -306,6 +309,7 @@ app.EmisionMapfreMas = (function () {
         app.ui.SetRadioStringValue('Vehiculo_Otra_Poliza', data.Vehiculo_Otra_Poliza);
         app.ui.SetRadioNumericValue('MCA_DESC_CLIENTE_NUEVO', data.MCA_DESC_CLIENTE_NUEVO);
         app.ui.SetNumericValue('#PCT_AJUSTE_GEN', data.PCT_AJUSTE_GEN);
+        app.ui.SetRadioNumericValue('ext_garantia', data.ext_garantia);
 
         if (data.terceros != null)
             $('#tercerosTbl').bootstrapTable('load', data.terceros);

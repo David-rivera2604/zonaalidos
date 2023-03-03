@@ -53,7 +53,7 @@ namespace Architect.DataFactory
                                 break;
                         }
                     }
-                    statement = statement.Replace(paremeter.Value, name);
+                    statement = statement.Replace(paremeter.Value, name); 
                 }
                 using (DataFactory.Database db = Architect.DataFactory.Database.Select(statement).Cache(withCache, prefix))
                 {
