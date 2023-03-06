@@ -190,6 +190,7 @@ namespace Architect.API.Tron.Business.Backoffice
         /// </summary>
         public static string ControlTecnico(string num_poliza, Contracts.Poliza.Parameters.ControlTecnicoParametros controlTecnico, Core.Contracts.Security.Token tokenInfo)
         {
+            string result = "Control técnico procesado correctamente";
             //En caso de que se este autorizando (1) o rechazando (2)
             if (controlTecnico.tip_autoriza == "1" || controlTecnico.tip_autoriza == "2")
             {
@@ -200,7 +201,7 @@ namespace Architect.API.Tron.Business.Backoffice
                     if (controlTecnico.correo1.IsNotEmpty())
                     {
                         Dictionary<string, string> emailTmpl = Core.Business.General.Mail.GetTemplate("Send_Certificate", tokenInfo.CompanyId, tokenInfo.UserId, 0, policy);
-                        string Id = DocuSign.Integrations.DocuSign.EviMail(num_poliza,
+                        string id = DocuSign.Integrations.DocuSign.EviMail(num_poliza,
                                                                            "Envío Certificado " + num_poliza,
                                                                            emailTmpl["Body"],
                                                                            "Certificado póliza",
@@ -208,7 +209,7 @@ namespace Architect.API.Tron.Business.Backoffice
                                                                            controlTecnico.correo1,
                                                                            certificado,
                                                                            num_poliza,
-                                                                           "Certificado póliza " + num_poliza).Result;
+                                                                           "Certificado póliza " + num_poliza + ".pdf").Result;
                     }
                 }
             }
@@ -228,10 +229,11 @@ namespace Architect.API.Tron.Business.Backoffice
                 {
                     Core.Business.General.Mail.SendByTemplate("Control_Tecnico", tokenInfo.CompanyId,
                         new { num_poliza = num_poliza, observacion = controlTecnico.observacion }, emailList);
+                    result = "El control técnico fue notificado de forma exitosa";
                 }
             }
 
-            return "Control técnico procesado correctamente";
+            return result;
         }
 
         /// <summary>
@@ -240,7 +242,12 @@ namespace Architect.API.Tron.Business.Backoffice
         public static string Renovar(string num_poliza)
         {
             string result = DataAccess.Poliza.Renovar(num_poliza);
-            return result.IsEmpty() ? "Póliza renovada correctamente." : result;
+            if (result.IndexOf("TRN-") > -1)
+            {
+                result = result.Substring(result.IndexOf("TRN-"));
+                result = result.Substring(result.IndexOf(":") + 1).Trim().Capitalize();
+            }
+            return result.IsEmpty() || result == "null" ? "Póliza renovada correctamente." : result;
         }
 
     }
