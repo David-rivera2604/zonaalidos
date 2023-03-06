@@ -73,6 +73,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architect.API.Core.Security
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architect.Compliance.Integrations", "Core\Architect.Compliance.Integrations\Architect.Compliance.Integrations.csproj", "{1A9F7166-6C86-44A6-8920-CD52422A2044}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DBScripts", "DBScripts", "{98C88292-F016-41B1-B540-9B7D063476D6}"
+	ProjectSection(SolutionItems) = preProject
+		dbscripts\230306.a.visualization.sql = dbscripts\230306.a.visualization.sql
+		dbscripts\230306.b.template.sql = dbscripts\230306.b.template.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
