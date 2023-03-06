@@ -44,7 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\QueryResult.cs" />
+    <Compile Include="Providers\Evicertia\Contracts\IdentityEvi.cs" />
+    <Compile Include="Providers\Evicertia\Contracts\EviMailSubmit.cs" />
     <Compile Include="Providers\Evicertia\Contracts\EviSignQueryResult.cs" />
+    <Compile Include="Providers\Evicertia\Contracts\Options.cs" />
     <Compile Include="Providers\Evicertia\Contracts\SigningParty.cs" />
     <Compile Include="Providers\Evicertia\Contracts\SignSubmit.cs" />
     <Compile Include="Contracts\SubmitResult.cs" />

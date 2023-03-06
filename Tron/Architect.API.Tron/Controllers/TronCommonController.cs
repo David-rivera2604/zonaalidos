@@ -200,9 +200,8 @@ namespace Architect.API.Tron.Controllers
             return result;
         }
 
-
         /// <summary>
-        /// Descarga el eposio de prima asoiados a un recibo.
+        /// Descarga los depósitos de prima asociados a un recibo.
         /// </summary>
         [HttpGet]
         [Route("ImprimirDepositoPrima/{num_recibo}")]

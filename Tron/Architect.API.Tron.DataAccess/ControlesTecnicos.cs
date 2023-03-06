@@ -13,12 +13,13 @@ namespace Architect.API.Tron.DataAccess
         /// <summary>
         ///  Autorización de un contrato de póliza a solicitud del asegurado o de la compañía de seguros.
         /// </summary>
-        public static void Autorizar(string numPoliza, Contracts.Poliza.Parameters.ControlTecnicoParametros controlTecnico)
+        public static Contracts.Poliza.DatoFijo Autorizar(string numPoliza, Contracts.Poliza.Parameters.ControlTecnicoParametros controlTecnico)
         {
+            Contracts.Poliza.DatoFijo policy;
             int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
             using (IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron"))
             {
-                Contracts.Poliza.DatoFijo policy = LeerPoliza.Poliza(cod_cia, numPoliza, controlTecnico.num_spto, 0, 0, currentConnection, false);
+                policy = LeerPoliza.Poliza(cod_cia, numPoliza, controlTecnico.num_spto, 0, 0, currentConnection, false);
 
                 Database.Procedure("EM_K_GEN_CT_MCR.P_AUTORIZA_CT_INDIVIDUAL")
                       .AddParameter("P_COD_CIA", Architect.DataFactory.Enumerations.DbType.Int32, 5, cod_cia)
@@ -38,8 +39,7 @@ namespace Architect.API.Tron.DataAccess
 
                 currentConnection.Close();
             }
-
- 
+            return policy;
         }
     }
 }

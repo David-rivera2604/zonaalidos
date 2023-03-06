@@ -22,6 +22,42 @@ namespace Architect.API.Core.Business.General
         //https://github.com/Antaris/RazorEngine
         //https://github.com/axuno/SmartFormat/wiki
 
+        public static Dictionary<string, string> GetTemplate(string templateKey, int companyId, int userId, int ownerId, object entity)
+        {
+            Architect.API.Core.Contracts.Security.UserMember currentUserInfo = new Contracts.Security.UserMember();
+            Architect.API.Core.Contracts.Security.UserMember ownerUserInfo = new Contracts.Security.UserMember();
+            Core.Contracts.General.Tenant tenantInfo = new Contracts.General.Tenant();
+            Dictionary<string, string> result = new Dictionary<string, string>();
+            if (userId != 0)
+            {
+                currentUserInfo = Architect.API.Core.Business.Security.UserMember.RetrieveById(companyId, userId);
+            }
+            if (ownerId != 0)
+            {
+                ownerUserInfo = Architect.API.Core.Business.Security.UserMember.RetrieveById(companyId, ownerId);
+            }
+            if (companyId != 0)
+            {
+                tenantInfo = Core.Business.General.Tenant.Information(companyId);
+            }
+            object context = new
+            {
+                Data = entity,
+                Company = tenantInfo,
+                CurrentUser = currentUserInfo,
+                Owner = ownerUserInfo
+            };
+            Contracts.General.InternalTemplate tmpl = DataAccess.General.InternalTemplate.Retrieve(companyId, templateKey);
+            if (tmpl.MasterTemplateId.IsNotEmpty())
+            {
+                Contracts.General.InternalTemplate tmplMaster = DataAccess.General.InternalTemplate.RetrieveById(companyId, tmpl.MasterTemplateId);
+
+                tmpl.Body = tmplMaster.Body.Replace("{Content}", tmpl.Body);
+            }
+            result.Add("Subject", Smart.Format(CultureInfo.CreateSpecificCulture("es-CR"), tmpl.Subject, context));
+            result.Add("Body", Smart.Format(CultureInfo.CreateSpecificCulture("es-CR"), tmpl.Body, context));
+            return result;
+        }
 
         public static void SendByTemplate(string mailServer, string templateKey, int companyId, int userId, object entity, Dictionary<string, string> toAddressList, string[] attachments = null)
         {
