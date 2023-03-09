@@ -91,6 +91,7 @@
     <Compile Include="LeerPresupuesto.cs" />
     <Compile Include="PolicyProposalEx.cs" />
     <Compile Include="PolicyProposal.cs" />
+    <Compile Include="Poliza.cs" />
     <Compile Include="PorRamo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ramo\A1001800.cs" />

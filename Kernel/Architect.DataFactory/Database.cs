@@ -788,6 +788,14 @@ namespace Architect.DataFactory
             try
             {
                 result = cmmd.ExecuteNonQuery();
+                if (Parameters != null && Parameters.Count > 0)
+                {
+                    foreach (Contracts.Parameter item in Parameters.Where(c => c.direction == ParameterDirection.InputOutput || c.direction == ParameterDirection.Output))
+                    {
+                        item.Value = cmmd.Parameters[item.Name].Value;
+                    }
+                }
+
             }
             catch (OracleException exOracle)
             {

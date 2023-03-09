@@ -414,7 +414,7 @@ namespace Architect.API.Tron.DataAccess
                     .AddParameter("cod_agt", DbType.Decimal, 5, cod_agt)
                     .Query("Tron", new Action<IDataReader>((reader) =>
                     {
-                        result= reader.IntegerValue("cod_fracc_pago");
+                        result = reader.IntegerValue("cod_fracc_pago");
                     }));
             return result;
         }

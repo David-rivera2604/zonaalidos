@@ -33,9 +33,5 @@ namespace Architect.DocuSign.Integrations.Providers.Evicertia.Contracts
 
     }
 
-    public class Options
-    {
-        public string signedRedirectUrl { get; set; }
-    }
 
 }

@@ -119,12 +119,34 @@ namespace Architect.API.Tron.Controllers
             string result = string.Empty;
             await Task.Run(() =>
             {
-                result = Architect.API.Tron.Business.Backoffice.Poliza.ControlTecnico(num_poliza, controlTecnico);
+                result = Architect.API.Tron.Business.Backoffice.Poliza.ControlTecnico(num_poliza, controlTecnico, tokenInfo);
             }).ConfigureAwait(false);
 
             return Ok(new
             {
                 Success = true,
+                Reason = result
+            });
+        }
+
+
+        /// <summary>
+        /// Permite renovar una póliza
+        /// </summary>
+        [HttpPut]
+        [Route("{num_poliza}/Renovar")]
+        public async Task<IHttpActionResult> Renovar([FromUri] string num_poliza)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            string result = string.Empty;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Backoffice.Poliza.Renovar(num_poliza);
+            }).ConfigureAwait(false);
+
+            return Ok(new
+            {
+                Success = (result == "Póliza renovada correctamente."),
                 Reason = result
             });
         }

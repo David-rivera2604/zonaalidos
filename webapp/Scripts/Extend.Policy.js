@@ -32,6 +32,17 @@ app.Ex_Policy = (function () {
                     app.ui.CloseSideBar();
                     app.ViewerQuery.Refresh(undefined, $('#1GridTbl'), 340, 1);
                 });
+        },
+        Renovacion_Procesar: function (custom, data) {
+            let row = JSON.parse(localStorage.getItem('current'));
+            app.ui.ButtonDoing('#renovar');
+            app.core.Put(app.setting.apipath + `v1/Poliza/${row.NUM_POLIZA}/Renovar`, null)
+                .done(function (res) {
+                }).always(function () {
+                    app.ui.ButtonDone('#renovar');
+                    app.ui.CloseSideBar();
+                    app.ViewerQuery.Refresh(undefined, $('#1GridTbl'), 341, 1);
+                });
         }
     };
 })();

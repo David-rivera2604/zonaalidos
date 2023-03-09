@@ -135,7 +135,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.122.21.1, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
       <HintPath>..\packages\Oracle.ManagedDataAccess.21.9.0\lib\net462\Oracle.ManagedDataAccess.dll</HintPath>
@@ -1213,8 +1213,11 @@
     <Content Include="releaseletter.txt" />
     <Content Include="Scripts\AvisosCobro.Recibos.js" />
     <Content Include="Scripts\Clientes.Index.js" />
+    <Content Include="Scripts\ColoresTenant.js" />
+    <Content Include="Scripts\CompraSegurosClients.js" />
     <Content Include="Scripts\Cotizacion.Coberturas.js" />
     <Content Include="Scripts\Cotizacion.SaldoDeudor.enfermedadesexcluidas.js" />
+    <Content Include="Scripts\CreateCase_Aliados.js" />
     <Content Include="Scripts\Emision.kyc.declarante.js" />
     <Content Include="Scripts\Emision.kyc.juridico.js" />
     <Content Include="Scripts\Emision.kyc.persona.js" />
@@ -1233,6 +1236,7 @@
     <Content Include="Scripts\Emision.Viajero.js" />
     <Content Include="Scripts\Extend.CaseDetail.js" />
     <Content Include="Scripts\Extend.AvisosCobro.js" />
+    <Content Include="Scripts\Extend.Policy.js" />
     <Content Include="Scripts\General.Case.js" />
     <Content Include="Scripts\General.NewCase.js" />
     <Content Include="Scripts\General.PaymentSettings.js" />
@@ -1255,6 +1259,7 @@
     <Content Include="Scripts\Pagos.Resultado.js" />
     <Content Include="Scripts\Prototype.Payment.js" />
     <Content Include="Scripts\Prototype.Producto.js" />
+    <Content Include="Scripts\Seguimiento_Aliados.js" />
     <Content Include="Scripts\Siniestros.Panel.js" />
     <Content Include="Scripts\Security.Integrate.js" />
     <Content Include="Scripts\process.instance.js" />
