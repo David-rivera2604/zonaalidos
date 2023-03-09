@@ -467,3 +467,7 @@
                    Aliados. Cancelación de póliza desde la consulta de pólizas activas,
                    MapfreMas. Ayuda para la selección de la marca, modelo y submodelo.
                    Aliados. Gestiones de aprobación -> Controles técnicos.
+1.6.25  09/03/2023 Envió de correo certificado Y notificación para controles técnicos.
+                   Renovación de pólizas.
+                   Impresión de certificados para todas las vigencias.
+                   Impresión de recibos cobras el mismo día o días anteriores.
