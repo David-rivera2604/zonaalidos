@@ -1,4 +1,5 @@
 ﻿using Microsoft.Web.Http;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -180,6 +181,28 @@ namespace Architect.API.Tron.Controllers
         }
 
         /// <summary>
+        /// Descarga un certificado de una póliza
+        /// </summary>
+        [HttpGet]
+        [Route("ImprimirSegunId/{reportId}")]
+        public HttpResponseMessage ImprimirSegunId([FromUri] string reportId)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+
+            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+            var dataStream = new MemoryStream(Business.Backoffice.Common.ImprimirPoliza(reportId,
+                String.Format("ReportId {0} ", reportId)));
+            result.Content = new StreamContent(dataStream);
+            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline")
+            {
+                FileName = "Mapfre Certificado.pdf"
+            };
+            result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
+            result.Content.Headers.ContentLength = dataStream.Length;
+            return result;
+        }
+
+        /// <summary>
         /// Descarga un recibo asociado a una póliza
         /// </summary>
         /// <param name="num_recibo"></param>
@@ -210,7 +233,26 @@ namespace Architect.API.Tron.Controllers
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
-            var dataStream = new MemoryStream(Business.Backoffice.Common.DepositoDePrima(num_recibo));
+            var dataStream = new MemoryStream(Business.Backoffice.Common.DepositoDePrima(num_recibo, false));
+            result.Content = new StreamContent(dataStream);
+            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline");
+            result.Content.Headers.ContentDisposition.FileName = "Mapfre Recibo.pdf";
+            result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
+            result.Content.Headers.ContentLength = dataStream.Length;
+            return result;
+        }
+
+        /// <summary>
+        /// Descarga los depósitos de prima asociados a un recibo.
+        /// </summary>
+        [HttpGet]
+        [Route("ImprimirDepositoPrimaHoy/{num_recibo}")]
+        public HttpResponseMessage ImprimirDepositoPrimaHoy([FromUri] int num_recibo)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+
+            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+            var dataStream = new MemoryStream(Business.Backoffice.Common.DepositoDePrima(num_recibo, true));
             result.Content = new StreamContent(dataStream);
             result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline");
             result.Content.Headers.ContentDisposition.FileName = "Mapfre Recibo.pdf";
