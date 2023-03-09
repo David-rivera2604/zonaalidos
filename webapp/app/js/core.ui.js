@@ -968,6 +968,19 @@ app.ui = (function () {
                     ctrl.html(ctrl.html().replace(mark, ''));
                 }
             }
-        }
+        },
+        LookUpListFormatter: function (value, row, index, field) {
+            if (value === null || value === 0 || typeof value === 'object')
+                return '';
+            else {
+                let lkp = [];
+                if (this.lookupList != undefined) {
+                    lkp = JSON.parse(this.lookupList.replaceAll("\'", "\""));
+                }
+                let lkpValue = lkp.find(({ code }) => code === value)
+            
+                return lkpValue == undefined ? value : lkpValue.desc;
+            }
+        },
     };
 })();
