@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace Architect.DataFactory
 {
@@ -14,7 +16,7 @@ namespace Architect.DataFactory
             bool multiQuery = false;
 
             MatchCollection parameterMatches = Regex.Matches(statement, @"{(.+?)}"); // ([^)]*)
-
+            List<string> parameterCursor = new List<string>();
             if (statement.StartsWith("MultiQuery.", StringComparison.CurrentCultureIgnoreCase))
             {
                 statement = statement.Substring(11);
@@ -30,13 +32,26 @@ namespace Architect.DataFactory
                 foreach (Match paremeter in parameterMatches)
                 {
                     statement = statement.Replace(paremeter.Value, string.Empty).Trim();
+                    if (paremeter.Value.EndsWith(":cursor}", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        parameterCursor.Add(paremeter.Value.Replace("{", "").Replace(":cursor}", ""));
+                    }
                 }
                 using (Database db = Database.Procedure(statement).Cache(withCache, prefix))
                 {
                     ProcessParameters(parameterMatches, values, db);
                     if (multiQuery)
                     {
-                        result = Newtonsoft.Json.JsonConvert.SerializeObject(db.MultiQuery(null, connectionName));
+                        DataSet ds = db.MultiQuery(null, connectionName);
+
+                        int top = parameterCursor.Count-1;
+                        for (int i = ds.Tables.Count - 1; i >= 0; i--)
+                        {
+                            ds.Tables[i].TableName = parameterCursor[top];
+                            top--;
+                        }
+
+                        result = Newtonsoft.Json.JsonConvert.SerializeObject(ds);
                     }
                     else
                     {
@@ -86,6 +101,10 @@ namespace Architect.DataFactory
             System.Data.DataTable records = null;
             MatchCollection parameterMatches = Regex.Matches(statement, @"{(.+?)}"); // ([^)]*)
 
+            if (statement.StartsWith("MultiQuery.", StringComparison.CurrentCultureIgnoreCase))
+            {
+                statement = statement.Substring(11);
+            }
             if (Utilities.Helpers.Settings.StringValue("Working.Mode") == "Development")
             {
                 withCache = false;
@@ -218,28 +237,28 @@ namespace Architect.DataFactory
                         isVarChar = false;
                         isCursor = false;
                         isInput = true;
-                        if (name.EndsWith(":date"))
+                        if (name.EndsWith(":date", StringComparison.CurrentCultureIgnoreCase))
                         {
                             name = name.Substring(0, name.Length - 5);
                             isDate = true;
                         }
-                        else if (name.EndsWith(":varchar"))
+                        else if (name.EndsWith(":varchar", StringComparison.CurrentCultureIgnoreCase))
                         {
                             name = name.Substring(0, name.Length - 8);
                             isVarChar = true;
                         }
-                        else if (name.EndsWith(":varcharout"))
+                        else if (name.EndsWith(":varcharout", StringComparison.CurrentCultureIgnoreCase))
                         {
                             name = name.Substring(0, name.Length - 11);
                             isVarChar = true;
                             isInput = false;
                         }
-                        else if (name.EndsWith(":numericout"))
+                        else if (name.EndsWith(":numericout", StringComparison.CurrentCultureIgnoreCase))
                         {
                             name = name.Substring(0, name.Length - 11);
                             isInput = false;
                         }
-                        else if (name.EndsWith(":cursor"))
+                        else if (name.EndsWith(":cursor", StringComparison.CurrentCultureIgnoreCase))
                         {
                             name = name.Substring(0, name.Length - 7);
                             isCursor = true;

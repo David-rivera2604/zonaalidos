@@ -601,12 +601,24 @@ app.ViewerQuery = (function () {
                         });
                 }
                 else {
+                    params.multiQuery = this.options?.multiquery;
                     app.core.Get(app.setting.apipath + 'v1/datasource/json?id=' + id + '&sequence=' + index + '&url=' + window.location.search.slice(1).replace(/&/g, ':') + url)
                         .done(function (data, textStatus, jqXHR) {
+                            if (data == null)
+                                data = [];
+                            else {
+                                if (!Array.isArray(data)) {
+                                    if (params?.multiQuery != undefined)
+                                        data = data[params.multiQuery];
+                                    else
+                                        data = Object.values(data)[0];
+                                }
+                            }
+                            _data = data;
                             if (params === undefined)
-                                element.bootstrapTable('load', data !== null ? data : []);
+                                element.bootstrapTable('load', data);
                             else
-                                params.success(data !== null ? data : [])
+                                params.success(data)
                         }).always(function () {
                             element.bootstrapTable('hideLoading');
                         });
