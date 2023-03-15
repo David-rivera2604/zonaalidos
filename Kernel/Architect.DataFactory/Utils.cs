@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Architect.Utilities.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
@@ -14,13 +16,24 @@ namespace Architect.DataFactory
         {
             string result = string.Empty;
             bool multiQuery = false;
+            string subQuery = string.Empty;
 
             MatchCollection parameterMatches = Regex.Matches(statement, @"{(.+?)}"); // ([^)]*)
             List<string> parameterCursor = new List<string>();
-            if (statement.StartsWith("MultiQuery.", StringComparison.CurrentCultureIgnoreCase))
+            if (statement.StartsWith("MultiQuery.", StringComparison.CurrentCultureIgnoreCase) ||
+                statement.StartsWith("MultiQuery(", StringComparison.CurrentCultureIgnoreCase))
             {
-                statement = statement.Substring(11);
+                if (statement.StartsWith("MultiQuery(", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    subQuery = statement.Substring(11, statement.IndexOf(")", 11) - 11);
+                    statement = statement.Substring(statement.IndexOf(")."));
+                }
+                else
+                {
+                    statement = statement.Substring(11);
+                }
                 multiQuery = true;
+                withCache = true;
             }
             if (Utilities.Helpers.Settings.StringValue("Working.Mode") == "Development")
             {
@@ -44,14 +57,20 @@ namespace Architect.DataFactory
                     {
                         DataSet ds = db.MultiQuery(null, connectionName);
 
-                        int top = parameterCursor.Count-1;
+                        int top = parameterCursor.Count - 1;
                         for (int i = ds.Tables.Count - 1; i >= 0; i--)
                         {
                             ds.Tables[i].TableName = parameterCursor[top];
                             top--;
                         }
-
-                        result = Newtonsoft.Json.JsonConvert.SerializeObject(ds);
+                        if (subQuery.IsEmpty())
+                        {
+                            result = Newtonsoft.Json.JsonConvert.SerializeObject(ds.Tables[subQuery]);
+                        }
+                        else
+                        {
+                            result = Newtonsoft.Json.JsonConvert.SerializeObject(ds);
+                        }
                     }
                     else
                     {
