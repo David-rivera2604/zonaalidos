@@ -1,16 +1,85 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Web.Security;
 
 namespace Architect.DataFactory
 {
     public static class Utils
     {
+
+        public static string StatementExecute_v2(string statement, int statementType, string connectionName, Dictionary<string, string> values, bool withCache, string prefix = null, string roleList = "")
+        {
+            string result = string.Empty;
+            bool multiQuery = false;
+
+            MatchCollection parameterMatches = Regex.Matches(statement, @"{(.+?)}"); // ([^)]*)
+
+            if (statement.StartsWith("MultiQuery.", StringComparison.CurrentCultureIgnoreCase))
+            {
+                statement = statement.Substring(11);
+                multiQuery = true;
+            }
+            if (Utilities.Helpers.Settings.StringValue("Working.Mode") == "Development")
+            {
+                withCache = false;
+            }
+
+            if (statementType == 2) //Procedure
+            {
+                foreach (Match paremeter in parameterMatches)
+                {
+                    statement = statement.Replace(paremeter.Value, string.Empty).Trim();
+                }
+                using (Database db = Database.Procedure(statement).Cache(withCache, prefix))
+                {
+                    ProcessParameters(parameterMatches, values, db);
+                    if (multiQuery)
+                    {
+                        result = Newtonsoft.Json.JsonConvert.SerializeObject(db.MultiQuery(null, connectionName));
+                    }
+                    else
+                    {
+                        result = Newtonsoft.Json.JsonConvert.SerializeObject(db.Query(null, connectionName));
+                    }
+                }
+            }
+            else
+            {
+                string name = string.Empty;
+                foreach (Match paremeter in parameterMatches)
+                {
+                    name = paremeter.Value;
+                    name = name.Replace(":date", string.Empty);
+                    name = name.Replace(":varchar", string.Empty);
+                    name = name.Replace(".", "_");
+                    name = name.Replace("{", ":").Replace("}", "");
+                    if (name.StartsWith(":app_", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        switch (name.ToLower())
+                        {
+                            case ":app_userrolenamelist":
+                                statement = statement.Replace(paremeter.Value, ("'" + string.Join("','", roleList.Split(',')) + "'").ToLower());
+                                break;
+                        }
+                    }
+                    statement = statement.Replace(paremeter.Value, name);
+                }
+                using (Database db = Database.Select(statement).Cache(withCache, prefix))
+                {
+                    ProcessParameters(parameterMatches, values, db);
+                    if (multiQuery)
+                    {
+                        result = Newtonsoft.Json.JsonConvert.SerializeObject(db.MultiQuery(null, connectionName));
+                    }
+                    else
+                    {
+                        result = Newtonsoft.Json.JsonConvert.SerializeObject(db.Query(null, connectionName));
+                    }
+                }
+            }
+            return result;
+        }
 
         public static System.Data.DataTable StatementExecute(string statement, int statementType, string connectionName, Dictionary<string, string> values, bool withCache, string prefix = null, string roleList = "")
         {
@@ -53,7 +122,7 @@ namespace Architect.DataFactory
                                 break;
                         }
                     }
-                    statement = statement.Replace(paremeter.Value, name); 
+                    statement = statement.Replace(paremeter.Value, name);
                 }
                 using (DataFactory.Database db = Architect.DataFactory.Database.Select(statement).Cache(withCache, prefix))
                 {
