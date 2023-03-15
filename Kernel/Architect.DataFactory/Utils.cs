@@ -26,7 +26,7 @@ namespace Architect.DataFactory
                 if (statement.StartsWith("MultiQuery(", StringComparison.CurrentCultureIgnoreCase))
                 {
                     subQuery = statement.Substring(11, statement.IndexOf(")", 11) - 11);
-                    statement = statement.Substring(statement.IndexOf(")."));
+                    statement = statement.Substring(statement.IndexOf(").") + 2);
                 }
                 else
                 {
@@ -63,7 +63,7 @@ namespace Architect.DataFactory
                             ds.Tables[i].TableName = parameterCursor[top];
                             top--;
                         }
-                        if (subQuery.IsEmpty())
+                        if (subQuery.IsNotEmpty())
                         {
                             result = Newtonsoft.Json.JsonConvert.SerializeObject(ds.Tables[subQuery]);
                         }
@@ -118,11 +118,25 @@ namespace Architect.DataFactory
         public static System.Data.DataTable StatementExecute(string statement, int statementType, string connectionName, Dictionary<string, string> values, bool withCache, string prefix = null, string roleList = "")
         {
             System.Data.DataTable records = null;
+            bool multiQuery = false;
+            string subQuery = string.Empty;
             MatchCollection parameterMatches = Regex.Matches(statement, @"{(.+?)}"); // ([^)]*)
+            List<string> parameterCursor = new List<string>();
 
-            if (statement.StartsWith("MultiQuery.", StringComparison.CurrentCultureIgnoreCase))
+            if (statement.StartsWith("MultiQuery.", StringComparison.CurrentCultureIgnoreCase) ||
+                statement.StartsWith("MultiQuery(", StringComparison.CurrentCultureIgnoreCase))
             {
-                statement = statement.Substring(11);
+                if (statement.StartsWith("MultiQuery(", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    subQuery = statement.Substring(11, statement.IndexOf(")", 11) - 11);
+                    statement = statement.Substring(statement.IndexOf(").") + 2);
+                }
+                else
+                {
+                    statement = statement.Substring(11);
+                }
+                multiQuery = true;
+                withCache = true;
             }
             if (Utilities.Helpers.Settings.StringValue("Working.Mode") == "Development")
             {
@@ -134,11 +148,31 @@ namespace Architect.DataFactory
                 foreach (Match paremeter in parameterMatches)
                 {
                     statement = statement.Replace(paremeter.Value, string.Empty).Trim();
+                    if (paremeter.Value.EndsWith(":cursor}", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        parameterCursor.Add(paremeter.Value.Replace("{", "").Replace(":cursor}", ""));
+                    }
                 }
-                using (DataFactory.Database db = Architect.DataFactory.Database.Procedure(statement).Cache(withCache, prefix))
+                using (Database db = Database.Procedure(statement).Cache(withCache, prefix))
                 {
                     ProcessParameters(parameterMatches, values, db);
-                    records = db.Query(null, connectionName);
+
+                    if (multiQuery && subQuery.IsNotEmpty())
+                    {
+                        DataSet ds = db.MultiQuery(null, connectionName);
+
+                        int top = parameterCursor.Count - 1;
+                        for (int i = ds.Tables.Count - 1; i >= 0; i--)
+                        {
+                            ds.Tables[i].TableName = parameterCursor[top];
+                            top--;
+                        }
+                        records = ds.Tables[subQuery];
+                    }
+                    else
+                    {
+                        records = db.Query(null, connectionName);
+                    }
                 }
             }
             else
@@ -162,7 +196,7 @@ namespace Architect.DataFactory
                     }
                     statement = statement.Replace(paremeter.Value, name);
                 }
-                using (DataFactory.Database db = Architect.DataFactory.Database.Select(statement).Cache(withCache, prefix))
+                using (Database db = Database.Select(statement).Cache(withCache, prefix))
                 {
                     ProcessParameters(parameterMatches, values, db);
                     records = db.Query(null, connectionName);
