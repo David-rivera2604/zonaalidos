@@ -88,6 +88,7 @@ namespace Architect.DataFactory
                     name = name.Replace(":varchar", string.Empty);
                     name = name.Replace(".", "_");
                     name = name.Replace("{", ":").Replace("}", "");
+                    name = name.Replace(":cursor}", "");
                     if (name.StartsWith(":app_", StringComparison.CurrentCultureIgnoreCase))
                     {
                         switch (name.ToLower())
@@ -98,13 +99,31 @@ namespace Architect.DataFactory
                         }
                     }
                     statement = statement.Replace(paremeter.Value, name);
+                    if (paremeter.Value.EndsWith(":cursor}", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        parameterCursor.Add(paremeter.Value.Replace("{", "").Replace(":cursor}", ""));
+                    }
                 }
                 using (Database db = Database.Select(statement).Cache(withCache, prefix))
                 {
                     ProcessParameters(parameterMatches, values, db);
                     if (multiQuery)
                     {
-                        result = Newtonsoft.Json.JsonConvert.SerializeObject(db.MultiQuery(null, connectionName));
+                        DataSet ds = db.MultiQuery(null, connectionName);
+                        int top = parameterCursor.Count - 1;
+                        for (int i = ds.Tables.Count - 1; i >= 0; i--)
+                        {
+                            ds.Tables[i].TableName = parameterCursor[top];
+                            top--;
+                        }
+                        if (subQuery.IsNotEmpty())
+                        {
+                            result = Newtonsoft.Json.JsonConvert.SerializeObject(ds.Tables[subQuery]);
+                        }
+                        else
+                        {
+                            result = Newtonsoft.Json.JsonConvert.SerializeObject(ds);
+                        }
                     }
                     else
                     {
@@ -185,6 +204,7 @@ namespace Architect.DataFactory
                     name = name.Replace(":varchar", string.Empty);
                     name = name.Replace(".", "_");
                     name = name.Replace("{", ":").Replace("}", "");
+                    name = name.Replace(":cursor}", "");
                     if (name.StartsWith(":app_", StringComparison.CurrentCultureIgnoreCase))
                     {
                         switch (name.ToLower())
@@ -195,11 +215,30 @@ namespace Architect.DataFactory
                         }
                     }
                     statement = statement.Replace(paremeter.Value, name);
+                    if (paremeter.Value.EndsWith(":cursor}", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        parameterCursor.Add(paremeter.Value.Replace("{", "").Replace(":cursor}", ""));
+                    }
                 }
                 using (Database db = Database.Select(statement).Cache(withCache, prefix))
                 {
                     ProcessParameters(parameterMatches, values, db);
-                    records = db.Query(null, connectionName);
+                    if (multiQuery && subQuery.IsNotEmpty())
+                    {
+                        DataSet ds = db.MultiQuery(null, connectionName);
+
+                        int top = parameterCursor.Count - 1;
+                        for (int i = ds.Tables.Count - 1; i >= 0; i--)
+                        {
+                            ds.Tables[i].TableName = parameterCursor[top];
+                            top--;
+                        }
+                        records = ds.Tables[subQuery];
+                    }
+                    else
+                    {
+                        records = db.Query(null, connectionName);
+                    }
                 }
             }
             return records;
