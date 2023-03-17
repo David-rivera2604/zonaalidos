@@ -601,14 +601,16 @@ app.ViewerQuery = (function () {
                         });
                 }
                 else {
-                    params.multiQuery = this.options?.multiquery;
+                    if (params != undefined) {
+                        params.multiQuery = this.options?.multiquery;
+                    }
                     app.core.Get(app.setting.apipath + 'v1/datasource/json?id=' + id + '&sequence=' + index + '&url=' + window.location.search.slice(1).replace(/&/g, ':') + url)
                         .done(function (data, textStatus, jqXHR) {
                             if (data == null)
                                 data = [];
                             else {
                                 if (!Array.isArray(data)) {
-                                    if (params?.multiQuery != undefined)
+                                    if (params != undefined && params?.multiQuery != undefined)
                                         data = data[params.multiQuery];
                                     else
                                         data = Object.values(data)[0];
