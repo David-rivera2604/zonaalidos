@@ -77,13 +77,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DBScripts", "DBScripts", "{
 	ProjectSection(SolutionItems) = preProject
 		dbscripts\230306.a.visualization.sql = dbscripts\230306.a.visualization.sql
 		dbscripts\230306.b.template.sql = dbscripts\230306.b.template.sql
+		dbscripts\230314.a.visualization.sql = dbscripts\230314.a.visualization.sql
+		dbscripts\230317.a.lookupmaster.sql = dbscripts\230317.a.lookupmaster.sql
+		dbscripts\230317.b.lookupmaster.sql = dbscripts\230317.b.lookupmaster.sql
+		dbscripts\230317.c.visualization.sql = dbscripts\230317.c.visualization.sql
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architect.Data.Source", "..\Kernel\Architect.Data.Source\Architect.Data.Source.csproj", "{7427EC41-EE41-4DC5-9BB6-D7FDECDF451B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architect.Data.Viewer", "..\Kernel\Architect.Data.Viewer\Architect.Data.Viewer.csproj", "{99043B82-47EC-47DA-A240-2DC715AFE9B5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architect.SmartGenerate", "..\Kernel\Architect.SmartGenerate\Architect.SmartGenerate.csproj", "{47D95A69-EBBD-43DA-8FB9-66647D01D4E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -207,18 +205,6 @@ Global
 		{1A9F7166-6C86-44A6-8920-CD52422A2044}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A9F7166-6C86-44A6-8920-CD52422A2044}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A9F7166-6C86-44A6-8920-CD52422A2044}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7427EC41-EE41-4DC5-9BB6-D7FDECDF451B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7427EC41-EE41-4DC5-9BB6-D7FDECDF451B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7427EC41-EE41-4DC5-9BB6-D7FDECDF451B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7427EC41-EE41-4DC5-9BB6-D7FDECDF451B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{99043B82-47EC-47DA-A240-2DC715AFE9B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{99043B82-47EC-47DA-A240-2DC715AFE9B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{99043B82-47EC-47DA-A240-2DC715AFE9B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{99043B82-47EC-47DA-A240-2DC715AFE9B5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{47D95A69-EBBD-43DA-8FB9-66647D01D4E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{47D95A69-EBBD-43DA-8FB9-66647D01D4E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{47D95A69-EBBD-43DA-8FB9-66647D01D4E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{47D95A69-EBBD-43DA-8FB9-66647D01D4E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
