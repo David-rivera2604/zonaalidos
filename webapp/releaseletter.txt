@@ -457,7 +457,7 @@
 1.6.23             Aliados.Cambio Estilo
                    Aliados.Abrir Casos y dar Seguimientos en el Workflow por Tenant
                    Aliados.Mantenimiento Colores por Tenant
-                   Aliados.Cotizacion Poliza Grupo Multirriesgo
+                   Aliados.Cotizacion Póliza Grupo Multirriesgo
                    Clientes.Compra Seguros Viajero
                    Bayer. Cambio en la expresion regular para los input de  cedulas (se quitan 0 y -)
 1.6.24  03/03/2023 Aliados. Manejo de información del agente por tenant,
@@ -471,8 +471,10 @@
                    Renovación de pólizas.
                    Impresión de certificados para todas las vigencias.
                    Impresión de recibos cobras el mismo día o días anteriores.
-1.6.26  21/03/2023 Reporte de cápita
+1.6.26  21/03/2023 Reporte de capital
                    Reporte de cartera vigente
-                   Reporte de historico de pago
-                   Consultas generales de polizas madres
+                   Reporte de histórico de pago
+                   Consultas generales de pólizas madres
                    Consultas generales vigencias anteriores
+                   Fix. Los avisos me trae la lista de contratos pero no me los carga en el selección
+                   Fix. En la consulta de avisos no me trae los recibos de un aviso.
