@@ -168,8 +168,10 @@ app.AvisosRecibos = (function () {
         });
 
         $('#Cod_Agt').on('change', function () {
-            app.core.LookupDependency($('select#Cod_Agt').val(), 'polizagrupo', 'PolizaGrupoPorAgente', '', null, true, null, `cod_ramo=302:cod_mon=${app.ui.GetDropDownNumericValue('#cod_mon')}:Cod_Agt=`);
-            app.core.LookupDependency($('select#Cod_Agt').val(), 'contratos', 'ContratosPorAgente', '', null, true, null, `cod_ramo=302:cod_mon=${app.ui.GetDropDownNumericValue('#cod_mon')}:Cod_Agt=`);
+            if (localStorage.getItem('Roles').includes('Empleado')) {
+                app.core.LookupDependency($('select#Cod_Agt').val(), 'polizagrupo', 'PolizaGrupoPorAgente', '', null, true, null, `cod_ramo=302:cod_mon=${app.ui.GetDropDownNumericValue('#cod_mon')}:Cod_Agt=`);
+                app.core.LookupDependency($('select#Cod_Agt').val(), 'contratos', 'ContratosPorAgente', '', null, true, null, `cod_ramo=302:cod_mon=${app.ui.GetDropDownNumericValue('#cod_mon')}:Cod_Agt=`);
+            }
         });
 
         app.ui.DocumentNumberHandler('#DocumentNumber', function (data) {

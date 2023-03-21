@@ -284,7 +284,7 @@ namespace Architect.Utilities.Extensions
 
         public static Dictionary<string, string> ToDictionary(this string value, char parameterSeparartor, char valueSeparator)
         {
-            Dictionary<string, string> result = new Dictionary<string, string>();
+            Dictionary<string, string> result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
             if (value.IsNotEmpty())
             {

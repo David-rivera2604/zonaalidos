@@ -533,10 +533,13 @@ app.ViewerQuery = (function () {
                     });
             }
         },
-        TabRender: function (me) {
+        TabRender: function (me, href) {
             event.preventDefault();
+            if (me != null) {
+                href = me.href;
+            }
 
-            window.open(me.href, "vdetail", "toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes, top=100, height=450, left=400, width=900");
+            window.open(href, "vdetail", "toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes, top=100, height=450, left=400, width=900");
 
         },
         ButtonClick: function (tbl, e, name, row, index) {

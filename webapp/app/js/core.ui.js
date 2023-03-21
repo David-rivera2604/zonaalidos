@@ -328,6 +328,12 @@ app.ui = (function () {
 
             return value;
         },
+
+        TestFormatter: function (value, row, index, field) {
+            var code = '<span class=columnBtn><button type=\"button\" name=\"xxx\" class=\"btn btn-white ns\" title=\"Permite imprimir la poliza\"><i class=\"fa fa-ellipsis-v\"></i></button>' + '</span>'
+            return code;
+
+        },
         DateAndTimeFormatter: function (value, row, index, field) {
             if (value === null || value === '0001-01-01T00:00:00')
                 value = '';

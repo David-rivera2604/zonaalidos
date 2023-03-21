@@ -471,3 +471,8 @@
                    Renovación de pólizas.
                    Impresión de certificados para todas las vigencias.
                    Impresión de recibos cobras el mismo día o días anteriores.
+1.6.26  21/03/2023 Reporte de cápita
+                   Reporte de cartera vigente
+                   Reporte de historico de pago
+                   Consultas generales de polizas madres
+                   Consultas generales vigencias anteriores
