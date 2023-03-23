@@ -1,7 +1,11 @@
-﻿using Architect.DataFactory;
+﻿using Architect.API.Core.Contracts.Security;
+using Architect.DataFactory;
 using Architect.Utilities.Extensions;
+using Architect.Utilities.Helpers;
 using System;
+using System.ComponentModel.Design;
 using System.Data;
+using System.Text.Json;
 using DbType = Architect.DataFactory.Enumerations.DbType;
 
 namespace Architect.API.Core.DataAccess.Security
@@ -52,6 +56,51 @@ namespace Architect.API.Core.DataAccess.Security
                          }));
 
             return result;
+        }
+
+        /// <summary>
+        /// Crea un subagente en TRON.
+        /// </summary>
+        /// <returns>Cantidad de registros creados.</returns>
+        public static bool Create_subAgent(Contracts.Security.SubAgent subagentItem, IDbConnection connection = null)
+        {
+
+            string json_tercero = "";
+            try {
+
+                subagentItem.cod_emp_agt = cod_SubAgent(subagentItem.tip_docum, subagentItem.cod_docum, subagentItem.cod_agt);
+                json_tercero = JsonSerializer.Serialize(subagentItem);
+
+                return Database.Procedure(@"em_k_mapfre_batch_contract_mcr.em_p_crea_terceros")
+                .AddParameter("p_dat_asegurado", DbType.String, 8000, json_tercero)
+                .AddParameter("p_errores", DbType.RefCursor, 0, null, ParameterDirection.Output)
+                .Execute(connection, "Tron") != 0;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+           
+                
+        }
+
+        public static int cod_SubAgent(string tip_docum, string cod_docum, int cod_agt)
+        {
+            int resultado = 0;
+            Database.Select(@"select 
+                                em_k_tables_contract_mcr.fc_cod_subagente(p_tip_docum => :tip_docum,
+                                                                          p_cod_docum => :p_cod_docum,
+                                                                          p_cod_agt => :p_cod_agt) cod_sub_agt
+                            from dual")
+                         .AddParameter("p_tip_docum", DbType.String, 50, tip_docum)
+                         .AddParameter("p_cod_docum", DbType.String, 50, cod_docum)
+                         .AddParameter("p_cod_agt", DbType.Int32, 50, cod_agt)
+                         .Query(null, "Tron", new Action<System.Data.IDataReader>((reader) =>
+                         {
+                             resultado = Convert.ToInt32(reader.StringValue("cod_sub_agt"));
+                         }));
+
+            return resultado;
         }
     }
 }

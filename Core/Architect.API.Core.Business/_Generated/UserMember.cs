@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using Architect.Utilities.Extensions;
+using Scriban.Functions;
 
 namespace Architect.API.Core.Business.Security
 {
@@ -11,7 +13,7 @@ namespace Architect.API.Core.Business.Security
     public static partial class UserMember
     {
 
-        public static Architect.API.Core.Contracts.Security.UserMember Create(int companyId, int userId, Architect.API.Core.Contracts.Security.UserMember item)
+        public static Architect.API.Core.Contracts.Security.UserMember Create(int companyId, int userId, Architect.API.Core.Contracts.Security.UserMember item, int cod_agt = 0)
         {
             Architect.API.Core.Contracts.Security.UserMember result = item;
             if (result.UserId.IsEmpty())
@@ -26,9 +28,78 @@ namespace Architect.API.Core.Business.Security
             result.UpdateUserCode = userId;
             result.UpdateDate = DateTime.Now;
             result.PasswordChangedDate = DateTime.Today;
+            result.responseTronSubAgent = "";
 
             int affectedRows = DataAccess.Security.UserMember.Create(result);
-            if (affectedRows > 0)
+
+            //Se crea subagente en TRON
+            string[] tenantList = ConfigurationManager.AppSettings["Mapfre.Tron.CreaSubAgentes"].Split(new char[] {';'});
+            bool affectedRowsSubAgent = false;
+            string tip_docum = null;
+            string cod_docum = null;
+            int cod_agt_ = 0;
+            foreach (string tenant in tenantList)
+            {
+
+                if (tenant == Convert.ToString(companyId))
+                {
+                    if (cod_agt == 0)
+                    {
+                        cod_agt_ = item.cod_agt;
+                    }
+                    else
+                    {
+                        cod_agt_ = cod_agt;
+                    }
+
+                    switch (item.IdentificationType)
+                    {
+                        case 1:
+                            tip_docum = "CNA";
+                            cod_docum = item.Identification.Remove(0, 1).Replace("-", "");
+                            break;
+                        case 2:
+                            tip_docum = "CRE";
+                            cod_docum = item.Identification.Replace("-", "");
+                            break;
+                        case 3:
+                            tip_docum = "PAS";
+                            break;
+                        case 4:
+                            tip_docum = "CJU"; 
+                            break;
+                    }
+
+                    var subAgent = new Contracts.Security.SubAgent
+                    {
+                        cod_cia = 1,
+                        tip_docum =  tip_docum,
+                        cod_docum = cod_docum,
+                        nom1_tercero = item.FirstName,
+                        ape1_tercero = item.LastName,
+                        ape2_tercero = "",
+                        email_com = item.EMail,
+                        cod_agt = cod_agt_,
+                        cod_emp_agt = 0,
+                        mca_inh = "N"
+
+                    };
+                    
+                    affectedRowsSubAgent = DataAccess.Security.Tron.Create_subAgent(subAgent);
+                    if (affectedRowsSubAgent)
+                    {
+                        result.responseTronSubAgent = "El Sub Agente fue Creado Correctamente en Sistema";
+                    }
+                    else
+                    {
+                        result.responseTronSubAgent = "El Sub Agente no se pudo crear en Sistema, intente nuevamente";
+
+                    }
+                }
+
+            }
+
+            if (affectedRows > 0 && affectedRowsSubAgent)
             {
                 SynchronizeUserRoleMember(companyId, userId, result.UserId, item.Roles);
                 MapLookups(companyId, result);
@@ -75,7 +146,7 @@ namespace Architect.API.Core.Business.Security
             return result;
         }
 
-        public static Architect.API.Core.Contracts.Security.UserMember Update(int companyId, int userId, int id, Architect.API.Core.Contracts.Security.UserMember item)
+        public static Architect.API.Core.Contracts.Security.UserMember Update(int companyId, int userId, int id, Architect.API.Core.Contracts.Security.UserMember item, int cod_agt = 0)
         {
             Architect.API.Core.Contracts.Security.UserMember result = Architect.API.Core.DataAccess.Security.UserMember.Retrieve(id, companyId);
 
@@ -128,9 +199,79 @@ namespace Architect.API.Core.Business.Security
             result.CompanyId = companyId;
             result.UpdateUserCode = userId;
             result.UpdateDate = DateTime.Now;
+            result.responseTronSubAgent = "";
 
             int affectedRows = Architect.API.Core.DataAccess.Security.UserMember.Update(result);
-            if (affectedRows > 0)
+            //Se crea subagente en TRON
+            string[] tenantList = ConfigurationManager.AppSettings["Mapfre.Tron.CreaSubAgentes"].Split(new char[] { ';' });
+            bool affectedRowsSubAgent = false;
+            string tip_docum = null;
+            string cod_docum = null;
+            int cod_agt_ = 0;
+
+            foreach (string tenant in tenantList)
+            {
+
+                if (tenant == Convert.ToString(companyId))
+                {
+                   
+                        if (cod_agt == 0)
+                        {
+                            cod_agt_ = item.cod_agt;
+                        }
+                        else
+                        {
+                            cod_agt_ = cod_agt;
+                        }
+
+                        switch (item.IdentificationType)
+                        {
+                            case 1:
+                                tip_docum = "CNA";
+                                cod_docum = item.Identification.Remove(0, 1).Replace("-", "");
+                                break;
+                            case 2:
+                                tip_docum = "CRE";
+                                cod_docum = item.Identification.Replace("-", "");
+                                break;
+                            case 3:
+                                tip_docum = "PAS";
+                                break;
+                            case 4:
+                                tip_docum = "CJU";
+                                break;
+                        }
+
+                        var subAgent = new Contracts.Security.SubAgent
+                    {
+                        cod_cia = 1,
+                        tip_docum = tip_docum,
+                        cod_docum = cod_docum,
+                        nom1_tercero = item.FirstName,
+                        ape1_tercero = item.LastName,
+                        ape2_tercero = "",
+                        email_com = item.EMail,
+                        cod_agt = cod_agt_,
+                        cod_emp_agt = 0,
+                        mca_inh = "N"
+
+                    };
+                    //string json_tercero = JsonSerializer.Serialize(subAgent);
+                    affectedRowsSubAgent = DataAccess.Security.Tron.Create_subAgent(subAgent);
+
+                    if (affectedRowsSubAgent)
+                    {
+                        result.responseTronSubAgent = "El Sub Agente fue Actualizado Correctamente en Sistema";
+                    }
+                    else
+                    {
+                        result.responseTronSubAgent = "El Sub Agente no se pudo actualizar en Sistema, intente nuevamente";
+
+                    }
+                }
+
+            }
+            if (affectedRows > 0 && affectedRowsSubAgent)
             {
                 SynchronizeUserRoleMember(companyId, userId, id, item.Roles);
 

@@ -692,7 +692,7 @@ namespace Architect.API.Core.Business.Security
                 }
 
                 result.UserMember.Roles = new List<Architect.Utilities.Contracts.LookUpValue> { new Architect.Utilities.Contracts.LookUpValue() { Code = roleId } };
-                result.UserMember = UserMember.Create(companyId, internalUserId, result.UserMember);
+                result.UserMember = UserMember.Create(companyId, internalUserId, result.UserMember, 1);
             }
 
             return result;

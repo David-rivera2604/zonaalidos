@@ -1213,8 +1213,11 @@
     <Content Include="releaseletter.txt" />
     <Content Include="Scripts\AvisosCobro.Recibos.js" />
     <Content Include="Scripts\Clientes.Index.js" />
+    <Content Include="Scripts\ColoresTenant.js" />
+    <Content Include="Scripts\CompraSegurosClients.js" />
     <Content Include="Scripts\Cotizacion.Coberturas.js" />
     <Content Include="Scripts\Cotizacion.SaldoDeudor.enfermedadesexcluidas.js" />
+    <Content Include="Scripts\CreateCase_Aliados.js" />
     <Content Include="Scripts\Emision.kyc.declarante.js" />
     <Content Include="Scripts\Emision.kyc.juridico.js" />
     <Content Include="Scripts\Emision.kyc.persona.js" />
@@ -1255,6 +1258,7 @@
     <Content Include="Scripts\Pagos.Resultado.js" />
     <Content Include="Scripts\Prototype.Payment.js" />
     <Content Include="Scripts\Prototype.Producto.js" />
+    <Content Include="Scripts\Seguimiento_Aliados.js" />
     <Content Include="Scripts\Siniestros.Panel.js" />
     <Content Include="Scripts\Security.Integrate.js" />
     <Content Include="Scripts\process.instance.js" />
@@ -1677,6 +1681,11 @@
     <Content Include="Reports\KYC_Juridico.repx" />
     <Content Include="Reports\KYC_Persona.repx" />
     <Content Include="Reports\MapfreMas_Solicitud_Individual.repx" />
+    <Content Include="Views\Cases\CasesAliados.cshtml" />
+    <Content Include="Views\Cases\Seguimiento_Al.cshtml" />
+    <Content Include="Views\Clientes\CompraSegurosC.cshtml" />
+    <Content Include="Views\Clientes\CompraSegurosE.cshtml" />
+    <Content Include="Views\General\ColorTenant.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
