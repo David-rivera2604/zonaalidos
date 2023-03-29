@@ -1,6 +1,7 @@
 ﻿using Architect.DataFactory;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Data;
 using DbType = Architect.DataFactory.Enumerations.DbType;
 
@@ -33,13 +34,13 @@ namespace Architect.API.Insurance.DataAccess.Policy
         /// <summary>
         /// Elimina un registro en la tabla RiskRoles por medio de su clave primaria.
         /// </summary>
-        /// <param name="policyid"></param>
         /// <returns>Cantidad de registros eliminados.</returns>
-        public static int DeleteByPolicyId(int policyid, IDbConnection connection = null)
+        public static int DeleteByPolicyId(int policyid, int companyid, IDbConnection connection = null)
         {
             return Database.Delete(@"DELETE FROM RiskRoles 
-                                      WHERE PolicyId=:PolicyId")
+                                      WHERE PolicyId=:PolicyId  AND CompanyId=:CompanyId")
                                .AddParameter("PolicyId", DbType.Decimal, 9, policyid)
+                               .AddParameter("CompanyId", DbType.Decimal, 5, companyid)
                                 .Execute(connection, "Research");
         }
 

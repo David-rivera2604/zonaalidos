@@ -594,5 +594,17 @@ namespace Architect.API.Insurance.Business.Bayer
             return result;
         }
 
+        public static void Delete(int companyId, int userId, int id)
+        {
+            int result = 0;
+            result = DataAccess.Policy.RiskBayer.Delete(id, companyId);
+            result = Core.Business.General.Attachment.Delete(2000, id, companyId);
+            result = DataAccess.Policy.RiskOverdraft.DeleteByIdCompanyId(id, companyId);
+            result = DataAccess.Policy.RiskQuestionnaires.DeleteByPolicyIdCompanyId(id, companyId);
+
+            result = DataAccess.Policy.RiskRoles.DeleteByPolicyId(id, companyId);
+            result = DataAccess.Policy.Risk.DeleteByIdCompanyId(id, companyId);
+        }
+
     }
 }

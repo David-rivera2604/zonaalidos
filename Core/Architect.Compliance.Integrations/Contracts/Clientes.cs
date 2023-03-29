@@ -73,7 +73,7 @@ namespace Architect.Compliance.Integrations.Contracts
         public Clientestransaccione[] clientesTransacciones { get; set; }
         public List<Clientespoliza> clientesPolizas { get; set; }
         public Clientesotrosatributo[] clientesOtrosAtributos { get; set; }
-        public Clientessocio[] clientesSocios { get; set; }
+        public List<Clientessocio> clientesSocios { get; set; }
         public Clientesrelacione[] clientesRelaciones { get; set; }
         public Clientesrepresentante[] clientesRepresentantes { get; set; }
         public int codigoCompania { get; set; }
@@ -292,7 +292,7 @@ namespace Architect.Compliance.Integrations.Contracts
         public string cargo { get; set; }
         public DateTime fechaVencimiento { get; set; }
         public Clientesrepresentantesnacionalidade[] clientesRepresentantesNacionalidades { get; set; }
-        public Clientesrepresentantesubicacione[] clientesRepresentantesUbicaciones { get; set; }
+        public List<Clientesrepresentantesubicacione> clientesRepresentantesUbicaciones { get; set; }
         public int codigoSesion { get; set; }
         public int codigoRegistro { get; set; }
     }

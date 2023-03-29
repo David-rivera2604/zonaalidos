@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 
 namespace Architect.API.Core.Business.General
 {
@@ -91,6 +92,11 @@ namespace Architect.API.Core.Business.General
                 DataAccess.General.Attachments.UpdateCustom(attachment);
             }
             return attachment;
+        }
+
+        public static int Delete(int entityType, long entityId, int companyId, IDbConnection connection = null)
+        {
+            return DataAccess.General.Attachments.Delete(entityType, entityId, companyId, connection);
         }
 
         public static void Delete(int id)

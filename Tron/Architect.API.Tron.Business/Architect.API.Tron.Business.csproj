@@ -76,6 +76,7 @@
     <Compile Include="Cotizacion\SaldoDeudor.cs" />
     <Compile Include="Cotizacion\Viajero.cs" />
     <Compile Include="Cotizacion\ViajeroConvert.cs" />
+    <Compile Include="Emision\ComplianceSetup.cs" />
     <Compile Include="Emision\MultirriesgoConvertFrom.cs" />
     <Compile Include="Emision\MapfreMasConvertFrom.cs" />
     <Compile Include="Emision\MultirriesgoConvertTo.cs" />

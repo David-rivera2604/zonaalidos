@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Http.Results;
 
 namespace Architect.API.Insurance.Controllers
 {
@@ -153,6 +154,32 @@ namespace Architect.API.Insurance.Controllers
             }
 
             return Ok(new { Valid = result, Message = message });
+        }
+
+
+        /// <summary>
+        /// Permite eliminar una solictud o pólizas.
+        /// </summary>
+        /// <param name="id">Identificción interna de una inclusión.</param>
+        /// <returns>Información de una inclusión.</returns>
+        [HttpDelete]
+        [Route("bayer/{id:int}")]
+        public async Task<IHttpActionResult> Delete([FromUri] int id)
+        {
+            IHttpActionResult result = NotFound();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+
+            if (id.IsEmpty())
+            {
+                return BadRequest("Debe indicar el identificador");
+            }
+
+            await Task.Run(() =>
+            {
+                Business.Bayer.Inclusion.Delete(tokenInfo.CompanyId, tokenInfo.UserId, id);
+                result = Ok(id);
+            }).ConfigureAwait(false);
+            return result;
         }
 
     }
