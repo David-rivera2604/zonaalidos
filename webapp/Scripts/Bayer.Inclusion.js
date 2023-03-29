@@ -185,15 +185,15 @@ app.BayerInclusion = (function () {
 
     function Status_Handler(status, statusmode) {
         switch (status) {
-            case 0:
-            case 1:
+            case 0: //Incompleta
+            case 1: //Incompleta
                 $('#VisualizationsEdtFormDraft').removeClass('d-none');
                 $('#VisualizationsEdtFormSave').removeClass('d-none');
                 if (localStorage.getItem('Tenant') === 'Bayer') {
                     $('#DateEntryWork').prop("disabled", false);
                 }
                 break;
-            case 2:
+            case 2: //En revisión
                 //app.ui.DataEntryBehavior('#VisualizationsEdtForm', 'disabled');
                 if (statusmode === 'Review') {
                     $('.role-Revisor-visible').removeClass('d-none');
@@ -204,9 +204,11 @@ app.BayerInclusion = (function () {
                     $('.role-Revisor-enabled-bayer').prop("disabled", false);
                     $('#VisualizationsEdtFormBack').removeClass('d-none');
                     $('#VisualizationsEdtFormRevised').removeClass('d-none');
+                    $('#VisualizationsEdtFormDelete').removeClass('d-none');
+
                 }
                 break;
-            case 4:
+            case 4: //Por aceptar
                 let data = MapInputToObject();
                 if (data.HasDigitalSignature) {
                     $('#acceptedNotify').removeClass('d-none');
@@ -217,22 +219,24 @@ app.BayerInclusion = (function () {
                         clearInterval(app.BayerInclusion.timer);
                     }, 500);
                 }
-            case 32:
+            case 32: //Rechazada
+            case 31: //Declinada por expiracíon
                 if (statusmode === 'Review') {
                     $('#VisualizationsEdtFormBack').removeClass('d-none');
                     $('#VisualizationsEdtFormRevised').removeClass('d-none');
+                    $('#VisualizationsEdtFormDelete').removeClass('d-none');
                 }
-            case 10:
-            case 31:
+            case 10: //Alta            
                 app.ui.DataEntryBehavior('#VisualizationsEdtForm', 'disabled');
                 $('#print').removeClass('d-none');
                 break;
-            case 99:
+            case 99: //Pendiente de firma digital CR
                 app.ui.DataEntryBehavior('#VisualizationsEdtForm', 'disabled');
                 $('#VisualizationsEdtFormDraft').addClass('d-none');
                 $('#VisualizationsEdtFormSave').addClass('d-none');
                 $('#VisualizationsEdtFormBack').addClass('d-none');
                 $('#VisualizationsEdtFormRevised').addClass('d-none');
+                $('#VisualizationsEdtFormDelete').addClass('d-none');
                 $('#acceptedNotify').addClass('d-none');
                 break;
         }
@@ -351,6 +355,7 @@ app.BayerInclusion = (function () {
         $("#VisualizationsEdtFormBack").appendTo("#GenericToolBar");
         $("#VisualizationsEdtFormRevised").appendTo("#GenericToolBar");
         $("#VisualizationsEdtFormUpLoad").appendTo("#GenericToolBar");
+        $('#VisualizationsEdtFormDelete').appendTo("#GenericToolBar");
 
 
         $(".XXX").appendTo('.sidebar-content');
@@ -465,6 +470,23 @@ app.BayerInclusion = (function () {
         $('#VisualizationsEdtFormRevised').click(function () {
             event.preventDefault();
             Submit_Stage('revised', '#VisualizationsEdtFormRevised');
+        });
+
+        $('#VisualizationsEdtFormDelete').click(function () {
+            event.preventDefault();
+            toastr.warning("Si está seguro de querer eliminar esta solicitud, haga clic aquí", null,
+                {
+                    timeOut: 7000, closeButton: true, progressBar: true,
+                    onclick: function () {
+                        $('.ibox-content').toggleClass('sk-loading');
+                        app.core.Delete(app.setting.apipath + `v1/Inclusion/bayer/${id}`)
+                            .done(function (data, textStatus, jqXHR) {
+                                toastr.success("El solicitud fue eliminada", "", { timeOut: 5000, closeButton: true, progressBar: true, onHidden: function () { window.location = document.referrer; } });
+                            }).always(function () {
+                                $('.ibox-content').toggleClass('sk-loading');
+                            });
+                    }
+                });
         });
 
         //$('#VisualizationsEdtFormCancel').click(function () {
@@ -1187,7 +1209,7 @@ app.BayerInclusion = (function () {
         }
     }
 
-    function IsDocumentNumberValid (documentType, documentNumber) {
+    function IsDocumentNumberValid(documentType, documentNumber) {
         var result = false;
         var length = documentNumber.length;
 
