@@ -22,7 +22,7 @@ namespace Architect.API.Tron.Business.Emision
 
             if (titular.DocumentNumberType == 4)
             {
-                mapInfo = Juridico(quoteInfo, jsonvalues, titular);
+                mapInfo = Juridico(quoteInfo, jsonvalues);
             }
             else
             {
@@ -182,25 +182,22 @@ namespace Architect.API.Tron.Business.Emision
             return mapInfo;
         }
 
-        private static Compliance.Integrations.Contracts.Clientes Juridico(Contracts.Emision.MapfreMas quoteInfo, JObject jsonvalues, Contracts.Comun.tercero titular)
+        private static Compliance.Integrations.Contracts.Clientes Juridico(Contracts.Emision.MapfreMas quoteInfo, JObject jsonvalues)
         {
-
-
-
             Architect.Compliance.Integrations.Contracts.Clientes mapInfo = new Compliance.Integrations.Contracts.Clientes()
             {
-                tipoIdentificacion = titular.DocumentNumberType,
-                numeroIdentificacion = titular.DocumentNumber,
-                nombreCliente = titular.nombre,
-                primerApellido = titular.apellido1,
-                segundoApellido = titular.apellido2,
-                conocidoComo = String.Empty,
-                razonSocial = String.Empty,
-                nombreComercial = String.Empty,
+                tipoIdentificacion = jsonvalues.TokenInt32Value("tipodecedulajuridicaJur"),
+                numeroIdentificacion = jsonvalues.TokenStringValue("numerocedulajuridicaJur"),
+                nombreCliente = string.Empty,
+                primerApellido = string.Empty,
+                segundoApellido = string.Empty,
+                conocidoComo = jsonvalues.TokenStringValue("nombrecomercialJur"),
+                razonSocial = jsonvalues.TokenStringValue("razonsocialJur"),
+                nombreComercial = jsonvalues.TokenStringValue("nombrecomercialJur"),
                 fechaUltimaActualizacion = DateTime.Now,
-                descripcionCuenta = titular.nombre.CompleteFullName(titular.apellido1, titular.apellido2),
-                numeroIdentificacionEntidad = titular.DocumentNumber,
-                fechaNacimiento = titular.fechadenacimiento,
+                descripcionCuenta = jsonvalues.TokenStringValue("nombrecomercialJur"),
+                numeroIdentificacionEntidad = jsonvalues.TokenStringValue("numerocedulajuridicaJur"),
+                fechaNacimiento = jsonvalues.TokenDateTimeValue("fechadeconstitucionJur"),
                 estado = "A",
                 estadoXML = "X",
                 administFondosTercero = "N",
@@ -243,64 +240,58 @@ namespace Architect.API.Tron.Business.Emision
             //paisOrigen = "111111"
             //profesion
             mapInfo.clientesUbicaciones = new List<Compliance.Integrations.Contracts.Clientesubicacione>();
-            if (titular.numerodetelefono.IsNotEmpty())
+            if (jsonvalues.TokenStringValue("telefonoJur").IsNotEmpty())
             {
                 mapInfo.clientesUbicaciones.Add(new Compliance.Integrations.Contracts.Clientesubicacione()
                 {
                     tipoUbicacion = 1,
                     divisionTerritorial = 99999,
-                    descripcionUbicacion = titular.numerodetelefono
+                    descripcionUbicacion = jsonvalues.TokenStringValue("telefonoJur")
                 });
             }
-            if (titular.correoelectronico.IsNotEmpty())
+            if (jsonvalues.TokenStringValue("correoelectronicoJur").IsNotEmpty())
             {
                 mapInfo.clientesUbicaciones.Add(new Compliance.Integrations.Contracts.Clientesubicacione()
                 {
                     tipoUbicacion = 3,
                     divisionTerritorial = 99999,
-                    descripcionUbicacion = titular.correoelectronico
+                    descripcionUbicacion = jsonvalues.TokenStringValue("correoelectronicoJur")
                 });
             }
-            if (titular.otrasenas.IsNotEmpty())
+            if (jsonvalues.TokenStringValue("direccionexactaJur").IsNotEmpty())
             {
                 mapInfo.clientesUbicaciones.Add(new Compliance.Integrations.Contracts.Clientesubicacione()
                 {
                     tipoUbicacion = 4,
-                    divisionTerritorial = titular.TDistrito,
-                    descripcionUbicacion = String.Format("{0}, {1}, {2}, {3}. {4}.", titular.TProvinciaDesc, titular.TCantonDesc, titular.TDistritoDesc, titular.otrasenas, "Costa Rica")
+                    divisionTerritorial = jsonvalues.TokenInt32Value("cod_localidadJur"),
+                    descripcionUbicacion = String.Format("{0}, {1}, {2}, {3}. {4}.", jsonvalues.TokenStringValue("cod_estadoJurDesc"), jsonvalues.TokenStringValue("cod_provJurDesc"), jsonvalues.TokenStringValue("cod_localidadJurDesc"), jsonvalues.TokenStringValue("direccionexactaJur"), jsonvalues.TokenStringValue("cod_paisJurDesc"))
                 });
             }
 
-
-            mapInfo.razonSocial = titular.nombre;
-            mapInfo.nombreComercial = titular.nombre;
-            mapInfo.nombreCliente = string.Empty;
-            mapInfo.primerApellido = string.Empty;
-            mapInfo.segundoApellido = string.Empty;
             mapInfo.genero = "X";
             mapInfo.estadoCivil = "X";
 
 
             mapInfo.paisOrigen = jsonvalues.TokenInt32Value("paisdeconstitucionJur");
             mapInfo.actividadEconomica = 8397;
-            mapInfo.fechaNacimiento = jsonvalues.TokenDateTimeValue("fechadeconstitucionJur");
 
             mapInfo.articulo15 = jsonvalues.TokenStringValue("actividadesart15Jur") == "1" ? "S" : "N";
-            if (jsonvalues.TokenStringValue("peprelacionJur") == "1")
-            {
-                mapInfo.esPep = "S";
-                mapInfo.tipoPep = "R";
-            }
-            if (jsonvalues.TokenStringValue("pepcargoJur") == "1")
-            {
-                mapInfo.esPep = "S";
-                mapInfo.tipoPep = "D";
-            }
+            //if (jsonvalues.TokenStringValue("peprelacionJur") == "1")
+            //{
+            //    mapInfo.esPep = "S";
+            //    mapInfo.tipoPep = "R";
+            //}
+            //if (jsonvalues.TokenStringValue("pepcargoJur") == "1")
+            //{
+            //    mapInfo.esPep = "S";
+            //    mapInfo.tipoPep = "D";
+            //}
             Clientesrepresentante representante = new Clientesrepresentante()
             {
 
                 tipoIdentificacionRepresentante = jsonvalues.TokenInt32Value("tipodeidentificacionJur"),
                 numeroIdentificacionRepresentante = jsonvalues.TokenStringValue("numerodeidentificacionJur"),
+                fechaVencimiento = jsonvalues.TokenDateTimeValue("fechadecaducidadJur"),
                 nombre = jsonvalues.TokenStringValue("nombrecompletoJur"),
                 segundoNombre = string.Empty,
                 primerApellido = jsonvalues.TokenStringValue("primerapellidoJur"),
@@ -316,8 +307,7 @@ namespace Architect.API.Tron.Business.Emision
                 tipoPep = "N",
                 descripcionPep = "No aplica",
                 articulo15 = jsonvalues.TokenStringValue("actividadesart15Jur") == "1" ? "S" : "N",
-                cargo = jsonvalues.TokenStringValue("posiciondentrodelaempresaJur", "No aplica"),
-                //fechaVencimiento = jsonvalues.TokenDateTimeValue("fechadecaducidadJur")
+                cargo = jsonvalues.TokenStringValue("posiciondentrodelaempresaJur", "No aplica")
             };
 
             representante.clientesRepresentantesUbicaciones = new List<Clientesrepresentantesubicacione>();
@@ -355,7 +345,7 @@ namespace Architect.API.Tron.Business.Emision
                 {
                     tipoUbicacion = 4,
                     divisionTerritorial = jsonvalues.TokenInt32Value("domiciliopermanenteCod_localidadJur"),
-                    descripcionUbicacion = String.Format("{0}, {1}, {2}, {3}. {4}.", jsonvalues.TokenStringValue("domiciliopermanenteCod_estadoJurDesc"), jsonvalues.TokenStringValue("domiciliopermanenteCod_provJurDesc"), jsonvalues.TokenStringValue("domiciliopermanenteCod_localidadJurDesc"), jsonvalues.TokenStringValue("domiciliopermanenteDireccionexactaJur"), "Costa Rica")
+                    descripcionUbicacion = String.Format("{0}, {1}, {2}, {3}. {4}.", jsonvalues.TokenStringValue("domiciliopermanenteCod_estadoJurDesc"), jsonvalues.TokenStringValue("domiciliopermanenteCod_provJurDesc"), jsonvalues.TokenStringValue("domiciliopermanenteCod_localidadJurDesc"), jsonvalues.TokenStringValue("domiciliopermanenteDireccionexactaJur"), jsonvalues.TokenStringValue("domiciliopermanenteCod_paisJurDesc"))
                 });
             }
 
@@ -427,11 +417,26 @@ namespace Architect.API.Tron.Business.Emision
 
             mapInfo.clientesSocios = new List<Clientessocio>();
 
-            mapInfo.clientesSocios.Add(new Clientessocio() { 
-                nombre = "",
-                numeroIdentificacionSocio ="",
-                participacion = 100
-            });
+            JArray participacionaccionaria = (JArray)jsonvalues["participacionaccionariaJur"];
+            foreach (JObject item in participacionaccionaria)
+            {
+
+                mapInfo.clientesSocios.Add(new Clientessocio()
+                {
+                    tipoIdentificacionSocio=1,
+                    nombre = item.TokenStringValue("participacionaccionariaNombrecompletoJur"),
+                    numeroIdentificacionSocio = item.TokenStringValue("participacionaccionariaNumerodeidentificacionJur"),
+                    participacion = item.TokenInt32Value("porcentajedeparticipacionJur"),
+                    esPep = "N",
+                    tipoPep = "N",
+                    descripcionPep = "No aplica",
+                    genero = "N",
+                    articulo15= "N",
+                    estadoCivil="X",
+                    fechaNacimiento = new DateTime(1900, 1, 1)
+                });
+
+            }
 
             return mapInfo;
         }

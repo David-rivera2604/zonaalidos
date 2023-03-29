@@ -478,3 +478,6 @@
                    Consultas generales vigencias anteriores
                    Fix. Los avisos me trae la lista de contratos pero no me los carga en el selección
                    Fix. En la consulta de avisos no me trae los recibos de un aviso.
+1.6.27  29/03/2023 Bayer. Al expirar la firma, se da la posibilidad de declinar o volver a enviar al revisor.
+                   Bayer. Borrado físico de solicitud para revisor.
+                   MapfreMas. Compliance. Ajustes para el caso de titulares jurídicos.
