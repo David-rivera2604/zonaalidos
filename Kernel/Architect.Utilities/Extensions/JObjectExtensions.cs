@@ -32,6 +32,16 @@ namespace Architect.Utilities.Extensions
             }
             return result;
         }
+        public static double TokenDoubleValue(this JObject instance, string path, double defaultValue = 0)
+        {
+            double result = defaultValue;
+            JToken jvalue = instance.SelectToken(path);
+            if (jvalue != null)
+            {
+                result = jvalue.Value<double>();
+            }
+            return result;
+        }
         public static DateTime TokenDateTimeValue(this JObject instance, string path)
         {
             return TokenDateTimeValue(instance, path, DateTime.MinValue);
