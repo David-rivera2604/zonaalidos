@@ -6,7 +6,7 @@
                     <span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span>
                 </button>
                 <h4 class="modal-title">Información de tercero</h4>
-                <small class="font-bold">Permite agregar un nuevo terceros o editar uno ya existente</small>
+                <small class="font-bold">Permite agregar un nuevo tercero o editar uno existente</small>
             </div>
             <div class="modal-body">
                 <!-- terceros Grid Edit Form -->
@@ -26,6 +26,7 @@
                                                 <select id='tipodetercero' name='tipodetercero' class='form-control'>
                                                     <option value="0" selected>Tomador(a)</option>
                                                     <option value="2">Asegurado(a)</option>
+                                                    <option value="3">Conductor habitual</option>
                                                     <option value="6">Beneficiario(a)</option>
                                                     <option value="8">Acreedor(a)</option>
                                                 </select>
@@ -214,8 +215,8 @@
                                                     Otra señas<span class='required-mark'
                                                                     title='Este campo debe ser llenado de forma obligatoria'>*</span>
                                                 </label>
-                                                <input type='text' id='otrasenas' name='otrasenas' class='form-control' size='100'
-                                                       maxlength='100' />
+                                                <input type='text' id='otrasenas' name='otrasenas' class='form-control' size='120'
+                                                       maxlength='120' />
                                             </div>
                                         </div>
                                         <!-- eltomadoreselmismoasegurado RadioButtonList -->
@@ -240,6 +241,21 @@
                                             </div>
                                         </div>
 
+                                        <!-- elaseguradoeselconductorhabitual RadioButtonList -->
+                                        <div class='col-sm-4 col-md-4 d-none mapfremas-visible'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='elaseguradoeselconductorhabitual'>El asegurado es el conductor habitual</label>
+                                                <div style="padding-top: 6px;">
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" class="custom-control-input" id="elaseguradoeselconductorhabitual_1" name="elaseguradoeselconductorhabitual" value="1">
+                                                        <label class="custom-control-label" for="elaseguradoeselconductorhabitual_1">Si</label>
+                                                    </div><div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" class="custom-control-input" id="elaseguradoeselconductorhabitual_2" name="elaseguradoeselconductorhabitual" value="2">
+                                                        <label class="custom-control-label" for="elaseguradoeselconductorhabitual_2">No</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                     </div>
                                     <!-- beneficiario Zone -->
