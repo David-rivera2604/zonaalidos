@@ -178,14 +178,39 @@
                                                 <select id='cod_pais' name='cod_pais' class='form-control' disabled></select>
                                             </div>
                                         </div>
+                                        <!-- TProvinciaHelper DropDownList -->
+                                        <div class='col-sm-4 col-md-4 d-none handler-TProvinciaHelper'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='TProvinciaHelper'>
+                                                    Provincia<span class='required-mark'
+                                                                   title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                                </label>
+                                                <div class='input-group'>
+                                                    <input id='TProvinciaHelper' class="form-control typeahead" type="text" placeholder="Indique el detalle...">
+                                                    <span class='input-group-addon' title="Ayuda para ubicar la dirección">
+                                                        <a href="#" id="TProvinciaHelperCancel">
+                                                            <i class="fa fa-level-up" aria-hidden="true"></i>
+                                                        </a>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <!-- TProvincia DropDownList -->
-                                        <div class='col-sm-4 col-md-4'>
+                                        <div class='col-sm-4 col-md-4 handler-TProvincia'>
                                             <div class='form-group'>
                                                 <label class='control-label' for='TProvincia'>
                                                     Provincia<span class='required-mark'
                                                                    title='Este campo debe ser llenado de forma obligatoria'>*</span>
                                                 </label>
-                                                <select id='TProvincia' name='TProvincia' class='form-control'></select>
+                                                <div class='input-group'>
+                                                    <select id='TProvincia' name='TProvincia' class='form-control'></select>
+                                                    <span class='input-group-addon' title="Ayuda para ubicar la dirección">
+                                                        <a href="#" id="TProvinciaHelperShow">
+                                                            <i class="fa fa-filter" aria-hidden="true"></i>
+                                                        </a>
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
                                         <!-- TCanton DropDownList -->

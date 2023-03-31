@@ -495,6 +495,7 @@ app.CotizacionMapfreMas = (function () {
 
             $("#VisualizationsEdtForm").validate().resetForm();
         });
+
         $('#VehicleModelHelper').click(function () {
             if (modelHelper.length === 0) {
                 app.core.Get(app.setting.apipath + 'v1/datasource/VehicleModelHelper')

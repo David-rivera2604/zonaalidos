@@ -147,7 +147,7 @@ namespace Architect.API.Tron.Business.Emision
             }
 
             mapInfo.genero = jsonvalues.TokenInt32Value("sexoPer") == 1 ? "M" : "F";
-            mapInfo.estadoCivil = jsonvalues.TokenStringValue("estadocivilPer");
+            mapInfo.estadoCivil = EstadoCivilHomo(jsonvalues.TokenStringValue("estadocivilPer"));
 
 
             mapInfo.profesion = jsonvalues.TokenInt32Value("profesionPer");
@@ -325,7 +325,7 @@ namespace Architect.API.Tron.Business.Emision
                 conocidoComo = String.Empty,
                 genero = jsonvalues.TokenStringValue("sexoJur") == "1" ? "M" : "F",
                 fechaNacimiento = jsonvalues.TokenDateTimeValue("fechadenacimientoJur"),
-                estadoCivil = jsonvalues.TokenStringValue("estadocivilJur", "X"),
+                estadoCivil = EstadoCivilHomo(jsonvalues.TokenStringValue("estadocivilJur")),
                 paisOrigen = jsonvalues.TokenInt32Value("paisdenacimientoJur"),
                 profesion = jsonvalues.TokenInt32Value("profesionJur"),
                 actividadEconomica = 8397,
@@ -375,32 +375,6 @@ namespace Architect.API.Tron.Business.Emision
                 });
             }
 
-
-
-            switch (representante.estadoCivil)
-            {
-                case "1": //casado
-                    representante.estadoCivil = "C";
-                    break;
-                case "2": //divorciado
-                    representante.estadoCivil = "D";
-                    break;
-                case "3": //soltero
-                    representante.estadoCivil = "S";
-                    break;
-                case "4": //viudo
-                    representante.estadoCivil = "V";
-                    break;
-                case "5": //otro
-                    representante.estadoCivil = "X";
-                    break;
-                case "7": //acompañado
-                    representante.estadoCivil = "U";
-                    break;
-                default:
-                    representante.estadoCivil = "X";
-                    break;
-            }
             if (jsonvalues.TokenStringValue("peprelacionJur") == "1")
             {
                 representante.esPep = "S";
@@ -498,6 +472,36 @@ namespace Architect.API.Tron.Business.Emision
             return mapInfo;
         }
 
+        private static string EstadoCivilHomo(string estadoCivil)
+        {
+            string result = string.Empty;
+
+            switch (estadoCivil)
+            {
+                case "1": //casado
+                    result = "C";
+                    break;
+                case "2": //divorciado
+                    result = "D";
+                    break;
+                case "3": //soltero
+                    result = "S";
+                    break;
+                case "4": //viudo
+                    result = "V";
+                    break;
+                case "5": //otro
+                    result = "X";
+                    break;
+                case "7": //acompañado
+                    result = "U";
+                    break;
+                default:
+                    result = "X";
+                    break;
+            }
+            return result;
+        }
 
         // FISICOS
         //	{"Text":"PERSONA FISICA NACIONAL","Value":"1"}

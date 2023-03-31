@@ -1277,6 +1277,7 @@ app.EmisionSaldoDeudor = (function () {
         $('#tipodetercero').val(row.tipodetercero);
         $('#tipodetercero').change();
         app.ui.SetDocumentTypeValue('#DocumentNumberType', row.DocumentNumberType);
+        terceros_documentTypeCallBack(row.DocumentNumberType);
         $('#DocumentNumber').val(row.DocumentNumber);
         $('#nombre').val(row.nombre);
         $('#apellido1').val(row.apellido1);
@@ -1444,8 +1445,28 @@ app.EmisionSaldoDeudor = (function () {
         }
     }
 
+    function terceros_documentTypeCallBack(data) {
+        data = $("#DocumentNumberType").data("value");
+        if (data === 4) {
+            $('#apellido1').parent().parent().addClass('d-none');
+            $('#apellido2').parent().parent().addClass('d-none');
+            $('#fechadenacimiento').parent().parent().parent().addClass('d-none');
+            $('#tercerosMca_sexo').parent().parent().addClass('d-none');
+            $('#estadoCivil').parent().parent().addClass('d-none');
+            $('#nombre').parent().parent().addClass('col-sm-8 col-md-8');
+
+        } else {
+            $('#apellido1').parent().parent().removeClass('d-none');
+            $('#apellido2').parent().parent().removeClass('d-none');
+            $('#fechadenacimiento').parent().parent().parent().removeClass('d-none');
+            $('#tercerosMca_sexo').parent().parent().removeClass('d-none');
+            $('#estadoCivil').parent().parent().removeClass('d-none');
+            $('#nombre').parent().parent().removeClass('col-sm-8 col-md-8');
+        }
+    }
+
     function terceros_controls_Events() {
-        app.ui.DocumentNumberHandler('#DocumentNumber', terceros_documentNumberCallBack);
+        app.ui.DocumentNumberHandler('#DocumentNumber', terceros_documentNumberCallBack, terceros_documentTypeCallBack);
 
         $('#tipodetercero').change(function () {
             switch ($('#tipodetercero').val()) {
@@ -1484,6 +1505,7 @@ app.EmisionSaldoDeudor = (function () {
         });
 
     }
+
 //#endregion
 
 //#region Documentos Requeridos
@@ -1909,6 +1931,8 @@ app.EmisionSaldoDeudor = (function () {
                 Init_Lookups_Covid();
                 Event_Controls_Covid();
                 Setup_Validations_Covid();
+
+                $('#tipodetercero option[value=3]').attr('hidden', '');
 
                 Setup();
                 console.log("Inicio");
