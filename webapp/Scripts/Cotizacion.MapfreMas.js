@@ -52,10 +52,15 @@ app.CotizacionMapfreMas = (function () {
                     }
 
 
-                    if (data.plandepagoporfrecuencia != null)
+                    if (data.plandepagoporfrecuencia != null) {
+                        $('.plandepagoporfrecuencia').removeClass('d-none');
                         $('#plandepagoporfrecuenciaTbl').bootstrapTable('load', data.plandepagoporfrecuencia);
-                    else
+                    }
+                    else {
+                        $('.plandepagoporfrecuencia').addClass('d-none');
                         $('#plandepagoporfrecuenciaTbl').bootstrapTable('load', {});
+                    }
+
 
                     $('#mainBlock').removeClass('col-md-12');
                     $('#mainBlock').addClass('col-md-9');
@@ -1021,6 +1026,8 @@ app.CotizacionMapfreMas = (function () {
         if (showCalculate) {
             $('#plandepagoRow').addClass('d-none');
             $('#plandepagoRowFull').addClass('d-none');
+
+            $('#plandepagoFullRow').addClass('d-none');
 
             $('#mainBlock').addClass('col-md-12');
             $('#mainBlock').removeClass('col-md-9');

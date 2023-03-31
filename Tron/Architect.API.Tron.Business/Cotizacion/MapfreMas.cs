@@ -241,7 +241,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 Contracts.Presupuesto.DatoFijo resultTron = Backoffice.Cotizacion.MapfreMas.Calcular(quoteTron);
                 resultInfo = MapfreMasConvertFrom.Quote(quoteInfo, resultTron);
 
-                if (tokenInfo.Roles.Contain("PolizaGrupo"))
+                if (resultInfo.Error.IsEmpty() && tokenInfo.Roles.Contain("PolizaGrupo"))
                 {
                     DateTime fecha_validar = quoteTron.fec_vcto_poliza.AddMonths(-1);
 
@@ -302,13 +302,14 @@ namespace Architect.API.Tron.Business.Cotizacion
                 //Utilities.SerializeHandler<Contracts.Cotizacion.MapfreMas>.SerializeToFile(resultInfo2, @"C:\temp\resultcompleta.xml");
                 //resultInfo = resultInfo2;
 
-                Architect.Utilities.Cache.SetItem(
-                    string.Format("mapfremas.{0}", resultInfo.presupuesto),
+                if (resultInfo.Error.IsEmpty()) {
+                    Architect.Utilities.Cache.SetItem(string.Format("mapfremas.{0}", resultInfo.presupuesto),
                         Newtonsoft.Json.JsonConvert.SerializeObject(resultInfo), -1);
 
-                if (resultInfo.presupuesto.IsNotEmpty())
-                {
-                    Core.Business.General.ChangeSet.Create(3000, Convert.ToInt32(resultInfo.presupuesto.Substring(4)), tokenInfo.CompanyId, "Cotización MapfreMas", "Presupuesto #" + resultInfo.presupuesto, tokenInfo.UserId, resultInfo);
+                    if (resultInfo.presupuesto.IsNotEmpty())
+                    {
+                        Core.Business.General.ChangeSet.Create(3000, Convert.ToInt32(resultInfo.presupuesto.Substring(4)), tokenInfo.CompanyId, "Cotización MapfreMas", "Presupuesto #" + resultInfo.presupuesto, tokenInfo.UserId, resultInfo);
+                    }
                 }
             }
             return resultInfo;
@@ -458,7 +459,7 @@ namespace Architect.API.Tron.Business.Cotizacion
 
         private static List<Core.Contracts.General.LookupValue> CleanEmptyValue(List<Core.Contracts.General.LookupValue> values)
         {
-            if (values != null && values.Count > 0 && values.First().Code== "0")
+            if (values != null && values.Count > 0 && values.First().Code == "0")
             {
                 values.Remove(values.First());
             }
