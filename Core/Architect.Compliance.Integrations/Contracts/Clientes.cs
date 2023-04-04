@@ -44,7 +44,7 @@ namespace Architect.Compliance.Integrations.Contracts
         public string institucionLabora { get; set; }
         public int cantidadAnosLaborar { get; set; }
         public int monedaIngresoMensual { get; set; }
-        public int montoIngresoMensual { get; set; }
+        public double montoIngresoMensual { get; set; }
         public string esEmpleado { get; set; }
         public string esPep { get; set; }
         public string tipoPep { get; set; }
@@ -65,10 +65,10 @@ namespace Architect.Compliance.Integrations.Contracts
         public string pagaImpuestos { get; set; }
         public Clientesnacionalidade[] clientesNacionalidades { get; set; }
         public List<Clientesubicacione> clientesUbicaciones { get; set; }
-        public Clientesfatca[] clientesFATCA { get; set; }
+        public List<Clientesfatca> clientesFATCA { get; set; }
         public Clientesingreso[] clientesIngresos { get; set; }
         public Clientesfondostercero[] clientesFondosTerceros { get; set; }
-        public Clientespatrimonio[] clientesPatrimonio { get; set; }
+        public List<Clientespatrimonio> clientesPatrimonio { get; set; }
         public Clientesfuncionespep[] clientesFuncionesPEP { get; set; }
         public Clientestransaccione[] clientesTransacciones { get; set; }
         public List<Clientespoliza> clientesPolizas { get; set; }
@@ -150,7 +150,7 @@ namespace Architect.Compliance.Integrations.Contracts
         public string descripcionPatrimonio { get; set; }
         public int tipoBien { get; set; }
         public int moneda { get; set; }
-        public int montoValor { get; set; }
+        public double montoValor { get; set; }
         public DateTime fechaRegistro { get; set; }
     }
 
@@ -185,8 +185,8 @@ namespace Architect.Compliance.Integrations.Contracts
         public DateTime fechaInicio { get; set; }
         public DateTime fechaFinalizacion { get; set; }
         public int moneda { get; set; }
-        public int prima { get; set; }
-        public int montoAsegurado { get; set; }
+        public double prima { get; set; }
+        public double montoAsegurado { get; set; }
         public string tipoPrima { get; set; }
         public string estado { get; set; }
         public string tipoPoliza { get; set; }

@@ -26,31 +26,56 @@ namespace Architect.API.Tron.Business.Emision
             }
             else
             {
-                mapInfo = Persona(quoteInfo, jsonvalues, titular);
+                mapInfo = Persona(quoteInfo, jsonvalues);
             }
             mapInfo.ejecutivo = tokenInfo.AgentCode.ToString();
             mapInfo.usuarioRegistro = tokenInfo.UserId.ToString();
             mapInfo.usuario = tokenInfo.UserId;
+            mapInfo.clientesFATCA = new List<Clientesfatca>() {
+                new Clientesfatca() {
+                    poseeGreenCard= "N",
+                    poseeEIN= "N",
+                    poseeProductos= "N",
+                    contribuyenteUSA= "N",
+                    domicilioExtranjero= "N",
+                    poseeTelefonoExtranjero= "N"
+                }
+            };
+            //if (quoteInfo.terceros?.Count > 0 && quoteInfo.terceros.Where(r=> r.tipodetercero== 6) != null)
+            //{
+            //}
+
+            mapInfo.clientesPatrimonio = new List<Clientespatrimonio>() {
+                new Clientespatrimonio()
+                {
+                     descripcionPatrimonio = string.Format("{0} {1} {2} {3}", quoteInfo.cod_marcaDesc, quoteInfo.cod_modeloDesc, quoteInfo.cod_sub_modeloDesc, quoteInfo.NUM_MATRICULA ),
+                     moneda = quoteInfo.cod_mon,
+                     montoValor = quoteInfo.IMP_VR,
+                     tipoBien = 1,
+                     fechaRegistro = DateTime.Now
+                }
+            };
+
             string result = Architect.Compliance.Integrations.Business.Customers.SendCustomers(mapInfo).Result;
         }
 
-        private static Compliance.Integrations.Contracts.Clientes Persona(Contracts.Emision.MapfreMas quoteInfo, JObject jsonvalues, Contracts.Comun.tercero titular)
+        private static Compliance.Integrations.Contracts.Clientes Persona(Contracts.Emision.MapfreMas quoteInfo, JObject jsonvalues)
         {
 
             Architect.Compliance.Integrations.Contracts.Clientes mapInfo = new Compliance.Integrations.Contracts.Clientes()
             {
-                tipoIdentificacion = titular.DocumentNumberType,
-                numeroIdentificacion = titular.DocumentNumber,
-                nombreCliente = titular.nombre,
-                primerApellido = titular.apellido1,
-                segundoApellido = titular.apellido2,
+                tipoIdentificacion = 1,
+                numeroIdentificacion = jsonvalues.TokenStringValue("numerodeidentificacionPer"),
+                nombreCliente = jsonvalues.TokenStringValue("nombrePer"),
+                primerApellido = jsonvalues.TokenStringValue("primerapellidoPer"),
+                segundoApellido = jsonvalues.TokenStringValue("segundoapellidoPer"),
                 conocidoComo = String.Empty,
                 razonSocial = String.Empty,
                 nombreComercial = String.Empty,
                 fechaUltimaActualizacion = DateTime.Now,
-                descripcionCuenta = titular.nombre.CompleteFullName(titular.apellido1, titular.apellido2),
-                numeroIdentificacionEntidad = titular.DocumentNumber,
-                fechaNacimiento = titular.fechadenacimiento,
+                descripcionCuenta = jsonvalues.TokenStringValue("nombrePer").CompleteFullName(jsonvalues.TokenStringValue("primerapellidoPer"), jsonvalues.TokenStringValue("segundoapellidoPer")),
+                numeroIdentificacionEntidad = jsonvalues.TokenStringValue("numerodeidentificacionPer"),
+                fechaNacimiento = jsonvalues.TokenDateTimeValue("fechadenacimientoPer"),
                 estado = "A",
                 estadoXML = "X",
                 administFondosTercero = "N",
@@ -76,7 +101,7 @@ namespace Architect.API.Tron.Business.Emision
                 institucionLabora = "0",
                 fechaRegistroApnfd = new DateTime(1900, 1, 1),
                 lugarExpedicionIdentificacion = "Costa Rica",
-                fechaVencimientoIdentificacion = new DateTime(1900, 1, 1),
+                fechaVencimientoIdentificacion = jsonvalues.TokenDateTimeValue("fechadecaducidadPer"),
                 fechaProximaActualizacion = new DateTime(1900, 1, 1),
                 descripcionInversionInicial = String.Empty
             };
@@ -93,64 +118,64 @@ namespace Architect.API.Tron.Business.Emision
             //paisOrigen = "111111"
             //profesion
             mapInfo.clientesUbicaciones = new List<Compliance.Integrations.Contracts.Clientesubicacione>();
-            if (titular.numerodetelefono.IsNotEmpty())
+            if (jsonvalues.TokenStringValue("telefonoresidenciaPer").IsNotEmpty())
             {
                 mapInfo.clientesUbicaciones.Add(new Compliance.Integrations.Contracts.Clientesubicacione()
                 {
                     tipoUbicacion = 1,
                     divisionTerritorial = 99999,
-                    descripcionUbicacion = titular.numerodetelefono
+                    descripcionUbicacion = jsonvalues.TokenStringValue("telefonoresidenciaPer")
                 });
             }
-            if (titular.correoelectronico.IsNotEmpty())
+            if (jsonvalues.TokenStringValue("correoelectronicoPer").IsNotEmpty())
             {
                 mapInfo.clientesUbicaciones.Add(new Compliance.Integrations.Contracts.Clientesubicacione()
                 {
                     tipoUbicacion = 3,
                     divisionTerritorial = 99999,
-                    descripcionUbicacion = titular.correoelectronico
+                    descripcionUbicacion = jsonvalues.TokenStringValue("correoelectronicoPer")
                 });
             }
-            if (titular.otrasenas.IsNotEmpty())
+            if (jsonvalues.TokenStringValue("direccionexactaPer").IsNotEmpty())
             {
                 mapInfo.clientesUbicaciones.Add(new Compliance.Integrations.Contracts.Clientesubicacione()
                 {
                     tipoUbicacion = 4,
-                    divisionTerritorial = titular.TDistrito,
-                    descripcionUbicacion = String.Format("{0}, {1}, {2}, {3}. {4}.", titular.TProvinciaDesc, titular.TCantonDesc, titular.TDistritoDesc, titular.otrasenas, "Costa Rica")
+                    divisionTerritorial = jsonvalues.TokenInt32Value("cod_localidadPer"),
+                    descripcionUbicacion = String.Format("{0}, {1}, {2}, {3}. {4}.", jsonvalues.TokenStringValue("cod_estadoPerDesc"), jsonvalues.TokenStringValue("cod_provPerDesc"), jsonvalues.TokenStringValue("cod_localidadPerDesc"), jsonvalues.TokenStringValue("direccionexactaPer"), jsonvalues.TokenStringValue("cod_paisPerDesc"))
                 });
             }
 
-            mapInfo.genero = titular.tercerosMca_sexo == 1 ? "M" : "F";
-            mapInfo.estadoCivil = titular.estadoCivil;
-  
+            mapInfo.genero = jsonvalues.TokenInt32Value("sexoPer") == 1 ? "M" : "F";
+            mapInfo.estadoCivil = EstadoCivilHomo(jsonvalues.TokenStringValue("estadocivilPer"));
 
-                mapInfo.profesion = jsonvalues.TokenInt32Value("profesionPer");
-                mapInfo.paisOrigen = jsonvalues.TokenInt32Value("paisdenacimientoPer");
-                mapInfo.actividadEconomica = 8397;
-                mapInfo.clientesNacionalidades = new[] { new Clientesnacionalidade() { nacionalidad = jsonvalues.TokenInt32Value("nacionalidadPer") } };
-                string telefonocelularPer = jsonvalues.TokenStringValue("telefonocelularPer");
-                if (telefonocelularPer.IsNotEmpty())
+
+            mapInfo.profesion = jsonvalues.TokenInt32Value("profesionPer");
+            mapInfo.paisOrigen = jsonvalues.TokenInt32Value("paisdenacimientoPer");
+            mapInfo.actividadEconomica = 8397;
+            mapInfo.clientesNacionalidades = new[] { new Clientesnacionalidade() { nacionalidad = jsonvalues.TokenInt32Value("nacionalidadPer") } };
+            string telefonocelularPer = jsonvalues.TokenStringValue("telefonocelularPer");
+            if (telefonocelularPer.IsNotEmpty())
+            {
+                mapInfo.clientesUbicaciones.Add(new Compliance.Integrations.Contracts.Clientesubicacione()
                 {
-                    mapInfo.clientesUbicaciones.Add(new Compliance.Integrations.Contracts.Clientesubicacione()
-                    {
-                        tipoUbicacion = 2,
-                        divisionTerritorial = 99999,
-                        descripcionUbicacion = telefonocelularPer
-                    });
-                }
-                mapInfo.articulo15 = jsonvalues.TokenStringValue("actividadesart15Per") == "1" ? "S" : "N";
-                if (jsonvalues.TokenStringValue("peprelacionPer") == "1")
-                {
-                    mapInfo.esPep = "S";
-                    mapInfo.tipoPep = "R";
-                }
-                if (jsonvalues.TokenStringValue("pepcargoPer") == "1")
-                {
-                    mapInfo.esPep = "S";
-                    mapInfo.tipoPep = "D";
-                }
-        
+                    tipoUbicacion = 2,
+                    divisionTerritorial = 99999,
+                    descripcionUbicacion = telefonocelularPer
+                });
+            }
+            mapInfo.articulo15 = jsonvalues.TokenStringValue("actividadesart15Per") == "1" ? "S" : "N";
+            if (jsonvalues.TokenStringValue("peprelacionPer") == "1")
+            {
+                mapInfo.esPep = "S";
+                mapInfo.tipoPep = "R";
+            }
+            if (jsonvalues.TokenStringValue("pepcargoPer") == "1")
+            {
+                mapInfo.esPep = "S";
+                mapInfo.tipoPep = "D";
+            }
+
 
 
             mapInfo.clientesPolizas = new List<Compliance.Integrations.Contracts.Clientespoliza>()
@@ -162,21 +187,34 @@ namespace Architect.API.Tron.Business.Emision
                     fechaInicio = quoteInfo.fec_efec_poliza,
                     fechaFinalizacion = quoteInfo.fec_vcto_poliza,
                     moneda  = quoteInfo.cod_mon,
-                   // prima = (int)quoteInfo.DatosEconomicos.annualnetpremium,
+                    prima = jsonvalues.TokenDoubleValue("montoprimaPer"),
                     estado="A",
                     //faltaban
                     tipoPrima = "A",
                     tipoPoliza= "C",
                     tipoProducto = 302,
-
-
+                    montoAsegurado =jsonvalues.TokenDoubleValue("montovaloraseguradoPer")
                 }
             };
-            if (quoteInfo.DatosEconomicos != null)
+            //if (quoteInfo.DatosEconomicos != null)
+            //{
+            //    mapInfo.clientesPolizas[0].prima = (int)quoteInfo.DatosEconomicos.annualgrosspremium;
+            //}
+            switch (jsonvalues.TokenStringValue("formadepagodelapolizaPer"))
             {
-                mapInfo.clientesPolizas[0].prima = (int)quoteInfo.DatosEconomicos.annualgrosspremium;
+                case "1": //Anual
+                    mapInfo.clientesPolizas[0].tipoPrima = "A";
+                    break;
+                case "2": //Semestral
+                    mapInfo.clientesPolizas[0].tipoPrima = "S";
+                    break;
+                case "3": //Trimestral
+                    mapInfo.clientesPolizas[0].tipoPrima = "T";
+                    break;
+                case "4": //Mensual
+                    mapInfo.clientesPolizas[0].tipoPrima = "M";
+                    break;
             }
-
 
 
             return mapInfo;
@@ -186,7 +224,7 @@ namespace Architect.API.Tron.Business.Emision
         {
             Architect.Compliance.Integrations.Contracts.Clientes mapInfo = new Compliance.Integrations.Contracts.Clientes()
             {
-                tipoIdentificacion = jsonvalues.TokenInt32Value("tipodecedulajuridicaJur"),
+                tipoIdentificacion = 2,
                 numeroIdentificacion = jsonvalues.TokenStringValue("numerocedulajuridicaJur"),
                 nombreCliente = string.Empty,
                 primerApellido = string.Empty,
@@ -225,7 +263,13 @@ namespace Architect.API.Tron.Business.Emision
                 lugarExpedicionIdentificacion = "Costa Rica",
                 fechaVencimientoIdentificacion = new DateTime(1900, 1, 1),
                 fechaProximaActualizacion = new DateTime(1900, 1, 1),
-                descripcionInversionInicial = String.Empty
+                descripcionInversionInicial = String.Empty,
+                paisOrigen = jsonvalues.TokenInt32Value("paisdeconstitucionJur"),
+                genero = "X",
+                estadoCivil = "X",
+                actividadEconomica = jsonvalues.TokenInt32Value("actividaddelclientenaturalezadelnegocioJur"),
+                montoIngresoMensual = jsonvalues.TokenDoubleValue("ingresomensualestimadoJur"),
+                inversionInicial = jsonvalues.TokenInt32Value("montovaloraseguradoJur")
             };
 
 
@@ -268,24 +312,6 @@ namespace Architect.API.Tron.Business.Emision
                 });
             }
 
-            mapInfo.genero = "X";
-            mapInfo.estadoCivil = "X";
-
-
-            mapInfo.paisOrigen = jsonvalues.TokenInt32Value("paisdeconstitucionJur");
-            mapInfo.actividadEconomica = 8397;
-
-            mapInfo.articulo15 = jsonvalues.TokenStringValue("actividadesart15Jur") == "1" ? "S" : "N";
-            //if (jsonvalues.TokenStringValue("peprelacionJur") == "1")
-            //{
-            //    mapInfo.esPep = "S";
-            //    mapInfo.tipoPep = "R";
-            //}
-            //if (jsonvalues.TokenStringValue("pepcargoJur") == "1")
-            //{
-            //    mapInfo.esPep = "S";
-            //    mapInfo.tipoPep = "D";
-            //}
             Clientesrepresentante representante = new Clientesrepresentante()
             {
 
@@ -299,7 +325,7 @@ namespace Architect.API.Tron.Business.Emision
                 conocidoComo = String.Empty,
                 genero = jsonvalues.TokenStringValue("sexoJur") == "1" ? "M" : "F",
                 fechaNacimiento = jsonvalues.TokenDateTimeValue("fechadenacimientoJur"),
-                estadoCivil = jsonvalues.TokenStringValue("estadocivilJur", "X"),
+                estadoCivil = EstadoCivilHomo(jsonvalues.TokenStringValue("estadocivilJur")),
                 paisOrigen = jsonvalues.TokenInt32Value("paisdenacimientoJur"),
                 profesion = jsonvalues.TokenInt32Value("profesionJur"),
                 actividadEconomica = 8397,
@@ -349,32 +375,6 @@ namespace Architect.API.Tron.Business.Emision
                 });
             }
 
-
-
-            switch (representante.estadoCivil)
-            {
-                case "1": //casado
-                    representante.estadoCivil = "C";
-                    break;
-                case "2": //divorciado
-                    representante.estadoCivil = "D";
-                    break;
-                case "3": //soltero
-                    representante.estadoCivil = "S";
-                    break;
-                case "4": //viudo
-                    representante.estadoCivil = "V";
-                    break;
-                case "5": //otro
-                    representante.estadoCivil = "X";
-                    break;
-                case "7": //acompañado
-                    representante.estadoCivil = "U";
-                    break;
-                default:
-                    representante.estadoCivil = "X";
-                    break;
-            }
             if (jsonvalues.TokenStringValue("peprelacionJur") == "1")
             {
                 representante.esPep = "S";
@@ -389,7 +389,19 @@ namespace Architect.API.Tron.Business.Emision
 
             mapInfo.clientesRepresentantes = new[] { representante };
 
+            //mapInfo.articulo15 = jsonvalues.TokenStringValue("actividadesart15Jur") == "1" ? "S" : "N";
+            mapInfo.articulo15 = "N";
 
+            //if (jsonvalues.TokenStringValue("peprelacionJur") == "1")
+            //{
+            //    mapInfo.esPep = "S";
+            //    mapInfo.tipoPep = "R";
+            //}
+            //if (jsonvalues.TokenStringValue("pepcargoJur") == "1")
+            //{
+            //    mapInfo.esPep = "S";
+            //    mapInfo.tipoPep = "D";
+            //}
 
             mapInfo.clientesPolizas = new List<Compliance.Integrations.Contracts.Clientespoliza>()
             {
@@ -400,20 +412,36 @@ namespace Architect.API.Tron.Business.Emision
                     fechaInicio = quoteInfo.fec_efec_poliza,
                     fechaFinalizacion = quoteInfo.fec_vcto_poliza,
                     moneda  = quoteInfo.cod_mon,
-                   // prima = (int)quoteInfo.DatosEconomicos.annualnetpremium,
+                    prima = jsonvalues.TokenDoubleValue("montoprimaJur"),
                     estado="A",
                     //faltaban
                     tipoPrima = "A",
                     tipoPoliza= "C",
                     tipoProducto = 302,
+                    montoAsegurado =jsonvalues.TokenDoubleValue("montovaloraseguradoJur")
 
 
                 }
             };
-            if (quoteInfo.DatosEconomicos != null)
+            switch (jsonvalues.TokenStringValue("formadepagodelapolizaJur"))
             {
-                mapInfo.clientesPolizas[0].prima = (int)quoteInfo.DatosEconomicos.annualgrosspremium;
+                case "1": //Anual
+                    mapInfo.clientesPolizas[0].tipoPrima = "A";
+                    break;
+                case "2": //Semestral
+                    mapInfo.clientesPolizas[0].tipoPrima = "S";
+                    break;
+                case "3": //Trimestral
+                    mapInfo.clientesPolizas[0].tipoPrima = "T";
+                    break;
+                case "4": //Mensual
+                    mapInfo.clientesPolizas[0].tipoPrima = "M";
+                    break;
             }
+            //if (quoteInfo.DatosEconomicos != null)
+            //{
+            //    mapInfo.clientesPolizas[0].prima = (int)quoteInfo.DatosEconomicos.annualgrosspremium;
+            //}
 
             mapInfo.clientesSocios = new List<Clientessocio>();
 
@@ -423,23 +451,80 @@ namespace Architect.API.Tron.Business.Emision
 
                 mapInfo.clientesSocios.Add(new Clientessocio()
                 {
-                    tipoIdentificacionSocio=1,
+                    tipoIdentificacionSocio = 1,
                     nombre = item.TokenStringValue("participacionaccionariaNombrecompletoJur"),
+                    primerApellido = string.Empty,
                     numeroIdentificacionSocio = item.TokenStringValue("participacionaccionariaNumerodeidentificacionJur"),
                     participacion = item.TokenInt32Value("porcentajedeparticipacionJur"),
                     esPep = "N",
                     tipoPep = "N",
                     descripcionPep = "No aplica",
                     genero = "N",
-                    articulo15= "N",
-                    estadoCivil="X",
+                    articulo15 = "N",
+                    estadoCivil = "X",
                     fechaNacimiento = new DateTime(1900, 1, 1)
                 });
 
             }
 
+
+
             return mapInfo;
         }
+
+        private static string EstadoCivilHomo(string estadoCivil)
+        {
+            string result = string.Empty;
+
+            switch (estadoCivil)
+            {
+                case "1": //casado
+                    result = "C";
+                    break;
+                case "2": //divorciado
+                    result = "D";
+                    break;
+                case "3": //soltero
+                    result = "S";
+                    break;
+                case "4": //viudo
+                    result = "V";
+                    break;
+                case "5": //otro
+                    result = "X";
+                    break;
+                case "7": //acompañado
+                    result = "U";
+                    break;
+                default:
+                    result = "X";
+                    break;
+            }
+            return result;
+        }
+
+        // FISICOS
+        //	{"Text":"PERSONA FISICA NACIONAL","Value":"1"}
+        //	{"Text":"PERSONA FISICA EXTRANJERA RESIDENTE","Value":"3"}
+        //  { "Text":"PERSONA EXTRANJERA NO RESIDENTE","Value":"5"}
+        //  { "Text":"No disponible","Value":"9"}
+        //  { "Text":"PERSONA FISICA EXTRANJERA DIPLOMATICA","Value":"10"}
+        // JURIDICO
+        //{ "Text":"PERSONA JURIDICA NACIONAL","Value":"2"},
+        //	{ "Text":"ENTIDAD FINANCIERA EXTRANJERA","Value":"4"},
+        //	{ "Text":"PERSONA JURIDICA EXTRANJERA DOMICILIADA","Value":"6"},
+        //	{ "Text":"FONDOS DE INVERSION","Value":"7"},
+        //	{ "Text":"FIDEICOMISOS","Value":"8"},
+        //	{ "Text":"PERSONA JURIDICA EXTRANJERA NO DOMICILIADA","Value":"11"},
+        //	{ "Text":"INSTITUCION AUTONOMA","Value":"12"},
+        //	{ "Text":"GOBIERNO CENTRAL","Value":"13"}
+        //tipoCuenta
+        //  {"Text":"Habitual","Value":"H"},
+        //  {"Text":"Ocasional","Value":"O"},
+        //  { "Text":"Nuevo","Value":"N"}
+
+
+
 
     }
 }
