@@ -1,4 +1,5 @@
 ﻿using Architect.Utilities.Extensions;
+using Microsoft.AspNet.OData;
 using Microsoft.Web.Http;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,6 @@ using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web.Http.OData;
 
 namespace Architect.API.Core.Controllers
 {
