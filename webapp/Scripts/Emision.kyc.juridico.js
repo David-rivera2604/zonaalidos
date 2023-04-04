@@ -8,7 +8,7 @@ app.kycjuridico = (function () {
 
     function Setup(data) {
 
-        app.core.Lookups(['Pais.paisdeconstitucionJur', 'Paises.cod_paisJur', 'Provincias.cod_estadoJur', 'Pais.nacionalidadJur', 'Pais.paisdenacimientoJur', 'TRON_G1000100.profesionJur', 'CivilStatus.estadocivilJur', 'Gender.sexoJur', 'Paises.domiciliopermanenteCod_paisJur', 'Provincias.domiciliopermanenteCod_estadoJur'],
+        app.core.Lookups(['ActividadEconomica.actividaddelclientenaturalezadelnegocioJur','Pais.paisdeconstitucionJur', 'Paises.cod_paisJur', 'Provincias.cod_estadoJur', 'Pais.nacionalidadJur', 'Pais.paisdenacimientoJur', 'TRON_G1000100.profesionJur', 'CivilStatus.estadocivilJur', 'Gender.sexoJur', 'Paises.domiciliopermanenteCod_paisJur', 'Provincias.domiciliopermanenteCod_estadoJur'],
             function () {
                 setupData = data;
                 MapObjectToInput(data);
@@ -47,7 +47,8 @@ app.kycjuridico = (function () {
             paisdeconstitucionJur: app.ui.GetDropDownNumericValue('#paisdeconstitucionJur'),
             paisdeconstitucionJurDesc: app.ui.GetDropDownSelectedText('#paisdeconstitucionJur'),
             fechadeconstitucionJur: app.ui.GetDateValue('#fechadeconstitucionJur'),
-            actividaddelclientenaturalezadelnegocioJur: $('#actividaddelclientenaturalezadelnegocioJur').val(),
+            actividaddelclientenaturalezadelnegocioJur: app.ui.GetDropDownNumericValue('#actividaddelclientenaturalezadelnegocioJur'),
+            actividaddelclientenaturalezadelnegocioJurDesc: app.ui.GetDropDownSelectedText('#actividaddelclientenaturalezadelnegocioJur'),
             telefonoJur: $('#telefonoJur').val(),
             faxJur: $('#faxJur').val(),
             apartadopostalJur: $('#apartadopostalJur').val(),
@@ -137,7 +138,7 @@ app.kycjuridico = (function () {
         app.ui.SetRadioNumericValue('tipodecedulajuridicaJur', data.tipodecedulajuridicaJur);
         app.ui.SetDropDownNumericValue('#paisdeconstitucionJur', data.paisdeconstitucionJur, true);
         app.ui.SetDateValue('#fechadeconstitucionJur', data.fechadeconstitucionJur);
-        $('#actividaddelclientenaturalezadelnegocioJur').val(data.actividaddelclientenaturalezadelnegocioJur);
+        app.ui.SetDropDownNumericValue('#actividaddelclientenaturalezadelnegocioJur', data.actividaddelclientenaturalezadelnegocioJur, true);
         $('#telefonoJur').val(data.telefonoJur);
         $('#faxJur').val(data.faxJur);
         $('#apartadopostalJur').val(data.apartadopostalJur);
@@ -671,7 +672,7 @@ app.kycjuridico = (function () {
                 "tipodecedulajuridicaJur": null,
                 "paisdeconstitucionJur": 0,
                 "fechadeconstitucionJur": "0001-01-01T00:00:00",
-                "actividaddelclientenaturalezadelnegocioJur": "",
+                "actividaddelclientenaturalezadelnegocioJur": 0,
                 "telefonoJur": "",
                 "faxJur": "",
                 "apartadopostalJur": "",

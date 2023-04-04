@@ -267,7 +267,7 @@ namespace Architect.API.Tron.Business.Emision
                 paisOrigen = jsonvalues.TokenInt32Value("paisdeconstitucionJur"),
                 genero = "X",
                 estadoCivil = "X",
-                actividadEconomica = 8397,
+                actividadEconomica = jsonvalues.TokenInt32Value("actividaddelclientenaturalezadelnegocioJur"),
                 montoIngresoMensual = jsonvalues.TokenDoubleValue("ingresomensualestimadoJur"),
                 inversionInicial = jsonvalues.TokenInt32Value("montovaloraseguradoJur")
             };
