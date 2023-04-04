@@ -4,25 +4,23 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{09A0943E-CE17-433E-AB5B-9F6E3AF78E50}</ProjectGuid>
+    <ProjectGuid>{68042445-0A60-4BED-A4A9-222A6BE98C3B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Architect.API.Insurance.Business</RootNamespace>
-    <AssemblyName>Architect.API.Insurance.Business</AssemblyName>
+    <RootNamespace>Architect.PDF.Integrations</RootNamespace>
+    <AssemblyName>Architect.PDF.Integrations</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugType>pdbonly</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Architect.API.Insurance.Business.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,23 +31,38 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Architect.Decision">
-      <HintPath>..\..\runtime\Architect.Decision.dll</HintPath>
+    <Reference Include="BouncyCastle.Crypto, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Portable.BouncyCastle.1.9.0\lib\net40\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
-    <Reference Include="Architect.Domain.Excel.Import">
-      <HintPath>..\..\runtime\Architect.Domain.Excel.Import.dll</HintPath>
+    <Reference Include="itext.barcodes, Version=7.2.5.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\itext7.7.2.5\lib\net461\itext.barcodes.dll</HintPath>
     </Reference>
-    <Reference Include="ClosedXML, Version=0.96.0.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ClosedXML.0.96.0\lib\net46\ClosedXML.dll</HintPath>
+    <Reference Include="itext.commons, Version=7.2.5.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\itext7.commons.7.2.5\lib\net461\itext.commons.dll</HintPath>
     </Reference>
-    <Reference Include="DocumentFormat.OpenXml, Version=2.19.0.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DocumentFormat.OpenXml.2.19.0\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    <Reference Include="itext.forms, Version=7.2.5.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\itext7.7.2.5\lib\net461\itext.forms.dll</HintPath>
     </Reference>
-    <Reference Include="ExcelNumberFormat, Version=1.1.0.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ExcelNumberFormat.1.1.0\lib\net20\ExcelNumberFormat.dll</HintPath>
+    <Reference Include="itext.io, Version=7.2.5.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\itext7.7.2.5\lib\net461\itext.io.dll</HintPath>
     </Reference>
-    <Reference Include="Hangfire.Core, Version=1.7.34.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Hangfire.Core.1.7.34\lib\net46\Hangfire.Core.dll</HintPath>
+    <Reference Include="itext.kernel, Version=7.2.5.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\itext7.7.2.5\lib\net461\itext.kernel.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.layout, Version=7.2.5.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\itext7.7.2.5\lib\net461\itext.layout.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.pdfa, Version=7.2.5.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\itext7.7.2.5\lib\net461\itext.pdfa.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.sign, Version=7.2.5.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\itext7.7.2.5\lib\net461\itext.sign.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.styledxmlparser, Version=7.2.5.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\itext7.7.2.5\lib\net461\itext.styledxmlparser.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.svg, Version=7.2.5.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\itext7.7.2.5\lib\net461\itext.svg.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
@@ -75,26 +88,14 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=7.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Diagnostics.DiagnosticSource.7.0.2\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
-    </Reference>
-    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.IO.Packaging, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.IO.Packaging.7.0.0\lib\net462\System.IO.Packaging.dll</HintPath>
     </Reference>
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
@@ -113,90 +114,15 @@
       <HintPath>..\..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bayer\Convertions.cs" />
-    <Compile Include="Bayer\Inclusion.cs" />
-    <Compile Include="Enumerations\PolicyStatus.cs" />
-    <Compile Include="ManualClaims\Claim.cs" />
-    <Compile Include="ManualPolicies\Certificate.cs" />
-    <Compile Include="Policy\DigitalSignature.cs" />
-    <Compile Include="Policy\ThirdParty.cs" />
-    <Compile Include="ManualPolicies\Policy.cs" />
-    <Compile Include="Policy\Notify.cs" />
-    <Compile Include="Policy\Rating.cs" />
-    <Compile Include="Policy\RiskImport.cs" />
-    <Compile Include="Policy\RiskBeneficiary.cs" />
-    <Compile Include="Policy\RiskQuestionnaires.cs" />
-    <Compile Include="Policy\Risk.cs" />
-    <Compile Include="Policy\RiskOverdraft.cs" />
-    <Compile Include="Policy\RiskRoles.cs" />
-    <Compile Include="Policy\RuleLoans.cs" />
-    <Compile Include="Products\Specification.cs" />
+    <Compile Include="Signature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reglas\research.cs" />
-    <Compile Include="_Generated\Certificate.cs" />
-    <Compile Include="_Generated\Claim.cs" />
-    <Compile Include="_Generated\Policy.cs" />
-    <Compile Include="_Generated\RiskOverdraft.cs" />
-    <Compile Include="_Generated\Risk.cs" />
-    <Compile Include="_Generated\RiskQuestionnaires.cs" />
-    <Compile Include="_Generated\RiskRoles.cs" />
-    <Compile Include="_Generated\ThirdParty.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\Architect.API.Core.Business\Architect.API.Core.Business.csproj">
-      <Project>{579105b3-776b-4094-a301-87a9c42962c5}</Project>
-      <Name>Architect.API.Core.Business</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Architect.API.Core.Contracts\Architect.API.Core.Contracts.csproj">
-      <Project>{29b21bef-8c87-4a9d-8b37-fecc57cd03c7}</Project>
-      <Name>Architect.API.Core.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Architect.DocuSign.Integrations\Architect.DocuSign.Integrations.csproj">
-      <Project>{41b3f1c8-fdb5-4db4-be61-6bf1576a09e7}</Project>
-      <Name>Architect.DocuSign.Integrations</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Architect.PDF.Integrations\Architect.PDF.Integrations.csproj">
-      <Project>{68042445-0a60-4bed-a4a9-222a6be98c3b}</Project>
-      <Name>Architect.PDF.Integrations</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\InsuranceRating\Architect.Insurance.Contracts\Architect.Insurance.Contracts.csproj">
-      <Project>{92937331-3ec2-45c0-879e-de7186cca4ae}</Project>
-      <Name>Architect.Insurance.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\InsuranceRating\Architect.Insurance.Services\Architect.Insurance.Services.csproj">
-      <Project>{6ef8ca1d-1853-4875-b953-8264f985c110}</Project>
-      <Name>Architect.Insurance.Services</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Kernel\Architect.DataFactory\Architect.DataFactory.csproj">
-      <Project>{011157f4-8e96-46fe-8ff6-2b36ae9f20c9}</Project>
-      <Name>Architect.DataFactory</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Kernel\Architect.Utilities.Excel\Architect.Utilities.Excel.csproj">
-      <Project>{231f38ee-e067-4a51-9195-fb5a3e0d337d}</Project>
-      <Name>Architect.Utilities.Excel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Kernel\Architect.Utilities\Architect.Utilities.csproj">
-      <Project>{e8317ab3-7807-4fcf-8520-b80340b4eb7d}</Project>
-      <Name>Architect.Utilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Architect.API.Insurance.Contracts\Architect.API.Insurance.Contracts.csproj">
-      <Project>{3da1398d-ccc0-4f4b-a099-72cc3bbd2a9a}</Project>
-      <Name>Architect.API.Insurance.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Architect.API.Insurance.DataAccess\Architect.API.Insurance.DataAccess.csproj">
-      <Project>{945e44c5-d4b9-0284-138f-dbfdcc714451}</Project>
-      <Name>Architect.API.Insurance.DataAccess</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

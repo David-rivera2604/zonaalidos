@@ -1,6 +1,5 @@
 ﻿using Architect.API.Insurance.Contracts.Policy;
 using Architect.Utilities.Extensions;
-using DocumentFormat.OpenXml.Bibliography;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -22,12 +21,11 @@ namespace Architect.API.Insurance.Business.Bayer
         {
             string fullFileName = Path.Combine(ConfigurationManager.AppSettings["Attachments.Path"], fileName);
             bool result = false;
-
-            Dictionary<string, string> pdfInfo = Helpers.DocumentManager.Information(fullFileName);
-            if (pdfInfo.ContainsKey("SERIALNUMBER"))
+            string serialNumber = Architect.PDF.Integrations.Signature.SerialNumber(fullFileName);
+            if (serialNumber.IsNotEmpty())
             {
                 Contracts.Bayer.InclusionRequest request = Retrieve(id, tokenInfo);
-                result = request.DocumentNumber.OnlyNumbers() == pdfInfo["SERIALNUMBER"].OnlyNumbers();
+                result = request.DocumentNumber.OnlyNumbers() == serialNumber.OnlyNumbers();
                 if (result)
                 {
                     Core.Contracts.General.Attachments attachment = new Core.Contracts.General.Attachments
