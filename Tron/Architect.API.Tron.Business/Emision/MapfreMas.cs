@@ -108,7 +108,12 @@ namespace Architect.API.Tron.Business.Emision
                 //TODO: Se debe incluir la validación de que de haber un Tomador, Asegurado y Conductor Habitual, pero faltan las básicas.
                 quoteInfo.DatosEconomicos = EconomicDataCalculate(quoteInfo);
 
-                //Compliance(quoteInfo, tokenInfo);
+                //Utilities.SerializeHandler<Contracts.Emision.MapfreMas>.
+                //    SerializeJSONToFile(quoteInfo,
+                //        string.Format(@"{1}\mapfremas.request.{0}.json", quoteInfo.presupuesto, ConfigurationManager.AppSettings["Path.Logs"]), true, false, false);
+
+
+                //ComplianceSetup.Send(quoteInfo, tokenInfo);
 
                 string uniqueId = EnviarSolicitud(quoteInfo.tip_firma, quoteInfo.correoenvio, quoteInfo, tokenInfo);
                 string kycUniqueId = String.Empty;

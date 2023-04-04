@@ -1224,6 +1224,7 @@
     <Content Include="Scripts\Emision.kyc.declarante.js" />
     <Content Include="Scripts\Emision.kyc.juridico.js" />
     <Content Include="Scripts\Emision.kyc.persona.js" />
+    <Content Include="Scripts\Emision.Terceros.js" />
     <Content Include="Scripts\Emision.SaldoDeudor.js" />
     <Content Include="Scripts\Cotizacion.SaldoDeudor.js" />
     <Content Include="Scripts\Cotizacion.Viajero.js" />
