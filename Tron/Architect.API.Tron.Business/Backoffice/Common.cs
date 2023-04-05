@@ -1,4 +1,5 @@
-﻿using Architect.Utilities.Extensions;
+﻿using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
+using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -177,7 +178,6 @@ namespace Architect.API.Tron.Business.Backoffice
         public static byte[] ImprimirPoliza(string num_poliza, int num_riesgo = 1)
         {
             string procedureName = string.Empty;
-            byte[] result = null;
             switch (num_poliza.Substring(0, 3))
             {
                 case "201":
@@ -204,9 +204,17 @@ namespace Architect.API.Tron.Business.Backoffice
             {
                 throw new Utilities.Exceptions.ApplicationException(string.Format("No se puede imprimir la póliza {0} del ramo {0}", num_poliza, num_poliza.Substring(0, 3)));
             }
+            string reportId = DataAccess.Impresion.Poliza(1, num_poliza, procedureName, num_riesgo);
+
+            return ImprimirPoliza(reportId,
+                String.Format("Póliza {0}, Riesgo {1}, ReportId {2} ", num_poliza, num_riesgo, reportId));
+        }
+
+        public static byte[] ImprimirPoliza(string reportId, string verb)
+        {
+            byte[] result = null;
             string id = string.Format("{0}/servlet/mapfre.srv.SVJspool?otxtAccion=11&id={1}&format=pdf",
-                                        ConfigurationManager.AppSettings["Mapfre.Tron.RutaImpresion"],
-                                        DataAccess.Impresion.Poliza(1, num_poliza, procedureName, num_riesgo));
+                            ConfigurationManager.AppSettings["Mapfre.Tron.RutaImpresion"], reportId);
             using (WebClient client = new WebClient())
             {
                 result = client.DownloadData(id);
@@ -217,7 +225,7 @@ namespace Architect.API.Tron.Business.Backoffice
                 Architect.Utilities.Log.ErrorLog("ImprimirPoliza", failDetail);
                 throw new Exception(failDetail);
             }
-            Utilities.Log.WarningLog("ImprimirPoliza", String.Format("Póliza {0}, Riesgo {1}, Tamaño {2}, URL {3} ", num_poliza, num_riesgo, result.Length, id), "tron");
+            Utilities.Log.WarningLog("ImprimirPoliza", verb, "tron");
 
             return result;
         }
@@ -266,13 +274,13 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Descarga el Deposito De Prima de tron.
         /// </summary>
-        public static byte[] DepositoDePrima(int num_recibo)
+        public static byte[] DepositoDePrima(int num_recibo, bool cobradosHoy = true)
         {
             byte[] result = null;
 
             string id = string.Format("{0}/servlet/mapfre.srv.SVJspool?otxtAccion=11&id={1}&format=pdf",
                                         ConfigurationManager.AppSettings["Mapfre.Tron.RutaImpresion"],
-                                        Architect.API.Tron.DataAccess.Impresion.DepositoDePrima(1, num_recibo));
+                                        Architect.API.Tron.DataAccess.Impresion.DepositoDePrima(1, num_recibo, cobradosHoy));
             using (WebClient client = new WebClient())
             {
                 result = client.DownloadData(id);

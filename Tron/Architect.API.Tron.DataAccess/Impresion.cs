@@ -1,4 +1,5 @@
 ﻿using Architect.DataFactory;
+using Microsoft.SqlServer.Server;
 using System;
 using System.Data;
 
@@ -59,15 +60,16 @@ namespace Architect.API.Tron.DataAccess
             return reportId;
         }
 
-        public static string DepositoDePrima(int cod_cia, int num_recibo)
+        public static string DepositoDePrima(int cod_cia, int num_recibo, bool cobradosHoy = true)
         {
+            string procName = cobradosHoy ? "em_k_jrp_liscomp_mcr.p_lista" : "em_k_jrp_re_liscomp_mcr.p_lista";
             IDbConnection currentConnection = Database.OpenConnection("Tron");
-            Database.Procedure("em_k_jrp_re_liscomp_mcr.p_lista")
-                    .AddParameter("p_cod_cia", DataFactory.Enumerations.DbType.Int32, 22, cod_cia)
-                    .AddParameter("p_cod_cajero", DataFactory.Enumerations.DbType.String, 8, null)
-                    .AddParameter("p_num_bloquetes", DataFactory.Enumerations.DbType.Int32, 12, null)
-                    .AddParameter("p_num_recibo", DataFactory.Enumerations.DbType.Int32, 22, num_recibo)
-                    .Execute(currentConnection, "Tron");
+            Database.Procedure(procName)
+                 .AddParameter("p_cod_cia", DataFactory.Enumerations.DbType.Int32, 22, cod_cia)
+                 .AddParameter("p_cod_cajero", DataFactory.Enumerations.DbType.String, 8, null)
+                 .AddParameter("p_num_bloquetes", DataFactory.Enumerations.DbType.Int32, 12, null)
+                 .AddParameter("p_num_recibo", DataFactory.Enumerations.DbType.Int32, 22, num_recibo)
+                 .Execute(currentConnection, "Tron");
 
             string reportId = ReportIdentify(currentConnection);
             currentConnection.Close();

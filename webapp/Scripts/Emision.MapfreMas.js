@@ -25,7 +25,7 @@ app.EmisionMapfreMas = (function () {
                     workMode = data.Modo;
                     if (localStorage.getItem('Roles').includes('Purdy')) {
                         $('.Purdy').removeClass('d-none');
-                        $('#Fuente_Tomador').prop("disabled", (workMode != 'draft' && workMode != 'resume') );
+                        $('#Fuente_Tomador').prop("disabled", (workMode != 'draft' && workMode != 'resume'));
                     }
 
                     if (workMode === 'draft' || workMode === 'resume') {
@@ -56,6 +56,7 @@ app.EmisionMapfreMas = (function () {
         $('#cod_zona_circul').replaceWith('<div>' + $('#cod_zona_circul option:selected').text() + '</div>');
         $('#cod_marca').replaceWith('<div>' + $('#cod_marca option:selected').text() + '</div>');
         $('#cod_modelo').replaceWith('<div>' + $('#cod_modelo option:selected').text() + '</div>');
+        $('#cod_sub_modelo').replaceWith('<div>' + $('#cod_sub_modelo option:selected').text() + '</div>');
         $('#ANIO_SUB_MODELO').replaceWith('<div>' + $('#ANIO_SUB_MODELO').val() + '</div>');
         $('#cod_tip_vehi').replaceWith('<div>' + $('#cod_tip_vehi option:selected').text() + '</div>');
         $('#cod_uso_vehi').replaceWith('<div>' + $('#cod_uso_vehi option:selected').text() + '</div>');
@@ -74,6 +75,7 @@ app.EmisionMapfreMas = (function () {
         $('label[for=MCA_VR').next().replaceWith('<div>' + $('label[for=MCA_VR_' + app.ui.GetRadioNumericValue('MCA_VR') + '').html() + '</div>');
         $('#IMP_VR').replaceWith('<div>' + $('#IMP_VR').val() + '</div>');
         $('label[for=MCA_DESC_CLIENTE_NUEVO').next().replaceWith('<div>' + $('label[for=MCA_DESC_CLIENTE_NUEVO_' + app.ui.GetRadioNumericValue('MCA_DESC_CLIENTE_NUEVO') + '').html() + '</div>');
+        $('label[for=ext_garantia').next().replaceWith('<div>' + $('label[for=ext_garantia_' + app.ui.GetRadioNumericValue('ext_garantia') + '').html() + '</div>');
         $('#PCT_AJUSTE_GEN').parent().replaceWith('<div>' + $('#PCT_AJUSTE_GEN').val() + ' %</div>');
         $('#IMP_AUTO_RC').replaceWith('<div>' + $('#IMP_AUTO_RC option:selected').text() + '</div>');
         $('#DED_AUTO_RC').replaceWith('<div>' + $('#DED_AUTO_RC option:selected').text() + '</div>');
@@ -184,15 +186,7 @@ app.EmisionMapfreMas = (function () {
                 });
             }, `cod_ramo=${data.cod_ramo}:cod_pais=CRI:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}:num_contrato=${data.contrato}`);
 
-        // Dependencies events
-        $('#TProvincia').on('change', function () {
-            var pais = $('select#cod_pais').val();
-            app.core.LookupDependency($('select#TProvincia').val(), 'TCanton', 'Cantones', '', null, true, null, `cod_pais=${pais}:cod_estado=`);
-        });
-        $('#TCanton').on('change', function () {
-            var pais = $('select#cod_pais').val();
-            app.core.LookupDependency($('select#TCanton').val(), 'TDistrito', 'Distritos', '', null, false, null, `cod_pais=${pais}:cod_prov=`);
-        });
+
     }
 
     function SettingReload(callback) {
@@ -286,6 +280,7 @@ app.EmisionMapfreMas = (function () {
         app.ui.DropDownValueWithOption('#cod_zona_circul', data.cod_zona_circul, data.cod_zona_circulDesc);
         $('#cod_marca').val(data.cod_marca);
         $('#cod_modelo').val(data.cod_modelo);
+        $('#cod_sub_modelo').val(data.cod_sub_modelo);
         app.ui.SetNumericValue('#ANIO_SUB_MODELO', data.ANIO_SUB_MODELO);
         $('#cod_tip_vehi').val(data.cod_tip_vehi);
         $('#cod_uso_vehi').val(data.cod_uso_vehi);
@@ -306,6 +301,7 @@ app.EmisionMapfreMas = (function () {
         app.ui.SetRadioStringValue('Vehiculo_Otra_Poliza', data.Vehiculo_Otra_Poliza);
         app.ui.SetRadioNumericValue('MCA_DESC_CLIENTE_NUEVO', data.MCA_DESC_CLIENTE_NUEVO);
         app.ui.SetNumericValue('#PCT_AJUSTE_GEN', data.PCT_AJUSTE_GEN);
+        app.ui.SetRadioNumericValue('ext_garantia', data.ext_garantia);
 
         if (data.terceros != null)
             $('#tercerosTbl').bootstrapTable('load', data.terceros);
@@ -881,561 +877,6 @@ app.EmisionMapfreMas = (function () {
         return result;
     }
 
-    function terceros_table_setup() {
-
-        $('#tercerosTbl').bootstrapTable({
-            uniqueId: 'tercerosId',
-            classes: 'table table-bordered table-hover table-index table-in-form',
-            pagination: true,
-            smartDisplay: true,
-            detailView: false,
-            detailFormatter: 'app.ui.GenericDetailFormatter',
-            columns: [
-                {
-                    field: 'tipodeterceroDesc',
-                    title: 'Tipo de tercero',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    formatter: 'app.ui.StringFormatter'
-                }, {
-                    field: 'DocumentNumber',
-                    title: 'Identificación',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    formatter: 'app.ui.StringFormatter'
-                }, {
-                    field: 'nombre',
-                    title: 'Nombre completo',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    formatter: function (value, row, index, field) {
-                        let name = value + (row.apellido1 ? ' ' + row.apellido1 : '');
-                        return `<span>${name}</span>`;
-                    }
-                }, {
-                    field: 'fechadenacimiento',
-                    title: 'Nacimiento',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'center',
-                    formatter: 'app.ui.DateFormatter'
-                }, {
-                    field: 'tercerosMca_sexoDesc',
-                    title: 'Sexo',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    formatter: 'app.ui.StringFormatter'
-                }, {
-                    field: 'estadoCivilDesc',
-                    title: 'Estado Civil',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    formatter: 'app.ui.StringFormatter'
-                }, {
-                    field: 'numerodetelefono',
-                    title: 'Teléfono',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    formatter: 'app.ui.StringFormatter'
-                }, {
-                    field: 'correoelectronico',
-                    title: 'Correo electrónico',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    formatter: 'app.ui.StringFormatter'
-                }, {
-                    field: 'TProvinciaDesc',
-                    title: 'Provincia',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    formatter: 'app.ui.StringFormatter'
-                }, {
-                    field: 'TCantonDesc',
-                    title: 'Cantón',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    formatter: 'app.ui.StringFormatter'
-                }, {
-                    field: 'TDistritoDesc',
-                    title: 'Distrito',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    formatter: 'app.ui.StringFormatter'
-                }, {
-                    field: 'otrasenas',
-                    title: 'Otra señas',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    formatter: 'app.ui.StringFormatter',
-                    visible: false
-                }, {
-                    field: 'numerodeprestamo',
-                    title: 'El tomador es el mismo asegurado',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'center',
-                    formatter: 'app.ui.StringFormatter',
-                    visible: false
-                }, {
-                    field: 'numerodeprestamo',
-                    title: 'El asegurado es el conductor habitual',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'center',
-                    formatter: 'app.ui.StringFormatter',
-                    visible: false
-                }, {
-                    field: 'numerodeprestamo',
-                    title: 'Número de prestamo',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    formatter: 'app.ui.StringFormatter',
-                    visible: false
-                }, {
-                    field: 'importedecesion',
-                    title: 'Importe de cesión',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'right',
-                    formatter: 'app.ui.DecimalFormatter',
-                    visible: false
-                }, {
-                    field: 'vencimientodecesion',
-                    title: 'Vencimiento de cesión',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'center',
-                    formatter: 'app.ui.DateFormatter',
-                    visible: false
-                }, {
-                    field: 'porcentajeacredor',
-                    title: 'Porcentaje acredor',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'right',
-                    formatter: 'app.ui.IntegerFormatter',
-                    visible: false
-                }, {
-                    field: 'parentesco',
-                    title: 'Parentesco',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    formatter: 'app.ui.StringFormatter',
-                    visible: false
-                }, {
-                    field: 'porcentaje',
-                    title: 'Porcentaje',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'right',
-                    formatter: 'app.ui.IntegerFormatter',
-                    visible: false
-                }, {
-                    field: 'Actions',
-                    title: 'Acciones',
-                    class: 'd-none d-sm-table-cell',
-                    titleTooltip: 'Acciones disponibles para un visualizations',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'center',
-                    width: 10,
-                    widthUnit: "%",
-                    visible: true,
-                    events: 'tercerosTbl_Events',
-                    formatter: function (value, row, index, field) {
-                        let attribute = row.NoEditable ? " disabled" : "";
-                        return '<button type="button"' + attribute + ' class="btn btn-sm btn-white edit" title="Al hacer click permite la edición de los datos del tercero de la fila"> <i class="fa fa-pencil"></i> </button>' +
-                            '<button type="button"' + attribute + ' class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar los datos del tercero de la fila"> <i class="fa fa-close"></i> </button>';
-                    },
-                    cellStyle: function (value, row, index) {
-                        return {
-                            css: {
-                                'white-space': 'nowrap',
-                                'vertical-align': 'top'
-                            }
-                        }
-                    }
-                }]
-        });
-
-        $('#tercerosNew').click(function () {
-            $('#tipodetercero').val($('#tipodetercero option[disabled!="disabled"]')[0].value);
-            $('#tipodetercero').change();
-            terceros_table_row_edit();
-        });
-
-        $('#tercerosEdtFormSave').click(function () {
-            if (app.ui.IsValid('#tercerosEdtForm', false)) {
-                app.ui.ButtonDoing('#tercerosEdtFormSave');
-
-                var row = terceros_table_row('values');
-
-                if (row.tercerosId === null)
-                    row.tercerosId = $('#tercerosTbl').bootstrapTable('getData').length + 1;
-
-                if ($('#tercerosModal').data('id') != null) {
-                    $('#tercerosTbl').bootstrapTable('updateByUniqueId', { id: row.tercerosId, row: row });
-                }
-                else {
-                    $('#tercerosTbl').bootstrapTable('append', row);
-
-                    if (row.eltomadoreselmismoasegurado === 1) {
-                        let newinsurance = JSON.parse(JSON.stringify(row));
-                        newinsurance.tercerosId += 1;
-                        newinsurance.tipodetercero = 2;
-                        newinsurance.tipodeterceroDesc = $('#tipodetercero option[value="2"]').text();
-                        newinsurance.eltomadoreselmismoasegurado = 1;
-                        newinsurance.elaseguradoeselconductorhabitual = 2;
-                        $('#tercerosTbl').bootstrapTable('append', newinsurance);
-                    }
-
-                    if (row.elaseguradoeselconductorhabitual === 1) {
-                        let newDriver = JSON.parse(JSON.stringify(row));
-                        newDriver.tercerosId += 1;
-                        newDriver.tipodetercero = 3;
-                        newDriver.tipodeterceroDesc = $('#tipodetercero option[value="3"]').text();
-                        newDriver.eltomadoreselmismoasegurado = 1;
-                        newDriver.elaseguradoeselconductorhabitual = 2;
-                        $('#tercerosTbl').bootstrapTable('append', newDriver);
-                    }
-                }
-
-                if (row.tipodetercero === 2) {
-                    $('#correoenvio').val(row.correoelectronico);
-                }
-
-                app.ui.ButtonDone('#tercerosEdtFormSave')
-                $('#tercerosModal').modal('hide');
-                formularios_handler();
-            }
-        });
-
-    }
-
-    function terceros_table_row(mode) {
-        if (mode == null) {
-            return {
-                tercerosId: null,
-                tipodetercero: $('#tipodetercero').val(),
-                DocumentNumberType: null,
-                DocumentNumber: null,
-                nombre: null,
-                apellido1: null,
-                apellido2: null,
-                fechadenacimiento: null,
-                tercerosMca_sexo: null,
-                estadoCivil: null,
-                numerodetelefono: null,
-                correoelectronico: null,
-                cod_pais: 'CRI',
-                TProvincia: null,
-                TCanton: null,
-                TDistrito: null,
-                otrasenas: null,
-                eltomadoreselmismoasegurado: 2,
-                elaseguradoeselconductorhabitual: 2,
-                numerodeprestamo: null,
-                importedecesion: null,
-                vencimientodecesion: null,
-                porcentajeacredor: null,
-                parentesco: null,
-                porcentaje: null,
-                NoEditable: false
-            };
-        }
-        else {
-            return {
-                tercerosId: $('#tercerosModal').data('id'),
-                tipodetercero: app.ui.GetDropDownNumericValue('#tipodetercero'),
-                tipodeterceroDesc: $('#tipodetercero option:selected').text(),
-                DocumentNumberType: $("#DocumentNumberType").data("value"),
-                DocumentNumber: $('#DocumentNumber').val(),
-                nombre: $('#nombre').val(),
-                apellido1: $('#apellido1').val(),
-                apellido2: $('#apellido2').val(),
-                fechadenacimiento: app.ui.GetDateValue('#fechadenacimiento'),
-                tercerosMca_sexo: $('#tercerosMca_sexo').val(),
-                tercerosMca_sexoDesc: $('#tercerosMca_sexo option:selected').text(),
-                estadoCivil: $('#estadoCivil').val(),
-                estadoCivilDesc: $('#estadoCivil option:selected').text(),
-                numerodetelefono: $('#numerodetelefono').val(),
-                correoelectronico: $('#correoelectronico').val(),
-                cod_pais: $('#cod_pais').val(),
-                TProvincia: $('#TProvincia').val(),
-                TProvinciaDesc: $('#TProvincia option:selected').text(),
-                TCanton: $('#TCanton').val(),
-                TCantonDesc: $('#TCanton option:selected').text(),
-                TDistrito: $('#TDistrito').val(),
-                TDistritoDesc: $('#TDistrito option:selected').text(),
-                otrasenas: $('#otrasenas').val(),
-                eltomadoreselmismoasegurado: app.ui.GetRadioNumericValue('eltomadoreselmismoasegurado'),
-                elaseguradoeselconductorhabitual: app.ui.GetRadioNumericValue('elaseguradoeselconductorhabitual'),
-                numerodeprestamo: $('#numerodeprestamo').val(),
-                importedecesion: app.ui.GetNumericValue('#importedecesion'),
-                vencimientodecesion: app.ui.GetDateValue('#vencimientodecesion'),
-                porcentajeacredor: app.ui.GetNumericValue('#porcentajeacredor'),
-                parentesco: $('#parentesco').val(),
-                parentescoDesc: $('#parentesco option:selected').text(),
-                porcentaje: app.ui.GetNumericValue('#porcentaje'),
-                NoEditable: false
-            };
-        }
-    }
-
-    function terceros_table_row_edit(row) {
-        var md = $('#tercerosModal').modal({ show: false });
-        var formInstance = $("#tercerosEdtForm");
-        var fvalidate = formInstance.validate();
-        fvalidate.resetForm();
-        row = row || terceros_table_row();
-        md.data('id', row.tercerosId);
-
-        $('#tipodetercero').val(row.tipodetercero);
-        $('#tipodetercero').change();
-        app.ui.SetDocumentTypeValue('#DocumentNumberType', row.DocumentNumberType);
-        $('#DocumentNumber').val(row.DocumentNumber);
-        $('#nombre').val(row.nombre);
-        $('#apellido1').val(row.apellido1);
-        $('#apellido2').val(row.apellido2);
-        app.ui.SetDateValue('#fechadenacimiento', row.fechadenacimiento);
-        $('#tercerosMca_sexo').val(row.tercerosMca_sexo);
-        $('#estadoCivil').val(row.estadoCivil);
-        $('#numerodetelefono').val(row.numerodetelefono);
-        $('#correoelectronico').val(row.correoelectronico);
-        $('#cod_pais').val(row.cod_pais);
-        $('#TProvincia').val(row.TProvincia);
-
-        app.core.LookupDependency(row.TProvincia, 'TCanton', 'Cantones', '', row.TCanton, false, null, `cod_pais=${row.cod_pais}:cod_estado=`);
-        app.core.LookupDependency(row.TCanton, 'TDistrito', 'Distritos', '', row.TDistrito, false, null, `cod_pais=${row.cod_pais}:cod_prov=`);
-
-        $('#otrasenas').val(row.otrasenas);
-        app.ui.SetRadioNumericValue('eltomadoreselmismoasegurado', row.eltomadoreselmismoasegurado)
-        app.ui.SetRadioNumericValue('elaseguradoeselconductorhabitual', row.elaseguradoeselconductorhabitual)
-        $('#numerodeprestamo').val(row.numerodeprestamo);
-        app.ui.SetNumericValue('#importedecesion', row.importedecesion);
-        app.ui.SetDateValue('#vencimientodecesion', row.vencimientodecesion);
-        app.ui.SetNumericValue('#porcentajeacredor', row.porcentajeacredor);
-        $('#parentesco').val(row.parentesco);
-        app.ui.SetNumericValue('#porcentaje', row.porcentaje);
-
-
-        md.modal('show');
-    }
-
-    function terceros_table_row_delete(row) {
-        $('#tercerosTbl').bootstrapTable('removeByUniqueId', row.tercerosId);
-    }
-
-    function terceros_table_Validations() {
-        app.ui.DateValidators();
-        $("#tercerosEdtForm").validate({
-            errorPlacement: app.ui.ErrorPlacement,
-            rules: {
-                tipodetercero: { required: true },
-                DocumentNumber: { required: true },
-                nombre: { required: true },
-                apellido1: { required: true },
-                apellido2: { required: true },
-                fechadenacimiento: { required: true },
-                tercerosMca_sexo: { required: true },
-                estadoCivil: { required: true },
-                numerodetelefono: { required: true },
-                correoelectronico: { email: true, required: true },
-                cod_pais: { required: true },
-                TProvincia: { required: true },
-                TCanton: { required: true },
-                TDistrito: { required: true },
-                otrasenas: { required: true },
-                vencimientodecesion: { required: true },
-                parentesco: { required: true },
-                porcentaje: { required: true },
-            },
-            messages: {
-                tipodetercero: { required: 'Debe indicar el Tipo de tercero' },
-                DocumentNumber: { required: 'Debe indicar el Identificación' },
-                nombre: { required: 'Debe indicar el Nombre' },
-                apellido1: { required: 'Debe indicar el Apellido 1' },
-                apellido2: { required: 'Debe indicar el Apellido 2' },
-                fechadenacimiento: { required: 'Debe indicar el Fecha de nacimiento' },
-                tercerosMca_sexo: { required: 'Debe indicar el Sexo' },
-                estadoCivil: { required: 'Debe indicar el Estado Civil' },
-                numerodetelefono: { required: 'Debe indicar el Número de teléfono' },
-                correoelectronico: { email: 'Debe indicar un correo electrónico valido', required: 'Debe indicar el correo electrónico' },
-                cod_pais: { required: 'Debe indicar el País' },
-                TProvincia: { required: 'Debe indicar el Provincia' },
-                TCanton: { required: 'Debe indicar el Cantón' },
-                TDistrito: { required: 'Debe indicar el Distrito' },
-                otrasenas: { required: 'Debe indicar el Otra señas' },
-                vencimientodecesion: { required: 'Debe indicar el Vencimiento de cesión' },
-                parentesco: { required: 'Debe indicar el Parentesco' },
-                porcentaje: { required: 'Debe indicar el Porcentaje' },
-            }
-        });
-    }
-
-    function terceros_controls_setup() {
-        $('#DocumentNumber').formatter({
-            pattern: '0{{9}}-{{9999}}-{{9999}}',
-            persistent: false
-        });
-        $('#fechadenacimiento_group').datetimepicker({
-            format: 'DD/MM/YYYY',
-            locale: 'es',
-            maxDate: app.ui.Yesterday(),
-            date: null
-
-        });
-        $('#numerodetelefono').formatter({
-            pattern: '{{9999}}-{{9999}}',
-            persistent: false
-        });
-        new AutoNumeric('#importedecesion', {
-            decimalCharacter: ',',
-            decimalCharacterAlternative: '.',
-            digitGroupSeparator: '.',
-            maximumValue: '999999999999999999',
-            minimumValue: '0',
-            decimalPlaces: '2',
-            emptyInputBehavior: 'null'
-        });
-        $('#vencimientodecesion_group').datetimepicker({
-            format: 'DD/MM/YYYY',
-            locale: 'es'
-        });
-        new AutoNumeric('#porcentajeacredor', {
-            decimalCharacter: ',',
-            decimalCharacterAlternative: '.',
-            digitGroupSeparator: '.',
-            maximumValue: '100',
-            minimumValue: '0',
-            decimalPlaces: '0',
-            emptyInputBehavior: 'null'
-        });
-        new AutoNumeric('#porcentaje', {
-            decimalCharacter: ',',
-            decimalCharacterAlternative: '.',
-            digitGroupSeparator: '.',
-            maximumValue: '100',
-            minimumValue: '0',
-            decimalPlaces: '0',
-            emptyInputBehavior: 'null'
-        });
-
-    }
-
-    function terceros_documentNumberCallBack(data) {
-        if (data != null) {
-            $('#nombre').val((data.FirstName + ' ' + data.MiddleName).trim());
-            $('#apellido1').val(data.LastName);
-            $('#apellido2').val(data.SecondLastName);
-            $('#PhoneNumber').val(data.PhoneNumber);
-            app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
-            $('#tercerosMca_sexo').val(data.Gender);
-            $('#TProvincia').val(data.Province);
-            $('#correoelectronico').val(data.PrimaryEmailAddress);
-            $('#numerodetelefono').val(data.PhoneNumber);
-
-            let value = data.CivilStatus;
-            if (value == '1')
-                value = 'C';
-            else if (value == '2')
-                value = 'D';
-            else if (value == '3')
-                value = 'S';
-            else if (value == '4')
-                value = 'V';
-            $('#estadoCivil').val(value);
-
-            //function LookupDependency(parentValue, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url) {
-
-            app.core.LookupDependency(data.Province, 'TCanton', 'Cantones', '', data.Canton, false, null, 'cod_pais=CRI:cod_estado=');
-            app.core.LookupDependency(data.Canton, 'TDistrito', 'Distritos', '', data.District, false, null, 'cod_pais=CRI:cod_prov=');
-
-            //$('#TCanton').val(data.Canton);
-            //$('#TDistrito').val(data.District);
-            $('#otrasenas').val(data.AddressDetail);
-
-
-
-
-
-        }
-    }
-
-    function terceros_controls_Events() {
-        app.ui.DocumentNumberHandler('#DocumentNumber', terceros_documentNumberCallBack);
-
-        $('#tipodetercero').change(function () {
-            switch ($('#tipodetercero').val()) {
-                case '0':
-                    $('[name=eltomadoreselmismoasegurado]').first().parent().parent().parent().parent().removeClass('d-none');
-                    $('[name=elaseguradoeselconductorhabitual]').first().parent().parent().parent().removeClass('d-none');
-                    $('#beneficiarioZone').addClass('d-none');
-                    $('#acredorZone').addClass('d-none');
-                    break;
-                case '2':
-                    $('[name=eltomadoreselmismoasegurado]').first().parent().parent().parent().parent().addClass('d-none');
-                    $('[name=elaseguradoeselconductorhabitual]').first().parent().parent().parent().parent().removeClass('d-none');
-                    $('#beneficiarioZone').addClass('d-none');
-                    $('#acredorZone').addClass('d-none');
-                    break;
-                case '3':
-                    $('[name=eltomadoreselmismoasegurado]').first().parent().parent().parent().parent().addClass('d-none');
-                    $('[name=elaseguradoeselconductorhabitual]').first().parent().parent().parent().parent().addClass('d-none');
-                    $('#beneficiarioZone').addClass('d-none');
-                    $('#acredorZone').addClass('d-none');
-                    break;
-                case '6':
-                    $('[name=eltomadoreselmismoasegurado]').first().parent().parent().parent().parent().addClass('d-none');
-                    $('[name=elaseguradoeselconductorhabitual]').first().parent().parent().parent().parent().addClass('d-none');
-                    $('#beneficiarioZone').removeClass('d-none');
-                    $('#acredorZone').addClass('d-none');
-                    break;
-                case '8':
-                    $('[name=eltomadoreselmismoasegurado]').first().parent().parent().parent().parent().addClass('d-none');
-                    $('[name=elaseguradoeselconductorhabitual]').first().parent().parent().parent().parent().addClass('d-none');
-                    $('#beneficiarioZone').addClass('d-none');
-                    $('#acredorZone').removeClass('d-none');
-                    break;
-            }
-
-        });
-
-    }
-
     function documentosrequeridos_table_setup() {
 
         $('#documentosrequeridosTbl').bootstrapTable({
@@ -1926,40 +1367,42 @@ app.EmisionMapfreMas = (function () {
                     app.core.LoadScriptFile(formularioRow.type === 'kycpersona' ? 'Emision.kyc.persona.js' : 'Emision.kyc.juridico.js')
                         .then(d => {
                             let ref = formularioRow.type === 'kycpersona' ? app.kycpersona : app.kycjuridico;
-                            formularioRow.data = ref.InitData();
-                            if (formularioRow.type === 'kycpersona') {
+                            if (formularioRow.data === null) {
+                                formularioRow.data = ref.InitData();
+                                if (formularioRow.type === 'kycpersona') {
 
 
 
-                                formularioRow.data.primerapellidoPer = mainHolder[0].apellido1;
-                                formularioRow.data.segundoapellidoPer = mainHolder[0].apellido2;
-                                formularioRow.data.nombrePer = mainHolder[0].nombre;
-                                formularioRow.data.fechadenacimientoPer = mainHolder[0].fechadenacimiento;
-                                formularioRow.data.correoelectronicoPer = mainHolder[0].correoelectronico;
-                                formularioRow.data.tercerosMca_sexo = mainHolder[0].tercerosMca_sexo;
-                                formularioRow.data.numerodeidentificacionPer = mainHolder[0].DocumentNumber;
-                                formularioRow.data.tipodeidentificacionPer = mainHolder[0].DocumentNumberType;
-                                formularioRow.data.estadocivilPer = mainHolder[0].estadoCivil;
-                                formularioRow.data.telefonoresidenciaPer = mainHolder[0].numerodetelefono;
+                                    formularioRow.data.primerapellidoPer = mainHolder[0].apellido1;
+                                    formularioRow.data.segundoapellidoPer = mainHolder[0].apellido2;
+                                    formularioRow.data.nombrePer = mainHolder[0].nombre;
+                                    formularioRow.data.fechadenacimientoPer = mainHolder[0].fechadenacimiento;
+                                    formularioRow.data.correoelectronicoPer = mainHolder[0].correoelectronico;
+                                    formularioRow.data.tercerosMca_sexo = mainHolder[0].tercerosMca_sexo;
+                                    formularioRow.data.numerodeidentificacionPer = mainHolder[0].DocumentNumber;
+                                    formularioRow.data.tipodeidentificacionPer = mainHolder[0].DocumentNumberType;
+                                    formularioRow.data.estadocivilPer = mainHolder[0].estadoCivil;
+                                    formularioRow.data.telefonoresidenciaPer = mainHolder[0].numerodetelefono;
 
-                                formularioRow.data.cod_paisPer = mainHolder[0].cod_pais;
-                                formularioRow.data.cod_estadoPer = mainHolder[0].TProvincia;
-                                formularioRow.data.cod_provPer = mainHolder[0].TCanton;
-                                formularioRow.data.cod_localidadPer = mainHolder[0].TDistrito;
-                                formularioRow.data.direccionexactaPer = mainHolder[0].otrasenas;
+                                    formularioRow.data.cod_paisPer = mainHolder[0].cod_pais;
+                                    formularioRow.data.cod_estadoPer = mainHolder[0].TProvincia;
+                                    formularioRow.data.cod_provPer = mainHolder[0].TCanton;
+                                    formularioRow.data.cod_localidadPer = mainHolder[0].TDistrito;
+                                    formularioRow.data.direccionexactaPer = mainHolder[0].otrasenas;
 
-                            } else {
-                                formularioRow.data.nombrecomercialJur = mainHolder[0].nombre;
-                                formularioRow.data.razonsocialJur = mainHolder[0].nombre;
-                                formularioRow.data.numerocedulajuridicaJur = mainHolder[0].DocumentNumber;
-                                formularioRow.data.correoelectronicoJur = mainHolder[0].correoelectronico;
+                                } else {
+                                    formularioRow.data.nombrecomercialJur = mainHolder[0].nombre;
+                                    formularioRow.data.razonsocialJur = mainHolder[0].nombre;
+                                    formularioRow.data.numerocedulajuridicaJur = mainHolder[0].DocumentNumber;
+                                    formularioRow.data.correoelectronicoJur = mainHolder[0].correoelectronico;
 
-                                formularioRow.data.cod_paisJur = mainHolder[0].cod_pais;
-                                formularioRow.data.cod_estadoJur = mainHolder[0].TProvincia;
-                                formularioRow.data.cod_provJur = mainHolder[0].TCanton;
-                                formularioRow.data.cod_localidadJur = mainHolder[0].TDistrito;
-                                formularioRow.data.direccionexactaJur = mainHolder[0].otrasenas;
+                                    formularioRow.data.cod_paisJur = mainHolder[0].cod_pais;
+                                    formularioRow.data.cod_estadoJur = mainHolder[0].TProvincia;
+                                    formularioRow.data.cod_provJur = mainHolder[0].TCanton;
+                                    formularioRow.data.cod_localidadJur = mainHolder[0].TDistrito;
+                                    formularioRow.data.direccionexactaJur = mainHolder[0].otrasenas;
 
+                                }
                             }
                             ref.Init(formularioRow.data);
                             ref.AcceptCallBack(app.EmisionMapfreMas.Accept);
@@ -1995,7 +1438,7 @@ app.EmisionMapfreMas = (function () {
 
                 $('.formulariosGrid').removeClass('d-none');
 
-                let row = { formularioId: 1, name: 'Conozca a su cliente persona', when: null, type: 'kycpersona', data: null };
+                let row = { formularioId: 1, name: 'Conozca a su cliente persona', when: setupData.kyc === null ? null : new Date(), type: 'kycpersona', data: setupData.kyc };
 
                 if (mainHolder[0].DocumentNumberType === 4) {
                     row.name = 'Conozca a su cliente Jurídico';
@@ -2025,11 +1468,6 @@ app.EmisionMapfreMas = (function () {
             plandepago_table_setup();
             Controls_Events();
 
-            terceros_controls_setup();
-            terceros_table_setup();
-            terceros_table_Validations();
-            terceros_controls_Events();
-
             documentosrequeridos_controls_setup();
             documentosrequeridos_table_setup();
             documentosrequeridos_table_Validations();
@@ -2037,13 +1475,9 @@ app.EmisionMapfreMas = (function () {
 
             formularios_table_setup();
 
+            $('.mapfremas-visible').removeClass('d-none');
+
             Setup();
-        },
-        tercerosEditRow: function (row) {
-            terceros_table_row_edit(row);
-        },
-        tercerosDeleteRow: function (row) {
-            terceros_table_row_delete(row);
         },
         documentosrequeridosEditRow: function (row) {
             documentosrequeridos_table_row_edit(row);
@@ -2059,20 +1493,13 @@ app.EmisionMapfreMas = (function () {
         },
         Accept: function (data) {
             formularios_table_kycSetData(data);
+        },
+        formularios_handler: function (src) {
+            formularios_handler();
         }
     };
 })();
 
-window.tercerosTbl_Events = {
-    'click .delete': function (e, value, row, index) {
-        toastr.warning("Si está seguro de querer eliminar el tercero '" + row.nombre + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionMapfreMas.tercerosDeleteRow(row); } });
-        e.stopPropagation();
-    },
-    'click .edit': function (e, value, row, index) {
-        app.EmisionMapfreMas.tercerosEditRow(row);
-        e.stopPropagation();
-    }
-};
 window.documentosrequeridosTbl_Events = {
     'click .delete': function (e, value, row, index) {
         toastr.warning("Si está seguro de querer limpiar el documento requerido '" + row.DNombre + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionMapfreMas.documentosrequeridosDeleteRow(row); } });

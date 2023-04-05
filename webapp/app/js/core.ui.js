@@ -286,6 +286,15 @@ app.ui = (function () {
             else
                 return value.toLocaleString('ES', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         },
+        IntegerWithZeroFormatter: function (value, row, index, field) {
+            if (value === null)
+                value = 0;
+            else if (value === undefined) {
+                console.log("IntegerFormatter", field, value);
+                value = 0;
+            }
+            return value.toLocaleString('ES', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+        },
         DecimalFormatter: function (value, row, index, field) {
             if (value == undefined || value === null || value === 0)
                 return '';
@@ -318,6 +327,12 @@ app.ui = (function () {
                 value = moment(value).format('DD/MM/YYYY');
 
             return value;
+        },
+
+        TestFormatter: function (value, row, index, field) {
+            var code = '<span class=columnBtn><button type=\"button\" name=\"xxx\" class=\"btn btn-white ns\" title=\"Permite imprimir la poliza\"><i class=\"fa fa-ellipsis-v\"></i></button>' + '</span>'
+            return code;
+
         },
         DateAndTimeFormatter: function (value, row, index, field) {
             if (value === null || value === '0001-01-01T00:00:00')
@@ -834,12 +849,20 @@ app.ui = (function () {
                 app.core.Get(app.setting.apipath + `v1/Viewer/Dialog?id=${options.id}`)
                     .done(function (data, textStatus, jqXHR) {
                         let html = data.HTML.supplant(options.data);
+                        html = app.core.ReplaceAll(html, '@_eqg', '>=');
                         html = app.core.ReplaceAll(html, '@_eq', '=');
                         html = app.core.ReplaceAll(html, '@_qt', '\'');
                         html = app.core.ReplaceAll(html, '@_sc', ';');
+
                         //html = html.replace(/@_/g, '\'');
                         $('.sidebar-content').replaceWith(html.replace('ibox-content', 'ibox-content sidebar-content'));
+                        if (options.callback != undefined) {
+                            data.Code = data.Code.replace("//Custom.Extend", options.callback + "(this, JSON.parse(localStorage.getItem('current')));");
+                        }
                         eval(data.Code);
+                        //if (options.callback != undefined) {
+                        //    eval(options.callback + '(app.Prototype, options.data)');
+                        //}
                     });
             }
             else {
@@ -865,7 +888,7 @@ app.ui = (function () {
                 }
             });
         },
-        LookupLoad: function (ctrl, lkpData) {
+        LookupLoad: function (ctrl, lkpData, autoSelect) {
             let selectedOptions = $('select#' + ctrl);
             selectedOptions.children().remove();
             $.each(lkpData, function () {
@@ -874,7 +897,16 @@ app.ui = (function () {
             if (lkpData.length == 1 && !selectedOptions.is(':disabled')) {
                 selectedOptions.val(lkpData[0]['Code']);
             } else {
-                selectedOptions.val(-1);
+                if (!selectedOptions.is(':disabled') && autoSelect != undefined && autoSelect != null && autoSelect) {
+                    selectedOptions.val($('select#' + ctrl + ' option:first').val());
+                } else {
+                    if (!selectedOptions.is(':disabled') && selectedOptions.data("autoselect") === true) {
+                        selectedOptions.val($('select#' + ctrl + ' option:first').val());
+                    } else {
+                        selectedOptions.val(-1);
+                    }
+                }
+
             }
         },
         DropDownDisabled: function (element, disabled, clean) {
@@ -886,6 +918,10 @@ app.ui = (function () {
             if (clean != undefined && clean) {
                 $(element).prop("selectedIndex", -1);
             }
+            if (current && !disabled && $(element).data("autoselect") === true) {
+                $(element).val($('select' + element + ' option:first').val());
+            }
+
         },
         Download: function (fileName, id) {
             fileName = fileName.toLowerCase();
@@ -917,7 +953,9 @@ app.ui = (function () {
             let tenant = localStorage.getItem('Tenant');
             roles.forEach(function (item) {
                 $(`.role-${item}-visible`).removeClass('d-none');
+                $(`.role-${item}-notvisible`).addClass('d-none');
                 $(`.role-${item}-enable`).prop("disabled", false);
+                $(`.role-${item}-disable`).prop("disabled", true);
                 $(`.role-${item}-${tenant}-visible`).removeClass('d-none');
                 $(`.role-${item}-${tenant}-enable`).prop("disabled", false);
                 $(`.role--${tenant}-visible`).removeClass('d-none');
@@ -936,6 +974,28 @@ app.ui = (function () {
                     ctrl.html(ctrl.html().replace(mark, ''));
                 }
             }
+        },
+        LookUpListFormatter: function (value, row, index, field) {
+            if (value === null || value === 0 || typeof value === 'object')
+                return '';
+            else {
+                let lkp = [];
+                if (this.lookupList != undefined) {
+                    lkp = JSON.parse(this.lookupList.replaceAll("\'", "\""));
+                }
+                let lkpValue = lkp.find(({ code }) => code === value)
+
+                return lkpValue == undefined ? value : lkpValue.desc;
+            }
+        },
+        IsSameDate: function (dateSource, dateTarget) {
+            if (dateSource != undefined && dateSource != null && dateTarget != undefined && dateTarget != null) {
+                return (dateSource.getFullYear() === dateTarget.getFullYear() &&
+                    dateSource.getMonth() === dateTarget.getMonth() &&
+                    dateSource.getDay() === dateTarget.getDay())
+            }
+            else
+                return false;
         }
     };
 })();

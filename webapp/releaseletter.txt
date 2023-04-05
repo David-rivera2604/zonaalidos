@@ -457,6 +457,27 @@
 1.6.23             Aliados.Cambio Estilo
                    Aliados.Abrir Casos y dar Seguimientos en el Workflow por Tenant
                    Aliados.Mantenimiento Colores por Tenant
-                   Aliados.Cotizacion Poliza Grupo Multirriesgo
+                   Aliados.Cotizacion Póliza Grupo Multirriesgo
                    Clientes.Compra Seguros Viajero
                    Bayer. Cambio en la expresion regular para los input de  cedulas (se quitan 0 y -)
+1.6.24  03/03/2023 Aliados. Manejo de información del agente por tenant,
+                   MapfreMas. Nuevos campos y condiciones de visibilidad parar Purdy.
+                   MapfreMas. Manejo de cotización por vigencia completa.
+                   MapfreMas. Autoselección de dropdown para facilitar el llenado de la cotización.
+                   Aliados. Cancelación de póliza desde la consulta de pólizas activas,
+                   MapfreMas. Ayuda para la selección de la marca, modelo y submodelo.
+                   Aliados. Gestiones de aprobación -> Controles técnicos.
+1.6.25  09/03/2023 Envió de correo certificado Y notificación para controles técnicos.
+                   Renovación de pólizas.
+                   Impresión de certificados para todas las vigencias.
+                   Impresión de recibos cobras el mismo día o días anteriores.
+1.6.26  21/03/2023 Reporte de capital
+                   Reporte de cartera vigente
+                   Reporte de histórico de pago
+                   Consultas generales de pólizas madres
+                   Consultas generales vigencias anteriores
+                   Fix. Los avisos me trae la lista de contratos pero no me los carga en el selección
+                   Fix. En la consulta de avisos no me trae los recibos de un aviso.
+1.6.27  29/03/2023 Bayer. Al expirar la firma, se da la posibilidad de declinar o volver a enviar al revisor.
+                   Bayer. Borrado físico de solicitud para revisor.
+                   MapfreMas. Compliance. Ajustes para el caso de titulares jurídicos.

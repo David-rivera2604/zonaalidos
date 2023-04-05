@@ -156,9 +156,9 @@ namespace Architect.API.Core.Business.Security
                         rols = DataAccess.Security.UserRoleMember.RetrieveLookByUserId(user.UserId, user.CompanyId);
                         result.Roles = rols.Select(x => x.Description).ToArray();
 
-                        //Este bloque esta duplicado en la clase token
+                        //Este bloque esta duplicado en la clase Architect.API.Core.Security.token
                         Contracts.Security.AgentInformation agentInfo = null;
-                        if (user.CompanyId == 2)
+                        if (Utilities.Helpers.Settings.StringValue("Tenant.Tron.Agent.Information").Contain(user.CompanyId.ToString()))
                         {
                             agentInfo = Tron.RetrieveAgentInformationByEmail(user.CompanyId, user.EMail);
                         }
