@@ -146,6 +146,7 @@ namespace Architect.API.Core.DataAccess.General
             }
             Database.Select("SELECT * FROM (" +
                             "SELECT Id, ProcessSpecFlow.CompanyId, Name, Description, Alias, MailServer, ReferenceCaption1, ReferenceLookupList1, ReferenceCaption2, ReferenceLookupList2, ReferenceCaption3, ReferenceLookupList3, ReferenceCaption4, ReferenceLookupList4, ReferenceCaption5, ReferenceLookupList5, SLA, Status, ProcessSpecFlow.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessSpecFlow.UpdateDate " +
+                            ", (SELECT LISTAGG(RM.ROLENAME , ', ') WITHIN GROUP (ORDER BY RM.ROLENAME ) FROM ProcessSpecFlowRole prm LEFT JOIN ROLEMEMBER rm ON rm.RoleId = prm.RoleId WHERE prm.COMPANYID=ProcessSpecFlow.CompanyId AND prm.ID=ProcessSpecFlow.ID) Roles" +
                                    ", ROW_NUMBER() OVER (ORDER BY ProcessSpecFlow.Id DESC) RowNumber " +
                               "FROM ProcessSpecFlow LEFT JOIN UserMember um ON um.UserId = ProcessSpecFlow.UpdateUserCode " +
                              "WHERE ProcessSpecFlow.CompanyId=:CompanyId" + filter +
@@ -156,7 +157,7 @@ namespace Architect.API.Core.DataAccess.General
                         .AddParameter("endIndex", DbType.Decimal, 9, endIndex)
                         .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
                         {
-                            result.Add(DataReaderToProcessSpecFlow(reader));
+                            result.Add(DataReaderToProcessSpecFlow(reader, null, true));
                         }));
             return result;
         }
@@ -386,7 +387,7 @@ namespace Architect.API.Core.DataAccess.General
         /// <param name="reader">DataReader</param>
         /// <param name="item">Instancia pre creada</param>
         /// <returns>Instancia con la información de la fila del 'DataReader'</returns>
-        public static Architect.API.Core.Contracts.General.ProcessSpecFlow DataReaderToProcessSpecFlow(System.Data.IDataReader reader, Architect.API.Core.Contracts.General.ProcessSpecFlow item = null)
+        public static Architect.API.Core.Contracts.General.ProcessSpecFlow DataReaderToProcessSpecFlow(System.Data.IDataReader reader, Architect.API.Core.Contracts.General.ProcessSpecFlow item = null, bool queryExt =false)
         {
             if (item == null)
             {
@@ -413,6 +414,9 @@ namespace Architect.API.Core.DataAccess.General
             item.UpdateUserCode = reader.IntegerValue("UpdateUserCode");
             item.UpdateUserName = reader.StringValue("UpdateUserName");
             item.UpdateDate = reader.DateTimeValue("UpdateDate");
+            if (queryExt) { 
+                item.RoleNames = reader.StringValue("Roles");
+            }
             return item;
         }
 

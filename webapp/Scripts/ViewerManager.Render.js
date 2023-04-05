@@ -262,6 +262,9 @@ app.ViewerQuery = (function () {
                     if (column.colorstate != undefined) {
                         app.ViewerQuery.state[column.field] = column.colorstate;
                     }
+                    if (column.style != undefined && column.style.startsWith('function ')) {
+                        column.cellStyle = column.style.replace(/@_/g, '\\\'').parseFunction();
+                    }
                 });
             });
         }
@@ -280,6 +283,9 @@ app.ViewerQuery = (function () {
                 }
                 if (column.colorstate != undefined) {
                     app.ViewerQuery.state[column.field] = column.colorstate;
+                }
+                if (column.style != undefined && column.style.startsWith('function ')) {
+                    column.cellStyle = column.style.replace(/@_/g, '\\\'').parseFunction();
                 }
             });
         }
