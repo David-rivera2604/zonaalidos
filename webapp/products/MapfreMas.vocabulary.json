@@ -470,5 +470,29 @@
       "CSharp": "\"trebolrc\"",
       "JavaScript": "\"trebolrc\""
     }
+  },
+  {
+    "Key": "{El ramo}",
+    "Description": "El ramo",
+    "Language": {
+      "CSharp": "data.cod_ramo",
+      "JavaScript": "data.cod_ramo"
+    }
+  },
+  {
+    "Key": "{MapfreMas}",
+    "Description": "MapfreMas",
+    "Language": {
+      "CSharp": "302",
+      "JavaScript": "302"
+    }
+  },
+  {
+    "Key": "{MapfreMasPlus}",
+    "Description": "MapfreMasPlus",
+    "Language": {
+      "CSharp": "303",
+      "JavaScript": "303"
+    }
   }
 ]

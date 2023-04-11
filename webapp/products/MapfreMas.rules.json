@@ -353,36 +353,40 @@
   ],
   "Coberturas": [
     {
-      "Condicion": "{El Plan} sea igual a {Plan básico}",
+      "Condicion": "{El ramo} sea igual a {MapfreMas} y {El Plan} sea igual a {Plan básico}",
       "Exclusion": "1061,1063,3002,3003,3008,3014,3015,3016,3017,3018,3094"
     },
     {
-      "Condicion": "{El Plan} sea igual a {Plan amplio}",
+      "Condicion": "{El ramo} sea igual a {MapfreMas} y {El Plan} sea igual a {Plan amplio}",
       "Exclusion": "3015,3008,3016,3018,3017,3094,1061,1063"
     },
     {
-      "Condicion": "{El Plan} sea igual a {Plan plus}",
+      "Condicion": "{El ramo} sea igual a {MapfreMas} y {El Plan} sea igual a {Plan plus}",
       "Exclusion": "1063,3016,3018,3017"
     },
     {
-      "Condicion": "{El Plan} sea igual a {Plan oro}",
+      "Condicion": "{El ramo} sea igual a {MapfreMas} y {El Plan} sea igual a {Plan oro}",
       "Exclusion": "3016,3018,3017,3094,1061"
     },
     {
-      "Condicion": "{El Plan} sea igual a {Plan plata}",
+      "Condicion": "{El ramo} sea igual a {MapfreMas} y {El Plan} sea igual a {Plan plata}",
       "Exclusion": "3016,3018,3017,3094,1061,3002,3003,3007,3014,3015"
     },
     {
-      "Condicion": "{El Plan} sea igual a {Plan trébol}",
+      "Condicion": "{El ramo} sea igual a {MapfreMas} y {El Plan} sea igual a {Plan trébol}",
       "Exclusion": "3016,3018,3017,3094,1061,1063"
     },
     {
-      "Condicion": "{El Plan} sea igual a {Plan trébol RC}",
+      "Condicion": "{El ramo} sea igual a {MapfreMas} y {El Plan} sea igual a {Plan trébol RC}",
       "Exclusion": "3002,3003,3004,3005,3006,3007,3008,3009,3014,3015,3016,3017,3018,3094,1060,1061,1063"
     },
     {
-      "Condicion": "{El Plan} sea igual a {Plan plata} y {La clase del vehículo} sea igual a 5",
+      "Condicion": "{El ramo} sea igual a {MapfreMas} y {El Plan} sea igual a {Plan plata} y {La clase del vehículo} sea igual a 5",
       "Exclusion": "3002,3003,3007,3014,3015,3008,3009,1060,1063,3016,3017,3018,3017,3094,1061"
+    },
+    {
+      "Condicion": "{El ramo} sea igual a {MapfreMasPlus}",
+      "Exclusion": "3010,3016,3018,1063"
     }
   ],
   "Listas": [

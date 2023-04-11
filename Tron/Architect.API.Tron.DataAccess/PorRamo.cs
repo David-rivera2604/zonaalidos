@@ -318,7 +318,7 @@ namespace Architect.API.Tron.DataAccess
                     .AddParameter("cod_cia", Architect.DataFactory.Enumerations.DbType.Int32, 22, cod_cia)
                     .AddParameter("num_poliza_grupo", Architect.DataFactory.Enumerations.DbType.String, 13, num_poliza_grupo)
                     .AddParameter("num_contrato", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_contrato)
-                    .AddParameter("num_contrato", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_subcontrato)
+                    .AddParameter("num_subcontrato", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_subcontrato)
                     .AddParameter("cod_marca", Architect.DataFactory.Enumerations.DbType.Int32, 22, cod_marca)
                     .AddParameter("cod_modelo", Architect.DataFactory.Enumerations.DbType.Int32, 22, cod_modelo)
                     .AddParameter("anio_veh", Architect.DataFactory.Enumerations.DbType.Int32, 22, anio_sub_modelo)

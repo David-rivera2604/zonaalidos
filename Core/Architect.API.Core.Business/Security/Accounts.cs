@@ -272,7 +272,7 @@ namespace Architect.API.Core.Business.Security
                             }
 
                         }
-                        if (!authenticationRequest.EmployeeMode)
+                        if (!bypass &&!authenticationRequest.EmployeeMode)
                         {
                             if (user.Password.Equals("."))
                                 result.MustChangePassword = true;
