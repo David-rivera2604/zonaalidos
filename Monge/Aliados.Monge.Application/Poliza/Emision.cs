@@ -300,7 +300,7 @@ namespace Aliados.Monge.Application.Poliza
                     Architect.API.Tron.Business.Util.Tercero(datoFijo,
                                                              riskThirdParty.tipoDocumentacion.ToString().IdentificationType(),
                                                              riskThirdParty.numeroDocumentacion.DocumentNumber(riskThirdParty.tipoDocumentacion.ToString()),
-                                                             Convert.ToInt32(riskThirdParty.tipodetercero), riskThirdParty.numeroderiesgo));
+                                                             Convert.ToInt32(riskThirdParty.tipodetercero), riskThirdParty.numeroderiesgo,  riskThirdParty.porcentaje, riskThirdParty.vencimientodecesion, riskThirdParty.importedecesion, riskThirdParty.numerodeprestamo, riskThirdParty.parentesco));
 
                 detalle = new Architect.API.Tron.Contracts.Presupuesto.DetalleDeTercero()
                 {
