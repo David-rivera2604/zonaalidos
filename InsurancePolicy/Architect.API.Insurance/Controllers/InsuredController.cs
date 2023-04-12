@@ -22,12 +22,13 @@ namespace Architect.API.Insurance.Controllers
         /// Busqueda de información de residentes de Costa Rica.
         /// </summary>
         /// <param name="id">Identificación.</param>
+        /// <param name="docType">Tipo de Identificacion.</param>																 
         /// <returns>Información de la personal.</returns>
         [HttpGet]
-        [Route("{id:int}")]
+        [Route("{id}")]
         [AllowAnonymous]
         [ResponseType(typeof(Contracts.Policy.Insured))]
-        public async Task<IHttpActionResult> InsuredByIdentification([FromUri] string id)
+        public async Task<IHttpActionResult> InsuredByIdentification([FromUri] string id, int docType)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Contracts.Policy.Insured result = null;
@@ -56,7 +57,7 @@ namespace Architect.API.Insurance.Controllers
 
             if (result == null)
             {
-                Task<Contracts.Policy.Insured> tron = Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id);
+                Task<Contracts.Policy.Insured> tron = Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
                 Task<Contracts.Policy.Insured> ins = Architect.Extend.Integrations.InstitutoNacionalDeSeguros.Consultas.PersonaPorIdentificacion(id);
                 Task<Contracts.Policy.Insured> padron = Architect.Extend.Integrations.My.Consultas.PersonaPorIdentificacion(id);
 

@@ -5,6 +5,7 @@ app.CotizacionMultirriesgo = (function () {
     var setupData = null;
     var quoteData = null;
     var showCalculate = false;
+    var workMode = '';
 
     function Setup() {
         $('#coberturasTbl').bootstrapTable('showLoading');
@@ -15,6 +16,9 @@ app.CotizacionMultirriesgo = (function () {
                 }
                 Init_Lookups(data);
             });
+
+        $('#emitir').html("<i class='fa fa-check'></i> Completar solicitud");
+        workMode = '&mode=draft';
     };
 
     function Quote() {
@@ -23,6 +27,7 @@ app.CotizacionMultirriesgo = (function () {
             function (data) {
                 quoteData = data;
                 if (!app.ui.NotifyErrors(data.Mensaje, data.Errors, '#VisualizationsEdtForm')) {
+                    $('#presupuesto').html(data.presupuesto);
                     $('#coberturasRow').removeClass('d-none');
                     $('#coberturasTbl').bootstrapTable('load', data.coberturas);
 
@@ -469,7 +474,7 @@ app.CotizacionMultirriesgo = (function () {
 
         $('#emitir').click(function () {
             event.preventDefault();
-            window.location.replace(app.setting.basepath + 'emision/multirriesgo?presupuesto=' + quoteData.presupuesto);
+            window.location.replace(app.setting.basepath + 'emision/multirriesgo?presupuesto=' + quoteData.presupuesto + workMode);
         });
 
     };

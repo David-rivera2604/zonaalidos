@@ -206,10 +206,57 @@ fieldset[disabled] {
 
 .inmodal .modal-header {
     padding: 8px 8px;
+    background: var(--mapfrered1);
+    color: #fff;
+}
+
+.inmodal .modal-title {
+    font-weight: 700;
+    color: #fff;
+}
+
+
+.modal-tab li {
+    cursor: default;
+    width: 50%;
+    text-align: center;
+    border-right: 1px solid #fff;
+}
+
+.modal-header .nav-tabs {
+    border-bottom: none !important;
+}
+
+.modal-tab li > a {
+    cursor: pointer !important;
+    background: #e7eaec !important;
+    color: #676a6c !important;
+}
+
+.modal-tab li .active {
+    cursor: pointer !important;
+    background: #f8fafb !important;
+    color: var(--mapfregray1) !important;
+}
+
+.modal-tab li {
+    cursor: pointer;
+    color: var(--mapfregray1);
+}
+
+.modal-tab-item a {
+    font-size: 16px;
+    font-weight: 300;
+}
+
+
+.modal-header span {
+    color: var(--mapfregray2);
 }
 
 .inmodal .modal-title {
     font-weight: 500;
+    color: #fff;
 }
 
 .modal-body {

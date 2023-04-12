@@ -518,6 +518,654 @@ namespace Architect.API.Tron.Business.Emision
             return result;
         }
 
+        private static void Compliance(Contracts.Emision.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
+        {
+            JObject jsonvalues = null;
+            Contracts.Comun.tercero titular = (from t in quoteInfo.terceros where t.tipodetercero == 0 select t).FirstOrDefault();
 
+            if (quoteInfo.kyc != null)
+            {
+                jsonvalues = (JObject)quoteInfo.kyc;
+            }
+
+
+            Architect.Compliance.Integrations.Contracts.Clientes mapInfo = new Compliance.Integrations.Contracts.Clientes()
+            {
+                tipoIdentificacion = titular.DocumentNumberType,
+                numeroIdentificacion = titular.DocumentNumber,
+                nombreCliente = titular.nombre,
+                primerApellido = titular.apellido1,
+                segundoApellido = titular.apellido2,
+                conocidoComo = String.Empty,
+                razonSocial = String.Empty,
+                nombreComercial = String.Empty,
+                fechaUltimaActualizacion = DateTime.Now,
+                descripcionCuenta = titular.nombre.CompleteFullName(titular.apellido1, titular.apellido2),
+                numeroIdentificacionEntidad = titular.DocumentNumber,
+                fechaNacimiento = titular.fechadenacimiento,
+                ejecutivo = tokenInfo.AgentCode.ToString(),
+                estado = "A",
+                estadoXML = "X",
+                usuarioRegistro = tokenInfo.UserId.ToString(),
+                administFondosTercero = "N",
+                usuario = tokenInfo.UserId,
+                esApnfd = "N",
+                tipoApnfd = "0",
+                esCpe = "N",
+                pagaImpuestos = "N",
+                //faltaban
+                esPep = "N",
+                tipoPep = "N",
+                residente = "S",
+                articulo15 = "S",
+                esEmpleado = "N",
+                fechaValor = DateTime.Now,
+                tipoCuenta = "1",
+                fechaSalida = new DateTime(1900, 1, 1),
+                fechaIngreso = DateTime.Now,
+                fechaRegistro = DateTime.Now,
+                sectorPublico = "N",
+                fechaInactividad = new DateTime(1900, 1, 1),
+                fechaVinculacion = DateTime.Now,
+                fechaCargaCliente = DateTime.Now,
+                institucionLabora = "0",
+                fechaRegistroApnfd = new DateTime(1900, 1, 1),
+                lugarExpedicionIdentificacion = "Costa Rica",
+                fechaVencimientoIdentificacion = jsonvalues.TokenDateTimeValue("fechadecaducidadPer"),
+                fechaProximaActualizacion = new DateTime(1900, 1, 1),
+                descripcionInversionInicial = String.Empty
+            };
+
+            if (titular.DocumentNumberType == 4)
+            {
+                mapInfo.fechaVencimientoIdentificacion = jsonvalues.TokenDateTimeValue("fechadecaducidadJur");
+            }
+            else if (titular.DocumentNumberType == 1)
+            {
+                mapInfo.fechaVencimientoIdentificacion = jsonvalues.TokenDateTimeValue("fechadecaducidadPer");
+            }
+            //KYC
+            //administFondosTercero
+            //
+            //montoIngresoMensual
+            //esPep
+            //tipoPep
+            //articulo15
+            //origenFondos
+            //paisOrigen = "111111"
+            //profesion
+            mapInfo.clientesUbicaciones = new List<Compliance.Integrations.Contracts.Clientesubicacione>()
+            {
+                new Compliance.Integrations.Contracts.Clientesubicacione()
+                {
+                    tipoUbicacion = 1,
+                    divisionTerritorial = 99999,
+                    descripcionUbicacion = titular.numerodetelefono
+                },
+                new Compliance.Integrations.Contracts.Clientesubicacione()
+                {
+                    tipoUbicacion = 3,
+                    divisionTerritorial = 99999,
+                    descripcionUbicacion = titular.correoelectronico
+                },
+                new Compliance.Integrations.Contracts.Clientesubicacione()
+                {
+                    tipoUbicacion = 4,
+                    divisionTerritorial = titular.TDistrito,
+                    descripcionUbicacion = String.Format("{0}, {1}, {2}, {3}. {4}.", titular.TProvinciaDesc , titular.TCantonDesc,titular.TDistritoDesc,titular.otrasenas, "Costa Rica")
+                }
+            };
+
+            if (titular.DocumentNumberType == 4)
+            {
+                var removeLine = titular.DocumentNumber.Replace("-", string.Empty);
+                mapInfo.numeroIdentificacion = removeLine;
+
+                var montoVehiculo = quoteInfo.IMP_VR;
+                int montoIntVehiculo = Convert.ToInt32(montoVehiculo);
+                mapInfo.razonSocial = titular.nombre;
+                mapInfo.nombreComercial = titular.nombre;
+                mapInfo.nombreCliente = string.Empty;
+                mapInfo.primerApellido = string.Empty;
+                mapInfo.segundoApellido = string.Empty;
+                mapInfo.genero = "X";
+                mapInfo.estadoCivil = "X";
+
+                if (jsonvalues != null)
+                {
+                    mapInfo.paisOrigen = jsonvalues.TokenInt32Value("paisdeconstitucionJur");
+                    mapInfo.actividadEconomica = 1;
+
+                    mapInfo.articulo15 = jsonvalues.TokenStringValue("actividadesart15") == "1" ? "S" : "N";
+                    if (jsonvalues.TokenStringValue("peprelacion") == "1")
+                    {
+                        mapInfo.esPep = "S";
+                        mapInfo.tipoPep = "R";
+                    }
+                    if (jsonvalues.TokenStringValue("pepcargo") == "1")
+                    {
+                        mapInfo.esPep = "S";
+                        mapInfo.tipoPep = "D";
+                    }
+
+                    Clientesrepresentante representante = new Clientesrepresentante()
+                    {
+
+                        tipoIdentificacionRepresentante = jsonvalues.TokenInt32Value("tipodeidentificacionJur"),
+                        numeroIdentificacionRepresentante = jsonvalues.TokenStringValue("numerodeidentificacionJur"),
+                        nombre = jsonvalues.TokenStringValue("nombrecompletoJur"),
+                        segundoNombre = string.Empty,
+                        primerApellido = jsonvalues.TokenStringValue("primerapellidoJur"),
+                        segundoApellido = jsonvalues.TokenStringValue("segundoapellidoJur"),
+                        conocidoComo = String.Empty,
+                        genero = jsonvalues.TokenStringValue("sexoJur") == "1" ? "M" : "F",
+                        fechaNacimiento = jsonvalues.TokenDateTimeValue("fechadenacimientoJur"),
+                        estadoCivil = jsonvalues.TokenStringValue("estadocivilJur", "X"),
+                        paisOrigen = jsonvalues.TokenInt32Value("paisdenacimientoJur"),
+                        profesion = jsonvalues.TokenInt32Value("profesionJur"),
+                        actividadEconomica = 1,
+                        esPep = "N",
+                        tipoPep = "N",
+                        descripcionPep = "No aplica",
+                        articulo15 = jsonvalues.TokenStringValue("actividadesart15Jur") == "1" ? "S" : "N",
+                        cargo = jsonvalues.TokenStringValue("posiciondentrodelaempresaJur", "No aplica"),
+                        fechaVencimiento = new DateTime(1900, 1, 1)
+                    };
+
+                    switch (representante.estadoCivil)
+                    {
+                        case "1": //casado
+                            representante.estadoCivil = "C";
+                            break;
+                        case "2": //divorciado
+                            representante.estadoCivil = "D";
+                            break;
+                        case "3": //soltero
+                            representante.estadoCivil = "S";
+                            break;
+                        case "4": //viudo
+                            representante.estadoCivil = "V";
+                            break;
+                        case "5": //otro
+                            representante.estadoCivil = "X";
+                            break;
+                        case "7": //acompañado
+                            representante.estadoCivil = "U";
+                            break;
+                        default:
+                            representante.estadoCivil = "X";
+                            break;
+                    }
+                    if (jsonvalues.TokenStringValue("peprelacion") == "1")
+                    {
+                        representante.esPep = "S";
+                        representante.tipoPep = "R";
+                    }
+                    if (jsonvalues.TokenStringValue("pepcargo") == "1")
+                    {
+                        representante.esPep = "S";
+                        representante.tipoPep = "D";
+                    }
+                    mapInfo.clientesRepresentantes = new[] { representante };
+
+
+                    Clientesfatca FATCA = new Clientesfatca()
+                    {
+                        poseeGreenCard = jsonvalues.TokenStringValue("greencard") == "1" ? "S" : "N",
+                        numeroTIN = jsonvalues.TokenStringValue("numeroTIN"),
+                        detalleDomicilio = jsonvalues.TokenStringValue("otrassenasFATCA"),
+                        poseeEIN = jsonvalues.TokenStringValue("identificacionEIN") == "1" ? "S" : "N",
+                        contribuyenteUSA = jsonvalues.TokenStringValue("contribuyenteUSA") == "1" ? "S" : "N",
+                        domicilioExtranjero = jsonvalues.TokenStringValue("domicilioExtranjero") == "1" ? "S" : "N",
+                        paisDomicilio = jsonvalues.TokenInt32Value("paisDomicilio"),
+                        poseeTelefonoExtranjero = jsonvalues.TokenStringValue("poseeTelefonoExtranjero") == "1" ? "S" : "N",
+                        telefonoExtranjero = jsonvalues.TokenStringValue("numeroExt"),
+                        poseeProductos = "N"
+                    };
+                    mapInfo.clientesFATCA = new[] { FATCA };
+
+                    Clientesrepresentante representantesLegales = new Clientesrepresentante()
+                    {
+                        nombre = titular.nombre,
+                        tipoIdentificacionRepresentante = titular.DocumentNumberType,
+                        numeroIdentificacionRepresentante = mapInfo.numeroIdentificacion,
+                        segundoNombre = string.Empty,
+                        cargo = jsonvalues.TokenStringValue("posiciondentrodelaempresaJur"),
+                        estadoCivil = jsonvalues.TokenStringValue("estadocivilJur", "X"),
+                        conocidoComo = jsonvalues.TokenStringValue("nombreJur"),
+                        primerApellido = jsonvalues.TokenStringValue("primerapellidoJur"),
+                        segundoApellido = jsonvalues.TokenStringValue("segundoapellidoJur"),
+                        genero = jsonvalues.TokenStringValue("sexoJur") == "1" ? "M" : "F",
+                        fechaNacimiento = jsonvalues.TokenDateTimeValue("fechadenacimientoJur"),
+                        paisOrigen = jsonvalues.TokenInt32Value("nacionalidadJur"),
+                        profesion = jsonvalues.TokenInt32Value("profesionJur"),
+                        actividadEconomica = mapInfo.actividadEconomica,
+                        fechaVencimiento = mapInfo.fechaVencimientoIdentificacion,
+                        esPep = mapInfo.esPep,
+                        tipoPep = mapInfo.tipoPep,
+                        descripcionPep = "No aplica",
+                        articulo15 = mapInfo.articulo15
+                    };
+                    switch (representantesLegales.estadoCivil)
+                    {
+                        case "1": //casado
+                            representantesLegales.estadoCivil = "C";
+                            break;
+                        case "2": //divorciado
+                            representantesLegales.estadoCivil = "D";
+                            break;
+                        case "3": //soltero
+                            representantesLegales.estadoCivil = "S";
+                            break;
+                        case "4": //viudo
+                            representantesLegales.estadoCivil = "V";
+                            break;
+                        case "5": //otro
+                            representantesLegales.estadoCivil = "X";
+                            break;
+                        case "7": //acompañado
+                            representantesLegales.estadoCivil = "U";
+                            break;
+                        default:
+                            representantesLegales.estadoCivil = "X";
+                            break;
+                    }
+
+                    mapInfo.clientesRepresentantes = new[] { representantesLegales };
+
+                    Clientestransaccione transaccionalidadCliente = new Clientestransaccione()
+                    {
+                        monto = montoIntVehiculo,
+                        montoIngresoMensual = jsonvalues.TokenInt32Value("ingresomensualestimado"),
+                        inversionInicial = jsonvalues.TokenStringValue("formadepagodelapoliza"),
+                        frecuencia = jsonvalues.TokenStringValue("periodicidad")
+
+                    };
+                    switch (transaccionalidadCliente.frecuencia)
+                    {
+                        case "4":
+                            transaccionalidadCliente.frecuencia = "M";
+                            break;
+
+                        default:
+                            transaccionalidadCliente.frecuencia = "N";
+                            break;
+
+                    }
+                    switch (transaccionalidadCliente.inversionInicial)
+                    {
+                        case "1":
+                            transaccionalidadCliente.inversionInicial = "E";
+                            break;
+                        case "2":
+                            transaccionalidadCliente.inversionInicial = "C";
+                            break;
+
+                        case "3":
+                            transaccionalidadCliente.inversionInicial = "D";
+                            break;
+
+                        case "4":
+                            transaccionalidadCliente.inversionInicial = "T";
+                            break;
+
+                        default:
+                            transaccionalidadCliente.inversionInicial = "T";
+                            break;
+                    }
+                    mapInfo.clientesTransacciones = new[] { transaccionalidadCliente };
+
+                    KycJuridico deserializedKyc = JsonConvert.DeserializeObject<KycJuridico>(JsonConvert.SerializeObject(jsonvalues));
+                    List<Participador_Accionario> participacionAccionaria = deserializedKyc.participacionaccionariaJur;
+
+                    foreach (dynamic recorrerPA in participacionAccionaria)
+                    {
+                        Clientessocio socios = new Clientessocio()
+                        {
+                            tipoIdentificacionSocio = recorrerPA.participacionaccionariaTipodeidentificacionJur,
+                            numeroIdentificacionSocio = participacionAccionaria[0].participacionaccionariaNumerodeidentificacionJur,
+                            nombre = participacionAccionaria[0].participacionaccionariaNombrecompletoJur,
+                            primerApellido = string.Empty,
+                            segundoApellido = string.Empty,
+                            conocidoComo = string.Empty,
+                            participacion = participacionAccionaria[0].porcentajedeparticipacionJur,
+                            genero = participacionAccionaria[0].participacionaccionariaSexoJur == 1 ? "M" : "F",
+                            fechaNacimiento = participacionAccionaria[0].participacionaccionariaFechadenacimientoJur,
+                            estadoCivil = participacionAccionaria[0].participacionaccionariaEstadocivilJur.ToString(),
+                            paisOrigen = participacionAccionaria[0].participacionaccionariaPaisdenacimientoJur,
+                            profesion = participacionAccionaria[0].participacionaccionariaProfesionJur,
+                            actividadEconomica = mapInfo.actividadEconomica, //ARREGLAR
+                            esPep = mapInfo.esPep,
+                            tipoPep = mapInfo.tipoPep,
+                            descripcionPep = "No aplica",
+                            articulo15 = mapInfo.articulo15
+                        };
+
+                        switch (socios.estadoCivil)
+                        {
+                            case "1": //casado
+                                socios.estadoCivil = "C";
+                                break;
+                            case "2": //divorciado
+                                socios.estadoCivil = "D";
+                                break;
+                            case "3": //soltero
+                                socios.estadoCivil = "S";
+                                break;
+                            case "4": //viudo
+                                socios.estadoCivil = "V";
+                                break;
+                            case "5": //otro
+                                socios.estadoCivil = "X";
+                                break;
+                            case "7": //acompañado
+                                socios.estadoCivil = "U";
+                                break;
+                            default:
+                                socios.estadoCivil = "X";
+                                break;
+                        }
+
+                        mapInfo.clientesSocios = new[] { socios };
+
+                    }
+
+
+                    Clientesotrosatributo otrosAtributos = new Clientesotrosatributo()
+                    {
+                        atributo = jsonvalues.TokenInt32Value("atributocanaldeingreso"),
+                        descripcionAtributo = jsonvalues.TokenStringValue("valorcanalingreso")
+                    };
+                    mapInfo.clientesOtrosAtributos = new[] { otrosAtributos };
+
+
+                    Clientespatrimonio clientespatrimonio = new Clientespatrimonio()
+                    {
+                        descripcionPatrimonio = "SEGURO MAPFRE MAS",
+                        tipoBien = 1,
+                        moneda = quoteInfo.cod_mon,
+                        montoValor = montoIntVehiculo,
+                        fechaRegistro = mapInfo.fechaRegistro,
+                    };
+                    mapInfo.clientesPatrimonio = new[] { clientespatrimonio };
+                }
+            }
+            else
+            {
+                if (titular.DocumentNumberType == 1)
+                {
+                    var removeLine = titular.DocumentNumber.Replace("-", string.Empty);
+                    var numberChanged = removeLine.Remove(0, 1);
+                    mapInfo.numeroIdentificacion = numberChanged;
+                }
+
+                var montoVehiculo = quoteInfo.IMP_VR;
+                int montoIntVehiculo = Convert.ToInt32(montoVehiculo);
+                mapInfo.genero = titular.tercerosMca_sexo == 1 ? "M" : "F";
+                mapInfo.estadoCivil = titular.estadoCivil;
+                if (jsonvalues != null)
+                {
+
+                    mapInfo.profesion = jsonvalues.TokenInt32Value("profesionPer");
+                    mapInfo.paisOrigen = jsonvalues.TokenInt32Value("paisdenacimientoPer");
+                    mapInfo.actividadEconomica = 1;
+                    mapInfo.clientesNacionalidades = new[] { new Clientesnacionalidade() { nacionalidad = jsonvalues.TokenInt32Value("nacionalidadPer") } };
+                    string telefonocelularPer = jsonvalues.TokenStringValue("telefonocelularPer");
+                    if (telefonocelularPer.IsNotEmpty())
+                    {
+                        mapInfo.clientesUbicaciones.Add(new Compliance.Integrations.Contracts.Clientesubicacione()
+                        {
+                            tipoUbicacion = 2,
+                            divisionTerritorial = 99999,
+                            descripcionUbicacion = telefonocelularPer
+                        });
+                    }
+
+                    mapInfo.articulo15 = jsonvalues.TokenStringValue("actividadesart15") == "1" ? "S" : "N";
+                    if (jsonvalues.TokenStringValue("peprelacion") == "1")
+                    {
+                        mapInfo.esPep = "S";
+                        mapInfo.tipoPep = "R";
+                    }
+                    if (jsonvalues.TokenStringValue("pepcargo") == "1")
+                    {
+                        mapInfo.esPep = "S";
+                        mapInfo.tipoPep = "D";
+                    }
+
+                    Clientesfatca FATCA = new Clientesfatca()
+                    {
+                        poseeGreenCard = jsonvalues.TokenStringValue("greencard") == "1" ? "S" : "N",
+                        numeroTIN = jsonvalues.TokenStringValue("numeroTIN"),
+                        detalleDomicilio = jsonvalues.TokenStringValue("otrassenasFATCA"),
+                        poseeEIN = jsonvalues.TokenStringValue("identificacionEIN") == "1" ? "S" : "N",
+                        contribuyenteUSA = jsonvalues.TokenStringValue("contribuyenteUSA") == "1" ? "S" : "N",
+                        domicilioExtranjero = jsonvalues.TokenStringValue("domicilioExtranjero") == "1" ? "S" : "N",
+                        paisDomicilio = jsonvalues.TokenInt32Value("paisDomicilio"),
+                        poseeTelefonoExtranjero = jsonvalues.TokenStringValue("poseeTelefonoExtranjero") == "1" ? "S" : "N",
+                        telefonoExtranjero = jsonvalues.TokenStringValue("numeroExt"),
+                        poseeProductos = "N"
+                    };
+                    mapInfo.clientesFATCA = new[] { FATCA };
+
+                    Clientesrelacione personasRelacionadas = new Clientesrelacione()
+                    {
+                        nombre = titular.nombre,
+                        tipoIdentificacionRelacion = titular.DocumentNumberType,
+                        numeroIdentificacionRelacion = mapInfo.numeroIdentificacion,
+                        fechaVencimientoIdentificacion = mapInfo.fechaVencimientoIdentificacion,
+                        segundoNombre = string.Empty,
+                        titular = titular.tipodetercero == 1 ? "S" : "N",
+                        cargo = jsonvalues.TokenStringValue("cargoempresaPer"),
+                        descripcionPep = "No aplica",
+                        tipoTitularidad = titular.tipodetercero == 1 ? "O" : "X",
+                        estadoCivil = jsonvalues.TokenStringValue("estadocivilPer", "X"),
+                        conocidoComo = jsonvalues.TokenStringValue("nombrePer"),
+                        primerApellido = jsonvalues.TokenStringValue("primerapellidoPer"),
+                        segundoApellido = jsonvalues.TokenStringValue("segundoapellidoPer"),
+                        beneficiario = titular.tipodetercero == 1 ? "S" : "N",
+                        genero = mapInfo.genero,
+                        fechaNacimiento = jsonvalues.TokenDateTimeValue("fechadenacimientoPer"),
+                        paisOrigen = mapInfo.paisOrigen,
+                        profesion = jsonvalues.TokenInt32Value("profesionPer"),
+                        actividadEconomica = mapInfo.actividadEconomica,
+                        esPep = mapInfo.esPep,
+                        tipoPep = mapInfo.tipoPep,
+                        articulo15 = mapInfo.articulo15,
+                        fechaInscripcionCargo = new DateTime(1900, 1, 1),
+                        fechaFinalizacionCargo = new DateTime(1900, 1, 1),
+                    };
+
+                    switch (personasRelacionadas.estadoCivil)
+                    {
+                        case "1": //casado
+                            personasRelacionadas.estadoCivil = "C";
+                            break;
+                        case "2": //divorciado
+                            personasRelacionadas.estadoCivil = "D";
+                            break;
+                        case "3": //soltero
+                            personasRelacionadas.estadoCivil = "S";
+                            break;
+                        case "4": //viudo
+                            personasRelacionadas.estadoCivil = "V";
+                            break;
+                        case "5": //otro
+                            personasRelacionadas.estadoCivil = "X";
+                            break;
+                        case "7": //acompañado
+                            personasRelacionadas.estadoCivil = "U";
+                            break;
+                        default:
+                            personasRelacionadas.estadoCivil = "X";
+                            break;
+                    }
+                    mapInfo.clientesRelaciones = new[] { personasRelacionadas };
+
+                    Clientesrepresentante beneficiarios = new Clientesrepresentante()
+                    {
+                        tipoIdentificacionRepresentante = titular.DocumentNumberType,
+                        numeroIdentificacionRepresentante = titular.DocumentNumber,
+                        nombre = titular.nombre,
+                        fechaVencimiento = mapInfo.fechaVencimientoIdentificacion,
+                        segundoNombre = string.Empty,
+                        primerApellido = jsonvalues.TokenStringValue("primerapellidoPer"),
+                        segundoApellido = jsonvalues.TokenStringValue("segundoapellidoPer"),
+                        conocidoComo = String.Empty,
+                        genero = jsonvalues.TokenStringValue("sexoPer") == "1" ? "M" : "F",
+                        fechaNacimiento = titular.fechadenacimiento,
+                        estadoCivil = jsonvalues.TokenStringValue("estadocivilPer", "X"),
+                        paisOrigen = jsonvalues.TokenInt32Value("paisdenacimientoPer"),
+                        profesion = jsonvalues.TokenInt32Value("profesionPer"),
+                        actividadEconomica = jsonvalues.TokenInt32Value("actividaddelclientenaturalezadelnegocioPer"),
+                        esPep = mapInfo.esPep,
+                        tipoPep = mapInfo.tipoPep,
+                        descripcionPep = "No aplica",
+                        articulo15 = mapInfo.articulo15,
+                        cargo = jsonvalues.TokenStringValue("posiciondentrodelaempresaPer", "No aplica")
+                    };
+
+                    switch (beneficiarios.estadoCivil)
+                    {
+                        case "1": //casado
+                            beneficiarios.estadoCivil = "C";
+                            break;
+                        case "2": //divorciado
+                            beneficiarios.estadoCivil = "D";
+                            break;
+                        case "3": //soltero
+                            beneficiarios.estadoCivil = "S";
+                            break;
+                        case "4": //viudo
+                            beneficiarios.estadoCivil = "V";
+                            break;
+                        case "5": //otro
+                            beneficiarios.estadoCivil = "X";
+                            break;
+                        case "7": //acompañado
+                            beneficiarios.estadoCivil = "U";
+                            break;
+                        default:
+                            beneficiarios.estadoCivil = "X";
+                            break;
+                    }
+                    if (jsonvalues.TokenStringValue("peprelacion") == "1")
+                    {
+                        beneficiarios.esPep = "S";
+                        beneficiarios.tipoPep = "R";
+                    }
+                    if (jsonvalues.TokenStringValue("pepcargo") == "1")
+                    {
+                        beneficiarios.esPep = "S";
+                        beneficiarios.tipoPep = "D";
+                    }
+                    mapInfo.clientesRepresentantes = new[] { beneficiarios };
+
+                    Clientestransaccione transaccionalidadCliente = new Clientestransaccione()
+                    {
+                        monto = montoIntVehiculo,
+                        montoIngresoMensual = jsonvalues.TokenInt32Value("ingresomensualestimado"),
+                        inversionInicial = jsonvalues.TokenStringValue("formadepagodelapoliza"),
+                        frecuencia = jsonvalues.TokenStringValue("periodicidad")
+
+                    };
+                    switch (transaccionalidadCliente.frecuencia)
+                    {
+                        case "4":
+                            transaccionalidadCliente.frecuencia = "M";
+                            break;
+
+                        default:
+                            transaccionalidadCliente.frecuencia = "N";
+                            break;
+
+                    }
+                    switch (transaccionalidadCliente.inversionInicial)
+                    {
+                        case "1":
+                            transaccionalidadCliente.inversionInicial = "E";
+                            break;
+                        case "2":
+                            transaccionalidadCliente.inversionInicial = "C";
+                            break;
+
+                        case "3":
+                            transaccionalidadCliente.inversionInicial = "D";
+                            break;
+
+                        case "4":
+                            transaccionalidadCliente.inversionInicial = "T";
+                            break;
+
+                        default:
+                            transaccionalidadCliente.inversionInicial = "T";
+                            break;
+                    }
+                    mapInfo.clientesTransacciones = new[] { transaccionalidadCliente };
+
+
+                    Clientesingreso transaccionalidadIngresos = new Clientesingreso()
+                    {
+                        actividadEconomica = mapInfo.actividadEconomica,
+                        cargo = jsonvalues.TokenStringValue("cargoempresaPer"),
+                        telefonoDirecto = jsonvalues.TokenStringValue("telefonocelularPer"),
+                        telefonoCentral = jsonvalues.TokenStringValue("telefonoresidenciaPer"),
+                        origenRecursos = jsonvalues.TokenInt32Value("correspondenciaOrigendelosfondosPer"),
+                        sustentoOtraPersonas = "S",
+                        moneda = quoteInfo.cod_mon,
+                        monto = jsonvalues.TokenInt32Value("ingresomensualestimado"),
+                        direccion = jsonvalues.TokenStringValue("domiciliocomercialCod_paisDesc") + "-" + " " + jsonvalues.TokenStringValue("domiciliocomercialCod_estadoDesc") + "-" + " " + jsonvalues.TokenStringValue("domiciliocomercialCod_provDesc") + "-" + " " + jsonvalues.TokenStringValue("domiciliocomercialCod_localidadDesc")
+                    };
+                    mapInfo.clientesIngresos = new[] { transaccionalidadIngresos };
+
+
+                    Clientesotrosatributo otrosAtributos = new Clientesotrosatributo()
+                    {
+                        atributo = jsonvalues.TokenInt32Value("atributocanaldeingreso"),
+                        descripcionAtributo = jsonvalues.TokenStringValue("valorcanalingreso").ToString()
+                    };
+                    mapInfo.clientesOtrosAtributos = new[] { otrosAtributos };
+
+
+                    Clientespatrimonio clientespatrimonio = new Clientespatrimonio()
+                    {
+                        descripcionPatrimonio = "SEGURO HOGAR TOTAL",
+                        tipoBien = 1,
+                        moneda = quoteInfo.cod_mon,
+                        montoValor = montoIntVehiculo,
+                        fechaRegistro = mapInfo.fechaRegistro,
+                    };
+                    mapInfo.clientesPatrimonio = new[] { clientespatrimonio };
+                }
+            }
+
+            mapInfo.clientesPolizas = new List<Compliance.Integrations.Contracts.Clientespoliza>()
+            {
+                new Compliance.Integrations.Contracts.Clientespoliza()
+                {
+                    numeroPoliza = quoteInfo.num_poliza,
+                    descripcionPoliza = "MapfreMas",
+                    fechaInicio = quoteInfo.fec_efec_poliza,
+                    fechaFinalizacion = quoteInfo.fec_vcto_poliza,
+                    moneda  = quoteInfo.cod_mon,
+                   // prima = (int)quoteInfo.DatosEconomicos.annualnetpremium,
+                    estado="A",
+                    //faltaban
+                    tipoPrima = "A",
+                    tipoPoliza= "C",
+                    tipoProducto = 302,
+
+
+                }
+            };
+            if (quoteInfo.DatosEconomicos != null)
+            {
+                mapInfo.clientesPolizas[0].prima = (int)quoteInfo.DatosEconomicos.annualgrosspremium;
+            }
+
+
+
+            string result = Architect.Compliance.Integrations.Business.Customers.SendCustomers(mapInfo).Result;
+        }		 
     }
 }

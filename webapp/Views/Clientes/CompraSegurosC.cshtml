@@ -5,31 +5,28 @@
 <!-- RoleMember -->
 <!----------------------------------------- INICIO FORM COMPRA DE SEGUROS COTIZACION/VIAJERO --------------------------------------------------->
 <div class="row">
-    <div id="mainBlock" class="col-md-12">
+    <div id="mainBlock" class="col-md-12 p-0">
         <div class="ibox">
-            <div class="ibox-title">
-
-                <h5><i class="fa fa-plane"></i> <span id="PageTitle">Seguro Viajero</span><small class="m-l-sm"><span id="PageSubTitle"> Cotización.</span></small> </h5>
-                <!-- Opciones CS/Cotizacion-->
-                <div class="ibox-tools">
-                    <a class="fullscreen-link">
-                        <i class="fa fa-expand"></i>
-                    </a>
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-wrench"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li>
-                            <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar la información</a>
-                        </li>
-                        <li>
-                            <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
-                        </li>
-                    </ul>
+            <div class="ibox-title p-0">
+                <div class="Title_Prin py-4">
+                    <div class="title_design T1">
+                        <h5><i class="fa fa-plane"></i> <span id="PageTitle">Seguro de Viaje</span></h5><br>
+                        <small class="m-l-sm"><span id="PageSubTitle"> Cotización.</span></small>
+                    </div>
+                    <div class="title_partner T2">
+                        <p class="text-muted small">MAPFRE le trae una nueva forma de proteger a ti y a su familia, suscribiendose a este seguro de viajes. Les respaldaremos cumpliendo los compromisos y coberturas que de ella se derivan en relación con los riesgos asumidos por su medio.</p>
+                    </div>
+                    <div class="title_partner T3 text-center">
+                        <a href="https://www.mapfre.cr/contacto/" target="_blank">Seguro de Viaje</a>
+                        <p class="mt-2 text-center">
+                            ¡Nosotros lo protegemos!
+                        </p>
+                    </div>
                 </div>
-                <br />
             </div>
-            <div class="ibox-content">
+
+
+            <div class="ibox-content box_design">
                 <div class="sk-spinner sk-spinner-wave">
                     <div class="sk-rect1"></div>
                     <div class="sk-rect2"></div>
@@ -41,7 +38,24 @@
                 </div>
                 <!-- Edit Form CS/Cotizacion-->
                 <div class='form-row'>
-                    <div class='col-md-12'>
+                    <!-- Opciones -->
+                    <div class="ibox-tools">
+                        <a class="fullscreen-link">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li>
+                                <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar la información</a>
+                            </li>
+                            <li>
+                                <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class='col-md-12 m-2'>
                         <div id="VisualizationsEdt" class="animated fadeInRight">
                             <form id='VisualizationsEdtForm' class='form-horizontal' data-toggle='validator'>
                                 <fieldset>
@@ -143,11 +157,11 @@
 
                                                 <!-- DES_DESTINO Text CS/Cotizacion-->
                                                 @*<div class='col-sm-4 col-md-4'>
-            <div class='form-group'>
-                <label class='control-label' for='DES_DESTINO'>Lugar de destino<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                <input type='text' id='DES_DESTINO' name='DES_DESTINO' class='form-control' size='50' maxlength='50' />
-            </div>
-        </div>*@
+                                        <div class='form-group'>
+                                            <label class='control-label' for='DES_DESTINO'>Lugar de destino<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                            <input type='text' id='DES_DESTINO' name='DES_DESTINO' class='form-control' size='50' maxlength='50' />
+                                        </div>
+                                    </div>*@
                                                 <div class='col-sm-4 col-md-4'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='DES_DESTINO'>País de destino<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
@@ -595,8 +609,8 @@
                                                     Cotizar
                                                 </button>
                                                 @*<button id="limpiar" type="button" class="btn btn-default" data-doing="Limpiando...">
-                                                        Limpiar
-                                                    </button>*@
+                                        Limpiar
+                                    </button>*@
                                             </div>
                                         </div>
                                     </div>
@@ -616,8 +630,11 @@
     <div id="quoteBlock" class="col-md-3 animated bounceInRight d-none">
 
         <div class="ibox">
-            <div class="ibox-title">
-                <h5><i class="fa fa-file-text"></i> Resumen de la cotización</h5>
+            <div class="ibox-title text-center float-right">
+                <div class="quote-title">
+                    <h4><i class="fa fa-file-text-o"></i> Resumen de la cotización</h4>
+                    <span class="label label-success" style="font-size: small;">Presupuesto #<span id="presupuesto"></span></span>
+                </div>
             </div>
             <div class="ibox-content">
 

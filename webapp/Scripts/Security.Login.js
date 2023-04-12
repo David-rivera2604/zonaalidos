@@ -335,7 +335,6 @@ app.login = (function () {
             localStorage.removeItem('reason');
             if (reason === 'session-expired') {
                 $('.alert').removeClass('d-none');
-                $('.wellcome-info').addClass('d-none');
             }
             $('#Tenant').val(_tenant);
             if (employeeMode) {

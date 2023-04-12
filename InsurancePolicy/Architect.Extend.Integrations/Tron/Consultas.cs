@@ -14,11 +14,15 @@ namespace Architect.Extend.Integrations.Tron
         /// <summary>
         /// Permite recuperar la información de una persona en la tabla de tercero de tron por medio de su identificación.
         /// </summary>
-        public async static Task<Architect.API.Insurance.Contracts.Policy.Insured> TerceroPorIdentificacion(string identificacion)
+        public async static Task<Architect.API.Insurance.Contracts.Policy.Insured> TerceroPorIdentificacion(string identificacion, int docType)
         {
             Architect.API.Insurance.Contracts.Policy.Insured result = null;
             try
             {
+                if (docType == 1 && identificacion[0] == '0')
+                {
+                    identificacion = identificacion.Substring(1);
+                }			 
                 Database.Select("SELECT A99.*, A31.* " +
                               "FROM A1001399 A99 " +
                               "LEFT JOIN A1001331 A31 ON A31.COD_CIA=A99.COD_CIA AND A31.TIP_DOCUM=A99.TIP_DOCUM AND A31.COD_DOCUM=A99.COD_DOCUM " +

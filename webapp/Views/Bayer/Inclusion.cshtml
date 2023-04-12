@@ -4,14 +4,20 @@
 @Styles.Render("~/Content/cssCRUD")
 <!-- RoleMember -->
 <div class="ibox">
-    <div class="ibox-title">
-        <h5><span id="PageTitle">Solicitud de inclusión</span><small class="m-l-sm"><span id="PageSubTitle"> Seguro colectivo y gastos medicos</span></small> </h5>
-        <!-- Opciones -->
-        <div class="ibox-tools">
-            <a id="print" href="" class="btn btn-primary btn-xs d-none" title="Permite imprimir la solicitud">Imprimir</a>
-            <a class="fullscreen-link">
-                <i class="fa fa-expand"></i>
-            </a>
+    <div class="ibox-title p-0">
+        <div class='Title_Prin'>
+            <div class='title_design T1'>
+                <h5><i class="fa fa-clipboard"></i> <span id="PageTitle">Solicitud de inclusión</span></h5>
+                <br />
+                <small class="m-l-sm"><span id="PageSubTitle">Seguro colectivo y gastos medicos</span></small>
+            </div>
+            <!-- Opciones -->
+            <div class="ibox-tools">
+                <a id="print" href="" class="btn btn-primary btn-xs d-none" title="Permite imprimir la solicitud">Imprimir</a>
+                <a class="fullscreen-link">
+                    <i class="fa fa-expand"></i>
+                </a>
+            </div>
         </div>
     </div>
     <div class="ibox-content">
@@ -37,13 +43,13 @@
 
                             <div id="acceptedNotify" class="alert alert-dismissable animated fadeInDown alert-info d-none" role="alert">
                                 <p>Su solicitud ya fue aceptada por el personal de RRHH, la misma fue enviada a su correo en forma de un archivo PDF para su respectiva firma digital, según la preferencia indicado por usted al momento de enviar la solicitud a RRHH.</p>
-                                <p>Una vez que reciba el correo mencionado, por favor proceda a firma digitalmente el archivo anexo, para luego cargar a este sistema el documento firmado usando el botón de nombre “Cargar la solicitud firmada” que se encuentra en la parte superior de la solicitud.</p>
+                                <p>Una vez que reciba el correo mencionado, por favor procesada a firma digitalmente el archivo anexo, para luego cargar a este sistema el documento firmado usando el botón de nombre “Cargar la solicitud firmada” que se encuentra en la parte superior de la solicitud.</p>
                             </div>
 
                             <div class="form-row">
                                 <!-- datosdelapoliza Zone -->
                                 <div class="col-md">
-                                    <h4>Datos de la póliza</h4>
+                                    <h4><i class="fa fa-file-text"></i> Datos de la póliza</h4>
                                     <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                     <div class="form-row">
                                         <!-- ContractorName DropDownList -->
@@ -78,7 +84,7 @@
 
                                 <!-- Clase Zone -->
                                 <div class="col-md-3 role-Revisor-visible d-none">
-                                    <h4>Clase</h4>
+                                    <h4><i class="fa fa-th-large"></i> Clase</h4>
                                     <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                     <div class="form-row">
                                         <!-- IsLife DropDownList -->
@@ -392,7 +398,7 @@
                             <!-- cuentaparareembolso Zone -->
                             <div class="form-row">
                                 <div class="col-lg-12">
-                                    <h4>Cuenta para reembolso</h4>
+                                    <h4><i class="fa fa-credit-card"></i>  Cuenta para reembolso</h4>
                                     <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                     <div class="form-row">
 
@@ -455,7 +461,7 @@
                                 <div class="col-lg-12">
                                     <div class="form-row">
                                         <div class='col'>
-                                            <h4>
+                                            <h4><i class="fa fa-user"></i> 
                                                 Beneficiarios de la póliza de vida<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span><label id="beneficiariosTbl-error" class="float-right d-none" style="color: #cc5965;
         display: inline-block;
         font-size: 11px;
@@ -484,7 +490,7 @@
                                 <div class="col-lg-12">
                                     <div class="form-row">
                                         <div class='col'>
-                                            <h4>Dependientes de la póliza de salud</h4>
+                                            <h4><i class="fa fa-user"></i> Dependientes de la póliza de salud</h4>
                                         </div>
                                         <div class='col-auto'>
                                             <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo Dependientes" data-toggle="modal" id="dependientesNew"> <i class="fa fa-plus"></i> </button>
@@ -537,7 +543,6 @@
                                     <button id="VisualizationsEdtFormDraft" type="button" class="btn btn-outline-warning d-none" data-doing="Guardando cambios...">Guardar sin enviar</button>
                                     <button id="VisualizationsEdtFormSave" type="button" class="btn btn-primary d-none" data-doing="Enviando a RRHH...">Enviar a RRHH</button>
                                     <button id="VisualizationsEdtFormBack" type="button" class="btn btn-outline-danger d-none" data-doing="Rechazando la solicitud...">Rechazar</button>
-                                    <button id="VisualizationsEdtFormDelete" type="button" class="btn btn-outline-danger d-none" data-doing="Eliminar la solicitud...">Eliminar</button>
                                     <button id="VisualizationsEdtFormRevised" type="button" class="btn btn-primary d-none" data-doing="Aceptando la solicitud...">Aceptar</button>
                                     <button id="VisualizationsEdtFormUpLoad" type="button" class="btn btn-primary d-none" data-doing="Cargando la solicitud firmada...">Cargar la solicitud firmada</button>
                                 </div>

@@ -3,30 +3,33 @@
 }
 @Styles.Render("~/Content/cssCRUD")
 <div class="row">
-    <div id="mainBlock" class="col-md-12">
+    <div id="mainBlock" class="col-md-12 p-0">
         <div class="ibox">
-            <div class="ibox-title">
-                <h5><span id="PageTitle">Mapfre Más</span><small class="m-l-sm"><span id="PageSubTitle"> Cotización</span></small> </h5>
-                <!-- Opciones -->
-                <div class="ibox-tools">
-                    <a class="fullscreen-link">
-                        <i class="fa fa-expand"></i>
-                    </a>
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-wrench"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li>
-                            <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar la información</a>
-                        </li>
-                        <li>
-                            <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
-                        </li>
-                    </ul>
+            <div class="ibox-title p-0">
+                <div class="Title_Prin py-2">
+                    <div class="title_design T1">
+                        <h5><i class="fa fa-car"></i> <span id="PageTitle">Mapfre Más</span></h5><br>
+                        <small class="m-l-sm"><span id="PageSubTitle"> Cotización.</span></small>
+                    </div>
+                    <div class="title_partner T2">
+                        <p class="text-muted small">En MAPFRE Costa Rica hemos creado una amplia variedad de opciones con excelentes coberturas y valores agregados, pensados para todas las necesidades de los costarricenses.</p>
+													
+                    </div>
+                    <div class="title_partner T3 text-center">
+                        <a href="https://www.mapfre.cr/seguros-autos/" target="_blank">Seguro Mapfre Más</a>
+						
+                        <p class="mt-2 text-center">
+                            El seguro que le ofrece diferentes coberturas desde responsabilidad civil, colisión y/o vuelco, robo, y coberturas adicionales.
+																																	 
+							 
+							
+																																	
+                        </p>
+                    </div>
                 </div>
             </div>
-            <div class="ibox-content">
-                <p class="text-muted small">En MAPFRE Costa Rica hemos creado una amplia variedad de opciones con excelentes coberturas y valores agregados, pensados para todas las necesidades de los costarricenses. <a href="https://www.mapfre.cr/seguros-cr/seguros/autos/" target="_blank">Seguro MAPFRE MÁS</a>, El seguro que le ofrece diferentes coberturas desde responsabilidad civil, colisión y/o vuelco, robo, y coberturas adicionales.</p>
+            <div class="ibox-content box_design">
+																																																																																																															  
                 <div class="sk-spinner sk-spinner-wave">
                     <div class="sk-rect1"></div>
                     <div class="sk-rect2"></div>
@@ -36,16 +39,34 @@
                 </div>
                 <div id="generalNotify">
                 </div>
+
                 <!-- Edit Form -->
                 <div class='form-row'>
-                    <div class='col-md-12'>
+                    <!-- Opciones -->
+                    <div class="ibox-tools">
+                        <a class="fullscreen-link">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li>
+                                <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar la información</a>
+                            </li>
+                            <li>
+                                <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class='col-md-12 m-2'>
                         <div id="VisualizationsEdt" class="animated fadeInRight">
                             <form id='VisualizationsEdtForm' class='form-horizontal' data-toggle='validator'>
                                 <fieldset>
                                     <!-- tipodeproducto Zone -->
                                     <div class="form-row">
                                         <div class="col-md-4 tipodeproductoZone role-Purdy-notvisible">
-                                            <h4>Tipo de producto</h4>
+                                           <h4><i class="fa fa-th"></i> Tipo de producto</h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -630,6 +651,7 @@
                                             <div class="form-row">
                                                 <div class='col'>
                                                     <h4>
+							                            <i class="fa fa-check-square"></i>
                                                         Coberturas
                                                         <label id="coberturasTbl-validate" class="float-right d-none LabelValidate"></label>
                                                     </h4>
@@ -718,9 +740,10 @@
     <div id="quoteBlock" class="col-md-3 animated bounceInRight d-none">
 
         <div class="ibox">
-            <div class="ibox-title">
+            <div class="text-center float-right">
                 <h5>Resumen</h5>
-                <div class="ibox-tools">
+                <div class="quote-title">
+                    <h4><i class="fa fa-file-text-o"></i> Resumen de la cotización</h4>																						
                     <h5><span class="label label-success float-right" style="font-size: small;">Presupuesto #<span id="presupuesto"></span></span></h5>
                 </div>
             </div>
@@ -754,7 +777,7 @@
             </div>
         </div>
 
-        <div class="ibox plandepagoporfrecuencia">
+        <div class="ibox ibox">
             <div class="ibox-title">
                 <h5>Importe por fraccionamiento de pago</h5>
             </div>

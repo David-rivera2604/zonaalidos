@@ -2653,6 +2653,18 @@ window.tercerosTbl_Events = {
     'click .edit': function (e, value, row, index) {
         app.EmisionSaldoDeudor.tercerosEditRow(row);
         e.stopPropagation();
+        $(document).ready(function () {
+            $('.col-sm-4').each(function () {
+                var idI = $(this).find('input').attr('id');
+                var idS = $(this).find('select').attr('id');
+                var typeNum = (row.DocumentNumberType != 1 && row.DocumentNumberType != 2 && row.DocumentNumberType != 3);
+                if (typeNum && (idI === 'apellido1' || idI === 'apellido2' || idI === 'fechadenacimiento' || idS === 'tercerosMca_sexo' || idS === 'estadoCivil')) {
+                    $(this).addClass('d-none');
+                } else if (!typeNum && (idI === 'apellido1' || idI === 'apellido2' || idI === 'fechadenacimiento' || idS === 'tercerosMca_sexo' || idS === 'estadoCivil')) {
+                    $(this).removeClass('d-none');
+                }
+            })
+        })		  
     }
 };
 

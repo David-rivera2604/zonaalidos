@@ -157,8 +157,6 @@ namespace Architect.API.Tron.Business.Cotizacion
             int num_riesgo = datosFijos.Riesgos.FirstOrDefault().num_riesgo;
 
 
-            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "OTRA_SENAS_RGO1", quoteInfo.otrassenas));
-
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "COD_PAIS", quoteInfo.pais));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "COD_ESTADO", quoteInfo.provincia.ToString()));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "COD_PROV", quoteInfo.canton.ToString()));
@@ -214,9 +212,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_PISO", "0"));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "PCT_AJUSTE_GEN", quoteInfo.descuento.ToString()));
 
-            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "CERCA_RI_MAR_LAG_TA_CI", quoteInfo.CERCA_RI_MAR_LAG_TA_CI == 1 ? "S" : "N"));
-            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "DISTANCIA_MTS", quoteInfo.DISTANCIA_MTS.ToString()));
-            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "INS_ELECT_ENTUB", quoteInfo.INS_ELECT_ENTUB == 1 ? "S" : "N"));
+
 
             return datosVariables;
         }

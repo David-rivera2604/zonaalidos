@@ -51,6 +51,11 @@ namespace Architect.API.Tron.Contracts.Emision
         [DataMember(), JsonProperty()] public List<Comun.tercero> terceros { get; set; }
 
         /// <summary>
+        /// Vehiculo
+        /// </summary>
+        [DataMember(), JsonProperty()] public List<Comun.vehiculo> vehiculo { get; set; }
+
+        /// <summary>				 
         /// Documentos requeridos
         /// </summary>
         [DataMember(), JsonProperty()] public List<Comun.DocumentoRequerido> documentosrequeridos { get; set; }

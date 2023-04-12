@@ -3,22 +3,30 @@
 }
 @Styles.Render("~/Content/cssCRUD")
 <div class="row">
-    <div id="mainBlock" class="col-md-12">
+    <div id="mainBlockc" class="col-md-12 p-0">
         <div class="ibox">
-            <div class="ibox-title">
-                <h5><span id="PageTitle">Seguro multirriesgo de empresas</span><small class="m-l-sm"><span id="PageSubTitle"> Emisión</span></small> </h5>
-                <!-- Opciones -->
-                <div class="ibox-tools">
-                    <a class="fullscreen-link">
-                        <i class="fa fa-expand"></i>
-                    </a>
+            <div class="ibox-title p-0">
+                <div class='Title_Prin'>
+                    <div class='title_design T1'>
+                        <h5><i class="fa fa-building-o"></i><span id="PageTitle"> Seguro multirriesgo de empresas</span></h5>
+                        <br />
+                        <small><span id="PageSubTitle"> Emisión</span></small>
+                    </div>
+                    <div class='title_partner T2'>
+                        <p>
+                            Son diversos los riesgos a los cuales se encuentran expuestos los negocios, el seguro multirriesgo empresa representa una buena opción para hacer frente a posibles eventualidades ya que es un paquete integral que se adapta a las necesidades de protección de cada empresa o negocio.
+                            Este producto está dirigido a las pequeñas y medianas empresas (PYMES) para amparar los bienes muebles e inmuebles de los cuales sea propietario o tome en arrendamiento y cuya pérdida o daño a los mismos le pueda originar una desmejora económica o la pérdida de su patrimonio.
+                        </p>
+                    </div>
+                    <div class='title_partner T3'>
+                        <a href="https://www.mapfre.cr/seguros-cr/seguros/empresas/multirriesgo-empresa/" target="_blank">Seguro multirriesgo empresa</a>
+                        <p class="text-center mt-2">
+                            Usted hace crecer su negocio, ¡nosotros lo protegemos!
+                        </p>
+                    </div>
                 </div>
             </div>
-            <div class="ibox-content">
-                <p class="text-muted small">
-                    Son diversos los riesgos a los cuales se encuentran expuestos los negocios, el seguro multirriesgo empresa representa una buena opción para hacer frente a posibles eventualidades ya que es un paquete integral que se adapta a las necesidades de protección de cada empresa o negocio.
-                    Este producto está dirigido a las pequeñas y medianas empresas (PYMES) para amparar los bienes muebles e inmuebles de los cuales sea propietario o tome en arrendamiento y cuya pérdida o daño a los mismos le pueda originar una desmejora económica o la pérdida de su patrimonio. <a href="https://www.mapfre.cr/seguros-cr/seguros/empresas/multirriesgo-empresa/" target="_blank">Seguro multirriesgo empresa</a>, usted hace crecer su negocio, ¡nosotros lo protegemos!
-                </p>
+            <div class="ibox-content box_design">
                 <div class="sk-spinner sk-spinner-wave">
                     <div class="sk-rect1"></div>
                     <div class="sk-rect2"></div>
@@ -29,38 +37,54 @@
                 <div id="generalNotify">
                 </div>
                 <!-- Edit Form -->
-                <div class='form-row'>
+                <div class='form-row m-2'>
+                    <!-- Opciones -->
+                    <div class="ibox-tools">
+                        <a class="fullscreen-link">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                    </div>
                     <div class='col-md-12'>
                         <div id="VisualizationsEdt" class="animated fadeInRight">
                             <form id='VisualizationsEdtForm' class='form-horizontal' data-toggle='validator'>
                                 <fieldset>
-                                    <!-- datosgenerales Zone -->
                                     <div class="form-row">
-                                        <div class="col-lg-12">
-                                            <h4>Datos generales</h4>
+                                        <!-- datosgenerales Zone -->
+                                        <div class="datosgeneralesZone col-lg-12">
+                                            <h4><i class="fa fa-list"></i> Datos generales</h4>
+
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
                                                 <!-- cod_mon DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='cod_mon'>Moneda<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <select id='cod_mon' name='cod_mon' class='form-control'></select>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-money icon"></i>
+                                                        <label class='control-label' for='cod_mon'>
+                                                            Moneda
+                                                        </label>
+                                                        <select id='cod_mon' name='cod_mon' class='form-control' disabled></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- cod_fracc_pago DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='cod_fracc_pago'>Fraccionamiento de pago<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <select id='cod_fracc_pago' name='cod_fracc_pago' class='form-control'></select>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-check-square icon"></i>
+                                                        <label class='control-label' for='cod_fracc_pago'>
+                                                            Fraccionamiento de pago
+                                                        </label>
+                                                        <select id='cod_fracc_pago' name='cod_fracc_pago' class='form-control' disabled></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- fec_efec_poliza DatePicker -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='fec_efec_poliza'>Inicio de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-calendar-check-o icon"></i>
+                                                        <label class='control-label' for='fec_efec_poliza'>Inicio de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'></span></label>
                                                         <div class='input-group date' id='fec_efec_poliza_group'>
                                                             <input type='text' id='fec_efec_poliza' name='fec_efec_poliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
                                                             <span class='input-group-addon'>
@@ -68,13 +92,15 @@
                                                             </span>
                                                         </div>
                                                         <div id='fec_efec_poliza_validate'></div>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- fec_vcto_poliza DatePicker -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='fec_vcto_poliza'>Fin de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-calendar-times-o icon"></i>
+                                                        <label class='control-label' for='fec_vcto_poliza'>Fin de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'></span></label>
                                                         <div class='input-group date' id='fec_vcto_poliza_group'>
                                                             <input type='text' id='fec_vcto_poliza' name='fec_vcto_poliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
                                                             <span class='input-group-addon'>
@@ -82,6 +108,7 @@
                                                             </span>
                                                         </div>
                                                         <div id='fec_vcto_poliza_validate'></div>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -91,57 +118,76 @@
                                     <!-- datosdelnegocio Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4>Datos del negocio</h4>
+                                            <h4><i class="fa fa-briefcase"></i> Datos del negocio</h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
                                                 <!-- cod_pais DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='cod_pais'>País</label>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-globe icon"></i>
+                                                        <label class='control-label' for='cod_pais'>
+                                                            País
+                                                        </label>
                                                         <select id='cod_pais' name='cod_pais' class='form-control' disabled></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- cod_estado DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='cod_estado'>Provincia</label>
-                                                        <select id='cod_estado' name='cod_estado' class='form-control'></select>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-globe icon"></i>
+                                                        <label class='control-label' for='cod_estado'>
+                                                            Provincia
+                                                        </label>
+                                                        <select id='cod_estado' name='cod_estado' class='form-control' disabled></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- cod_prov DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='cod_prov'>Cantón</label>
-                                                        <select id='cod_prov' name='cod_prov' class='form-control'></select>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-globe icon"></i>
+                                                        <label class='control-label' for='cod_prov'>
+                                                            Cantón
+                                                        </label>
+                                                        <select id='cod_prov' name='cod_prov' class='form-control' disabled></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- cod_localidad DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='cod_localidad'>Distrito</label>
-                                                        <select id='cod_localidad' name='cod_localidad' class='form-control'></select>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-globe icon"></i>
+                                                        <label class='control-label' for='cod_localidad'>
+                                                            Distrito
+                                                        </label>
+                                                        <select id='cod_localidad' name='cod_localidad' class='form-control' disabled></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- otrassenasdelriesgo Text -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-map-marker icon"></i>
                                                         <label class='control-label' for='otrassenasdelriesgo'>Otras señas del riesgo</label>
                                                         <input type='text' id='otrassenasdelriesgo' name='otrassenasdelriesgo' class='form-control' size='60' maxlength='60' />
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
                                                 <!-- cod_tip_ocup DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-industry icon"></i>
                                                         <label class='control-label' for='cod_tip_ocup'>Ocupación del riesgo</label>
                                                         <select id='cod_tip_ocup' name='cod_tip_ocup' class='form-control'></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                         </div>
                                     </div>
@@ -155,43 +201,54 @@
 
                                                 <!-- cod_tip_edit DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-building icon"></i>
                                                         <label class='control-label' for='cod_tip_edit'>Tipo</label>
                                                         <select id='cod_tip_edit' name='cod_tip_edit' class='form-control'></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- num_pisos_edif DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-building icon"></i>
                                                         <label class='control-label' for='num_pisos_edif'>Número de pisos</label>
                                                         <select id='num_pisos_edif' name='num_pisos_edif' class='form-control'></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- cod_tipo_estruc DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-fire-extinguisher icon"></i>
                                                         <label class='control-label' for='cod_tipo_estruc'>Tipo de estructura</label>
                                                         <select id='cod_tipo_estruc' name='cod_tipo_estruc' class='form-control'></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- cod_tipo_techo DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-fire icon"></i>
                                                         <label class='control-label' for='cod_tipo_techo'>Tipo de techo</label>
                                                         <select id='cod_tipo_techo' name='cod_tipo_techo' class='form-control'></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- cod_tipo_pared DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-fire-extinguisher icon"></i>
                                                         <label class='control-label' for='cod_tipo_pared'>Tipo de pared</label>
                                                         <select id='cod_tipo_pared' name='cod_tipo_pared' class='form-control'></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
+
                                                 <!-- anodeconstruccion Numeric -->
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
@@ -203,10 +260,30 @@
                                                                class='form-control text-right' size='5' maxlength='5' />
                                                     </div>
                                                 </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!--datosvariables Zone -->
+                                    <div class="form-row Solictud_DatosVar ">
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <div class='col'>
+                                                    <h4> Detalles de la solicitud</h4>
+                                                </div>
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class='col-md-12' style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="formulariosDV" style="font-size: 11px;">
+                                                        </table>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-
                                     <!-- sumasaseguradasparacoberturas Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
@@ -216,81 +293,103 @@
 
                                                 <!-- IMP_EDIFICIO Numeric -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='IMP_EDIFICIO'>Edificio<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-building icon"></i>
+                                                        <label class='control-label' for='IMP_EDIFICIO'>Edificio<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'></span></label>
                                                         <input type='text' id='IMP_EDIFICIO' name='IMP_EDIFICIO' class='form-control text-right' size='21' maxlength='21' />
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
                                                 <!-- cod_tip_med_rob DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='cod_tip_med_rob'>Tipo de medida por robo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-shield icon"></i>
+                                                        <label class='control-label' for='cod_tip_med_rob'>Tipo de medida por robo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'></span></label>
                                                         <select id='cod_tip_med_rob' name='cod_tip_med_rob' class='form-control' multiple disabled></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- IMP_DOMOS_TOTAL Numeric -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='IMP_DOMOS_TOTAL'>Rotura domo, cristales, mármol y granito<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-square-o icon"></i>
+                                                        <label class='control-label' for='IMP_DOMOS_TOTAL'>Rotura domo, cristales, mármol y granito<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'></span></label>
                                                         <input type='text' id='IMP_DOMOS_TOTAL' name='IMP_DOMOS_TOTAL' class='form-control text-right' size='21' maxlength='21' disabled />
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
                                                 <!-- IMP_GAS_ALQ Numeric -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='IMP_GAS_ALQ'>Gastos por alquiler<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-key icon"></i>
+                                                        <label class='control-label' for='IMP_GAS_ALQ'>Gastos por alquiler<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'></span></label>
                                                         <input type='text' id='IMP_GAS_ALQ' name='IMP_GAS_ALQ' class='form-control text-right' size='21' maxlength='21' disabled />
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
                                                 <!-- IMP_PER_REN Numeric -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='IMP_PER_REN'>Perdida de rentas<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-level-down icon"></i>
+                                                        <label class='control-label' for='IMP_PER_REN'>Perdida de rentas<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'></span></label>
                                                         <input type='text' id='IMP_PER_REN' name='IMP_PER_REN' class='form-control text-right' size='21' maxlength='21' disabled />
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
                                                 <!-- COB_PDR_MESES Numeric -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='COB_PDR_MESES'>Meses a amparar<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-sort-numeric-desc icon"></i>
+                                                        <label class='control-label' for='COB_PDR_MESES'>Meses a amparar<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'></span></label>
                                                         <input type='text' id='COB_PDR_MESES' name='COB_PDR_MESES' class='form-control text-right' size='5' maxlength='5' disabled />
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
                                                 <!-- IMP_MER_TRA Numeric -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='IMP_MER_TRA'>Mercancía en tránsito<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-truck icon"></i>
+                                                        <label class='control-label' for='IMP_MER_TRA'>Mercancía en tránsito<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'></span></label>
                                                         <input type='text' id='IMP_MER_TRA' name='IMP_MER_TRA' class='form-control text-right' size='21' maxlength='21' disabled />
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
                                                 <!-- cod_tip_med_rdm DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='cod_tip_med_rdm'>Tipo de medida por rotura de maquinaria<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-chain-broken icon"></i>
+                                                        <label class='control-label' for='cod_tip_med_rdm'>Tipo de medida por rotura de maquinaria<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'></span></label>
                                                         <select id='cod_tip_med_rdm' name='cod_tip_med_rdm' class='form-control' multiple disabled></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- IMP_INT_NEG Numeric -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='IMP_INT_NEG'>Interrupción de negocios<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-briefcase icon"></i>
+                                                        <label class='control-label' for='IMP_INT_NEG'>Interrupción de negocios<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'></span></label>
                                                         <input type='text' id='IMP_INT_NEG' name='IMP_INT_NEG' class='form-control text-right' size='21' maxlength='21' disabled />
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
                                                 <!-- COB_IDN_MESES Numeric -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='COB_IDN_MESES'>Meses a amparar<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-sort-numeric-desc icon"></i>
+                                                        <label class='control-label' for='COB_IDN_MESES'>Meses a amparar<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'></span></label>
                                                         <input type='text' id='COB_IDN_MESES' name='COB_IDN_MESES' class='form-control text-right' size='5' maxlength='5' disabled />
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
                                                 <!-- cod_tip_rgo_idn DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='cod_tip_rgo_idn'>Tipo de riesgos por interrupción de negocios<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-exclamation-triangle icon"></i>
+                                                        <label class='control-label' for='cod_tip_rgo_idn'>Tipo de riesgos por interrupción de negocios<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'></span></label>
                                                         <select id='cod_tip_rgo_idn' name='cod_tip_rgo_idn' class='form-control'></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
@@ -301,64 +400,80 @@
                                     <!-- sumasaseguradaspararubros Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4>Sumas aseguradas para rubros</h4>
+                                            <h4><i class="fa fa-sliders"></i> Sumas aseguradas para rubros</h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
                                                 <!-- IMP_MOBILIARIO Numeric -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='IMP_MOBILIARIO'>Mobiliario</label>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-building icon"></i>
+                                                        <label class='control-label' for='IMP_MOBILIARIO'>Mobilario</label>
                                                         <input type='text' id='IMP_MOBILIARIO' name='IMP_MOBILIARIO' class='form-control text-right' size='21' maxlength='21' disabled />
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
                                                 <!-- IMP_MAQUINARIA Numeric -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-cogs icon"></i>
                                                         <label class='control-label' for='IMP_MAQUINARIA'>Maquinaria</label>
                                                         <input type='text' id='IMP_MAQUINARIA' name='IMP_MAQUINARIA' class='form-control text-right' size='21' maxlength='21' disabled />
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
                                                 <!-- IMP_EQUIP_ELEC Numeric -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-laptop icon"></i>
                                                         <label class='control-label' for='IMP_EQUIP_ELEC'>Equipos electrónico (No Móvil)</label>
                                                         <input type='text' id='IMP_EQUIP_ELEC' name='IMP_EQUIP_ELEC' class='form-control text-right' size='21' maxlength='21' disabled />
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
                                                 <!-- IMP_EQUIP_ELEC_M Numeric -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-mobile-phone icon"></i>
                                                         <label class='control-label' for='IMP_EQUIP_ELEC_M'>Equipos electrónico (Móvil)</label>
                                                         <input type='text' id='IMP_EQUIP_ELEC_M' name='IMP_EQUIP_ELEC_M' class='form-control text-right' size='21' maxlength='21' disabled />
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
                                                 <!-- IMP_MERCADERIA Numeric -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-truck icon"></i>
                                                         <label class='control-label' for='IMP_MERCADERIA'>Mercadería</label>
                                                         <input type='text' id='IMP_MERCADERIA' name='IMP_MERCADERIA' class='form-control text-right' size='21' maxlength='21' disabled />
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
                                                 <!-- IMP_BIE_TEM_DES Numeric -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-building icon"></i>
                                                         <label class='control-label' for='IMP_BIE_TEM_DES'>Bienes temporalmente desplazados</label>
                                                         <input type='text' id='IMP_BIE_TEM_DES' name='IMP_BIE_TEM_DES' class='form-control text-right' size='21' maxlength='21' disabled />
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
                                                 <!-- IMP_BIE_INT Numeric -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-building icon"></i>
                                                         <label class='control-label' for='IMP_BIE_INT'>Bienes a la interperie</label>
                                                         <input type='text' id='IMP_BIE_INT' name='IMP_BIE_INT' class='form-control text-right' size='21' maxlength='21' disabled />
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
                                                 <!-- IMP_OBJ_ESP_VAL Numeric -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-diamond icon"></i>
                                                         <label class='control-label' for='IMP_OBJ_ESP_VAL'>Objetos de especial valor</label>
                                                         <input type='text' id='IMP_OBJ_ESP_VAL' name='IMP_OBJ_ESP_VAL' class='form-control text-right' size='21' maxlength='21' disabled />
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -374,15 +489,18 @@
 
                                                 <!-- cod_tip_med_inc DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-fire icon"></i>
                                                         <label class='control-label' for='cod_tip_med_inc'>Tipo de medida contra incendio</label>
                                                         <select id='cod_tip_med_inc' name='cod_tip_med_inc' class='form-control' multiple disabled></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- MCA_EXTIN_INC RadioButtonList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-fire-extinguisher icon"></i>
                                                         <label class='control-label' for='MCA_EXTIN_INC'>¿Posee extintores de incendio?</label>
                                                         <div style="padding-top: 6px;">
                                                             <div class="custom-control custom-radio custom-control-inline">
@@ -393,14 +511,57 @@
                                                                 <label class="custom-control-label" for="MCA_EXTIN_INC_2">No</label>
                                                             </div>
                                                         </div>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- NUM_EXTIN_INC Numeric -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='NUM_EXTIN_INC'>Cuantos extintores de incendio<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <div class='form-group newEmision'>
+                                                        <i class="fa fa-fire-extinguisher icon"></i>
+                                                        <label class='control-label' for='NUM_EXTIN_INC'>Cuantos extintores de incendio<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'></span></label>
                                                         <input type='text' id='NUM_EXTIN_INC' name='NUM_EXTIN_INC' class='form-control text-right' size='5' maxlength='5' disabled />
+                                                        <div class="lineNE"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- coberturas Grid -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <div class='col'>
+                                                    <h4><i class="fa fa-check-square"></i> Coberturas</h4>
+                                                </div>
+
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class='col-md-12' style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="coberturasTbl" style="font-size: 11px;">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- plandepago Grid -->
+                                    <div class="form-row" id="plandepagoRow">
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <div class='col'>
+                                                    <h4><i class="fa fa-credit-card-alt"></i> Plan de pago</h4>
+                                                </div>
+
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class='col-md-12' style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="plandepagoTbl" style="font-size: 11px;">
+                                                        </table>
                                                     </div>
                                                 </div>
                                             </div>
@@ -418,7 +579,7 @@
                                                     </h4>
                                                 </div>
                                                 <div class='col-auto'>
-                                                    <button type="button" class="btn btn-sm btn-white"
+                                                    <button type="button" class="btn btn-sm btn-white d-none"
                                                             title="Al hacer click permite agregar un nuevo Terceros" data-toggle="modal" id="tercerosNew">
                                                         <i class="fa fa-plus"></i>
                                                     </button>
@@ -436,8 +597,56 @@
                                         </div>
                                     </div>
 
-                                    <!-- documentosrequeridos Grid -->
+                                    <!-- formularios Grid -->
+                                    <div class="form-row formulariosGrid d-none">
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <div class='col'>
+                                                    <h4><i class="fa fa-pencil-square-o"></i> Formularios requeridos<label id="formulariosTbl-error" class="float-right d-none LabelValidate"></label></h4>
+                                                </div>
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class='col-md-12' style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="formulariosTbl" style="font-size: 11px;">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="form-row">
+                                        <div class="col-lg-12 d-none enviosolicitudZone">
+                                            <h4><i class="fa fa-envelope-o"></i> Destinatario para envío de solicitud</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- tipoenvio DropDownList -->
+                                                <div class='col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='tip_firma'>Tipo de envío<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='tip_firma' name='tip_firma' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- correoenvio Text -->
+                                                <div class='col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='correoenvio'>Correo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input id='correoenvio' name='correoenvio' type='text' class='form-control' size='80' maxlength='80'>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- documentosrequeridos Grid -->
+                                    <div class="form-row documentosrequeridosGrid">
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
@@ -459,27 +668,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- coberturas Grid -->
-                                    <div class="form-row">
-                                        <div class="col-lg-12">
-                                            <div class="form-row">
-                                                <div class='col'>
-                                                    <h4>Coberturas</h4>
-                                                </div>
-
-                                            </div>
-                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-                                            <div class="form-row">
-                                                <div class='col-md-12' style="padding-bottom: 20px">
-                                                    <div class="table-responsive">
-                                                        <table id="coberturasTbl" style="font-size: 11px;">
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                     <!-- Notificaciones  -->
                                     <div id="quoteNotify">
                                     </div>
@@ -487,7 +675,10 @@
                                     <div class="form-row">
                                         <div class='col-md-12'>
                                             <div class="modal-footer">
-                                                <button id="cotizar" type="button" class="btn  btn-primary" data-doing="Emitiendo...">
+                                                <button id="guardarenviar" type="button" class="btn btn-primary d-none" data-doing="Enviado solictud...">
+                                                    Guardar y enviar solicitud
+                                                </button>
+                                                <button id="cotizar" type="button" class="btn btn-primary d-none" data-doing="Emitiendo...">
                                                     Emitir
                                                 </button>
                                                 <input id="fileUpload" type="file" class="d-none" />
@@ -495,26 +686,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- plandepago Grid -->
-                                    <div class="form-row" id="plandepagoRow">
-                                        <div class="col-lg-12">
-                                            <div class="form-row">
-                                                <div class='col'>
-                                                    <h4>Plan de pago</h4>
-                                                </div>
-
-                                            </div>
-                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-                                            <div class="form-row">
-                                                <div class='col-md-12' style="padding-bottom: 20px">
-                                                    <div class="table-responsive">
-                                                        <table id="plandepagoTbl" style="font-size: 11px;">
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </fieldset>
                             </form>
                         </div>
@@ -584,7 +755,7 @@
                                     <fieldset>
                                         <div class='form-row'>
                                             <!-- tipodetercero DropDownList -->
-                                            <div class='col-sm-4 col-md-4'>
+                                            <div class='col-sm-3 col-md-3'>
                                                 <div class='form-group'>
                                                     <label class='control-label' for='tipodetercero'>
                                                         Tipo de tercero<span class='required-mark'
@@ -598,7 +769,7 @@
                                                 </div>
                                             </div>
                                             <!-- DocumentNumber Text -->
-                                            <div class='col-sm-4 col-md-4'>
+                                            <div class='col-sm-5 col-md-5'>
                                                 <div class='form-group'>
                                                     <label class='control-label' for='DocumentNumber'>
                                                         Identificación<span class='required-mark'
@@ -626,7 +797,8 @@
                                                     </div>
                                                     <div id='DocumentNumber_validate'></div>
                                                 </div>
-                                            </div><!-- nombre Text -->
+                                            </div>
+                                            <!-- nombre Text -->
                                             <div class='col-sm-4 col-md-4'>
                                                 <div class='form-group'>
                                                     <label class='control-label' for='nombre'>
@@ -673,15 +845,15 @@
                                                     <div id='fechadenacimiento_validate'></div>
                                                 </div>
                                             </div>
-                                            <!-- mca_sexo DropDownList -->
+                                            <!-- tercerosMca_sexo DropDownList -->
                                             <div class='col-sm-4 col-md-4'>
                                                 <div class='form-group'>
-                                                    <label class='control-label' for='mca_sexo'>
+                                                    <label class='control-label' for='tercerosMca_sexo'>
                                                         Sexo<span class='required-mark'
                                                                   title='Este campo debe ser llenado de forma obligatoria'>*</span>
                                                     </label>
-                                                    <select id='mca_sexo' name='mca_sexo' class='form-control'>
-                                                        <option value='0'>Femenino</option>
+                                                    <select id='tercerosMca_sexo' name='tercerosMca_sexo' class='form-control'>
+                                                        <option value='2'>Femenino</option>
                                                         <option value='1'>Masculino</option>
                                                     </select>
                                                 </div>
@@ -952,14 +1124,383 @@
             </div>
         </div>
     </div>
+
+    <div id="dynamic"></div>
+    <div id="datosvariables">
+        <!-- datosvariables Grid Modal -->
+        <div class="modal inmodal" id="datosvariablesModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content animated bounceInRight">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                        <h4 class="modal-title">Detalles de la edificacion</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <!-- Edit Form -->
+                        <div class='form-row'>
+                            <div class='col-md-12'>
+                                <div id="datosvarEdt" class="animated fadeInRight">
+                                    <form id='DetallesEdifi' class='form-horizontal' data-toggle='validator'>
+                                        <fieldset>
+                                            <!-- Detalles de la propiedad Zone -->
+                                            <div class="form-row">
+                                                <div class="col-lg-12">
+                                                    <h4>Detalles de la propiedad</h4>
+                                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                                    <div class="form-row">
+
+                                                        <!-- Numero de folio real Numeric -->
+                                                        <div class="col-sm-3 col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="num_folio">
+                                                                    Numero de Folio Real@*<span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span>*@
+                                                                </label>
+                                                                <input type="text" id="num_folio" name="num_folio" class="form-control text-right valid" value="" aria-invalid="false"><label id="num_folio-error" class="error" for="num_folio" style="display: none;"></label>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Numero de finca filial Numeric -->
+                                                        <div class="col-sm-3 col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="num_finca">
+                                                                    Numero de Finca Filial@*<span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span>*@
+                                                                </label>
+                                                                <input type="text" id="num_finca" name="num_finca" class="form-control text-right valid" value="" aria-invalid="false"><label id="num_finca-error" class="error" for="num_finca" style="display: none;"></label>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Área de construccion Numeric -->
+                                                        <div class="col-sm-3 col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="Area_Constru">
+                                                                    Área de construccion (m2)
+                                                                </label>
+                                                                <div class="input-group">
+                                                                    <input type="text" id="Area_Constru" name="Area_Constru" class="form-control text-right valid" value="" aria-invalid="false">
+                                                                    <span class="input-group-addon">
+                                                                        <small class="text-muted" title="Metros">mts2</small>
+                                                                    </span>
+                                                                </div>
+                                                                <label id="Area_Constru-error" class="error" for="Area_Constru" style="display: none;"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+
+                                                        <!-- Cerca de rio,mar,lago talud RadioButtonList -->
+                                                        <div class="col-sm-3 col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="ZonaAcuifera">¿Esta cerca de un rio, ¿mar, lago, talud, en la cima?</label>
+                                                                <div style="padding-top: 6px;">
+                                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" class="custom-control-input" id="ZonaAcuifera_1" name="ZonaAcuifera" value=1>
+                                                                        <label class="custom-control-label" for="ZonaAcuifera_1">Si</label>
+                                                                    </div><div class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" class="custom-control-input" id="ZonaAcuifera_2" name="ZonaAcuifera" value=2 checked>
+                                                                        <label class="custom-control-label" for="ZonaAcuifera_2">No</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Distacia de ZonaAcuifera Numeric -->
+                                                        <div class="col-sm-3 col-md-3 Distan_Ag d-none">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="Dist_ZonaAcu">
+                                                                    Distancia en metros
+                                                                </label>
+                                                                <div class="input-group">
+                                                                    <input type="text" id="Dis_ZonaAcu" name="Dis_ZonaAcu" class="form-control text-right valid" value="" aria-invalid="false">
+                                                                    <span class="input-group-addon">
+                                                                        <small class="text-muted" title="Metros">mts</small>
+                                                                    </span>
+                                                                </div>
+                                                                <label id="Dis_ZonaAcu-error" class="error" for="Dis_ZonaAcu" style="display: none;"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Detalles Colinates y Georeferncia Zone -->
+                                            <div class="form-row">
+                                                <div class="col-md-6">
+                                                    <h4>Georeferncia</h4>
+                                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                                    <div class="form-row">
+                                                        <!-- Longitud Numeric -->
+                                                        <div class="col-sm-6 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="Geo_Longitud">
+                                                                    Longitud
+                                                                </label>
+                                                                <div class="input-group">
+                                                                    <input type="text" id="Geo_Longitud" name="Geo_Longitud" class="form-control text-right valid" value="" aria-invalid="false" placeholder="XX°XX′XX″XX">
+                                                                    <select id="Est_OestMenu" style="border: var(--mapfregray2) 1px solid;border-radius: 0px 5px 5px 0px;">
+                                                                        <option value="E">E</option>
+                                                                        <option value="O">O</option>
+                                                                    </select>
+                                                                    <label id="Geo_Longitud-error" class="error" for="Geo_Longitud" style="display: none;"></label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Latitud Numeric -->
+                                                        <div class="col-sm-6 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="Geo_Latitud">
+                                                                    Latitud
+                                                                </label>
+                                                                <div class="input-group">
+                                                                    <input type="text" id="Geo_Latitud" name="Geo_Latitud" class="form-control text-right valid" value="" aria-invalid="false" placeholder="XX°XX′XX″XX">
+                                                                    <select id="Nor_SurMenu" style="border: var(--mapfregray2) 1px solid;border-radius: 0px 5px 5px 0px;">
+                                                                        <option value="N">N</option>
+                                                                        <option value="S">S</option>
+                                                                    </select>
+                                                                    <label id="Geo_Latitud-error" class="error" for="Geo_Latitud" style="display: none;"></label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div><div class="col-md-6">
+                                                    <h4>Detalles Colindantes </h4>
+                                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                                    <div class="form-row">
+                                                        <!-- Norte Numeric -->
+                                                        <div class="col-sm-3 col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="Colin_Norte">
+                                                                    Norte
+                                                                </label>
+                                                                <input type="text" id="Colin_Norte" name="Colin_Norte" class="form-control text-right valid" value="" aria-invalid="false"><label id="Colin_Norte-error" class="error" for="Colin_Norte" style="display: none;"></label>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Sur Numeric -->
+                                                        <div class="col-sm-3 col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="Colin_Sur">
+                                                                    Sur
+                                                                </label>
+                                                                <input type="text" id="Colin_Sur" name="Colin_Sur" class="form-control text-right valid" value="" aria-invalid="false"><label id="Colin_Sur-error" class="error" for="Colin_Sur" style="display: none;"></label>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Este Numeric -->
+                                                        <div class="col-sm-3 col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="Colin_Este">
+                                                                    Este
+                                                                </label>
+                                                                <input type="text" id="Colin_Este" name="Colin_Este" class="form-control text-right valid" value="" aria-invalid="false"><label id="Colin_Este-error" class="error" for="Colin_Este" style="display: none;"></label>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Oeste Numeric -->
+                                                        <div class="col-sm-3 col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="Colin_Oeste">
+                                                                    Oeste
+                                                                </label>
+                                                                <input type="text" id="Colin_Oeste" name="Colin_Oeste" class="form-control text-right valid" value="" aria-invalid="false"><label id="Colin_Oeste-error" class="error" for="Colin_Oeste" style="display: none;"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- CLASE DE CONSTRUCCIÓN Zone -->
+                                            <div class="form-row">
+                                                <div class="col-lg-12">
+                                                    <h4>Clase de construcción</h4>
+                                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                                    <div class="form-row">
+                                                        <!-- Material Construcción Numeric -->
+                                                        <div class="col-sm-6 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="Mate_Estruc">
+                                                                    Describa de qué material es la estructura@*<span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span>*@
+                                                                </label>
+                                                                <input type="text" id="Mate_Estruc" name="Mate_Estruc" class="form-control valid" value="" aria-invalid="false"><label id="Mate_Estruc-error" class="error" for="Mate_Estruc" style="display: none;"></label>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Tipo de Maposteria Numeric -->
+                                                        <div class="col-sm-6 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="Tip_Mampost">
+                                                                    Tipo de Mamposteria@*<span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span>*@
+                                                                </label>
+                                                                <input type="text" id="Tip_Mampost" name="Tip_Mampost" class="form-control valid" value="" aria-invalid="false"><label id="Tip_Mampost-error" class="error" for="Tip_Mampost" style="display: none;"></label>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Material paredes internas Numeric -->
+                                                        <div class="col-sm-6 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="Mate_PardIn">
+                                                                    Describa el material de las paredes internas@*<span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span>*@
+                                                                </label>
+                                                                <input type="text" id="Mate_PardIn" name="Mate_PardIn" class="form-control valid" value="" aria-invalid="false"><label id="Mate_PardIn-error" class="error" for="Mate_PardIn" style="display: none;"></label>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Material techo -->
+                                                        <div class="col-sm-6 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="Mate_Techo">
+                                                                    Describa de que material es el techo@*<span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span>*@
+                                                                </label>
+                                                                <input type="text" id="Mate_Techo" name="Mate_Techo" class="form-control valid" value="" aria-invalid="false"><label id="Mate_Techo-error" class="error" for="Mate_Techo" style="display: none;"></label>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Material entrepisos Numeric -->
+                                                        <div class="col-sm-6 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="Mate_EntrePiso">
+                                                                    Describa de que material son los entrepisos@*<span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span>*@
+                                                                </label>
+                                                                <input type="text" id="Mate_EntrePiso" name="Mate_EntrePiso" class="form-control valid" value="" aria-invalid="false"><label id="Mate_EntrePiso-error" class="error" for="Mate_EntrePiso" style="display: none;"></label>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Material piso Numeric -->
+                                                        <div class="col-sm-6 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="Mate_Piso">
+                                                                    Describa de que material es el piso@*<span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span>*@
+                                                                </label>
+                                                                <input type="text" id="Mate_Piso" name="Mate_Piso" class="form-control valid" value="" aria-invalid="false"><label id="Mate_Piso-error" class="error" for="Mate_Piso" style="display: none;"></label>
+                                                            </div>
+                                                        </div>
+                                                        <!-- SobrePeso_Estruct -->
+                                                        <div class="col-sm-6 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="SobrePes_Estruct">
+                                                                    Describa si, en su conocimiento, existe sobrepeso en las estructuras@*<span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span>*@
+                                                                </label>
+                                                                <input type="text" id="SobrePes_Estruct" name="SobrePes_Estruct" class="form-control valid" value="" aria-invalid="false"><label id="SobrePes_Estruct-error" class="error" for="SobrePes_Estruct" style="display: none;"></label>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Interseccion vehicular Numeric -->
+                                                        <div class="col-sm-6 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="Intersec_Vehicula">
+                                                                    Describa si el bien asegurado se encuentra o no en una esquina o intersección vehicular@*<span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span>*@
+                                                                </label>
+                                                                <input type="text" id="Intersec_Vehicula" name="Intersec_Vehicula" class="form-control valid" value="" aria-invalid="false"><label id="Intersec_Vehicula-error" class="error" for="Intersec_Vehicula" style="display: none;"></label>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Daños Previos Numeric -->
+                                                        <div class="col-sm-6 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="Daños_Prev">
+                                                                    Describa si el bien asegurado ha tenido daños previos y si estos fueron o no reparados@*<span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span>*@
+                                                                </label>
+                                                                <input type="text" id="Daños_Prev" name="Daños_Prev" class="form-control valid" value="" aria-invalid="false"><label id="Daños_Prev-error" class="error" for="Daños_Prev" style="display: none;"></label>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Cerca de rio,mar,lago talud RadioButtonList -->
+                                                        <div class="col-sm-6 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="Insta_Elect_Entub">¿Las instalaciones eléctricas se encuentran entubadas?</label>
+                                                                <div style="padding-top: 6px;">
+                                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" class="custom-control-input" id="Insta_Elect_Entub_1" name="Insta_Elect_Entub" value="1">
+                                                                        <label class="custom-control-label" for="Insta_Elect_Entub_1">Si</label>
+                                                                    </div><div class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" class="custom-control-input" id="Insta_Elect_Entub_2" name="Insta_Elect_Entub" value="2">
+                                                                        <label class="custom-control-label" for="Insta_Elect_Entub_2">No</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Sumas aseguradas de vivienda Zone -->
+                                            <div class="form-row">
+                                                <div class="col-lg-12">
+                                                    <h4>Sumas aseguradas del monto de vivienda</h4>
+                                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                                    <div class="form-row">
+                                                        <!--Suma Bodegas -->
+                                                        <div class="col-sm-2 col-md-2">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="Suma_Bode">Bodegas</label>
+                                                                <input type="text" id="Suma_Bode" name="Suma_Bode" class="form-control text-right valid" value="" aria-invalid="false"><label id="Suma_Bode-error" class="error" for="Suma_Bode" style="display: none;"></label>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Suma Garajes -->
+                                                        <div class="col-sm-2 col-md-2">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="Suma_Gara">Garajes</label>
+                                                                <input type="text" id="Suma_Gara" name="Suma_Gara" class="form-control text-right valid" value="" aria-invalid="false"><label id="Suma_Gara-error" class="error" for="Suma_Gara" style="display: none;"></label>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Suma Tapias -->
+                                                        <div class="col-sm-2 col-md-2">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="Suma_Tapias">Tapias</label>
+                                                                <input type="text" id="Suma_Tapias" name="Suma_Tapias" class="form-control text-right valid" value="" aria-invalid="false"><label id="Suma_Tapias-error" class="error" for="Suma_Tapias" style="display: none;"></label>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Suma Piscina -->
+                                                        <div class="col-sm-3 col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="Suma_Piscina">Piscinas</label>
+                                                                <input type="text" id="Suma_Piscina" name="Suma_Piscina" class="form-control text-right valid" value="" aria-invalid="false"><label id="Suma_Piscina-error" class="error" for="Suma_Piscina" style="display: none;"></label>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Suma Otros -->
+                                                        <div class="col-sm-3 col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="Suma_Otros">Otros</label>
+                                                                <input type="text" id="Suma_Otros" name="Suma_Otros" class="form-control text-right valid" value="" aria-invalid="false"><label id="Suma_Otros-error" class="error" for="Suma_Otros" style="display: none;"></label>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Vulnerabilidad de los contenidos -->
+                                                        <div class="col-sm-6 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="Vuln_Conten">Vulnerabilidad de los contenidos</label>
+                                                                <div style="padding-top: 6px;">
+                                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" class="custom-control-input" id="Vuln_Conten_1" name="Vuln_Conten" value="1">
+                                                                        <label class="custom-control-label" for="Vuln_Conten_1">Baja</label>
+                                                                    </div>
+                                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" class="custom-control-input" id="Vuln_Conten_2" name="Vuln_Conten" value="2">
+                                                                        <label class="custom-control-label" for="Vuln_Conten_2">Regular</label>
+                                                                    </div><div class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" class="custom-control-input" id="Vuln_Conten_3" name="Vuln_Conten" value="3">
+                                                                        <label class="custom-control-label" for="Vuln_Conten_3">Alta</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Edit Form End -->
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button id="DetallesSave" type="button" class="btn btn-primary" data-doing="Guardando cambios...">Guardar cambios</button>
+                        <button id="datosvarEdtFormCancel" type="button" class="btn btn-white" data-doing="Cancelando cambios..." data-dismiss="modal">Cancelar</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
     <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
     <script src="@Url.Content("~/Scripts/Emision.Multirriesgo.js")"></script>
+    <script src="@Url.Content("~/assets/js/multimodal.js")"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             app.EmisionMultirriesgo.Init();
         });
     </script>
 }
+

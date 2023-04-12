@@ -121,7 +121,10 @@ namespace Architect.API.Tron.Business.Backoffice.Emision
                 foreach (Contracts.Presupuesto.Tercero p2000030Instance60 in s2000030Instance.Terceros)
                 {
                     p2000030Instance60.num_poliza = s2000030Instance.num_poliza;
-                    DataAccess.CrearPresupuesto.PP_Insert_P2000060(p2000030Instance60, currentConnection);
+                    if (!DataAccess.Batch.P2000060.Exist(p2000030Instance60.tip_docum, p2000030Instance60.cod_docum, s2000030Instance.num_poliza, p2000030Instance60.tip_benef, currentConnection))
+                    {
+                        DataAccess.CrearPresupuesto.PP_Insert_P2000060(p2000030Instance60, currentConnection);
+                    }					 
                 }
             }
         }
