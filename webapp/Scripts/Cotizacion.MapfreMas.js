@@ -1069,6 +1069,7 @@ app.CotizacionMapfreMas = (function () {
             num_poliza_grupo: setupData.polizagrupo == null ? '' : setupData.polizagrupo
         };
     }
+
     function SettingReload(callback) {
         var param = SettingParameter();
 
