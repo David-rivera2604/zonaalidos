@@ -25,9 +25,8 @@ namespace Architect.API.Core.DataAccess.General
             {
                 processcaseItem.UpdateDate = DateTime.Now;
             }
-            //Agregado provisional Sebastian UserSend
-            return Database.Insert("INSERT INTO ProcessCase (Id, CompanyId, Title, Description, Priority, InstanceId, CurrentStepId, Reference1, Reference2, Reference3, Reference4, Reference5, ContactMainName, ContactMainEmail, Status, Label, SubStatus, SubLabel, FlowId, UserId, SLA, UpdateUserCode, UpdateDate , UserSend) " +
-                                                 "VALUES(:Id, :CompanyId, :Title, :Description, :Priority, :InstanceId, :CurrentStepId, :Reference1, :Reference2, :Reference3, :Reference4, :Reference5, :ContactMainName, :ContactMainEmail, :Status, :Label, :SubStatus, :SubLabel, :FlowId, :UserId, :SLA, :UpdateUserCode, :UpdateDate, :UserSend)")
+            return Database.Insert("INSERT INTO ProcessCase (Id, CompanyId, Title, Description, Priority, InstanceId, CurrentStepId, Reference1, Reference2, Reference3, Reference4, Reference5, Reference6, Reference7, Reference8, Reference9, Reference10, ContactMainName, ContactMainEmail, Status, Label, SubStatus, SubLabel, FlowId, UserId, SLA, UpdateUserCode, UpdateDate, UserSend) " +
+                                                 "VALUES(:Id, :CompanyId, :Title, :Description, :Priority, :InstanceId, :CurrentStepId, :Reference1, :Reference2, :Reference3, :Reference4, :Reference5, :Reference6, :Reference7, :Reference8, :Reference9, :Reference10, :ContactMainName, :ContactMainEmail, :Status, :Label, :SubStatus, :SubLabel, :FlowId, :UserId, :SLA, :UpdateUserCode, :UpdateDate, :UserSend)")
                             .AddParameter("Id", DbType.Decimal, 9, processcaseItem.Id)
                             .AddParameter("CompanyId", DbType.Decimal, 5, processcaseItem.CompanyId)
                             .AddParameter("Title", DbType.AnsiString, 120, processcaseItem.Title)
@@ -40,6 +39,11 @@ namespace Architect.API.Core.DataAccess.General
                             .AddParameter("Reference3", DbType.AnsiString, 36, processcaseItem.Reference3)
                             .AddParameter("Reference4", DbType.AnsiString, 36, processcaseItem.Reference4)
                             .AddParameter("Reference5", DbType.AnsiString, 36, processcaseItem.Reference5)
+                            .AddParameter("Reference6", DbType.AnsiString, 80, processcaseItem.Reference6)
+                            .AddParameter("Reference7", DbType.AnsiString, 80, processcaseItem.Reference7)
+                            .AddParameter("Reference8", DbType.AnsiString, 80, processcaseItem.Reference8)
+                            .AddParameter("Reference9", DbType.AnsiString, 80, processcaseItem.Reference9)
+                            .AddParameter("Reference10", DbType.AnsiString, 80, processcaseItem.Reference10)
                             .AddParameter("ContactMainName", DbType.AnsiString, 256, processcaseItem.ContactMainName)
                             .AddParameter("ContactMainEmail", DbType.AnsiString, 256, processcaseItem.ContactMainEmail)
                             .AddParameter("Status", DbType.Decimal, 3, processcaseItem.Status)
@@ -96,7 +100,7 @@ namespace Architect.API.Core.DataAccess.General
         {
             Architect.API.Core.Contracts.General.ProcessCase result = null;
             //Agregado provisional Sebastian UserSend
-            Database.Select("SELECT Id, ProcessCase.CompanyId, Title, Description, Priority, InstanceId, UserSend, CurrentStepId, Reference1, Reference2, Reference3, Reference4, Reference5, ContactMainName, ContactMainEmail, Status, Label, SubStatus, SubLabel, FlowId, ProcessCase.UserId, SLA, ProcessCase.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessCase.UpdateDate " +
+            Database.Select("SELECT Id, ProcessCase.CompanyId, Title, Description, Priority, InstanceId, CurrentStepId, Reference1, Reference2, Reference3, Reference4, Reference5, Reference6, Reference7, Reference8, Reference9, Reference10, ContactMainName, ContactMainEmail, Status, Label, SubStatus, SubLabel, FlowId, ProcessCase.UserId, SLA, ProcessCase.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessCase.UpdateDate, UserSend " +
                               "FROM ProcessCase LEFT JOIN UserMember um ON um.UserId = ProcessCase.UpdateUserCode " +
                              "WHERE ProcessCase.Id=:Id AND ProcessCase.CompanyId=:CompanyId")
                         .AddParameter("Id", DbType.Decimal, 9, id)
@@ -119,7 +123,7 @@ namespace Architect.API.Core.DataAccess.General
         public static List<Architect.API.Core.Contracts.General.ProcessCase> RetrieveAll(int companyId, string filter, List<DataFactory.Contracts.Parameter> parameters = null, IDbConnection connection = null)
         {
             List<Architect.API.Core.Contracts.General.ProcessCase> result = new List<Architect.API.Core.Contracts.General.ProcessCase>();
-            Database.Select("SELECT Id, ProcessCase.CompanyId, Title, Description, Priority, InstanceId, CurrentStepId, Reference1, Reference2, Reference3, Reference4, Reference5, ContactMainName, ContactMainEmail, Status, Label, SubStatus, SubLabel, FlowId, ProcessCase.UserId, SLA, ProcessCase.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessCase.UpdateDate " +
+            Database.Select("SELECT Id, ProcessCase.CompanyId, Title, Description, Priority, InstanceId, CurrentStepId, Reference1, Reference2, Reference3, Reference4, Reference5, Reference6, Reference7, Reference8, Reference9, Reference10, ContactMainName, ContactMainEmail, Status, Label, SubStatus, SubLabel, FlowId, ProcessCase.UserId, SLA, ProcessCase.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessCase.UpdateDate " +
                               "FROM ProcessCase LEFT JOIN UserMember um ON um.UserId = ProcessCase.UpdateUserCode " +
                              "WHERE ProcessCase.CompanyId=:CompanyId" + filter)
                         .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
@@ -164,7 +168,7 @@ namespace Architect.API.Core.DataAccess.General
                 endIndex = int.MaxValue;
             }
             Database.Select("SELECT * FROM (" +
-                            "SELECT Id, ProcessCase.CompanyId, Title, Description, Priority, InstanceId, CurrentStepId, Reference1, Reference2, Reference3, Reference4, Reference5, ContactMainName, ContactMainEmail, Status, Label, SubStatus, ProcessCase.UserSend, SubLabel, FlowId, ProcessCase.UserId, SLA, ProcessCase.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessCase.UpdateDate " +
+                            "SELECT Id, ProcessCase.CompanyId, Title, Description, Priority, InstanceId, CurrentStepId, Reference1, Reference2, Reference3, Reference4, Reference5, Reference6, Reference7, Reference8, Reference9, Reference10, ContactMainName, ContactMainEmail, Status, Label, SubStatus, SubLabel, FlowId, ProcessCase.UserId, SLA, ProcessCase.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessCase.UpdateDate, ProcessCase.UserSend " +
                                    ", ROW_NUMBER() OVER (ORDER BY ProcessCase.Id DESC) RowNumber " +
                               "FROM ProcessCase LEFT JOIN UserMember um ON um.UserId = ProcessCase.UpdateUserCode " +
                              "WHERE ProcessCase.CompanyId=:CompanyId" + filter +
@@ -220,7 +224,7 @@ namespace Architect.API.Core.DataAccess.General
                 processcaseItem.UpdateDate = DateTime.Now;
             }
             return Database.Update("UPDATE ProcessCase " +
-                                      "SET CompanyId=:CompanyId, Title=:Title, Description=:Description, Priority=:Priority, InstanceId=:InstanceId, CurrentStepId=:CurrentStepId, Reference1=:Reference1, Reference2=:Reference2, Reference3=:Reference3, Reference4=:Reference4, Reference5=:Reference5, ContactMainName=:ContactMainName, ContactMainEmail=:ContactMainEmail, Status=:Status, Label=:Label, SubStatus=:SubStatus, SubLabel=:SubLabel, FlowId=:FlowId, UserId=:UserId, SLA=:SLA, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
+                                      "SET CompanyId=:CompanyId, Title=:Title, Description=:Description, Priority=:Priority, InstanceId=:InstanceId, CurrentStepId=:CurrentStepId, Reference1=:Reference1, Reference2=:Reference2, Reference3=:Reference3, Reference4=:Reference4, Reference5=:Reference5, Reference6=:Reference6, Reference7=:Reference7, Reference8=:Reference8, Reference9=:Reference9, Reference10=:Reference10, ContactMainName=:ContactMainName, ContactMainEmail=:ContactMainEmail, Status=:Status, Label=:Label, SubStatus=:SubStatus, SubLabel=:SubLabel, FlowId=:FlowId, UserId=:UserId, SLA=:SLA, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
                                     "WHERE Id=:Id")
                                 .AddParameter("CompanyId", DbType.Decimal, 5, processcaseItem.CompanyId)
                                 .AddParameter("Title", DbType.AnsiString, 120, processcaseItem.Title)
@@ -233,6 +237,11 @@ namespace Architect.API.Core.DataAccess.General
                                 .AddParameter("Reference3", DbType.AnsiString, 36, processcaseItem.Reference3)
                                 .AddParameter("Reference4", DbType.AnsiString, 36, processcaseItem.Reference4)
                                 .AddParameter("Reference5", DbType.AnsiString, 36, processcaseItem.Reference5)
+                                .AddParameter("Reference6", DbType.AnsiString, 80, processcaseItem.Reference6)
+                                .AddParameter("Reference7", DbType.AnsiString, 80, processcaseItem.Reference7)
+                                .AddParameter("Reference8", DbType.AnsiString, 80, processcaseItem.Reference8)
+                                .AddParameter("Reference9", DbType.AnsiString, 80, processcaseItem.Reference9)
+                                .AddParameter("Reference10", DbType.AnsiString, 80, processcaseItem.Reference10)
                                 .AddParameter("ContactMainName", DbType.AnsiString, 256, processcaseItem.ContactMainName)
                                 .AddParameter("ContactMainEmail", DbType.AnsiString, 256, processcaseItem.ContactMainEmail)
                                 .AddParameter("Status", DbType.Decimal, 3, processcaseItem.Status)
@@ -401,6 +410,11 @@ namespace Architect.API.Core.DataAccess.General
             item.Reference3 = reader.StringValue("Reference3");
             item.Reference4 = reader.StringValue("Reference4");
             item.Reference5 = reader.StringValue("Reference5");
+            item.Reference6 = reader.StringValue("Reference6");
+            item.Reference7 = reader.StringValue("Reference7");
+            item.Reference8 = reader.StringValue("Reference8");
+            item.Reference9 = reader.StringValue("Reference9");
+            item.Reference10 = reader.StringValue("Reference10");
             item.ContactMainName = reader.StringValue("ContactMainName");
             item.ContactMainEmail = reader.StringValue("ContactMainEmail");
             item.Status = reader.IntegerValue("Status");

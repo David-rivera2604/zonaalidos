@@ -8,6 +8,11 @@ namespace Architect.API.Core.Contracts.General
     {
 
         /// <summary>
+        /// Lista de roles asociados al proceso.
+        /// </summary>
+        [DataMember(), JsonProperty()] public string RoleNames { get; set; }
+
+        /// <summary>
         /// Pasos o estados de un proceso.
         /// </summary>
         [DataMember(), JsonProperty()] public List<ProcessSpecStep> ProcessSpecSteps { get; set; }

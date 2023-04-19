@@ -756,3 +756,7 @@ html {
     position: relative;
     top: -7px;
 }
+
+.form-compact .form-group {
+    margin-bottom: 0px;
+}

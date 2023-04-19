@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>C:\publish\viajero</_PublishTargetUrl>
-    <History>True|2023-04-12T21:12:21.4461394Z;True|2022-10-10T06:07:56.8204260-06:00;True|2022-10-03T08:59:02.7615786-06:00;True|2022-09-02T08:20:42.7559959-06:00;True|2022-08-31T12:39:52.0783144-06:00;True|2022-08-31T12:39:17.3135817-06:00;</History>
+    <History>True|2023-04-13T00:07:15.3094853Z;True|2023-04-12T15:12:21.4461394-06:00;True|2022-10-10T06:07:56.8204260-06:00;True|2022-10-03T08:59:02.7615786-06:00;True|2022-09-02T08:20:42.7559959-06:00;True|2022-08-31T12:39:52.0783144-06:00;True|2022-08-31T12:39:17.3135817-06:00;</History>
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
@@ -73,16 +73,16 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>08/22/2022 13:02:56</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.Application.dll">
-      <publishTime>04/12/2023 15:12:15</publishTime>
+      <publishTime>04/12/2023 18:07:11</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.Application.dll.config">
       <publishTime>04/03/2023 20:37:00</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.Application.pdb">
-      <publishTime>04/12/2023 15:12:15</publishTime>
+      <publishTime>04/12/2023 18:07:11</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.dll">
-      <publishTime>04/12/2023 15:12:17</publishTime>
+      <publishTime>04/12/2023 18:07:12</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.Domain.dll">
       <publishTime>04/12/2023 15:12:03</publishTime>
@@ -100,16 +100,16 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>04/12/2023 15:12:07</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.pdb">
-      <publishTime>04/12/2023 15:12:17</publishTime>
+      <publishTime>04/12/2023 18:07:12</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.WebApi.dll">
-      <publishTime>04/12/2023 15:12:15</publishTime>
+      <publishTime>04/12/2023 18:07:12</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.WebApi.dll.config">
       <publishTime>04/03/2023 20:37:00</publishTime>
     </File>
     <File Include="bin/Aliados.Monge.WebApi.pdb">
-      <publishTime>04/12/2023 15:12:15</publishTime>
+      <publishTime>04/12/2023 18:07:12</publishTime>
     </File>
     <File Include="bin/Antlr3.Runtime.dll">
       <publishTime>09/10/2013 10:29:20</publishTime>
@@ -118,13 +118,13 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>09/10/2013 10:29:20</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Business.dll">
-      <publishTime>04/12/2023 15:12:10</publishTime>
+      <publishTime>04/12/2023 18:07:09</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Business.dll.config">
       <publishTime>04/03/2023 20:36:59</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Business.pdb">
-      <publishTime>04/12/2023 15:12:10</publishTime>
+      <publishTime>04/12/2023 18:07:09</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Contracts.dll">
       <publishTime>04/12/2023 15:12:05</publishTime>
@@ -136,58 +136,58 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>04/12/2023 15:12:05</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.DataAccess.dll">
-      <publishTime>04/12/2023 15:12:08</publishTime>
+      <publishTime>04/12/2023 18:07:08</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.DataAccess.dll.config">
       <publishTime>04/03/2023 20:36:50</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.DataAccess.pdb">
-      <publishTime>04/12/2023 15:12:08</publishTime>
+      <publishTime>04/12/2023 18:07:08</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Security.dll">
-      <publishTime>04/12/2023 15:12:09</publishTime>
+      <publishTime>04/12/2023 18:07:08</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Security.dll.config">
       <publishTime>04/03/2023 20:36:58</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Security.pdb">
-      <publishTime>04/12/2023 15:12:09</publishTime>
+      <publishTime>04/12/2023 18:07:08</publishTime>
     </File>
     <File Include="bin/Architect.API.Insurance.Contracts.dll">
-      <publishTime>04/12/2023 15:12:11</publishTime>
+      <publishTime>04/12/2023 18:07:09</publishTime>
     </File>
     <File Include="bin/Architect.API.Insurance.Contracts.dll.config">
       <publishTime>04/03/2023 20:36:59</publishTime>
     </File>
     <File Include="bin/Architect.API.Insurance.Contracts.pdb">
-      <publishTime>04/12/2023 15:12:11</publishTime>
+      <publishTime>04/12/2023 18:07:09</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.Business.dll">
-      <publishTime>04/12/2023 15:12:14</publishTime>
+      <publishTime>04/12/2023 18:07:11</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.Business.dll.config">
       <publishTime>04/03/2023 20:36:59</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.Business.pdb">
-      <publishTime>04/12/2023 15:12:14</publishTime>
+      <publishTime>04/12/2023 18:07:11</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.Contracts.dll">
-      <publishTime>04/12/2023 15:12:12</publishTime>
+      <publishTime>04/12/2023 18:07:10</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.Contracts.dll.config">
       <publishTime>04/03/2023 20:36:59</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.Contracts.pdb">
-      <publishTime>04/12/2023 15:12:12</publishTime>
+      <publishTime>04/12/2023 18:07:10</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.DataAccess.dll">
-      <publishTime>04/12/2023 15:12:12</publishTime>
+      <publishTime>04/12/2023 18:07:10</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.DataAccess.dll.config">
       <publishTime>04/03/2023 20:37:00</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.DataAccess.pdb">
-      <publishTime>04/12/2023 15:12:12</publishTime>
+      <publishTime>04/12/2023 18:07:10</publishTime>
     </File>
     <File Include="bin/Architect.Compliance.Integrations.dll">
       <publishTime>04/12/2023 15:12:05</publishTime>
@@ -229,13 +229,13 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>04/12/2023 15:12:04</publishTime>
     </File>
     <File Include="bin/Architect.WS.Integrations.dll">
-      <publishTime>04/12/2023 15:12:13</publishTime>
+      <publishTime>04/12/2023 18:07:10</publishTime>
     </File>
     <File Include="bin/Architect.WS.Integrations.dll.config">
       <publishTime>04/03/2023 20:37:00</publishTime>
     </File>
     <File Include="bin/Architect.WS.Integrations.pdb">
-      <publishTime>04/12/2023 15:12:13</publishTime>
+      <publishTime>04/12/2023 18:07:10</publishTime>
     </File>
     <File Include="bin/ca/Hangfire.Core.resources.dll">
       <publishTime>03/29/2023 22:29:48</publishTime>
