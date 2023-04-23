@@ -100,7 +100,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="form-row">
                                 <!-- Contacto -->
                                 <div class="col-lg-4">
@@ -150,6 +150,9 @@
                                     </div>
                                 </div>
 
+                                <!-- _anexos Grid -->
+                                @Html.Partial("_anexos_grid")
+
                                 <!-- Referencias -->
 
                                 <div class="col-lg-8">
@@ -183,7 +186,7 @@
                                         <!-- Reference4 -->
                                         <div class='col-sm-6 col-md-6 d-none'>
                                             <div class='form-group'>
-                                                <label class='control-label' for='Reference4'>Reference 4</label>
+                                                <label class='control-label' for='Reference4'>Referencia 4</label>
                                                 <input id='Reference4' name='Reference4' type='text' class='form-control d-none' size='36' maxlength='36'>
                                                 <select id='Reference4List' name='Reference4List' class='form-control d-none'><option selected="selected" value=""></option></select>
                                             </div>
@@ -194,6 +197,46 @@
                                                 <label class='control-label' for='Reference5'>Referencia 5</label>
                                                 <input id='Reference5' name='Reference5' type='text' class='form-control d-none' size='36' maxlength='36'>
                                                 <select id='Reference5List' name='Reference5List' class='form-control d-none'><option selected="selected" value=""></option></select>
+                                            </div>
+                                        </div>
+                                        <!-- Reference6 -->
+                                        <div class='col-sm-6 col-md-6 d-none'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='Reference6'>Referencia 6</label>
+                                                <input id='Reference6' name='Reference6' type='text' class='form-control d-none' size='36' maxlength='36'>
+                                                <select id='Reference6List' name='Reference6List' class='form-control d-none'><option selected="selected" value=""></option></select>
+                                            </div>
+                                        </div>
+                                        <!-- Reference7 -->
+                                        <div class='col-sm-6 col-md-6 d-none'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='Reference7'>Referencia 7</label>
+                                                <input id='Reference7' name='Reference7' type='text' class='form-control d-none' size='36' maxlength='36'>
+                                                <select id='Reference7List' name='Reference7List' class='form-control d-none'><option selected="selected" value=""></option></select>
+                                            </div>
+                                        </div>
+                                        <!-- Reference8 -->
+                                        <div class='col-sm-6 col-md-6 d-none'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='Reference8'>Referencia 8</label>
+                                                <input id='Reference8' name='Reference8' type='text' class='form-control d-none' size='36' maxlength='36'>
+                                                <select id='Reference8List' name='Reference8List' class='form-control d-none'><option selected="selected" value=""></option></select>
+                                            </div>
+                                        </div>
+                                        <!-- Reference9 -->
+                                        <div class='col-sm-6 col-md-6 d-none'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='Reference9'>Referencia 9</label>
+                                                <input id='Reference9' name='Reference9' type='text' class='form-control d-none' size='36' maxlength='36'>
+                                                <select id='Reference9List' name='Reference9List' class='form-control d-none'><option selected="selected" value=""></option></select>
+                                            </div>
+                                        </div>
+                                        <!-- Reference10 -->
+                                        <div class='col-sm-6 col-md-6 d-none'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='Reference10'>Referencia 10</label>
+                                                <input id='Reference10' name='Reference10' type='text' class='form-control d-none' size='36' maxlength='36'>
+                                                <select id='Reference10List' name='Reference10List' class='form-control d-none'><option selected="selected" value=""></option></select>
                                             </div>
                                         </div>
                                     </div>
@@ -213,6 +256,8 @@
             </div>
         </div>
     </div>
+    <!-- _anexos Grid Modal -->
+    @Html.Partial("_anexos_modal")
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")

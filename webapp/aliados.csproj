@@ -1233,6 +1233,7 @@
     <Content Include="Scripts\Emision.kyc.declarante.js" />
     <Content Include="Scripts\Emision.kyc.juridico.js" />
     <Content Include="Scripts\Emision.kyc.persona.js" />
+    <Content Include="Scripts\Common.Anexos.js" />
     <Content Include="Scripts\Emision.Terceros.js" />
     <Content Include="Scripts\Emision.SaldoDeudor.js" />
     <Content Include="Scripts\Cotizacion.SaldoDeudor.js" />
@@ -1696,6 +1697,8 @@
     <Content Include="Reports\KYC_Juridico.repx" />
     <Content Include="Reports\KYC_Persona.repx" />
     <Content Include="Reports\MapfreMas_Solicitud_Individual.repx" />
+    <Content Include="Views\Cases\_anexos_modal.cshtml" />
+    <Content Include="Views\Cases\_anexos_grid.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
