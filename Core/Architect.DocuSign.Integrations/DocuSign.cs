@@ -12,7 +12,7 @@ namespace Architect.DocuSign.Integrations
 
     public static class DocuSign
     {
-   //     private static HttpClient eviCertiaClient = new HttpClient();
+        //     private static HttpClient eviCertiaClient = new HttpClient();
 
         /// <summary>
         /// Permite la remisión a EVICERTIA de una carta o documento notarial
@@ -118,7 +118,9 @@ namespace Architect.DocuSign.Integrations
                             result.affidavits.Add(new Contracts.affidavits()
                             {
                                 description = affidavit.description,
-                                bytes = affidavit.bytes
+                                bytes = affidavit.bytes,
+                                kind = affidavit.kind,
+                                Signed = affidavit.kind.Equals("EviSign:Main", StringComparison.CurrentCultureIgnoreCase)
                             });
                         }
                     }

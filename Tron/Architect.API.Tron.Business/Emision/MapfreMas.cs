@@ -158,7 +158,7 @@ namespace Architect.API.Tron.Business.Emision
 
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     resultQuoteInfo = new Contracts.Emision.MapfreMas()
                     {
@@ -167,7 +167,7 @@ namespace Architect.API.Tron.Business.Emision
                     };
 
                 }
-             
+
             }
             return resultQuoteInfo;
         }
@@ -226,7 +226,7 @@ namespace Architect.API.Tron.Business.Emision
 
                                 foreach (DocuSign.Integrations.Contracts.affidavits affidavit in eviSignInf.affidavits)
                                 {
-                                    if (affidavit.description.Equals("documento firmado", StringComparison.CurrentCultureIgnoreCase))
+                                    if (affidavit.Signed)
                                     {
                                         Almacena_Documento_Firmado(item.ProposalId, affidavit.bytes, companyId, userId);
                                         break;
