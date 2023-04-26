@@ -254,7 +254,7 @@ namespace Architect.API.Tron.Business.Emision
 
                                 foreach (DocuSign.Integrations.Contracts.affidavits affidavit in eviSignInf.affidavits)
                                 {
-                                    if (affidavit.description.Equals("documento firmado", StringComparison.CurrentCultureIgnoreCase))
+                                    if (affidavit.Signed)
                                     {
                                         Almacena_Documento_Firmado(item.ProposalId, affidavit.bytes, companyId, userId);
                                         break;
