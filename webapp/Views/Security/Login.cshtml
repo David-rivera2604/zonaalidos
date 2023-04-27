@@ -18,7 +18,7 @@
 
     <!-- Google Tag Manager -->
     <script>
-    (function (w, d, s, l, i) {
+        (function (w, d, s, l, i) {
             w[l] = w[l] || []; w[l].push({
                 'gtm.start':
                     new Date().getTime(), event: 'gtm.js'
@@ -54,57 +54,65 @@
                 </div>
             </div>*@
         <div class="caja_prin loginscreen animated fadeInDown">
+
             <div class="caja c1">
 
-                <div>
-                    <h1 class="logo-name"></h1>
-                </div>
                 <div id="login">
                     <div class="wellcome-info text-center">
                         <h3>Bienvenido a la Zona de Aliados</h3>
                         <h4>MAPFRE COSTA RICA</h4>
                     </div>
-                    <div class="alert alert-info alert-dismissable fade show text-left di_aleLog d-none ">
+
+                    <div class="alert alert-info alert-dismissable fade show di_aleLog d-none ">
                         <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
                         Usted ha sido redireccionado a esta página debido a que su sesión de usuario ha superado el tiempo máximo de inactividad.
                     </div>
                     @*<p>Login in. To see it in action.</p>*@
                     <form id="LoginEdtForm" class="m-t d-flex justify-content-center" role="form" action="index.html" data-toggle='validator'>
-                        <fieldset class="text-center formlog">
-                            <div class="form-group">
-                                <div class="input-group Mydis">
-                                    <input id="Tenant" name="Tenant" type="text" class="desi_In" maxlength="60" required="" autocomplete="off" value="" title="Nombre o código del aliado">
-                                    <label class="lab_desi"><i class="fa fa-puzzle-piece Ilog" aria-hidden="true"></i> Aliado</label>
-                                    <span class="highlight"></span>
-                                    <span class="bar"></span>
+                        <div class="login-box">
+                            <fieldset class="text-center formlog">
+                                <div class="form-group">
+                                    <div class="input-group Mydis">
+                                        <input id="Tenant" name="Tenant" type="text" class="desi_In" maxlength="60" required="" autocomplete="off" value="" title="Nombre o código del aliado">
+                                        <label class="lab_desi"><i class="fa fa-puzzle-piece Ilog" aria-hidden="true"></i> Aliado</label>
+                                        <span class="highlight"></span>
+                                        <span class="bar"></span>
+                                    </div>
+                                    <div id='Tenant_validate'></div>
                                 </div>
-                                <div id='Tenant_validate'></div>
-                            </div>
-                            <div class="form-group ">
-                                <div class="input-group Mydis">
-                                    <input id="Username" name="Username" type="text" class="desi_In" maxlength="60" required="" autocomplete="off" title="Usuario o correo" x-webkit-speech>
-                                    <label class="lab_desi"><i class="fa fa-user Ilog" aria-hidden="true"></i> Usuario o correo</label>
-                                    <span class="highlight"></span>
-                                    <span class="bar"></span>
+                                <div class="form-group ">
+                                    <div class="input-group Mydis">
+                                        <input id="Username" name="Username" type="text" class="desi_In" maxlength="60" required="" autocomplete="off" title="Usuario o correo" x-webkit-speech>
+                                        <label class="lab_desi"><i class="fa fa-user Ilog" aria-hidden="true"></i> Usuario o correo</label>
+                                        <span class="highlight"></span>
+                                        <span class="bar"></span>
+                                    </div>
+                                    <div id='Username_validate'></div>
                                 </div>
-                                <div id='Username_validate'></div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group Mydis ">
-                                    <input id="Password" name="Password" type="password" class="desi_In" maxlength="70" required="" autocomplete="off" title="Clave de acceso">
-                                    <label class="lab_desi"><i class="fa fa-lock Ilog" aria-hidden="true"></i> Clave de acceso</label>
-                                    <span class="highlight"></span>
-                                    <span class="bar"></span>
+                                <div class="form-group">
+                                    <div class="input-group Mydis ">
+                                        <input id="Password" name="Password" type="password" class="desi_In" maxlength="70" required="" autocomplete="off" title="Clave de acceso">
+                                        <label class="lab_desi"><i class="fa fa-lock Ilog" aria-hidden="true"></i> Clave de acceso</label>
+                                        <span class="highlight"></span>
+                                        <span class="bar"></span>
 
-                                    <div id='Password_validate'></div>
+                                        <div id='Password_validate'></div>
 
+                                    </div>
                                 </div>
-                            </div>
-                            <button id="Send" type="submit" class="full-width slidee Des_bot" title="Verifica las credenciales de acceso">Iniciar</button>
-                            <a href="#" id="forgotlink" title="Permite establecer una nueva clave de acceso"><small>Olvidó su clave de acceso?</small></a>
-                            @*<p class="text-muted text-center"><small>Do not have an account?</small></p>
-                    <a class="btn btn-sm btn-white btn-block" href="register.html">Create an account</a>*@
-                        </fieldset>
+                                <button id="Send" type="submit" class="full-width slidee Des_bot" title="Verifica las credenciales de acceso">Iniciar</button>
+                                <a href="#" id="forgotlink" title="Permite establecer una nueva clave de acceso"><small>Olvidó su clave de acceso?</small></a>
+                                @*<p class="text-muted text-center"><small>Do not have an account?</small></p>
+                                    <a class="btn btn-sm btn-white btn-block" href="register.html">Create an account</a>*@
+                                <p class="m-t text-center" style="margin-bottom: 0rem !important;">
+                                    <small>
+                                        &copy; 2023 MAPFRE. Todos los derechos reservados.
+                                    </small>
+                                </p>
+                            </fieldset>
+
+
+                        </div>
                     </form>
                 </div>
 
@@ -197,19 +205,15 @@
                     </form>
                 </div>
 
-                <p class="m-t text-center">
-                    <small>
-                        &copy; 2023 MAPFRE. Todos los derechos reservados.
-                    </small>
-                </p>
+
                 @*<div class="container-certificates">
-                    <div class="certificates-imgs p-2 d-flex justify-content-center">
-                        <img src="~/app/img/logo-AENOR.png" alt="AENOR" id="patrocinioAENOR">
-                    </div>
-                    <div class="title-certificates text-center">
-                        Certificados
-                    </div>
-                </div>*@
+                        <div class="certificates-imgs p-2 d-flex justify-content-center">
+                            <img src="~/app/img/logo-AENOR.png" alt="AENOR" id="patrocinioAENOR">
+                        </div>
+                        <div class="title-certificates text-center">
+                            Certificados
+                        </div>
+                    </div>*@
             </div>
 
             <div class="caja c2">
@@ -229,11 +233,11 @@
                             <img class="d-block w-100" src="~/app/img/login2.jpg" alt="Second slide">
                             <div class="carousel-caption d-none d-md-block text_logC">
                                 @*<p>
-                                    Con el compromiso de siempre poder brindar herramientas que apoyen en la gestión de venta y
-                                    el cumplimiento de objetivos ponemos a su disposición nuestra zona de aliados,
-                                    la cual permitirá reducir los tiempos de respuesta en los
-                                    procesos de cotización y emisión con mayor accesibilidad y comodidad.
-                                </p>*@
+                                        Con el compromiso de siempre poder brindar herramientas que apoyen en la gestión de venta y
+                                        el cumplimiento de objetivos ponemos a su disposición nuestra zona de aliados,
+                                        la cual permitirá reducir los tiempos de respuesta en los
+                                        procesos de cotización y emisión con mayor accesibilidad y comodidad.
+                                    </p>*@
                             </div>
                         </div>
                         <div class="carousel-item">

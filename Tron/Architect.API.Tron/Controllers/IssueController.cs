@@ -17,17 +17,18 @@ namespace Architect.API.Tron.Controllers
         /// <summary>
         /// Devuelve la estructura de datos asociados a un presupuesto, con información complementaria para permitir la emisión de una póliza de tipo Hogar Total
         /// </summary>
+        /// <param name="mode"></param>
         /// <param name="presupuesto"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("HogarTotalSetup/{presupuesto}")]
-        public async Task<IHttpActionResult> HogarTotalSetup(string presupuesto)
+        public async Task<IHttpActionResult> HogarTotalSetup(string presupuesto, string mode)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Emision.HogarTotal result = null;
             await Task.Run(() =>
             {
-                result = Architect.API.Tron.Business.Emision.HogarTotal.Setup(presupuesto, tokenInfo);
+                result = Business.Emision.HogarTotal.Setup(presupuesto, mode, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -43,10 +44,30 @@ namespace Architect.API.Tron.Controllers
         public async Task<IHttpActionResult> HogarTotalIssue([FromBody] Tron.Contracts.Emision.HogarTotal quoteInfo)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
-            Tron.Contracts.Cotizacion.HogarTotal result = null;
+            Tron.Contracts.Emision.HogarTotal result = null;
             await Task.Run(() =>
             {
                 result = Architect.API.Tron.Business.Emision.HogarTotal.Issue(quoteInfo, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Envío o reenvío de una solicitud asociada a un presupuesto para su firma manual o por medio de evicertia
+        /// </summary>
+        /// <param name="presupuesto"></param>
+        /// <param name="correoenvio"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("HogarTotal/EnviarSolicitud")]
+        public async Task<IHttpActionResult> ReEnviarSolicitudHT(string presupuesto, string correoenvio)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            string result = string.Empty;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Emision.HogarTotal.ReEnviarSolicitudHT(presupuesto, correoenvio, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -139,13 +160,13 @@ namespace Architect.API.Tron.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("MultirriesgoSetup/{presupuesto}")]
-        public async Task<IHttpActionResult> MultirriesgoSetup(string presupuesto)
+        public async Task<IHttpActionResult> MultirriesgoSetup(string presupuesto, string mode)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Emision.Multirriesgo result = null;
             await Task.Run(() =>
             {
-                result = Architect.API.Tron.Business.Emision.Multirriesgo.Setup(presupuesto);
+                result = Architect.API.Tron.Business.Emision.Multirriesgo.Setup(presupuesto, mode, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -165,6 +186,26 @@ namespace Architect.API.Tron.Controllers
             await Task.Run(() =>
             {
                 result = Architect.API.Tron.Business.Emision.Multirriesgo.Issue(quoteInfo, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Envío o reenvío de una solicitud Multirriesgo asociada a un presupuesto para su firma manual o por medio de evicertia
+        /// </summary>
+        /// <param name="presupuesto"></param>
+        /// <param name="correoenvio"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Multirriesgo/EnviarSolicitud")]
+        public async Task<IHttpActionResult> ReEnviarSolicitudMultirriesgo(string presupuesto, string correoenvio)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            string result = string.Empty;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Emision.Multirriesgo.ReEnviarSolicitud(presupuesto, correoenvio, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);

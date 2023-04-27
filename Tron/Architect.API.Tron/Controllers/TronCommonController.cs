@@ -1,10 +1,13 @@
-﻿using Microsoft.Web.Http;
+﻿using Architect.API.Core.Contracts.General;
+using Microsoft.Web.Http;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -166,18 +169,57 @@ namespace Architect.API.Tron.Controllers
         [Route("ImprimirPoliza/{num_poliza}/{num_riesgo}")]
         public HttpResponseMessage ImprimirPoliza([FromUri] string num_poliza, int num_riesgo = 1)
         {
-            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            try {
+                Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
-            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
-            var dataStream = new MemoryStream(Business.Backoffice.Common.ImprimirPoliza(num_poliza, num_riesgo));
-            result.Content = new StreamContent(dataStream);
-            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline")
+                HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+                var dataStream = new MemoryStream(Business.Backoffice.Common.ImprimirPoliza(num_poliza, num_riesgo));
+                result.Content = new StreamContent(dataStream);
+                result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline")
+                {
+                    FileName = "Mapfre Certificado.pdf"
+                };
+                result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
+                result.Content.Headers.ContentLength = dataStream.Length;
+                return result;
+            }
+
+            catch (Exception e)
             {
-                FileName = "Mapfre Certificado.pdf"
-            };
-            result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
-            result.Content.Headers.ContentLength = dataStream.Length;
-            return result;
+                HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+                byte[] plantilla = null;
+                MemoryStream ms;
+                using (WebClient client = new WebClient())
+                {
+                    switch (num_poliza.Substring(0, 3))
+                    {
+                        case "441":
+                            if (e.Message.Contains("NO SE HA PAGADO LA PÓLIZA"))
+                            {
+                                plantilla = client.DownloadData(ConfigurationManager.AppSettings["Certificadospdf.Path"] + "Plantilla441NoPagado.pdf");
+                            }
+                            else
+                            {
+                                plantilla = client.DownloadData(ConfigurationManager.AppSettings["Certificadospdf.Path"] + "PlantillaGenerica.pdf");
+                            }
+                            break;
+                        default:
+                            plantilla = client.DownloadData(ConfigurationManager.AppSettings["Certificadospdf.Path"] + "PlantillaGenerica.pdf");
+                            break;
+
+                    }
+                     ms = new MemoryStream(plantilla);
+                }
+                result.Content = new StreamContent(ms);
+                result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline")
+                {
+                    FileName = "Respuesta Certificado.pdf"
+                };
+                result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
+                result.Content.Headers.ContentLength = ms.Length;
+                return result;
+            }
+            
         }
 
         /// <summary>

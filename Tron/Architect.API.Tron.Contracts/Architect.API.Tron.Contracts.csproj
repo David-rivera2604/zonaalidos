@@ -62,7 +62,9 @@
     <Compile Include="Comun\PlanDePago.cs" />
     <Compile Include="Comun\DocumentoRequerido.cs" />
     <Compile Include="Comun\Cobertura.cs" />
+    <Compile Include="Comun\Propiedad.cs" />
     <Compile Include="Comun\Tercero.cs" />
+    <Compile Include="Comun\Vehiculo.cs" />
     <Compile Include="Poliza\Parameters\ControlTecnicoParametros.cs" />
     <Compile Include="Cotizacion\HogarTotalSettings.cs" />
     <Compile Include="Cotizacion\plandepagoporfrecuencia.cs" />

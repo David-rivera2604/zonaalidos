@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using Architect.Utilities.Extensions;
 
 namespace Architect.API.Tron.Business.Emision
@@ -98,12 +99,13 @@ namespace Architect.API.Tron.Business.Emision
 
             return datosVariables;
         }
+
         internal static List<Architect.API.Tron.Contracts.Presupuesto.Tercero> Terceros(Contracts.Emision.Multirriesgo quoteInfo, Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos)
         {
             datosFijos.Terceros = new List<Architect.API.Tron.Contracts.Presupuesto.Tercero>();
             datosFijos.DetalleDeTerceros = new List<Architect.API.Tron.Contracts.Presupuesto.DetalleDeTercero>();
 
-            foreach (Contracts.Emision.MultirriesgoTerceros item in quoteInfo.terceros)
+            foreach (Contracts.Comun.tercero item in quoteInfo.terceros)
             {
                 if (item.tipodetercero != 0)
                 {
@@ -120,6 +122,7 @@ namespace Architect.API.Tron.Business.Emision
 
                 datosFijos.DetalleDeTerceros.Add(CambioTerceroPresupuesto(datosFijos, item));
             }
+
 
 
             return datosFijos.Terceros;
@@ -170,7 +173,7 @@ namespace Architect.API.Tron.Business.Emision
 
             return result;
         }
-        internal static Architect.API.Tron.Contracts.Presupuesto.DetalleDeTercero CambioTerceroPresupuesto(Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos, Architect.API.Tron.Contracts.Emision.MultirriesgoTerceros item)
+        internal static Architect.API.Tron.Contracts.Presupuesto.DetalleDeTercero CambioTerceroPresupuesto(Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos, Contracts.Comun.tercero item)
         {
             Architect.API.Tron.Contracts.Presupuesto.DetalleDeTercero result = new Architect.API.Tron.Contracts.Presupuesto.DetalleDeTercero()
             {
@@ -183,10 +186,10 @@ namespace Architect.API.Tron.Business.Emision
                 ape1_tercero = item.apellido1,
                 ape2_tercero = item.apellido2,
                 fec_nacimiento = item.fechadenacimiento,
-                mca_sexo = item.mca_sexo.ToString(),
+                mca_sexo = item.tercerosMca_sexoDesc.ToString(),
                 cod_est_civil = item.estadoCivil,
                 tlf_numero = item.numerodetelefono,
-                cod_pais = item.tercerosCod_pais,
+                cod_pais = item.cod_pais,
                 cod_estado = item.TProvincia,
                 cod_prov = item.TCanton,
                 cod_localidad = item.TDistrito,

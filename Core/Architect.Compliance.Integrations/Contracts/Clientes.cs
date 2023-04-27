@@ -65,10 +65,10 @@ namespace Architect.Compliance.Integrations.Contracts
         public string pagaImpuestos { get; set; }
         public Clientesnacionalidade[] clientesNacionalidades { get; set; }
         public List<Clientesubicacione> clientesUbicaciones { get; set; }
-        public List<Clientesfatca> clientesFATCA { get; set; }
+        public Clientesfatca[] clientesFATCA { get; set; }
         public Clientesingreso[] clientesIngresos { get; set; }
         public Clientesfondostercero[] clientesFondosTerceros { get; set; }
-        public List<Clientespatrimonio> clientesPatrimonio { get; set; }
+        public Clientespatrimonio[] clientesPatrimonio { get; set; }
         public Clientesfuncionespep[] clientesFuncionesPEP { get; set; }
         public Clientestransaccione[] clientesTransacciones { get; set; }
         public List<Clientespoliza> clientesPolizas { get; set; }

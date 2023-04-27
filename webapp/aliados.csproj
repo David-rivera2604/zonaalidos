@@ -1253,6 +1253,7 @@
     <Content Include="Scripts\General.ProcessSpecStep.js" />
     <Content Include="Scripts\General.ProcessSpecTask.js" />
     <Content Include="Scripts\General.Template.js" />
+    <Content Include="Scripts\InicioMantenimiento.js" />
     <Content Include="Scripts\ManagerLinks.UI.js" />
     <Content Include="Scripts\Manual.Siniestro.js" />
     <Content Include="Scripts\Extend.js" />
@@ -1552,6 +1553,7 @@
     <Content Include="products\credecoop_saldo_deudor.import.json" />
     <Content Include="products\policy.vocabulary.json" />
     <Content Include="products\SaldoDeudor.rules.json" />
+    <Content Include="products\Actividad_Economica_List.json" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\Policy\index.cshtml" />
     <Content Include="Views\Policy\Listv3.cshtml" />
@@ -1691,6 +1693,8 @@
     <Content Include="Views\Clientes\CompraSegurosC.cshtml" />
     <Content Include="Views\Clientes\CompraSegurosE.cshtml" />
     <Content Include="Views\General\ColorTenant.cshtml" />
+    <Content Include="Views\Clientes\Inicio.cshtml" />
+    <Content Include="Views\General\MantenimientoInicio.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

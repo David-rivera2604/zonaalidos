@@ -114,9 +114,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\FileUploaded.cs" />
+    <Compile Include="Controllers\ClienteInicioController.cs" />
     <Compile Include="Controllers\ColorsController.cs" />
     <Compile Include="Controllers\FileManagerController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
+    <Compile Include="Controllers\KycController.cs" />
     <Compile Include="Controllers\LookupController.cs" />
     <Compile Include="Controllers\LookupMasterController.cs" />
     <Compile Include="Controllers\NavigationController.cs" />

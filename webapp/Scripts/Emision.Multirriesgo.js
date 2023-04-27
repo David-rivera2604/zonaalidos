@@ -683,16 +683,23 @@ app.EmisionMultirriesgo = (function () {
 
         $('#DetallesSave').click(function () {
 
-            if (app.ui.IsValid('#DetallesEdifi', false)) {
+            var anio = detalle_validations();
+
+            if (app.ui.IsValid('#DetallesEdifi', false) && anio === 0) {
                 app.ui.ButtonDoing('#DetallesSave');
                 formularios_table_DetallesSetData()
                 app.ui.ButtonDone('#DetallesSave');
+            }
+            else {
+                toastr.error("Debe indicar el año de construccion", "", { closeButton: true, progressBar: true });
             }
             event.preventDefault();
         });
         $('#cotizar').click(function () {
             var others = OtherValidations();
-            if (app.ui.IsValid('#VisualizationsEdtForm', false) && others === 0) {
+            var detalle = detalle_validations();
+
+            if (app.ui.IsValid('#VisualizationsEdtForm', false) && others === 0 && detalle === 0) {
                 app.ui.ButtonDoing('#cotizar');
                 Quote();
             }
@@ -704,13 +711,19 @@ app.EmisionMultirriesgo = (function () {
                 var count = validate.numberOfInvalids();
                 validate.settings.ignore = ':hidden';
                 toastr.error("Existen " + (count + others) + " error(es), que ameritan su atención.", "", { closeButton: true, progressBar: true });
+                if (detalle === 1) {
+                    toastr.error("Debe indicar el año de construccion", "", { closeButton: true, progressBar: true });
+                    $('#detalleSolicitud-error').html('Debe indicar información de Datos de la Solicitud');
+                }
             }
             event.preventDefault();
         });
 
         $('#guardarenviar').click(function () {
             var others = OtherValidations();
-            if (app.ui.IsValid('#VisualizationsEdtForm', false) && others === 0) {
+            var detalle = detalle_validations();
+
+            if (app.ui.IsValid('#VisualizationsEdtForm', false) && others === 0 && detalle === 0) {
                 app.ui.ButtonDoing('#guardarenviar');
                 app.core.Post(app.setting.apipath + 'v1/Issue/Multirriesgo',
                     JSON.stringify(MapInputToObject()),
@@ -734,6 +747,10 @@ app.EmisionMultirriesgo = (function () {
                 var count = validate.numberOfInvalids();
                 validate.settings.ignore = ':hidden';
                 toastr.error("Existen " + (count + others) + " error(es), que ameritan su atención.", "", { closeButton: true, progressBar: true });
+                if (detalle === 1) {
+                    toastr.error("Debe indicar el año de construccion", "", { closeButton: true, progressBar: true });
+                    $('#detalleSolicitud-error').html('Debe indicar información de Datos de la Solicitud');
+                }
             }
             event.preventDefault();
         });
@@ -1015,6 +1032,18 @@ app.EmisionMultirriesgo = (function () {
 
         return result;
     };
+
+    function detalle_validations() {
+        var result = 0;
+        var anio = app.ui.GetNumericValue('#anodeconstruccion');
+
+        if (anio === 0) {
+            result = 1;
+        }
+
+        return result;
+
+    }
 
     function FormulariosValidations(result) {
         let formularios = $('#formulariosTbl').bootstrapTable('getData');
@@ -2294,7 +2323,7 @@ app.EmisionMultirriesgo = (function () {
                 }]
         });
 
-        let row = { formularioId: 1, name: 'Informacion de la edificación', when: null, type: 'datosvariables', data: null };
+        let row = { formularioId: 1, name: 'Información de la edificación', when: null, type: 'datosvariables', data: null };
         $('#formulariosDV').bootstrapTable('load', [row]);
     }
 

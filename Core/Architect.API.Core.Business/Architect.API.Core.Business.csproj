@@ -149,6 +149,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="General\KycBussines.cs" />
     <Compile Include="General\Notes.cs" />
     <Compile Include="General\Attachment.cs" />
     <Compile Include="General\CustomFields.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="General\Report.cs" />
     <Compile Include="General\WhiteList.cs" />
     <Compile Include="Security\RoleMember.cs" />
+    <Compile Include="_Generated\ChangeInicio.cs" />
     <Compile Include="_Generated\Lookup.cs" />
     <Compile Include="_Generated\ChangeColor.cs" />
     <Compile Include="_Generated\Notes.cs" />

@@ -772,7 +772,7 @@ namespace Architect.API.Tron.Business.Emision
                         sociosList.Add(socios);
                     }
 
-                    mapInfo.clientesSocios = sociosList.ToArray();
+                    mapInfo.clientesSocios = sociosList;
                 }
 
             }
