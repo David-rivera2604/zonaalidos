@@ -50,6 +50,6 @@ namespace Architect.DocuSign.Integrations.Providers.Evicertia.Contracts
         public string partyUniqueId { get; set; }
         public string bytes { get; set; }
         public string description { get; set; }
-        public string kind { get; set; } 
+        public string kind { get; set; }
     }
 }
