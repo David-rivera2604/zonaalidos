@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 namespace Architect.API.Tron.Business.Cotizacion
 {
     /// <summary>
-    /// Cotización de póliza de MapfreMas en tron.
+    /// Cotización de póliza de MapfreMasPlus en tron.
     /// </summary>
-    public static class MapfreMas
+    public static class MapfreMasPlus
     {
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace Architect.API.Tron.Business.Cotizacion
         {
             Contracts.Cotizacion.MapfreMas result = new Contracts.Cotizacion.MapfreMas()
             {
-                cod_ramo = 302,
+                cod_ramo = 303,
                 cod_mon = 1,
                 cod_fracc_pago = 1,
                 fec_efec_poliza = DateTime.Today,
@@ -129,87 +129,35 @@ namespace Architect.API.Tron.Business.Cotizacion
             int cod_cia = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_cia"]);
             int tip_valoracion = 1;
             DateTime fec_validez = DateTime.Today;
+            List<Contracts.Ramo.G2990026> coberturaGrupo = new List<Contracts.Ramo.G2990026>();
 
-            if (tokenInfo.Roles.Contain("PolizaGrupo"))
+            if (tokenInfo.Roles.Contain("PolizaGrupo") && num_contrato > 0)
             {
-                if (num_contrato > 0)
-                {
-                    List<Contracts.Ramo.G2990026> coberturaGrupo = DataAccess.PorRamo.Coberturas_por_contrato2(cod_ramo, num_contrato);
-                    cod_cobIncludeFilter = Util.Convert_CoverageListToString(coberturaGrupo);
 
-                    if (cod_cobIncludeFilter.IsNotEmpty())
-                    {
-                        switch (cod_tip_vehi)
-                        {
-                            case 5:
-                                cod_cobIncludeFilter = cod_cobIncludeFilter.Replace(",3009", string.Empty);
-                                cod_cobIncludeFilter = cod_cobIncludeFilter.Replace(",3017", string.Empty);
-                                break;
-                            case 17:
-                            case 18:
-                                cod_cobIncludeFilter = cod_cobIncludeFilter.Replace(",3017", string.Empty);
-                                break;
-                        }
-
-
-                        foreach (Contracts.Ramo.a1002150 item in DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, cod_cobExcludeFilter, cod_cobIncludeFilter))
-                        {
-                            coberturas.Add(new Contracts.Comun.Cobertura()
-                            {
-                                seleccionado = false,
-                                requerida = coberturaGrupo.Any(r => r.COD_COB == item.COD_COB && r.MCA_OBLIGATORIO == "S"),
-                                codigo = item.COD_COB,
-                                nombre = item.NOM_COB,
-                                capital = item.SUMA_ASEG,
-                                primatotal = item.IMP_TOTAL,
-                                deducible = item.NOM_FRANQUICIA
-                            });
-                            if (coberturas.Last().requerida)
-                            {
-                                coberturas.Last().seleccionado = true;
-                            }
-                        }
-                    }
-
-                }
+                coberturaGrupo = DataAccess.PorRamo.Coberturas_por_contrato2(cod_ramo, num_contrato);
+                cod_cobIncludeFilter = Util.Convert_CoverageListToString(coberturaGrupo);
             }
-
-            if (cod_cobIncludeFilter.IsEmpty())
+            if (tokenInfo.Roles.Contain("PolizaGrupo") && cod_cobIncludeFilter.IsNotEmpty())
             {
-                cod_cobExcludeFilter = Reglas.research.Apply_Coberturas("MapfreMas",
-                    new Contracts.Cotizacion.MapfreMas()
-                    {
-                        cod_ramo = cod_ramo,
-                        cod_mon = cod_mon,
-                        cod_marca = cod_marca,
-                        cod_modelo = cod_modelo,
-                        ANIO_SUB_MODELO = anio_sub_modelo,
-                        cod_tip_vehi = cod_tip_vehi,
-                        cod_uso_vehi = cod_uso_vehi,
-                        mca_sexo = mca_sexo,
-                        cod_zona_circul = cod_zona_circul,
-                        edad = edad,
-                        COD_PLAN_AUTO = cod_plan_auto,
-                        contrato = num_contrato,
-                        subcontrato = num_subcontrato,
-                        polizagrupo = num_poliza_grupo
-                    }, tokenInfo);
-
-                if (cod_cobExcludeFilter.IsNotEmpty())
+                switch (cod_tip_vehi)
                 {
-                    Architect.Utilities.Log.TraceLog("Coverage", $"Excluir '{cod_cobExcludeFilter}' las coberturas", "Decision");
+                    case 5:
+                        cod_cobIncludeFilter = cod_cobIncludeFilter.Replace(",3009", string.Empty);
+                        cod_cobIncludeFilter = cod_cobIncludeFilter.Replace(",3017", string.Empty);
+                        break;
+                    case 17:
+                    case 18:
+                        cod_cobIncludeFilter = cod_cobIncludeFilter.Replace(",3017", string.Empty);
+                        break;
                 }
 
-                List<Contracts.Ramo.ta301003> coverageSelection = DataAccess.PorRamo.AutomobileCoverageSelection(cod_cia, num_poliza_grupo, num_contrato, num_subcontrato, cod_ramo, cod_mon, cod_marca, cod_modelo, anio_sub_modelo, cod_tip_vehi, cod_uso_vehi, mca_sexo, cod_zona_circul, edad, cod_plan_auto, tip_valoracion);
-                bool required;
-                cod_cobIncludeFilter = "3001,3002,3003,3004,3005,3006,3007,3008,3009,3010,3011,3012,1060";
+
                 foreach (Contracts.Ramo.a1002150 item in DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, cod_cobExcludeFilter, cod_cobIncludeFilter))
                 {
-                    required = coverageSelection.Any(r => r.cod_cob == item.COD_COB && r.mca_obligatoria == "S");
                     coberturas.Add(new Contracts.Comun.Cobertura()
                     {
-                        seleccionado = required,
-                        requerida = required,
+                        seleccionado = false,
+                        requerida = coberturaGrupo.Any(r => r.COD_COB == item.COD_COB && r.MCA_OBLIGATORIO == "S"),
                         codigo = item.COD_COB,
                         nombre = item.NOM_COB,
                         capital = item.SUMA_ASEG,
@@ -218,6 +166,50 @@ namespace Architect.API.Tron.Business.Cotizacion
                     });
                 }
             }
+            else
+            {
+                cod_cobExcludeFilter = Reglas.research.Apply_Coberturas("MapfreMas",
+                      new Contracts.Cotizacion.MapfreMas()
+                      {
+                          cod_ramo = cod_ramo,
+                          cod_mon = cod_mon,
+                          cod_marca = cod_marca,
+                          cod_modelo = cod_modelo,
+                          ANIO_SUB_MODELO = anio_sub_modelo,
+                          cod_tip_vehi = cod_tip_vehi,
+                          cod_uso_vehi = cod_uso_vehi,
+                          mca_sexo = mca_sexo,
+                          cod_zona_circul = cod_zona_circul,
+                          edad = edad,
+                          COD_PLAN_AUTO = cod_plan_auto,
+                          contrato = num_contrato,
+                          subcontrato = num_subcontrato,
+                          polizagrupo = num_poliza_grupo
+                      }, tokenInfo);
+
+                if (cod_cobExcludeFilter.IsNotEmpty())
+                {
+                    Architect.Utilities.Log.TraceLog("Coverage", $"Excluir '{cod_cobExcludeFilter}' las coberturas", "Decision");
+                }
+                string coverageSelected = Architect.Utilities.Helpers.Settings.StringValue("Coberturas.mapfre.masplus");
+                bool required;
+                cod_cobIncludeFilter = "";
+                foreach (Contracts.Ramo.a1002150 item in DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, cod_cobExcludeFilter, cod_cobIncludeFilter))
+                {
+                    required = coverageSelected.Contain(item.COD_COB.ToString());
+                    coberturas.Add(new Contracts.Comun.Cobertura()
+                    {
+                        seleccionado = required,
+                        requerida = false,
+                        codigo = item.COD_COB,
+                        nombre = item.NOM_COB,
+                        capital = item.SUMA_ASEG,
+                        primatotal = item.IMP_TOTAL,
+                        deducible = item.NOM_FRANQUICIA
+                    });
+                }
+            }
+
 
             return coberturas;
         }
@@ -306,7 +298,7 @@ namespace Architect.API.Tron.Business.Cotizacion
 
                 if (resultInfo.Error.IsEmpty())
                 {
-                    Architect.Utilities.Cache.SetItem(string.Format("mapfremas.{0}", resultInfo.presupuesto),
+                    Architect.Utilities.Cache.SetItem(string.Format("mapfremasplus.{0}", resultInfo.presupuesto),
                         Newtonsoft.Json.JsonConvert.SerializeObject(resultInfo), -1);
 
                     if (resultInfo.presupuesto.IsNotEmpty())

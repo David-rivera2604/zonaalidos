@@ -30,7 +30,7 @@ namespace aliados.Controllers
         public ActionResult MapfreMasPlus()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
-            return this.RedirectToAction("MapfreMas", "Cotizacion", new { modo = "plus" });
+            return View();
         }
 
         public ActionResult Viajero()

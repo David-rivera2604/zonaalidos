@@ -132,6 +132,7 @@ namespace Architect.API.Tron.Controllers
             return Ok(result);
         }
 
+
         /// <summary>
         /// Devuelve la estructura de datos asociados a un presupuesto, con información complementaria para permitir la emisión de una póliza de tipo Multirriesgo
         /// </summary>
@@ -169,6 +170,7 @@ namespace Architect.API.Tron.Controllers
                 .ConfigureAwait(false);
             return Ok(result);
         }
+
 
         /// <summary>
         /// Devuelve la estructura de datos asociados a un presupuesto, con información complementaria para permitir la emisión de una póliza de tipo Viajero
@@ -208,6 +210,7 @@ namespace Architect.API.Tron.Controllers
             return Ok(result);
         }
 
+
         /// <summary>
         /// Devuelve información de un presupuesto para la emisión de una póliza de saldo deudor.
         /// </summary>
@@ -237,6 +240,47 @@ namespace Architect.API.Tron.Controllers
             await Task.Run(() =>
             {
                 result = Architect.API.Tron.Business.Emision.SaldoDeudor.Issue(quoteInfo, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+
+        /// <summary>
+        /// Devuelve la estructura de datos asociados a un presupuesto, con información complementaria para permitir la emisión de una póliza de tipo Mapfre Más Plus
+        /// </summary>
+        /// <param name="presupuesto"></param>
+        /// <param name="mode"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("MapfreMasPlusSetup/{presupuesto}")]
+        public async Task<IHttpActionResult> MapfreMasPlusSetup(string presupuesto, string mode)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Tron.Contracts.Emision.MapfreMas  result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Emision.MapfreMasPlus.Setup(presupuesto, mode, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Realiza la validación de datos y emisión de la póliza para un producto de tipo Mapfre Más Plus
+        /// </summary>
+        /// <param name="quoteInfo"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("MapfreMasPlus")]
+        public async Task<IHttpActionResult> MapfreMasPlusIssue([FromBody] Tron.Contracts.Emision.MapfreMas quoteInfo)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Tron.Contracts.Cotizacion.MapfreMas result = null;
+
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Emision.MapfreMasPlus.Issue(quoteInfo, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
