@@ -1,9 +1,9 @@
 /// <XRTypeInfo>
-///   <AssemblyFullName>DevExpress.XtraReports.v22.1, Version=22.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</AssemblyFullName>
-///   <AssemblyLocation>C:\WINDOWS\Microsoft.Net\assembly\GAC_MSIL\DevExpress.XtraReports.v22.1\v4.0_22.1.5.0__b88d1754d700e49a\DevExpress.XtraReports.v22.1.dll</AssemblyLocation>
+///   <AssemblyFullName>DevExpress.XtraReports.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</AssemblyFullName>
+///   <AssemblyLocation>C:\WINDOWS\Microsoft.Net\assembly\GAC_MSIL\DevExpress.XtraReports.v22.2\v4.0_22.2.4.0__b88d1754d700e49a\DevExpress.XtraReports.v22.2.dll</AssemblyLocation>
 ///   <TypeName>DevExpress.XtraReports.UI.XtraReport</TypeName>
 ///   <Localization>en-US</Localization>
-///   <Version>22.1</Version>
+///   <Version>22.2</Version>
 ///   <Resources>
 ///     <Resource Name="XtraReportSerialization.KYC_Juridico">
 /// zsrvvgEAAACRAAAAbFN5c3RlbS5SZXNvdXJjZXMuUmVzb3VyY2VSZWFkZXIsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSNTeXN0ZW0uUmVzb3VyY2VzLlJ1bnRpbWVSZXNvdXJjZVNldAIAAAAHAAAAAAAAAFBBRFBBRFA5cv2QsVY3kdLIsZOU94Kdg0O/pPJD966r5+12SAEAAPEAAAAOAQAAwAAAAF8AAAArAQAAAAAAAGcCAABaRgBvAHIAbQBhAEQAZQBQAGEAZwBvAEQAZQBMAGEAUABvAGwAaQB6AGEARgBpAGUAbABkAC4ARQB4AHAAcgBlAHMAcwBpAG8AbgBCAGkAbgBkAGkAbgBnAHMAAAAAAFxJAG4AZwByAGUAcwBvAE0AZQBuAHMAdQBhAGwARQBzAHQAaQBtAGEAZABv
@@ -212,7 +212,7 @@ namespace XtraReportSerialization {
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode4 = new DevExpress.DataAccess.Json.JsonSchemaNode("codigodeclienteJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode5 = new DevExpress.DataAccess.Json.JsonSchemaNode("tipodeSociedadJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode6 = new DevExpress.DataAccess.Json.JsonSchemaNode("numeroCedulaJuridicaJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
-            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode7 = new DevExpress.DataAccess.Json.JsonSchemaNode("tipodeCedulaJuridicaJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(object));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode7 = new DevExpress.DataAccess.Json.JsonSchemaNode("tipodeCedulaJuridicaJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property);
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode8 = new DevExpress.DataAccess.Json.JsonSchemaNode("paisdeconstitucionJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode9 = new DevExpress.DataAccess.Json.JsonSchemaNode("fechadeconstitucionJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<System.DateTime>));
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode10 = new DevExpress.DataAccess.Json.JsonSchemaNode("actividaddelClientenaturalezadelnegocioJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
@@ -231,7 +231,7 @@ namespace XtraReportSerialization {
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode23 = new DevExpress.DataAccess.Json.JsonSchemaNode("nombrecompletoJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode24 = new DevExpress.DataAccess.Json.JsonSchemaNode("posiciondentrodelaempresaJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode25 = new DevExpress.DataAccess.Json.JsonSchemaNode("numerodeidentificacionJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
-            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode26 = new DevExpress.DataAccess.Json.JsonSchemaNode("tipodeidentificacionJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(object));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode26 = new DevExpress.DataAccess.Json.JsonSchemaNode("tipodeidentificacionJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property);
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode27 = new DevExpress.DataAccess.Json.JsonSchemaNode("especifiqueJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode28 = new DevExpress.DataAccess.Json.JsonSchemaNode("fechadecaducidadJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<System.DateTime>));
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode29 = new DevExpress.DataAccess.Json.JsonSchemaNode("nacionalidadJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
@@ -253,21 +253,21 @@ namespace XtraReportSerialization {
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode45 = new DevExpress.DataAccess.Json.JsonSchemaNode("correspondenciaOrigendelosfondosJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode46 = new DevExpress.DataAccess.Json.JsonSchemaNode("paismayoractividadJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode47 = new DevExpress.DataAccess.Json.JsonSchemaNode("ingresomensualestimadoJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
-            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode48 = new DevExpress.DataAccess.Json.JsonSchemaNode("fondospormivilizarJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(object));
-            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode49 = new DevExpress.DataAccess.Json.JsonSchemaNode("actividadesart15Jur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(object));
-            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode50 = new DevExpress.DataAccess.Json.JsonSchemaNode("activoscorrespondenJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(object));
-            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode51 = new DevExpress.DataAccess.Json.JsonSchemaNode("pepcargoJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(object));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode48 = new DevExpress.DataAccess.Json.JsonSchemaNode("fondospormivilizarJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property);
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode49 = new DevExpress.DataAccess.Json.JsonSchemaNode("actividadesart15Jur", true, DevExpress.DataAccess.Json.JsonNodeType.Property);
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode50 = new DevExpress.DataAccess.Json.JsonSchemaNode("activoscorrespondenJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property);
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode51 = new DevExpress.DataAccess.Json.JsonSchemaNode("pepcargoJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property);
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode52 = new DevExpress.DataAccess.Json.JsonSchemaNode("pepduracionJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
-            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode53 = new DevExpress.DataAccess.Json.JsonSchemaNode("peprelacionJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(object));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode53 = new DevExpress.DataAccess.Json.JsonSchemaNode("peprelacionJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property);
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode54 = new DevExpress.DataAccess.Json.JsonSchemaNode("peptiporelacionJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
-            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode55 = new DevExpress.DataAccess.Json.JsonSchemaNode("participacionaccionariaJur", true, DevExpress.DataAccess.Json.JsonNodeType.Array, typeof(object[]));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode55 = new DevExpress.DataAccess.Json.JsonSchemaNode("participacionaccionariaJur", true, DevExpress.DataAccess.Json.JsonNodeType.Array);
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode56 = new DevExpress.DataAccess.Json.JsonSchemaNode("propositoderelacioncomercialIndicareltipodeSeguroqueestaadquiriendoJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode57 = new DevExpress.DataAccess.Json.JsonSchemaNode("montoprimaJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode58 = new DevExpress.DataAccess.Json.JsonSchemaNode("tipodeprimaJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
-            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode59 = new DevExpress.DataAccess.Json.JsonSchemaNode("periodicidadJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(object));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode59 = new DevExpress.DataAccess.Json.JsonSchemaNode("periodicidadJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property);
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode60 = new DevExpress.DataAccess.Json.JsonSchemaNode("montoValoraseguradoJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
-            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode61 = new DevExpress.DataAccess.Json.JsonSchemaNode("formadepagodelapolizaJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(object));
-            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode62 = new DevExpress.DataAccess.Json.JsonSchemaNode("mediodeenvioJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(object));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode61 = new DevExpress.DataAccess.Json.JsonSchemaNode("formadepagodelapolizaJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property);
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode62 = new DevExpress.DataAccess.Json.JsonSchemaNode("mediodeenvioJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property);
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode63 = new DevExpress.DataAccess.Json.JsonSchemaNode("correspondenciaEspecifiqueJur", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
             this.label11 = new DevExpress.XtraReports.UI.XRLabel();
@@ -569,13 +569,14 @@ namespace XtraReportSerialization {
                         this.label20,
                         this.label21,
                         this.shape2});
+            this.Detail.Expanded = false;
             this.Detail.HeightF = 1013.417F;
             this.Detail.Name = "Detail";
             this.Detail.SnapLinePadding = new DevExpress.XtraPrinting.PaddingInfo(5, 5, 5, 5, 100F);
             // 
             // label11
             // 
-            this.label11.Font = new System.Drawing.Font("Times New Roman", 6F);
+            this.label11.Font = new DevExpress.Drawing.DXFont("Times New Roman", 6F);
             this.label11.LocationFloat = new DevExpress.Utils.PointFloat(9.682359F, 409.6111F);
             this.label11.Multiline = true;
             this.label11.Name = "label11";
@@ -597,7 +598,7 @@ namespace XtraReportSerialization {
             // 
             // NombreEmpresaLabel
             // 
-            this.NombreEmpresaLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.NombreEmpresaLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.NombreEmpresaLabel.LocationFloat = new DevExpress.Utils.PointFloat(75.99996F, 57.0625F);
             this.NombreEmpresaLabel.Name = "NombreEmpresaLabel";
             this.NombreEmpresaLabel.SizeF = new System.Drawing.SizeF(125F, 12F);
@@ -611,7 +612,7 @@ namespace XtraReportSerialization {
             this.NombreEmpresaField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.NombreEmpresaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[nombreComercialJur]")});
-            this.NombreEmpresaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.NombreEmpresaField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.NombreEmpresaField.LocationFloat = new DevExpress.Utils.PointFloat(5F, 69.06249F);
             this.NombreEmpresaField.Name = "NombreEmpresaField";
             this.NombreEmpresaField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -622,7 +623,7 @@ namespace XtraReportSerialization {
             // 
             // RazonSocialLabel
             // 
-            this.RazonSocialLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.RazonSocialLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.RazonSocialLabel.LocationFloat = new DevExpress.Utils.PointFloat(364F, 57.0625F);
             this.RazonSocialLabel.Name = "RazonSocialLabel";
             this.RazonSocialLabel.SizeF = new System.Drawing.SizeF(125F, 12F);
@@ -636,7 +637,7 @@ namespace XtraReportSerialization {
             this.RazonSocialField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.RazonSocialField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[razonSocialJur]")});
-            this.RazonSocialField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.RazonSocialField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.RazonSocialField.LocationFloat = new DevExpress.Utils.PointFloat(304F, 69.06249F);
             this.RazonSocialField.Name = "RazonSocialField";
             this.RazonSocialField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -647,7 +648,7 @@ namespace XtraReportSerialization {
             // 
             // CodigoDeClienteLabel
             // 
-            this.CodigoDeClienteLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.CodigoDeClienteLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.CodigoDeClienteLabel.LocationFloat = new DevExpress.Utils.PointFloat(590.0768F, 57.0625F);
             this.CodigoDeClienteLabel.Name = "CodigoDeClienteLabel";
             this.CodigoDeClienteLabel.SizeF = new System.Drawing.SizeF(125F, 12F);
@@ -662,7 +663,7 @@ namespace XtraReportSerialization {
                         | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.CodigoDeClienteField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[CodigoDeCliente]")});
-            this.CodigoDeClienteField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.CodigoDeClienteField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.CodigoDeClienteField.LocationFloat = new DevExpress.Utils.PointFloat(573.5837F, 69.06249F);
             this.CodigoDeClienteField.Name = "CodigoDeClienteField";
             this.CodigoDeClienteField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -673,7 +674,7 @@ namespace XtraReportSerialization {
             // 
             // TipoSociedadLabel
             // 
-            this.TipoSociedadLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.TipoSociedadLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.TipoSociedadLabel.LocationFloat = new DevExpress.Utils.PointFloat(56.19175F, 84.06248F);
             this.TipoSociedadLabel.Name = "TipoSociedadLabel";
             this.TipoSociedadLabel.SizeF = new System.Drawing.SizeF(125F, 12F);
@@ -687,7 +688,7 @@ namespace XtraReportSerialization {
             this.TipoSociedadField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.TipoSociedadField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[TipoSociedadDesc]")});
-            this.TipoSociedadField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.TipoSociedadField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.TipoSociedadField.LocationFloat = new DevExpress.Utils.PointFloat(5F, 96.06248F);
             this.TipoSociedadField.Name = "TipoSociedadField";
             this.TipoSociedadField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -698,7 +699,7 @@ namespace XtraReportSerialization {
             // 
             // TipoCedulaLabel
             // 
-            this.TipoCedulaLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.TipoCedulaLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.TipoCedulaLabel.LocationFloat = new DevExpress.Utils.PointFloat(398.0026F, 84.06247F);
             this.TipoCedulaLabel.Name = "TipoCedulaLabel";
             this.TipoCedulaLabel.SizeF = new System.Drawing.SizeF(90.99741F, 12F);
@@ -712,7 +713,7 @@ namespace XtraReportSerialization {
             this.TipoCedulaField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.TipoCedulaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif([TipoCedula]=1, \'Jurídica nacional\', \'Jurídica extranjera\')")});
-            this.TipoCedulaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.TipoCedulaField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.TipoCedulaField.LocationFloat = new DevExpress.Utils.PointFloat(371.1917F, 96.06248F);
             this.TipoCedulaField.Name = "TipoCedulaField";
             this.TipoCedulaField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -723,7 +724,7 @@ namespace XtraReportSerialization {
             // 
             // NumeroCedulaJuridicaLabel
             // 
-            this.NumeroCedulaJuridicaLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.NumeroCedulaJuridicaLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.NumeroCedulaJuridicaLabel.LocationFloat = new DevExpress.Utils.PointFloat(241.1917F, 84.06247F);
             this.NumeroCedulaJuridicaLabel.Name = "NumeroCedulaJuridicaLabel";
             this.NumeroCedulaJuridicaLabel.SizeF = new System.Drawing.SizeF(130F, 12F);
@@ -737,7 +738,7 @@ namespace XtraReportSerialization {
             this.NumeroCedulaJuridicaField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.NumeroCedulaJuridicaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[NumeroCedulaJuridica]")});
-            this.NumeroCedulaJuridicaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.NumeroCedulaJuridicaField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.NumeroCedulaJuridicaField.LocationFloat = new DevExpress.Utils.PointFloat(241.1917F, 96.06248F);
             this.NumeroCedulaJuridicaField.Name = "NumeroCedulaJuridicaField";
             this.NumeroCedulaJuridicaField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -748,7 +749,7 @@ namespace XtraReportSerialization {
             // 
             // PaisConstitucionLabel
             // 
-            this.PaisConstitucionLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.PaisConstitucionLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.PaisConstitucionLabel.LocationFloat = new DevExpress.Utils.PointFloat(521.0001F, 84.06247F);
             this.PaisConstitucionLabel.Name = "PaisConstitucionLabel";
             this.PaisConstitucionLabel.SizeF = new System.Drawing.SizeF(99.29449F, 12F);
@@ -762,7 +763,7 @@ namespace XtraReportSerialization {
             this.PaisConstitucionField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.PaisConstitucionField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PaisConstitucionDesc]")});
-            this.PaisConstitucionField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.PaisConstitucionField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.PaisConstitucionField.LocationFloat = new DevExpress.Utils.PointFloat(501.1917F, 96.06248F);
             this.PaisConstitucionField.Name = "PaisConstitucionField";
             this.PaisConstitucionField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -773,7 +774,7 @@ namespace XtraReportSerialization {
             // 
             // FechaConstitucionLabel
             // 
-            this.FechaConstitucionLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.FechaConstitucionLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.FechaConstitucionLabel.LocationFloat = new DevExpress.Utils.PointFloat(641.9397F, 84.06248F);
             this.FechaConstitucionLabel.Name = "FechaConstitucionLabel";
             this.FechaConstitucionLabel.SizeF = new System.Drawing.SizeF(90.06049F, 12F);
@@ -788,7 +789,7 @@ namespace XtraReportSerialization {
                         | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.FechaConstitucionField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[FechaConstitucion]")});
-            this.FechaConstitucionField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.FechaConstitucionField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.FechaConstitucionField.LocationFloat = new DevExpress.Utils.PointFloat(631.1917F, 96.06248F);
             this.FechaConstitucionField.Name = "FechaConstitucionField";
             this.FechaConstitucionField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -800,7 +801,7 @@ namespace XtraReportSerialization {
             // 
             // CategoriaActividadLabel
             // 
-            this.CategoriaActividadLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.CategoriaActividadLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.CategoriaActividadLabel.LocationFloat = new DevExpress.Utils.PointFloat(156.8628F, 111.0625F);
             this.CategoriaActividadLabel.Name = "CategoriaActividadLabel";
             this.CategoriaActividadLabel.SizeF = new System.Drawing.SizeF(130F, 12F);
@@ -814,7 +815,7 @@ namespace XtraReportSerialization {
             this.CategoriaActividadField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.CategoriaActividadField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[CategoriaActividadDesc]")});
-            this.CategoriaActividadField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.CategoriaActividadField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.CategoriaActividadField.LocationFloat = new DevExpress.Utils.PointFloat(5F, 123.611F);
             this.CategoriaActividadField.Name = "CategoriaActividadField";
             this.CategoriaActividadField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -825,7 +826,7 @@ namespace XtraReportSerialization {
             // 
             // ActividadEmpresaLabel
             // 
-            this.ActividadEmpresaLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.ActividadEmpresaLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.ActividadEmpresaLabel.LocationFloat = new DevExpress.Utils.PointFloat(450.6571F, 111.0625F);
             this.ActividadEmpresaLabel.Name = "ActividadEmpresaLabel";
             this.ActividadEmpresaLabel.SizeF = new System.Drawing.SizeF(184.343F, 12F);
@@ -840,7 +841,7 @@ namespace XtraReportSerialization {
                         | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.ActividadEmpresaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[ActividadEmpresaDesc]")});
-            this.ActividadEmpresaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.ActividadEmpresaField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.ActividadEmpresaField.LocationFloat = new DevExpress.Utils.PointFloat(371.1917F, 123.611F);
             this.ActividadEmpresaField.Name = "ActividadEmpresaField";
             this.ActividadEmpresaField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -854,7 +855,7 @@ namespace XtraReportSerialization {
             this.TelefonoEmpresaField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.TelefonoEmpresaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[TelefonoEmpresa]")});
-            this.TelefonoEmpresaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.TelefonoEmpresaField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.TelefonoEmpresaField.LocationFloat = new DevExpress.Utils.PointFloat(5F, 150.611F);
             this.TelefonoEmpresaField.Name = "TelefonoEmpresaField";
             this.TelefonoEmpresaField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -865,7 +866,7 @@ namespace XtraReportSerialization {
             // 
             // FaxEmpresaLabel
             // 
-            this.FaxEmpresaLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.FaxEmpresaLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.FaxEmpresaLabel.LocationFloat = new DevExpress.Utils.PointFloat(131F, 138.611F);
             this.FaxEmpresaLabel.Name = "FaxEmpresaLabel";
             this.FaxEmpresaLabel.SizeF = new System.Drawing.SizeF(110.1917F, 12F);
@@ -879,7 +880,7 @@ namespace XtraReportSerialization {
             this.FaxEmpresaField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.FaxEmpresaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[FaxEmpresa]")});
-            this.FaxEmpresaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.FaxEmpresaField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.FaxEmpresaField.LocationFloat = new DevExpress.Utils.PointFloat(131F, 150.611F);
             this.FaxEmpresaField.Name = "FaxEmpresaField";
             this.FaxEmpresaField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -890,7 +891,7 @@ namespace XtraReportSerialization {
             // 
             // ApartadoPostalEmpresaLabel
             // 
-            this.ApartadoPostalEmpresaLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.ApartadoPostalEmpresaLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.ApartadoPostalEmpresaLabel.LocationFloat = new DevExpress.Utils.PointFloat(241.1917F, 138.611F);
             this.ApartadoPostalEmpresaLabel.Name = "ApartadoPostalEmpresaLabel";
             this.ApartadoPostalEmpresaLabel.SizeF = new System.Drawing.SizeF(130F, 12F);
@@ -904,7 +905,7 @@ namespace XtraReportSerialization {
             this.ApartadoPostalEmpresaField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.ApartadoPostalEmpresaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[ApartadoPostalEmpresa]")});
-            this.ApartadoPostalEmpresaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.ApartadoPostalEmpresaField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.ApartadoPostalEmpresaField.LocationFloat = new DevExpress.Utils.PointFloat(241.1917F, 150.611F);
             this.ApartadoPostalEmpresaField.Name = "ApartadoPostalEmpresaField";
             this.ApartadoPostalEmpresaField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -915,7 +916,7 @@ namespace XtraReportSerialization {
             // 
             // CorreoElectronicoEmpresaLabel
             // 
-            this.CorreoElectronicoEmpresaLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.CorreoElectronicoEmpresaLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.CorreoElectronicoEmpresaLabel.LocationFloat = new DevExpress.Utils.PointFloat(371.1917F, 138.611F);
             this.CorreoElectronicoEmpresaLabel.Name = "CorreoElectronicoEmpresaLabel";
             this.CorreoElectronicoEmpresaLabel.SizeF = new System.Drawing.SizeF(149.8082F, 12F);
@@ -929,7 +930,7 @@ namespace XtraReportSerialization {
             this.CorreoElectronicoEmpresaField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.CorreoElectronicoEmpresaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[CorreoElectronicoEmpresa]")});
-            this.CorreoElectronicoEmpresaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.CorreoElectronicoEmpresaField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.CorreoElectronicoEmpresaField.LocationFloat = new DevExpress.Utils.PointFloat(371.1917F, 150.611F);
             this.CorreoElectronicoEmpresaField.Name = "CorreoElectronicoEmpresaField";
             this.CorreoElectronicoEmpresaField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -940,7 +941,7 @@ namespace XtraReportSerialization {
             // 
             // PaginaWebEmpresaLabel
             // 
-            this.PaginaWebEmpresaLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.PaginaWebEmpresaLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.PaginaWebEmpresaLabel.LocationFloat = new DevExpress.Utils.PointFloat(520.9999F, 138.611F);
             this.PaginaWebEmpresaLabel.Name = "PaginaWebEmpresaLabel";
             this.PaginaWebEmpresaLabel.SizeF = new System.Drawing.SizeF(224.0001F, 12F);
@@ -955,7 +956,7 @@ namespace XtraReportSerialization {
                         | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.PaginaWebEmpresaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PaginaWebEmpresa]")});
-            this.PaginaWebEmpresaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.PaginaWebEmpresaField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.PaginaWebEmpresaField.LocationFloat = new DevExpress.Utils.PointFloat(521F, 150.611F);
             this.PaginaWebEmpresaField.Name = "PaginaWebEmpresaField";
             this.PaginaWebEmpresaField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -967,7 +968,7 @@ namespace XtraReportSerialization {
             // Label
             // 
             this.Label.BackColor = System.Drawing.Color.Red;
-            this.Label.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.Label.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.Label.ForeColor = System.Drawing.Color.White;
             this.Label.LocationFloat = new DevExpress.Utils.PointFloat(5F, 167.611F);
             this.Label.Multiline = true;
@@ -985,7 +986,7 @@ namespace XtraReportSerialization {
             this.PaisTrabajoField.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
             this.PaisTrabajoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PaisTrabajoDesc]")});
-            this.PaisTrabajoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.PaisTrabajoField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.PaisTrabajoField.LocationFloat = new DevExpress.Utils.PointFloat(96.99998F, 177.6111F);
             this.PaisTrabajoField.Name = "PaisTrabajoField";
             this.PaisTrabajoField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -999,7 +1000,7 @@ namespace XtraReportSerialization {
             this.ProvinciaTrabajoField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.ProvinciaTrabajoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[ProvinciaTrabajoDesc]")});
-            this.ProvinciaTrabajoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.ProvinciaTrabajoField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.ProvinciaTrabajoField.LocationFloat = new DevExpress.Utils.PointFloat(259F, 177.6111F);
             this.ProvinciaTrabajoField.Name = "ProvinciaTrabajoField";
             this.ProvinciaTrabajoField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1013,7 +1014,7 @@ namespace XtraReportSerialization {
             this.CantonTrabajoField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.CantonTrabajoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[CantonTrabajoDesc]")});
-            this.CantonTrabajoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.CantonTrabajoField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.CantonTrabajoField.LocationFloat = new DevExpress.Utils.PointFloat(421F, 177.6111F);
             this.CantonTrabajoField.Name = "CantonTrabajoField";
             this.CantonTrabajoField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1028,7 +1029,7 @@ namespace XtraReportSerialization {
                         | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.DistritoTrabajoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[DistritoTrabajoDesc]")});
-            this.DistritoTrabajoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.DistritoTrabajoField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.DistritoTrabajoField.LocationFloat = new DevExpress.Utils.PointFloat(583F, 177.6111F);
             this.DistritoTrabajoField.Name = "DistritoTrabajoField";
             this.DistritoTrabajoField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1043,7 +1044,7 @@ namespace XtraReportSerialization {
                         | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.DireccionExactaTrabajoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[DireccionExactaTrabajo]")});
-            this.DireccionExactaTrabajoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.DireccionExactaTrabajoField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.DireccionExactaTrabajoField.LocationFloat = new DevExpress.Utils.PointFloat(5F, 206.6111F);
             this.DireccionExactaTrabajoField.Name = "DireccionExactaTrabajoField";
             this.DireccionExactaTrabajoField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1066,7 +1067,7 @@ namespace XtraReportSerialization {
             // 
             // PrimerApellidoLabel
             // 
-            this.PrimerApellidoLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.PrimerApellidoLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.PrimerApellidoLabel.LocationFloat = new DevExpress.Utils.PointFloat(4.999996F, 243.6111F);
             this.PrimerApellidoLabel.Name = "PrimerApellidoLabel";
             this.PrimerApellidoLabel.SizeF = new System.Drawing.SizeF(162F, 12F);
@@ -1080,7 +1081,7 @@ namespace XtraReportSerialization {
             this.PrimerApellidoField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.PrimerApellidoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PrimerApellido]")});
-            this.PrimerApellidoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.PrimerApellidoField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.PrimerApellidoField.LocationFloat = new DevExpress.Utils.PointFloat(4.999996F, 255.611F);
             this.PrimerApellidoField.Name = "PrimerApellidoField";
             this.PrimerApellidoField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1091,7 +1092,7 @@ namespace XtraReportSerialization {
             // 
             // SegundoApellidoLabel
             // 
-            this.SegundoApellidoLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.SegundoApellidoLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.SegundoApellidoLabel.LocationFloat = new DevExpress.Utils.PointFloat(167F, 243.6111F);
             this.SegundoApellidoLabel.Name = "SegundoApellidoLabel";
             this.SegundoApellidoLabel.SizeF = new System.Drawing.SizeF(172.2859F, 12F);
@@ -1105,7 +1106,7 @@ namespace XtraReportSerialization {
             this.SegundoApellidoField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.SegundoApellidoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[SegundoApellido]")});
-            this.SegundoApellidoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.SegundoApellidoField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.SegundoApellidoField.LocationFloat = new DevExpress.Utils.PointFloat(167F, 255.611F);
             this.SegundoApellidoField.Name = "SegundoApellidoField";
             this.SegundoApellidoField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1116,7 +1117,7 @@ namespace XtraReportSerialization {
             // 
             // NombreLabel
             // 
-            this.NombreLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.NombreLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.NombreLabel.LocationFloat = new DevExpress.Utils.PointFloat(339.2859F, 243.6111F);
             this.NombreLabel.Name = "NombreLabel";
             this.NombreLabel.SizeF = new System.Drawing.SizeF(201.9395F, 12F);
@@ -1130,7 +1131,7 @@ namespace XtraReportSerialization {
             this.NombreField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.NombreField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[Nombre]")});
-            this.NombreField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.NombreField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.NombreField.LocationFloat = new DevExpress.Utils.PointFloat(339.2859F, 255.611F);
             this.NombreField.Name = "NombreField";
             this.NombreField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1141,7 +1142,7 @@ namespace XtraReportSerialization {
             // 
             // CargoEmpresaLabel
             // 
-            this.CargoEmpresaLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.CargoEmpresaLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.CargoEmpresaLabel.LocationFloat = new DevExpress.Utils.PointFloat(541.2255F, 243.6111F);
             this.CargoEmpresaLabel.Name = "CargoEmpresaLabel";
             this.CargoEmpresaLabel.SizeF = new System.Drawing.SizeF(203.7745F, 12F);
@@ -1156,7 +1157,7 @@ namespace XtraReportSerialization {
                         | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.CargoEmpresaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[CargoEmpresa]")});
-            this.CargoEmpresaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.CargoEmpresaField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.CargoEmpresaField.LocationFloat = new DevExpress.Utils.PointFloat(541.2255F, 255.611F);
             this.CargoEmpresaField.Name = "CargoEmpresaField";
             this.CargoEmpresaField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1167,7 +1168,7 @@ namespace XtraReportSerialization {
             // 
             // TipoDeIdentificacionLabel
             // 
-            this.TipoDeIdentificacionLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.TipoDeIdentificacionLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.TipoDeIdentificacionLabel.LocationFloat = new DevExpress.Utils.PointFloat(167F, 270.611F);
             this.TipoDeIdentificacionLabel.Name = "TipoDeIdentificacionLabel";
             this.TipoDeIdentificacionLabel.SizeF = new System.Drawing.SizeF(374.2255F, 12.00003F);
@@ -1182,7 +1183,7 @@ namespace XtraReportSerialization {
             this.TipoDeIdentificacionField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif([TipoDeIdentificacion]=1, \'Cédula\',[TipoDeIdentificacion]=2, \'Pasaporte\',[Tip" +
                                 "oDeIdentificacion]=3, \'Cédula Residencia\', \'Otro\')")});
-            this.TipoDeIdentificacionField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.TipoDeIdentificacionField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.TipoDeIdentificacionField.LocationFloat = new DevExpress.Utils.PointFloat(167F, 282.611F);
             this.TipoDeIdentificacionField.Name = "TipoDeIdentificacionField";
             this.TipoDeIdentificacionField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1193,7 +1194,7 @@ namespace XtraReportSerialization {
             // 
             // NumeroDeIdentificacionLabel
             // 
-            this.NumeroDeIdentificacionLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.NumeroDeIdentificacionLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.NumeroDeIdentificacionLabel.LocationFloat = new DevExpress.Utils.PointFloat(5.000029F, 270.611F);
             this.NumeroDeIdentificacionLabel.Name = "NumeroDeIdentificacionLabel";
             this.NumeroDeIdentificacionLabel.SizeF = new System.Drawing.SizeF(162F, 12F);
@@ -1207,7 +1208,7 @@ namespace XtraReportSerialization {
             this.NumeroDeIdentificacionField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.NumeroDeIdentificacionField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[NumeroDeIdentificacion]")});
-            this.NumeroDeIdentificacionField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.NumeroDeIdentificacionField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.NumeroDeIdentificacionField.LocationFloat = new DevExpress.Utils.PointFloat(5.000062F, 282.611F);
             this.NumeroDeIdentificacionField.Name = "NumeroDeIdentificacionField";
             this.NumeroDeIdentificacionField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1218,7 +1219,7 @@ namespace XtraReportSerialization {
             // 
             // FechaDeCaducidadLabel
             // 
-            this.FechaDeCaducidadLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.FechaDeCaducidadLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.FechaDeCaducidadLabel.LocationFloat = new DevExpress.Utils.PointFloat(541.2255F, 270.611F);
             this.FechaDeCaducidadLabel.Name = "FechaDeCaducidadLabel";
             this.FechaDeCaducidadLabel.SizeF = new System.Drawing.SizeF(203.7746F, 12.00003F);
@@ -1233,7 +1234,7 @@ namespace XtraReportSerialization {
                         | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.FechaDeCaducidadField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[FechaDeCaducidad]")});
-            this.FechaDeCaducidadField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.FechaDeCaducidadField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.FechaDeCaducidadField.LocationFloat = new DevExpress.Utils.PointFloat(541.2255F, 282.611F);
             this.FechaDeCaducidadField.Name = "FechaDeCaducidadField";
             this.FechaDeCaducidadField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1245,7 +1246,7 @@ namespace XtraReportSerialization {
             // 
             // NacionalidadLabel
             // 
-            this.NacionalidadLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.NacionalidadLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.NacionalidadLabel.LocationFloat = new DevExpress.Utils.PointFloat(5.000062F, 297.611F);
             this.NacionalidadLabel.Name = "NacionalidadLabel";
             this.NacionalidadLabel.SizeF = new System.Drawing.SizeF(125.1917F, 12F);
@@ -1259,7 +1260,7 @@ namespace XtraReportSerialization {
             this.NacionalidadField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.NacionalidadField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[NacionalidadDesc]")});
-            this.NacionalidadField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.NacionalidadField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.NacionalidadField.LocationFloat = new DevExpress.Utils.PointFloat(5.808362F, 309.6111F);
             this.NacionalidadField.Name = "NacionalidadField";
             this.NacionalidadField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1270,7 +1271,7 @@ namespace XtraReportSerialization {
             // 
             // FechaDeNacimientoLabel
             // 
-            this.FechaDeNacimientoLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.FechaDeNacimientoLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.FechaDeNacimientoLabel.LocationFloat = new DevExpress.Utils.PointFloat(130.1917F, 297.611F);
             this.FechaDeNacimientoLabel.Name = "FechaDeNacimientoLabel";
             this.FechaDeNacimientoLabel.SizeF = new System.Drawing.SizeF(111F, 12F);
@@ -1284,7 +1285,7 @@ namespace XtraReportSerialization {
             this.FechaDeNacimientoField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.FechaDeNacimientoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[FechaDeNacimiento]")});
-            this.FechaDeNacimientoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.FechaDeNacimientoField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.FechaDeNacimientoField.LocationFloat = new DevExpress.Utils.PointFloat(131F, 309.6111F);
             this.FechaDeNacimientoField.Name = "FechaDeNacimientoField";
             this.FechaDeNacimientoField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1296,7 +1297,7 @@ namespace XtraReportSerialization {
             // 
             // PaisDeNacimientoLabel
             // 
-            this.PaisDeNacimientoLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.PaisDeNacimientoLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.PaisDeNacimientoLabel.LocationFloat = new DevExpress.Utils.PointFloat(241.1917F, 297.611F);
             this.PaisDeNacimientoLabel.Name = "PaisDeNacimientoLabel";
             this.PaisDeNacimientoLabel.SizeF = new System.Drawing.SizeF(138.0338F, 12F);
@@ -1310,7 +1311,7 @@ namespace XtraReportSerialization {
             this.PaisDeNacimientoField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.PaisDeNacimientoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PaisDeNacimientoDesc]")});
-            this.PaisDeNacimientoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.PaisDeNacimientoField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.PaisDeNacimientoField.LocationFloat = new DevExpress.Utils.PointFloat(242F, 309.6111F);
             this.PaisDeNacimientoField.Name = "PaisDeNacimientoField";
             this.PaisDeNacimientoField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1321,7 +1322,7 @@ namespace XtraReportSerialization {
             // 
             // ProfesionLabel
             // 
-            this.ProfesionLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.ProfesionLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.ProfesionLabel.LocationFloat = new DevExpress.Utils.PointFloat(379.2255F, 297.6111F);
             this.ProfesionLabel.Name = "ProfesionLabel";
             this.ProfesionLabel.SizeF = new System.Drawing.SizeF(119.1029F, 12F);
@@ -1335,7 +1336,7 @@ namespace XtraReportSerialization {
             this.ProfesionField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.ProfesionField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[ProfesionDesc]")});
-            this.ProfesionField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.ProfesionField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.ProfesionField.LocationFloat = new DevExpress.Utils.PointFloat(380.0338F, 309.6111F);
             this.ProfesionField.Name = "ProfesionField";
             this.ProfesionField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1346,7 +1347,7 @@ namespace XtraReportSerialization {
             // 
             // EstadoCivilLabel
             // 
-            this.EstadoCivilLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.EstadoCivilLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.EstadoCivilLabel.LocationFloat = new DevExpress.Utils.PointFloat(498.3284F, 297.611F);
             this.EstadoCivilLabel.Name = "EstadoCivilLabel";
             this.EstadoCivilLabel.SizeF = new System.Drawing.SizeF(121.9662F, 12F);
@@ -1360,7 +1361,7 @@ namespace XtraReportSerialization {
             this.EstadoCivilField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.EstadoCivilField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[EstadoCivilDesc]")});
-            this.EstadoCivilField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.EstadoCivilField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.EstadoCivilField.LocationFloat = new DevExpress.Utils.PointFloat(499.1367F, 309.6111F);
             this.EstadoCivilField.Name = "EstadoCivilField";
             this.EstadoCivilField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1371,7 +1372,7 @@ namespace XtraReportSerialization {
             // 
             // SexoLabel
             // 
-            this.SexoLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.SexoLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.SexoLabel.LocationFloat = new DevExpress.Utils.PointFloat(623.0339F, 297.6111F);
             this.SexoLabel.Name = "SexoLabel";
             this.SexoLabel.SizeF = new System.Drawing.SizeF(121.9662F, 12F);
@@ -1386,7 +1387,7 @@ namespace XtraReportSerialization {
                         | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.SexoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif([Sexo]=1, \'Femenino\',\'Masculino\')")});
-            this.SexoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.SexoField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.SexoField.LocationFloat = new DevExpress.Utils.PointFloat(623.8422F, 309.6111F);
             this.SexoField.Name = "SexoField";
             this.SexoField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1397,7 +1398,7 @@ namespace XtraReportSerialization {
             // 
             // TelefonoResidenciaLabel
             // 
-            this.TelefonoResidenciaLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.TelefonoResidenciaLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.TelefonoResidenciaLabel.LocationFloat = new DevExpress.Utils.PointFloat(4.999996F, 324.6111F);
             this.TelefonoResidenciaLabel.Name = "TelefonoResidenciaLabel";
             this.TelefonoResidenciaLabel.SizeF = new System.Drawing.SizeF(130F, 12F);
@@ -1411,7 +1412,7 @@ namespace XtraReportSerialization {
             this.TelefonoResidenciaField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.TelefonoResidenciaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[TelefonoResidencia]")});
-            this.TelefonoResidenciaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.TelefonoResidenciaField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.TelefonoResidenciaField.LocationFloat = new DevExpress.Utils.PointFloat(4.999996F, 336.6111F);
             this.TelefonoResidenciaField.Name = "TelefonoResidenciaField";
             this.TelefonoResidenciaField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1422,7 +1423,7 @@ namespace XtraReportSerialization {
             // 
             // TelefonoCelularLabel
             // 
-            this.TelefonoCelularLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.TelefonoCelularLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.TelefonoCelularLabel.LocationFloat = new DevExpress.Utils.PointFloat(135F, 324.6111F);
             this.TelefonoCelularLabel.Name = "TelefonoCelularLabel";
             this.TelefonoCelularLabel.SizeF = new System.Drawing.SizeF(130F, 12F);
@@ -1436,7 +1437,7 @@ namespace XtraReportSerialization {
             this.TelefonoCelularField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.TelefonoCelularField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[TelefonoCelular]")});
-            this.TelefonoCelularField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.TelefonoCelularField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.TelefonoCelularField.LocationFloat = new DevExpress.Utils.PointFloat(135F, 336.6111F);
             this.TelefonoCelularField.Name = "TelefonoCelularField";
             this.TelefonoCelularField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1447,7 +1448,7 @@ namespace XtraReportSerialization {
             // 
             // FaxLabel
             // 
-            this.FaxLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.FaxLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.FaxLabel.LocationFloat = new DevExpress.Utils.PointFloat(265F, 324.6111F);
             this.FaxLabel.Name = "FaxLabel";
             this.FaxLabel.SizeF = new System.Drawing.SizeF(130F, 12F);
@@ -1461,7 +1462,7 @@ namespace XtraReportSerialization {
             this.FaxField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.FaxField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[Fax]")});
-            this.FaxField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.FaxField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.FaxField.LocationFloat = new DevExpress.Utils.PointFloat(265F, 336.611F);
             this.FaxField.Name = "FaxField";
             this.FaxField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1472,7 +1473,7 @@ namespace XtraReportSerialization {
             // 
             // ApartadoPostalLabel
             // 
-            this.ApartadoPostalLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.ApartadoPostalLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.ApartadoPostalLabel.LocationFloat = new DevExpress.Utils.PointFloat(395F, 324.6111F);
             this.ApartadoPostalLabel.Name = "ApartadoPostalLabel";
             this.ApartadoPostalLabel.SizeF = new System.Drawing.SizeF(130F, 12F);
@@ -1486,7 +1487,7 @@ namespace XtraReportSerialization {
             this.ApartadoPostalField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.ApartadoPostalField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[ApartadoPostal]")});
-            this.ApartadoPostalField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.ApartadoPostalField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.ApartadoPostalField.LocationFloat = new DevExpress.Utils.PointFloat(395F, 336.611F);
             this.ApartadoPostalField.Name = "ApartadoPostalField";
             this.ApartadoPostalField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1497,7 +1498,7 @@ namespace XtraReportSerialization {
             // 
             // CorreoElectronicoLabel
             // 
-            this.CorreoElectronicoLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.CorreoElectronicoLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.CorreoElectronicoLabel.LocationFloat = new DevExpress.Utils.PointFloat(525F, 324.6111F);
             this.CorreoElectronicoLabel.Name = "CorreoElectronicoLabel";
             this.CorreoElectronicoLabel.SizeF = new System.Drawing.SizeF(220.8085F, 12F);
@@ -1512,7 +1513,7 @@ namespace XtraReportSerialization {
                         | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.CorreoElectronicoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[CorreoElectronico]")});
-            this.CorreoElectronicoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.CorreoElectronicoField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.CorreoElectronicoField.LocationFloat = new DevExpress.Utils.PointFloat(525F, 336.611F);
             this.CorreoElectronicoField.Name = "CorreoElectronicoField";
             this.CorreoElectronicoField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1524,7 +1525,7 @@ namespace XtraReportSerialization {
             // DomicilioPermanenteLabel
             // 
             this.DomicilioPermanenteLabel.BackColor = System.Drawing.Color.Red;
-            this.DomicilioPermanenteLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.DomicilioPermanenteLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.DomicilioPermanenteLabel.ForeColor = System.Drawing.Color.White;
             this.DomicilioPermanenteLabel.LocationFloat = new DevExpress.Utils.PointFloat(5.808362F, 353.6111F);
             this.DomicilioPermanenteLabel.Multiline = true;
@@ -1539,7 +1540,7 @@ namespace XtraReportSerialization {
             // 
             // PaisLabel
             // 
-            this.PaisLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.PaisLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.PaisLabel.LocationFloat = new DevExpress.Utils.PointFloat(109.6824F, 351.6111F);
             this.PaisLabel.Name = "PaisLabel";
             this.PaisLabel.SizeF = new System.Drawing.SizeF(149.3176F, 12F);
@@ -1553,7 +1554,7 @@ namespace XtraReportSerialization {
             this.PaisField.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
             this.PaisField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PaisDesc]")});
-            this.PaisField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.PaisField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.PaisField.LocationFloat = new DevExpress.Utils.PointFloat(109.6824F, 363.6111F);
             this.PaisField.Name = "PaisField";
             this.PaisField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1564,7 +1565,7 @@ namespace XtraReportSerialization {
             // 
             // ProvinciaLabel
             // 
-            this.ProvinciaLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.ProvinciaLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.ProvinciaLabel.LocationFloat = new DevExpress.Utils.PointFloat(259F, 351.6111F);
             this.ProvinciaLabel.Name = "ProvinciaLabel";
             this.ProvinciaLabel.SizeF = new System.Drawing.SizeF(162F, 12F);
@@ -1578,7 +1579,7 @@ namespace XtraReportSerialization {
             this.ProvinciaField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.ProvinciaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[ProvinciaDesc]")});
-            this.ProvinciaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.ProvinciaField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.ProvinciaField.LocationFloat = new DevExpress.Utils.PointFloat(259.8085F, 363.6111F);
             this.ProvinciaField.Name = "ProvinciaField";
             this.ProvinciaField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1589,7 +1590,7 @@ namespace XtraReportSerialization {
             // 
             // CantonLabel
             // 
-            this.CantonLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.CantonLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.CantonLabel.LocationFloat = new DevExpress.Utils.PointFloat(421F, 351.6111F);
             this.CantonLabel.Name = "CantonLabel";
             this.CantonLabel.SizeF = new System.Drawing.SizeF(162F, 12F);
@@ -1603,7 +1604,7 @@ namespace XtraReportSerialization {
             this.CantonField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.CantonField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[CantonDesc]")});
-            this.CantonField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.CantonField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.CantonField.LocationFloat = new DevExpress.Utils.PointFloat(421.8084F, 363.6111F);
             this.CantonField.Name = "CantonField";
             this.CantonField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1614,7 +1615,7 @@ namespace XtraReportSerialization {
             // 
             // DistritoLabel
             // 
-            this.DistritoLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.DistritoLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.DistritoLabel.LocationFloat = new DevExpress.Utils.PointFloat(583F, 351.6111F);
             this.DistritoLabel.Name = "DistritoLabel";
             this.DistritoLabel.SizeF = new System.Drawing.SizeF(162F, 12F);
@@ -1629,7 +1630,7 @@ namespace XtraReportSerialization {
                         | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.DistritoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[DistritoDesc]")});
-            this.DistritoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.DistritoField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.DistritoField.LocationFloat = new DevExpress.Utils.PointFloat(583.8085F, 363.6111F);
             this.DistritoField.Name = "DistritoField";
             this.DistritoField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1642,7 +1643,7 @@ namespace XtraReportSerialization {
             // 
             this.DireccionExactaLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right) 
                         | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.DireccionExactaLabel.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.DireccionExactaLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.DireccionExactaLabel.LocationFloat = new DevExpress.Utils.PointFloat(5.808362F, 380.6111F);
             this.DireccionExactaLabel.Name = "DireccionExactaLabel";
             this.DireccionExactaLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1660,7 +1661,7 @@ namespace XtraReportSerialization {
                         | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.DireccionExactaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[DireccionExacta]")});
-            this.DireccionExactaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.DireccionExactaField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.DireccionExactaField.LocationFloat = new DevExpress.Utils.PointFloat(5.808362F, 394.6111F);
             this.DireccionExactaField.Name = "DireccionExactaField";
             this.DireccionExactaField.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1682,7 +1683,7 @@ namespace XtraReportSerialization {
             // OrigenFondosJuridicoLabel
             // 
             this.OrigenFondosJuridicoLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.OrigenFondosJuridicoLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.OrigenFondosJuridicoLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.OrigenFondosJuridicoLabel.LocationFloat = new DevExpress.Utils.PointFloat(5.808362F, 445.2953F);
             this.OrigenFondosJuridicoLabel.Name = "OrigenFondosJuridicoLabel";
             this.OrigenFondosJuridicoLabel.SizeF = new System.Drawing.SizeF(298.1916F, 15F);
@@ -1695,7 +1696,7 @@ namespace XtraReportSerialization {
             this.OrigenFondosJuridicoField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.OrigenFondosJuridicoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[OrigenFondosJuridicoDesc]")});
-            this.OrigenFondosJuridicoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.OrigenFondosJuridicoField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.OrigenFondosJuridicoField.LocationFloat = new DevExpress.Utils.PointFloat(304F, 445.2953F);
             this.OrigenFondosJuridicoField.Name = "OrigenFondosJuridicoField";
             this.OrigenFondosJuridicoField.SizeF = new System.Drawing.SizeF(441.0001F, 15F);
@@ -1705,7 +1706,7 @@ namespace XtraReportSerialization {
             // PaisActividadEconomicaLabel
             // 
             this.PaisActividadEconomicaLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.PaisActividadEconomicaLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.PaisActividadEconomicaLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.PaisActividadEconomicaLabel.LocationFloat = new DevExpress.Utils.PointFloat(5.808362F, 462.2953F);
             this.PaisActividadEconomicaLabel.Name = "PaisActividadEconomicaLabel";
             this.PaisActividadEconomicaLabel.SizeF = new System.Drawing.SizeF(308.9369F, 14.99997F);
@@ -1718,7 +1719,7 @@ namespace XtraReportSerialization {
             this.PaisActividadEconomicaField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.PaisActividadEconomicaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PaisActividadEconomicaDesc]")});
-            this.PaisActividadEconomicaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.PaisActividadEconomicaField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.PaisActividadEconomicaField.LocationFloat = new DevExpress.Utils.PointFloat(314.7453F, 462.2953F);
             this.PaisActividadEconomicaField.Name = "PaisActividadEconomicaField";
             this.PaisActividadEconomicaField.SizeF = new System.Drawing.SizeF(430.2547F, 14.99997F);
@@ -1728,7 +1729,7 @@ namespace XtraReportSerialization {
             // IngresoMensualEstimadoLabel
             // 
             this.IngresoMensualEstimadoLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.IngresoMensualEstimadoLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.IngresoMensualEstimadoLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.IngresoMensualEstimadoLabel.LocationFloat = new DevExpress.Utils.PointFloat(5.808362F, 479.2953F);
             this.IngresoMensualEstimadoLabel.Name = "IngresoMensualEstimadoLabel";
             this.IngresoMensualEstimadoLabel.SizeF = new System.Drawing.SizeF(124.3833F, 15F);
@@ -1741,7 +1742,7 @@ namespace XtraReportSerialization {
             this.IngresoMensualEstimadoField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.IngresoMensualEstimadoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", resources.GetString("IngresoMensualEstimadoField.ExpressionBindings"))});
-            this.IngresoMensualEstimadoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.IngresoMensualEstimadoField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.IngresoMensualEstimadoField.LocationFloat = new DevExpress.Utils.PointFloat(131F, 479.2953F);
             this.IngresoMensualEstimadoField.Name = "IngresoMensualEstimadoField";
             this.IngresoMensualEstimadoField.SizeF = new System.Drawing.SizeF(194F, 15F);
@@ -1751,7 +1752,7 @@ namespace XtraReportSerialization {
             // FondosPorMovilizarLabel
             // 
             this.FondosPorMovilizarLabel.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
-            this.FondosPorMovilizarLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.FondosPorMovilizarLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.FondosPorMovilizarLabel.LocationFloat = new DevExpress.Utils.PointFloat(326F, 479.2953F);
             this.FondosPorMovilizarLabel.Name = "FondosPorMovilizarLabel";
             this.FondosPorMovilizarLabel.SizeF = new System.Drawing.SizeF(237.0251F, 15F);
@@ -1764,7 +1765,7 @@ namespace XtraReportSerialization {
             this.FondosPorMovilizarField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.FondosPorMovilizarField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif([FondosPorMovilizar]=1, \'Propios\',\'Terceros\')")});
-            this.FondosPorMovilizarField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.FondosPorMovilizarField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.FondosPorMovilizarField.LocationFloat = new DevExpress.Utils.PointFloat(563.0251F, 479.2953F);
             this.FondosPorMovilizarField.Name = "FondosPorMovilizarField";
             this.FondosPorMovilizarField.SizeF = new System.Drawing.SizeF(181.9749F, 15F);
@@ -1774,7 +1775,7 @@ namespace XtraReportSerialization {
             // DesempenaActividadesLabel
             // 
             this.DesempenaActividadesLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.DesempenaActividadesLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.DesempenaActividadesLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.DesempenaActividadesLabel.LocationFloat = new DevExpress.Utils.PointFloat(5.808362F, 496.2953F);
             this.DesempenaActividadesLabel.Name = "DesempenaActividadesLabel";
             this.DesempenaActividadesLabel.SizeF = new System.Drawing.SizeF(308.9369F, 29F);
@@ -1788,7 +1789,7 @@ namespace XtraReportSerialization {
             this.DesempenaActividadesField.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
             this.DesempenaActividadesField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif([DesempenaActividades]=1, \'Si\',\'No\')")});
-            this.DesempenaActividadesField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.DesempenaActividadesField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.DesempenaActividadesField.LocationFloat = new DevExpress.Utils.PointFloat(314.7453F, 510.2952F);
             this.DesempenaActividadesField.Name = "DesempenaActividadesField";
             this.DesempenaActividadesField.SizeF = new System.Drawing.SizeF(119.2547F, 15.00006F);
@@ -1808,7 +1809,7 @@ namespace XtraReportSerialization {
             // ActivosLabel
             // 
             this.ActivosLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.ActivosLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.ActivosLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.ActivosLabel.LocationFloat = new DevExpress.Utils.PointFloat(5.808362F, 549.2953F);
             this.ActivosLabel.Name = "ActivosLabel";
             this.ActivosLabel.SizeF = new System.Drawing.SizeF(195.1916F, 15F);
@@ -1820,7 +1821,7 @@ namespace XtraReportSerialization {
             this.ActivosField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.ActivosField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[Activos]")});
-            this.ActivosField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.ActivosField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.ActivosField.LocationFloat = new DevExpress.Utils.PointFloat(201F, 549.2953F);
             this.ActivosField.Name = "ActivosField";
             this.ActivosField.SizeF = new System.Drawing.SizeF(544.8087F, 15.00012F);
@@ -1840,7 +1841,7 @@ namespace XtraReportSerialization {
             // FuncionesPublicasLabel
             // 
             this.FuncionesPublicasLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.FuncionesPublicasLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.FuncionesPublicasLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.FuncionesPublicasLabel.LocationFloat = new DevExpress.Utils.PointFloat(5.808362F, 588.2953F);
             this.FuncionesPublicasLabel.Name = "FuncionesPublicasLabel";
             this.FuncionesPublicasLabel.SizeF = new System.Drawing.SizeF(483.1916F, 15F);
@@ -1854,7 +1855,7 @@ namespace XtraReportSerialization {
             this.FuncionesPublicasField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.FuncionesPublicasField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif([FuncionesPublicas]=1, \'Si\',\'No\')")});
-            this.FuncionesPublicasField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.FuncionesPublicasField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.FuncionesPublicasField.LocationFloat = new DevExpress.Utils.PointFloat(489F, 588.2953F);
             this.FuncionesPublicasField.Name = "FuncionesPublicasField";
             this.FuncionesPublicasField.SizeF = new System.Drawing.SizeF(256.0002F, 15F);
@@ -1864,7 +1865,7 @@ namespace XtraReportSerialization {
             // PeriodoFuncionesPublicasLabel
             // 
             this.PeriodoFuncionesPublicasLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.PeriodoFuncionesPublicasLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.PeriodoFuncionesPublicasLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.PeriodoFuncionesPublicasLabel.LocationFloat = new DevExpress.Utils.PointFloat(5.808362F, 605.2953F);
             this.PeriodoFuncionesPublicasLabel.Name = "PeriodoFuncionesPublicasLabel";
             this.PeriodoFuncionesPublicasLabel.SizeF = new System.Drawing.SizeF(374.2255F, 15F);
@@ -1878,7 +1879,7 @@ namespace XtraReportSerialization {
             this.PeriodoFuncionesPublicasField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.PeriodoFuncionesPublicasField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PeriodoFuncionesPublicas]")});
-            this.PeriodoFuncionesPublicasField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.PeriodoFuncionesPublicasField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.PeriodoFuncionesPublicasField.LocationFloat = new DevExpress.Utils.PointFloat(380.0338F, 605.2953F);
             this.PeriodoFuncionesPublicasField.Name = "PeriodoFuncionesPublicasField";
             this.PeriodoFuncionesPublicasField.SizeF = new System.Drawing.SizeF(364.9662F, 15F);
@@ -1888,7 +1889,7 @@ namespace XtraReportSerialization {
             // RelacionPersonaPoliticaLabel
             // 
             this.RelacionPersonaPoliticaLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.RelacionPersonaPoliticaLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.RelacionPersonaPoliticaLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.RelacionPersonaPoliticaLabel.LocationFloat = new DevExpress.Utils.PointFloat(5.808359F, 622.2953F);
             this.RelacionPersonaPoliticaLabel.Name = "RelacionPersonaPoliticaLabel";
             this.RelacionPersonaPoliticaLabel.SizeF = new System.Drawing.SizeF(567.7755F, 28F);
@@ -1903,7 +1904,7 @@ namespace XtraReportSerialization {
             this.RelacionPersonaPoliticaField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.RelacionPersonaPoliticaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[RelacionPersonaPolitica]")});
-            this.RelacionPersonaPoliticaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.RelacionPersonaPoliticaField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.RelacionPersonaPoliticaField.LocationFloat = new DevExpress.Utils.PointFloat(574.3925F, 635.2952F);
             this.RelacionPersonaPoliticaField.Name = "RelacionPersonaPoliticaField";
             this.RelacionPersonaPoliticaField.SizeF = new System.Drawing.SizeF(171.4162F, 15F);
@@ -1913,7 +1914,7 @@ namespace XtraReportSerialization {
             // DetRelacionPersonaPoliticaLabel
             // 
             this.DetRelacionPersonaPoliticaLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.DetRelacionPersonaPoliticaLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.DetRelacionPersonaPoliticaLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.DetRelacionPersonaPoliticaLabel.LocationFloat = new DevExpress.Utils.PointFloat(5.000062F, 652.6295F);
             this.DetRelacionPersonaPoliticaLabel.Name = "DetRelacionPersonaPoliticaLabel";
             this.DetRelacionPersonaPoliticaLabel.SizeF = new System.Drawing.SizeF(129.9999F, 15.00012F);
@@ -1926,7 +1927,7 @@ namespace XtraReportSerialization {
             this.DetRelacionPersonaPoliticaField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.DetRelacionPersonaPoliticaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[DetRelacionPersonaPolitica]")});
-            this.DetRelacionPersonaPoliticaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.DetRelacionPersonaPoliticaField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.DetRelacionPersonaPoliticaField.LocationFloat = new DevExpress.Utils.PointFloat(135F, 652.6296F);
             this.DetRelacionPersonaPoliticaField.Name = "DetRelacionPersonaPoliticaField";
             this.DetRelacionPersonaPoliticaField.SizeF = new System.Drawing.SizeF(610.0001F, 15F);
@@ -1945,7 +1946,7 @@ namespace XtraReportSerialization {
             // 
             // label9
             // 
-            this.label9.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.label9.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.label9.LocationFloat = new DevExpress.Utils.PointFloat(23.3647F, 5.000005F);
             this.label9.Multiline = true;
             this.label9.Name = "label9";
@@ -1956,7 +1957,7 @@ namespace XtraReportSerialization {
             // 
             // label10
             // 
-            this.label10.Font = new System.Drawing.Font("Times New Roman", 6F);
+            this.label10.Font = new DevExpress.Drawing.DXFont("Times New Roman", 6F);
             this.label10.LocationFloat = new DevExpress.Utils.PointFloat(450.6571F, 1.999995F);
             this.label10.Multiline = true;
             this.label10.Name = "label10";
@@ -1971,7 +1972,7 @@ namespace XtraReportSerialization {
             // 
             this.label2.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right) 
                         | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.label2.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.label2.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.label2.LocationFloat = new DevExpress.Utils.PointFloat(5F, 193.6111F);
             this.label2.Name = "label2";
             this.label2.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -1985,7 +1986,7 @@ namespace XtraReportSerialization {
             // 
             // label3
             // 
-            this.label3.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.label3.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.label3.LocationFloat = new DevExpress.Utils.PointFloat(583.0001F, 165.611F);
             this.label3.Name = "label3";
             this.label3.SizeF = new System.Drawing.SizeF(162F, 12F);
@@ -1996,7 +1997,7 @@ namespace XtraReportSerialization {
             // 
             // label4
             // 
-            this.label4.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.label4.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.label4.LocationFloat = new DevExpress.Utils.PointFloat(421.0001F, 165.611F);
             this.label4.Name = "label4";
             this.label4.SizeF = new System.Drawing.SizeF(162F, 12F);
@@ -2007,7 +2008,7 @@ namespace XtraReportSerialization {
             // 
             // label5
             // 
-            this.label5.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.label5.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.label5.LocationFloat = new DevExpress.Utils.PointFloat(259.0001F, 165.611F);
             this.label5.Name = "label5";
             this.label5.SizeF = new System.Drawing.SizeF(162F, 12F);
@@ -2018,7 +2019,7 @@ namespace XtraReportSerialization {
             // 
             // label6
             // 
-            this.label6.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.label6.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.label6.LocationFloat = new DevExpress.Utils.PointFloat(97.00005F, 165.611F);
             this.label6.Name = "label6";
             this.label6.SizeF = new System.Drawing.SizeF(162F, 12F);
@@ -2029,7 +2030,7 @@ namespace XtraReportSerialization {
             // 
             // label7
             // 
-            this.label7.Font = new System.Drawing.Font("Times New Roman", 7F);
+            this.label7.Font = new DevExpress.Drawing.DXFont("Times New Roman", 7F);
             this.label7.LocationFloat = new DevExpress.Utils.PointFloat(13.99999F, 138.611F);
             this.label7.Name = "label7";
             this.label7.SizeF = new System.Drawing.SizeF(117F, 12F);
@@ -2041,7 +2042,7 @@ namespace XtraReportSerialization {
             // label12
             // 
             this.label12.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.label12.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.label12.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.label12.LocationFloat = new DevExpress.Utils.PointFloat(434F, 510.2953F);
             this.label12.Name = "label12";
             this.label12.SizeF = new System.Drawing.SizeF(311.8085F, 15.00006F);
@@ -2051,7 +2052,7 @@ namespace XtraReportSerialization {
             // 
             // label13
             // 
-            this.label13.Font = new System.Drawing.Font("Times New Roman", 6F);
+            this.label13.Font = new DevExpress.Drawing.DXFont("Times New Roman", 6F);
             this.label13.LocationFloat = new DevExpress.Utils.PointFloat(5.808355F, 687.6296F);
             this.label13.Multiline = true;
             this.label13.Name = "label13";
@@ -2062,7 +2063,7 @@ namespace XtraReportSerialization {
             // 
             // label14
             // 
-            this.label14.Font = new System.Drawing.Font("Times New Roman", 6F);
+            this.label14.Font = new DevExpress.Drawing.DXFont("Times New Roman", 6F);
             this.label14.LocationFloat = new DevExpress.Utils.PointFloat(5.000044F, 723.6548F);
             this.label14.Multiline = true;
             this.label14.Name = "label14";
@@ -2075,7 +2076,7 @@ namespace XtraReportSerialization {
             // label16
             // 
             this.label16.Borders = DevExpress.XtraPrinting.BorderSide.Top;
-            this.label16.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.label16.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.label16.LocationFloat = new DevExpress.Utils.PointFloat(399.6526F, 951.3721F);
             this.label16.Multiline = true;
             this.label16.Name = "label16";
@@ -2091,7 +2092,7 @@ namespace XtraReportSerialization {
             // label15
             // 
             this.label15.Borders = DevExpress.XtraPrinting.BorderSide.Top;
-            this.label15.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.label15.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.label15.LocationFloat = new DevExpress.Utils.PointFloat(181.6815F, 951.3721F);
             this.label15.Multiline = true;
             this.label15.Name = "label15";
@@ -2119,7 +2120,7 @@ namespace XtraReportSerialization {
             this.MedioDeEnvioDetalleField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.MedioDeEnvioDetalleField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[MedioDeEnvioDetalle]")});
-            this.MedioDeEnvioDetalleField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.MedioDeEnvioDetalleField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.MedioDeEnvioDetalleField.LocationFloat = new DevExpress.Utils.PointFloat(581.9602F, 838.8624F);
             this.MedioDeEnvioDetalleField.Name = "MedioDeEnvioDetalleField";
             this.MedioDeEnvioDetalleField.SizeF = new System.Drawing.SizeF(159.7316F, 16F);
@@ -2129,7 +2130,7 @@ namespace XtraReportSerialization {
             // MedioDeEnvioDetalleLabel
             // 
             this.MedioDeEnvioDetalleLabel.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
-            this.MedioDeEnvioDetalleLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.MedioDeEnvioDetalleLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.MedioDeEnvioDetalleLabel.LocationFloat = new DevExpress.Utils.PointFloat(519.3605F, 838.8624F);
             this.MedioDeEnvioDetalleLabel.Name = "MedioDeEnvioDetalleLabel";
             this.MedioDeEnvioDetalleLabel.SizeF = new System.Drawing.SizeF(62.59988F, 16F);
@@ -2143,7 +2144,7 @@ namespace XtraReportSerialization {
             this.MedioDeEnvioField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif([MedioDeEnvio]\n=1, \'Apartado Postal\',[MedioDeEnvio]\n=2, \'Dirección física\', [" +
                                 "MedioDeEnvio]\n=3, \'Fax\',\'Correo electrónico\')")});
-            this.MedioDeEnvioField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.MedioDeEnvioField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.MedioDeEnvioField.LocationFloat = new DevExpress.Utils.PointFloat(321.8083F, 838.8624F);
             this.MedioDeEnvioField.Name = "MedioDeEnvioField";
             this.MedioDeEnvioField.SizeF = new System.Drawing.SizeF(197.5521F, 16F);
@@ -2153,7 +2154,7 @@ namespace XtraReportSerialization {
             // MedioDeEnvioLabel
             // 
             this.MedioDeEnvioLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.MedioDeEnvioLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.MedioDeEnvioLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.MedioDeEnvioLabel.LocationFloat = new DevExpress.Utils.PointFloat(5.808393F, 838.8624F);
             this.MedioDeEnvioLabel.Name = "MedioDeEnvioLabel";
             this.MedioDeEnvioLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
@@ -2178,7 +2179,7 @@ namespace XtraReportSerialization {
             this.FormaDePagoDeLaPolizaField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.FormaDePagoDeLaPolizaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", resources.GetString("FormaDePagoDeLaPolizaField.ExpressionBindings"))});
-            this.FormaDePagoDeLaPolizaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.FormaDePagoDeLaPolizaField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.FormaDePagoDeLaPolizaField.LocationFloat = new DevExpress.Utils.PointFloat(140.3378F, 796.8625F);
             this.FormaDePagoDeLaPolizaField.Name = "FormaDePagoDeLaPolizaField";
             this.FormaDePagoDeLaPolizaField.SizeF = new System.Drawing.SizeF(601.354F, 16F);
@@ -2188,7 +2189,7 @@ namespace XtraReportSerialization {
             // FormaDePagoDeLaPolizaLabel
             // 
             this.FormaDePagoDeLaPolizaLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.FormaDePagoDeLaPolizaLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.FormaDePagoDeLaPolizaLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.FormaDePagoDeLaPolizaLabel.LocationFloat = new DevExpress.Utils.PointFloat(5.808393F, 796.8625F);
             this.FormaDePagoDeLaPolizaLabel.Name = "FormaDePagoDeLaPolizaLabel";
             this.FormaDePagoDeLaPolizaLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
@@ -2203,7 +2204,7 @@ namespace XtraReportSerialization {
             this.MontoValorAseguradoField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.MontoValorAseguradoField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[MontoValorAsegurado]")});
-            this.MontoValorAseguradoField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.MontoValorAseguradoField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.MontoValorAseguradoField.LocationFloat = new DevExpress.Utils.PointFloat(603.1625F, 777.8624F);
             this.MontoValorAseguradoField.Name = "MontoValorAseguradoField";
             this.MontoValorAseguradoField.SizeF = new System.Drawing.SizeF(138.5294F, 16F);
@@ -2213,7 +2214,7 @@ namespace XtraReportSerialization {
             // MontoValorAseguradoLabel
             // 
             this.MontoValorAseguradoLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.MontoValorAseguradoLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.MontoValorAseguradoLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.MontoValorAseguradoLabel.LocationFloat = new DevExpress.Utils.PointFloat(482.8083F, 777.8624F);
             this.MontoValorAseguradoLabel.Name = "MontoValorAseguradoLabel";
             this.MontoValorAseguradoLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
@@ -2229,7 +2230,7 @@ namespace XtraReportSerialization {
             this.PeriodicidadField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif([Periodicidad]\n=1, \'Anual\',[Periodicidad]\n=2, \'Semestral\', [Periodicidad]\n=3," +
                                 " \'Trimestral\',\'Mensual\')")});
-            this.PeriodicidadField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.PeriodicidadField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.PeriodicidadField.LocationFloat = new DevExpress.Utils.PointFloat(321.8083F, 777.8624F);
             this.PeriodicidadField.Name = "PeriodicidadField";
             this.PeriodicidadField.SizeF = new System.Drawing.SizeF(161F, 16F);
@@ -2239,7 +2240,7 @@ namespace XtraReportSerialization {
             // PeriodicidadLabel
             // 
             this.PeriodicidadLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.PeriodicidadLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.PeriodicidadLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.PeriodicidadLabel.LocationFloat = new DevExpress.Utils.PointFloat(245.0381F, 777.8624F);
             this.PeriodicidadLabel.Name = "PeriodicidadLabel";
             this.PeriodicidadLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
@@ -2254,7 +2255,7 @@ namespace XtraReportSerialization {
             this.TipoDePrimaField.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
             this.TipoDePrimaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[TipoDePrimaDesc]")});
-            this.TipoDePrimaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.TipoDePrimaField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.TipoDePrimaField.LocationFloat = new DevExpress.Utils.PointFloat(79.29044F, 777.8624F);
             this.TipoDePrimaField.Name = "TipoDePrimaField";
             this.TipoDePrimaField.SizeF = new System.Drawing.SizeF(165.7476F, 16F);
@@ -2264,7 +2265,7 @@ namespace XtraReportSerialization {
             // TipoDePrimaLabel
             // 
             this.TipoDePrimaLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.TipoDePrimaLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.TipoDePrimaLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.TipoDePrimaLabel.LocationFloat = new DevExpress.Utils.PointFloat(5.808393F, 777.8624F);
             this.TipoDePrimaLabel.Name = "TipoDePrimaLabel";
             this.TipoDePrimaLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
@@ -2279,7 +2280,7 @@ namespace XtraReportSerialization {
             this.MontoPrimaField.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.MontoPrimaField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[MontoPrima]")});
-            this.MontoPrimaField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.MontoPrimaField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.MontoPrimaField.LocationFloat = new DevExpress.Utils.PointFloat(618.5633F, 758.8625F);
             this.MontoPrimaField.Name = "MontoPrimaField";
             this.MontoPrimaField.SizeF = new System.Drawing.SizeF(123.1285F, 15.99994F);
@@ -2289,7 +2290,7 @@ namespace XtraReportSerialization {
             // MontoPrimaLabel
             // 
             this.MontoPrimaLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.MontoPrimaLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.MontoPrimaLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.MontoPrimaLabel.LocationFloat = new DevExpress.Utils.PointFloat(543.8061F, 758.8625F);
             this.MontoPrimaLabel.Name = "MontoPrimaLabel";
             this.MontoPrimaLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
@@ -2304,7 +2305,7 @@ namespace XtraReportSerialization {
             this.PropositoDeRelacionComercialField.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
             this.PropositoDeRelacionComercialField.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PropositoDeRelacionComercialDesc]")});
-            this.PropositoDeRelacionComercialField.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.PropositoDeRelacionComercialField.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.PropositoDeRelacionComercialField.LocationFloat = new DevExpress.Utils.PointFloat(371.9245F, 758.8624F);
             this.PropositoDeRelacionComercialField.Name = "PropositoDeRelacionComercialField";
             this.PropositoDeRelacionComercialField.SizeF = new System.Drawing.SizeF(171.8816F, 16.00006F);
@@ -2314,7 +2315,7 @@ namespace XtraReportSerialization {
             // PropositoDeRelacionComercialLabel
             // 
             this.PropositoDeRelacionComercialLabel.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.PropositoDeRelacionComercialLabel.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.PropositoDeRelacionComercialLabel.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.PropositoDeRelacionComercialLabel.LocationFloat = new DevExpress.Utils.PointFloat(5.808393F, 758.8624F);
             this.PropositoDeRelacionComercialLabel.Name = "PropositoDeRelacionComercialLabel";
             this.PropositoDeRelacionComercialLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(3, 0, 0, 0, 100F);
@@ -2337,7 +2338,8 @@ namespace XtraReportSerialization {
             // 
             // label20
             // 
-            this.label20.Font = new System.Drawing.Font("Times New Roman", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label20.Font = new DevExpress.Drawing.DXFont("Times New Roman", 6F, DevExpress.Drawing.DXFontStyle.Regular, DevExpress.Drawing.DXGraphicsUnit.Point, new DevExpress.Drawing.DXFontAdditionalProperty[] {
+                        new DevExpress.Drawing.DXFontAdditionalProperty("GdiCharSet", ((byte)(0)))});
             this.label20.LocationFloat = new DevExpress.Utils.PointFloat(20.17305F, 876.8624F);
             this.label20.Multiline = true;
             this.label20.Name = "label20";
@@ -2351,7 +2353,7 @@ namespace XtraReportSerialization {
             // label21
             // 
             this.label21.Borders = DevExpress.XtraPrinting.BorderSide.Top;
-            this.label21.Font = new System.Drawing.Font("Times New Roman", 8F);
+            this.label21.Font = new DevExpress.Drawing.DXFont("Times New Roman", 8F);
             this.label21.LocationFloat = new DevExpress.Utils.PointFloat(23.45512F, 951.3721F);
             this.label21.Multiline = true;
             this.label21.Name = "label21";
@@ -2489,11 +2491,11 @@ namespace XtraReportSerialization {
             this.ComponentStorage.AddRange(new System.ComponentModel.IComponent[] {
                         this.jsonDataSource1});
             this.DataSource = this.jsonDataSource1;
-            this.Margins = new System.Drawing.Printing.Margins(50, 50, 54, 50);
+            this.Margins = new DevExpress.Drawing.DXMargins(50F, 50F, 54.32829F, 50F);
             this.Name = "KYC_Juridico";
             this.PageHeight = 1100;
             this.PageWidth = 850;
-            this.Version = "22.1";
+            this.Version = "22.2";
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
         }
     }
