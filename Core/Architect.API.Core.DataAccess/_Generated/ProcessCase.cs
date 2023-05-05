@@ -130,18 +130,7 @@ namespace Architect.API.Core.DataAccess.General
                         }));
             return result;
         }
-        public static List<Architect.API.Core.Contracts.Security.ColoresResponse> RetrieveAllColors(IDbConnection connection = null)
-        {
-            List<Architect.API.Core.Contracts.Security.ColoresResponse> result = new List<Architect.API.Core.Contracts.Security.ColoresResponse>();
-            Database.Select("SELECT DESCRIPTION, COLOR1TENANT, COLOR2TENANT , LOGO  " +
-                              "FROM LOOKUP " +
-                             "WHERE LOOKUPID = 4")
-                        .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
-                        {
-                            result.Add(DataReaderToColorData(reader));
-                        }));
-            return result;
-        }
+
         /// <summary>
         /// Recupera una lista de registros en la tabla ProcessCase.
         /// </summary>
@@ -416,19 +405,6 @@ namespace Architect.API.Core.DataAccess.General
 
             //Agregado para la lectura del usuario que envio el caso
             item.UserSend = reader.IntegerValue("UserSend");
-            return item;
-        }
-
-        public static Architect.API.Core.Contracts.Security.ColoresResponse DataReaderToColorData(System.Data.IDataReader reader, Architect.API.Core.Contracts.Security.ColoresResponse item = null)
-        {
-            if (item == null)
-            {
-                item = new Architect.API.Core.Contracts.Security.ColoresResponse();
-            }
-            item.Tenant = reader.StringValue("Description");
-            item.Color1 = reader.StringValue("Color1Tenant");
-            item.Color2 = reader.StringValue("Color2Tenant");
-            item.Logo = reader.StringValue("LOGO");
             return item;
         }
 

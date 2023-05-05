@@ -353,7 +353,7 @@ namespace Architect.API.Core.Business.Security
         public static List<Architect.API.Core.Contracts.Security.ColoresResponse> ReadColor()
         {
 
-            List<Architect.API.Core.Contracts.Security.ColoresResponse> RespuestaData = Architect.API.Core.DataAccess.General.ProcessCase.RetrieveAllColors();
+            List<Architect.API.Core.Contracts.Security.ColoresResponse> RespuestaData = Architect.API.Core.DataAccess.General.ColorKey.RetrieveAllColors();
 
             return RespuestaData;
         }

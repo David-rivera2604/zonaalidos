@@ -67,14 +67,21 @@ namespace Architect.API.Core.DataAccess.Security
 
             string json_tercero = "";
             try {
+                if (subagentItem.cod_agt != 999999)
+                {
+                    subagentItem.cod_emp_agt = cod_SubAgent(subagentItem.tip_docum, subagentItem.cod_docum, subagentItem.cod_agt);
+                    json_tercero = JsonSerializer.Serialize(subagentItem);
 
-                subagentItem.cod_emp_agt = cod_SubAgent(subagentItem.tip_docum, subagentItem.cod_docum, subagentItem.cod_agt);
-                json_tercero = JsonSerializer.Serialize(subagentItem);
-
-                return Database.Procedure(@"em_k_mapfre_batch_contract_mcr.em_p_crea_terceros")
-                .AddParameter("p_dat_asegurado", DbType.String, 8000, json_tercero)
-                .AddParameter("p_errores", DbType.RefCursor, 0, null, ParameterDirection.Output)
-                .Execute(connection, "Tron") != 0;
+                    return Database.Procedure(@"em_k_mapfre_batch_contract_mcr.em_p_crea_terceros")
+                    .AddParameter("p_dat_asegurado", DbType.String, 8000, json_tercero)
+                    .AddParameter("p_errores", DbType.RefCursor, 0, null, ParameterDirection.Output)
+                    .Execute(connection, "Tron") != 0;
+                }
+                else
+                {
+                    return true;
+                }
+                
             }
             catch (Exception ex)
             {
@@ -88,9 +95,9 @@ namespace Architect.API.Core.DataAccess.Security
         {
             int resultado = 0;
             Database.Select(@"select 
-                                em_k_tables_contract_mcr.fc_cod_subagente(p_tip_docum => :tip_docum,
+                                nvl(em_k_tables_contract_mcr.fc_cod_subagente(p_tip_docum => :tip_docum,
                                                                           p_cod_docum => :p_cod_docum,
-                                                                          p_cod_agt => :p_cod_agt) cod_sub_agt
+                                                                          p_cod_agt => :p_cod_agt),0) cod_sub_agt
                             from dual")
                          .AddParameter("p_tip_docum", DbType.String, 50, tip_docum)
                          .AddParameter("p_cod_docum", DbType.String, 50, cod_docum)
