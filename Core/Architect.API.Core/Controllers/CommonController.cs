@@ -112,15 +112,7 @@ namespace Architect.API.Core.Controllers
             Contracts.Security.Token tokenInfo = Security.Token.Info();
             await Task.Run(() =>
             {
-                item.CompanyId = tokenInfo.CompanyId;
-                item.UpdateUserCode = tokenInfo.UserId;
-                if (item.FileContent.IsNotEmpty()) {
-                    item.FileContent = Path.Combine(HostingEnvironment.MapPath(ConfigurationManager.AppSettings["Files.Path"]), item.FileContent);
-                }
-
-
-                item = Architect.API.Core.Business.General.Attachment.SyncUp(item);
-
+                item = Architect.API.Core.Business.General.Attachment.SyncUpBase(item, tokenInfo.CompanyId, tokenInfo.UserId);
                 if (item.Id != 0)
                 {
                     result = Created(string.Format("{0}/{1}", Request.RequestUri.AbsoluteUri.Substring(0, Request.RequestUri.AbsoluteUri.LastIndexOf("/")), item.Id), new { Id = item.Id, UpdateDate = item.UpdateDate });
