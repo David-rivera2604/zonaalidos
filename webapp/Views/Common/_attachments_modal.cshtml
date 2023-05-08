@@ -1,0 +1,66 @@
+﻿<!-- Attachment Grid Modal -->
+<div class="modal inmodal" id="AttachmentModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                <h4 class="modal-title">Adjunto</h4>
+                <small class="font-bold">Permite agregar un nuevo adjunto o editar uno ya existente</small>
+            </div>
+            <div class="modal-body">
+                <!-- Attachment Grid Edit Form -->
+                <div class='form-row'>
+                    <div class='col-md-12'>
+                        <div id="AttachmentEdt" class="animated fadeInRight">
+                            <form id='AttachmentEdtForm' class='form-horizontal' data-toggle='validator'>
+                                <fieldset>
+                                    <div class='form-row'>
+                                        <!-- tipo -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='AttachmentDocumentType'>Tipo de documento<span class='required-mark'>*</span></label>
+                                                <select id='AttachmentDocumentType' name='AttachmentDocumentType' class='form-control' disabled>
+                                                    <option value="1">General</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- FileName -->
+                                        <div class='col-sm-6 col-md-9'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='AttachmentFileName'>Archivo<span class='required-mark'>*</span></label>
+                                                <div class="input-group">
+                                                    <input id='AttachmentFileName' name='AttachmentFileName' type='text' class='form-control' size='80' maxlength='80' placeholder="Indique el archivo a procesar..." readonly>
+                                                    <input id="AttachmentStored" type="hidden" value="" />
+                                                    <input id="AttachmentFileSize" type="hidden" value="" />
+                                                    <div class="input-group-append">
+                                                        <span class="btn btn-default fileinput-button" title="Permite seleccionar el archivo a ser procesado">
+                                                            <span>Examinar...</span>
+                                                            <input id="fileUploadModal" type="file" />
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div id='AttachmentFileName_validate'></div>
+                                            </div>
+                                        </div>
+                                        <!-- Description -->
+                                        <div class='col-sm-3 col-md-12'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='AttachmentDescription'>Descripción<span class='required-mark'>*</span></label>
+                                                <input id='AttachmentDescription' name='AttachmentDescription' type='text' class='form-control' size='120' maxlength='120'>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="AttachmentEdtFormSave" data-doing="Guardando...">Guardar cambios</button>
+                <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>

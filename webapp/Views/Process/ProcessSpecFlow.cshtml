@@ -138,7 +138,6 @@
                                 </div>
                             </div>
 
-
                             <div class="form-row">
                                 <div class="col-lg-12">
                                     <h4> Campos personalizados</h4>
@@ -149,76 +148,449 @@
 
                                             <div class="form-row form-compact">
                                                 <!-- ReferenceCaption1 -->
-                                                <div class='col-sm-4 col-md-7'>
+                                                <div class='col-sm-4 pref1 col-md-12'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='ReferenceCaption1'>Etiqueta para el campo #1</label>
                                                         <input id='ReferenceCaption1' name='ReferenceCaption1' type='text' class='form-control' size='80' maxlength='80'>
                                                     </div>
                                                 </div>
                                                 <!-- ReferenceType1 -->
-                                                <div class='col-sm-4 col-md-3'>
+                                                <div class='col-sm-4 col-md-2 ref1 d-none'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='ReferenceType1'>Tipo</label>
                                                         <select id='ReferenceType1' name='ReferenceType1' class='form-control'>
-                                                            <option>Texto</option>
-                                                            <option>Número</option>
-                                                            <option>Fecha</option>
-                                                            <option>Lista</option>
+                                                            <option value="1">Texto</option>
+                                                            <option value="2">Entero</option>
+                                                            <option value="3">Decimal</option>
+                                                            <option value="4">Fecha</option>
+                                                            <option value="5">Lista</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <!-- ReferenceRequired1 -->
-                                                <div class='col-sm-4 col-md-2'>
+                                                <div class='col-sm-4 col-md-2 ref1 d-none'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='ReferenceRequired1'>Requerido</label>
                                                         <select id='ReferenceRequired1' name='ReferenceRequired1' class='form-control'>
-                                                            <option>No</option>
-                                                            <option>Si</option>
+                                                            <option value="false">No</option>
+                                                            <option value="true">Si</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-row">
+                                            <div class="form-row refl1 d-none">
                                                 <!-- ReferenceLookupList1 -->
                                                 <div class='col-sm-4 col-md-12'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='ReferenceLookupList1'>Lista de valores</label>
-                                                        <textarea id='ReferenceLookupList11' name='ReferenceLookupList11' class='form-control' size='4000' maxlength='4000' rows="2" title="Lista de valores para el campo #1"></textarea>
+                                                        <textarea id='ReferenceLookupList1' name='ReferenceLookupList1' class='form-control' size='4000' maxlength='4000' rows="2"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
                                         <!-- ReferenceCaption2 -->
                                         <div class='col-sm-6 col-md-6'>
-                                            <div class='form-group'>
-                                                <label class='control-label' for='ReferenceCaption2'>Etiqueta para el campo #2</label>
-                                                <input id='ReferenceCaption2' name='ReferenceCaption2' type='text' class='form-control' size='80' maxlength='80'>
-                                                <textarea id='ReferenceLookupList2' name='ReferenceLookupList2' class='form-control lookup d-none' size='4000' maxlength='4000' rows="2" placeholder="Lista de valores para el campo #2" title="Lista de valores para el campo #2"></textarea>
+
+                                            <div class="form-row form-compact">
+                                                <!-- ReferenceCaption2 -->
+                                                <div class='col-sm-4 pref2 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceCaption2'>Etiqueta para el campo #2</label>
+                                                        <input id='ReferenceCaption2' name='ReferenceCaption2' type='text' class='form-control' size='80' maxlength='80'>
+                                                    </div>
+                                                </div>
+                                                <!-- ReferenceType2 -->
+                                                <div class='col-sm-4 col-md-2 ref2 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceType2'>Tipo</label>
+                                                        <select id='ReferenceType2' name='ReferenceType2' class='form-control'>
+                                                            <option value="1">Texto</option>
+                                                            <option value="2">Entero</option>
+                                                            <option value="3">Decimal</option>
+                                                            <option value="4">Fecha</option>
+                                                            <option value="5">Lista</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!-- ReferenceRequired2 -->
+                                                <div class='col-sm-4 col-md-2 ref2 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceRequired2'>Requerido</label>
+                                                        <select id='ReferenceRequired2' name='ReferenceRequired2' class='form-control'>
+                                                            <option value="false">No</option>
+                                                            <option value="true">Si</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row refl2 d-none">
+                                                <!-- ReferenceLookupList2 -->
+                                                <div class='col-sm-4 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceLookupList2'>Lista de valores</label>
+                                                        <textarea id='ReferenceLookupList2' name='ReferenceLookupList2' class='form-control' size='4000' maxlength='4000' rows="2"></textarea>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <!-- ReferenceCaption3 -->
                                         <div class='col-sm-6 col-md-6'>
-                                            <div class='form-group'>
-                                                <label class='control-label' for='ReferenceCaption3'>Etiqueta para el campo #3</label>
-                                                <input id='ReferenceCaption3' name='ReferenceCaption3' type='text' class='form-control' size='80' maxlength='80'>
-                                                <textarea id='ReferenceLookupList3' name='ReferenceLookupList3' class='form-control lookup d-none' size='4000' maxlength='4000' rows="2" placeholder="Lista de valores para el campo #3" title="Lista de valores para el campo #3"></textarea>
+
+                                            <div class="form-row form-compact">
+                                                <!-- ReferenceCaption3 -->
+                                                <div class='col-sm-4 pref3 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceCaption3'>Etiqueta para el campo #3</label>
+                                                        <input id='ReferenceCaption3' name='ReferenceCaption3' type='text' class='form-control' size='80' maxlength='80'>
+                                                    </div>
+                                                </div>
+                                                <!-- ReferenceType3 -->
+                                                <div class='col-sm-4 col-md-2 ref3 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceType3'>Tipo</label>
+                                                        <select id='ReferenceType3' name='ReferenceType3' class='form-control'>
+                                                            <option value="1">Texto</option>
+                                                            <option value="2">Entero</option>
+                                                            <option value="3">Decimal</option>
+                                                            <option value="4">Fecha</option>
+                                                            <option value="5">Lista</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!-- ReferenceRequired3 -->
+                                                <div class='col-sm-4 col-md-2 ref3 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceRequired3'>Requerido</label>
+                                                        <select id='ReferenceRequired3' name='ReferenceRequired3' class='form-control'>
+                                                            <option value="false">No</option>
+                                                            <option value="true">Si</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row refl3 d-none">
+                                                <!-- ReferenceLookupList3 -->
+                                                <div class='col-sm-4 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceLookupList3'>Lista de valores</label>
+                                                        <textarea id='ReferenceLookupList3' name='ReferenceLookupList3' class='form-control' size='4000' maxlength='4000' rows="2"></textarea>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <!-- ReferenceCaption4 -->
                                         <div class='col-sm-6 col-md-6'>
-                                            <div class='form-group'>
-                                                <label class='control-label' for='ReferenceCaption4'>Etiqueta para el campo #4</label>
-                                                <input id='ReferenceCaption4' name='ReferenceCaption4' type='text' class='form-control' size='80' maxlength='80'>
-                                                <textarea id='ReferenceLookupList4' name='ReferenceLookupList4' class='form-control lookup d-none' size='4000' maxlength='4000' rows="2" placeholder="Lista de valores para el campo #4" title="Lista de valores para el campo #4"></textarea>
+
+                                            <div class="form-row form-compact">
+                                                <!-- ReferenceCaption4 -->
+                                                <div class='col-sm-4 pref4 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceCaption4'>Etiqueta para el campo #4</label>
+                                                        <input id='ReferenceCaption4' name='ReferenceCaption4' type='text' class='form-control' size='80' maxlength='80'>
+                                                    </div>
+                                                </div>
+                                                <!-- ReferenceType4 -->
+                                                <div class='col-sm-4 col-md-2 ref4 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceType4'>Tipo</label>
+                                                        <select id='ReferenceType4' name='ReferenceType4' class='form-control'>
+                                                            <option value="1">Texto</option>
+                                                            <option value="2">Entero</option>
+                                                            <option value="3">Decimal</option>
+                                                            <option value="4">Fecha</option>
+                                                            <option value="5">Lista</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!-- ReferenceRequired4 -->
+                                                <div class='col-sm-4 col-md-2 ref4 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceRequired4'>Requerido</label>
+                                                        <select id='ReferenceRequired4' name='ReferenceRequired4' class='form-control'>
+                                                            <option value="false">No</option>
+                                                            <option value="true">Si</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row refl4 d-none">
+                                                <!-- ReferenceLookupList4 -->
+                                                <div class='col-sm-4 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceLookupList4'>Lista de valores</label>
+                                                        <textarea id='ReferenceLookupList4' name='ReferenceLookupList4' class='form-control' size='4000' maxlength='4000' rows="2"></textarea>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <!-- ReferenceCaption5 -->
                                         <div class='col-sm-6 col-md-6'>
-                                            <div class='form-group'>
-                                                <label class='control-label' for='ReferenceCaption5'>Etiqueta para el campo #5</label>
-                                                <input id='ReferenceCaption5' name='ReferenceCaption5' type='text' class='form-control' size='80' maxlength='80'>
-                                                <textarea id='ReferenceLookupList5' name='ReferenceLookupList5' class='form-control lookup d-none' size='4000' maxlength='4000' rows="2" placeholder="Lista de valores para el campo #5" title="Lista de valores para el campo #5"></textarea>
+
+                                            <div class="form-row form-compact">
+                                                <!-- ReferenceCaption5 -->
+                                                <div class='col-sm-4 pref5 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceCaption5'>Etiqueta para el campo #5</label>
+                                                        <input id='ReferenceCaption5' name='ReferenceCaption5' type='text' class='form-control' size='80' maxlength='80'>
+                                                    </div>
+                                                </div>
+                                                <!-- ReferenceType5 -->
+                                                <div class='col-sm-4 col-md-2 ref5 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceType5'>Tipo</label>
+                                                        <select id='ReferenceType5' name='ReferenceType5' class='form-control'>
+                                                            <option value="1">Texto</option>
+                                                            <option value="2">Entero</option>
+                                                            <option value="3">Decimal</option>
+                                                            <option value="4">Fecha</option>
+                                                            <option value="5">Lista</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!-- ReferenceRequired5 -->
+                                                <div class='col-sm-4 col-md-2 ref5 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceRequired5'>Requerido</label>
+                                                        <select id='ReferenceRequired5' name='ReferenceRequired5' class='form-control'>
+                                                            <option value="false">No</option>
+                                                            <option value="true">Si</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row refl5 d-none">
+                                                <!-- ReferenceLookupList5 -->
+                                                <div class='col-sm-4 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceLookupList5'>Lista de valores</label>
+                                                        <textarea id='ReferenceLookupList5' name='ReferenceLookupList5' class='form-control' size='4000' maxlength='4000' rows="2"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- ReferenceCaption6 -->
+                                        <div class='col-sm-6 col-md-6'>
+
+                                            <div class="form-row form-compact">
+                                                <!-- ReferenceCaption6 -->
+                                                <div class='col-sm-4 pref6 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceCaption6'>Etiqueta para el campo #6</label>
+                                                        <input id='ReferenceCaption6' name='ReferenceCaption6' type='text' class='form-control' size='80' maxlength='80'>
+                                                    </div>
+                                                </div>
+                                                <!-- ReferenceType6 -->
+                                                <div class='col-sm-4 col-md-2 ref6 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceType6'>Tipo</label>
+                                                        <select id='ReferenceType6' name='ReferenceType6' class='form-control'>
+                                                            <option value="1">Texto</option>
+                                                            <option value="2">Entero</option>
+                                                            <option value="3">Decimal</option>
+                                                            <option value="4">Fecha</option>
+                                                            <option value="5">Lista</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!-- ReferenceRequired6 -->
+                                                <div class='col-sm-4 col-md-2 ref6 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceRequired6'>Requerido</label>
+                                                        <select id='ReferenceRequired6' name='ReferenceRequired6' class='form-control'>
+                                                            <option value="false">No</option>
+                                                            <option value="true">Si</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row refl6 d-none">
+                                                <!-- ReferenceLookupList6 -->
+                                                <div class='col-sm-4 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceLookupList6'>Lista de valores</label>
+                                                        <textarea id='ReferenceLookupList6' name='ReferenceLookupList6' class='form-control' size='4000' maxlength='4000' rows="2"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- ReferenceCaption7 -->
+                                        <div class='col-sm-6 col-md-6'>
+
+                                            <div class="form-row form-compact">
+                                                <!-- ReferenceCaption7 -->
+                                                <div class='col-sm-4 pref7 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceCaption7'>Etiqueta para el campo #7</label>
+                                                        <input id='ReferenceCaption7' name='ReferenceCaption7' type='text' class='form-control' size='80' maxlength='80'>
+                                                    </div>
+                                                </div>
+                                                <!-- ReferenceType7 -->
+                                                <div class='col-sm-4 col-md-2 ref7 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceType7'>Tipo</label>
+                                                        <select id='ReferenceType7' name='ReferenceType7' class='form-control'>
+                                                            <option value="1">Texto</option>
+                                                            <option value="2">Entero</option>
+                                                            <option value="3">Decimal</option>
+                                                            <option value="4">Fecha</option>
+                                                            <option value="5">Lista</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!-- ReferenceRequired7 -->
+                                                <div class='col-sm-4 col-md-2 ref7 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceRequired7'>Requerido</label>
+                                                        <select id='ReferenceRequired7' name='ReferenceRequired7' class='form-control'>
+                                                            <option value="false">No</option>
+                                                            <option value="true">Si</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row refl7 d-none">
+                                                <!-- ReferenceLookupList7 -->
+                                                <div class='col-sm-4 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceLookupList7'>Lista de valores</label>
+                                                        <textarea id='ReferenceLookupList7' name='ReferenceLookupList7' class='form-control' size='4000' maxlength='4000' rows="2"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- ReferenceCaption8 -->
+                                        <div class='col-sm-6 col-md-6'>
+
+                                            <div class="form-row form-compact">
+                                                <!-- ReferenceCaption8 -->
+                                                <div class='col-sm-4 pref8 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceCaption8'>Etiqueta para el campo #8</label>
+                                                        <input id='ReferenceCaption8' name='ReferenceCaption8' type='text' class='form-control' size='80' maxlength='80'>
+                                                    </div>
+                                                </div>
+                                                <!-- ReferenceType8 -->
+                                                <div class='col-sm-4 col-md-2 ref8 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceType8'>Tipo</label>
+                                                        <select id='ReferenceType8' name='ReferenceType8' class='form-control'>
+                                                            <option value="1">Texto</option>
+                                                            <option value="2">Entero</option>
+                                                            <option value="3">Decimal</option>
+                                                            <option value="4">Fecha</option>
+                                                            <option value="5">Lista</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!-- ReferenceRequired8 -->
+                                                <div class='col-sm-4 col-md-2 ref8 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceRequired8'>Requerido</label>
+                                                        <select id='ReferenceRequired8' name='ReferenceRequired8' class='form-control'>
+                                                            <option value="false">No</option>
+                                                            <option value="true">Si</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row refl8 d-none">
+                                                <!-- ReferenceLookupList8 -->
+                                                <div class='col-sm-4 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceLookupList8'>Lista de valores</label>
+                                                        <textarea id='ReferenceLookupList8' name='ReferenceLookupList8' class='form-control' size='4000' maxlength='4000' rows="2"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- ReferenceCaption9 -->
+                                        <div class='col-sm-6 col-md-6'>
+
+                                            <div class="form-row form-compact">
+                                                <!-- ReferenceCaption9 -->
+                                                <div class='col-sm-4 pref9 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceCaption9'>Etiqueta para el campo #9</label>
+                                                        <input id='ReferenceCaption9' name='ReferenceCaption9' type='text' class='form-control' size='80' maxlength='80'>
+                                                    </div>
+                                                </div>
+                                                <!-- ReferenceType9 -->
+                                                <div class='col-sm-4 col-md-2 ref9 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceType9'>Tipo</label>
+                                                        <select id='ReferenceType9' name='ReferenceType9' class='form-control'>
+                                                            <option value="1">Texto</option>
+                                                            <option value="2">Entero</option>
+                                                            <option value="3">Decimal</option>
+                                                            <option value="4">Fecha</option>
+                                                            <option value="5">Lista</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!-- ReferenceRequired9 -->
+                                                <div class='col-sm-4 col-md-2 ref9 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceRequired9'>Requerido</label>
+                                                        <select id='ReferenceRequired9' name='ReferenceRequired9' class='form-control'>
+                                                            <option value="false">No</option>
+                                                            <option value="true">Si</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row refl9 d-none">
+                                                <!-- ReferenceLookupList9 -->
+                                                <div class='col-sm-4 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceLookupList9'>Lista de valores</label>
+                                                        <textarea id='ReferenceLookupList9' name='ReferenceLookupList9' class='form-control' size='4000' maxlength='4000' rows="2"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- ReferenceCaption10 -->
+                                        <div class='col-sm-6 col-md-6'>
+
+                                            <div class="form-row form-compact">
+                                                <!-- ReferenceCaption10 -->
+                                                <div class='col-sm-4 pref10 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceCaption10'>Etiqueta para el campo #10</label>
+                                                        <input id='ReferenceCaption10' name='ReferenceCaption10' type='text' class='form-control' size='80' maxlength='80'>
+                                                    </div>
+                                                </div>
+                                                <!-- ReferenceType10 -->
+                                                <div class='col-sm-4 col-md-2 ref10 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceType10'>Tipo</label>
+                                                        <select id='ReferenceType10' name='ReferenceType10' class='form-control'>
+                                                            <option value="1">Texto</option>
+                                                            <option value="2">Entero</option>
+                                                            <option value="3">Decimal</option>
+                                                            <option value="4">Fecha</option>
+                                                            <option value="5">Lista</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!-- ReferenceRequired10 -->
+                                                <div class='col-sm-4 col-md-2 ref10 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceRequired10'>Requerido</label>
+                                                        <select id='ReferenceRequired10' name='ReferenceRequired10' class='form-control'>
+                                                            <option value="false">No</option>
+                                                            <option value="true">Si</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row refl10 d-none">
+                                                <!-- ReferenceLookupList10 -->
+                                                <div class='col-sm-4 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ReferenceLookupList10'>Lista de valores</label>
+                                                        <textarea id='ReferenceLookupList10' name='ReferenceLookupList10' class='form-control' size='4000' maxlength='4000' rows="2"></textarea>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
 

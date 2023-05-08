@@ -73,9 +73,9 @@ app.GeneralNewCase = (function () {
     function ReferenceHandler(caption, type, required, valueList, id) {
         if (caption != '') {
             if (required)
-                $("label[for='" + id + "']").text(caption+ "<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>");
+                $("label[for='" + id + "']").html(caption + "<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>");
             else
-                $("label[for='" + id + "']").text(caption );
+                $("label[for='" + id + "']").html(caption);
 
             if (valueList == '')
                 $('#' + id).removeClass('d-none');
@@ -140,7 +140,8 @@ app.GeneralNewCase = (function () {
             SubLabel: $('#SubLabel').val(),
             FlowId: $('#FlowId').val(),
             UserId: $('#UserId').val(),
-            SLA: $('#SLA').val()
+            SLA: $('#SLA').val(),
+            Attachments: app.Attachments.Data()
         };
     }
 
@@ -175,11 +176,21 @@ app.GeneralNewCase = (function () {
         app.ui.DateValidators();
         $.validator.addMethod("DynamicRequired",
             function (value, element, params) {
-                let id = element.id.substring(element.id.length - 1, 1);
+                let id = element.id.replace('List', '');
+                id = id.substring(id.length - 1, id.length);
                 if (id === '0')
                     id = '10';
-                if (flowSpec['ReferenceType' + id] == true)
+                if (flowSpec['ReferenceRequired' + id] == true) {
+                    $('#' + element.id).rules('add', {
+                        messages: {
+                            DynamicRequired: `Debe indicar un valor para ${flowSpec['ReferenceCaption' + id]}`
+                        }
+                    });
                     return (value != null && value != "");
+                }
+
+                else
+                    return true;
             }
         );
         $("#ProcessCaseEdtForm").validate({
@@ -344,7 +355,7 @@ app.GeneralNewCase = (function () {
                     DynamicRequired: 'Debe indicar un valor'
                 },
                 Reference10List: {
-                    DynamicRequired: 'Debe indicar un valor'
+                    DynamicRequired: ''
                 }
             }
 
@@ -363,6 +374,7 @@ app.GeneralNewCase = (function () {
             Event_Controls();
             Setup_Validations();
 
+            app.Attachments.Init({ PostByEachRow: false });
         },
         New: function (row) {
             let newRow = { Id: 0, Title: null, Description: null, Priority: 4, InstanceId: 0, Reference1: null, Reference2: null, Reference3: null, Reference4: null, Reference5: null, Reference6: null, Reference7: null, Reference8: null, Reference9: null, Reference10: null, ContactMainName: null, ContactMainEmail: null, Status: 0, Label: null, SubStatus: 0, SubLabel: null, FlowId: null, UserId: null }

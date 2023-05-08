@@ -13,7 +13,7 @@ using System.Net.Http.Headers;
 
 namespace Architect.API.Tron.Business.Emision
 {
-    public static class MapfreMas
+    public static class MapfreMasPlus
     {
         /// <summary>
         /// 
@@ -26,7 +26,7 @@ namespace Architect.API.Tron.Business.Emision
         {
             Contracts.Emision.MapfreMas result = null;
             bool tryOnTron = false;
-            string key = string.Format("mapfremas.{0}", presupuesto);
+            string key = string.Format("mapfremasplus.{0}", presupuesto);
 
             if (mode == "continue")
             {
@@ -57,10 +57,10 @@ namespace Architect.API.Tron.Business.Emision
 
                 if (mode.IsEmpty() || mode == "draft" || mode == "resume" || tryOnTron)
                 {
-                    result.terceros = Reglas.research.Apply_Terceros("MapfreMas", result.terceros, result.Fuente_Tomador, tokenInfo);
+                    result.terceros = Reglas.research.Apply_Terceros("MapfreMasPlus", result.terceros, result.Fuente_Tomador, tokenInfo);
                 }
 
-                result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("MapfreMas", null, result.MCA_CERO_KM, tokenInfo);
+                result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("MapfreMasPlus", null, result.MCA_CERO_KM, tokenInfo);
 
                 if (mode == "continue")
                 {
@@ -90,7 +90,7 @@ namespace Architect.API.Tron.Business.Emision
 
             //Utilities.SerializeHandler<Contracts.Emision.MapfreMas>.SerializeJSONToFile(result, string.Format(@"c:\temp\mapfremas.proposal.{0}.json", presupuesto), true, false, false);
 
-            //Utilities.Cache.SetItem(string.Format("mapfremas.proposal.{0}", presupuesto),
+            //Utilities.Cache.SetItem(string.Format("mapfremasplus.proposal.{0}", presupuesto),
             //                        Newtonsoft.Json.JsonConvert.SerializeObject(result), -1);
 
             if (tryOnTron)
@@ -237,7 +237,7 @@ namespace Architect.API.Tron.Business.Emision
         {
             try
             {
-                Utilities.Log.TraceLog("MapfreMas.EvicertiaSigned", DateTime.Now.ToString(), "Evicertia");
+                Utilities.Log.TraceLog("MapfreMasPlus.EvicertiaSigned", DateTime.Now.ToString(), "Evicertia");
                 DocuSign.Integrations.Contracts.QueryResult eviSignInf = null;
                 int companyId = 2;
                 int userId = 666;
@@ -246,7 +246,7 @@ namespace Architect.API.Tron.Business.Emision
                     eviSignInf = DocuSign.Integrations.DocuSign.Query(item.SigningRequestId, true).GetAwaiter().GetResult();
                     if (eviSignInf != null)
                     {
-                        Utilities.Log.TraceLog("MapfreMas.EvicertiaSigned", item.Id + ' ' + item.SigningRequestId + " outcome " + eviSignInf.outcome, "Evicertia");
+                        Utilities.Log.TraceLog("MapfreMasPlus.EvicertiaSigned", item.Id + ' ' + item.SigningRequestId + " outcome " + eviSignInf.outcome, "Evicertia");
                         switch (eviSignInf.outcome)
                         {
                             case "Signed":
@@ -273,13 +273,13 @@ namespace Architect.API.Tron.Business.Emision
                     }
                     else
                     {
-                        Utilities.Log.TraceLog("MapfreMas.EvicertiaSigned", item.Id + ' ' + item.SigningRequestId + " not outcome", "Evicertia");
+                        Utilities.Log.TraceLog("MapfreMasPlus.EvicertiaSigned", item.Id + ' ' + item.SigningRequestId + " not outcome", "Evicertia");
                     }
                 }
             }
             catch (Exception ex)
             {
-                Utilities.Log.ErrorLog("MapfreMas", "EvicertiaSigned", ex);
+                Utilities.Log.ErrorLog("MapfreMasPlus", "EvicertiaSigned", ex);
                 throw ex;
             }
         }
@@ -315,7 +315,7 @@ namespace Architect.API.Tron.Business.Emision
             Contracts.Comun.tercero primaryInsured = (from t in quoteInfo.terceros where t.tipodetercero == 2 select t).First();
             if (tip_firma == Contracts.TipoDeFirma.Manual)
             {
-                Core.Business.General.Mail.SendByTemplate("MapfreMas_Solicitud", tokenInfo.CompanyId, tokenInfo.UserId, 0, quoteInfo,
+                Core.Business.General.Mail.SendByTemplate("MapfreMasPlus_Solicitud", tokenInfo.CompanyId, tokenInfo.UserId, 0, quoteInfo,
                     new Dictionary<string, string>() { { correoenvio, string.Empty } },
                     new string[] { string.Format("{0};Solicitud {1}.pdf", solicitudPDF, quoteInfo.presupuesto) });
                 submit.UniqueId = quoteInfo.presupuesto;
@@ -340,7 +340,7 @@ namespace Architect.API.Tron.Business.Emision
 
             if (tip_firma == Contracts.TipoDeFirma.Manual)
             {
-                Core.Business.General.Mail.SendByTemplate("MapfreMas_Solicitud", tokenInfo.CompanyId, tokenInfo.UserId, 0, quoteInfo,
+                Core.Business.General.Mail.SendByTemplate("MapfreMasPlus_Solicitud", tokenInfo.CompanyId, tokenInfo.UserId, 0, quoteInfo,
                     new Dictionary<string, string>() { { correoenvio, string.Empty } },
                     new string[] { string.Format("{0};Solicitud {1}.pdf", kycPDF, quoteInfo.presupuesto) });
             }
@@ -393,11 +393,11 @@ namespace Architect.API.Tron.Business.Emision
 
             if (tokenInfo.Roles.Contain("PolizaGrupo"))
             {
-                return Core.Business.General.Report.GeneratePDFFile("mapfremas_solicitud", data).GetAwaiter().GetResult();
+                return Core.Business.General.Report.GeneratePDFFile("mapfremasplus_solicitud", data).GetAwaiter().GetResult();
             }
             else
             {
-                return Core.Business.General.Report.GeneratePDFFile("mapfremas_solicitud_individual", data).GetAwaiter().GetResult();
+                return Core.Business.General.Report.GeneratePDFFile("mapfremasplus_solicitud_individual", data).GetAwaiter().GetResult();
             }
 
 

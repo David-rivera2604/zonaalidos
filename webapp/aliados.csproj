@@ -1228,12 +1228,14 @@
     <Content Include="Scripts\ColoresTenant.js" />
     <Content Include="Scripts\CompraSegurosClients.js" />
     <Content Include="Scripts\Cotizacion.Coberturas.js" />
+    <Content Include="Scripts\Cotizacion.MapfreMasPlus.js" />
     <Content Include="Scripts\Cotizacion.SaldoDeudor.enfermedadesexcluidas.js" />
     <Content Include="Scripts\CreateCase_Aliados.js" />
     <Content Include="Scripts\Emision.kyc.declarante.js" />
     <Content Include="Scripts\Emision.kyc.juridico.js" />
     <Content Include="Scripts\Emision.kyc.persona.js" />
-    <Content Include="Scripts\Common.Anexos.js" />
+    <Content Include="Scripts\Common.Attachments.js" />
+    <Content Include="Scripts\Emision.MapfreMasPlus.js" />
     <Content Include="Scripts\Emision.Terceros.js" />
     <Content Include="Scripts\Emision.SaldoDeudor.js" />
     <Content Include="Scripts\Cotizacion.SaldoDeudor.js" />
@@ -1697,8 +1699,10 @@
     <Content Include="Reports\KYC_Juridico.repx" />
     <Content Include="Reports\KYC_Persona.repx" />
     <Content Include="Reports\MapfreMas_Solicitud_Individual.repx" />
-    <Content Include="Views\Cases\_anexos_modal.cshtml" />
-    <Content Include="Views\Cases\_anexos_grid.cshtml" />
+    <Content Include="Views\Common\_attachments_modal.cshtml" />
+    <Content Include="Views\Common\_attachments_grid.cshtml" />
+    <Content Include="Views\Cotizacion\MapfreMasPlus.cshtml" />
+    <Content Include="Views\Emision\MapfreMasPlus.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
