@@ -1567,6 +1567,8 @@
     <Content Include="products\policy.vocabulary.json" />
     <Content Include="products\SaldoDeudor.rules.json" />
     <Content Include="products\Actividad_Economica_List.json" />
+    <Content Include="products\Multirriesgos.rules.json" />
+    <Content Include="products\Multirriesgos.vocabulary.json" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\Policy\index.cshtml" />
     <Content Include="Views\Policy\Listv3.cshtml" />
@@ -1701,6 +1703,18 @@
     <Content Include="Reports\KYC_Juridico.repx" />
     <Content Include="Reports\KYC_Persona.repx" />
     <Content Include="Reports\MapfreMas_Solicitud_Individual.repx" />
+    <Content Include="Views\Common\_attachments_grid.cshtml" />
+    <Content Include="Views\Common\_attachments_modal.cshtml" />
+    <Content Include="Reports\pdf\Consentimiento para Uso de Datos Personales.pdf" />
+    <Content Include="Reports\pdf\HogarTotalSolicitudMCPG_.pdf" />
+    <Content Include="Reports\pdf\HogarTotalSolicitudMIJ_.pdf" />
+    <Content Include="Reports\pdf\HogarTotalSolicitudMIP_.pdf" />
+    <Content Include="Reports\pdf\MAPFRE-Conozca_Cliente_Juridico.pdf" />
+    <Content Include="Reports\pdf\MAPFRE-Conozca_Cliente_Persona.pdf" />
+    <Content Include="Reports\pdf\MultiriesgoSolicitud_Colectiva_Juridico.pdf" />
+    <Content Include="Reports\pdf\MultiriesgoSolicitud_Individual_Juridico.pdf" />
+    <Content Include="Reports\pdf\MultiriesgoSolicitud_Individual_Persona.pdf" />
+    <Content Include="Reports\pdf\Recibido de Condiciones Generales.pdf" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

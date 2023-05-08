@@ -481,8 +481,18 @@
 1.6.27  29/03/2023 Bayer. Al expirar la firma, se da la posibilidad de declinar o volver a enviar al revisor.
                    Bayer. Borrado físico de solicitud para revisor.
                    MapfreMas. Compliance. Ajustes para el caso de titulares jurídicos.
-1.6.28  28/04/203  Aliados. Compliance. Mejoras Terceros. Ayuda en las direcciones. Manejo Cedulas Juridicas.
+1.6.28  28/04/2023 Aliados. Compliance. Mejoras Terceros. Ayuda en las direcciones. Manejo Cedulas Juridicas.
 1.6.29  28/04/2023 Aliados. Formularios KYC, Solicitud y envio a Snap para Multirriesgo y Hogar.
 	               Aliados. Validaciones en Terceros en los emisores.
 				   Aliados. Mejoras en el estilo de la App.
 				   Aliados. Pagina y mantenimiento de Inicio por Tenant.
+1.6.30  07/05/2023 Trazabilidad. Todos los casos que tiene acceso el usuario, visualiza la etapas realizadas y quien las hizo (4004)
+                   Monge. Datos de tercero, porcentaje de participación para beneficiarios y otros.
+                   Evicertia. Ajuste para identificar documento firmado, aplicado en desarrollo y rama de producción.
+                   Reportes. Cambio de imagen de firma en los reportes.
+                   Trazabilidad. Cambio en plantilla de correo para agregar los campos tomador y correduria.
+                   Trazabilidad. Se requiere aumentar la cantidad de “Campos personalizados” a 10 en total.
+                   Trazabilidad. Se requiere poder indicar si los campos personalizables son obligatorios o no.
+                   Trazabilidad. Se necesita que la herramienta permita colocar adjuntos desde la apertura de un caso.
+
+
