@@ -1715,6 +1715,15 @@
     <Content Include="Reports\pdf\MultiriesgoSolicitud_Individual_Juridico.pdf" />
     <Content Include="Reports\pdf\MultiriesgoSolicitud_Individual_Persona.pdf" />
     <Content Include="Reports\pdf\Recibido de Condiciones Generales.pdf" />
+    <Content Include="Views\Cases\CasesAliados.cshtml" />
+    <Content Include="Views\Cases\Seguimiento_Al.cshtml" />
+    <Content Include="Views\Clientes\CompraSegurosC.cshtml" />
+    <Content Include="Views\Clientes\CompraSegurosE.cshtml" />
+    <Content Include="Views\Clientes\Inicio.cshtml" />
+    <Content Include="Views\Cotizacion\MapfreMasPlus.cshtml" />
+    <Content Include="Views\Emision\MapfreMasPlus.cshtml" />
+    <Content Include="Views\General\ColorTenant.cshtml" />
+    <Content Include="Views\General\MantenimientoInicio.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
