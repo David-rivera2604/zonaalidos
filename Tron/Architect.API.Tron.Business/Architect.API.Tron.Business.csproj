@@ -66,6 +66,7 @@
     <Compile Include="Cotizacion\API.cs" />
     <Compile Include="Cotizacion\APIConvertTo.cs" />
     <Compile Include="Cotizacion\Generico.cs" />
+    <Compile Include="Cotizacion\MapfreMasPlus.cs" />
     <Compile Include="Cotizacion\SaldoDeudorConvert.cs" />
     <Compile Include="Cotizacion\MapfreMasConvertTo.cs" />
     <Compile Include="Cotizacion\MapfreMasConvertFrom.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Cotizacion\Viajero.cs" />
     <Compile Include="Cotizacion\ViajeroConvert.cs" />
     <Compile Include="Emision\ComplianceSetup.cs" />
+    <Compile Include="Emision\MapfreMasPlus.cs" />
     <Compile Include="Emision\MultirriesgoConvertFrom.cs" />
     <Compile Include="Emision\MapfreMasConvertFrom.cs" />
     <Compile Include="Emision\MultirriesgoConvertTo.cs" />

@@ -28,13 +28,16 @@ namespace Aliados.Monge.Domain.Poliza.Emision
         /// Identificación.
         /// </summary>
         [Required()] public string numeroDocumentacion { get; set; }
+        /// <summary>
+        /// Número de documentación tributaria.
+        /// </summary>
         public string DocumentacionTributaria { get; set; }
         /// <summary>
         /// Nombre.
         /// </summary>
         [Required()] public string nombre { get; set; }
         /// <summary>
-        /// Pimer apellido.
+        /// Primer apellido.
         /// </summary>
         [Required()] public string apellido1 { get; set; }
         /// <summary>
@@ -74,7 +77,7 @@ namespace Aliados.Monge.Domain.Poliza.Emision
         /// </summary>
         public DateTime vencimientodecesion { get; set; }
         /// <summary>
-        /// Porcentaje acredor.
+        /// Porcentaje acreedor.
         /// </summary>
         public int porcentajeacredor { get; set; }
         /// <summary>

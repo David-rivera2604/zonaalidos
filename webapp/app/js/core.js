@@ -397,7 +397,8 @@ app.core = (function () {
                             selectedOptions.append($('<option />').val(this['Code']).text(this['Description']));
                         });
                         if (selectedOptions.data("autoselect") === true) {
-                            selectedOptions.val($('select#' + 'ctrl' + ' option:first').val());
+                            selectedOptions.val($('select#' + ctrlName[index] + ' option:first').val());
+                            selectedOptions.trigger('change');
                         } else {
                             selectedOptions.val(-1);
                         }

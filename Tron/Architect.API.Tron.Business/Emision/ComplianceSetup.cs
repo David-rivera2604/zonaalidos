@@ -192,7 +192,7 @@ namespace Architect.API.Tron.Business.Emision
                     //faltaban
                     tipoPrima = "A",
                     tipoPoliza= "C",
-                    tipoProducto = 302,
+                    tipoProducto = quoteInfo.cod_ramo,
                     montoAsegurado =jsonvalues.TokenDoubleValue("montovaloraseguradoPer")
                 }
             };
@@ -417,7 +417,7 @@ namespace Architect.API.Tron.Business.Emision
                     //faltaban
                     tipoPrima = "A",
                     tipoPoliza= "C",
-                    tipoProducto = 302,
+                    tipoProducto = quoteInfo.cod_ramo,
                     montoAsegurado =jsonvalues.TokenDoubleValue("montovaloraseguradoJur")
 
 

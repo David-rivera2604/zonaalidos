@@ -198,13 +198,13 @@ namespace Architect.API.Tron.Controllers
         /// </summary>
         [HttpGet]
         [Route("MapfreMasSetup")]
-        public async Task<IHttpActionResult> MapfreMasSetup()
+        public async Task<IHttpActionResult> MapfreMasSetup(string mode = "")
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Architect.API.Tron.Contracts.Cotizacion.MapfreMas result = null;
             await Task.Run(() =>
             {
-                result = Architect.API.Tron.Business.Cotizacion.MapfreMas.Setup(tokenInfo);
+                result = Architect.API.Tron.Business.Cotizacion.MapfreMas.Setup(mode , tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -218,13 +218,13 @@ namespace Architect.API.Tron.Controllers
         /// </summary>
         [HttpGet]
         [Route("MapfreMasSettings")]
-        public async Task<IHttpActionResult> MapfreMasSettings(int cod_ramo, int cod_mon, int edad, string tipo_prod, int cod_marca, int num_contrato, int num_subcontrato)
+        public async Task<IHttpActionResult> MapfreMasSettings(int cod_ramo, int cod_mon, int cod_marca, int cod_modelo, int cod_sub_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int num_contrato, int num_subcontrato, string num_poliza_grupo, string tipo_prod)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Cotizacion.MapfreMasSettings result = null;
             await Task.Run(() =>
             {
-                result = Architect.API.Tron.Business.Cotizacion.MapfreMas.Settings(cod_ramo, cod_mon, edad, tipo_prod, cod_marca, num_contrato, num_subcontrato, tokenInfo);
+                result = Architect.API.Tron.Business.Cotizacion.MapfreMas.Settings(cod_ramo, cod_mon, cod_marca, cod_modelo, cod_sub_modelo, anio_sub_modelo, cod_tip_vehi, cod_uso_vehi, mca_sexo, cod_zona_circul, edad, cod_plan_auto, num_contrato, num_subcontrato, num_poliza_grupo, tipo_prod, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -233,29 +233,15 @@ namespace Architect.API.Tron.Controllers
         /// <summary>
         /// Recupera configuración de coberturas por defecto
         /// </summary>
-        /// <param name="cod_mon"></param>
-        /// <param name="cod_marca"></param>
-        /// <param name="cod_modelo"></param>
-        /// <param name="anio_sub_modelo"></param>
-        /// <param name="cod_tip_vehi"></param>
-        /// <param name="cod_uso_vehi"></param>
-        /// <param name="mca_sexo"></param>
-        /// <param name="cod_zona_circul"></param>
-        /// <param name="edad"></param>
-        /// <param name="cod_plan_auto"></param>
-        /// <param name="num_contrato"></param>
-        /// <param name="num_subcontrato"></param>
-        /// <param name="num_poliza_grupo"></param>
-        /// <returns></returns>
         [HttpGet]
         [Route("MapfreMasCoverages")]
-        public async Task<IHttpActionResult> MapfreMasCoverages(int cod_mon, int cod_marca, int cod_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int num_contrato, int num_subcontrato, string num_poliza_grupo)
+        public async Task<IHttpActionResult> MapfreMasCoverages(int cod_ramo, int cod_mon, int cod_marca, int cod_modelo, int cod_sub_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int num_contrato, int num_subcontrato, string num_poliza_grupo)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             List<Tron.Contracts.Comun.Cobertura> result = null;
             await Task.Run(() =>
             {
-                result = Architect.API.Tron.Business.Cotizacion.MapfreMas.CoverageByDefault(cod_mon, cod_marca, cod_modelo, anio_sub_modelo, cod_tip_vehi, cod_uso_vehi, mca_sexo, cod_zona_circul, edad, cod_plan_auto, num_contrato, num_subcontrato, num_poliza_grupo, tokenInfo);
+                result = Architect.API.Tron.Business.Cotizacion.MapfreMas.CoverageByDefault(cod_ramo, cod_mon, cod_marca, cod_modelo, cod_sub_modelo, anio_sub_modelo, cod_tip_vehi, cod_uso_vehi, mca_sexo, cod_zona_circul, edad, cod_plan_auto, num_contrato, num_subcontrato, num_poliza_grupo, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -398,6 +384,81 @@ namespace Architect.API.Tron.Controllers
             await Task.Run(() =>
             {
                 result = Architect.API.Tron.Business.Cotizacion.SaldoDeudor.calcula_imc(estatura, peso, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        #endregion
+
+        #region MapfreMasPlus
+
+        /// <summary>
+        /// Devuelve la estructura de datos con los valores por defecto para una cotización de tipo Mapfre Más
+        /// </summary>
+        [HttpGet]
+        [Route("MapfreMasPlusSetup")]
+        public async Task<IHttpActionResult> MapfreMasPlusSetup(string mode = "")
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Architect.API.Tron.Contracts.Cotizacion.MapfreMas result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Cotizacion.MapfreMasPlus.Setup(mode, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        //'http://localhost:8082/aliados/api/v1/Quote/MapfreMasPlusSettings?cod_ramo=302&cod_mon=2&edad=18&plan=basico&cod_marca=255&_=1621315088177'.
+        //Mhttp://localhost:8082/aliados/api/v1/Quote/MapfreMasPlusSettings?cod_ramo=302&cod_mon=1&edad=18&tipo_prod=basico&cod_marca=255&contrato=0&num_subcontrato=0&_=1621480590098
+
+        /// <summary>
+        /// Recupera lista de valores para sumas aseguradas de coberturas o valores deducibles según el rol del usuario
+        /// </summary>
+        [HttpGet]
+        [Route("MapfreMasPlusSettings")]
+        public async Task<IHttpActionResult> MapfreMasPlusSettings(int cod_ramo, int cod_mon, int cod_marca, int cod_modelo, int cod_sub_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int num_contrato, int num_subcontrato, string num_poliza_grupo, string tipo_prod)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Tron.Contracts.Cotizacion.MapfreMasSettings result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Cotizacion.MapfreMasPlus.Settings(cod_ramo, cod_mon, cod_marca, cod_modelo, cod_sub_modelo, anio_sub_modelo, cod_tip_vehi, cod_uso_vehi, mca_sexo, cod_zona_circul, edad, cod_plan_auto, num_contrato, num_subcontrato, num_poliza_grupo, tipo_prod, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Recupera configuración de coberturas por defecto
+        /// </summary>
+        [HttpGet]
+        [Route("MapfreMasPlusCoverages")]
+        public async Task<IHttpActionResult> MapfreMasPlusCoverages(int cod_ramo, int cod_mon, int cod_marca, int cod_modelo, int cod_sub_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int num_contrato, int num_subcontrato, string num_poliza_grupo)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            List<Tron.Contracts.Comun.Cobertura> result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Cotizacion.MapfreMasPlus.CoverageByDefault(cod_ramo, cod_mon, cod_marca, cod_modelo, cod_sub_modelo, anio_sub_modelo, cod_tip_vehi, cod_uso_vehi, mca_sexo, cod_zona_circul, edad, cod_plan_auto, num_contrato, num_subcontrato, num_poliza_grupo, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Realiza la validación de datos y cálculo necesarios para obtener una cotización o presupuesto de un producto de tipo Mapfre Más
+        /// </summary>
+        [HttpPost]
+        [Route("MapfreMasPlusQuote")]
+        public async Task<IHttpActionResult> MapfreMasPlusQuote([FromBody] Tron.Contracts.Cotizacion.MapfreMas quoteInfo)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Tron.Contracts.Cotizacion.MapfreMas result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Cotizacion.MapfreMasPlus.Quote(quoteInfo, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);

@@ -347,7 +347,13 @@ app.ui = (function () {
             if (row.UpdateUserName != undefined) {
                 userName = row.UpdateUserName;
             }
-            return '<span title="' + moment(value).format('DD/MM/YYYY hh:mm:ssa') + '">' + userName + ' <small class="text-muted"> ' + moment(value).from() + '</small></span>';
+            else if (row.UPDATEUSERNAME != undefined) {
+                userName = row.UPDATEUSERNAME;
+            }
+            if (value === null || value === '0001-01-01T00:00:00')
+                return '';
+            else
+                return '<span title="' + moment(value).format('DD/MM/YYYY hh:mm:ssa') + '">' + userName + ' <small class="text-muted"> ' + moment(value).from() + '</small></span>';
         },
         EditLinkFormatter: function (value, row, index, field) {
             return '<a class="edit" href="javascript:void(0)" title="Al hacer click permite la edición de la fila">' + value + '</a>';

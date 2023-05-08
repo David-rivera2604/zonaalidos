@@ -12,7 +12,6 @@ using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web.Http.OData;
 
 namespace Architect.API.Core.Controllers
 {
@@ -31,7 +30,6 @@ namespace Architect.API.Core.Controllers
         /// <param name="parentId">clave que identifica el agrupado de la lista dependiente.</param>
         /// <param name="url"></param>
         /// <returns>Lista de valores disponibles</returns>
-        [EnableQuery]
         [HttpGet]
         [Route("LkpChild")]
         public IQueryable<Contracts.General.LookupValue> LkpChild([FromUri] string key, [FromUri] int parentId, [FromUri] string url = "")
@@ -48,7 +46,6 @@ namespace Architect.API.Core.Controllers
         /// <param name="keys">Lista de claves de valores posibles separadas por coma.</param>
         /// <param name="url"></param>
         /// <returns>Múltiples listas de valores disponibles</returns>
-        [EnableQuery]
         [HttpGet]
         [Route("Lkps")]
         [Authorize]
@@ -115,15 +112,7 @@ namespace Architect.API.Core.Controllers
             Contracts.Security.Token tokenInfo = Security.Token.Info();
             await Task.Run(() =>
             {
-                item.CompanyId = tokenInfo.CompanyId;
-                item.UpdateUserCode = tokenInfo.UserId;
-                if (item.FileContent.IsNotEmpty()) {
-                    item.FileContent = Path.Combine(HostingEnvironment.MapPath(ConfigurationManager.AppSettings["Files.Path"]), item.FileContent);
-                }
-
-
-                item = Architect.API.Core.Business.General.Attachment.SyncUp(item);
-
+                item = Architect.API.Core.Business.General.Attachment.SyncUpBase(item, tokenInfo.CompanyId, tokenInfo.UserId);
                 if (item.Id != 0)
                 {
                     result = Created(string.Format("{0}/{1}", Request.RequestUri.AbsoluteUri.Substring(0, Request.RequestUri.AbsoluteUri.LastIndexOf("/")), item.Id), new { Id = item.Id, UpdateDate = item.UpdateDate });

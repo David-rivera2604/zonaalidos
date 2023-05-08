@@ -114,6 +114,32 @@ app.GeneralCase = (function () {
                     $('#Reference5').html(data.Reference5 === '' ? '...' : data.Reference5);
                     $('#Reference5').parent().removeClass('d-none');
                 }
+                if (dataFlow.ReferenceCaption6 != '') {
+                    $('#ReferenceCaption6').html(dataFlow.ReferenceCaption6);
+                    $('#Reference6').html(data.Reference6 === '' ? '...' : data.Reference6);
+                    $('#Reference6').parent().removeClass('d-none');
+                }
+                if (dataFlow.ReferenceCaption7 != '') {
+                    $('#ReferenceCaption7').html(dataFlow.ReferenceCaption7);
+                    $('#Reference7').html(data.Reference7 === '' ? '...' : data.Reference7);
+                    $('#Reference7').parent().removeClass('d-none');
+                }
+                if (dataFlow.ReferenceCaption8 != '') {
+                    $('#ReferenceCaption8').html(dataFlow.ReferenceCaption8);
+                    $('#Reference8').html(data.Reference8 === '' ? '...' : data.Reference8);
+                    $('#Reference8').parent().removeClass('d-none');
+                }
+                if (dataFlow.ReferenceCaption9 != '') {
+                    $('#ReferenceCaption9').html(dataFlow.ReferenceCaption9);
+                    $('#Reference9').html(data.Reference9 === '' ? '...' : data.Reference9);
+                    $('#Reference9').parent().removeClass('d-none');
+                }
+                if (dataFlow.ReferenceCaption10 != '') {
+                    $('#ReferenceCaption10').html(dataFlow.ReferenceCaption10);
+                    $('#Reference10').html(data.Reference10 === '' ? '...' : data.Reference10);
+                    $('#Reference10').parent().removeClass('d-none');
+                }
+
 
                 NotasDraw(data.Id);
                 AttachmentDraw(data.Id);
@@ -427,7 +453,7 @@ app.GeneralCase = (function () {
                     title: 'Archivo',
                     halign: 'left',
                     formatter: function (value, row, index, field) {
-                        return `<a href=# onclick="app.ui.Download('${row.FileName}', ${row.Id}); return false;" title="Descargar adjunto">${value}</a>`;
+                        return `<a href=# onclick="app.ui.Download('${row.FileName}', ${row.Id}); return false;" title="Descargar adjunto"><i class="fa fa-paperclip"></i> ${value}</a>`;
                     }
                 }, {
                     field: 'FileSize',
@@ -510,8 +536,8 @@ app.GeneralCase = (function () {
                     $('#AttachmentFileName').val(fileList[0].FileName);
                     $('#AttachmentStored').val(fileList[0].StoredFileName);
                     $('#AttachmentFileSize').val(fileList[0].Size);
-                    $('#AttachmentDescripcion').val(app.ui.StringCapitalizeFormatter(fileList[0].FileName.substring(0, fileList[0].FileName.indexOf('.'))));
-                    $('#AttachmentDescripcion').select().focus()
+                    $('#AttachmentDescription').val(app.ui.StringCapitalizeFormatter(fileList[0].FileName.substring(0, fileList[0].FileName.indexOf('.'))));
+                    $('#AttachmentDescription').select().focus()
                 });
         });
 

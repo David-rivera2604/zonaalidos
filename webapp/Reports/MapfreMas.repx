@@ -33,7 +33,7 @@
         </Item1>
       </Controls>
     </Item1>
-    <Item2 Ref="16" ControlType="DetailBand" Name="Detail" HeightF="577.49054">
+    <Item2 Ref="16" ControlType="DetailBand" Name="Detail" Expanded="false" HeightF="577.49054">
       <Controls>
         <Item1 Ref="17" ControlType="XRTable" Name="table5" SizeF="699.9999,128" LocationFloat="0,445.700378" Padding="2,2,0,0,96">
           <Rows>
@@ -496,7 +496,7 @@
         </Item1>
       </Controls>
     </Item3>
-    <Item4 Ref="252" ControlType="DetailReportBand" Name="coberturas" Level="0" FilterString="[seleccionado] = True" DataMember="coberturas" DataSource="#Ref-0">
+    <Item4 Ref="252" ControlType="DetailReportBand" Name="coberturas" Level="0" FilterString="[seleccionado] = True" DataMember="coberturas" DataSource="#Ref-0" Expanded="false">
       <Bands>
         <Item1 Ref="253" ControlType="DetailBand" Name="Detail1" HeightF="20.5357227">
           <Controls>
@@ -578,7 +578,7 @@
         </Item3>
       </Bands>
     </Item4>
-    <Item5 Ref="288" ControlType="DetailReportBand" Name="plandepago" Level="1" DataMember="plandepago" DataSource="#Ref-0" PageBreak="BeforeBand">
+    <Item5 Ref="288" ControlType="DetailReportBand" Name="plandepago" Level="1" DataMember="plandepago" DataSource="#Ref-0" Expanded="false" PageBreak="BeforeBand">
       <Bands>
         <Item1 Ref="289" ControlType="DetailBand" Name="Detail2" HeightF="30.2251186">
           <Controls>
