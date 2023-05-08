@@ -23,14 +23,14 @@ app.CotizacionMapfreMasPlus = (function () {
         workMode = '&mode=draft';
 
         $('#coberturasTbl').bootstrapTable('showLoading');
-        app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasSetup?mode=${mode}`)
+        app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasPlusSetup?mode=${mode}`)
             .done(function (data, textStatus, jqXHR) {
                 Init_Lookups(data);
             });
     }
 
     function Quote() {
-        app.core.Post(app.setting.apipath + 'v1/Quote/MapfreMasQuote',
+        app.core.Post(app.setting.apipath + 'v1/Quote/MapfreMasPlusQuote',
             JSON.stringify(MapInputToObject()),
             function (data) {
                 quoteData = data;
@@ -472,7 +472,7 @@ app.CotizacionMapfreMasPlus = (function () {
 
         $('#emitir').click(function () {
             event.preventDefault();
-            window.location.replace(app.setting.basepath + 'emision/mapfremas?presupuesto=' + quoteData.presupuesto + workMode);
+            window.location.replace(app.setting.basepath + 'emision/mapfremasplus?presupuesto=' + quoteData.presupuesto + workMode);
         });
 
         $('#IMP_VR').change(function () {
@@ -1069,7 +1069,7 @@ app.CotizacionMapfreMasPlus = (function () {
     function SettingReload(callback) {
         var param = SettingParameter();
 
-        app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasSettings?cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&cod_sub_modelo=${param.cod_sub_modelo}&anio_sub_modelo=${param.anio_sub_modelo}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.cod_plan_auto}&num_contrato=${param.num_contrato}&num_subcontrato=${param.num_subcontrato}&num_poliza_grupo=${param.num_poliza_grupo}&tipo_prod=${param.tipo_prod}`)
+        app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasPlusSettings?cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&cod_sub_modelo=${param.cod_sub_modelo}&anio_sub_modelo=${param.anio_sub_modelo}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.cod_plan_auto}&num_contrato=${param.num_contrato}&num_subcontrato=${param.num_subcontrato}&num_poliza_grupo=${param.num_poliza_grupo}&tipo_prod=${param.tipo_prod}`)
             .done(function (settingData) {
                 fec_vcto_poliza_grupo = settingData.fec_vcto_poliza_grupo;
                 app.ui.SetDateValue('#fec_vcto_poliza', app.ui.GetDateValue('#fec_efec_poliza'))
@@ -1114,7 +1114,7 @@ app.CotizacionMapfreMasPlus = (function () {
         //  int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto
         var param = SettingParameter();
         $('#coberturasTbl').bootstrapTable('showLoading');
-        app.core.Get(app.setting.apipath + 'v1/Quote/MapfreMasCoverages?' + `cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&anio_sub_modelo=${param.anio_sub_modelo}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.cod_plan_auto}&num_contrato=${param.num_contrato}&num_subcontrato=${param.num_subcontrato}&num_poliza_grupo=${param.num_poliza_grupo}`)
+        app.core.Get(app.setting.apipath + 'v1/Quote/MapfreMasPlusCoverages?' + `cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&anio_sub_modelo=${param.anio_sub_modelo}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.cod_plan_auto}&num_contrato=${param.num_contrato}&num_subcontrato=${param.num_subcontrato}&num_poliza_grupo=${param.num_poliza_grupo}`)
             .done(function (data) {
                 if (data != null) {
                     $('#coberturasTbl').bootstrapTable('load', data);

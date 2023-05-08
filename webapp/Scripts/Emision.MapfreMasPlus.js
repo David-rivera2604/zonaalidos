@@ -16,7 +16,7 @@ app.EmisionMapfreMasPlus = (function () {
             workMode = app.core.URLStringValue('mode');
 
             $('#coberturasTbl').bootstrapTable('showLoading');
-            app.core.Get(app.setting.apipath + 'v1/Issue/MapfreMasSetup/' + _id + '?mode=' + workMode)
+            app.core.Get(app.setting.apipath + 'v1/Issue/MapfreMasPlusSetup/' + _id + '?mode=' + workMode)
                 .done(function (data, textStatus, jqXHR) {
                     workMode = data.Modo;
                     if (localStorage.getItem('Roles').includes('Purdy')) {
@@ -117,7 +117,7 @@ app.EmisionMapfreMasPlus = (function () {
     }
 
     function Quote() {
-        app.core.Post(app.setting.apipath + 'v1/Issue/MapfreMas',
+        app.core.Post(app.setting.apipath + 'v1/Issue/MapfreMasPlus',
             JSON.stringify(MapInputToObject()),
             function (data) {
                 setupData = data;
@@ -197,7 +197,7 @@ app.EmisionMapfreMasPlus = (function () {
             num_poliza_grupo: setupData.polizagrupo
         };
 
-        app.core.Get(app.setting.apipath + 'v1/Quote/MapfreMasSettings?' + `cod_ramo=${data.cod_ramo}&cod_mon=${data.cod_mon}&edad=${data.edad}&tipo_prod=${data.tipo_prod}&cod_marca=${data.cod_marca}&num_contrato=${data.num_contrato}&num_subcontrato=${data.num_subcontrato}&num_poliza_grupo=${data.num_poliza_grupo}`, null,
+        app.core.Get(app.setting.apipath + 'v1/Quote/MapfreMasPlusSettings?' + `cod_ramo=${data.cod_ramo}&cod_mon=${data.cod_mon}&edad=${data.edad}&tipo_prod=${data.tipo_prod}&cod_marca=${data.cod_marca}&num_contrato=${data.num_contrato}&num_subcontrato=${data.num_subcontrato}&num_poliza_grupo=${data.num_poliza_grupo}`, null,
             function (settingData) {
                 fec_vcto_poliza_grupo = settingData.fec_vcto_poliza_grupo;
                 if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
@@ -475,7 +475,7 @@ app.EmisionMapfreMasPlus = (function () {
 
         $('#Fuente_Tomador').change(function () {
             let value = $('#Fuente_Tomador').val();
-            app.core.Post(app.setting.apipath + 'v1/Issue/MapfreMas/Terceros/' + value,
+            app.core.Post(app.setting.apipath + 'v1/Issue/MapfreMasPlus/Terceros/' + value,
                 JSON.stringify($('#tercerosTbl').bootstrapTable('getData')),
                 function (data) {
                     setupData.terceros = data;
@@ -508,7 +508,7 @@ app.EmisionMapfreMasPlus = (function () {
             var others = OtherValidations();
             if (app.ui.IsValid('#VisualizationsEdtForm', false) && others === 0) {
                 app.ui.ButtonDoing('#guardarenviar');
-                app.core.Post(app.setting.apipath + 'v1/Issue/MapfreMas',
+                app.core.Post(app.setting.apipath + 'v1/IssueMapfreMasPlus',
                     JSON.stringify(MapInputToObject()),
                     function (data) {
 
