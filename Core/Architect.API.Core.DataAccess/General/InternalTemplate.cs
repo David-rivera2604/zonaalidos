@@ -32,13 +32,16 @@ namespace Architect.API.Core.DataAccess.General
                         .Query(null, "Research", new Action<System.Data.IDataReader>((reader) =>
                         {
 
-                            result = new Contracts.General.InternalTemplate()
+                            if (result.Subject == "Plantilla no encontrada")
                             {
-                                Subject = reader.StringValue("Subject"),
-                                Body = reader.StringValue("Body"),
-                                EmailTo = reader.StringValue("EmailTo"),
-                                MasterTemplateId = reader.IntegerValue("MasterTemplateId")
-                            };
+                                result = new Contracts.General.InternalTemplate()
+                                {
+                                    Subject = reader.StringValue("Subject"),
+                                    Body = reader.StringValue("Body"),
+                                    EmailTo = reader.StringValue("EmailTo"),
+                                    MasterTemplateId = reader.IntegerValue("MasterTemplateId")
+                                };
+                            }
 
                         }), false);
 
@@ -61,14 +64,16 @@ namespace Architect.API.Core.DataAccess.General
                         .Cache(ConfigurationManager.AppSettings["Working.Mode"] != "Development")
                         .Query(null, "Research", new Action<System.Data.IDataReader>((reader) =>
                         {
-                            result = new Contracts.General.InternalTemplate()
+                            if (result.Subject == "Plantilla no encontrada")
                             {
-                                Subject = reader.StringValue("Subject"),
-                                Body = reader.StringValue("Body"),
-                                EmailTo = reader.StringValue("EmailTo"),
-                                MasterTemplateId = reader.IntegerValue("MasterTemplateId")
-                            };
-
+                                result = new Contracts.General.InternalTemplate()
+                                {
+                                    Subject = reader.StringValue("Subject"),
+                                    Body = reader.StringValue("Body"),
+                                    EmailTo = reader.StringValue("EmailTo"),
+                                    MasterTemplateId = reader.IntegerValue("MasterTemplateId")
+                                };
+                            }
                         }), false);
 
             return result;
