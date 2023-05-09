@@ -97,7 +97,7 @@
     <Compile Include="Security\Tron.cs" />
     <Compile Include="Security\UserRoleMember.cs" />
     <Compile Include="General\WhiteList.cs" />
-	<Compile Include="_Generated\ColorKey.cs" />
+    <Compile Include="_Generated\ColorKey.cs" />
     <Compile Include="_Generated\CustomFields.cs" />
     <Compile Include="_Generated\DataSource.cs" />
     <Compile Include="_Generated\Labels.cs" />
@@ -133,7 +133,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="_Generated\Attachments.cs.vsspell" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Kernel\Architect.DataFactory\Architect.DataFactory.csproj">
