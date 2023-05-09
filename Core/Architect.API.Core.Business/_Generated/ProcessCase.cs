@@ -53,6 +53,17 @@ namespace Architect.API.Core.Business.General
 
                 if (Architect.API.Core.DataAccess.General.ProcessCase.Create(result) > 0)
                 {
+
+                    if (result.Attachments.IsNotEmpty() && result.Attachments.Count > 0)
+                    {
+                        foreach (Contracts.General.Attachments attachment in result.Attachments)
+                        {
+                            attachment.EntityType = 1304;
+                            attachment.EntityId = result.Id;
+                            Architect.API.Core.Business.General.Attachment.SyncUpBase(attachment, companyId, userId);
+                        }
+                    }
+
                     MapLookups(companyId, result);
                     ChangeSet.Create(1304, result.Id, companyId, "Creación", string.Format("Se creó el processcase '{0}'", result.Title), userId, result);
 

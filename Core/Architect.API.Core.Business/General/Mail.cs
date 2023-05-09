@@ -1,5 +1,6 @@
 ﻿using Architect.Utilities.Extensions;
 using SmartFormat;
+using SmartFormat.Core.Settings;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -10,7 +11,6 @@ using System.Net.Mail;
 using System.Net.Mime;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
 
 namespace Architect.API.Core.Business.General
 {
@@ -68,7 +68,8 @@ namespace Architect.API.Core.Business.General
                 Data = entity,
                 Company = tenantInfo,
                 CurrentUser = currentUserInfo,
-                Owner = ownerUserInfo
+                Owner = ownerUserInfo,
+                app = new { url = ConfigurationManager.AppSettings["Aliados.URL.Base"] }
             };
 
             if (templateKey.IsNotEmpty() && subject.IsEmpty())
@@ -82,6 +83,7 @@ namespace Architect.API.Core.Business.General
                     tmpl.Body = tmplMaster.Body.Replace("{Content}", tmpl.Body);
                 }
                 subject = Smart.Format(CultureInfo.CreateSpecificCulture("es-CR"), tmpl.Subject, context);
+                Smart.Default.Settings.Parser.ErrorAction = ParseErrorAction.Ignore;
                 body = Smart.Format(CultureInfo.CreateSpecificCulture("es-CR"), tmpl.Body, context);
 
                 switch (tmpl.EmailTo)

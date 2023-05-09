@@ -1,6 +1,7 @@
 ﻿var app = app || {};
 
 app.GeneralNewCase = (function () {
+    let flowSpec = null;
 
     function Init_Controls() {
         new AutoNumeric('#SubStatus', {
@@ -37,11 +38,17 @@ app.GeneralNewCase = (function () {
             $('#SLA').val(sla);
             app.core.Get(app.setting.apipath + 'v1/ProcessSpecFlow/' + flowId)
                 .done(function (data, textStatus, jqXHR) {
-                    ReferenceHandler(data.ReferenceCaption1, data.ReferenceLookupList1, 'Reference1');
-                    ReferenceHandler(data.ReferenceCaption2, data.ReferenceLookupList2, 'Reference2');
-                    ReferenceHandler(data.ReferenceCaption3, data.ReferenceLookupList3, 'Reference3');
-                    ReferenceHandler(data.ReferenceCaption4, data.ReferenceLookupList4, 'Reference4');
-                    ReferenceHandler(data.ReferenceCaption5, data.ReferenceLookupList5, 'Reference5');
+                    flowSpec = data;
+                    ReferenceHandler(data.ReferenceCaption1, data.ReferenceType1, data.ReferenceRequired1, data.ReferenceLookupList1, 'Reference1');
+                    ReferenceHandler(data.ReferenceCaption2, data.ReferenceType2, data.ReferenceRequired2, data.ReferenceLookupList2, 'Reference2');
+                    ReferenceHandler(data.ReferenceCaption3, data.ReferenceType3, data.ReferenceRequired3, data.ReferenceLookupList3, 'Reference3');
+                    ReferenceHandler(data.ReferenceCaption4, data.ReferenceType4, data.ReferenceRequired4, data.ReferenceLookupList4, 'Reference4');
+                    ReferenceHandler(data.ReferenceCaption5, data.ReferenceType5, data.ReferenceRequired5, data.ReferenceLookupList5, 'Reference5');
+                    ReferenceHandler(data.ReferenceCaption6, data.ReferenceType6, data.ReferenceRequired6, data.ReferenceLookupList6, 'Reference6');
+                    ReferenceHandler(data.ReferenceCaption7, data.ReferenceType7, data.ReferenceRequired7, data.ReferenceLookupList7, 'Reference7');
+                    ReferenceHandler(data.ReferenceCaption8, data.ReferenceType8, data.ReferenceRequired8, data.ReferenceLookupList8, 'Reference8');
+                    ReferenceHandler(data.ReferenceCaption9, data.ReferenceType9, data.ReferenceRequired9, data.ReferenceLookupList9, 'Reference9');
+                    ReferenceHandler(data.ReferenceCaption10, data.ReferenceType10, data.ReferenceRequired10, data.ReferenceLookupList10, 'Reference10');
                 });
         });
 
@@ -63,9 +70,13 @@ app.GeneralNewCase = (function () {
 
     }
 
-    function ReferenceHandler(caption, valueList, id) {
+    function ReferenceHandler(caption, type, required, valueList, id) {
         if (caption != '') {
-            $("label[for='" + id + "']").text(caption);
+            if (required)
+                $("label[for='" + id + "']").html(caption + "<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>");
+            else
+                $("label[for='" + id + "']").html(caption);
+
             if (valueList == '')
                 $('#' + id).removeClass('d-none');
             else {
@@ -75,10 +86,8 @@ app.GeneralNewCase = (function () {
 
                 selectedOptions.append($('<option selected />').val('').text(''));
                 $.each(valueList.split(';'), function () {
-                    selectedOptions.append($('<option />').val(this).text(this));                    
+                    selectedOptions.append($('<option />').val(this).text(this));
                 });
-
-                
             }
             $('#' + id).parent().parent().removeClass('d-none');
         } else {
@@ -100,7 +109,7 @@ app.GeneralNewCase = (function () {
     }
 
     function Init_Lookups() {
-        app.core.Lookups(['CasePriority.Priority', 'ProcessStatus.Status', 'ProcessByRolDetail.FlowId' , 'ProcessByRol.FlowId', 'Users.UserId.', 'SLA.SLA.'],
+        app.core.Lookups(['CasePriority.Priority', 'ProcessStatus.Status', 'ProcessByRolDetail.FlowId', 'ProcessByRol.FlowId', 'Users.UserId.', 'SLA.SLA.'],
             function () {
                 app.GeneralNewCase.New();
             });
@@ -118,6 +127,11 @@ app.GeneralNewCase = (function () {
             Reference3: $('#Reference3').val() + $('#Reference3List').val(),
             Reference4: $('#Reference4').val() + $('#Reference4List').val(),
             Reference5: $('#Reference5').val() + $('#Reference5List').val(),
+            Reference6: $('#Reference6').val() + $('#Reference6List').val(),
+            Reference7: $('#Reference7').val() + $('#Reference7List').val(),
+            Reference8: $('#Reference8').val() + $('#Reference8List').val(),
+            Reference9: $('#Reference9').val() + $('#Reference9List').val(),
+            Reference10: $('#Reference10').val() + $('#Reference10List').val(),
             ContactMainName: $('#ContactMainName').val(),
             ContactMainEmail: $('#ContactMainEmail').val(),
             Status: $('#Status').val(),
@@ -126,7 +140,8 @@ app.GeneralNewCase = (function () {
             SubLabel: $('#SubLabel').val(),
             FlowId: $('#FlowId').val(),
             UserId: $('#UserId').val(),
-            SLA: $('#SLA').val()
+            SLA: $('#SLA').val(),
+            Attachments: app.Attachments.Data()
         };
     }
 
@@ -141,6 +156,11 @@ app.GeneralNewCase = (function () {
         $('#Reference3').val(data.Reference3);
         $('#Reference4').val(data.Reference4);
         $('#Reference5').val(data.Reference5);
+        $('#Reference6').val(data.Reference6);
+        $('#Reference7').val(data.Reference7);
+        $('#Reference8').val(data.Reference8);
+        $('#Reference9').val(data.Reference9);
+        $('#Reference10').val(data.Reference10);
         $('#ContactMainName').val(data.ContactMainName);
         $('#ContactMainEmail').val(data.ContactMainEmail);
         $('#Status').val(data.Status);
@@ -154,6 +174,25 @@ app.GeneralNewCase = (function () {
 
     function Setup_Validations() {
         app.ui.DateValidators();
+        $.validator.addMethod("DynamicRequired",
+            function (value, element, params) {
+                let id = element.id.replace('List', '');
+                id = id.substring(id.length - 1, id.length);
+                if (id === '0')
+                    id = '10';
+                if (flowSpec['ReferenceRequired' + id] == true) {
+                    $('#' + element.id).rules('add', {
+                        messages: {
+                            DynamicRequired: `Debe indicar un valor para ${flowSpec['ReferenceCaption' + id]}`
+                        }
+                    });
+                    return (value != null && value != "");
+                }
+
+                else
+                    return true;
+            }
+        );
         $("#ProcessCaseEdtForm").validate({
             errorPlacement: function (error, element) {
                 var name = $(element).attr("name");
@@ -180,6 +219,66 @@ app.GeneralNewCase = (function () {
                 },
                 FlowId: {
                     required: true
+                },
+                Reference1: {
+                    DynamicRequired: true
+                },
+                Reference1List: {
+                    DynamicRequired: true
+                },
+                Reference2: {
+                    DynamicRequired: true
+                },
+                Reference2List: {
+                    DynamicRequired: true
+                },
+                Reference3: {
+                    DynamicRequired: true
+                },
+                Reference3List: {
+                    DynamicRequired: true
+                },
+                Reference4: {
+                    DynamicRequired: true
+                },
+                Reference4List: {
+                    DynamicRequired: true
+                },
+                Reference5: {
+                    DynamicRequired: true
+                },
+                Reference5List: {
+                    DynamicRequired: true
+                },
+                Reference6: {
+                    DynamicRequired: true
+                },
+                Reference6List: {
+                    DynamicRequired: true
+                },
+                Reference7: {
+                    DynamicRequired: true
+                },
+                Reference7List: {
+                    DynamicRequired: true
+                },
+                Reference8: {
+                    DynamicRequired: true
+                },
+                Reference8List: {
+                    DynamicRequired: true
+                },
+                Reference9: {
+                    DynamicRequired: true
+                },
+                Reference9List: {
+                    DynamicRequired: true
+                },
+                Reference10: {
+                    DynamicRequired: true
+                },
+                Reference10List: {
+                    DynamicRequired: true
                 }
             },
             messages: {
@@ -197,6 +296,66 @@ app.GeneralNewCase = (function () {
                 },
                 FlowId: {
                     required: 'Debe indicar el proceso'
+                },
+                Reference1: {
+                    DynamicRequired: 'Debe indicar un valor'
+                },
+                Reference1List: {
+                    DynamicRequired: 'Debe indicar un valor'
+                },
+                Reference2: {
+                    DynamicRequired: 'Debe indicar un valor'
+                },
+                Reference2List: {
+                    DynamicRequired: 'Debe indicar un valor'
+                },
+                Reference3: {
+                    DynamicRequired: 'Debe indicar un valor'
+                },
+                Reference3List: {
+                    DynamicRequired: 'Debe indicar un valor'
+                },
+                Reference4: {
+                    DynamicRequired: 'Debe indicar un valor'
+                },
+                Reference4List: {
+                    DynamicRequired: 'Debe indicar un valor'
+                },
+                Reference5: {
+                    DynamicRequired: 'Debe indicar un valor'
+                },
+                Reference5List: {
+                    DynamicRequired: 'Debe indicar un valor'
+                },
+                Reference6: {
+                    DynamicRequired: 'Debe indicar un valor'
+                },
+                Reference6List: {
+                    DynamicRequired: 'Debe indicar un valor'
+                },
+                Reference7: {
+                    DynamicRequired: 'Debe indicar un valor'
+                },
+                Reference7List: {
+                    DynamicRequired: 'Debe indicar un valor'
+                },
+                Reference8: {
+                    DynamicRequired: 'Debe indicar un valor'
+                },
+                Reference8List: {
+                    DynamicRequired: 'Debe indicar un valor'
+                },
+                Reference9: {
+                    DynamicRequired: 'Debe indicar un valor'
+                },
+                Reference9List: {
+                    DynamicRequired: 'Debe indicar un valor'
+                },
+                Reference10: {
+                    DynamicRequired: 'Debe indicar un valor'
+                },
+                Reference10List: {
+                    DynamicRequired: ''
                 }
             }
 
@@ -215,9 +374,10 @@ app.GeneralNewCase = (function () {
             Event_Controls();
             Setup_Validations();
 
+            app.Attachments.Init({ PostByEachRow: false });
         },
         New: function (row) {
-            let newRow = { Id: 0, Title: null, Description: null, Priority: 4, InstanceId: 0, Reference1: null, Reference2: null, Reference3: null, Reference4: null, Reference5: null, ContactMainName: null, ContactMainEmail: null, Status: 0, Label: null, SubStatus: 0, SubLabel: null, FlowId: null, UserId: null }
+            let newRow = { Id: 0, Title: null, Description: null, Priority: 4, InstanceId: 0, Reference1: null, Reference2: null, Reference3: null, Reference4: null, Reference5: null, Reference6: null, Reference7: null, Reference8: null, Reference9: null, Reference10: null, ContactMainName: null, ContactMainEmail: null, Status: 0, Label: null, SubStatus: 0, SubLabel: null, FlowId: null, UserId: null }
             if (row !== undefined) {
                 row.Id = 0;
                 newRow = row;

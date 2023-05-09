@@ -72,6 +72,11 @@ app.GeneralProcessSpecFlow = (function () {
                     sortable: true,
                     halign: 'center'
                 }, {
+                    field: 'RoleNames',
+                    title: 'Roles',
+                    sortable: true,
+                    halign: 'center'
+                }, {
                     field: 'UpdateDate',
                     title: 'Realizado por',
                     class: 'd-none d-sm-table-cell',
@@ -218,10 +223,11 @@ app.GeneralProcessSpecFlow = (function () {
             event.preventDefault();
         });
 
-        $('#ReferenceCaption1,#ReferenceCaption2,#ReferenceCaption3,#ReferenceCaption4,#ReferenceCaption5').change(function () {
-
+        $('#ReferenceCaption1,#ReferenceCaption2,#ReferenceCaption3,#ReferenceCaption4,#ReferenceCaption5,#ReferenceCaption6,#ReferenceCaption7,#ReferenceCaption8,#ReferenceCaption9,#ReferenceCaption10').change(function () {
             CustomFields();
-
+        });
+        $('#ReferenceType1,#ReferenceType2,#ReferenceType3,#ReferenceType4,#ReferenceType5,#ReferenceType6,#ReferenceType7,#ReferenceType8,#ReferenceType9,#ReferenceType10').change(function () {
+            CustomFields();
         });
 
         $('#fileUpload').on('change', function () {
@@ -290,27 +296,35 @@ app.GeneralProcessSpecFlow = (function () {
     }
 
     function CustomFields() {
-        if ($('#ReferenceCaption1').val() == '')
-            $('#ReferenceLookupList1').addClass('d-none');
-        else
-            $('#ReferenceLookupList1').removeClass('d-none');
-        if ($('#ReferenceCaption2').val() == '')
-            $('#ReferenceLookupList2').addClass('d-none');
-        else
-            $('#ReferenceLookupList2').removeClass('d-none');
-        if ($('#ReferenceCaption3').val() == '')
-            $('#ReferenceLookupList3').addClass('d-none');
-        else
-            $('#ReferenceLookupList3').removeClass('d-none');
-        if ($('#ReferenceCaption4').val() == '')
-            $('#ReferenceLookupList4').addClass('d-none');
-        else
-            $('#ReferenceLookupList4').removeClass('d-none');
-        if ($('#ReferenceCaption5').val() == '')
-            $('#ReferenceLookupList5').addClass('d-none');
-        else
-            $('#ReferenceLookupList5').removeClass('d-none');
+        for (let i = 1; i <= 10; i++) {
+            if ($('#ReferenceCaption' + i).val() == '') {
+                $('.pref' + i).addClass('col-md-12');
+                $('.pref' + i).removeClass('col-md-8');
+                $('.ref' + i).addClass('d-none');
+                $('.refl' + i).addClass('d-none');
+            }
+            else {
+                $('.pref' + i).removeClass('col-md-12');
+                $('.pref' + i).addClass('col-md-8');
+                $('.ref' + i).removeClass('d-none');
+                if ($('#ReferenceType' + i).val() == '5')
+                    $('.refl' + i).removeClass('d-none');
+                else
+                    $('.refl' + i).addClass('d-none');
+            }
+        }
+        for (let i = 1; i <= 9; i++) {
+            if ($('#ReferenceCaption' + i).val() == '') {
+                $('#ReferenceCaption' + (i + 1)).parent().parent().parent().addClass('d-none');
+            }
+            else {
+                $('#ReferenceCaption' + (i + 1)).parent().parent().parent().removeClass('d-none');
+            }
+        }
+
     }
+
+
 
     function Create(uidata, mode) {
         app.core.Post(app.setting.apipath + 'v1/ProcessSpecFlow', JSON.stringify(uidata))
@@ -385,26 +399,25 @@ app.GeneralProcessSpecFlow = (function () {
     }
 
     function MapInputToObject() {
-        return {
+        let data = {
             Id: parseInt(0 + $('#Id').val(), 10),
             Name: $('#Name').val(),
             Description: $('#Description').val(),
             Alias: $('#Alias').val(),
             MailServer: $('#MailServer').val(),
-            ReferenceCaption1: $('#ReferenceCaption1').val(),
-            ReferenceLookupList1: $('#ReferenceLookupList1').val(),
-            ReferenceCaption2: $('#ReferenceCaption2').val(),
-            ReferenceLookupList2: $('#ReferenceLookupList2').val(),
-            ReferenceCaption3: $('#ReferenceCaption3').val(),
-            ReferenceLookupList3: $('#ReferenceLookupList3').val(),
-            ReferenceCaption4: $('#ReferenceCaption4').val(),
-            ReferenceLookupList4: $('#ReferenceLookupList4').val(),
-            ReferenceCaption5: $('#ReferenceCaption5').val(),
-            ReferenceLookupList5: $('#ReferenceLookupList5').val(),
             Status: $('#Status').val(),
             Roles: app.ui.GetDropDownMultiValues('Roles'),
             SLA: app.ui.GetDropDownNumericValue('#SLA')
-        };
+        }
+
+        for (let i = 1; i <= 10; i++) {
+            data['ReferenceCaption' + i] = $('#ReferenceCaption' + i).val();
+            data['ReferenceType' + i] = $('#ReferenceType' + i).val();
+            data['ReferenceRequired' + i] = $('#ReferenceRequired' + i).val();
+            data['ReferenceLookupList' + i] = $('#ReferenceLookupList' + i).val();
+        }
+
+        return data;
     }
 
     function MapObjectToInput(data) {
@@ -413,16 +426,28 @@ app.GeneralProcessSpecFlow = (function () {
         $('#Description').val(data.Description);
         $('#Alias').val(data.Alias);
         $('#MailServer').val(data.MailServer);
-        $('#ReferenceCaption1').val(data.ReferenceCaption1);
-        $('#ReferenceLookupList1').val(data.ReferenceLookupList1);
-        $('#ReferenceCaption2').val(data.ReferenceCaption2);
-        $('#ReferenceLookupList2').val(data.ReferenceLookupList2);
-        $('#ReferenceCaption3').val(data.ReferenceCaption3);
-        $('#ReferenceLookupList3').val(data.ReferenceLookupList3);
-        $('#ReferenceCaption4').val(data.ReferenceCaption4);
-        $('#ReferenceLookupList4').val(data.ReferenceLookupList4);
-        $('#ReferenceCaption5').val(data.ReferenceCaption5);
-        $('#ReferenceLookupList5').val(data.ReferenceLookupList5);
+        for (let i = 1; i <= 10; i++) {
+            $('#ReferenceCaption' + i).val(data['ReferenceCaption' + i]);
+
+            if (data['ReferenceType' + i] == 0)
+                if (data['ReferenceLookupList' + i] != '')
+                    data['ReferenceType' + i] = 5;
+                else
+                    data['ReferenceType' + i] = 1;
+            $('#ReferenceType' + i).val(data['ReferenceType' + i]);
+            $('#ReferenceRequired' + i).val(data['ReferenceRequired' + i].toString());
+            $('#ReferenceLookupList' + i).val(data['ReferenceLookupList' + i]);
+        }
+        //$('#ReferenceCaption1').val(data.ReferenceCaption1);
+        //$('#ReferenceLookupList1').val(data.ReferenceLookupList1);
+        //$('#ReferenceCaption2').val(data.ReferenceCaption2);
+        //$('#ReferenceLookupList2').val(data.ReferenceLookupList2);
+        //$('#ReferenceCaption3').val(data.ReferenceCaption3);
+        //$('#ReferenceLookupList3').val(data.ReferenceLookupList3);
+        //$('#ReferenceCaption4').val(data.ReferenceCaption4);
+        //$('#ReferenceLookupList4').val(data.ReferenceLookupList4);
+        //$('#ReferenceCaption5').val(data.ReferenceCaption5);
+        //$('#ReferenceLookupList5').val(data.ReferenceLookupList5);
         $('#Status').val(data.Status);
         app.ui.SetDropDownMultiValues('Roles', data.Roles);
         $('#SLA').val(data.SLA);
@@ -540,7 +565,10 @@ app.GeneralProcessSpecFlow = (function () {
                     field: 'Name',
                     title: 'Nombre',
                     sortable: true,
-                    halign: 'center'
+                    halign: 'center',
+                    formatter: function (value, row, index, field) {
+                        return `<a class="edit" href="ProcessSpecStep?id=${row.Id}" title="Al hacer click permite editar la etapa">${value}</a>`;
+                    }
                 }, {
                     field: 'Description',
                     title: 'Descripción',
@@ -635,6 +663,11 @@ app.GeneralProcessSpecFlow = (function () {
                     halign: 'center',
                     visible: false
                 }, {
+                    field: 'RoleNames',
+                    title: 'Roles',
+                    sortable: true,
+                    halign: 'center'
+                }, {
                     field: 'UpdateDate',
                     title: 'Realizado por',
                     class: 'd-none d-sm-table-cell',
@@ -689,7 +722,10 @@ app.GeneralProcessSpecFlow = (function () {
                     field: 'Name',
                     title: 'Name',
                     sortable: true,
-                    halign: 'center'
+                    halign: 'center',
+                    formatter: function (value, row, index, field) {
+                        return `<a class="edit" href="ProcessSpecTask?id=${row.Id}" title="Al hacer click permite editar la tarea">${value}</a>`;
+                    }
                 }, {
                     field: 'Description',
                     title: 'Descripción',
@@ -787,7 +823,7 @@ app.GeneralProcessSpecFlow = (function () {
             }
         },
         New: function (row) {
-            let newRow = { Id: 0, Name: null, Description: null, Alias: null, MailServer: 1, Status: 1 }
+            let newRow = { Id: 0, Name: null, Description: null, Alias: null, MailServer: 1, Status: 1, ReferenceCaption1: null, ReferenceType1: 1, ReferenceRequired1: 'false', ReferenceLookupList1: '', ReferenceCaption2: '', ReferenceType2: 1, ReferenceRequired2: 'false', ReferenceLookupList2: '', ReferenceCaption3: '', ReferenceType3: 1, ReferenceRequired3: 'false', ReferenceLookupList3: '', ReferenceCaption4: '', ReferenceType4: 1, ReferenceRequired4: 'false', ReferenceLookupList4: '', ReferenceCaption5: '', ReferenceType5: 1, ReferenceRequired5: 'false', ReferenceLookupList5: '', ReferenceCaption6: '', ReferenceType6: 1, ReferenceRequired6: 'false', ReferenceLookupList6: '', ReferenceCaption7: '', ReferenceType7: 1, ReferenceRequired7: 'false', ReferenceLookupList7: '', ReferenceCaption8: '', ReferenceType8: 1, ReferenceRequired8: 'false', ReferenceLookupList8: '', ReferenceCaption9: '', ReferenceType9: 1, ReferenceRequired9: 'false', ReferenceLookupList9: '', ReferenceCaption10: '', ReferenceType10: 1, ReferenceRequired10: 'false', ReferenceLookupList10: '' };
             if (row !== undefined) {
                 row.Id = 0;
                 newRow = row;

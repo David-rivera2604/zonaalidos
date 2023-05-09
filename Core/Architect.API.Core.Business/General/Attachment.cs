@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
+using System.Web.Hosting;
 
 namespace Architect.API.Core.Business.General
 {
@@ -76,6 +78,17 @@ namespace Architect.API.Core.Business.General
             }
 
             return attachments;
+        }
+
+        public static Contracts.General.Attachments SyncUpBase(Contracts.General.Attachments attachment, int companyId, int userId)
+        {
+            attachment.CompanyId = companyId;
+            attachment.UpdateUserCode = userId;
+            if (attachment.FileContent.IsNotEmpty())
+            {
+                attachment.FileContent = Path.Combine(HostingEnvironment.MapPath(ConfigurationManager.AppSettings["FAttachments.Path"]), attachment.FileContent);
+            }
+            return SyncUp(attachment);
         }
 
         public static Contracts.General.Attachments SyncUp(Contracts.General.Attachments attachment)

@@ -46,7 +46,7 @@ namespace Architect.API.Core.Business.General
                             DataAccess.General.ProcessInstance.Update(item.ActivityId, now);
                             Notify(item.CaseId,
                                 sla.MailForSLAExpiration, sla.MailForSLAExpirationCustom, sla.MailForSLAExpirationTmpl, item.Step.MailServer,
-                                spec.MailServer, item.Step, null, item.CompanyId, 0, "Process.Mail.Responsible.Notify.OverDue.Template");
+                                spec, item.Step, null, item.CompanyId, 0, "Process.Mail.Responsible.Notify.OverDue.Template");
                         }
                     }
                 }
@@ -211,8 +211,8 @@ namespace Architect.API.Core.Business.General
 
             List<Contracts.General.ProcessInstance> instanceCreated = DataAccess.General.Process.Specification.CreateInstance(instance);
 
-            Notify_ContactProcess_Progress(caseId, currentStep, spec.MailServer, companyId, userId, true, null);
-            Notify_ResponsibleProcess_Progress(caseId, currentStep, spec.MailServer, companyId, userId);
+            Notify_ContactProcess_Progress(caseId, currentStep, spec, companyId, userId, true, null);
+            Notify_ResponsibleProcess_Progress(caseId, currentStep, spec, companyId, userId);
 
 
             return instanceCreated.First();
@@ -641,15 +641,15 @@ namespace Architect.API.Core.Business.General
             }
             if (currentStep.Step.ProgressMode == 1)
             {
-                Notify_ContactProcess_Progress(currentFlow.CaseId, nextStep, spec.MailServer, currentFlow.CompanyId, userId, checkedInformation.Notify, attachments.ToArray());
-                Notify_ResponsibleProcess_Progress(currentFlow.CaseId, nextStep, spec.MailServer, currentFlow.CompanyId, userId);
+                Notify_ContactProcess_Progress(currentFlow.CaseId, nextStep, spec, currentFlow.CompanyId, userId, checkedInformation.Notify, attachments.ToArray());
+                Notify_ResponsibleProcess_Progress(currentFlow.CaseId, nextStep, spec, currentFlow.CompanyId, userId);
             }
             if (currentStep.Step.ProgressMode == 2)
             {
                 if (nextStep.IsNotEmpty())
                 {
-                    Notify_ContactProcess_Progress(currentFlow.CaseId, nextStep, spec.MailServer, currentFlow.CompanyId, userId, checkedInformation.Notify, attachments.ToArray());
-                    Notify_ResponsibleProcess_Progress(currentFlow.CaseId, nextStep, spec.MailServer, currentFlow.CompanyId, userId);
+                    Notify_ContactProcess_Progress(currentFlow.CaseId, nextStep, spec, currentFlow.CompanyId, userId, checkedInformation.Notify, attachments.ToArray());
+                    Notify_ResponsibleProcess_Progress(currentFlow.CaseId, nextStep, spec, currentFlow.CompanyId, userId);
                 }
                 else
                 {
@@ -660,12 +660,13 @@ namespace Architect.API.Core.Business.General
             return nextStep;
         }
 
-        private static void Notify_ContactProcess_Progress(int caseId, Contracts.General.ProcessInstance step, int mailServer, int companyId, int userId, bool notify, string[] attachments)
+        private static void Notify_ContactProcess_Progress(int caseId, Contracts.General.ProcessInstance step, Contracts.General.ProcessSpecFlow spec, int companyId, int userId, bool notify, string[] attachments)
         {
             Dictionary<string, string> mailFullList = new Dictionary<string, string>();
             Contracts.General.ProcessCase procCase = null;
             string mailList = string.Empty;
             string mailAddress = string.Empty;
+            int mailServer = spec.MailServer;
 
             if (step.Step.MailToContact == 1) //Si
             {
@@ -725,14 +726,15 @@ namespace Architect.API.Core.Business.General
                     procCase = Business.General.ProcessCase.RetrieveById(companyId, caseId);
                 }
 
-                Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = step }, mailFullList, attachments);
+                Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = step, Spec = spec }, mailFullList, attachments);
             }
         }
 
-        private static void Notify_ResponsibleProcess_Progress(int caseId, Contracts.General.ProcessInstance step, int mailServer, int companyId, int userId, string mailTemplateSetting = "Process.Mail.Responsible.Notify.Template")
+        private static void Notify_ResponsibleProcess_Progress(int caseId, Contracts.General.ProcessInstance step, Contracts.General.ProcessSpecFlow spec, int companyId, int userId, string mailTemplateSetting = "Process.Mail.Responsible.Notify.Template")
         {
             Dictionary<string, string> mailFullList = new Dictionary<string, string>();
             Contracts.General.ProcessCase procCase = null;
+            int mailServer = spec.MailServer;
 
             if (step.Step.MailToStepResponsible == 1 || step.Step.MailToStepResponsible == 3)
             {
@@ -779,14 +781,15 @@ namespace Architect.API.Core.Business.General
                 {
                     procCase = ProcessCase.RetrieveById(companyId, caseId);
                 }
-                Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = step }, mailFullList);
+                Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = step, Spec = spec }, mailFullList);
             }
         }
 
-        private static void Notify(int caseId, int responsible, string custom, int mailTmpl, int customMailServer, int mailServer, object entity, List<Contracts.General.LookupValue> roles, int companyId, int userId, string mailTemplateSetting = "Process.Mail.Responsible.Notify.Template")
+        private static void Notify(int caseId, int responsible, string custom, int mailTmpl, int customMailServer, Contracts.General.ProcessSpecFlow spec, object entity, List<Contracts.General.LookupValue> roles, int companyId, int userId, string mailTemplateSetting = "Process.Mail.Responsible.Notify.Template")
         {
             Dictionary<string, string> mailFullList = new Dictionary<string, string>();
             Contracts.General.ProcessCase procCase = null;
+            int mailServer = spec.MailServer;
 
             if (responsible == 1 || responsible == 3)
             {
@@ -829,7 +832,7 @@ namespace Architect.API.Core.Business.General
                 {
                     procCase = ProcessCase.RetrieveById(companyId, caseId);
                 }
-                Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = entity }, mailFullList);
+                Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = entity, Spec = spec }, mailFullList);
             }
         }
 
