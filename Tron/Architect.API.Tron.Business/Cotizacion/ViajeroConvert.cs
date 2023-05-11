@@ -40,6 +40,8 @@ namespace Architect.API.Tron.Business.Cotizacion
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "DES_DESTINO", quoteInfo.DES_DESTINO, 1, 4, quoteInfo.DES_DESTINO_DESC));
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "CANAL_VENTA", "TWB", 1, 5));
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "TIP_VIAJE", quoteInfo.TIP_VIAJE, 1, 6));
+            datosVariables.Add(Util.DatoVariable(datosFijos, 0, "ORI_ORIGEN", quoteInfo.COD_PAIS_ORIGEN, 1, 9, quoteInfo.PAIS_ORIGEN_DESC));
+
 
             for (int i = 1; i <= quoteInfo.cantidad_riesgos; i++)
             {

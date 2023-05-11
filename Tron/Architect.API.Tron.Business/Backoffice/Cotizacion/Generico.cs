@@ -15,6 +15,8 @@ namespace Architect.API.Tron.Business.Backoffice.Cotizacion
     {
         public static DatoFijo Calcular(Architect.API.Tron.Contracts.Presupuesto.DatoFijo quoteInfo, int tip_mvto_batch = 8, string txt_alias = "Cotizado desde ZA")
         {
+            List<Contracts.Presupuesto.DatoVariable> datosVariable = null;
+
             using (IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron"))
             {
                 Contracts.Batch.Proceso g2000510Instance = new Contracts.Batch.Proceso
@@ -48,6 +50,7 @@ namespace Architect.API.Tron.Business.Backoffice.Cotizacion
                 Crea_Riesgos(quoteInfo, currentConnection);
 
                 Crea_DatosVariables(quoteInfo.num_poliza, quoteInfo.DatosVariables, currentConnection);
+                datosVariable = quoteInfo.DatosVariables;
 
                 Crea_Ocurrencias(quoteInfo, currentConnection);
 
@@ -76,9 +79,30 @@ namespace Architect.API.Tron.Business.Backoffice.Cotizacion
 
                 quoteInfo.DatosDelProceso = g2000510Instance;
 
+                Actualiza_txt_campo(quoteInfo.num_poliza, datosVariable, currentConnection);
+                
                 currentConnection.Close();
+
             }
-            return quoteInfo;
+              return quoteInfo;
+        }
+
+        private  static void Actualiza_txt_campo(string num_presupuesto, List<Contracts.Presupuesto.DatoVariable> dato_variable, IDbConnection currentConnection)
+        {
+            foreach (Contracts.Presupuesto.DatoVariable datosVariable in dato_variable)
+            { 
+                switch (datosVariable.cod_campo)
+                {
+                    case "DES_DESTINO":
+                         DataAccess.DatosVariables.Agrega_txt_campo(num_presupuesto, datosVariable.cod_campo, datosVariable.txt_campo, currentConnection);
+                         break;
+                    case "ORI_ORIGEN":
+                         DataAccess.DatosVariables.Agrega_txt_campo(num_presupuesto, datosVariable.cod_campo, datosVariable.txt_campo, currentConnection);
+                         break;
+
+                }
+                
+            }
         }
 
         private static void Crea_Coberturas(DatoFijo quoteInfo, IDbConnection currentConnection)

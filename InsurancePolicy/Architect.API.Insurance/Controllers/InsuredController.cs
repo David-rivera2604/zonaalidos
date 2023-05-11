@@ -1,4 +1,5 @@
-﻿using Architect.Utilities.Extensions;
+﻿using Architect.API.Insurance.Contracts.Policy;
+using Architect.Utilities.Extensions;
 using Microsoft.Web.Http;
 using System.Collections.Generic;
 using System.Linq;
@@ -165,6 +166,52 @@ namespace Architect.API.Insurance.Controllers
             result = Architect.API.Insurance.Business.Policy.RiskQuestionnaires.RetrieveByDocumentNumber(id, name, tokenInfo.CompanyId);
 
             return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("PostCambiosCliente")]
+        [Authorize]
+        public async Task<IHttpActionResult> PostCambiosCliente([FromBody] Insured item, [FromUri] string type)
+        {
+            ChangeDatosResult newcreate = ChangeDatosClientes.UpdateDatosCliente(item);
+            ChangeDatosResult newcreate2 = ChangeDatosClientes.UpdateClienteContacto(item);
+
+            return Ok(new { DatosCliente = newcreate, ClienteContacto = newcreate2 });
+        }
+
+        public partial class ChangeDatosResult
+        {
+
+            public Insured CambioClienteResponse { get; set; }
+        }
+
+        public static partial class ChangeDatosClientes
+        {
+            public static ChangeDatosResult UpdateDatosCliente(Insured item)
+            {
+                Insured result = item;
+
+                if (Architect.Extend.Integrations.Tron.UpdateCliente.UpdateDatosCliente(result) > 0)
+                {
+
+
+                }
+
+                return new ChangeDatosResult() { CambioClienteResponse = result };
+            }
+            public static ChangeDatosResult UpdateClienteContacto(Insured item)
+            {
+                Insured result = item;
+
+                if (Architect.Extend.Integrations.Tron.UpdateCliente.UpdateClienteContacto(result) > 0)
+                {
+
+
+                }
+
+                return new ChangeDatosResult() { CambioClienteResponse = result };
+            }
+
         }
     }
 }

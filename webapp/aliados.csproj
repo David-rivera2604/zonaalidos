@@ -1223,6 +1223,7 @@
     <Content Include="products\cope_vida.xml" />
     <Content Include="roles.configurations.txt" />
     <Content Include="releaseletter.txt" />
+    <Content Include="Scripts\AdministrarCliente.js" />
     <Content Include="Scripts\AvisosCobro.Recibos.js" />
     <Content Include="Scripts\Clientes.Index.js" />
     <Content Include="Scripts\ColoresTenant.js" />
@@ -1724,6 +1725,7 @@
     <Content Include="Views\Emision\MapfreMasPlus.cshtml" />
     <Content Include="Views\General\ColorTenant.cshtml" />
     <Content Include="Views\General\MantenimientoInicio.cshtml" />
+    <Content Include="Views\General\Administration.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

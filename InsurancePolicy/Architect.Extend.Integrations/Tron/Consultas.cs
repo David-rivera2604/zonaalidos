@@ -71,19 +71,26 @@ namespace Architect.Extend.Integrations.Tron
                             }
                             switch (reader.StringValue("COD_EST_CIVIL"))
                             {
+                                case "C":
+                                    result.CivilStatus = 1;  // Casado(a)
+                                    break;
+                                case "D":
+                                    result.CivilStatus = 2;  // Divorciado(a)
+                                    break;
                                 case "S":
                                     result.CivilStatus = 3;  // Soltero(a)
                                     break;
-                                case "C":
-                                    result.CivilStatus = 1;  // Casado(a)
+                                case "V":
+                                    result.CivilStatus = 4;  // Viudo(a)
+                                    break;
+                                case "A":
+                                    result.CivilStatus = 6;  // Acompañado(a)
                                     break;
                                 default:
                                     result.CivilStatus = 5; //5 Otro
                                     break;
-                                    //2 Divorciado(a)
-                                    //4 Viudo(a)
-                                    //6 Acompañado(a)
                             }
+
 
                         }));
             }
