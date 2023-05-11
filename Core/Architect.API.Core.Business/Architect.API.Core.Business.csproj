@@ -207,6 +207,10 @@
       <Project>{29b21bef-8c87-4a9d-8b37-fecc57cd03c7}</Project>
       <Name>Architect.API.Core.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Architect.API.Core.DataAccess\Architect.API.Core.DataAccess.csproj">
+      <Project>{ade9e68b-134e-0d88-34f0-07a5aad11285}</Project>
+      <Name>Architect.API.Core.DataAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Architect.API.Core.Utilities\Architect.API.Core.Security.csproj">
       <Project>{3d406267-4a50-4e87-842a-553e3d222cf1}</Project>
       <Name>Architect.API.Core.Security</Name>
