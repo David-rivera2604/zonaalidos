@@ -214,10 +214,10 @@ namespace Architect.API.Core.Business.General
             }
 
             //InstanceId:
-            if ((!isnew || isdelete) && source.InstanceId.IsEmpty())
-            {
-                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "InstanceId", Message = "Debe indicar el identificación" });
-            }
+            //if ((!isnew || isdelete) && source.InstanceId.IsEmpty())
+            //{
+            //    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "InstanceId", Message = "Debe indicar el identificación" });
+            //}
             if ((!isnew || isdelete) && source.InstanceId.IsNotEmpty() && Architect.API.Core.DataAccess.General.ProcessCase.Count(source.InstanceId, companyId) == 0)
             {
                 result.Add(new Core.Contracts.General.Error() { Group = group, Key = "InstanceId", Message = "La identificación no está registrada" });
