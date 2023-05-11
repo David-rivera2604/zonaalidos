@@ -43,7 +43,7 @@ MERGE INTO VISUALIZATIONS A USING
         "halign": "center",
         "align": "left",
         "visible": true,
-        "format": "<button type=''button'' name=''deletecase'' class=''btn btn-sm btn-link d-none role-Seguridad-visible event'' title=''Permite eliminar un caso''><i class=''fa fa-close text-danger''></i></button> <a href=''../cases/case?id={ID}'' title=''Ver caso #{ID}''>{TITLE}</a>. <small class=''text-muted''>{FLOWNAME}</small>",
+        "format": "<button type=''button'' name=''deletecase'' class=''btn btn-sm btn-link d-none role-Supervisor-visible event'' title=''Permite eliminar un caso''><i class=''fa fa-close text-danger''></i></button> <a href=''../cases/case?id={ID}'' title=''Ver caso #{ID}''>{TITLE}</a>. <small class=''text-muted''>{FLOWNAME}</small>",
           "events": true,
           "action_deletecase": "app.Ex_Cases.Eliminar(row)"
       },
