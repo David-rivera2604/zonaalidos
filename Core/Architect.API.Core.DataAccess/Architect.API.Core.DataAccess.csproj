@@ -171,7 +171,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="_Generated\Attachments.cs.vsspell" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Kernel\Architect.DataFactory\Architect.DataFactory.csproj">

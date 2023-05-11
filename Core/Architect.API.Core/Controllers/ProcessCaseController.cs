@@ -218,7 +218,7 @@ namespace Architect.API.Core.Controllers
             Contracts.Security.Token tokenInfo = Security.Token.Info();
             await Task.Run(() =>
             {
-                Architect.API.Core.Contracts.General.ProcessCaseResult deleted = Architect.API.Core.Business.General.ProcessCase.Delete(tokenInfo.CompanyId, tokenInfo.UserId, id);
+                Architect.API.Core.Contracts.General.ProcessCaseResult deleted = Architect.API.Core.Business.General.ProcessCase.DeleteFull(tokenInfo.CompanyId, tokenInfo.UserId, id);
                 if (deleted.Errors.Count == 0)
                 {
                     result = Ok(deleted.ProcessCase);

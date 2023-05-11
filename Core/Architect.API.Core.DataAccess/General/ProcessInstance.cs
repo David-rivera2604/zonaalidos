@@ -164,6 +164,17 @@ namespace Architect.API.Core.DataAccess.General
                             .AddParameter("EntityId", DbType.Decimal, 18, entityId).Parameters, connection);
         }
 
+        /// <summary>
+        /// Elimina un registro en la tabla ProcessInstance por medio del campo CaseId.
+        /// </summary>
+        public static int DeleteByCaseId(int caseId, int companyId, IDbConnection connection = null)
+        {
+            return Database.Delete("DELETE FROM ProcessInstance " +
+                                    "WHERE CaseId=:CaseId AND CompanyId=:CompanyId")
+                                .AddParameter("CaseId", DbType.Decimal, 9, caseId)
+                                .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                                .Execute(connection, "Research");
+        }
     }
 
 }

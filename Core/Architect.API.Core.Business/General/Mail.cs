@@ -11,8 +11,6 @@ using System.Net.Mail;
 using System.Net.Mime;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
-using System.Security.Policy;
-using System.Text;
 
 namespace Architect.API.Core.Business.General
 {
@@ -172,10 +170,6 @@ namespace Architect.API.Core.Business.General
                 subject = Smart.Format(CultureInfo.CreateSpecificCulture("es-CR"), subject, context);
                 body = Smart.Format(CultureInfo.CreateSpecificCulture("es-CR"), body, context);
 
-            }
-            if (body != null)
-            {
-                body = body.Replace("{app.aliados.url.base}", ConfigurationManager.AppSettings["Aliados.URL.Base"]);
             }
             if (testEmail.IsNotEmpty())
             {

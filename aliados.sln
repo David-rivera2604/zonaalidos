@@ -81,11 +81,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DBScripts", "DBScripts", "{
 		dbscripts\230317.a.lookupmaster.sql = dbscripts\230317.a.lookupmaster.sql
 		dbscripts\230317.b.lookupmaster.sql = dbscripts\230317.b.lookupmaster.sql
 		dbscripts\230317.c.visualization.sql = dbscripts\230317.c.visualization.sql
-		dbscripts\230403.a.lookup.3074.act_econ.sql = dbscripts\230403.a.lookup.3074.act_econ.sql
-		dbscripts\230404.a.visualization.4004.sql = dbscripts\230404.a.visualization.4004.sql
-		dbscripts\230410.a.lookupmaster.sql = dbscripts\230410.a.lookupmaster.sql
-		dbscripts\230411.a.alter.flow.case.sql = dbscripts\230411.a.alter.flow.case.sql
-		dbscripts\230507.a.templates.sql = dbscripts\230507.a.templates.sql
+		dbscripts\230510.a.visualization.4003.sql = dbscripts\230510.a.visualization.4003.sql
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architect.PDF.Integrations", "Core\Architect.PDF.Integrations\Architect.PDF.Integrations.csproj", "{68042445-0A60-4BED-A4A9-222A6BE98C3B}"
