@@ -625,7 +625,7 @@ namespace Architect.API.Tron.Business.Emision
                         telefonoExtranjero = jsonvalues.TokenStringValue("numeroExt"),
                         poseeProductos = "N"
                     };
-                    mapInfo.clientesFATCA = new[] { FATCA };
+                    mapInfo.clientesFATCA = new List<Clientesfatca>() { FATCA };
 
 
                     Clientesrepresentante representantesLegales = new Clientesrepresentante()
@@ -796,7 +796,7 @@ namespace Architect.API.Tron.Business.Emision
                         montoValor = quoteInfo.sAEdificio,
                         fechaRegistro = mapInfo.fechaRegistro,
                     };
-                    mapInfo.clientesPatrimonio = new[] { clientespatrimonio };
+                    mapInfo.clientesPatrimonio = new List<Clientespatrimonio>() { clientespatrimonio };
 
 
 
@@ -856,7 +856,7 @@ namespace Architect.API.Tron.Business.Emision
                         telefonoExtranjero = jsonvalues.TokenStringValue("numeroExt"),
                         poseeProductos = "N"
                     };
-                    mapInfo.clientesFATCA = new[] { FATCA };
+                    mapInfo.clientesFATCA = new List<Clientesfatca> { FATCA };
 
                     Clientesrelacione personasRelacionadas = new Clientesrelacione()
                     {
@@ -1051,7 +1051,7 @@ namespace Architect.API.Tron.Business.Emision
                         montoValor = quoteInfo.sAEdificio,
                         fechaRegistro = mapInfo.fechaRegistro,
                     };
-                    mapInfo.clientesPatrimonio = new[] { clientespatrimonio };
+                    mapInfo.clientesPatrimonio = new List<Clientespatrimonio>() { clientespatrimonio };
                 }
             }
 
