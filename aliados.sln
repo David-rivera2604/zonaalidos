@@ -73,7 +73,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architect.API.Core.Security
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DBScripts", "DBScripts", "{7B87066D-6381-44D1-8174-473454D5D2BF}"
 	ProjectSection(SolutionItems) = preProject
-		230510.a.visualization.4003.sql = 230510.a.visualization.4003.sql
+		dbscripts\230404.a.visualization.4004.sql = dbscripts\230404.a.visualization.4004.sql
+		dbscripts\230411.a.alter.flow.case.sql = dbscripts\230411.a.alter.flow.case.sql
+		dbscripts\230507.a.templates.sql = dbscripts\230507.a.templates.sql
+		dbscripts\230510.a.visualization.4003.sql = dbscripts\230510.a.visualization.4003.sql
 	EndProjectSection
 EndProject
 Global
