@@ -494,5 +494,7 @@
                    Trazabilidad. Se requiere aumentar la cantidad de “Campos personalizados” a 10 en total.
                    Trazabilidad. Se requiere poder indicar si los campos personalizables son obligatorios o no.
                    Trazabilidad. Se necesita que la herramienta permita colocar adjuntos desde la apertura de un caso.
+1.6.31  16/05/2023 Aliados. Cotizacion Viajero Se agrega lista de paises TRON para campos PAIS_ORIGEN y DES_DESTINO
+                   Aliados. Formulario para actualizar datos de los clientes.
 
 
