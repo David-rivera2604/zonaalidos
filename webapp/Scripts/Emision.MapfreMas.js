@@ -33,7 +33,7 @@ app.EmisionMapfreMas = (function () {
                         $("#guardarenviar").appendTo("#GenericToolBar");
                         $('.documentosrequeridosGrid').addClass('d-none');
 
-						$('#PageSubTitle').text("Emision Solicitud de Seguro")													  
+                        $('#PageSubTitle').text("Emision Solicitud de Seguro")
                         $('.datosgeneralesZone').removeClass('col-md-12');
                         $('.datosgeneralesZone').addClass('col-md-7');
                         $('.enviosolicitudZone').removeClass('d-none');
@@ -191,19 +191,13 @@ app.EmisionMapfreMas = (function () {
     }
 
     function SettingReload(callback) {
-        var data = {
-            cod_ramo: setupData.cod_ramo,
-            edad: setupData.edad,
-            cod_mon: app.ui.GetDropDownNumericValue('#cod_mon'),
-            tipo_prod: $('input:radio[name=tipo_prod]:checked').val(),
-            cod_marca: app.ui.GetDropDownNumericValue('#cod_marca'),
-            num_contrato: setupData.contrato,
-            num_subcontrato: setupData.subcontrato,
-            num_poliza_grupo: setupData.polizagrupo
-        };
+        let param = setupData;
+        param.cod_mon = app.ui.GetDropDownNumericValue('#cod_mon');
+        param.tipo_prod = $('input:radio[name=tipo_prod]:checked').val();
+        param.cod_marca = app.ui.GetDropDownNumericValue('#cod_marca');
 
-        app.core.Get(app.setting.apipath + 'v1/Quote/MapfreMasSettings?' + `cod_ramo=${data.cod_ramo}&cod_mon=${data.cod_mon}&edad=${data.edad}&tipo_prod=${data.tipo_prod}&cod_marca=${data.cod_marca}&num_contrato=${data.num_contrato}&num_subcontrato=${data.num_subcontrato}&num_poliza_grupo=${data.num_poliza_grupo}`, null,
-            function (settingData) {
+        app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasSettings?cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&cod_sub_modelo=${param.cod_sub_modelo}&anio_sub_modelo=${param.ANIO_SUB_MODELO}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.COD_PLAN_AUTO}&num_contrato=${param.contrato}&num_subcontrato=${param.subcontrato}&num_poliza_grupo=${param.polizagrupo}&tipo_prod=${param.tipo_prod}`)
+            .done(function (settingData) {
                 fec_vcto_poliza_grupo = settingData.fec_vcto_poliza_grupo;
                 if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
                     app.ui.SetDateValue('#fec_vcto_poliza', app.ui.GetDateValue('#fec_efec_poliza'))
@@ -800,7 +794,7 @@ app.EmisionMapfreMas = (function () {
         let result = 0;
         let message = 'Debe indicar la información de terceros';
         let terceros = $('#tercerosTbl').bootstrapTable('getData');
-        let vehiculo = $('#vehiculoTbl').bootstrapTable('getData');																   
+        let vehiculo = $('#vehiculoTbl').bootstrapTable('getData');
         let terceroserrors = (terceros.length === 0);
 
         //if (vehiculo.length === 0) {
@@ -1177,7 +1171,7 @@ app.EmisionMapfreMas = (function () {
                         }
                     }
                     else if (Rules.Event == "Insert") {
-                       // $('#tercerosTbl').bootstrapTable('append', row);
+                        // $('#tercerosTbl').bootstrapTable('append', row);
 
                         if (row.eltomadoreselmismoasegurado === 1 && row.tipodetercero == 0) {
                             let AseguradoExiste = $('#tercerosTbl').bootstrapTable('getData').filter(i => i.DocumentNumber == row.DocumentNumber);
@@ -2334,85 +2328,85 @@ app.EmisionMapfreMas = (function () {
                     app.core.LoadScriptFile(formularioRow.type === 'kycpersona' ? 'Emision.kyc.persona.js' : 'Emision.kyc.juridico.js')
                         .then(d => {
                             let ref = formularioRow.type === 'kycpersona' ? app.kycpersona : app.kycjuridico;
-                            formularioRow.data = ref.InitData(false);
-                            if (formularioRow.type === 'kycpersona') {
-                                if (app.ui.IsDocumentNumberValid(mainHolder[0].DocumentNumberType, mainHolder[0].DocumentNumber)) {
-                                    var value = mainHolder[0].DocumentNumber.replace(/-/g, '');
-                                    app.core.Get(app.setting.apipath + 'v1/KYC/' + "persona" + "?id=" + value)
-                                        .done(function (data, textStatus, jqXHR) {
-                                            if (data != null) {
-                                                for (const a in formularioRow.data) {
-                                                    for (const b in data) {
-                                                        if (a == b) {
-                                                            formularioRow.data[a] = data[b]
+                            if (formularioRow.data === null) {
+                                formularioRow.data = ref.InitData(false);
+                                if (formularioRow.type === 'kycpersona') {
+                                    if (app.ui.IsDocumentNumberValid(mainHolder[0].DocumentNumberType, mainHolder[0].DocumentNumber)) {
+                                        var value = mainHolder[0].DocumentNumber.replace(/-/g, '');
+                                        app.core.Get(app.setting.apipath + 'v1/KYC/' + "persona" + "?id=" + value)
+                                            .done(function (data, textStatus, jqXHR) {
+                                                if (data != null) {
+                                                    for (const a in formularioRow.data) {
+                                                        for (const b in data) {
+                                                            if (a == b) {
+                                                                formularioRow.data[a] = data[b]
+                                                            }
+                                                        }
+                                                    }
+
+                                                }
+                                                else {
+                                                    formularioRow.data.nacionalidadPer = 188;
+                                                    formularioRow.data.paisdenacimientoPer = 188;
+                                                }
+
+                                                formularioRow.data.primerapellidoPer = mainHolder[0].apellido1;
+                                                formularioRow.data.segundoapellidoPer = mainHolder[0].apellido2;
+                                                formularioRow.data.nombrePer = mainHolder[0].nombre;
+                                                formularioRow.data.fechadenacimientoPer = mainHolder[0].fechadenacimiento;
+                                                formularioRow.data.correoelectronicoPer = mainHolder[0].correoelectronico;
+                                                formularioRow.data.sexoPer = mainHolder[0].tercerosMca_sexo;
+                                                formularioRow.data.numidentificacion = mainHolder[0].DocumentNumber;
+                                                formularioRow.data.numidentificaciontipo = mainHolder[0].DocumentNumberType;
+                                                formularioRow.data.estadocivilPer = mainHolder[0].estadoCivil;
+                                                formularioRow.data.telefonoresidenciaPer = mainHolder[0].numerodetelefono;
+
+                                                formularioRow.data.domiciliopermanenteCod_pais = mainHolder[0].cod_pais;
+                                                formularioRow.data.cod_paisPer = mainHolder[0].cod_pais;
+                                                formularioRow.data.cod_estadoPer = mainHolder[0].TProvincia;
+                                                formularioRow.data.cod_provPer = mainHolder[0].TCanton;
+                                                formularioRow.data.cod_localidadPer = mainHolder[0].TDistrito;
+                                                formularioRow.data.direccionexactaPer = mainHolder[0].otrasenas;
+
+                                                ref.Init(formularioRow.data);
+                                                ref.AcceptCallBack(app.EmisionMapfreMas.Accept);
+                                            })
+                                    }
+                                }
+                                else {
+                                    if (app.ui.IsDocumentNumberValid(mainHolder[0].DocumentNumberType, mainHolder[0].DocumentNumber)) {
+                                        var value = mainHolder[0].DocumentNumber.replace(/-/g, '');
+                                        app.core.Get(app.setting.apipath + 'v1/KYC/' + "juridico" + "?id=" + value)
+                                            .done(function (data, textStatus, jqXHR) {
+                                                if (data != null) {
+                                                    for (const a in formularioRow.data) {
+                                                        for (const b in data) {
+                                                            if (a == b) {
+                                                                formularioRow.data[a] = data[b]
+                                                            }
                                                         }
                                                     }
                                                 }
 
-                                            }
-                                            else {
-                                                formularioRow.data.nacionalidadPer = 188;
-                                                formularioRow.data.paisdenacimientoPer = 188;
-                                            }
 
-                                            formularioRow.data.primerapellidoPer = mainHolder[0].apellido1;
-                                            formularioRow.data.segundoapellidoPer = mainHolder[0].apellido2;
-                                            formularioRow.data.nombrePer = mainHolder[0].nombre;
-                                            formularioRow.data.fechadenacimientoPer = mainHolder[0].fechadenacimiento;
-                                            formularioRow.data.correoelectronicoPer = mainHolder[0].correoelectronico;
-                                            formularioRow.data.sexoPer = mainHolder[0].tercerosMca_sexo;
-                                            formularioRow.data.numidentificacion = mainHolder[0].DocumentNumber;
-                                            formularioRow.data.numidentificaciontipo = mainHolder[0].DocumentNumberType;
-                                            formularioRow.data.estadocivilPer = mainHolder[0].estadoCivil;
-                                            formularioRow.data.telefonoresidenciaPer = mainHolder[0].numerodetelefono;
+                                                formularioRow.data.nombrecomercialJur = mainHolder[0].nombre;
+                                                formularioRow.data.razonsocialJur = mainHolder[0].nombre;
+                                                formularioRow.data.numidentificacion = mainHolder[0].DocumentNumber;
+                                                formularioRow.data.correoelectronicoJur = mainHolder[0].correoelectronico;
 
-                                            formularioRow.data.domiciliopermanenteCod_pais = mainHolder[0].cod_pais;
-                                            formularioRow.data.cod_paisPer = mainHolder[0].cod_pais;
-                                            formularioRow.data.cod_estadoPer = mainHolder[0].TProvincia;
-                                            formularioRow.data.cod_provPer = mainHolder[0].TCanton;
-                                            formularioRow.data.cod_localidadPer = mainHolder[0].TDistrito;
-                                            formularioRow.data.direccionexactaPer = mainHolder[0].otrasenas;
+                                                formularioRow.data.cod_paisJur = mainHolder[0].cod_pais;
+                                                formularioRow.data.cod_estadoJur = mainHolder[0].TProvincia;
+                                                formularioRow.data.cod_provJur = mainHolder[0].TCanton;
+                                                formularioRow.data.cod_localidadJur = mainHolder[0].TDistrito;
+                                                formularioRow.data.direccionexactaJur = mainHolder[0].otrasenas;
 
-                                            ref.Init(formularioRow.data);
-                                            ref.AcceptCallBack(app.EmisionMapfreMas.Accept);
-                                        })
+                                                ref.Init(formularioRow.data);
+                                                ref.AcceptCallBack(app.EmisionMapfreMas.Accept);
+                                            })
+                                    }
+
                                 }
                             }
-                            else {
-                                if (app.ui.IsDocumentNumberValid(mainHolder[0].DocumentNumberType, mainHolder[0].DocumentNumber)) {
-                                    var value = mainHolder[0].DocumentNumber.replace(/-/g, '');
-                                    app.core.Get(app.setting.apipath + 'v1/KYC/' + "juridico" + "?id=" + value)
-                                        .done(function (data, textStatus, jqXHR) {
-                                            if (data != null) {
-                                                for (const a in formularioRow.data) {
-                                                    for (const b in data) {
-                                                        if (a == b) {
-                                                            formularioRow.data[a] = data[b]
-                                                        }
-                                                    }
-                                                }
-                                            }
-
-
-                                            formularioRow.data.nombrecomercialJur = mainHolder[0].nombre;
-                                            formularioRow.data.razonsocialJur = mainHolder[0].nombre;
-                                            formularioRow.data.numidentificacion = mainHolder[0].DocumentNumber;
-                                            formularioRow.data.correoelectronicoJur = mainHolder[0].correoelectronico;
-
-                                            formularioRow.data.cod_paisJur = mainHolder[0].cod_pais;
-                                            formularioRow.data.cod_estadoJur = mainHolder[0].TProvincia;
-                                            formularioRow.data.cod_provJur = mainHolder[0].TCanton;
-                                            formularioRow.data.cod_localidadJur = mainHolder[0].TDistrito;
-                                            formularioRow.data.direccionexactaJur = mainHolder[0].otrasenas;
-
-                                            ref.Init(formularioRow.data);
-                                            ref.AcceptCallBack(app.EmisionMapfreMas.Accept);
-                                        })
-                                }
-
-                            }
-
-
                         })
                         .catch(err => {
                             console.error(err);
@@ -2498,7 +2492,7 @@ app.EmisionMapfreMas = (function () {
         },
         tercerosDeleteRow: function (row) {
             terceros_table_row_delete(row);
-        },		  
+        },
         documentosrequeridosEditRow: function (row) {
             documentosrequeridos_table_row_edit(row);
         },
@@ -2507,7 +2501,7 @@ app.EmisionMapfreMas = (function () {
         },
         vehiculoDeleteRow: function (row) {
             vehiculo_table_row_delete(row);
-        },		  
+        },
         documentosrequeridosDeleteRow: function (row) {
             documentosrequeridos_table_row_delete(row);
         },
@@ -2557,7 +2551,7 @@ window.vehiculo_Events = {
         app.EmisionMapfreMas.vehiculoEditRow(row);
         e.stopPropagation();
     }
-}; 
+};
 window.documentosrequeridosTbl_Events = {
     'click .delete': function (e, value, row, index) {
         toastr.warning("Si está seguro de querer limpiar el documento requerido '" + row.DNombre + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionMapfreMas.documentosrequeridosDeleteRow(row); } });

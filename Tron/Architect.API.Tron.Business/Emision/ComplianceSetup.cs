@@ -31,7 +31,7 @@ namespace Architect.API.Tron.Business.Emision
             mapInfo.ejecutivo = tokenInfo.AgentCode.ToString();
             mapInfo.usuarioRegistro = tokenInfo.UserId.ToString();
             mapInfo.usuario = tokenInfo.UserId;
-            mapInfo.clientesFATCA = new[] {
+            mapInfo.clientesFATCA = new List<Clientesfatca>() {
                 new Clientesfatca() {
                     poseeGreenCard= "N",
                     poseeEIN= "N",
@@ -45,7 +45,7 @@ namespace Architect.API.Tron.Business.Emision
             //{
             //}
 
-            mapInfo.clientesPatrimonio = new[] {
+            mapInfo.clientesPatrimonio = new List<Clientespatrimonio>() {
                 new Clientespatrimonio()
                 {
                      descripcionPatrimonio = string.Format("{0} {1} {2} {3}", quoteInfo.cod_marcaDesc, quoteInfo.cod_modeloDesc, quoteInfo.cod_sub_modeloDesc, quoteInfo.NUM_MATRICULA ),

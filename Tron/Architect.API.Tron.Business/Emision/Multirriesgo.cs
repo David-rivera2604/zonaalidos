@@ -17,6 +17,8 @@ using Architect.API.Core.Contracts;
 using Newtonsoft.Json;
 using Architect.Compliance.Integrations.Contracts;
 using Architect.API.Tron.Contracts.Presupuesto.API;
+using System.Net.Http.Headers;
+using System.Runtime.InteropServices;
 
 namespace Architect.API.Tron.Business.Emision
 {
@@ -120,32 +122,32 @@ namespace Architect.API.Tron.Business.Emision
             else
             {
 
-                    Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = MultirriesgoConvertTo.Tron(quoteInfo);
+                Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = MultirriesgoConvertTo.Tron(quoteInfo);
 
-                    Architect.API.Tron.Contracts.Poliza.DatoFijo result2 = Backoffice.Emision.Generico.Emitir(result, tokenInfo);
+                Architect.API.Tron.Contracts.Poliza.DatoFijo result2 = Backoffice.Emision.Generico.Emitir(result, tokenInfo);
 
-                    resultQuoteInfo = MultirriesgoConvertFrom.Quote(quoteInfo, result2);
+                resultQuoteInfo = MultirriesgoConvertFrom.Quote(quoteInfo, result2);
 
-                    if (resultQuoteInfo.num_poliza.IsNotEmpty())
+                if (resultQuoteInfo.num_poliza.IsNotEmpty())
+                {
+                    Core.Business.General.ChangeSet.Create(3000, Convert.ToInt32(resultQuoteInfo.num_poliza.Substring(4)), tokenInfo.CompanyId, "Emisión Multirriesgo", "Póliza #" + resultQuoteInfo.num_poliza, tokenInfo.UserId, resultQuoteInfo);
+
+                    //Se cambian los adjuntos creados al número de presupuesto al número de póliza generado
+                    Core.Business.General.Attachment.ChangeEntityId(tokenInfo.CompanyId, 3000, Convert.ToInt64(resultQuoteInfo.presupuesto), 3000, Convert.ToInt64(resultQuoteInfo.num_poliza), tokenInfo.UserId);
+
+                    try
                     {
-                        Core.Business.General.ChangeSet.Create(3000, Convert.ToInt32(resultQuoteInfo.num_poliza.Substring(4)), tokenInfo.CompanyId, "Emisión Multirriesgo", "Póliza #" + resultQuoteInfo.num_poliza, tokenInfo.UserId, resultQuoteInfo);
-
-                        //Se cambian los adjuntos creados al número de presupuesto al número de póliza generado
-                        Core.Business.General.Attachment.ChangeEntityId(tokenInfo.CompanyId, 3000, Convert.ToInt64(resultQuoteInfo.presupuesto), 3000, Convert.ToInt64(resultQuoteInfo.num_poliza), tokenInfo.UserId);
-
-                        try
-                        {
-                            Compliance(quoteInfo, tokenInfo);
-                        }
-                        catch (Exception ex)
-                        {
-                            Utilities.Log.ErrorLog("Issue.Compliance", "Fail send compliance information", ex);
-                        }
-
-
-                        Contracts.PolicyProposal proposal = DataAccess.PolicyProposal.RetrieveByProposalId(quoteInfo.presupuesto, tokenInfo.CompanyId);
-                        DataAccess.PolicyProposal.Update_Status(proposal.Id, 10, quoteInfo.presupuesto, tokenInfo.UserId);
+                        Compliance(quoteInfo, tokenInfo);
                     }
+                    catch (Exception ex)
+                    {
+                        Utilities.Log.ErrorLog("Issue.Compliance", "Fail send compliance information", ex);
+                    }
+
+
+                    Contracts.PolicyProposal proposal = DataAccess.PolicyProposal.RetrieveByProposalId(quoteInfo.presupuesto, tokenInfo.CompanyId);
+                    DataAccess.PolicyProposal.Update_Status(proposal.Id, 10, quoteInfo.presupuesto, tokenInfo.UserId);
+                }
             }
 
             return resultQuoteInfo;
@@ -811,7 +813,7 @@ namespace Architect.API.Tron.Business.Emision
             }
 
 
-            mapInfo.clientesFATCA = new[] { FATCA };
+            mapInfo.clientesFATCA = new List<Clientesfatca>() { FATCA };
             mapInfo.clientesTransacciones = new[] { Transacciones };
             mapInfo.clientesIngresos = new[] { Ingresos };
             mapInfo.clientesPolizas = new List<Compliance.Integrations.Contracts.Clientespoliza>()
@@ -834,7 +836,7 @@ namespace Architect.API.Tron.Business.Emision
                 }
             };
             mapInfo.clientesOtrosAtributos = new[] { OtrosAtributos };
-            mapInfo.clientesPatrimonio = new[] { Patrimonio };
+            mapInfo.clientesPatrimonio = new List<Clientespatrimonio> { Patrimonio };
             if (quoteInfo.DatosEconomicos != null)
             {
                 mapInfo.clientesPolizas[0].prima = (int)quoteInfo.DatosEconomicos.annualgrosspremium;
