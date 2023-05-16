@@ -79,7 +79,7 @@ namespace Architect.API.Tron.Business.Backoffice.Cotizacion
 
                 quoteInfo.DatosDelProceso = g2000510Instance;
 
-                Actualiza_txt_campo(quoteInfo.num_poliza, datosVariable, currentConnection);
+               //Actualiza_txt_campo(quoteInfo.num_poliza, datosVariable, currentConnection);
                 
                 currentConnection.Close();
 
