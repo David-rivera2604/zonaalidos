@@ -87,7 +87,7 @@ namespace Architect.API.Core.Business.General
             attachment.UpdateUserCode = userId;
             if (attachment.FileContent.IsNotEmpty())
             {
-                attachment.FileContent = Path.Combine(HostingEnvironment.MapPath(ConfigurationManager.AppSettings["FAttachments.Path"]), attachment.FileContent);
+                attachment.FileContent = Path.Combine(ConfigurationManager.AppSettings["Attachments.Path"], attachment.FileContent);
             }
             return SyncUp(attachment);
         }
