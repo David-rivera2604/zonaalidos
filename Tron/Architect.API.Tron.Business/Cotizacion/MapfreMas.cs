@@ -462,7 +462,7 @@ namespace Architect.API.Tron.Business.Cotizacion
 
         private static List<Core.Contracts.General.LookupValue> CleanEmptyValue(List<Core.Contracts.General.LookupValue> values)
         {
-            if (values != null && values.Count > 0 && values.First().Code == "0")
+            if (values != null && values.Count > 0 && (values.First().Code == "0" || values.First().Code == ""))
             {
                 values.Remove(values.First());
             }
