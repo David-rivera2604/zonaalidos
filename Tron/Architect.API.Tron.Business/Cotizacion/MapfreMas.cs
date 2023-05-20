@@ -1,14 +1,10 @@
-﻿using Architect.API.Core.Contracts.General;
-using Architect.API.Core.Contracts.Security;
-using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
+﻿using Architect.API.Core.Contracts.Security;
 using Architect.Utilities.Extensions;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Architect.API.Tron.Business.Cotizacion
 {
