@@ -30,7 +30,11 @@ namespace Architect.API.Tron.Business.Cotizacion
             //Número de Días
             TimeSpan difFechas = quoteInfo.fec_vcto_poliza - quoteInfo.fec_efec_poliza;
             int dias = difFechas.Days + 1;
-            if(quoteInfo.DES_DESTINO_DESC == String.Empty)
+            if (quoteInfo.COD_PAIS_ORIGEN == String.Empty)
+            {
+                quoteInfo.PAIS_ORIGEN_DESC = Destino(quoteInfo.COD_PAIS_ORIGEN);
+            }
+            if (quoteInfo.DES_DESTINO_DESC == String.Empty)
             {
                 quoteInfo.DES_DESTINO_DESC = Destino(quoteInfo.DES_DESTINO);
             }
