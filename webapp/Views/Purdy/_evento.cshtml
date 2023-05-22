@@ -1,0 +1,204 @@
+﻿<!-- Edit Form -->
+<div class='form-row'>
+    <div class='col-md-12'>
+        <div id="PanelPurdyEventoEdt" class="animated fadeInRight compact">
+            <form id='PanelPurdyEventoEdtForm' class='form-horizontal' data-toggle='validator'>
+                <fieldset>
+                    <!-- tB2Analisisdelevento Zone -->
+                    <div class="form-row">
+                        @*<div class="col-lg-12">
+                            <h4>TB2 Análisis del evento</h4>
+                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>*@
+                            <div class="form-row">
+
+                                <!-- fechadelevento DatePicker -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='fechadelevento'>Fecha del evento</label>
+                                        <div class='input-group date' id='fechadelevento_group'>
+                                            <input type='text' id='fechadelevento' name='fechadelevento' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                            <span class='input-group-addon'>
+                                                <span class='glyphicon glyphicon-calendar'></span>
+                                            </span>
+                                        </div>
+                                        <div id='fechadelevento_validate'></div>
+                                    </div>
+                                </div>
+
+                                <!-- analistaReclamos DropDownList -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='analistaReclamos'>Analista Reclamos</label>
+                                        <select id='analistaReclamos' name='analistaReclamos' class='form-control'>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- motivoNoProcede DropDownList -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='motivoNoProcede'>Motivo No Procede</label>
+                                        <select id='motivoNoProcede' name='motivoNoProcede' class='form-control'>
+                                            <option value='1'>Tercero asume</option>
+                                            <option value='2'>Monto de reparación menor al deducible</option>
+                                            <option value='3'>Cliente no desea utilizar póliza</option>
+                                            <option value='4'>Declinado</option>
+                                            <option value='5'>Otro</option>
+                                            <option value='6'>Cobertura Mapfre</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- detalleNoprocede Text -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='detalleNoprocede'>Detalle No procede</label>
+                                        <input type='text' id='detalleNoprocede' name='detalleNoprocede' class='form-control' size='40' maxlength='40' />
+
+                                    </div>
+                                </div>
+                                <!-- detalleSiniestro Text -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='detalleSiniestro'>Detalle Siniestro</label>
+                                        <input type='text' id='detalleSiniestro' name='detalleSiniestro' class='form-control' size='40' maxlength='40' />
+
+                                    </div>
+                                </div>
+                                <!-- tipodeCobertura DropDownList -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='tipodeCobertura'>Tipo de Cobertura</label>
+                                        <select id='tipodeCobertura' name='tipodeCobertura' class='form-control'>
+                                            <option value='1'>CV</option>
+                                            <option value='2'>CV-RC</option>
+                                            <option value='3'>RC</option>
+                                            <option value='4'>RA</option>
+                                            <option value='5'>RT</option>
+                                            <option value='6'>RB</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- categoriadeSiniestro DropDownList -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='categoriadeSiniestro'>Categoría de Siniestro</label>
+                                        <select id='categoriadeSiniestro' name='categoriadeSiniestro' class='form-control'>
+                                            <option value='1'>Colisión entre vehículos</option>
+                                            <option value='2'>Colisión objeto fijo</option>
+                                            <option value='3'>Volcamiento</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- posibleSubrogacion CheckBox -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="posibleSubrogacion">
+                                            <label class="custom-control-label" for="posibleSubrogacion" style="padding-top: 4px;font-size: 11px;">Posible Subrogación</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- fechaidentificadocomoPosibleSubrogacion DatePicker -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='fechaidentificadocomoPosibleSubrogacion'>Fecha identificado como Posible Subrogación</label>
+                                        <div class='input-group date' id='fechaidentificadocomoPosibleSubrogacion_group'>
+                                            <input type='text' id='fechaidentificadocomoPosibleSubrogacion' name='fechaidentificadocomoPosibleSubrogacion' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                            <span class='input-group-addon'>
+                                                <span class='glyphicon glyphicon-calendar'></span>
+                                            </span>
+                                        </div>
+                                        <div id='fechaidentificadocomoPosibleSubrogacion_validate'></div>
+                                    </div>
+                                </div>
+
+                                <!-- enviadoaInvestigacion CheckBox -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="enviadoaInvestigacion">
+                                            <label class="custom-control-label" for="enviadoaInvestigacion" style="padding-top: 4px;font-size: 11px;">Enviado a Investigación</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- fechaEnviadoaInvestigacion DatePicker -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='fechaEnviadoaInvestigacion'>Fecha Enviado a Investigación</label>
+                                        <div class='input-group date' id='fechaEnviadoaInvestigacion_group'>
+                                            <input type='text' id='fechaEnviadoaInvestigacion' name='fechaEnviadoaInvestigacion' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                            <span class='input-group-addon'>
+                                                <span class='glyphicon glyphicon-calendar'></span>
+                                            </span>
+                                        </div>
+                                        <div id='fechaEnviadoaInvestigacion_validate'></div>
+                                    </div>
+                                </div>
+
+                                <!-- enviadoaAcompanamientoLegal CheckBox -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="enviadoaAcompanamientoLegal">
+                                            <label class="custom-control-label" for="enviadoaAcompanamientoLegal" style="padding-top: 4px;font-size: 11px;">Enviado a Acompañamiento Legal</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- fechaEnviadoaAcompanamientoLegal DatePicker -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='fechaEnviadoaAcompanamientoLegal'>Fecha Enviado a Acompañamiento Legal</label>
+                                        <div class='input-group date' id='fechaEnviadoaAcompanamientoLegal_group'>
+                                            <input type='text' id='fechaEnviadoaAcompanamientoLegal' name='fechaEnviadoaAcompanamientoLegal' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                            <span class='input-group-addon'>
+                                                <span class='glyphicon glyphicon-calendar'></span>
+                                            </span>
+                                        </div>
+                                        <div id='fechaEnviadoaAcompanamientoLegal_validate'></div>
+                                    </div>
+                                </div>
+
+                                <!-- infraseguro CheckBox -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="infraseguro">
+                                            <label class="custom-control-label" for="infraseguro" style="padding-top: 4px;font-size: 11px;">Infraseguro</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- autorizaciondeUsoPoliza CheckBox -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="autorizaciondeUsoPoliza">
+                                            <label class="custom-control-label" for="autorizaciondeUsoPoliza" style="padding-top: 4px;font-size: 11px;">Autorización de Uso Póliza</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- fechaAutorizaciondeUsoPoliza DatePicker -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='fechaAutorizaciondeUsoPoliza'>Fecha Autorización de Uso Póliza</label>
+                                        <div class='input-group date' id='fechaAutorizaciondeUsoPoliza_group'>
+                                            <input type='text' id='fechaAutorizaciondeUsoPoliza' name='fechaAutorizaciondeUsoPoliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                            <span class='input-group-addon'>
+                                                <span class='glyphicon glyphicon-calendar'></span>
+                                            </span>
+                                        </div>
+                                        <div id='fechaAutorizaciondeUsoPoliza_validate'></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        @*</div>
+                    </div>*@
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Edit Form End -->

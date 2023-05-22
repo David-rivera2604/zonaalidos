@@ -1,0 +1,251 @@
+﻿        <!-- Edit Form -->
+<div class='form-row'>
+    <div class='col-md-12'>
+        <div id="PanelPurdyDetalleEdt" class="animated fadeInRight compact">
+            <form id='PanelPurdyDetalleEdtForm' class='form-horizontal' data-toggle='validator'>
+                <fieldset>
+                    <!-- tB1Detallez1Poliza Zone -->
+                    <div class="form-row">
+                        <div class="col-lg-12">
+                            <h4>Póliza</h4>
+                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                            <div class="form-row">
+
+                                <!-- numerodepoliza Text -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='numerodepoliza'>Número de póliza</label>
+                                        <input type='text' id='numerodepoliza' name='numerodepoliza' class='form-control' size='0' maxlength='0' />
+
+                                    </div>
+                                </div>
+                                <!-- monedadepoliza DropDownList -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='monedadepoliza'>Moneda de póliza</label>
+                                        <select id='monedadepoliza' name='monedadepoliza' class='form-control'>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- usodepoliza DropDownList -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='usodepoliza'>Uso de póliza</label>
+                                        <select id='usodepoliza' name='usodepoliza' class='form-control'>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- coberturascontratadas Text -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='coberturascontratadas'>Coberturas contratadas</label>
+                                        <input type='text' id='coberturascontratadas' name='coberturascontratadas' class='form-control' size='40' maxlength='40' />
+
+                                    </div>
+                                </div>
+                                <!-- primaAnual Numeric -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='primaAnual'>Prima Anual</label>
+                                        <input type='text' id='primaAnual' name='primaAnual' class='form-control text-right' size='26' maxlength='26' />
+                                    </div>
+                                </div>
+                                <!-- primaspagadas Numeric -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='primaspagadas'>Primas pagadas</label>
+                                        <input type='text' id='primaspagadas' name='primaspagadas' class='form-control text-right' size='26' maxlength='26' />
+                                    </div>
+                                </div>
+                                <!-- primaspendientesdecobro Numeric -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='primaspendientesdecobro'>Primas pendientes de cobro</label>
+                                        <input type='text' id='primaspendientesdecobro' name='primaspendientesdecobro' class='form-control text-right' size='26' maxlength='26' />
+                                    </div>
+                                </div>
+                                <!-- fechaultimaprimacobrada DatePicker -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='fechaultimaprimacobrada'>Fecha última prima cobrada</label>
+                                        <div class='input-group date' id='fechaultimaprimacobrada_group'>
+                                            <input type='text' id='fechaultimaprimacobrada' name='fechaultimaprimacobrada' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                            <span class='input-group-addon'>
+                                                <span class='glyphicon glyphicon-calendar'></span>
+                                            </span>
+                                        </div>
+                                        <div id='fechaultimaprimacobrada_validate'></div>
+                                    </div>
+                                </div>
+
+                                <!-- deducible Numeric -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='deducible'>Deducible</label>
+                                        <input type='text' id='deducible' name='deducible' class='form-control text-right' size='26' maxlength='26' />
+                                    </div>
+                                </div>
+                                <!-- tomador Text -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='tomador'>Tomador</label>
+                                        <input type='text' id='tomador' name='tomador' class='form-control' size='40' maxlength='40' />
+
+                                    </div>
+                                </div>
+                                <!-- acreedor Text -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='acreedor'>Acreedor</label>
+                                        <input type='text' id='acreedor' name='acreedor' class='form-control' size='40' maxlength='40' />
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- tB1Detallez2Vehiculo Zone -->
+                    <div class="form-row">
+                        <div class="col-lg-12">
+                            <h4>Vehículo</h4>
+                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                            <div class="form-row">
+
+                                <!-- placa Text -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='placa'>Placa</label>
+                                        <input type='text' id='placa' name='placa' class='form-control' size='40' maxlength='40' />
+
+                                    </div>
+                                </div>
+                                <!-- chasis Text -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='chasis'>Chasis</label>
+                                        <input type='text' id='chasis' name='chasis' class='form-control' size='40' maxlength='40' />
+
+                                    </div>
+                                </div>
+                                <!-- marca Text -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='marca'>Marca</label>
+                                        <input type='text' id='marca' name='marca' class='form-control' size='40' maxlength='40' />
+
+                                    </div>
+                                </div>
+                                <!-- valorAsegurado Numeric -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='valorAsegurado'>Valor Asegurado</label>
+                                        <input type='text' id='valorAsegurado' name='valorAsegurado' class='form-control text-right' size='26' maxlength='26' />
+                                    </div>
+                                </div>
+                                <!-- nombredelchoferduranteelsiniestro Text -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='nombredelchoferduranteelsiniestro'>Nombre del chofer durante el siniestro</label>
+                                        <input type='text' id='nombredelchoferduranteelsiniestro' name='nombredelchoferduranteelsiniestro' class='form-control' size='40' maxlength='40' />
+
+                                    </div>
+                                </div>
+                                <!-- telefonodechofer Text -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='telefonodechofer'>Teléfono de chofer</label>
+                                        <div class='input-group'>
+                                            <span class='input-group-addon'>
+                                                <span class='glyphicon glyphicon-earphone'></span>
+                                            </span>
+                                            <div class="input-group-prepend">
+                                                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="telefonodechoferType" data-value='1'>
+                                                    Celular
+                                                </button>
+                                                <div class="dropdown-menu" id="telefonodechoferTypeMenu">
+                                                    <a class="dropdown-item active" data-value='1' href="#">Celular</a>
+                                                    <a class="dropdown-item" data-value='2' href="#">Habitación</a>
+                                                    <a class="dropdown-item" data-value='3' href="#">Oficina</a>
+                                                    <a class="dropdown-item" data-value='4' href="#">Fax</a>
+                                                </div>
+                                            </div>
+                                            <input id='telefonodechofer' name='telefonodechofer' type='text' class='form-control' size='9' maxlength='9'>
+                                        </div>
+                                        <div id='telefonodechofer_validate'></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- tB1Detallet3BitacoradeASIGES Grid -->
+                    <div class="form-row">
+                        <div class="col-lg-12">
+                            <div class="form-row">
+                                <div class='col'>
+                                    <h4>Bitácora de ASIGES<label id="tB1Detallet3BitacoradeASIGESTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                </div>
+                                <div class='col-auto'>
+                                    <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo Bitácora de ASIGES" data-toggle="modal" id="tB1Detallet3BitacoradeASIGESNew"> <i class="fa fa-plus"></i> </button>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                            <div class="form-row">
+                                <div class='col-md-12' style="padding-bottom: 20px">
+                                    <div class="table-responsive">
+                                        <table id="tB1Detallet3BitacoradeASIGESTbl" style="font-size: 11px;">
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- tB1Detallet3BitacoradeASIGES Grid Modal -->
+<div class="modal inmodal" id="tB1Detallet3BitacoradeASIGESModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                <h4 class="modal-title">Bitácora de ASIGES</h4>
+                <small class="font-bold">Permite agregar un nuevo Bitácora de ASIGES o editar uno ya existente</small>
+            </div>
+            <div class="modal-body">
+                <!-- tB1Detallet3BitacoradeASIGES Grid Edit Form -->
+                <div class='form-row'>
+                    <div class='col-md-12'>
+                        <div id="tB1Detallet3BitacoradeASIGESEdt" class="animated fadeInRight compact">
+                            <form id='tB1Detallet3BitacoradeASIGESEdtForm' class='form-horizontal' data-toggle='validator'>
+                                <fieldset>
+                                    <div class='form-row'>
+                                        <!-- bitacora Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='bitacora'>Bitácora</label>
+                                                <input type='text' id='bitacora' name='bitacora' class='form-control' size='40' maxlength='40' />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="tB1Detallet3BitacoradeASIGESEdtFormSave" data-doing="Guardando...">Guardar cambios</button>
+                <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Form End -->
