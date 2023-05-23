@@ -219,6 +219,7 @@ namespace Aliados.Monge.Application.Poliza
                 TIP_VIAJE = tip_viaje,
                 FEC_VIAJE = risk.Datos_Generales.fec_efec_poliza,
                 DES_DESTINO = StringValue(datosvariables, "DES_DESTINO"),
+                COD_PAIS_ORIGEN = StringValue(datosvariables, "ORI_ORIGEN"),
                 COD_MODALIDAD = risk.Datos_Generales.cod_modalidad,
                 cantidad_riesgos = cantidadRiesgos,
                 coberturas = new List<Architect.API.Tron.Contracts.Comun.Cobertura>()

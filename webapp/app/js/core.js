@@ -378,11 +378,11 @@ app.core = (function () {
         ajaxCall('GET', app.setting.apipath + path + '?keys=' + onlyKeys.toString() + '&url=' + url, null,
             function (data) {
                 var key = '', ctrl = '';
-                
+
                 $.each(data, function (index, values) {
 
                     let current = lookupData.filter(i => i.Key === values.Key)
-                    if (current.length > 0 ) {
+                    if (current.length > 0) {
                         lookupData.splice(lookupData.indexOf(current[0]), 1);
                     }
                     lookupData.push(values);
@@ -401,6 +401,9 @@ app.core = (function () {
                             selectedOptions.trigger('change');
                         } else {
                             selectedOptions.val(-1);
+                        }
+                        if (selectedOptions.data("emptydisabled") === true) {
+                            selectedOptions.prop('disabled', selectedOptions.children().length == 0);
                         }
                     }
                     else {

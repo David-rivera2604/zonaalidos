@@ -197,7 +197,7 @@ namespace Architect.API.Tron.Business.Backoffice
                 Contracts.Poliza.DatoFijo policy = DataAccess.ControlesTecnicos.Autorizar(num_poliza, controlTecnico);
                 if (controlTecnico.tip_autoriza == "1")
                 {
-                    string certificado = Common.ImprimirPoliza_PDF(num_poliza, controlTecnico.num_spto);
+                    string certificado = Common.ImprimirPoliza_PDF(num_poliza);
                     if (controlTecnico.correo1.IsNotEmpty())
                     {
                         Dictionary<string, string> emailTmpl = Core.Business.General.Mail.GetTemplate("Send_Certificate", tokenInfo.CompanyId, tokenInfo.UserId, 0, policy);
