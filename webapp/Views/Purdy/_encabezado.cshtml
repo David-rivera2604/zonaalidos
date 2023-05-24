@@ -7,214 +7,144 @@
                     <!-- seccionEncabezado Zone -->
                     <div class="form-row">
                         @*<div class="col-lg-12">
-                            <h4>Sección Encabezado</h4>
-                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>*@
-                            <div class="form-row">
-
-                                <!-- aSIGES Text -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='aSIGES'>ASIGES<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                        <input type='text' id='aSIGES' name='aSIGES' class='form-control' size='40' maxlength='40' />
-
-                                    </div>
-                                </div>
-                                <!-- tipodeIndemnizacion DropDownList -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='tipodeIndemnizacion'>Tipo de Indemnización</label>
-                                        <select id='tipodeIndemnizacion' name='tipodeIndemnizacion' class='form-control'>
-                                            <option value='1'>Casos reparados</option>
-                                            <option value='2'>Pérdida Total Financiera</option>
-                                            <option value='3'>Pérdida Total Estructural</option>
-                                            <option value='4'>Casos con Avalúo pendiente de reparación</option>
-                                            <option value='5'>Repuestos pendientes</option>
-                                            <option value='6'>Avalúo cliente no repara aún</option>
-                                            <option value='7'>Pendiente Avalúo</option>
-                                            <option value='8'>No procede</option>
-                                            <option value='9'>Posible pérdida total</option>
-                                            <option value='10'>Pago directo</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- estadoMapfre DropDownList -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='estadoMapfre'>Estado Mapfre</label>
-                                        <select id='estadoMapfre' name='estadoMapfre' class='form-control'>
-                                            <option value='1'>Pagado</option>
-                                            <option value='2'>Reparación</option>
-                                            <option value='3'>En reserva</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- numerodepoliza Text -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='numerodepoliza'>Número de póliza</label>
-                                        <input type='text' id='numerodepoliza' name='numerodepoliza' class='form-control' size='0' maxlength='0' />
-
-                                    </div>
-                                </div>
-                                <!-- nombreAsegurado Text -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='nombreAsegurado'>Nombre Asegurado</label>
-                                        <input type='text' id='nombreAsegurado' name='nombreAsegurado' class='form-control' size='100' maxlength='100' />
-
-                                    </div>
-                                </div>
-                                <!-- DocumentNumber Text -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='DocumentNumber'>Cédula Asegurado</label>
-                                        <div class='input-group'>
-                                            <span class='input-group-addon'>
-                                                <span class='glyphicon glyphicon-barcode'></span>
-                                            </span>
-                                            <div class="input-group-prepend">
-                                                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-value='1' id="DocumentNumberType">
-                                                    Cédula
-                                                </button>
-                                                <div class="dropdown-menu" id="DocumentNumberTypeMenu">
-                                                    <a class="dropdown-item active" href="#" data-value='1'>Cédula</a>
-                                                    <a class="dropdown-item" href="#" data-value='2'>DIMEX</a>
-                                                    <a class="dropdown-item" href="#" data-value='3'>Pasaporte</a>
-                                                    <a class="dropdown-item" href="#" data-value='4'>Cédula jurídica</a>
-                                                </div>
-                                            </div>
-                                            <input id='DocumentNumber' name='DocumentNumber'
-                                                   type='text' class='form-control' size='20'
-                                                   maxlength='20' placeholder='0X-XXXX-XXXX'>
-
-                                        </div>
-                                        <div id='DocumentNumber_validate'></div>
-                                    </div>
-                                </div>
-                                <!-- correoAsegurado Text -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='correoAsegurado'>Correo Asegurado</label>
-                                        <div class='input-group'>
-                                            <span class='input-group-addon'>
-                                                <span class='glyphicon glyphicon-envelope'></span>
-                                            </span>
-                                            <input id='correoAsegurado' name='correoAsegurado' type='text' class='form-control' size='80' maxlength='80'>
-                                        </div>
-                                        <div id='correoAsegurado_validate'></div>
-                                    </div>
-                                </div>
-                                <!-- telefonoAsegurado Text -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='telefonoAsegurado'>Teléfono Asegurado</label>
-                                        <div class='input-group'>
-                                            <span class='input-group-addon'>
-                                                <span class='glyphicon glyphicon-earphone'></span>
-                                            </span>
-                                            <div class="input-group-prepend">
-                                                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="telefonoAseguradoType" data-value='1'>
-                                                    Celular
-                                                </button>
-                                                <div class="dropdown-menu" id="telefonoAseguradoTypeMenu">
-                                                    <a class="dropdown-item active" data-value='1' href="#">Celular</a>
-                                                    <a class="dropdown-item" data-value='2' href="#">Habitación</a>
-                                                    <a class="dropdown-item" data-value='3' href="#">Oficina</a>
-                                                    <a class="dropdown-item" data-value='4' href="#">Fax</a>
-                                                </div>
-                                            </div>
-                                            <input id='telefonoAsegurado' name='telefonoAsegurado' type='text' class='form-control' size='9' maxlength='9'>
-                                        </div>
-                                        <div id='telefonoAsegurado_validate'></div>
-                                    </div>
-                                </div>
-                                <!-- ingresodeaviso DatePicker -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='ingresodeaviso'>Ingreso de aviso</label>
-                                        <div class='input-group date' id='ingresodeaviso_group'>
-                                            <input type='text' id='ingresodeaviso' name='ingresodeaviso' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
-                                            <span class='input-group-addon'>
-                                                <span class='glyphicon glyphicon-calendar'></span>
-                                            </span>
-                                        </div>
-                                        <div id='ingresodeaviso_validate'></div>
-                                    </div>
-                                </div>
-
-                                <!-- fechadelevento DatePicker -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='fechadelevento'>Fecha del evento</label>
-                                        <div class='input-group date' id='fechadelevento_group'>
-                                            <input type='text' id='fechadelevento' name='fechadelevento' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
-                                            <span class='input-group-addon'>
-                                                <span class='glyphicon glyphicon-calendar'></span>
-                                            </span>
-                                        </div>
-                                        <div id='fechadelevento_validate'></div>
-                                    </div>
-                                </div>
-
-                                <!-- noSiniestro Text -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='noSiniestro'>No. Siniestro</label>
-                                        <input type='text' id='noSiniestro' name='noSiniestro' class='form-control' size='0' maxlength='0' />
-
-                                    </div>
-                                </div>
-                                <!-- analistaReclamos DropDownList -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='analistaReclamos'>Analista Reclamos</label>
-                                        <select id='analistaReclamos' name='analistaReclamos' class='form-control'>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- analistaGestora DropDownList -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='analistaGestora'>Analista Gestora</label>
-                                        <select id='analistaGestora' name='analistaGestora' class='form-control'>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- tipodeIndemnizacion DropDownList -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='tipodeIndemnizacion'>Tipo de Indemnización</label>
-                                        <select id='tipodeIndemnizacion' name='tipodeIndemnizacion' class='form-control'>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- detalleSiniestro Notes -->
-                                <div class='col-sm-12 col-md-12'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='detalleSiniestro'>Detalle Siniestro</label>
-                                        <textarea id='detalleSiniestro' name='detalleSiniestro' class='form-control' rows="2"></textarea>
-                                    </div>
-                                </div>
-                                <!-- categoriadeSiniestro DropDownList -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='categoriadeSiniestro'>Categoría de Siniestro</label>
-                                        <select id='categoriadeSiniestro' name='categoriadeSiniestro' class='form-control'>
-                                            <option value='1'>Colisión entre vehículos</option>
-                                            <option value='2'>Colisión objeto fijo</option>
-                                            <option value='3'>Volcamiento</option>
-                                        </select>
-                                    </div>
-                                </div>
+        <h4>Sección Encabezado</h4>
+        <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>*@
+                        <!-- aSIGES Text -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='aSIGES'>ASIGES<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                <input type='text' id='aSIGES' name='aSIGES' class='form-control' size='16' maxlength='16' />
 
                             </div>
-                        @*</div>
-                    </div>*@
+                        </div>
+                        <!-- tipodeindemnizacion DropDownList -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='tipodeindemnizacion'>Tipo de indemnización</label>
+                                <select id='tipodeindemnizacion' name='tipodeindemnizacion' class='form-control'>
+                                    <option value='1'>Casos reparados</option>
+                                    <option value='2'>Pérdida total financiera</option>
+                                    <option value='3'>Pérdida total estructural</option>
+                                    <option value='4'>Casos con avalúo pendiente de reparación</option>
+                                    <option value='5'>Repuestos pendientes</option>
+                                    <option value='6'>Avalúo cliente no repara aún</option>
+                                    <option value='7' selected>Pendiente avalúo</option>
+                                    <option value='8'>No procede</option>
+                                    <option value='9'>Posible pérdida total</option>
+                                    <option value='10'>Pago directo</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- estadoMapfre DropDownList -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='estadoMapfre'>Estado Mapfre</label>
+                                <div id='estadoMapfre' class="readonly"></div>
+                            </div>
+                        </div>
+
+                        <!-- numerodepoliza Numeric -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='numerodepoliza'>Número de póliza</label>
+                                <div id='numerodepoliza' class="readonly"></div>
+                            </div>
+                        </div>
+                        <!-- DocumentNumber Text -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='cedulaasegurado'>Cédula asegurado</label>
+                                <div id='cedulaasegurado' class="readonly"></div>
+                            </div>
+                        </div>
+                        <!-- nombreasegurado Text -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='nombreasegurado'>Nombre asegurado</label>
+                                <div id='nombreasegurado' class="readonly"></div>
+                            </div>
+                        </div>
+
+                        <!-- correoasegurado Text -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='correoasegurado'>Correo asegurado</label>
+                                <div id='correoasegurado' class="readonly"></div>
+                            </div>
+                        </div>
+                        <!-- telefonoasegurado Text -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='telefonoasegurado'>Teléfono asegurado</label>
+                                <div id='telefonoasegurado' class="readonly"></div>
+                            </div>
+                        </div>
+                        <!-- ingresodeaviso DatePicker -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='ingresodeaviso'>Ingreso de aviso</label>
+                                <div id='ingresodeaviso' class="readonly"></div>
+                            </div>
+                        </div>
+
+                        <!-- fechadelevento DatePicker -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='fechadelevento'>Fecha del evento</label>
+                                <div id='fechadelevento' class="readonly"></div>
+
+                            </div>
+                        </div>
+
+                        <!-- noSiniestro Numeric -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='noSiniestro'>No. Siniestro</label>
+                                <div id='noSiniestro' class="readonly"></div>
+                            </div>
+                        </div>
+
+                        <!-- categoriadesiniestro DropDownList -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='categoriadesiniestro'>Categoría de siniestro</label>
+                                <div id='categoriadesiniestro' class="readonly"></div>
+                            </div>
+                        </div>
+                        <!-- tipodeindemnizacion DropDownList -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='tipodeindemnizacion'>Tipo de indemnización</label>
+                                <div id='tipodeindemnizacion' class="readonly"></div>
+                            </div>
+                        </div>
+                        <!-- analistareclamos DropDownList -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='analistareclamos'>Analista reclamos</label>
+                                <div id='analistareclamos' class="readonly"></div>
+                            </div>
+                        </div>
+
+                        <!-- analistagestora DropDownList -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='analistagestora'>Analista gestora</label>
+                                <div id='analistagestora' class="readonly"></div>
+                            </div>
+                        </div>
+
+                        <!-- detallesiniestro Notes -->
+                        <div class='col-sm-12 col-md-12'>
+                            <div class='form-group'>
+                                <label class='control-label' for='detallesiniestro'>Detalle siniestro</label>
+                                <div id='detallesiniestro' class="readonly"></div>
+                            </div>
+                        </div>
+                    </div>
+                    @*</div>
+                        </div>*@
                 </fieldset>
             </form>
         </div>

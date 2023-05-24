@@ -1280,7 +1280,7 @@
     <Content Include="Scripts\Prototype.Producto.js" />
     <Content Include="Scripts\Purdy.Panel.Danos.js" />
     <Content Include="Scripts\Purdy.Panel.Detalle.js" />
-    <Content Include="Scripts\Purdy.Panel.Encabezado.js" />
+    <Content Include="Scripts\Purdy.PanelEncabezado.js" />
     <Content Include="Scripts\Purdy.Panel.Evento.js" />
     <Content Include="Scripts\Purdy.Panel.Indemnizacion.js" />
     <Content Include="Scripts\Purdy.Panel.js" />
