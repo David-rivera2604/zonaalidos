@@ -57,11 +57,6 @@
                     <i class="fa fa-gavel"></i> Análisis de Indemnización <span class="badge badge-danger"></span>
                 </a>
             </li>
-            <li>
-                <a class="nav-link" data-toggle="tab" href="#variosTab" id="variosHTab">
-                    <i class="fa fa-tasks"></i> Varios <span class="badge badge-danger"></span>
-                </a>
-            </li>
         </ul>
 
         <!-- Contenido de las pestañas  -->
@@ -78,9 +73,6 @@
             <div id="indemnizacionTab" class="tab-pane show fade">
                 @Html.Partial("_indemnizacion")
             </div>
-            <div id="variosTab" class="tab-pane  show fade">
-                @Html.Partial("_nose")
-            </div>
         </div>
 
     </div>
@@ -93,7 +85,6 @@
     <script src="@Url.Content("~/Scripts/Purdy.Panel.Evento.js")"></script>
     <script src="@Url.Content("~/Scripts/Purdy.Panel.Danos.js")"></script>
     <script src="@Url.Content("~/Scripts/Purdy.Panel.Indemnizacion.js")"></script>
-    <script src="@Url.Content("~/Scripts/Purdy.Panel.nose.js")"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             app.PurdyPanel.Init();

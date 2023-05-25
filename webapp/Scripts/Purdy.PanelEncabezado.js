@@ -41,13 +41,26 @@ app.PurdyPanelEncabezado = (function () {
 
         $('#aSIGES').change(function () {
             let code = $('#aSIGES').val();
-            let data = [{ "NUM_SINI": 101130223003326, "NUM_EXP": 1, "TXT_DANO_VEHI": "FRONTAL", "NUM_POLIZA": "3022010106226", "TIP_DOCUM_ASEG": "CRE", "COD_DOCUM_ASEG": "175600094530", "FEC_DENU_SINI": "2023-01-09T00:00:00", "HORA_DENU_SINI": "14:56", "FEC_SINI": "2023-01-09T00:00:00", "HORA_SINI": "14:56", "TIP_EXP": "PPD", "TIP_EST_EXP": "P", "NOM_ASEG": "CAMALEO ", "APE_ASEG": "SACAPALLO ", "EMAIL_ASEG": "CHRISTIAN@ELALMA.COM", "TLF_NUMERO_ASEG": "26669060" }];
-            MapObjectToInput(data[0]);
+           // let data = [{ "NUM_SINI": 101130223003326, "NUM_EXP": 1, "TXT_DANO_VEHI": "FRONTAL", "NUM_POLIZA": "3022010106226", "TIP_DOCUM_ASEG": "CRE", "COD_DOCUM_ASEG": "175600094530", "FEC_DENU_SINI": "2023-01-09T00:00:00", "HORA_DENU_SINI": "14:56", "FEC_SINI": "2023-01-09T00:00:00", "HORA_SINI": "14:56", "TIP_EXP": "PPD", "TIP_EST_EXP": "P", "NOM_ASEG": "CAMALEO ", "APE_ASEG": "SACAPALLO ", "EMAIL_ASEG": "CHRISTIAN@ELALMA.COM", "TLF_NUMERO_ASEG": "26669060" }];
+           //MapObjectToInput(data[0]);
 
-            //app.core.Get(`https://appqa.mapfrecr.com/Aliadosdes/api/v1/datasource/json?id=700&sequence=1&url=asiges=${code}`)
-            //    .done(function (data, textStatus, jqXHR) {
-            //        console.log(data);
-            //    });
+            app.core.Get(`${app.setting.apipath}v1/datasource/json?id=700&sequence=1&url=asiges=${code}`)
+                .done(function (claim) {
+                    console.log(claim);
+                    MapObjectToInput(claim[0]);
+                    app.core.Get(`${app.setting.apipath}v1/datasource/json?id=700&sequence=2&url=NUM_POLIZA=${claim[0].NUM_POLIZA}:NUM_SPTO=${claim[0].NUM_SPTO}:NUM_APLI=${claim[0].NUM_APLI}:NUM_SPTO_APLI=${claim[0].NUM_SPTO_APLI}`)
+                        .done(function (policy) {
+                            console.log(policy);
+                        });
+                    app.core.Get(`${app.setting.apipath}v1/datasource/json?id=700&sequence=3&url=NUM_POLIZA=${claim[0].NUM_POLIZA}`)
+                        .done(function (policy) {
+                            console.log(policy);
+                        });
+                    app.core.Get(`${app.setting.apipath}v1/datasource/json?id=700&sequence=4&url=NUM_POLIZA=${claim[0].NUM_POLIZA}:NUM_RIESGO=${claim[0].NUM_RIESGO}`)
+                        .done(function (policy) {
+                            console.log(policy);
+                        });
+                });
         });
     };
 
