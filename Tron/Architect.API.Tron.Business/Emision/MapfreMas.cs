@@ -16,12 +16,11 @@ namespace Architect.API.Tron.Business.Emision
     public static class MapfreMas
     {
         /// <summary>
-        /// 
+        /// Preparara información necesaria para inicial la emision de una póliza.
         /// </summary>
-        /// <param name="presupuesto"></param>
+        /// <param name="presupuesto">Número de presupuesto</param>
         /// <param name="mode">"continue" para retomar un presupuesto (json), "resume" para retomar directo de una cotización de tron, "draft" para complementar la solicitud para luego retomar bajo el modo "continue".</param>
-        /// <param name="tokenInfo"></param>
-        /// <returns></returns>
+        /// <param name="tokenInfo">Información de contexto del usuario conectando.</param>
         public static Contracts.Emision.MapfreMas Setup(string presupuesto, string mode, Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.Emision.MapfreMas result = null;
@@ -55,7 +54,8 @@ namespace Architect.API.Tron.Business.Emision
 
                 result.Modo = mode;
 
-                if (mode.IsEmpty() || mode == "draft" || mode == "resume" || tryOnTron)
+                if (!tokenInfo.Roles.Contain("Purdy") &&
+                    (mode.IsEmpty() || mode == "draft" || mode == "resume" || tryOnTron))
                 {
                     result.terceros = Reglas.research.Apply_Terceros("MapfreMas", result.terceros, result.Fuente_Tomador, tokenInfo);
                 }

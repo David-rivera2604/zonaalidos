@@ -237,7 +237,7 @@ namespace Architect.API.Tron.Business.Reglas
 
         public static List<Contracts.Comun.tercero> Apply_Terceros(string ruleFile, List<Contracts.Comun.tercero> terceros, string fuente_Tomador, Core.Contracts.Security.Token tokenInfo)
         {
-            List<Contracts.Comun.tercero> result = Apply_Terceros_int(ruleFile, terceros, fuente_Tomador, tokenInfo);
+            List<Contracts.Comun.tercero> result = Apply_Terceros_int(ruleFile, new List<Contracts.Comun.tercero>(), fuente_Tomador, tokenInfo);
 
             if (result?.Count > 0 && terceros?.Count > 0)
             {
