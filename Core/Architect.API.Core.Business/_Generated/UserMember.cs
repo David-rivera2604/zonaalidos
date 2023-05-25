@@ -271,7 +271,7 @@ namespace Architect.API.Core.Business.Security
                 }
 
             }
-            if (affectedRows > 0 && affectedRowsSubAgent)
+            if (affectedRows > 0 )
             {
                 SynchronizeUserRoleMember(companyId, userId, id, item.Roles);
 

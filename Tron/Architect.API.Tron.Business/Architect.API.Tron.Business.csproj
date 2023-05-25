@@ -81,7 +81,9 @@
     <Compile Include="Cotizacion\HogarTotalConvertTo.cs" />
     <Compile Include="Cotizacion\HogarTotal.cs" />
     <Compile Include="Cotizacion\SaldoDeudor.cs" />
+    <Compile Include="Cotizacion\Estudiantil.cs" />
     <Compile Include="Cotizacion\Viajero.cs" />
+    <Compile Include="Cotizacion\EstudiantilConvert.cs" />
     <Compile Include="Cotizacion\ViajeroConvert.cs" />
     <Compile Include="Emision\ComplianceSetup.cs" />
     <Compile Include="Emision\MapfreMasPlus.cs" />
@@ -90,6 +92,7 @@
     <Compile Include="Emision\MultirriesgoConvertTo.cs" />
     <Compile Include="Emision\SaldoDeudor.cs" />
     <Compile Include="Emision\SaldoDeudorConvert.cs" />
+    <Compile Include="Emision\Estudiantil.cs" />
     <Compile Include="Emision\Viajero.cs" />
     <Compile Include="Emision\ViajeroConvertFrom.cs" />
     <Compile Include="Emision\ViajeroConvertTo.cs" />

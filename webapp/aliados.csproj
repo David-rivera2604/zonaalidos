@@ -1230,6 +1230,7 @@
     <Content Include="Scripts\CompraSegurosClients.js" />
     <Content Include="Scripts\Cotizacion.Coberturas.js" />
     <Content Include="Scripts\Cotizacion.MapfreMasPlus.js" />
+    <Content Include="Scripts\Cotizacion.Estudiantil.js" />
     <Content Include="Scripts\Cotizacion.SaldoDeudor.enfermedadesexcluidas.js" />
     <Content Include="Scripts\CreateCase_Aliados.js" />
     <Content Include="Scripts\Emision.kyc.declarante.js" />
@@ -1250,6 +1251,7 @@
     <Content Include="Scripts\Cotizacion.Multirriesgo.js" />
     <Content Include="Scripts\Cotizacion.HogarTotal.js" />
     <Content Include="Scripts\Cotizacion.PolizaLider.js" />
+    <Content Include="Scripts\Emision.Estudiantil.js" />
     <Content Include="Scripts\Emision.Viajero.js" />
     <Content Include="Scripts\Extend.Cases.js" />
     <Content Include="Scripts\Extend.CaseDetail.js" />
@@ -1726,6 +1728,8 @@
     <Content Include="Views\General\ColorTenant.cshtml" />
     <Content Include="Views\General\MantenimientoInicio.cshtml" />
     <Content Include="Views\General\Administration.cshtml" />
+    <Content Include="Views\Cotizacion\Estudiantil.cshtml" />
+    <Content Include="Views\Emision\Estudiantil.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

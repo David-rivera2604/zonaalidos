@@ -327,5 +327,43 @@ namespace Architect.API.Tron.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Devuelve la estructura de datos asociados a un presupuesto, con información complementaria para permitir la emisión de una póliza de tipo Estudiantil
+        /// </summary>
+        /// <param name="presupuesto"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Estudiantil/{presupuesto}")]
+        public async Task<IHttpActionResult> EstudiantilSetup(string presupuesto, string mode)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Tron.Contracts.Emision.Estudiantil result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Emision.Estudiantil.Setup(presupuesto, mode, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Realiza la validación de datos y emisión de la póliza para un producto de tipo Estudiantil
+        /// </summary>
+        /// <param name="quoteInfo"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Estudiantil")]
+        public async Task<IHttpActionResult> EstudiantilIssue([FromBody] Tron.Contracts.Emision.Viajero quoteInfo)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Tron.Contracts.Cotizacion.Viajero result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Emision.Viajero.Issue(quoteInfo, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
     }
 }

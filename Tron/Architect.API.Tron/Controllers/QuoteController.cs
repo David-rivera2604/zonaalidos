@@ -466,5 +466,46 @@ namespace Architect.API.Tron.Controllers
 
         #endregion
 
+        #region Estudiantil
+
+        /// <summary>
+        /// Devuelve la estructura de datos con los valores por defecto para una cotización de tipo estudiantil
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("EstudiantilSetup")]
+        public async Task<IHttpActionResult> EstudiantilSetup()
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Architect.API.Tron.Contracts.Cotizacion.Estudiantil result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Cotizacion.Estudiantil.Setup(tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Realiza la validación de datos y cálculo necesarios para obtener una cotización o presupuesto de un producto de estudiantil
+        /// </summary>
+        /// <param name="quoteInfo"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("EstudiantilQuote")]
+        public async Task<IHttpActionResult> EstudiantilQuote([FromBody] Tron.Contracts.Cotizacion.Estudiantil quoteInfo)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Tron.Contracts.Cotizacion.Estudiantil result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Cotizacion.Estudiantil.Quote(quoteInfo, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        #endregion
+
     }
 }
