@@ -9,7 +9,8 @@ app.CotizacionViajero = (function () {
 
         app.core.Get(app.setting.apipath + 'v1/Quote/ViajeroSetup', null,
             function (data) {
-                app.core.Lookups(['MonedasPorRamo.cod_mon', 'FrecuenciaDePagoPorRamo.cod_fracc_pago', 'TRON_G2990006:TIP_PLAN.TIP_PLAN', 'TRON_G2990006:TIP_VIAJE.TIP_VIAJE', 'TRON_A1002090.COD_MODALIDAD'],
+                app.core.Lookups(['MonedasPorRamo.cod_mon', 'FrecuenciaDePagoPorRamo.cod_fracc_pago', 'TRON_G2990006:TIP_PLAN.TIP_PLAN', 'TRON_G2990006:TIP_VIAJE.TIP_VIAJE', 'TRON_A1002090.COD_MODALIDAD',
+                    'TRON_A1000101.PAIS_ORIGEN','TRON_A1000101.DES_DESTINO'],
                     function () {
                         setupData = data;
                         MapObjectToInput(data);
@@ -106,6 +107,7 @@ app.CotizacionViajero = (function () {
         $('#TIP_VIAJE').val(data.TIP_VIAJE);
         app.ui.SetDropDownNumericValue('#TIP_VIAJE', data.TIP_VIAJE, true, 'NA');
         app.ui.SetDateValue('#FEC_VIAJE', data.FEC_VIAJE);
+        $('#PAIS_ORIGEN').val(data.PAIS_ORIGEN);
         $('#DES_DESTINO').val(data.DES_DESTINO);
         app.ui.SetNumericValue('#cantidad_riesgos', data.cantidad_riesgos);
         app.ui.SetDateValue('#FEC_NACIMIENTO', data.FEC_NACIMIENTO);
@@ -340,6 +342,7 @@ app.CotizacionViajero = (function () {
                 TIP_PLAN: { required: true },
                 TIP_VIAJE: { required: true },
                 FEC_VIAJE: { required: true },
+                PAIS_ORIGEN: { required: true },
                 DES_DESTINO: { required: true },
                 COD_MODALIDAD: { required: true },
                 cantidad_riesgos: { required: true, Numeric: true },
@@ -362,6 +365,7 @@ app.CotizacionViajero = (function () {
                 TIP_PLAN: { required: 'Debe indicar el plan' },
                 TIP_VIAJE: { required: 'Debe indicar el tipo de viaje' },
                 FEC_VIAJE: { required: 'Debe indicar el fecha de inicio del viaje' },
+                PAIS_ORIGEN: { required: 'Debe indicar el pais de origen' },
                 DES_DESTINO: { required: 'Debe indicar el lugar de destino' },
                 COD_MODALIDAD: { required: 'Debe indicar la modalidad' },
                 cantidad_riesgos: { required: 'Debe indicar la cantidad de riesgos', Numeric: 'Debe indicar la cantidad de riesgos' },
