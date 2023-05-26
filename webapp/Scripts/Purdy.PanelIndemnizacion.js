@@ -1,6 +1,7 @@
 ﻿var app = app || {};
 app.PurdyPanelIndemnizacion = (function () {
 
+    let _eventCallback = null;
     var setupData = null;
     var changedCallback = null;
 
@@ -1239,7 +1240,8 @@ app.PurdyPanelIndemnizacion = (function () {
 
 
     return {
-        Init: function () {
+        Init: function (eventCallback) {
+            _eventCallback = eventCallback;
             try {
                 Controls_setup();
                 Setup_Validations();

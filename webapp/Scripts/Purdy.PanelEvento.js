@@ -2,20 +2,21 @@
 
 app.PurdyPanelEvento = (function () {
 
+    let _eventCallback = null;
     var setupData = null;
     var changedCallback = null;
 
     function Setup() {
 
-        app.core.Get(app.setting.apipath + 'v1/Quote/PanelEventoSetup', null,
-            function (data) {
-                app.core.Lookups(['Users-Reclamos.analistareclamos',],
-                    function () {
-                        setupData = data;
-                        MapObjectToInput(data);
-                    }, ``);
+        //app.core.Get(app.setting.apipath + 'v1/Quote/PanelEventoSetup', null,
+        //    function (data) {
+        //        app.core.Lookups(['Users-Reclamos.analistareclamos',],
+        //            function () {
+        //                setupData = data;
+        //                MapObjectToInput(data);
+        //            }, ``);
 
-            });
+        //    });
     };
 
     function ReadOnly() {
@@ -177,8 +178,9 @@ app.PurdyPanelEvento = (function () {
 
 
     return {
-        Init: function () {
+        Init: function (eventCallback) {
             try {
+                _eventCallback = eventCallback;
                 Controls_setup();
                 Setup_Validations();
 
