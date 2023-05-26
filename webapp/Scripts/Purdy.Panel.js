@@ -5,7 +5,8 @@ app.PurdyPanel = (function () {
     return {
         Init: function () {
             try {
-    
+                app.ui.CommonBehaviour();
+
                 app.PurdyPanelEncabezado.Init();
                 app.PurdyPanelDetalle.Init();
                 app.PurdyPanelEvento.Init();

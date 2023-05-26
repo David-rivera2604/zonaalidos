@@ -814,6 +814,7 @@ html {
 
 .readonly {
     margin-left: 6px;
+    height: 13px;
 }
 
     .readonly a {

@@ -1279,9 +1279,9 @@
     <Content Include="Scripts\Prototype.Payment.js" />
     <Content Include="Scripts\Prototype.Producto.js" />
     <Content Include="Scripts\Purdy.Panel.Danos.js" />
-    <Content Include="Scripts\Purdy.Panel.Detalle.js" />
+    <Content Include="Scripts\Purdy.PanelDetalle.js" />
     <Content Include="Scripts\Purdy.PanelEncabezado.js" />
-    <Content Include="Scripts\Purdy.Panel.Evento.js" />
+    <Content Include="Scripts\Purdy.PanelEvento.js" />
     <Content Include="Scripts\Purdy.Panel.Indemnizacion.js" />
     <Content Include="Scripts\Purdy.Panel.js" />
     <Content Include="Scripts\Seguimiento_Aliados.js" />
