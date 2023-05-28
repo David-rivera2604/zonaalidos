@@ -1,4 +1,5 @@
 ﻿var app = app || {};
+
 app.PurdyPanelDanos = (function () {
 
     let _eventCallback = null;
@@ -7,60 +8,15 @@ app.PurdyPanelDanos = (function () {
 
     function Setup() {
 
-        //app.core.Get(app.setting.apipath + 'v1/Quote/DanosSetup', null,
-        //    function (data) {
-        //        app.core.Lookups([],
-        //            function () {
-        //                setupData = data;
-        //                MapObjectToInput(data);
-        //            }, ``);
+        app.core.Get(app.setting.apipath + 'v1/Quote/PanelDanosSetup', null,
+            function (data) {
+                app.core.Lookups(['Users-Avalúos.analistadeDanos',],
+                    function () {
+                        setupData = data;
+                        MapObjectToInput(data);
+                    }, ``);
 
-        //    });
-    };
-
-    function ReadOnly() {
-        $('#taller').replaceWith('<div>' + $('#taller option:selected').text() + '</div>');
-        $('#fechaenviodelavaluo_group').replaceWith('<div>' + $('#fechaenviodelavaluo').val() + '</div>');
-        $('#montopreliminardeperdidaRepuestos').replaceWith('<div>' + $('#montopreliminardeperdidaRepuestos').val() + '</div>');
-        $('#aMontoneto').replaceWith('<div>' + $('#aMontoneto').val() + '</div>');
-        $('#bIVA').replaceWith('<div>' + $('#bIVA').val() + '</div>');
-        $('#cMontototal').replaceWith('<div>' + $('#cMontototal').val() + '</div>');
-        $('#montopreliminardeperdidaManodeObra').replaceWith('<div>' + $('#montopreliminardeperdidaManodeObra').val() + '</div>');
-        $('#aMontoneto').replaceWith('<div>' + $('#aMontoneto').val() + '</div>');
-        $('#bIVA').replaceWith('<div>' + $('#bIVA').val() + '</div>');
-        $('#cMontototal').replaceWith('<div>' + $('#cMontototal').val() + '</div>');
-        $('#montopreliminardePerdida').replaceWith('<div>' + $('#montopreliminardePerdida').val() + '</div>');
-        $('#fechaAutorizaciondeUsoPoliza_group').replaceWith('<div>' + $('#fechaAutorizaciondeUsoPoliza').val() + '</div>');
-        $('#oT').replaceWith('<div>' + $('#oT').val() + '</div>');
-        $('#asesorTaller').replaceWith('<div>' + $('#asesorTaller').val() + '</div>');
-        $('#expediente').replaceWith('<div>' + $('#expediente').val() + '</div>');
-        $('#analistadeDanos').replaceWith('<div>' + $('#analistadeDanos option:selected').text() + '</div>');
-        $('#depreciacionyExclusiones').replaceWith('<div>' + $('#depreciacionyExclusiones').val() + '</div>');
-        $('#montototaldeperdidaRepuestos').replaceWith('<div>' + $('#montototaldeperdidaRepuestos').val() + '</div>');
-        $('#aMontoneto').replaceWith('<div>' + $('#aMontoneto').val() + '</div>');
-        $('#bIVA').replaceWith('<div>' + $('#bIVA').val() + '</div>');
-        $('#cMontototal').replaceWith('<div>' + $('#cMontototal').val() + '</div>');
-        $('#montototaldeperdidaManodeObra').replaceWith('<div>' + $('#montototaldeperdidaManodeObra').val() + '</div>');
-        $('#aMontoneto').replaceWith('<div>' + $('#aMontoneto').val() + '</div>');
-        $('#bIVA').replaceWith('<div>' + $('#bIVA').val() + '</div>');
-        $('#cMontototal').replaceWith('<div>' + $('#cMontototal').val() + '</div>');
-        $('#montoTotaldePerdida').replaceWith('<div>' + $('#montoTotaldePerdida').val() + '</div>');
-        $('#severidaddelsiniestro').replaceWith('<div>' + $('#severidaddelsiniestro option:selected').text() + '</div>');
-        $('#fechaAutorizacion_group').replaceWith('<div>' + $('#fechaAutorizacion').val() + '</div>');
-        $('#tipodePerdidaTotal').replaceWith('<div>' + $('#tipodePerdidaTotal option:selected').text() + '</div>');
-        $('#danoOculto').replaceWith('<div>' + $('#danoOculto').val() + '</div>');
-        $('#danoOcultoFechaSolicitado_group').replaceWith('<div>' + $('#danoOcultoFechaSolicitado').val() + '</div>');
-        $('#danoOcultoObservaciones').replaceWith('<div>' + $('#danoOcultoObservaciones').val() + '</div>');
-        $('#danoOcultoMontoRepuestos').replaceWith('<div>' + $('#danoOcultoMontoRepuestos').val() + '</div>');
-        $('#aMontoneto').replaceWith('<div>' + $('#aMontoneto').val() + '</div>');
-        $('#bIVA').replaceWith('<div>' + $('#bIVA').val() + '</div>');
-        $('#cMontototal').replaceWith('<div>' + $('#cMontototal').val() + '</div>');
-        $('#danoOcultoMontoManodeObra').replaceWith('<div>' + $('#danoOcultoMontoManodeObra').val() + '</div>');
-        $('#aMontoneto').replaceWith('<div>' + $('#aMontoneto').val() + '</div>');
-        $('#bIVA').replaceWith('<div>' + $('#bIVA').val() + '</div>');
-        $('#cMontototal').replaceWith('<div>' + $('#cMontototal').val() + '</div>');
-        $('#danoOcultoMontoTotal').replaceWith('<div>' + $('#danoOcultoMontoTotal').val() + '</div>');
-
+            });
     };
 
     function MapInputToObject() {
@@ -68,48 +24,49 @@ app.PurdyPanelDanos = (function () {
             taller: app.ui.GetDropDownNumericValue('#taller'),
             tallerDesc: app.ui.GetDropDownSelectedText('#taller'),
             fechaenviodelavaluo: app.ui.GetDateValue('#fechaenviodelavaluo'),
-            montopreliminardeperdidaRepuestos: app.ui.GetNumericValue('#montopreliminardeperdidaRepuestos'),
-            aMontoneto: app.ui.GetNumericValue('#aMontoneto'),
-            bIVA: app.ui.GetNumericValue('#bIVA'),
-            cMontototal: app.ui.GetNumericValue('#cMontototal'),
-            montopreliminardeperdidaManodeObra: app.ui.GetNumericValue('#montopreliminardeperdidaManodeObra'),
-            aMontoneto: app.ui.GetNumericValue('#aMontoneto'),
-            bIVA: app.ui.GetNumericValue('#bIVA'),
-            cMontototal: app.ui.GetNumericValue('#cMontototal'),
-            montopreliminardePerdida: app.ui.GetNumericValue('#montopreliminardePerdida'),
+            prerepuestos: app.ui.GetNumericValue('#prerepuestos'),
+            prerepuestosiva: app.ui.GetNumericValue('#prerepuestosiva'),
+            prerepuestostotal: app.ui.GetNumericValue('#prerepuestostotal'),
+            premano: app.ui.GetNumericValue('#premano'),
+            premanoiva: app.ui.GetNumericValue('#premanoiva'),
+            premanototal: app.ui.GetNumericValue('#premanototal'),
+            preperdida: app.ui.GetNumericValue('#preperdida'),
+            autorizaciondeusopoliza: app.ui.GetRadioNumericValue('autorizaciondeusopoliza'),
+            autorizaciondeusopolizaDesc: app.ui.GetRadioSelectedText('autorizaciondeusopoliza'),
             fechaAutorizaciondeUsoPoliza: app.ui.GetDateValue('#fechaAutorizaciondeUsoPoliza'),
             oT: app.ui.GetNumericValue('#oT'),
             asesorTaller: $('#asesorTaller').val(),
             expediente: $('#expediente').val(),
             analistadeDanos: app.ui.GetDropDownNumericValue('#analistadeDanos'),
             analistadeDanosDesc: app.ui.GetDropDownSelectedText('#analistadeDanos'),
-            depreciacionyExclusiones: app.ui.GetNumericValue('#depreciacionyExclusiones'),
-            montototaldeperdidaRepuestos: app.ui.GetNumericValue('#montototaldeperdidaRepuestos'),
-            aMontoneto: app.ui.GetNumericValue('#aMontoneto'),
-            bIVA: app.ui.GetNumericValue('#bIVA'),
-            cMontototal: app.ui.GetNumericValue('#cMontototal'),
-            montototaldeperdidaManodeObra: app.ui.GetNumericValue('#montototaldeperdidaManodeObra'),
-            aMontoneto: app.ui.GetNumericValue('#aMontoneto'),
-            bIVA: app.ui.GetNumericValue('#bIVA'),
-            cMontototal: app.ui.GetNumericValue('#cMontototal'),
-            montoTotaldePerdida: app.ui.GetNumericValue('#montoTotaldePerdida'),
+            depreciacionyexclusiones: app.ui.GetNumericValue('#depreciacionyexclusiones'),
+            perdrepuesto: app.ui.GetNumericValue('#perdrepuesto'),
+            perdrepuestoiva: app.ui.GetNumericValue('#perdrepuestoiva'),
+            perdrepuestototal: app.ui.GetNumericValue('#perdrepuestototal'),
+            perdmano: app.ui.GetNumericValue('#perdmano'),
+            perdmanoiva: app.ui.GetNumericValue('#perdmanoiva'),
+            perdmanototal: app.ui.GetNumericValue('#perdmanototal'),
+            perdida: app.ui.GetNumericValue('#perdida'),
             severidaddelsiniestro: app.ui.GetDropDownNumericValue('#severidaddelsiniestro'),
             severidaddelsiniestroDesc: app.ui.GetDropDownSelectedText('#severidaddelsiniestro'),
-            fechaAutorizacion: app.ui.GetDateValue('#fechaAutorizacion'),
-            tipodePerdidaTotal: app.ui.GetDropDownNumericValue('#tipodePerdidaTotal'),
-            tipodePerdidaTotalDesc: app.ui.GetDropDownSelectedText('#tipodePerdidaTotal'),
-            danoOculto: app.ui.GetNumericValue('#danoOculto'),
-            danoOcultoFechaSolicitado: app.ui.GetDateValue('#danoOcultoFechaSolicitado'),
-            danoOcultoObservaciones: $('#danoOcultoObservaciones').val(),
-            danoOcultoMontoRepuestos: app.ui.GetNumericValue('#danoOcultoMontoRepuestos'),
-            aMontoneto: app.ui.GetNumericValue('#aMontoneto'),
-            bIVA: app.ui.GetNumericValue('#bIVA'),
-            cMontototal: app.ui.GetNumericValue('#cMontototal'),
-            danoOcultoMontoManodeObra: app.ui.GetNumericValue('#danoOcultoMontoManodeObra'),
-            aMontoneto: app.ui.GetNumericValue('#aMontoneto'),
-            bIVA: app.ui.GetNumericValue('#bIVA'),
-            cMontototal: app.ui.GetNumericValue('#cMontototal'),
-            danoOcultoMontoTotal: app.ui.GetNumericValue('#danoOcultoMontoTotal'),
+            avaluoautorizado: app.ui.GetRadioNumericValue('avaluoautorizado'),
+            avaluoautorizadoDesc: app.ui.GetRadioSelectedText('avaluoautorizado'),
+            fechaautorizacion: app.ui.GetDateValue('#fechaautorizacion'),
+            perdidatotal: app.ui.GetRadioNumericValue('perdidatotal'),
+            perdidatotalDesc: app.ui.GetRadioSelectedText('perdidatotal'),
+            tipodeperdidatotal: app.ui.GetDropDownNumericValue('#tipodeperdidatotal'),
+            tipodeperdidatotalDesc: app.ui.GetDropDownSelectedText('#tipodeperdidatotal'),
+            presentadanooculto: app.ui.GetRadioNumericValue('presentadanooculto'),
+            presentadanoocultoDesc: app.ui.GetRadioSelectedText('presentadanooculto'),
+            fechasolicitado: $('#fechasolicitado').val(),
+            observaciones: $('#observaciones').val(),
+            danoocultomontoRepuestosDanooculto: app.ui.GetNumericValue('#danoocultomontoRepuestosDanooculto'),
+            danoocultoiva: app.ui.GetNumericValue('#danoocultoiva'),
+            danoocultototal: app.ui.GetNumericValue('#danoocultototal'),
+            danoocultomano: app.ui.GetNumericValue('#danoocultomano'),
+            danoocultomanoiva: app.ui.GetNumericValue('#danoocultomanoiva'),
+            danoocultomanototal: app.ui.GetNumericValue('#danoocultomanototal'),
+            otrosIIOtrosIIDanoocultomanototal: app.ui.GetNumericValue('#otrosIIOtrosIIDanoocultomanototal'),
 
         };
         return data;
@@ -118,45 +75,42 @@ app.PurdyPanelDanos = (function () {
     function MapObjectToInput(data) {
         app.ui.SetDropDownNumericValue('#taller', data.taller, true);
         app.ui.SetDateValue('#fechaenviodelavaluo', data.fechaenviodelavaluo);
-        app.ui.SetNumericValue('#montopreliminardeperdidaRepuestos', data.montopreliminardeperdidaRepuestos);
-        app.ui.SetNumericValue('#aMontoneto', data.aMontoneto);
-        app.ui.SetNumericValue('#bIVA', data.bIVA);
-        app.ui.SetNumericValue('#cMontototal', data.cMontototal);
-        app.ui.SetNumericValue('#montopreliminardeperdidaManodeObra', data.montopreliminardeperdidaManodeObra);
-        app.ui.SetNumericValue('#aMontoneto', data.aMontoneto);
-        app.ui.SetNumericValue('#bIVA', data.bIVA);
-        app.ui.SetNumericValue('#cMontototal', data.cMontototal);
-        app.ui.SetNumericValue('#montopreliminardePerdida', data.montopreliminardePerdida);
+        app.ui.SetNumericValue('#prerepuestos', data.prerepuestos);
+        app.ui.SetNumericValue('#prerepuestosiva', data.prerepuestosiva);
+        app.ui.SetNumericValue('#prerepuestostotal', data.prerepuestostotal);
+        app.ui.SetNumericValue('#premano', data.premano);
+        app.ui.SetNumericValue('#premanoiva', data.premanoiva);
+        app.ui.SetNumericValue('#premanototal', data.premanototal);
+        app.ui.SetNumericValue('#preperdida', data.preperdida);
+        app.ui.SetRadioNumericValue('autorizaciondeusopoliza', data.autorizaciondeusopoliza);
         app.ui.SetDateValue('#fechaAutorizaciondeUsoPoliza', data.fechaAutorizaciondeUsoPoliza);
         app.ui.SetNumericValue('#oT', data.oT);
         $('#asesorTaller').val(data.asesorTaller);
         $('#expediente').val(data.expediente);
         app.ui.SetDropDownNumericValue('#analistadeDanos', data.analistadeDanos, true);
-        app.ui.SetNumericValue('#depreciacionyExclusiones', data.depreciacionyExclusiones);
-        app.ui.SetNumericValue('#montototaldeperdidaRepuestos', data.montototaldeperdidaRepuestos);
-        app.ui.SetNumericValue('#aMontoneto', data.aMontoneto);
-        app.ui.SetNumericValue('#bIVA', data.bIVA);
-        app.ui.SetNumericValue('#cMontototal', data.cMontototal);
-        app.ui.SetNumericValue('#montototaldeperdidaManodeObra', data.montototaldeperdidaManodeObra);
-        app.ui.SetNumericValue('#aMontoneto', data.aMontoneto);
-        app.ui.SetNumericValue('#bIVA', data.bIVA);
-        app.ui.SetNumericValue('#cMontototal', data.cMontototal);
-        app.ui.SetNumericValue('#montoTotaldePerdida', data.montoTotaldePerdida);
+        app.ui.SetNumericValue('#depreciacionyexclusiones', data.depreciacionyexclusiones);
+        app.ui.SetNumericValue('#perdrepuesto', data.perdrepuesto);
+        app.ui.SetNumericValue('#perdrepuestoiva', data.perdrepuestoiva);
+        app.ui.SetNumericValue('#perdrepuestototal', data.perdrepuestototal);
+        app.ui.SetNumericValue('#perdmano', data.perdmano);
+        app.ui.SetNumericValue('#perdmanoiva', data.perdmanoiva);
+        app.ui.SetNumericValue('#perdmanototal', data.perdmanototal);
+        app.ui.SetNumericValue('#perdida', data.perdida);
         app.ui.SetDropDownNumericValue('#severidaddelsiniestro', data.severidaddelsiniestro, true);
-        app.ui.SetDateValue('#fechaAutorizacion', data.fechaAutorizacion);
-        app.ui.SetDropDownNumericValue('#tipodePerdidaTotal', data.tipodePerdidaTotal, true);
-        app.ui.SetNumericValue('#danoOculto', data.danoOculto);
-        app.ui.SetDateValue('#danoOcultoFechaSolicitado', data.danoOcultoFechaSolicitado);
-        $('#danoOcultoObservaciones').val(data.danoOcultoObservaciones);
-        app.ui.SetNumericValue('#danoOcultoMontoRepuestos', data.danoOcultoMontoRepuestos);
-        app.ui.SetNumericValue('#aMontoneto', data.aMontoneto);
-        app.ui.SetNumericValue('#bIVA', data.bIVA);
-        app.ui.SetNumericValue('#cMontototal', data.cMontototal);
-        app.ui.SetNumericValue('#danoOcultoMontoManodeObra', data.danoOcultoMontoManodeObra);
-        app.ui.SetNumericValue('#aMontoneto', data.aMontoneto);
-        app.ui.SetNumericValue('#bIVA', data.bIVA);
-        app.ui.SetNumericValue('#cMontototal', data.cMontototal);
-        app.ui.SetNumericValue('#danoOcultoMontoTotal', data.danoOcultoMontoTotal);
+        app.ui.SetRadioNumericValue('avaluoautorizado', data.avaluoautorizado);
+        app.ui.SetDateValue('#fechaautorizacion', data.fechaautorizacion);
+        app.ui.SetRadioNumericValue('perdidatotal', data.perdidatotal);
+        app.ui.SetDropDownNumericValue('#tipodeperdidatotal', data.tipodeperdidatotal, true);
+        app.ui.SetRadioNumericValue('presentadanooculto', data.presentadanooculto);
+        $('#fechasolicitado').val(data.fechasolicitado);
+        $('#observaciones').val(data.observaciones);
+        app.ui.SetNumericValue('#danoocultomontoRepuestosDanooculto', data.danoocultomontoRepuestosDanooculto);
+        app.ui.SetNumericValue('#danoocultoiva', data.danoocultoiva);
+        app.ui.SetNumericValue('#danoocultototal', data.danoocultototal);
+        app.ui.SetNumericValue('#danoocultomano', data.danoocultomano);
+        app.ui.SetNumericValue('#danoocultomanoiva', data.danoocultomanoiva);
+        app.ui.SetNumericValue('#danoocultomanototal', data.danoocultomanototal);
+        app.ui.SetNumericValue('#otrosIIOtrosIIDanoocultomanototal', data.otrosIIOtrosIIDanoocultomanototal);
 
     };
 
@@ -165,7 +119,7 @@ app.PurdyPanelDanos = (function () {
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
-        new AutoNumeric('#montopreliminardeperdidaRepuestos', {
+        new AutoNumeric('#prerepuestos', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -174,7 +128,7 @@ app.PurdyPanelDanos = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-        new AutoNumeric('#aMontoneto', {
+        new AutoNumeric('#prerepuestosiva', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -183,7 +137,7 @@ app.PurdyPanelDanos = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-        new AutoNumeric('#bIVA', {
+        new AutoNumeric('#prerepuestostotal', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -192,7 +146,7 @@ app.PurdyPanelDanos = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-        new AutoNumeric('#cMontototal', {
+        new AutoNumeric('#premano', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -201,7 +155,7 @@ app.PurdyPanelDanos = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-        new AutoNumeric('#montopreliminardeperdidaManodeObra', {
+        new AutoNumeric('#premanoiva', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -210,7 +164,7 @@ app.PurdyPanelDanos = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-        new AutoNumeric('#aMontoneto', {
+        new AutoNumeric('#premanototal', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -219,25 +173,7 @@ app.PurdyPanelDanos = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-        new AutoNumeric('#bIVA', {
-            decimalCharacter: ',',
-            decimalCharacterAlternative: '.',
-            digitGroupSeparator: '.',
-            maximumValue: '999999999999999999',
-            minimumValue: '0',
-            decimalPlaces: '2',
-            emptyInputBehavior: 'null'
-        });
-        new AutoNumeric('#cMontototal', {
-            decimalCharacter: ',',
-            decimalCharacterAlternative: '.',
-            digitGroupSeparator: '.',
-            maximumValue: '999999999999999999',
-            minimumValue: '0',
-            decimalPlaces: '2',
-            emptyInputBehavior: 'null'
-        });
-        new AutoNumeric('#montopreliminardePerdida', {
+        new AutoNumeric('#preperdida', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -259,7 +195,7 @@ app.PurdyPanelDanos = (function () {
             decimalPlaces: '0',
             emptyInputBehavior: 'null'
         });
-        new AutoNumeric('#depreciacionyExclusiones', {
+        new AutoNumeric('#depreciacionyexclusiones', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -268,7 +204,7 @@ app.PurdyPanelDanos = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-        new AutoNumeric('#montototaldeperdidaRepuestos', {
+        new AutoNumeric('#perdrepuesto', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -277,7 +213,7 @@ app.PurdyPanelDanos = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-        new AutoNumeric('#aMontoneto', {
+        new AutoNumeric('#perdrepuestoiva', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -286,7 +222,7 @@ app.PurdyPanelDanos = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-        new AutoNumeric('#bIVA', {
+        new AutoNumeric('#perdrepuestototal', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -295,7 +231,7 @@ app.PurdyPanelDanos = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-        new AutoNumeric('#cMontototal', {
+        new AutoNumeric('#perdmano', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -304,7 +240,7 @@ app.PurdyPanelDanos = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-        new AutoNumeric('#montototaldeperdidaManodeObra', {
+        new AutoNumeric('#perdmanoiva', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -313,7 +249,7 @@ app.PurdyPanelDanos = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-        new AutoNumeric('#aMontoneto', {
+        new AutoNumeric('#perdmanototal', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -322,7 +258,7 @@ app.PurdyPanelDanos = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-        new AutoNumeric('#bIVA', {
+        new AutoNumeric('#perdida', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -331,42 +267,11 @@ app.PurdyPanelDanos = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-        new AutoNumeric('#cMontototal', {
-            decimalCharacter: ',',
-            decimalCharacterAlternative: '.',
-            digitGroupSeparator: '.',
-            maximumValue: '999999999999999999',
-            minimumValue: '0',
-            decimalPlaces: '2',
-            emptyInputBehavior: 'null'
-        });
-        new AutoNumeric('#montoTotaldePerdida', {
-            decimalCharacter: ',',
-            decimalCharacterAlternative: '.',
-            digitGroupSeparator: '.',
-            maximumValue: '999999999999999999',
-            minimumValue: '0',
-            decimalPlaces: '2',
-            emptyInputBehavior: 'null'
-        });
-        $('#fechaAutorizacion_group').datetimepicker({
+        $('#fechaautorizacion_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
-        new AutoNumeric('#danoOculto', {
-            decimalCharacter: ',',
-            decimalCharacterAlternative: '.',
-            digitGroupSeparator: '.',
-            maximumValue: '999999999',
-            minimumValue: '0',
-            decimalPlaces: '0',
-            emptyInputBehavior: 'null'
-        });
-        $('#danoOcultoFechaSolicitado_group').datetimepicker({
-            format: 'DD/MM/YYYY',
-            locale: 'es'
-        });
-        new AutoNumeric('#danoOcultoMontoRepuestos', {
+        new AutoNumeric('#danoocultomontoRepuestosDanooculto', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -375,7 +280,7 @@ app.PurdyPanelDanos = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-        new AutoNumeric('#aMontoneto', {
+        new AutoNumeric('#danoocultoiva', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -384,7 +289,7 @@ app.PurdyPanelDanos = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-        new AutoNumeric('#bIVA', {
+        new AutoNumeric('#danoocultototal', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -393,7 +298,7 @@ app.PurdyPanelDanos = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-        new AutoNumeric('#cMontototal', {
+        new AutoNumeric('#danoocultomano', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -402,7 +307,7 @@ app.PurdyPanelDanos = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-        new AutoNumeric('#danoOcultoMontoManodeObra', {
+        new AutoNumeric('#danoocultomanoiva', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -411,7 +316,7 @@ app.PurdyPanelDanos = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-        new AutoNumeric('#aMontoneto', {
+        new AutoNumeric('#danoocultomanototal', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -420,25 +325,7 @@ app.PurdyPanelDanos = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-        new AutoNumeric('#bIVA', {
-            decimalCharacter: ',',
-            decimalCharacterAlternative: '.',
-            digitGroupSeparator: '.',
-            maximumValue: '999999999999999999',
-            minimumValue: '0',
-            decimalPlaces: '2',
-            emptyInputBehavior: 'null'
-        });
-        new AutoNumeric('#cMontototal', {
-            decimalCharacter: ',',
-            decimalCharacterAlternative: '.',
-            digitGroupSeparator: '.',
-            maximumValue: '999999999999999999',
-            minimumValue: '0',
-            decimalPlaces: '2',
-            emptyInputBehavior: 'null'
-        });
-        new AutoNumeric('#danoOcultoMontoTotal', {
+        new AutoNumeric('#otrosIIOtrosIIDanoocultomanototal', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -454,19 +341,19 @@ app.PurdyPanelDanos = (function () {
         $(".input-group.date").on('dp.change', function (e) {
             data_changed();
         });
-        $("#PanelPurdyDanosEdtForm :input").change(function () {
+        $("#PurdyPanelDanosEdtForm :input").change(function () {
             data_changed();
         });
 
 
-        $('#PanelPurdyDanosEdtFormSave').click(function () {
+        $('#PurdyPanelDanosEdtFormSave').click(function () {
 
-            if (app.ui.IsValid('#PanelPurdyDanosEdtForm', false)) {
-                app.ui.ButtonDoing('#PanelPurdyDanosEdtFormSave');
+            if (app.ui.IsValid('#PurdyPanelDanosEdtForm', false)) {
+                app.ui.ButtonDoing('#PurdyPanelDanosEdtFormSave');
 
                 console.log(MapInputToObject())
 
-                app.core.Post(app.setting.apipath + 'v1/PanelPurdy/Danos',
+                app.core.Post(app.setting.apipath + 'v1/Purdy/PanelDanos',
                     JSON.stringify(MapInputToObject()),
                     function (data) {
                         if (data.Mensaje != null) {
@@ -477,15 +364,15 @@ app.PurdyPanelDanos = (function () {
                         }
 
                     }).always(function () {
-                        app.ui.ButtonDone('#PanelPurdyDanosEdtFormSave');
+                        app.ui.ButtonDone('#PurdyPanelDanosEdtFormSave');
                     });
             }
             event.preventDefault();
         });
 
-        $('#PanelPurdyDanosEdtFormCancel').click(function () {
-            app.ui.ButtonDoing('#PanelPurdyDanosEdtFormCancel');
-            setTimeout(() => { app.ui.ButtonDone('#PanelPurdyDanosEdtFormCancel'); }, 3000);
+        $('#PurdyPanelDanosEdtFormCancel').click(function () {
+            app.ui.ButtonDoing('#PurdyPanelDanosEdtFormCancel');
+            setTimeout(() => { app.ui.ButtonDone('#PurdyPanelDanosEdtFormCancel'); }, 3000);
             event.preventDefault();
         });
 
@@ -494,12 +381,32 @@ app.PurdyPanelDanos = (function () {
     function data_changed() {
         if (changedCallback !== undefined && changedCallback !== null)
             changedCallback(MapInputToObject());
+        if (taller === 1)
+            $('.asesorTallerVisible').removeClass('d-none');
+        else
+            $('.asesorTallerVisible').addClass('d-none');
+        if (taller === 1)
+            $('.expedienteVisible').removeClass('d-none');
+        else
+            $('.expedienteVisible').addClass('d-none');
+        if (app.ui.GetRadioNumericValue('avaluoautorizado') === 'Si')
+            $('.fechaautorizacionVisible').removeClass('d-none');
+        else
+            $('.fechaautorizacionVisible').addClass('d-none');
+        if (perdidatotal === Si)
+            $('.tipodeperdidatotalVisible').removeClass('d-none');
+        else
+            $('.tipodeperdidatotalVisible').addClass('d-none');
+        if (app.ui.GetRadioNumericValue('presentadanooculto') === 'Si')
+            $('.observacionesVisible').removeClass('d-none');
+        else
+            $('.observacionesVisible').addClass('d-none');
     };
 
     function Setup_Validations() {
         app.ui.DateValidators();
         app.ui.NumericValidators();
-        $("#PanelPurdyDanosEdtForm").validate({
+        $("#PurdyPanelDanosEdtForm").validate({
             errorPlacement: app.ui.ErrorPlacement,
             rules: {},
             messages: {}
@@ -510,34 +417,20 @@ app.PurdyPanelDanos = (function () {
 
     return {
         Init: function (eventCallback) {
-            _eventCallback = eventCallback;
             try {
+                _eventCallback = eventCallback;
                 Controls_setup();
                 Setup_Validations();
 
                 Controls_Events();
-                Setup();
-                //Custom.Extend
-                console.log("Inicio");
+
             }
             catch (err) {
                 console.error("Error Init");
                 console.error(err);
             }
         },
-        Data: function () {
-            return MapInputToObject();
-        },
-        SetData: function (data) {
-            MapObjectToInput(data);
-        },
-        Changed: function (callback) {
-            changedCallback = callback;
-        },
-        IsValid: function (showResume) {
-            return app.ui.IsValid('#PanelPurdyDanosEdtForm', false, showResume);
+        Event: function (src, data) {
         }
     };
 })();
-
-

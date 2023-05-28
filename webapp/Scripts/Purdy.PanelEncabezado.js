@@ -84,17 +84,7 @@ app.PurdyPanelEncabezado = (function () {
                 console.error(err);
             }
         },
-        Data: function () {
-            return MapInputToObject();
-        },
-        SetData: function (data) {
-            MapObjectToInput(data);
-        },
-        Changed: function (callback) {
-            changedCallback = callback;
-        },
-        IsValid: function (showResume) {
-            return app.ui.IsValid('#PurdyPanelEncabezadoEdtForm', false, showResume);
+        Event: function (src, data) {
         }
     };
 })();

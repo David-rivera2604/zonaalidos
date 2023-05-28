@@ -1,21 +1,19 @@
 ﻿<!-- Edit Form -->
 <div class='form-row'>
     <div class='col-md-12'>
-        <div id="PanelPurdyDanosEdt" class="animated fadeInRight compact">
-            <form id='PanelPurdyDanosEdtForm' class='form-horizontal' data-toggle='validator'>
+        <div id="PurdyPanelDanosEdt" class="animated fadeInRight">
+            <form id='PurdyPanelDanosEdtForm' class='form-horizontal' data-toggle='validator'>
                 <fieldset>
-                    <!-- tB3AnalisisdeDanos Zone -->
-                    @*<div class="form-row">
+                    <!-- tB3AnalisisdeDanosPurdyPanelDanos Zone -->
+                    <div class="form-row">
                         <div class="col-lg-12">
-                            <h4>TB3 Análisis de Daños</h4>
-                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>*@
                             <div class="form-row">
 
                                 <!-- taller DropDownList -->
-                                <div class='col-sm-4 col-md-4'>
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
                                         <label class='control-label' for='taller'>Taller</label>
-                                        <select id='taller' name='taller' class='form-control'>
+                                        <select id='taller' name='taller' class='form-control role-Avalúos-enabled' disabled>
                                             <option value='1'>Purdy Auto SA</option>
                                             <option value='2'>Taller 3B Ciudad Neily</option>
                                             <option value='3'>Taller JW Murcia Esparza</option>
@@ -40,11 +38,11 @@
                                 </div>
 
                                 <!-- fechaenviodelavaluo DatePicker -->
-                                <div class='col-sm-4 col-md-4'>
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
                                         <label class='control-label' for='fechaenviodelavaluo'>Fecha envío del avalúo</label>
                                         <div class='input-group date' id='fechaenviodelavaluo_group'>
-                                            <input type='text' id='fechaenviodelavaluo' name='fechaenviodelavaluo' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                            <input type='text' id='fechaenviodelavaluo' name='fechaenviodelavaluo' class='form-control role-Avalúos-enabled' size='10' maxlength='10' placeholder='día/mes/año' disabled />
                                             <span class='input-group-addon'>
                                                 <span class='glyphicon glyphicon-calendar'></span>
                                             </span>
@@ -53,84 +51,110 @@
                                     </div>
                                 </div>
 
-                                <!-- montopreliminardeperdidaRepuestos Numeric -->
-                                <div class='col-sm-4 col-md-4'>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- montopreliminardeperdidaRepuestos Zone -->
+                    <div class="form-row">
+                        <div class="col-lg-12">
+                            <h4>Monto preliminar de pérdida (Repuestos)</h4>
+                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                            <div class="form-row">
+
+                                <!-- prerepuestos Numeric -->
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='montopreliminardeperdidaRepuestos'>Monto preliminar de pérdida (Repuestos)</label>
-                                        <input type='text' id='montopreliminardeperdidaRepuestos' name='montopreliminardeperdidaRepuestos' class='form-control text-right' size='26' maxlength='26' />
+                                        <label class='control-label' for='prerepuestos'>Monto neto</label>
+                                        <input type='text' id='prerepuestos' name='prerepuestos' class='form-control text-right role-Avalúos-enabled' size='26' maxlength='26' disabled />
                                     </div>
                                 </div>
-                                <!-- aMontoneto Numeric -->
-                                <div class='col-sm-4 col-md-4'>
+                                <!-- prerepuestosiva Numeric -->
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='aMontoneto'>a Monto neto</label>
-                                        <input type='text' id='aMontoneto' name='aMontoneto' class='form-control text-right' size='26' maxlength='26' />
+                                        <label class='control-label' for='prerepuestosiva'>IVA</label>
+                                        <input type='text' id='prerepuestosiva' name='prerepuestosiva' class='form-control text-right' size='26' maxlength='26' disabled />
                                     </div>
                                 </div>
-                                <!-- bIVA Numeric -->
-                                <div class='col-sm-4 col-md-4'>
+                                <!-- prerepuestostotal Numeric -->
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='bIVA'>b IVA</label>
-                                        <input type='text' id='bIVA' name='bIVA' class='form-control text-right' size='26' maxlength='26' />
+                                        <label class='control-label' for='prerepuestostotal'>Monto total</label>
+                                        <input type='text' id='prerepuestostotal' name='prerepuestostotal' class='form-control text-right' size='26' maxlength='26' disabled />
                                     </div>
                                 </div>
-                                <!-- cMontototal Numeric -->
-                                <div class='col-sm-4 col-md-4'>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- montopreliminardeperdidaManodeObra Zone -->
+                    <div class="form-row">
+                        <div class="col-lg-12">
+                            <h4>Monto preliminar de pérdida (Mano de Obra)</h4>
+                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                            <div class="form-row">
+
+                                <!-- premano Numeric -->
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='cMontototal'>c Monto total</label>
-                                        <input type='text' id='cMontototal' name='cMontototal' class='form-control text-right' size='26' maxlength='26' />
+                                        <label class='control-label' for='premano'>Monto neto</label>
+                                        <input type='text' id='premano' name='premano' class='form-control text-right role-Avalúos-enabled' size='26' maxlength='26' disabled />
                                     </div>
                                 </div>
-                                <!-- montopreliminardeperdidaManodeObra Numeric -->
-                                <div class='col-sm-4 col-md-4'>
+                                <!-- premanoiva Numeric -->
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='montopreliminardeperdidaManodeObra'>Monto preliminar de pérdida (Mano de Obra)</label>
-                                        <input type='text' id='montopreliminardeperdidaManodeObra' name='montopreliminardeperdidaManodeObra' class='form-control text-right' size='26' maxlength='26' />
+                                        <label class='control-label' for='premanoiva'>IVA</label>
+                                        <input type='text' id='premanoiva' name='premanoiva' class='form-control text-right' size='26' maxlength='26' disabled />
                                     </div>
                                 </div>
-                                <!-- aMontoneto Numeric -->
-                                <div class='col-sm-4 col-md-4'>
+                                <!-- premanototal Numeric -->
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='aMontoneto'>a Monto neto</label>
-                                        <input type='text' id='aMontoneto' name='aMontoneto' class='form-control text-right' size='26' maxlength='26' />
+                                        <label class='control-label' for='premanototal'>Monto total</label>
+                                        <input type='text' id='premanototal' name='premanototal' class='form-control text-right' size='26' maxlength='26' disabled />
                                     </div>
                                 </div>
-                                <!-- bIVA Numeric -->
-                                <div class='col-sm-4 col-md-4'>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- otros Zone -->
+                    <div class="form-row">
+                        <div class="col-lg-12">
+                            <h4>Otros</h4>
+                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                            <div class="form-row">
+
+                                <!-- preperdida Numeric -->
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='bIVA'>b IVA</label>
-                                        <input type='text' id='bIVA' name='bIVA' class='form-control text-right' size='26' maxlength='26' />
+                                        <label class='control-label' for='preperdida'>Monto preliminar de pérdida</label>
+                                        <input type='text' id='preperdida' name='preperdida' class='form-control text-right' size='26' maxlength='26' disabled />
                                     </div>
                                 </div>
-                                <!-- cMontototal Numeric -->
-                                <div class='col-sm-4 col-md-4'>
+                                <!-- autorizaciondeusopoliza RadioButtonList -->
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='cMontototal'>c Monto total</label>
-                                        <input type='text' id='cMontototal' name='cMontototal' class='form-control text-right' size='26' maxlength='26' />
-                                    </div>
-                                </div>
-                                <!-- montopreliminardePerdida Numeric -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='montopreliminardePerdida'>Monto preliminar de Pérdida</label>
-                                        <input type='text' id='montopreliminardePerdida' name='montopreliminardePerdida' class='form-control text-right' size='26' maxlength='26' />
-                                    </div>
-                                </div>
-                                <!-- autorizaciondeUsoPoliza CheckBox -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="autorizaciondeUsoPoliza">
-                                            <label class="custom-control-label" for="autorizaciondeUsoPoliza" style="padding-top: 4px;font-size: 11px;">Autorización de Uso Póliza</label>
+                                        <label class='control-label' for='autorizaciondeusopoliza'>Autorización de uso póliza</label>
+                                        <div style="padding-top: 6px;">
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="autorizaciondeusopoliza_1" name="autorizaciondeusopoliza" value="1" disabled>
+                                                <label class="custom-control-label" for="autorizaciondeusopoliza_1">Si</label>
+                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="autorizaciondeusopoliza_2" name="autorizaciondeusopoliza" value="2" disabled>
+                                                <label class="custom-control-label" for="autorizaciondeusopoliza_2">No</label>
+                                            </div><div id='autorizaciondeusopoliza_validate'></div>
                                         </div>
                                     </div>
                                 </div>
+
                                 <!-- fechaAutorizaciondeUsoPoliza DatePicker -->
-                                <div class='col-sm-4 col-md-4'>
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
                                         <label class='control-label' for='fechaAutorizaciondeUsoPoliza'>Fecha Autorización de Uso Póliza</label>
                                         <div class='input-group date' id='fechaAutorizaciondeUsoPoliza_group'>
-                                            <input type='text' id='fechaAutorizaciondeUsoPoliza' name='fechaAutorizaciondeUsoPoliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                            <input type='text' id='fechaAutorizaciondeUsoPoliza' name='fechaAutorizaciondeUsoPoliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled />
                                             <span class='input-group-addon'>
                                                 <span class='glyphicon glyphicon-calendar'></span>
                                             </span>
@@ -140,112 +164,131 @@
                                 </div>
 
                                 <!-- oT Numeric -->
-                                <div class='col-sm-4 col-md-4'>
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
                                         <label class='control-label' for='oT'>OT</label>
-                                        <input type='text' id='oT' name='oT' class='form-control text-right' size='7' maxlength='7' />
+                                        <input type='text' id='oT' name='oT' class='form-control text-right role-Avalúos-enabled' size='7' maxlength='7' disabled />
                                     </div>
                                 </div>
                                 <!-- asesorTaller Text -->
-                                <div class='col-sm-4 col-md-4'>
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
                                         <label class='control-label' for='asesorTaller'>Asesor Taller</label>
-                                        <input type='text' id='asesorTaller' name='asesorTaller' class='form-control' size='100' maxlength='100' />
+                                        <input type='text' id='asesorTaller' name='asesorTaller' class='form-control role-Avalúos-enabled' size='100' maxlength='100' disabled />
 
                                     </div>
                                 </div>
                                 <!-- expediente Text -->
-                                <div class='col-sm-4 col-md-4'>
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
                                         <label class='control-label' for='expediente'>Expediente</label>
-                                        <input type='text' id='expediente' name='expediente' class='form-control' size='20' maxlength='20' />
+                                        <input type='text' id='expediente' name='expediente' class='form-control role-Avalúos-enabled' size='20' maxlength='20' disabled />
 
                                     </div>
                                 </div>
                                 <!-- analistadeDanos DropDownList -->
-                                <div class='col-sm-4 col-md-4'>
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
                                         <label class='control-label' for='analistadeDanos'>Analista de Daños</label>
-                                        <select id='analistadeDanos' name='analistadeDanos' class='form-control'>
+                                        <select id='analistadeDanos' name='analistadeDanos' class='form-control role-Avalúos-enabled' disabled>
                                         </select>
                                     </div>
                                 </div>
 
-                                <!-- depreciacionyExclusiones Numeric -->
-                                <div class='col-sm-4 col-md-4'>
+                                <!-- depreciacionyexclusiones Numeric -->
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='depreciacionyExclusiones'>Depreciación y Exclusiones</label>
-                                        <input type='text' id='depreciacionyExclusiones' name='depreciacionyExclusiones' class='form-control text-right' size='26' maxlength='26' />
+                                        <label class='control-label' for='depreciacionyexclusiones'>Depreciación y exclusiones</label>
+                                        <input type='text' id='depreciacionyexclusiones' name='depreciacionyexclusiones' class='form-control text-right role-Avalúos-enabled' size='26' maxlength='26' disabled />
                                     </div>
                                 </div>
-                                <!-- montototaldeperdidaRepuestos Numeric -->
-                                <div class='col-sm-4 col-md-4'>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- montototaldeperdidaRepuestos Zone -->
+                    <div class="form-row">
+                        <div class="col-lg-12">
+                            <h4>Monto total de pérdida (Repuestos)</h4>
+                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                            <div class="form-row">
+
+                                <!-- perdrepuesto Numeric -->
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='montototaldeperdidaRepuestos'>Monto total de pérdida (Repuestos)</label>
-                                        <input type='text' id='montototaldeperdidaRepuestos' name='montototaldeperdidaRepuestos' class='form-control text-right' size='26' maxlength='26' />
+                                        <label class='control-label' for='perdrepuesto'>Monto neto</label>
+                                        <input type='text' id='perdrepuesto' name='perdrepuesto' class='form-control text-right role-Avalúos-enabled' size='26' maxlength='26' disabled />
                                     </div>
                                 </div>
-                                <!-- aMontoneto Numeric -->
-                                <div class='col-sm-4 col-md-4'>
+                                <!-- perdrepuestoiva Numeric -->
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='aMontoneto'>a Monto neto</label>
-                                        <input type='text' id='aMontoneto' name='aMontoneto' class='form-control text-right' size='26' maxlength='26' />
+                                        <label class='control-label' for='perdrepuestoiva'>IVA</label>
+                                        <input type='text' id='perdrepuestoiva' name='perdrepuestoiva' class='form-control text-right' size='26' maxlength='26' disabled />
                                     </div>
                                 </div>
-                                <!-- bIVA Numeric -->
-                                <div class='col-sm-4 col-md-4'>
+                                <!-- perdrepuestototal Numeric -->
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='bIVA'>b IVA</label>
-                                        <input type='text' id='bIVA' name='bIVA' class='form-control text-right' size='26' maxlength='26' />
+                                        <label class='control-label' for='perdrepuestototal'>Monto total</label>
+                                        <input type='text' id='perdrepuestototal' name='perdrepuestototal' class='form-control text-right' size='26' maxlength='26' disabled />
                                     </div>
                                 </div>
-                                <!-- cMontototal Numeric -->
-                                <div class='col-sm-4 col-md-4'>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- montototaldeperdidaManodeObra Zone -->
+                    <div class="form-row">
+                        <div class="col-lg-12">
+                            <h4>Monto total de pérdida (Mano de Obra)</h4>
+                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                            <div class="form-row">
+
+                                <!-- perdmano Numeric -->
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='cMontototal'>c Monto total</label>
-                                        <input type='text' id='cMontototal' name='cMontototal' class='form-control text-right' size='26' maxlength='26' />
+                                        <label class='control-label' for='perdmano'>Monto neto</label>
+                                        <input type='text' id='perdmano' name='perdmano' class='form-control text-right role-Avalúos-enabled' size='26' maxlength='26' disabled />
                                     </div>
                                 </div>
-                                <!-- montototaldeperdidaManodeObra Numeric -->
-                                <div class='col-sm-4 col-md-4'>
+                                <!-- perdmanoiva Numeric -->
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='montototaldeperdidaManodeObra'>Monto total de pérdida (Mano de Obra)</label>
-                                        <input type='text' id='montototaldeperdidaManodeObra' name='montototaldeperdidaManodeObra' class='form-control text-right' size='26' maxlength='26' />
+                                        <label class='control-label' for='perdmanoiva'>IVA</label>
+                                        <input type='text' id='perdmanoiva' name='perdmanoiva' class='form-control text-right' size='26' maxlength='26' disabled />
                                     </div>
                                 </div>
-                                <!-- aMontoneto Numeric -->
-                                <div class='col-sm-4 col-md-4'>
+                                <!-- perdmanototal Numeric -->
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='aMontoneto'>a Monto neto</label>
-                                        <input type='text' id='aMontoneto' name='aMontoneto' class='form-control text-right' size='26' maxlength='26' />
+                                        <label class='control-label' for='perdmanototal'>Monto total</label>
+                                        <input type='text' id='perdmanototal' name='perdmanototal' class='form-control text-right' size='26' maxlength='26' disabled />
                                     </div>
                                 </div>
-                                <!-- bIVA Numeric -->
-                                <div class='col-sm-4 col-md-4'>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- otrosII Zone -->
+                    <div class="form-row">
+                        <div class="col-lg-12">
+                            <h4>Otros II</h4>
+                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                            <div class="form-row">
+
+                                <!-- perdida Numeric -->
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='bIVA'>b IVA</label>
-                                        <input type='text' id='bIVA' name='bIVA' class='form-control text-right' size='26' maxlength='26' />
-                                    </div>
-                                </div>
-                                <!-- cMontototal Numeric -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='cMontototal'>c Monto total</label>
-                                        <input type='text' id='cMontototal' name='cMontototal' class='form-control text-right' size='26' maxlength='26' />
-                                    </div>
-                                </div>
-                                <!-- montoTotaldePerdida Numeric -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='montoTotaldePerdida'>Monto Total de Pérdida</label>
-                                        <input type='text' id='montoTotaldePerdida' name='montoTotaldePerdida' class='form-control text-right' size='26' maxlength='26' />
+                                        <label class='control-label' for='perdida'>Monto total de pérdida</label>
+                                        <input type='text' id='perdida' name='perdida' class='form-control text-right' size='26' maxlength='26' disabled />
                                     </div>
                                 </div>
                                 <!-- severidaddelsiniestro DropDownList -->
-                                <div class='col-sm-4 col-md-4'>
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
                                         <label class='control-label' for='severidaddelsiniestro'>Severidad del siniestro</label>
-                                        <select id='severidaddelsiniestro' name='severidaddelsiniestro' class='form-control'>
+                                        <select id='severidaddelsiniestro' name='severidaddelsiniestro' class='form-control role-Avalúos-enabled' disabled>
                                             <option value='1'>Alta</option>
                                             <option value='2'>Media</option>
                                             <option value='3'>Baja</option>
@@ -253,144 +296,190 @@
                                     </div>
                                 </div>
 
-                                <!-- avaluoAutorizado CheckBox -->
-                                <div class='col-sm-4 col-md-4'>
+                                <!-- avaluoautorizado RadioButtonList -->
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="avaluoAutorizado">
-                                            <label class="custom-control-label" for="avaluoAutorizado" style="padding-top: 4px;font-size: 11px;">Avalúo Autorizado</label>
+                                        <label class='control-label' for='avaluoautorizado'>Avalúo autorizado</label>
+                                        <div style="padding-top: 6px;">
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input role-Avalúos-enabled" id="avaluoautorizado_1" name="avaluoautorizado" value="1" disabled>
+                                                <label class="custom-control-label" for="avaluoautorizado_1">Si</label>
+                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input role-Avalúos-enabled" id="avaluoautorizado_2" name="avaluoautorizado" value="2" disabled>
+                                                <label class="custom-control-label" for="avaluoautorizado_2">No</label>
+                                            </div><div id='avaluoautorizado_validate'></div>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- fechaAutorizacion DatePicker -->
-                                <div class='col-sm-4 col-md-4'>
+
+                                <!-- fechaautorizacion DatePicker -->
+                                <div class='col-sm-3 col-md-3 fechaautorizacionVisible d-none'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='fechaAutorizacion'>Fecha Autorización</label>
-                                        <div class='input-group date' id='fechaAutorizacion_group'>
-                                            <input type='text' id='fechaAutorizacion' name='fechaAutorizacion' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                        <label class='control-label' for='fechaautorizacion'>Fecha autorización</label>
+                                        <div class='input-group date' id='fechaautorizacion_group'>
+                                            <input type='text' id='fechaautorizacion' name='fechaautorizacion' class='form-control role-Avalúos-enabled' size='10' maxlength='10' placeholder='día/mes/año' disabled />
                                             <span class='input-group-addon'>
                                                 <span class='glyphicon glyphicon-calendar'></span>
                                             </span>
                                         </div>
-                                        <div id='fechaAutorizacion_validate'></div>
+                                        <div id='fechaautorizacion_validate'></div>
                                     </div>
                                 </div>
 
-                                <!-- perdidaTotal CheckBox -->
-                                <div class='col-sm-4 col-md-4'>
+                                <!-- perdidatotal RadioButtonList -->
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="perdidaTotal">
-                                            <label class="custom-control-label" for="perdidaTotal" style="padding-top: 4px;font-size: 11px;">Pérdida Total</label>
+                                        <label class='control-label' for='perdidatotal'>Pérdida total</label>
+                                        <div style="padding-top: 6px;">
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input role-Avalúos-enabled" id="perdidatotal_1" name="perdidatotal" value="1" disabled>
+                                                <label class="custom-control-label" for="perdidatotal_1">Si</label>
+                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input role-Avalúos-enabled" id="perdidatotal_2" name="perdidatotal" value="2" disabled>
+                                                <label class="custom-control-label" for="perdidatotal_2">No</label>
+                                            </div><div id='perdidatotal_validate'></div>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- tipodePerdidaTotal DropDownList -->
-                                <div class='col-sm-4 col-md-4'>
+
+                                <!-- tipodeperdidatotal DropDownList -->
+                                <div class='col-sm-3 col-md-3 tipodeperdidatotalVisible d-none'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='tipodePerdidaTotal'>Tipo de Pérdida Total</label>
-                                        <select id='tipodePerdidaTotal' name='tipodePerdidaTotal' class='form-control'>
+                                        <label class='control-label' for='tipodeperdidatotal'>Tipo de pérdida total</label>
+                                        <select id='tipodeperdidatotal' name='tipodeperdidatotal' class='form-control role-Avalúos-enabled' disabled>
                                             <option value='1'>Estructural</option>
                                             <option value='2'>Financiera</option>
                                         </select>
                                     </div>
                                 </div>
 
-                                <!-- danoOculto Numeric -->
-                                <div class='col-sm-4 col-md-4'>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- danooculto Zone -->
+                    <div class="form-row">
+                        <div class="col-lg-12">
+                            <h4>Daño oculto</h4>
+                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                            <div class="form-row">
+
+                                <!-- presentadanooculto RadioButtonList -->
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='danoOculto'>Daño Oculto</label>
-                                        <input type='text' id='danoOculto' name='danoOculto' class='form-control text-right' size='11' maxlength='11' />
-                                    </div>
-                                </div>
-                                <!-- danoOcultoFechaSolicitado DatePicker -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='danoOcultoFechaSolicitado'>Daño Oculto Fecha Solicitado</label>
-                                        <div class='input-group date' id='danoOcultoFechaSolicitado_group'>
-                                            <input type='text' id='danoOcultoFechaSolicitado' name='danoOcultoFechaSolicitado' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
-                                            <span class='input-group-addon'>
-                                                <span class='glyphicon glyphicon-calendar'></span>
-                                            </span>
+                                        <label class='control-label' for='presentadanooculto'>Presenta daño oculto</label>
+                                        <div style="padding-top: 6px;">
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input role-Avalúos-enabled" id="presentadanooculto_1" name="presentadanooculto" value="1" disabled>
+                                                <label class="custom-control-label" for="presentadanooculto_1">Si</label>
+                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input role-Avalúos-enabled" id="presentadanooculto_2" name="presentadanooculto" value="2" disabled>
+                                                <label class="custom-control-label" for="presentadanooculto_2">No</label>
+                                            </div><div id='presentadanooculto_validate'></div>
                                         </div>
-                                        <div id='danoOcultoFechaSolicitado_validate'></div>
                                     </div>
                                 </div>
 
-                                <!-- danoOcultoObservaciones Text -->
-                                <div class='col-sm-4 col-md-4'>
+                                <!-- fechasolicitado Text -->
+                                <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='danoOcultoObservaciones'>Daño Oculto Observaciones</label>
-                                        <input type='text' id='danoOcultoObservaciones' name='danoOcultoObservaciones' class='form-control' size='40' maxlength='40' />
+                                        <label class='control-label' for='fechasolicitado'>Fecha solicitado</label>
+                                        <input type='text' id='fechasolicitado' name='fechasolicitado' class='form-control' size='0' maxlength='0' />
 
                                     </div>
                                 </div>
-                                <!-- danoOcultoMontoRepuestos Numeric -->
-                                <div class='col-sm-4 col-md-4'>
+                                <!-- observaciones Notes -->
+                                <div class='col-sm-12 col-md-12 observacionesVisible d-none'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='danoOcultoMontoRepuestos'>Daño Oculto Monto (Repuestos)</label>
-                                        <input type='text' id='danoOcultoMontoRepuestos' name='danoOcultoMontoRepuestos' class='form-control text-right' size='26' maxlength='26' />
-                                    </div>
-                                </div>
-                                <!-- aMontoneto Numeric -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='aMontoneto'>a Monto neto</label>
-                                        <input type='text' id='aMontoneto' name='aMontoneto' class='form-control text-right' size='26' maxlength='26' />
-                                    </div>
-                                </div>
-                                <!-- bIVA Numeric -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='bIVA'>b IVA</label>
-                                        <input type='text' id='bIVA' name='bIVA' class='form-control text-right' size='26' maxlength='26' />
-                                    </div>
-                                </div>
-                                <!-- cMontototal Numeric -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='cMontototal'>c Monto total</label>
-                                        <input type='text' id='cMontototal' name='cMontototal' class='form-control text-right' size='26' maxlength='26' />
-                                    </div>
-                                </div>
-                                <!-- danoOcultoMontoManodeObra Numeric -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='danoOcultoMontoManodeObra'>Daño Oculto Monto (Mano de Obra)</label>
-                                        <input type='text' id='danoOcultoMontoManodeObra' name='danoOcultoMontoManodeObra' class='form-control text-right' size='26' maxlength='26' />
-                                    </div>
-                                </div>
-                                <!-- aMontoneto Numeric -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='aMontoneto'>a Monto neto</label>
-                                        <input type='text' id='aMontoneto' name='aMontoneto' class='form-control text-right' size='26' maxlength='26' />
-                                    </div>
-                                </div>
-                                <!-- bIVA Numeric -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='bIVA'>b IVA</label>
-                                        <input type='text' id='bIVA' name='bIVA' class='form-control text-right' size='26' maxlength='26' />
-                                    </div>
-                                </div>
-                                <!-- cMontototal Numeric -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='cMontototal'>c Monto total</label>
-                                        <input type='text' id='cMontototal' name='cMontototal' class='form-control text-right' size='26' maxlength='26' />
-                                    </div>
-                                </div>
-                                <!-- danoOcultoMontoTotal Numeric -->
-                                <div class='col-sm-4 col-md-4'>
-                                    <div class='form-group'>
-                                        <label class='control-label' for='danoOcultoMontoTotal'>Daño Oculto Monto Total</label>
-                                        <input type='text' id='danoOcultoMontoTotal' name='danoOcultoMontoTotal' class='form-control text-right' size='26' maxlength='26' />
+                                        <label class='control-label' for='observaciones'>Observaciones</label>
+                                        <textarea id='observaciones' name='observaciones' class='form-control' rows="2"></textarea>
                                     </div>
                                 </div>
                             </div>
-                        @*</div>
-                    </div>*@
+                        </div>
+                    </div>
+
+                    <!-- danoocultomontoRepuestos Zone -->
+                    <div class="form-row">
+                        <div class="col-lg-12">
+                            <h4>Daño oculto monto (Repuestos)</h4>
+                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                            <div class="form-row">
+
+                                <!-- danoocultomontoRepuestosDanooculto Numeric -->
+                                <div class='col-sm-3 col-md-3'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='danoocultomontoRepuestosDanooculto'>Monto neto</label>
+                                        <input type='text' id='danoocultomontoRepuestosDanooculto' name='danoocultomontoRepuestosDanooculto' class='form-control text-right role-Avalúos-enabled' size='26' maxlength='26' disabled />
+                                    </div>
+                                </div>
+                                <!-- danoocultoiva Numeric -->
+                                <div class='col-sm-3 col-md-3'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='danoocultoiva'>IVA</label>
+                                        <input type='text' id='danoocultoiva' name='danoocultoiva' class='form-control text-right' size='26' maxlength='26' disabled />
+                                    </div>
+                                </div>
+                                <!-- danoocultototal Numeric -->
+                                <div class='col-sm-3 col-md-3'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='danoocultototal'>Monto total</label>
+                                        <input type='text' id='danoocultototal' name='danoocultototal' class='form-control text-right' size='26' maxlength='26' disabled />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- danoocultomontoManodeObra Zone -->
+                    <div class="form-row">
+                        <div class="col-lg-12">
+                            <h4>Daño oculto monto (Mano de Obra)</h4>
+                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                            <div class="form-row">
+
+                                <!-- danoocultomano Numeric -->
+                                <div class='col-sm-3 col-md-3'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='danoocultomano'>Monto neto</label>
+                                        <input type='text' id='danoocultomano' name='danoocultomano' class='form-control text-right role-Avalúos-enabled' size='26' maxlength='26' disabled />
+                                    </div>
+                                </div>
+                                <!-- danoocultomanoiva Numeric -->
+                                <div class='col-sm-3 col-md-3'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='danoocultomanoiva'>IVA</label>
+                                        <input type='text' id='danoocultomanoiva' name='danoocultomanoiva' class='form-control text-right' size='26' maxlength='26' disabled />
+                                    </div>
+                                </div>
+                                <!-- danoocultomanototal Numeric -->
+                                <div class='col-sm-3 col-md-3'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='danoocultomanototal'>Monto total</label>
+                                        <input type='text' id='danoocultomanototal' name='danoocultomanototal' class='form-control text-right' size='26' maxlength='26' disabled />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- otrosIIOtrosII Zone -->
+                    <div class="form-row">
+                        <div class="col-lg-12">
+                            <h4>Otros II</h4>
+                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                            <div class="form-row">
+
+                                <!-- otrosIIOtrosIIDanoocultomanototal Numeric -->
+                                <div class='col-sm-3 col-md-3'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='otrosIIOtrosIIDanoocultomanototal'>Daño oculto monto total</label>
+                                        <input type='text' id='otrosIIOtrosIIDanoocultomanototal' name='otrosIIOtrosIIDanoocultomanototal' class='form-control text-right' size='26' maxlength='26' disabled />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </fieldset>
             </form>
         </div>

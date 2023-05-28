@@ -14,6 +14,7 @@ app.PurdyPanel = (function () {
                 app.PurdyPanelEvento.Init(app.PurdyPanel.Event);
                 app.PurdyPanelDanos.Init(app.PurdyPanel.Event);
                 app.PurdyPanelIndemnizacion.Init(app.PurdyPanel.Event);
+                app.PurdyPanelLegal.Init(app.PurdyPanel.Event);
             }
             catch (err) {
                 console.error("Error Init");

@@ -6,40 +6,6 @@ app.PurdyPanelEvento = (function () {
     var setupData = null;
     var changedCallback = null;
 
-    function Setup() {
-
-        //app.core.Get(app.setting.apipath + 'v1/Quote/PanelEventoSetup', null,
-        //    function (data) {
-        //        app.core.Lookups(['Users-Reclamos.analistareclamos',],
-        //            function () {
-        //                setupData = data;
-        //                MapObjectToInput(data);
-        //            }, ``);
-
-        //    });
-    };
-
-    function ReadOnly() {
-        $('#fechadelevento_group').replaceWith('<div>' + $('#fechadelevento').val() + '</div>');
-        $('#analistareclamos').replaceWith('<div>' + $('#analistareclamos option:selected').text() + '</div>');
-        $('#tipodeindemnizacion').replaceWith('<div>' + $('#tipodeindemnizacion option:selected').text() + '</div>');
-        $('#motivonoProcede').replaceWith('<div>' + $('#motivonoProcede option:selected').text() + '</div>');
-        $('#detallenoprocede').replaceWith('<div>' + $('#detallenoprocede').val() + '</div>');
-        $('#detallesiniestro').replaceWith('<div>' + $('#detallesiniestro').val() + '</div>');
-        $('#tipodecobertura').replaceWith('<div>' + $('#tipodecobertura option:selected').text() + '</div>');
-        $('#categoriadesiniestro').replaceWith('<div>' + $('#categoriadesiniestro option:selected').text() + '</div>');
-        $('label[for=posiblesubrogacion').next().replaceWith('<div>' + $('label[for=posiblesubrogacion_' + app.ui.GetRadioNumericValue('posiblesubrogacion') + '').html() + '</div>');
-        $('#fechaidentificadocomoPosibleSubrogacion_group').replaceWith('<div>' + $('#fechaidentificadocomoPosibleSubrogacion').val() + '</div>');
-        $('label[for=enviadoaInvestigacion').next().replaceWith('<div>' + $('label[for=enviadoaInvestigacion_' + app.ui.GetRadioNumericValue('enviadoaInvestigacion') + '').html() + '</div>');
-        $('#fechaenviadoainvestigacion_group').replaceWith('<div>' + $('#fechaenviadoainvestigacion').val() + '</div>');
-        $('label[for=enviadoaacompanamientoLegal').next().replaceWith('<div>' + $('label[for=enviadoaacompanamientoLegal_' + app.ui.GetRadioNumericValue('enviadoaacompanamientoLegal') + '').html() + '</div>');
-        $('#fechaenviadoaacompanamientoLegal_group').replaceWith('<div>' + $('#fechaenviadoaacompanamientoLegal').val() + '</div>');
-        $('label[for=infraseguro').next().replaceWith('<div>' + $('label[for=infraseguro_' + app.ui.GetRadioNumericValue('infraseguro') + '').html() + '</div>');
-        $('label[for=autorizaciondeusopoliza').next().replaceWith('<div>' + $('label[for=autorizaciondeusopoliza_' + app.ui.GetRadioNumericValue('autorizaciondeusopoliza') + '').html() + '</div>');
-        $('#fechaautorizaciondeusopoliza_group').replaceWith('<div>' + $('#fechaautorizaciondeusopoliza').val() + '</div>');
-
-    };
-
     function MapInputToObject() {
         var data = {
             fechadelevento: app.ui.GetDateValue('#fechadelevento'),
@@ -185,26 +151,13 @@ app.PurdyPanelEvento = (function () {
                 Setup_Validations();
 
                 Controls_Events();
-                Setup();
-                //Custom.Extend
-                console.log("Inicio");
             }
             catch (err) {
                 console.error("Error Init");
                 console.error(err);
             }
         },
-        Data: function () {
-            return MapInputToObject();
-        },
-        SetData: function (data) {
-            MapObjectToInput(data);
-        },
-        Changed: function (callback) {
-            changedCallback = callback;
-        },
-        IsValid: function (showResume) {
-            return app.ui.IsValid('#PurdyPanelEventoEdtForm', false, showResume);
+        Event: function (src, data) {
         }
     };
 })();

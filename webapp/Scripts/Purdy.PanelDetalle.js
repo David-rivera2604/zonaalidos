@@ -47,7 +47,7 @@ app.PurdyPanelDetalle = (function () {
             $('#numerodepoliza').html(data.claim.NUM_POLIZA);
             $('#monedadepoliza').html(data.claim.NOM_MON);
             $('#tomador').html(`${data.claim.TIP_DOCUM_TOMADOR} ${data.claim.COD_DOCUM_TOMADOR} - ${data.claim.NOM_TOMADOR} ${data.claim.APE_TOMADOR}`);
-
+            $('#coberturaafectada').html(`${data.claim.COD_CAUSA_SINI} ${data.claim.NOM_COB}`);
             app.core.Get(`${app.setting.apipath}v1/datasource/json?id=700&sequence=2&url=NUM_POLIZA=${data.claim.NUM_POLIZA}:NUM_SPTO=${data.claim.NUM_SPTO}:NUM_APLI=${data.claim.NUM_APLI}:NUM_SPTO_APLI=${data.claim.NUM_SPTO_APLI}`)
                 .done(function (policy) {
                     _data = policy[0];
@@ -74,8 +74,7 @@ app.PurdyPanelDetalle = (function () {
                             ShowValue(data.filter(i => i.COD_CAMPO === "COD_CHASSIS"), 'chasis', 'VAL_CAMPO');
                             ShowValue(data.filter(i => i.COD_CAMPO === "COD_MARCA"), 'marca', 'TXT_CAMPO');
                             ShowValue(data.filter(i => i.COD_CAMPO === "IMP_VR"), 'valorasegurado', 'TXT_CAMPO');
-                            
-                  
+                            ShowValue(data.filter(i => i.COD_CAMPO === "COD_USO_VEHI"), 'usodepoliza', 'TXT_CAMPO');
                         });
                 });
         }

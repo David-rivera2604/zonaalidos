@@ -1282,6 +1282,7 @@
     <Content Include="Scripts\Purdy.PanelDetalle.js" />
     <Content Include="Scripts\Purdy.PanelEncabezado.js" />
     <Content Include="Scripts\Purdy.PanelEvento.js" />
+    <Content Include="Scripts\Purdy.PanelLegal.js" />
     <Content Include="Scripts\Purdy.PanelIndemnizacion.js" />
     <Content Include="Scripts\Purdy.Panel.js" />
     <Content Include="Scripts\Seguimiento_Aliados.js" />
@@ -1740,6 +1741,7 @@
     <Content Include="Views\Purdy\_detalle.cshtml" />
     <Content Include="Views\Purdy\_evento.cshtml" />
     <Content Include="Views\Purdy\_indemnizacion.cshtml" />
+    <Content Include="Views\Purdy\_legal.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
