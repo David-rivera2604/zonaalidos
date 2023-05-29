@@ -807,3 +807,16 @@ html {
 .form-compact .form-group {
     margin-bottom: 0px;
 }
+
+.compact .form-group {
+    margin-bottom: 5px;
+}
+
+.readonly {
+    margin-left: 6px;
+    height: 13px;
+}
+
+    .readonly a {
+        font-weight: normal;
+    }

@@ -1278,6 +1278,13 @@
     <Content Include="Scripts\Pagos.Resultado.js" />
     <Content Include="Scripts\Prototype.Payment.js" />
     <Content Include="Scripts\Prototype.Producto.js" />
+    <Content Include="Scripts\Purdy.PanelDanos.js" />
+    <Content Include="Scripts\Purdy.PanelDetalle.js" />
+    <Content Include="Scripts\Purdy.PanelEncabezado.js" />
+    <Content Include="Scripts\Purdy.PanelEvento.js" />
+    <Content Include="Scripts\Purdy.PanelLegal.js" />
+    <Content Include="Scripts\Purdy.PanelIndemnizacion.js" />
+    <Content Include="Scripts\Purdy.Panel.js" />
     <Content Include="Scripts\Seguimiento_Aliados.js" />
     <Content Include="Scripts\Siniestros.Panel.js" />
     <Content Include="Scripts\Security.Integrate.js" />
@@ -1323,6 +1330,8 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\UnhandledExceptionLogger.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\PurdyController.cs" />
+    <Compile Include="Controllers\ColorsController.cs" />
     <Compile Include="Controllers\DocuSignController.cs" />
     <Compile Include="Controllers\AvisosController.cs" />
     <Compile Include="Controllers\ManualController.cs" />
@@ -1726,6 +1735,13 @@
     <Content Include="Views\General\ColorTenant.cshtml" />
     <Content Include="Views\General\MantenimientoInicio.cshtml" />
     <Content Include="Views\General\Administration.cshtml" />
+    <Content Include="Views\Purdy\Panel.cshtml" />
+    <Content Include="Views\Purdy\_encabezado.cshtml" />
+    <Content Include="Views\Purdy\_danos.cshtml" />
+    <Content Include="Views\Purdy\_detalle.cshtml" />
+    <Content Include="Views\Purdy\_evento.cshtml" />
+    <Content Include="Views\Purdy\_indemnizacion.cshtml" />
+    <Content Include="Views\Purdy\_legal.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1744,6 +1760,10 @@
     <ProjectReference Include="..\Core\Architect.API.Core.Business\Architect.API.Core.Business.csproj">
       <Project>{579105b3-776b-4094-a301-87a9c42962c5}</Project>
       <Name>Architect.API.Core.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Architect.API.Core.Contracts\Architect.API.Core.Contracts.csproj">
+      <Project>{29b21bef-8c87-4a9d-8b37-fecc57cd03c7}</Project>
+      <Name>Architect.API.Core.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core\Architect.API.Core.Utilities\Architect.API.Core.Security.csproj">
       <Project>{3d406267-4a50-4e87-842a-553e3d222cf1}</Project>

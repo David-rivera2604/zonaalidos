@@ -1,0 +1,221 @@
+﻿<!-- Edit Form -->
+<div class='form-row'>
+    <div class='col-md-12'>
+        <div id="PurdyPanelIndemnizacionEdt" class="animated fadeInRight">
+            <form id='PurdyPanelIndemnizacionEdtForm' class='form-horizontal' data-toggle='validator'>
+                <fieldset>
+                    <!-- movimientosdemontos Grid -->
+                    <div class="form-row">
+                        <div class="col-lg-12">
+                            <div class="form-row">
+                                <div class='col'>
+                                    <h4>Movimientos de montos<label id="movimientosdemontosTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                </div>
+                                <div class='col-auto'>
+                                    <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo Movimientos de montos" data-toggle="modal" id="movimientosdemontosNew"> <i class="fa fa-plus"></i> </button>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                            <div class="form-row">
+                                <div class='col-md-12' style="padding-bottom: 20px">
+                                    <div class="table-responsive">
+                                        <table id="movimientosdemontosTbl" style="font-size: 11px;">
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- balance Grid -->
+                    <div class="form-row">
+                        <div class="col-lg-12">
+                            <div class="form-row">
+                                <div class='col'>
+                                    <h4>Balance<label id="balanceTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                </div>
+                                <div class='col-auto'>
+                                    <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo Balance" data-toggle="modal" id="balanceNew"> <i class="fa fa-plus"></i> </button>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                            <div class="form-row">
+                                <div class='col-md-12' style="padding-bottom: 20px">
+                                    <div class="table-responsive">
+                                        <table id="balanceTbl" style="font-size: 11px;">
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- movimientosdemontos Grid Modal -->
+<div class="modal inmodal" id="movimientosdemontosModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                <h4 class="modal-title">Movimientos de montos</h4>
+                <small class="font-bold">Permite agregar un nuevo Movimientos de montos o editar uno ya existente</small>
+            </div>
+            <div class="modal-body">
+                <!-- movimientosdemontos Grid Edit Form -->
+                <div class='form-row'>
+                    <div class='col-md-12'>
+                        <div id="movimientosdemontosEdt" class="animated fadeInRight">
+                            <form id='movimientosdemontosEdtForm' class='form-horizontal' data-toggle='validator'>
+                                <fieldset>
+                                    <div class='form-row'>
+                                        <!-- montoInicialporIndemnizar Numeric -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='montoInicialporIndemnizar'>Monto Inicial por Indemnizar</label>
+                                                <input type='text' id='montoInicialporIndemnizar' name='montoInicialporIndemnizar' class='form-control text-right role-Administrativo-enabled' size='26' maxlength='26' disabled />
+                                            </div>
+                                        </div><!-- montoInicialporIndemnizarRepuestos Numeric -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='montoInicialporIndemnizarRepuestos'>Monto Inicial por Indemnizar (Repuestos)</label>
+                                                <input type='text' id='montoInicialporIndemnizarRepuestos' name='montoInicialporIndemnizarRepuestos' class='form-control text-right role-Administrativo-enabled' size='26' maxlength='26' disabled />
+                                            </div>
+                                        </div><!-- montoInicialporIndemnizarManodeObra Numeric -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='montoInicialporIndemnizarManodeObra'>Monto Inicial por Indemnizar (Mano de Obra)</label>
+                                                <input type='text' id='montoInicialporIndemnizarManodeObra' name='montoInicialporIndemnizarManodeObra' class='form-control text-right role-Administrativo-enabled' size='26' maxlength='26' disabled />
+                                            </div>
+                                        </div><!-- montoDanoOcultoporIndemnizar Numeric -->
+                                        <div class='col-sm-4 col-md-4 montoDanoOcultoporIndemnizarVisible d-none'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='montoDanoOcultoporIndemnizar'>Monto Daño Oculto por Indemnizar</label>
+                                                <input type='text' id='montoDanoOcultoporIndemnizar' name='montoDanoOcultoporIndemnizar' class='form-control text-right role-Administrativo-enabled' size='26' maxlength='26' disabled />
+                                            </div>
+                                        </div><!-- montoDanoOcultoporIndemnizarRepuestos Numeric -->
+                                        <div class='col-sm-4 col-md-4 montoDanoOcultoporIndemnizarRepuestosVisible d-none'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='montoDanoOcultoporIndemnizarRepuestos'>Monto Daño Oculto por Indemnizar (Repuestos)</label>
+                                                <input type='text' id='montoDanoOcultoporIndemnizarRepuestos' name='montoDanoOcultoporIndemnizarRepuestos' class='form-control text-right role-Administrativo-enabled' size='26' maxlength='26' disabled />
+                                            </div>
+                                        </div><!-- montoDanoOcultoporIndemnizarManodeObra Numeric -->
+                                        <div class='col-sm-4 col-md-4 montoDanoOcultoporIndemnizarManodeObraVisible d-none'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='montoDanoOcultoporIndemnizarManodeObra'>Monto Daño Oculto por Indemnizar (Mano de Obra)</label>
+                                                <input type='text' id='montoDanoOcultoporIndemnizarManodeObra' name='montoDanoOcultoporIndemnizarManodeObra' class='form-control text-right role-Administrativo-enabled' size='26' maxlength='26' disabled />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="movimientosdemontosEdtFormSave" data-doing="Guardando...">Guardar cambios</button>
+                <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- balance Grid Modal -->
+<div class="modal inmodal" id="balanceModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                <h4 class="modal-title">Balance</h4>
+                <small class="font-bold">Permite agregar un nuevo Balance o editar uno ya existente</small>
+            </div>
+            <div class="modal-body">
+                <!-- balance Grid Edit Form -->
+                <div class='form-row'>
+                    <div class='col-md-12'>
+                        <div id="balanceEdt" class="animated fadeInRight">
+                            <form id='balanceEdtForm' class='form-horizontal' data-toggle='validator'>
+                                <fieldset>
+                                    <div class='form-row'>
+                                        <!-- numerodeSiniestro Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='numerodeSiniestro'>Número de Siniestro</label>
+                                                <input type='text' id='numerodeSiniestro' name='numerodeSiniestro' class='form-control' size='0' maxlength='0' disabled />
+
+                                            </div>
+                                        </div><!-- tipodedocumento DropDownList -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='tipodedocumento'>Tipo de documento</label>
+                                                <select id='tipodedocumento' name='tipodedocumento' class='form-control'>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- numerodedocumento Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='numerodedocumento'>Número de documento</label>
+                                                <input type='text' id='numerodedocumento' name='numerodedocumento' class='form-control role-Administrativo-enabled' size='20' maxlength='20' disabled />
+
+                                            </div>
+                                        </div><!-- fecha DatePicker -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='fecha'>Fecha</label>
+                                                <div class='input-group date' id='fecha_group'>
+                                                    <input type='text' id='fecha' name='fecha' class='form-control role-Administrativo-enabled' size='10' maxlength='10' placeholder='día/mes/año' disabled />
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-calendar'></span>
+                                                    </span>
+                                                </div>
+                                                <div id='fecha_validate'></div>
+                                            </div>
+                                        </div>
+                                        <!-- receptor Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='receptor'>Receptor</label>
+                                                <input type='text' id='receptor' name='receptor' class='form-control role-Administrativo-enabled' size='100' maxlength='100' disabled />
+
+                                            </div>
+                                        </div><!-- monto Numeric -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='monto'>Monto</label>
+                                                <input type='text' id='monto' name='monto' class='form-control text-right role-Administrativo-enabled' size='26' maxlength='26' disabled />
+                                            </div>
+                                        </div><!-- nCRepuesto Numeric -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='nCRepuesto'>NC Repuesto</label>
+                                                <input type='text' id='nCRepuesto' name='nCRepuesto' class='form-control text-right' size='26' maxlength='26' disabled />
+                                            </div>
+                                        </div><!-- observacion Notes -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='observacion'>Observación</label>
+                                                <textarea id='observacion' name='observacion' class='form-control' rows="2"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="balanceEdtFormSave" data-doing="Guardando...">Guardar cambios</button>
+                <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Form End -->
