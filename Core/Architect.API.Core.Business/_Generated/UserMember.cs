@@ -34,7 +34,7 @@ namespace Architect.API.Core.Business.Security
 
             //Se crea subagente en TRON
             string[] tenantList = ConfigurationManager.AppSettings["Mapfre.Tron.CreaSubAgentes"].Split(new char[] {';'});
-            bool affectedRowsSubAgent = false;
+            bool affectedRowsSubAgent = true;
             string tip_docum = null;
             string cod_docum = null;
             int cod_agt_ = 0;
@@ -204,7 +204,7 @@ namespace Architect.API.Core.Business.Security
             int affectedRows = Architect.API.Core.DataAccess.Security.UserMember.Update(result);
             //Se crea subagente en TRON
             string[] tenantList = ConfigurationManager.AppSettings["Mapfre.Tron.CreaSubAgentes"].Split(new char[] { ';' });
-            bool affectedRowsSubAgent = false;
+            bool affectedRowsSubAgent = true;
             string tip_docum = null;
             string cod_docum = null;
             int cod_agt_ = 0;
