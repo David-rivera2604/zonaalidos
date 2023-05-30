@@ -16,7 +16,7 @@
                                 <div class='form-group'>
                                     <label class='control-label' for='fechadelevento'>Fecha del evento</label>
                                     <div class='input-group date' id='fechadelevento_group'>
-                                        <input type='text' id='fechadelevento' name='fechadelevento' class='form-control role-Reclamos-enabled' size='10' maxlength='10' placeholder='día/mes/año' disabled />
+                                        <input type='text' id='fechadelevento' name='fechadelevento' class='form-control role-Reclamos-enable' size='10' maxlength='10' placeholder='día/mes/año' disabled />
                                         <span class='input-group-addon'>
                                             <span class='glyphicon glyphicon-calendar'></span>
                                         </span>
@@ -29,7 +29,7 @@
                             <div class='col-sm-3 col-md-3'>
                                 <div class='form-group'>
                                     <label class='control-label' for='analistareclamos'>Analista reclamos</label>
-                                    <select id='analistareclamos' name='analistareclamos' class='form-control role-Reclamos-enabled' disabled>
+                                    <select id='analistareclamos' name='analistareclamos' class='form-control role-Reclamos-enable' disabled>
                                     </select>
                                 </div>
                             </div>
@@ -57,7 +57,7 @@
                             <div class='col-sm-3 col-md-3 motivonoProcedeVisible d-none'>
                                 <div class='form-group'>
                                     <label class='control-label' for='motivonoProcede'>Motivo no Procede</label>
-                                    <select id='motivonoProcede' name='motivonoProcede' class='form-control role-Reclamos-enabled' disabled>
+                                    <select id='motivonoProcede' name='motivonoProcede' class='form-control role-Reclamos-enable' disabled>
                                         <option value='1'>Tercero asume</option>
                                         <option value='2'>Monto de reparación menor al deducible</option>
                                         <option value='3'>Cliente no desea utilizar póliza</option>
@@ -101,7 +101,7 @@
                             <div class='col-sm-3 col-md-3'>
                                 <div class='form-group'>
                                     <label class='control-label' for='categoriadesiniestro'>Categoría de siniestro</label>
-                                    <select id='categoriadesiniestro' name='categoriadesiniestro' class='form-control role-Reclamos-enabled' disabled>
+                                    <select id='categoriadesiniestro' name='categoriadesiniestro' class='form-control role-Reclamos-enable' disabled>
                                         <option value='1'>Colisión entre vehículos</option>
                                         <option value='2'>Colisión objeto fijo</option>
                                         <option value='3'>Volcamiento</option>
@@ -115,10 +115,10 @@
                                     <label class='control-label' for='posiblesubrogacion'>Posible subrogación</label>
                                     <div style="padding-top: 6px;">
                                         <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input role-Reclamos-enabled" id="posiblesubrogacion_1" name="posiblesubrogacion" value="1" disabled>
+                                            <input type="radio" class="custom-control-input role-Reclamos-enable" id="posiblesubrogacion_1" name="posiblesubrogacion" value="1" disabled>
                                             <label class="custom-control-label" for="posiblesubrogacion_1">Si</label>
                                         </div><div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input role-Reclamos-enabled" id="posiblesubrogacion_2" name="posiblesubrogacion" value="2" disabled>
+                                            <input type="radio" class="custom-control-input role-Reclamos-enable" id="posiblesubrogacion_2" name="posiblesubrogacion" value="2" disabled>
                                             <label class="custom-control-label" for="posiblesubrogacion_2">No</label>
                                         </div><div id='posiblesubrogacion_validate'></div>
                                     </div>
@@ -130,7 +130,7 @@
                                 <div class='form-group'>
                                     <label class='control-label' for='fechaidentificadocomoPosibleSubrogacion'>Fecha identificado como Posible Subrogación</label>
                                     <div class='input-group date' id='fechaidentificadocomoPosibleSubrogacion_group'>
-                                        <input type='text' id='fechaidentificadocomoPosibleSubrogacion' name='fechaidentificadocomoPosibleSubrogacion' class='form-control role-Reclamos-enabled' size='10' maxlength='10' placeholder='día/mes/año' disabled />
+                                        <input type='text' id='fechaidentificadocomoPosibleSubrogacion' name='fechaidentificadocomoPosibleSubrogacion' class='form-control role-Reclamos-enable' size='10' maxlength='10' placeholder='día/mes/año' disabled />
                                         <span class='input-group-addon'>
                                             <span class='glyphicon glyphicon-calendar'></span>
                                         </span>
@@ -145,10 +145,10 @@
                                     <label class='control-label' for='enviadoaInvestigacion'>Enviado a Investigación</label>
                                     <div style="padding-top: 6px;">
                                         <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input role-Reclamos-enabled" id="enviadoaInvestigacion_1" name="enviadoaInvestigacion" value="1" disabled>
+                                            <input type="radio" class="custom-control-input role-Reclamos-enable" id="enviadoaInvestigacion_1" name="enviadoaInvestigacion" value="1" disabled>
                                             <label class="custom-control-label" for="enviadoaInvestigacion_1">Si</label>
                                         </div><div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input role-Reclamos-enabled" id="enviadoaInvestigacion_2" name="enviadoaInvestigacion" value="2" disabled>
+                                            <input type="radio" class="custom-control-input role-Reclamos-enable" id="enviadoaInvestigacion_2" name="enviadoaInvestigacion" value="2" disabled>
                                             <label class="custom-control-label" for="enviadoaInvestigacion_2">No</label>
                                         </div><div id='enviadoaInvestigacion_validate'></div>
                                     </div>
@@ -160,7 +160,7 @@
                                 <div class='form-group'>
                                     <label class='control-label' for='fechaenviadoainvestigacion'>Fecha enviado a investigación</label>
                                     <div class='input-group date' id='fechaenviadoainvestigacion_group'>
-                                        <input type='text' id='fechaenviadoainvestigacion' name='fechaenviadoainvestigacion' class='form-control role-Reclamos-enabled' size='10' maxlength='10' placeholder='día/mes/año' disabled />
+                                        <input type='text' id='fechaenviadoainvestigacion' name='fechaenviadoainvestigacion' class='form-control role-Reclamos-enable' size='10' maxlength='10' placeholder='día/mes/año' disabled />
                                         <span class='input-group-addon'>
                                             <span class='glyphicon glyphicon-calendar'></span>
                                         </span>
@@ -175,10 +175,10 @@
                                     <label class='control-label' for='enviadoaacompanamientoLegal'>Enviado a acompañamiento Legal</label>
                                     <div style="padding-top: 6px;">
                                         <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input role-Reclamos-enabled" id="enviadoaacompanamientoLegal_1" name="enviadoaacompanamientoLegal" value="1" disabled>
+                                            <input type="radio" class="custom-control-input role-Reclamos-enable" id="enviadoaacompanamientoLegal_1" name="enviadoaacompanamientoLegal" value="1" disabled>
                                             <label class="custom-control-label" for="enviadoaacompanamientoLegal_1">Si</label>
                                         </div><div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input role-Reclamos-enabled" id="enviadoaacompanamientoLegal_2" name="enviadoaacompanamientoLegal" value="2" disabled>
+                                            <input type="radio" class="custom-control-input role-Reclamos-enable" id="enviadoaacompanamientoLegal_2" name="enviadoaacompanamientoLegal" value="2" disabled>
                                             <label class="custom-control-label" for="enviadoaacompanamientoLegal_2">No</label>
                                         </div><div id='enviadoaacompanamientoLegal_validate'></div>
                                     </div>
@@ -190,7 +190,7 @@
                                 <div class='form-group'>
                                     <label class='control-label' for='fechaenviadoaacompanamientoLegal'>Fecha enviado a acompañamiento Legal</label>
                                     <div class='input-group date' id='fechaenviadoaacompanamientoLegal_group'>
-                                        <input type='text' id='fechaenviadoaacompanamientoLegal' name='fechaenviadoaacompanamientoLegal' class='form-control role-Reclamos-enabled' size='10' maxlength='10' placeholder='día/mes/año' disabled />
+                                        <input type='text' id='fechaenviadoaacompanamientoLegal' name='fechaenviadoaacompanamientoLegal' class='form-control role-Reclamos-enable' size='10' maxlength='10' placeholder='día/mes/año' disabled />
                                         <span class='input-group-addon'>
                                             <span class='glyphicon glyphicon-calendar'></span>
                                         </span>
@@ -205,10 +205,10 @@
                                     <label class='control-label' for='infraseguro'>Infraseguro</label>
                                     <div style="padding-top: 6px;">
                                         <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input role-Reclamos-enabled" id="infraseguro_1" name="infraseguro" value="1" disabled>
+                                            <input type="radio" class="custom-control-input role-Reclamos-enable" id="infraseguro_1" name="infraseguro" value="1" disabled>
                                             <label class="custom-control-label" for="infraseguro_1">Si</label>
                                         </div><div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input role-Reclamos-enabled" id="infraseguro_2" name="infraseguro" value="2" disabled>
+                                            <input type="radio" class="custom-control-input role-Reclamos-enable" id="infraseguro_2" name="infraseguro" value="2" disabled>
                                             <label class="custom-control-label" for="infraseguro_2">No</label>
                                         </div><div id='infraseguro_validate'></div>
                                     </div>
@@ -221,10 +221,10 @@
                                     <label class='control-label' for='autorizaciondeusopoliza'>Autorización de uso póliza</label>
                                     <div style="padding-top: 6px;">
                                         <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input role-Reclamos-enabled" id="autorizaciondeusopoliza_1" name="autorizaciondeusopoliza" value="1" disabled>
+                                            <input type="radio" class="custom-control-input role-Reclamos-enable" id="autorizaciondeusopoliza_1" name="autorizaciondeusopoliza" value="1" disabled>
                                             <label class="custom-control-label" for="autorizaciondeusopoliza_1">Si</label>
                                         </div><div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input role-Reclamos-enabled" id="autorizaciondeusopoliza_2" name="autorizaciondeusopoliza" value="2" disabled>
+                                            <input type="radio" class="custom-control-input role-Reclamos-enable" id="autorizaciondeusopoliza_2" name="autorizaciondeusopoliza" value="2" disabled>
                                             <label class="custom-control-label" for="autorizaciondeusopoliza_2">No</label>
                                         </div><div id='autorizaciondeusopoliza_validate'></div>
                                     </div>
@@ -236,7 +236,7 @@
                                 <div class='form-group'>
                                     <label class='control-label' for='fechaautorizaciondeusopoliza'>Fecha autorización de uso póliza</label>
                                     <div class='input-group date' id='fechaautorizaciondeusopoliza_group'>
-                                        <input type='text' id='fechaautorizaciondeusopoliza' name='fechaautorizaciondeusopoliza' class='form-control role-Reclamos-enabled' size='10' maxlength='10' placeholder='día/mes/año' disabled />
+                                        <input type='text' id='fechaautorizaciondeusopoliza' name='fechaautorizaciondeusopoliza' class='form-control role-Reclamos-enable' size='10' maxlength='10' placeholder='día/mes/año' disabled />
                                         <span class='input-group-addon'>
                                             <span class='glyphicon glyphicon-calendar'></span>
                                         </span>

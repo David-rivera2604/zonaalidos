@@ -8,13 +8,12 @@ app.PurdyPanel = (function () {
         Init: function () {
             try {
                 app.ui.CommonBehaviour();
-
                 app.PurdyPanelEncabezado.Init(app.PurdyPanel.Event);
                 app.PurdyPanelDetalle.Init(app.PurdyPanel.Event);
                 app.PurdyPanelEvento.Init(app.PurdyPanel.Event);
                 app.PurdyPanelDanos.Init(app.PurdyPanel.Event);
                 app.PurdyPanelIndemnizacion.Init(app.PurdyPanel.Event);
-                app.PurdyPanelLegal.Init(app.PurdyPanel.Event);
+                app.PurdyPanelLegal.Init(app.PurdyPanel.Event);                
             }
             catch (err) {
                 console.error("Error Init");
