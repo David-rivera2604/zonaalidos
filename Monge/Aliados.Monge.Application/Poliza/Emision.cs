@@ -58,7 +58,7 @@ namespace Aliados.Monge.Application.Poliza
 
                 Architect.API.Tron.Contracts.Cotizacion.Viajero quote = MapperBase(risk);
 
-                Architect.API.Tron.Contracts.Presupuesto.DatoFijo result2 = ViajeroConvert.ToTron(quote, cod_ramo, tokenInfo.AgentCode, tokenInfo.UserName);
+                Architect.API.Tron.Contracts.Presupuesto.DatoFijo result2 = ViajeroConvert.ToTron(quote, cod_ramo, tokenInfo.AgentCode, tokenInfo.UserName, tokenInfo.CompanyId);
                 result2 = MapperTerceros(risk, result2);
 
                 result2.tip_docum = result2.Terceros.FirstOrDefault().tip_docum;
@@ -219,7 +219,7 @@ namespace Aliados.Monge.Application.Poliza
                 TIP_VIAJE = tip_viaje,
                 FEC_VIAJE = risk.Datos_Generales.fec_efec_poliza,
                 DES_DESTINO = StringValue(datosvariables, "DES_DESTINO"),
-                COD_PAIS_ORIGEN = StringValue(datosvariables, "ORI_ORIGEN"),
+                COD_PAIS_ORIGEN = StringValue(datosvariables, "ORI_ORIGEN", "CR"),
                 COD_MODALIDAD = risk.Datos_Generales.cod_modalidad,
                 cantidad_riesgos = cantidadRiesgos,
                 coberturas = new List<Architect.API.Tron.Contracts.Comun.Cobertura>()
@@ -359,12 +359,15 @@ namespace Aliados.Monge.Application.Poliza
         }
 
 
-        private static string StringValue(List<Domain.Poliza.Emision.DatosVariables> datosvariables, string name)
+        private static string StringValue(List<Domain.Poliza.Emision.DatosVariables> datosvariables, string name, string defaultValue = "")
         {
             string result = String.Empty;
             if (datosvariables.Exists(r => r.nombre == name))
             {
                 result = datosvariables.Find(r => r.nombre == name).valor;
+            } else if (defaultValue.IsNotEmpty())
+            {
+                result = defaultValue;
             }
             return result;
 
