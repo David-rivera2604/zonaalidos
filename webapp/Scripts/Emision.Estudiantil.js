@@ -1,6 +1,6 @@
 ﻿var app = app || {};
 
-app.EmisionViajero = (function () {
+app.EmisionEstudiantil = (function () {
     let workMode = '';
     var setupData = null;
     var changedCallback = null;
@@ -11,7 +11,7 @@ app.EmisionViajero = (function () {
         if (_id != '') {
             workMode = app.core.URLStringValue('mode');
             $('#coberturasTbl').bootstrapTable('showLoading');
-            app.core.Get(app.setting.apipath + 'v1/Issue/Viajero/' + _id + '?mode=' + workMode)
+            app.core.Get(app.setting.apipath + 'v1/Issue/Estudiantil/' + _id + '?mode=' + workMode)
                 .done(function (data) {
                     Init_Lookups(data);
                 });
@@ -19,7 +19,7 @@ app.EmisionViajero = (function () {
     };
 
     function Quote() {
-        app.core.Post(app.setting.apipath + 'v1/Issue/Viajero',
+        app.core.Post(app.setting.apipath + 'v1/Issue/Estudiantil',
             JSON.stringify(MapInputToObject()),
             function (data) {
                 setupData = data;
@@ -75,26 +75,22 @@ app.EmisionViajero = (function () {
         $('#cod_fracc_pago').replaceWith('<div>' + $('#cod_fracc_pago option:selected').text() + '</div>');
         $('#fec_efec_poliza_group').replaceWith('<div>' + $('#fec_efec_poliza').val() + '</div>');
         $('#fec_vcto_poliza_group').replaceWith('<div>' + $('#fec_vcto_poliza').val() + '</div>');
-        $('#TIP_PLAN').replaceWith('<div>' + $('#TIP_PLAN option:selected').text() + '</div>');
-        $('#TIP_VIAJE').replaceWith('<div>' + $('#TIP_VIAJE option:selected').text() + '</div>');
-        $('#FEC_VIAJE_group').replaceWith('<div>' + $('#FEC_VIAJE').val() + '</div>');
-        $('#DES_DESTINO').replaceWith('<div>' + $('#DES_DESTINO').val() + '</div>');
-        $('#cantidad_riesgos').replaceWith('<div>' + $('#cantidad_riesgos').val() + '</div>');
-        $('#FEC_NACIMIENTO_group').replaceWith('<div>' + $('#FEC_NACIMIENTO').val() + '</div>');
-        $('#COD_MODALIDAD').replaceWith('<div>' + $('#COD_MODALIDAD option:selected').text() + '</div>');
+        //$('#FEC_NACIMIENTO_group').replaceWith('<div>' + $('#FEC_NACIMIENTO').val() + '</div>');
+        $('#MCA_SEXO').replaceWith('<div>' + $('#MCA_SEXO').val() + '</div>');
+        $('#TXT_CRED_ESTUD').replaceWith('<div>' + $('#TXT_CRED_ESTUD').val() + '</div>');
+        $('#COD_PLAN_AP').replaceWith('<div>' + $('#COD_PLAN_AP').val() + '</div>');
 
     };
 
     function Init_Lookups(data) {
         setupData = JSON.parse(JSON.stringify(data));
         app.core.Lookups([
-            'MonedasPorRamo.cod_mon', 'FrecuenciaDePagoPorRamo.cod_fracc_pago', 'TRON_G2990006:TIP_PLAN.TIP_PLAN',
-            'TRON_G2990006:TIP_VIAJE.TIP_VIAJE', 'TRON_A1002090.COD_MODALIDAD',
+            'MonedasPorRamo.cod_mon', 'FrecuenciaDePagoPorRamo.cod_fracc_pago',
             'Paises.cod_pais', 'Provincias.TProvincia'],
             function () {
                 MapObjectToInput(data);
                 ReadOnly();
-            }, `cod_ramo=441:cod_mon=2:cod_pais=CRI`);
+            }, `cod_ramo=194:cod_mon=1:cod_pais=CRI`);
 
         // Dependencies events
         $('#TProvincia').on('change', function () {
@@ -124,16 +120,12 @@ app.EmisionViajero = (function () {
         app.ui.SetDateValue('#fec_efec_poliza', data.fec_efec_poliza);
         $('#fec_vcto_poliza_group').data("DateTimePicker").minDate($('#fec_efec_poliza_group').data("DateTimePicker").date());
         app.ui.SetDateValue('#fec_vcto_poliza', data.fec_vcto_poliza);
-        $('#TIP_PLAN').val(data.TIP_PLAN);
-        app.ui.SetDropDownNumericValue('#TIP_PLAN', data.TIP_PLAN, true, 'I');
-        $('#TIP_VIAJE').val(data.TIP_VIAJE);
-        app.ui.SetDropDownNumericValue('#TIP_VIAJE', data.TIP_VIAJE, true, 'NA');
-        app.ui.SetDateValue('#FEC_VIAJE', data.FEC_VIAJE);
-        $('#DES_DESTINO').val(data.DES_DESTINO_DESC);
-        $('#cantidad_riesgos').val(data.cantidad_riesgos);
+        $('#COD_PLAN_AP').val(data.COD_PLAN_AP);
         //app.ui.SetDateValue('#FEC_NACIMIENTO', data.FEC_NACIMIENTO);
-        $('#COD_MODALIDAD').val(data.COD_MODALIDAD);
-        app.ui.SetDropDownNumericValue('#COD_MODALIDAD', data.COD_MODALIDAD, true);
+        $('#MCA_SEXO').val(data.MCA_SEXO);
+        $('#TXT_CRED_ESTUD').val(data.TXT_CRED_ESTUD);
+        
+
         if (data.terceros != null)
             $('#tercerosTbl').bootstrapTable('load', data.terceros);
         else
@@ -169,17 +161,13 @@ app.EmisionViajero = (function () {
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
-        $('#FEC_VIAJE_group').datetimepicker({
-            format: 'DD/MM/YYYY',
-            locale: 'es'
-        });
-        $('#FEC_NACIMIENTO_group').datetimepicker({
-            format: 'DD/MM/YYYY',
-            locale: 'es',
-            maxDate: app.ui.Yesterday(),
-            date: null
+        //$('#FEC_NACIMIENTO_group').datetimepicker({
+        //    format: 'DD/MM/YYYY',
+        //    locale: 'es',
+        //    maxDate: app.ui.Yesterday(),
+        //    date: null
 
-        });
+        //});
 
         $("#emitir").appendTo("#GenericToolBar");
         $("#limpiar").appendTo("#GenericToolBar");
@@ -209,7 +197,7 @@ app.EmisionViajero = (function () {
 
                 console.log(MapInputToObject())
 
-                app.core.Post(app.setting.apipath + 'v1/Cotizacion/Viajero',
+                app.core.Post(app.setting.apipath + 'v1/Cotizacion/Estudiantil',
                     JSON.stringify(MapInputToObject()),
                     function (data) {
                         if (data.Mensaje != null) {
@@ -271,24 +259,20 @@ app.EmisionViajero = (function () {
                 cod_fracc_pago: { required: true },
                 fec_efec_poliza: { required: true },
                 fec_vcto_poliza: { required: true },
-                TIP_PLAN: { required: true },
-                TIP_VIAJE: { required: true },
-                FEC_VIAJE: { required: true },
-                DES_DESTINO: { required: true },
-                FEC_NACIMIENTO: { required: true },
-                COD_MODALIDAD: { required: true },
+                //FEC_NACIMIENTO: { required: true },
+                MCA_SEXO: { required: true },
+                TXT_CRED_ESTUD: { required: true },
+                COD_PLAN_AP: { required: true },
             },
             messages: {
-                cod_mon: { required: 'Debe indicar el Moneda' },
-                cod_fracc_pago: { required: 'Debe indicar el Fraccionamiento de pago' },
-                fec_efec_poliza: { required: 'Debe indicar el Inicio de vigencia' },
-                fec_vcto_poliza: { required: 'Debe indicar el Fin de vigencia' },
-                TIP_PLAN: { required: 'Debe indicar el Plan' },
-                TIP_VIAJE: { required: 'Debe indicar el Tipo de viaje' },
-                FEC_VIAJE: { required: 'Debe indicar el Fecha de inicio del viaje' },
-                DES_DESTINO: { required: 'Debe indicar el Lugar de destino' },
-                FEC_NACIMIENTO: { required: 'Debe indicar el Fecha de nacimiento' },
-                COD_MODALIDAD: { required: 'Debe indicar el Modalidad' },
+                cod_mon: { required: 'Debe indicar la moneda' },
+                cod_fracc_pago: { required: 'Debe indicar el fraccionamiento de pago' },
+                fec_efec_poliza: { required: 'Debe indicar el inicio de vigencia' },
+                fec_vcto_poliza: { required: 'Debe indicar el in de vigencia' },
+                //FEC_NACIMIENTO: { required: 'Debe indicar la fecha de nacimiento' },
+                MCA_SEXO: { required: 'Debe indicar el sexo' },
+                TXT_CRED_ESTUD: { required: 'Debe indicar el credencial del estudiante' },
+                COD_PLAN_AP: { required: 'Debe indicar el plan' }
             }
         });
     };
@@ -1606,7 +1590,7 @@ window.tercerosTbl_Events = {
         e.stopPropagation();
     },
     'click .edit': function (e, value, row, index) {
-        app.EmisionViajero.tercerosEditRow(row);
+        app.EmisionEstudiantil.tercerosEditRow(row);
         e.stopPropagation();
     }
 };
@@ -1616,7 +1600,7 @@ window.documentosrequeridosTbl_Events = {
         e.stopPropagation();
     },
     'click .edit': function (e, value, row, index) {
-        app.EmisionViajero.documentosrequeridosEditRow(row);
+        app.EmisionEstudiantil.documentosrequeridosEditRow(row);
         e.stopPropagation();
     }
 };

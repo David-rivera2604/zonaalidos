@@ -199,6 +199,9 @@ namespace Architect.API.Tron.Business.Backoffice
                 case "441":
                     procedureName = "em_k_jrp_condiciones_441_mcr.p_lista";
                     break;
+                case "194":
+                    procedureName = "em_k_jrp_certificado_194_mcr.p_lista";
+                    break;
             }
             if (procedureName.IsEmpty())
             {

@@ -65,6 +65,8 @@
     <Compile Include="Comun\Propiedad.cs" />
     <Compile Include="Comun\Tercero.cs" />
     <Compile Include="Comun\Vehiculo.cs" />
+    <Compile Include="Cotizacion\Estudiantil.cs" />
+    <Compile Include="Emision\Estudiantil.cs" />
     <Compile Include="Poliza\Parameters\ControlTecnicoParametros.cs" />
     <Compile Include="Cotizacion\HogarTotalSettings.cs" />
     <Compile Include="Cotizacion\plandepagoporfrecuencia.cs" />

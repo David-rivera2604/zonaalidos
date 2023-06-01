@@ -6,6 +6,9 @@ app.Extend = (function () {
         EmisionFormatter: function (value, row, index, field) {
             let quote = '', mode = 'resume';
             switch (row.COD_RAMO) {
+                case 194:
+                    quote = 'estudiantil';
+                    break;
                 case 201:
                     quote = 'hogartotal';
                     break;

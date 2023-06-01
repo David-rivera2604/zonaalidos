@@ -279,9 +279,16 @@ namespace Architect.API.Tron.Business
             };
         }
 
-        internal static List<Contracts.Presupuesto.Riesgo> DatosDelRiesgo(Contracts.Presupuesto.DatoFijo datosFijos, string nom_riesgo, int num_riesgo = 1)
+        internal static List<Contracts.Presupuesto.Riesgo> DatosDelRiesgo(Contracts.Presupuesto.DatoFijo datosFijos, string nom_riesgo, int num_riesgo = 1, int ramo = 999)
         {
             List<Contracts.Presupuesto.Riesgo> riesgos = new List<Contracts.Presupuesto.Riesgo>();
+            int modalidad = 99999;
+
+            if (ramo == 194) 
+                modalidad = 19401;
+            else
+                modalidad = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_modalidad"]);
+
 
             for (int i = 1; i <= num_riesgo; i++)
             {
@@ -300,7 +307,7 @@ namespace Architect.API.Tron.Business
                     num_riesgo = i,
                     nom_riesgo = nom_riesgo,
                     tip_spto = "XX",
-                    cod_modalidad = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_modalidad"])
+                    cod_modalidad = modalidad
                 });
             }
 
