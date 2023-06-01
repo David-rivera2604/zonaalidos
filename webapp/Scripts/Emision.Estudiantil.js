@@ -1,6 +1,6 @@
 ﻿var app = app || {};
 
-app.EmisionViajero = (function () {
+app.EmisionEstudiantil = (function () {
     let workMode = '';
     var setupData = null;
     var changedCallback = null;
@@ -75,10 +75,10 @@ app.EmisionViajero = (function () {
         $('#cod_fracc_pago').replaceWith('<div>' + $('#cod_fracc_pago option:selected').text() + '</div>');
         $('#fec_efec_poliza_group').replaceWith('<div>' + $('#fec_efec_poliza').val() + '</div>');
         $('#fec_vcto_poliza_group').replaceWith('<div>' + $('#fec_vcto_poliza').val() + '</div>');
-        $('#FEC_NACIMIENTO_group').replaceWith('<div>' + $('#FEC_NACIMIENTO').val() + '</div>');
+        //$('#FEC_NACIMIENTO_group').replaceWith('<div>' + $('#FEC_NACIMIENTO').val() + '</div>');
         $('#MCA_SEXO').replaceWith('<div>' + $('#MCA_SEXO').val() + '</div>');
         $('#TXT_CRED_ESTUD').replaceWith('<div>' + $('#TXT_CRED_ESTUD').val() + '</div>');
-        $('#COD_PLAN_AP').replaceWith('<div>' + $('#COD_PLAN_AP option:selected').text() + '</div>');
+        $('#COD_PLAN_AP').replaceWith('<div>' + $('#COD_PLAN_AP').val() + '</div>');
 
     };
 
@@ -120,14 +120,11 @@ app.EmisionViajero = (function () {
         app.ui.SetDateValue('#fec_efec_poliza', data.fec_efec_poliza);
         $('#fec_vcto_poliza_group').data("DateTimePicker").minDate($('#fec_efec_poliza_group').data("DateTimePicker").date());
         app.ui.SetDateValue('#fec_vcto_poliza', data.fec_vcto_poliza);
-
-        $('#COD_PLAN_AP').val(data.TIP_PLAN);
-        app.ui.SetDropDownNumericValue('#COD_PLAN_AP', data.COD_PLAN_AP, true, 'I');
-        app.ui.SetDateValue('#FEC_NACIMIENTO', data.FEC_NACIMIENTO);
+        $('#COD_PLAN_AP').val(data.COD_PLAN_AP);
+        //app.ui.SetDateValue('#FEC_NACIMIENTO', data.FEC_NACIMIENTO);
         $('#MCA_SEXO').val(data.MCA_SEXO);
         $('#TXT_CRED_ESTUD').val(data.TXT_CRED_ESTUD);
         
-
 
         if (data.terceros != null)
             $('#tercerosTbl').bootstrapTable('load', data.terceros);
@@ -164,13 +161,13 @@ app.EmisionViajero = (function () {
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
-        $('#FEC_NACIMIENTO_group').datetimepicker({
-            format: 'DD/MM/YYYY',
-            locale: 'es',
-            maxDate: app.ui.Yesterday(),
-            date: null
+        //$('#FEC_NACIMIENTO_group').datetimepicker({
+        //    format: 'DD/MM/YYYY',
+        //    locale: 'es',
+        //    maxDate: app.ui.Yesterday(),
+        //    date: null
 
-        });
+        //});
 
         $("#emitir").appendTo("#GenericToolBar");
         $("#limpiar").appendTo("#GenericToolBar");
@@ -262,7 +259,7 @@ app.EmisionViajero = (function () {
                 cod_fracc_pago: { required: true },
                 fec_efec_poliza: { required: true },
                 fec_vcto_poliza: { required: true },
-                FEC_NACIMIENTO: { required: true },
+                //FEC_NACIMIENTO: { required: true },
                 MCA_SEXO: { required: true },
                 TXT_CRED_ESTUD: { required: true },
                 COD_PLAN_AP: { required: true },
@@ -272,7 +269,7 @@ app.EmisionViajero = (function () {
                 cod_fracc_pago: { required: 'Debe indicar el fraccionamiento de pago' },
                 fec_efec_poliza: { required: 'Debe indicar el inicio de vigencia' },
                 fec_vcto_poliza: { required: 'Debe indicar el in de vigencia' },
-                FEC_NACIMIENTO: { required: 'Debe indicar la fecha de nacimiento' },
+                //FEC_NACIMIENTO: { required: 'Debe indicar la fecha de nacimiento' },
                 MCA_SEXO: { required: 'Debe indicar el sexo' },
                 TXT_CRED_ESTUD: { required: 'Debe indicar el credencial del estudiante' },
                 COD_PLAN_AP: { required: 'Debe indicar el plan' }

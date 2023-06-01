@@ -131,7 +131,7 @@ app.EmisionViajero = (function () {
         app.ui.SetDateValue('#FEC_VIAJE', data.FEC_VIAJE);
         $('#DES_DESTINO').val(data.DES_DESTINO_DESC);
         $('#cantidad_riesgos').val(data.cantidad_riesgos);
-        app.ui.SetDateValue('#FEC_NACIMIENTO', data.FEC_NACIMIENTO);
+        //app.ui.SetDateValue('#FEC_NACIMIENTO', data.FEC_NACIMIENTO);
         $('#COD_MODALIDAD').val(data.COD_MODALIDAD);
         app.ui.SetDropDownNumericValue('#COD_MODALIDAD', data.COD_MODALIDAD, true);
         if (data.terceros != null)

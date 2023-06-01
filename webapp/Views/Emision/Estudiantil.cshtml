@@ -111,7 +111,7 @@
                                             <div class="form-row">
 
                                                 <!-- FEC_NACIMIENTO DatePicker -->
-                                                <div class='col-sm-3 col-md-3'>
+                                                <!--<div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='FEC_NACIMIENTO'>Fecha de nacimiento<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                         <div class='input-group date' id='FEC_NACIMIENTO_group'>
@@ -122,22 +122,13 @@
                                                         </div>
                                                         <div id='FEC_NACIMIENTO_validate'></div>
                                                     </div>
-                                                </div>
+                                                </div>-->
 
                                                 <!-- MCA_SEXO RadioButtonList -->
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='MCA_SEXO'>Sexo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <div style="padding-top: 6px;">
-                                                            <div class="custom-control custom-radio custom-control-inline">
-                                                                <input type="radio" class="custom-control-input" id="MCA_SEXO_1" name="MCA_SEXO" value="0">
-                                                                <label class="custom-control-label" for="MCA_SEXO_1">Femenino</label>
-                                                            </div><div class="custom-control custom-radio custom-control-inline">
-                                                                <input type="radio" class="custom-control-input" id="MCA_SEXO_2" name="MCA_SEXO" value="1">
-                                                                <label class="custom-control-label" for="MCA_SEXO_2">Masculino</label>
-                                                            </div>
-                                                        </div>
-                                                        <div id='MCA_SEXO_validate'></div>
+                                                        <input type='text' id='MCA_SEXO' name='MCA_SEXO' class='form-control' size='20' maxlength='20' />
                                                     </div>
                                                 </div>
 
@@ -152,8 +143,8 @@
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='COD_PLAN_AP'>Plan<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <select id='COD_PLAN_AP' name='COD_PLAN_AP' class='form-control'>
-                                                        </select>
+                                                        <input type='text' id='COD_PLAN_AP' name='COD_PLAN_AP' class='form-control' size='20' maxlength='20' />
+
                                                     </div>
                                                 </div>
 
@@ -332,7 +323,7 @@
                                                     <option value="0" selected>Tomador(a)</option>
                                                     <option value="2">Asegurado(a)</option>
                                                     <option value="6">Beneficiario(a)</option>
-                                                    <option value="8">Acreedor(a)</option>
+                                                    
                                                 </select>
                                             </div>
                                         </div>
@@ -610,8 +601,8 @@
                                                     <div class='form-group'>
                                                         <label class='control-label' for='parentesco'>Parentesco<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                         <select id='parentesco' name='parentesco' class='form-control'>
-                                                            <option value="1">Padre</option>
                                                             <option value="10">Asegurado principal</option>
+                                                            <option value="1">Padre</option>
                                                             <option value="2">Madre</option>
                                                             <option value="3">Hijo(a)</option>
                                                             <option value="4">Amigo(a)</option>
@@ -808,7 +799,7 @@
     <script src="@Url.Content("~/Scripts/Emision.Estudiantil.js")"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            app.EmisionViajero.Init();
+            app.EmisionEstudiantil.Init();
         });
     </script>
 }

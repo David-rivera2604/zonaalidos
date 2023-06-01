@@ -353,13 +353,13 @@ namespace Architect.API.Tron.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Estudiantil")]
-        public async Task<IHttpActionResult> EstudiantilIssue([FromBody] Tron.Contracts.Emision.Viajero quoteInfo)
+        public async Task<IHttpActionResult> EstudiantilIssue([FromBody] Tron.Contracts.Emision.Estudiantil quoteInfo)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
-            Tron.Contracts.Cotizacion.Viajero result = null;
+            Tron.Contracts.Cotizacion.Estudiantil result = null;
             await Task.Run(() =>
             {
-                result = Architect.API.Tron.Business.Emision.Viajero.Issue(quoteInfo, tokenInfo);
+                result = Architect.API.Tron.Business.Emision.Estudiantil.Issue(quoteInfo, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);

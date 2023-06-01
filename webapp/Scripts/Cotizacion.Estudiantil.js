@@ -6,7 +6,7 @@ app.CotizacionEstudiantil = (function () {
 
     let setupData = null;
     let changedCallback = null;
-    var workMode = '';
+    var workMode = '&mode=resume';
 
     function Setup()
     {
@@ -106,9 +106,7 @@ app.CotizacionEstudiantil = (function () {
         $('#fec_efec_poliza').blur(function () {
             let minDate = app.ui.GetDateRawValue('#fec_efec_poliza');
             minDate.setDate(minDate.getDate());
-
-            //Asignacion a vencimiento
-            app.ui.SetDateValue('#fec_vcto_poliza', minDate + 1);
+            app.ui.SetDateValue('#fec_vcto_poliza', minDate.setFullYear(minDate.getFullYear() + 1));
 
         });
 
@@ -398,7 +396,6 @@ app.CotizacionEstudiantil = (function () {
                         $('#presupuesto').html(data.presupuesto);
                         $('#coberturasRow').removeClass('d-none');
                         $('#coberturasTbl').bootstrapTable('load', data.coberturas);
-                        Coberturas_ManejoGeneral();
                         $('#plandepagoRow').removeClass('d-none');
                         $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
 

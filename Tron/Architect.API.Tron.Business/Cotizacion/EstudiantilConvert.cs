@@ -1,6 +1,7 @@
 ﻿using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,12 +32,12 @@ namespace Architect.API.Tron.Business.Cotizacion
 
             int edad = DateTime.Today.AddTicks(-quoteInfo.FEC_NACIMIENTO.Ticks).Year - 1;
 
-            datosVariables.Add(Util.DatoVariable(datosFijos, 1, "FEC_NACIMIENTO", quoteInfo.FEC_NACIMIENTO.ToString("ddMMyyyy"),2,1));
-            datosVariables.Add(Util.DatoVariable(datosFijos, 0, "VAL_EDAD_ACTUARIAL", edad.ToString(), 2, 2));
-            datosVariables.Add(Util.DatoVariable(datosFijos, 0, "MCA_SEXO", quoteInfo.MCA_SEXO, 2, 3));
-            datosVariables.Add(Util.DatoVariable(datosFijos, 0, "TXT_CRED_ESTUD", quoteInfo.TXT_CRED_ESTUD, 2, 4));
-            datosVariables.Add(Util.DatoVariable(datosFijos, 0, "COD_PLAN_AP", quoteInfo.COD_PLAN_AP.ToString(), 2, 5,quoteInfo.NOM_PLAN_AP));
-            datosVariables.Add(Util.DatoVariable(datosFijos, 0, "COD_MODALIDAD", "19401", 2,99, "ACCIDENTES PER. ESCOLARES"));
+            datosVariables.Add(Util.DatoVariable(datosFijos, 1, "FEC_NACIMIENTO", quoteInfo.FEC_NACIMIENTO.ToString("ddMMyyyy"),2,1, quoteInfo.FEC_NACIMIENTO.ToString("dd/MM/yyyy")));
+            datosVariables.Add(Util.DatoVariable(datosFijos, 1, "VAL_EDAD_ACTUARIAL", edad.ToString(), 2, 2));
+            datosVariables.Add(Util.DatoVariable(datosFijos, 1, "MCA_SEXO", quoteInfo.MCA_SEXO, 2, 3));
+            datosVariables.Add(Util.DatoVariable(datosFijos, 1, "TXT_CRED_ESTUD", quoteInfo.TXT_CRED_ESTUD, 2, 4));
+            datosVariables.Add(Util.DatoVariable(datosFijos, 1, "COD_PLAN_AP", quoteInfo.COD_PLAN_AP.ToString(), 2, 5,quoteInfo.NOM_PLAN_AP));
+            datosVariables.Add(Util.DatoVariable(datosFijos, 1, "COD_MODALIDAD", "19401", 2,99, "ACCIDENTES PER. ESCOLARES"));
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "MCA_COLECTIVO", "N", 1, 900, "INDIVIDUAL "));
 
             return datosVariables;
@@ -52,12 +53,23 @@ namespace Architect.API.Tron.Business.Cotizacion
 
         private static Contracts.Cotizacion.Estudiantil FromTron_DatosVariables(Contracts.Presupuesto.DatoFijo tronQuoteInfo, Contracts.Cotizacion.Estudiantil quoteInfo)
         {
+            var cultureInfo = new CultureInfo("de-DE");
             foreach (Contracts.Presupuesto.DatoVariable item in tronQuoteInfo.DatosVariables)
             {
                 switch (item.cod_campo)
                 {
-                    case "TIP_PLAN":
+                    
+                    case "FEC_NACIMIENTO":
+                       // quoteInfo.FEC_NACIMIENTO = Convert.ToDateTime(item.val_campo);
+                        break;
+                    case "COD_PLAN_AP":
                         quoteInfo.COD_PLAN_AP = Convert.ToInt32(item.val_campo);
+                        break;
+                    case "MCA_SEXO":
+                        quoteInfo.MCA_SEXO = item.val_campo;
+                        break;
+                    case "TXT_CRED_ESTUD":
+                        quoteInfo.TXT_CRED_ESTUD = item.val_campo;
                         break;
                 }
             }

@@ -99,7 +99,7 @@ namespace Architect.API.Core.Business.Security
 
             }
 
-            if (affectedRows > 0 && affectedRowsSubAgent)
+            if (affectedRows > 0 )
             {
                 SynchronizeUserRoleMember(companyId, userId, result.UserId, item.Roles);
                 MapLookups(companyId, result);
