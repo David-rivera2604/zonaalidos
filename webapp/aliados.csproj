@@ -1230,6 +1230,7 @@
     <Content Include="Scripts\CompraSegurosClients.js" />
     <Content Include="Scripts\Cotizacion.Coberturas.js" />
     <Content Include="Scripts\Cotizacion.MapfreMasPlus.js" />
+    <Content Include="Scripts\Cotizacion.Estudiantil.js" />
     <Content Include="Scripts\Cotizacion.SaldoDeudor.enfermedadesexcluidas.js" />
     <Content Include="Scripts\CreateCase_Aliados.js" />
     <Content Include="Scripts\Emision.kyc.declarante.js" />
@@ -1250,6 +1251,7 @@
     <Content Include="Scripts\Cotizacion.Multirriesgo.js" />
     <Content Include="Scripts\Cotizacion.HogarTotal.js" />
     <Content Include="Scripts\Cotizacion.PolizaLider.js" />
+    <Content Include="Scripts\Emision.Estudiantil.js" />
     <Content Include="Scripts\Emision.Viajero.js" />
     <Content Include="Scripts\Extend.Cases.js" />
     <Content Include="Scripts\Extend.CaseDetail.js" />
@@ -1278,14 +1280,14 @@
     <Content Include="Scripts\Pagos.Resultado.js" />
     <Content Include="Scripts\Prototype.Payment.js" />
     <Content Include="Scripts\Prototype.Producto.js" />
-    <Content Include="Scripts\Purdy.PanelDanos.js" />
+	<Content Include="Scripts\Purdy.PanelDanos.js" />
     <Content Include="Scripts\Purdy.PanelDetalle.js" />
     <Content Include="Scripts\Purdy.PanelEncabezado.js" />
     <Content Include="Scripts\Purdy.PanelEvento.js" />
     <Content Include="Scripts\Purdy.PanelLegal.js" />
     <Content Include="Scripts\Purdy.PanelIndemnizacion.js" />
-    <Content Include="Scripts\Purdy.Panel.js" />
-    <Content Include="Scripts\Seguimiento_Aliados.js" />
+    <Content Include="Scripts\Purdy.Panel.js" />												 
+	<Content Include="Scripts\Seguimiento_Aliados.js" />
     <Content Include="Scripts\Siniestros.Panel.js" />
     <Content Include="Scripts\Security.Integrate.js" />
     <Content Include="Scripts\process.instance.js" />
@@ -1331,7 +1333,7 @@
     <Compile Include="App_Start\UnhandledExceptionLogger.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\PurdyController.cs" />
-    <Compile Include="Controllers\ColorsController.cs" />
+    <Compile Include="Controllers\ColorsController.cs" />																											 
     <Compile Include="Controllers\DocuSignController.cs" />
     <Compile Include="Controllers\AvisosController.cs" />
     <Compile Include="Controllers\ManualController.cs" />
@@ -1735,13 +1737,13 @@
     <Content Include="Views\General\ColorTenant.cshtml" />
     <Content Include="Views\General\MantenimientoInicio.cshtml" />
     <Content Include="Views\General\Administration.cshtml" />
-    <Content Include="Views\Purdy\Panel.cshtml" />
-    <Content Include="Views\Purdy\_encabezado.cshtml" />
+    <Content Include="Views\Cotizacion\Estudiantil.cshtml" />
+    <Content Include="Views\Emision\Estudiantil.cshtml" />
     <Content Include="Views\Purdy\_danos.cshtml" />
     <Content Include="Views\Purdy\_detalle.cshtml" />
     <Content Include="Views\Purdy\_evento.cshtml" />
     <Content Include="Views\Purdy\_indemnizacion.cshtml" />
-    <Content Include="Views\Purdy\_legal.cshtml" />
+    <Content Include="Views\Purdy\_legal.cshtml" />												   												   
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1764,8 +1766,8 @@
     <ProjectReference Include="..\Core\Architect.API.Core.Contracts\Architect.API.Core.Contracts.csproj">
       <Project>{29b21bef-8c87-4a9d-8b37-fecc57cd03c7}</Project>
       <Name>Architect.API.Core.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Core\Architect.API.Core.Utilities\Architect.API.Core.Security.csproj">
+    </ProjectReference>																										 
+	<ProjectReference Include="..\Core\Architect.API.Core.Utilities\Architect.API.Core.Security.csproj">
       <Project>{3d406267-4a50-4e87-842a-553e3d222cf1}</Project>
       <Name>Architect.API.Core.Security</Name>
     </ProjectReference>
