@@ -108,7 +108,7 @@ app.CotizacionViajero = (function () {
         $('#TIP_VIAJE').val(data.TIP_VIAJE);
         app.ui.SetDropDownNumericValue('#TIP_VIAJE', data.TIP_VIAJE, true, 'NA');
         app.ui.SetDateValue('#FEC_VIAJE', data.FEC_VIAJE);
-        $('#PAIS_ORIGEN').val(data.PAIS_ORIGEN);
+        $('#PAIS_ORIGEN').val(data.COD_PAIS_ORIGEN);
         $('#DES_DESTINO').val(data.DES_DESTINO);
         app.ui.SetNumericValue('#cantidad_riesgos', data.cantidad_riesgos);
         app.ui.SetDateValue('#FEC_NACIMIENTO', data.FEC_NACIMIENTO);
