@@ -62,6 +62,7 @@
     <Compile Include="General\ProcessSpecFlowRole.cs" />
     <Compile Include="General\ProcessSpecStepRole.cs" />
     <Compile Include="General\ProcessSpecTask.cs" />
+    <Compile Include="General\SolicitudCotizacion.cs" />
     <Compile Include="General\TaskChecked.cs" />
     <Compile Include="General\InternalTemplate.cs" />
     <Compile Include="General\Tenant.cs" />

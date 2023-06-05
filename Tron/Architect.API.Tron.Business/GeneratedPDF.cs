@@ -6,6 +6,7 @@ using System.IO;
 using Architect.API.Tron.Contracts.Comun;
 using Architect.API.Tron.Contracts.Emision;
 using Architect.Utilities.Extensions;
+using Architect.API.Core.Contracts;
 
 namespace Architect.API.Tron.Business.DocumentGenerator
 {
@@ -19,7 +20,8 @@ namespace Architect.API.Tron.Business.DocumentGenerator
             string fullnewpath = string.Empty;
             string fullpath = string.Empty;
 
-            if (datos is Contracts.Emision.MultirriesgoSolicitud) {
+            if (datos is Contracts.Emision.MultirriesgoSolicitud)
+            {
                 MultirriesgoSolicitud multirriesgoSolicitud = datos;
                 if (tokenInfo.Roles.Contain("PolizaGrupo") && multirriesgoSolicitud.polizagrupo != null)
                 {
@@ -29,11 +31,11 @@ namespace Architect.API.Tron.Business.DocumentGenerator
                 else
                 {
                     filenamenew = @"MultiriesgoSolicitud(Individual)_" + multirriesgoSolicitud.presupuesto.Replace(" ", "").Trim() + ".pdf";
-                    
+
                     if (multirriesgoSolicitud.titular.DocumentNumberType == 4)
                     {
                         PlantillaPdf = @"MultiriesgoSolicitud_Individual_Juridico.pdf";
-                        
+
                     }
                     else
                     {
@@ -155,6 +157,53 @@ namespace Architect.API.Tron.Business.DocumentGenerator
                     pdfreader.Close();
                 }
             }
+            else if (datos is Solicitud)
+            {
+
+                Solicitud solicitud = datos;
+                if (solicitud.Seguro.id == 401)
+                {
+                    PlantillaPdf = @"Solicitud_Cotizacion_Viajero.pdf";
+                }
+                else if (solicitud.Seguro.id == 302)
+                {
+                    PlantillaPdf = @"Solicitud_Cotizacion_MapfreMas.pdf";
+                }
+                else
+                {
+                    PlantillaPdf = @"Solicitud_Cotizacion.pdf";
+                }
+
+                string thisDay = DateTime.Today.ToString("d").Replace("/", "-");
+                string thisHour = DateTime.Now.ToString("hh:mm:ss").Replace(":", "");
+
+                filenamenew = @"Solicitud_Cotizacion_" + solicitud.Persona.Nombre + "_" + thisHour + "_" + thisDay + ".pdf";
+                fullnewpath = ConfigurationManager.AppSettings["Attachments.Path"] + filenamenew;
+                fullpath = ConfigurationManager.AppSettings["Reportpdf.Path"] + PlantillaPdf;
+
+                using (var existingfilestream = new FileStream(fullpath, FileMode.Open))
+
+                using (var newfilestream = new FileStream(fullnewpath, FileMode.Create))
+                {
+                    var pdfreader = new PdfReader(existingfilestream);
+
+                    var stamper = new PdfStamper(pdfreader, newfilestream);
+
+                    AcroFields fields = stamper.AcroFields;
+
+                    FileData(solicitud, fields);
+
+
+                    string NombreComple = solicitud.Persona.Nombre + " " + solicitud.Persona.Apellido;
+
+                    fields.SetField("NombreCompletoPersona", NombreComple);
+
+                    stamper.FormFlattening = true;
+                    stamper.Close();
+                    pdfreader.Close();
+                }
+
+            }
             return fullnewpath;
         }
 
@@ -165,7 +214,7 @@ namespace Architect.API.Tron.Business.DocumentGenerator
             string thisHour = DateTime.Now.ToString("hh:mm:ss tt");
             string[] ListElement = thisDay.Split('/');
             string month = fecha.ToString("MMMM", new System.Globalization.CultureInfo("es-ES"));
-            string day = ListElement[0];   
+            string day = ListElement[0];
             string year = fecha.ToString("yyyy");
 
             fields.SetField("dia", day);
@@ -199,10 +248,12 @@ namespace Architect.API.Tron.Business.DocumentGenerator
                 }
                 else if (prop.PropertyType.IsGenericType)
                 {
+                    int count = 0;
                     if (PropertyValue != null)
                     {
                         foreach (dynamic Elementlist in PropertyValue)
                         {
+
                             Type _types = Elementlist.GetType();
                             if (prop.Name == "terceros")
                             {
@@ -229,7 +280,6 @@ namespace Architect.API.Tron.Business.DocumentGenerator
                             }
                             if (prop.Name == "coberturas")
                             {
-                                string TipoTercero = string.Empty;
                                 System.Reflection.PropertyInfo[] listaPropiedades = _types.GetProperties();
 
                                 foreach (System.Reflection.PropertyInfo CheckTrue in listaPropiedades)
@@ -244,7 +294,7 @@ namespace Architect.API.Tron.Business.DocumentGenerator
                                     }
                                 }
                             }
-                            else
+                            if (prop.Name == "Solicitud_Coberturas" || prop.Name == "SumasAseguradas")
                             {
                                 System.Reflection.PropertyInfo[] listaPropiedades = _types.GetProperties();
 
@@ -252,19 +302,47 @@ namespace Architect.API.Tron.Business.DocumentGenerator
                                 {
                                     propiedad = PropiedadLista.Name;
                                     value = Convert.ToString(PropiedadLista.GetValue(Elementlist, null));
-                                    fields.SetField(propiedad, value);
 
+                                    if (propiedad == "Cobertura_seleccionado")
+                                    {
+                                        if (value == "True")
+                                        {
+                                            fields.SetField(propiedad + "_" + count.ToString(), "Si");
+                                        }
+                                        else
+                                        {
+                                            fields.SetField(propiedad + "_" + count.ToString(), "No");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        fields.SetField(propiedad + "_" + count.ToString(), value);
+                                    }
+
+                                }
+                                count += 1;
+                            }
+                            else
+                            {
+                                System.Reflection.PropertyInfo[] listaPropiedades = _types.GetProperties();
+
+                                foreach (System.Reflection.PropertyInfo PropiedadLista in listaPropiedades)
+                                {
+
+                                    propiedad = PropiedadLista.Name;
+                                    value = Convert.ToString(PropiedadLista.GetValue(Elementlist, null));
+                                    fields.SetField(propiedad, value);
                                 }
                             }
 
                         }
                     }
-                        
-                }   
+
+                }
                 else if (PropertyValue is object)
                 {
 
-                    if(PropertyValue is JObject)
+                    if (PropertyValue is JObject)
                     {
                         if (PropertyValue != null)
                         {
@@ -295,14 +373,14 @@ namespace Architect.API.Tron.Business.DocumentGenerator
                                     foreach (dynamic Elementlist in List)
                                     {
                                         Type _types = Elementlist.GetType();
-                                        if (PropiedadClass.Name == "participacionaccionariaJur")
+                                        if (PropiedadClass.Name == "participacionaccionariaJur" || PropiedadClass.Name == "Edades")
                                         {
                                             System.Reflection.PropertyInfo[] listaPropiedades = _types.GetProperties();
                                             foreach (System.Reflection.PropertyInfo PropiedadLista in listaPropiedades)
                                             {
-                                               propiedad = PropiedadLista.Name;
-                                               value = Convert.ToString(PropiedadLista.GetValue(Elementlist, null));
-                                               fields.SetField(propiedad + "_" + count.ToString(), value);
+                                                propiedad = PropiedadLista.Name;
+                                                value = Convert.ToString(PropiedadLista.GetValue(Elementlist, null));
+                                                fields.SetField(propiedad + "_" + count.ToString(), value);
                                             }
                                         }
                                         count += 1;
@@ -314,16 +392,16 @@ namespace Architect.API.Tron.Business.DocumentGenerator
                                     value = Convert.ToString(PropiedadClass.GetValue(PropertyValue, null));
                                     fields.SetField(propiedad, value);
                                 }
-                                
+
                             }
                         }
                     }
                 }
 
             }
-            
+
         }
     }
 
-   
+
 }

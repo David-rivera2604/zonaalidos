@@ -37,6 +37,7 @@
 
     <div id="wrapper">
         <div id="page-wrapper" class="bg-white">
+
             <div class="head_prin">
                 <div id="imgHead" class="imgHeadMapfre">
                     <img src="../app/img/logohorizontal.jpg" style="width: 190px;height: auto;margin-top: 12px;" alt="logoMAPFRE">
@@ -61,14 +62,24 @@
                     </div>
                 </div>
                 <div class="head_line">
-                    <div class="hList" id="side-menu" role="navigation" style="margin-bottom: 0">
+                    <div class="hList headinamci" id="side-menu" role="navigation" style="margin-bottom: 0">
+                    </div>
+                    <div class="min_menu" style="display:none" id="moremenubox">
+                        <input type="checkbox" id="more_menu">
+                        <label for="more_menu" class="more">
+                            <div class="menuicon">
+                                <span></span>
+                            </div>
+                        </label>
+                        <div id="container_moremenu">
+
+                        </div>
                     </div>
                     <div class="aliados">
                         <div class="usua_head">
                             <span class="block m-t-xs" id="UserNameMaster"></span>
-                            <ul class="hList rh">
-
-                                <nav class="megamenu megamenu_desktop">
+                            <ul class="hList">
+                                <nav class="megamenu_desktop">
                                     <div class="menu dropdown">
                                         <input type="checkbox" id="Aliados" class="inputche d-none">
                                         <label class="level_1__item level_2__small" for="Aliados"> <a class="level_1__link  dropdown-toggle" title=""> <span><span id="TenantMaster">menu</span></span></a></label>
@@ -78,29 +89,29 @@
                                                     <i class="fa fa-sign-out"></i> <span class="d-sm-inline">Desconectar </span>
                                                 </a>
                                             </li>
-                                            <li style="display: flex;align-items: center;"><a href="~/Security/ChangePassword" style="padding-top: 10px; width: 156px;" title="Permite el cambio de la clave de acceso del usuario conectado">Cambio de clave de acceso</a></li>
+                                            <li style="display: flex;align-items: center;"><a href="~/Security/ChangePassword" style="padding-top: 10px;" title="Permite el cambio de la clave de acceso del usuario conectado">Cambio de clave de acceso</a></li>
                                         </ul>
                                     </div>
                                 </nav>
                                 @*<nav id="megamenu" class="megamenu megamenu_desktop">
-                    <div href="#click" class="menu dropdown">
-                        <ul id="megamenu_level__1" class="level_1 sf-js-enabled sf-arrows">
-                            <li class="level_1__item level_2__small" style="display: inline-block;">
-                                <a data-toggle="dropdown" class="level_1__link sf-with-ul " href="#">
-                                    <span class="block dropdown-toggle"><span id="TenantMaster">menu</span></span>
-                                </a>
-                            </li>
-                        </ul>
-                        <ul class="menu-dropdown">
-                            <li>
-                                <a href="~/Security/Login" title="Permite terminar la sesión del usuario">
-                                    <i class="fa fa-sign-out"></i> <span class="d-sm-inline">Desconectar </span>
-                                </a>
-                            </li>
-                            <li><a class="dropdown-item" href="~/Security/ChangePassword" title="Permite el cambio de la clave de acceso del usuario conectado">Cambio de clave de acceso</a></li>
-                        </ul>
-                    </div>
-                </nav>*@
+                                        <div href="#click" class="menu dropdown">
+                                            <ul id="megamenu_level__1" class="level_1 sf-js-enabled sf-arrows">
+                                                <li class="level_1__item level_2__small" style="display: inline-block;">
+                                                    <a data-toggle="dropdown" class="level_1__link sf-with-ul " href="#">
+                                                        <span class="block dropdown-toggle"><span id="TenantMaster">menu</span></span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                            <ul class="menu-dropdown">
+                                                <li>
+                                                    <a href="~/Security/Login" title="Permite terminar la sesión del usuario">
+                                                        <i class="fa fa-sign-out"></i> <span class="d-sm-inline">Desconectar </span>
+                                                    </a>
+                                                </li>
+                                                <li><a class="dropdown-item" href="~/Security/ChangePassword" title="Permite el cambio de la clave de acceso del usuario conectado">Cambio de clave de acceso</a></li>
+                                            </ul>
+                                        </div>
+                                    </nav>*@
                             </ul>
 
                         </div>
@@ -120,6 +131,7 @@
 
                 </div>
             </div>
+
             <div class="wrapper wrapper-content animated fadeInRight">
                 <div class="row">
                     <div class="col-lg-12">
@@ -173,25 +185,7 @@
         });
     </script>
 
-    <script>
-
-        $(document).click(function () {
-            var obj = $('.inputche')
-            var box_obj = $('ul.menu-dropdown > li')
-            var input = event.target;
-            if (!obj.is(event.target) && !obj.has(event.target).length) {
-                if (!box_obj.is(event.target) && !box_obj.has(event.target).length) {
-                    let inputs = document.getElementsByClassName("inputche")
-                    inputs.forEach(function (input) {
-                        if (input.className == "inputche d-none") {
-                            input.checked = false
-                        }
-                    });
-                }
-            }
-        });
-
-    </script>
+    <script src="@Url.Content("~/Scripts/LayoutView.js")"></script>
 </body>
 
 </html>

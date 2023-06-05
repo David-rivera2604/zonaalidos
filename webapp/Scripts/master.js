@@ -1,4 +1,5 @@
 ﻿var app = app || {};
+
 app.master = (function () {
     var timerId;
 
@@ -55,7 +56,7 @@ app.master = (function () {
 
             if (menuItems.length > 0) {
 
-                sideMenu.append('<nav class="megamenu megamenu_desktop" id="' + itemParent.Code + '"' + isActiveClass + '><div class="menu dropdown"><input type="checkbox" id="' + (itemParent.MenuTitle === '' ? itemParent.Title : itemParent.MenuTitle) + '" class="inputche d-none"><label class="level_1__item level_2__small" for="' + (itemParent.MenuTitle === '' ? itemParent.Title : itemParent.MenuTitle) + '"> <a class="level_1__link  dropdown-toggle"' + '" title="' + itemParent.Description + '">' + '<i class="' + itemParent.SmallImage + '"></i> ' + (itemParent.MenuTitle === '' ? itemParent.Title : itemParent.MenuTitle) + '</a></label><ul class="menu-dropdown" aria-expanded="false"></ul></div></nav>');
+                sideMenu.append('<nav class=" ResElement megamenu megamenu_desktop" id="' + itemParent.Code + '"' + isActiveClass + '><div class="menu dropdown"><input type="checkbox" id="' + (itemParent.MenuTitle === '' ? itemParent.Title : itemParent.MenuTitle) + '" class="inputche d-none"><label class="level_1__item level_2__small" for="' + (itemParent.MenuTitle === '' ? itemParent.Title : itemParent.MenuTitle) + '"> <a class="level_1__link  dropdown-toggle"' + '" title="' + itemParent.Description + '">' + '<i class=" mr-1 ' + itemParent.SmallImage + '"></i> ' + (itemParent.MenuTitle === '' ? itemParent.Title : itemParent.MenuTitle) + '</a></label><ul class="menu-dropdown" aria-expanded="false"></ul></div></nav>');
 
             }
             else {
@@ -70,7 +71,7 @@ app.master = (function () {
                 } else {
                     href = app.setting.basepath + itemParent.URLPath;
                 }
-                sideMenu.append('<nav class="megamenu megamenu_desktop" id="' + itemParent.Code + '"' + isActiveClass + '><div class="menu"><ul class="level_1 sf-js-enabled sf-arrows" >  <li class="level_1__item level_2__small" style="display: inline-block;"> <a class="level_1__link" href="' + href + '" title="' + itemParent.Description + '">' + '<i class="' + itemParent.SmallImage + '"></i> ' + (itemParent.MenuTitle === '' ? itemParent.Title : itemParent.MenuTitle) + '</a></li></ul></div></nav>');
+                sideMenu.append('<nav class=" ResElement megamenu megamenu_desktop" id="' + itemParent.Code + '"' + isActiveClass + '><div class="menu"><ul class="level_1 sf-js-enabled sf-arrows" >  <li class="level_1__item level_2__small" style="display: inline-block;"> <a class="level_1__link" href="' + href + '" title="' + itemParent.Description + '">' + '<i class="  mr-1 ' + itemParent.SmallImage + '"></i> ' + (itemParent.MenuTitle === '' ? itemParent.Title : itemParent.MenuTitle) + '</a></li></ul></div></nav>');
 
             }
             var itemObj = sideMenu.find('#' + itemParent.Code + ' ul');
@@ -93,12 +94,43 @@ app.master = (function () {
                 } else {
                     href = app.setting.basepath + item.URLPath;
                 }
-                itemObj.append('<li id="' + item.Code + '"' + isActiveClass + '><a  href="' + href + '" title="' + item.Description + '">' + '<i class="' + item.SmallImage + '"></i> ' + (item.MenuTitle === '' ? item.Title : item.MenuTitle) + '</a></li>');
+                itemObj.append('<li id="' + item.Code + '"' + isActiveClass + '><a  href="' + href + '" title="' + item.Description + '">' + '<i class=" mr-1 ' + item.SmallImage + '"></i> ' + (item.MenuTitle === '' ? item.Title : item.MenuTitle) + '</a></li>');
             });
         });
         sideMenu.metisMenu();
-
+        rendmoremenu();
     };
+
+    function rendmoremenu() {
+        var boxs = document.getElementsByClassName('ResElement');
+        var ham_menu = document.getElementById('container_moremenu');
+        var prin_box = document.getElementById('moremenubox');
+        prin_box.setAttribute('style', 'display:none')
+
+        for (let i = boxs.length - 1; i > 0; i--) {
+            if (boxs[i].offsetTop > 31) {
+                boxs[i].children[0].children[0].checked = false
+                var newelement = boxs[i].cloneNode("megamenu megamenu_desktop");
+                newelement.setAttribute('class', 'megamenu_desktop')
+                newelement.setAttribute('id', 'hamcheck' + (i + 1))
+                newelement.children[0].children[0].setAttribute('id', 'hamcheck_' + newelement.children[0].children[0].getAttribute('id'))
+                newelement.children[0].children[1].setAttribute('for', newelement.children[0].children[0].getAttribute('id'))
+                newelement.children[0].children[2].setAttribute('class', 'menu-dropdown ham')
+                var exit = document.getElementById(newelement.getAttribute('id'));
+                if (!(exit)) {
+                    ham_menu.appendChild(newelement)
+                    prin_box.setAttribute('style', ' ')
+                }
+            }
+            else {
+                var exitham = document.getElementById('hamcheck' + (i + 1));
+                if (exitham) {
+                    ham_menu.removeChild(exitham)
+                }
+            }
+        }
+    }
+
     function render_Ham_menu(data) {
         var Ham_menu = $('#MenuVertical');
 
@@ -118,7 +150,7 @@ app.master = (function () {
 
             if (menuItems.length > 0) {
 
-                Ham_menu.append('<hr class="linside"><nav class= "megamenu megamenu_desktop" id = "' + itemParent.Code + '"' + isActiveClass + ' > <div class="menu dropdown"><input type="checkbox" id="ham' + (itemParent.MenuTitle === '' ? itemParent.Title : itemParent.MenuTitle) + '" class="inputche d-none"><label class="level_1__item level_2__small" for="ham' + (itemParent.MenuTitle === '' ? itemParent.Title : itemParent.MenuTitle) + '"> <a class="level_1__link  dropdown-toggle"' + '" title="' + itemParent.Description + '">' + '<i class="' + itemParent.SmallImage + '"></i> ' + (itemParent.MenuTitle === '' ? itemParent.Title : itemParent.MenuTitle) + '</a></label><ul class="menu-dropdown ham" aria-expanded="false"></ul></div></nav >');
+                Ham_menu.append('<hr class="linside"><nav class= "megamenu megamenu_desktop" id = "' + itemParent.Code + '"' + isActiveClass + ' > <div class="menu dropdown"><input type="checkbox" id="ham' + (itemParent.MenuTitle === '' ? itemParent.Title : itemParent.MenuTitle) + '" class="inputche d-none"><label class="level_1__item level_2__small" for="ham' + (itemParent.MenuTitle === '' ? itemParent.Title : itemParent.MenuTitle) + '"> <a class="level_1__link  dropdown-toggle"' + '" title="' + itemParent.Description + '">' + '<i class=" mr-1 ' + itemParent.SmallImage + '"></i> ' + (itemParent.MenuTitle === '' ? itemParent.Title : itemParent.MenuTitle) + '</a></label><ul class="menu-dropdown ham" aria-expanded="false"></ul></div></nav >');
 
 
             }
@@ -134,7 +166,7 @@ app.master = (function () {
                 } else {
                     href = app.setting.basepath + itemParent.URLPath;
                 }
-                Ham_menu.append('<hr class="linside"><nav class="megamenu ham_megamenu megamenu_desktop" id="' + itemParent.Code + '"' + isActiveClass + '><div class="menu"><ul class="level_1 sf-js-enabled sf-arrows" >  <li class="level_1__item level_2__small" style="display: inline-block;"> <a class="level_1__link" href="' + href + '" title="' + itemParent.Description + '">' + '<i class="' + itemParent.SmallImage + '"></i> ' + (itemParent.MenuTitle === '' ? itemParent.Title : itemParent.MenuTitle) + '</a></li></ul></div></nav>');
+                Ham_menu.append('<hr class="linside"><nav class="megamenu ham_megamenu megamenu_desktop" id="' + itemParent.Code + '"' + isActiveClass + '><div class="menu"><ul class="level_1 sf-js-enabled sf-arrows" >  <li class="level_1__item level_2__small" style="display: inline-block;"> <a class="level_1__link" href="' + href + '" title="' + itemParent.Description + '">' + '<i class=" mr-1 ' + itemParent.SmallImage + '"></i> ' + (itemParent.MenuTitle === '' ? itemParent.Title : itemParent.MenuTitle) + '</a></li></ul></div></nav>');
 
             }
             var itemObj = Ham_menu.find('#' + itemParent.Code + ' ul');
@@ -157,7 +189,7 @@ app.master = (function () {
                 } else {
                     href = app.setting.basepath + item.URLPath;
                 }
-                itemObj.append('<li id="' + item.Code + '"' + isActiveClass + '><a  href="' + href + '" title="' + item.Description + '">' + '<i class="' + item.SmallImage + '"></i> ' + (item.MenuTitle === '' ? item.Title : item.MenuTitle) + '</a></li>');
+                itemObj.append('<li id="' + item.Code + '"' + isActiveClass + '><a  href="' + href + '" title="' + item.Description + '">' + '<i class=" mr-1 ' + item.SmallImage + '"></i> ' + (item.MenuTitle === '' ? item.Title : item.MenuTitle) + '</a></li>');
             });
         });
         Ham_menu.metisMenu();

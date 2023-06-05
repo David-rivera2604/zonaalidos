@@ -156,11 +156,11 @@
 
                                                 <!-- DES_DESTINO Text -->
                                                 @*<div class='col-sm-4 col-md-4'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='DES_DESTINO'>Lugar de destino<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <input type='text' id='DES_DESTINO' name='DES_DESTINO' class='form-control' size='50' maxlength='50' />
-                                                    </div>
-                                                </div>*@
+                                                        <div class='form-group'>
+                                                            <label class='control-label' for='DES_DESTINO'>Lugar de destino<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                            <input type='text' id='DES_DESTINO' name='DES_DESTINO' class='form-control' size='50' maxlength='50' />
+                                                        </div>
+                                                    </div>*@
 
                                                 <!--PAIS_ORIGEN-->
                                                 <div class='col-sm-4 col-md-4'>
@@ -609,10 +609,16 @@
                                         </div>
                                     </div>
 
-
-                                    <button id="cotizar" type="button" class="btn  btn-primary" data-doing="Cotizando...">
-                                        Cotizar
-                                    </button>
+                                    <!-- Botonera -->
+                                    <div class="form-row">
+                                        <div class='col-md-12'>
+                                            <div class="modal-footer">
+                                                <button id="cotizar" type="button" class="btn  btn-primary" data-doing="Cotizando...">
+                                                    Cotizar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     @*@ibox-content-footer@*@
                                 </fieldset>

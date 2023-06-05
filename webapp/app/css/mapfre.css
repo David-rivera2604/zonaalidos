@@ -89,7 +89,7 @@ body.Mapfre {
 }
 
 .Mapfre .wrapper-content {
-    margin-top: 5%;
+    margin-top: 80px;
 }
 
 .Mapfre #page-wrapper {
@@ -180,8 +180,11 @@ body.Mapfre {
     background-color: white;
     background-size: cover;
     width: 100%;
-    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 
 .Mapfre .wellcome-info > p {
     color: black;
@@ -190,20 +193,19 @@ body.Mapfre {
 .Mapfre .wellcome-info > h3 {
     color: rgb(103, 106, 108);
     font-weight: bold;
-    font-size: 5vh;
-    margin-top: 20%;
+    font-size: 2.2rem;
 }
 
 .Mapfre .wellcome-info > h4 {
     color: #c31f09;
-    font-size: 4.5vh;
+    font-size: 2rem;
     font-weight: bold;
     margin-bottom: 10%;
 }
 
     .Mapfre .wellcome-info > h4 title-preview {
         color: var(--prewiew1) !important;
-        font-size: 4.5vh;
+        font-size: 2rem;
         font-weight: bold;
         margin-bottom: 10%;
     }
@@ -362,17 +364,6 @@ body.mini-navbar .nav-header {
 }
 
 
-@media only screen and (max-width: 600px) {
-    .Mapfre .wrapper-content {
-        padding: 0px;
-        margin-top: 10%;
-    }
-
-    .Mapfre #page-wrapper {
-        padding: 0px;
-    }
-}
-
 .bootstrap-table .fixed-table-container .table td, .bootstrap-table .fixed-table-container .table td:first-child {
     text-align: left;
     font: menu;
@@ -400,11 +391,15 @@ body.mini-navbar .nav-header {
 }
 
 #LoginEdtForm {
-    margin: -10%;
+    margin: -2%;
+}
+
+.wellcome-info {
+    margin-bottom: 15%
 }
 
 .formlog {
-    width: 100%;
+    width: 75%;
 }
 
 .form-group {
@@ -532,7 +527,7 @@ body.mini-navbar .nav-header {
 
 .for_olv {
     width: 100%;
-    max-width: 450px;
+    min-width: 450px;
     margin: 0px auto;
     display: flex;
     flex-direction: column;
@@ -571,7 +566,13 @@ body.mini-navbar .nav-header {
     width: 100%;
 }
 
-
+@supports (object-fit: cover) {
+    .car_im img {
+        height: 100%;
+        object-fit: cover;
+        object-position: center center;
+    }
+}
 
 
 .carousel-indicators li {
@@ -805,6 +806,7 @@ body.mini-navbar .nav-header {
 
 .di_aleLog {
     margin-bottom: 4em;
+    width: 98%;
 }
 
 .container {
@@ -1055,12 +1057,12 @@ a {
 .menu-dropdown {
     font-size: 12px;
     font-weight: 400;
-    min-width: 100%;
-    position: absolute;
+    position: fixed;
     z-index: 100;
     transition: padding 0.5s ease 0s, background 0.5s ease 0s;
     padding-top: 10px !important;
 }
+
 
     .menu-dropdown::after {
         content: "";
@@ -1147,6 +1149,11 @@ a {
     flex-wrap: wrap;
 }
 
+.headinamci {
+    height: 27px;
+    overflow: hidden
+}
+
 .head_line {
     width: 100%;
     display: flex;
@@ -1209,6 +1216,7 @@ a {
     align-items: center;
     justify-content: space-between;
     margin-right: 60px;
+    margin-top: 5px;
 }
 
 .dropdown .dropdown-menu {
@@ -1286,12 +1294,20 @@ a {
 }
 
 @media screen and (max-width: 900px) {
+
+    .menuicon {
+        display: none;
+    }
+
+    .min_menu {
+        display: none !important;
+    }
+
     .title_design {
         clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%) !important;
     }
 
     .Title_Prin {
-        margin-left: 25px;
         display: block !important;
     }
 
@@ -1360,30 +1376,24 @@ a {
         flex-direction: column-reverse;
         margin: 0px;
         width: 115px;
+        margin-top: 5px;
     }
 
     .usua_head {
-        margin-top: 2px !important;
+        position: absolute;
+        right: 50px;
+        width: auto !important;
+    }
+
+    #UserNameMaster {
+        width: auto !important;
     }
 }
 
-@media screen and (max-width: 900px) {
-    .wrapper-content {
-        margin-top: 105px !important;
-    }
-}
 
-
-@media screen and (max-width: 550px) {
-    .wrapper-content {
-        margin-top: 155px !important;
-    }
-}
 
 @media screen and (max-width: 640px) {
-    .Title_Prin {
-        margin-left: 10px;
-    }
+
 
     .head_prin {
     }
@@ -1402,8 +1412,6 @@ a {
     }
 
     .wrapper-content {
-        margin-top: 144px !important;
-        margin-left: 20px;
         margin-bottom: 40px;
     }
 
@@ -1411,11 +1419,6 @@ a {
         display: flex;
         align-items: center;
         justify-content: center;
-    }
-
-    .usua_head {
-        margin-top: 11px !important;
-        width: 150px;
     }
 
     .quest_desk {
@@ -1629,26 +1632,13 @@ a {
     flex-wrap: wrap;
     flex-direction: column;
     line-height: 2px;
-    margin-top: 8px;
     align-items: center;
     font-weight: 900;
     text-align: center;
 }
 
-@media screen and (min-width: 1280px) {
-    #UserNameMaster {
-        width: 130px;
-    }
-}
-
-@media screen and (max-width: 780px) {
-    #UserNameMaster {
-        width: 145px;
-    }
-}
-
-
 #UserNameMaster {
+    width: 130px;
     line-height: 15px;
     margin: 0;
 }
@@ -2144,14 +2134,8 @@ div .input-group-prepend {
     position: relative;
     object-fit: cover;
     object-position: center center;
-    height: 100%;
-    margin-top: 29px;
 }
 
-
-.c1 #login {
-    margin-top: -70px !important;
-}
 
 .login-box {
     width: 58%;
@@ -2168,8 +2152,14 @@ div .input-group-prepend {
     border-top: 1px solid #676a6c;
     border-bottom: 1px solid #676a6c;
 }
+
 /*LOGIN RESPONSIVE*/
-@media screen and (max-width: 900px) {
+
+@media screen and (max-width: 750px) {
+    .Mapfre .loginBackground {
+        display: block;
+    }
+
     .car_im img {
         width: 100% !important;
     }
@@ -2177,6 +2167,8 @@ div .input-group-prepend {
     .caja_prin {
         display: flex;
         flex-direction: column-reverse;
+        flex-wrap: nowrap;
+        padding: 0;
     }
 
     .img-login {
@@ -2190,9 +2182,13 @@ div .input-group-prepend {
 
     .c1 {
         padding: 1px;
+        height: 50%;
+        position: absolute;
         border-top-left-radius: 50px;
         width: 100% !important;
         z-index: 1000 !important;
+        bottom: -38%;
+        display: block
     }
 
     .c2 {
@@ -2203,29 +2199,48 @@ div .input-group-prepend {
     .carousel-indicators {
         position: absolute;
         margin-left: 76%;
-        bottom: -15px;
+        bottom: 10%;
     }
 
     .Mapfre .wellcome-info > h3 {
-        font-size: 3.5vh;
-        margin-top: 20%;
+        font-size: 1.5rem !important;
+        margin-top: 8%;
     }
 
     .Mapfre .wellcome-info > h4 {
-        font-size: 2.5vh;
+        font-size: 1.3rem !important;
+    }
+
+    .wellcome-info {
+        margin-bottom: 10%;
     }
 }
 
 
 @media screen and (max-width: 1170px) {
     .Mapfre .wellcome-info > h3 {
-        font-size: 3vh;
+        font-size: 1.8rem;
     }
 
     .Mapfre .wellcome-info > h4 {
-        font-size: 3vh;
+        font-size: 1.6rem;
         margin-bottom: 40px;
     }
+}
+
+@media screen and (max-width: 950px) {
+    .Mapfre .wellcome-info > h3 {
+        font-size: 1.4rem;
+    }
+
+    .Mapfre .wellcome-info > h4 {
+        font-size: 1.2rem;
+        margin-bottom: 40px;
+    }
+}
+
+.textdown {
+    margin-top: 5%;
 }
 
 /*BOTON PERSONAS CON DISCAPACIDAD*/
@@ -2895,6 +2910,7 @@ div.ham-menu {
 
 .Title_Prin {
     display: flex;
+    min-height: 100px;
 }
 
 .label_title {
@@ -2916,7 +2932,7 @@ div.ham-menu {
     }
 
     .title_design > * {
-        padding: 15px 15px 7px 20px !important;
+        padding: 5px 15px 5px 20px !important;
         color: white !important;
         font-size: 14px;
         font-weight: 300;
@@ -3507,4 +3523,88 @@ div.ham-menu {
         box-shadow: inset 100em 0 0 0 var(--hover);
         transition: all 1.5s cubic-bezier(0.98, 0.38, 0.22, 1) 0s;
     }
- 
+
+
+/*more menu*/
+.min_menu {
+    height: 100%;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    width: 75px;
+}
+
+.menuicon {
+    cursor: pointer;
+    width: 30px;
+    padding-left: 15px;
+    height: 32px;
+}
+
+    .menuicon span {
+        transition: 0.4s ease;
+        width: 6px;
+        height: 6px;
+        transform: translateY(12px);
+        background-color: var(--mapfrered1);
+        display: block;
+        border-radius: 5px;
+    }
+
+        .menuicon span::before, .menuicon span::after {
+            transition: 0.4s ease;
+            position: absolute;
+            content: "";
+            width: 6px;
+            height: 6px;
+            background-color: var(--mapfrered1);
+            display: block;
+            border-radius: 9px;
+        }
+
+        .menuicon span::before {
+            transform: translateX(10px);
+        }
+
+        .menuicon span::after {
+            transform: translateX(-10px);
+        }
+
+#more_menu {
+    display: none
+}
+
+    #more_menu:checked ~ div#container_moremenu {
+        transform: scale(1);
+    }
+
+div#container_moremenu {
+    transition: 0.4s ease;
+    transform: scale(0);
+    text-align: center;
+    width: 200px;
+    position: absolute;
+    z-index: 1;
+    background: white;
+    top: 97%;
+    border: solid var(--mapfrered1);
+    border-top: none;
+}
+
+#more_menu:checked ~ label.more > .menuicon span {
+    background-color: var(--mapfrered1);
+    height: 4px;
+}
+
+    #more_menu:checked ~ label.more > .menuicon span::before {
+        background-color: var(--mapfrered1);
+        transform: translateX(0);
+        width: 16px;
+        height: 4px;
+    }
+
+    #more_menu:checked ~ label.more > .menuicon span::after {
+        background-color: var(--mapfrered1);
+        width: 16px;
+        height: 4px;
+    }

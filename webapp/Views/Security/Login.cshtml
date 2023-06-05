@@ -29,7 +29,7 @@
     <!-- End Google Tag Manager -->
 
 </head>
-<body class="gray-bg Mapfre @ViewBag.theme">
+<body class="gray-bg Mapfre @ViewBag.theme" style="--mapfrered1: #c31f09; --mapfrered2: #d81e05;">
 
     <!-- Google Tag Manager (noscript) -->
     <noscript>
@@ -69,50 +69,42 @@
                     </div>
                     @*<p>Login in. To see it in action.</p>*@
                     <form id="LoginEdtForm" class="m-t d-flex justify-content-center" role="form" action="index.html" data-toggle='validator'>
-                        <div class="login-box">
-                            <fieldset class="text-center formlog">
-                                <div class="form-group">
-                                    <div class="input-group Mydis">
-                                        <input id="Tenant" name="Tenant" type="text" class="desi_In" maxlength="60" required="" autocomplete="off" value="" title="Nombre o código del aliado">
-                                        <label class="lab_desi"><i class="fa fa-puzzle-piece Ilog" aria-hidden="true"></i> Aliado</label>
-                                        <span class="highlight"></span>
-                                        <span class="bar"></span>
-                                    </div>
-                                    <div id='Tenant_validate'></div>
+                        <fieldset class="text-center formlog">
+                            <div class="form-group">
+                                <div class="input-group Mydis">
+                                    <input id="Tenant" name="Tenant" type="text" class="desi_In" maxlength="60" required="" autocomplete="off" value="" title="Nombre o código del aliado">
+                                    <label class="lab_desi"><i class="fa fa-puzzle-piece Ilog" aria-hidden="true"></i> Aliado</label>
+                                    <span class="highlight"></span>
+                                    <span class="bar"></span>
                                 </div>
-                                <div class="form-group ">
-                                    <div class="input-group Mydis">
-                                        <input id="Username" name="Username" type="text" class="desi_In" maxlength="60" required="" autocomplete="off" title="Usuario o correo" x-webkit-speech>
-                                        <label class="lab_desi"><i class="fa fa-user Ilog" aria-hidden="true"></i> Usuario o correo</label>
-                                        <span class="highlight"></span>
-                                        <span class="bar"></span>
-                                    </div>
-                                    <div id='Username_validate'></div>
+                                <div id='Tenant_validate'></div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="input-group Mydis">
+                                    <input id="Username" name="Username" type="text" class="desi_In" maxlength="60" required="" autocomplete="off" title="Usuario o correo" x-webkit-speech>
+                                    <label class="lab_desi"><i class="fa fa-user Ilog" aria-hidden="true"></i> Usuario o correo</label>
+                                    <span class="highlight"></span>
+                                    <span class="bar"></span>
                                 </div>
-                                <div class="form-group">
-                                    <div class="input-group Mydis ">
-                                        <input id="Password" name="Password" type="password" class="desi_In" maxlength="70" required="" autocomplete="off" title="Clave de acceso">
-                                        <label class="lab_desi"><i class="fa fa-lock Ilog" aria-hidden="true"></i> Clave de acceso</label>
-                                        <span class="highlight"></span>
-                                        <span class="bar"></span>
+                                <div id='Username_validate'></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group Mydis ">
+                                    <input id="Password" name="Password" type="password" class="desi_In" maxlength="70" required="" autocomplete="off" title="Clave de acceso">
+                                    <label class="lab_desi"><i class="fa fa-lock Ilog" aria-hidden="true"></i> Clave de acceso</label>
+                                    <span class="highlight"></span>
+                                    <span class="bar"></span>
 
-                                        <div id='Password_validate'></div>
+                                    <div id='Password_validate'></div>
 
-                                    </div>
                                 </div>
-                                <button id="Send" type="submit" class="full-width slidee Des_bot" title="Verifica las credenciales de acceso">Iniciar</button>
-                                <a href="#" id="forgotlink" title="Permite establecer una nueva clave de acceso"><small>Olvidó su clave de acceso?</small></a>
-                                @*<p class="text-muted text-center"><small>Do not have an account?</small></p>
-                                    <a class="btn btn-sm btn-white btn-block" href="register.html">Create an account</a>*@
-                                <p class="m-t text-center" style="margin-bottom: 0rem !important;">
-                                    <small>
-                                        &copy; 2023 MAPFRE. Todos los derechos reservados.
-                                    </small>
-                                </p>
-                            </fieldset>
+                            </div>
+                            <button id="Send" type="submit" class="full-width slidee Des_bot" title="Verifica las credenciales de acceso">Iniciar</button>
+                            <a href="#" id="forgotlink" title="Permite establecer una nueva clave de acceso"><small>Olvidó su clave de acceso?</small></a>
+                            @*<p class="text-muted text-center"><small>Do not have an account?</small></p>
+                                <a class="btn btn-sm btn-white btn-block" href="register.html">Create an account</a>*@
+                        </fieldset>
 
-
-                        </div>
                     </form>
                 </div>
 
@@ -205,7 +197,11 @@
                     </form>
                 </div>
 
-
+                <p class="m-t text-center" style="margin-bottom: 0rem !important;">
+                    <small>
+                        &copy; 2023 MAPFRE. Todos los derechos reservados.
+                    </small>
+                </p>
                 @*<div class="container-certificates">
                         <div class="certificates-imgs p-2 d-flex justify-content-center">
                             <img src="~/app/img/logo-AENOR.png" alt="AENOR" id="patrocinioAENOR">
