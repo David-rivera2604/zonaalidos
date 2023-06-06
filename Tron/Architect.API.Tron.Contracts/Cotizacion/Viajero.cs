@@ -29,8 +29,8 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// <summary>
         ///  Pais de Origen.
         /// </summary>
-        [DataMember(), JsonProperty()] public string COD_PAIS_ORIGEN { get; set; }
-        [DataMember(), JsonProperty()] public string PAIS_ORIGEN_DESC { get; set; }
+        [DataMember(), JsonProperty()] public string COD_PAIS_ORIGEN { get; set; } =  "CRI";
+        [DataMember(), JsonProperty()] public string PAIS_ORIGEN_DESC { get; set; } = "COSTA RICA";
         /// <summary>
         /// Fecha de nacimiento.
         /// </summary>
