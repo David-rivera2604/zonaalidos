@@ -12,8 +12,8 @@ app.PurdyPanel = (function () {
                 app.PurdyPanelDetalle.Init(app.PurdyPanel.Event);
                 app.PurdyPanelEvento.Init(app.PurdyPanel.Event);
                 app.PurdyPanelDanos.Init(app.PurdyPanel.Event);
-                app.PurdyPanelIndemnizacion.Init(app.PurdyPanel.Event);
-                app.PurdyPanelLegal.Init(app.PurdyPanel.Event);                
+                //app.PurdyPanelIndemnizacion.Init(app.PurdyPanel.Event);
+                //app.PurdyPanelLegal.Init(app.PurdyPanel.Event);                
             }
             catch (err) {
                 console.error("Error Init");
@@ -23,11 +23,22 @@ app.PurdyPanel = (function () {
         Event: function (src, data) {
             switch (src) {
                 case 'ASIGESChange':
+                    _data.asiges = data.ASIGES;
                     _data.claim = data;
-                    app.PurdyPanelDetalle.Event(src, _data);
+                    //app.PurdyPanelDetalle.Event(src, _data);
+                    app.PurdyPanelEvento.Event(src, _data);
+                    app.PurdyPanelDanos.Event(src, _data);
                     break;
                 case 'PolicyChange', 'PolicyRolesChange', 'PolicyDataChange':
                     _data.policy = data;
+                    break;
+                case 'EventoDataChange':
+                    _data.event = data;
+                    app.PurdyPanelEncabezado.Event(src, _data);
+                    break;
+                case 'DanoDataChange':
+                    _data.damage = data;
+                    app.PurdyPanelEncabezado.Event(src, _data);
                     break;
             }
 

@@ -45,7 +45,7 @@
                                         <option value='4'>Casos con avalúo pendiente de reparación</option>
                                         <option value='5'>Repuestos pendientes</option>
                                         <option value='6'>Avalúo cliente no repara aún</option>
-                                        <option value='7'>Pendiente avalúo</option>
+                                        <option value='7'>Pendiente de avalúo</option>
                                         <option value='8'>No procede</option>
                                         <option value='9'>Posible pérdida total</option>
                                         <option value='10'>Pago directo</option>
@@ -56,7 +56,7 @@
                             <!-- motivonoProcede DropDownList -->
                             <div class='col-sm-3 col-md-3 motivonoProcedeVisible d-none'>
                                 <div class='form-group'>
-                                    <label class='control-label' for='motivonoProcede'>Motivo no Procede</label>
+                                    <label class='control-label' for='motivonoProcede'>Motivo no procede</label>
                                     <select id='motivonoProcede' name='motivonoProcede' class='form-control role-Reclamos-enable' disabled>
                                         <option value='1'>Tercero asume</option>
                                         <option value='2'>Monto de reparación menor al deducible</option>
@@ -75,13 +75,7 @@
                                     <textarea id='detallenoprocede' name='detallenoprocede' class='form-control' rows="2"></textarea>
                                 </div>
                             </div>
-                            <!-- detallesiniestro Notes -->
-                            <div class='col-sm-12 col-md-12'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='detallesiniestro'>Detalle siniestro</label>
-                                    <textarea id='detallesiniestro' name='detallesiniestro' class='form-control' rows="2"></textarea>
-                                </div>
-                            </div>
+
                             <!-- tipodecobertura DropDownList -->
                             <div class='col-sm-3 col-md-3'>
                                 <div class='form-group'>
@@ -113,89 +107,84 @@
                             <div class='col-sm-3 col-md-3'>
                                 <div class='form-group'>
                                     <label class='control-label' for='posiblesubrogacion'>Posible subrogación</label>
-                                    <div style="padding-top: 6px;">
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input role-Reclamos-enable" id="posiblesubrogacion_1" name="posiblesubrogacion" value="1" disabled>
-                                            <label class="custom-control-label" for="posiblesubrogacion_1">Si</label>
-                                        </div><div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input role-Reclamos-enable" id="posiblesubrogacion_2" name="posiblesubrogacion" value="2" disabled>
-                                            <label class="custom-control-label" for="posiblesubrogacion_2">No</label>
-                                        </div><div id='posiblesubrogacion_validate'></div>
+                                    <div class="form-row">
+                                        <div class='col-*'>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input role-Reclamos-enable" id="posiblesubrogacion_1" name="posiblesubrogacion" value="1" disabled>
+                                                <label class="custom-control-label" for="posiblesubrogacion_1">Si</label>
+                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input role-Reclamos-enable" id="posiblesubrogacion_2" name="posiblesubrogacion" value="2" disabled>
+                                                <label class="custom-control-label" for="posiblesubrogacion_2">No</label>
+                                            </div><div id='posiblesubrogacion_validate'></div>
+                                        </div>
+                                        <div class='col fechaidentificadocomoPosibleSubrogacionVisible d-none'>
+                                            <div class='input-group date' id='fechaidentificadocomoPosibleSubrogacion_group'>
+                                                <input type='text' id='fechaidentificadocomoPosibleSubrogacion' name='fechaidentificadocomoPosibleSubrogacion' class='form-control role-Reclamos-enable' size='10' maxlength='10' placeholder='día/mes/año' disabled />
+                                                <span class='input-group-addon'>
+                                                    <span class='glyphicon glyphicon-calendar'></span>
+                                                </span>
+                                            </div>
+                                            <div id='fechaidentificadocomoPosibleSubrogacion_validate'></div>
+                                            <small class="form-text text-muted">Fecha identificado como Posible Subrogación</small>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
 
-                            <!-- fechaidentificadocomoPosibleSubrogacion DatePicker -->
-                            <div class='col-sm-3 col-md-3 fechaidentificadocomoPosibleSubrogacionVisible d-none'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='fechaidentificadocomoPosibleSubrogacion'>Fecha identificado como Posible Subrogación</label>
-                                    <div class='input-group date' id='fechaidentificadocomoPosibleSubrogacion_group'>
-                                        <input type='text' id='fechaidentificadocomoPosibleSubrogacion' name='fechaidentificadocomoPosibleSubrogacion' class='form-control role-Reclamos-enable' size='10' maxlength='10' placeholder='día/mes/año' disabled />
-                                        <span class='input-group-addon'>
-                                            <span class='glyphicon glyphicon-calendar'></span>
-                                        </span>
-                                    </div>
-                                    <div id='fechaidentificadocomoPosibleSubrogacion_validate'></div>
                                 </div>
                             </div>
 
                             <!-- enviadoaInvestigacion RadioButtonList -->
                             <div class='col-sm-3 col-md-3'>
                                 <div class='form-group'>
-                                    <label class='control-label' for='enviadoaInvestigacion'>Enviado a Investigación</label>
-                                    <div style="padding-top: 6px;">
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input role-Reclamos-enable" id="enviadoaInvestigacion_1" name="enviadoaInvestigacion" value="1" disabled>
-                                            <label class="custom-control-label" for="enviadoaInvestigacion_1">Si</label>
-                                        </div><div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input role-Reclamos-enable" id="enviadoaInvestigacion_2" name="enviadoaInvestigacion" value="2" disabled>
-                                            <label class="custom-control-label" for="enviadoaInvestigacion_2">No</label>
-                                        </div><div id='enviadoaInvestigacion_validate'></div>
+                                    <label class='control-label' for='enviadoaInvestigacion'>Enviado a investigación</label>
+                                    <div class="form-row">
+                                        <div class='col-*'>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input role-Reclamos-enable" id="enviadoaInvestigacion_1" name="enviadoaInvestigacion" value="1" disabled>
+                                                <label class="custom-control-label" for="enviadoaInvestigacion_1">Si</label>
+                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input role-Reclamos-enable" id="enviadoaInvestigacion_2" name="enviadoaInvestigacion" value="2" disabled>
+                                                <label class="custom-control-label" for="enviadoaInvestigacion_2">No</label>
+                                            </div><div id='enviadoaInvestigacion_validate'></div>
+                                        </div>
+                                        <div class='col fechaenviadoainvestigacionVisible d-none'>
+                                            <div class='input-group date' id='fechaenviadoainvestigacion_group'>
+                                                <input type='text' id='fechaenviadoainvestigacion' name='fechaenviadoainvestigacion' class='form-control role-Reclamos-enable' size='10' maxlength='10' placeholder='día/mes/año' disabled />
+                                                <span class='input-group-addon'>
+                                                    <span class='glyphicon glyphicon-calendar'></span>
+                                                </span>
+                                            </div>
+                                            <div id='fechaenviadoainvestigacion_validate'></div>
+                                            <small class="form-text text-muted">Fecha enviado a investigación</small>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-
-                            <!-- fechaenviadoainvestigacion DatePicker -->
-                            <div class='col-sm-3 col-md-3 fechaenviadoainvestigacionVisible d-none'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='fechaenviadoainvestigacion'>Fecha enviado a investigación</label>
-                                    <div class='input-group date' id='fechaenviadoainvestigacion_group'>
-                                        <input type='text' id='fechaenviadoainvestigacion' name='fechaenviadoainvestigacion' class='form-control role-Reclamos-enable' size='10' maxlength='10' placeholder='día/mes/año' disabled />
-                                        <span class='input-group-addon'>
-                                            <span class='glyphicon glyphicon-calendar'></span>
-                                        </span>
-                                    </div>
-                                    <div id='fechaenviadoainvestigacion_validate'></div>
                                 </div>
                             </div>
 
                             <!-- enviadoaacompanamientoLegal RadioButtonList -->
                             <div class='col-sm-3 col-md-3'>
                                 <div class='form-group'>
-                                    <label class='control-label' for='enviadoaacompanamientoLegal'>Enviado a acompañamiento Legal</label>
-                                    <div style="padding-top: 6px;">
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input role-Reclamos-enable" id="enviadoaacompanamientoLegal_1" name="enviadoaacompanamientoLegal" value="1" disabled>
-                                            <label class="custom-control-label" for="enviadoaacompanamientoLegal_1">Si</label>
-                                        </div><div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input role-Reclamos-enable" id="enviadoaacompanamientoLegal_2" name="enviadoaacompanamientoLegal" value="2" disabled>
-                                            <label class="custom-control-label" for="enviadoaacompanamientoLegal_2">No</label>
-                                        </div><div id='enviadoaacompanamientoLegal_validate'></div>
+                                    <label class='control-label' for='enviadoaacompanamientoLegal'>Enviado a acompañamiento legal</label>
+                                    <div class="form-row">
+                                        <div class='col-*'>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input role-Reclamos-enable" id="enviadoaacompanamientoLegal_1" name="enviadoaacompanamientoLegal" value="1" disabled>
+                                                <label class="custom-control-label" for="enviadoaacompanamientoLegal_1">Si</label>
+                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input role-Reclamos-enable" id="enviadoaacompanamientoLegal_2" name="enviadoaacompanamientoLegal" value="2" disabled>
+                                                <label class="custom-control-label" for="enviadoaacompanamientoLegal_2">No</label>
+                                            </div><div id='enviadoaacompanamientoLegal_validate'></div>
+                                        </div>
+                                        <div class='col fechaenviadoaacompanamientoLegalVisible d-none'>
+                                            <div class='input-group date' id='fechaenviadoaacompanamientoLegal_group'>
+                                                <input type='text' id='fechaenviadoaacompanamientoLegal' name='fechaenviadoaacompanamientoLegal' class='form-control role-Reclamos-enable' size='10' maxlength='10' placeholder='día/mes/año' disabled />
+                                                <span class='input-group-addon'>
+                                                    <span class='glyphicon glyphicon-calendar'></span>
+                                                </span>
+                                            </div>
+                                            <div id='fechaenviadoaacompanamientoLegal_validate'></div>
+                                            <small class="form-text text-muted">Fecha enviado a acompañamiento legal</small>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-
-                            <!-- fechaenviadoaacompanamientoLegal DatePicker -->
-                            <div class='col-sm-3 col-md-3 fechaenviadoaacompanamientoLegalVisible d-none'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='fechaenviadoaacompanamientoLegal'>Fecha enviado a acompañamiento Legal</label>
-                                    <div class='input-group date' id='fechaenviadoaacompanamientoLegal_group'>
-                                        <input type='text' id='fechaenviadoaacompanamientoLegal' name='fechaenviadoaacompanamientoLegal' class='form-control role-Reclamos-enable' size='10' maxlength='10' placeholder='día/mes/año' disabled />
-                                        <span class='input-group-addon'>
-                                            <span class='glyphicon glyphicon-calendar'></span>
-                                        </span>
-                                    </div>
-                                    <div id='fechaenviadoaacompanamientoLegal_validate'></div>
                                 </div>
                             </div>
 
@@ -215,36 +204,41 @@
                                 </div>
                             </div>
 
-                            <!-- autorizaciondeusopoliza RadioButtonList -->
+                            <!-- autorizaciondeusopolizaEvent RadioButtonList -->
                             <div class='col-sm-3 col-md-3'>
                                 <div class='form-group'>
-                                    <label class='control-label' for='autorizaciondeusopoliza'>Autorización de uso póliza</label>
-                                    <div style="padding-top: 6px;">
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input role-Reclamos-enable" id="autorizaciondeusopoliza_1" name="autorizaciondeusopoliza" value="1" disabled>
-                                            <label class="custom-control-label" for="autorizaciondeusopoliza_1">Si</label>
-                                        </div><div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input role-Reclamos-enable" id="autorizaciondeusopoliza_2" name="autorizaciondeusopoliza" value="2" disabled>
-                                            <label class="custom-control-label" for="autorizaciondeusopoliza_2">No</label>
-                                        </div><div id='autorizaciondeusopoliza_validate'></div>
+                                    <label class='control-label' for='autorizaciondeusopolizaEvent'>Autorización de uso póliza</label>
+                                    <div class="form-row">
+                                        <div class='col-*'>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input role-Reclamos-enable" id="autorizaciondeusopolizaEvent_1" name="autorizaciondeusopolizaEvent" value="1" disabled>
+                                                <label class="custom-control-label" for="autorizaciondeusopolizaEvent_1">Si</label>
+                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input role-Reclamos-enable" id="autorizaciondeusopolizaEvent_2" name="autorizaciondeusopolizaEvent" value="2" disabled>
+                                                <label class="custom-control-label" for="autorizaciondeusopolizaEvent_2">No</label>
+                                            </div><div id='autorizaciondeusopolizaEvent_validate'></div>
+                                        </div>
+                                        <div class='col fechaautorizaciondeusopolizaEventVisible d-none'>
+                                            <div class='input-group date' id='fechaautorizaciondeusopolizaEvent_group'>
+                                                <input type='text' id='fechaautorizaciondeusopolizaEvent' name='fechaautorizaciondeusopolizaEvent' class='form-control role-Reclamos-enable' size='10' maxlength='10' placeholder='día/mes/año' disabled />
+                                                <span class='input-group-addon'>
+                                                    <span class='glyphicon glyphicon-calendar'></span>
+                                                </span>
+                                            </div>
+                                            <div id='fechaautorizaciondeusopolizaEvent_validate'></div>
+                                            <small class="form-text text-muted">Fecha autorización de uso póliza</small>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- fechaautorizaciondeusopoliza DatePicker -->
-                            <div class='col-sm-3 col-md-3 fechaautorizaciondeusopolizaVisible d-none'>
-                                <div class='form-group'>
-                                    <label class='control-label' for='fechaautorizaciondeusopoliza'>Fecha autorización de uso póliza</label>
-                                    <div class='input-group date' id='fechaautorizaciondeusopoliza_group'>
-                                        <input type='text' id='fechaautorizaciondeusopoliza' name='fechaautorizaciondeusopoliza' class='form-control role-Reclamos-enable' size='10' maxlength='10' placeholder='día/mes/año' disabled />
-                                        <span class='input-group-addon'>
-                                            <span class='glyphicon glyphicon-calendar'></span>
-                                        </span>
-                                    </div>
-                                    <div id='fechaautorizaciondeusopoliza_validate'></div>
-                                </div>
+                        </div>
+                    </div>
+                    <div class="form-row role-Reclamos-changed-visible d-none">
+                        <div class='col-md-12'>
+                            <div class="modal-footer">
+                                <button id="PurdyPanelEventoEdtFormSave" type="button" class="btn btn-primary" data-doing="Guardando cambios...">Guardar cambios</button>
+                                <button id="PurdyPanelEventoEdtFormCancel" type="button" class="btn btn-white" data-doing="Cancelando cambios...">Cancelar</button>
                             </div>
-
                         </div>
                     </div>
                     @*</div>*@

@@ -9,8 +9,8 @@ app.PurdyPanelEncabezado = (function () {
     function MapInputToObject() {
         var data = {
             aSIGES: $('#aSIGES').val(),
-            tipodeindemnizacion: app.ui.GetDropDownNumericValue('#tipodeindemnizacion'),
-            tipodeindemnizacionDesc: app.ui.GetDropDownSelectedText('#tipodeindemnizacion')
+            tipodeindemnizacionEnc: app.ui.GetDropDownNumericValue('#tipodeindemnizacionEnc'),
+            tipodeindemnizacionEncDesc: app.ui.GetDropDownSelectedText('#tipodeindemnizacionEnc')
         };
         return data;
     };
@@ -23,11 +23,11 @@ app.PurdyPanelEncabezado = (function () {
         $('#correoasegurado').html(`<a href="mailto:${data.EMAIL_ASEG}" title="Al hacer click se podrá escribir un correo electrónico usando esta dirección">${data.EMAIL_ASEG}</a>`);
         $('#telefonoasegurado').html(`<a href="tel:${data.TLF_NUMERO_ASEG}" title="Al hacer click se podrá llamar a este teléfono">${data.TLF_NUMERO_ASEG}</a>`);
         $('#ingresodeaviso').html(`${app.ui.DateFormatter(data.FEC_DENU_SINI)} ${data.HORA_DENU_SINI}`);
-        $('#fechadelevento').html(`${app.ui.DateFormatter(data.FEC_SINI)} ${data.HORA_SINI}`);
+        $('#fechadeleventoEnc').html(`${app.ui.DateFormatter(data.FEC_SINI)} ${data.HORA_SINI}`);
         $('#noSiniestro').html(data.NUM_SINI);
-        $('#tipodeindemnizacion').html(data.tipodeindemnizacion);
-        $('#categoriadesiniestro').html(data.categoriadesiniestro);
-        $('#analistareclamos').html(data.analistareclamos);
+        $('#tipodeindemnizacionSel').html(data.tipodeindemnizacionEnc);
+        $('#categoriadesiniestroEnc').html(data.categoriadesiniestro);
+        $('#analistareclamosSel').html(data.analistareclamosSel);
         $('#analistagestora').html(data.analistagestora);
         $('#detallesiniestro').html(data.TXT_DANO_VEHI);
     };
@@ -42,11 +42,19 @@ app.PurdyPanelEncabezado = (function () {
 
         $('#aSIGES').change(function () {
             let code = $('#aSIGES').val();
-            app.core.Get(`${app.setting.apipath}v1/datasource/json?id=700&sequence=1&url=asiges=${code}`)
-                .done(function (claim) {
-                    MapObjectToInput(claim[0]);
-                    _eventCallback('ASIGESChange', claim[0])
-                });
+            let data = { ASIGES: code };
+
+            $('.panelinfo').addClass('d-none');
+            $('.panelinfo').removeClass('d-none');
+
+            _eventCallback('ASIGESChange', data);
+
+            //app.core.Get(`${app.setting.apipath}v1/datasource/json?id=700&sequence=1&url=asiges=${code}`)
+            //    .done(function (claim) {
+            //        claim[0]['ASIGES'] = code;
+            //        MapObjectToInput(claim[0]);
+            //        _eventCallback('ASIGESChange', claim[0]);
+            //    });
         });
     };
 
@@ -77,7 +85,6 @@ app.PurdyPanelEncabezado = (function () {
                 Setup_Validations();
 
                 Controls_Events();
-                console.log("Inicio");
             }
             catch (err) {
                 console.error("Error Init");
@@ -85,6 +92,13 @@ app.PurdyPanelEncabezado = (function () {
             }
         },
         Event: function (src, data) {
+            switch (src) {
+                case 'EventoDataChange':
+                    $('#tipodeindemnizacionSel').html(data.event.TIPODEINDEMNIZACIONDESC);
+                    $('#analistareclamosSel').html(data.event.ANALISTARECLAMOSDESC);
+                    $('#categoriadesiniestroEnc').html(data.event.CATEGORIADESINIESTRODESC);
+                    break;
+            }
         }
     };
 })();

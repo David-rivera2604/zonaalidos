@@ -3,115 +3,104 @@
 app.PurdyPanelDanos = (function () {
 
     let _eventCallback = null;
-    var setupData = null;
-    var changedCallback = null;
-
-    function Setup() {
-
-        app.core.Get(app.setting.apipath + 'v1/Quote/PanelDanosSetup', null,
-            function (data) {
-                app.core.Lookups(['Users-Avalúos.analistadeDanos',],
-                    function () {
-                        setupData = data;
-                        MapObjectToInput(data);
-                    }, ``);
-
-            });
-    };
+    let _data = null;
+    let _loadready = false;
+    let _changed = false;
 
     function MapInputToObject() {
         var data = {
-            taller: app.ui.GetDropDownNumericValue('#taller'),
-            tallerDesc: app.ui.GetDropDownSelectedText('#taller'),
-            fechaenviodelavaluo: app.ui.GetDateValue('#fechaenviodelavaluo'),
-            prerepuestos: app.ui.GetNumericValue('#prerepuestos'),
-            prerepuestosiva: app.ui.GetNumericValue('#prerepuestosiva'),
-            prerepuestostotal: app.ui.GetNumericValue('#prerepuestostotal'),
-            premano: app.ui.GetNumericValue('#premano'),
-            premanoiva: app.ui.GetNumericValue('#premanoiva'),
-            premanototal: app.ui.GetNumericValue('#premanototal'),
-            preperdida: app.ui.GetNumericValue('#preperdida'),
-            autorizaciondeusopoliza: app.ui.GetRadioNumericValue('autorizaciondeusopoliza'),
-            autorizaciondeusopolizaDesc: app.ui.GetRadioSelectedText('autorizaciondeusopoliza'),
-            fechaAutorizaciondeUsoPoliza: app.ui.GetDateValue('#fechaAutorizaciondeUsoPoliza'),
-            oT: app.ui.GetNumericValue('#oT'),
-            asesorTaller: $('#asesorTaller').val(),
-            expediente: $('#expediente').val(),
-            analistadeDanos: app.ui.GetDropDownNumericValue('#analistadeDanos'),
-            analistadeDanosDesc: app.ui.GetDropDownSelectedText('#analistadeDanos'),
-            depreciacionyexclusiones: app.ui.GetNumericValue('#depreciacionyexclusiones'),
-            perdrepuesto: app.ui.GetNumericValue('#perdrepuesto'),
-            perdrepuestoiva: app.ui.GetNumericValue('#perdrepuestoiva'),
-            perdrepuestototal: app.ui.GetNumericValue('#perdrepuestototal'),
-            perdmano: app.ui.GetNumericValue('#perdmano'),
-            perdmanoiva: app.ui.GetNumericValue('#perdmanoiva'),
-            perdmanototal: app.ui.GetNumericValue('#perdmanototal'),
-            perdida: app.ui.GetNumericValue('#perdida'),
-            severidaddelsiniestro: app.ui.GetDropDownNumericValue('#severidaddelsiniestro'),
-            severidaddelsiniestroDesc: app.ui.GetDropDownSelectedText('#severidaddelsiniestro'),
-            avaluoautorizado: app.ui.GetRadioNumericValue('avaluoautorizado'),
-            avaluoautorizadoDesc: app.ui.GetRadioSelectedText('avaluoautorizado'),
-            fechaautorizacion: app.ui.GetDateValue('#fechaautorizacion'),
-            perdidatotal: app.ui.GetRadioNumericValue('perdidatotal'),
-            perdidatotalDesc: app.ui.GetRadioSelectedText('perdidatotal'),
-            tipodeperdidatotal: app.ui.GetDropDownNumericValue('#tipodeperdidatotal'),
-            tipodeperdidatotalDesc: app.ui.GetDropDownSelectedText('#tipodeperdidatotal'),
-            presentadanooculto: app.ui.GetRadioNumericValue('presentadanooculto'),
-            presentadanoocultoDesc: app.ui.GetRadioSelectedText('presentadanooculto'),
-            fechasolicitado: $('#fechasolicitado').val(),
-            observaciones: $('#observaciones').val(),
-            danoocultomontoRepuestosDanooculto: app.ui.GetNumericValue('#danoocultomontoRepuestosDanooculto'),
-            danoocultoiva: app.ui.GetNumericValue('#danoocultoiva'),
-            danoocultototal: app.ui.GetNumericValue('#danoocultototal'),
-            danoocultomano: app.ui.GetNumericValue('#danoocultomano'),
-            danoocultomanoiva: app.ui.GetNumericValue('#danoocultomanoiva'),
-            danoocultomanototal: app.ui.GetNumericValue('#danoocultomanototal'),
-            otrosIIOtrosIIDanoocultomanototal: app.ui.GetNumericValue('#otrosIIOtrosIIDanoocultomanototal'),
-
+            ID: _data.ID,
+            ASIGES: _data.ASIGES,
+            TALLER: app.ui.GetDropDownNumericValue('#taller'),
+            TALLERDESC: app.ui.GetDropDownSelectedText('#taller'),
+            FECHAENVIODELAVALUO: app.ui.GetDateValue('#fechaenviodelavaluo'),
+            PREREPUESTOS: app.ui.GetNumericValue('#prerepuestos'),
+            PREREPUESTOSIVA: app.ui.GetNumericValue('#prerepuestosiva'),
+            PREREPUESTOSTOTAL: app.ui.GetNumericValue('#prerepuestostotal'),
+            PREMANO: app.ui.GetNumericValue('#premano'),
+            PREMANOIVA: app.ui.GetNumericValue('#premanoiva'),
+            PREMANOTOTAL: app.ui.GetNumericValue('#premanototal'),
+            PREPERDIDA: app.ui.GetNumericValue('#preperdida'),
+            AUTORIZACIONDEUSOPOLIZA: app.ui.GetRadioNumericValue('autorizaciondeusopoliza'),
+            AUTORIZACIONDEUSOPOLIZADESC: app.ui.GetRadioSelectedText('autorizaciondeusopoliza'),
+            FECHAAUTORIZACIONDEUSOPOLIZA: app.ui.GetDateValue('#fechaAutorizaciondeUsoPoliza'),
+            OT: app.ui.GetNumericValue('#oT'),
+            ASESORTALLER: $('#asesorTaller').val(),
+            EXPEDIENTE: $('#expediente').val(),
+            ANALISTADEDANOS: app.ui.GetDropDownNumericValue('#analistadeDanos'),
+            ANALISTADEDANOSDESC: app.ui.GetDropDownSelectedText('#analistadeDanos'),
+            DEPRECIACIONYEXCLUSIONES: app.ui.GetNumericValue('#depreciacionyexclusiones'),
+            PERDREPUESTO: app.ui.GetNumericValue('#perdrepuesto'),
+            PERDREPUESTOIVA: app.ui.GetNumericValue('#perdrepuestoiva'),
+            PERDREPUESTOTOTAL: app.ui.GetNumericValue('#perdrepuestototal'),
+            PERDMANO: app.ui.GetNumericValue('#perdmano'),
+            PERDMANOIVA: app.ui.GetNumericValue('#perdmanoiva'),
+            PERDMANOTOTAL: app.ui.GetNumericValue('#perdmanototal'),
+            PERDIDA: app.ui.GetNumericValue('#perdida'),
+            SEVERIDADDELSINIESTRO: app.ui.GetDropDownNumericValue('#severidaddelsiniestro'),
+            SEVERIDADDELSINIESTRODESC: app.ui.GetDropDownSelectedText('#severidaddelsiniestro'),
+            AVALUOAUTORIZADO: app.ui.GetRadioNumericValue('avaluoautorizado'),
+            AVALUOAUTORIZADODESC: app.ui.GetRadioSelectedText('avaluoautorizado'),
+            FECHAAUTORIZACION: app.ui.GetDateValue('#fechaautorizacion'),
+            PERDIDATOTAL: app.ui.GetRadioNumericValue('perdidatotal'),
+            PERDIDATOTALDESC: app.ui.GetRadioSelectedText('perdidatotal'),
+            TIPODEPERDIDATOTAL: app.ui.GetDropDownNumericValue('#tipodeperdidatotal'),
+            TIPODEPERDIDATOTALDESC: app.ui.GetDropDownSelectedText('#tipodeperdidatotal'),
+            PRESENTADANOOCULTO: app.ui.GetRadioNumericValue('presentadanooculto'),
+            PRESENTADANOOCULTODESC: app.ui.GetRadioSelectedText('presentadanooculto'),
+            FECHASOLICITADO: app.ui.GetDateValue('#fechasolicitado'),
+            OBSERVACIONES: $('#observaciones').val(),
+            DANOOCULTOMONTOREPDANOOCULTO: app.ui.GetNumericValue('#danoocultomontoRepuestosDanooculto'),
+            DANOOCULTOIVA: app.ui.GetNumericValue('#danoocultoiva'),
+            DANOOCULTOTOTAL: app.ui.GetNumericValue('#danoocultototal'),
+            DANOOCULTOMANO: app.ui.GetNumericValue('#danoocultomano'),
+            DANOOCULTOMANOIVA: app.ui.GetNumericValue('#danoocultomanoiva'),
+            DANOOCULTOMANOTOTAL: app.ui.GetNumericValue('#danoocultomanototal'),
+            OTROSIIOTROSIIDANOCULMANOTOTAL: app.ui.GetNumericValue('#otrosIIOtrosIIDanoocultomanototal')
         };
         return data;
     };
 
     function MapObjectToInput(data) {
-        app.ui.SetDropDownNumericValue('#taller', data.taller, true);
-        app.ui.SetDateValue('#fechaenviodelavaluo', data.fechaenviodelavaluo);
-        app.ui.SetNumericValue('#prerepuestos', data.prerepuestos);
-        app.ui.SetNumericValue('#prerepuestosiva', data.prerepuestosiva);
-        app.ui.SetNumericValue('#prerepuestostotal', data.prerepuestostotal);
-        app.ui.SetNumericValue('#premano', data.premano);
-        app.ui.SetNumericValue('#premanoiva', data.premanoiva);
-        app.ui.SetNumericValue('#premanototal', data.premanototal);
-        app.ui.SetNumericValue('#preperdida', data.preperdida);
-        app.ui.SetRadioNumericValue('autorizaciondeusopoliza', data.autorizaciondeusopoliza);
-        app.ui.SetDateValue('#fechaAutorizaciondeUsoPoliza', data.fechaAutorizaciondeUsoPoliza);
-        app.ui.SetNumericValue('#oT', data.oT);
-        $('#asesorTaller').val(data.asesorTaller);
-        $('#expediente').val(data.expediente);
-        app.ui.SetDropDownNumericValue('#analistadeDanos', data.analistadeDanos, true);
-        app.ui.SetNumericValue('#depreciacionyexclusiones', data.depreciacionyexclusiones);
-        app.ui.SetNumericValue('#perdrepuesto', data.perdrepuesto);
-        app.ui.SetNumericValue('#perdrepuestoiva', data.perdrepuestoiva);
-        app.ui.SetNumericValue('#perdrepuestototal', data.perdrepuestototal);
-        app.ui.SetNumericValue('#perdmano', data.perdmano);
-        app.ui.SetNumericValue('#perdmanoiva', data.perdmanoiva);
-        app.ui.SetNumericValue('#perdmanototal', data.perdmanototal);
-        app.ui.SetNumericValue('#perdida', data.perdida);
-        app.ui.SetDropDownNumericValue('#severidaddelsiniestro', data.severidaddelsiniestro, true);
-        app.ui.SetRadioNumericValue('avaluoautorizado', data.avaluoautorizado);
-        app.ui.SetDateValue('#fechaautorizacion', data.fechaautorizacion);
-        app.ui.SetRadioNumericValue('perdidatotal', data.perdidatotal);
-        app.ui.SetDropDownNumericValue('#tipodeperdidatotal', data.tipodeperdidatotal, true);
-        app.ui.SetRadioNumericValue('presentadanooculto', data.presentadanooculto);
-        $('#fechasolicitado').val(data.fechasolicitado);
-        $('#observaciones').val(data.observaciones);
-        app.ui.SetNumericValue('#danoocultomontoRepuestosDanooculto', data.danoocultomontoRepuestosDanooculto);
-        app.ui.SetNumericValue('#danoocultoiva', data.danoocultoiva);
-        app.ui.SetNumericValue('#danoocultototal', data.danoocultototal);
-        app.ui.SetNumericValue('#danoocultomano', data.danoocultomano);
-        app.ui.SetNumericValue('#danoocultomanoiva', data.danoocultomanoiva);
-        app.ui.SetNumericValue('#danoocultomanototal', data.danoocultomanototal);
-        app.ui.SetNumericValue('#otrosIIOtrosIIDanoocultomanototal', data.otrosIIOtrosIIDanoocultomanototal);
+        app.ui.SetDropDownNumericValue('#taller', data.TALLER, false);
+        app.ui.SetDateValue('#fechaenviodelavaluo', data.FECHAENVIODELAVALUO);
+        app.ui.SetNumericValue('#prerepuestos', data.PREREPUESTOS);
+        app.ui.SetNumericValue('#prerepuestosiva', data.PREREPUESTOSIVA);
+        app.ui.SetNumericValue('#prerepuestostotal', data.PREREPUESTOSTOTAL);
+        app.ui.SetNumericValue('#premano', data.PREMANO);
+        app.ui.SetNumericValue('#premanoiva', data.PREMANOIVA);
+        app.ui.SetNumericValue('#premanototal', data.PREMANOTOTAL);
+        app.ui.SetNumericValue('#preperdida', data.PREPERDIDA);
+        app.ui.SetRadioNumericValue('autorizaciondeusopoliza', data.AUTORIZACIONDEUSOPOLIZA);
+        app.ui.SetDateValue('#fechaAutorizaciondeUsoPoliza', data.FECHAAUTORIZACIONDEUSOPOLIZA);
+        app.ui.SetNumericValue('#oT', data.OT);
+        $('#asesorTaller').val(data.ASESORTALLER);
+        $('#expediente').val(data.EXPEDIENTE);
+        app.ui.SetDropDownNumericValue('#analistadeDanos', data.ANALISTADEDANOS, false);
+        app.ui.SetNumericValue('#depreciacionyexclusiones', data.DEPRECIACIONYEXCLUSIONES);
 
+        app.ui.SetNumericValue('#perdrepuesto', data.PERDREPUESTO);
+        app.ui.SetNumericValue('#perdrepuestoiva', data.PERDREPUESTOIVA);
+        app.ui.SetNumericValue('#perdrepuestototal', data.PERDREPUESTOTOTAL);
+        app.ui.SetNumericValue('#perdmano', data.PERDMANO);
+        app.ui.SetNumericValue('#perdmanoiva', data.PERDMANOIVA);
+        app.ui.SetNumericValue('#perdmanototal', data.PERDMANOTOTAL);
+        app.ui.SetNumericValue('#perdida', data.PERDIDA);
+        app.ui.SetDropDownNumericValue('#severidaddelsiniestro', data.SEVERIDADDELSINIESTRO, false);
+        app.ui.SetRadioNumericValue('avaluoautorizado', data.AVALUOAUTORIZADO);
+        app.ui.SetDateValue('#fechaautorizacion', data.FECHAAUTORIZACION);
+        app.ui.SetRadioNumericValue('perdidatotal', data.PERDIDATOTAL);
+        app.ui.SetDropDownNumericValue('#tipodeperdidatotal', data.TIPODEPERDIDATOTAL, false);
+        app.ui.SetRadioNumericValue('presentadanooculto', data.PRESENTADANOOCULTO);
+        app.ui.SetDateValue('#fechasolicitado', data.FECHASOLICITADO);
+        $('#observaciones').val(data.OBSERVACIONES);
+        app.ui.SetNumericValue('#danoocultomontoRepuestosDanooculto', data.DANOOCULTOMONTOREPDANOOCULTO);
+        app.ui.SetNumericValue('#danoocultoiva', data.DANOOCULTOIVA);
+        app.ui.SetNumericValue('#danoocultototal', data.DANOOCULTOTOTAL);
+        app.ui.SetNumericValue('#danoocultomano', data.DANOOCULTOMANO);
+        app.ui.SetNumericValue('#danoocultomanoiva', data.DANOOCULTOMANOIVA);
+        app.ui.SetNumericValue('#danoocultomanototal', data.DANOOCULTOMANOTOTAL);
+        app.ui.SetNumericValue('#otrosIIOtrosIIDanoocultomanototal', data.OTROSIIOTROSIIDANOCULMANOTOTAL);
     };
 
     function Controls_setup() {
@@ -334,7 +323,10 @@ app.PurdyPanelDanos = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-
+        $('#fechasolicitado_group').datetimepicker({
+            format: 'DD/MM/YYYY',
+            locale: 'es'
+        });
     };
 
     function Controls_Events() {
@@ -345,62 +337,115 @@ app.PurdyPanelDanos = (function () {
             data_changed();
         });
 
-
         $('#PurdyPanelDanosEdtFormSave').click(function () {
 
             if (app.ui.IsValid('#PurdyPanelDanosEdtForm', false)) {
                 app.ui.ButtonDoing('#PurdyPanelDanosEdtFormSave');
+                let submitData = MapInputToObject();
+                if (submitData.ID === null) {
+                    app.core.Post(`https://localhost:7262/api/entity/PurdyPanelDano`, JSON.stringify(submitData))
+                        .done(function (created) {
+                            if (created?.Sucessfully) {
+                                _data.ID = created.Data.Next.NEXTID
+                                _loadready = true;
+                                _changed = false;
+                                app.ui.CustomBehaviour('changed', false);
+                                toastr.success('La información del análisis del daño, fue actualizada de forma exitosa', '', { timeOut: 5000, closeButton: true, progressBar: true });
+                            }
+                            else {
+                                console.error(created);
+                            }
 
-                console.log(MapInputToObject())
-
-                app.core.Post(app.setting.apipath + 'v1/Purdy/PanelDanos',
-                    JSON.stringify(MapInputToObject()),
-                    function (data) {
-                        if (data.Mensaje != null) {
-                            app.ui.ShowAlert('quoteNotify', 'alert-danger', data.Mensaje);
-                        }
-                        else {
-
-                        }
-
-                    }).always(function () {
-                        app.ui.ButtonDone('#PurdyPanelDanosEdtFormSave');
-                    });
+                        }).always(function () {
+                            app.ui.ButtonDone('#PurdyPanelDanosEdtFormSave');
+                        });
+                }
+                else {
+                    app.core.Put(`https://localhost:7262/api/entity/PurdyPanelDano/${submitData.ID}`, JSON.stringify(submitData))
+                        .done(function (updated) {
+                            if (updated?.Sucessfully) {
+                                _loadready = true;
+                                _changed = false;
+                                app.ui.CustomBehaviour('changed', false);
+                                toastr.success('La información del análisis del daño, fue actualizada de forma exitosa', '', { timeOut: 5000, closeButton: true, progressBar: true });
+                            }
+                            else {
+                                console.error(updated);
+                            }
+                        }).always(function () {
+                            app.ui.ButtonDone('#PurdyPanelDanosEdtFormSave');
+                        });
+                }
             }
             event.preventDefault();
         });
 
         $('#PurdyPanelDanosEdtFormCancel').click(function () {
-            app.ui.ButtonDoing('#PurdyPanelDanosEdtFormCancel');
-            setTimeout(() => { app.ui.ButtonDone('#PurdyPanelDanosEdtFormCancel'); }, 3000);
+            Get(_data.ASIGES);
             event.preventDefault();
         });
 
     };
 
     function data_changed() {
-        if (changedCallback !== undefined && changedCallback !== null)
-            changedCallback(MapInputToObject());
-        if (taller === 1)
+
+        if (app.ui.GetDropDownNumericValue('#taller') === 1)
             $('.asesorTallerVisible').removeClass('d-none');
         else
             $('.asesorTallerVisible').addClass('d-none');
-        if (taller === 1)
+        if (app.ui.GetDropDownNumericValue('#taller') === 1)
+            $('.oTVisible').removeClass('d-none');
+        else
+            $('.oTVisible').addClass('d-none');
+        if (app.ui.GetDropDownNumericValue('#taller') === 1)
             $('.expedienteVisible').removeClass('d-none');
         else
             $('.expedienteVisible').addClass('d-none');
-        if (app.ui.GetRadioNumericValue('avaluoautorizado') === 'Si')
+        if (app.ui.GetRadioNumericValue('autorizaciondeusopoliza') === 1)
+            $('.fechaAutorizaciondeUsoPolizaVisible').removeClass('d-none');
+        else
+            $('.fechaAutorizaciondeUsoPolizaVisible').addClass('d-none');
+        if (app.ui.GetRadioNumericValue('avaluoautorizado') === 1)
             $('.fechaautorizacionVisible').removeClass('d-none');
         else
             $('.fechaautorizacionVisible').addClass('d-none');
-        if (perdidatotal === Si)
+        if (app.ui.GetRadioNumericValue('perdidatotal') === 1)
             $('.tipodeperdidatotalVisible').removeClass('d-none');
         else
             $('.tipodeperdidatotalVisible').addClass('d-none');
-        if (app.ui.GetRadioNumericValue('presentadanooculto') === 'Si')
+        if (app.ui.GetRadioNumericValue('presentadanooculto') === 1)
+            $('.fechasolicitadoVisible').removeClass('d-none');
+        else
+            $('.fechasolicitadoVisible').addClass('d-none');
+        if (app.ui.GetRadioNumericValue('presentadanooculto') === 1)
             $('.observacionesVisible').removeClass('d-none');
         else
             $('.observacionesVisible').addClass('d-none');
+
+
+        app.ui.SetNumericValue('#prerepuestosiva', app.ui.GetNumericValue('#prerepuestos') * 0.13);
+        app.ui.SetNumericValue('#prerepuestostotal', app.ui.GetNumericValue('#prerepuestos') * 1.13);
+        app.ui.SetNumericValue('#premanoiva', app.ui.GetNumericValue('#premano') * 0.13);
+        app.ui.SetNumericValue('#premanototal', app.ui.GetNumericValue('#premano') * 1.13);
+        app.ui.SetNumericValue('#preperdida', (app.ui.GetNumericValue('#prerepuestos') * 1.13) + (app.ui.GetNumericValue('#premano') * 1.13));
+
+
+        app.ui.SetNumericValue('#perdrepuestoiva', app.ui.GetNumericValue('#perdrepuesto') * 0.13);
+        app.ui.SetNumericValue('#perdrepuestototal', app.ui.GetNumericValue('#perdrepuesto') * 1.13);
+        app.ui.SetNumericValue('#perdmanoiva', app.ui.GetNumericValue('#perdmano') * 0.13);
+        app.ui.SetNumericValue('#perdmanototal', app.ui.GetNumericValue('#perdmano') * 1.13);
+        app.ui.SetNumericValue('#perdida', (app.ui.GetNumericValue('#perdrepuesto') * 1.13) + (app.ui.GetNumericValue('#perdmano') * 1.13));
+
+        app.ui.SetNumericValue('#danoocultoiva', app.ui.GetNumericValue('#danoocultomontoRepuestosDanooculto') * 0.13);
+        app.ui.SetNumericValue('#danoocultototal', app.ui.GetNumericValue('#danoocultomontoRepuestosDanooculto') * 1.13);
+        app.ui.SetNumericValue('#danoocultomanoiva', app.ui.GetNumericValue('#danoocultomano') * 0.13);
+        app.ui.SetNumericValue('#danoocultomanototal', app.ui.GetNumericValue('#danoocultomano') * 1.13);
+        app.ui.SetNumericValue('#otrosIIOtrosIIDanoocultomanototal', (app.ui.GetNumericValue('#danoocultomontoRepuestosDanooculto') * 1.13) + (app.ui.GetNumericValue('#danoocultomano') * 1.13));
+
+        if (_loadready) {
+            _changed = true;
+        }
+        app.ui.CustomBehaviour('changed', _loadready && _changed);
     };
 
     function Setup_Validations() {
@@ -413,7 +458,72 @@ app.PurdyPanelDanos = (function () {
         });
     };
 
+    function EmptyPurdyPanelDano() {
+        let data = {
+            ID: null,
+            ASIGES: null,
+            TALLER: null,
+            FECHAENVIODELAVALUO: null,
+            PREREPUESTOS: null,
+            PREREPUESTOSIVA: null,
+            PREREPUESTOSTOTAL: null,
+            PREMANO: null,
+            PREMANOIVA: null,
+            PREMANOTOTAL: null,
+            PREPERDIDA: null,
+            AUTORIZACIONDEUSOPOLIZA: 2,
+            FECHAAUTORIZACIONDEUSOPOLIZA: null,
+            OT: null,
+            ASESORTALLER: null,
+            EXPEDIENTE: null,
+            ANALISTADEDANOS: null,
+            DEPRECIACIONYEXCLUSIONES: null,
+            PERDREPUESTO: null,
+            PERDREPUESTOIVA: null,
+            PERDREPUESTOTOTAL: null,
+            PERDMANO: null,
+            PERDMANOIVA: null,
+            PERDMANOTOTAL: null,
+            PERDIDA: null,
+            SEVERIDADDELSINIESTRO: null,
+            AVALUOAUTORIZADO: 2,
+            FECHAAUTORIZACION: null,
+            PERDIDATOTAL: 2,
+            TIPODEPERDIDATOTAL: null,
+            PRESENTADANOOCULTO: 2,
+            FECHASOLICITADO: null,
+            OBSERVACIONES: null,
+            DANOOCULTOMONTOREPDANOOCULTO: null,
+            DANOOCULTOIVA: null,
+            DANOOCULTOTOTAL: null,
+            DANOOCULTOMANO: null,
+            DANOOCULTOMANOIVA: null,
+            DANOOCULTOMANOTOTAL: null,
+            OTROSIIOTROSIIDANOCULMANOTOTAL: null,
+            UPDATEUSERCODE: null,
+            UPDATEDATE: null
+        };
+        return data;
+    };
 
+    function Get(asigesCode) {
+        _loadready = false;
+        app.core.Get(`https://localhost:7262/api/entity/PurdyPanelDano/asiges?code=${asigesCode}`)
+            .done(function (dataDanos) {
+                if (dataDanos?.Sucessfully) {
+                    if (dataDanos.Data === null) {
+                        dataDanos.Data = EmptyPurdyPanelDano();
+                        dataDanos.Data.ASIGES = asigesCode;
+                    }
+                    MapObjectToInput(dataDanos.Data);
+                    data_changed();
+                    _data = dataDanos.Data;
+                    _eventCallback('EventoDataChange', dataDanos.Data);
+                }
+                _changed = false;
+                _loadready = true;
+            });
+    };
 
     return {
         Init: function (eventCallback) {
@@ -424,6 +534,12 @@ app.PurdyPanelDanos = (function () {
 
                 Controls_Events();
 
+                app.core.Lookups(['UsersByRol:Avalúos.analistadeDanos'],
+                    function () {
+                        MapObjectToInput(EmptyPurdyPanelDano());
+                        data_changed();
+                        _loadready = true;
+                    }, ``);
             }
             catch (err) {
                 console.error("Error Init");
@@ -431,6 +547,10 @@ app.PurdyPanelDanos = (function () {
             }
         },
         Event: function (src, data) {
+            switch (src) {
+                case 'ASIGESChange':
+                    Get(data.asiges);
+            }
         }
     };
 })();
