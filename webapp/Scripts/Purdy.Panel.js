@@ -12,7 +12,7 @@ app.PurdyPanel = (function () {
                 app.PurdyPanelDetalle.Init(app.PurdyPanel.Event);
                 app.PurdyPanelEvento.Init(app.PurdyPanel.Event);
                 app.PurdyPanelDanos.Init(app.PurdyPanel.Event);
-                //app.PurdyPanelIndemnizacion.Init(app.PurdyPanel.Event);
+                app.PurdyPanelIndemnizacion.Init(app.PurdyPanel.Event);
                 //app.PurdyPanelLegal.Init(app.PurdyPanel.Event);                
             }
             catch (err) {
@@ -28,6 +28,7 @@ app.PurdyPanel = (function () {
                     //app.PurdyPanelDetalle.Event(src, _data);
                     app.PurdyPanelEvento.Event(src, _data);
                     app.PurdyPanelDanos.Event(src, _data);
+                    app.PurdyPanelIndemnizacion.Event(src, _data);
                     break;
                 case 'PolicyChange', 'PolicyRolesChange', 'PolicyDataChange':
                     _data.policy = data;
@@ -36,9 +37,10 @@ app.PurdyPanel = (function () {
                     _data.event = data;
                     app.PurdyPanelEncabezado.Event(src, _data);
                     break;
-                case 'DanoDataChange':
+                case 'DanosDataChange':
                     _data.damage = data;
                     app.PurdyPanelEncabezado.Event(src, _data);
+                    app.PurdyPanelIndemnizacion.Event(src, _data);
                     break;
             }
 

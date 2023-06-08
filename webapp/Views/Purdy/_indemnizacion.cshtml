@@ -4,6 +4,7 @@
         <div id="PurdyPanelIndemnizacionEdt" class="animated fadeInRight">
             <form id='PurdyPanelIndemnizacionEdtForm' class='form-horizontal' data-toggle='validator'>
                 <fieldset>
+
                     <!-- movimientosdemontos Grid -->
                     <div class="form-row">
                         <div class="col-lg-12">
@@ -49,14 +50,12 @@
                             </div>
                         </div>
                     </div>
-
-
-
                 </fieldset>
             </form>
         </div>
     </div>
 </div>
+<!-- Edit Form End -->
 <!-- movimientosdemontos Grid Modal -->
 <div class="modal inmodal" id="movimientosdemontosModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -77,38 +76,42 @@
                                         <!-- montoInicialporIndemnizar Numeric -->
                                         <div class='col-sm-4 col-md-4'>
                                             <div class='form-group'>
-                                                <label class='control-label' for='montoInicialporIndemnizar'>Monto Inicial por Indemnizar</label>
+                                                <label class='control-label' for='montoInicialporIndemnizar'>Monto inicial por indemnizar</label>
                                                 <input type='text' id='montoInicialporIndemnizar' name='montoInicialporIndemnizar' class='form-control text-right role-Administrativo-enable' size='26' maxlength='26' disabled />
                                             </div>
                                         </div><!-- montoInicialporIndemnizarRepuestos Numeric -->
                                         <div class='col-sm-4 col-md-4'>
                                             <div class='form-group'>
-                                                <label class='control-label' for='montoInicialporIndemnizarRepuestos'>Monto Inicial por Indemnizar (Repuestos)</label>
+                                                <label class='control-label' for='montoInicialporIndemnizarRepuestos'>Monto inicial por indemnizar</label>
                                                 <input type='text' id='montoInicialporIndemnizarRepuestos' name='montoInicialporIndemnizarRepuestos' class='form-control text-right role-Administrativo-enable' size='26' maxlength='26' disabled />
+                                                <small class="form-text text-muted">(Repuestos)</small>
                                             </div>
                                         </div><!-- montoInicialporIndemnizarManodeObra Numeric -->
                                         <div class='col-sm-4 col-md-4'>
                                             <div class='form-group'>
-                                                <label class='control-label' for='montoInicialporIndemnizarManodeObra'>Monto Inicial por Indemnizar (Mano de Obra)</label>
+                                                <label class='control-label' for='montoInicialporIndemnizarManodeObra'>Monto inicial por indemnizar</label>
                                                 <input type='text' id='montoInicialporIndemnizarManodeObra' name='montoInicialporIndemnizarManodeObra' class='form-control text-right role-Administrativo-enable' size='26' maxlength='26' disabled />
+                                                <small class="form-text text-muted">(Mano de obra)</small>
                                             </div>
                                         </div><!-- montoDanoOcultoporIndemnizar Numeric -->
-                                        <div class='col-sm-4 col-md-4 montoDanoOcultoporIndemnizarVisible d-none'>
+                                        <div class='col-sm-4 col-md-4 DanoOculto-visible d-none'>
                                             <div class='form-group'>
-                                                <label class='control-label' for='montoDanoOcultoporIndemnizar'>Monto Daño Oculto por Indemnizar</label>
+                                                <label class='control-label' for='montoDanoOcultoporIndemnizar'>Monto daño oculto por indemnizar</label>
                                                 <input type='text' id='montoDanoOcultoporIndemnizar' name='montoDanoOcultoporIndemnizar' class='form-control text-right role-Administrativo-enable' size='26' maxlength='26' disabled />
                                             </div>
                                         </div><!-- montoDanoOcultoporIndemnizarRepuestos Numeric -->
-                                        <div class='col-sm-4 col-md-4 montoDanoOcultoporIndemnizarRepuestosVisible d-none'>
+                                        <div class='col-sm-4 col-md-4 DanoOculto-visible d-none'>
                                             <div class='form-group'>
-                                                <label class='control-label' for='montoDanoOcultoporIndemnizarRepuestos'>Monto Daño Oculto por Indemnizar (Repuestos)</label>
+                                                <label class='control-label' for='montoDanoOcultoporIndemnizarRepuestos'>Monto daño oculto por indemnizar</label>
                                                 <input type='text' id='montoDanoOcultoporIndemnizarRepuestos' name='montoDanoOcultoporIndemnizarRepuestos' class='form-control text-right role-Administrativo-enable' size='26' maxlength='26' disabled />
+                                                <small class="form-text text-muted">(Repuestos)</small>
                                             </div>
                                         </div><!-- montoDanoOcultoporIndemnizarManodeObra Numeric -->
-                                        <div class='col-sm-4 col-md-4 montoDanoOcultoporIndemnizarManodeObraVisible d-none'>
+                                        <div class='col-sm-4 col-md-4 DanoOculto-visible d-none'>
                                             <div class='form-group'>
-                                                <label class='control-label' for='montoDanoOcultoporIndemnizarManodeObra'>Monto Daño Oculto por Indemnizar (Mano de Obra)</label>
+                                                <label class='control-label' for='montoDanoOcultoporIndemnizarManodeObra'>Monto daño oculto por indemnizar</label>
                                                 <input type='text' id='montoDanoOcultoporIndemnizarManodeObra' name='montoDanoOcultoporIndemnizarManodeObra' class='form-control text-right role-Administrativo-enable' size='26' maxlength='26' disabled />
+                                                <small class="form-text text-muted">(Mano de obra)</small>
                                             </div>
                                         </div>
                                     </div>
@@ -125,6 +128,7 @@
         </div>
     </div>
 </div>
+
 <!-- balance Grid Modal -->
 <div class="modal inmodal" id="balanceModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -145,7 +149,7 @@
                                         <!-- numerodeSiniestro Text -->
                                         <div class='col-sm-4 col-md-4'>
                                             <div class='form-group'>
-                                                <label class='control-label' for='numerodeSiniestro'>Número de Siniestro</label>
+                                                <label class='control-label' for='numerodeSiniestro'>Número de siniestro</label>
                                                 <input type='text' id='numerodeSiniestro' name='numerodeSiniestro' class='form-control' size='0' maxlength='0' disabled />
 
                                             </div>
@@ -154,6 +158,10 @@
                                             <div class='form-group'>
                                                 <label class='control-label' for='tipodedocumento'>Tipo de documento</label>
                                                 <select id='tipodedocumento' name='tipodedocumento' class='form-control'>
+                                                    <option value='1'>Factura MO (x pagar)</option>
+                                                    <option value='2'>Factura RE (x pagar)</option>
+                                                    <option value='3'>Cobro deducible (x cobrar)</option>
+                                                    <option value='4'>Ajuste (gasto)</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -200,7 +208,7 @@
                                         <div class='col-sm-4 col-md-4'>
                                             <div class='form-group'>
                                                 <label class='control-label' for='observacion'>Observación</label>
-                                                <textarea id='observacion' name='observacion' class='form-control' rows="2"></textarea>
+                                                <textarea id='observacion' name='observacion' class='form-control role-Administrativo-enable' rows='2' disabled></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -217,5 +225,3 @@
         </div>
     </div>
 </div>
-
-<!-- Edit Form End -->

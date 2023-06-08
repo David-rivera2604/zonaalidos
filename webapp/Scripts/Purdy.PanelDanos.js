@@ -346,9 +346,11 @@ app.PurdyPanelDanos = (function () {
                     app.core.Post(`https://localhost:7262/api/entity/PurdyPanelDano`, JSON.stringify(submitData))
                         .done(function (created) {
                             if (created?.Sucessfully) {
+                                _data = submitData
                                 _data.ID = created.Data.Next.NEXTID
                                 _loadready = true;
                                 _changed = false;
+                                _eventCallback('DanosDataChange', _data);
                                 app.ui.CustomBehaviour('changed', false);
                                 toastr.success('La información del análisis del daño, fue actualizada de forma exitosa', '', { timeOut: 5000, closeButton: true, progressBar: true });
                             }
@@ -364,8 +366,10 @@ app.PurdyPanelDanos = (function () {
                     app.core.Put(`https://localhost:7262/api/entity/PurdyPanelDano/${submitData.ID}`, JSON.stringify(submitData))
                         .done(function (updated) {
                             if (updated?.Sucessfully) {
+                                _data = submitData
                                 _loadready = true;
                                 _changed = false;
+                                _eventCallback('DanosDataChange', _data);
                                 app.ui.CustomBehaviour('changed', false);
                                 toastr.success('La información del análisis del daño, fue actualizada de forma exitosa', '', { timeOut: 5000, closeButton: true, progressBar: true });
                             }
@@ -413,15 +417,22 @@ app.PurdyPanelDanos = (function () {
             $('.tipodeperdidatotalVisible').removeClass('d-none');
         else
             $('.tipodeperdidatotalVisible').addClass('d-none');
-        if (app.ui.GetRadioNumericValue('presentadanooculto') === 1)
-            $('.fechasolicitadoVisible').removeClass('d-none');
-        else
-            $('.fechasolicitadoVisible').addClass('d-none');
-        if (app.ui.GetRadioNumericValue('presentadanooculto') === 1)
-            $('.observacionesVisible').removeClass('d-none');
-        else
-            $('.observacionesVisible').addClass('d-none');
 
+
+
+        app.ui.VisibleBehaviour('.presentadanooculto', app.ui.GetRadioNumericValue('presentadanooculto') === 1);
+
+        if (app.ui.GetRadioNumericValue('presentadanooculto') === 2) {
+            app.ui.SetDateValue('#fechasolicitado', null);
+            $('#observaciones').val('');
+            app.ui.SetNumericValue('#danoocultomontoRepuestosDanooculto', 0);
+            app.ui.SetNumericValue('#danoocultoiva', 0);
+            app.ui.SetNumericValue('#danoocultototal', 0);
+            app.ui.SetNumericValue('#danoocultomano', 0);
+            app.ui.SetNumericValue('#danoocultomanoiva', 0);
+            app.ui.SetNumericValue('#danoocultomanototal', 0);
+            app.ui.SetNumericValue('#otrosIIOtrosIIDanoocultomanototal', 0);
+        }
 
         app.ui.SetNumericValue('#prerepuestosiva', app.ui.GetNumericValue('#prerepuestos') * 0.13);
         app.ui.SetNumericValue('#prerepuestostotal', app.ui.GetNumericValue('#prerepuestos') * 1.13);
@@ -518,7 +529,7 @@ app.PurdyPanelDanos = (function () {
                     MapObjectToInput(dataDanos.Data);
                     data_changed();
                     _data = dataDanos.Data;
-                    _eventCallback('EventoDataChange', dataDanos.Data);
+                    _eventCallback('DanosDataChange', dataDanos.Data);
                 }
                 _changed = false;
                 _loadready = true;
@@ -550,6 +561,7 @@ app.PurdyPanelDanos = (function () {
             switch (src) {
                 case 'ASIGESChange':
                     Get(data.asiges);
+                    break;
             }
         }
     };

@@ -1128,6 +1128,12 @@ app.ui = (function () {
                     $(`.role-${item}-${tag}-visible`).addClass('d-none');
             })
         },
+        VisibleBehaviour: function (tag, condition) {
+            if (condition)
+                $(`${tag}-visible`).removeClass('d-none');
+            else
+                $(`${tag}-visible`).addClass('d-none');
+        },
         RequiredMark: function (ctrlId, add) {
             const mark = ' <span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span>';
             let ctrl = $("[for=" + ctrlId + "]");
