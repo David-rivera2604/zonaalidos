@@ -1,4 +1,4 @@
-﻿var app = app || {};
+﻿ var app = app || {};
 
 app.PurdyPanelIndemnizacion = (function () {
 
@@ -8,7 +8,18 @@ app.PurdyPanelIndemnizacion = (function () {
     let _loadready = false;
     let _changed = false;
 
-    let _emptyValue = {
+    let _emptyValueBalance = {
+        ID: null,
+        NUMERODESINIESTRO: null,
+        TIPODEDOCUMENTO: null,
+        NUMERODEDOCUMENTO: null,
+        FECHA: null,
+        RECEPTOR: null,
+        MONTO: null,
+        NCREPUESTO: null,
+        OBSERVACION: null
+    };
+    let _emptyValueMontos = {
         ID: null,
         MONTOINICIALPORINDEMNIZAR: null,
         MONTOINICIALPORINDEMNIZARREPUE: null,
@@ -99,49 +110,30 @@ app.PurdyPanelIndemnizacion = (function () {
     };
 
     function Controls_Events() {
-        $(".input-group.date").on('dp.change', function (e) {
-            data_changed();
-        });
-        $("#PurdyPanelIndemnizacionEdtForm :input").change(function () {
-            data_changed();
-        });
-    };
 
-    function data_changed() {
-
-        //if (ctrol.presentadanooculto === Si)
-        //    $('.montoDanoOcultoporIndemnizarVisible').removeClass('d-none');
-        //else
-        //    $('.montoDanoOcultoporIndemnizarVisible').addClass('d-none');
-        //if (ctrol.presentadanooculto === Si)
-        //    $('.montoDanoOcultoporIndemnizarRepuestosVisible').removeClass('d-none');
-        //else
-        //    $('.montoDanoOcultoporIndemnizarRepuestosVisible').addClass('d-none');
-        //if (ctrol.presentadanooculto === Si)
-        //    $('.montoDanoOcultoporIndemnizarManodeObraVisible').removeClass('d-none');
-        //else
-        //    $('.montoDanoOcultoporIndemnizarManodeObraVisible').addClass('d-none');
-    };
-
-    function Setup_Validations() {
-        app.ui.DateValidators();
-        app.ui.NumericValidators();
-        $("#PurdyPanelIndemnizacionEdtForm").validate({
-            errorPlacement: app.ui.ErrorPlacement,
-            rules: {
-            },
-            messages: {
-            }
+        $("#monto").change(function () {
+            let factor = 0.0;
+            let taller = _data.damage.TALLER;
+            let marca = _data.policy.data.find(i => i.COD_CAMPO === "COD_MARCA")?.TXT_CAMPO;
+            if (taller === 1 && (marca === 'FORD' || marca === 'VOLKSWAGEN'))
+                factor = 0.10;
+            if (taller == 1 && (marca != 'FORD' && marca != 'VOLKSWAGEN'))
+                factor = 0.15;
+            if (taller != 1 && (marca === 'FORD' || marca === 'VOLKSWAGEN'))
+                factor = 0.15;
+            if (taller != 1 && (marca != 'FORD' && marca != 'VOLKSWAGEN'))
+                factor = 0.20;
+            app.ui.SetNumericValue('#nCRepuesto', app.ui.GetNumericValue('#monto') * factor);
         });
+
     };
 
     function GetMovimientosDeMontos(asigesCode) {
         _asiges = asigesCode;
-        app.core.Get(`https://localhost:7262/api/entity/PurdyPanelMontos/asiges?code=${asigesCode}`)
+        app.core.Get(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelMontos/asiges?code=${asigesCode}`)
             .done(function (dataMontos) {
                 if (dataMontos?.Sucessfully) {
                     $('#movimientosdemontosTbl').bootstrapTable('load', dataMontos.Data == null ? [] : dataMontos.Data);
-                    _data = dataMontos.Data;
                     _eventCallback('MontosDataChange', dataMontos.Data);
                 }
             });
@@ -149,7 +141,7 @@ app.PurdyPanelIndemnizacion = (function () {
 
     function GetBalance(asigesCode) {
         _asiges = asigesCode;
-        app.core.Get(`https://localhost:7262/api/entity/PurdyPanelBalance/asiges?code=${asigesCode}`)
+        app.core.Get(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelBalance/asiges?code=${asigesCode}`)
             .done(function (dataBalance) {
                 if (dataBalance?.Sucessfully) {
                     if (dataBalance.Data != null) {
@@ -158,7 +150,6 @@ app.PurdyPanelIndemnizacion = (function () {
                         });
                     }
                     $('#balanceTbl').bootstrapTable('load', dataBalance.Data == null ? [] : dataBalance.Data);
-                    _data = dataBalance.Data;
                     _eventCallback('BalanceDataChange', dataBalance.Data);
                 }
             });
@@ -266,15 +257,15 @@ app.PurdyPanelIndemnizacion = (function () {
                 var row = movimientosdemontos_table_row('values');
                 row.ASIGES = _asiges;
                 if (row.ID === null) {
-                    app.core.Post(`https://localhost:7262/api/entity/PurdyPanelMontos`, JSON.stringify(row))
+                    app.core.Post(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelMontos`, JSON.stringify(row))
                         .done(function (created) {
                             if (created?.Sucessfully) {
                                 _loadready = true;
                                 _changed = false;
                                 $('#movimientosdemontosModal').modal('hide');
                                 GetMovimientosDeMontos(_asiges);
-                                toastr.success('El movimiento de montos, fue creada de forma exitosa', '', { timeOut: 5000, closeButton: true, progressBar: true });
-                                
+                                app.ui.Success('El movimiento de montos, fue creada de forma exitosa');
+
                             }
                             else {
                                 console.error(created);
@@ -284,15 +275,15 @@ app.PurdyPanelIndemnizacion = (function () {
                             app.ui.ButtonDone('#movimientosdemontosEdtFormSave');
                         });
                 } else {
-                    app.core.Put(`https://localhost:7262/api/entity/PurdyPanelMontos/${row.ID}`, JSON.stringify(row))
+                    app.core.Put(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelMontos/${row.ID}`, JSON.stringify(row))
                         .done(function (updated) {
                             if (updated?.Sucessfully) {
                                 _loadready = true;
                                 _changed = false;
                                 $('#movimientosdemontosModal').modal('hide');
                                 GetMovimientosDeMontos(_asiges);
-                                toastr.success('El movimiento de montos, fue actualizado de forma exitosa', '', { timeOut: 5000, closeButton: true, progressBar: true });
-                                
+                                app.ui.Success('El movimiento de montos, fue actualizado de forma exitosa');
+
                             }
                             else {
                                 console.error(updated);
@@ -308,7 +299,7 @@ app.PurdyPanelIndemnizacion = (function () {
 
     function movimientosdemontos_table_row(mode) {
         if (mode == null) {
-            return _emptyValue;
+            return _emptyValueMontos;
         }
         else {
             return {
@@ -343,11 +334,11 @@ app.PurdyPanelIndemnizacion = (function () {
     };
 
     function movimientosdemontos_table_row_delete(row) {
-        app.core.Delete(`https://localhost:7262/api/entity/PurdyPanelMontos/${row.ID}`, null)
+        app.core.Delete(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelMontos/${row.ID}`, null)
             .done(function (deleted) {
                 if (deleted?.Sucessfully) {
                     GetMovimientosDeMontos(_asiges);
-                    toastr.success('El movimiento de montos, fue eliminado de forma exitosa', '', { timeOut: 5000, closeButton: true, progressBar: true });                    
+                    app.ui.Success('El movimiento de montos, fue eliminado de forma exitosa');
                 }
                 else {
                     console.error(deleted);
@@ -485,12 +476,12 @@ app.PurdyPanelIndemnizacion = (function () {
                 var row = balance_table_row('values');
                 row.ASIGES = _asiges;
                 if (row.ID === null) {
-                    app.core.Post(`https://localhost:7262/api/entity/PurdyPanelBalance`, JSON.stringify(row))
+                    app.core.Post(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelBalance`, JSON.stringify(row))
                         .done(function (created) {
                             if (created?.Sucessfully) {
                                 $('#balanceModal').modal('hide');
                                 GetBalance(_asiges);
-                                toastr.success('El movimiento de montos, fue creada de forma exitosa', '', { timeOut: 5000, closeButton: true, progressBar: true });
+                                app.ui.Success('El movimiento de montos, fue creada de forma exitosa');
                             }
                             else {
                                 console.error(created);
@@ -500,12 +491,12 @@ app.PurdyPanelIndemnizacion = (function () {
                             app.ui.ButtonDone('#balanceEdtFormSave');
                         });
                 } else {
-                    app.core.Put(`https://localhost:7262/api/entity/PurdyPanelBalance/${row.ID}`, JSON.stringify(row))
+                    app.core.Put(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelBalance/${row.ID}`, JSON.stringify(row))
                         .done(function (updated) {
                             if (updated?.Sucessfully) {
                                 $('#balanceModal').modal('hide');
                                 GetBalance(_asiges);
-                                toastr.success('El movimiento de montos, fue actualizado de forma exitosa', '', { timeOut: 5000, closeButton: true, progressBar: true });
+                                app.ui.Success('El movimiento de montos, fue actualizado de forma exitosa');
                             }
                             else {
                                 console.error(updated);
@@ -520,17 +511,7 @@ app.PurdyPanelIndemnizacion = (function () {
 
     function balance_table_row(mode) {
         if (mode == null) {
-            return {
-                ID: null,
-                NUMERODESINIESTRO: null,
-                TIPODEDOCUMENTO: null,
-                NUMERODEDOCUMENTO: null,
-                FECHA: null,
-                RECEPTOR: null,
-                MONTO: null,
-                NCREPUESTO: null,
-                OBSERVACION: null
-            };
+            return _emptyValueBalance;
         }
         else {
             return {
@@ -569,11 +550,11 @@ app.PurdyPanelIndemnizacion = (function () {
     };
 
     function balance_table_row_delete(row) {
-        app.core.Delete(`https://localhost:7262/api/entity/PurdyPanelBalance/${row.ID}`, null)
+        app.core.Delete(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelBalance/${row.ID}`, null)
             .done(function (deleted) {
                 if (deleted?.Sucessfully) {
                     GetBalance(_asiges);
-                    toastr.success('El movimiento de balance, fue eliminado de forma exitosa', '', { timeOut: 5000, closeButton: true, progressBar: true });
+                    app.ui.Success('El movimiento de balance, fue eliminado de forma exitosa');
                 }
                 else {
                     console.error(deleted);
@@ -595,7 +576,6 @@ app.PurdyPanelIndemnizacion = (function () {
             try {
                 _eventCallback = eventCallback;
                 Controls_setup();
-                Setup_Validations();
                 movimientosdemontos_table_setup();
                 movimientosdemontos_table_Validations();
                 balance_table_setup();
@@ -614,20 +594,28 @@ app.PurdyPanelIndemnizacion = (function () {
         Event: function (src, data) {
             switch (src) {
                 case 'ASIGESChange':
-                    GetMovimientosDeMontos(data.asiges);
-                    GetBalance(data.asiges);
+                    if (data.claim != null) {
+                        GetMovimientosDeMontos(data.asiges);
+                        GetBalance(data.asiges);
+                        _emptyValueBalance.NUMERODESINIESTRO = data.claim.NUM_SINI;
+                    } else {
+                        $('#balanceTbl').bootstrapTable('load', []);
+                        $('#movimientosdemontosTbl').bootstrapTable('load', []);
+                        app.ui.VisibleBehaviour('.DanoOculto', false);
+                    }
+                    _data = data;
                     break;
                 case 'DanosDataChange':
                     app.ui.VisibleBehaviour('.DanoOculto', data.damage.PRESENTADANOOCULTO == 1);
 
-                    _emptyValue.MONTOINICIALPORINDEMNIZAR = data.damage.PERDIDA;
-                    _emptyValue.MONTOINICIALPORINDEMNIZARREPUE = data.damage.PERDREPUESTOTOTAL;
-                    _emptyValue.MONTOINICIALPORINDEMNIZARMANOD = data.damage.PERDMANOTOTAL;
+                    _emptyValueMontos.MONTOINICIALPORINDEMNIZAR = data.damage.PERDIDA;
+                    _emptyValueMontos.MONTOINICIALPORINDEMNIZARREPUE = data.damage.PERDREPUESTOTOTAL;
+                    _emptyValueMontos.MONTOINICIALPORINDEMNIZARMANOD = data.damage.PERDMANOTOTAL;
 
-                    _emptyValue.MONTODANOOCULTOPORINDEMNIZAR = data.damage.OTROSIIOTROSIIDANOCULMANOTOTAL;
-                    _emptyValue.MONTODANOOCULTOPORINDEMNIZARRE = data.damage.DANOOCULTOTOTAL;
-                    _emptyValue.MONTODANOOCULTOPORINDEMNIZARMA = data.damage.DANOOCULTOMANOTOTAL;
-
+                    _emptyValueMontos.MONTODANOOCULTOPORINDEMNIZAR = data.damage.OTROSIIOTROSIIDANOCULMANOTOTAL;
+                    _emptyValueMontos.MONTODANOOCULTOPORINDEMNIZARRE = data.damage.DANOOCULTOTOTAL;
+                    _emptyValueMontos.MONTODANOOCULTOPORINDEMNIZARMA = data.damage.DANOOCULTOMANOTOTAL;
+                    _data = data;
                     break;
             }
         },
@@ -648,7 +636,7 @@ app.PurdyPanelIndemnizacion = (function () {
 
 window.movimientosdemontosTbl_Events = {
     'click .delete': function (e, value, row, index) {
-        toastr.warning("Si está seguro de querer eliminar el movimiento de saldo '" + row.ID + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.PurdyPanelIndemnizacion.movimientosdemontosDeleteRow(row); } });
+        app.ui.Warning("Si está seguro de querer eliminar el movimiento de saldo '" + row.ID + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.PurdyPanelIndemnizacion.movimientosdemontosDeleteRow(row); } });
         e.stopPropagation();
     },
     'click .edit': function (e, value, row, index) {
@@ -658,7 +646,7 @@ window.movimientosdemontosTbl_Events = {
 };
 window.balanceTbl_Events = {
     'click .delete': function (e, value, row, index) {
-        toastr.warning("Si está seguro de querer eliminar el movimiento de balance '" + row.ID + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.PurdyPanelIndemnizacion.balanceDeleteRow(row); } });
+        app.ui.Warning("Si está seguro de querer eliminar el movimiento de balance '" + row.ID + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.PurdyPanelIndemnizacion.balanceDeleteRow(row); } });
         e.stopPropagation();
     },
     'click .edit': function (e, value, row, index) {

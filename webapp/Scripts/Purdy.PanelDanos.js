@@ -21,9 +21,9 @@ app.PurdyPanelDanos = (function () {
             PREMANOIVA: app.ui.GetNumericValue('#premanoiva'),
             PREMANOTOTAL: app.ui.GetNumericValue('#premanototal'),
             PREPERDIDA: app.ui.GetNumericValue('#preperdida'),
-            AUTORIZACIONDEUSOPOLIZA: app.ui.GetRadioNumericValue('autorizaciondeusopoliza'),
-            AUTORIZACIONDEUSOPOLIZADESC: app.ui.GetRadioSelectedText('autorizaciondeusopoliza'),
-            FECHAAUTORIZACIONDEUSOPOLIZA: app.ui.GetDateValue('#fechaAutorizaciondeUsoPoliza'),
+            AUTORIZACIONDEUSOPOLIZA: null,
+            AUTORIZACIONDEUSOPOLIZADESC: null,
+            FECHAAUTORIZACIONDEUSOPOLIZA: null,
             OT: app.ui.GetNumericValue('#oT'),
             ASESORTALLER: $('#asesorTaller').val(),
             EXPEDIENTE: $('#expediente').val(),
@@ -71,8 +71,8 @@ app.PurdyPanelDanos = (function () {
         app.ui.SetNumericValue('#premanoiva', data.PREMANOIVA);
         app.ui.SetNumericValue('#premanototal', data.PREMANOTOTAL);
         app.ui.SetNumericValue('#preperdida', data.PREPERDIDA);
-        app.ui.SetRadioNumericValue('autorizaciondeusopoliza', data.AUTORIZACIONDEUSOPOLIZA);
-        app.ui.SetDateValue('#fechaAutorizaciondeUsoPoliza', data.FECHAAUTORIZACIONDEUSOPOLIZA);
+        //app.ui.SetRadioNumericValue('autorizaciondeusopoliza', data.AUTORIZACIONDEUSOPOLIZA);
+        //app.ui.SetDateValue('#fechaAutorizaciondeUsoPoliza', data.FECHAAUTORIZACIONDEUSOPOLIZA);
         app.ui.SetNumericValue('#oT', data.OT);
         $('#asesorTaller').val(data.ASESORTALLER);
         $('#expediente').val(data.EXPEDIENTE);
@@ -101,6 +101,8 @@ app.PurdyPanelDanos = (function () {
         app.ui.SetNumericValue('#danoocultomanoiva', data.DANOOCULTOMANOIVA);
         app.ui.SetNumericValue('#danoocultomanototal', data.DANOOCULTOMANOTOTAL);
         app.ui.SetNumericValue('#otrosIIOtrosIIDanoocultomanototal', data.OTROSIIOTROSIIDANOCULMANOTOTAL);
+
+        data_changed();
     };
 
     function Controls_setup() {
@@ -343,7 +345,7 @@ app.PurdyPanelDanos = (function () {
                 app.ui.ButtonDoing('#PurdyPanelDanosEdtFormSave');
                 let submitData = MapInputToObject();
                 if (submitData.ID === null) {
-                    app.core.Post(`https://localhost:7262/api/entity/PurdyPanelDano`, JSON.stringify(submitData))
+                    app.core.Post(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelDano`, JSON.stringify(submitData))
                         .done(function (created) {
                             if (created?.Sucessfully) {
                                 _data = submitData
@@ -352,7 +354,7 @@ app.PurdyPanelDanos = (function () {
                                 _changed = false;
                                 _eventCallback('DanosDataChange', _data);
                                 app.ui.CustomBehaviour('changed', false);
-                                toastr.success('La información del análisis del daño, fue actualizada de forma exitosa', '', { timeOut: 5000, closeButton: true, progressBar: true });
+                                app.ui.Success('La información del análisis del daño, fue actualizada de forma exitosa');
                             }
                             else {
                                 console.error(created);
@@ -363,7 +365,7 @@ app.PurdyPanelDanos = (function () {
                         });
                 }
                 else {
-                    app.core.Put(`https://localhost:7262/api/entity/PurdyPanelDano/${submitData.ID}`, JSON.stringify(submitData))
+                    app.core.Put(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelDano/${submitData.ID}`, JSON.stringify(submitData))
                         .done(function (updated) {
                             if (updated?.Sucessfully) {
                                 _data = submitData
@@ -371,7 +373,7 @@ app.PurdyPanelDanos = (function () {
                                 _changed = false;
                                 _eventCallback('DanosDataChange', _data);
                                 app.ui.CustomBehaviour('changed', false);
-                                toastr.success('La información del análisis del daño, fue actualizada de forma exitosa', '', { timeOut: 5000, closeButton: true, progressBar: true });
+                                app.ui.Success('La información del análisis del daño, fue actualizada de forma exitosa');
                             }
                             else {
                                 console.error(updated);
@@ -519,7 +521,7 @@ app.PurdyPanelDanos = (function () {
 
     function Get(asigesCode) {
         _loadready = false;
-        app.core.Get(`https://localhost:7262/api/entity/PurdyPanelDano/asiges?code=${asigesCode}`)
+        app.core.Get(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelDano/asiges?code=${asigesCode}`)
             .done(function (dataDanos) {
                 if (dataDanos?.Sucessfully) {
                     if (dataDanos.Data === null) {
@@ -527,7 +529,6 @@ app.PurdyPanelDanos = (function () {
                         dataDanos.Data.ASIGES = asigesCode;
                     }
                     MapObjectToInput(dataDanos.Data);
-                    data_changed();
                     _data = dataDanos.Data;
                     _eventCallback('DanosDataChange', dataDanos.Data);
                 }
@@ -548,7 +549,6 @@ app.PurdyPanelDanos = (function () {
                 app.core.Lookups(['UsersByRol:Avalúos.analistadeDanos'],
                     function () {
                         MapObjectToInput(EmptyPurdyPanelDano());
-                        data_changed();
                         _loadready = true;
                     }, ``);
             }
@@ -560,7 +560,18 @@ app.PurdyPanelDanos = (function () {
         Event: function (src, data) {
             switch (src) {
                 case 'ASIGESChange':
-                    Get(data.asiges);
+                    if (data.claim != null) {
+                        Get(data.asiges);
+                    } else {
+                        MapObjectToInput(EmptyPurdyPanelDano());
+                        app.ui.SetRadioNumericValue('autorizaciondeusopoliza', 2);
+                        app.ui.SetDateValue('#fechaAutorizaciondeUsoPoliza', null);
+                    }
+                    break;
+                case 'EventoDataChange':
+                    app.ui.SetRadioNumericValue('autorizaciondeusopoliza', data.event.AUTORIZACIONDEUSOPOLIZA);
+                    app.ui.SetDateValue('#fechaAutorizaciondeUsoPoliza', data.event.FECHAAUTORIZACIONDEUSOPOLIZA);
+                    data_changed();
                     break;
             }
         }

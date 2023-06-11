@@ -61,6 +61,7 @@ app.PurdyPanelEvento = (function () {
         app.ui.SetRadioNumericValue('autorizaciondeusopolizaEvent', data.AUTORIZACIONDEUSOPOLIZA);
         app.ui.SetDateValue('#fechaautorizaciondeusopolizaEvent', data.FECHAAUTORIZACIONDEUSOPOLIZA);
 
+        data_changed();
     };
 
     function Controls_setup() {
@@ -91,6 +92,7 @@ app.PurdyPanelEvento = (function () {
         $(".input-group.date").on('dp.change', function (e) {
             data_changed();
         });
+
         $("#PurdyPanelEventoEdtForm :input").change(function () {
             data_changed();
         });
@@ -101,7 +103,7 @@ app.PurdyPanelEvento = (function () {
                 app.ui.ButtonDoing('#PurdyPanelEventoEdtFormSave');
                 let submitData = MapInputToObject();
                 if (submitData.ID === null) {
-                    app.core.Post(`https://localhost:7262/api/entity/PurdyPanelEvento`, JSON.stringify(submitData))
+                    app.core.Post(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelEvento`, JSON.stringify(submitData))
                         .done(function (created) {
                             if (created?.Sucessfully) {
                                 _data.ID = created.Data.Next.NEXTID
@@ -109,7 +111,7 @@ app.PurdyPanelEvento = (function () {
                                 _changed = false;
                                 app.ui.CustomBehaviour('changed', false);
                                 _eventCallback('EventoDataChange', submitData);
-                                toastr.success('La información del análisis del evento, fue creada de forma exitosa', '', { timeOut: 5000, closeButton: true, progressBar: true });
+                                app.ui.Success('La información del análisis del evento, fue creada de forma exitosa');
                             }
                             else {
                                 console.error(created);
@@ -120,14 +122,14 @@ app.PurdyPanelEvento = (function () {
                         });
                 }
                 else {
-                    app.core.Put(`https://localhost:7262/api/entity/PurdyPanelEvento/${submitData.ID}`, JSON.stringify(submitData))
+                    app.core.Put(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelEvento/${submitData.ID}`, JSON.stringify(submitData))
                         .done(function (updated) {
                             if (updated?.Sucessfully) {
                                 _loadready = true;
                                 _changed = false;
                                 app.ui.CustomBehaviour('changed', false);
                                 _eventCallback('EventoDataChange', submitData);
-                                toastr.success('La información del análisis del evento, fue actualizada de forma exitosa', '', { timeOut: 5000, closeButton: true, progressBar: true });
+                                app.ui.Success('La información del análisis del evento, fue actualizada de forma exitosa');
                             }
                             else {
                                 console.error(updated);
@@ -193,19 +195,20 @@ app.PurdyPanelEvento = (function () {
     function EmptyPurdyPanelEvento() {
         let data = { ID: null, ASIGES: null, FECHADELEVENTO: null, ANALISTARECLAMOS: null, TIPODEINDEMNIZACION: null, MOTIVONOPROCEDE: null, DETALLENOPROCEDE: null, DETALLESINIESTRO: null, TIPODECOBERTURA: null, CATEGORIADESINIESTRO: null, POSIBLESUBROGACION: 2, FECHAPOSIBLESUBROGACION: null, ENVIADOAINVESTIGACION: 2, FECHAENVIADOAINVESTIGACION: null, ENVIADOAACOMPANAMIENTOLEGAL: 2, FECHAENVIADOACOMPALEGAL: null, INFRASEGURO: 2, AUTORIZACIONDEUSOPOLIZA: 2, FECHAAUTORIZACIONDEUSOPOLIZA: null };
 
-        if (localStorage.getItem('Roles').includes('Reclamos')) {
-            app.ui.SelectDropDownByText('#analistareclamos', localStorage.getItem('Username'));
+        //if (localStorage.getItem('Roles').includes('Reclamos')) {
+        //    app.ui.SelectDropDownByText('#analistareclamos', localStorage.getItem('Username'));
 
-            data.FECHADELEVENTO = new Date();
-            data.ANALISTARECLAMOS = app.ui.GetDropDownNumericValue('#analistareclamos')
-        }
+        //    data.FECHADELEVENTO = new Date();
+        //    data.ANALISTARECLAMOS = app.ui.GetDropDownNumericValue('#analistareclamos')
+        //}
 
         return data;
     };
 
     function Get(asigesCode) {
         _loadready = false;
-        app.core.Get(`https://localhost:7262/api/entity/PurdyPanelEvento/asiges?code=${asigesCode}`)
+
+        app.core.Get(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelEvento/asiges?code=${asigesCode}`)
             .done(function (dataEvento) {
                 if (dataEvento?.Sucessfully) {
                     if (dataEvento.Data === null) {
@@ -213,7 +216,6 @@ app.PurdyPanelEvento = (function () {
                         dataEvento.Data.ASIGES = asigesCode;
                     }
                     MapObjectToInput(dataEvento.Data);
-                    data_changed();
                     dataEvento.Data.ANALISTARECLAMOSDESC = app.ui.GetDropDownSelectedText('#analistareclamos');
                     dataEvento.Data.TIPODEINDEMNIZACIONDESC = app.ui.GetDropDownSelectedText('#tipodeindemnizacion');
                     dataEvento.Data.CATEGORIADESINIESTRODESC = app.ui.GetDropDownSelectedText('#categoriadesiniestro');
@@ -235,7 +237,6 @@ app.PurdyPanelEvento = (function () {
                 app.core.Lookups(['UsersByRol:Reclamos.analistareclamos'],
                     function () {
                         MapObjectToInput(EmptyPurdyPanelEvento());
-                        data_changed();
                         _loadready = true;
                     }, ``);
             }
@@ -244,16 +245,14 @@ app.PurdyPanelEvento = (function () {
                 console.error(err);
             }
         },
-        Data: function (data) {
-            if (data === undefined) {
-                _data = MapInputToObject();
-            }
-            return _data;
-        },
         Event: function (src, data) {
             switch (src) {
                 case 'ASIGESChange':
-                    Get(data.asiges);
+                    if (data.claim != null) {
+                        Get(data.asiges);
+                    } else {
+                        MapObjectToInput(EmptyPurdyPanelEvento());
+                    }                    
                     break;
             }
         }

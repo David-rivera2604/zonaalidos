@@ -1168,6 +1168,29 @@ app.ui = (function () {
             }
             else
                 return false;
+        },
+        Warning: function (msg, title, settings) {
+            
+            toastr.warning(msg, title, settings);
+        },
+        Success: function (msg, title, settings) {
+            
+            toastr.success(msg, '', { timeOut: 5000, closeButton: true, progressBar: true });
+        },
+        Success: function (msg, title, settings) {
+            
+            toastr.success(msg, title, settings);
+        },
+        Error: function (msg) {
+            app.ui.Error(msg, '', { timeOut: 9000, closeButton: true, progressBar: true });
+        },
+        Error: function (msg, title, settings) {
+            
+            toastr.error(msg, title, settings);
+        },
+        NotifyClear: function (msg, title, settings) {
+
+            toastr.remove();
         }
     };
 })();
