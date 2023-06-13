@@ -46,7 +46,7 @@ String.prototype.supplant = function (o) {
 
 app.core = (function () {
 
-    let lookupData;
+    let lookupData = [];
 
     function GetPDF(url, download, filename, callback) {
         //var req = new XMLHttpRequest();
@@ -378,8 +378,15 @@ app.core = (function () {
         ajaxCall('GET', app.setting.apipath + path + '?keys=' + onlyKeys.toString() + '&url=' + url, null,
             function (data) {
                 var key = '', ctrl = '';
-                lookupData = data;
+
                 $.each(data, function (index, values) {
+
+                    let current = lookupData.filter(i => i.Key === values.Key)
+                    if (current.length > 0) {
+                        lookupData.splice(lookupData.indexOf(current[0]), 1);
+                    }
+                    lookupData.push(values);
+
                     selectedOptions = ctrls[index];
                     if (selectCtrol[index]) {
                         selectedOptions.children().remove();
@@ -389,7 +396,15 @@ app.core = (function () {
                         $.each(values.Lkp, function () {
                             selectedOptions.append($('<option />').val(this['Code']).text(this['Description']));
                         });
-                        selectedOptions.val(-1);
+                        if (selectedOptions.data("autoselect") === true) {
+                            selectedOptions.val($('select#' + ctrlName[index] + ' option:first').val());
+                            selectedOptions.trigger('change');
+                        } else {
+                            selectedOptions.val(-1);
+                        }
+                        if (selectedOptions.data("emptydisabled") === true) {
+                            selectedOptions.prop('disabled', selectedOptions.children().length == 0);
+                        }
                     }
                     else {
                         selectedOptions.replaceWith('<div id="radio' + ctrlName[index] + '"></div>');

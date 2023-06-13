@@ -22,6 +22,42 @@ namespace Architect.API.Core.Business.General
         //https://github.com/Antaris/RazorEngine
         //https://github.com/axuno/SmartFormat/wiki
 
+        public static Dictionary<string, string> GetTemplate(string templateKey, int companyId, int userId, int ownerId, object entity)
+        {
+            Architect.API.Core.Contracts.Security.UserMember currentUserInfo = new Contracts.Security.UserMember();
+            Architect.API.Core.Contracts.Security.UserMember ownerUserInfo = new Contracts.Security.UserMember();
+            Core.Contracts.General.Tenant tenantInfo = new Contracts.General.Tenant();
+            Dictionary<string, string> result = new Dictionary<string, string>();
+            if (userId != 0)
+            {
+                currentUserInfo = Architect.API.Core.Business.Security.UserMember.RetrieveById(companyId, userId);
+            }
+            if (ownerId != 0)
+            {
+                ownerUserInfo = Architect.API.Core.Business.Security.UserMember.RetrieveById(companyId, ownerId);
+            }
+            if (companyId != 0)
+            {
+                tenantInfo = Core.Business.General.Tenant.Information(companyId);
+            }
+            object context = new
+            {
+                Data = entity,
+                Company = tenantInfo,
+                CurrentUser = currentUserInfo,
+                Owner = ownerUserInfo
+            };
+            Contracts.General.InternalTemplate tmpl = DataAccess.General.InternalTemplate.Retrieve(companyId, templateKey);
+            if (tmpl.MasterTemplateId.IsNotEmpty())
+            {
+                Contracts.General.InternalTemplate tmplMaster = DataAccess.General.InternalTemplate.RetrieveById(companyId, tmpl.MasterTemplateId);
+
+                tmpl.Body = tmplMaster.Body.Replace("{Content}", tmpl.Body);
+            }
+            result.Add("Subject", Smart.Format(CultureInfo.CreateSpecificCulture("es-CR"), tmpl.Subject, context));
+            result.Add("Body", Smart.Format(CultureInfo.CreateSpecificCulture("es-CR"), tmpl.Body, context));
+            return result;
+        }
 
         public static void SendByTemplate(string mailServer, string templateKey, int companyId, int userId, object entity, Dictionary<string, string> toAddressList, string[] attachments = null)
         {
@@ -38,6 +74,12 @@ namespace Architect.API.Core.Business.General
             Hangfire.BackgroundJob.Enqueue(() => EnqueueSend("Default", companyId, userId, ownerId, templateKey, toAddressList, null, null, entity, attachments));
         }
 
+        public static void SendEmail(Dictionary<string, string> toAddressList, string subject, string body, string[] attachments = null)
+        {
+
+            Hangfire.BackgroundJob.Enqueue(() => SendAngular(toAddressList, subject, body, attachments));
+
+        }
 
         public static void EnqueueSend(string mailServer, int companyId, int userId, int ownerId, string templateKey, Dictionary<string, string> toAddressList, string subject, string body, object entity, string[] attachments)
         {
@@ -82,6 +124,7 @@ namespace Architect.API.Core.Business.General
 
                     tmpl.Body = tmplMaster.Body.Replace("{Content}", tmpl.Body);
                 }
+
                 subject = Smart.Format(CultureInfo.CreateSpecificCulture("es-CR"), tmpl.Subject, context);
                 Smart.Default.Settings.Parser.ErrorAction = ParseErrorAction.Ignore;
                 body = Smart.Format(CultureInfo.CreateSpecificCulture("es-CR"), tmpl.Body, context);
@@ -358,6 +401,91 @@ namespace Architect.API.Core.Business.General
             //TODO: Mejorar, debe ser asincrono, pero cuando se hace en caso de que se envie dos email seguidos solo llega el ultimo.
 
 
+
+        }
+        public static void SendAngular(Dictionary<string, string> toAddressList, string subject, string body, string[] attachments)
+        {
+            string testEmail = ConfigurationManager.AppSettings["EMail.Test"];
+
+            if (testEmail.IsNotEmpty())
+            {
+                subject += string.Format(" ({0}) ", testEmail);
+            }
+            var mail = new MailMessage
+            {
+                From = new MailAddress(ConfigurationManager.AppSettings["EMail.From.Address"], ConfigurationManager.AppSettings["EMail.From.Diplayname"]),
+                IsBodyHtml = true,
+                Subject = subject,
+                Body = body
+            };
+
+            foreach (KeyValuePair<string, string> entry in toAddressList)
+            {
+                if (testEmail.IsNotEmpty())
+                {
+                    mail.To.Add(new MailAddress(testEmail, entry.Value));
+                }
+                else
+                {
+                    mail.To.Add(new MailAddress(entry.Key, entry.Value));
+                }
+                Architect.Utilities.Log.WarningLog(entry.Key, subject, "Mail");
+            }
+
+            if (attachments?.Length > 0)
+            {
+                System.Net.Mail.Attachment attachment = null;
+                foreach (string attachmentFile in attachments)
+                {
+
+                    if (attachmentFile.IndexOf(';') == -1)
+                    {
+                        attachment = new System.Net.Mail.Attachment(attachmentFile);
+                    }
+                    else
+                    {
+                        attachment = new System.Net.Mail.Attachment(attachmentFile.Split(';')[0]);
+                        attachment.Name = attachmentFile.Split(';')[1];
+                    }
+
+                    mail.Attachments.Add(attachment);
+                }
+            }
+
+                SmtpClient SmtpServer = new SmtpClient(ConfigurationManager.AppSettings["EMail.Host"])
+                {
+                    Port = Convert.ToInt32(ConfigurationManager.AppSettings["EMail.Port"]),
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    EnableSsl = Convert.ToBoolean(ConfigurationManager.AppSettings["EMail.EnableSsl"])
+                };
+               
+            string mailUsername = ConfigurationManager.AppSettings["EMail.Username"];
+            if (!string.IsNullOrEmpty(mailUsername))
+            {
+                SmtpServer.Credentials = new System.Net.NetworkCredential(mailUsername, ConfigurationManager.AppSettings["EMail.Password"]);
+            }
+
+            if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings["EMail.Ssl.ValidCertificate"]) && ConfigurationManager.AppSettings["EMail.Ssl.ValidCertificate"] == "false")
+            {
+                ServicePointManager.ServerCertificateValidationCallback = delegate (Object obj, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
+                {
+                    return true;
+                };
+            }
+
+            try
+            {
+                SmtpServer.Send(mail);
+            }
+            catch (Exception ex)
+            {
+                Architect.Utilities.Log.WarningLog("Fail", ex.Message, "Mail");
+                Architect.Utilities.Log.ErrorLog("SendMail", string.Empty, ex);
+            }
+
+            mail.Dispose();
+            SmtpServer.Dispose();
 
         }
 

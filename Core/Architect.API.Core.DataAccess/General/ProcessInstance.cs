@@ -175,7 +175,10 @@ namespace Architect.API.Core.DataAccess.General
                                 .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
                                 .Execute(connection, "Research");
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2603d8692335166cf5801e413f5bc98d7a338de7
     }
 
 }

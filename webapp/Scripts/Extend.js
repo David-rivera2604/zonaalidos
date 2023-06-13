@@ -6,15 +6,20 @@ app.Extend = (function () {
         EmisionFormatter: function (value, row, index, field) {
             let quote = '', mode = 'resume';
             switch (row.COD_RAMO) {
+                case 194:
+                    quote = 'estudiantil';
+                    break;
+                case 201:
+                    quote = 'hogartotal';
+                    break;
+                case 202:
+                    quote = 'multirriesgo';
+                    break;
                 case 302:
                     quote = 'mapfremas';
-                    mode = localStorage.getItem('Roles').includes('Purdy') ||
-                           localStorage.getItem('Roles').includes('Davivienda_Prendarios') ||
-                           localStorage.getItem('Roles').includes('Davivienda_Leasing') ? 'continue' : 'resume';
                     break;
                 case 401:
                     quote = 'saldodeudor';
-                    mode = 'resume';
                     break;
                 case 441:
                     quote = 'viajero';

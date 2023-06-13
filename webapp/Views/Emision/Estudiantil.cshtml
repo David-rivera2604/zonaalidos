@@ -1,0 +1,805 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<!-- RoleMember -->
+<div class="row">
+    <div id="mainBlock" class="col-md-12">
+        <div class="ibox">
+            <div class="ibox-title">
+
+                <h5><span id="PageTitle">AutoExpedible Estudiantil</span><small class="m-l-sm">Emisión<span id="PageSubTitle">   </span></small> </h5>
+                <button id="emitir" type="button" class="btn  btn-primary" data-doing="Emitiendo...">
+                    Emitir
+                </button>
+                <!-- Opciones -->
+                <div class="ibox-tools">
+                    <a class="fullscreen-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-wrench"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li>
+                            <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar la información</a>
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="sk-spinner sk-spinner-wave">
+                    <div class="sk-rect1"></div>
+                    <div class="sk-rect2"></div>
+                    <div class="sk-rect3"></div>
+                    <div class="sk-rect4"></div>
+                    <div class="sk-rect5"></div>
+                </div>
+                <div id="generalNotify">
+                </div>
+                <!-- Edit Form -->
+                <div class='form-row'>
+                    <div class='col-md-12'>
+                        <div id="VisualizationsEdt" class="animated fadeInRight">
+                            <form id='VisualizationsEdtForm' class='form-horizontal' data-toggle='validator'>
+                                <fieldset>
+                                    <!-- datosgenerales Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Datos generales</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- cod_mon DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cod_mon'>Moneda<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='cod_mon' name='cod_mon' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- cod_fracc_pago DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cod_fracc_pago'>Fraccionamiento de pago<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='cod_fracc_pago' name='cod_fracc_pago' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- fec_efec_poliza DatePicker -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='fec_efec_poliza'>Inicio de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='fec_efec_poliza_group'>
+                                                            <input type='text' id='fec_efec_poliza' name='fec_efec_poliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='fec_efec_poliza_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- fec_vcto_poliza DatePicker -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='fec_vcto_poliza'>Fin de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='fec_vcto_poliza_group'>
+                                                            <input type='text' id='fec_vcto_poliza' name='fec_vcto_poliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='fec_vcto_poliza_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--Datos del estudiante Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4>Datos del Estudiante</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- FEC_NACIMIENTO DatePicker -->
+                                                <!--<div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='FEC_NACIMIENTO'>Fecha de nacimiento<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='FEC_NACIMIENTO_group'>
+                                                            <input type='text' id='FEC_NACIMIENTO' name='FEC_NACIMIENTO' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='FEC_NACIMIENTO_validate'></div>
+                                                    </div>
+                                                </div>-->
+
+                                                <!-- MCA_SEXO RadioButtonList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='MCA_SEXO'>Sexo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='MCA_SEXO' name='MCA_SEXO' class='form-control' size='20' maxlength='20' />
+                                                    </div>
+                                                </div>
+
+                                                <!-- Cedencial Estudiantil Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='TXT_CRED_ESTUD'>Credencial Estudiantil<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='TXT_CRED_ESTUD' name='TXT_CRED_ESTUD' class='form-control' size='20' maxlength='20' />
+                                                    </div>
+                                                </div>
+                                                <!--Plan-->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='COD_PLAN_AP'>Plan<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='COD_PLAN_AP' name='COD_PLAN_AP' class='form-control' size='20' maxlength='20' />
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- terceros Grid -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <div class='col'>
+                                                    <h4><i class="fa fa-user-o"></i> Terceros<label id="tercerosTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                                </div>
+                                                <div class='col-auto'>
+                                                    <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo tercero" data-toggle="modal" id="tercerosNew"> <i class="fa fa-plus"></i> </button>
+                                                </div>
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class='col-md-12' style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="tercerosTbl" style="font-size: 11px;">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- documentosrequeridos Grid -->
+                                    <div class="form-row documentosrequeridosGrid">
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <div class='col'>
+                                                    <h4><i class="fa fa-file-o"></i> Documentos requeridos<label id="documentosrequeridosTbl-error" class="float-right d-none LabelValidate"></label></h4>
+                                                </div>
+                                                <div class='col-auto'>
+                                                    <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo documento pendiente" data-toggle="modal" id="documentosrequeridosNew"> <i class="fa fa-plus"></i> </button>
+                                                </div>
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class='col-md-12' style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="documentosrequeridosTbl" style="font-size: 11px;">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- coberturas Grid -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <div class='col'>
+                                                    <h4>Coberturas<label id="coberturasTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                                </div>
+
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class='col-md-12' style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="coberturasTbl" style="font-size: 11px;">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- plandepago Grid -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <div class='col'>
+                                                    <h4>Plan de pago<label id="plandepagoTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                                </div>
+
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class='col-md-12' style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="plandepagoTbl" style="font-size: 11px;">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    @*@ibox-content-footer@*@
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Form End -->
+            </div>
+        </div>
+    </div>
+    <div id="quoteBlock" class="col-md-3 animated bounceInRight d-none">
+
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Resumen</h5>
+                <div class="ibox-tools">
+                    <h5><span class="label label-success float-right" style="font-size: small;">Póliza #<span id="NumPoliza"></span></span></h5>
+                </div>
+            </div>
+            <div class="ibox-content">
+
+                <div class="row">
+                    <div class="col-7 col-md-6">
+                        <span>
+                            Importe total
+                        </span>
+                        <h2 class="font-bold">
+                            <span id="importetotal">0,00</span>
+                        </h2>
+                    </div>
+                    <div class="col-5 col-md-6">
+                        <table class="text-muted small">
+                            <tr><td style="text-align:right"><span id="primaneta">0,00</span></td><td>Prima neta</td></tr>
+                            <tr><td style="text-align:right"><span id="iva">0,00</span></td><td>IVA</td></tr>
+                            <tr><td style="text-align:right"><span id="recardoporfraccionamiento">0,00</span></td><td>Recargo</td></tr>
+                            <tr class=""><td style="text-align:right"><span id="cuotas">0</span></td><td>Cuotas</td></tr>
+                        </table>
+                    </div>
+                </div>
+                <hr>
+                <div class="m-t-sm text-center">
+                    <div class="btn-group">
+                        <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-envelope-o"></i> Enviar certificado por correo</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div> <!-- terceros Grid Modal -->
+<div class="modal inmodal" id="tercerosModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span>
+                </button>
+                <h4 class="modal-title">Información de tercero</h4>
+                <small class="font-bold">Permite agregar un nuevo terceros o editar uno ya existente</small>
+            </div>
+            <div class="modal-body">
+                <!-- terceros Grid Edit Form -->
+                <div class='form-row'>
+                    <div class='col-md-12'>
+                        <div id="tercerosEdt" class="animated fadeInRight">
+                            <form id='tercerosEdtForm' class='form-horizontal' data-toggle='validator'>
+                                <fieldset>
+                                    <div class='form-row'>
+                                        <!-- tipodetercero DropDownList -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='tipodetercero'>
+                                                    Tipo de tercero<span class='required-mark'
+                                                                         title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                                </label>
+                                                <select id='tipodetercero' name='tipodetercero' class='form-control'>
+                                                    <option value="0" selected>Tomador(a)</option>
+                                                    <option value="2">Asegurado(a)</option>
+                                                    <option value="6">Beneficiario(a)</option>
+                                                    
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- numero de riesgo Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label'>
+                                                    Número de Riesgo<span class='required-mark'
+                                                                          title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                                </label>
+
+                                                <input id='numeroderiesgo' name='numeroderiesgo' type='text' class='form-control'
+                                                       size='9' maxlength='9'>
+                                            </div>
+                                        </div>
+                                        <!-- DocumentNumber Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='DocumentNumber'>
+                                                    Identificación<span class='required-mark'
+                                                                        title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                                </label>
+                                                <div class='input-group'>
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-barcode'></span>
+                                                    </span>
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false" data-value='1' id="DocumentNumberType">
+                                                            Cédula
+                                                        </button>
+                                                        <div class="dropdown-menu" id="DocumentNumberTypeMenu">
+                                                            <a class="dropdown-item active" href="#" data-value='1'>Cédula</a>
+                                                            <a class="dropdown-item" href="#" data-value='2'>DIMEX</a>
+                                                            <a class="dropdown-item" href="#" data-value='3'>Pasaporte</a>
+                                                            <a class="dropdown-item" href="#" data-value='4'>Cédula jurídica</a>
+                                                        </div>
+                                                    </div>
+                                                    <input id='DocumentNumber' name='DocumentNumber' type='text' class='form-control'
+                                                           size='20' maxlength='20' placeholder="0X-XXXX-XXXX">
+
+                                                </div>
+                                                <div id='DocumentNumber_validate'></div>
+                                            </div>
+                                        </div><!-- nombre Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='nombre'>
+                                                    Nombre<span class='required-mark'
+                                                                title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                                </label>
+                                                <input type='text' id='nombre' name='nombre' class='form-control' size='100'
+                                                       maxlength='100' />
+                                            </div>
+                                        </div><!-- apellido1 Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='apellido1'>
+                                                    Apellido 1<span class='required-mark'
+                                                                    title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                                </label>
+                                                <input type='text' id='apellido1' name='apellido1' class='form-control' size='50'
+                                                       maxlength='50' />
+                                            </div>
+                                        </div><!-- apellido2 Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='apellido2'>
+                                                    Apellido 2<span class='required-mark'
+                                                                    title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                                </label>
+                                                <input type='text' id='apellido2' name='apellido2' class='form-control' size='50'
+                                                       maxlength='50' />
+                                            </div>
+                                        </div><!-- fechadenacimiento DatePicker -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='fechadenacimiento'>
+                                                    Fecha de nacimiento<span class='required-mark'
+                                                                             title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                                </label>
+                                                <div class='input-group date' id='fechadenacimiento_group'>
+                                                    <input type='text' id='fechadenacimiento' name='fechadenacimiento' class='form-control'
+                                                           size='10' maxlength='10' placeholder='día/mes/año' />
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-calendar'></span>
+                                                    </span>
+                                                </div>
+                                                <div id='fechadenacimiento_validate'></div>
+                                            </div>
+                                        </div>
+                                        <!-- tercerosMca_sexo DropDownList -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='tercerosMca_sexo'>
+                                                    Sexo<span class='required-mark'
+                                                              title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                                </label>
+                                                <select id='tercerosMca_sexo' name='tercerosMca_sexo' class='form-control'>
+                                                    <option value="0">Femenino</option>
+                                                    <option value="1">Masculino</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- estadoCivil DropDownList -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='estadoCivil'>
+                                                    Estado Civil<span class='required-mark'
+                                                                      title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                                </label>
+                                                <select id='estadoCivil' name='estadoCivil' class='form-control'>
+                                                    <option value="C">Casado(a)</option>
+                                                    <option value="D">Divorciado(a)</option>
+                                                    <option value="S">Soltero(a)</option>
+                                                    <option value="CL">Unión Libre</option>
+                                                    <option value="V">Viudo(a)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- numerodetelefono Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='numerodetelefono'>
+                                                    Número de teléfono<span class='required-mark'
+                                                                            title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                                </label>
+                                                <div class='input-group'>
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-earphone'></span>
+                                                    </span>
+                                                    <input id='numerodetelefono' name='numerodetelefono' type='text' class='form-control'
+                                                           size='9' maxlength='9'>
+                                                </div>
+                                                <div id='numerodetelefono_validate'></div>
+                                            </div>
+                                        </div><!-- correoelectronico Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='correoelectronico'>
+                                                    Correo electrónico<span class='required-mark'
+                                                                            title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                                </label>
+                                                <div class='input-group'>
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-envelope'></span>
+                                                    </span>
+                                                    <input id='correoelectronico' name='correoelectronico' type='text' class='form-control'
+                                                           size='80' maxlength='80'>
+                                                </div>
+                                                <div id='correoelectronico_validate'></div>
+                                            </div>
+                                        </div><!-- cod_pais DropDownList -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='cod_pais'>
+                                                    País<span class='required-mark'
+                                                              title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                                </label>
+                                                <select id='cod_pais' name='cod_pais' class='form-control' disabled></select>
+                                            </div>
+                                        </div>
+                                        <!-- TProvincia DropDownList -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='TProvincia'>
+                                                    Provincia<span class='required-mark'
+                                                                   title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                                </label>
+                                                <select id='TProvincia' name='TProvincia' class='form-control'></select>
+                                            </div>
+                                        </div>
+                                        <!-- TCanton DropDownList -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='TCanton'>
+                                                    Cantón<span class='required-mark'
+                                                                title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                                </label>
+                                                <select id='TCanton' name='TCanton' class='form-control'></select>
+                                            </div>
+                                        </div>
+                                        <!-- TDistrito DropDownList -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='TDistrito'>
+                                                    Distrito<span class='required-mark'
+                                                                  title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                                </label>
+                                                <select id='TDistrito' name='TDistrito' class='form-control'></select>
+                                            </div>
+                                        </div>
+                                        <!-- otrasenas Text -->
+                                        <div class='col-sm-8 col-md-8'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='otrasenas'>
+                                                    Otra señas<span class='required-mark'
+                                                                    title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                                </label>
+                                                <input type='text' id='otrasenas' name='otrasenas' class='form-control' size='100'
+                                                       maxlength='100' />
+                                            </div>
+                                        </div>
+                                        <!-- eltomadoreselmismoasegurado RadioButtonList -->
+                                        <div class='col-sm-4 col-md-4 d-none'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='eltomadoreselmismoasegurado'>
+                                                    El tomador es el mismo
+                                                    asegurado
+                                                </label>
+                                                <div style="padding-top: 6px;">
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" class="custom-control-input" id="eltomadoreselmismoasegurado_1"
+                                                               name="eltomadoreselmismoasegurado" value="1">
+                                                        <label class="custom-control-label" for="eltomadoreselmismoasegurado_1">Si</label>
+                                                    </div>
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" class="custom-control-input" id="eltomadoreselmismoasegurado_2"
+                                                               name="eltomadoreselmismoasegurado" value="2">
+                                                        <label class="custom-control-label" for="eltomadoreselmismoasegurado_2">No</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- elaseguradoeselmismotomador RadioButtonList -->
+                                        <div class='col-sm-4 col-md-4 d-none'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='elaseguradoeselmismotomador'>
+                                                    El asegurado es el mismo tomador
+                                                </label>
+                                                <div style="padding-top: 6px;">
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" class="custom-control-input" id="elaseguradoeselmismotomador_1"
+                                                               name="elaseguradoeselmismotomador" value="1">
+                                                        <label class="custom-control-label" for="elaseguradoeselmismotomador_1">Si</label>
+                                                    </div>
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" class="custom-control-input" id="elaseguradoeselmismotomador_2"
+                                                               name="elaseguradoeselmismotomador" value="2">
+                                                        <label class="custom-control-label" for="elaseguradoeselmismotomador_2">No</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- elbeneficiarioeselmismotodoslosriesgos RadioButtonList -->
+                                        <div class='col-sm-4 col-md-4 d-none'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='elbeneficiarioeselmismotodoslosriesgos'>
+                                                    El beneficiario es el mismo para todos los riesgos
+                                                </label>
+                                                <div style="padding-top: 6px;">
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" class="custom-control-input" id="elbeneficiarioeselmismotodoslosriesgos_1"
+                                                               name="elbeneficiarioeselmismotodoslosriesgos" value="1">
+                                                        <label class="custom-control-label" for="elbeneficiarioeselmismotodoslosriesgos_1">Si</label>
+                                                    </div>
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" class="custom-control-input" id="elbeneficiarioeselmismotodoslosriesgos_2"
+                                                               name="elbeneficiarioeselmismotodoslosriesgos" value="2">
+                                                        <label class="custom-control-label" for="elbeneficiarioeselmismotodoslosriesgos_2">No</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <!-- beneficiario Zone -->
+                                    <div id="beneficiarioZone" class="form-row d-none animated fadeIn">
+                                        <div class="col-lg-12">
+                                            <h4>Información del beneficiario</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 2px 0px 6px 0px;"></div>
+                                            <div class="form-row">
+                                                <!-- parentesco DropDownList -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='parentesco'>Parentesco<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='parentesco' name='parentesco' class='form-control'>
+                                                            <option value="10">Asegurado principal</option>
+                                                            <option value="1">Padre</option>
+                                                            <option value="2">Madre</option>
+                                                            <option value="3">Hijo(a)</option>
+                                                            <option value="4">Amigo(a)</option>
+                                                            <option value="5">Cuñado(a)</option>
+                                                            <option value="6">Sobrino(a)</option>
+                                                            <option value="7">Hermano(a)</option>
+                                                            <option value="8">Primo(a)</option>
+                                                            <option value="9">Conyugue</option>
+                                                            <option value="12">Tío(a)</option>
+                                                            <option value="11">Otro</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!-- porcentaje Numeric -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='porcentaje'>Porcentaje<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group'>
+                                                            <input type='text' id='porcentaje' autocomplete="off" name='porcentaje' class='form-control text-right' size='3' maxlength='3' />
+                                                            <span class='input-group-addon'>
+                                                                <small class="text-muted">%</small>
+                                                            </span>
+                                                        </div>
+                                                        <div id='porcentaje_validate'></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- informaciondelacredor Zone -->
+                                    <div id="acredorZone" class="form-row d-none animated fadeIn">
+                                        <div class="col-lg-12">
+                                            <h4>Información del acredor</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 2px 0px 6px 0px;"></div>
+                                            <div class="form-row">
+                                                <!-- numerodeprestamo Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='numerodeprestamo'>Número de prestamo</label>
+                                                        <input type='text' id='numerodeprestamo' name='numerodeprestamo' class='form-control'
+                                                               size='50' maxlength='50' />
+                                                    </div>
+                                                </div><!-- importedecesion Text -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='importedecesion'>Importe de cesión</label>
+                                                        <input type='text' id='importedecesion' name='importedecesion'
+                                                               class='form-control text-right' size='18' maxlength='18' />
+                                                    </div>
+                                                </div><!-- vencimientodecesion DatePicker -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='vencimientodecesion'>
+                                                            Vencimiento de cesión<span class='required-mark'
+                                                                                       title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                                        </label>
+                                                        <div class='input-group date' id='vencimientodecesion_group'>
+                                                            <input type='text' id='vencimientodecesion' name='vencimientodecesion'
+                                                                   class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='vencimientodecesion_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- porcentajeacredor Numeric -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='porcentajeacredor'>Porcentaje acreedor</label>
+                                                        <div class='input-group'>
+                                                            <input type='text' id='porcentajeacredor' name='porcentajeacredor'
+                                                                   class='form-control text-right' size='3' maxlength='3' />
+                                                            <span class='input-group-addon'>
+                                                                <small class="text-muted">%</small>
+                                                            </span>
+                                                        </div>
+                                                        <div id='porcentajeacredor_validate'></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="justify-content: space-between;">
+                <div>
+                    <div class="custom-control custom-checkbox" title="Si está marcado permite usar la dirección actual, como la dirección base para otros terceros.">
+                        <input type="checkbox" class="custom-control-input" id="reutilizarestadireccion">
+                        <label class="custom-control-label control-label" for="reutilizarestadireccion" style="padding-top: 4px;">Reutilizar la dirección</label>
+                    </div>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-primary" id="tercerosEdtFormSave" data-doing="Guardando...">
+                        Guardar
+                        cambios
+                    </button>
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- documentosrequeridos Grid Modal -->
+<div class="modal inmodal" id="documentosrequeridosModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span>
+                </button>
+                <h4 class="modal-title">Documentos requeridos</h4>
+                <small class="font-bold">
+                    Permite agregar un nuevo Documentos requeridos o editar uno ya
+                    existente
+                </small>
+            </div>
+            <div class="modal-body">
+                <!-- documentosrequeridos Grid Edit Form -->
+                <div class='form-row'>
+                    <div class='col-md-12'>
+                        <div id="documentosrequeridosEdt" class="animated fadeInRight">
+                            <form id='documentosrequeridosEdtForm' class='form-horizontal'
+                                  data-toggle='validator'>
+                                <fieldset>
+                                    <input id="Grupo" type="hidden" value="" />
+                                    <div class='form-row'>
+                                        <!-- tipo -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='tipo'>Tipo de documento<span class='required-mark'>*</span></label>
+                                                <select id='tipo' name='tipo' class='form-control' disabled>
+                                                    <option value="99">Genérico</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- FileName -->
+                                        <div class='col-sm-6 col-md-9'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='DNombre'>Archivo<span class='required-mark'>*</span></label>
+                                                <div class="input-group">
+                                                    <input id='DNombre' name='DNombre' type='text' class='form-control' size='80' maxlength='80' placeholder="Indique el archivo a procesar..." readonly>
+                                                    <input id="DStored" type="hidden" value="" />
+                                                    <input id="DTamano" type="hidden" value="" />
+                                                    <div class="input-group-append">
+                                                        <span class="btn btn-default fileinput-button" title="Permite seleccionar el archivo a ser procesado">
+                                                            <span>Examinar...</span>
+                                                            <input id="fileUploadModal" type="file" />
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div id='FileName_validate'></div>
+                                            </div>
+                                        </div>
+                                        <!-- Description -->
+                                        <div class='col-sm-3 col-md-12'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='DDescripcion'>Descripción<span class='required-mark'>*</span></label>
+                                                <input id='DDescripcion' name='DDescripcion' type='text' class='form-control' size='120' maxlength='120'>
+                                            </div>
+                                        </div>
+                                        <!-- Botonera -->
+                                        <div class="form-row">
+                                            <div class='col-md-12'>
+                                                <input id="fileUpload" type="file" class="d-none" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="documentosrequeridosEdtFormSave"
+                        data-doing="Guardando...">
+                    Guardar cambios
+                </button>
+                <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
+    <script src="@Url.Content("~/Scripts/Emision.Estudiantil.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.EmisionEstudiantil.Init();
+        });
+    </script>
+}

@@ -43,7 +43,7 @@ namespace Architect.API.Core.Controllers
                 authenticationRequest.UserAgent = Request.Headers.UserAgent.ToString();
                 Architect.API.Core.Contracts.Security.Token token = new Contracts.Security.Token();
 
-                await Task.Run(() => responseItem = Business.Security.Accounts.Authentication(authenticationRequest, ref token)).ConfigureAwait(false);
+                await Task.Run(() => responseItem = Business.Security.Accounts.Authentication(authenticationRequest, ref token, true)).ConfigureAwait(false);
 
                 if (responseItem.Reason.IsNotEmpty())
                 {

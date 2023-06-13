@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
+using Architect.API.Tron.Contracts.Comun;
 using Architect.Utilities.Extensions;
 
 namespace Architect.API.Tron.Business.Emision
@@ -80,7 +82,7 @@ namespace Architect.API.Tron.Business.Emision
                 cod_nivel3_captura = 0,
                 fec_actu = DateTime.MinValue,
                 cod_dst_agt = 0,
-                num_spto_publico = 0,                
+                num_spto_publico = 0,
                 fec_tratamiento = DateTime.MinValue,
                 num_orden = 0
             };
@@ -92,34 +94,42 @@ namespace Architect.API.Tron.Business.Emision
         {
             List<Architect.API.Tron.Contracts.Presupuesto.DatoVariable> datosVariables = new List<Architect.API.Tron.Contracts.Presupuesto.DatoVariable>();
             int num_riesgo = 1;
+            var propiedad = quoteInfo.propiedad[0];
 
-            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "OTRA_SENAS_RGO1", quoteInfo.otrassenas, 2, 5));
-            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "FOLIO_RGO1", quoteInfo.numerodefolio, 2, 6));
-            if (quoteInfo.alturaedificio.IsNotEmpty())
+
+
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "OTRA_SENAS_RGO1", propiedad.otrassenas, 2, 5));
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "FOLIO_RGO1", propiedad.numerodefolio, 2, 6));
+            if (propiedad.alturaedificio.IsNotEmpty())
             {
-                datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "FOLIO_RGO2", quoteInfo.alturaedificio.ToString(), 2, 7, string.Format("{0} METRO(S)", quoteInfo.alturaedificio)));
+                datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "FOLIO_RGO2", propiedad.alturaedificio.ToString(), 2, 7, string.Format("{0} METRO(S)", propiedad.alturaedificio)));
             }
             else
             {
                 datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "FOLIO_RGO2", "N/A", 2, 7, "N/A"));
             }
-            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_PISO", quoteInfo.numerodepiso.ToString(), 2, 10));
-            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "ANO_CONST", quoteInfo.anodeconstruccion.ToString(), 2, 13));
-            if (quoteInfo.alturaedificio.IsNotEmpty())
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_PISO", propiedad.numerodepiso.ToString(), 2, 10));
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "ANO_CONST", propiedad.anodeconstruccion.ToString(), 2, 13));
+            if (propiedad.alturaedificio.IsNotEmpty())
             {
-                datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_METROS_CONSTRUIDOS", quoteInfo.alturaedificio.ToString(), 2, 15, string.Format("{0} METROS", quoteInfo.numerodefoliomadre)));
+                datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_METROS_CONSTRUIDOS", propiedad.alturaedificio.ToString(), 2, 15, string.Format("{0} METROS", propiedad.numerodefoliomadre)));
             }
             else
             {
                 datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_METROS_CONSTRUIDOS", "0", 2, 15, "0"));
             }
-            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "ALTURA_EDIF", quoteInfo.alturaedificio.ToString(), 2, 16));
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "ALTURA_EDIF", propiedad.alturaedificio.ToString(), 2, 16));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "MCA_SUB_ROB", "N", 2, 65));
-            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "TIP_PLAN_ASIST",Convert.ToString(quoteInfo.tipoplan) , 3, 99, ""));
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "TIP_PLAN_ASIST", Convert.ToString(propiedad.tipoplan), 3, 99, ""));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "MCA_COLECTIVO", "N", 1, 900, "INDIVIDUAL"));
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "CERCA_RI_MAR_LAG_TA_CI", propiedad.CERCA_RI_MAR_LAG_TA_CI == 1 ? "S" : "N"));
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "DISTANCIA_MTS", propiedad.DISTANCIA_MTS.ToString()));
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "INS_ELECT_ENTUB", propiedad.INS_ELECT_ENTUB == 1 ? "S" : "N"));
 
             return datosVariables;
+
         }
+
         internal static List<Architect.API.Tron.Contracts.Presupuesto.Tercero> Terceros(Contracts.Emision.HogarTotal quoteInfo, Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos)
         {
             datosFijos.Terceros = new List<Architect.API.Tron.Contracts.Presupuesto.Tercero>();
@@ -195,7 +205,7 @@ namespace Architect.API.Tron.Business.Emision
                 fec_tratamiento = DateTime.Today,
                 tip_mvto_batch = "3",
                 tip_docum = item.DocumentNumberType.ToString().IdentificationType(),
-                cod_docum = Util.IdentificationFormat(item.DocumentNumberType,item.DocumentNumber),
+                cod_docum = Util.IdentificationFormat(item.DocumentNumberType, item.DocumentNumber),
                 nom_tercero = item.nombre,
                 ape1_tercero = item.apellido1,
                 ape2_tercero = item.apellido2,

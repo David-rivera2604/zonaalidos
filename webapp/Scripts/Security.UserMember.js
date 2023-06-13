@@ -15,6 +15,22 @@ app.SecurityUserMember = (function () {
             }).always(function () {
                 $('#UserMemberGridTbl').bootstrapTable('hideLoading');
             });
+
+        if (localStorage.getItem('Roles').includes('Empleado')) {
+
+            let lks = ['Agents.Cod_Agt'];
+            app.core.Lookups(lks,
+                function () {
+                    data = {
+                        Cod_Agt: null
+                    };
+                    app.ui.SetDropDownNumericValue('#Cod_Agt', data.Cod_Agt, true);
+
+                }, `cod_ramo=302:cod_mon=1`);
+
+            $('#agt-section').removeClass('d-none');
+        }
+         
     }
 
     function Init_Controls() {
@@ -266,7 +282,7 @@ app.SecurityUserMember = (function () {
     function Create(uidata, mode) {
         app.core.Post(app.setting.apipath + 'v1/UserMember/Post', JSON.stringify(uidata))
             .done(function (data, textStatus, jqXHR) {
-                toastr.success("El usuario '" + uidata.UserName + "' fue creado", "", { timeOut: 5000, closeButton: true, progressBar: true });
+                toastr.success("El usuario '" + uidata.UserName + "' fue creado. " + uidata.responseTronSubAgent , "", { timeOut: 5000, closeButton: true, progressBar: true });
                 Refresh();
                 switch (mode) {
                     case 'Save':
@@ -299,7 +315,7 @@ app.SecurityUserMember = (function () {
     function Update(uidata) {
         app.core.Put(app.setting.apipath + 'v1/UserMember/Put?id=' + uidata.UserId, JSON.stringify(uidata))
             .done(function (data, textStatus, jqXHR) {
-                toastr.success("El usuario '" + uidata.UserName + "' fue modificado", "", { timeOut: 5000, closeButton: true, progressBar: true });
+                toastr.success("El usuario '" + uidata.UserName + "' fue modificado" + uidata.responseTronSubAgent, "", { timeOut: 5000, closeButton: true, progressBar: true });
                 ViewMode();
                 Refresh();
             }).always(function () {
@@ -337,6 +353,7 @@ app.SecurityUserMember = (function () {
     };
 
     function MapInputToObject() {
+
         var data = {
             UserId: parseInt(0 + $('#UserId').val(), 10),
             UserName: $('#UserName').val(),
@@ -365,7 +382,8 @@ app.SecurityUserMember = (function () {
             CustomData: "", //$('#CustomData').val(),
             RecordStatus: $('#RecordStatus').val(),
             Roles: app.ui.GetDropDownMultiValues('Roles'),
-            Extent: app.ui.GetExtentValue()
+            Extent: app.ui.GetExtentValue(),
+            cod_agt: $('#Cod_Agt').val()
         };
         return data;
     };

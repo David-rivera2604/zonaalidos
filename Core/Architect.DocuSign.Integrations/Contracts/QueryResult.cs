@@ -18,6 +18,9 @@ namespace Architect.DocuSign.Integrations.Contracts
         public string description { get; set; }
 
         public bool Signed { get; set; }
+<<<<<<< HEAD
         
+=======
+>>>>>>> 2603d8692335166cf5801e413f5bc98d7a338de7
     }
 }

@@ -447,7 +447,11 @@ namespace Architect.API.Core.DataAccess.General
         /// <param name="reader">DataReader</param>
         /// <param name="item">Instancia pre creada</param>
         /// <returns>Instancia con la información de la fila del 'DataReader'</returns>
+<<<<<<< HEAD
         public static Architect.API.Core.Contracts.General.ProcessSpecFlow DataReaderToProcessSpecFlow(System.Data.IDataReader reader, Architect.API.Core.Contracts.General.ProcessSpecFlow item = null, bool queryExt = false)
+=======
+        public static Architect.API.Core.Contracts.General.ProcessSpecFlow DataReaderToProcessSpecFlow(System.Data.IDataReader reader, Architect.API.Core.Contracts.General.ProcessSpecFlow item = null, bool queryExt =false)
+>>>>>>> 2603d8692335166cf5801e413f5bc98d7a338de7
         {
             if (item == null)
             {
@@ -504,8 +508,12 @@ namespace Architect.API.Core.DataAccess.General
             item.UpdateUserCode = reader.IntegerValue("UpdateUserCode");
             item.UpdateUserName = reader.StringValue("UpdateUserName");
             item.UpdateDate = reader.DateTimeValue("UpdateDate");
+<<<<<<< HEAD
             if (queryExt)
             {
+=======
+            if (queryExt) { 
+>>>>>>> 2603d8692335166cf5801e413f5bc98d7a338de7
                 item.RoleNames = reader.StringValue("Roles");
             }
             return item;

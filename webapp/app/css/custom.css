@@ -3,33 +3,6 @@
     border-bottom: 1px solid #e7eaec !important;
 }
 
-.ibox-title {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    background-color: #ffffff;
-    border-color: #e7eaec;
-    border-image: none;
-    border-style: solid solid none;
-    border-width: 1px;
-    color: inherit;
-    margin-bottom: 0;
-    padding: 15px 90px 8px 15px;
-    min-height: 48px;
-    position: relative;
-    clear: both;
-}
-
-.ibox-content {
-    background-color: #ffffff;
-    color: inherit;
-    padding: 15px 20px 20px 20px;
-    border-color: #e7eaec;
-    border-image: none;
-    border-style: solid solid none;
-    border-width: 1px;
-}
 
 .required-mark {
     font-size: 11px;
@@ -233,10 +206,57 @@ fieldset[disabled] {
 
 .inmodal .modal-header {
     padding: 8px 8px;
+    background: var(--mapfrered1);
+    color: #fff;
+}
+
+.inmodal .modal-title {
+    font-weight: 700;
+    color: #fff;
+}
+
+
+.modal-tab li {
+    cursor: default;
+    width: 50%;
+    text-align: center;
+    border-right: 1px solid #fff;
+}
+
+.modal-header .nav-tabs {
+    border-bottom: none !important;
+}
+
+.modal-tab li > a {
+    cursor: pointer !important;
+    background: #e7eaec !important;
+    color: #676a6c !important;
+}
+
+.modal-tab li .active {
+    cursor: pointer !important;
+    background: #f8fafb !important;
+    color: var(--mapfregray1) !important;
+}
+
+.modal-tab li {
+    cursor: pointer;
+    color: var(--mapfregray1);
+}
+
+.modal-tab-item a {
+    font-size: 16px;
+    font-weight: 300;
+}
+
+
+.modal-header span {
+    color: var(--mapfregray2);
 }
 
 .inmodal .modal-title {
     font-weight: 500;
+    color: #fff;
 }
 
 .modal-body {
@@ -249,7 +269,6 @@ fieldset[disabled] {
 
 
 .loginBackground {
-    background-image: url('/aliados/images/landing.jpg');
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -288,13 +307,6 @@ fieldset[disabled] {
     font-weight: bold;
 }
 
-#forgotlink > small {
-    color: black;
-}
-
-.m-t > small {
-    color: black;
-}
 
 .table-in-form thead th {
     color: #676a6c;
@@ -525,9 +537,6 @@ span.page-list button.btn.btn-outline.btn-default.dropdown-toggle {
 }
 
 @media only screen and (max-width: 600px) {
-    .wrapper-content {
-        padding: 0 0 0;
-    }
 
     #page-wrapper {
         padding: 0 0;
@@ -658,3 +667,142 @@ span.columnBtn {
         .grid-control:disabled::placeholder {
             color: transparent;
         }
+
+
+
+/*Contenido agregado por practicante*/
+
+
+html, body {
+    flex-direction: column;
+    height: 100%;
+}
+
+#cont_log {
+    flex: 1;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.caja_prin {
+    display: flex;
+    background: #33394400;
+    width: 100%;
+    padding: 0px 20px
+}
+
+.caja {
+    background: white;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.img {
+    background-color: #a5a5a5
+}
+
+.control-label-content {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.control-label {
+    font-size: 13px;
+    border-radius: 5px;
+    font-weight: normal;
+    padding: 0 5px;
+    transition: 0.2s ease all;
+    z-index: 3;
+}
+
+    .control-label:focus {
+        box-shadow: none;
+    }
+
+#MCA_VR {
+    position: relative;
+    top: 6px;
+}
+
+#CLIENTE_NUEVO {
+    position: relative;
+    top: 6px;
+}
+
+#CERO_KM {
+    position: relative;
+    top: 6px;
+}
+
+#AUTO_GPS {
+    position: relative;
+    top: 6px;
+}
+
+#HogarTotal {
+    position: relative;
+    top: 6px;
+}
+
+#AUTO_GPS_CMS {
+    position: relative;
+    top: 6px;
+}
+
+#EXTIN_INC {
+    position: relative;
+    top: -7px;
+}
+
+#tipo_producto {
+    position: relative;
+    top: -7px;
+}
+
+#KM {
+    position: relative;
+    top: -7px;
+}
+
+#GPS {
+    position: relative;
+    top: -7px;
+}
+
+#MONITOREO_GPS {
+    position: relative;
+    top: -7px;
+}
+
+#MCA_PRA {
+    position: relative;
+    top: -7px;
+}
+
+#VR {
+    position: relative;
+    top: -7px;
+}
+
+#DESC_CLIENTE_NUEVO {
+    position: relative;
+    top: -7px;
+}
+
+#GPS_CMS {
+    position: relative;
+    top: -7px;
+}
+
+.form-compact .form-group {
+    margin-bottom: 0px;
+}

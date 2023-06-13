@@ -1,0 +1,153 @@
+﻿<!-- Edit Form -->
+<div class='form-row'>
+    <div class='col-md-12'>
+        <div id="PanelPurdyEncabezadoEdt" class="animated fadeInRight compact">
+            <form id='PanelPurdyEncabezadoEdtForm' class='form-horizontal' data-toggle='validator'>
+                <fieldset>
+                    <!-- seccionEncabezado Zone -->
+                    <div class="form-row">
+                        @*<div class="col-lg-12">
+        <h4>Sección Encabezado</h4>
+        <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>*@
+                        <!-- aSIGES Text -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='aSIGES'>ASIGES<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                <input type='text' id='aSIGES' name='aSIGES' class='form-control' size='16' maxlength='16' />
+
+                            </div>
+                        </div>
+                        <!-- tipodeindemnizacion DropDownList -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='tipodeindemnizacion'>Tipo de indemnización</label>
+                                <select id='tipodeindemnizacion' name='tipodeindemnizacion' class='form-control'>
+                                    <option value='1'>Casos reparados</option>
+                                    <option value='2'>Pérdida total financiera</option>
+                                    <option value='3'>Pérdida total estructural</option>
+                                    <option value='4'>Casos con avalúo pendiente de reparación</option>
+                                    <option value='5'>Repuestos pendientes</option>
+                                    <option value='6'>Avalúo cliente no repara aún</option>
+                                    <option value='7' selected>Pendiente avalúo</option>
+                                    <option value='8'>No procede</option>
+                                    <option value='9'>Posible pérdida total</option>
+                                    <option value='10'>Pago directo</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- estadoMapfre DropDownList -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='estadoMapfre'>Estado Mapfre</label>
+                                <div id='estadoMapfre' class="readonly"></div>
+                            </div>
+                        </div>
+
+                        <!-- numerodepoliza Numeric -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='NUM_POLIZA'>Número de póliza</label>
+                                <div id='NUM_POLIZA' class="readonly"></div>
+                            </div>
+                        </div>
+                        <!-- DocumentNumber Text -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='cedulaasegurado'>Cédula asegurado</label>
+                                <div id='cedulaasegurado' class="readonly"></div>
+                            </div>
+                        </div>
+                        <!-- nombreasegurado Text -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='nombreasegurado'>Nombre asegurado</label>
+                                <div id='nombreasegurado' class="readonly"></div>
+                            </div>
+                        </div>
+
+                        <!-- correoasegurado Text -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='correoasegurado'>Correo asegurado</label>
+                                <div id='correoasegurado' class="readonly"></div>
+                            </div>
+                        </div>
+                        <!-- telefonoasegurado Text -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='telefonoasegurado'>Teléfono asegurado</label>
+                                <div id='telefonoasegurado' class="readonly"></div>
+                            </div>
+                        </div>
+                        <!-- ingresodeaviso DatePicker -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='ingresodeaviso'>Ingreso de aviso</label>
+                                <div id='ingresodeaviso' class="readonly"></div>
+                            </div>
+                        </div>
+
+                        <!-- fechadelevento DatePicker -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='fechadelevento'>Fecha del evento</label>
+                                <div id='fechadelevento' class="readonly"></div>
+
+                            </div>
+                        </div>
+
+                        <!-- noSiniestro Numeric -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='noSiniestro'>No. Siniestro</label>
+                                <div id='noSiniestro' class="readonly"></div>
+                            </div>
+                        </div>
+
+                        <!-- categoriadesiniestro DropDownList -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='categoriadesiniestro'>Categoría de siniestro</label>
+                                <div id='categoriadesiniestro' class="readonly"></div>
+                            </div>
+                        </div>
+                        <!-- tipodeindemnizacion DropDownList -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='tipodeindemnizacion'>Tipo de indemnización</label>
+                                <div id='tipodeindemnizacion' class="readonly"></div>
+                            </div>
+                        </div>
+                        <!-- analistareclamos DropDownList -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='analistareclamos'>Analista reclamos</label>
+                                <div id='analistareclamos' class="readonly"></div>
+                            </div>
+                        </div>
+
+                        <!-- analistagestora DropDownList -->
+                        <div class='col-sm-3 col-md-3'>
+                            <div class='form-group'>
+                                <label class='control-label' for='analistagestora'>Analista gestora</label>
+                                <div id='analistagestora' class="readonly"></div>
+                            </div>
+                        </div>
+
+                        <!-- detallesiniestro Notes -->
+                        <div class='col-sm-12 col-md-12'>
+                            <div class='form-group'>
+                                <label class='control-label' for='detallesiniestro'>Detalle siniestro</label>
+                                <div id='detallesiniestro' class="readonly"></div>
+                            </div>
+                        </div>
+                    </div>
+                    @*</div>
+                        </div>*@
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Edit Form End -->

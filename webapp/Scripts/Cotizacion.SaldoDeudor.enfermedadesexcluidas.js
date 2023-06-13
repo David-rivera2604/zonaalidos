@@ -1,4 +1,6 @@
 ﻿var app = app || {};
+var errors = false;
+var msj_errors = '';
 
 app.CotizacionSaldoDeudorEnfermedadesExcluidas = (function () {
 
@@ -90,22 +92,32 @@ app.CotizacionSaldoDeudorEnfermedadesExcluidas = (function () {
 
         $('#enfermedadesexcluidasEdtFormSave').click(function () {
             if (app.ui.IsValid('#enfermedadesexcluidasEdtForm', false)) {
-                app.ui.ButtonDoing('#enfermedadesexcluidasEdtFormSave');
 
-                var row = enfermedadesexcluidas_table_row('values');
+                valid_venct_prestamo();
 
-                if (row.enfermedadesexcluidasId === null)
-                    row.enfermedadesexcluidasId = 1;
+                if (errors === false) {
+                    app.ui.ButtonDoing('#enfermedadesexcluidasEdtFormSave');
 
-                if ($('#enfermedadesexcluidasModal').data('id') != null) {
-                    $('#enfermedadesexcluidasTbl').bootstrapTable('updateByUniqueId', { id: row.enfermedadesexcluidasId, row: row });
+                    var row = enfermedadesexcluidas_table_row('values');
+
+                    if (row.enfermedadesexcluidasId === null)
+                        row.enfermedadesexcluidasId = 1;
+
+                    if ($('#enfermedadesexcluidasModal').data('id') != null) {
+                        $('#enfermedadesexcluidasTbl').bootstrapTable('updateByUniqueId', { id: row.enfermedadesexcluidasId, row: row });
+                    }
+                    else {
+                        $('#enfermedadesexcluidasTbl').bootstrapTable('append', row);
+                    }
+
+                    app.ui.ButtonDone('#enfermedadesexcluidasEdtFormSave')
+                    $('#enfermedadesexcluidasModal').modal('hide');
                 }
                 else {
-                    $('#enfermedadesexcluidasTbl').bootstrapTable('append', row);
+                    toastr.error("Existen errores" + msj_errors, "", { closeButton: true, progressBar: true });
                 }
 
-                app.ui.ButtonDone('#enfermedadesexcluidasEdtFormSave')
-                $('#enfermedadesexcluidasModal').modal('hide');
+                
             }
         });
 
@@ -179,11 +191,32 @@ app.CotizacionSaldoDeudorEnfermedadesExcluidas = (function () {
         });
     };
 
+    function valid_venct_prestamo() {
+
+       // $('#FEC_FIN_EXC').focusout(function () {
+
+            let inicio = $('#FEC_INI_EXC').val();
+            let fin = $('#FEC_FIN_EXC').val();
+
+            if (inicio === fin) {
+                errors = true;
+                msj_errors += ', La fecha de inicio y fin de exclusión, no pueden ser iguales';
+            }
+            else {
+                errors = false;
+                msj_errors = '';
+            }
+
+        //});
+
+    };
+
     return {
         Init: function () {
             try {
                 enfermedadesexcluidas_table_setup();
                 enfermedadesexcluidas_table_Validations();
+                
             }
             catch (err) {
                 console.error("Error Init");

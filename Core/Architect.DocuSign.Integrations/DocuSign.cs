@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -137,6 +138,69 @@ namespace Architect.DocuSign.Integrations
                 eviCertiaClient = new HttpClient();
                 throw ex;
             }
+            return result;
+        }
+
+        public async static Task<string> EviMail(string lookupKey, string subject, string body, string issuerName, string signingName, string signingEmail, string fileName, string evidenceUniqueId, string displayName)
+        {
+            string result = String.Empty;
+
+            if (lookupKey.Length > 35)
+            {
+                lookupKey = lookupKey.Substring(0, 35);
+            }
+
+            string json = JsonConvert.SerializeObject(new Providers.Evicertia.Contracts.EviMailSubmit()
+            {
+                LookupKey = lookupKey,
+                Subject = subject,
+                Body = body,
+                IssuerName = issuerName,
+                Recipient = new Providers.Evicertia.Contracts.Recipient()
+                {
+                    LegalName = signingName,
+                    EmailAddress = signingEmail
+                },
+                Attachments = new List<Providers.Evicertia.Contracts.Attachments>() {
+                    new Providers.Evicertia.Contracts.Attachments() {
+                        UniqueId = string.Empty,
+                        CreationDate = string.Empty,
+                        EvidenceUniqueId = evidenceUniqueId,
+                        DisplayName = displayName,
+                        Filename = displayName,
+                        Data = Convert.ToBase64String(System.IO.File.ReadAllBytes(fileName))
+                    }
+                },
+                Options = new Providers.Evicertia.Contracts.Options()
+            });
+            HttpClient eviCertiaClient = new HttpClient();
+            eviCertiaClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Utilities.Helpers.Settings.StringValue("Evicertia.Authentication"));
+            eviCertiaClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            eviCertiaClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
+
+            try
+            {
+                HttpResponseMessage response = await eviCertiaClient.PostAsync(Utilities.Helpers.Settings.StringValue("Evicertia.URL.EviMailSubmit"), new StringContent(json, Encoding.UTF8, "application/json"));
+                string resultResponse = response.Content.ReadAsStringAsync().Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    IdentityEvi identity = JsonConvert.DeserializeObject<IdentityEvi>(resultResponse);
+                    result = identity.eviId;
+                }
+                else
+                {
+                    Utilities.Log.ErrorLog("EviSignSubmit", response.ReasonPhrase);
+                    Utilities.Log.ErrorLog("EviSignSubmit", resultResponse);
+                }
+            }
+            catch (Exception ex)
+            {
+                eviCertiaClient.Dispose();
+                eviCertiaClient = new HttpClient();
+                throw ex;
+            }
+
+
             return result;
         }
 

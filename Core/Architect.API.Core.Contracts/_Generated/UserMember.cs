@@ -154,6 +154,14 @@ namespace Architect.API.Core.Contracts.Security
         /// Fecha que se actualizo por última vez el registro.
         /// </summary>
         [DataMember(), JsonProperty()] public DateTime UpdateDate { get; set; }
+        /// <summary>
+        /// Codigo del agente.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int cod_agt { get; set; }
+        /// <summary>
+        /// Respuesta TRON SubAgente
+        /// </summary>
+        [DataMember(), JsonProperty()] public string responseTronSubAgent { get; set; }
     }
 }
 

@@ -34,8 +34,14 @@
     <Reference Include="Architect.Decision">
       <HintPath>..\..\runtime\Architect.Decision.dll</HintPath>
     </Reference>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.9.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\..\packages\BouncyCastle.1.8.9\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.3, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\iTextSharp.5.5.13.3\lib\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -60,6 +66,7 @@
     <Compile Include="Cotizacion\API.cs" />
     <Compile Include="Cotizacion\APIConvertTo.cs" />
     <Compile Include="Cotizacion\Generico.cs" />
+    <Compile Include="Cotizacion\MapfreMasPlus.cs" />
     <Compile Include="Cotizacion\SaldoDeudorConvert.cs" />
     <Compile Include="Cotizacion\MapfreMasConvertTo.cs" />
     <Compile Include="Cotizacion\MapfreMasConvertFrom.cs" />
@@ -74,16 +81,25 @@
     <Compile Include="Cotizacion\HogarTotalConvertTo.cs" />
     <Compile Include="Cotizacion\HogarTotal.cs" />
     <Compile Include="Cotizacion\SaldoDeudor.cs" />
+    <Compile Include="Cotizacion\Estudiantil.cs" />
     <Compile Include="Cotizacion\Viajero.cs" />
+    <Compile Include="Cotizacion\EstudiantilConvert.cs" />
     <Compile Include="Cotizacion\ViajeroConvert.cs" />
+    <Compile Include="Emision\ComplianceSetup.cs" />
+    <Compile Include="Emision\MapfreMasPlus.cs" />
     <Compile Include="Emision\MultirriesgoConvertFrom.cs" />
     <Compile Include="Emision\MapfreMasConvertFrom.cs" />
     <Compile Include="Emision\MultirriesgoConvertTo.cs" />
     <Compile Include="Emision\SaldoDeudor.cs" />
     <Compile Include="Emision\SaldoDeudorConvert.cs" />
+    <Compile Include="Emision\Estudiantil.cs" />
     <Compile Include="Emision\Viajero.cs" />
+    <Compile Include="Emision\EstudiantilConvertFrom.cs" />
     <Compile Include="Emision\ViajeroConvertFrom.cs" />
+    <Compile Include="Emision\EstudiantilConvertTo.cs" />
     <Compile Include="Emision\ViajeroConvertTo.cs" />
+    <Compile Include="GeneratedPDF.cs" />
+    <Compile Include="Info.cs" />
     <Compile Include="Ramo\Configuracion.cs" />
     <Compile Include="Reglas\research.cs" />
     <Compile Include="Siniestro\Purdy.cs" />
@@ -105,6 +121,10 @@
     <ProjectReference Include="..\..\Core\Architect.API.Core.Contracts\Architect.API.Core.Contracts.csproj">
       <Project>{29b21bef-8c87-4a9d-8b37-fecc57cd03c7}</Project>
       <Name>Architect.API.Core.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Architect.Compliance.Integrations\Architect.Compliance.Integrations.csproj">
+      <Project>{1a9f7166-6c86-44a6-8920-cd52422a2044}</Project>
+      <Name>Architect.Compliance.Integrations</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Core\Architect.DocuSign.Integrations\Architect.DocuSign.Integrations.csproj">
       <Project>{41b3f1c8-fdb5-4db4-be61-6bf1576a09e7}</Project>

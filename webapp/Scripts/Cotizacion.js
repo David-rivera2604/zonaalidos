@@ -35,7 +35,7 @@ app.Cotizacion = (function () {
                         }
                     });
         },
-        ImprimirPoliza: function (num_poliza,num_riesgo) {
+        ImprimirPoliza: function (num_poliza, num_riesgo) {
             app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/ImprimirPoliza/' + num_poliza + "/" + num_riesgo, false, 'Mapfre Certificado.pdf');
         },
         ImprimirRecibo: function (num_recibo) {
@@ -43,24 +43,32 @@ app.Cotizacion = (function () {
         },
         Coberturas_Seleccionada: function (lista, codigo) {
             var result = false;
-            for (var i = 0; i < lista.length; i++) {
-                if (lista[i].codigo == codigo) {
-                    result = lista[i].seleccionado;
-                    break;
+            if (lista != null) {
+                for (var i = 0; i < lista.length; i++) {
+                    if (lista[i].codigo == codigo) {
+                        result = lista[i].seleccionado;
+                        break;
+                    }
                 }
             }
             return result;
         },
         Coberturas_ComportamientoDependencia: function (element, disabled) {
-            $(element).prop("disabled", disabled);
+            let ctrol = $(element);
+            ctrol.prop("disabled", disabled);
             if (disabled) {
                 $(element + '-error').html('');
-                $(element).removeClass('error');
+                ctrol.removeClass('error');
             }
             else {
-                if ($(element).children().length == 1) {
-                    $(element).val($(element + ' option:first').val());
-                    $(element).change();
+                if (ctrol.children().length == 1) {
+                    ctrol.val($(element + ' option:first').val());
+                    ctrol.change();
+                } else {
+                    if (!disabled && ctrol.data("autoselect") === true) {
+                        ctrol.val($(element + ' option:first').val());
+                        ctrol.change();
+                    }
                 }
             }
         }

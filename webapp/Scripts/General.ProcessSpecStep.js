@@ -160,6 +160,11 @@ app.GeneralProcessSpecStep = (function () {
                     halign: 'center',
                     visible: false
                 }, {
+                    field: 'RoleNames',
+                    title: 'Roles',
+                    sortable: true,
+                    halign: 'center'
+                }, {
                     field: 'UpdateDate',
                     title: 'Realizado por',
                     class: 'd-none d-sm-table-cell',
@@ -603,7 +608,10 @@ app.GeneralProcessSpecStep = (function () {
                     field: 'Name',
                     title: 'Name',
                     sortable: true,
-                    halign: 'center'
+                    halign: 'center',
+                    formatter: function (value, row, index, field) {
+                        return `<a class="edit" href="ProcessSpecTask?id=${row.Id}" title="Al hacer click permite editar la tarea">${value}</a>`;
+                    }
                 }, {
                     field: 'Description',
                     title: 'Descripción',

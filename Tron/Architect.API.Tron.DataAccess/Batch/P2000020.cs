@@ -71,8 +71,8 @@ namespace Architect.API.Tron.DataAccess.Batch
                                             " WHERE COD_CIA=1" +
                                              "  AND NUM_POLIZA=:P_NUM_POLIZA" +
                                              "  AND COD_CAMPO=:P_COD_CAMPO")
-               .AddParameter("P_NUM_POLIZA", Architect.DataFactory.Enumerations.DbType.String, 20, num_presupuesto)
-               .AddParameter("P_COD_CAMPO", Architect.DataFactory.Enumerations.DbType.String, 20, cod_campo)
+               .AddParameter("P_NUM_POLIZA", Architect.DataFactory.Enumerations.DbType.String, 25, num_presupuesto)
+               .AddParameter("P_COD_CAMPO", Architect.DataFactory.Enumerations.DbType.String, 35, cod_campo)
                                           .QueryScalar<Decimal>(currentConnection, "Tron") >0;
         }
 

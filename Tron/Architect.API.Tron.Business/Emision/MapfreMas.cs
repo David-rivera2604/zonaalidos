@@ -1,22 +1,26 @@
-﻿using Architect.Utilities.Extensions;
+﻿using Architect.API.Insurance.Contracts.Bayer;
+using Architect.Compliance.Integrations.Contracts;
+using Architect.Utilities.Extensions;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 
 namespace Architect.API.Tron.Business.Emision
 {
     public static class MapfreMas
     {
         /// <summary>
-        /// 
+        /// Preparara información necesaria para inicial la emision de una póliza.
         /// </summary>
-        /// <param name="presupuesto"></param>
+        /// <param name="presupuesto">Número de presupuesto</param>
         /// <param name="mode">"continue" para retomar un presupuesto (json), "resume" para retomar directo de una cotización de tron, "draft" para complementar la solicitud para luego retomar bajo el modo "continue".</param>
-        /// <param name="tokenInfo"></param>
-        /// <returns></returns>
+        /// <param name="tokenInfo">Información de contexto del usuario conectando.</param>
         public static Contracts.Emision.MapfreMas Setup(string presupuesto, string mode, Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.Emision.MapfreMas result = null;
@@ -50,7 +54,8 @@ namespace Architect.API.Tron.Business.Emision
 
                 result.Modo = mode;
 
-                if (mode.IsEmpty() || mode == "draft" || mode == "resume" || tryOnTron)
+                if (!tokenInfo.Roles.Contain("Purdy") &&
+                    (mode.IsEmpty() || mode == "draft" || mode == "resume" || tryOnTron))
                 {
                     result.terceros = Reglas.research.Apply_Terceros("MapfreMas", result.terceros, result.Fuente_Tomador, tokenInfo);
                 }
@@ -98,14 +103,25 @@ namespace Architect.API.Tron.Business.Emision
         public static Contracts.Emision.MapfreMas Issue(Contracts.Emision.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.Emision.MapfreMas resultQuoteInfo = null;
-            if (quoteInfo.Modo == "draft")
+            if (quoteInfo.Modo == "draft" || quoteInfo.Modo == "resume")
             {
-
                 //TODO: Se debe incluir la validación de que de haber un Tomador, Asegurado y Conductor Habitual, pero faltan las básicas.
                 quoteInfo.DatosEconomicos = EconomicDataCalculate(quoteInfo);
 
+                //Utilities.SerializeHandler<Contracts.Emision.MapfreMas>.
+                //    SerializeJSONToFile(quoteInfo,
+                //        string.Format(@"{1}\mapfremas.request.{0}.json", quoteInfo.presupuesto, ConfigurationManager.AppSettings["Path.Logs"]), true, false, false);
+
+
+                //ComplianceSetup.Send(quoteInfo, tokenInfo);
+
                 string uniqueId = EnviarSolicitud(quoteInfo.tip_firma, quoteInfo.correoenvio, quoteInfo, tokenInfo);
-                AlmacenarSolicitud(quoteInfo, quoteInfo.tip_firma == Contracts.TipoDeFirma.Manual ? 33 : 4, tokenInfo, uniqueId);
+                string kycUniqueId = String.Empty;
+                //if (quoteInfo.kyc != null)
+                //{
+                //    kycUniqueId = EnviarKYC(quoteInfo.tip_firma, quoteInfo.correoenvio, quoteInfo, tokenInfo);
+                //}
+                AlmacenarSolicitud(quoteInfo, quoteInfo.tip_firma == Contracts.TipoDeFirma.Manual ? 33 : 4, tokenInfo, uniqueId, kycUniqueId);
                 GuardaDatosVariables(quoteInfo.presupuesto, quoteInfo.cod_ramo, quoteInfo.tip_firma, quoteInfo.tip_firmaDesc, uniqueId);
                 string message = string.Empty;
                 if (uniqueId.IsNotEmpty())
@@ -167,6 +183,21 @@ namespace Architect.API.Tron.Business.Emision
                     };
 
                 }
+<<<<<<< HEAD
+=======
+                try
+                {
+                    if (resultQuoteInfo.num_poliza.IsNotEmpty())
+                    {
+                        ComplianceSetup.Send(quoteInfo, tokenInfo);
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Utilities.Log.ErrorLog("Issue.Compliance", "Fail send compliance information", ex);
+                }
+>>>>>>> 2603d8692335166cf5801e413f5bc98d7a338de7
 
             }
             return resultQuoteInfo;
@@ -285,21 +316,45 @@ namespace Architect.API.Tron.Business.Emision
             DocuSign.Integrations.Contracts.SubmitResult submit = new DocuSign.Integrations.Contracts.SubmitResult();
             string solicitudPDF = General_PDF_Solicitud(quoteInfo, tokenInfo);
             Contracts.Comun.tercero primaryInsured = (from t in quoteInfo.terceros where t.tipodetercero == 2 select t).First();
-
             if (tip_firma == Contracts.TipoDeFirma.Manual)
             {
                 Core.Business.General.Mail.SendByTemplate("MapfreMas_Solicitud", tokenInfo.CompanyId, tokenInfo.UserId, 0, quoteInfo,
                     new Dictionary<string, string>() { { correoenvio, string.Empty } },
                     new string[] { string.Format("{0};Solicitud {1}.pdf", solicitudPDF, quoteInfo.presupuesto) });
+                submit.UniqueId = quoteInfo.presupuesto;
             }
             else
             {
                 submit = DocuSign.Integrations.DocuSign.Submit(
                                 quoteInfo.presupuesto,
-                                "Envío solicitud " + quoteInfo.presupuesto,
+                                "Solicitud de seguro, presupuesto " + quoteInfo.presupuesto,
                                 primaryInsured.nombre.CompleteFullName(primaryInsured.apellido1, primaryInsured.apellido2),
                                 correoenvio,
                                 solicitudPDF, quoteInfo.tip_firma == Contracts.TipoDeFirma.Tablet ? "Handwriting" : "WebClick").GetAwaiter().GetResult();
+            }
+            return submit.UniqueId;
+        }
+
+        private static string EnviarKYC(string tip_firma, string correoenvio, Contracts.Emision.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
+        {
+            DocuSign.Integrations.Contracts.SubmitResult submit = new DocuSign.Integrations.Contracts.SubmitResult();
+            string kycPDF = General_PDF_KYC(quoteInfo);
+            Contracts.Comun.tercero primaryInsured = (from t in quoteInfo.terceros where t.tipodetercero == 2 select t).First();
+
+            if (tip_firma == Contracts.TipoDeFirma.Manual)
+            {
+                Core.Business.General.Mail.SendByTemplate("MapfreMas_Solicitud", tokenInfo.CompanyId, tokenInfo.UserId, 0, quoteInfo,
+                    new Dictionary<string, string>() { { correoenvio, string.Empty } },
+                    new string[] { string.Format("{0};Solicitud {1}.pdf", kycPDF, quoteInfo.presupuesto) });
+            }
+            else
+            {
+                submit = DocuSign.Integrations.DocuSign.Submit(
+                            quoteInfo.presupuesto,
+                            "Conozca a su cliente " + quoteInfo.presupuesto,
+                            primaryInsured.nombre.CompleteFullName(primaryInsured.apellido1, primaryInsured.apellido2),
+                            correoenvio,
+                            kycPDF, quoteInfo.tip_firma == Contracts.TipoDeFirma.Tablet ? "Handwriting" : "WebClick").GetAwaiter().GetResult();
 
             }
             return submit.UniqueId;
@@ -309,10 +364,12 @@ namespace Architect.API.Tron.Business.Emision
         {
             Contracts.Emision.MapfreMasSolicitud data = Newtonsoft.Json.JsonConvert.DeserializeObject<Contracts.Emision.MapfreMasSolicitud>(Newtonsoft.Json.JsonConvert.SerializeObject(quoteInfo));
 
+            data.kyc = quoteInfo.kyc;
             data.titular = (from t in data.terceros where t.tipodetercero == 0 select t).FirstOrDefault();
             data.asegurado = (from a in data.terceros where a.tipodetercero == 2 select a).FirstOrDefault();
             data.conductor = (from c in data.terceros where c.tipodetercero == 3 select c).FirstOrDefault();
             data.acredor = (from c in data.terceros where c.tipodetercero == 8 select c).FirstOrDefault();
+
             int index = 1;
             foreach (Contracts.Comun.tercero item in from b in data.terceros where b.tipodetercero == 6 select b)
             {
@@ -337,10 +394,31 @@ namespace Architect.API.Tron.Business.Emision
                 data.mainrole = "Purdy";
             }
 
-            return Core.Business.General.Report.GeneratePDFFile("mapfremas_solicitud", data).GetAwaiter().GetResult();
+            if (tokenInfo.Roles.Contain("PolizaGrupo"))
+            {
+                return Core.Business.General.Report.GeneratePDFFile("mapfremas_solicitud", data).GetAwaiter().GetResult();
+            }
+            else
+            {
+                return Core.Business.General.Report.GeneratePDFFile("mapfremas_solicitud_individual", data).GetAwaiter().GetResult();
+            }
+
+
         }
 
-        private static void AlmacenarSolicitud(Contracts.Emision.MapfreMas quoteInfo, int status, Core.Contracts.Security.Token tokenInfo, string uniqueId)
+        private static string General_PDF_KYC(Contracts.Emision.MapfreMas quoteInfo)
+        {
+            string pdf_FileName = "KYC_Persona";
+            Contracts.Comun.tercero titular = (from t in quoteInfo.terceros where t.tipodetercero == 0 select t).FirstOrDefault();
+
+            if (titular.DocumentNumberType == 4)
+            {
+                pdf_FileName = "KYC_Juridico";
+            }
+            return Core.Business.General.Report.GeneratePDFFile(pdf_FileName, quoteInfo.kyc).GetAwaiter().GetResult();
+        }
+
+        private static void AlmacenarSolicitud(Contracts.Emision.MapfreMas quoteInfo, int status, Core.Contracts.Security.Token tokenInfo, string uniqueId, string signingRequest2Id = "")
         {
             Contracts.Comun.tercero primaryInsured = (from t in quoteInfo.terceros where t.tipodetercero == 2 select t).First();
             DataAccess.PolicyProposal.Create(new Contracts.PolicyProposal()
@@ -354,6 +432,8 @@ namespace Architect.API.Tron.Business.Emision
                 Summary = string.Format("Placa: {0}, Chasis: {1}, Motor: {2}, Color: {3}", quoteInfo.NUM_MATRICULA, quoteInfo.COD_CHASSIS, quoteInfo.NUM_MOTOR, quoteInfo.COD_COLORDesc),
                 IssueDate = DateTime.Now,
                 SigningRequestId = uniqueId,
+                SigningRequest2Id = signingRequest2Id,
+                SignedRequest2 = false,
                 SigningType = quoteInfo.tip_firma,
                 PrimaryEmailAddress = quoteInfo.correoenvio,
                 Status = status,
@@ -440,6 +520,7 @@ namespace Architect.API.Tron.Business.Emision
             }
             return result;
         }
+
 
     }
 }

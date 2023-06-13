@@ -2,6 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+<<<<<<< HEAD
+=======
+using System.Data;
+>>>>>>> 2603d8692335166cf5801e413f5bc98d7a338de7
 using System.IO;
 using System.Web.Hosting;
 
@@ -90,7 +94,10 @@ namespace Architect.API.Core.Business.General
             }
             return SyncUp(attachment);
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2603d8692335166cf5801e413f5bc98d7a338de7
         public static Contracts.General.Attachments SyncUp(Contracts.General.Attachments attachment)
         {
             attachment.UpdateDate = DateTime.Now;
@@ -104,6 +111,11 @@ namespace Architect.API.Core.Business.General
                 DataAccess.General.Attachments.UpdateCustom(attachment);
             }
             return attachment;
+        }
+
+        public static int Delete(int entityType, long entityId, int companyId, IDbConnection connection = null)
+        {
+            return DataAccess.General.Attachments.Delete(entityType, entityId, companyId, connection);
         }
 
         public static void Delete(int id)

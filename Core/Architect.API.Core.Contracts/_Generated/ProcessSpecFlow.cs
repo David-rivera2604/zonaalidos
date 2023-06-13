@@ -256,6 +256,12 @@ namespace Architect.API.Core.Contracts.General
         /// Fecha que se actualizo por última vez el registro.
         /// </summary>
         public DateTime UpdateDate { get; set; }
+<<<<<<< HEAD
+=======
+
+    }
+}
+>>>>>>> 2603d8692335166cf5801e413f5bc98d7a338de7
 
     }
 }

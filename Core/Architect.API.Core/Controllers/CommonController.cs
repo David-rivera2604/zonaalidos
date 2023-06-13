@@ -12,7 +12,6 @@ using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web.Http.OData;
 
 namespace Architect.API.Core.Controllers
 {
@@ -31,7 +30,6 @@ namespace Architect.API.Core.Controllers
         /// <param name="parentId">clave que identifica el agrupado de la lista dependiente.</param>
         /// <param name="url"></param>
         /// <returns>Lista de valores disponibles</returns>
-        [EnableQuery]
         [HttpGet]
         [Route("LkpChild")]
         public IQueryable<Contracts.General.LookupValue> LkpChild([FromUri] string key, [FromUri] int parentId, [FromUri] string url = "")
@@ -48,7 +46,6 @@ namespace Architect.API.Core.Controllers
         /// <param name="keys">Lista de claves de valores posibles separadas por coma.</param>
         /// <param name="url"></param>
         /// <returns>Múltiples listas de valores disponibles</returns>
-        [EnableQuery]
         [HttpGet]
         [Route("Lkps")]
         [Authorize]

@@ -12,9 +12,6 @@ namespace Architect.API.Core.DataAccess.General
         /// <summary>
         /// Recupera una plantilla por medio de la clave de la misma para la compañía en tratamiento o para la compañía 0.
         /// </summary>
-        /// <param name="companyId"></param>
-        /// <param name="key"></param>
-        /// <returns></returns>
         public static Contracts.General.InternalTemplate Retrieve(int companyId, string key)
         {
             Contracts.General.InternalTemplate result = new Contracts.General.InternalTemplate()
@@ -31,15 +28,16 @@ namespace Architect.API.Core.DataAccess.General
                         .Cache(ConfigurationManager.AppSettings["Working.Mode"] != "Development")
                         .Query(null, "Research", new Action<System.Data.IDataReader>((reader) =>
                         {
-
-                            result = new Contracts.General.InternalTemplate()
+                            if (result.Subject == "Plantilla no encontrada")
                             {
-                                Subject = reader.StringValue("Subject"),
-                                Body = reader.StringValue("Body"),
-                                EmailTo = reader.StringValue("EmailTo"),
-                                MasterTemplateId = reader.IntegerValue("MasterTemplateId")
-                            };
-
+                                result = new Contracts.General.InternalTemplate()
+                                {
+                                    Subject = reader.StringValue("Subject"),
+                                    Body = reader.StringValue("Body"),
+                                    EmailTo = reader.StringValue("EmailTo"),
+                                    MasterTemplateId = reader.IntegerValue("MasterTemplateId")
+                                };
+                            }
                         }), false);
 
             return result;
@@ -61,14 +59,16 @@ namespace Architect.API.Core.DataAccess.General
                         .Cache(ConfigurationManager.AppSettings["Working.Mode"] != "Development")
                         .Query(null, "Research", new Action<System.Data.IDataReader>((reader) =>
                         {
-                            result = new Contracts.General.InternalTemplate()
+                            if (result.Subject == "Plantilla no encontrada")
                             {
-                                Subject = reader.StringValue("Subject"),
-                                Body = reader.StringValue("Body"),
-                                EmailTo = reader.StringValue("EmailTo"),
-                                MasterTemplateId = reader.IntegerValue("MasterTemplateId")
-                            };
-
+                                result = new Contracts.General.InternalTemplate()
+                                {
+                                    Subject = reader.StringValue("Subject"),
+                                    Body = reader.StringValue("Body"),
+                                    EmailTo = reader.StringValue("EmailTo"),
+                                    MasterTemplateId = reader.IntegerValue("MasterTemplateId")
+                                };
+                            }
                         }), false);
 
             return result;

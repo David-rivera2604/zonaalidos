@@ -3,19 +3,27 @@
 }
 @Styles.Render("~/Content/cssCRUD")
 <div class="row">
-    <div id="mainBlock" class="col-md-12">
+    <div id="mainBlock" class="col-md-12 p-0">
         <div class="ibox">
-            <div class="ibox-title">
-                <h5><i class="fa fa-home"></i> <span id="PageTitle">Hogar Total</span><small class="m-l-sm"><span id="PageSubTitle"> Cotización.</span></small> </h5>
-                <!-- Opciones -->
-                <div class="ibox-tools">
-                    <a class="fullscreen-link">
-                        <i class="fa fa-expand"></i>
-                    </a>
+            <div class="ibox-title p-0">
+                <div class="Title_Prin py-2">
+                    <div class="title_design T1">
+                        <h5><i class="fa fa-home"></i> <span id="PageTitle">Hogar Total</span></h5><br>
+                        <small class="m-l-sm"><span id="PageSubTitle"> Cotización.</span></small>
+                    </div>
+                    <div class="title_partner T2">
+                        <p class="text-muted small">MAPFRE le trae una nueva forma de proteger a su familia, con nuestro seguro Hogar Total. Más que un seguro contra siniestros o robos, es un seguro de protección total para su hogar; 11 riesgos de cobertura básica y 8 coberturas opcionales.</p>
+                    </div>
+                    <div class="title_partner T3 text-center">
+                        <a href="https://www.mapfre.cr/seguros-cr/seguros/hogar/hogar-total/" target="_blank">Seguro Hogar Total</a>
+                        <p class="mt-2 text-center">
+                            Más que un seguro, una protección integral.
+                        </p>
+                    </div>
                 </div>
             </div>
-            <div class="ibox-content">
-                <p class="text-muted small">MAPFRE le trae una nueva forma de proteger a su familia, con nuestro seguro Hogar Total. Más que un seguro contra siniestros o robos, es un seguro de protección total para su hogar; 11 riesgos de cobertura básica y 8 coberturas opcionales. <a href="https://www.mapfre.cr/seguros-cr/seguros/hogar/hogar-total/" target="_blank">Seguro hogar total</a>, más que un seguro, una protección integral.</p>
+
+            <div class="ibox-content box_design">
                 <div class="sk-spinner sk-spinner-wave">
                     <div class="sk-rect1"></div>
                     <div class="sk-rect2"></div>
@@ -25,9 +33,16 @@
                 </div>
                 <div id="generalNotify">
                 </div>
+
                 <!-- Edit Form -->
                 <div class='form-row'>
-                    <div class='col-md-12'>
+                    <!-- Opciones -->
+                    <div class="ibox-tools">
+                        <a class="fullscreen-link">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                    </div>
+                    <div class='col-md-12 m-2'>
                         <div id="VisualizationsEdt" class="animated fadeInRight">
                             <form id='VisualizationsEdtForm' class='form-horizontal' data-toggle='validator'>
                                 <fieldset>
@@ -35,7 +50,7 @@
                                     <div class="form-row">
                                         <div class="col-lg-12">
 
-                                            <h4>Datos generales</h4>
+                                            <h4><i class="fa fa-list"></i>  Datos generales</h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -116,7 +131,7 @@
                                     <!-- datosdelhogar Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4>Datos del hogar</h4>
+                                            <h4><i class="fa fa-home"></i> Datos del hogar</h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -192,7 +207,7 @@
                                                     </div>
                                                 </div>
                                                 <!-- medidasdeseguridad DropDownList -->
-                                                <div class='col-sm-3 col-md-3'>
+                                                <div class='col-sm-3 col-md-4'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='medidasdeseguridad'>Medidas de seguridad</label>
                                                         <select id='medidasdeseguridad' name='medidasdeseguridad' class='form-control' multiple="multiple"></select>
@@ -206,59 +221,6 @@
                                                         <select id='descuento' name='descuento' class='form-control'></select>
                                                     </div>
                                                 </div>
-
-                                                <!-- CERCA_RI_MAR_LAG_TA_CI RadioButtonList -->
-                                                <div class='col-sm-3 col-md-3 role-esph-visible d-none'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='CERCA_RI_MAR_LAG_TA_CI'>¿Está cerca de un río, mar, lago, talud, en la cima?</label>
-                                                        <div style="padding-top: 6px;">
-                                                            <div class="custom-control custom-radio custom-control-inline">
-                                                                <input type="radio" class="custom-control-input" id="CERCA_RI_MAR_LAG_TA_CI_1" name="CERCA_RI_MAR_LAG_TA_CI" value="1">
-                                                                <label class="custom-control-label" for="CERCA_RI_MAR_LAG_TA_CI_1">Si</label>
-                                                            </div><div class="custom-control custom-radio custom-control-inline">
-                                                                <input type="radio" class="custom-control-input" id="CERCA_RI_MAR_LAG_TA_CI_2" name="CERCA_RI_MAR_LAG_TA_CI" value="2">
-                                                                <label class="custom-control-label" for="CERCA_RI_MAR_LAG_TA_CI_2">No</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!-- DISTANCIA_MTS Numeric -->
-                                                <div class='col-sm-3 col-md-3 role-esph-visible d-none'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='DISTANCIA_MTS'>Distancia/Metros</label>
-                                                        <input type='text' id='DISTANCIA_MTS' name='DISTANCIA_MTS' class='form-control text-right' size='6' maxlength='6' disabled />
-                                                    </div>
-                                                </div>
-
-                                                <!-- INS_ELECT_ENTUB RadioButtonList -->
-                                                <div class='col-sm-3 col-md-3 role-esph-visible d-none'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='INS_ELECT_ENTUB'>¿Las instalaciones eléctricas se encuentran entubadas?</label>
-                                                        <div style="padding-top: 6px;">
-                                                            <div class="custom-control custom-radio custom-control-inline">
-                                                                <input type="radio" class="custom-control-input" id="INS_ELECT_ENTUB_1" name="INS_ELECT_ENTUB" value="1">
-                                                                <label class="custom-control-label" for="INS_ELECT_ENTUB_1">Si</label>
-                                                            </div><div class="custom-control custom-radio custom-control-inline">
-                                                                <input type="radio" class="custom-control-input" id="INS_ELECT_ENTUB_2" name="INS_ELECT_ENTUB" value="2">
-                                                                <label class="custom-control-label" for="INS_ELECT_ENTUB_2">No</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!-- otrassenas Text -->
-                                                <div class='col-sm-3 col-md-3 role-esph-visible d-none'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='otrassenas'>
-                                                            Otras señas<span class='required-mark'
-                                                                             title='Este campo debe ser llenado de forma obligatoria'>*</span>
-                                                        </label>
-                                                        <input type='text' id='otrassenas' name='otrassenas' class='form-control' size='100'
-                                                               maxlength='100' />
-                                                    </div>
-                                                </div>
-
                                             </div>
                                         </div>
                                     </div>
@@ -271,7 +233,7 @@
                                                 <div class="col-lg-12">
                                                     <div class="form-row">
                                                         <div class='col'>
-                                                            <h4>Coberturas<label id="coberturasTbl-validate" class="float-right d-none LabelValidate"></label></h4>
+                                                            <h4><i class="fa fa-check-square"></i> Coberturas<label id="coberturasTbl-validate" class="float-right d-none LabelValidate"></label></h4>
                                                         </div>
                                                         <div class='col-auto'>
                                                             <button type="button" class="btn btn-sm btn-white d-none" title="Al hacer click permite agregar un nuevo Coberturas" data-toggle="modal" id="coberturasNew"> <i class="fa fa-plus"></i> </button>
@@ -296,7 +258,7 @@
                                                 <div class="col-lg-12">
                                                     <div class="form-row">
                                                         <div class='col'>
-                                                            <h4>Sumas aseguradas</h4>
+                                                            <h4><i class="fa fa-plus-square"></i> Sumas aseguradas</h4>
                                                         </div>
                                                     </div>
                                                     <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
@@ -411,8 +373,11 @@
     <div id="quoteBlock" class="col-md-3 animated bounceInRight d-none">
 
         <div class="ibox">
-            <div class="ibox-title">
-                <h5>Resumen de la cotización</h5>
+            <div class="ibox-title text-center float-right">
+                <div class="quote-title">
+                    <h4><i class="fa fa-file-text-o"></i> Resumen de la cotización</h4>
+                    <span class="label label-success" style="font-size: small;">Presupuesto #<span id="presupuesto"></span></span>
+                </div>
             </div>
             <div class="ibox-content">
 
@@ -472,5 +437,3 @@
         });
     </script>
 }
-
-

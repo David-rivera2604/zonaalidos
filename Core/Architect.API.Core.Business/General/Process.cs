@@ -726,7 +726,11 @@ namespace Architect.API.Core.Business.General
                     procCase = Business.General.ProcessCase.RetrieveById(companyId, caseId);
                 }
 
+<<<<<<< HEAD
                 Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = step, Spec = spec }, mailFullList, attachments);
+=======
+                Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = step, Spec = spec}, mailFullList, attachments);
+>>>>>>> 2603d8692335166cf5801e413f5bc98d7a338de7
             }
         }
 
@@ -781,7 +785,11 @@ namespace Architect.API.Core.Business.General
                 {
                     procCase = ProcessCase.RetrieveById(companyId, caseId);
                 }
+<<<<<<< HEAD
                 Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = step, Spec = spec }, mailFullList);
+=======
+                Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = step, Spec = spec}, mailFullList);
+>>>>>>> 2603d8692335166cf5801e413f5bc98d7a338de7
             }
         }
 
@@ -832,7 +840,11 @@ namespace Architect.API.Core.Business.General
                 {
                     procCase = ProcessCase.RetrieveById(companyId, caseId);
                 }
+<<<<<<< HEAD
                 Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = entity, Spec = spec }, mailFullList);
+=======
+                Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = entity, Spec = spec}, mailFullList);
+>>>>>>> 2603d8692335166cf5801e413f5bc98d7a338de7
             }
         }
 

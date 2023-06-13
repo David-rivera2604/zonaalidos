@@ -38,9 +38,9 @@ namespace Architect.API.Tron.Business.Cotizacion
                 numerodepisosedificacion = 1,
                 tipodeestrucdelaedificacion = 1,
                 Agente = tokenInfo.UserName,
-                CERCA_RI_MAR_LAG_TA_CI = 2,
-                DISTANCIA_MTS = 0,
-                INS_ELECT_ENTUB = 2
+                //CERCA_RI_MAR_LAG_TA_CI = 2,
+                //DISTANCIA_MTS = 0,
+                //INS_ELECT_ENTUB = 2
             };
 
             bool IsCoope = false;

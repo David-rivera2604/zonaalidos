@@ -10,6 +10,16 @@ namespace Architect.API.Core.DataAccess.General
 {
     public sealed partial class Attachments
     {
+
+        public static int Delete(int entityType, long entityId, int companyId, IDbConnection connection = null)
+        {
+            return Database.Delete("Attachments", ExecuteMode.CommandBuilder)
+                    .Filter("EntityType", DbType.Decimal, 5, entityType)
+                    .Filter("EntityId", DbType.Decimal, 18, entityId)
+                    .Filter("CompanyId", DbType.Decimal, 5, companyId)
+                    .Execute(connection, "Research");
+        }
+
         /// <summary>
         /// Elimina un registro en la tabla Attachments por medio de su clave primaria.
         /// </summary>

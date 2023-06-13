@@ -21,7 +21,7 @@ namespace Architect.API.Core.Business.General
 
             List<Contracts.General.TenantLookup> tenantLkpMaster = new List<Contracts.General.TenantLookup>();
             Contracts.General.TenantLookup result = null;
-            if (Architect.Utilities.Cache.NotExist("tenantLkpMaster"))
+            if (Utilities.Cache.NotExist("tenantLkpMaster") || Utilities.Helpers.Settings.StringValue("Working.Mode") == "Development")
             {
                 List<Contracts.General.LookupMaster> lookupList = DataAccess.General.LookupMaster.RetrieveAll(string.Empty);
                 foreach (Contracts.General.LookupMaster item in lookupList)

@@ -10,21 +10,37 @@ namespace Architect.API.Tron.Business.Cotizacion
     {
         internal static Contracts.Cotizacion.HogarTotal Quote(Contracts.Presupuesto.DatoFijo tronQuoteInfo)
         {
-            Contracts.Cotizacion.HogarTotal data = DatosFijos(tronQuoteInfo);
-            data = DatosVariables(data, tronQuoteInfo);
-            return data;
-        }
-
-        private static Contracts.Cotizacion.HogarTotal DatosFijos(Contracts.Presupuesto.DatoFijo tronQuoteInfo)
-        {
-
-            return new Contracts.Cotizacion.HogarTotal()
+            Contracts.Cotizacion.HogarTotal quoteInfo = new Contracts.Cotizacion.HogarTotal()
             {
+                cod_ramo = tronQuoteInfo.cod_ramo,
+                presupuesto = tronQuoteInfo.num_poliza,
+                moneda = tronQuoteInfo.cod_mon,
+                fraccionamientodepago = tronQuoteInfo.cod_fracc_pago,
                 iniciodevigencia = tronQuoteInfo.fec_efec_poliza,
                 findevigencia = tronQuoteInfo.fec_vcto_poliza,
-                moneda = tronQuoteInfo.cod_mon,
-                fraccionamientodepago = tronQuoteInfo.cod_fracc_pago
+                contrato = tronQuoteInfo.num_contrato,
+                subcontrato = tronQuoteInfo.num_subcontrato,
+                polizagrupo = tronQuoteInfo.num_poliza_grupo,
+                coberturas = new List<Contracts.Comun.Cobertura>()
             };
+
+            quoteInfo = DatosVariables(quoteInfo, tronQuoteInfo);
+
+            foreach (Contracts.Presupuesto.Cobertura item in tronQuoteInfo.Coberturas)
+            {
+                quoteInfo.coberturas.Add(new Contracts.Comun.Cobertura()
+                {
+                    seleccionado = true,
+                    requerida = true,
+                    codigo = item.cod_cob,
+                    nombre = item.nom_cob,
+                    capital = item.suma_aseg,
+                    primatotal = item.imp_total,
+                    deducible = item.nom_franquicia
+                });
+            }
+
+            return DatosVariables(quoteInfo, tronQuoteInfo);
         }
 
         private static Contracts.Cotizacion.HogarTotal DatosVariables(Contracts.Cotizacion.HogarTotal quoteInfo, Contracts.Presupuesto.DatoFijo tronQuoteInfo)
@@ -60,6 +76,9 @@ namespace Architect.API.Tron.Business.Cotizacion
                     case "NUM_PISOS_EDIF": // NÚMERO DE PISOS EDIFICACIÓN
                         quoteInfo.numerodepisosedificacion = Convert.ToInt32(item.val_campo);
                         break;
+                    case "COD_TIPO_ESTRUC": // TIPO DE ESTRUC DE LA EDIFICACI
+                        quoteInfo.tipodeestrucdelaedificacion = Convert.ToInt32(item.val_campo);
+                        break;
                     case "COB_PDR_MESES": // MESES A AMPARAR POR PERD RENTA
                         quoteInfo.mesesaampararporperdrentas = Convert.ToInt32(item.val_campo);
                         break;
@@ -91,11 +110,12 @@ namespace Architect.API.Tron.Business.Cotizacion
                     case "NUM_MED_ROB": // ¿# MEDIDAS SEGURIDAD ROBO?
                         if (Convert.ToInt32(item.val_campo) > 0 && tronQuoteInfo.Ocurrencias?.Count > 0)
                         {
+                            quoteInfo.medidasdeseguridad = string.Empty;
                             foreach (Contracts.Presupuesto.Ocurrencia ocurrencia in from t in tronQuoteInfo.Ocurrencias where t.cod_campo == "COD_TIP_MED_ROB" orderby t.num_ocurrencia select t)
                             {
                                 if (quoteInfo.medidasdeseguridad.IsNotEmpty())
                                 {
-                                    quoteInfo.medidasdeseguridad += ",";
+                                    quoteInfo.medidasdeseguridad += "-";
                                 }
                                 quoteInfo.medidasdeseguridad += ocurrencia.val_campo;
                             }
@@ -127,7 +147,6 @@ namespace Architect.API.Tron.Business.Cotizacion
 
                     case "NUM_METROS_CONSTRUIDOS": // METROS CONSTRUIDOS
                     case "ALTURA_EDIF": // ÁLTURA APRÓXIMADA EN METROS
-                    case "COD_TIPO_ESTRUC": // TIPO DE ESTRUC DE LA EDIFICACI
                     case "MCA_COB_INCENDIO": // ¿COB, A-INCENDIO?
                     case "MCA_COB_TERR": // ¿COB. TERREMOTO (S/N)?
                     case "MCA_COB_INUN": // ¿COB. INUNDACIÓN (S/N)?
