@@ -58,7 +58,7 @@ namespace Aliados.Monge.Application.Poliza
 
                 Architect.API.Tron.Contracts.Cotizacion.Viajero quote = MapperBase(risk);
 
-                Architect.API.Tron.Contracts.Presupuesto.DatoFijo result2 = ViajeroConvert.ToTron(quote, cod_ramo, tokenInfo.AgentCode, tokenInfo.UserName);
+                Architect.API.Tron.Contracts.Presupuesto.DatoFijo result2 = ViajeroConvert.ToTron(quote, cod_ramo, tokenInfo.AgentCode, tokenInfo.UserName, tokenInfo.CompanyId);
                 result2 = MapperTerceros(risk, result2);
 
                 result2.tip_docum = result2.Terceros.FirstOrDefault().tip_docum;
