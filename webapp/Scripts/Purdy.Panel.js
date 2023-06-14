@@ -13,24 +13,73 @@ app.PurdyPanel = (function () {
                 app.PurdyPanelEvento.Init(app.PurdyPanel.Event);
                 app.PurdyPanelDanos.Init(app.PurdyPanel.Event);
                 app.PurdyPanelIndemnizacion.Init(app.PurdyPanel.Event);
-                app.PurdyPanelLegal.Init(app.PurdyPanel.Event);                
+                app.PurdyPanelLegal.Init(app.PurdyPanel.Event);
+
+                $('.confirm').change(function () {
+                    let ctrolName = this.name;
+                    let clicked = false;
+
+                    if (app.ui.GetRadioNumericValue(ctrolName) == 1) {
+                        toastr.warning('Por favor confirme el cambio de estado haciendo clic aquí',
+                            'Confirmación', {
+                            timeOut: 4000,
+                            closeButton: true,
+                            progressBar: true,
+                            onclick: function () {
+                                clicked = true;
+                            },
+                            onHidden: function () {
+                                if (!clicked) {
+                                    $('#' + ctrolName + '_2').click();
+                                    $('#' + ctrolName + '_2').focus();
+                                }
+                            }
+                        });
+                    }
+
+
+                });
+
             }
             catch (err) {
                 console.error("Error Init");
                 console.error(err);
             }
         },
-        Event: function (src, data) {
+        Event: async function (src, data) {
+            console.log(src, _data, data);
             switch (src) {
                 case 'ASIGESChange':
+                    if (data != null) {
+                        _data.asiges = data.ASIGES;
+                    }
                     _data.claim = data;
-                    app.PurdyPanelDetalle.Event(src, _data);
                     break;
                 case 'PolicyChange', 'PolicyRolesChange', 'PolicyDataChange':
                     _data.policy = data;
                     break;
+                case 'EventoDataChange':
+                    _data.event = data;
+                    break;
+                case 'DanosDataChange':
+                    _data.damage = data;
+                    break;
+                case 'BalanceDataChange':
+                    _data.balance = data;
+                    break;
+                case 'DetalleDataChange':
+                    _data.detail = data;
+                    break;
+                case 'RecuperacionDataChange':
+                    _data.recovery = data;
+                    break;
             }
-
+            app.PurdyPanelEncabezado.Event(src, _data);
+            app.PurdyPanelDetalle.Event(src, _data);
+            app.PurdyPanelEvento.Event(src, _data);
+            app.PurdyPanelDanos.Event(src, _data);
+            app.PurdyPanelIndemnizacion.Event(src, _data);
+            app.PurdyPanelLegal.Event(src, _data);
         },
         Data: function (data) {
             if (data !== undefined) {

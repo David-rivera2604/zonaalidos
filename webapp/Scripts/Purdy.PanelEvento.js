@@ -3,62 +3,65 @@
 app.PurdyPanelEvento = (function () {
 
     let _eventCallback = null;
-    var setupData = null;
-    var changedCallback = null;
+    let _data = null;
+    let _loadready = false;
+    let _changed = false;
 
     function MapInputToObject() {
         var data = {
-            fechadelevento: app.ui.GetDateValue('#fechadelevento'),
-            analistareclamos: app.ui.GetDropDownNumericValue('#analistareclamos'),
-            analistareclamosDesc: app.ui.GetDropDownSelectedText('#analistareclamos'),
-            tipodeindemnizacion: app.ui.GetDropDownNumericValue('#tipodeindemnizacion'),
-            tipodeindemnizacionDesc: app.ui.GetDropDownSelectedText('#tipodeindemnizacion'),
-            motivonoProcede: app.ui.GetDropDownNumericValue('#motivonoProcede'),
-            motivonoProcedeDesc: app.ui.GetDropDownSelectedText('#motivonoProcede'),
-            detallenoprocede: $('#detallenoprocede').val(),
-            detallesiniestro: $('#detallesiniestro').val(),
-            tipodecobertura: app.ui.GetDropDownNumericValue('#tipodecobertura'),
-            tipodecoberturaDesc: app.ui.GetDropDownSelectedText('#tipodecobertura'),
-            categoriadesiniestro: app.ui.GetDropDownNumericValue('#categoriadesiniestro'),
-            categoriadesiniestroDesc: app.ui.GetDropDownSelectedText('#categoriadesiniestro'),
-            posiblesubrogacion: app.ui.GetRadioNumericValue('posiblesubrogacion'),
-            posiblesubrogacionDesc: app.ui.GetRadioSelectedText('posiblesubrogacion'),
-            fechaidentificadocomoPosibleSubrogacion: app.ui.GetDateValue('#fechaidentificadocomoPosibleSubrogacion'),
-            enviadoaInvestigacion: app.ui.GetRadioNumericValue('enviadoaInvestigacion'),
-            enviadoaInvestigacionDesc: app.ui.GetRadioSelectedText('enviadoaInvestigacion'),
-            fechaenviadoainvestigacion: app.ui.GetDateValue('#fechaenviadoainvestigacion'),
-            enviadoaacompanamientoLegal: app.ui.GetRadioNumericValue('enviadoaacompanamientoLegal'),
-            enviadoaacompanamientoLegalDesc: app.ui.GetRadioSelectedText('enviadoaacompanamientoLegal'),
-            fechaenviadoaacompanamientoLegal: app.ui.GetDateValue('#fechaenviadoaacompanamientoLegal'),
-            infraseguro: app.ui.GetRadioNumericValue('infraseguro'),
-            infraseguroDesc: app.ui.GetRadioSelectedText('infraseguro'),
-            autorizaciondeusopoliza: app.ui.GetRadioNumericValue('autorizaciondeusopoliza'),
-            autorizaciondeusopolizaDesc: app.ui.GetRadioSelectedText('autorizaciondeusopoliza'),
-            fechaautorizaciondeusopoliza: app.ui.GetDateValue('#fechaautorizaciondeusopoliza'),
-
+            ID: _data.ID,
+            ASIGES: _data.ASIGES,
+            FECHADELEVENTO: app.ui.GetDateValue('#fechadelevento'),
+            ANALISTARECLAMOS: app.ui.GetDropDownNumericValue('#analistareclamos'),
+            ANALISTARECLAMOSDESC: app.ui.GetDropDownSelectedText('#analistareclamos'),
+            TIPODEINDEMNIZACION: app.ui.GetDropDownNumericValue('#tipodeindemnizacion'),
+            TIPODEINDEMNIZACIONDESC: app.ui.GetDropDownSelectedText('#tipodeindemnizacion'),
+            MOTIVONOPROCEDE: app.ui.GetDropDownNumericValue('#motivonoProcede'),
+            MOTIVONOPROCEDEDESC: app.ui.GetDropDownSelectedText('#motivonoProcede'),
+            DETALLENOPROCEDE: $('#detallenoprocede').val(),
+            TIPODECOBERTURA: app.ui.GetDropDownNumericValue('#tipodecobertura'),
+            TIPODECOBERTURADESC: app.ui.GetDropDownSelectedText('#tipodecobertura'),
+            CATEGORIADESINIESTRO: app.ui.GetDropDownNumericValue('#categoriadesiniestro'),
+            CATEGORIADESINIESTRODESC: app.ui.GetDropDownSelectedText('#categoriadesiniestro'),
+            POSIBLESUBROGACION: app.ui.GetRadioNumericValue('posiblesubrogacion'),
+            POSIBLESUBROGACIONDESC: app.ui.GetRadioSelectedText('posiblesubrogacion'),
+            FECHAPOSIBLESUBROGACION: app.ui.GetDateValue('#fechaidentificadocomoPosibleSubrogacion'),
+            ENVIADOAINVESTIGACION: app.ui.GetRadioNumericValue('enviadoaInvestigacion'),
+            ENVIADOAINVESTIGACIONDESC: app.ui.GetRadioSelectedText('enviadoaInvestigacion'),
+            FECHAENVIADOAINVESTIGACION: app.ui.GetDateValue('#fechaenviadoainvestigacion'),
+            ENVIADOAACOMPANAMIENTOLEGAL: app.ui.GetRadioNumericValue('enviadoaacompanamientoLegal'),
+            ENVIADOAACOMPANAMIENTOLEGALDESC: app.ui.GetRadioSelectedText('enviadoaacompanamientoLegal'),
+            FECHAENVIADOACOMPALEGAL: app.ui.GetDateValue('#fechaenviadoaacompanamientoLegal'),
+            INFRASEGURO: app.ui.GetRadioNumericValue('infraseguro'),
+            INFRASEGURODESC: app.ui.GetRadioSelectedText('infraseguro'),
+            AUTORIZACIONDEUSOPOLIZA: app.ui.GetRadioNumericValue('autorizaciondeusopolizaEvent'),
+            AUTORIZACIONDEUSOPOLIZADESC: app.ui.GetRadioSelectedText('autorizaciondeusopolizaEvent'),
+            FECHAAUTORIZACIONDEUSOPOLIZA: app.ui.GetDateValue('#fechaautorizaciondeusopolizaEvent'),
+            DETALLESINIESTRO: null
         };
+
         return data;
     };
 
     function MapObjectToInput(data) {
-        app.ui.SetDateValue('#fechadelevento', data.fechadelevento);
-        app.ui.SetDropDownNumericValue('#analistareclamos', data.analistareclamos, true);
-        app.ui.SetDropDownNumericValue('#tipodeindemnizacion', data.tipodeindemnizacion, true, 7);
-        app.ui.SetDropDownNumericValue('#motivonoProcede', data.motivonoProcede, true);
-        $('#detallenoprocede').val(data.detallenoprocede);
-        $('#detallesiniestro').val(data.detallesiniestro);
-        app.ui.SetDropDownNumericValue('#tipodecobertura', data.tipodecobertura, true);
-        app.ui.SetDropDownNumericValue('#categoriadesiniestro', data.categoriadesiniestro, true);
-        app.ui.SetRadioNumericValue('posiblesubrogacion', data.posiblesubrogacion);
-        app.ui.SetDateValue('#fechaidentificadocomoPosibleSubrogacion', data.fechaidentificadocomoPosibleSubrogacion);
-        app.ui.SetRadioNumericValue('enviadoaInvestigacion', data.enviadoaInvestigacion);
-        app.ui.SetDateValue('#fechaenviadoainvestigacion', data.fechaenviadoainvestigacion);
-        app.ui.SetRadioNumericValue('enviadoaacompanamientoLegal', data.enviadoaacompanamientoLegal);
-        app.ui.SetDateValue('#fechaenviadoaacompanamientoLegal', data.fechaenviadoaacompanamientoLegal);
-        app.ui.SetRadioNumericValue('infraseguro', data.infraseguro);
-        app.ui.SetRadioNumericValue('autorizaciondeusopoliza', data.autorizaciondeusopoliza);
-        app.ui.SetDateValue('#fechaautorizaciondeusopoliza', data.fechaautorizaciondeusopoliza);
+        app.ui.SetDateValue('#fechadelevento', data.FECHADELEVENTO);
+        app.ui.SetDropDownNumericValue('#analistareclamos', data.ANALISTARECLAMOS, false);
+        app.ui.SetDropDownNumericValue('#tipodeindemnizacion', data.TIPODEINDEMNIZACION, false, 7);
+        app.ui.SetDropDownNumericValue('#motivonoProcede', data.MOTIVONOPROCEDE, false);
+        $('#detallenoprocede').val(data.DETALLENOPROCEDE);
+        app.ui.SetDropDownNumericValue('#tipodecobertura', data.TIPODECOBERTURA, false);
+        app.ui.SetDropDownNumericValue('#categoriadesiniestro', data.CATEGORIADESINIESTRO, false);
+        app.ui.SetRadioNumericValue('posiblesubrogacion', data.POSIBLESUBROGACION);
+        app.ui.SetDateValue('#fechaidentificadocomoPosibleSubrogacion', data.FECHAPOSIBLESUBROGACION);
+        app.ui.SetRadioNumericValue('enviadoaInvestigacion', data.ENVIADOAINVESTIGACION);
+        app.ui.SetDateValue('#fechaenviadoainvestigacion', data.FECHAENVIADOAINVESTIGACION);
+        app.ui.SetRadioNumericValue('enviadoaacompanamientoLegal', data.ENVIADOAACOMPANAMIENTOLEGAL);
+        app.ui.SetDateValue('#fechaenviadoaacompanamientoLegal', data.FECHAENVIADOACOMPALEGAL);
+        app.ui.SetRadioNumericValue('infraseguro', data.INFRASEGURO);
+        app.ui.SetRadioNumericValue('autorizaciondeusopolizaEvent', data.AUTORIZACIONDEUSOPOLIZA);
+        app.ui.SetDateValue('#fechaautorizaciondeusopolizaEvent', data.FECHAAUTORIZACIONDEUSOPOLIZA);
 
+        data_changed();
     };
 
     function Controls_setup() {
@@ -78,7 +81,7 @@ app.PurdyPanelEvento = (function () {
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
-        $('#fechaautorizaciondeusopoliza_group').datetimepicker({
+        $('#fechaautorizaciondeusopolizaEvent_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
@@ -89,46 +92,94 @@ app.PurdyPanelEvento = (function () {
         $(".input-group.date").on('dp.change', function (e) {
             data_changed();
         });
+
         $("#PurdyPanelEventoEdtForm :input").change(function () {
             data_changed();
         });
-
 
         $('#PurdyPanelEventoEdtFormSave').click(function () {
 
             if (app.ui.IsValid('#PurdyPanelEventoEdtForm', false)) {
                 app.ui.ButtonDoing('#PurdyPanelEventoEdtFormSave');
+                let submitData = MapInputToObject();
+                if (submitData.ID === null) {
+                    app.core.Post(`${app.setting.entityapi}/PurdyPanelEvento`, JSON.stringify(submitData))
+                        .done(function (created) {
+                            if (created?.Sucessfully) {
+                                _data.ID = created.Data.Next.NEXTID
+                                _loadready = true;
+                                _changed = false;
+                                app.ui.CustomBehaviour('changed', false);
+                                _eventCallback('EventoDataChange', submitData);
+                                app.ui.Success('La información del análisis del evento, fue creada de forma exitosa');
+                            }
+                            else {
+                                console.error(created);
+                            }
 
-                console.log(MapInputToObject())
-
-                app.core.Post(app.setting.apipath + 'v1/Purdy/PanelEvento',
-                    JSON.stringify(MapInputToObject()),
-                    function (data) {
-                        if (data.Mensaje != null) {
-                            app.ui.ShowAlert('quoteNotify', 'alert-danger', data.Mensaje);
-                        }
-                        else {
-
-                        }
-
-                    }).always(function () {
-                        app.ui.ButtonDone('#PurdyPanelEventoEdtFormSave');
-                    });
+                        }).always(function () {
+                            app.ui.ButtonDone('#PurdyPanelEventoEdtFormSave');
+                        });
+                }
+                else {
+                    app.core.Put(`${app.setting.entityapi}/PurdyPanelEvento/${submitData.ID}`, JSON.stringify(submitData))
+                        .done(function (updated) {
+                            if (updated?.Sucessfully) {
+                                _loadready = true;
+                                _changed = false;
+                                app.ui.CustomBehaviour('changed', false);
+                                _eventCallback('EventoDataChange', submitData);
+                                app.ui.Success('La información del análisis del evento, fue actualizada de forma exitosa');
+                            }
+                            else {
+                                console.error(updated);
+                            }
+                        }).always(function () {
+                            app.ui.ButtonDone('#PurdyPanelEventoEdtFormSave');
+                        });
+                }
             }
             event.preventDefault();
         });
 
         $('#PurdyPanelEventoEdtFormCancel').click(function () {
-            app.ui.ButtonDoing('#PurdyPanelEventoEdtFormCancel');
-            setTimeout(() => { app.ui.ButtonDone('#PurdyPanelEventoEdtFormCancel'); }, 3000);
+            Get(_data.ASIGES);
+
             event.preventDefault();
         });
 
     };
 
     function data_changed() {
-        if (changedCallback !== undefined && changedCallback !== null)
-            changedCallback(MapInputToObject());
+        if (app.ui.GetDropDownNumericValue('#tipodeindemnizacion') === 8)
+            $('.motivonoProcedeVisible').removeClass('d-none');
+        else
+            $('.motivonoProcedeVisible').addClass('d-none');
+        if (app.ui.GetDropDownNumericValue('#tipodeindemnizacion') === 8)
+            $('.detallenoprocedeVisible').removeClass('d-none');
+        else
+            $('.detallenoprocedeVisible').addClass('d-none');
+        if (app.ui.GetRadioNumericValue('posiblesubrogacion') === 1)
+            $('.fechaidentificadocomoPosibleSubrogacionVisible').removeClass('d-none');
+        else
+            $('.fechaidentificadocomoPosibleSubrogacionVisible').addClass('d-none');
+        if (app.ui.GetRadioNumericValue('enviadoaInvestigacion') === 1)
+            $('.fechaenviadoainvestigacionVisible').removeClass('d-none');
+        else
+            $('.fechaenviadoainvestigacionVisible').addClass('d-none');
+        if (app.ui.GetRadioNumericValue('enviadoaacompanamientoLegal') === 1)
+            $('.fechaenviadoaacompanamientoLegalVisible').removeClass('d-none');
+        else
+            $('.fechaenviadoaacompanamientoLegalVisible').addClass('d-none');
+        if (app.ui.GetRadioNumericValue('autorizaciondeusopolizaEvent') === 1)
+            $('.fechaautorizaciondeusopolizaEventVisible').removeClass('d-none');
+        else
+            $('.fechaautorizaciondeusopolizaEventVisible').addClass('d-none');
+        if (_loadready) {
+            _changed = true;
+        }
+        app.ui.CustomBehaviour('changed', _loadready && _changed);
+
     };
 
     function Setup_Validations() {
@@ -141,7 +192,40 @@ app.PurdyPanelEvento = (function () {
         });
     };
 
+    function EmptyPurdyPanelEvento() {
+        let data = { ID: null, ASIGES: null, FECHADELEVENTO: null, ANALISTARECLAMOS: null, TIPODEINDEMNIZACION: null, MOTIVONOPROCEDE: null, DETALLENOPROCEDE: null, DETALLESINIESTRO: null, TIPODECOBERTURA: null, CATEGORIADESINIESTRO: null, POSIBLESUBROGACION: 2, FECHAPOSIBLESUBROGACION: null, ENVIADOAINVESTIGACION: 2, FECHAENVIADOAINVESTIGACION: null, ENVIADOAACOMPANAMIENTOLEGAL: 2, FECHAENVIADOACOMPALEGAL: null, INFRASEGURO: 2, AUTORIZACIONDEUSOPOLIZA: 2, FECHAAUTORIZACIONDEUSOPOLIZA: null };
 
+        //if (localStorage.getItem('Roles').includes('Reclamos')) {
+        //    app.ui.SelectDropDownByText('#analistareclamos', localStorage.getItem('Username'));
+
+        //    data.FECHADELEVENTO = new Date();
+        //    data.ANALISTARECLAMOS = app.ui.GetDropDownNumericValue('#analistareclamos')
+        //}
+
+        return data;
+    };
+
+    async function Get(asigesCode) {
+        _loadready = false;
+
+        app.core.Get(`${app.setting.entityapi}/PurdyPanelEvento/asiges?code=${asigesCode}`)
+            .done(function (dataEvento) {
+                if (dataEvento?.Sucessfully) {
+                    if (dataEvento.Data === null) {
+                        dataEvento.Data = EmptyPurdyPanelEvento();
+                        dataEvento.Data.ASIGES = asigesCode;
+                    }
+                    MapObjectToInput(dataEvento.Data);
+                    dataEvento.Data.ANALISTARECLAMOSDESC = app.ui.GetDropDownSelectedText('#analistareclamos');
+                    dataEvento.Data.TIPODEINDEMNIZACIONDESC = app.ui.GetDropDownSelectedText('#tipodeindemnizacion');
+                    dataEvento.Data.CATEGORIADESINIESTRODESC = app.ui.GetDropDownSelectedText('#categoriadesiniestro');
+                    _data = dataEvento.Data;
+                    _eventCallback('EventoDataChange', dataEvento.Data);
+                }
+                _changed = false;
+                _loadready = true;
+            });
+    };
 
     return {
         Init: function (eventCallback) {
@@ -149,15 +233,28 @@ app.PurdyPanelEvento = (function () {
                 _eventCallback = eventCallback;
                 Controls_setup();
                 Setup_Validations();
-
                 Controls_Events();
+                app.core.Lookups(['UsersByRol:Reclamos.analistareclamos'],
+                    function () {
+                        MapObjectToInput(EmptyPurdyPanelEvento());
+                        _loadready = true;
+                    }, ``);
             }
             catch (err) {
                 console.error("Error Init");
                 console.error(err);
             }
         },
-        Event: function (src, data) {
+        Event: async function (src, data) {
+            switch (src) {
+                case 'ASIGESChange':
+                    if (data.claim != null) {
+                        Get(data.asiges);
+                    } else {
+                        MapObjectToInput(EmptyPurdyPanelEvento());
+                    }                    
+                    break;
+            }
         }
     };
 })();

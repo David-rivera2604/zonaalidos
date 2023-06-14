@@ -36,36 +36,36 @@
         @Html.Partial("_encabezado")
 
         <!-- Cabecera de las pestañas -->
-    <ul class="nav nav-tabs" style="padding-top: 14px">
-        <li>
-            <a class="nav-link active show" data-toggle="tab" href="#detalleTab" id="detalleHTab">
-                <i class="fa fa-list"></i> Detalle <span class="badge badge-danger"></span>
-            </a>
-        </li>
-        <li>
-            <a class="nav-link" data-toggle="tab" href="#eventoTab" id="eventoHTab">
-                <i class="fa fa-bell-o"></i> Análisis del evento <span class="badge badge-danger"></span>
-            </a>
-        </li>
-        <li>
-            <a class="nav-link" data-toggle="tab" href="#danoTab" id="danoHTab">
-                <i class="fa fa-bug"></i> Análisis de Daños<span class="badge badge-danger"></span>
-            </a>
-        </li>
-        <li>
-            <a class="nav-link" data-toggle="tab" href="#indemnizacionTab" id="indemnizacionHTab">
-                <i class="fa fa-money"></i> Análisis de Indemnización <span class="badge badge-danger"></span>
-            </a>
-        </li>
-        <li>
-            <a class="nav-link" data-toggle="tab" href="#legalTab" id="legalHTab">
-                <i class="fa fa-gavel"></i> Legal <span class="badge badge-danger"></span>
-            </a>
-        </li>
-    </ul>
+        <ul class="nav nav-tabs d-none panelinfo" style="padding-top: 14px">
+            <li>
+                <a class="nav-link active show" data-toggle="tab" href="#detalleTab" id="detalleHTab">
+                    <i class="fa fa-list"></i> Detalle <span class="badge badge-danger"></span>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" data-toggle="tab" href="#eventoTab" id="eventoHTab">
+                    <i class="fa fa-bell-o"></i> Análisis del evento <span class="badge badge-danger"></span>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" data-toggle="tab" href="#danoTab" id="danoHTab">
+                    <i class="fa fa-bug"></i> Análisis de Daños<span class="badge badge-danger"></span>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" data-toggle="tab" href="#indemnizacionTab" id="indemnizacionHTab">
+                    <i class="fa fa-money"></i> Análisis de Indemnización <span class="badge badge-danger"></span>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" data-toggle="tab" href="#legalTab" id="legalHTab">
+                    <i class="fa fa-gavel"></i> Legal <span class="badge badge-danger"></span>
+                </a>
+            </li>
+        </ul>
 
         <!-- Contenido de las pestañas  -->
-        <div class="tab-content" style="padding-top: 10px">
+        <div class="tab-content d-none panelinfo" style="padding-top: 10px">
             <div id="detalleTab" class="tab-pane active show fade">
                 @Html.Partial("_detalle")
             </div>

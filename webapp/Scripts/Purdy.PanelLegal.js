@@ -2,84 +2,65 @@
 
 app.PurdyPanelLegal = (function () {
 
+    let _asiges = null;
     let _eventCallback = null;
-    var setupData = null;
-    var changedCallback = null;
-
-    function Setup() {
-
-        app.core.Get(app.setting.apipath + 'v1/Quote/PanelLegalSetup', null,
-            function (data) {
-                app.core.Lookups([],
-                    function () {
-                        setupData = data;
-                        MapObjectToInput(data);
-                    }, ``);
-
-            });
+    let _emptyValueRecuperacion = {
+        ID: null,
+        numerodesiniestro: null,
+        tipodedocumento: null,
+        numerodedocumento: null,
+        fecharecupera: null,
+        receptor: null,
+        montorecupera: null,
+        observacion: null
     };
-
-    function ReadOnly() {
-        $('#aSIGES').replaceWith('<div>' + $('#aSIGES').val() + '</div>');
-        $('#detalleNew').addClass('d-none');
-        $('#detalleTbl').bootstrapTable('hideColumn', 'Actions');
-        $('#recuperacionNew').addClass('d-none');
-        $('#recuperacionTbl').bootstrapTable('hideColumn', 'Actions');
-        $('#montopagado').replaceWith('<div>' + $('#montopagado').val() + '</div>');
-        $('#totalesMontorecuperado').replaceWith('<div>' + $('#totalesMontorecuperado').val() + '</div>');
-        $('#montoutilizado').replaceWith('<div>' + $('#montoutilizado').val() + '</div>');
-
-    };
-
-    function MapInputToObject() {
-        var data = {
-            aSIGES: $('#aSIGES').val(),
-            detalle: $('#detalleTbl').bootstrapTable('getData'),
-            recuperacion: $('#recuperacionTbl').bootstrapTable('getData'),
-            montopagado: app.ui.GetNumericValue('#montopagado'),
-            totalesMontorecuperado: app.ui.GetNumericValue('#totalesMontorecuperado'),
-            montoutilizado: app.ui.GetNumericValue('#montoutilizado'),
-
-        };
-        return data;
-    };
-
-    function MapObjectToInput(data) {
-        $('#aSIGES').val(data.aSIGES);
-        if (data.detalle != null)
-            $('#detalleTbl').bootstrapTable('load', data.detalle);
-        else
-            $('#detalleTbl').bootstrapTable('load', {});
-        if (data.recuperacion != null)
-            $('#recuperacionTbl').bootstrapTable('load', data.recuperacion);
-        else
-            $('#recuperacionTbl').bootstrapTable('load', {});
-        app.ui.SetNumericValue('#montopagado', data.montopagado);
-        app.ui.SetNumericValue('#totalesMontorecuperado', data.totalesMontorecuperado);
-        app.ui.SetNumericValue('#montoutilizado', data.montoutilizado);
-
-    };
+    let _emptyValueDetalle = {
+        ID: null,
+        enviadoainvestigacion: null,
+        fechaenviadoainvestigacion: null,
+        requisitosporpresentarparareco: null,
+        enviadoaacompanamientolega: null,
+        fechaenviadoaacompanamientoLeg: null,
+        fechadelevento: null,
+        posiblesubrogacion: null,
+        fechaidentificadocomoposiblesu: null,
+        muertos: null,
+        lesionados: null,
+        lesionadosPosibleResultado: null,
+        asesorlegal: null,
+        estadoprocesal: null,
+        recomendacionlegal: null,
+        nombredeltercero: null,
+        ceduladeltercero: null,
+        telefonodeltercero: null,
+        correodeltercero: null,
+        placadetercerocontraparte: null,
+        lugaraccidente: null,
+        juzgado: null,
+        expedientejudicial: null,
+        fechasentencia: null,
+        subrogacion: null,
+        montoporrecuperar: null,
+        montorecuperado: null,
+        saldoporrecuperar: null
+    }
 
     function Controls_setup() {
-        $('#fechaenviadoainvestigacion_group').datetimepicker({
+        $('#fechaenviadoainvestigacionDet_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
-        $('#fechaenviadoaacompanamientoLegal_group').datetimepicker({
+        $('#fechaenviadoaacompanamientoLegDet_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
-        $('#fechadelevento_group').datetimepicker({
+        $('#fechadeleventoDet_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
-        $('#fechaidentificadocomoposiblesubrogacion_group').datetimepicker({
+        $('#fechaidentificadocomoposiblesuDet_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es'
-        });
-        $('#DocumentNumber').formatter({
-            pattern: '0{{9}}-{{9999}}-{{9999}}',
-            persistent: false
         });
         $('#telefonodeltercero').formatter({
             pattern: '{{9999}}-{{9999}}',
@@ -116,11 +97,11 @@ app.PurdyPanelLegal = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-        $('#fecha_group').datetimepicker({
+        $('#fecharecuperaLegal_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
-        new AutoNumeric('#monto', {
+        new AutoNumeric('#montorecuperaLegal', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -152,7 +133,7 @@ app.PurdyPanelLegal = (function () {
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
             maximumValue: '999999999999999999',
-            minimumValue: '0',
+            minimumValue: '-999999999999999999',
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
@@ -160,94 +141,54 @@ app.PurdyPanelLegal = (function () {
     };
 
     function Controls_Events() {
-        $(".input-group.date").on('dp.change', function (e) {
+
+        $("#detalleEdtForm :input").change(function () {
             data_changed();
-        });
-        $("#PurdyPanelLegalEdtForm :input").change(function () {
-            data_changed();
-        });
-
-        $('#DocumentNumberTypeMenu a').click(function () {
-            app.ui.DocumentTypeHandler(this, '#DocumentNumber', 'Identification');
-        });
-
-        $('#DocumentNumber').on('blur', function () {
-            if (app.ui.IsDocumentNumberValid($('#DocumentNumberType').data('value'), $('#DocumentNumber').val())) {
-                var value = $('#DocumentNumber').val().replace(/-/g, '');
-                if (value !== null && parseInt(0 + value, 10) !== 0 && parseInt(0 + value, 10) <= 999999999) {
-                    $('#DocumentNumber').addClass('loading');
-                    app.core.GetExt('https://www.inmotiontools.com:8083/logic/api/padron/personaporcedula?cedula=' + parseInt(0 + value, 10))
-                        .done(function (data, textStatus, jqXHR) {
-                            if (data.Nombre !== null) {
-                                alert(data.Nombre);
-                            }
-                        }).always(function () {
-                            $('#DocumentNumber').removeClass('loading');
-                        });
-                }
-            }
-        });
-        $('#telefonodelterceroTypeMenu a').click(function () {
-            app.ui.DocumentTypeHandler(this, '#telefonodeltercero', 'Phone');
-        });
-
-        $('#PurdyPanelLegalEdtFormSave').click(function () {
-
-            if (app.ui.IsValid('#PurdyPanelLegalEdtForm', false)) {
-                app.ui.ButtonDoing('#PurdyPanelLegalEdtFormSave');
-
-                console.log(MapInputToObject())
-
-                app.core.Post(app.setting.apipath + 'v1/Purdy/PanelLegal',
-                    JSON.stringify(MapInputToObject()),
-                    function (data) {
-                        if (data.Mensaje != null) {
-                            app.ui.ShowAlert('quoteNotify', 'alert-danger', data.Mensaje);
-                        }
-                        else {
-
-                        }
-
-                    }).always(function () {
-                        app.ui.ButtonDone('#PurdyPanelLegalEdtFormSave');
-                    });
-            }
-            event.preventDefault();
-        });
-
-        $('#PurdyPanelLegalEdtFormCancel').click(function () {
-            app.ui.ButtonDoing('#PurdyPanelLegalEdtFormCancel');
-            setTimeout(() => { app.ui.ButtonDone('#PurdyPanelLegalEdtFormCancel'); }, 3000);
-            event.preventDefault();
         });
 
     };
 
     function data_changed() {
-        if (changedCallback !== undefined && changedCallback !== null)
-            changedCallback(MapInputToObject());
+        app.ui.VisibleBehaviour('.subrogacion', app.ui.GetRadioNumericValue('subrogacion') === 1);
+        app.ui.SetNumericValue('#saldoporrecuperar', app.ui.GetNumericValue('#montoporrecuperar') - app.ui.GetNumericValue('#montorecuperado'));
     };
 
-    function Setup_Validations() {
-        app.ui.DateValidators();
-        app.ui.NumericValidators();
-        $("#PurdyPanelLegalEdtForm").validate({
-            errorPlacement: app.ui.ErrorPlacement,
-            rules: {
-                aSIGES: { required: true },
-                correodeltercero: { email: true },
-            },
-            messages: {
-                aSIGES: { required: 'Debe indicar el asiges' },
-                correodeltercero: { email: 'Debe indicar un correo electrónico valido' },
-            }
-        });
+    async function GetDetalle(asigesCode) {
+        _asiges = asigesCode;
+        app.core.Get(`${app.setting.entityapi}/PurdyPanelDetalle/asiges?code=${asigesCode}`)
+            .done(function (dataDetalle) {
+                if (dataDetalle?.Sucessfully) {
+                    $('#detalleTbl').bootstrapTable('load', dataDetalle.Data == null ? [] : dataDetalle.Data);
+                    _eventCallback('DetalleDataChange', dataDetalle.Data);
+                }
+            });
     };
 
-    function detalle_table_setup() {
+    async function GetRecuperacion(asigesCode) {
+        _asiges = asigesCode;
+        app.core.Get(`${app.setting.entityapi}/PurdyPanelRecuperacion/asiges?code=${asigesCode}`)
+            .done(function (dataRecuperacion) {
+                if (dataRecuperacion?.Sucessfully) {
+                    $('#recuperacionTbl').bootstrapTable('load', dataRecuperacion.Data == null ? [] : dataRecuperacion.Data);
+
+                    let montoPagado = 0;
+
+                    if (dataRecuperacion.Data != null) {
+                        montoPagado = dataRecuperacion.Data.reduce((accumulator, item) => { return accumulator + item.montorecupera; }, 0);
+                    }
+
+                    app.ui.SetNumericValue('#montopagado', montoPagado);
+                    app.ui.SetNumericValue('#montoutilizado', montoPagado - app.ui.GetNumericValue('#totalesMontorecuperado'));
+
+                    _eventCallback('RecuperacionDataChange', dataRecuperacion.Data);
+                }
+            });
+    };
+
+    async function detalle_table_setup() {
 
         $('#detalleTbl').bootstrapTable({
-            uniqueId: 'detalleId',
+            uniqueId: 'ID',
             classes: 'table table-bordered table-hover table-index table-in-form',
             pagination: true,
             smartDisplay: true,
@@ -273,7 +214,7 @@ app.PurdyPanelLegal = (function () {
                     formatter: 'app.ui.DateFormatter',
                     visible: true
                 }, {
-                    field: 'requisitosporpresentarparareconstruccion',
+                    field: 'requisitosporpresentarparareco',
                     title: 'Requisitos por presentar para reconstrucción',
                     titleTooltip: '',
                     sortable: false,
@@ -282,7 +223,7 @@ app.PurdyPanelLegal = (function () {
                     formatter: 'app.ui.StringFormatter',
                     visible: true
                 }, {
-                    field: 'enviadoaacompanamientolegal',
+                    field: 'enviadoaacompanamientolega',
                     title: 'Enviado a acompañamiento legal',
                     titleTooltip: '',
                     sortable: false,
@@ -291,7 +232,7 @@ app.PurdyPanelLegal = (function () {
                     formatter: 'app.ui.StringFormatter',
                     visible: true
                 }, {
-                    field: 'fechaenviadoaacompanamientoLegal',
+                    field: 'fechaenviadoaacompanamientoLeg',
                     title: 'Fecha enviado a acompañamiento Legal',
                     titleTooltip: '',
                     sortable: false,
@@ -318,7 +259,7 @@ app.PurdyPanelLegal = (function () {
                     formatter: 'app.ui.StringFormatter',
                     visible: true
                 }, {
-                    field: 'fechaidentificadocomoposiblesubrogacion',
+                    field: 'fechaidentificadocomoposiblesu',
                     title: 'Fecha identificado como posible subrogación',
                     titleTooltip: '',
                     sortable: false,
@@ -390,7 +331,7 @@ app.PurdyPanelLegal = (function () {
                     formatter: 'app.ui.StringFormatter',
                     visible: true
                 }, {
-                    field: 'DocumentNumber',
+                    field: 'ceduladeltercero',
                     title: 'Cédula del tercero',
                     titleTooltip: '',
                     sortable: false,
@@ -533,19 +474,38 @@ app.PurdyPanelLegal = (function () {
                 app.ui.ButtonDoing('#detalleEdtFormSave');
 
                 var row = detalle_table_row('values');
+                row.ASIGES = _asiges;
+                if (row.ID === null) {
+                    app.core.Post(`${app.setting.entityapi}/PurdyPanelDetalle`, JSON.stringify(row))
+                        .done(function (created) {
+                            if (created?.Sucessfully) {
+                                $('#detalleModal').modal('hide');
+                                GetDetalle(_asiges);
+                                app.ui.Success('El movimiento de detalle, fue creada de forma exitosa.');
+                            }
+                            else {
+                                console.error(created);
+                            }
 
-                if (row.detalleId === null)
-                    row.detalleId = 1;
-
-                if ($('#detalleModal').data('id') != null) {
-                    $('#detalleTbl').bootstrapTable('updateByUniqueId', { id: row.detalleId, row: row });
+                        }).always(function () {
+                            app.ui.ButtonDone('#detalleEdtFormSave');
+                        });
                 }
                 else {
-                    $('#detalleTbl').bootstrapTable('append', row);
+                    app.core.Put(`${app.setting.entityapi}/PurdyPanelDetalle/${row.ID}`, JSON.stringify(row))
+                        .done(function (updated) {
+                            if (updated?.Sucessfully) {
+                                $('#detalleModal').modal('hide');
+                                GetDetalle(_asiges);
+                                app.ui.Success('El movimiento de detalle, fue actualizado de forma exitosa');
+                            }
+                            else {
+                                console.error(updated);
+                            }
+                        }).always(function () {
+                            app.ui.ButtonDone('#detalleEdtFormSave');
+                        });
                 }
-
-                app.ui.ButtonDone('#detalleEdtFormSave')
-                $('#detalleModal').modal('hide');
             }
         });
 
@@ -553,48 +513,19 @@ app.PurdyPanelLegal = (function () {
 
     function detalle_table_row(mode) {
         if (mode == null) {
-            return {
-                detalleId: null,
-                enviadoainvestigacion: null,
-                fechaenviadoainvestigacion: null,
-                requisitosporpresentarparareconstruccion: null,
-                enviadoaacompanamientolegal: null,
-                fechaenviadoaacompanamientoLegal: null,
-                fechadelevento: null,
-                posiblesubrogacion: null,
-                fechaidentificadocomoposiblesubrogacion: null,
-                muertos: null,
-                lesionados: null,
-                lesionadosPosibleResultado: null,
-                asesorlegal: null,
-                estadoprocesal: null,
-                recomendacionlegal: null,
-                nombredeltercero: null,
-                DocumentNumber: null,
-                telefonodeltercero: null,
-                correodeltercero: null,
-                placadetercerocontraparte: null,
-                lugaraccidente: null,
-                juzgado: null,
-                expedientejudicial: null,
-                fechasentencia: null,
-                subrogacion: null,
-                montoporrecuperar: null,
-                montorecuperado: null,
-                saldoporrecuperar: null
-            };
+            return _emptyValueDetalle;
         }
         else {
             return {
-                detalleId: $('#detalleModal').data('id'),
-                enviadoainvestigacion: app.ui.GetRadioNumericValue('enviadoainvestigacion'),
-                fechaenviadoainvestigacion: app.ui.GetDateValue('#fechaenviadoainvestigacion'),
-                requisitosporpresentarparareconstruccion: $('#requisitosporpresentarparareconstruccion').val(),
-                enviadoaacompanamientolegal: app.ui.GetRadioNumericValue('enviadoaacompanamientolegal'),
-                fechaenviadoaacompanamientoLegal: app.ui.GetDateValue('#fechaenviadoaacompanamientoLegal'),
-                fechadelevento: app.ui.GetDateValue('#fechadelevento'),
-                posiblesubrogacion: app.ui.GetRadioNumericValue('posiblesubrogacion'),
-                fechaidentificadocomoposiblesubrogacion: app.ui.GetDateValue('#fechaidentificadocomoposiblesubrogacion'),
+                ID: $('#detalleModal').data('id'),
+                enviadoainvestigacion: app.ui.GetRadioNumericValue('enviadoainvestigacionDet'),
+                fechaenviadoainvestigacion: app.ui.GetDateValue('#fechaenviadoainvestigacionDet'),
+                requisitosporpresentarparareco: $('#requisitosporpresentarparareco').val(),
+                enviadoaacompanamientolega: app.ui.GetRadioNumericValue('enviadoaacompanamientolegaDet'),
+                fechaenviadoaacompanamientoLeg: app.ui.GetDateValue('#fechaenviadoaacompanamientoLegDet'),
+                fechadelevento: app.ui.GetDateValue('#fechadeleventoDet'),
+                posiblesubrogacion: app.ui.GetRadioNumericValue('posiblesubrogacionDet'),
+                fechaidentificadocomoposiblesu: app.ui.GetDateValue('#fechaidentificadocomoposiblesuDet'),
                 muertos: $('#muertos').val(),
                 lesionados: $('#lesionados').val(),
                 lesionadosPosibleResultado: $('#lesionadosPosibleResultado').val(),
@@ -602,7 +533,7 @@ app.PurdyPanelLegal = (function () {
                 estadoprocesal: $('#estadoprocesal').val(),
                 recomendacionlegal: $('#recomendacionlegal').val(),
                 nombredeltercero: $('#nombredeltercero').val(),
-                DocumentNumber: $('#DocumentNumber').val(),
+                ceduladeltercero: $('#ceduladeltercero').val(),
                 telefonodeltercero: $('#telefonodeltercero').val(),
                 correodeltercero: $('#correodeltercero').val(),
                 placadetercerocontraparte: $('#placadetercerocontraparte').val(),
@@ -624,16 +555,16 @@ app.PurdyPanelLegal = (function () {
         var fvalidate = formInstance.validate();
         fvalidate.resetForm();
         row = row || detalle_table_row();
-        md.data('id', row.detalleId);
+        md.data('id', row.ID);
 
-        app.ui.SetRadioNumericValue('enviadoainvestigacion', row.enviadoainvestigacion);
-        app.ui.SetDateValue('#fechaenviadoainvestigacion', row.fechaenviadoainvestigacion);
-        $('#requisitosporpresentarparareconstruccion').val(row.requisitosporpresentarparareconstruccion);
-        app.ui.SetRadioNumericValue('enviadoaacompanamientolegal', row.enviadoaacompanamientolegal);
-        app.ui.SetDateValue('#fechaenviadoaacompanamientoLegal', row.fechaenviadoaacompanamientoLegal);
-        app.ui.SetDateValue('#fechadelevento', row.fechadelevento);
-        app.ui.SetRadioNumericValue('posiblesubrogacion', row.posiblesubrogacion);
-        app.ui.SetDateValue('#fechaidentificadocomoposiblesubrogacion', row.fechaidentificadocomoposiblesubrogacion);
+        app.ui.SetRadioNumericValue('enviadoainvestigacionDet', row.enviadoainvestigacion);
+        app.ui.SetDateValue('#fechaenviadoainvestigacionDet', row.fechaenviadoainvestigacion);
+        $('#requisitosporpresentarparareco').val(row.requisitosporpresentarparareco);
+        app.ui.SetRadioNumericValue('enviadoaacompanamientolegaDet', row.enviadoaacompanamientolega);
+        app.ui.SetDateValue('#fechaenviadoaacompanamientoLegDet', row.fechaenviadoaacompanamientoLeg);
+        app.ui.SetDateValue('#fechadeleventoDet', row.fechadelevento);
+        app.ui.SetRadioNumericValue('posiblesubrogacionDet', row.posiblesubrogacion);
+        app.ui.SetDateValue('#fechaidentificadocomoposiblesuDet', row.fechaidentificadocomoposiblesu);
         $('#muertos').val(row.muertos);
         $('#lesionados').val(row.lesionados);
         $('#lesionadosPosibleResultado').val(row.lesionadosPosibleResultado);
@@ -641,7 +572,7 @@ app.PurdyPanelLegal = (function () {
         $('#estadoprocesal').val(row.estadoprocesal);
         $('#recomendacionlegal').val(row.recomendacionlegal);
         $('#nombredeltercero').val(row.nombredeltercero);
-        $('#DocumentNumber').val(row.DocumentNumber);
+        $('#ceduladeltercero').val(row.ceduladeltercero);
         $('#telefonodeltercero').val(row.telefonodeltercero);
         $('#correodeltercero').val(row.correodeltercero);
         $('#placadetercerocontraparte').val(row.placadetercerocontraparte);
@@ -654,27 +585,40 @@ app.PurdyPanelLegal = (function () {
         app.ui.SetNumericValue('#montorecuperado', row.montorecuperado);
         app.ui.SetNumericValue('#saldoporrecuperar', row.saldoporrecuperar);
 
-
+        data_changed();
         md.modal('show');
     };
 
     function detalle_table_row_delete(row) {
-        $('#detalleTbl').bootstrapTable('removeByUniqueId', row.detalleId);
+        app.core.Delete(`${app.setting.entityapi}/PurdyPanelDetalle/${row.ID}`, null)
+            .done(function (deleted) {
+                if (deleted?.Sucessfully) {
+                    GetDetalle(_asiges);
+                    app.ui.Success('El movimiento de detalle, fue eliminado de forma exitosa');
+                }
+                else {
+                    console.error(deleted);
+                }
+            });
     };
 
     function detalle_table_Validations() {
         app.ui.DateValidators();
         $("#detalleEdtForm").validate({
             errorPlacement: app.ui.ErrorPlacement,
-            rules: {},
-            messages: {}
+            rules: {
+                correodeltercero: { email: true }
+            },
+            messages: {
+                correodeltercero: { email: 'Debe indicar un correo electrónico valido' }
+            }
         });
     };
 
-    function recuperacion_table_setup() {
+    async function recuperacion_table_setup() {
 
         $('#recuperacionTbl').bootstrapTable({
-            uniqueId: 'recuperacionId',
+            uniqueId: 'ID',
             classes: 'table table-bordered table-hover table-index table-in-form',
             pagination: true,
             smartDisplay: true,
@@ -709,7 +653,7 @@ app.PurdyPanelLegal = (function () {
                     formatter: 'app.ui.StringFormatter',
                     visible: true
                 }, {
-                    field: 'fecha',
+                    field: 'fecharecupera',
                     title: 'Fecha',
                     titleTooltip: '',
                     sortable: false,
@@ -727,7 +671,7 @@ app.PurdyPanelLegal = (function () {
                     formatter: 'app.ui.StringFormatter',
                     visible: true
                 }, {
-                    field: 'monto',
+                    field: 'montorecupera',
                     title: 'Monto',
                     titleTooltip: '',
                     sortable: false,
@@ -780,19 +724,38 @@ app.PurdyPanelLegal = (function () {
                 app.ui.ButtonDoing('#recuperacionEdtFormSave');
 
                 var row = recuperacion_table_row('values');
+                row.ASIGES = _asiges;
+                if (row.ID === null) {
+                    app.core.Post(`${app.setting.entityapi}/PurdyPanelRecuperacion`, JSON.stringify(row))
+                        .done(function (created) {
+                            if (created?.Sucessfully) {
+                                $('#recuperacionModal').modal('hide');
+                                GetRecuperacion(_asiges);
+                                app.ui.Success('El movimiento de recuperación, fue creada de forma exitosa');
+                            }
+                            else {
+                                console.error(created);
+                            }
 
-                if (row.recuperacionId === null)
-                    row.recuperacionId = 1;
-
-                if ($('#recuperacionModal').data('id') != null) {
-                    $('#recuperacionTbl').bootstrapTable('updateByUniqueId', { id: row.recuperacionId, row: row });
+                        }).always(function () {
+                            app.ui.ButtonDone('#recuperacionEdtFormSave');
+                        });
                 }
                 else {
-                    $('#recuperacionTbl').bootstrapTable('append', row);
+                    app.core.Put(`${app.setting.entityapi}/PurdyPanelRecuperacion/${row.ID}`, JSON.stringify(row))
+                        .done(function (updated) {
+                            if (updated?.Sucessfully) {
+                                $('#recuperacionModal').modal('hide');
+                                GetRecuperacion(_asiges);
+                                app.ui.Success('El movimiento de recuperación, fue actualizado de forma exitosa');
+                            }
+                            else {
+                                console.error(updated);
+                            }
+                        }).always(function () {
+                            app.ui.ButtonDone('#recuperacionEdtFormSave');
+                        });
                 }
-
-                app.ui.ButtonDone('#recuperacionEdtFormSave')
-                $('#recuperacionModal').modal('hide');
             }
         });
 
@@ -800,27 +763,18 @@ app.PurdyPanelLegal = (function () {
 
     function recuperacion_table_row(mode) {
         if (mode == null) {
-            return {
-                recuperacionId: null,
-                numerodesiniestro: null,
-                tipodedocumento: null,
-                numerodedocumento: null,
-                fecha: null,
-                receptor: null,
-                monto: null,
-                observacion: null
-            };
+            return _emptyValueRecuperacion;
         }
         else {
             return {
-                recuperacionId: $('#recuperacionModal').data('id'),
-                numerodesiniestro: $('#numerodesiniestro').val(),
-                tipodedocumento: $('#tipodedocumento').val(),
-                numerodedocumento: $('#numerodedocumento').val(),
-                fecha: app.ui.GetDateValue('#fecha'),
-                receptor: $('#receptor').val(),
-                monto: app.ui.GetNumericValue('#monto'),
-                observacion: $('#observacion').val()
+                ID: $('#recuperacionModal').data('id'),
+                numerodesiniestro: $('#numerodesiniestroLegal').val(),
+                tipodedocumento: $('#tipodedocumentoLegal').val(),
+                numerodedocumento: $('#numerodedocumentoLegal').val(),
+                fecharecupera: app.ui.GetDateValue('#fecharecuperaLegal'),
+                receptor: $('#receptorLegal').val(),
+                montorecupera: app.ui.GetNumericValue('#montorecuperaLegal'),
+                observacion: $('#observacionLegal').val()
             };
         }
     };
@@ -831,22 +785,31 @@ app.PurdyPanelLegal = (function () {
         var fvalidate = formInstance.validate();
         fvalidate.resetForm();
         row = row || recuperacion_table_row();
-        md.data('id', row.recuperacionId);
+        md.data('id', row.ID);
 
-        $('#numerodesiniestro').val(row.numerodesiniestro);
-        $('#tipodedocumento').val(row.tipodedocumento);
-        $('#numerodedocumento').val(row.numerodedocumento);
-        app.ui.SetDateValue('#fecha', row.fecha);
-        $('#receptor').val(row.receptor);
-        app.ui.SetNumericValue('#monto', row.monto);
-        $('#observacion').val(row.observacion);
+        $('#numerodesiniestroLegal').val(row.numerodesiniestro);
+        $('#tipodedocumentoLegal').val(row.tipodedocumento);
+        $('#numerodedocumentoLegal').val(row.numerodedocumento);
+        app.ui.SetDateValue('#fecharecuperaLegal', row.fecharecupera);
+        $('#receptorLegal').val(row.receptor);
+        app.ui.SetNumericValue('#montorecuperaLegal', row.montorecupera);
+        $('#observacionLegal').val(row.observacion);
 
 
         md.modal('show');
     };
 
     function recuperacion_table_row_delete(row) {
-        $('#recuperacionTbl').bootstrapTable('removeByUniqueId', row.recuperacionId);
+        app.core.Delete(`${app.setting.entityapi}/PurdyPanelRecuperacion/${row.ID}`, null)
+            .done(function (deleted) {
+                if (deleted?.Sucessfully) {
+                    GetRecuperacion(_asiges);
+                    app.ui.Success('El movimiento de recuperación, fue eliminado de forma exitosa');
+                }
+                else {
+                    console.error(deleted);
+                }
+            });
     };
 
     function recuperacion_table_Validations() {
@@ -858,14 +821,11 @@ app.PurdyPanelLegal = (function () {
         });
     };
 
-
-
     return {
         Init: function (eventCallback) {
             try {
                 _eventCallback = eventCallback;
                 Controls_setup();
-                Setup_Validations();
                 detalle_table_setup();
                 detalle_table_Validations();
                 recuperacion_table_setup();
@@ -873,13 +833,53 @@ app.PurdyPanelLegal = (function () {
 
                 Controls_Events();
 
+                $('#detalleTbl').bootstrapTable('load', {});
+                $('#recuperacionTbl').bootstrapTable('load', {});
             }
             catch (err) {
                 console.error("Error Init");
                 console.error(err);
             }
         },
-        Event: function (src, data) {
+        Event: async function (src, data) {
+            switch (src) {
+                case 'ASIGESChange':
+                    if (data.claim != null) {
+                        GetDetalle(data.asiges);
+                        GetRecuperacion(data.asiges);
+                        _emptyValueRecuperacion.numerodesiniestro = data.claim.NUM_SINI;
+                    } else {
+                        $('#detalleTbl').bootstrapTable('load', []);
+                        $('#recuperacionTbl').bootstrapTable('load', []);
+                        app.ui.SetNumericValue('#montopagado', 0);
+                        app.ui.SetNumericValue('#totalesMontorecuperado', 0);
+                        app.ui.SetNumericValue('#montoutilizado', 0);
+                        app.ui.VisibleBehaviour('.posiblesubrogacion', false)
+                    }
+                    break;
+                case 'EventoDataChange':
+                    app.ui.VisibleBehaviour('.posiblesubrogacion', data.event.POSIBLESUBROGACION === 1);
+
+
+                    _emptyValueDetalle.enviadoainvestigacion = data.event.ENVIADOAINVESTIGACION;
+                    _emptyValueDetalle.fechaenviadoainvestigacion = data.event.FECHAENVIADOAINVESTIGACION;
+                    _emptyValueDetalle.enviadoaacompanamientolega = data.event.ENVIADOAACOMPANAMIENTOLEGAL;
+                    _emptyValueDetalle.fechaenviadoaacompanamientoLeg = data.event.FECHAENVIADOACOMPALEGAL;
+
+                    _emptyValueDetalle.fechadelevento = data.event.FECHADELEVENTO;
+                    _emptyValueDetalle.posiblesubrogacion = data.event.POSIBLESUBROGACION;
+                    _emptyValueDetalle.fechaidentificadocomoposiblesu = data.event.FECHAPOSIBLESUBROGACION;
+
+                    break;
+                case 'BalanceDataChange':
+                    let montoRecuperado = 0;
+                    if (data.balance != null) {
+                        montoRecuperado = data.balance.filter(i => i.TIPODEDOCUMENTO === 1 || i.TIPODEDOCUMENTO === 2)?.reduce((accumulator, item) => { return accumulator + item.MONTO; }, 0);
+                    }
+                    app.ui.SetNumericValue('#totalesMontorecuperado', montoRecuperado);
+                    app.ui.SetNumericValue('#montoutilizado', 0 - montoRecuperado);
+                    break;
+            }
         },
         detalleEditRow: function (row) {
             detalle_table_row_edit(row);
@@ -898,22 +898,21 @@ app.PurdyPanelLegal = (function () {
 
 window.detalleTbl_Events = {
     'click .delete': function (e, value, row, index) {
-        toastr.warning("Si está seguro de querer eliminar el visualizations '" + row.detalleId + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.PanelLegal.detalleDeleteRow(row); } });
+        app.ui.Warning("Si está seguro de querer eliminar el visualizations '" + row.ID + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.PurdyPanelLegal.detalleDeleteRow(row); } });
         e.stopPropagation();
     },
     'click .edit': function (e, value, row, index) {
-        app.PanelLegal.detalleEditRow(row);
+        app.PurdyPanelLegal.detalleEditRow(row);
         e.stopPropagation();
     }
 };
 window.recuperacionTbl_Events = {
     'click .delete': function (e, value, row, index) {
-        toastr.warning("Si está seguro de querer eliminar el visualizations '" + row.recuperacionId + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.PanelLegal.recuperacionDeleteRow(row); } });
+        app.ui.Warning("Si está seguro de querer eliminar el visualizations '" + row.ID + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.PurdyPanelLegal.recuperacionDeleteRow(row); } });
         e.stopPropagation();
     },
     'click .edit': function (e, value, row, index) {
-        app.PanelLegal.recuperacionEditRow(row);
+        app.PurdyPanelLegal.recuperacionEditRow(row);
         e.stopPropagation();
     }
 };
-

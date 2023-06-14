@@ -1,54 +1,32 @@
-﻿var app = app || {};
+﻿ var app = app || {};
 
 app.PurdyPanelIndemnizacion = (function () {
 
+    let _asiges = null;
     let _eventCallback = null;
-    var setupData = null;
-    var changedCallback = null;
+    let _data = null;
+    let _loadready = false;
+    let _changed = false;
 
-    function Setup() {
-
-        app.core.Get(app.setting.apipath + 'v1/Quote/PanelIndemnizacionSetup', null,
-            function (data) {
-                app.core.Lookups([],
-                    function () {
-                        setupData = data;
-                        MapObjectToInput(data);
-                    }, ``);
-
-            });
+    let _emptyValueBalance = {
+        ID: null,
+        NUMERODESINIESTRO: null,
+        TIPODEDOCUMENTO: null,
+        NUMERODEDOCUMENTO: null,
+        FECHA: null,
+        RECEPTOR: null,
+        MONTO: null,
+        NCREPUESTO: null,
+        OBSERVACION: null
     };
-
-    function ReadOnly() {
-        $('#aSIGES').replaceWith('<div>' + $('#aSIGES').val() + '</div>');
-        $('#movimientosdemontosNew').addClass('d-none');
-        $('#movimientosdemontosTbl').bootstrapTable('hideColumn', 'Actions');
-        $('#balanceNew').addClass('d-none');
-        $('#balanceTbl').bootstrapTable('hideColumn', 'Actions');
-
-    };
-
-    function MapInputToObject() {
-        var data = {
-            aSIGES: $('#aSIGES').val(),
-            movimientosdemontos: $('#movimientosdemontosTbl').bootstrapTable('getData'),
-            balance: $('#balanceTbl').bootstrapTable('getData'),
-
-        };
-        return data;
-    };
-
-    function MapObjectToInput(data) {
-        $('#aSIGES').val(data.aSIGES);
-        if (data.movimientosdemontos != null)
-            $('#movimientosdemontosTbl').bootstrapTable('load', data.movimientosdemontos);
-        else
-            $('#movimientosdemontosTbl').bootstrapTable('load', {});
-        if (data.balance != null)
-            $('#balanceTbl').bootstrapTable('load', data.balance);
-        else
-            $('#balanceTbl').bootstrapTable('load', {});
-
+    let _emptyValueMontos = {
+        ID: null,
+        MONTOINICIALPORINDEMNIZAR: null,
+        MONTOINICIALPORINDEMNIZARREPUE: null,
+        MONTOINICIALPORINDEMNIZARMANOD: null,
+        MONTODANOOCULTOPORINDEMNIZAR: null,
+        MONTODANOOCULTOPORINDEMNIZARRE: null,
+        MONTODANOOCULTOPORINDEMNIZARMA: null
     };
 
     function Controls_setup() {
@@ -132,81 +110,55 @@ app.PurdyPanelIndemnizacion = (function () {
     };
 
     function Controls_Events() {
-        $(".input-group.date").on('dp.change', function (e) {
-            data_changed();
-        });
-        $("#PurdyPanelIndemnizacionEdtForm :input").change(function () {
-            data_changed();
-        });
 
-
-        $('#PurdyPanelIndemnizacionEdtFormSave').click(function () {
-
-            if (app.ui.IsValid('#PurdyPanelIndemnizacionEdtForm', false)) {
-                app.ui.ButtonDoing('#PurdyPanelIndemnizacionEdtFormSave');
-
-                console.log(MapInputToObject())
-
-                app.core.Post(app.setting.apipath + 'v1/Purdy/PanelIndemnizacion',
-                    JSON.stringify(MapInputToObject()),
-                    function (data) {
-                        if (data.Mensaje != null) {
-                            app.ui.ShowAlert('quoteNotify', 'alert-danger', data.Mensaje);
-                        }
-                        else {
-
-                        }
-
-                    }).always(function () {
-                        app.ui.ButtonDone('#PurdyPanelIndemnizacionEdtFormSave');
-                    });
-            }
-            event.preventDefault();
-        });
-
-        $('#PurdyPanelIndemnizacionEdtFormCancel').click(function () {
-            app.ui.ButtonDoing('#PurdyPanelIndemnizacionEdtFormCancel');
-            setTimeout(() => { app.ui.ButtonDone('#PurdyPanelIndemnizacionEdtFormCancel'); }, 3000);
-            event.preventDefault();
+        $("#monto").change(function () {
+            let factor = 0.0;
+            let taller = _data.damage.TALLER;
+            let marca = _data.policy.data.find(i => i.COD_CAMPO === "COD_MARCA")?.TXT_CAMPO;
+            if (taller === 1 && (marca === 'FORD' || marca === 'VOLKSWAGEN'))
+                factor = 0.10;
+            if (taller == 1 && (marca != 'FORD' && marca != 'VOLKSWAGEN'))
+                factor = 0.15;
+            if (taller != 1 && (marca === 'FORD' || marca === 'VOLKSWAGEN'))
+                factor = 0.15;
+            if (taller != 1 && (marca != 'FORD' && marca != 'VOLKSWAGEN'))
+                factor = 0.20;
+            app.ui.SetNumericValue('#nCRepuesto', app.ui.GetNumericValue('#monto') * factor);
         });
 
     };
 
-    function data_changed() {
-        if (changedCallback !== undefined && changedCallback !== null)
-            changedCallback(MapInputToObject());
-        if (ctrol.presentadanooculto === 'Si')
-            $('.montoDanoOcultoporIndemnizarVisible').removeClass('d-none');
-        else
-            $('.montoDanoOcultoporIndemnizarVisible').addClass('d-none');
-        if (ctrol.presentadanooculto === 'Si')
-            $('.montoDanoOcultoporIndemnizarRepuestosVisible').removeClass('d-none');
-        else
-            $('.montoDanoOcultoporIndemnizarRepuestosVisible').addClass('d-none');
-        if (ctrol.presentadanooculto === 'Si')
-            $('.montoDanoOcultoporIndemnizarManodeObraVisible').removeClass('d-none');
-        else
-            $('.montoDanoOcultoporIndemnizarManodeObraVisible').addClass('d-none');
+    async function GetMovimientosDeMontos(asigesCode) {
+        _asiges = asigesCode;
+        app.core.Get(`${app.setting.entityapi}/PurdyPanelMontos/asiges?code=${asigesCode}`)
+            .done(function (dataMontos) {
+                if (dataMontos?.Sucessfully) {
+                    $('#movimientosdemontosTbl').bootstrapTable('load', dataMontos.Data == null ? [] : dataMontos.Data);
+                    _eventCallback('MontosDataChange', dataMontos.Data);
+                }
+            });
     };
 
-    function Setup_Validations() {
-        app.ui.DateValidators();
-        app.ui.NumericValidators();
-        $("#PurdyPanelIndemnizacionEdtForm").validate({
-            errorPlacement: app.ui.ErrorPlacement,
-            rules: {
-                aSIGES: { required: true },
-            },
-            messages: {
-                aSIGES: { required: 'Debe indicar el asiges' },
-            }
-        });
+    async function GetBalance(asigesCode) {
+        _asiges = asigesCode;
+        app.core.Get(`${app.setting.entityapi}/PurdyPanelBalance/asiges?code=${asigesCode}`)
+            .done(function (dataBalance) {
+                if (dataBalance?.Sucessfully) {
+                    if (dataBalance.Data != null) {
+                        dataBalance.Data.forEach(function (item) {
+                            item.TIPODEDOCUMENTODESC = $(`#tipodedocumento option[value=${item.TIPODEDOCUMENTO}]`).text();
+                        });
+                    }
+                    $('#balanceTbl').bootstrapTable('load', dataBalance.Data == null ? [] : dataBalance.Data);
+                    _eventCallback('BalanceDataChange', dataBalance.Data);
+                }
+            });
     };
 
-    function movimientosdemontos_table_setup() {
+    async function movimientosdemontos_table_setup() {
 
         $('#movimientosdemontosTbl').bootstrapTable({
-            uniqueId: 'movimientosdemontosId',
+            uniqueId: 'ID',
             classes: 'table table-bordered table-hover table-index table-in-form',
             pagination: true,
             smartDisplay: true,
@@ -214,7 +166,7 @@ app.PurdyPanelIndemnizacion = (function () {
             detailFormatter: 'app.ui.GenericDetailFormatter',
             columns: [
                 {
-                    field: 'montoInicialporIndemnizar',
+                    field: 'MONTOINICIALPORINDEMNIZAR',
                     title: 'Monto Inicial por Indemnizar',
                     titleTooltip: '',
                     sortable: false,
@@ -223,7 +175,7 @@ app.PurdyPanelIndemnizacion = (function () {
                     formatter: 'app.ui.DecimalFormatter',
                     visible: true
                 }, {
-                    field: 'montoInicialporIndemnizarRepuestos',
+                    field: 'MONTOINICIALPORINDEMNIZARREPUE',
                     title: 'Monto Inicial por Indemnizar (Repuestos)',
                     titleTooltip: '',
                     sortable: false,
@@ -232,7 +184,7 @@ app.PurdyPanelIndemnizacion = (function () {
                     formatter: 'app.ui.DecimalFormatter',
                     visible: true
                 }, {
-                    field: 'montoInicialporIndemnizarManodeObra',
+                    field: 'MONTOINICIALPORINDEMNIZARMANOD',
                     title: 'Monto Inicial por Indemnizar (Mano de Obra)',
                     titleTooltip: '',
                     sortable: false,
@@ -241,7 +193,7 @@ app.PurdyPanelIndemnizacion = (function () {
                     formatter: 'app.ui.DecimalFormatter',
                     visible: true
                 }, {
-                    field: 'montoDanoOcultoporIndemnizar',
+                    field: 'MONTODANOOCULTOPORINDEMNIZAR',
                     title: 'Monto Daño Oculto por Indemnizar',
                     titleTooltip: '',
                     sortable: false,
@@ -250,7 +202,7 @@ app.PurdyPanelIndemnizacion = (function () {
                     formatter: 'app.ui.DecimalFormatter',
                     visible: true
                 }, {
-                    field: 'montoDanoOcultoporIndemnizarRepuestos',
+                    field: 'MONTODANOOCULTOPORINDEMNIZARRE',
                     title: 'Monto Daño Oculto por Indemnizar (Repuestos)',
                     titleTooltip: '',
                     sortable: false,
@@ -259,7 +211,7 @@ app.PurdyPanelIndemnizacion = (function () {
                     formatter: 'app.ui.DecimalFormatter',
                     visible: true
                 }, {
-                    field: 'montoDanoOcultoporIndemnizarManodeObra',
+                    field: 'MONTODANOOCULTOPORINDEMNIZARMA',
                     title: 'Monto Daño Oculto por Indemnizar (Mano de Obra)',
                     titleTooltip: '',
                     sortable: false,
@@ -303,45 +255,61 @@ app.PurdyPanelIndemnizacion = (function () {
                 app.ui.ButtonDoing('#movimientosdemontosEdtFormSave');
 
                 var row = movimientosdemontos_table_row('values');
+                row.ASIGES = _asiges;
+                if (row.ID === null) {
+                    app.core.Post(`${app.setting.entityapi}/PurdyPanelMontos`, JSON.stringify(row))
+                        .done(function (created) {
+                            if (created?.Sucessfully) {
+                                _loadready = true;
+                                _changed = false;
+                                $('#movimientosdemontosModal').modal('hide');
+                                GetMovimientosDeMontos(_asiges);
+                                app.ui.Success('El movimiento de montos, fue creada de forma exitosa');
 
-                if (row.movimientosdemontosId === null)
-                    row.movimientosdemontosId = 1;
+                            }
+                            else {
+                                console.error(created);
+                            }
 
-                if ($('#movimientosdemontosModal').data('id') != null) {
-                    $('#movimientosdemontosTbl').bootstrapTable('updateByUniqueId', { id: row.movimientosdemontosId, row: row });
+                        }).always(function () {
+                            app.ui.ButtonDone('#movimientosdemontosEdtFormSave');
+                        });
+                } else {
+                    app.core.Put(`${app.setting.entityapi}/PurdyPanelMontos/${row.ID}`, JSON.stringify(row))
+                        .done(function (updated) {
+                            if (updated?.Sucessfully) {
+                                _loadready = true;
+                                _changed = false;
+                                $('#movimientosdemontosModal').modal('hide');
+                                GetMovimientosDeMontos(_asiges);
+                                app.ui.Success('El movimiento de montos, fue actualizado de forma exitosa');
+
+                            }
+                            else {
+                                console.error(updated);
+                            }
+
+                        }).always(function () {
+                            app.ui.ButtonDone('#movimientosdemontosEdtFormSave');
+                        });
                 }
-                else {
-                    $('#movimientosdemontosTbl').bootstrapTable('append', row);
-                }
-
-                app.ui.ButtonDone('#movimientosdemontosEdtFormSave')
-                $('#movimientosdemontosModal').modal('hide');
             }
         });
-
     };
 
     function movimientosdemontos_table_row(mode) {
         if (mode == null) {
-            return {
-                movimientosdemontosId: null,
-                montoInicialporIndemnizar: null,
-                montoInicialporIndemnizarRepuestos: null,
-                montoInicialporIndemnizarManodeObra: null,
-                montoDanoOcultoporIndemnizar: null,
-                montoDanoOcultoporIndemnizarRepuestos: null,
-                montoDanoOcultoporIndemnizarManodeObra: null
-            };
+            return _emptyValueMontos;
         }
         else {
             return {
-                movimientosdemontosId: $('#movimientosdemontosModal').data('id'),
-                montoInicialporIndemnizar: app.ui.GetNumericValue('#montoInicialporIndemnizar'),
-                montoInicialporIndemnizarRepuestos: app.ui.GetNumericValue('#montoInicialporIndemnizarRepuestos'),
-                montoInicialporIndemnizarManodeObra: app.ui.GetNumericValue('#montoInicialporIndemnizarManodeObra'),
-                montoDanoOcultoporIndemnizar: app.ui.GetNumericValue('#montoDanoOcultoporIndemnizar'),
-                montoDanoOcultoporIndemnizarRepuestos: app.ui.GetNumericValue('#montoDanoOcultoporIndemnizarRepuestos'),
-                montoDanoOcultoporIndemnizarManodeObra: app.ui.GetNumericValue('#montoDanoOcultoporIndemnizarManodeObra')
+                ID: $('#movimientosdemontosModal').data('id'),
+                MONTOINICIALPORINDEMNIZAR: app.ui.GetNumericValue('#montoInicialporIndemnizar'),
+                MONTOINICIALPORINDEMNIZARREPUE: app.ui.GetNumericValue('#montoInicialporIndemnizarRepuestos'),
+                MONTOINICIALPORINDEMNIZARMANOD: app.ui.GetNumericValue('#montoInicialporIndemnizarManodeObra'),
+                MONTODANOOCULTOPORINDEMNIZAR: app.ui.GetNumericValue('#montoDanoOcultoporIndemnizar'),
+                MONTODANOOCULTOPORINDEMNIZARRE: app.ui.GetNumericValue('#montoDanoOcultoporIndemnizarRepuestos'),
+                MONTODANOOCULTOPORINDEMNIZARMA: app.ui.GetNumericValue('#montoDanoOcultoporIndemnizarManodeObra')
             };
         }
     };
@@ -352,21 +320,30 @@ app.PurdyPanelIndemnizacion = (function () {
         var fvalidate = formInstance.validate();
         fvalidate.resetForm();
         row = row || movimientosdemontos_table_row();
-        md.data('id', row.movimientosdemontosId);
+        md.data('id', row.ID);
 
-        app.ui.SetNumericValue('#montoInicialporIndemnizar', row.montoInicialporIndemnizar);
-        app.ui.SetNumericValue('#montoInicialporIndemnizarRepuestos', row.montoInicialporIndemnizarRepuestos);
-        app.ui.SetNumericValue('#montoInicialporIndemnizarManodeObra', row.montoInicialporIndemnizarManodeObra);
-        app.ui.SetNumericValue('#montoDanoOcultoporIndemnizar', row.montoDanoOcultoporIndemnizar);
-        app.ui.SetNumericValue('#montoDanoOcultoporIndemnizarRepuestos', row.montoDanoOcultoporIndemnizarRepuestos);
-        app.ui.SetNumericValue('#montoDanoOcultoporIndemnizarManodeObra', row.montoDanoOcultoporIndemnizarManodeObra);
+        app.ui.SetNumericValue('#montoInicialporIndemnizar', row.MONTOINICIALPORINDEMNIZAR);
+        app.ui.SetNumericValue('#montoInicialporIndemnizarRepuestos', row.MONTOINICIALPORINDEMNIZARREPUE);
+        app.ui.SetNumericValue('#montoInicialporIndemnizarManodeObra', row.MONTOINICIALPORINDEMNIZARMANOD);
+        app.ui.SetNumericValue('#montoDanoOcultoporIndemnizar', row.MONTODANOOCULTOPORINDEMNIZAR);
+        app.ui.SetNumericValue('#montoDanoOcultoporIndemnizarRepuestos', row.MONTODANOOCULTOPORINDEMNIZARRE);
+        app.ui.SetNumericValue('#montoDanoOcultoporIndemnizarManodeObra', row.MONTODANOOCULTOPORINDEMNIZARMA);
 
 
         md.modal('show');
     };
 
     function movimientosdemontos_table_row_delete(row) {
-        $('#movimientosdemontosTbl').bootstrapTable('removeByUniqueId', row.movimientosdemontosId);
+        app.core.Delete(`${app.setting.entityapi}/PurdyPanelMontos/${row.ID}`, null)
+            .done(function (deleted) {
+                if (deleted?.Sucessfully) {
+                    GetMovimientosDeMontos(_asiges);
+                    app.ui.Success('El movimiento de montos, fue eliminado de forma exitosa');
+                }
+                else {
+                    console.error(deleted);
+                }
+            });
     };
 
     function movimientosdemontos_table_Validations() {
@@ -378,10 +355,11 @@ app.PurdyPanelIndemnizacion = (function () {
         });
     };
 
-    function balance_table_setup() {
+
+    async function balance_table_setup() {
 
         $('#balanceTbl').bootstrapTable({
-            uniqueId: 'balanceId',
+            uniqueId: 'ID',
             classes: 'table table-bordered table-hover table-index table-in-form',
             pagination: true,
             smartDisplay: true,
@@ -389,7 +367,7 @@ app.PurdyPanelIndemnizacion = (function () {
             detailFormatter: 'app.ui.GenericDetailFormatter',
             columns: [
                 {
-                    field: 'numerodeSiniestro',
+                    field: 'NUMERODESINIESTRO',
                     title: 'Número de Siniestro',
                     titleTooltip: '',
                     sortable: false,
@@ -398,7 +376,7 @@ app.PurdyPanelIndemnizacion = (function () {
                     formatter: 'app.ui.StringFormatter',
                     visible: true
                 }, {
-                    field: 'tipodedocumento',
+                    field: 'TIPODEDOCUMENTODESC',
                     title: 'Tipo de documento',
                     titleTooltip: '',
                     sortable: false,
@@ -407,7 +385,7 @@ app.PurdyPanelIndemnizacion = (function () {
                     formatter: 'app.ui.StringFormatter',
                     visible: true
                 }, {
-                    field: 'numerodedocumento',
+                    field: 'NUMERODEDOCUMENTO',
                     title: 'Número de documento',
                     titleTooltip: '',
                     sortable: false,
@@ -416,7 +394,7 @@ app.PurdyPanelIndemnizacion = (function () {
                     formatter: 'app.ui.StringFormatter',
                     visible: true
                 }, {
-                    field: 'fecha',
+                    field: 'FECHA',
                     title: 'Fecha',
                     titleTooltip: '',
                     sortable: false,
@@ -425,7 +403,7 @@ app.PurdyPanelIndemnizacion = (function () {
                     formatter: 'app.ui.DateFormatter',
                     visible: true
                 }, {
-                    field: 'receptor',
+                    field: 'RECEPTOR',
                     title: 'Receptor',
                     titleTooltip: '',
                     sortable: false,
@@ -434,7 +412,7 @@ app.PurdyPanelIndemnizacion = (function () {
                     formatter: 'app.ui.StringFormatter',
                     visible: true
                 }, {
-                    field: 'monto',
+                    field: 'MONTO',
                     title: 'Monto',
                     titleTooltip: '',
                     sortable: false,
@@ -443,7 +421,7 @@ app.PurdyPanelIndemnizacion = (function () {
                     formatter: 'app.ui.DecimalFormatter',
                     visible: true
                 }, {
-                    field: 'nCRepuesto',
+                    field: 'NCREPUESTO',
                     title: 'NC Repuesto',
                     titleTooltip: '',
                     sortable: false,
@@ -452,7 +430,7 @@ app.PurdyPanelIndemnizacion = (function () {
                     formatter: 'app.ui.DecimalFormatter',
                     visible: true
                 }, {
-                    field: 'observacion',
+                    field: 'OBSERVACION',
                     title: 'Observación',
                     titleTooltip: '',
                     sortable: false,
@@ -496,49 +474,56 @@ app.PurdyPanelIndemnizacion = (function () {
                 app.ui.ButtonDoing('#balanceEdtFormSave');
 
                 var row = balance_table_row('values');
+                row.ASIGES = _asiges;
+                if (row.ID === null) {
+                    app.core.Post(`${app.setting.entityapi}/PurdyPanelBalance`, JSON.stringify(row))
+                        .done(function (created) {
+                            if (created?.Sucessfully) {
+                                $('#balanceModal').modal('hide');
+                                GetBalance(_asiges);
+                                app.ui.Success('El movimiento de montos, fue creada de forma exitosa');
+                            }
+                            else {
+                                console.error(created);
+                            }
 
-                if (row.balanceId === null)
-                    row.balanceId = 1;
-
-                if ($('#balanceModal').data('id') != null) {
-                    $('#balanceTbl').bootstrapTable('updateByUniqueId', { id: row.balanceId, row: row });
+                        }).always(function () {
+                            app.ui.ButtonDone('#balanceEdtFormSave');
+                        });
+                } else {
+                    app.core.Put(`${app.setting.entityapi}/PurdyPanelBalance/${row.ID}`, JSON.stringify(row))
+                        .done(function (updated) {
+                            if (updated?.Sucessfully) {
+                                $('#balanceModal').modal('hide');
+                                GetBalance(_asiges);
+                                app.ui.Success('El movimiento de montos, fue actualizado de forma exitosa');
+                            }
+                            else {
+                                console.error(updated);
+                            }
+                        }).always(function () {
+                            app.ui.ButtonDone('#balanceEdtFormSave');
+                        });
                 }
-                else {
-                    $('#balanceTbl').bootstrapTable('append', row);
-                }
-
-                app.ui.ButtonDone('#balanceEdtFormSave')
-                $('#balanceModal').modal('hide');
             }
         });
-
     };
 
     function balance_table_row(mode) {
         if (mode == null) {
-            return {
-                balanceId: null,
-                numerodeSiniestro: null,
-                tipodedocumento: null,
-                numerodedocumento: null,
-                fecha: null,
-                receptor: null,
-                monto: null,
-                nCRepuesto: null,
-                observacion: null
-            };
+            return _emptyValueBalance;
         }
         else {
             return {
-                balanceId: $('#balanceModal').data('id'),
-                numerodeSiniestro: $('#numerodeSiniestro').val(),
-                tipodedocumento: $('#tipodedocumento').val(),
-                numerodedocumento: $('#numerodedocumento').val(),
-                fecha: app.ui.GetDateValue('#fecha'),
-                receptor: $('#receptor').val(),
-                monto: app.ui.GetNumericValue('#monto'),
-                nCRepuesto: app.ui.GetNumericValue('#nCRepuesto'),
-                observacion: $('#observacion').val()
+                ID: $('#balanceModal').data('id'),
+                NUMERODESINIESTRO: $('#numerodeSiniestro').val(),
+                TIPODEDOCUMENTO: $('#tipodedocumento').val(),
+                NUMERODEDOCUMENTO: $('#numerodedocumento').val(),
+                FECHA: app.ui.GetDateValue('#fecha'),
+                RECEPTOR: $('#receptor').val(),
+                MONTO: app.ui.GetNumericValue('#monto'),
+                NCREPUESTO: app.ui.GetNumericValue('#nCRepuesto'),
+                OBSERVACION: $('#observacion').val()
             };
         }
     };
@@ -549,23 +534,32 @@ app.PurdyPanelIndemnizacion = (function () {
         var fvalidate = formInstance.validate();
         fvalidate.resetForm();
         row = row || balance_table_row();
-        md.data('id', row.balanceId);
+        md.data('id', row.ID);
 
-        $('#numerodeSiniestro').val(row.numerodeSiniestro);
-        $('#tipodedocumento').val(row.tipodedocumento);
-        $('#numerodedocumento').val(row.numerodedocumento);
-        app.ui.SetDateValue('#fecha', row.fecha);
-        $('#receptor').val(row.receptor);
-        app.ui.SetNumericValue('#monto', row.monto);
-        app.ui.SetNumericValue('#nCRepuesto', row.nCRepuesto);
-        $('#observacion').val(row.observacion);
+        $('#numerodeSiniestro').val(row.NUMERODESINIESTRO);
+        $('#tipodedocumento').val(row.TIPODEDOCUMENTO);
+        $('#numerodedocumento').val(row.NUMERODEDOCUMENTO);
+        app.ui.SetDateValue('#fecha', row.FECHA);
+        $('#receptor').val(row.RECEPTOR);
+        app.ui.SetNumericValue('#monto', row.MONTO);
+        app.ui.SetNumericValue('#nCRepuesto', row.NCREPUESTO);
+        $('#observacion').val(row.OBSERVACION);
 
 
         md.modal('show');
     };
 
     function balance_table_row_delete(row) {
-        $('#balanceTbl').bootstrapTable('removeByUniqueId', row.balanceId);
+        app.core.Delete(`${app.setting.entityapi}/PurdyPanelBalance/${row.ID}`, null)
+            .done(function (deleted) {
+                if (deleted?.Sucessfully) {
+                    GetBalance(_asiges);
+                    app.ui.Success('El movimiento de balance, fue eliminado de forma exitosa');
+                }
+                else {
+                    console.error(deleted);
+                }
+            });
     };
 
     function balance_table_Validations() {
@@ -577,27 +571,53 @@ app.PurdyPanelIndemnizacion = (function () {
         });
     };
 
-
-
     return {
         Init: function (eventCallback) {
             try {
                 _eventCallback = eventCallback;
                 Controls_setup();
-                Setup_Validations();
                 movimientosdemontos_table_setup();
                 movimientosdemontos_table_Validations();
                 balance_table_setup();
                 balance_table_Validations();
 
                 Controls_Events();
+
+                $('#movimientosdemontosTbl').bootstrapTable('load', {});
+                $('#balanceTbl').bootstrapTable('load', {});
             }
             catch (err) {
                 console.error("Error Init");
                 console.error(err);
             }
         },
-        Event: function (src, data) {
+        Event: async function (src, data) {
+            switch (src) {
+                case 'ASIGESChange':
+                    if (data.claim != null) {
+                        GetMovimientosDeMontos(data.asiges);
+                        GetBalance(data.asiges);
+                        _emptyValueBalance.NUMERODESINIESTRO = data.claim.NUM_SINI;
+                    } else {
+                        $('#balanceTbl').bootstrapTable('load', []);
+                        $('#movimientosdemontosTbl').bootstrapTable('load', []);
+                        app.ui.VisibleBehaviour('.DanoOculto', false);
+                    }
+                    _data = data;
+                    break;
+                case 'DanosDataChange':
+                    app.ui.VisibleBehaviour('.DanoOculto', data.damage.PRESENTADANOOCULTO == 1);
+
+                    _emptyValueMontos.MONTOINICIALPORINDEMNIZAR = data.damage.PERDIDA;
+                    _emptyValueMontos.MONTOINICIALPORINDEMNIZARREPUE = data.damage.PERDREPUESTOTOTAL;
+                    _emptyValueMontos.MONTOINICIALPORINDEMNIZARMANOD = data.damage.PERDMANOTOTAL;
+
+                    _emptyValueMontos.MONTODANOOCULTOPORINDEMNIZAR = data.damage.OTROSIIOTROSIIDANOCULMANOTOTAL;
+                    _emptyValueMontos.MONTODANOOCULTOPORINDEMNIZARRE = data.damage.DANOOCULTOTOTAL;
+                    _emptyValueMontos.MONTODANOOCULTOPORINDEMNIZARMA = data.damage.DANOOCULTOMANOTOTAL;
+                    _data = data;
+                    break;
+            }
         },
         movimientosdemontosEditRow: function (row) {
             movimientosdemontos_table_row_edit(row);
@@ -616,21 +636,21 @@ app.PurdyPanelIndemnizacion = (function () {
 
 window.movimientosdemontosTbl_Events = {
     'click .delete': function (e, value, row, index) {
-        toastr.warning("Si está seguro de querer eliminar el visualizations '" + row.movimientosdemontosId + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.PanelIndemnizacion.movimientosdemontosDeleteRow(row); } });
+        app.ui.Warning("Si está seguro de querer eliminar el movimiento de saldo '" + row.ID + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.PurdyPanelIndemnizacion.movimientosdemontosDeleteRow(row); } });
         e.stopPropagation();
     },
     'click .edit': function (e, value, row, index) {
-        app.PanelIndemnizacion.movimientosdemontosEditRow(row);
+        app.PurdyPanelIndemnizacion.movimientosdemontosEditRow(row);
         e.stopPropagation();
     }
 };
 window.balanceTbl_Events = {
     'click .delete': function (e, value, row, index) {
-        toastr.warning("Si está seguro de querer eliminar el visualizations '" + row.balanceId + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.PanelIndemnizacion.balanceDeleteRow(row); } });
+        app.ui.Warning("Si está seguro de querer eliminar el movimiento de balance '" + row.ID + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.PurdyPanelIndemnizacion.balanceDeleteRow(row); } });
         e.stopPropagation();
     },
     'click .edit': function (e, value, row, index) {
-        app.PanelIndemnizacion.balanceEditRow(row);
+        app.PurdyPanelIndemnizacion.balanceEditRow(row);
         e.stopPropagation();
     }
 };

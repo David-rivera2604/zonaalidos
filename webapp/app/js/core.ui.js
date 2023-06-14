@@ -436,7 +436,7 @@ app.ui = (function () {
             }
             else {
                 var value = $(el).data('value');
-            }			 
+            }
             btn.text($(el).text());
             btn.data('value', value);
             event.preventDefault();
@@ -536,7 +536,7 @@ app.ui = (function () {
                 if (typedocument != 4) {
                     typedocument = app.ui.GetRadioNumericValue(documenttype)
                 }
-                if (app.ui.IsDocumentNumberValid(typedocument, $(documentNumberElement).val())) {																								 
+                if (app.ui.IsDocumentNumberValid(typedocument, $(documentNumberElement).val())) {
                     var value = $(documentNumberElement).val().replace(/-/g, '');
                     if (value !== null && parseInt(0 + value, 10) !== 0 && parseInt(0 + value, 10) <= 999999999) {
                         $(documentNumberElement).addClass('loading');
@@ -595,7 +595,7 @@ app.ui = (function () {
             return {
                 result: result,
                 pattern: pattern,
-            };			  
+            };
         },
         DocumentNumberValidators: function () {
             $.validator.addMethod("DocumentNumberLength",
@@ -931,7 +931,7 @@ app.ui = (function () {
                         html = app.core.ReplaceAll(html, '@_eq', '=');
                         html = app.core.ReplaceAll(html, '@_qt', '\'');
                         html = app.core.ReplaceAll(html, '@_sc', ';');
-						html = app.core.ReplaceAll(html, '@_ee', ' ');
+                        html = app.core.ReplaceAll(html, '@_ee', ' ');
                         //html = html.replace(/@_/g, '\'');
                         $('.sidebar-content').replaceWith(html.replace('ibox-content', 'ibox-content sidebar-content'));
                         if (options.callback != undefined) {
@@ -1024,7 +1024,7 @@ app.ui = (function () {
         DocumentNumberHandlerJDC: function (documentNumberElement, callbackDone, callbackDocumentType) {
             $(documentNumberElement + 'TypeMenu a').click(function () {
                 app.ui.RemoveInJuridico(this, documentNumberElement, 'Identification', callbackDocumentType);
-            });		   
+            });
         },
         DataEntryBehavior: function (formName, behavior) {
             $(formName + ' :input').each(function () {
@@ -1102,7 +1102,7 @@ app.ui = (function () {
         LabelColorFormatter: function (value, row, index, field) {
             return '<span class="label label-' + (app.ViewerQuery.state[field][value] || app.ViewerQuery.state[field]['_']) + '">' + app.ui.StringCapitalizeFormatter(value) + '</span>';
         },
-        CommonBehaviour: function () {
+        CommonBehaviour: function (custom) {
             let roles = JSON.parse(localStorage.getItem('Roles'));
             let tenant = localStorage.getItem('Tenant');
             roles.forEach(function (item) {
@@ -1114,7 +1114,25 @@ app.ui = (function () {
                 $(`.role-${item}-${tenant}-enable`).prop("disabled", false);
                 $(`.role--${tenant}-visible`).removeClass('d-none');
                 $(`.role--${tenant}-enable`).prop("disabled", false);
+                if (custom != undefined) {
+                }
             })
+        },
+        CustomBehaviour: function (tag, condition) {
+            let roles = JSON.parse(localStorage.getItem('Roles'));
+            roles.forEach(function (item) {
+
+                if (condition)
+                    $(`.role-${item}-${tag}-visible`).removeClass('d-none');
+                else
+                    $(`.role-${item}-${tag}-visible`).addClass('d-none');
+            })
+        },
+        VisibleBehaviour: function (tag, condition) {
+            if (condition)
+                $(`${tag}-visible`).removeClass('d-none');
+            else
+                $(`${tag}-visible`).addClass('d-none');
         },
         RequiredMark: function (ctrlId, add) {
             const mark = ' <span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span>';
@@ -1150,6 +1168,29 @@ app.ui = (function () {
             }
             else
                 return false;
+        },
+        Warning: function (msg, title, settings) {
+            
+            toastr.warning(msg, title, settings);
+        },
+        Success: function (msg, title, settings) {
+            
+            toastr.success(msg, '', { timeOut: 5000, closeButton: true, progressBar: true });
+        },
+        Success: function (msg, title, settings) {
+            
+            toastr.success(msg, title, settings);
+        },
+        Error: function (msg) {
+            app.ui.Error(msg, '', { timeOut: 9000, closeButton: true, progressBar: true });
+        },
+        Error: function (msg, title, settings) {
+            
+            toastr.error(msg, title, settings);
+        },
+        NotifyClear: function (msg, title, settings) {
+
+            toastr.remove();
         }
     };
 })();
