@@ -216,21 +216,6 @@ app.master = (function () {
             name = name.replace('á', 'a');
 
             if ($('#tenantLogo').length > 0) {
-                app.core.Get(app.setting.apipath + 'v1/Colors/GetColor')
-                    .done(function (data, textStatus, jqXHR) {
-                        ListaElementos = data;
-                        var Tenant = localStorage.getItem("Tenant")
-                        for (var a in ListaElementos) {
-                            for (var prop in ListaElementos[a]) {
-                                var object = ListaElementos[a]
-                                if (object[prop] == Tenant) {
-                                    document.getElementById('logotenantHead').innerHTML = ['<img class="thumb" src= "' + object['Logo'] + '"/>']
-                                }
-                            }
-                        }
-
-                    })
-
 
 
                 $('#UserNameMaster').html(localStorage.getItem('Username'));
@@ -275,21 +260,6 @@ $(document).ready(function () {
 
 ///////////////////////////////////////NEW COLORS TENAT/////////////////////////////////
 
-app.core.Get(app.setting.apipath + 'v1/Colors/GetColor')
-    .done(function (data, textStatus, jqXHR) {
-        var ListaElementos = data;
-        var Tenant = localStorage.getItem('Tenant')
-        for (var a in ListaElementos) {
-            for (var prop in ListaElementos[a]) {
-                var object = ListaElementos[a]
-                if (object[prop] == Tenant) {
-                    document.documentElement.style.setProperty('--mapfrered1', object['Color1'])
-                    document.documentElement.style.setProperty('--mapfrered2', object['Color2'])
-                }
-            }
-        }
-
-    })
 
 //function WheelChair() {
 //    $(".fa-wheelchair").click(function () {

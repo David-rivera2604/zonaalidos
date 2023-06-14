@@ -302,6 +302,7 @@ namespace Architect.API.Core.Business.Security
                     {
                         toAdd = new Architect.API.Core.Contracts.Security.UserRoleMember();
                         roles.Add(toAdd);
+                        toAdd.Id = DataAccess.Security.UserRoleMember.RetrieveLastKey()+1;
                         toAdd.UserId = id;
                         toAdd.RoleId = Convert.ToInt32(newItem.Code);
 

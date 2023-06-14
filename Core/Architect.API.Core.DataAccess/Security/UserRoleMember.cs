@@ -24,6 +24,7 @@ namespace Architect.API.Core.DataAccess.Security
                 userrolememberItem.UpdateDate = DateTime.Now;
             }
             return Database.Insert("UserRoleMember", ExecuteMode.CommandBuilder)
+                    .Column("Id", DbType.Decimal, 9, userrolememberItem.Id)
                     .Column("CompanyId", DbType.Decimal, 5, userrolememberItem.CompanyId)
                     .Column("UserId", DbType.Decimal, 9, userrolememberItem.UserId)
                     .Column("RoleId", DbType.Decimal, 9, userrolememberItem.RoleId)
@@ -88,10 +89,10 @@ namespace Architect.API.Core.DataAccess.Security
         public static int DeleteByKey(int userId, int roleId, IDbConnection connection = null)
         {
             return Database.Delete("UserRoleMember", ExecuteMode.CommandBuilder)
-                    .Filter("UserId", DbType.Decimal, 9,  userId)
-                    .Filter("RoleId", DbType.Decimal, 9,  roleId)
+                    .Filter("UserId", DbType.Decimal, 9, userId)
+                    .Filter("RoleId", DbType.Decimal, 9, roleId)
                     .Execute(connection, "Research");
-          
+
         }
 
         /// <summary>
@@ -104,8 +105,8 @@ namespace Architect.API.Core.DataAccess.Security
         {
             return Database.Delete(@"DELETE FROM UserRoleMember 
                                            WHERE UserId=:UserId")
-                             .AddParameter("UserId", DbType.Decimal, 9, userId) 
-                             .Execute(connection, "Research"); 
+                             .AddParameter("UserId", DbType.Decimal, 9, userId)
+                             .Execute(connection, "Research");
         }
 
         /// <summary>
@@ -129,6 +130,6 @@ namespace Architect.API.Core.DataAccess.Security
                         }));
             return result;
         }
- 
+
     }
 }
