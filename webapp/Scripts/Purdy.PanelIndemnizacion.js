@@ -128,9 +128,9 @@ app.PurdyPanelIndemnizacion = (function () {
 
     };
 
-    function GetMovimientosDeMontos(asigesCode) {
+    async function GetMovimientosDeMontos(asigesCode) {
         _asiges = asigesCode;
-        app.core.Get(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelMontos/asiges?code=${asigesCode}`)
+        app.core.Get(`${app.setting.entityapi}/PurdyPanelMontos/asiges?code=${asigesCode}`)
             .done(function (dataMontos) {
                 if (dataMontos?.Sucessfully) {
                     $('#movimientosdemontosTbl').bootstrapTable('load', dataMontos.Data == null ? [] : dataMontos.Data);
@@ -139,9 +139,9 @@ app.PurdyPanelIndemnizacion = (function () {
             });
     };
 
-    function GetBalance(asigesCode) {
+    async function GetBalance(asigesCode) {
         _asiges = asigesCode;
-        app.core.Get(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelBalance/asiges?code=${asigesCode}`)
+        app.core.Get(`${app.setting.entityapi}/PurdyPanelBalance/asiges?code=${asigesCode}`)
             .done(function (dataBalance) {
                 if (dataBalance?.Sucessfully) {
                     if (dataBalance.Data != null) {
@@ -155,7 +155,7 @@ app.PurdyPanelIndemnizacion = (function () {
             });
     };
 
-    function movimientosdemontos_table_setup() {
+    async function movimientosdemontos_table_setup() {
 
         $('#movimientosdemontosTbl').bootstrapTable({
             uniqueId: 'ID',
@@ -257,7 +257,7 @@ app.PurdyPanelIndemnizacion = (function () {
                 var row = movimientosdemontos_table_row('values');
                 row.ASIGES = _asiges;
                 if (row.ID === null) {
-                    app.core.Post(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelMontos`, JSON.stringify(row))
+                    app.core.Post(`${app.setting.entityapi}/PurdyPanelMontos`, JSON.stringify(row))
                         .done(function (created) {
                             if (created?.Sucessfully) {
                                 _loadready = true;
@@ -275,7 +275,7 @@ app.PurdyPanelIndemnizacion = (function () {
                             app.ui.ButtonDone('#movimientosdemontosEdtFormSave');
                         });
                 } else {
-                    app.core.Put(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelMontos/${row.ID}`, JSON.stringify(row))
+                    app.core.Put(`${app.setting.entityapi}/PurdyPanelMontos/${row.ID}`, JSON.stringify(row))
                         .done(function (updated) {
                             if (updated?.Sucessfully) {
                                 _loadready = true;
@@ -334,7 +334,7 @@ app.PurdyPanelIndemnizacion = (function () {
     };
 
     function movimientosdemontos_table_row_delete(row) {
-        app.core.Delete(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelMontos/${row.ID}`, null)
+        app.core.Delete(`${app.setting.entityapi}/PurdyPanelMontos/${row.ID}`, null)
             .done(function (deleted) {
                 if (deleted?.Sucessfully) {
                     GetMovimientosDeMontos(_asiges);
@@ -356,7 +356,7 @@ app.PurdyPanelIndemnizacion = (function () {
     };
 
 
-    function balance_table_setup() {
+    async function balance_table_setup() {
 
         $('#balanceTbl').bootstrapTable({
             uniqueId: 'ID',
@@ -476,7 +476,7 @@ app.PurdyPanelIndemnizacion = (function () {
                 var row = balance_table_row('values');
                 row.ASIGES = _asiges;
                 if (row.ID === null) {
-                    app.core.Post(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelBalance`, JSON.stringify(row))
+                    app.core.Post(`${app.setting.entityapi}/PurdyPanelBalance`, JSON.stringify(row))
                         .done(function (created) {
                             if (created?.Sucessfully) {
                                 $('#balanceModal').modal('hide');
@@ -491,7 +491,7 @@ app.PurdyPanelIndemnizacion = (function () {
                             app.ui.ButtonDone('#balanceEdtFormSave');
                         });
                 } else {
-                    app.core.Put(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelBalance/${row.ID}`, JSON.stringify(row))
+                    app.core.Put(`${app.setting.entityapi}/PurdyPanelBalance/${row.ID}`, JSON.stringify(row))
                         .done(function (updated) {
                             if (updated?.Sucessfully) {
                                 $('#balanceModal').modal('hide');
@@ -550,7 +550,7 @@ app.PurdyPanelIndemnizacion = (function () {
     };
 
     function balance_table_row_delete(row) {
-        app.core.Delete(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelBalance/${row.ID}`, null)
+        app.core.Delete(`${app.setting.entityapi}/PurdyPanelBalance/${row.ID}`, null)
             .done(function (deleted) {
                 if (deleted?.Sucessfully) {
                     GetBalance(_asiges);
@@ -591,7 +591,7 @@ app.PurdyPanelIndemnizacion = (function () {
                 console.error(err);
             }
         },
-        Event: function (src, data) {
+        Event: async function (src, data) {
             switch (src) {
                 case 'ASIGESChange':
                     if (data.claim != null) {

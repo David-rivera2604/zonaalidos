@@ -345,7 +345,7 @@ app.PurdyPanelDanos = (function () {
                 app.ui.ButtonDoing('#PurdyPanelDanosEdtFormSave');
                 let submitData = MapInputToObject();
                 if (submitData.ID === null) {
-                    app.core.Post(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelDano`, JSON.stringify(submitData))
+                    app.core.Post(`${app.setting.entityapi}/PurdyPanelDano`, JSON.stringify(submitData))
                         .done(function (created) {
                             if (created?.Sucessfully) {
                                 _data = submitData
@@ -365,7 +365,7 @@ app.PurdyPanelDanos = (function () {
                         });
                 }
                 else {
-                    app.core.Put(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelDano/${submitData.ID}`, JSON.stringify(submitData))
+                    app.core.Put(`${app.setting.entityapi}/PurdyPanelDano/${submitData.ID}`, JSON.stringify(submitData))
                         .done(function (updated) {
                             if (updated?.Sucessfully) {
                                 _data = submitData
@@ -519,9 +519,9 @@ app.PurdyPanelDanos = (function () {
         return data;
     };
 
-    function Get(asigesCode) {
+    async function Get(asigesCode) {
         _loadready = false;
-        app.core.Get(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelDano/asiges?code=${asigesCode}`)
+        app.core.Get(`${app.setting.entityapi}/PurdyPanelDano/asiges?code=${asigesCode}`)
             .done(function (dataDanos) {
                 if (dataDanos?.Sucessfully) {
                     if (dataDanos.Data === null) {
@@ -557,7 +557,7 @@ app.PurdyPanelDanos = (function () {
                 console.error(err);
             }
         },
-        Event: function (src, data) {
+        Event: async function (src, data) {
             switch (src) {
                 case 'ASIGESChange':
                     if (data.claim != null) {

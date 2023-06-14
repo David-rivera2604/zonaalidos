@@ -153,9 +153,9 @@ app.PurdyPanelLegal = (function () {
         app.ui.SetNumericValue('#saldoporrecuperar', app.ui.GetNumericValue('#montoporrecuperar') - app.ui.GetNumericValue('#montorecuperado'));
     };
 
-    function GetDetalle(asigesCode) {
+    async function GetDetalle(asigesCode) {
         _asiges = asigesCode;
-        app.core.Get(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelDetalle/asiges?code=${asigesCode}`)
+        app.core.Get(`${app.setting.entityapi}/PurdyPanelDetalle/asiges?code=${asigesCode}`)
             .done(function (dataDetalle) {
                 if (dataDetalle?.Sucessfully) {
                     $('#detalleTbl').bootstrapTable('load', dataDetalle.Data == null ? [] : dataDetalle.Data);
@@ -164,9 +164,9 @@ app.PurdyPanelLegal = (function () {
             });
     };
 
-    function GetRecuperacion(asigesCode) {
+    async function GetRecuperacion(asigesCode) {
         _asiges = asigesCode;
-        app.core.Get(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelRecuperacion/asiges?code=${asigesCode}`)
+        app.core.Get(`${app.setting.entityapi}/PurdyPanelRecuperacion/asiges?code=${asigesCode}`)
             .done(function (dataRecuperacion) {
                 if (dataRecuperacion?.Sucessfully) {
                     $('#recuperacionTbl').bootstrapTable('load', dataRecuperacion.Data == null ? [] : dataRecuperacion.Data);
@@ -185,7 +185,7 @@ app.PurdyPanelLegal = (function () {
             });
     };
 
-    function detalle_table_setup() {
+    async function detalle_table_setup() {
 
         $('#detalleTbl').bootstrapTable({
             uniqueId: 'ID',
@@ -476,7 +476,7 @@ app.PurdyPanelLegal = (function () {
                 var row = detalle_table_row('values');
                 row.ASIGES = _asiges;
                 if (row.ID === null) {
-                    app.core.Post(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelDetalle`, JSON.stringify(row))
+                    app.core.Post(`${app.setting.entityapi}/PurdyPanelDetalle`, JSON.stringify(row))
                         .done(function (created) {
                             if (created?.Sucessfully) {
                                 $('#detalleModal').modal('hide');
@@ -492,7 +492,7 @@ app.PurdyPanelLegal = (function () {
                         });
                 }
                 else {
-                    app.core.Put(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelDetalle/${row.ID}`, JSON.stringify(row))
+                    app.core.Put(`${app.setting.entityapi}/PurdyPanelDetalle/${row.ID}`, JSON.stringify(row))
                         .done(function (updated) {
                             if (updated?.Sucessfully) {
                                 $('#detalleModal').modal('hide');
@@ -590,7 +590,7 @@ app.PurdyPanelLegal = (function () {
     };
 
     function detalle_table_row_delete(row) {
-        app.core.Delete(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelDetalle/${row.ID}`, null)
+        app.core.Delete(`${app.setting.entityapi}/PurdyPanelDetalle/${row.ID}`, null)
             .done(function (deleted) {
                 if (deleted?.Sucessfully) {
                     GetDetalle(_asiges);
@@ -615,7 +615,7 @@ app.PurdyPanelLegal = (function () {
         });
     };
 
-    function recuperacion_table_setup() {
+    async function recuperacion_table_setup() {
 
         $('#recuperacionTbl').bootstrapTable({
             uniqueId: 'ID',
@@ -726,7 +726,7 @@ app.PurdyPanelLegal = (function () {
                 var row = recuperacion_table_row('values');
                 row.ASIGES = _asiges;
                 if (row.ID === null) {
-                    app.core.Post(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelRecuperacion`, JSON.stringify(row))
+                    app.core.Post(`${app.setting.entityapi}/PurdyPanelRecuperacion`, JSON.stringify(row))
                         .done(function (created) {
                             if (created?.Sucessfully) {
                                 $('#recuperacionModal').modal('hide');
@@ -742,7 +742,7 @@ app.PurdyPanelLegal = (function () {
                         });
                 }
                 else {
-                    app.core.Put(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelRecuperacion/${row.ID}`, JSON.stringify(row))
+                    app.core.Put(`${app.setting.entityapi}/PurdyPanelRecuperacion/${row.ID}`, JSON.stringify(row))
                         .done(function (updated) {
                             if (updated?.Sucessfully) {
                                 $('#recuperacionModal').modal('hide');
@@ -800,7 +800,7 @@ app.PurdyPanelLegal = (function () {
     };
 
     function recuperacion_table_row_delete(row) {
-        app.core.Delete(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelRecuperacion/${row.ID}`, null)
+        app.core.Delete(`${app.setting.entityapi}/PurdyPanelRecuperacion/${row.ID}`, null)
             .done(function (deleted) {
                 if (deleted?.Sucessfully) {
                     GetRecuperacion(_asiges);
@@ -820,6 +820,7 @@ app.PurdyPanelLegal = (function () {
             messages: {}
         });
     };
+
     return {
         Init: function (eventCallback) {
             try {
@@ -840,7 +841,7 @@ app.PurdyPanelLegal = (function () {
                 console.error(err);
             }
         },
-        Event: function (src, data) {
+        Event: async function (src, data) {
             switch (src) {
                 case 'ASIGESChange':
                     if (data.claim != null) {

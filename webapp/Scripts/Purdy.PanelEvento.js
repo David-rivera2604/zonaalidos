@@ -103,7 +103,7 @@ app.PurdyPanelEvento = (function () {
                 app.ui.ButtonDoing('#PurdyPanelEventoEdtFormSave');
                 let submitData = MapInputToObject();
                 if (submitData.ID === null) {
-                    app.core.Post(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelEvento`, JSON.stringify(submitData))
+                    app.core.Post(`${app.setting.entityapi}/PurdyPanelEvento`, JSON.stringify(submitData))
                         .done(function (created) {
                             if (created?.Sucessfully) {
                                 _data.ID = created.Data.Next.NEXTID
@@ -122,7 +122,7 @@ app.PurdyPanelEvento = (function () {
                         });
                 }
                 else {
-                    app.core.Put(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelEvento/${submitData.ID}`, JSON.stringify(submitData))
+                    app.core.Put(`${app.setting.entityapi}/PurdyPanelEvento/${submitData.ID}`, JSON.stringify(submitData))
                         .done(function (updated) {
                             if (updated?.Sucessfully) {
                                 _loadready = true;
@@ -205,10 +205,10 @@ app.PurdyPanelEvento = (function () {
         return data;
     };
 
-    function Get(asigesCode) {
+    async function Get(asigesCode) {
         _loadready = false;
 
-        app.core.Get(`https://appqa.mapfrecr.com/datapi/api/entity/PurdyPanelEvento/asiges?code=${asigesCode}`)
+        app.core.Get(`${app.setting.entityapi}/PurdyPanelEvento/asiges?code=${asigesCode}`)
             .done(function (dataEvento) {
                 if (dataEvento?.Sucessfully) {
                     if (dataEvento.Data === null) {
@@ -245,7 +245,7 @@ app.PurdyPanelEvento = (function () {
                 console.error(err);
             }
         },
-        Event: function (src, data) {
+        Event: async function (src, data) {
             switch (src) {
                 case 'ASIGESChange':
                     if (data.claim != null) {
