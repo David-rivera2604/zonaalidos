@@ -47,7 +47,7 @@ app.PurdyPanel = (function () {
             }
         },
         Event: async function (src, data) {
-            console.log(src, _data, data);
+            //console.log(src, _data, data);
             switch (src) {
                 case 'ASIGESChange':
                     if (data != null) {
@@ -72,14 +72,14 @@ app.PurdyPanel = (function () {
                     break;
                 case 'RecuperacionDataChange':
                     _data.recovery = data;
-                    break;
+                    break;                    
             }
-            app.PurdyPanelEncabezado.Event(src, _data);
-            app.PurdyPanelDetalle.Event(src, _data);
-            app.PurdyPanelEvento.Event(src, _data);
-            app.PurdyPanelDanos.Event(src, _data);
-            app.PurdyPanelIndemnizacion.Event(src, _data);
-            app.PurdyPanelLegal.Event(src, _data);
+            app.PurdyPanelEncabezado.Event(src, _data, data);
+            app.PurdyPanelDetalle.Event(src, _data, data);
+            app.PurdyPanelEvento.Event(src, _data, data);
+            app.PurdyPanelDanos.Event(src, _data, data);
+            app.PurdyPanelIndemnizacion.Event(src, _data, data);
+            app.PurdyPanelLegal.Event(src, _data, data);
         },
         Data: function (data) {
             if (data !== undefined) {

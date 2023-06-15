@@ -127,24 +127,49 @@
                                         <div id='valorasegurado' class='readonly'></div>
                                     </div>
                                 </div>
-                                <!-- nombredelchoferduranteelsiniestro Text -->
-                                <div class='col-sm-3 col-md-3'>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Datos del chofer durante el siniestro Zone -->
+                    <div class="form-row">
+                        <div class="col-lg-12">
+                            <h4>Datos del chofer durante el siniestro</h4>
+                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                            <div class="form-row">
+
+                                <!-- nombredelchofer Text -->
+                                <div class='col-sm-3 col-md-6'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='nombredelchoferduranteelsiniestro'>Nombre del chofer durante el siniestro</label>
-                                        <div id='nombredelchoferduranteelsiniestro' class='readonly'></div>
+                                        <label class='control-label' for='nombredelchofer'>Nombre</label>
+                                        <input type='text' id='nombredelchofer' name='nombredelchofer' class='form-control' size='100' maxlength='100' />
                                     </div>
                                 </div>
                                 <!-- telefonodechofer Text -->
                                 <div class='col-sm-3 col-md-3'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='telefonodelchofer'>Teléfono del chofer</label>
-                                        <div id='telefonodechofer' class='readonly'></div>
+                                        <label class='control-label' for='telefonodelchofer'>Teléfono</label>
+                                        <div class='input-group'>
+                                            <span class='input-group-addon'>
+                                                <span class='glyphicon glyphicon-earphone'></span>
+                                            </span>
+                                            <input id='telefonodelchofer' name='telefonodelchofer' type='text' class='form-control' size='9' maxlength='9'>
+                                        </div>
+                                        <div id='telefonodelchofer_validate'></div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
-
+                    <div class="form-row detalleChanged-visible d-none">
+                        <div class='col-md-12'>
+                            <div class="modal-footer">
+                                <button id="PurdyPanelDetalleEdtFormSave" type="button" class="btn btn-primary" data-doing="Guardando cambios...">Guardar cambios</button>
+                                <button id="PurdyPanelDetalleEdtFormCancel" type="button" class="btn btn-white" data-doing="Cancelando cambios...">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
                 </fieldset>
             </form>
         </div>

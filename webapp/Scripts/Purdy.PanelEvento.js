@@ -14,8 +14,8 @@ app.PurdyPanelEvento = (function () {
             FECHADELEVENTO: app.ui.GetDateValue('#fechadelevento'),
             ANALISTARECLAMOS: app.ui.GetDropDownNumericValue('#analistareclamos'),
             ANALISTARECLAMOSDESC: app.ui.GetDropDownSelectedText('#analistareclamos'),
-            TIPODEINDEMNIZACION: app.ui.GetDropDownNumericValue('#tipodeindemnizacion'),
-            TIPODEINDEMNIZACIONDESC: app.ui.GetDropDownSelectedText('#tipodeindemnizacion'),
+            TIPODEINDEMNIZACION: _data.TIPODEINDEMNIZACION,
+            TIPODEINDEMNIZACIONDESC: _data.TIPODEINDEMNIZACIONDESC,
             MOTIVONOPROCEDE: app.ui.GetDropDownNumericValue('#motivonoProcede'),
             MOTIVONOPROCEDEDESC: app.ui.GetDropDownSelectedText('#motivonoProcede'),
             DETALLENOPROCEDE: $('#detallenoprocede').val(),
@@ -44,9 +44,9 @@ app.PurdyPanelEvento = (function () {
     };
 
     function MapObjectToInput(data) {
+        _loadready = false;
         app.ui.SetDateValue('#fechadelevento', data.FECHADELEVENTO);
         app.ui.SetDropDownNumericValue('#analistareclamos', data.ANALISTARECLAMOS, false);
-        app.ui.SetDropDownNumericValue('#tipodeindemnizacion', data.TIPODEINDEMNIZACION, false, 7);
         app.ui.SetDropDownNumericValue('#motivonoProcede', data.MOTIVONOPROCEDE, false);
         $('#detallenoprocede').val(data.DETALLENOPROCEDE);
         app.ui.SetDropDownNumericValue('#tipodecobertura', data.TIPODECOBERTURA, false);
@@ -62,6 +62,8 @@ app.PurdyPanelEvento = (function () {
         app.ui.SetDateValue('#fechaautorizaciondeusopolizaEvent', data.FECHAAUTORIZACIONDEUSOPOLIZA);
 
         data_changed();
+        _changed = false;
+        _loadready = true;
     };
 
     function Controls_setup() {
@@ -97,65 +99,28 @@ app.PurdyPanelEvento = (function () {
             data_changed();
         });
 
-        $('#PurdyPanelEventoEdtFormSave').click(function () {
+        $('#PurdyPanelEventoEdtFormSave').click(function (e) {
 
             if (app.ui.IsValid('#PurdyPanelEventoEdtForm', false)) {
-                app.ui.ButtonDoing('#PurdyPanelEventoEdtFormSave');
-                let submitData = MapInputToObject();
-                if (submitData.ID === null) {
-                    app.core.Post(`${app.setting.entityapi}/PurdyPanelEvento`, JSON.stringify(submitData))
-                        .done(function (created) {
-                            if (created?.Sucessfully) {
-                                _data.ID = created.Data.Next.NEXTID
-                                _loadready = true;
-                                _changed = false;
-                                app.ui.CustomBehaviour('changed', false);
-                                _eventCallback('EventoDataChange', submitData);
-                                app.ui.Success('La información del análisis del evento, fue creada de forma exitosa');
-                            }
-                            else {
-                                console.error(created);
-                            }
-
-                        }).always(function () {
-                            app.ui.ButtonDone('#PurdyPanelEventoEdtFormSave');
-                        });
-                }
-                else {
-                    app.core.Put(`${app.setting.entityapi}/PurdyPanelEvento/${submitData.ID}`, JSON.stringify(submitData))
-                        .done(function (updated) {
-                            if (updated?.Sucessfully) {
-                                _loadready = true;
-                                _changed = false;
-                                app.ui.CustomBehaviour('changed', false);
-                                _eventCallback('EventoDataChange', submitData);
-                                app.ui.Success('La información del análisis del evento, fue actualizada de forma exitosa');
-                            }
-                            else {
-                                console.error(updated);
-                            }
-                        }).always(function () {
-                            app.ui.ButtonDone('#PurdyPanelEventoEdtFormSave');
-                        });
-                }
+                Save('La información del análisis del evento, fue creada de forma exitosa', 'La información del análisis del evento, fue actualizada de forma exitosa');
             }
-            event.preventDefault();
+            e.preventDefault();
         });
 
-        $('#PurdyPanelEventoEdtFormCancel').click(function () {
+        $('#PurdyPanelEventoEdtFormCancel').click(function (e) {
             Get(_data.ASIGES);
 
-            event.preventDefault();
+            e.preventDefault();
         });
 
     };
 
     function data_changed() {
-        if (app.ui.GetDropDownNumericValue('#tipodeindemnizacion') === 8)
+        if (_data?.TIPODEINDEMNIZACION === 8)
             $('.motivonoProcedeVisible').removeClass('d-none');
         else
             $('.motivonoProcedeVisible').addClass('d-none');
-        if (app.ui.GetDropDownNumericValue('#tipodeindemnizacion') === 8)
+        if (_data?.TIPODEINDEMNIZACION === 8)
             $('.detallenoprocedeVisible').removeClass('d-none');
         else
             $('.detallenoprocedeVisible').addClass('d-none');
@@ -178,7 +143,7 @@ app.PurdyPanelEvento = (function () {
         if (_loadready) {
             _changed = true;
         }
-        app.ui.CustomBehaviour('changed', _loadready && _changed);
+        app.ui.CustomBehaviour('eventChanged', _loadready && _changed);
 
     };
 
@@ -205,9 +170,47 @@ app.PurdyPanelEvento = (function () {
         return data;
     };
 
-    async function Get(asigesCode) {
-        _loadready = false;
+    async function Save(msgCreated, msgUpdated) {
+        app.ui.ButtonDoing('#PurdyPanelEventoEdtFormSave');
+        let submitData = MapInputToObject();
+        if (submitData.ID === null) {
+            app.core.Post(`${app.setting.entityapi}/PurdyPanelEvento`, JSON.stringify(submitData))
+                .done(function (created) {
+                    if (created?.Sucessfully) {
+                        _data.ID = created.Data.Next.NEXTID
+                        _loadready = true;
+                        _changed = false;
+                        app.ui.CustomBehaviour('eventChanged', false);
+                        _eventCallback('EventoDataChange', submitData);
+                        app.ui.Success(msgCreated);
+                    }
+                    else {
+                        console.error(created);
+                    }
 
+                }).always(function () {
+                    app.ui.ButtonDone('#PurdyPanelEventoEdtFormSave');
+                });
+        }
+        else {
+            app.core.Put(`${app.setting.entityapi}/PurdyPanelEvento/${submitData.ID}`, JSON.stringify(submitData))
+                .done(function (updated) {
+                    if (updated?.Sucessfully) {
+                        _loadready = true;
+                        _changed = false;
+                        app.ui.CustomBehaviour('eventChanged', false);
+                        _eventCallback('EventoDataChange', submitData);
+                        app.ui.Success(msgUpdated);
+                    }
+                    else {
+                        console.error(updated);
+                    }
+                }).always(function () {
+                    app.ui.ButtonDone('#PurdyPanelEventoEdtFormSave');
+                });
+        }
+    };
+    async function Get(asigesCode) {
         app.core.Get(`${app.setting.entityapi}/PurdyPanelEvento/asiges?code=${asigesCode}`)
             .done(function (dataEvento) {
                 if (dataEvento?.Sucessfully) {
@@ -217,13 +220,10 @@ app.PurdyPanelEvento = (function () {
                     }
                     MapObjectToInput(dataEvento.Data);
                     dataEvento.Data.ANALISTARECLAMOSDESC = app.ui.GetDropDownSelectedText('#analistareclamos');
-                    dataEvento.Data.TIPODEINDEMNIZACIONDESC = app.ui.GetDropDownSelectedText('#tipodeindemnizacion');
                     dataEvento.Data.CATEGORIADESINIESTRODESC = app.ui.GetDropDownSelectedText('#categoriadesiniestro');
                     _data = dataEvento.Data;
                     _eventCallback('EventoDataChange', dataEvento.Data);
                 }
-                _changed = false;
-                _loadready = true;
             });
     };
 
@@ -245,14 +245,30 @@ app.PurdyPanelEvento = (function () {
                 console.error(err);
             }
         },
-        Event: async function (src, data) {
+        Event: async function (src, data, eventData) {
             switch (src) {
                 case 'ASIGESChange':
+                    _loadready = false;
+                    _claim = data.claim;
                     if (data.claim != null) {
                         Get(data.asiges);
                     } else {
                         MapObjectToInput(EmptyPurdyPanelEvento());
-                    }                    
+                    }
+                    break;
+                case 'TipoDeIndemnizacionChange':
+                    _data.TIPODEINDEMNIZACION = eventData.TIPODEINDEMNIZACION;
+                    _data.TIPODEINDEMNIZACIONDESC = eventData.TIPODEINDEMNIZACIONDESC;
+
+                    _loadready = true;
+                    data_changed();
+                    _loadready = false;
+
+                    Save('El tipo de indemnización, fue almacenado de forma exitosa',
+                        'El tipo de indemnización, fue actualizado de forma exitosa');
+                    break;
+                case 'detalleChanged':
+                    Get(data.asiges);
                     break;
             }
         }
