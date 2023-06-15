@@ -7,8 +7,8 @@
                     <!-- seccionEncabezado Zone -->
                     <div class="form-row">
                         @*<div class="col-lg-12">
-        <h4>Sección Encabezado</h4>
-        <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>*@
+                            <h4>Sección Encabezado</h4>
+                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>*@
                         <!-- aSIGES Text -->
                         <div class='col-sm-3 col-md-3'>
                             <div class='form-group'>
@@ -21,18 +21,27 @@
                         <div class='col-sm-3 col-md-3'>
                             <div class='form-group'>
                                 <label class='control-label' for='tipodeindemnizacionEnc'>Tipo de indemnización</label>
-                                <select id='tipodeindemnizacionEnc' name='tipodeindemnizacionEnc' class='form-control'>
-                                    <option value='1'>Casos reparados</option>
-                                    <option value='2'>Pérdida total financiera</option>
-                                    <option value='3'>Pérdida total estructural</option>
-                                    <option value='4'>Casos con avalúo pendiente de reparación</option>
-                                    <option value='5'>Repuestos pendientes</option>
-                                    <option value='6'>Avalúo cliente no repara aún</option>
-                                    <option value='7' selected>Pendiente avalúo</option>
-                                    <option value='8'>No procede</option>
-                                    <option value='9'>Posible pérdida total</option>
-                                    <option value='10'>Pago directo</option>
-                                </select>
+                                <div id='tipodeindemnizacionEnc' class="readonly"></div>
+
+                                <div class="input-group d-none tipodeindemnizacionGrp-visible">
+                                    <select id='tipodeindemnizacion' name='tipodeindemnizacion' class='form-control'>
+                                        <option value='1'>Casos reparados</option>
+                                        <option value='2'>Pérdida total financiera</option>
+                                        <option value='3'>Pérdida total estructural</option>
+                                        <option value='4'>Casos con avalúo pendiente de reparación</option>
+                                        <option value='5'>Repuestos pendientes</option>
+                                        <option value='6'>Avalúo cliente no repara aún</option>
+                                        <option value='7'>Pendiente de avalúo</option>
+                                        <option value='8'>No procede</option>
+                                        <option value='9'>Posible pérdida total</option>
+                                        <option value='10'>Pago directo</option>
+                                    </select>
+                                    <span class="input-group-append d-none tipodeindemnizacionSave-visible">
+                                        <button id="tipodeindemnizacionSave" type="button" class="btn btn-primary">
+                                            Guardar cambio
+                                        </button>
+                                    </span>
+                                </div>
                             </div>
                         </div>
 

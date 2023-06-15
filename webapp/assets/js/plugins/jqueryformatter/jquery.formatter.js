@@ -443,7 +443,8 @@ var formatter = function (patternMatcher, inptSel, utils) {
     var defaults = {
         persistent: false,
         repeat: false,
-        placeholder: ' '
+        placeholder: ' ',
+        change: false
       };
     // Regexs for input validation
     var inptRegs = {
@@ -644,7 +645,11 @@ var formatter = function (patternMatcher, inptSel, utils) {
         this.delta += chars.length;
       }
       // Format el.value (also handles updating caret position)
-      this._formatValue(ignoreCaret);
+        this._formatValue(ignoreCaret);
+        if (this.opts.change) {
+            console.log(this.el);
+            $(this.el).trigger('change');
+        };
     };
     //
     // @private

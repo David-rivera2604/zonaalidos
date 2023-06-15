@@ -1119,6 +1119,7 @@ app.ui = (function () {
             })
         },
         CustomBehaviour: function (tag, condition) {
+
             let roles = JSON.parse(localStorage.getItem('Roles'));
             roles.forEach(function (item) {
 
@@ -1130,9 +1131,15 @@ app.ui = (function () {
         },
         VisibleBehaviour: function (tag, condition) {
             if (condition)
-                $(`${tag}-visible`).removeClass('d-none');
+                if (tag.startsWith('#'))
+                    $(`${tag}`).removeClass('d-none');
+                else
+                    $(`${tag}-visible`).removeClass('d-none');
             else
-                $(`${tag}-visible`).addClass('d-none');
+                if (tag.startsWith('#'))
+                    $(`${tag}`).addClass('d-none');
+                else
+                    $(`${tag}-visible`).addClass('d-none');
         },
         RequiredMark: function (ctrlId, add) {
             const mark = ' <span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span>';
@@ -1170,22 +1177,22 @@ app.ui = (function () {
                 return false;
         },
         Warning: function (msg, title, settings) {
-            
+
             toastr.warning(msg, title, settings);
         },
         Success: function (msg, title, settings) {
-            
+
             toastr.success(msg, '', { timeOut: 5000, closeButton: true, progressBar: true });
         },
         Success: function (msg, title, settings) {
-            
+
             toastr.success(msg, title, settings);
         },
         Error: function (msg) {
             app.ui.Error(msg, '', { timeOut: 9000, closeButton: true, progressBar: true });
         },
         Error: function (msg, title, settings) {
-            
+
             toastr.error(msg, title, settings);
         },
         NotifyClear: function (msg, title, settings) {

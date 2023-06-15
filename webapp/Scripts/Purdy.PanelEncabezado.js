@@ -45,8 +45,13 @@ app.PurdyPanelEncabezado = (function () {
     };
 
     async function GetClaim(code) {
+        $('.ibox-content').toggleClass('sk-loading');
         api_get(`${app.setting.entityapi}/claim/asiges?code=${code}`)
             .then(data => {
+                $('#tipodeindemnizacionEnc').html('');
+                app.ui.VisibleBehaviour('#tipodeindemnizacionEnc', true);
+                app.ui.VisibleBehaviour('.tipodeindemnizacionGrp', false);
+
                 if (data != null) {
                     app.ui.NotifyClear();
                     $('.panelinfo').removeClass('d-none');
@@ -79,6 +84,7 @@ app.PurdyPanelEncabezado = (function () {
                     app.ui.Error(`El código ASIGES '${code}' no fue encontrado en nuestro sistema, por favor intente con otro código.`);
                 }
                 _eventCallback('ASIGESChange', data);
+                $('.ibox-content').toggleClass('sk-loading');
             });
 
 
@@ -145,6 +151,19 @@ app.PurdyPanelEncabezado = (function () {
             let data = { ASIGES: code };
             GetClaim(code)
         });
+        $('#tipodeindemnizacion').change(function () {
+            app.ui.VisibleBehaviour('.tipodeindemnizacionSave', true);
+        });
+
+        $('#tipodeindemnizacionSave').click(function (e) {
+
+            _eventCallback('TipoDeIndemnizacionChange', {
+                TIPODEINDEMNIZACION: app.ui.GetDropDownNumericValue('#tipodeindemnizacion'),
+                TIPODEINDEMNIZACIONDESC: app.ui.GetDropDownSelectedText('#tipodeindemnizacion')
+            });
+            app.ui.VisibleBehaviour('.tipodeindemnizacionSave', false);
+           e.preventDefault();
+        });
     };
 
     function Setup_Validations() {
@@ -204,7 +223,18 @@ app.PurdyPanelEncabezado = (function () {
         Event: async function (src, data) {
             switch (src) {
                 case 'EventoDataChange':
-                    app.ui.SetDropDownNumericValue('#tipodeindemnizacionEnc', data.event.TIPODEINDEMNIZACION);
+                    let allow = localStorage.getItem('Roles').includes('Reclamos') || localStorage.getItem('Roles').includes('Administrativo');
+                    let isnew = false;
+                    if (data.event.TIPODEINDEMNIZACION === null) {
+                        data.event.TIPODEINDEMNIZACION = 7;
+                        isnew = true;
+                    }
+                    app.ui.VisibleBehaviour('#tipodeindemnizacionEnc', !allow);
+                    app.ui.VisibleBehaviour('.tipodeindemnizacionGrp', allow);
+                    app.ui.VisibleBehaviour('.tipodeindemnizacionSave', isnew);
+                    app.ui.SetDropDownNumericValue('#tipodeindemnizacion', data.event.TIPODEINDEMNIZACION);
+                    $('#tipodeindemnizacionEnc').html(app.ui.GetDropDownSelectedText('#tipodeindemnizacion'));
+
                     $('#estadoMapfre').html(EstadoMapfre(data.event.TIPODEINDEMNIZACION));
                     $('#tipodeindemnizacionSel').html(data.event.TIPODEINDEMNIZACIONDESC);
                     $('#analistareclamosSel').html(data.event.ANALISTARECLAMOSDESC);

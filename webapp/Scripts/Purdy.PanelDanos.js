@@ -62,6 +62,7 @@ app.PurdyPanelDanos = (function () {
     };
 
     function MapObjectToInput(data) {
+        _loadready = false;
         app.ui.SetDropDownNumericValue('#taller', data.TALLER, false);
         app.ui.SetDateValue('#fechaenviodelavaluo', data.FECHAENVIODELAVALUO);
         app.ui.SetNumericValue('#prerepuestos', data.PREREPUESTOS);
@@ -103,6 +104,8 @@ app.PurdyPanelDanos = (function () {
         app.ui.SetNumericValue('#otrosIIOtrosIIDanoocultomanototal', data.OTROSIIOTROSIIDANOCULMANOTOTAL);
 
         data_changed();
+        _changed = false;
+        _loadready = true;
     };
 
     function Controls_setup() {
@@ -353,7 +356,7 @@ app.PurdyPanelDanos = (function () {
                                 _loadready = true;
                                 _changed = false;
                                 _eventCallback('DanosDataChange', _data);
-                                app.ui.CustomBehaviour('changed', false);
+                                app.ui.CustomBehaviour('danoChanged', false);
                                 app.ui.Success('La información del análisis del daño, fue actualizada de forma exitosa');
                             }
                             else {
@@ -372,7 +375,7 @@ app.PurdyPanelDanos = (function () {
                                 _loadready = true;
                                 _changed = false;
                                 _eventCallback('DanosDataChange', _data);
-                                app.ui.CustomBehaviour('changed', false);
+                                app.ui.CustomBehaviour('danoChanged', false);
                                 app.ui.Success('La información del análisis del daño, fue actualizada de forma exitosa');
                             }
                             else {
@@ -458,7 +461,7 @@ app.PurdyPanelDanos = (function () {
         if (_loadready) {
             _changed = true;
         }
-        app.ui.CustomBehaviour('changed', _loadready && _changed);
+        app.ui.CustomBehaviour('danoChanged', _loadready && _changed);
     };
 
     function Setup_Validations() {
@@ -520,7 +523,6 @@ app.PurdyPanelDanos = (function () {
     };
 
     async function Get(asigesCode) {
-        _loadready = false;
         app.core.Get(`${app.setting.entityapi}/PurdyPanelDano/asiges?code=${asigesCode}`)
             .done(function (dataDanos) {
                 if (dataDanos?.Sucessfully) {
@@ -532,8 +534,6 @@ app.PurdyPanelDanos = (function () {
                     _data = dataDanos.Data;
                     _eventCallback('DanosDataChange', dataDanos.Data);
                 }
-                _changed = false;
-                _loadready = true;
             });
     };
 
@@ -549,7 +549,7 @@ app.PurdyPanelDanos = (function () {
                 app.core.Lookups(['UsersByRol:Avalúos.analistadeDanos'],
                     function () {
                         MapObjectToInput(EmptyPurdyPanelDano());
-                        _loadready = true;
+                        
                     }, ``);
             }
             catch (err) {
@@ -560,9 +560,10 @@ app.PurdyPanelDanos = (function () {
         Event: async function (src, data) {
             switch (src) {
                 case 'ASIGESChange':
+                    _loadready = false;
                     if (data.claim != null) {
                         Get(data.asiges);
-                    } else {
+                    } else {                        
                         MapObjectToInput(EmptyPurdyPanelDano());
                         app.ui.SetRadioNumericValue('autorizaciondeusopoliza', 2);
                         app.ui.SetDateValue('#fechaAutorizaciondeUsoPoliza', null);
