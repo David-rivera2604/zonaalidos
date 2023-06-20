@@ -497,3 +497,7 @@
 1.6.31  16/05/2023 Aliados. Cotizacion Viajero Se agrega lista de paises TRON para campos PAIS_ORIGEN y DES_DESTINO
                    Aliados. Formulario para actualizar datos de los clientes.
 1.6.32  15/06/2023 Aliados. Panel para siniestros Purdy.
+
+
+
+?.?.??  20/06/2023 MapfreMas. Ajuste en el campo "Plan" para manejar la opción especial para purdy.
