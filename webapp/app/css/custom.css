@@ -806,3 +806,12 @@ html, body {
 .form-compact .form-group {
     margin-bottom: 0px;
 }
+
+.btn-slim {
+    padding: 0rem 0.22rem !important;
+}
+
+
+.readonlyfield {
+    padding-bottom: 8px;
+}

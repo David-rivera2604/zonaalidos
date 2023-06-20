@@ -2,6 +2,30 @@
 app.ui = (function () {
 
     return {
+        StringValueToString: function (value, defaultValue) {
+            if (value === null) {
+                return defaultValue === undefined ? '' : defaultValue;
+            }
+            else {
+                return value;
+            }
+        },
+        DateTimeValueToString: function (value, hourValue, defaultValue) {
+            if (value === null) {
+                return defaultValue === undefined ? '' : defaultValue;
+            }
+            else {
+                let hfmt = '';
+                if (hourValue != undefined) {
+                    hfmt = ' hh:mma';
+                    if (hourValue != null) {
+                        value = value.replace("T00:00", "T" + hourValue)
+                    }
+                }
+                return moment(value).format('DD/MM/YYYY' + hfmt);
+                return value;
+            }
+        },
         Age: function (birthDate) {
             let age = moment().diff(birthDate, 'years');
             if (Number.isNaN(age))
@@ -893,6 +917,9 @@ app.ui = (function () {
             }
         },
         ShowSideBar: function (options) {
+            if (options.isHTML === undefined) {
+                options.isHTML = false;
+            }
             if (options.isExternal === undefined) {
                 options.isExternal = false;
             }
@@ -912,18 +939,27 @@ app.ui = (function () {
             if (typeof options.subtitle != "undefined") {
                 $('#sidebarTitle').append('<small>' + options.subtitle.supplant(options.data) + '</small>');
             }
-            $('.sidebar-content').toggleClass('sk-loading');
             if (options.class === '') {
                 $('#right-sidebar').attr('style', 'width:' + options.width + ' !important');
             } else {
                 $('#right-sidebar').addClass(options.class);
             }
+
+            if ($('#right-sidebar').hasClass('sidebar-open')) {
+                $('#right-sidebar').toggleClass('sidebar-open');
+                $('.sidebar-content').replaceWith('<div class="ibox-content sidebar-content"><div class="sk-spinner sk-spinner-wave"><div class="sk-rect1"></div><div class="sk-rect2"></div><div class="sk-rect3"></div><div class="sk-rect4"></div><div class="sk-rect5"></div></div><div class="sidebarContent" /></div>');
+                $('.sidebarContent').html('');
+                $('#right-sidebar').addClass('d-none');
+            }
+
             if (!$('#right-sidebar').hasClass('sidebar-open')) {
                 $('#right-sidebar').removeClass('d-none');
                 $('#right-sidebar').toggleClass('sidebar-open');
             }
-
-            if (!options.isExternal) {
+            if (options.isHTML) {
+                $('.sidebarContent').html(options.HTML);
+            } else if (!options.isExternal) {
+                $('.sidebar-content').toggleClass('sk-loading');
                 app.core.Get(app.setting.apipath + `v1/Viewer/Dialog?id=${options.id}`)
                     .done(function (data, textStatus, jqXHR) {
                         let html = data.HTML.supplant(options.data);
@@ -944,6 +980,7 @@ app.ui = (function () {
                     });
             }
             else {
+                $('.sidebar-content').toggleClass('sk-loading');
                 $('.sidebar-content').replaceWith($("<iframe id='sidebarFrame' class='sidebar-content'/>").attr({ frameBorder: 0, width: '100%', height: 60 + $('#right-sidebar').height() + 'px', src: options.url, scrolling: 'no' }));
                 $('#sidebarFrame').on('load', function (e) {
                     $('.sidebar-content').attr({ height: document.getElementById("sidebarFrame").contentWindow.document.body.scrollHeight + 'px' });

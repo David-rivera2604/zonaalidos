@@ -40,6 +40,7 @@ app.PurdyPanel = (function () {
 
                 });
 
+                app.PurdyPanelEncabezado.Called();
             }
             catch (err) {
                 console.error("Error Init");

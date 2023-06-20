@@ -4,49 +4,9 @@ app.PurdyPanelEncabezado = (function () {
 
     let _eventCallback = null;
 
-    function api_ShowError() {
-        toastr.error("Por favor intente nuevamente y en caso de persistir el problema contacte el personal de soporte", "Ha ocurrido un error no controlado", { timeOut: 10000, closeButton: true, progressBar: true });
-    }
-
-    function api_sendHttpRequest(method, url, data) {
-        return fetch(url, {
-            body: method === 'GET' ? null : JSON.stringify(data),
-            method: method,
-            headers: {
-                'Content-Type': data ? 'application/json; charset=utf-8' : {},
-                'Authorization': 'Bearer ' + localStorage.getItem('Token')
-            }
-        }).then(response => {
-            if (!response.ok) {
-                api_ShowError();
-                return;
-            } else {
-                return response.json();
-            }
-        });
-    };
-
-    function api_get(url) {
-        return new Promise((resolve, reject) => {
-            api_sendHttpRequest('GET', url)
-                .then(data => {
-                    if (data === undefined) {
-                        resolve(null);
-                    } else {
-                        if (data?.Sucessfully != undefined && data.Sucessfully) {
-                            resolve(data.Data);
-                        } else {
-                            api_ShowError();
-                            resolve(null);
-                        }
-                    }
-                });
-        })
-    };
-
     async function GetClaim(code) {
         $('.ibox-content').toggleClass('sk-loading');
-        api_get(`${app.setting.entityapi}/claim/asiges?code=${code}`)
+        app.core.api_get(`claim/asiges?code=${code}`)
             .then(data => {
                 $('#tipodeindemnizacionEnc').html('');
                 app.ui.VisibleBehaviour('#tipodeindemnizacionEnc', true);
@@ -87,44 +47,6 @@ app.PurdyPanelEncabezado = (function () {
                 $('.ibox-content').toggleClass('sk-loading');
             });
 
-
-        //app.core.Get(`${app.setting.entityapi}/claim/asiges?code=${code}`)
-        //    .done(function (claim) {
-        //        if (claim?.Sucessfully) {
-        //            if (claim.Data != null) {
-        //                app.ui.NotifyClear();
-        //                $('.panelinfo').removeClass('d-none');
-        //                claim.Data.ASIGES = code;
-        //                MapObjectToInput(claim.Data);
-        //            } else {
-        //                $('.panelinfo').addClass('d-none');
-        //                MapObjectToInput({
-        //                    NUM_POLIZA: '',
-        //                    NOM_ASEG: '',
-        //                    APE_ASEG: '',
-        //                    TIP_DOCUM_ASEG: '',
-        //                    COD_DOCUM_ASEG: '',
-        //                    EMAIL_ASEG: '',
-        //                    EMAIL_ASEG: '',
-        //                    TLF_NUMERO_ASEG: '',
-        //                    TLF_NUMERO_ASEG: '',
-        //                    FEC_DENU_SINI: null,
-        //                    HORA_DENU_SINI: '',
-        //                    NUM_SINI: '',
-        //                    TXT_DANO_VEHI: ''
-        //                });
-        //                app.ui.SetDropDownNumericValue('#tipodeindemnizacionEnc', -1);
-        //                $('#estadoMapfre').html('');
-        //                $('#tipodeindemnizacionSel').html('');
-        //                $('#analistareclamosSel').html('');
-        //                $('#categoriadesiniestroEnc').html('');
-        //                $('#fechadeleventoEnc').html('');
-        //                $('.panelinfo').addClass('d-none');
-        //                app.ui.Error(`El código ASIGES '${code}' no fue encontrado en nuestro sistema, por favor intente con otro código.`);
-        //            }
-        //            _eventCallback('ASIGESChange', claim.Data);
-        //        }
-        //    });
     };
 
     function MapObjectToInput(data) {
@@ -162,7 +84,7 @@ app.PurdyPanelEncabezado = (function () {
                 TIPODEINDEMNIZACIONDESC: app.ui.GetDropDownSelectedText('#tipodeindemnizacion')
             });
             app.ui.VisibleBehaviour('.tipodeindemnizacionSave', false);
-           e.preventDefault();
+            e.preventDefault();
         });
     };
 
@@ -241,6 +163,16 @@ app.PurdyPanelEncabezado = (function () {
                     $('#categoriadesiniestroEnc').html(data.event.CATEGORIADESINIESTRODESC);
                     $('#fechadeleventoEnc').html(`${app.ui.DateFormatter(data.event.FECHADELEVENTO)}`);
                     break;
+            }
+        },
+        Called: function () {
+            let id = app.core.URLStringValue('asiges');
+            if (id != '') {
+                if (id.lenght > 40) {
+                    id = id.substring(0, 40);
+                }
+                $('#aSIGES').val(id);
+                GetClaim(id);
             }
         }
     };

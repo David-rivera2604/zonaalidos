@@ -1253,6 +1253,7 @@
     <Content Include="Scripts\Cotizacion.PolizaLider.js" />
     <Content Include="Scripts\Emision.Estudiantil.js" />
     <Content Include="Scripts\Emision.Viajero.js" />
+    <Content Include="Scripts\Extend.Claims.js" />
     <Content Include="Scripts\Extend.Cases.js" />
     <Content Include="Scripts\Extend.CaseDetail.js" />
     <Content Include="Scripts\Extend.AvisosCobro.js" />
@@ -1744,6 +1745,8 @@
     <Content Include="Views\Purdy\_evento.cshtml" />
     <Content Include="Views\Purdy\_indemnizacion.cshtml" />
     <Content Include="Views\Purdy\_legal.cshtml" />
+    <Content Include="Views\Purdy\_encabezado.cshtml" />
+    <Content Include="Views\Purdy\Panel.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

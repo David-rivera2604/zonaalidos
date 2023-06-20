@@ -273,15 +273,15 @@ app.master = (function () {
 
                 activateActivityTracker();
 
-                $('.close-link-sidebar').click(function () {
-                    event.preventDefault();
+                $('.close-link-sidebar').click(function (e) {
+                    e.preventDefault();
                     $('#right-sidebar').toggleClass('sidebar-open');
-                    $('.sidebar-content').replaceWith('<div class="ibox-content sidebar-content"><div class="sk-spinner sk-spinner-wave"><div class="sk-rect1"></div><div class="sk-rect2"></div><div class="sk-rect3"></div><div class="sk-rect4"></div><div class="sk-rect5"></div></div></div>');
+                    $('.sidebar-content').replaceWith('<div class="ibox-content sidebar-content"><div class="ibox-content sidebar-content"><div class="sk-spinner sk-spinner-wave"><div class="sk-rect1"></div><div class="sk-rect2"></div><div class="sk-rect3"></div><div class="sk-rect4"></div><div class="sk-rect5"></div></div><div class="sidebarContent" /></div></div>');
                     $('#right-sidebar').addClass('d-none');
                 });
 
-                $('#showHelp').click(function () {
-                    event.preventDefault();
+                $('#showHelp').click(function (e) {
+                    e.preventDefault();
                     window.open(app.setting.viewpath + 'help/index', "Ayuda", "left=200, width=750, height=550, titlebar=no, location=NO,resizable,scrollbars,status");
                 });
 

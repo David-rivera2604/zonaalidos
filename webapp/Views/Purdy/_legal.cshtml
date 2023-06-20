@@ -13,7 +13,7 @@
                                     <h4>Detalle<label id="detalleTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
                                 </div>
                                 <div class='col-auto'>
-                                    <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo Detalle" data-toggle="modal" id="detalleNew"> <i class="fa fa-plus"></i> </button>
+                                    <button type="button" class="btn btn-sm btn-white role-Legal-visible role-Administrativo-visible d-none" title="Al hacer click permite agregar un nuevo Detalle" data-toggle="modal" id="detalleNew"> <i class="fa fa-plus"></i> </button>
                                 </div>
                             </div>
                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
@@ -36,7 +36,7 @@
                                     <h4>Recuperación<label id="recuperacionTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
                                 </div>
                                 <div class='col-auto'>
-                                    <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo Recuperación" data-toggle="modal" id="recuperacionNew"> <i class="fa fa-plus"></i> </button>
+                                    <button type="button" class="btn btn-sm btn-white role-Administrativo-visible d-none" title="Al hacer click permite agregar un nuevo Recuperación" data-toggle="modal" id="recuperacionNew"> <i class="fa fa-plus"></i> </button>
                                 </div>
                             </div>
                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
@@ -416,7 +416,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="detalleEdtFormSave" data-doing="Guardando...">Guardar cambios</button>
+                <button type="button" class="btn btn-primary role-Legal-visible role-Administrativo-visible d-none" id="detalleEdtFormSave" data-doing="Guardando...">Guardar cambios</button>
                 <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
@@ -508,7 +508,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="recuperacionEdtFormSave" data-doing="Guardando...">Guardar cambios</button>
+                <button type="button" class="btn btn-primary" id="recuperacionEdtFormSave role-Administrativo-visible d-none" data-doing="Guardando...">Guardar cambios</button>
                 <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
             </div>
         </div>

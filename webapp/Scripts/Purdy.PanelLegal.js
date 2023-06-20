@@ -451,8 +451,14 @@ app.PurdyPanelLegal = (function () {
                     visible: true,
                     events: 'detalleTbl_Events',
                     formatter: function (value, row, index, field) {
-                        return '<button type="button" class="btn btn-sm btn-white edit" title="Al hacer click permite la edición de los datos del visualizations de la fila"> <i class="fa fa-pencil"></i> </button>' +
-                            '<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar los datos del visualizations de la fila"> <i class="fa fa-close"></i> </button>';
+                        let deleteBtn = '<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar los datos del visualizations de la fila"> <i class="fa fa-close"></i> </button>';
+
+                        if (!localStorage.getItem('Roles').includes('Administrativo') &&
+                            !localStorage.getItem('Roles').includes('Legal')) {
+                            deleteBtn = '';
+                        }
+
+                        return '<button type="button" class="btn btn-sm btn-white edit" title="Al hacer click permite la edición de los datos del visualizations de la fila"> <i class="fa fa-pencil"></i> </button>' + deleteBtn;
                     },
                     cellStyle: function (value, row, index) {
                         return {
@@ -701,8 +707,12 @@ app.PurdyPanelLegal = (function () {
                     visible: true,
                     events: 'recuperacionTbl_Events',
                     formatter: function (value, row, index, field) {
-                        return '<button type="button" class="btn btn-sm btn-white edit" title="Al hacer click permite la edición de los datos del visualizations de la fila"> <i class="fa fa-pencil"></i> </button>' +
-                            '<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar los datos del visualizations de la fila"> <i class="fa fa-close"></i> </button>';
+                        let deleteBtn = '<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar los datos del visualizations de la fila"> <i class="fa fa-close"></i> </button>';
+
+                        if (!localStorage.getItem('Roles').includes('Administrativo')) {
+                            deleteBtn = '';
+                        }
+                        return '<button type="button" class="btn btn-sm btn-white edit" title="Al hacer click permite la edición de los datos del visualizations de la fila"> <i class="fa fa-pencil"></i> </button>' + deleteBtn;
                     },
                     cellStyle: function (value, row, index) {
                         return {

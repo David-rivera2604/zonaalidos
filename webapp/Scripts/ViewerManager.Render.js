@@ -211,7 +211,7 @@ app.ViewerQuery = (function () {
                 $detail.append('<span class="detail-title">...</span>');
                 $detail.append('<div class="table-responsive" style="background-color: white; margin: 0px 0px 0px 10px;"><table style="font-size: 11px" id="' + id + '"></table></div>');
 
-                Child($detail.find('span'), $detail.find('table'), this.detailId, url, id);
+                Child($detail.find('span'), $detail.find('table'), this.detailId, url, id, row);
             };
         }
         else {
@@ -431,11 +431,11 @@ app.ViewerQuery = (function () {
         });
     };
 
-    function Child(title, $el, id, url, tableId) {
+    function Child(title, $el, id, url, tableId, row) {
         app.core.Get(app.setting.apipath + 'v1/Viewer/QuerySpecification?id=' + id + '&url=' + window.location.search.slice(1).replace(/&/g, ':'))
             .done(function (data, textStatus, jqXHR) {
                 var spec = data.table;
-                title.html(data.title);
+                title.html(data.title.supplant(row));
                 if (spec.classes === undefined) {
                     spec.classes = "table table-bordered table-hover table-index";
                 }
@@ -465,6 +465,13 @@ app.ViewerQuery = (function () {
                 spec.onPostBody = function (data) {
                     app.ui.CommonBehaviour();
                 };
+                spec.rowStyle = function (row, index) {
+                    return {
+                        css: {
+                            'vertical-align': 'top'
+                        }
+                    }
+                }
                 //spec.onRefresh = function (params) {
                 //    app.ViewerQuery.Refresh(params, $el);
                 //};

@@ -7,7 +7,6 @@ app.setting = {
     basepath: '/Aliados/',
     viewpath: 'http://localhost:8082/aliados/',
     entityapi: 'https://appqa.mapfrecr.com/datapi/api/entity',
-    _entityapi: 'https://localhost:7262/api/entity'
 };
 // CONSERVAR DEL ORIGINAL HASTA AQUI
 
@@ -586,6 +585,30 @@ app.core = (function () {
         return string.split(search).join(replace);
     }
 
+    function api_sendHttpRequest(method, url, data) {
+        return fetch(url, {
+            body: method === 'GET' ? null : JSON.stringify(data),
+            method: method,
+            headers: {
+                'Content-Type': data ? 'application/json; charset=utf-8' : {},
+                'Authorization': 'Bearer ' + localStorage.getItem('Token')
+            }
+        }).then(response => {
+            if (!response.ok) {
+                api_ShowError();
+                return;
+            } else {
+                return response.json();
+            }
+        });
+    };
+
+    function api_ShowError() {
+        toastr.error("Por favor intente nuevamente y en caso de persistir el problema contacte el personal de soporte", "Ha ocurrido un error no controlado", { timeOut: 10000, closeButton: true, progressBar: true });
+    }
+
+    ;
+
     return {
         ReplaceAll(string, search, replace) {
             return ReplaceAll(string, search, replace);
@@ -750,6 +773,23 @@ app.core = (function () {
                     reject(error);
                 }
             });
+        },
+        api_get: function (url) {
+            return new Promise((resolve, reject) => {
+                api_sendHttpRequest('GET', `${app.setting.entityapi}/${url}`)
+                    .then(data => {
+                        if (data === undefined) {
+                            resolve(null);
+                        } else {
+                            if (data?.Sucessfully != undefined && data.Sucessfully) {
+                                resolve(data.Data);
+                            } else {
+                                api_ShowError();
+                                resolve(null);
+                            }
+                        }
+                    });
+            })
         }
     };
 })();
