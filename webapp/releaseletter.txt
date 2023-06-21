@@ -498,3 +498,4 @@
                    Aliados. Formulario para actualizar datos de los clientes.
 1.6.32  15/06/2023 Aliados. Panel para siniestros Purdy.
 1.6.33  19/06/2023 Aliados. Panel para siniestros consulta de ingreso.
+1.6.33a 20/06/2023 Aliados. Correcciones para los reporte de MapfreMas.
