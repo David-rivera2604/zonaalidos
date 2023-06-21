@@ -290,7 +290,8 @@ namespace Architect.API.Core.Business.General
                     Status = step.Step.ProcessStatus,
                     Label = step.Step.ProcessLabel,
                     Wait = "on",
-                    ProgressMode = step.Step.ProgressMode
+                    ProgressMode = step.Step.ProgressMode,
+                    References = step.Step.References,
                 };
                 if (step.StartDate.IsNotEmpty())
                 {

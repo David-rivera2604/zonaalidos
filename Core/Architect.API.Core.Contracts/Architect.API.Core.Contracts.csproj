@@ -58,6 +58,7 @@
     <Compile Include="General\Navigation.cs" />
     <Compile Include="General\ProcessCase.cs" />
     <Compile Include="General\ProcessInstance.cs" />
+    <Compile Include="General\ReferenceField.cs" />
     <Compile Include="General\ProcessSpecSLA.cs" />
     <Compile Include="General\ProcessSpecFlowRole.cs" />
     <Compile Include="General\ProcessSpecStepRole.cs" />

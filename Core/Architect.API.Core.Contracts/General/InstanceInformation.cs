@@ -87,6 +87,7 @@ namespace Architect.API.Core.Contracts.General
         /// Tipo de progreso.
         /// </summary>
         [DataMember(), JsonProperty()] public int ProgressMode { get; set; }
+        [DataMember(), JsonProperty()] public string References { get; set; }
     }
     public class TaskInformation
     {
