@@ -499,3 +499,4 @@
 1.6.32  15/06/2023 Aliados. Panel para siniestros Purdy.
 1.6.33  19/06/2023 Aliados. Panel para siniestros consulta de ingreso.
 1.6.33a 20/06/2023 Aliados. Correcciones para los reporte de MapfreMas.
+1.6.33b 20/06/2023 Aliados. Se prepara reporte MapfreMas Solicitud para producción.
