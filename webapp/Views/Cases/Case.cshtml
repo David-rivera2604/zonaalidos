@@ -148,6 +148,14 @@
                         <!-- Seguimiento -->
                         <div role="tabpanel" id="Tareas" class="tab-pane active ">
                             <div class="panel-body">
+
+                                <form id='ReferencesEdtForm' class='form-horizontal' data-toggle='validator' style=" margin-left: 10px; margin-right: 10px;margin-top: 6px;">
+                                    <fieldset>
+                                        @Html.Partial("_references")
+                                    </fieldset>
+     
+                                </form>
+
                                 <div class='row'>
                                     <div id="ChangeStage" class='col-md-12 d-none'>
                                         <div class='col-md-12'>

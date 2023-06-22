@@ -1747,6 +1747,7 @@
     <Content Include="Views\Purdy\_legal.cshtml" />
     <Content Include="Views\Purdy\_encabezado.cshtml" />
     <Content Include="Views\Purdy\Panel.cshtml" />
+    <Content Include="Views\Cases\_references.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

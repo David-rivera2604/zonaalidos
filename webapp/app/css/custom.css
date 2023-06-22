@@ -815,3 +815,9 @@ html, body {
 .readonlyfield {
     padding-bottom: 8px;
 }
+
+.footer-custom {
+    justify-content: normal !important;
+    border-top: 0 !important;
+    padding: 1.4rem 0 0 0 !important;
+}
