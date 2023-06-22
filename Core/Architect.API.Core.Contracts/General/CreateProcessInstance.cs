@@ -14,6 +14,14 @@
 
         public string Reference4 { get; set; }
 
+        public string Reference5 { get; set; }
+        public string Reference6 { get; set; }
+        public string Reference7 { get; set; }
+
+
+        public string Reference8 { get; set; }
+        public string Reference9 { get; set; }
+        public string Reference10 { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
 

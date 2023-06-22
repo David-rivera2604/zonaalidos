@@ -3,6 +3,7 @@
 app.GeneralCase = (function () {
 
     let _data = null;
+    let _enabledRef = null;
     let _managerLinks = null;
     let _instance = null;
 
@@ -15,7 +16,7 @@ app.GeneralCase = (function () {
         //$('#sidebarTitle').html("<h3>Historial</h3>");
 
         $("#ReferencesEdtForm :input").change(function () {
-            $('#ReferencesEdtFormSave').removeClass('d-none');
+            $('#ProcessStepAccept').prop("disabled", false);
         });
 
         $('#ProcessStepAccept').click(function () {
@@ -187,15 +188,15 @@ app.GeneralCase = (function () {
     }
 
     async function EnableReference(dataRef) {
-        let data = JSON.parse(dataRef);
+        _enabledRef = JSON.parse(dataRef);
         for (let i = 1; i <= 10; i++) {
             $(`#EReference${i}`).parent().parent().addClass('d-none');
         }
-        $('#ReferencesEdtFormSave').addClass('d-none');
-        $.each(data, function () {
+
+        $.each(_enabledRef, function () {
             $('#E' + this.Code).parent().parent().removeClass('d-none');
         });
-        if (data.length > 0) {
+        if (_enabledRef.length > 0) {
             $('.references-section').removeClass('d-none');
         }
     }
@@ -468,14 +469,26 @@ app.GeneralCase = (function () {
     }
 
     function TaskChecked(instanceId, activityId, comment, notify) {
+        let references = [];
+        $.each(_enabledRef, function () {
+            references.push({ Code: this.Code, Description: $('#E' + this.Code).val() });
+        });
+
         app.core.Put(app.setting.apipath + `v1/Process/Task/Checked/${instanceId}`,
             JSON.stringify({
+                StepId: _instance.ActivityId,
                 ActivityId: activityId,
                 Comment: comment,
-                Notify: notify
+                Notify: notify,
+                References: references
             }))
             .done(function (data, textStatus, jqXHR) {
-                EditMode({ Id: _data.Id });
+                if (activityId === 0) {
+                    $('#ProcessStepAccept').prop("disabled", true);
+                } else {
+                    EditMode({ Id: _data.Id });
+                }
+
             }).always(function () {
                 app.ui.ButtonDone('#ProcessStepAccept', false);
             });
