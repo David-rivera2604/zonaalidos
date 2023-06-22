@@ -5,7 +5,7 @@ app.Cotizacion = (function () {
     return {
         Imprimir: function (name, data) {
             var urlServer = app.setting.apibase + '/AliadoServReports/api/Report/Build';
-            //urlServer = 'http://216.177.200.23/Report.Services/api/Report/Build';
+            urlServer = 'http://216.177.200.23/Report.Services/api/Report/Build';
             var data2 = {
                 Source: JSON.stringify(data),
                 Type: 'pdf',

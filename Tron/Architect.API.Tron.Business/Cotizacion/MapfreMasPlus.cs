@@ -78,13 +78,14 @@ namespace Architect.API.Tron.Business.Cotizacion
 
             List<string> keys = new List<string> {
                 "MM_ClaseVehiculos", "MM_Plan",
-                "MM_CAPITAL_RC", "MM_CAPITAL_GM", "MM_CAPITAL_AC", "MM_CAPITAL_GN", "MM_CAPITAL_AM", "MM_CAPITAL_ROTCRI",
-                "MM_DEDU_RC", "MM_DEDU_CV", "MM_DEDU_RA", "MM_DEDU_ROBO", "MM_DEDU_EE", "MM_DEDU_ROTCRI" };
+                "MM_CAPITAL_RC_G","TRON_TA301001EX:3001", "TRON_DEDU_CONTR:DED_AUTO_RC", "TRON_G1010031:DEDUC303_3001",
+                "MM_CAPITAL_GM", "MM_CAPITAL_AC", "MM_CAPITAL_GN", "MM_CAPITAL_AM", "MM_CAPITAL_ROTCRI",
+                "MM_DEDU_CV", "MM_DEDU_RA", "MM_DEDU_ROBO", "MM_DEDU_EE", "MM_DEDU_ROTCRI" };
             if (tokenInfo.Roles.Contain("PolizaGrupo"))
             {
                 keys.AddRange(new List<string> {
-                    "TRON_TA301001:3001", "MM_CAPITAL_GM_G", "MM_CAPITAL_AC_G", "MM_CAPITAL_ROTCRI_G",
-                    "MM_DEDU_RC_G", "MM_DEDU_CV_G", "MM_DEDU_ROTCRI_G", "MM_DEDU_EE_G", "MM_DEDU_RA_G", "MM_DEDU_ROBO_G", "MM_POLIZA_GRUPO"});
+                    "MM_CAPITAL_GM_G", "MM_CAPITAL_AC_G", "MM_CAPITAL_ROTCRI_G",
+                    "MM_DEDU_CV_G", "MM_DEDU_ROTCRI_G", "MM_DEDU_EE_G", "MM_DEDU_RA_G", "MM_DEDU_ROBO_G", "MM_POLIZA_GRUPO"});
             }
 
             string url = $"cod_ramo={cod_ramo}:cod_mon={cod_mon}:edad={edad}:plan={tipo_prod}:cod_marca={cod_marca}:num_contrato={num_contrato}:num_subcontrato={num_subcontrato}:num_poliza_grupo={num_poliza_grupo}:cod_modelo={cod_modelo}:anio_sub_modelo={anio_sub_modelo}:cod_tip_vehi={cod_tip_vehi}:cod_uso_vehi={cod_uso_vehi}:mca_sexo={mca_sexo}:cod_zona_circul={cod_zona_circul}:cod_plan_auto={cod_plan_auto}";
@@ -319,9 +320,6 @@ namespace Architect.API.Tron.Business.Cotizacion
             {
                 switch (itemValues.Key)
                 {
-                    case "TRON_TA301001:3001":
-                        result.IMP_AUTO_RC = CleanEmptyValue(itemValues.Lkp);
-                        break;
                     case "MM_CAPITAL_GM_G":
                         result.IMP_AUTO_GMO = CleanEmptyValue(itemValues.Lkp);
                         break;
@@ -331,9 +329,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                     case "MM_CAPITAL_ROTCRI_G":
                         result.IMP_AUTO_CRI = CleanEmptyValue(itemValues.Lkp);
                         break;
-                    case "MM_DEDU_RC_G":
-                        result.DED_AUTO_RC = CleanEmptyValue(itemValues.Lkp);
-                        break;
+
                     case "MM_DEDU_CV_G":
                         result.DED_AUTO_CYV = CleanEmptyValue(itemValues.Lkp);
                         break;
@@ -382,10 +378,28 @@ namespace Architect.API.Tron.Business.Cotizacion
                     case "MM_Plan":
                         result.PLAN_AUTO = itemValues.Lkp;
                         break;
-                    case "MM_CAPITAL_RC":
+                    case "MM_CAPITAL_RC_G":
                         if (result.IMP_AUTO_RC.IsEmpty() || result.IMP_AUTO_RC.Count == 0)
                         {
                             result.IMP_AUTO_RC = CleanEmptyValue(itemValues.Lkp);
+                        }
+                        break;
+                    case "TRON_TA301001EX:3001":
+                        if (result.IMP_AUTO_RC.IsEmpty() || result.IMP_AUTO_RC.Count == 0)
+                        {
+                            result.IMP_AUTO_RC = CleanEmptyValue(itemValues.Lkp);
+                        }
+                        break;
+                    case "TRON_DEDU_CONTR:DED_AUTO_RC":
+                        if (result.DED_AUTO_RC.IsEmpty() || result.DED_AUTO_RC.Count == 0)
+                        {
+                            result.DED_AUTO_RC = CleanEmptyValue(itemValues.Lkp);
+                        }
+                        break;
+                    case "TRON_G1010031:DEDUC303_3001":
+                        if (result.DED_AUTO_RC.IsEmpty() || result.DED_AUTO_RC.Count == 0)
+                        {
+                            result.DED_AUTO_RC = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
                     case "MM_CAPITAL_GM":
@@ -412,12 +426,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                             result.IMP_AUTO_CRI = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
-                    case "MM_DEDU_RC":
-                        if (result.DED_AUTO_RC.IsEmpty() || result.DED_AUTO_RC.Count == 0)
-                        {
-                            result.DED_AUTO_RC = CleanEmptyValue(itemValues.Lkp);
-                        }
-                        break;
+
                     case "MM_DEDU_CV":
                         if (result.DED_AUTO_CYV.IsEmpty() || result.DED_AUTO_CYV.Count == 0)
                         {
