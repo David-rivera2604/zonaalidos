@@ -1085,7 +1085,7 @@ app.ui = (function () {
             $.each(lkpData, function () {
                 selectedOptions.append($('<option />').val(this['Code']).text(this['Description']));
             });
-            if (lkpData.length == 1 && !selectedOptions.is(':disabled')) {
+            if (lkpData?.length == 1 && !selectedOptions.is(':disabled')) {
                 selectedOptions.val(lkpData[0]['Code']);
             } else {
                 if (!selectedOptions.is(':disabled') && autoSelect != undefined && autoSelect != null && autoSelect) {

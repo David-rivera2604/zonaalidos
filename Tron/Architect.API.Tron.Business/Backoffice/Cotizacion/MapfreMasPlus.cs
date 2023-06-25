@@ -8,14 +8,14 @@ using System.Collections.Generic;
 namespace Architect.API.Tron.Business.Backoffice.Cotizacion
 {
     /// <summary>
-    /// Permite realizar cotizaciones de pólizas MapfreMas.
+    /// Permite realizar cotizaciones de pólizas MapfreMasPlus.
     /// </summary>
-    public static class MapfreMas
+    public static class MapfreMasPlus
     {
         public static Architect.API.Tron.Contracts.Presupuesto.DatoFijo Calcular(Contracts.Batch.CotizadorMapfreMasClass _class)
         {
             IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron");
-            Architect.API.Tron.Contracts.Presupuesto.DatoFijo P30Instance = Architect.API.Tron.DataAccess.CotizadorMapfreMasPlusClass.P_Cotiza(_class, currentConnection);
+            Architect.API.Tron.Contracts.Presupuesto.DatoFijo P30Instance = Architect.API.Tron.DataAccess.CotizadorMapfreMasClass.P_Cotiza(_class, currentConnection);
 
             // Guardar datos del Sub Agente en la P2000060
             if (_class.Sub_Agt)

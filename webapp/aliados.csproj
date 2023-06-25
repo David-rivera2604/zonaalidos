@@ -1582,6 +1582,8 @@
     <Content Include="products\Actividad_Economica_List.json" />
     <Content Include="products\Multirriesgos.rules.json" />
     <Content Include="products\Multirriesgos.vocabulary.json" />
+    <Content Include="products\MapfreMasPlus.vocabulary.json" />
+    <Content Include="products\MapfreMasPlus.rules.json" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\Policy\index.cshtml" />
     <Content Include="Views\Policy\Listv3.cshtml" />

@@ -1,6 +1,7 @@
 ﻿using Architect.API.Core.Contracts.General;
 using Architect.API.Core.Contracts.Security;
 using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
+using Architect.Utilities.Contracts;
 using Architect.Utilities.Extensions;
 using Newtonsoft.Json.Linq;
 using System;
@@ -78,14 +79,21 @@ namespace Architect.API.Tron.Business.Cotizacion
 
             List<string> keys = new List<string> {
                 "MM_ClaseVehiculos", "MM_Plan",
-                "MM_CAPITAL_RC_G","TRON_TA301001EX:3001", "TRON_DEDU_CONTR:DED_AUTO_RC", "TRON_G1010031:DEDUC303_3001",
-                "MM_CAPITAL_GM", "MM_CAPITAL_AC", "MM_CAPITAL_GN", "MM_CAPITAL_AM", "MM_CAPITAL_ROTCRI",
-                "MM_DEDU_CV", "MM_DEDU_RA", "MM_DEDU_ROBO", "MM_DEDU_EE", "MM_DEDU_ROTCRI" };
+                "TRON_G2990019:IMP_AUTO_RC","TRON_TA301001EX:3001",
+                "TRON_DEDU_CONTR:DED_AUTO_RC", "TRON_G1010031:DEDUC303_3001",
+                "TRON_G2990019:IMP_AUTO_GMO", "TRON_TA301001EX:3002",
+                "TRON_TA301001EX:3003",
+                "TRON_DEDU_CONTR:DED_AUTO_CYV", "TRON_G1010031:DEDUC303_3004",
+                "TRON_DEDU_CONTR:DED_AUTO_RAD", "TRON_G1010031:DEDUC303_3005",
+                "TRON_DEDU_CONTR:DED_AUTO_ROB", "TRON_G1010031:DEDUC303_3006",
+                "TRON_DEDU_CONTR:DED_AUTO_EQESP", "TRON_G1010031:DEDUC303_3007",
+                "TRON_G2990019:IMP_AUTO_CRI", "TRON_TA301001EX:3009",
+                "TRON_DEDU_CONTR:DED_AUTO_CRI", "TRON_G1010031:DEDUC303_3009" };
+
             if (tokenInfo.Roles.Contain("PolizaGrupo"))
             {
                 keys.AddRange(new List<string> {
-                    "MM_CAPITAL_GM_G", "MM_CAPITAL_AC_G", "MM_CAPITAL_ROTCRI_G",
-                    "MM_DEDU_CV_G", "MM_DEDU_ROTCRI_G", "MM_DEDU_EE_G", "MM_DEDU_RA_G", "MM_DEDU_ROBO_G", "MM_POLIZA_GRUPO"});
+                    "MM_POLIZA_GRUPO"});
             }
 
             string url = $"cod_ramo={cod_ramo}:cod_mon={cod_mon}:edad={edad}:plan={tipo_prod}:cod_marca={cod_marca}:num_contrato={num_contrato}:num_subcontrato={num_subcontrato}:num_poliza_grupo={num_poliza_grupo}:cod_modelo={cod_modelo}:anio_sub_modelo={anio_sub_modelo}:cod_tip_vehi={cod_tip_vehi}:cod_uso_vehi={cod_uso_vehi}:mca_sexo={mca_sexo}:cod_zona_circul={cod_zona_circul}:cod_plan_auto={cod_plan_auto}";
@@ -94,7 +102,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             result.fec_vcto_poliza = DateTime.Today.AddYears(1);
             if (tokenInfo.Roles.Contain("PolizaGrupo"))
             {
-                LookUpsForPolizaGrupo(result, values);
+                //LookUpsForPolizaGrupo(result, values);
 
                 Core.Contracts.General.LookupValues contratosMaster = values.Find(x => x.Key == "MM_POLIZA_GRUPO");
                 if (contratosMaster != null)
@@ -124,18 +132,17 @@ namespace Architect.API.Tron.Business.Cotizacion
         public static List<Contracts.Comun.Cobertura> CoverageByDefault(int cod_ramo, int cod_mon, int cod_marca, int cod_modelo, int cod_sub_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int num_contrato, int num_subcontrato, string num_poliza_grupo, Core.Contracts.Security.Token tokenInfo)
         {
             List<Contracts.Comun.Cobertura> coberturas = new List<Contracts.Comun.Cobertura>();
-            string cod_cobExcludeFilter = string.Empty;
             string cod_cobIncludeFilter = string.Empty;
-            int cod_modalidad = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_modalidad"]);
-            int cod_cia = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_cia"]);
-            int tip_valoracion = 1;
-            DateTime fec_validez = DateTime.Today;
-            List<Contracts.Ramo.G2990026> coberturaGrupo = new List<Contracts.Ramo.G2990026>();
+            int cod_modalidad = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_modalidad");
+            int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia");
+            string coverageSelected = Utilities.Helpers.Settings.StringValue("Coberturas.mapfre.masplus");
+            bool required;
+
+
 
             if (tokenInfo.Roles.Contain("PolizaGrupo") && num_contrato > 0)
             {
-
-                coberturaGrupo = DataAccess.PorRamo.Coberturas_por_contrato2(cod_ramo, num_contrato);
+                List<Contracts.Ramo.G2990026> coberturaGrupo = DataAccess.PorRamo.Coberturas_por_contrato2(cod_ramo, num_contrato);
                 cod_cobIncludeFilter = Util.Convert_CoverageListToString(coberturaGrupo);
             }
             if (tokenInfo.Roles.Contain("PolizaGrupo") && cod_cobIncludeFilter.IsNotEmpty())
@@ -153,60 +160,76 @@ namespace Architect.API.Tron.Business.Cotizacion
                 }
 
 
-                foreach (Contracts.Ramo.a1002150 item in DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, cod_cobExcludeFilter, cod_cobIncludeFilter))
+                foreach (LookUpValue item in DataAccess.PorRamo.CoberturasPorRamo(cod_cia, cod_ramo, cod_modalidad, "", "", cod_cobIncludeFilter))
                 {
+                    required = coverageSelected.Contain(item.Code);
                     coberturas.Add(new Contracts.Comun.Cobertura()
                     {
                         seleccionado = false,
-                        requerida = coberturaGrupo.Any(r => r.COD_COB == item.COD_COB && r.MCA_OBLIGATORIO == "S"),
-                        codigo = item.COD_COB,
-                        nombre = item.NOM_COB,
-                        capital = item.SUMA_ASEG,
-                        primatotal = item.IMP_TOTAL,
-                        deducible = item.NOM_FRANQUICIA
+                        requerida = required,
+                        codigo = Convert.ToInt32(item.Code),
+                        nombre = item.Description,
+                        capital = 0,
+                        primatotal = 0,
+                        deducible = string.Empty
                     });
                 }
             }
             else
             {
-                cod_cobExcludeFilter = Reglas.research.Apply_Coberturas("MapfreMas",
-                      new Contracts.Cotizacion.MapfreMas()
-                      {
-                          cod_ramo = cod_ramo,
-                          cod_mon = cod_mon,
-                          cod_marca = cod_marca,
-                          cod_modelo = cod_modelo,
-                          ANIO_SUB_MODELO = anio_sub_modelo,
-                          cod_tip_vehi = cod_tip_vehi,
-                          cod_uso_vehi = cod_uso_vehi,
-                          mca_sexo = mca_sexo,
-                          cod_zona_circul = cod_zona_circul,
-                          edad = edad,
-                          COD_PLAN_AUTO = cod_plan_auto,
-                          contrato = num_contrato,
-                          subcontrato = num_subcontrato,
-                          polizagrupo = num_poliza_grupo
-                      }, tokenInfo);
+                string excluir_comercial = "";
+
+                if (cod_uso_vehi == 2)
+                {
+                    switch (cod_uso_vehi)
+                    {
+                        case 31:
+                        case 32:
+                            excluir_comercial = "3002,3003";
+                            break;
+                        case 38:
+                            excluir_comercial = "3010,3016,3018,1063";
+                            break;
+                    }
+                }
+
+                string cod_cobExcludeFilter = Reglas.research.Apply_Coberturas("MapfreMasPlus",
+                  new Contracts.Cotizacion.MapfreMas()
+                  {
+                      cod_ramo = cod_ramo,
+                      cod_mon = cod_mon,
+                      cod_marca = cod_marca,
+                      cod_modelo = cod_modelo,
+                      ANIO_SUB_MODELO = anio_sub_modelo,
+                      cod_tip_vehi = cod_tip_vehi,
+                      cod_uso_vehi = cod_uso_vehi,
+                      mca_sexo = mca_sexo,
+                      cod_zona_circul = cod_zona_circul,
+                      edad = edad,
+                      COD_PLAN_AUTO = cod_plan_auto,
+                      contrato = num_contrato,
+                      subcontrato = num_subcontrato,
+                      polizagrupo = num_poliza_grupo
+                  }, tokenInfo);
 
                 if (cod_cobExcludeFilter.IsNotEmpty())
                 {
                     Architect.Utilities.Log.TraceLog("Coverage", $"Excluir '{cod_cobExcludeFilter}' las coberturas", "Decision");
                 }
-                string coverageSelected = Architect.Utilities.Helpers.Settings.StringValue("Coberturas.mapfre.masplus");
-                bool required;
-                cod_cobIncludeFilter = "";
-                foreach (Contracts.Ramo.a1002150 item in DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, cod_cobExcludeFilter, cod_cobIncludeFilter))
+
+
+                foreach (LookUpValue item in DataAccess.PorRamo.CoberturasPorRamo(cod_cia, cod_ramo, cod_modalidad, cod_cobExcludeFilter, excluir_comercial, ""))
                 {
-                    required = coverageSelected.Contain(item.COD_COB.ToString());
+                    required = coverageSelected.Contain(item.Code);
                     coberturas.Add(new Contracts.Comun.Cobertura()
                     {
                         seleccionado = required,
                         requerida = false,
-                        codigo = item.COD_COB,
-                        nombre = item.NOM_COB,
-                        capital = item.SUMA_ASEG,
-                        primatotal = item.IMP_TOTAL,
-                        deducible = item.NOM_FRANQUICIA
+                        codigo = Convert.ToInt32(item.Code),
+                        nombre = item.Description,
+                        capital = 0,
+                        primatotal = 0,
+                        deducible = ""
                     });
                 }
             }
@@ -223,7 +246,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             Contracts.Cotizacion.MapfreMas resultInfo = quoteInfo;
 
             //Valida la información de una póliza para permitir o no su emisión.
-            resultInfo.Errors = Reglas.research.Apply_Reglas("MapfreMas", quoteInfo, tokenInfo);
+            resultInfo.Errors = Reglas.research.Apply_Reglas("MapfreMasPlus", quoteInfo, tokenInfo);
             //TODO: Es necesario convertir las validaciones existentes en el JS
 
             if (resultInfo.Errors.Count == 0)
@@ -236,7 +259,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 Contracts.Presupuesto.DatoFijo resultTron = Backoffice.Cotizacion.MapfreMas.Calcular(quoteTron);
                 resultInfo = MapfreMasConvertFrom.Quote(quoteInfo, resultTron);
 
-                if (resultInfo.Error.IsEmpty() && tokenInfo.Roles.Contain("PolizaGrupo"))
+                if (resultInfo.Error.IsEmpty() && tokenInfo.Roles.Contain("Purdy") && tokenInfo.Roles.Contain("PolizaGrupo"))
                 {
                     DateTime fecha_validar = quoteTron.fec_vcto_poliza.AddMonths(-1);
 
@@ -314,40 +337,15 @@ namespace Architect.API.Tron.Business.Cotizacion
         /// <summary>
         /// Prepara las lista de valores por póliza de grupo necesarias para la cotización.
         /// </summary>
-        private static void LookUpsForPolizaGrupo(Contracts.Cotizacion.MapfreMasSettings result, List<Core.Contracts.General.LookupValues> values)
-        {
-            foreach (Core.Contracts.General.LookupValues itemValues in values)
-            {
-                switch (itemValues.Key)
-                {
-                    case "MM_CAPITAL_GM_G":
-                        result.IMP_AUTO_GMO = CleanEmptyValue(itemValues.Lkp);
-                        break;
-                    case "MM_CAPITAL_AC_G":
-                        result.IMP_AUTO_ACO = CleanEmptyValue(itemValues.Lkp);
-                        break;
-                    case "MM_CAPITAL_ROTCRI_G":
-                        result.IMP_AUTO_CRI = CleanEmptyValue(itemValues.Lkp);
-                        break;
-
-                    case "MM_DEDU_CV_G":
-                        result.DED_AUTO_CYV = CleanEmptyValue(itemValues.Lkp);
-                        break;
-                    case "MM_DEDU_ROTCRI_G":
-                        result.DED_AUTO_CRI = CleanEmptyValue(itemValues.Lkp);
-                        break;
-                    case "MM_DEDU_EE_G":
-                        result.DED_AUTO_EQESP = CleanEmptyValue(itemValues.Lkp);
-                        break;
-                    case "MM_DEDU_RA_G":
-                        result.DED_AUTO_RAD = CleanEmptyValue(itemValues.Lkp);
-                        break;
-                    case "MM_DEDU_ROBO_G":
-                        result.DED_AUTO_ROB = CleanEmptyValue(itemValues.Lkp);
-                        break;
-                }
-            }
-        }
+        //private static void LookUpsForPolizaGrupo(Contracts.Cotizacion.MapfreMasSettings result, List<Core.Contracts.General.LookupValues> values)
+        //{
+        //    foreach (Core.Contracts.General.LookupValues itemValues in values)
+        //    {
+        //        switch (itemValues.Key)
+        //        {
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// Prepara las lista de valores necesarias para la cotización.
@@ -358,7 +356,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             foreach (Core.Contracts.General.LookupValues itemValues in values)
             {
                 exclude = string.Empty;
-                exclude = Reglas.research.Apply_Listas("MapfreMas", data, itemValues.Key, tokenInfo);
+                exclude = Reglas.research.Apply_Listas("MapfreMasPlus", data, itemValues.Key, tokenInfo);
 
                 if (exclude.IsNotEmpty())
                 {
@@ -378,7 +376,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                     case "MM_Plan":
                         result.PLAN_AUTO = itemValues.Lkp;
                         break;
-                    case "MM_CAPITAL_RC_G":
+                    case "TRON_G2990019:IMP_AUTO_RC":
                         if (result.IMP_AUTO_RC.IsEmpty() || result.IMP_AUTO_RC.Count == 0)
                         {
                             result.IMP_AUTO_RC = CleanEmptyValue(itemValues.Lkp);
@@ -402,61 +400,113 @@ namespace Architect.API.Tron.Business.Cotizacion
                             result.DED_AUTO_RC = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
-                    case "MM_CAPITAL_GM":
+                    case "TRON_G2990019:IMP_AUTO_GMO":
+                        if (result.IMP_AUTO_GMO.IsEmpty() || result.IMP_AUTO_GMO.Count == 0)
+                        {
+                            result.IMP_AUTO_GMO = CleanEmptyValue(itemValues.Lkp);
+                            result.IMP_AUTO_ACO = CleanEmptyValue(itemValues.Lkp);
+                        }
+
+                        break;
+                    case "TRON_TA301001EX:3002":
                         if (result.IMP_AUTO_GMO.IsEmpty() || result.IMP_AUTO_GMO.Count == 0)
                         {
                             result.IMP_AUTO_GMO = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
-                    case "MM_CAPITAL_AC":
+                    case "TRON_TA301001EX:3003":
                         if (result.IMP_AUTO_ACO.IsEmpty() || result.IMP_AUTO_ACO.Count == 0)
                         {
                             result.IMP_AUTO_ACO = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
-                    case "MM_CAPITAL_GN":
-                        result.IMP_AUTO_NEUM = CleanEmptyValue(itemValues.Lkp);
+                    case "TRON_DEDU_CONTR:DED_AUTO_CYV":
+                        if (result.DED_AUTO_CYV.IsEmpty() || result.DED_AUTO_CYV.Count == 0)
+                        {
+                            result.DED_AUTO_CYV = CleanEmptyValue(itemValues.Lkp);
+                        }
                         break;
-                    case "MM_CAPITAL_AM":
-                        result.IMP_AUTO_MECA = CleanEmptyValue(itemValues.Lkp);
+                    case "TRON_G1010031:DEDUC303_3004":
+                        if (result.DED_AUTO_CYV.IsEmpty() || result.DED_AUTO_CYV.Count == 0)
+                        {
+                            result.DED_AUTO_CYV = CleanEmptyValue(itemValues.Lkp);
+                        }
                         break;
-                    case "MM_CAPITAL_ROTCRI":
+
+                    case "TRON_DEDU_CONTR:DED_AUTO_RAD":
+                        if (result.DED_AUTO_RAD.IsEmpty() || result.DED_AUTO_RAD.Count == 0)
+                        {
+                            result.DED_AUTO_RAD = CleanEmptyValue(itemValues.Lkp);
+                        }
+                        break;
+                    case "TRON_G1010031:DEDUC303_3005":
+                        if (result.DED_AUTO_RAD.IsEmpty() || result.DED_AUTO_RAD.Count == 0)
+                        {
+                            result.DED_AUTO_RAD = CleanEmptyValue(itemValues.Lkp);
+                        }
+                        break;
+
+                    case "TRON_DEDU_CONTR:DED_AUTO_ROB":
+                        if (result.DED_AUTO_ROB.IsEmpty() || result.DED_AUTO_ROB.Count == 0)
+                        {
+                            result.DED_AUTO_ROB = CleanEmptyValue(itemValues.Lkp);
+                        }
+                        break;
+                    case "TRON_G1010031:DEDUC303_3006":
+                        if (result.DED_AUTO_ROB.IsEmpty() || result.DED_AUTO_ROB.Count == 0)
+                        {
+                            result.DED_AUTO_ROB = CleanEmptyValue(itemValues.Lkp);
+                        }
+                        break;
+                    case "TRON_DEDU_CONTR:DED_AUTO_EQESP":
+                        if (result.DED_AUTO_EQESP.IsEmpty() || result.DED_AUTO_EQESP.Count == 0)
+                        {
+                            result.DED_AUTO_EQESP = CleanEmptyValue(itemValues.Lkp);
+                        }
+                        break;
+                    case "TRON_G1010031:DEDUC303_3007":
+                        if (result.DED_AUTO_EQESP.IsEmpty() || result.DED_AUTO_EQESP.Count == 0)
+                        {
+                            result.DED_AUTO_EQESP = CleanEmptyValue(itemValues.Lkp);
+                        }
+                        break;
+
+
+                    case "TRON_G2990019:IMP_AUTO_CRI":
                         if (result.IMP_AUTO_CRI.IsEmpty() || result.IMP_AUTO_CRI.Count == 0)
                         {
                             result.IMP_AUTO_CRI = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
 
-                    case "MM_DEDU_CV":
-                        if (result.DED_AUTO_CYV.IsEmpty() || result.DED_AUTO_CYV.Count == 0)
+                    case "TRON_TA301001EX:3009":
+                        if (result.IMP_AUTO_CRI.IsEmpty() || result.IMP_AUTO_CRI.Count == 0)
                         {
-                            result.DED_AUTO_CYV = CleanEmptyValue(itemValues.Lkp);
+                            result.IMP_AUTO_CRI = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
-                    case "MM_DEDU_RA":
-                        if (result.DED_AUTO_RAD.IsEmpty() || result.DED_AUTO_RAD.Count == 0)
-                        {
-                            result.DED_AUTO_RAD = CleanEmptyValue(itemValues.Lkp);
-                        }
-                        break;
-                    case "MM_DEDU_ROBO":
-                        if (result.DED_AUTO_ROB.IsEmpty() || result.DED_AUTO_ROB.Count == 0)
-                        {
-                            result.DED_AUTO_ROB = CleanEmptyValue(itemValues.Lkp);
-                        }
-                        break;
-                    case "MM_DEDU_EE":
-                        if (result.DED_AUTO_EQESP.IsEmpty() || result.DED_AUTO_EQESP.Count == 0)
-                        {
-                            result.DED_AUTO_EQESP = CleanEmptyValue(itemValues.Lkp);
-                        }
-                        break;
-                    case "MM_DEDU_ROTCRI":
+
+                    case "TRON_DEDU_CONTR:DED_AUTO_CRI":
                         if (result.DED_AUTO_CRI.IsEmpty() || result.DED_AUTO_CRI.Count == 0)
                         {
                             result.DED_AUTO_CRI = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
+                    case "TRON_G1010031:DEDUC303_3009":
+                        if (result.DED_AUTO_CRI.IsEmpty() || result.DED_AUTO_CRI.Count == 0)
+                        {
+                            result.DED_AUTO_CRI = CleanEmptyValue(itemValues.Lkp);
+                        }
+                        break;
+
+                    case "MM_CAPITAL_GN":
+                        result.IMP_AUTO_NEUM = CleanEmptyValue(itemValues.Lkp);
+                        break;
+                    case "MM_CAPITAL_AM":
+                        result.IMP_AUTO_MECA = CleanEmptyValue(itemValues.Lkp);
+                        break;
+
+
                 }
             }
         }
@@ -500,7 +550,7 @@ namespace Architect.API.Tron.Business.Cotizacion
         private static List<Core.Contracts.General.LookupValue> NewMethod(Contracts.Cotizacion.MapfreMas data, Token tokenInfo, string key, List<Core.Contracts.General.LookupValue> values)
         {
             string exclude = string.Empty;
-            exclude = Reglas.research.Apply_Listas("MapfreMas", data, key, tokenInfo);
+            exclude = Reglas.research.Apply_Listas("MapfreMasPlus", data, key, tokenInfo);
 
             if (exclude.IsNotEmpty())
             {

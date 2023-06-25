@@ -1,0 +1,482 @@
+﻿[
+  {
+    "Key": "{La moneda}",
+    "Description": "La moneda",
+    "Language": {
+      "CSharp": "data.cod_mon",
+      "JavaScript": "data.cod_mon"
+    }
+  },
+  {
+    "Key": "{La marca del vehículo}",
+    "Description": "La marca del vehículo",
+    "Language": {
+      "CSharp": "data.cod_marca",
+      "JavaScript": "data.cod_marca"
+    }
+  },
+  {
+    "Key": "{El tipo de producto}",
+    "Description": "El tipo de producto",
+    "Language": {
+      "CSharp": "data.tipo_prod",
+      "JavaScript": "data.tipo_prod"
+    }
+  },
+  {
+    "Key": "{El año del vehículo}",
+    "Description": "El año del vehículo",
+    "Language": {
+      "CSharp": "data.ANIO_SUB_MODELO",
+      "JavaScript": "data.ANIO_SUB_MODELO"
+    }
+  },
+  {
+    "Key": "{El contrato}",
+    "Description": "El contrato",
+    "Language": {
+      "CSharp": "data.contrato",
+      "JavaScript": "data.contrato"
+    }
+  },
+  {
+    "Key": "{El plan}",
+    "Description": "El plan",
+    "Language": {
+      "CSharp": "data.COD_PLAN_AUTO",
+      "JavaScript": "data.COD_PLAN_AUTO"
+    }
+  },
+  {
+    "Key": "{El valor del vehículo}",
+    "Description": "El valor del vehículo",
+    "Language": {
+      "CSharp": "data.IMP_VR",
+      "JavaScript": "##"
+    }
+  },
+  {
+    "Key": "{La suma asegurada de colisión y vuelco}",
+    "Description": "La suma asegurada de colisión y vuelco",
+    "Language": {
+      "CSharp": "data.IMP_AUTO_CYV",
+      "JavaScript": "data.IMP_AUTO_CYV"
+    }
+  },
+  {
+    "Key": "{El edad}",
+    "Description": "El edad",
+    "Language": {
+      "CSharp": "data.edad",
+      "JavaScript": "data.edad"
+    }
+  },
+  {
+    "Key": "{El sexo}",
+    "Description": "El sexo",
+    "Language": {
+      "CSharp": "data.mca_sexo",
+      "JavaScript": "data.mca_sexo"
+    }
+  },
+  {
+    "Key": "{El fraccionamiento de pago}",
+    "Description": "El fraccionamiento de pago",
+    "Language": {
+      "CSharp": "data.cod_fracc_pago",
+      "JavaScript": "data.cod_fracc_pago"
+    }
+  },
+  {
+    "Key": "{El inicio de vigencia}",
+    "Description": "El inicio de vigencia",
+    "Language": {
+      "CSharp": "data.fec_efec_poliza",
+      "JavaScript": "data.fec_efec_poliza"
+    }
+  },
+  {
+    "Key": "{EL fin de vigencia}",
+    "Description": "EL fin de vigencia",
+    "Language": {
+      "CSharp": "data.fec_vcto_poliza",
+      "JavaScript": "data.fec_vcto_poliza"
+    }
+  },
+  {
+    "Key": "{La zona de circulación}",
+    "Description": "La zona de circulación",
+    "Language": {
+      "CSharp": "data.cod_zona_circul",
+      "JavaScript": "data.cod_zona_circul"
+    }
+  },
+  {
+    "Key": "{El modelo}",
+    "Description": "El modelo",
+    "Language": {
+      "CSharp": "data.cod_modelo",
+      "JavaScript": "data.cod_modelo"
+    }
+  },
+  {
+    "Key": "{El número de placa}",
+    "Description": "El número de placa",
+    "Language": {
+      "CSharp": "data.NUM_MATRICULA",
+      "JavaScript": "data.NUM_MATRICULA"
+    }
+  },
+  {
+    "Key": "{El número de chasis}",
+    "Description": "El número de chasis",
+    "Language": {
+      "CSharp": "data.COD_CHASSIS",
+      "JavaScript": "data.COD_CHASSIS"
+    }
+  },
+  {
+    "Key": "{El número de motor}",
+    "Description": "El número de motor",
+    "Language": {
+      "CSharp": "data.NUM_MOTOR",
+      "JavaScript": "data.NUM_MOTOR"
+    }
+  },
+  {
+    "Key": "{La clase del vehículo}",
+    "Description": "La clase del vehículo",
+    "Language": {
+      "CSharp": "data.cod_tip_vehi",
+      "JavaScript": "data.cod_tip_vehi"
+    }
+  },
+  {
+    "Key": "{El uso del vehículo}",
+    "Description": "El uso del vehículo",
+    "Language": {
+      "CSharp": "data.cod_uso_vehi",
+      "JavaScript": "data.cod_uso_vehi"
+    }
+  },
+  {
+    "Key": "{Cero km}",
+    "Description": "Cero km",
+    "Language": {
+      "CSharp": "data.MCA_CERO_KM",
+      "JavaScript": "data.MCA_CERO_KM"
+    }
+  },
+  {
+    "Key": "{Tiene GPS}",
+    "Description": "Tiene GPS",
+    "Language": {
+      "CSharp": "data.MCA_AUTO_GPS",
+      "JavaScript": "data.MCA_AUTO_GPS"
+    }
+  },
+  {
+    "Key": "{GPS con convenio del ministerio}",
+    "Description": "GPS con convenio del ministerio",
+    "Language": {
+      "CSharp": "data.MCA_AUTO_GPS_CMS",
+      "JavaScript": "data.MCA_AUTO_GPS_CMS"
+    }
+  },
+  {
+    "Key": "{GPS con monitoreo}",
+    "Description": "GPS con monitoreo",
+    "Language": {
+      "CSharp": "data.MCA_MONITOREO_GPS",
+      "JavaScript": "data.MCA_MONITOREO_GPS"
+    }
+  },
+  {
+    "Key": "{Asegurar a primer riesgo ABS}",
+    "Description": "Asegurar a primer riesgo ABS",
+    "Language": {
+      "CSharp": "data.MCA_PRA",
+      "JavaScript": "data.MCA_PRA"
+    }
+  },
+  {
+    "Key": "{Asegurar a valor real}",
+    "Description": "Asegurar a valor real",
+    "Language": {
+      "CSharp": "data.MCA_VR",
+      "JavaScript": "data.MCA_VR"
+    }
+  },
+  {
+    "Key": "{El cliente es nuevo}",
+    "Description": "El cliente es nuevo",
+    "Language": {
+      "CSharp": "data.MCA_DESC_CLIENTE_NUEVO",
+      "JavaScript": "data.MCA_DESC_CLIENTE_NUEVO"
+    }
+  },
+  {
+    "Key": "{El porcentaje de ajuste comercial}",
+    "Description": "El porcentaje de ajuste comercial",
+    "Language": {
+      "CSharp": "data.PCT_AJUSTE_GEN",
+      "JavaScript": "data.PCT_AJUSTE_GEN"
+    }
+  },
+  {
+    "Key": "{La suma asegurada de responsabilidad civil}",
+    "Description": "La suma asegurada de responsabilidad civil",
+    "Language": {
+      "CSharp": "data.IMP_AUTO_RC",
+      "JavaScript": "data.IMP_AUTO_RC"
+    }
+  },
+  {
+    "Key": "{El deducible responsabilidad civil}",
+    "Description": "El deducible responsabilidad civil",
+    "Language": {
+      "CSharp": "data.DED_AUTO_RC",
+      "JavaScript": "data.DED_AUTO_RC"
+    }
+  },
+  {
+    "Key": "{La suma asegurada de gastos médicos de ocupantes}",
+    "Description": "La suma asegurada de gastos médicos de ocupantes",
+    "Language": {
+      "CSharp": "data.IMP_AUTO_GMO",
+      "JavaScript": "data.IMP_AUTO_GMO"
+    }
+  },
+  {
+    "Key": "{La suma asegurada de accidentes al conductor}",
+    "Description": "La suma asegurada de accidentes al conductor",
+    "Language": {
+      "CSharp": "data.IMP_AUTO_ACO",
+      "JavaScript": "data.IMP_AUTO_ACO"
+    }
+  },
+  {
+    "Key": "{El deducible colisión y vuelco}",
+    "Description": "El deducible colisión y vuelco",
+    "Language": {
+      "CSharp": "data.DED_AUTO_CYV",
+      "JavaScript": "data.DED_AUTO_CYV"
+    }
+  },
+  {
+    "Key": "{La suma asegurada de riesgos adicionales}",
+    "Description": "La suma asegurada de riesgos adicionales",
+    "Language": {
+      "CSharp": "data.IMP_AUTO_RAD",
+      "JavaScript": "data.IMP_AUTO_RAD"
+    }
+  },
+  {
+    "Key": "{El deducible riesgos adicionales}",
+    "Description": "El deducible riesgos adicionales",
+    "Language": {
+      "CSharp": "data.DED_AUTO_RAD",
+      "JavaScript": "data.DED_AUTO_RAD"
+    }
+  },
+  {
+    "Key": "{La suma asegurada de robo}",
+    "Description": "La suma asegurada de robo",
+    "Language": {
+      "CSharp": "data.IMP_AUTO_ROB",
+      "JavaScript": "data.IMP_AUTO_ROB"
+    }
+  },
+  {
+    "Key": "{El deducible robo}",
+    "Description": "El deducible robo",
+    "Language": {
+      "CSharp": "data.DED_AUTO_ROB",
+      "JavaScript": "data.DED_AUTO_ROB"
+    }
+  },
+  {
+    "Key": "{La suma asegurada de equipo especial}",
+    "Description": "La suma asegurada de equipo especial",
+    "Language": {
+      "CSharp": "data.IMP_AUTO_EQESP",
+      "JavaScript": "data.IMP_AUTO_EQESP"
+    }
+  },
+  {
+    "Key": "{El deducible equipo especial}",
+    "Description": "El deducible equipo especial",
+    "Language": {
+      "CSharp": "data.DED_AUTO_EQESP",
+      "JavaScript": "data.DED_AUTO_EQESP"
+    }
+  },
+  {
+    "Key": "{La suma asegurada de garantía de neumáticos}",
+    "Description": "La suma asegurada de garantía de neumáticos",
+    "Language": {
+      "CSharp": "data.IMP_AUTO_NEUM",
+      "JavaScript": "data.IMP_AUTO_NEUM"
+    }
+  },
+  {
+    "Key": "{La suma asegurada de avería mecánica}",
+    "Description": "La suma asegurada de avería mecánica",
+    "Language": {
+      "CSharp": "data.IMP_AUTO_MECA",
+      "JavaScript": "data.IMP_AUTO_MECA"
+    }
+  },
+  {
+    "Key": "{La suma asegurada de rotura de cristales}",
+    "Description": "La suma asegurada de rotura de cristales",
+    "Language": {
+      "CSharp": "data.IMP_AUTO_CRI",
+      "JavaScript": "data.IMP_AUTO_CRI"
+    }
+  },
+  {
+    "Key": "{El deducible rotura de cristales}",
+    "Description": "El deducible rotura de cristales",
+    "Language": {
+      "CSharp": "data.DED_AUTO_CRI",
+      "JavaScript": "data.DED_AUTO_CRI"
+    }
+  },
+  {
+    "Key": "{Colones}",
+    "Description": "Colones",
+    "Language": {
+      "CSharp": "1",
+      "JavaScript": "1"
+    }
+  },
+  {
+    "Key": "{Dólares}",
+    "Description": "Dólares",
+    "Language": {
+      "CSharp": "2",
+      "JavaScript": "2"
+    }
+  },
+  {
+    "Key": "{Plan básico}",
+    "Description": "Plan básico",
+    "Language": {
+      "CSharp": "31",
+      "JavaScript": "31"
+    }
+  },
+  {
+    "Key": "{Plan amplio}",
+    "Description": "Plan amplio",
+    "Language": {
+      "CSharp": "32",
+      "JavaScript": "32"
+    }
+  },
+  {
+    "Key": "{Plan plus}",
+    "Description": "Plan plus",
+    "Language": {
+      "CSharp": "33",
+      "JavaScript": "33"
+    }
+  },
+  {
+    "Key": "{Plan oro}",
+    "Description": "Plan oro",
+    "Language": {
+      "CSharp": "34",
+      "JavaScript": "34"
+    }
+  },
+  {
+    "Key": "{Plan plata}",
+    "Description": "Plan plata",
+    "Language": {
+      "CSharp": "35",
+      "JavaScript": "35"
+    }
+  },
+  {
+    "Key": "{Plan trébol}",
+    "Description": "Plan trébol",
+    "Language": {
+      "CSharp": "36",
+      "JavaScript": "36"
+    }
+  },
+  {
+    "Key": "{Plan trébol rc}",
+    "Description": "Plan trébol rc",
+    "Language": {
+      "CSharp": "37",
+      "JavaScript": "37"
+    }
+  },
+  {
+    "Key": "{Plan especial}",
+    "Description": "Plan especial",
+    "Language": {
+      "CSharp": "38",
+      "JavaScript": "38"
+    }
+  },
+  {
+    "Key": "{Básico}",
+    "Description": "Básico",
+    "Language": {
+      "CSharp": "\"basico\"",
+      "JavaScript": "\"basico\""
+    }
+  },
+  {
+    "Key": "{Amplio}",
+    "Description": "Amplio",
+    "Language": {
+      "CSharp": "\"amplio\"",
+      "JavaScript": "\"amplio\""
+    }
+  },
+  {
+    "Key": "{Plus}",
+    "Description": "Plus",
+    "Language": {
+      "CSharp": "\"plus\"",
+      "JavaScript": "\"plus\""
+    }
+  },
+  {
+    "Key": "{Oro}",
+    "Description": "Oro",
+    "Language": {
+      "CSharp": "\"oro\"",
+      "JavaScript": "\"oro\""
+    }
+  },
+  {
+    "Key": "{Plata}",
+    "Description": "Plata",
+    "Language": {
+      "CSharp": "\"plata\"",
+      "JavaScript": "\"plata\""
+    }
+  },
+  {
+    "Key": "{Trébol}",
+    "Description": "Trébol",
+    "Language": {
+      "CSharp": "\"trebol\"",
+      "JavaScript": "\"trebol\""
+    }
+  },
+  {
+    "Key": "{Trébol rc}",
+    "Description": "Trébol rc",
+    "Language": {
+      "CSharp": "\"trebolrc\"",
+      "JavaScript": "\"trebolrc\""
+    }
+  }
+]

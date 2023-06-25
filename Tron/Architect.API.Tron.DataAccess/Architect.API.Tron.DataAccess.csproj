@@ -77,6 +77,7 @@
     <Compile Include="Batch\A2000500.cs" />
     <Compile Include="Batch\P1001331.cs" />
     <Compile Include="Batch\P2100170.cs" />
+    <Compile Include="CotizadorMapfreMasPlusClass.cs" />
     <Compile Include="CotizadorMapfreMasClass.cs" />
     <Compile Include="CotizadorPolizaLiderClass.cs" />
     <Compile Include="ControlesTecnicos.cs" />
