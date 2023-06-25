@@ -185,20 +185,34 @@ app.EmisionMapfreMasPlus = (function () {
 
     }
 
-    function SettingReload(callback) {
-        var data = {
+    function SettingParameter() {
+        return {
             cod_ramo: setupData.cod_ramo,
             edad: setupData.edad,
             cod_mon: app.ui.GetDropDownNumericValue('#cod_mon'),
             tipo_prod: $('input:radio[name=tipo_prod]:checked').val(),
             cod_marca: app.ui.GetDropDownNumericValue('#cod_marca'),
+
+            cod_modelo: setupData.cod_modelo,
+            cod_sub_modelo: setupData.cod_sub_modelo,
+            anio_sub_modelo: setupData.ANIO_SUB_MODELO,
+            cod_tip_vehi: setupData.cod_tip_vehi,
+            cod_uso_vehi: setupData.cod_uso_vehi,
+            mca_sexo: setupData.mca_sexo,
+            cod_zona_circul: setupData.cod_zona_circul,
+            cod_plan_auto: setupData.COD_PLAN_AUTO,
+
             num_contrato: setupData.contrato,
             num_subcontrato: setupData.subcontrato,
-            num_poliza_grupo: setupData.polizagrupo
+            num_poliza_grupo: setupData.polizagrupo == null ? '' : setupData.polizagrupo
         };
+    }
 
-        app.core.Get(app.setting.apipath + 'v1/Quote/MapfreMasPlusSettings?' + `cod_ramo=${data.cod_ramo}&cod_mon=${data.cod_mon}&edad=${data.edad}&tipo_prod=${data.tipo_prod}&cod_marca=${data.cod_marca}&num_contrato=${data.num_contrato}&num_subcontrato=${data.num_subcontrato}&num_poliza_grupo=${data.num_poliza_grupo}`, null,
-            function (settingData) {
+    function SettingReload(callback) {
+        var param = SettingParameter();
+
+        app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasPlusSettings?cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&cod_sub_modelo=${param.cod_sub_modelo}&anio_sub_modelo=${param.anio_sub_modelo}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.cod_plan_auto}&num_contrato=${param.num_contrato}&num_subcontrato=${param.num_subcontrato}&num_poliza_grupo=${param.num_poliza_grupo}&tipo_prod=${param.tipo_prod}`)
+            .done(function (settingData) {
                 fec_vcto_poliza_grupo = settingData.fec_vcto_poliza_grupo;
                 if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
                     app.ui.SetDateValue('#fec_vcto_poliza', app.ui.GetDateValue('#fec_efec_poliza'))
