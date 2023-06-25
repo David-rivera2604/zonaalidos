@@ -88,6 +88,7 @@ namespace Architect.DataFactory
                     name = name.Replace(":varchar", string.Empty);
                     name = name.Replace(".", "_");
                     name = name.Replace("{", ":").Replace("}", "");
+
                     name = name.Replace(":cursor}", "");
                     if (name.StartsWith(":app_", StringComparison.CurrentCultureIgnoreCase))
                     {

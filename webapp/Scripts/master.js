@@ -113,9 +113,11 @@ app.master = (function () {
                 var newelement = boxs[i].cloneNode("megamenu megamenu_desktop");
                 newelement.setAttribute('class', 'megamenu_desktop')
                 newelement.setAttribute('id', 'hamcheck' + (i + 1))
-                newelement.children[0].children[0].setAttribute('id', 'hamcheck_' + newelement.children[0].children[0].getAttribute('id'))
-                newelement.children[0].children[1].setAttribute('for', newelement.children[0].children[0].getAttribute('id'))
-                newelement.children[0].children[2].setAttribute('class', 'menu-dropdown ham')
+                if (newelement.children[0].children[1] != undefined) {
+                    newelement.children[0].children[0].setAttribute('id', 'hamcheck_' + newelement.children[0].children[0].getAttribute('id'))
+                    newelement.children[0].children[1].setAttribute('for', newelement.children[0].children[0].getAttribute('id'))
+                    newelement.children[0].children[2].setAttribute('class', 'menu-dropdown ham')
+                }
                 var exit = document.getElementById(newelement.getAttribute('id'));
                 if (!(exit)) {
                     ham_menu.appendChild(newelement)
@@ -322,6 +324,30 @@ app.core.Get(app.setting.apipath + 'v1/Colors/GetColor')
         }
 
     })
+
+///////////////////////////////////////NEW INICIO/////////////////////////////////
+
+app.core.Get(app.setting.apipath + 'v1/Clientes/GetInicio')
+    .done(function (data, textStatus, jqXHR) {
+        objectlist = data;
+
+        for (var i = 1; i <= 4; i++) {
+            var titulo = objectlist['Titulo' + i];
+            var descripcion = objectlist['Descripcion' + i];
+            var link = objectlist['Link' + i];
+            var frase = objectlist['Frase' + i];
+            var imagen = objectlist['Imagen' + i];
+
+            $('#titulo' + i).text(titulo);
+            $('#descripcion' + i).text(descripcion);
+            $('#link' + i).attr('href', link);
+            $('#frase' + i).text(frase);
+
+            if (imagen != null) {
+                $('#img' + i).attr('src', imagen);
+            }
+        }
+    });
 
 //function WheelChair() {
 //    $(".fa-wheelchair").click(function () {

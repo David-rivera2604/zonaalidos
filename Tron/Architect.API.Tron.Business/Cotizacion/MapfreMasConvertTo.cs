@@ -50,7 +50,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 cod_sub_modelo = quoteInfo.cod_sub_modelo == 0 ? 999 : quoteInfo.cod_sub_modelo,
                 edad = quoteInfo.edad,
                 mca_auto_gps_cms = quoteInfo.MCA_AUTO_GPS_CMS == 1 ? "SS" : "SN",
-                mca_vr = quoteInfo.MCA_VR == 1 ? "SS" : "SN",
+                mca_vr = "SS" ,
                 imp_vr = quoteInfo.IMP_VR,
                 mca_pra = quoteInfo.MCA_PRA == 1 ? "SS" : "SN",
                 ded_auto_rc = quoteInfo.DED_AUTO_RC,

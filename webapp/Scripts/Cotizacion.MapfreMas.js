@@ -23,8 +23,15 @@ app.CotizacionMapfreMas = (function () {
             $("label[for='nombredelcontratante']").html($("label[for='nombredelcontratante']").html() + "<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>")
         }
 
-        $('#emitir').html("<i class='fa fa-check'></i> Completar solicitud");
-        workMode = '&mode=draft';
+        if (localStorage.getItem('Roles').includes('Purdy') || localStorage.getItem('Roles').includes('Davivienda_Prendarios') ||
+            localStorage.getItem('Roles').includes('Davivienda_Leasing')) {
+            $('#emitir').html("<i class='fa fa-check'></i> Completar solicitud");
+            workMode = '&mode=draft';
+        }
+        else {
+            $('#emitir').html("<i class='fa fa-check'></i> Emitir");
+            workMode = '&mode=continue';
+        }
 
         $('#coberturasTbl').bootstrapTable('showLoading');
         app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasSetup?mode=${mode}`)
@@ -1118,7 +1125,7 @@ app.CotizacionMapfreMas = (function () {
         //  int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto
         var param = SettingParameter();
         $('#coberturasTbl').bootstrapTable('showLoading');
-        app.core.Get(app.setting.apipath + 'v1/Quote/MapfreMasCoverages?' + `cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&anio_sub_modelo=${param.anio_sub_modelo}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.cod_plan_auto}&num_contrato=${param.num_contrato}&num_subcontrato=${param.num_subcontrato}&num_poliza_grupo=${param.num_poliza_grupo}`)
+        app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasCoverages?cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&cod_sub_modelo=${param.cod_sub_modelo}&anio_sub_modelo=${param.anio_sub_modelo}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.cod_plan_auto}&num_contrato=${param.num_contrato}&num_subcontrato=${param.num_subcontrato}&num_poliza_grupo=${param.num_poliza_grupo}`)
             .done(function (data) {
                 if (data != null) {
                     $('#coberturasTbl').bootstrapTable('load', data);

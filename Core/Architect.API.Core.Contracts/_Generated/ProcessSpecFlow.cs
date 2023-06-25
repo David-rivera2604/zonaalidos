@@ -257,6 +257,6 @@ namespace Architect.API.Core.Contracts.General
         /// </summary>
         public DateTime UpdateDate { get; set; }
 
+
     }
 }
-

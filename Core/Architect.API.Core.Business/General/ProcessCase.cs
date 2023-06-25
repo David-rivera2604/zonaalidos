@@ -6,6 +6,8 @@ namespace Architect.API.Core.Business.General
 {
     public static partial class ProcessCase
     {
+       
+
 
         /// <summary>
         /// Elimina un registro en la tabla ProcessCase por medio de su clave primaria.
