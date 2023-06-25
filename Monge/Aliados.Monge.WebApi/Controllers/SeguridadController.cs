@@ -16,6 +16,7 @@ namespace Aliados.Monge.WebApi.Controllers
     [RoutePrefix("api/v{version:apiVersion}/Seguridad")]
     public class SeguridadController : ApiController
     {
+
         /// <summary>
         /// Permite validar las credenciales de acceso para la generar y generar un token que permite el consumo de las APIs.
         /// </summary>
@@ -23,33 +24,18 @@ namespace Aliados.Monge.WebApi.Controllers
         [Route("Token")]
         [AllowAnonymous]
         [ResponseType(typeof(Domain.Seguridad.RespuestaSeguridad))]
-        public async Task<IHttpActionResult> Token()
+        public async Task<IHttpActionResult> Token(Domain.Seguridad.SolicitudAcceso solicitud)
         {
-            string clienteID = string.Empty;
-            string secretID = string.Empty;
-            IEnumerable<string> values;
-            Request.Headers.TryGetValues("clienteID", out values);
 
-            if (values != null && values.Count() > 0)
-                clienteID = values.FirstOrDefault();
-
-            Request.Headers.TryGetValues("secretID", out values);
-            if (values != null && values.Count() > 0)
-                secretID = values.FirstOrDefault();
-
-            if (clienteID.IsEmpty())
+            if (solicitud.IsEmpty() || solicitud.clienteID.IsEmpty() || solicitud.secretID.IsEmpty())
             {
-                return BadRequest("Debe indicar un clienteID");
-            }
-            if (secretID.IsEmpty())
-            {
-                return BadRequest("Debe indicar un secretID");
+                return BadRequest("Debe indicar la credenciales de acceso");
             }
 
             string IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
             string useragent = Request.Headers.UserAgent.ToString();
 
-            Domain.Seguridad.RespuestaSeguridad x1 = Application.Seguridad.SeguridadHandler.Autorizacion(clienteID, secretID, IPAddress, useragent).Result;
+            Domain.Seguridad.RespuestaSeguridad x1 = Application.Seguridad.SeguridadHandler.Autorizacion(solicitud.clienteID, solicitud.secretID, IPAddress, useragent).Result;
 
             if (x1 != null && !x1.access_token.IsEmpty())
             {

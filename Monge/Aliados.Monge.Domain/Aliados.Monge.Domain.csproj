@@ -68,6 +68,7 @@
     <Compile Include="Poliza\Emision\Tercero.cs" />
     <Compile Include="Poliza\Emision\Tienda.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Seguridad\SolicitudAcceso.cs" />
     <Compile Include="Seguridad\RespuestaSeguridad.cs" />
     <Compile Include="Traza\TrackRequest.cs" />
   </ItemGroup>
