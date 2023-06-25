@@ -1226,12 +1226,9 @@
     <Content Include="Scripts\AdministrarCliente.js" />
     <Content Include="Scripts\AvisosCobro.Recibos.js" />
     <Content Include="Scripts\Clientes.Index.js" />
-<<<<<<< HEAD
     <Content Include="Scripts\Common.Attachments.js" />
-=======
     <Content Include="Scripts\ColoresTenant.js" />
     <Content Include="Scripts\CompraSegurosClients.js" />
->>>>>>> 2603d8692335166cf5801e413f5bc98d7a338de7
     <Content Include="Scripts\Cotizacion.Coberturas.js" />
     <Content Include="Scripts\Cotizacion.MapfreMasPlus.js" />
     <Content Include="Scripts\Cotizacion.Estudiantil.js" />
@@ -1260,11 +1257,8 @@
     <Content Include="Scripts\Extend.Cases.js" />
     <Content Include="Scripts\Extend.CaseDetail.js" />
     <Content Include="Scripts\Extend.AvisosCobro.js" />
-<<<<<<< HEAD
     <Content Include="Scripts\Extend.Cases.js" />
-=======
     <Content Include="Scripts\Extend.Policy.js" />
->>>>>>> 2603d8692335166cf5801e413f5bc98d7a338de7
     <Content Include="Scripts\General.Case.js" />
     <Content Include="Scripts\General.NewCase.js" />
     <Content Include="Scripts\General.PaymentSettings.js" />
@@ -1717,10 +1711,8 @@
     <Content Include="Views\General\PaymentSettings.cshtml" />
     <Content Include="Reports\coopenae_saldo_deudor.repx" />
     <Content Include="Reports\coopenae_saldo_deudor_mayor_que_64.repx" />
-<<<<<<< HEAD
     <Content Include="Views\Common\_attachments_grid.cshtml" />
     <Content Include="Views\Common\_attachments_modal.cshtml" />
-=======
     <Content Include="Views\Emision\_kyc_declarante.cshtml" />
     <Content Include="Views\Emision\_kyc_juridico.cshtml" />
     <Content Include="Views\Emision\_kyc_persona.cshtml" />
@@ -1756,7 +1748,6 @@
     <Content Include="Views\Purdy\_evento.cshtml" />
     <Content Include="Views\Purdy\_indemnizacion.cshtml" />
     <Content Include="Views\Purdy\_legal.cshtml" />
->>>>>>> 2603d8692335166cf5801e413f5bc98d7a338de7
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

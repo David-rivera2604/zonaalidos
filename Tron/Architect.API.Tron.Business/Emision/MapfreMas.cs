@@ -183,13 +183,11 @@ namespace Architect.API.Tron.Business.Emision
                     };
 
                 }
-<<<<<<< HEAD
-=======
                 try
                 {
                     if (resultQuoteInfo.num_poliza.IsNotEmpty())
                     {
-                        ComplianceSetup.Send(quoteInfo, tokenInfo);
+                        //ComplianceSetup.Send(quoteInfo, tokenInfo);
                     }
 
                 }
@@ -197,7 +195,6 @@ namespace Architect.API.Tron.Business.Emision
                 {
                     Utilities.Log.ErrorLog("Issue.Compliance", "Fail send compliance information", ex);
                 }
->>>>>>> 2603d8692335166cf5801e413f5bc98d7a338de7
 
             }
             return resultQuoteInfo;

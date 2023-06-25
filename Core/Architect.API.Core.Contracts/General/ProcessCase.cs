@@ -11,16 +11,9 @@ namespace Architect.API.Core.Contracts.General
         /// <summary>
         /// Adjuntos del un caso.
         /// </summary>
-<<<<<<< HEAD
-        public List<Contracts.General.Attachments> Attachments { get; set; }
-
-    }
-}
-=======
         public List<Contracts.General.Attachments> Attachments  { get; set; }
 
     }
 }
 
 
->>>>>>> 2603d8692335166cf5801e413f5bc98d7a338de7

@@ -12,11 +12,7 @@ namespace Architect.DataFactory
     public static class Utils
     {
 
-<<<<<<< HEAD
-        public static System.Data.DataTable StatementExecute(string statement, int statementType, string connectionName, Dictionary<string, string> values, bool withCache, string prefix = null, string roleList = "")
-=======
         public static string StatementExecute_v2(string statement, int statementType, string connectionName, Dictionary<string, string> values, bool withCache, string prefix = null, string roleList = "")
->>>>>>> 2603d8692335166cf5801e413f5bc98d7a338de7
         {
             string result = string.Empty;
             bool multiQuery = false;
@@ -92,11 +88,8 @@ namespace Architect.DataFactory
                     name = name.Replace(":varchar", string.Empty);
                     name = name.Replace(".", "_");
                     name = name.Replace("{", ":").Replace("}", "");
-<<<<<<< HEAD
-                    
-=======
+
                     name = name.Replace(":cursor}", "");
->>>>>>> 2603d8692335166cf5801e413f5bc98d7a338de7
                     if (name.StartsWith(":app_", StringComparison.CurrentCultureIgnoreCase))
                     {
                         switch (name.ToLower())

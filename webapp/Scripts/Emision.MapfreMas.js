@@ -22,7 +22,7 @@ app.EmisionMapfreMas = (function () {
             $('#coberturasTbl').bootstrapTable('showLoading');
             app.core.Get(app.setting.apipath + 'v1/Issue/MapfreMasSetup/' + _id + '?mode=' + workMode)
                 .done(function (data, textStatus, jqXHR) {
-                    workMode = data.Modo;
+                    //workMode = data.Modo;
                     if (localStorage.getItem('Roles').includes('Purdy')) {
                         $('.Purdy').removeClass('d-none');
                         $('#Fuente_Tomador').prop("disabled", (workMode != 'draft' && workMode != 'resume'));
@@ -253,6 +253,11 @@ app.EmisionMapfreMas = (function () {
         if (formulariosData.length > 0) {
             data.kyc = $('#formulariosTbl').bootstrapTable('getData')[0].data;
         }
+        if (!(localStorage.getItem('Roles').includes('Purdy') || localStorage.getItem('Roles').includes('Davivienda_Prendarios') ||
+            localStorage.getItem('Roles').includes('Davivienda_Leasing'))) {
+            data.Modo = 'continue';
+        }
+
         setupData = data;
         return data;
     }

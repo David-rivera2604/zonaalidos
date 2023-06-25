@@ -137,7 +137,7 @@ namespace Architect.API.Tron.Business.Emision
 
                     try
                     {
-                        Compliance(quoteInfo, tokenInfo);
+                        //Compliance(quoteInfo, tokenInfo);
                     }
                     catch (Exception ex)
                     {
@@ -146,7 +146,7 @@ namespace Architect.API.Tron.Business.Emision
 
 
                     Contracts.PolicyProposal proposal = DataAccess.PolicyProposal.RetrieveByProposalId(quoteInfo.presupuesto, tokenInfo.CompanyId);
-                    DataAccess.PolicyProposal.Update_Status(proposal.Id, 10, quoteInfo.presupuesto, tokenInfo.UserId);
+                    //DataAccess.PolicyProposal.Update_Status(proposal.Id, 10, quoteInfo.presupuesto, tokenInfo.UserId);
                 }
             }
 

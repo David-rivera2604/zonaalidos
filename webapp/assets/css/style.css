@@ -2262,6 +2262,7 @@ button:focus {
     color: inherit;
     background: white;
     border: 1px solid var(--mapfregray2);
+    margin: 8px;
 }
 
     .btn-white:hover,

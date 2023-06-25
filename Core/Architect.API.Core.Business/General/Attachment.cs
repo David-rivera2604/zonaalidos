@@ -2,10 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-<<<<<<< HEAD
-=======
 using System.Data;
->>>>>>> 2603d8692335166cf5801e413f5bc98d7a338de7
 using System.IO;
 using System.Web.Hosting;
 
@@ -94,10 +91,7 @@ namespace Architect.API.Core.Business.General
             }
             return SyncUp(attachment);
         }
-<<<<<<< HEAD
 
-=======
->>>>>>> 2603d8692335166cf5801e413f5bc98d7a338de7
         public static Contracts.General.Attachments SyncUp(Contracts.General.Attachments attachment)
         {
             attachment.UpdateDate = DateTime.Now;

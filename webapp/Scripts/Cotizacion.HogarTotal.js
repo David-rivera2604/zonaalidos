@@ -16,8 +16,11 @@ app.HogarTotal = (function () {
             $('#descuento').prop("disabled", true);
         }
 
-        $('#emitir').html("<i class='fa fa-check'></i> Completar solicitud");
-        workMode = '&mode=draft';
+        //$('#emitir').html("<i class='fa fa-check'></i> Completar solicitud");
+        //workMode = '&mode=draft';
+
+        $('#emitir').html("<i class='fa fa-check'></i> Emitir");
+        workMode = '&mode=continue';
 
         $('#coberturasTbl').bootstrapTable('showLoading');
         app.core.Get(app.setting.apipath + 'v1/Quote/HogarTotalSetup')
@@ -412,9 +415,8 @@ app.HogarTotal = (function () {
                 sADomocristalmarmolgranito: { required: true, Numeric: true },
                 sAGastosalquiler: { required: true, Numeric: true },
                 sAPerdidaderentas: { required: true, Numeric: true },
-                sARespcivil: { required: true, Numeric: true },
-                contrato: { required: true },
-                subcontrato: { required: true }
+                sARespcivil: { required: true, Numeric: true }
+                
             },
             messages: {
                 mesesaampararporperdrentas: { required: 'Debe indicar la cantidad de meses a amparar', Numeric: 'Debe indicar la cantidad de meses a amparar', min: 'Debe indicar indicar un valor entre 1 y 12', max: 'Debe indicar indicar un valor entre 1 y 12' },
@@ -425,9 +427,7 @@ app.HogarTotal = (function () {
                 sADomocristalmarmolgranito: { required: 'Debe indicar la suma asegurada para domo, cristal, mármol, granito', Numeric: 'Debe indicar la suma asegurada para domo, cristal, mármol, granito' },
                 sAGastosalquiler: { required: 'Debe indicar la suma asegurada para gastos de alquiler', Numeric: 'Debe indicar la suma asegurada para gastos de alquiler' },
                 sAPerdidaderentas: { required: 'Debe indicar la suma asegurada para pérdida de rentas', Numeric: 'Debe indicar la suma asegurada para pérdida de rentas' },
-                sARespcivil: { required: 'Debe indicar la suma asegurada para responsabilidad civil', Numeric: 'Debe indicar la suma asegurada para responsabilidad civil' },
-                contrato: { required: 'Debe indicar el contrato' },
-                subcontrato: { required: 'Debe indicar el subcontrato' }
+                sARespcivil: { required: 'Debe indicar la suma asegurada para responsabilidad civil', Numeric: 'Debe indicar la suma asegurada para responsabilidad civil' }
             }
         });
     };

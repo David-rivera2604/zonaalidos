@@ -449,11 +449,6 @@ namespace Architect.API.Insurance.Business.Bayer
                         Message = "total del porcentaje de participación debe ser el 100%"
                     });
             }
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 2603d8692335166cf5801e413f5bc98d7a338de7
             return result;
         }
 

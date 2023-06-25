@@ -251,7 +251,7 @@ namespace Architect.API.Tron.Contracts.Batch
         /// <summary>
         ///
         /// </summary>
-        public string mca_vr { get; set; } = " ";
+        public string mca_vr { get; set; } = "1";
 
         /// <summary>
         ///

@@ -206,6 +206,7 @@ app.HogarTotal = (function () {
         if (formulariosDatakyc.length > 0) {
             data.kyc = $('#formulariosTbl').bootstrapTable('getData')[0].data;
         }
+        data.Modo = 'continue';
         setupData = data;
         return data;
     };

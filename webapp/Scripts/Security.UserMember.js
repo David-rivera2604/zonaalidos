@@ -434,6 +434,9 @@ app.SecurityUserMember = (function () {
                 }
             },
             rules: {
+                DocumentNumber: {
+                    required: true
+                },
                 UserName: {
                     required: true
                 },
@@ -469,6 +472,9 @@ app.SecurityUserMember = (function () {
                 }
             },
             messages: {
+                DocumentNumber: {
+                    required: 'Debe indicar el numero de identificacion del usuario'
+                },
                 UserName: {
                     required: 'Debe indicar el usuario'
                 },
