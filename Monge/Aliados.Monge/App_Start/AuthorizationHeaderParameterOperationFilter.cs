@@ -20,24 +20,24 @@ namespace Aliados.Monge.App_Start
                 .GetCustomAttributes<AllowAnonymousAttribute>()
                 .Any();
 
-            if (allowAnonymous)
-            {
-                operation.parameters.Add(new Parameter
-                {
-                    name = "clienteID",
-                    @in = "header",
-                    description = "clienteID",
-                    required = true,
-                    type = "string"
-                }); operation.parameters.Add(new Parameter
-                {
-                    name = "secretID",
-                    @in = "header",
-                    description = "secretID",
-                    required = true,
-                    type = "string"
-                });
-            }
+            //if (allowAnonymous)
+            //{
+            //    operation.parameters.Add(new Parameter
+            //    {
+            //        name = "clienteID",
+            //        @in = "header",
+            //        description = "clienteID",
+            //        required = true,
+            //        type = "string"
+            //    }); operation.parameters.Add(new Parameter
+            //    {
+            //        name = "secretID",
+            //        @in = "header",
+            //        description = "secretID",
+            //        required = true,
+            //        type = "string"
+            //    });
+            //}
             //if (isAuthorized && !allowAnonymous)
             //{
             //    operation.parameters.Add(new Parameter

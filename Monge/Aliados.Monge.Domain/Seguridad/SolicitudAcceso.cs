@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,11 +15,11 @@ namespace Aliados.Monge.Domain.Seguridad
         /// <summary>
         /// Identificador público de la aplicación.
         /// </summary>
-        public string clienteID { get; set; }
+        [Required()] public string clienteID { get; set; }
         /// <summary>
         /// información de acceso de la aplicación.
         /// </summary>
-        public string secretID { get; set; }
+        [Required()] public string secretID { get; set; }
 
     }
 }

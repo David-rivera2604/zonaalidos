@@ -26,7 +26,6 @@ namespace Aliados.Monge.WebApi.Controllers
         [ResponseType(typeof(Domain.Seguridad.RespuestaSeguridad))]
         public async Task<IHttpActionResult> Token(Domain.Seguridad.SolicitudAcceso solicitud)
         {
-
             if (solicitud.IsEmpty() || solicitud.clienteID.IsEmpty() || solicitud.secretID.IsEmpty())
             {
                 return BadRequest("Debe indicar la credenciales de acceso");
@@ -35,11 +34,11 @@ namespace Aliados.Monge.WebApi.Controllers
             string IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
             string useragent = Request.Headers.UserAgent.ToString();
 
-            Domain.Seguridad.RespuestaSeguridad x1 = Application.Seguridad.SeguridadHandler.Autorizacion(solicitud.clienteID, solicitud.secretID, IPAddress, useragent).Result;
+            Domain.Seguridad.RespuestaSeguridad result = Application.Seguridad.SeguridadHandler.Autorizacion(solicitud.clienteID, solicitud.secretID, IPAddress, useragent).Result;
 
-            if (x1 != null && !x1.access_token.IsEmpty())
+            if (result != null && !result.access_token.IsEmpty())
             {
-                return Ok(x1);
+                return Ok(result);
             }
             else
             {
