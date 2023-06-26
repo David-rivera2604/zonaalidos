@@ -219,13 +219,17 @@ app.BayerInclusion = (function () {
                         clearInterval(app.BayerInclusion.timer);
                     }, 500);
                 }
+                break;
             case 32: //Rechazada
             case 31: //Declinada por expiracíon
                 if (statusmode === 'Review') {
-                    $('#VisualizationsEdtFormBack').removeClass('d-none');
+                    $('.role-Revisor-visible').removeClass('d-none');
+                    $('.role-Revisor-enabled').prop("disabled", false);
+                    $('.role-Revisor-enabled-bayer').prop("disabled", false);
                     $('#VisualizationsEdtFormRevised').removeClass('d-none');
                     $('#VisualizationsEdtFormDelete').removeClass('d-none');
                 }
+                break;
             case 10: //Alta            
                 app.ui.DataEntryBehavior('#VisualizationsEdtForm', 'disabled');
                 $('#print').removeClass('d-none');

@@ -71,6 +71,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aliados.Monge.Infrastructur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architect.API.Core.Security", "Core\Architect.API.Core.Utilities\Architect.API.Core.Security.csproj", "{3D406267-4A50-4E87-842A-553E3D222CF1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DBScripts", "DBScripts", "{7B87066D-6381-44D1-8174-473454D5D2BF}"
+	ProjectSection(SolutionItems) = preProject
+		dbscripts\230404.a.visualization.4004.sql = dbscripts\230404.a.visualization.4004.sql
+		dbscripts\230411.a.alter.flow.case.sql = dbscripts\230411.a.alter.flow.case.sql
+		dbscripts\230507.a.templates.sql = dbscripts\230507.a.templates.sql
+		dbscripts\230510.a.visualization.4003.sql = dbscripts\230510.a.visualization.4003.sql
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architect.Compliance.Integrations", "Core\Architect.Compliance.Integrations\Architect.Compliance.Integrations.csproj", "{1A9F7166-6C86-44A6-8920-CD52422A2044}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DBScripts", "DBScripts", "{98C88292-F016-41B1-B540-9B7D063476D6}"

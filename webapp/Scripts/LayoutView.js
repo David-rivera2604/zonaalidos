@@ -23,9 +23,11 @@ function rendmoremenu() {
             var newelement = boxs[i].cloneNode("megamenu megamenu_desktop");
             newelement.setAttribute('class', 'megamenu_desktop')
             newelement.setAttribute('id', 'hamcheck' + (i + 1))
-            newelement.children[0].children[0].setAttribute('id', 'hamcheck_' + newelement.children[0].children[0].getAttribute('id'))
-            newelement.children[0].children[1].setAttribute('for', newelement.children[0].children[0].getAttribute('id'))
-            newelement.children[0].children[2].setAttribute('class', 'menu-dropdown ham')
+            if (newelement.children[0].children[1] != undefined) {
+                newelement.children[0].children[0].setAttribute('id', 'hamcheck_' + newelement.children[0].children[0].getAttribute('id'))
+                newelement.children[0].children[1].setAttribute('for', newelement.children[0].children[0].getAttribute('id'))
+                newelement.children[0].children[2].setAttribute('class', 'menu-dropdown ham')
+            }
             var exit = document.getElementById(newelement.getAttribute('id'));
             prin_box.setAttribute('style', ' ')
             if (!(exit)) {

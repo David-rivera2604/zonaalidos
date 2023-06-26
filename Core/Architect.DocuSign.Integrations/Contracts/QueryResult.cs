@@ -18,5 +18,6 @@ namespace Architect.DocuSign.Integrations.Contracts
         public string description { get; set; }
 
         public bool Signed { get; set; }
+
     }
 }

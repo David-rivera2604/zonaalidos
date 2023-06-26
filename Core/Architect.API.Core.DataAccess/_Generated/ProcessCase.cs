@@ -134,7 +134,7 @@ namespace Architect.API.Core.DataAccess.General
                         }));
             return result;
         }
-
+  
         /// <summary>
         /// Recupera una lista de registros en la tabla ProcessCase.
         /// </summary>
@@ -421,6 +421,8 @@ namespace Architect.API.Core.DataAccess.General
             item.UserSend = reader.IntegerValue("UserSend");
             return item;
         }
+
+ 
 
     }
 

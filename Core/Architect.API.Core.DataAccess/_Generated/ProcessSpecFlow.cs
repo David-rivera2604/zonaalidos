@@ -205,11 +205,11 @@ namespace Architect.API.Core.DataAccess.General
             if (filter.IsNotEmpty())
             {
                 string condition = string.Empty;
-                if (filter.IndexOf("|")>-1)
+                if (filter.IndexOf("|") > -1)
                 {
-                    condition = filter.Substring( filter.IndexOf("|"));
+                    condition = filter.Substring(filter.IndexOf("|"));
                     filter = filter.Substring(0, filter.IndexOf("|"));
-                }			
+                }
                 if (includeWhere)
                 {
                     result = " WHERE ";
@@ -226,7 +226,7 @@ namespace Architect.API.Core.DataAccess.General
                 if (condition.IsNotEmpty())
                 {
                     result += Database.FilterFactory(condition, "ProcessSpecFlow");
-                }				
+                }
             }
             return result;
         }
@@ -447,7 +447,8 @@ namespace Architect.API.Core.DataAccess.General
         /// <param name="reader">DataReader</param>
         /// <param name="item">Instancia pre creada</param>
         /// <returns>Instancia con la información de la fila del 'DataReader'</returns>
-        public static Architect.API.Core.Contracts.General.ProcessSpecFlow DataReaderToProcessSpecFlow(System.Data.IDataReader reader, Architect.API.Core.Contracts.General.ProcessSpecFlow item = null, bool queryExt =false)
+        public static Architect.API.Core.Contracts.General.ProcessSpecFlow DataReaderToProcessSpecFlow(System.Data.IDataReader reader, Architect.API.Core.Contracts.General.ProcessSpecFlow item = null, bool queryExt = false)
+
         {
             if (item == null)
             {
@@ -504,6 +505,7 @@ namespace Architect.API.Core.DataAccess.General
             item.UpdateUserCode = reader.IntegerValue("UpdateUserCode");
             item.UpdateUserName = reader.StringValue("UpdateUserName");
             item.UpdateDate = reader.DateTimeValue("UpdateDate");
+
             if (queryExt) { 
                 item.RoleNames = reader.StringValue("Roles");
             }

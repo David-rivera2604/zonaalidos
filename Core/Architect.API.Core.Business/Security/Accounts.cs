@@ -363,7 +363,7 @@ namespace Architect.API.Core.Business.Security
         public static Architect.API.Core.Contracts.Security.ClientesInicioResponse ReadInicio(Core.Contracts.Security.Token tokenInfo)
         {
 
-            Architect.API.Core.Contracts.Security.ClientesInicioResponse DataInicio = null; //Architect.API.Core.DataAccess.General.ProcessData.RetrieveInicio(tokenInfo.CompanyId);
+            Architect.API.Core.Contracts.Security.ClientesInicioResponse DataInicio = Architect.API.Core.DataAccess.General.ProcessData.RetrieveInicio(tokenInfo.CompanyId);
 
             return DataInicio;
         }			 

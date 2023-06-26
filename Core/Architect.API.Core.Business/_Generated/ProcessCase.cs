@@ -54,7 +54,7 @@ namespace Architect.API.Core.Business.General
                 if (Architect.API.Core.DataAccess.General.ProcessCase.Create(result) > 0)
                 {
 
-                    if(result.Attachments.IsNotEmpty()&& result.Attachments.Count  > 0)
+                    if (result.Attachments.IsNotEmpty() && result.Attachments.Count > 0)
                     {
                         foreach (Contracts.General.Attachments attachment in result.Attachments)
                         {

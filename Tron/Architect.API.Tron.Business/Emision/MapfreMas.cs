@@ -187,7 +187,7 @@ namespace Architect.API.Tron.Business.Emision
                 {
                     if (resultQuoteInfo.num_poliza.IsNotEmpty())
                     {
-                        ComplianceSetup.Send(quoteInfo, tokenInfo);
+                        //ComplianceSetup.Send(quoteInfo, tokenInfo);
                     }
 
                 }

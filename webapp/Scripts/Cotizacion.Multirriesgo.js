@@ -17,8 +17,11 @@ app.CotizacionMultirriesgo = (function () {
                 Init_Lookups(data);
             });
 
-        $('#emitir').html("<i class='fa fa-check'></i> Completar solicitud");
-        workMode = '&mode=draft';
+        //$('#emitir').html("<i class='fa fa-check'></i> Completar solicitud");
+        //workMode = '&mode=draft';
+
+        $('#emitir').html("<i class='fa fa-check'></i> Emitir");
+        workMode = '&mode=continue';
     };
 
     function Quote() {
@@ -535,9 +538,8 @@ app.CotizacionMultirriesgo = (function () {
                 IMP_MERCADERIA: { AtLeastOne: 'IMP_MOBILIARIO,IMP_MAQUINARIA,IMP_EQUIP_ELEC,IMP_EQUIP_ELEC_M,IMP_MERCADERIA,IMP_BIE_TEM_DES,IMP_BIE_INT,IMP_OBJ_ESP_VAL' },
                 IMP_BIE_TEM_DES: { AtLeastOne: 'IMP_MOBILIARIO,IMP_MAQUINARIA,IMP_EQUIP_ELEC,IMP_EQUIP_ELEC_M,IMP_MERCADERIA,IMP_BIE_TEM_DES,IMP_BIE_INT,IMP_OBJ_ESP_VAL' },
                 IMP_BIE_INT: { AtLeastOne: 'IMP_MOBILIARIO,IMP_MAQUINARIA,IMP_EQUIP_ELEC,IMP_EQUIP_ELEC_M,IMP_MERCADERIA,IMP_BIE_TEM_DES,IMP_BIE_INT,IMP_OBJ_ESP_VAL' },
-                IMP_OBJ_ESP_VAL: { AtLeastOne: 'IMP_MOBILIARIO,IMP_MAQUINARIA,IMP_EQUIP_ELEC,IMP_EQUIP_ELEC_M,IMP_MERCADERIA,IMP_BIE_TEM_DES,IMP_BIE_INT,IMP_OBJ_ESP_VAL' },
-                contrato: { required: true },
-                subcontrato: { required: true }
+                IMP_OBJ_ESP_VAL: { AtLeastOne: 'IMP_MOBILIARIO,IMP_MAQUINARIA,IMP_EQUIP_ELEC,IMP_EQUIP_ELEC_M,IMP_MERCADERIA,IMP_BIE_TEM_DES,IMP_BIE_INT,IMP_OBJ_ESP_VAL' }
+                
             },
             messages: {
                 cod_mon: { required: 'Debe indicar el Moneda' },
@@ -563,9 +565,8 @@ app.CotizacionMultirriesgo = (function () {
                 IMP_MERCADERIA: { AtLeastOne: 'Debe indicar al menos una suma asegurada para rubros' },
                 IMP_BIE_TEM_DES: { AtLeastOne: 'Debe indicar al menos una suma asegurada para rubros' },
                 IMP_BIE_INT: { AtLeastOne: 'Debe indicar al menos una suma asegurada para rubros' },
-                IMP_OBJ_ESP_VAL: { AtLeastOne: 'Debe indicar al menos una suma asegurada para rubros' },
-                contrato: { required: 'Debe indicar el contrato' },
-                subcontrato: { required: 'Debe indicar el subcontrato' }
+                IMP_OBJ_ESP_VAL: { AtLeastOne: 'Debe indicar al menos una suma asegurada para rubros' }
+                
             }
         });
     };

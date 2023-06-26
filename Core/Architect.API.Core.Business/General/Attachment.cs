@@ -91,6 +91,7 @@ namespace Architect.API.Core.Business.General
             }
             return SyncUp(attachment);
         }
+
         public static Contracts.General.Attachments SyncUp(Contracts.General.Attachments attachment)
         {
             attachment.UpdateDate = DateTime.Now;

@@ -11,7 +11,7 @@ namespace Architect.API.Tron.Business.Emision
 
         internal static Architect.API.Tron.Contracts.Presupuesto.DatoFijo Tron(Contracts.Emision.Multirriesgo quoteInfo)
         {
-
+            quoteInfo.cod_ramo = 202;
             Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos = DatosFijos(quoteInfo, quoteInfo.cod_ramo);
             Terceros(quoteInfo, datosFijos);
             datosFijos.DatosVariables = DatosVariable(quoteInfo, datosFijos);

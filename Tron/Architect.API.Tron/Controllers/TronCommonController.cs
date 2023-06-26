@@ -169,6 +169,7 @@ namespace Architect.API.Tron.Controllers
         [Route("ImprimirPoliza/{num_poliza}/{num_riesgo}")]
         public HttpResponseMessage ImprimirPoliza([FromUri] string num_poliza, int num_riesgo = 1)
         {
+
             try {
                 Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
