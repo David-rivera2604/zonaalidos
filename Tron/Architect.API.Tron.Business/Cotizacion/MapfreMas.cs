@@ -1,14 +1,10 @@
-﻿using Architect.API.Core.Contracts.General;
-using Architect.API.Core.Contracts.Security;
-using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
+﻿using Architect.API.Core.Contracts.Security;
 using Architect.Utilities.Extensions;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Architect.API.Tron.Business.Cotizacion
 {
@@ -18,16 +14,14 @@ namespace Architect.API.Tron.Business.Cotizacion
     public static class MapfreMas
     {
 
-        const int COD_RAMO = 302;
-
         /// <summary>
         /// Devuelve la estructura de datos con los valores por defecto para una cotización de tipo Mapfre Más.
         /// </summary>
-        public static Contracts.Cotizacion.MapfreMas Setup(Core.Contracts.Security.Token tokenInfo)
+        public static Contracts.Cotizacion.MapfreMas Setup(string mode, Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.Cotizacion.MapfreMas result = new Contracts.Cotizacion.MapfreMas()
             {
-                cod_ramo = COD_RAMO,
+                cod_ramo = 302,
                 cod_mon = 1,
                 cod_fracc_pago = 1,
                 fec_efec_poliza = DateTime.Today,
@@ -45,6 +39,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 MCA_CERO_KM = 2,
                 MCA_AUTO_GPS = 2,
                 MCA_MONITOREO_GPS = 2,
+                ext_garantia = 2,
                 MCA_AUTO_GPS_CMS = 2,
                 MCA_PRA = 2,
                 MCA_VR = 1,
@@ -54,7 +49,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 IMP_AUTO_CRI = 750000,
                 Agente = tokenInfo.UserName
             };
-            result.coberturas = CoverageByDefault(result.cod_mon, result.cod_marca, result.cod_modelo, result.ANIO_SUB_MODELO, result.cod_tip_vehi, result.cod_uso_vehi, result.mca_sexo, result.cod_zona_circul, result.edad, result.COD_PLAN_AUTO, 0, 0, string.Empty, tokenInfo);
+            result.coberturas = CoverageByDefault(result.cod_ramo, result.cod_mon, result.cod_marca, result.cod_modelo, result.cod_sub_modelo, result.ANIO_SUB_MODELO, result.cod_tip_vehi, result.cod_uso_vehi, result.mca_sexo, result.cod_zona_circul, result.edad, result.COD_PLAN_AUTO, 0, 0, string.Empty, tokenInfo);
 
             return result;
         }
@@ -62,13 +57,15 @@ namespace Architect.API.Tron.Business.Cotizacion
         /// <summary>
         /// Recupera lista de valores para sumas aseguradas de coberturas o valores deducibles según el rol del usuario
         /// </summary>
-        public static Contracts.Cotizacion.MapfreMasSettings Settings(int cod_ramo, int cod_mon, int edad, string tipo_prod, int cod_marca, int num_contrato, int num_subcontrato, Core.Contracts.Security.Token tokenInfo)
+        public static Contracts.Cotizacion.MapfreMasSettings Settings(int cod_ramo, int cod_mon, int cod_marca, int cod_modelo, int cod_sub_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int num_contrato, int num_subcontrato, string num_poliza_grupo, string tipo_prod, Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.Cotizacion.MapfreMasSettings result = new Contracts.Cotizacion.MapfreMasSettings();
             Contracts.Cotizacion.MapfreMas data = new Contracts.Cotizacion.MapfreMas()
             {
                 cod_mon = cod_mon,
                 cod_marca = cod_marca,
+                cod_modelo = cod_modelo,
+                cod_sub_modelo = cod_sub_modelo,
                 tipo_prod = tipo_prod,
                 edad = edad,
                 contrato = num_contrato,
@@ -82,11 +79,11 @@ namespace Architect.API.Tron.Business.Cotizacion
             if (tokenInfo.Roles.Contain("PolizaGrupo"))
             {
                 keys.AddRange(new List<string> {
-                    "MM_CAPITAL_RC_G", "MM_CAPITAL_GM_G", "MM_CAPITAL_AC_G", "MM_CAPITAL_ROTCRI_G",
+                    "TRON_TA301001:3001", "MM_CAPITAL_GM_G", "MM_CAPITAL_AC_G", "MM_CAPITAL_ROTCRI_G",
                     "MM_DEDU_RC_G", "MM_DEDU_CV_G", "MM_DEDU_ROTCRI_G", "MM_DEDU_EE_G", "MM_DEDU_RA_G", "MM_DEDU_ROBO_G", "MM_POLIZA_GRUPO"});
             }
 
-            string url = $"cod_ramo={cod_ramo}:cod_mon={cod_mon}:edad={edad}:plan={tipo_prod}:cod_marca={cod_marca}:num_contrato={num_contrato}:num_subcontrato={num_subcontrato}";
+            string url = $"cod_ramo={cod_ramo}:cod_mon={cod_mon}:edad={edad}:plan={tipo_prod}:cod_marca={cod_marca}:num_contrato={num_contrato}:num_subcontrato={num_subcontrato}:num_poliza_grupo={num_poliza_grupo}:cod_modelo={cod_modelo}:anio_sub_modelo={anio_sub_modelo}:cod_tip_vehi={cod_tip_vehi}:cod_uso_vehi={cod_uso_vehi}:mca_sexo={mca_sexo}:cod_zona_circul={cod_zona_circul}:cod_plan_auto={cod_plan_auto}";
             List<Core.Contracts.General.LookupValues> values = Core.Business.Common.Lkps(string.Join(",", keys), url, tokenInfo);
 
             result.fec_vcto_poliza = DateTime.Today.AddYears(1);
@@ -119,7 +116,7 @@ namespace Architect.API.Tron.Business.Cotizacion
         /// <summary>
         /// Recupera la configuración de coberturas por defecto.
         /// </summary>
-        public static List<Contracts.Comun.Cobertura> CoverageByDefault(int cod_mon, int cod_marca, int cod_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int num_contrato, int num_subcontrato, string num_poliza_grupo, Core.Contracts.Security.Token tokenInfo)
+        public static List<Contracts.Comun.Cobertura> CoverageByDefault(int cod_ramo, int cod_mon, int cod_marca, int cod_modelo, int cod_sub_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int num_contrato, int num_subcontrato, string num_poliza_grupo, Core.Contracts.Security.Token tokenInfo)
         {
             List<Contracts.Comun.Cobertura> coberturas = new List<Contracts.Comun.Cobertura>();
             string cod_cobExcludeFilter = string.Empty;
@@ -133,7 +130,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             {
                 if (num_contrato > 0)
                 {
-                    List<Contracts.Ramo.G2990026> coberturaGrupo = DataAccess.PorRamo.Coberturas_por_contrato2(COD_RAMO, num_contrato);
+                    List<Contracts.Ramo.G2990026> coberturaGrupo = DataAccess.PorRamo.Coberturas_por_contrato2(cod_ramo, num_contrato);
                     cod_cobIncludeFilter = Util.Convert_CoverageListToString(coberturaGrupo);
 
                     if (cod_cobIncludeFilter.IsNotEmpty())
@@ -151,7 +148,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                         }
 
 
-                        foreach (Contracts.Ramo.a1002150 item in DataAccess.PorRamo.Coberturas(cod_cia, COD_RAMO, cod_modalidad, fec_validez, cod_cobExcludeFilter, cod_cobIncludeFilter))
+                        foreach (Contracts.Ramo.a1002150 item in DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, cod_cobExcludeFilter, cod_cobIncludeFilter))
                         {
                             coberturas.Add(new Contracts.Comun.Cobertura()
                             {
@@ -178,6 +175,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 cod_cobExcludeFilter = Reglas.research.Apply_Coberturas("MapfreMas",
                     new Contracts.Cotizacion.MapfreMas()
                     {
+                        cod_ramo = cod_ramo,
                         cod_mon = cod_mon,
                         cod_marca = cod_marca,
                         cod_modelo = cod_modelo,
@@ -198,9 +196,10 @@ namespace Architect.API.Tron.Business.Cotizacion
                     Architect.Utilities.Log.TraceLog("Coverage", $"Excluir '{cod_cobExcludeFilter}' las coberturas", "Decision");
                 }
 
-                List<Contracts.Ramo.ta301003> coverageSelection = DataAccess.PorRamo.AutomobileCoverageSelection(cod_cia, num_poliza_grupo, num_contrato, num_subcontrato, COD_RAMO, cod_mon, cod_marca, cod_modelo, anio_sub_modelo, cod_tip_vehi, cod_uso_vehi, mca_sexo, cod_zona_circul, edad, cod_plan_auto, tip_valoracion);
+                List<Contracts.Ramo.ta301003> coverageSelection = DataAccess.PorRamo.AutomobileCoverageSelection(cod_cia, num_poliza_grupo, num_contrato, num_subcontrato, cod_ramo, cod_mon, cod_marca, cod_modelo, anio_sub_modelo, cod_tip_vehi, cod_uso_vehi, mca_sexo, cod_zona_circul, edad, cod_plan_auto, tip_valoracion);
                 bool required;
-                foreach (Contracts.Ramo.a1002150 item in DataAccess.PorRamo.Coberturas(cod_cia, COD_RAMO, cod_modalidad, fec_validez, cod_cobExcludeFilter, cod_cobIncludeFilter))
+                cod_cobIncludeFilter = "3001,3002,3003,3004,3005,3006,3007,3008,3009,3010,3011,3012,1060";
+                foreach (Contracts.Ramo.a1002150 item in DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, cod_cobExcludeFilter, cod_cobIncludeFilter))
                 {
                     required = coverageSelection.Any(r => r.cod_cob == item.COD_COB && r.mca_obligatoria == "S");
                     coberturas.Add(new Contracts.Comun.Cobertura()
@@ -234,12 +233,63 @@ namespace Architect.API.Tron.Business.Cotizacion
             {
                 quoteInfo.presupuesto = string.Empty;
                 quoteInfo.resumen = null;
-                Contracts.Batch.CotizadorMapfreMasClass quoteTron = MapfreMasConvertTo.Tron(quoteInfo, COD_RAMO, tokenInfo.AgentCode, tokenInfo.UserName, tokenInfo.IdentificationType, tokenInfo.Identification);
+                Contracts.Batch.CotizadorMapfreMasClass quoteTron = MapfreMasConvertTo.Tron(quoteInfo, quoteInfo.cod_ramo, tokenInfo.AgentCode, tokenInfo.UserName, tokenInfo.IdentificationType, tokenInfo.Identification, tokenInfo.Roles);
                 //Architect.Common.Helpers.Serialize.SerializeToFile<Architect.API.Tron.Contracts.Batch.CotizadorMapfreMasClass>(result, @"C:\temp\mapfremas.in.xml");
 
                 Contracts.Presupuesto.DatoFijo resultTron = Backoffice.Cotizacion.MapfreMas.Calcular(quoteTron);
                 resultInfo = MapfreMasConvertFrom.Quote(quoteInfo, resultTron);
 
+                if (resultInfo.Error.IsEmpty() && tokenInfo.Roles.Contain("Purdy") && tokenInfo.Roles.Contain("PolizaGrupo"))
+                {
+                    DateTime fecha_validar = quoteTron.fec_vcto_poliza.AddMonths(-1);
+
+                    if (quoteTron.fec_efec_poliza >= fecha_validar)
+                    {
+
+                        // Guarda dato Variable MCA_RENUEVA_EMI
+                        Backoffice.Cotizacion.Generico.Crea_DatosVariable(resultInfo.presupuesto,
+                            new Contracts.Presupuesto.DatoVariable()
+                            {
+                                cod_cia = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_cia"]),
+                                num_poliza = resultInfo.presupuesto,
+                                num_spto = 0,
+                                num_spto_apli = 0,
+                                num_riesgo = 1,
+                                num_periodo = 1,
+                                tip_nivel = 2,
+                                cod_campo = "MCA_RENUEVA_EMI",
+                                val_campo = "S",
+                                txt_campo = "S",
+                                cod_ramo = quoteInfo.cod_ramo,
+                                num_secu = 105,
+                                mca_baja_riesgo = "N",
+                                mca_vigente = "S",
+                                mca_vigente_apli = "S"
+                            });
+
+                        quoteTron.fec_efec_poliza = quoteTron.fec_vcto_poliza;
+                        quoteTron.fec_efec_spto = quoteTron.fec_efec_poliza;
+                        quoteTron.fec_vcto_poliza = quoteTron.fec_vcto_poliza.AddYears(1);
+
+                        // Cotiza Vigencia completa
+                        Contracts.Presupuesto.DatoFijo resultTronFull = Backoffice.Cotizacion.MapfreMas.Calcular(quoteTron);
+
+                        quoteInfo.plandepagoFull = new List<Contracts.Comun.PlanDePago>();
+                        foreach (Architect.API.Tron.Contracts.Presupuesto.Recibo item in resultTronFull.Recibos)
+                        {
+                            quoteInfo.plandepagoFull.Add(new Contracts.Comun.PlanDePago()
+                            {
+                                cuota = item.num_cuota,
+                                fechadesde = item.fec_efec_recibo,
+                                fechahasta = item.fec_vcto_recibo,
+                                primaneta = item.imp_neta + item.imp_recargo,
+                                iVA = item.imp_imptos,
+                                recargoporfraccionamiento = item.imp_interes,
+                                importetotal = item.imp_recibo
+                            });
+                        }
+                    }
+                }
 
                 //Utilities.SerializeHandler<Contracts.Presupuesto.DatoFijo>.SerializeToFile(resultTron, @"C:\temp\resultTron.xml");
                 //Utilities.SerializeHandler<Contracts.Cotizacion.MapfreMas>.SerializeToFile(resultInfo, @"C:\temp\resultInfo.xml");
@@ -250,13 +300,15 @@ namespace Architect.API.Tron.Business.Cotizacion
                 //Utilities.SerializeHandler<Contracts.Cotizacion.MapfreMas>.SerializeToFile(resultInfo2, @"C:\temp\resultcompleta.xml");
                 //resultInfo = resultInfo2;
 
-                Architect.Utilities.Cache.SetItem(
-                    string.Format("mapfremas.{0}", resultInfo.presupuesto),
+                if (resultInfo.Error.IsEmpty())
+                {
+                    Architect.Utilities.Cache.SetItem(string.Format("mapfremas.{0}", resultInfo.presupuesto),
                         Newtonsoft.Json.JsonConvert.SerializeObject(resultInfo), -1);
 
-                if (resultInfo.presupuesto.IsNotEmpty())
-                {
-                    Core.Business.General.ChangeSet.Create(3000, Convert.ToInt32(resultInfo.presupuesto.Substring(4)), tokenInfo.CompanyId, "Cotización MapfreMas", "Presupuesto #" + resultInfo.presupuesto, tokenInfo.UserId, resultInfo);
+                    if (resultInfo.presupuesto.IsNotEmpty())
+                    {
+                        Core.Business.General.ChangeSet.Create(3000, Convert.ToInt32(resultInfo.presupuesto.Substring(4)), tokenInfo.CompanyId, "Cotización MapfreMas", "Presupuesto #" + resultInfo.presupuesto, tokenInfo.UserId, resultInfo);
+                    }
                 }
             }
             return resultInfo;
@@ -271,35 +323,35 @@ namespace Architect.API.Tron.Business.Cotizacion
             {
                 switch (itemValues.Key)
                 {
-                    case "MM_CAPITAL_RC_G":
-                        result.IMP_AUTO_RC = itemValues.Lkp;
+                    case "TRON_TA301001:3001":
+                        result.IMP_AUTO_RC = CleanEmptyValue(itemValues.Lkp);
                         break;
                     case "MM_CAPITAL_GM_G":
-                        result.IMP_AUTO_GMO = itemValues.Lkp;
+                        result.IMP_AUTO_GMO = CleanEmptyValue(itemValues.Lkp);
                         break;
                     case "MM_CAPITAL_AC_G":
-                        result.IMP_AUTO_ACO = itemValues.Lkp;
+                        result.IMP_AUTO_ACO = CleanEmptyValue(itemValues.Lkp);
                         break;
                     case "MM_CAPITAL_ROTCRI_G":
-                        result.IMP_AUTO_CRI = itemValues.Lkp;
+                        result.IMP_AUTO_CRI = CleanEmptyValue(itemValues.Lkp);
                         break;
                     case "MM_DEDU_RC_G":
-                        result.DED_AUTO_RC = itemValues.Lkp;
+                        result.DED_AUTO_RC = CleanEmptyValue(itemValues.Lkp);
                         break;
                     case "MM_DEDU_CV_G":
-                        result.DED_AUTO_CYV = itemValues.Lkp;
+                        result.DED_AUTO_CYV = CleanEmptyValue(itemValues.Lkp);
                         break;
                     case "MM_DEDU_ROTCRI_G":
-                        result.DED_AUTO_CRI = itemValues.Lkp;
+                        result.DED_AUTO_CRI = CleanEmptyValue(itemValues.Lkp);
                         break;
                     case "MM_DEDU_EE_G":
-                        result.DED_AUTO_EQESP = itemValues.Lkp;
+                        result.DED_AUTO_EQESP = CleanEmptyValue(itemValues.Lkp);
                         break;
                     case "MM_DEDU_RA_G":
-                        result.DED_AUTO_RAD = itemValues.Lkp;
+                        result.DED_AUTO_RAD = CleanEmptyValue(itemValues.Lkp);
                         break;
                     case "MM_DEDU_ROBO_G":
-                        result.DED_AUTO_ROB = itemValues.Lkp;
+                        result.DED_AUTO_ROB = CleanEmptyValue(itemValues.Lkp);
                         break;
                 }
             }
@@ -337,71 +389,80 @@ namespace Architect.API.Tron.Business.Cotizacion
                     case "MM_CAPITAL_RC":
                         if (result.IMP_AUTO_RC.IsEmpty() || result.IMP_AUTO_RC.Count == 0)
                         {
-                            result.IMP_AUTO_RC = itemValues.Lkp;
+                            result.IMP_AUTO_RC = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
                     case "MM_CAPITAL_GM":
                         if (result.IMP_AUTO_GMO.IsEmpty() || result.IMP_AUTO_GMO.Count == 0)
                         {
-                            result.IMP_AUTO_GMO = itemValues.Lkp;
+                            result.IMP_AUTO_GMO = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
                     case "MM_CAPITAL_AC":
                         if (result.IMP_AUTO_ACO.IsEmpty() || result.IMP_AUTO_ACO.Count == 0)
                         {
-                            result.IMP_AUTO_ACO = itemValues.Lkp;
+                            result.IMP_AUTO_ACO = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
                     case "MM_CAPITAL_GN":
-                        result.IMP_AUTO_NEUM = itemValues.Lkp;
+                        result.IMP_AUTO_NEUM = CleanEmptyValue(itemValues.Lkp);
                         break;
                     case "MM_CAPITAL_AM":
-                        result.IMP_AUTO_MECA = itemValues.Lkp;
+                        result.IMP_AUTO_MECA = CleanEmptyValue(itemValues.Lkp);
                         break;
                     case "MM_CAPITAL_ROTCRI":
                         if (result.IMP_AUTO_CRI.IsEmpty() || result.IMP_AUTO_CRI.Count == 0)
                         {
-                            result.IMP_AUTO_CRI = itemValues.Lkp;
+                            result.IMP_AUTO_CRI = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
                     case "MM_DEDU_RC":
                         if (result.DED_AUTO_RC.IsEmpty() || result.DED_AUTO_RC.Count == 0)
                         {
-                            result.DED_AUTO_RC = itemValues.Lkp;
+                            result.DED_AUTO_RC = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
                     case "MM_DEDU_CV":
                         if (result.DED_AUTO_CYV.IsEmpty() || result.DED_AUTO_CYV.Count == 0)
                         {
-                            result.DED_AUTO_CYV = itemValues.Lkp;
+                            result.DED_AUTO_CYV = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
                     case "MM_DEDU_RA":
                         if (result.DED_AUTO_RAD.IsEmpty() || result.DED_AUTO_RAD.Count == 0)
                         {
-                            result.DED_AUTO_RAD = itemValues.Lkp;
+                            result.DED_AUTO_RAD = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
                     case "MM_DEDU_ROBO":
                         if (result.DED_AUTO_ROB.IsEmpty() || result.DED_AUTO_ROB.Count == 0)
                         {
-                            result.DED_AUTO_ROB = itemValues.Lkp;
+                            result.DED_AUTO_ROB = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
                     case "MM_DEDU_EE":
                         if (result.DED_AUTO_EQESP.IsEmpty() || result.DED_AUTO_EQESP.Count == 0)
                         {
-                            result.DED_AUTO_EQESP = itemValues.Lkp;
+                            result.DED_AUTO_EQESP = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
                     case "MM_DEDU_ROTCRI":
                         if (result.DED_AUTO_CRI.IsEmpty() || result.DED_AUTO_CRI.Count == 0)
                         {
-                            result.DED_AUTO_CRI = itemValues.Lkp;
+                            result.DED_AUTO_CRI = CleanEmptyValue(itemValues.Lkp);
                         }
                         break;
                 }
             }
+        }
+
+        private static List<Core.Contracts.General.LookupValue> CleanEmptyValue(List<Core.Contracts.General.LookupValue> values)
+        {
+            if (values != null && values.Count > 0 && (values.First().Code == "0" || values.First().Code == ""))
+            {
+                values.Remove(values.First());
+            }
+            return values;
         }
 
         public static List<Core.Contracts.General.LookupValues> LksExclude(string keys, string url, Core.Contracts.Security.Token tokenInfo)

@@ -1,0 +1,115 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<!-- Navigation -->
+<div class="ibox">
+    <div class="ibox-title">
+        <h5>Mantenimiento Inicio</h5>
+    </div>
+    <div class="ibox-content">
+
+        <hr />
+        <h3>First slide</h3>
+        <hr />
+
+        <div class="clients-square">
+            <div class="box-img-mant">
+                <input type="text" name="name" value="" id="IM_titulo1" class="iputsMant titulosMant" />
+
+                <textarea aria-label="With textarea" id="IM_descripcion1" class="iputsMant descripMant"></textarea>
+                <hr />
+
+                <input type="text" name="name" value="" id="IM_frase1" class="iputsMant fraseMant" />
+
+                <hr />
+                <input type="text" name="name" value="" id="IM_link1" class="iputsMant linkMant" />
+            </div>
+            <form class="fileMant fileMant1" action="upload.php" method="POST">
+                <input type="file" id="fileimg1" class="file-img" />
+                <label>Imagen Click or Drag</label>
+                <p>Dimensiones recomendadas 1320 x 500</p>
+            </form>
+            <img src="~/app/img/undefined.svg" id="IM_img1" alt="First slide">
+        </div>
+
+        <hr />
+        <h3>Second slide</h3>
+        <hr />
+
+        <div class="clients-square">
+            <div class="box-img-mant">
+                <input type="text" name="name" value="" id="IM_titulo2" class="iputsMant titulosMant" />
+
+                <textarea aria-label="With textarea" id="IM_descripcion2" class="iputsMant descripMant"></textarea>
+                <hr />
+
+                <input type="text" name="name" value="" id="IM_frase2" class="iputsMant fraseMant" />
+
+                <hr />
+                <input type="text" name="name" value="" id="IM_link2" class="iputsMant linkMant" />
+            </div>
+            <form class="fileMant fileMant2" action="upload.php" method="POST">
+                <input type="file" id="fileimg2" class="file-img" />
+                <label>Imagen Click or Drag</label>
+                <p>Dimensiones recomendadas 1320 x 500</p>
+            </form>
+            <img src="~/app/img/undefined.svg" id="IM_img2" alt="Second slide">
+        </div>
+
+        <hr />
+        <h3>Third slide</h3>
+        <hr />
+
+        <div class="clients-square">
+            <div class="box-img-mant">
+                <input type="text" name="name" value="" id="IM_titulo3" class="iputsMant titulosMant" />
+
+                <textarea aria-label="With textarea" id="IM_descripcion3" class="iputsMant descripMant"></textarea>
+                <hr />
+
+                <input type="text" name="name" value="" id="IM_frase3" class="iputsMant fraseMant" />
+
+                <hr />
+                <input type="text" name="name" value="" id="IM_link3" class="iputsMant linkMant" />
+            </div>
+            <form class="fileMant fileMant3" action="upload.php" method="POST">
+                <input type="file" id="fileimg3" class="file-img" />
+                <label>Imagen Click or Drag</label>
+                <p>Dimensiones recomendadas 1320 x 500</p>
+            </form>
+            <img src="~/app/img/undefined.svg" id="IM_img3" alt="Third slide">
+        </div>
+
+        <hr />
+        <h3>Fourth slide</h3>
+        <hr />
+
+        <div class="clients-square">
+            <div class="box-img-mant">
+                <input type="text" name="name" value="" id="IM_titulo4" class="iputsMant titulosMant" />
+
+                <textarea aria-label="With textarea" id="IM_descripcion4" class="iputsMant descripMant"></textarea>
+                <hr />
+
+                <input type="text" name="name" value="" id="IM_frase4" class="iputsMant fraseMant" />
+
+                <hr />
+                <input type="text" name="name" value="" id="IM_link4" class="iputsMant linkMant" />
+            </div>
+            <form class="fileMant fileMant4" action="upload.php" method="POST">
+                <input type="file" id="fileimg4" class="file-img" />
+                <label>Imagen Click or Drag</label>
+                <p>Dimensiones recomendadas 1320 x 500</p>
+            </form>
+            <img src="~/app/img/undefined.svg" id="IM_img4" alt="Third slide">
+        </div>
+
+    </div>
+    <button id="cambiarInicio" type="button" class="btn btn-primary mb-5" data-doing="Guardando cambios..." title="Guardar">Guardar y aplicar cambios</button>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/InicioMantenimiento.js")"></script>
+}

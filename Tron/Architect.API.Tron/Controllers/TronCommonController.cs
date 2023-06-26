@@ -1,4 +1,5 @@
-﻿using Microsoft.Web.Http;
+﻿using Architect.API.Core.Contracts.General;
+using Microsoft.Web.Http;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -6,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -112,6 +114,20 @@ namespace Architect.API.Tron.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("Producto")]
+        public async Task<IHttpActionResult> Producto([FromUri] string alias)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Contracts.Especificacion.Producto result = null;
+            await Task.Run(() =>
+            {
+                result = Business.Reglas.research.GetProducto(alias);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
         [HttpPost]
         [Route("Producto")]
         public async Task<IHttpActionResult> Producto([FromUri] string alias, [FromBody] Contracts.Especificacion.Producto def)
@@ -153,8 +169,8 @@ namespace Architect.API.Tron.Controllers
         [Route("ImprimirPoliza/{num_poliza}/{num_riesgo}")]
         public HttpResponseMessage ImprimirPoliza([FromUri] string num_poliza, int num_riesgo = 1)
         {
-            try
-            {
+
+            try {
                 Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
                 HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
@@ -193,7 +209,7 @@ namespace Architect.API.Tron.Controllers
                             break;
 
                     }
-                    ms = new MemoryStream(plantilla);
+                     ms = new MemoryStream(plantilla);
                 }
                 result.Content = new StreamContent(ms);
                 result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline")
@@ -204,7 +220,29 @@ namespace Architect.API.Tron.Controllers
                 result.Content.Headers.ContentLength = ms.Length;
                 return result;
             }
+            
+        }
 
+        /// <summary>
+        /// Descarga un certificado de una póliza
+        /// </summary>
+        [HttpGet]
+        [Route("ImprimirSegunId/{reportId}")]
+        public HttpResponseMessage ImprimirSegunId([FromUri] string reportId)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+
+            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+            var dataStream = new MemoryStream(Business.Backoffice.Common.ImprimirPoliza(reportId,
+                String.Format("ReportId {0} ", reportId)));
+            result.Content = new StreamContent(dataStream);
+            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline")
+            {
+                FileName = "Mapfre Certificado.pdf"
+            };
+            result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
+            result.Content.Headers.ContentLength = dataStream.Length;
+            return result;
         }
 
         /// <summary>
@@ -228,9 +266,8 @@ namespace Architect.API.Tron.Controllers
             return result;
         }
 
-
         /// <summary>
-        /// Descarga el eposio de prima asoiados a un recibo.
+        /// Descarga los depósitos de prima asociados a un recibo.
         /// </summary>
         [HttpGet]
         [Route("ImprimirDepositoPrima/{num_recibo}")]
@@ -239,7 +276,26 @@ namespace Architect.API.Tron.Controllers
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
-            var dataStream = new MemoryStream(Business.Backoffice.Common.DepositoDePrima(num_recibo));
+            var dataStream = new MemoryStream(Business.Backoffice.Common.DepositoDePrima(num_recibo, false));
+            result.Content = new StreamContent(dataStream);
+            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline");
+            result.Content.Headers.ContentDisposition.FileName = "Mapfre Recibo.pdf";
+            result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
+            result.Content.Headers.ContentLength = dataStream.Length;
+            return result;
+        }
+
+        /// <summary>
+        /// Descarga los depósitos de prima asociados a un recibo.
+        /// </summary>
+        [HttpGet]
+        [Route("ImprimirDepositoPrimaHoy/{num_recibo}")]
+        public HttpResponseMessage ImprimirDepositoPrimaHoy([FromUri] int num_recibo)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+
+            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+            var dataStream = new MemoryStream(Business.Backoffice.Common.DepositoDePrima(num_recibo, true));
             result.Content = new StreamContent(dataStream);
             result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline");
             result.Content.Headers.ContentDisposition.FileName = "Mapfre Recibo.pdf";

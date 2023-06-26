@@ -1,4 +1,5 @@
-﻿using Architect.Utilities.Extensions;
+﻿using Architect.API.Insurance.Contracts.Policy;
+using Architect.Utilities.Extensions;
 using Microsoft.Web.Http;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,12 +23,13 @@ namespace Architect.API.Insurance.Controllers
         /// Busqueda de información de residentes de Costa Rica.
         /// </summary>
         /// <param name="id">Identificación.</param>
+        /// <param name="docType">Tipo de Identificacion.</param>																 
         /// <returns>Información de la personal.</returns>
         [HttpGet]
-        [Route("{id:int}")]
+        [Route("{id}")]
         [AllowAnonymous]
         [ResponseType(typeof(Contracts.Policy.Insured))]
-        public async Task<IHttpActionResult> InsuredByIdentification([FromUri] string id)
+        public async Task<IHttpActionResult> InsuredByIdentification([FromUri] string id, int docType)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Contracts.Policy.Insured result = null;
@@ -56,7 +58,7 @@ namespace Architect.API.Insurance.Controllers
 
             if (result == null)
             {
-                Task<Contracts.Policy.Insured> tron = Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id);
+                Task<Contracts.Policy.Insured> tron = Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
                 Task<Contracts.Policy.Insured> ins = Architect.Extend.Integrations.InstitutoNacionalDeSeguros.Consultas.PersonaPorIdentificacion(id);
                 Task<Contracts.Policy.Insured> padron = Architect.Extend.Integrations.My.Consultas.PersonaPorIdentificacion(id);
 
@@ -164,6 +166,52 @@ namespace Architect.API.Insurance.Controllers
             result = Architect.API.Insurance.Business.Policy.RiskQuestionnaires.RetrieveByDocumentNumber(id, name, tokenInfo.CompanyId);
 
             return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("PostCambiosCliente")]
+        [Authorize]
+        public async Task<IHttpActionResult> PostCambiosCliente([FromBody] Insured item, [FromUri] string type)
+        {
+            ChangeDatosResult newcreate = ChangeDatosClientes.UpdateDatosCliente(item);
+            ChangeDatosResult newcreate2 = ChangeDatosClientes.UpdateClienteContacto(item);
+
+            return Ok(new { DatosCliente = newcreate, ClienteContacto = newcreate2 });
+        }
+
+        public partial class ChangeDatosResult
+        {
+
+            public Insured CambioClienteResponse { get; set; }
+        }
+
+        public static partial class ChangeDatosClientes
+        {
+            public static ChangeDatosResult UpdateDatosCliente(Insured item)
+            {
+                Insured result = item;
+
+                if (Architect.Extend.Integrations.Tron.UpdateCliente.UpdateDatosCliente(result) > 0)
+                {
+
+
+                }
+
+                return new ChangeDatosResult() { CambioClienteResponse = result };
+            }
+            public static ChangeDatosResult UpdateClienteContacto(Insured item)
+            {
+                Insured result = item;
+
+                if (Architect.Extend.Integrations.Tron.UpdateCliente.UpdateClienteContacto(result) > 0)
+                {
+
+
+                }
+
+                return new ChangeDatosResult() { CambioClienteResponse = result };
+            }
+
         }
     }
 }

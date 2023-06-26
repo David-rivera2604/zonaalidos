@@ -2,6 +2,30 @@
 app.ui = (function () {
 
     return {
+        StringValueToString: function (value, defaultValue) {
+            if (value === null) {
+                return defaultValue === undefined ? '' : defaultValue;
+            }
+            else {
+                return value;
+            }
+        },
+        DateTimeValueToString: function (value, hourValue, defaultValue) {
+            if (value === null) {
+                return defaultValue === undefined ? '' : defaultValue;
+            }
+            else {
+                let hfmt = '';
+                if (hourValue != undefined) {
+                    hfmt = ' hh:mma';
+                    if (hourValue != null) {
+                        value = value.replace("T00:00", "T" + hourValue)
+                    }
+                }
+                return moment(value).format('DD/MM/YYYY' + hfmt);
+                return value;
+            }
+        },
         Age: function (birthDate) {
             let age = moment().diff(birthDate, 'years');
             if (Number.isNaN(age))
@@ -185,6 +209,9 @@ app.ui = (function () {
         GetRadioStringValue: function (name) {
             return $('input:radio[name=' + name + ']:checked').val();
         },
+        GetRadioSelectedText: function (name) {
+            return $('label[for=' + name + '_' + app.ui.GetRadioNumericValue(name) + ']').text();
+        },
         SetDocumentTypeValue: function (name, value) {
             if (value == null || value == 0) {
                 value = 1;
@@ -283,6 +310,15 @@ app.ui = (function () {
             else
                 return value.toLocaleString('ES', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         },
+        IntegerWithZeroFormatter: function (value, row, index, field) {
+            if (value === null)
+                value = 0;
+            else if (value === undefined) {
+                console.log("IntegerFormatter", field, value);
+                value = 0;
+            }
+            return value.toLocaleString('ES', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+        },
         DecimalFormatter: function (value, row, index, field) {
             if (value == undefined || value === null || value === 0)
                 return '';
@@ -316,6 +352,12 @@ app.ui = (function () {
 
             return value;
         },
+
+        TestFormatter: function (value, row, index, field) {
+            var code = '<span class=columnBtn><button type=\"button\" name=\"xxx\" class=\"btn btn-white ns\" title=\"Permite imprimir la poliza\"><i class=\"fa fa-ellipsis-v\"></i></button>' + '</span>'
+            return code;
+
+        },
         DateAndTimeFormatter: function (value, row, index, field) {
             if (value === null || value === '0001-01-01T00:00:00')
                 value = '';
@@ -329,7 +371,13 @@ app.ui = (function () {
             if (row.UpdateUserName != undefined) {
                 userName = row.UpdateUserName;
             }
-            return '<span title="' + moment(value).format('DD/MM/YYYY hh:mm:ssa') + '">' + userName + ' <small class="text-muted"> ' + moment(value).from() + '</small></span>';
+            else if (row.UPDATEUSERNAME != undefined) {
+                userName = row.UPDATEUSERNAME;
+            }
+            if (value === null || value === '0001-01-01T00:00:00')
+                return '';
+            else
+                return '<span title="' + moment(value).format('DD/MM/YYYY hh:mm:ssa') + '">' + userName + ' <small class="text-muted"> ' + moment(value).from() + '</small></span>';
         },
         EditLinkFormatter: function (value, row, index, field) {
             return '<a class="edit" href="javascript:void(0)" title="Al hacer click permite la edición de la fila">' + value + '</a>';
@@ -406,7 +454,13 @@ app.ui = (function () {
         },
         DocumentTypeHandler: function (el, element, type, callbackDocumentType) {
             var btn = $(el).parent().parent().find('.btn');
-            var value = $(el).data('value');
+            var elementType = $(el).prop('type');
+            if (elementType == "radio") {
+                var value = app.ui.GetRadioNumericValue(el.name);
+            }
+            else {
+                var value = $(el).data('value');
+            }
             btn.text($(el).text());
             btn.data('value', value);
             event.preventDefault();
@@ -439,16 +493,74 @@ app.ui = (function () {
                 callbackDocumentType(value);
             }
         },
-        DocumentNumberHandler: function (documentNumberElement, callbackDone, callbackDocumentType) {
+        DocumentNumberHandler: function (documentNumberElement, callbackDone, callbackDocType) {
             $(documentNumberElement).formatter({
-                pattern: '0{{9}}-{{9999}}-{{9999}}',
+                pattern: '',
                 persistent: false
             });
             $(documentNumberElement + 'TypeMenu a').click(function () {
-                app.ui.DocumentTypeHandler(this, documentNumberElement, 'Identification', callbackDocumentType);
+                app.ui.DocumentTypeHandler(this, documentNumberElement, 'Identification', callbackDocType);
             });
             $(documentNumberElement).on('blur', function () {
-                if (app.ui.IsDocumentNumberValid($(documentNumberElement + 'Type').data('value'), $(documentNumberElement).val())) {
+                var validation = app.ui.IsDocumentNumberValid($(documentNumberElement + 'Type').data('value'), $(documentNumberElement).val());
+                if (validation.result) {
+                    $(documentNumberElement).addClass('loading');
+                    var encodedDocNum = encodeURIComponent($(documentNumberElement).val());
+                    var docType = $(documentNumberElement + 'Type').data('value');
+                    if (docType == 1) {
+                        var apiUrl = app.setting.apipath + 'v1/Insured/' + $(documentNumberElement).val().replace(/-/g, '') + '?docType=' + docType;
+
+                    } else {
+                        var apiUrl = app.setting.apipath + 'v1/Insured/' + (docType != 1 && docType != 2 ? encodedDocNum : parseInt(0 + $(documentNumberElement).val().replace(/-/g, ''), 10)) + '?docType=' + docType;
+                    }
+                    app.core.Get(apiUrl).done(function (data, textStatus, jqXHR) {
+                        if (data != null && data.FirstName !== null) {
+                            if (data.MiddleName === null) data.MiddleName = '';
+                            if (data.LastName === null) data.LastName = '';
+                            if (data.SecondLastName === null) data.SecondLastName = '';
+                        } else {
+                            data = null;
+                        }
+                        if (callbackDone) callbackDone(data);
+                    }).always(function () {
+                        $(documentNumberElement).removeClass('loading');
+                    });
+                    $(documentNumberElement).formatter({
+                        pattern: validation.pattern,
+                        persistent: false,
+                    });
+                }
+            });
+        },
+
+        DocumentNumberHandlerKYC: function (documentNumberElement, callbackDone, callbackDocumentType, TypeKYC) {
+            var typedocument;
+            let documenttype = documentNumberElement + "tipo"
+            if (TypeKYC == "juridico") {
+                $(documentNumberElement).formatter({
+                    pattern: '{{9999999999}}',
+                    persistent: false
+                });
+                $(documentNumberElement).attr('placeholder', 'XXXXXXXXXX');
+
+                typedocument = 4;
+            }
+            else {
+                $(documentNumberElement).formatter({
+                    pattern: '0{{9}}-{{9999}}-{{9999}}',
+                    persistent: false
+                });
+                documenttype = documenttype.substring(1);
+                $("input:radio[name=" + documenttype + "]").on("change", function () {
+                    app.ui.DocumentTypeHandler(this, documentNumberElement, 'Identification', callbackDocumentType);
+                });
+            }
+
+            $(documentNumberElement).on('blur', function () {
+                if (typedocument != 4) {
+                    typedocument = app.ui.GetRadioNumericValue(documenttype)
+                }
+                if (app.ui.IsDocumentNumberValid(typedocument, $(documentNumberElement).val())) {
                     var value = $(documentNumberElement).val().replace(/-/g, '');
                     if (value !== null && parseInt(0 + value, 10) !== 0 && parseInt(0 + value, 10) <= 999999999) {
                         $(documentNumberElement).addClass('loading');
@@ -484,22 +596,30 @@ app.ui = (function () {
         IsDocumentNumberValid: function (documentType, documentNumber) {
             var result = false;
             var length = documentNumber.length;
+            var pattern = "";
 
             switch (documentType) {
-                case 1: //10 DIGITOS Y DEBE INICIAR CON “0”: 0X-XXXX-XXXX
-                    result = (length === 12);
+                case 1: //Cédula física: 10 DIGITOS Y DEBE INICIAR CON “0”: 0X-XXXX-XXXX
+                    pattern = '0{{9}}-{{9999}}-{{9999}}';
+                    result = (length === 12 && documentNumber.match(/^0\d{1}-\d{4}-\d{4}$/));
                     break;
-                case 2: //12 DÍGITOS Y DEBE INICIAR CON “1”: 1XXX-XXXXXX-XX
-                    result = (length === 14);
+                case 2: //DIME: 12 DÍGITOS Y DEBE INICIAR CON “1”: 1XXX-XXXXXX-XX
+                    pattern = '{{9999}}-{{999999}}-{{99}}';
+                    result = (length === 14 && documentNumber.match(/^1\d{3}-\d{6}-\d{2}$/));
                     break;
-                case 3: //14 DÍGITOS: PASXXXXXXXXXXXXXX
-                    result = (length >= 3 && length <= 14);
+                case 3: //Pasaporte: DE 7 A 14 DÍGITOS, NUMÉRICOS O ALFANUMÉRICOS
+                    pattern = '{{9999999}}|{{99999999}}|{{999999999}}|{{9999999999}}';
+                    result = (length >= 7 && length <= 14 && documentNumber.match(/^[a-zA-Z0-9]{7,14}$/));
                     break;
-                case 4:
-                    result = (length >= 7 && length <= 14);
+                case 4: //Cédula jurídica: 10 DÍGITOS
+                    pattern = '{{9999999999}}';
+                    result = (length >= 7 && length <= 14 && documentNumber.match(/^\d{10}$/));
                     break;
             }
-            return result;
+            return {
+                result: result,
+                pattern: pattern,
+            };
         },
         DocumentNumberValidators: function () {
             $.validator.addMethod("DocumentNumberLength",
@@ -797,6 +917,9 @@ app.ui = (function () {
             }
         },
         ShowSideBar: function (options) {
+            if (options.isHTML === undefined) {
+                options.isHTML = false;
+            }
             if (options.isExternal === undefined) {
                 options.isExternal = false;
             }
@@ -816,35 +939,129 @@ app.ui = (function () {
             if (typeof options.subtitle != "undefined") {
                 $('#sidebarTitle').append('<small>' + options.subtitle.supplant(options.data) + '</small>');
             }
-            $('.sidebar-content').toggleClass('sk-loading');
             if (options.class === '') {
                 $('#right-sidebar').attr('style', 'width:' + options.width + ' !important');
             } else {
                 $('#right-sidebar').addClass(options.class);
             }
+
+            if ($('#right-sidebar').hasClass('sidebar-open')) {
+                $('#right-sidebar').toggleClass('sidebar-open');
+                $('.sidebar-content').replaceWith('<div class="ibox-content sidebar-content"><div class="sk-spinner sk-spinner-wave"><div class="sk-rect1"></div><div class="sk-rect2"></div><div class="sk-rect3"></div><div class="sk-rect4"></div><div class="sk-rect5"></div></div><div class="sidebarContent" /></div>');
+                $('.sidebarContent').html('');
+                $('#right-sidebar').addClass('d-none');
+            }
+
             if (!$('#right-sidebar').hasClass('sidebar-open')) {
                 $('#right-sidebar').removeClass('d-none');
                 $('#right-sidebar').toggleClass('sidebar-open');
             }
-
-            if (!options.isExternal) {
+            if (options.isHTML) {
+                $('.sidebarContent').html(options.HTML);
+            } else if (!options.isExternal) {
+                $('.sidebar-content').toggleClass('sk-loading');
                 app.core.Get(app.setting.apipath + `v1/Viewer/Dialog?id=${options.id}`)
                     .done(function (data, textStatus, jqXHR) {
                         let html = data.HTML.supplant(options.data);
+                        html = app.core.ReplaceAll(html, '@_eqg', '>=');
                         html = app.core.ReplaceAll(html, '@_eq', '=');
                         html = app.core.ReplaceAll(html, '@_qt', '\'');
                         html = app.core.ReplaceAll(html, '@_sc', ';');
+                        html = app.core.ReplaceAll(html, '@_ee', ' ');
                         //html = html.replace(/@_/g, '\'');
                         $('.sidebar-content').replaceWith(html.replace('ibox-content', 'ibox-content sidebar-content'));
+                        if (options.callback != undefined) {
+                            data.Code = data.Code.replace("//Custom.Extend", options.callback + "(this, JSON.parse(localStorage.getItem('current')));");
+                        }
                         eval(data.Code);
+                        //if (options.callback != undefined) {
+                        //    eval(options.callback + '(app.Prototype, options.data)');
+                        //}
                     });
             }
             else {
+                $('.sidebar-content').toggleClass('sk-loading');
                 $('.sidebar-content').replaceWith($("<iframe id='sidebarFrame' class='sidebar-content'/>").attr({ frameBorder: 0, width: '100%', height: 60 + $('#right-sidebar').height() + 'px', src: options.url, scrolling: 'no' }));
                 $('#sidebarFrame').on('load', function (e) {
                     $('.sidebar-content').attr({ height: document.getElementById("sidebarFrame").contentWindow.document.body.scrollHeight + 'px' });
                 });
             }
+        },
+        RemoveInJuridico: function (el, element, type, callbackDocumentType) {
+            var btn = $(el).parent().parent().find('.btn');
+            var elementType = $(el).prop('type');
+            if (elementType == "radio") {
+                var value = app.ui.GetRadioNumericValue(el.name);
+            }
+            else {
+                var value = $(el).data('value');
+            }
+            btn.text($(el).text());
+            btn.data('value', value);
+            event.preventDefault();
+
+            var col4 = $('.col-sm-4')
+
+            if (type == 'Identification') {
+                switch (value) {
+                    case 1: //Cédula física
+                        $(document).ready(function () {
+                            $(col4).each(function () {
+                                $(col4).addClass('animated fadeIn')
+                                var idI = $(this).find('input').attr('id');
+                                var idS = $(this).find('select').attr('id');
+                                if (idI === 'apellido1' || idI === 'apellido2' || idI === 'fechadenacimiento' || idS === 'tercerosMca_sexo' || idS === 'estadoCivil') {
+                                    $(this).removeClass('d-none');
+                                }
+                            });
+                        });
+                        break;
+                    case 2: //DIMEX
+                        $(document).ready(function () {
+                            $(col4).each(function () {
+                                $(col4).addClass('animated fadeIn')
+                                var idI = $(this).find('input').attr('id');
+                                var idS = $(this).find('select').attr('id');
+                                if (idI === 'apellido1' || idI === 'apellido2' || idI === 'fechadenacimiento' || idS === 'tercerosMca_sexo' || idS === 'estadoCivil') {
+                                    $(this).removeClass('d-none');
+                                }
+                            });
+                        });
+                        break;
+                    case 3: //Pasaporte
+                        $(document).ready(function () {
+                            $(col4).each(function () {
+                                $(col4).addClass('animated fadeIn')
+                                var idI = $(this).find('input').attr('id');
+                                var idS = $(this).find('select').attr('id');
+                                if (idI === 'apellido1' || idI === 'apellido2' || idI === 'fechadenacimiento' || idS === 'tercerosMca_sexo' || idS === 'estadoCivil') {
+                                    $(this).removeClass('d-none');
+                                }
+                            });
+                        });
+                        break;
+                    case 4: // Cédula jurídica
+                        $(document).ready(function () {
+                            $(col4).each(function () {
+                                $(col4).addClass('animated fadeIn')
+                                var idI = $(this).find('input').attr('id');
+                                var idS = $(this).find('select').attr('id');
+                                if (idI === 'apellido1' || idI === 'apellido2' || idI === 'fechadenacimiento' || idS === 'tercerosMca_sexo' || idS === 'estadoCivil') {
+                                    $(this).addClass('d-none');
+                                }
+                            });
+                        });
+                        break;
+                }
+            }
+            if (callbackDocumentType !== undefined && callbackDocumentType !== null) {
+                callbackDocumentType(value);
+            }
+        },
+        DocumentNumberHandlerJDC: function (documentNumberElement, callbackDone, callbackDocumentType) {
+            $(documentNumberElement + 'TypeMenu a').click(function () {
+                app.ui.RemoveInJuridico(this, documentNumberElement, 'Identification', callbackDocumentType);
+            });
         },
         DataEntryBehavior: function (formName, behavior) {
             $(formName + ' :input').each(function () {
@@ -862,16 +1079,25 @@ app.ui = (function () {
                 }
             });
         },
-        LookupLoad: function (ctrl, lkpData) {
+        LookupLoad: function (ctrl, lkpData, autoSelect) {
             let selectedOptions = $('select#' + ctrl);
             selectedOptions.children().remove();
             $.each(lkpData, function () {
                 selectedOptions.append($('<option />').val(this['Code']).text(this['Description']));
             });
-            if (lkpData.length == 1 && !selectedOptions.is(':disabled')) {
+            if (lkpData?.length == 1 && !selectedOptions.is(':disabled')) {
                 selectedOptions.val(lkpData[0]['Code']);
             } else {
-                selectedOptions.val(-1);
+                if (!selectedOptions.is(':disabled') && autoSelect != undefined && autoSelect != null && autoSelect) {
+                    selectedOptions.val($('select#' + ctrl + ' option:first').val());
+                } else {
+                    if (!selectedOptions.is(':disabled') && selectedOptions.data("autoselect") === true) {
+                        selectedOptions.val($('select#' + ctrl + ' option:first').val());
+                    } else {
+                        selectedOptions.val(-1);
+                    }
+                }
+
             }
         },
         DropDownDisabled: function (element, disabled, clean) {
@@ -883,6 +1109,10 @@ app.ui = (function () {
             if (clean != undefined && clean) {
                 $(element).prop("selectedIndex", -1);
             }
+            if (current && !disabled && $(element).data("autoselect") === true) {
+                $(element).val($('select' + element + ' option:first').val());
+            }
+
         },
         Download: function (fileName, id) {
             fileName = fileName.toLowerCase();
@@ -909,17 +1139,44 @@ app.ui = (function () {
         LabelColorFormatter: function (value, row, index, field) {
             return '<span class="label label-' + (app.ViewerQuery.state[field][value] || app.ViewerQuery.state[field]['_']) + '">' + app.ui.StringCapitalizeFormatter(value) + '</span>';
         },
-        CommonBehaviour: function () {
+        CommonBehaviour: function (custom) {
             let roles = JSON.parse(localStorage.getItem('Roles'));
             let tenant = localStorage.getItem('Tenant');
             roles.forEach(function (item) {
                 $(`.role-${item}-visible`).removeClass('d-none');
+                $(`.role-${item}-notvisible`).addClass('d-none');
                 $(`.role-${item}-enable`).prop("disabled", false);
+                $(`.role-${item}-disable`).prop("disabled", true);
                 $(`.role-${item}-${tenant}-visible`).removeClass('d-none');
                 $(`.role-${item}-${tenant}-enable`).prop("disabled", false);
                 $(`.role--${tenant}-visible`).removeClass('d-none');
                 $(`.role--${tenant}-enable`).prop("disabled", false);
+                if (custom != undefined) {
+                }
             })
+        },
+        CustomBehaviour: function (tag, condition) {
+
+            let roles = JSON.parse(localStorage.getItem('Roles'));
+            roles.forEach(function (item) {
+
+                if (condition)
+                    $(`.role-${item}-${tag}-visible`).removeClass('d-none');
+                else
+                    $(`.role-${item}-${tag}-visible`).addClass('d-none');
+            })
+        },
+        VisibleBehaviour: function (tag, condition) {
+            if (condition)
+                if (tag.startsWith('#'))
+                    $(`${tag}`).removeClass('d-none');
+                else
+                    $(`${tag}-visible`).removeClass('d-none');
+            else
+                if (tag.startsWith('#'))
+                    $(`${tag}`).addClass('d-none');
+                else
+                    $(`${tag}-visible`).addClass('d-none');
         },
         RequiredMark: function (ctrlId, add) {
             const mark = ' <span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span>';
@@ -933,6 +1190,51 @@ app.ui = (function () {
                     ctrl.html(ctrl.html().replace(mark, ''));
                 }
             }
+        },
+        LookUpListFormatter: function (value, row, index, field) {
+            if (value === null || value === 0 || typeof value === 'object')
+                return '';
+            else {
+                let lkp = [];
+                if (this.lookupList != undefined) {
+                    lkp = JSON.parse(this.lookupList.replaceAll("\'", "\""));
+                }
+                let lkpValue = lkp.find(({ code }) => code === value)
+
+                return lkpValue == undefined ? value : lkpValue.desc;
+            }
+        },
+        IsSameDate: function (dateSource, dateTarget) {
+            if (dateSource != undefined && dateSource != null && dateTarget != undefined && dateTarget != null) {
+                return (dateSource.getFullYear() === dateTarget.getFullYear() &&
+                    dateSource.getMonth() === dateTarget.getMonth() &&
+                    dateSource.getDay() === dateTarget.getDay())
+            }
+            else
+                return false;
+        },
+        Warning: function (msg, title, settings) {
+
+            toastr.warning(msg, title, settings);
+        },
+        Success: function (msg, title, settings) {
+
+            toastr.success(msg, '', { timeOut: 5000, closeButton: true, progressBar: true });
+        },
+        Success: function (msg, title, settings) {
+
+            toastr.success(msg, title, settings);
+        },
+        Error: function (msg) {
+            app.ui.Error(msg, '', { timeOut: 9000, closeButton: true, progressBar: true });
+        },
+        Error: function (msg, title, settings) {
+
+            toastr.error(msg, title, settings);
+        },
+        NotifyClear: function (msg, title, settings) {
+
+            toastr.remove();
         }
     };
 })();

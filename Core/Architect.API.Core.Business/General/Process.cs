@@ -726,7 +726,8 @@ namespace Architect.API.Core.Business.General
                     procCase = Business.General.ProcessCase.RetrieveById(companyId, caseId);
                 }
 
-                Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = step, Spec = spec }, mailFullList, attachments);
+
+                Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = step, Spec = spec}, mailFullList, attachments);
             }
         }
 
@@ -781,7 +782,8 @@ namespace Architect.API.Core.Business.General
                 {
                     procCase = ProcessCase.RetrieveById(companyId, caseId);
                 }
-                Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = step, Spec = spec }, mailFullList);
+
+                Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = step, Spec = spec}, mailFullList);
             }
         }
 
@@ -832,7 +834,7 @@ namespace Architect.API.Core.Business.General
                 {
                     procCase = ProcessCase.RetrieveById(companyId, caseId);
                 }
-                Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = entity, Spec = spec }, mailFullList);
+                Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = entity, Spec = spec}, mailFullList);
             }
         }
 

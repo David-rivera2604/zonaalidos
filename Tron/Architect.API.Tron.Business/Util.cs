@@ -1,5 +1,6 @@
 ﻿using Architect.API.Tron.Contracts.Cotizacion;
 using Architect.API.Tron.Contracts.Presupuesto;
+using Architect.API.Tron.DataAccess;
 using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
@@ -278,9 +279,16 @@ namespace Architect.API.Tron.Business
             };
         }
 
-        internal static List<Contracts.Presupuesto.Riesgo> DatosDelRiesgo(Contracts.Presupuesto.DatoFijo datosFijos, string nom_riesgo, int num_riesgo = 1)
+        internal static List<Contracts.Presupuesto.Riesgo> DatosDelRiesgo(Contracts.Presupuesto.DatoFijo datosFijos, string nom_riesgo, int num_riesgo = 1, int ramo = 999)
         {
             List<Contracts.Presupuesto.Riesgo> riesgos = new List<Contracts.Presupuesto.Riesgo>();
+            int modalidad = 99999;
+
+            if (ramo == 194) 
+                modalidad = 19401;
+            else
+                modalidad = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_modalidad"]);
+
 
             for (int i = 1; i <= num_riesgo; i++)
             {
@@ -299,7 +307,7 @@ namespace Architect.API.Tron.Business
                     num_riesgo = i,
                     nom_riesgo = nom_riesgo,
                     tip_spto = "XX",
-                    cod_modalidad = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_modalidad"])
+                    cod_modalidad = modalidad
                 });
             }
 
@@ -314,7 +322,11 @@ namespace Architect.API.Tron.Business
             return terceros;
         }
 
-        public static Contracts.Presupuesto.Tercero Tercero(Contracts.Presupuesto.DatoFijo datosFijos, string tip_docum, string cod_docum, int tip_benef, int num_riesgo = 1)
+        public static Contracts.Presupuesto.Tercero Tercero(Contracts.Presupuesto.DatoFijo datosFijos, string tip_docum, string cod_docum, int tip_benef)
+        {
+            return Tercero(datosFijos, tip_docum, cod_docum, tip_benef, 1, 0, DateTime.MinValue, 0, string.Empty, string.Empty);
+        }
+        public static Contracts.Presupuesto.Tercero Tercero(Contracts.Presupuesto.DatoFijo datosFijos, string tip_docum, string cod_docum, int tip_benef, int num_riesgo, double participacion, DateTime fec_vcto_cesion, double imp_cesion, string num_prestamo, string tip_relac)
         {
             return new Contracts.Presupuesto.Tercero()
             {
@@ -331,7 +343,12 @@ namespace Architect.API.Tron.Business
                 mca_principal = "N",
                 mca_calculo = "N",
                 mca_baja = "N",
-                mca_vigente = "S"
+                mca_vigente = "S",
+                pct_participacion = participacion,
+                fec_vcto_cesion = fec_vcto_cesion,
+                imp_cesion = imp_cesion,
+                num_prestamo = num_prestamo,
+                tip_relac = tip_relac
             };
         }
 

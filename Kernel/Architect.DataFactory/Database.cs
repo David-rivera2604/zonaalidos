@@ -491,6 +491,35 @@ namespace Architect.DataFactory
             }
             return result;
         }
+        public DataSet MultiQuery(IDbConnection connection, string connectionStringName)
+        {
+            bool local = false;
+            DataSet result;
+
+            if (connection == null)
+            {
+                local = true;
+                connection = OpenConnection(connectionStringName);
+            }
+
+            switch (StatementType)
+            {
+                case "Select":
+                case "Procedure":
+                    result = ExecuteMultiQuery(this, connection, StatementType);
+                    break;
+
+                default:
+                    Exception currentException = new Exception(string.Format("Tipo de instrucción ({0}) invalida para esta operación", StatementType));
+                    throw currentException;
+            }
+
+            if (local)
+            {
+                connection.Close();
+            }
+            return result;
+        }
 
         public void Query(IDbConnection connection, string connectionStringName, Action<IDataReader> callBack, bool manyRows = true)
         {
@@ -788,6 +817,14 @@ namespace Architect.DataFactory
             try
             {
                 result = cmmd.ExecuteNonQuery();
+                if (Parameters != null && Parameters.Count > 0)
+                {
+                    foreach (Contracts.Parameter item in Parameters.Where(c => c.direction == ParameterDirection.InputOutput || c.direction == ParameterDirection.Output))
+                    {
+                        item.Value = cmmd.Parameters[item.Name].Value;
+                    }
+                }
+
             }
             catch (OracleException exOracle)
             {
@@ -848,6 +885,164 @@ namespace Architect.DataFactory
             }
             return cmmd;
         }
+
+        /// <summary>
+        /// Métodos para ejecutar consultas en la base de datos, con sobrecarga de la conexión.
+        /// </summary>
+        /// <param name="command">Comando que se desea ejecutar</param>
+        /// <param name="connection">Instancia del objeto conexión</param>
+        /// <returns></returns>
+        private DataSet ExecuteMultiQuery(Database database, IDbConnection connection, string CommandType = "Select")
+        {
+            var key = string.Empty;
+            Stopwatch watch = null;
+            DataSet result = new DataSet();
+            OracleCommand cmmd = new OracleCommand(Statement, (OracleConnection)connection);
+            if (Handlers.UtilityHandler.AppSettingsCheck("Architect.DataFactory.Trace.Enabled"))
+            {
+                watch = new Stopwatch();
+                watch.Start();
+            }
+            if (database.IsCaching)
+            {
+                key = string.Format("{1}.{0}", Architect.DataFactory.Handlers.UtilityHandler.GetMd5Hash(database.ConnectionStringName, Statement, database.Parameters), database.CachePrefix);
+            }
+            if (!database.IsCaching || Architect.Utilities.Cache.NotExist(key))
+            {
+                for (int attempts = 1; attempts <= 3; attempts++)
+                {
+                    try
+                    {
+                        if (CommandType.Equals("Procedure"))
+                        {
+                            cmmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        }
+                        if (Parameters?.Count > 0)
+                        {
+                            bool haveRefCursor = false;
+                            foreach (var item in Parameters)
+                            {
+                                OracleParameter parameter;
+                                parameter = new OracleParameter(item.Name, DBParameterTypeConvert(item), item.Size, item.Value, DBParameterDirectionConvert(item));
+                                if (item.Type == Enumerations.DbType.StringArray)
+                                {
+                                    parameter.CollectionType = OracleCollectionType.PLSQLAssociativeArray;
+                                }
+                                if (item.Type == Enumerations.DbType.RefCursor)
+                                {
+                                    haveRefCursor = true;
+                                }
+
+                                cmmd.Parameters.Add(parameter);
+                            }
+                            if (CommandType.Equals("Procedure") && !haveRefCursor)
+                            {
+                                cmmd.Parameters.Add(new OracleParameter("RC1", OracleDbType.RefCursor, ParameterDirection.Output));
+                            }
+                        }
+
+           
+                        OracleDataAdapter oda = new OracleDataAdapter(cmmd);
+                        oda.Fill(result);
+
+                        if (database.IsCaching)
+                        {
+                            Architect.Utilities.Cache.SetItem(key, result, database.CacheExpiration);
+                        }
+                        break;
+                    }
+                    catch (OracleException exOracle)
+                    {
+                        if ((exOracle.Message.StartsWith("ORA-03135:") ||
+                             exOracle.Message.StartsWith("ORA-03113:") ||
+                             exOracle.Message.IndexOf("End-of-file on communication channel", StringComparison.CurrentCultureIgnoreCase) > -1 ||
+                             exOracle.Message.IndexOf("fin de archivo en el canal de comunicación", StringComparison.CurrentCultureIgnoreCase) > -1 ||
+                             exOracle.Message.IndexOf("TNS:packet writer failure", StringComparison.CurrentCultureIgnoreCase) > -1) && attempts < 3)
+                        {
+                            MethodInfo magicMethod = connection.GetType().GetMethod("ClearAllPools");
+                            for (int connectAttempts = 1; connectAttempts <= 3; connectAttempts++)
+                            {
+                                cmmd.Connection = null;
+                                if (connection.State == ConnectionState.Open)
+                                    connection.Close();
+
+                                if (magicMethod.IsNotEmpty())
+                                    magicMethod.Invoke(connection, new Object[] { });
+
+                                Log.WarningLog("DataAccessLayer", $"Retry due to disconnection for query on table '{result.Tables.Count}' ({attempts}/{connectAttempts}). {exOracle.Message}", "datafactory");
+                                Thread.Sleep(1000);
+
+                                try
+                                {
+                                    connection.Open();
+                                    break;
+                                }
+                                catch (Exception ex2)
+                                {
+                                    if (connectAttempts >= 3)
+                                    {
+                                        var temporalException = Exceptions.DataAccessException.Factory(ex2, cmmd, result.Tables.Count.ToString(), "Query");
+                                        ClosedConnection(cmmd, connection);
+                                        throw temporalException;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Exception temporalException = Exceptions.DataAccessException.Factory(exOracle, cmmd, string.Empty, "Query");
+                            ClosedConnection(cmmd, connection);
+                            throw temporalException;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Exception temporalException;
+                        if ((ex.Message.StartsWith("ORA-03135:") || ex.Message.StartsWith("ORA-03113:") || ex.Message.IndexOf("End-of-file on communication channel", StringComparison.CurrentCultureIgnoreCase) > -1 || ex.Message.IndexOf("fin de archivo en el canal de comunicación", StringComparison.CurrentCultureIgnoreCase) > -1 || ex.Message.IndexOf("TNS:packet writer failure", StringComparison.CurrentCultureIgnoreCase) > -1) && attempts < 3)
+                        {
+                            MethodInfo magicMethod = connection.GetType().GetMethod("ClearAllPools");
+                            if (magicMethod.IsNotEmpty())
+                                magicMethod.Invoke(connection, new Object[] { });
+                            Log.WarningLog("DataAccessLayer", String.Format("Retry due to disconnection for '{3}' command on table '{2}' ({0}). {1}", attempts, ex.Message, result.Tables.Count, "Query"), "datafactory");
+
+                            Thread.Sleep(500);
+
+                            try
+                            {
+                                connection.Open();
+                            }
+                            catch (Exception ex2)
+                            {
+                                temporalException = Exceptions.DataAccessException.Factory(ex2, cmmd, result.Tables.Count.ToString(), "Query");
+                                ClosedConnection(cmmd, connection);
+                                throw temporalException;
+                            }
+                        }
+                        else
+                        {
+                            temporalException = Exceptions.DataAccessException.Factory(ex, cmmd, result.Tables.Count.ToString(), "Query");
+                            ClosedConnection(cmmd, connection);
+                            throw temporalException;
+                        }
+                    }
+                }
+
+            }
+            else
+            {
+                result = (DataSet)Architect.Utilities.Cache.GetItem(key);
+            }
+            if (Handlers.UtilityHandler.AppSettingsCheck("Architect.DataFactory.Trace.Enabled"))
+            {
+                watch.Stop();
+
+                Log.TraceLog("DataAccessLayer",
+                    Handlers.UtilityHandler.MakeCommandSummary(cmmd) +
+                    $"  {result.Tables.Count} Tables in {watch.ElapsedMilliseconds} ms{((database.IsCaching ? " (Cache)" : ""))}\n", "datafactory");
+            }
+            return result;
+        }
+
 
         /// <summary>
         /// Métodos para ejecutar consultas en la base de datos, con sobrecarga de la conexión.
@@ -1177,7 +1372,7 @@ namespace Architect.DataFactory
                             {
                                 connection.Open();
                             }
-                            catch (Exception )
+                            catch (Exception)
                             {
                                 temporalException = Exceptions.DataAccessException.Factory(ex, cmmd, string.Empty, "Query");
                                 ClosedConnection(cmmd, connection);
@@ -1306,7 +1501,7 @@ namespace Architect.DataFactory
                             else
                             {
                                 var index = 1;
-                                var currsors = Parameters.Where(c => c.Type ==  Enumerations.DbType.RefCursor && c.direction == ParameterDirection.Output).ToList<Architect.DataFactory.Contracts.Parameter>();
+                                var currsors = Parameters.Where(c => c.Type == Enumerations.DbType.RefCursor && c.direction == ParameterDirection.Output).ToList<Architect.DataFactory.Contracts.Parameter>();
 
                                 if (reader.HasRows)
                                 {
@@ -1394,7 +1589,7 @@ namespace Architect.DataFactory
                             {
                                 connection.Open();
                             }
-                            catch (Exception )
+                            catch (Exception)
                             {
                                 temporalException = Exceptions.DataAccessException.Factory(ex, cmmd, string.Empty, "Query");
                                 ClosedConnection(cmmd, connection);
@@ -1608,9 +1803,10 @@ namespace Architect.DataFactory
             }
         }
 
-        private static void ClosedConnection(DbCommand Command, IDbConnection currentConnection)
+        public static void ClosedConnection(DbCommand command, IDbConnection currentConnection)
         {
-            Command.Connection = null;
+            if (command != null)
+                command.Connection = null;
             if (currentConnection.State == ConnectionState.Open)
                 currentConnection.Close();
         }

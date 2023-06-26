@@ -6,6 +6,9 @@ namespace Architect.API.Core.Business.General
 {
     public static partial class ProcessCase
     {
+       
+
+
         /// <summary>
         /// Elimina un registro en la tabla ProcessCase por medio de su clave primaria.
         /// </summary>
@@ -17,7 +20,7 @@ namespace Architect.API.Core.Business.General
             if (errors.Count == 0)
             {
                 result = Architect.API.Core.DataAccess.General.ProcessCase.Retrieve(id, companyId);
-                if (result.IsNotEmpty())
+                if (result.IsNotEmpty() )
                 {
                     Architect.API.Core.DataAccess.General.ProcessInstance.DeleteByCaseId(id, companyId);
                     if (Architect.API.Core.DataAccess.General.ProcessCase.Delete(id, companyId) > 0)

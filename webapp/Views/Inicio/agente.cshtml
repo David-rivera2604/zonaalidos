@@ -3,78 +3,59 @@
 }
 @Styles.Render("~/Content/cssCRUD")
 
-
 <div class="row">
     <div class="col-md-8">
         <div class="row">
-            <div class="col-sm-6 col-md-3">
-                <div class="ibox" title="Cotizaciones de los últimos 30 días">
-                    <div class="ibox-content widgetHome">
-                        <div class="row">
-                            <div class="col-8">
-                                <h1 class="no-margins"><a id="CotizacionesVigentes" href="/Aliados/viewer/viewer?id=320">...</a></h1>
-                                <small>Cotizaciones vigentes</small>
-                            </div>
-                            <div class="col-4 text-right">
-                                <i class="fa fa-bookmark-o fa-3x" style="color: #1c84c6; font-size: 3em;"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-                <div class="ibox" title="Total de pólizas activas">
-                    <div class="ibox-content widgetHome">
-                        <div class="row">
-                            <div class="col-8">
-                                <h1 class="no-margins"><a id="PolizasActivas" href="/Aliados/viewer/tab?id=300">...</a></h1>
-                                <small>Pólizas activas</small>
-                            </div>
-                            <div class="col-4 text-right">
-                                <i class="fa fa-shield fa-3x" style="color: #1ab394; font-size: 3em;"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-                <div class="ibox" title="Total de siniestros activos">
-                    <div class="ibox-content widgetHome">
-                        <div class="row">
-                            <div class="col-8">
-                                <h1 class="no-margins"><a id="SiniestrosActivos" href="/Aliados/viewer/tab?id=300">...</a></h1>
-                                <small>Siniestros activos</small>
-                            </div>
-                            <div class="col-4 text-right">
-                                <i class="fa fa-exclamation-triangle fa-3x" style="color: #ed5565; font-size: 3em;"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-                <div class="ibox" title="Total de recibos pendientes">
-                    <div class="ibox-content widgetHome">
-                        <div class="row">
-                            <div class="col-8">
-                                <h1 class="no-margins"><a id="RecibosPendientes" href="/Aliados/viewer/tab?id=310">...</a></h1>
-                                <small>Recibos pendientes</small>
-                            </div>
-                            <div class="col-4 text-right">
-                                <i class="fa fa-briefcase fa-3x" style="color: #f8ac59; font-size: 3em;"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col-sm-6 col-md-6">
-                <div class="ibox ">
-                    <div class="ibox-title">
-                        <h5>Ultimas cotizaciones</h5>
+
+            <div class="part_noticias">
+                <div id="fb-root"></div>
+                <script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_ES/sdk.js#xfbml=1&version=v15.0" nonce="JPoqWEfD"></script>
+
+                <button class="btn boton" id="boton"><i class="fa fa-2x fa-newspaper-o" aria-hidden="true"></i></button>
+
+                <div class="noticias" id="noticias" style="display: none;">
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-10 p-0">
+                                <h3>Manténgase al tanto de las últimas noticias</h3>
+                            </div>
+                            <div class="col-2">
+                                <button class="btn equis" id="equis">
+                                    <i class="fa fa-times-circle" aria-hidden="true"
+                                       style="color: #d81e05;"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="fb-page m-2" data-href="https://www.facebook.com/MAPFREcr/"
+                                 data-tabs="timeline"
+                                 data-width="550"
+                                 data-height="430"
+                                 data-small-header="true"
+                                 data-adapt-container-width="false"
+                                 data-hide-cover="false"
+                                 data-show-facepile="true">
+                                <blockquote cite="https://www.facebook.com/MAPFREcr/" class="fb-xfbml-parse-ignore">
+                                    <a href="https://www.facebook.com/MAPFREcr/">FACEBOOK MAPFRE</a>
+                                </blockquote>
+                            </div>
+                        </div>
+                    </div>
+                  
+                </div>
+            </div>
+
+
+            <div class="col-sm-6 col-md-6">
+                <div class="ibox-title">
+                    <h5><i class="fa fa-list-alt" aria-hidden="true"></i> Ultimas cotizaciones</h5>
+                </div>
+                <div class="ibox ult_in">
                     <div class="ibox-content">
                         <div>
                             <div id="UltimasCotizaciones" class="feed-activity-list">
@@ -86,14 +67,14 @@
 
             </div>
             <div class="col-sm-6 col-md-6">
-                <div class="ibox ">
-                    <div class="ibox-title">
-                        <h5>Ultimas pólizas emitidas</h5>
-                    </div>
+                <div class="ibox-title">
+                    <h5><i class="fa fa-check-square" aria-hidden="true"></i> Ultimas pólizas emitidas</h5>
+                </div>
+                <div class="ibox ult_in">
                     <div class="ibox-content">
 
                         <div>
-                            <div id="UltimasPolizas" class="feed-activity-list">
+                            <div id="UltimasPolizas" class="table1">
                             </div>
                             <button class="btn btn-primary btn-block m-t d-none"><i class="fa fa-arrow-down"></i> Show More</button>
                         </div>
@@ -167,7 +148,7 @@
                 </div>
 
             </div>
-            <div class="col-sm-6 col-md-6">
+            <div class="col-sm-6 col-md-6 ">
                 <div class="ibox ">
                     <div class="ibox-title">
                         <h5>Ultimos recibos</h5>
@@ -197,7 +178,6 @@
                                     </div>
                                 </div>
                                 <div class="feed-element">
-
                                     <div class="media-body ">
                                         <small class="float-right">2h ago</small>
                                         <strong>Janet Rosowski</strong> add 1 photo on <strong>Monica Smith</strong>. <br>
@@ -234,12 +214,12 @@
     </div>
     <div class="col-md-4">
         <div class="row">
-            <div class="col-sm-12">
-                <h5 class="m-b-xs">Historial de pago de comisiones</h5>
-                <div id="sparkline2" class="m-b-sm"><canvas width="507" height="50" style="display: inline-block; width: 507.656px; height: 50px; vertical-align: top;"></canvas></div>
+            <div class="col-sm-12 line_hist_pago">
+                <h5 class="m-b-xs title1"><i class="fa fa-line-chart" aria-hidden="true"></i> Historial de pago de comisiones</h5>
+                <div id="sparkline2" class="m-b-sm linesparkbottom"><canvas width="507" height="50" style="display: inline-block; width: 507.656px; height: 50px; vertical-align: top;"></canvas></div>
 
-                <div class="row m-t-xs" style="margin-bottom: 30px" title="Comisiones estimadas por pagar">
-                    <div class="col-6">
+                <div class="row m-t-xs comisiones" style="margin-bottom: 30px" title="Comisiones estimadas por pagar">
+                    <div class="col-6 line2col">
                         <h5 class="m-b-xs">Comisiones por pagar en dolares</h5>
                         <h2 id="ComisionesPorPagarDolares" class="no-margins" style="white-space: nowrap; font-weight: 500;">$ 0</h2>
                     </div>
@@ -248,6 +228,7 @@
                         <h2 id="ComisionesPorPagarColones" class="no-margins" style="white-space: nowrap; font-weight: 500;">₡ 0</h2>
                     </div>
                 </div>
+
 
                 <table class="table small m-t-sm d-none">
 
@@ -273,48 +254,79 @@
 
                     </tbody>
                 </table>
-
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12">
-                <div class="ibox d-none">
-                    <div class="ibox-content">
-                        <a href="article.html" class="btn-link">
-                            <h2 style="font-weight: 700;">
-                                MAPFRE lanza el seguro de crédito en Costa Rica
-                            </h2>
-                        </a>
-                        <div class="small m-b-xs">
-                            <strong>Noticias Corporativas</strong> <span class="text-muted"><i class="fa fa-clock-o"></i> 5 Oct 2017</span>
+            <h5 class="m-b-xs title1 res_tit"><i class="fa fa-clipboard" aria-hidden="true"></i> Resumen general</h5>
+            <div class="col-sm-6 col-md-6 boxresumen">
+                <div class="ibox res_bo" title="Cotizaciones de los últimos 30 días">
+                    <div class="ibox-content container">
+                        <div class="items">
+                            <label for="" style="color: var(--mapfrered1);">Cotizaciones vigentes</label>
                         </div>
-                        <p>
-                            MAPFRE respaldada por SOLUNION, empresa experta en seguros de crédito a nivel mundial, inicia la comercialización del seguro de crédito interno y a la exportación. SOLUNION proporcionará la experiencia internacional y dará el servicio de mantenimiento y gestión de riesgos. Desde ahora, las empresas costarricenses podrán acceder a la oferta de seguros y servicios para cubrir los riesgos en sus operaciones comerciales a crédito. De esta manera, pueden asegurar el crecimiento de su negocio en el mercado doméstico y en el internacional.
-                        </p>
+                        <div class="info">
+                            <p>
+                                <i class="fa fa-hourglass-half fa-2x iconboxes" style="color: #1C84C6;"></i>
+                                <a class="num" id="CotizacionesVigentes" href="/Aliados/viewer/viewer?id=320">...</a>
+                            </p>
+                        </div>
                     </div>
                 </div>
-                <div class="ibox">
-                    <div class="ibox-content">
-                        <a href="#" class="btn-link">
-                            <h2 style="font-weight: 700;">
-                                Nueva página de inicio
-                            </h2>
-                        </a>
-                        <div class="small m-b-xs">
-                            <strong>Noticias</strong> <span class="text-muted"><i class="fa fa-clock-o"></i> 1 Nov 2021</span>
+            </div>
+            <div class="col-sm-6 col-md-6 boxresumen">
+                <div class="ibox res_bo" title="Total de pólizas activas">
+                    <div class="ibox-content container">
+                        <div class="items">
+                            <label for="" style="color: var(--mapfrered1);">Pólizas activas</label>
                         </div>
-                        <p>
-                            MAPFRE fiel a su compromiso de brindar herramientas que apoyen en la gestión de venta y el cumplimiento de objetivos, incorpora una nueva funcionalidad a su zona de aliados.
-                        </p>
-                        <p>
-                            La nueva funcionalidad consiste en una página inicial con un resumen de información relevan de su gestión como aliado.
-                        </p>
+                        <div class="info">
+                            <p><i class="fa fa-shield fa-2x iconboxes" style="color: #1AB394;"></i><a class="num" id="PolizasActivas" href="/Aliados/viewer/tab?id=300">...</a></p>
+                        </div>
                     </div>
                 </div>
-
+            </div>
+            <div class="w-100"></div>
+            <div class="col-sm-6 col-md-6 boxresumen">
+                <div class="ibox res_bo" title="Total de siniestros activos">
+                    <div class="ibox-content container">
+                        <div class="items">
+                            <label for="" style="color: #C31F09;">Siniestros activos</label>
+                        </div>
+                        <div class="info">
+                            <p><i class="fa fa-exclamation-triangle fa-2x iconboxes" style="color: #FFCE2B;"></i> <a class="num" id="SiniestrosActivos" href="/Aliados/viewer/tab?id=300">...</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6 boxresumen">
+                <div class="ibox res_bo" title="Total de recibos pendientes">
+                    <div class="ibox-content container">
+                        <div class="items">
+                            <label for="" style="color: #C31F09;">Recibos pendientes</label>
+                        </div>
+                        <div class="info">
+                            <p><i class="fa fa-clock-o fa-2x iconboxes" style="color: #ED5565"></i> <a class="num" id="RecibosPendientes" href="/Aliados/viewer/tab?id=310">...</a></p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
+        <!--<div class="row discapacityZone" id="wheelChair">
+        <div class="btnWC ml-2">
+            <i class="fa fa-wheelchair" aria-hidden="true"></i>
+        </div>
+        <div id="buttonsToDisplay" style="display: none;">-->
+        <!--<button class="btnContraste">
+        <i class="fa fa-adjust" aria-hidden="true"></i> Contraste
+    </button>-->
+        <!--<button class="btnTexto">
+                <i class="fa fa-font" aria-hidden="true"></i> Tamaño de Texto <i class="fa fa-plus" id="font-up"></i> <i class="fa fa-minus" id="font-down"></i>
+            </button>
+            <button class="btnEspaciado">
+                <i class="fa fa-text-width" aria-hidden="true"></i> Espaciado de Texto
+            </button>
+        </div>
+    </div>-->
     </div>
 </div>
 
@@ -335,8 +347,11 @@
                     type: 'line',
                     width: '100%',
                     height: '50',
-                    lineColor: '#0056b3',
+                    lineColor: 'rgb(0,143,251)',
                     fillColor: "transparent",
+                    spotColor: '#676a6c',
+                    minSpotColor: '#676a6c',
+                    maxSpotColor: '#676a6c',
                     tooltipFormat: '<span style="color: {{color}}">&#9679;</span>{{offset:names}}: ₡ {{prefix}}{{y}}{{suffix}}</span>',
                     tooltipValueLookups: {
                         names: pagasColonesName
@@ -351,8 +366,11 @@
                     type: 'line',
                     width: '100%',
                     height: '50',
-                    lineColor: "green",
+                    lineColor: "rgb(0,227,150)",
                     fillColor: "transparent",
+                    spotColor: '#676a6c',
+                    minSpotColor: '#676a6c',
+                    maxSpotColor: '#676a6c',
                     tooltipFormat: '<span style="color: {{color}}">&#9679;</span>{{offset:names}}: $ {{prefix}}{{y}}{{suffix}}</span>',
                     tooltipValueLookups: {
                         names: pagasDolaresName
@@ -388,7 +406,7 @@
                 app.core.Get(app.setting.apipath + 'v1/datasource/json?id=7000&sequence=10&url=NumRows=5')
                     .done(function (data) {
                         data.forEach(function (row, index, array) {
-                            $('#UltimasCotizaciones').append(`<div class="feed-element"><div class="media-body"><small class="float-right">${moment(row.FEC_ACTU).from()}</small><strong>${row.NUM_PRESUPUESTO}</strong><br>${row.DETALLE}<strong> ${row.FRACCIONAMIENTODEPAGO}</strong>.<br><small class="text-muted">${moment(row.FEC_ACTU).format('hh:mma - DD/MM/YYYY')}</small></div></div>`);
+                            $('#UltimasCotizaciones').append(`<div class="info_table_top"><strong>${row.NUM_PRESUPUESTO}</strong><small class="">${moment(row.FEC_ACTU).from()}</small></div> <div class="info_table_body"> <h3 class="title_table_body fw-bold">Detalles: </h3> <p>${row.DETALLE}</p> </div> <div class="info_table_footer"> <strong> ${row.FRACCIONAMIENTODEPAGO}</strong><small class="">${moment(row.FEC_ACTU).format('hh:mma - DD/MM/YYYY')}</small></div> <br> </div>`);
                         });
                     });
                 app.core.Get(app.setting.apipath + 'v1/datasource/json?id=7000&sequence=11&url=NumRows=5')
@@ -404,7 +422,7 @@
                             if (row.EMAIL != null && row.EMAIL != '') {
                                 email = `<a href="mailto:${row.EMAIL}" title="Correo electrónico ${row.EMAIL}"><i class="fa fa-envelope"></i></a> `;
                             }
-                            $('#UltimasPolizas').append(`<div class="feed-element"><div class="media-body"><small class="float-right">${moment(row.FEC_ACTU).from()}</small><strong><a href="../Viewer/tabrender?id=302&P_NUM_POLIZA=${row.NUM_POLIZA}" onclick="TabRender(this);" style="color: inherit;">${row.NUM_POLIZA}</a></strong><br/>${phone}${email}${row.NOM_COMPLETO}<br>${row.DETALLE}<br><small class="text-muted">${moment(row.FEC_EFEC_POLIZA).format('DD/MM/YYYY')} - ${moment(row.FEC_VCTO_POLIZA).format('DD/MM/YYYY')}. ${row.FRACCIONAMIENTODEPAGO}.</small></div></div>`);
+                            $('#UltimasPolizas').append(`<div class="info_table_top2"> <strong><a href="../Viewer/tabrender?id=302&P_NUM_POLIZA=${row.NUM_POLIZA}" onclick="TabRender(this);" style="color: inherit;">${row.NUM_POLIZA}</a></strong><small>${moment(row.FEC_ACTU).from()}</small> </div> <div class="info_table_body2"><p>${phone}${email}${row.NOM_COMPLETO}</p><h3 class="title_table_body fw-bold">Descripcion: </h3><p>${row.DETALLE}</p> <div class="info_table_footer2"><small class="small_dates">Efectuada - Vence</small> <strong> ${row.FRACCIONAMIENTODEPAGO}</strong><div><small>${moment(row.FEC_EFEC_POLIZA).format('DD/MM/YYYY')} - ${moment(row.FEC_VCTO_POLIZA).format('DD/MM/YYYY')}.</small></div> </div> <br> </div>`);
                         });
                     });
                 app.core.Get(app.setting.apipath + 'v1/datasource/json?id=310&sequence=3&url=')
@@ -440,4 +458,23 @@
             window.open(me.href, "vdetail", "toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes, top=100, height=450, left=400, width=900");
         }
     </script>
+
+
+    <script>
+        $(document).ready(function () {
+            $("#boton").click(function () {
+                $("#noticias").fadeIn(1000); // or fadeOut()
+                $("#boton").attr('disable', true)
+                $("#equis").attr('disable', false)
+            });
+
+
+            $("#equis").click(function () {
+                $("#noticias").fadeOut(1000);
+
+            });
+
+        });
+    </script>
+
 }

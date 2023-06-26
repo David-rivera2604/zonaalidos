@@ -1,0 +1,230 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<!-- ProcessCase -->
+<div class="ibox">
+    <div class="ibox-title">
+        <h5><i class="fa fa-envelope-open" aria-hidden="true"></i> Crear un nuevo caso</h5>
+        <!-- Opciones -->
+        <div class="ibox-tools">
+            <a class="fullscreen-link">
+                <i class="fa fa-expand" title="Expande la zona de trabajo"></i>
+            </a>
+        </div>
+    </div>
+    <div class="ibox-content mt-3">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+            <div class="sk-rect4"></div>
+            <div class="sk-rect5"></div>
+        </div>
+        <div id="generalNotify">
+        </div>
+        <!-- Edit Form -->
+        <div class='form-row'>
+            <div class='col-md-12'>
+                <div id="ProcessCaseEdt" class="animated fadeInRight">
+                    <form id='ProcessCaseEdtForm' class='form-horizontal' data-toggle='validator'>
+                        <fieldset>
+                            <div class="form-row">
+                                <!-- FlowId -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <select id="FlowId" name="FlowId" class="desi_InCase" required></select>
+                                        <label class="lab_desiCase" for="FlowId">Proceso<span class="required-mark">*</span></label>
+                                        <span class="bar"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <!-- Id -->
+                                <input id='Id' name='Id' type='hidden' value=''>
+                                <!-- InstanceId -->
+                                <input id='InstanceId' name='InstanceId' type='hidden' value=''>
+                                <!-- Title -->
+                                <div class='col-sm-8 col-md-8'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Title'>Asunto<span class='required-mark'>*</span></label>
+                                        <input id='Title' name='Title' type='text' class='form-control' size='120' maxlength='120'>
+                                    </div>
+                                </div>
+
+                                <!-- Priority -->
+                                <div class='col-sm-2 col-md-2'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Priority'>Prioridad<span class='required-mark'>*</span></label>
+                                        <select id='Priority' name='Priority' class='form-control'></select>
+                                    </div>
+                                </div>
+
+                                <div class='col-sm-2 col-md-2'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Status'>Acuerdo de servicio</label>
+                                        <select id='SLA' name='SLA' class='form-control'></select>
+                                    </div>
+                                </div>
+                                <!-- Description -->
+                                <div class='col-sm-12 col-md-12'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Description'>Descripción</label>
+                                        <textarea id='Description' name='Description' class='form-control' rows="2"></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Status -->
+                                <div class='col-sm-4 col-md-4 d-none'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Status'>Estado</label>
+                                        <select id='Status' name='Status' class='form-control'></select>
+                                    </div>
+                                </div>
+                                <!-- Label -->
+                                <div class='col-sm-4 col-md-4 d-none'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='Label'>Etiqueta</label>
+                                        <input id='Label' name='Label' type='text' class='form-control' size='80' maxlength='80'>
+                                    </div>
+                                </div>
+                                <!-- SubStatus -->
+                                <div class='col-sm-4 col-md-4 d-none'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='SubStatus'>Estado</label>
+                                        <input id='SubStatus' name='SubStatus' type='text' class='form-control text-right' size='3' maxlength='3'>
+                                    </div>
+                                </div>
+                                <!-- SubLabel -->
+                                <div class='col-sm-4 col-md-4 d-none'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='SubLabel'>Etiqueta</label>
+                                        <input id='SubLabel' name='SubLabel' type='text' class='form-control' size='80' maxlength='80'>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <!-- Contacto -->
+                                <div class="col-lg-12">
+                                    <h4 style="margin-bottom:20px"><i class="fa fa-users" aria-hidden="true"></i> Contacto</h4>
+                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                    <div class="FormCasBox">
+                                        <!-- UserId -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='UserId'>Usuario</label>
+                                                <div class='input-group'>
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-user'></span>
+                                                    </span>
+                                                    <select id='UserId' name='UserId' class='form-control'></select>
+                                                </div>
+                                                <div id='UserId_validate'></div>
+                                            </div>
+                                        </div>
+                                        <!-- ContactMainName -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='ContactMainName'>Nombre completo<span class='required-mark'>*</span></label>
+
+                                                <div class='input-group'>
+                                                    <span class='input-group-addon'>
+                                                        <i class="fa fa-address-card-o" aria-hidden="true"></i>
+                                                    </span>
+                                                    <input id='ContactMainName' name='ContactMainName' type='text' class='form-control' size='256' maxlength='256'>
+                                                </div>
+                                                <div id='ContactMainName_validate'></div>
+                                            </div>
+                                        </div>
+                                        <!-- ContactMainEmail -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='ContactMainEmail'>Correo electrónico<span class='required-mark'>*</span></label>
+                                                <div class='input-group'>
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-envelope'></span>
+                                                    </span>
+                                                    <input id='ContactMainEmail' name='ContactMainEmail' type='text' class='form-control' size='256' maxlength='256'>
+                                                </div>
+                                                <div id='ContactMainEmail_validate'></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-row">
+                                <!-- Referencias -->
+
+                                <div class="col-lg-12">
+                                    <h4><i class="fa fa-file-text-o" aria-hidden="true"></i> Referencias</h4>
+                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                    <div class="FormCasBox">
+                                        <!-- Reference1 -->
+                                        <div class='col-sm-6 col-md-6 d-none'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='Reference1'>Referencia 1</label>
+                                                <input id='Reference1' name='Reference1' type='text' class='form-control d-none' size='36' maxlength='36'>
+                                                <select id='Reference1List' name='Reference1List' class='form-control d-none'><option selected="selected" value=""></option></select>
+                                            </div>
+                                        </div>
+                                        <!-- Reference2 -->
+                                        <div class='col-sm-6 col-md-6 d-none'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='Reference2'>Referencia 2</label>
+                                                <input id='Reference2' name='Reference2' type='text' class='form-control d-none' size='36' maxlength='36'>
+                                                <select id='Reference2List' name='Reference2List' class='form-control d-none'><option selected="selected" value=""></option></select>
+                                            </div>
+                                        </div>
+                                        <!-- Reference3 -->
+                                        <div class='col-sm-6 col-md-6 d-none'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='Reference3'>Referencia 3</label>
+                                                <input id='Reference3' name='Reference3' type='text' class='form-control d-none' size='36' maxlength='36'>
+                                                <select id='Reference3List' name='Reference3List' class='form-control d-none'><option selected="selected" value=""></option></select>
+                                            </div>
+                                        </div>
+                                        <!-- Reference4 -->
+                                        <div class='col-sm-6 col-md-6 d-none'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='Reference4'>Reference 4</label>
+                                                <input id='Reference4' name='Reference4' type='text' class='form-control d-none' size='36' maxlength='36'>
+                                                <select id='Reference4List' name='Reference4List' class='form-control d-none'><option selected="selected" value=""></option></select>
+                                            </div>
+                                        </div>
+                                        <!-- Reference5 -->
+                                        <div class='col-sm-6 col-md-6 d-none'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='Reference5'>Referencia 5</label>
+                                                <input id='Reference5' name='Reference5' type='text' class='form-control d-none' size='36' maxlength='36'>
+                                                <select id='Reference5List' name='Reference5List' class='form-control d-none'><option selected="selected" value=""></option></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class='col-md-12'style="display: flex;justify-content: center;">
+                                    <div class="modal-footer">
+                                        <button id="ProcessCaseEdtFormSave" type="button" class="btn btn-primary btn-sm" data-doing="Guardando cambios..." title="Guardar cambios">Guardar</button>
+                                        <button id="ProcessCaseEdtFormCancel" type="button" class="btn btn-white btn-sm">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/CreateCase_Aliados.js")"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.CentralCase.Init();
+        });
+    </script>
+}

@@ -185,16 +185,16 @@ app.BayerInclusion = (function () {
 
     function Status_Handler(status, statusmode) {
         switch (status) {
-            case 0:
-            case 1:
+            case 0: //Incompleta
+            case 1: //Incompleta
                 $('#VisualizationsEdtFormDraft').removeClass('d-none');
                 $('#VisualizationsEdtFormSave').removeClass('d-none');
                 if (localStorage.getItem('Tenant') === 'Bayer') {
                     $('#DateEntryWork').prop("disabled", false);
                 }
                 break;
-            case 2:
-                app.ui.DataEntryBehavior('#VisualizationsEdtForm', 'disabled');
+            case 2: //En revisión
+                //app.ui.DataEntryBehavior('#VisualizationsEdtForm', 'disabled');
                 if (statusmode === 'Review') {
                     $('.role-Revisor-visible').removeClass('d-none');
                     if (localStorage.getItem('Tenant') === 'Caturix') {
@@ -204,9 +204,11 @@ app.BayerInclusion = (function () {
                     $('.role-Revisor-enabled-bayer').prop("disabled", false);
                     $('#VisualizationsEdtFormBack').removeClass('d-none');
                     $('#VisualizationsEdtFormRevised').removeClass('d-none');
+                    $('#VisualizationsEdtFormDelete').removeClass('d-none');
+
                 }
                 break;
-            case 4:
+            case 4: //Por aceptar
                 let data = MapInputToObject();
                 if (data.HasDigitalSignature) {
                     $('#acceptedNotify').removeClass('d-none');
@@ -217,22 +219,28 @@ app.BayerInclusion = (function () {
                         clearInterval(app.BayerInclusion.timer);
                     }, 500);
                 }
-            case 32:
+                break;
+            case 32: //Rechazada
+            case 31: //Declinada por expiracíon
                 if (statusmode === 'Review') {
-                    $('#VisualizationsEdtFormBack').removeClass('d-none');
+                    $('.role-Revisor-visible').removeClass('d-none');
+                    $('.role-Revisor-enabled').prop("disabled", false);
+                    $('.role-Revisor-enabled-bayer').prop("disabled", false);
                     $('#VisualizationsEdtFormRevised').removeClass('d-none');
+                    $('#VisualizationsEdtFormDelete').removeClass('d-none');
                 }
-            case 10:
-            case 31:
+                break;
+            case 10: //Alta            
                 app.ui.DataEntryBehavior('#VisualizationsEdtForm', 'disabled');
                 $('#print').removeClass('d-none');
                 break;
-            case 99:
+            case 99: //Pendiente de firma digital CR
                 app.ui.DataEntryBehavior('#VisualizationsEdtForm', 'disabled');
                 $('#VisualizationsEdtFormDraft').addClass('d-none');
                 $('#VisualizationsEdtFormSave').addClass('d-none');
                 $('#VisualizationsEdtFormBack').addClass('d-none');
                 $('#VisualizationsEdtFormRevised').addClass('d-none');
+                $('#VisualizationsEdtFormDelete').addClass('d-none');
                 $('#acceptedNotify').addClass('d-none');
                 break;
         }
@@ -251,7 +259,7 @@ app.BayerInclusion = (function () {
             locale: 'es'
         });
         $('#DocumentNumber').formatter({
-            pattern: '0{{9}}-{{9999}}-{{9999}}',
+            pattern: '{{9}}{{9999}}{{9999}}',
             persistent: false
         });
         $('#BirthDate_group').datetimepicker({
@@ -306,7 +314,7 @@ app.BayerInclusion = (function () {
             emptyInputBehavior: 'null'
         });
         $('#BDocumentNumber').formatter({
-            pattern: '0{{9}}-{{9999}}-{{9999}}',
+            pattern: '{{9}}{{9999}}{{9999}}',
             persistent: false
         });
         $('#BBirthDate_group').datetimepicker({
@@ -326,7 +334,7 @@ app.BayerInclusion = (function () {
             emptyInputBehavior: 'null'
         });
         $('#DDocumentNumber').formatter({
-            pattern: '0{{9}}-{{9999}}-{{9999}}',
+            pattern: '{{9}}{{9999}}{{9999}}',
             persistent: false
         });
         $('#DBirthDate_group').datetimepicker({
@@ -351,6 +359,7 @@ app.BayerInclusion = (function () {
         $("#VisualizationsEdtFormBack").appendTo("#GenericToolBar");
         $("#VisualizationsEdtFormRevised").appendTo("#GenericToolBar");
         $("#VisualizationsEdtFormUpLoad").appendTo("#GenericToolBar");
+        $('#VisualizationsEdtFormDelete').appendTo("#GenericToolBar");
 
 
         $(".XXX").appendTo('.sidebar-content');
@@ -366,11 +375,11 @@ app.BayerInclusion = (function () {
         });
 
         $('#DocumentNumberTypeMenu a').click(function () {
-            app.ui.DocumentTypeHandler(this, '#DocumentNumber', 'Identification');
+            DocumentTypeHandler(this, '#DocumentNumber', 'Identification');
         });
 
         $('#DocumentNumber').on('blur', function () {
-            if (app.ui.IsDocumentNumberValid($('#DocumentNumberType').data('value'), $('#DocumentNumber').val())) {
+            if (IsDocumentNumberValid($('#DocumentNumberType').data('value'), $('#DocumentNumber').val())) {
                 var value = $('#DocumentNumber').val().replace(/-/g, '');
                 if (value !== null && parseInt(0 + value, 10) !== 0 && parseInt(0 + value, 10) <= 999999999) {
                     $('#DocumentNumber').addClass('loading');
@@ -395,15 +404,15 @@ app.BayerInclusion = (function () {
         });
 
         $('#PhoneNumberTypeMenu a').click(function () {
-            app.ui.DocumentTypeHandler(this, '#PhoneNumber', 'Phone');
+            DocumentTypeHandler(this, '#PhoneNumber', 'Phone');
         });
 
         $('#BDocumentNumberTypeMenu a').click(function () {
-            app.ui.DocumentTypeHandler(this, '#BDocumentNumber', 'Identification');
+            DocumentTypeHandler(this, '#BDocumentNumber', 'Identification');
         });
 
         $('#BDocumentNumber').on('blur', function () {
-            if (app.ui.IsDocumentNumberValid($('#BDocumentNumberType').data('value'), $('#BDocumentNumber').val())) {
+            if (IsDocumentNumberValid($('#BDocumentNumberType').data('value'), $('#BDocumentNumber').val())) {
                 var value = $('#BDocumentNumber').val().replace(/-/g, '');
                 if (value !== null && parseInt(0 + value, 10) !== 0 && parseInt(0 + value, 10) <= 999999999) {
                     $('#BDocumentNumber').addClass('loading');
@@ -422,11 +431,11 @@ app.BayerInclusion = (function () {
         });
 
         $('#DDocumentNumberTypeMenu a').click(function () {
-            app.ui.DocumentTypeHandler(this, '#DDocumentNumber', 'Identification');
+            DocumentTypeHandler(this, '#DDocumentNumber', 'Identification');
         });
 
         $('#DDocumentNumber').on('blur', function () {
-            if (app.ui.IsDocumentNumberValid($('#DDocumentNumberType').data('value'), $('#DDocumentNumber').val())) {
+            if (IsDocumentNumberValid($('#DDocumentNumberType').data('value'), $('#DDocumentNumber').val())) {
                 var value = $('#DDocumentNumber').val().replace(/-/g, '');
                 if (value !== null && parseInt(0 + value, 10) !== 0 && parseInt(0 + value, 10) <= 999999999) {
                     $('#DDocumentNumber').addClass('loading');
@@ -465,6 +474,23 @@ app.BayerInclusion = (function () {
         $('#VisualizationsEdtFormRevised').click(function () {
             event.preventDefault();
             Submit_Stage('revised', '#VisualizationsEdtFormRevised');
+        });
+
+        $('#VisualizationsEdtFormDelete').click(function () {
+            event.preventDefault();
+            toastr.warning("Si está seguro de querer eliminar esta solicitud, haga clic aquí", null,
+                {
+                    timeOut: 7000, closeButton: true, progressBar: true,
+                    onclick: function () {
+                        $('.ibox-content').toggleClass('sk-loading');
+                        app.core.Delete(app.setting.apipath + `v1/Inclusion/bayer/${id}`)
+                            .done(function (data, textStatus, jqXHR) {
+                                toastr.success("El solicitud fue eliminada", "", { timeOut: 5000, closeButton: true, progressBar: true, onHidden: function () { window.location = document.referrer; } });
+                            }).always(function () {
+                                $('.ibox-content').toggleClass('sk-loading');
+                            });
+                    }
+                });
         });
 
         //$('#VisualizationsEdtFormCancel').click(function () {
@@ -920,7 +946,7 @@ app.BayerInclusion = (function () {
             }
             else if (beneficiarios.reduce((total, item) => total + item.BParticipationRate, 0) != 100) {
                 result = false;
-                $('#beneficiariosTbl-error').text('El total del porcentaje de particupación debe ser el 100%');
+                $('#beneficiariosTbl-error').text('El total del porcentaje de participación debe ser el 100%');
                 $('#beneficiariosTbl-error').removeClass('d-none');
             }
             else {
@@ -1150,6 +1176,64 @@ app.BayerInclusion = (function () {
             app.ui.SetNumericValue('#InsuredAmount', insuredAmount);
         }
     }
+
+    function DocumentTypeHandler(el, element, type, callbackDocumentType) {
+        var btn = $(el).parent().parent().find('.btn');
+        var value = $(el).data('value');
+        btn.text($(el).text());
+        btn.data('value', value);
+        event.preventDefault();
+
+        if (type == 'Identification') {
+            switch (value) {
+                case 1: //Cédula física 9 
+                    $(element).val('');
+                    $(element).formatter().resetPattern('{{9}}{{9999}}{{9999}}');
+                    $(element).attr('placeholder', 'XXXXXXXXX');
+                    break;
+                case 2: //DIME 11 o 12  12 DÍGITOS Y DEBE INICIAR CON “1”: 1XXX-XXXXXX-XX
+                    $(element).val('');
+                    $(element).formatter().resetPattern('{{9999}}{{999999}}{{99}}');
+                    $(element).attr('placeholder', 'XXXXXXXXXXXX');
+                    break;
+                case 3: //Pasaporte 14 DÍGITOS: XXXXXXXXXXXXXX
+                    $(element).val('');
+                    $(element).formatter().resetPattern('{{**************}}');
+                    $(element).attr('placeholder', 'XXXXXXXXXXXXXX');
+                    break;
+                case 4: // Cédula jurídica 10
+                    $(element).val('');
+                    $(element).formatter().resetPattern('{{9999999999}}');
+                    $(element).attr('placeholder', 'XXXXXXXXXX');
+                    break;
+            }
+        }
+        if (callbackDocumentType !== undefined && callbackDocumentType !== null) {
+            callbackDocumentType(value);
+        }
+    }
+
+    function IsDocumentNumberValid(documentType, documentNumber) {
+        var result = false;
+        var length = documentNumber.length;
+
+        switch (documentType) {
+            case 1: //9 DIGITOS: XXXXXXXXX
+                result = (length === 9);
+                break;
+            case 2: //12 DÍGITOS Y DEBE INICIAR CON “1”: 1XXX-XXXXXX-XX
+                result = (length === 12);
+                break;
+            case 3: //14 DÍGITOS: PASXXXXXXXXXXXXXX
+                result = (length >= 3 && length <= 14);
+                break;
+            case 4:
+                result = (length >= 7 && length <= 14);
+                break;
+        }
+        return result;
+    }
+
 
     return {
         Init: function () {

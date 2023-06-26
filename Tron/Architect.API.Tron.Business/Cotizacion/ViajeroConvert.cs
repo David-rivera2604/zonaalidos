@@ -1,4 +1,5 @@
-﻿using Architect.Utilities.Extensions;
+﻿using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
+using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -19,7 +20,8 @@ namespace Architect.API.Tron.Business.Cotizacion
             datosFijos.Riesgos = Util.DatosDelRiesgo(datosFijos, "Cotizador Seguro de Viaje", quoteInfo.cantidad_riesgos);
             datosFijos.Terceros = Util.Terceros(datosFijos);
             datosFijos.Coberturas = Util.Coberturas(quoteInfo, datosFijos, false, quoteInfo.cantidad_riesgos);
-            datosFijos.DatosVariables = DatosVariable_ToTron(quoteInfo, datosFijos,companyId);
+
+            datosFijos.DatosVariables = DatosVariable_ToTron(quoteInfo, datosFijos, companyId);
 
             return datosFijos;
         }
@@ -45,7 +47,9 @@ namespace Architect.API.Tron.Business.Cotizacion
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "DES_DESTINO", quoteInfo.DES_DESTINO, 1, 4, quoteInfo.DES_DESTINO_DESC));
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "CANAL_VENTA", "TWB", 1, 5));
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "TIP_VIAJE", quoteInfo.TIP_VIAJE, 1, 6));
-            datosVariables.Add(Util.DatoVariable(datosFijos, 0, "ORI_ORIGEN", quoteInfo.COD_PAIS_ORIGEN, 1, 9,quoteInfo.PAIS_ORIGEN_DESC));
+
+            datosVariables.Add(Util.DatoVariable(datosFijos, 0, "ORI_ORIGEN", quoteInfo.COD_PAIS_ORIGEN, 1, 9, quoteInfo.PAIS_ORIGEN_DESC));
+
 
             for (int i = 1; i <= quoteInfo.cantidad_riesgos; i++)
             {

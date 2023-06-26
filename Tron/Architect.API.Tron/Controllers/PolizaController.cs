@@ -1,4 +1,6 @@
-﻿using Microsoft.Web.Http;
+﻿using Architect.Utilities.Extensions;
+using Microsoft.Web.Http;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -82,6 +84,70 @@ namespace Architect.API.Tron.Controllers
             {
                 Success = result,
                 Reason = result ? "Las variaciones fueron procesadas de forma correcta" : "Ha ocurrido un error tratando de procesar las variaciones"
+            });
+        }
+
+        /// <summary>
+        /// Cancela una póliza
+        /// </summary>
+        [HttpPut]
+        [Route("{num_poliza}/Cancelacion")]
+        public async Task<IHttpActionResult> Cancelacion([FromUri] string num_poliza, [FromBody] Contracts.Poliza.Cancelacion datosCancelacion)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            string result = string.Empty;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Backoffice.Poliza.Cancelacion(1, num_poliza, num_poliza, datosCancelacion.Fec_Anulacion, datosCancelacion.Mot_Spto);
+            }).ConfigureAwait(false);
+
+            return Ok(new
+            {
+                Success = result.IsEmpty(),
+                Reason = result.IsEmpty() ? "La cancelación fue procesada de forma correcta" : result
+            });
+        }
+
+        /// <summary>
+        /// Control técnico de una póliza, permite su aprobación o rechazo
+        /// </summary>
+        [HttpPut]
+        [Route("{num_poliza}/ControlTecnico")]
+        public async Task<IHttpActionResult> ControlTecnico([FromUri] string num_poliza, [FromBody] Contracts.Poliza.Parameters.ControlTecnicoParametros controlTecnico)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            string result = string.Empty;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Backoffice.Poliza.ControlTecnico(num_poliza, controlTecnico, tokenInfo);
+            }).ConfigureAwait(false);
+
+            return Ok(new
+            {
+                Success = true,
+                Reason = result
+            });
+        }
+
+
+        /// <summary>
+        /// Permite renovar una póliza
+        /// </summary>
+        [HttpPut]
+        [Route("{num_poliza}/Renovar")]
+        public async Task<IHttpActionResult> Renovar([FromUri] string num_poliza)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            string result = string.Empty;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Backoffice.Poliza.Renovar(num_poliza);
+            }).ConfigureAwait(false);
+
+            return Ok(new
+            {
+                Success = (result == "Póliza renovada correctamente."),
+                Reason = result
             });
         }
 

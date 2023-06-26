@@ -1,0 +1,516 @@
+﻿<!-- Edit Form -->
+<div class='form-row'>
+    <div class='col-md-12'>
+        <div id="PurdyPanelLegalEdt" class="animated fadeInRight">
+            <form id='PurdyPanelLegalEdtForm' class='form-horizontal' data-toggle='validator'>
+                <fieldset>
+
+                    <!-- detalle Grid -->
+                    <div class="form-row">
+                        <div class="col-lg-12">
+                            <div class="form-row">
+                                <div class='col'>
+                                    <h4>Detalle<label id="detalleTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                </div>
+                                <div class='col-auto'>
+                                    <button type="button" class="btn btn-sm btn-white role-Legal-visible role-Administrativo-visible d-none" title="Al hacer click permite agregar un nuevo Detalle" data-toggle="modal" id="detalleNew"> <i class="fa fa-plus"></i> </button>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                            <div class="form-row">
+                                <div class='col-md-12' style="padding-bottom: 20px">
+                                    <div class="table-responsive">
+                                        <table id="detalleTbl" style="font-size: 11px;">
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- recuperacion Grid -->
+                    <div class="form-row posiblesubrogacion-visible d-none">
+                        <div class="col-lg-12">
+                            <div class="form-row">
+                                <div class='col'>
+                                    <h4>Recuperación<label id="recuperacionTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                </div>
+                                <div class='col-auto'>
+                                    <button type="button" class="btn btn-sm btn-white role-Administrativo-visible d-none" title="Al hacer click permite agregar un nuevo Recuperación" data-toggle="modal" id="recuperacionNew"> <i class="fa fa-plus"></i> </button>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                            <div class="form-row">
+                                <div class='col-md-12' style="padding-bottom: 20px">
+                                    <div class="table-responsive">
+                                        <table id="recuperacionTbl" style="font-size: 11px;">
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- totales Zone -->
+                    <div class="form-row posiblesubrogacion-visible d-none">
+                        <div class="col-lg-12">
+                            <h4>Totales</h4>
+                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                            <div class="form-row">
+
+                                <!-- montopagado Numeric -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='montopagado'>Monto pagado</label>
+                                        <input type='text' id='montopagado' name='montopagado' class='form-control text-right' size='26' maxlength='26' disabled />
+                                    </div>
+                                </div>
+                                <!-- totalesMontorecuperado Numeric -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='totalesMontorecuperado'>Monto recuperado</label>
+                                        <input type='text' id='totalesMontorecuperado' name='totalesMontorecuperado' class='form-control text-right' size='26' maxlength='26' disabled />
+                                    </div>
+                                </div>
+                                <!-- montoutilizado Numeric -->
+                                <div class='col-sm-4 col-md-4'>
+                                    <div class='form-group'>
+                                        <label class='control-label' for='montoutilizado'>Monto utilizado</label>
+                                        <input type='text' id='montoutilizado' name='montoutilizado' class='form-control text-right' size='26' maxlength='26' disabled />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- detalle Grid Modal -->
+<div class="modal inmodal" id="detalleModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                <h4 class="modal-title">Detalle</h4>
+                <small class="font-bold">Permite agregar un nuevo Detalle o editar uno ya existente</small>
+            </div>
+            <div class="modal-body">
+                <!-- detalle Grid Edit Form -->
+                <div class='form-row'>
+                    <div class='col-md-12'>
+                        <div id="detalleEdt" class="animated fadeInRight">
+                            <form id='detalleEdtForm' class='form-horizontal' data-toggle='validator'>
+                                <fieldset>
+                                    <div class='form-row'>
+                                        <!-- enviadoainvestigacionDet RadioButtonList -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='enviadoainvestigacionDet'>Enviado a investigación</label>
+                                                <div style="padding-top: 6px;">
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" class="custom-control-input" id="enviadoainvestigacionDet_1" name="enviadoainvestigacionDet" value="1" disabled>
+                                                        <label class="custom-control-label" for="enviadoainvestigacionDet_1">Si</label>
+                                                    </div><div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" class="custom-control-input" id="enviadoainvestigacionDet_2" name="enviadoainvestigacionDet" value="2" disabled>
+                                                        <label class="custom-control-label" for="enviadoainvestigacionDet_2">No</label>
+                                                    </div><div id='enviadoainvestigacionDet_validate'></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- fechaenviadoainvestigacionDet DatePicker -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='fechaenviadoainvestigacionDet'>Fecha enviado a investigación</label>
+                                                <div class='input-group date' id='fechaenviadoainvestigacionDet_group'>
+                                                    <input type='text' id='fechaenviadoainvestigacionDet' name='fechaenviadoainvestigacionDet' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled />
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-calendar'></span>
+                                                    </span>
+                                                </div>
+                                                <div id='fechaenviadoainvestigacionDet_validate'></div>
+                                            </div>
+                                        </div>
+                                        <!-- requisitosporpresentarparareco Notes -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='requisitosporpresentarparareco'>Requisitos por presentar para reconstrucción</label>
+                                                <textarea id='requisitosporpresentarparareco' name='requisitosporpresentarparareco' class='form-control' rows="2"></textarea>
+                                            </div>
+                                        </div><!-- enviadoaacompanamientolegaDet RadioButtonList -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='enviadoaacompanamientolegaDet'>Enviado a acompañamiento legal</label>
+                                                <div style="padding-top: 6px;">
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" class="custom-control-input" id="enviadoaacompanamientolegaDet_1" name="enviadoaacompanamientolegaDet" value="1" disabled>
+                                                        <label class="custom-control-label" for="enviadoaacompanamientolega_1">Si</label>
+                                                    </div><div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" class="custom-control-input" id="enviadoaacompanamientolegaDet_2" name="enviadoaacompanamientolegaDet" value="2" disabled>
+                                                        <label class="custom-control-label" for="enviadoaacompanamientolegaDet_2">No</label>
+                                                    </div><div id='enviadoaacompanamientolegaDet_validate'></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- fechaenviadoaacompanamientoLegDet DatePicker -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='fechaenviadoaacompanamientoLegDet'>Fecha enviado a acompañamiento Legal</label>
+                                                <div class='input-group date' id='fechaenviadoaacompanamientoLegDet_group'>
+                                                    <input type='text' id='fechaenviadoaacompanamientoLegDet' name='fechaenviadoaacompanamientoLegDet' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled />
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-calendar'></span>
+                                                    </span>
+                                                </div>
+                                                <div id='fechaenviadoaacompanamientoLegDet_validate'></div>
+                                            </div>
+                                        </div>
+                                        <!-- fechadeleventoDet DatePicker -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='fechadeleventoDet'>Fecha del evento</label>
+                                                <div class='input-group date' id='fechadeleventoDet_group'>
+                                                    <input type='text' id='fechadeleventoDet' name='fechadeleventoDet' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled />
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-calendar'></span>
+                                                    </span>
+                                                </div>
+                                                <div id='fechadeleventoDet_validate'></div>
+                                            </div>
+                                        </div>
+                                        <!-- posiblesubrogacion RadioButtonList -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='posiblesubrogacion'>Posible subrogación</label>
+                                                <div style="padding-top: 6px;">
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" class="custom-control-input" id="posiblesubrogacion_1" name="posiblesubrogacion" value="1" disabled>
+                                                        <label class="custom-control-label" for="posiblesubrogacion_1">Si</label>
+                                                    </div><div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" class="custom-control-input" id="posiblesubrogacion_2" name="posiblesubrogacion" value="2" disabled>
+                                                        <label class="custom-control-label" for="posiblesubrogacion_2">No</label>
+                                                    </div><div id='posiblesubrogacion_validate'></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- fechaidentificadocomoposiblesuDet DatePicker -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='fechaidentificadocomoposiblesuDet'>Fecha identificado como posible subrogación</label>
+                                                <div class='input-group date' id='fechaidentificadocomoposiblesuDet_group'>
+                                                    <input type='text' id='fechaidentificadocomoposiblesuDet' name='fechaidentificadocomoposiblesuDet' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled />
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-calendar'></span>
+                                                    </span>
+                                                </div>
+                                                <div id='fechaidentificadocomoposiblesuDet_validate'></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='form-row'>
+                                        <!-- muertos Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='muertos'>Muertos</label>
+                                                <input type='text' id='muertos' name='muertos' class='form-control role-Legal-enable' size='100' maxlength='100' disabled />
+
+                                            </div>
+                                        </div><!-- lesionados Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='lesionados'>Lesionados</label>
+                                                <input type='text' id='lesionados' name='lesionados' class='form-control role-Legal-enable' size='100' maxlength='100' disabled />
+
+                                            </div>
+                                        </div><!-- lesionadosPosibleResultado Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='lesionadosPosibleResultado'>Lesionados (Posible Resultado)</label>
+                                                <input type='text' id='lesionadosPosibleResultado' name='lesionadosPosibleResultado' class='form-control role-Legal-enable' size='100' maxlength='100' disabled />
+
+                                            </div>
+                                        </div><!-- asesorlegal Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='asesorlegal'>Asesor legal</label>
+                                                <input type='text' id='asesorlegal' name='asesorlegal' class='form-control role-Legal-enable' size='100' maxlength='100' disabled />
+
+                                            </div>
+                                        </div><!-- estadoprocesal Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='estadoprocesal'>Estado procesal</label>
+                                                <input type='text' id='estadoprocesal' name='estadoprocesal' class='form-control role-Legal-enable' size='100' maxlength='100' disabled />
+
+                                            </div>
+                                        </div><!-- recomendacionlegal Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='recomendacionlegal'>Recomendación legal</label>
+                                                <input type='text' id='recomendacionlegal' name='recomendacionlegal' class='form-control role-Legal-enable' size='100' maxlength='100' disabled />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='form-row'>
+                                        <!-- nombredeltercero Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='nombredeltercero'>Nombre del tercero</label>
+                                                <input type='text' id='nombredeltercero' name='nombredeltercero' class='form-control role-Legal-enable' size='100' maxlength='100' disabled />
+
+                                            </div>
+                                        </div><!-- ceduladeltercero Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='ceduladeltercero'>Cédula del tercero</label>
+                                                <input type='text' id='ceduladeltercero' name='ceduladeltercero' class='form-control role-Legal-enable' size='20' maxlength='20' disabled />
+
+                                            </div>
+                                        </div><!-- telefonodeltercero Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='telefonodeltercero'>Teléfono del tercero</label>
+                                                <div class='input-group'>
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-earphone'></span>
+                                                    </span>
+                                                    <input id='telefonodeltercero' name='telefonodeltercero' type='text' class='form-control role-Legal-enable' size='9' maxlength='9' disabled>
+                                                </div>
+                                                <div id='telefonodeltercero_validate'></div>
+                                            </div>
+                                        </div><!-- correodeltercero Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='correodeltercero'>Correo del tercero</label>
+                                                <div class='input-group'>
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-envelope'></span>
+                                                    </span>
+                                                    <input id='correodeltercero' name='correodeltercero' type='text' class='form-control role-Legal-enable' size='80' maxlength='80' disabled>
+                                                </div>
+                                                <div id='correodeltercero_validate'></div>
+                                            </div>
+                                        </div><!-- placadetercerocontraparte Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='placadetercerocontraparte'>Placa de tercero (contraparte)</label>
+                                                <input type='text' id='placadetercerocontraparte' name='placadetercerocontraparte' class='form-control role-Legal-enable' size='8' maxlength='8' disabled />
+
+                                            </div>
+                                        </div><!-- lugaraccidente Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='lugaraccidente'>Lugar accidente</label>
+                                                <input type='text' id='lugaraccidente' name='lugaraccidente' class='form-control role-Legal-enable' size='100' maxlength='100' disabled />
+
+                                            </div>
+                                        </div><!-- juzgado DropDownList -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='juzgado'>Juzgado</label>
+                                                <select id='juzgado' name='juzgado' class='form-control'>
+                                                    <option value='1'>Tránsito de San José</option>
+                                                    <option value='2'>Tránsito del II Circuito Judicial de San José</option>
+                                                    <option value='3'>Tránsito de Alajuela</option>
+                                                    <option value='4'>Tránsito de Cartago</option>
+                                                    <option value='5'>Tránsito de Desamparados</option>
+                                                    <option value='6'>Tránsito de Guácimo</option>
+                                                    <option value='7'>Tránsito de Hatillo</option>
+                                                    <option value='8'>Tránsito de Heredia</option>
+                                                    <option value='9'>Tránsito de Liberia</option>
+                                                    <option value='10'>Tránsito de Limón</option>
+                                                    <option value='11'>Tránsito de Pavas y Escazú</option>
+                                                    <option value='12'>Tránsito de Puntarenas</option>
+                                                    <option value='13'>Tránsito de San Carlos</option>
+                                                    <option value='14'>Tránsito de San Ramón</option>
+                                                    <option value='15'>Tránsito de II Circuito Judicial Zona Atlántica</option>
+                                                    <option value='16'>I Circuito Zona Atlántica</option>
+                                                    <option value='17'>Juzgado de Grecia</option>
+                                                    <option value='18'>Juzgado de Turrialba</option>
+                                                    <option value='19'>Juzgado de Quepos</option>
+                                                    <option value='20'>Cont. Aguirre y Parrita</option>
+                                                    <option value='21'>Cont. y Menor Cuantía de Santo Domingo</option>
+                                                    <option value='22'>Cont. y Menor Cuantía de Liberia</option>
+                                                    <option value='23'>Cont. y Menor Cuantia de San Rafael</option>
+                                                    <option value='24'>Cont. y Menor Cuantía de Carrillo</option>
+                                                    <option value='25'>Cont. y Menor Cuantía de Upala</option>
+                                                    <option value='26'>Cont. y Menor Cuantía de Garabito</option>
+                                                    <option value='27'>Cont. y Menor Cuantía de Osa</option>
+                                                    <option value='28'>Cont y Menor Cuantía de San Isidro</option>
+                                                    <option value='29'>Cont. y Menor Cuantía de Sarapiquí</option>
+                                                    <option value='30'>Cont. y Menor Cuantía de Mora</option>
+                                                    <option value='31'>Ciudad Quesada</option>
+                                                    <option value='32'>Cont. y Menor Cuantía de Santa Ana</option>
+                                                    <option value='33'>Zarcero</option>
+                                                    <option value='34'>Cont. y Menor Cuantía de Parrita</option>
+                                                    <option value='35'>Cont. y Menor Cuantía de Abangares</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- expedientejudicial Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='expedientejudicial'>Expediente judicial</label>
+                                                <input type='text' id='expedientejudicial' name='expedientejudicial' class='form-control role-Legal-enable' size='100' maxlength='100' disabled />
+
+                                            </div>
+                                        </div><!-- fechasentencia DatePicker -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='fechasentencia'>Fecha sentencia</label>
+                                                <div class='input-group date' id='fechasentencia_group'>
+                                                    <input type='text' id='fechasentencia' name='fechasentencia' class='form-control role-Legal-enable' size='10' maxlength='10' placeholder='día/mes/año' disabled />
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-calendar'></span>
+                                                    </span>
+                                                </div>
+                                                <div id='fechasentencia_validate'></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='form-row'>
+
+                                        <!-- subrogacion RadioButtonList -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='subrogacion'>Subrogación</label>
+                                                <div style="padding-top: 6px;">
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" class="custom-control-input" id="subrogacion_1" name="subrogacion" value="1">
+                                                        <label class="custom-control-label" for="subrogacion_1">Si</label>
+                                                    </div><div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" class="custom-control-input" id="subrogacion_2" name="subrogacion" value="2">
+                                                        <label class="custom-control-label" for="subrogacion_2">No</label>
+                                                    </div><div id='subrogacion_validate'></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- montoporrecuperar Numeric -->
+                                        <div class='col-sm-4 col-md-4 subrogacion-visible d-none'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='montoporrecuperar'>Monto por recuperar</label>
+                                                <input type='text' id='montoporrecuperar' name='montoporrecuperar' class='form-control text-right role-Administrativo-enable' size='26' maxlength='26' disabled />
+                                            </div>
+                                        </div><!-- montorecuperado Numeric -->
+                                        <div class='col-sm-4 col-md-4 subrogacion-visible d-none'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='montorecuperado'>Monto recuperado</label>
+                                                <input type='text' id='montorecuperado' name='montorecuperado' class='form-control text-right role-Administrativo-enable' size='26' maxlength='26' disabled />
+                                            </div>
+                                        </div><!-- saldoporrecuperar Numeric -->
+                                        <div class='col-sm-4 col-md-4 subrogacion-visible d-none'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='saldoporrecuperar'>Saldo por recuperar</label>
+                                                <input type='text' id='saldoporrecuperar' name='saldoporrecuperar' class='form-control text-right' size='26' maxlength='26' disabled />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary role-Legal-visible role-Administrativo-visible d-none" id="detalleEdtFormSave" data-doing="Guardando...">Guardar cambios</button>
+                <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- recuperacion Grid Modal -->
+<div class="modal inmodal" id="recuperacionModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                <h4 class="modal-title">Recuperación</h4>
+                <small class="font-bold">Permite agregar un nuevo Recuperación o editar uno ya existente</small>
+            </div>
+            <div class="modal-body">
+                <!-- recuperacion Grid Edit Form -->
+                <div class='form-row'>
+                    <div class='col-md-12'>
+                        <div id="recuperacionEdt" class="animated fadeInRight">
+                            <form id='recuperacionEdtForm' class='form-horizontal' data-toggle='validator'>
+                                <fieldset>
+                                    <div class='form-row'>
+                                        <!-- numerodesiniestro Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='numerodesiniestroLegal'>Número de siniestro</label>
+                                                <input type='text' id='numerodesiniestroLegal' name='numerodesiniestroLegal' class='form-control' size='0' maxlength='0' disabled />
+
+                                            </div>
+                                        </div><!-- tipodedocumento DropDownList -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='tipodedocumentoLegal'>Tipo de documento</label>
+                                                <select id='tipodedocumentoLegal' name='tipodedocumentoLegal' class='form-control'>
+                                                    <option value='1'>Salvamento</option>
+                                                    <option value='2'>Subrogado</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- numerodedocumento Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='numerodedocumentoLegal'>Número de documento</label>
+                                                <input type='text' id='numerodedocumentoLegal' name='numerodedocumentoLegal' class='form-control role-Administrativo-enable' size='20' maxlength='20' disabled />
+
+                                            </div>
+                                        </div><!-- fecharecuperaLegal DatePicker -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='fecharecuperaLegal'>Fecha</label>
+                                                <div class='input-group date' id='fecharecuperaLegal_group'>
+                                                    <input type='text' id='fecharecuperaLegal' name='fecharecuperaLegal' class='form-control role-Administrativo-enable' size='10' maxlength='10' placeholder='día/mes/año' disabled />
+                                                    <span class='input-group-addon'>
+                                                        <span class='glyphicon glyphicon-calendar'></span>
+                                                    </span>
+                                                </div>
+                                                <div id='fecharecuperaLegal_validate'></div>
+                                            </div>
+                                        </div>
+                                        <!-- receptor Text -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='receptorLegal'>Receptor</label>
+                                                <input type='text' id='receptorLegal' name='receptorLegal' class='form-control role-Administrativo-enable' size='100' maxlength='100' disabled />
+
+                                            </div>
+                                        </div><!-- montorecupera Numeric -->
+                                        <div class='col-sm-4 col-md-4'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='montorecuperaLegal'>Monto</label>
+                                                <input type='text' id='montorecuperaLegal' name='montorecuperaLegal' class='form-control text-right role-Administrativo-enable' size='26' maxlength='26' disabled />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='form-row'>
+                                        <!-- observacion Notes -->
+                                        <div class='col-sm-12 col-md-12'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='observacionLegal'>Observación</label>
+                                                <textarea id='observacionLegal' name='observacionLegal' class='form-control' rows="2"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="recuperacionEdtFormSave role-Administrativo-visible d-none" data-doing="Guardando...">Guardar cambios</button>
+                <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>

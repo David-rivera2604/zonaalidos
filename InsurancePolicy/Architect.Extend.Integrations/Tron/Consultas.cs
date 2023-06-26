@@ -14,11 +14,15 @@ namespace Architect.Extend.Integrations.Tron
         /// <summary>
         /// Permite recuperar la información de una persona en la tabla de tercero de tron por medio de su identificación.
         /// </summary>
-        public async static Task<Architect.API.Insurance.Contracts.Policy.Insured> TerceroPorIdentificacion(string identificacion)
+        public async static Task<Architect.API.Insurance.Contracts.Policy.Insured> TerceroPorIdentificacion(string identificacion, int docType)
         {
             Architect.API.Insurance.Contracts.Policy.Insured result = null;
             try
             {
+                if (docType == 1 && identificacion[0] == '0')
+                {
+                    identificacion = identificacion.Substring(1);
+                }			 
                 Database.Select("SELECT A99.*, A31.* " +
                               "FROM A1001399 A99 " +
                               "LEFT JOIN A1001331 A31 ON A31.COD_CIA=A99.COD_CIA AND A31.TIP_DOCUM=A99.TIP_DOCUM AND A31.COD_DOCUM=A99.COD_DOCUM " +
@@ -67,19 +71,26 @@ namespace Architect.Extend.Integrations.Tron
                             }
                             switch (reader.StringValue("COD_EST_CIVIL"))
                             {
+                                case "C":
+                                    result.CivilStatus = 1;  // Casado(a)
+                                    break;
+                                case "D":
+                                    result.CivilStatus = 2;  // Divorciado(a)
+                                    break;
                                 case "S":
                                     result.CivilStatus = 3;  // Soltero(a)
                                     break;
-                                case "C":
-                                    result.CivilStatus = 1;  // Casado(a)
+                                case "V":
+                                    result.CivilStatus = 4;  // Viudo(a)
+                                    break;
+                                case "A":
+                                    result.CivilStatus = 6;  // Acompañado(a)
                                     break;
                                 default:
                                     result.CivilStatus = 5; //5 Otro
                                     break;
-                                    //2 Divorciado(a)
-                                    //4 Viudo(a)
-                                    //6 Acompañado(a)
                             }
+
 
                         }));
             }

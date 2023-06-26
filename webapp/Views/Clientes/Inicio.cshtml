@@ -1,0 +1,74 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<div class="ibox">
+    <div class="ibox-content clients-square mt-2">
+        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="box-img">
+                        <p1 id="titulo1"></p1>
+                        <p2 id="descripcion1"></p2>
+                        <hr />
+                        <p3 id="frase1"></p3>
+                        <hr />
+                        <a id="link1" href='' target="_blank" class="btn btn-inicio"><i class="fa fa-info-circle"></i> Más información</a>
+                    </div>
+                    <img id="img1" class="d-block w-100" src="" alt="First slide">
+                </div>
+
+                <div class="carousel-item">
+                    <div class="box-img">
+                        <p1 id="titulo2"></p1>
+                        <p2 id="descripcion2"></p2>
+                        <hr />
+                        <p3 id="frase2"></p3>
+                        <hr />
+                        <a id="link2" href='' target="_blank" class="btn btn-inicio"><i class="fa fa-info-circle"></i> Más información</a>
+                    </div>
+                    <img id="img2" class="d-block w-100" src="" alt="Second slide">
+                </div>
+
+                <div class="carousel-item">
+                    <div class="box-img">
+                        <p1 id="titulo3"></p1>
+                        <p2 id="descripcion3"></p2>
+                        <hr />
+                        <p3 id="frase3"></p3>
+                        <hr />
+                        <a id="link3" href='' target="_blank" class="btn btn-inicio"><i class="fa fa-info-circle"></i> Más información</a>
+                    </div>
+                    <img id="img3" class="d-block w-100" src="" alt="Third slide">
+                </div>
+
+                <div class="carousel-item">
+                    <div class="box-img">
+                        <p1 id="titulo4"></p1>
+                        <p2 id="descripcion4"></p2>
+                        <hr />
+                        <p3 id="frase4"></p3>
+                        <hr />
+                        <a id="link4" href='' target="_blank" class="btn btn-inicio"><i class="fa fa-info-circle"></i> Más información</a>
+                    </div>
+                    <img id="img4" class="d-block w-100" src="" alt="Third slide">
+                </div>
+
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/assets/sparkline/jquery.sparkline.min.js")"></script>
+
+}

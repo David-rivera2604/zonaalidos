@@ -185,12 +185,13 @@ namespace Aliados.Monge.Application.Poliza
                     eltomadoreselmismoasegurado = 2,
                     elaseguradoeselmismotomador = 2,
                     elaseguradoeselconductorhabitual = 2,
-                    numerodeprestamo = "",
-                    importedecesion = 0,
-                    porcentajeacredor = 0,
-                    parentesco = 0,
+                    numerodeprestamo = riskThirdParty.numerodeprestamo,
+                    importedecesion = riskThirdParty.importedecesion,
+                    vencimientodecesion = riskThirdParty.vencimientodecesion,
+                    porcentajeacredor = riskThirdParty.porcentajeacredor,
+                    parentesco = Convert.ToInt32(riskThirdParty.parentesco),
                     parentescoDesc = "",
-                    porcentaje = 0,
+                    porcentaje = riskThirdParty.porcentaje,
                     NoEditable = false,
                     numeroderiesgo = riskThirdParty.numeroderiesgo,
                     elbeneficiarioeselmismotodoslosriesgos = 2,
@@ -218,6 +219,7 @@ namespace Aliados.Monge.Application.Poliza
                 TIP_VIAJE = tip_viaje,
                 FEC_VIAJE = risk.Datos_Generales.fec_efec_poliza,
                 DES_DESTINO = StringValue(datosvariables, "DES_DESTINO"),
+                COD_PAIS_ORIGEN = StringValue(datosvariables, "ORI_ORIGEN", "CRI"),
                 COD_MODALIDAD = risk.Datos_Generales.cod_modalidad,
                 cantidad_riesgos = cantidadRiesgos,
                 coberturas = new List<Architect.API.Tron.Contracts.Comun.Cobertura>()
@@ -299,7 +301,7 @@ namespace Aliados.Monge.Application.Poliza
                     Architect.API.Tron.Business.Util.Tercero(datoFijo,
                                                              riskThirdParty.tipoDocumentacion.ToString().IdentificationType(),
                                                              riskThirdParty.numeroDocumentacion.DocumentNumber(riskThirdParty.tipoDocumentacion.ToString()),
-                                                             Convert.ToInt32(riskThirdParty.tipodetercero), riskThirdParty.numeroderiesgo));
+                                                             Convert.ToInt32(riskThirdParty.tipodetercero), riskThirdParty.numeroderiesgo,  riskThirdParty.porcentaje, riskThirdParty.vencimientodecesion, riskThirdParty.importedecesion, riskThirdParty.numerodeprestamo, riskThirdParty.parentesco));
 
                 detalle = new Architect.API.Tron.Contracts.Presupuesto.DetalleDeTercero()
                 {
@@ -343,7 +345,7 @@ namespace Aliados.Monge.Application.Poliza
                     cod_causa_inh_trc = int.MinValue,
                     cod_exp_carnet_con = int.MinValue
                 };
-                //Si es tipo de documento es cédula juridica
+                //Si es tipo de documento es cédula jurídica
                 if (detalle.tip_docum == "CJU")
                 {
                     detalle.mca_fisico = "N";
@@ -357,12 +359,15 @@ namespace Aliados.Monge.Application.Poliza
         }
 
 
-        private static string StringValue(List<Domain.Poliza.Emision.DatosVariables> datosvariables, string name)
+        private static string StringValue(List<Domain.Poliza.Emision.DatosVariables> datosvariables, string name, string defaultValue = "")
         {
             string result = String.Empty;
             if (datosvariables.Exists(r => r.nombre == name))
             {
                 result = datosvariables.Find(r => r.nombre == name).valor;
+            } else if (defaultValue.IsNotEmpty())
+            {
+                result = defaultValue;
             }
             return result;
 

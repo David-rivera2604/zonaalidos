@@ -1,0 +1,696 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<!-- RoleMember -->
+<!----------------------------------------- INICIO FORM COMPRA DE SEGUROS COTIZACION/VIAJERO --------------------------------------------------->
+<div class="row">
+    <div id="mainBlock" class="col-md-12 p-0">
+        <div class="ibox">
+            <div class="ibox-title p-0">
+                <div class="Title_Prin py-4">
+                    <div class="title_design T1">
+                        <h5><i class="fa fa-plane"></i> <span id="PageTitle">Seguro de Viaje</span></h5><br>
+                        <small class="m-l-sm"><span id="PageSubTitle"> Cotización.</span></small>
+                    </div>
+                    <div class="title_partner T2">
+                        <p class="text-muted small">MAPFRE le trae una nueva forma de proteger a ti y a su familia, suscribiendose a este seguro de viajes. Les respaldaremos cumpliendo los compromisos y coberturas que de ella se derivan en relación con los riesgos asumidos por su medio.</p>
+                    </div>
+                    <div class="title_partner T3 text-center">
+                        <a href="https://www.mapfre.cr/contacto/" target="_blank">Seguro de Viaje</a>
+                        <p class="mt-2 text-center">
+                            ¡Nosotros lo protegemos!
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="ibox-content box_design">
+                <div class="sk-spinner sk-spinner-wave">
+                    <div class="sk-rect1"></div>
+                    <div class="sk-rect2"></div>
+                    <div class="sk-rect3"></div>
+                    <div class="sk-rect4"></div>
+                    <div class="sk-rect5"></div>
+                </div>
+                <div id="generalNotify">
+                </div>
+                <!-- Edit Form CS/Cotizacion-->
+                <div class='form-row'>
+                    <!-- Opciones -->
+                    <div class="ibox-tools">
+                        <a class="fullscreen-link">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li>
+                                <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar la información</a>
+                            </li>
+                            <li>
+                                <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class='col-md-12 m-2'>
+                        <div id="VisualizationsEdt" class="animated fadeInRight">
+                            <form id='VisualizationsEdtForm' class='form-horizontal' data-toggle='validator'>
+                                <fieldset>
+                                    <!-- datosgenerales Zone CS/Cotizacion-->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4><i class="fa fa-list"></i> Datos generales</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- cod_mon DropDownList CS/Cotizacion-->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cod_mon'>Moneda<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='cod_mon' name='cod_mon' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- cod_fracc_pago DropDownList CS/Cotizacion-->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cod_fracc_pago'>Fraccionamiento de pago<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='cod_fracc_pago' name='cod_fracc_pago' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- fec_efec_poliza DatePicker CS/Cotizacion-->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='fec_efec_poliza'>Inicio de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='fec_efec_poliza_group'>
+                                                            <input type='text' id='fec_efec_poliza' name='fec_efec_poliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='fec_efec_poliza_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- fec_vcto_poliza DatePicker CS/Cotizacion-->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='fec_vcto_poliza'>Fin de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='fec_vcto_poliza_group'>
+                                                            <input type='text' id='fec_vcto_poliza' name='fec_vcto_poliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='fec_vcto_poliza_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- datosdelviaje Zone CS/Cotizacion-->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4><i class="fa fa-plane" aria-hidden="true"></i> Datos del viaje</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- TIP_PLAN DropDownList CS/Cotizacion-->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='TIP_PLAN'>Plan<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='TIP_PLAN' name='TIP_PLAN' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- TIP_VIAJE DropDownList CS/Cotizacion-->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='TIP_VIAJE'>Tipo de viaje<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='TIP_VIAJE' name='TIP_VIAJE' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- FEC_VIAJE DatePicker CS/Cotizacion-->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='FEC_VIAJE'>Fecha de inicio del viaje<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='FEC_VIAJE_group'>
+                                                            <input type='text' id='FEC_VIAJE' name='FEC_VIAJE' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='FEC_VIAJE_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- DES_DESTINO Text CS/Cotizacion-->
+                                                @*<div class='col-sm-4 col-md-4'>
+                                        <div class='form-group'>
+                                            <label class='control-label' for='DES_DESTINO'>Lugar de destino<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                            <input type='text' id='DES_DESTINO' name='DES_DESTINO' class='form-control' size='50' maxlength='50' />
+                                        </div>
+                                    </div>*@
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='DES_DESTINO'>País de destino<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='DES_DESTINO' name='DES_DESTINO' class='form-control'>
+                                                            <option value="AD">Andorra</option>
+                                                            <option value="AE">Emiratos Árabes Unidos</option>
+                                                            <option value="AF">Afganistán</option>
+                                                            <option value="AG">Antigua y Barbuda</option>
+                                                            <option value="AI">Anguila</option>
+                                                            <option value="AL">Albania</option>
+                                                            <option value="AM">Armenia</option>
+                                                            <option value="AN">Antillas Neerlandesas</option>
+                                                            <option value="AO">Angola</option>
+                                                            <option value="AQ">Antártida</option>
+                                                            <option value="AR">Argentina</option>
+                                                            <option value="AS">Samoa Americana</option>
+                                                            <option value="AT">Austria</option>
+                                                            <option value="AU">Australia</option>
+                                                            <option value="AW">Aruba</option>
+                                                            <option value="AX">Islas Áland</option>
+                                                            <option value="AZ">Azerbaiyán</option>
+                                                            <option value="BA">Bosnia y Herzegovina</option>
+                                                            <option value="BB">Barbados</option>
+                                                            <option value="BD">Bangladesh</option>
+                                                            <option value="BE">Bélgica</option>
+                                                            <option value="BF">Burkina Faso</option>
+                                                            <option value="BG">Bulgaria</option>
+                                                            <option value="BH">Bahréin</option>
+                                                            <option value="BI">Burundi</option>
+                                                            <option value="BJ">Benin</option>
+                                                            <option value="BL">San Bartolomé</option>
+                                                            <option value="BM">Bermudas</option>
+                                                            <option value="BN">Brunéi</option>
+                                                            <option value="BO">Bolivia</option>
+                                                            <option value="BR">Brasil</option>
+                                                            <option value="BS">Bahamas</option>
+                                                            <option value="BT">Bhután</option>
+                                                            <option value="BV">Isla Bouvet</option>
+                                                            <option value="BW">Botsuana</option>
+                                                            <option value="BY">Belarús</option>
+                                                            <option value="BZ">Belice</option>
+                                                            <option value="CA">Canadá</option>
+                                                            <option value="CC">Islas Cocos</option>
+                                                            <option value="CF">República Centro-Africana</option>
+                                                            <option value="CG">Congo</option>
+                                                            <option value="CH">Suiza</option>
+                                                            <option value="CI">Costa de Marfil</option>
+                                                            <option value="CK">Islas Cook</option>
+                                                            <option value="CL">Chile</option>
+                                                            <option value="CM">Camerún</option>
+                                                            <option value="CN">China</option>
+                                                            <option value="CO">Colombia</option>
+                                                            <option value="CR">Costa Rica</option>
+                                                            <option value="CU">Cuba</option>
+                                                            <option value="CV">Cabo Verde</option>
+                                                            <option value="CX">Islas Christmas</option>
+                                                            <option value="CY">Chipre</option>
+                                                            <option value="CZ">República Checa</option>
+                                                            <option value="DE">Alemania</option>
+                                                            <option value="DJ">Yibuti</option>
+                                                            <option value="DK">Dinamarca</option>
+                                                            <option value="DM">Domínica</option>
+                                                            <option value="DO">República Dominicana</option>
+                                                            <option value="DZ">Argel</option>
+                                                            <option value="EC">Ecuador</option>
+                                                            <option value="EE">Estonia</option>
+                                                            <option value="EG">Egipto</option>
+                                                            <option value="EH">Sahara Occidental</option>
+                                                            <option value="ER">Eritrea</option>
+                                                            <option value="ES">España</option>
+                                                            <option value="ET">Etiopía</option>
+                                                            <option value="FI">Finlandia</option>
+                                                            <option value="FJ">Fiji</option>
+                                                            <option value="FK">Islas Malvinas</option>
+                                                            <option value="FM">Micronesia</option>
+                                                            <option value="FO">Islas Faroe</option>
+                                                            <option value="FR">Francia</option>
+                                                            <option value="GA">Gabón</option>
+                                                            <option value="GB">Reino Unido</option>
+                                                            <option value="GD">Granada</option>
+                                                            <option value="GE">Georgia</option>
+                                                            <option value="GF">Guayana Francesa</option>
+                                                            <option value="GG">Guernsey</option>
+                                                            <option value="GH">Ghana</option>
+                                                            <option value="GI">Gibraltar</option>
+                                                            <option value="GL">Groenlandia</option>
+                                                            <option value="GM">Gambia</option>
+                                                            <option value="GN">Guinea</option>
+                                                            <option value="GP">Guadalupe</option>
+                                                            <option value="GQ">Guinea Ecuatorial</option>
+                                                            <option value="GR">Grecia</option>
+                                                            <option value="GS">Georgia del Sur e Islas Sandwich del Sur</option>
+                                                            <option value="GT">Guatemala</option>
+                                                            <option value="GU">Guam</option>
+                                                            <option value="GW">Guinea-Bissau</option>
+                                                            <option value="GY">Guayana</option>
+                                                            <option value="HK">Hong Kong</option>
+                                                            <option value="HM">Islas Heard y McDonald</option>
+                                                            <option value="HN">Honduras</option>
+                                                            <option value="HR">Croacia</option>
+                                                            <option value="HT">Haití</option>
+                                                            <option value="HU">Hungría</option>
+                                                            <option value="ID">Indonesia</option>
+                                                            <option value="IE">Irlanda</option>
+                                                            <option value="IL">Israel</option>
+                                                            <option value="IM">Isla de Man</option>
+                                                            <option value="IN">India</option>
+                                                            <option value="IO">Territorio Británico del Océano Índico</option>
+                                                            <option value="IQ">Irak</option>
+                                                            <option value="IR">Irán</option>
+                                                            <option value="IS">Islandia</option>
+                                                            <option value="IT">Italia</option>
+                                                            <option value="JE">Jersey</option>
+                                                            <option value="JM">Jamaica</option>
+                                                            <option value="JO">Jordania</option>
+                                                            <option value="JP">Japón</option>
+                                                            <option value="KE">Kenia</option>
+                                                            <option value="KG">Kirguistán</option>
+                                                            <option value="KH">Camboya</option>
+                                                            <option value="KI">Kiribati</option>
+                                                            <option value="KM">Comoros</option>
+                                                            <option value="KN">San Cristóbal y Nieves</option>
+                                                            <option value="KP">Corea del Norte</option>
+                                                            <option value="KR">Corea del Sur</option>
+                                                            <option value="KW">Kuwait</option>
+                                                            <option value="KY">Islas Caimán</option>
+                                                            <option value="KZ">Kazajstán</option>
+                                                            <option value="LA">Laos</option>
+                                                            <option value="LB">Líbano</option>
+                                                            <option value="LC">Santa Lucía</option>
+                                                            <option value="LI">Liechtenstein</option>
+                                                            <option value="LK">Sri Lanka</option>
+                                                            <option value="LR">Liberia</option>
+                                                            <option value="LS">Lesotho</option>
+                                                            <option value="LT">Lituania</option>
+                                                            <option value="LU">Luxemburgo</option>
+                                                            <option value="LV">Letonia</option>
+                                                            <option value="LY">Libia</option>
+                                                            <option value="MA">Marruecos</option>
+                                                            <option value="MC">Mónaco</option>
+                                                            <option value="MD">Moldova</option>
+                                                            <option value="ME">Montenegro</option>
+                                                            <option value="MG">Madagascar</option>
+                                                            <option value="MH">Islas Marshall</option>
+                                                            <option value="MK">Macedonia</option>
+                                                            <option value="ML">Mali</option>
+                                                            <option value="MM">Myanmar</option>
+                                                            <option value="MN">Mongolia</option>
+                                                            <option value="MO">Macao</option>
+                                                            <option value="MQ">Martinica</option>
+                                                            <option value="MR">Mauritania</option>
+                                                            <option value="MS">Montserrat</option>
+                                                            <option value="MT">Malta</option>
+                                                            <option value="MU">Mauricio</option>
+                                                            <option value="MV">Maldivas</option>
+                                                            <option value="MW">Malawi</option>
+                                                            <option value="MX">México</option>
+                                                            <option value="MY">Malasia</option>
+                                                            <option value="MZ">Mozambique</option>
+                                                            <option value="NA">Namibia</option>
+                                                            <option value="NC">Nueva Caledonia</option>
+                                                            <option value="NE">Níger</option>
+                                                            <option value="NF">Islas Norkfolk</option>
+                                                            <option value="NG">Nigeria</option>
+                                                            <option value="NI">Nicaragua</option>
+                                                            <option value="NL">Países Bajos</option>
+                                                            <option value="NO">Noruega</option>
+                                                            <option value="NP">Nepal</option>
+                                                            <option value="NR">Nauru</option>
+                                                            <option value="NU">Niue</option>
+                                                            <option value="NZ">Nueva Zelanda</option>
+                                                            <option value="OM">Omán</option>
+                                                            <option value="PA">Panamá</option>
+                                                            <option value="PE">Perú</option>
+                                                            <option value="PF">Polinesia Francesa</option>
+                                                            <option value="PG">Papúa Nueva Guinea</option>
+                                                            <option value="PH">Filipinas</option>
+                                                            <option value="PK">Pakistán</option>
+                                                            <option value="PL">Polonia</option>
+                                                            <option value="PM">San Pedro y Miquelón</option>
+                                                            <option value="PN">Islas Pitcairn</option>
+                                                            <option value="PR">Puerto Rico</option>
+                                                            <option value="PS">Palestina</option>
+                                                            <option value="PT">Portugal</option>
+                                                            <option value="PW">Islas Palaos</option>
+                                                            <option value="PY">Paraguay</option>
+                                                            <option value="QA">Qatar</option>
+                                                            <option value="RE">Reunión</option>
+                                                            <option value="RO">Rumanía</option>
+                                                            <option value="RS">Serbia y Montenegro</option>
+                                                            <option value="RU">Rusia</option>
+                                                            <option value="RW">Ruanda</option>
+                                                            <option value="SA">Arabia Saudita</option>
+                                                            <option value="SB">Islas Solomón</option>
+                                                            <option value="SC">Seychelles</option>
+                                                            <option value="SD">Sudán</option>
+                                                            <option value="SE">Suecia</option>
+                                                            <option value="SG">Singapur</option>
+                                                            <option value="SH">Santa Elena</option>
+                                                            <option value="SI">Eslovenia</option>
+                                                            <option value="SJ">Islas Svalbard y Jan Mayen</option>
+                                                            <option value="SK">Eslovaquia</option>
+                                                            <option value="SL">Sierra Leona</option>
+                                                            <option value="SM">San Marino</option>
+                                                            <option value="SN">Senegal</option>
+                                                            <option value="SO">Somalia</option>
+                                                            <option value="SR">Surinam</option>
+                                                            <option value="ST">Santo Tomé y Príncipe</option>
+                                                            <option value="SV">El Salvador</option>
+                                                            <option value="SY">Siria</option>
+                                                            <option value="SZ">Suazilandia</option>
+                                                            <option value="TC">Islas Turcas y Caicos</option>
+                                                            <option value="TD">Chad</option>
+                                                            <option value="TF">Territorios Australes Franceses</option>
+                                                            <option value="TG">Togo</option>
+                                                            <option value="TH">Tailandia</option>
+                                                            <option value="TH">Tanzania</option>
+                                                            <option value="TJ">Tayikistán</option>
+                                                            <option value="TK">Tokelau</option>
+                                                            <option value="TL">Timor-Leste</option>
+                                                            <option value="TM">Turkmenistán</option>
+                                                            <option value="TN">Túnez</option>
+                                                            <option value="TO">Tonga</option>
+                                                            <option value="TR">Turquía</option>
+                                                            <option value="TT">Trinidad y Tobago</option>
+                                                            <option value="TV">Tuvalu</option>
+                                                            <option value="TW">Taiwán</option>
+                                                            <option value="UA">Ucrania</option>
+                                                            <option value="UG">Uganda</option>
+                                                            <option value="US">Estados Unidos de América</option>
+                                                            <option value="UY">Uruguay</option>
+                                                            <option value="UZ">Uzbekistán</option>
+                                                            <option value="VA">Ciudad del Vaticano</option>
+                                                            <option value="VC">San Vicente y las Granadinas</option>
+                                                            <option value="VE">Venezuela</option>
+                                                            <option value="VG">Islas Vírgenes Británicas</option>
+                                                            <option value="VI">Islas Vírgenes de los Estados Unidos de América</option>
+                                                            <option value="VN">Vietnam</option>
+                                                            <option value="VU">Vanuatu</option>
+                                                            <option value="WF">Wallis y Futuna</option>
+                                                            <option value="WS">Samoa</option>
+                                                            <option value="YE">Yemen</option>
+                                                            <option value="YT">Mayotte</option>
+                                                            <option value="ZA">Sudáfrica</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!-- COD_MODALIDAD DropDownList CS/Cotizacion-->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='COD_MODALIDAD'>Modalidad<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='COD_MODALIDAD' name='COD_MODALIDAD' class='form-control'>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!-- cantidad_riesgos Numeric CS/Cotizacion-->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cantidad_riesgos'>Cantidad de riesgos asegurar<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='cantidad_riesgos' name='cantidad_riesgos' autocomplete="off" class='form-control text-right' size='21' maxlength='21' />
+                                                    </div>
+                                                </div>
+                                                <!-- FEC_NACIMIENTO DatePicker CS/Cotizacion-->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='FEC_NACIMIENTO'>Fecha de nacimiento -Riesgo 1<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='FEC_NACIMIENTO_group'>
+                                                            <input type='text' id='FEC_NACIMIENTO' name='FEC_NACIMIENTO' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='FEC_NACIMIENTO_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- FEC_NACIMIENTO2 DatePicker CS/Cotizacion-->
+                                                <div class='col-sm-4 col-md-4 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='FEC_NACIMIENTO2'>Fecha de nacimiento -Riesgo 2<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='FEC_NACIMIENTO2_group'>
+                                                            <input type='text' id='FEC_NACIMIENTO2' name='FEC_NACIMIENTO2' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='FEC_NACIMIENTO2_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- FEC_NACIMIENTO3 DatePicker CS/Cotizacion-->
+                                                <div class='col-sm-4 col-md-4 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='FEC_NACIMIENTO3'>Fecha de nacimiento -Riesgo 3<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='FEC_NACIMIENTO3_group'>
+                                                            <input type='text' id='FEC_NACIMIENTO3' name='FEC_NACIMIENTO3' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='FEC_NACIMIENTO3_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- FEC_NACIMIENTO4 DatePicker CS/Cotizacion-->
+                                                <div class='col-sm-4 col-md-4 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='FEC_NACIMIENTO4'>Fecha de nacimiento -Riesgo 4<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='FEC_NACIMIENTO4_group'>
+                                                            <input type='text' id='FEC_NACIMIENTO4' name='FEC_NACIMIENTO4' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='FEC_NACIMIENTO4_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- FEC_NACIMIENTO5 DatePicker CS/Cotizacion-->
+                                                <div class='col-sm-4 col-md-4 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='FEC_NACIMIENTO5'>Fecha de nacimiento -Riesgo 5<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='FEC_NACIMIENTO5_group'>
+                                                            <input type='text' id='FEC_NACIMIENTO5' name='FEC_NACIMIENTO5' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='FEC_NACIMIENTO5_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- FEC_NACIMIENTO6 DatePicker CS/Cotizacion-->
+                                                <div class='col-sm-4 col-md-4 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='FEC_NACIMIENTO6'>Fecha de nacimiento -Riesgo 6<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='FEC_NACIMIENTO6_group'>
+                                                            <input type='text' id='FEC_NACIMIENTO6' name='FEC_NACIMIENTO6' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='FEC_NACIMIENTO6_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- FEC_NACIMIENTO7 DatePicker CS/Cotizacion-->
+                                                <div class='col-sm-4 col-md-4 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='FEC_NACIMIENTO7'>Fecha de nacimiento -Riesgo 7<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='FEC_NACIMIENTO7_group'>
+                                                            <input type='text' id='FEC_NACIMIENTO7' name='FEC_NACIMIENTO7' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='FEC_NACIMIENTO7_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- FEC_NACIMIENTO8 DatePicker CS/Cotizacion-->
+                                                <div class='col-sm-4 col-md-4 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='FEC_NACIMIENTO8'>Fecha de nacimiento -Riesgo 8<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='FEC_NACIMIENTO8_group'>
+                                                            <input type='text' id='FEC_NACIMIENTO8' name='FEC_NACIMIENTO8' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='FEC_NACIMIENTO8_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- FEC_NACIMIENTO9 DatePicker CS/Cotizacion -->
+                                                <div class='col-sm-4 col-md-4 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='FEC_NACIMIENTO9'>Fecha de nacimiento -Riesgo 9<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='FEC_NACIMIENTO9_group'>
+                                                            <input type='text' id='FEC_NACIMIENTO9' name='FEC_NACIMIENTO9' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='FEC_NACIMIENTO9_validate'></div>
+                                                    </div>
+                                                </div>
+                                                <!-- FEC_NACIMIENTO10 DatePicker CS/Cotizacion -->
+                                                <div class='col-sm-4 col-md-4 d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='FEC_NACIMIENTO10'>Fecha de nacimiento -Riesgo 10<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='FEC_NACIMIENTO10_group'>
+                                                            <input type='text' id='FEC_NACIMIENTO10' name='FEC_NACIMIENTO10' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='FEC_NACIMIENTO10_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- coberturas Grid CS/Cotizacion -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <div class='col'>
+                                                    <h4><i class="fa fa-check-circle" aria-hidden="true"></i> Coberturas<label id="coberturasTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                                </div>
+
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class='col-md-12' style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="coberturasTbl" style="font-size: 11px;">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- plandepago Grid CS/Cotizacion -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <div class='col'>
+                                                    <h4><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Plan de pago<label id="plandepagoTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                                </div>
+
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class='col-md-12' style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="plandepagoTbl" style="font-size: 11px;">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Botonera CS/Cotizacion-->
+                                    <div class="form-row">
+                                        <div class='col-md-12'>
+                                            <div class="modal-footer">
+                                                <button id="cotizar" type="button" class="btn  btn-primary" data-doing="Cotizando...">
+                                                    Cotizar
+                                                </button>
+                                                @*<button id="limpiar" type="button" class="btn btn-default" data-doing="Limpiando...">
+                                        Limpiar
+                                    </button>*@
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    @*@ibox-content-footer@*@
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!----------------------------------------- FIN FORM COMPRA DE SEGUROS COTIZACION/VIAJERO --------------------------------------------------->
+            </div>
+        </div>
+    </div>
+    <div id="quoteBlock" class="col-md-3 animated bounceInRight d-none">
+
+        <div class="ibox">
+            <div class="ibox-title text-center float-right">
+                <div class="quote-title">
+                    <h4><i class="fa fa-file-text-o"></i> Resumen de la cotización</h4>
+                    <span class="label label-success" style="font-size: small;">Presupuesto #<span id="presupuesto"></span></span>
+                </div>
+            </div>
+            <div class="ibox-content">
+
+                <div class="row">
+                    <div class="col-7 col-md-6">
+                        <span>
+                            Importe total
+                        </span>
+                        <h2 class="font-bold">
+                            <span id="importetotal">0,00</span>
+                        </h2>
+                    </div>
+                    <div class="col-5 col-md-6">
+                        <table class="text-muted small">
+                            <tr><td style="text-align:right"><span id="primaneta">0,00</span></td><td>Prima neta</td></tr>
+                            <tr><td style="text-align:right"><span id="iva">0,00</span></td><td>IVA</td></tr>
+                            <tr><td style="text-align:right"><span id="recardoporfraccionamiento">0,00</span></td><td>Recargo</td></tr>
+                            <tr class=""><td style="text-align:right"><span id="cuotas">0</span></td><td><a href="#plandepagoRow" title="Ver detalle de las cuotas">Cuotas</a></td></tr>
+                        </table>
+                    </div>
+                </div>
+                <hr>
+                <div>
+                    <div class="btn-group">
+                        <a id="emitir" href="#" class="btn btn-primary btn-sm"><i class="fa fa-check"></i> Emisión</a>
+                        <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-print"></i> Imprimir</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="ibox">
+                <div class="ibox-title">
+                    <h5>Importe por fraccionamiento de pago</h5>
+                </div>
+                <div class="ibox-content text-center">
+                    <div class="form-row">
+                        <div class='col-md-12' style="padding-bottom: 20px">
+                            <div class="table-responsive">
+                                <table id="plandepagoporfrecuenciaTbl" style="font-size: 11px;">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
+    <script src="@Url.Content("~/Scripts/CompraSegurosClients.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.CompraSegurosC.Init();
+        });
+    </script>
+}

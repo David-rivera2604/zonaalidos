@@ -14,7 +14,13 @@ app.HogarTotal = (function () {
 
         if (localStorage.getItem('Roles').includes('Coopenae-Credecoop')) {
             $('#descuento').prop("disabled", true);
-        } 
+        }
+
+        //$('#emitir').html("<i class='fa fa-check'></i> Completar solicitud");
+        //workMode = '&mode=draft';
+
+        $('#emitir').html("<i class='fa fa-check'></i> Emitir");
+        workMode = '&mode=continue';
 
         $('#coberturasTbl').bootstrapTable('showLoading');
         app.core.Get(app.setting.apipath + 'v1/Quote/HogarTotalSetup')
@@ -32,6 +38,7 @@ app.HogarTotal = (function () {
             function (data) {
                 quoteData = data;
                 if (!app.ui.NotifyErrors(data.Mensaje, data.Errors, '#VisualizationsEdtForm')) {
+                    $('#presupuesto').html(data.presupuesto);
                     $('#coberturasRow').removeClass('d-none');
                     $('#coberturasTbl').bootstrapTable('load', data.coberturas);
 
@@ -182,10 +189,6 @@ app.HogarTotal = (function () {
             mesesaampararporperdrentas: app.ui.GetNumericValue('#mesesaampararporperdrentas'),
             medidasdeseguridad: app.ui.GetDropDownMultiStringValues('#medidasdeseguridad'),
             descuento: app.ui.GetDropDownNumericValue('#descuento'),
-            CERCA_RI_MAR_LAG_TA_CI: app.ui.GetRadioNumericValue('CERCA_RI_MAR_LAG_TA_CI'),
-            DISTANCIA_MTS: app.ui.GetNumericValue('#DISTANCIA_MTS'),
-            INS_ELECT_ENTUB: app.ui.GetRadioNumericValue('INS_ELECT_ENTUB'),
-            otrassenas: $('#otrassenas').val(),
             sAEdificio: app.ui.GetNumericValue('#sAEdificio'),
             sAObjetosvaliosos: app.ui.GetNumericValue('#sAObjetosvaliosos'),
             sADomocristalmarmolgranito: app.ui.GetNumericValue('#sADomocristalmarmolgranito'),
@@ -219,12 +222,6 @@ app.HogarTotal = (function () {
         app.ui.SetNumericValue('#mesesaampararporperdrentas', data.mesesaampararporperdrentas);
         $('#medidasdeseguridad').val(data.medidasdeseguridad);
         $('#descuento').val(data.descuento);
-
-        app.ui.SetRadioNumericValue('CERCA_RI_MAR_LAG_TA_CI', data.CERCA_RI_MAR_LAG_TA_CI);
-        app.ui.SetNumericValue('#DISTANCIA_MTS', data.DISTANCIA_MTS);
-        app.ui.SetRadioNumericValue('INS_ELECT_ENTUB', data.INS_ELECT_ENTUB);
-
-        $('#otrassenas').val(data.otrassenas);
 
         app.ui.SetNumericValue('#sAEdificio', data.sAEdificio);
         app.ui.SetNumericValue('#sAObjetosvaliosos', data.sAObjetosvaliosos);
@@ -260,16 +257,6 @@ app.HogarTotal = (function () {
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
             maximumValue: '12',
-            minimumValue: '0',
-            decimalPlaces: '0',
-            emptyInputBehavior: 'null'
-        });
-
-        new AutoNumeric('#DISTANCIA_MTS', {
-            decimalCharacter: ',',
-            decimalCharacterAlternative: '.',
-            digitGroupSeparator: '',
-            maximumValue: '999999',
             minimumValue: '0',
             decimalPlaces: '0',
             emptyInputBehavior: 'null'
@@ -386,12 +373,12 @@ app.HogarTotal = (function () {
 
         $('#emitir').click(function () {
             event.preventDefault();
-            window.location.replace(app.setting.basepath + 'emision/hogartotal?presupuesto=' + quoteData.presupuesto);
+            window.location.replace(app.setting.basepath + 'emision/hogartotal?presupuesto=' + quoteData.presupuesto + workMode);
         });
 
-        $('input:radio[name=CERCA_RI_MAR_LAG_TA_CI]').change(function () {
-            $('#DISTANCIA_MTS').prop("disabled", app.ui.GetRadioNumericValue('CERCA_RI_MAR_LAG_TA_CI') === 2);
-        });
+        //$('input:radio[name=CERCA_RI_MAR_LAG_TA_CI]').change(function () {
+        //    $('#DISTANCIA_MTS').prop("disabled", app.ui.GetRadioNumericValue('CERCA_RI_MAR_LAG_TA_CI') === 2);
+        //});
 
         $('#fec_efec_poliza').blur(function () {
             var minDate = app.ui.GetDateRawValue('#fec_efec_poliza');
@@ -420,29 +407,26 @@ app.HogarTotal = (function () {
             errorPlacement: app.ui.ErrorPlacement,
             rules: {
                 mesesaampararporperdrentas: { required: true, Numeric: true, min: 1, max: 12 },
-                otrassenas: { required: true },
+                //otrassenas: { required: true },
                 sAEdificio: { required: false, Numeric: true },
                 sAObjetosvaliosos: { required: false, Numeric: false, Complement: true },
                 sAMobiliario: { required: true, Numeric: false, Complement: true },
                 sADomocristalmarmolgranito: { required: true, Numeric: true },
                 sAGastosalquiler: { required: true, Numeric: true },
                 sAPerdidaderentas: { required: true, Numeric: true },
-                sARespcivil: { required: true, Numeric: true },
-                contrato: { required: true },
-                subcontrato: { required: true }
+                sARespcivil: { required: true, Numeric: true }
+                
             },
             messages: {
                 mesesaampararporperdrentas: { required: 'Debe indicar la cantidad de meses a amparar', Numeric: 'Debe indicar la cantidad de meses a amparar', min: 'Debe indicar indicar un valor entre 1 y 12', max: 'Debe indicar indicar un valor entre 1 y 12' },
-                otrassenas: { required: 'Debe indicar otras señas' },
+                //otrassenas: { required: 'Debe indicar otras señas' },
                 sAEdificio: { required: 'Debe indicar la suma asegurada del edificio', Numeric: 'Debe indicar la suma asegurada del edificio' },
                 sAObjetosvaliosos: { required: 'Debe indicar la suma asegurada para objetos valiosos', Numeric: 'Debe indicar la suma asegurada para objetos valiosos', Complement: 'Debe indicar la suma asegurada para los objects valiosos y/o del mobiliario' },
                 sAMobiliario: { required: 'Debe indicar la suma asegurada del mobiliario', Numeric: 'Debe indicar la suma asegurada del mobiliario', Complement: 'Debe indicar la suma asegurada del mobiliario y/o para los objects valiosos' },
                 sADomocristalmarmolgranito: { required: 'Debe indicar la suma asegurada para domo, cristal, mármol, granito', Numeric: 'Debe indicar la suma asegurada para domo, cristal, mármol, granito' },
                 sAGastosalquiler: { required: 'Debe indicar la suma asegurada para gastos de alquiler', Numeric: 'Debe indicar la suma asegurada para gastos de alquiler' },
                 sAPerdidaderentas: { required: 'Debe indicar la suma asegurada para pérdida de rentas', Numeric: 'Debe indicar la suma asegurada para pérdida de rentas' },
-                sARespcivil: { required: 'Debe indicar la suma asegurada para responsabilidad civil', Numeric: 'Debe indicar la suma asegurada para responsabilidad civil' },
-                contrato: { required: 'Debe indicar el contrato' },
-                subcontrato: { required: 'Debe indicar el subcontrato' }
+                sARespcivil: { required: 'Debe indicar la suma asegurada para responsabilidad civil', Numeric: 'Debe indicar la suma asegurada para responsabilidad civil' }
             }
         });
     };

@@ -131,7 +131,7 @@ app.EmisionViajero = (function () {
         app.ui.SetDateValue('#FEC_VIAJE', data.FEC_VIAJE);
         $('#DES_DESTINO').val(data.DES_DESTINO_DESC);
         $('#cantidad_riesgos').val(data.cantidad_riesgos);
-        app.ui.SetDateValue('#FEC_NACIMIENTO', data.FEC_NACIMIENTO);
+        //app.ui.SetDateValue('#FEC_NACIMIENTO', data.FEC_NACIMIENTO);
         $('#COD_MODALIDAD').val(data.COD_MODALIDAD);
         app.ui.SetDropDownNumericValue('#COD_MODALIDAD', data.COD_MODALIDAD, true);
         if (data.terceros != null)
@@ -733,7 +733,8 @@ app.EmisionViajero = (function () {
         });
 
         $('#tercerosNew').click(function () {
-
+            $('#tipodetercero').val($('#tipodetercero option[disabled!="disabled"]')[0].value);
+            $('#tipodetercero').change();
             terceros_table_row_edit();
         });
 
@@ -744,7 +745,7 @@ app.EmisionViajero = (function () {
                 let row = terceros_table_row('values');
                 let cloneBeneficiario = (row.elbeneficiarioeselmismotodoslosriesgos === 1);
 
-                
+
                 if (cloneBeneficiario) {
                     row.elbeneficiarioeselmismotodoslosriesgos = 2;
                     row.numeroderiesgo = 1;
@@ -899,7 +900,7 @@ app.EmisionViajero = (function () {
 
         if (direccion) {
             $('#reutilizarestadireccion').parent().addClass('d-none');
-            if (row.otrasenas === '') {
+            if (row.otrasenas === null) {
                 row.cod_pais = direccion.cod_pais;
                 row.TProvincia = direccion.TProvincia;
                 row.TCanton = direccion.TCanton;
@@ -931,6 +932,8 @@ app.EmisionViajero = (function () {
         $('#correoelectronico').val(row.correoelectronico);
         $('#cod_pais').val(row.cod_pais);
         $('#TProvincia').val(row.TProvincia);
+        app.core.LookupDependency(row.TProvincia, 'TCanton', 'Cantones', '', row.TCanton, false, null, `cod_pais=${row.cod_pais}:cod_estado=`);
+        app.core.LookupDependency(row.TCanton, 'TDistrito', 'Distritos', '', row.TDistrito, false, null, `cod_pais=${row.cod_pais}:cod_prov=`);
         $('#TCanton').val(row.TCanton);
         $('#TDistrito').val(row.TDistrito);
         $('#otrasenas').val(row.otrasenas);

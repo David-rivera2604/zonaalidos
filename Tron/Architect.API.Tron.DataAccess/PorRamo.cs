@@ -1,5 +1,6 @@
 ﻿using Architect.API.Tron.Contracts.Integraciones.PanamaAsistencia;
 using Architect.DataFactory;
+using Architect.Utilities.Contracts;
 using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
@@ -318,7 +319,7 @@ namespace Architect.API.Tron.DataAccess
                     .AddParameter("cod_cia", Architect.DataFactory.Enumerations.DbType.Int32, 22, cod_cia)
                     .AddParameter("num_poliza_grupo", Architect.DataFactory.Enumerations.DbType.String, 13, num_poliza_grupo)
                     .AddParameter("num_contrato", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_contrato)
-                    .AddParameter("num_contrato", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_subcontrato)
+                    .AddParameter("num_subcontrato", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_subcontrato)
                     .AddParameter("cod_marca", Architect.DataFactory.Enumerations.DbType.Int32, 22, cod_marca)
                     .AddParameter("cod_modelo", Architect.DataFactory.Enumerations.DbType.Int32, 22, cod_modelo)
                     .AddParameter("anio_veh", Architect.DataFactory.Enumerations.DbType.Int32, 22, anio_sub_modelo)
@@ -414,8 +415,50 @@ namespace Architect.API.Tron.DataAccess
                     .AddParameter("cod_agt", DbType.Decimal, 5, cod_agt)
                     .Query("Tron", new Action<IDataReader>((reader) =>
                     {
-                        result= reader.IntegerValue("cod_fracc_pago");
+                        result = reader.IntegerValue("cod_fracc_pago");
                     }));
+            return result;
+        }
+
+        /// <summary>
+        /// em_k_tables_contract_mcr.retrieve_a1002150
+        /// </summary>
+        public static List<LookUpValue> CoberturasPorRamo(int cod_cia, int cod_ramo, int cod_modalidad, string cob_ExcludeFilter, string excluir_comercial, string poliza_grupo, IDbConnection connection = null)
+        {
+            List<LookUpValue> result = new List<LookUpValue>();
+
+            string p_cob_ExcludeFilter = "";
+            string p_cob_IncludeFilter = "";
+
+            if (!String.IsNullOrEmpty(cob_ExcludeFilter))
+            {
+                p_cob_ExcludeFilter = cob_ExcludeFilter;
+            }
+            if (!String.IsNullOrEmpty(excluir_comercial))
+            {
+                p_cob_ExcludeFilter += "," + excluir_comercial;
+            }
+            if (!String.IsNullOrEmpty(poliza_grupo))
+            {
+                p_cob_IncludeFilter = poliza_grupo;
+            }
+
+            Database.Procedure("em_k_tables_contract_mcr.retrieve_a1002150")
+                .AddParameter("p_cod_cia", DbType.Int32, 22, cod_cia)
+                .AddParameter("p_cod_ramo", DbType.Int32, 22, cod_ramo)
+                .AddParameter("p_cod_modalidad", DbType.Int32, 22, cod_modalidad)
+                .AddParameter("p_fec_validez", DbType.String, 18, DateTime.Now.ToString("yyyyMMdd"))
+                .AddParameter("p_cob_ExcludeFilter", DbType.String, 512, p_cob_ExcludeFilter)
+                .AddParameter("p_cob_IncludeFilter", DbType.String, 512, p_cob_IncludeFilter)
+                .AddParameter("RC1", DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
+                .Query(null, "Tron", new Action<IDataReader>((reader) =>
+                {
+                    result.Add(new LookUpValue()
+                    {
+                        Code = reader.IntegerValue("COD_COB").ToString(),
+                        Description = reader.StringValue("NOM_COB")
+                    });
+                }));
             return result;
         }
 

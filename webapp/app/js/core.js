@@ -5,7 +5,8 @@ app.setting = {
     apibase: 'http://localhost:8082',
     apipath: 'http://localhost:8082/aliados/api/',
     basepath: '/Aliados/',
-    viewpath: 'http://localhost:8082/aliados/'
+    viewpath: 'http://localhost:8082/aliados/',
+    entityapi: 'https://appqa.mapfrecr.com/datapiDES/api/entity',
 };
 // CONSERVAR DEL ORIGINAL HASTA AQUI
 
@@ -46,7 +47,7 @@ String.prototype.supplant = function (o) {
 
 app.core = (function () {
 
-    let lookupData;
+    let lookupData = [];
 
     function GetPDF(url, download, filename, callback) {
         //var req = new XMLHttpRequest();
@@ -378,8 +379,15 @@ app.core = (function () {
         ajaxCall('GET', app.setting.apipath + path + '?keys=' + onlyKeys.toString() + '&url=' + url, null,
             function (data) {
                 var key = '', ctrl = '';
-                lookupData = data;
+
                 $.each(data, function (index, values) {
+
+                    let current = lookupData.filter(i => i.Key === values.Key)
+                    if (current.length > 0) {
+                        lookupData.splice(lookupData.indexOf(current[0]), 1);
+                    }
+                    lookupData.push(values);
+
                     selectedOptions = ctrls[index];
                     if (selectCtrol[index]) {
                         selectedOptions.children().remove();
@@ -389,7 +397,15 @@ app.core = (function () {
                         $.each(values.Lkp, function () {
                             selectedOptions.append($('<option />').val(this['Code']).text(this['Description']));
                         });
-                        selectedOptions.val(-1);
+                        if (selectedOptions.data("autoselect") === true) {
+                            selectedOptions.val($('select#' + ctrlName[index] + ' option:first').val());
+                            selectedOptions.trigger('change');
+                        } else {
+                            selectedOptions.val(-1);
+                        }
+                        if (selectedOptions.data("emptydisabled") === true) {
+                            selectedOptions.prop('disabled', selectedOptions.children().length == 0);
+                        }
                     }
                     else {
                         selectedOptions.replaceWith('<div id="radio' + ctrlName[index] + '"></div>');
@@ -569,6 +585,30 @@ app.core = (function () {
         return string.split(search).join(replace);
     }
 
+    function api_sendHttpRequest(method, url, data) {
+        return fetch(url, {
+            body: method === 'GET' ? null : JSON.stringify(data),
+            method: method,
+            headers: {
+                'Content-Type': data ? 'application/json; charset=utf-8' : {},
+                'Authorization': 'Bearer ' + localStorage.getItem('Token')
+            }
+        }).then(response => {
+            if (!response.ok) {
+                api_ShowError();
+                return;
+            } else {
+                return response.json();
+            }
+        });
+    };
+
+    function api_ShowError() {
+        toastr.error("Por favor intente nuevamente y en caso de persistir el problema contacte el personal de soporte", "Ha ocurrido un error no controlado", { timeOut: 10000, closeButton: true, progressBar: true });
+    }
+
+    ;
+
     return {
         ReplaceAll(string, search, replace) {
             return ReplaceAll(string, search, replace);
@@ -733,6 +773,23 @@ app.core = (function () {
                     reject(error);
                 }
             });
+        },
+        api_get: function (url) {
+            return new Promise((resolve, reject) => {
+                api_sendHttpRequest('GET', `${app.setting.entityapi}/${url}`)
+                    .then(data => {
+                        if (data === undefined) {
+                            resolve(null);
+                        } else {
+                            if (data?.Sucessfully != undefined && data.Sucessfully) {
+                                resolve(data.Data);
+                            } else {
+                                api_ShowError();
+                                resolve(null);
+                            }
+                        }
+                    });
+            })
         }
     };
 })();

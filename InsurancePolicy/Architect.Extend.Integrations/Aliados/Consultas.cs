@@ -21,8 +21,8 @@ namespace Architect.Extend.Integrations.Aliados
 
             try
             {
-                identificacion = "0000000000000000" + identificacion;
-                identificacion = identificacion.Substring(identificacion.Length - 10);
+                //identificacion = "0000000000000000" + identificacion;
+                //identificacion = identificacion.Substring(identificacion.Length - 10);
                 Database.Select("SELECT DocumentType, DocumentNumber, FirstName, MiddleName, LastName, SecondLastName, BirthDate, Gender, CivilStatus, PrimaryEmailAddress, Province, Canton, District, AddressDetail, PhoneType, PhoneNumber, CountryOfNationality " +
                                   "FROM RiskRoles " +
                                  "WHERE REPLACE(DocumentNumber,'-','')=:COD_DOCUM " +

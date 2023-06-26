@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 
 namespace Architect.API.Tron.Contracts.Cotizacion
 {
-    public class HogarTotal: Quote
+    public class HogarTotal : Quote
     {
         /// <summary>
         /// Moneda.
@@ -118,23 +118,7 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         [DataMember(), JsonProperty()] public int contrato { get; set; }
         [DataMember(), JsonProperty()] public int subcontrato { get; set; }
         [DataMember(), JsonProperty()] public string polizagrupo { get; set; }
-
-        /// <summary>
-        /// ¿Está cerca de un río, mar, lago, talud, en la cima?
-        /// </summary>
-        [DataMember(), JsonProperty()] public int CERCA_RI_MAR_LAG_TA_CI { get; set; }
-        /// <summary>
-        /// Distancia/Metros
-        /// </summary>
-        [DataMember(), JsonProperty()] public int DISTANCIA_MTS { get; set; }
-        /// <summary>
-        /// ¿Las instalaciones eléctricas se encuentran entubadas?
-        /// </summary>
-        [DataMember(), JsonProperty()] public int INS_ELECT_ENTUB { get; set; }
-        /// <summary>
-        /// Otras señas.
-        /// </summary>
-        [DataMember(), JsonProperty()] public string otrassenas { get; set; }
+        [DataMember(), JsonProperty()] public int cod_fracc_pago { get; set; }
 
     }
 

@@ -1,4 +1,7 @@
 ﻿var app = app || {};
+
+
+
 app.login = (function () {
 
     let employeeMode = window.location.href.toLowerCase().endsWith("/mapfre");
@@ -46,6 +49,8 @@ app.login = (function () {
                             if (!data.MustChangePassword) {
                                 localStorage.setItem('Username', data.UserName);
                                 localStorage.setItem('Tenant', data.Tenant);
+                                localStorage.setItem('Color1Tenant', data.Color1Tenant);
+                                localStorage.setItem('Color2Tenant', data.Color2Tenant);
                                 localStorage.setItem('Roles', JSON.stringify(data.Roles));
 
                                 var dta = new Date();
@@ -60,7 +65,7 @@ app.login = (function () {
                                 status = 'redirect';
                                 window.location.replace(app.setting.basepath + data.InitialPath);
                             } else {
-  
+
                                 $('#ForgotMail').val(data.EMail);
                                 $('#login').addClass('d-none');
 
@@ -330,12 +335,11 @@ app.login = (function () {
             localStorage.removeItem('reason');
             if (reason === 'session-expired') {
                 $('.alert').removeClass('d-none');
-                $('.wellcome-info').addClass('d-none');
             }
             $('#Tenant').val(_tenant);
             if (employeeMode) {
                 $('#forgotlink').addClass('d-none');
-                
+
             }
         }
     };

@@ -7,6 +7,7 @@ using Architect.DataFactory;
 using Architect.Utilities.Extensions;
 using System.Data;
 using System.Data.Common;
+using DbType = Architect.DataFactory.Enumerations.DbType;
 
 namespace Architect.API.Tron.DataAccess
 {
@@ -61,6 +62,22 @@ namespace Architect.API.Tron.DataAccess
                                 .Parameter("p_txt_obs", Architect.DataFactory.Enumerations.DbType.String, 400, txt_obs)
                                 .Parameter("p_cod_usr", Architect.DataFactory.Enumerations.DbType.String, 8, "COTIZWEB")
                                 .Execute(currentConnection, "Tron");
+        }
+
+        public static bool Agrega_txt_campo (string num_poliza, string cod_campo, string txt_campo, IDbConnection connection = null)
+        {
+            bool result = false;
+         
+            int affected = Database.Procedure("EM_K_MAPFRE_BATCH_CONTRACT_MCR.p_actualiza_txt_campo")
+                                    .AddParameter("p_num_poliza", DbType.String, 22, num_poliza)
+                                    .AddParameter("p_cod_campo", DbType.String, 22, cod_campo)
+                                    .AddParameter("p_txt_campo", DbType.String, 80, txt_campo)
+                                    .Execute(connection, "Tron");
+            if (affected != 0)
+            {
+                result = true;
+            }
+            return result;
         }
     }
 }

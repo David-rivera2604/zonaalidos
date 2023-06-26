@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Net;
+using System.Reflection;
 
 namespace Architect.API.Tron.Business.Backoffice
 {
@@ -101,6 +102,8 @@ namespace Architect.API.Tron.Business.Backoffice
 
                 DataAccess.Batch.A2000500.Create(a2000500, connection);
 
+
+
                 Contracts.Batch.Proceso procesoResult = DataAccess.Batch.G2000510.Execute(g2000510Instance, connection);
                 if (procesoResult.txt_error.IsEmpty())
                 {
@@ -152,6 +155,99 @@ namespace Architect.API.Tron.Business.Backoffice
 
             currentConnection.Close();
             return result;
+        }
+
+        /// <summary>
+        /// Aplica variaciones a una póliza
+        /// </summary>
+        public static bool Cancelacion(string num_poliza, Contracts.Poliza.Variacion variacion)
+        {
+            bool result = false;
+            IDbConnection currentConnection = DataFactory.Database.OpenConnection("Tron");
+            try
+            {
+                foreach (Contracts.Poliza.DatoVariacion item in variacion.Detalle)
+                {
+                    if (item.val_campo_ant != item.val_campo_act)
+                    {
+                        DataAccess.DatosVariables.AplicarVariacion(variacion.cod_ramo, num_poliza, variacion.num_riesgo,
+                            item.cod_campo, item.val_campo_ant, item.val_campo_act, variacion.fec_validez, "ZA: " + variacion.txt_obs, currentConnection);
+                    }
+                }
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                Utilities.Log.ErrorLog("Falla al tratar de procesar las variaciones", "Póliza " + num_poliza, ex);
+            }
+
+            currentConnection.Close();
+            return result;
+        }
+
+        /// <summary>
+        /// Control técnico de una póliza, permite su aprobación o rechazo
+        /// </summary>
+        public static string ControlTecnico(string num_poliza, Contracts.Poliza.Parameters.ControlTecnicoParametros controlTecnico, Core.Contracts.Security.Token tokenInfo)
+        {
+            string result = "Control técnico procesado correctamente";
+            //En caso de que se este autorizando (1) o rechazando (2)
+            if (controlTecnico.tip_autoriza == "1" || controlTecnico.tip_autoriza == "2")
+            {
+                Contracts.Poliza.DatoFijo policy = DataAccess.ControlesTecnicos.Autorizar(num_poliza, controlTecnico);
+                if (controlTecnico.tip_autoriza == "1")
+                {
+                    string certificado = Common.ImprimirPoliza_PDF(num_poliza);
+                    if (controlTecnico.correo1.IsNotEmpty())
+                    {
+                        Dictionary<string, string> emailTmpl = Core.Business.General.Mail.GetTemplate("Send_Certificate", tokenInfo.CompanyId, tokenInfo.UserId, 0, policy);
+                        string id = DocuSign.Integrations.DocuSign.EviMail(num_poliza,
+                                                                           "Envío Certificado " + num_poliza,
+                                                                           emailTmpl["Body"],
+                                                                           "Certificado póliza",
+                                                                           "Cliente",
+                                                                           controlTecnico.correo1,
+                                                                           certificado,
+                                                                           num_poliza,
+                                                                           "Certificado póliza " + num_poliza + ".pdf").Result;
+                    }
+                }
+            }
+            else
+            {
+                //En caso de que se este dejando como pendiente (3)
+                Dictionary<string, string> emailList = new Dictionary<string, string>();
+                if (controlTecnico.correo1.IsNotEmpty())
+                {
+                    emailList.Add(controlTecnico.correo1, controlTecnico.correo1);
+                }
+                if (controlTecnico.correo2.IsNotEmpty() && !emailList.ContainsKey(controlTecnico.correo2))
+                {
+                    emailList.Add(controlTecnico.correo2, controlTecnico.correo2);
+                }
+                if (emailList.Count > 0)
+                {
+                    Core.Business.General.Mail.SendByTemplate("Control_Tecnico", tokenInfo.CompanyId,
+                        new { num_poliza = num_poliza, observacion = controlTecnico.observacion }, emailList);
+                    result = "El control técnico fue notificado de forma exitosa";
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Permite renovar una póliza
+        /// </summary>
+        public static string Renovar(string num_poliza)
+        {
+            string result = DataAccess.Poliza.Renovar(num_poliza);
+            if (result.IndexOf("TRN-") > -1)
+            {
+                result = result.Substring(result.IndexOf("TRN-"));
+                result = result.Substring(result.IndexOf(":") + 1).Trim().Capitalize();
+            }
+            return result.IsEmpty() || result == "null" ? "Póliza renovada correctamente." : result;
         }
 
     }

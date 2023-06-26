@@ -27,6 +27,11 @@ namespace aliados.Controllers
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
+        public ActionResult MapfreMasPlus()
+        {
+            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
+            return View();
+        }
 
         public ActionResult Viajero()
         {
@@ -35,6 +40,12 @@ namespace aliados.Controllers
         }
 
         public ActionResult SaldoDeudor()
+        {
+            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
+            return View();
+        }
+
+        public ActionResult Estudiantil()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();

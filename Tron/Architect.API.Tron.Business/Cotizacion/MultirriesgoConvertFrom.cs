@@ -10,21 +10,36 @@ namespace Architect.API.Tron.Business.Cotizacion
 
         internal static Contracts.Cotizacion.Multirriesgo Quote(Architect.API.Tron.Contracts.Presupuesto.DatoFijo tronQuoteInfo)
         {
-            Contracts.Cotizacion.Multirriesgo result = DatosFijos(tronQuoteInfo);
-            result = DatosVariable(result, tronQuoteInfo);
-            return result;
-        }
-        private static Contracts.Cotizacion.Multirriesgo DatosFijos(Architect.API.Tron.Contracts.Presupuesto.DatoFijo tronQuoteInfo)
-        {
-            return new Contracts.Cotizacion.Multirriesgo()
+            //Contracts.Cotizacion.Multirriesgo result = DatosFijos(tronQuoteInfo);
+
+            Contracts.Cotizacion.Multirriesgo quoteInfo = new Contracts.Cotizacion.Multirriesgo()
             {
                 cod_fracc_pago = tronQuoteInfo.cod_fracc_pago,
                 cod_mon = tronQuoteInfo.cod_mon,
                 fec_efec_poliza = tronQuoteInfo.fec_efec_poliza,
-                fec_vcto_poliza = tronQuoteInfo.fec_vcto_poliza
+                fec_vcto_poliza = tronQuoteInfo.fec_vcto_poliza,
+                coberturas = new List<Contracts.Comun.Cobertura>()
             };
 
+            quoteInfo = DatosVariable(quoteInfo, tronQuoteInfo);
+
+            foreach (Contracts.Presupuesto.Cobertura item in tronQuoteInfo.Coberturas)
+            {
+                quoteInfo.coberturas.Add(new Contracts.Comun.Cobertura()
+                {
+                    seleccionado = true,
+                    requerida = true,
+                    codigo = item.cod_cob,
+                    nombre = item.nom_cob,
+                    capital = item.suma_aseg,
+                    primatotal = item.imp_total,
+                    deducible = item.nom_franquicia
+                });
+
+            }
+            return quoteInfo;
         }
+
 
         private static Contracts.Cotizacion.Multirriesgo DatosVariable(Contracts.Cotizacion.Multirriesgo quoteInfo, Architect.API.Tron.Contracts.Presupuesto.DatoFijo tronQuoteInfo)
         {

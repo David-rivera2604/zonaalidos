@@ -51,6 +51,11 @@ namespace Architect.API.Tron.Contracts.Emision
         [DataMember(), JsonProperty()] public List<Comun.tercero> terceros { get; set; }
 
         /// <summary>
+        /// Vehiculo
+        /// </summary>
+        [DataMember(), JsonProperty()] public List<Comun.vehiculo> vehiculo { get; set; }
+
+        /// <summary>				 
         /// Documentos requeridos
         /// </summary>
         [DataMember(), JsonProperty()] public List<Comun.DocumentoRequerido> documentosrequeridos { get; set; }
@@ -69,11 +74,13 @@ namespace Architect.API.Tron.Contracts.Emision
         [DataMember(), JsonProperty()] public string Modalidad_Pago { get; set; } = "DEPCM";
         [DataMember(), JsonProperty()] public string Tipo_Licencia { get; set; } = "B1";
         [DataMember(), JsonProperty()] public string Tiempo_Licencia { get; set; }
-        [DataMember(), JsonProperty()] public string Fuente_Tomador { get; set; } = "SCOTIABANK";
+        [DataMember(), JsonProperty()] public string Fuente_Tomador { get; set; }
 
         [DataMember(), JsonProperty()] public string Modo { get; set; }
 
         [DataMember(), JsonProperty()] public EconomicData DatosEconomicos { get; set; }
+
+        [DataMember(), JsonProperty()] public object kyc { get; set; }
 
     }
 

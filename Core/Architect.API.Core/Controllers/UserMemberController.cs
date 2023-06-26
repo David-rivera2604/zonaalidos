@@ -43,7 +43,7 @@ namespace Architect.API.Core.Controllers
                     await Task.Run(() =>
                     {
                         item = Architect.API.Core.Business.Security.UserMember
-                            .Create(tokenInfo.CompanyId, tokenInfo.UserId, item);
+                            .Create(tokenInfo.CompanyId, tokenInfo.UserId, item, tokenInfo.AgentCode);
                     })
                         .ConfigureAwait(false);
 
@@ -147,7 +147,7 @@ namespace Architect.API.Core.Controllers
                     await Task.Run(() =>
                     {
                         item = Architect.API.Core.Business.Security.UserMember
-                            .Update(tokenInfo.CompanyId, tokenInfo.UserId, id, item);
+                            .Update(tokenInfo.CompanyId, tokenInfo.UserId, id, item, tokenInfo.AgentCode);
                     }).ConfigureAwait(false);
                     result = Ok(new { Id = item.UserId });
                 }

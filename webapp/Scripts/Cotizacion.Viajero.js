@@ -10,7 +10,7 @@ app.CotizacionViajero = (function () {
         app.core.Get(app.setting.apipath + 'v1/Quote/ViajeroSetup', null,
             function (data) {
                 app.core.Lookups(['MonedasPorRamo.cod_mon', 'FrecuenciaDePagoPorRamo.cod_fracc_pago', 'TRON_G2990006:TIP_PLAN.TIP_PLAN', 'TRON_G2990006:TIP_VIAJE.TIP_VIAJE', 'TRON_A1002090.COD_MODALIDAD',
-                    'TRON_A1000101.PAIS_ORIGEN','TRON_A1000101.DES_DESTINO'],
+                    'TRON_A1000101.PAIS_ORIGEN', 'TRON_A1000101.DES_DESTINO'],
                     function () {
                         setupData = data;
                         MapObjectToInput(data);
@@ -25,6 +25,7 @@ app.CotizacionViajero = (function () {
             function (data) {
                 quoteData = data;
                 if (!app.ui.NotifyErrors(data.Mensaje, data.Errors, '#VisualizationsEdtForm')) {
+                    $('#presupuesto').html(data.presupuesto);
                     $('#coberturasRow').removeClass('d-none');
                     $('#coberturasTbl').bootstrapTable('load', data.coberturas);
 
@@ -73,6 +74,8 @@ app.CotizacionViajero = (function () {
             TIP_VIAJE: app.ui.GetDropDownStringValue('#TIP_VIAJE'),
             TIP_VIAJE_DESC: $("#TIP_VIAJE option:selected").text(),
             FEC_VIAJE: app.ui.GetDateValue('#FEC_VIAJE'),
+            COD_PAIS_ORIGEN: $('#PAIS_ORIGEN').val(),
+            PAIS_ORIGEN_DESC: $("#PAIS_ORIGEN option:selected").text(),
             DES_DESTINO: $('#DES_DESTINO').val(),
             DES_DESTINO_DESC: $("#DES_DESTINO option:selected").text(),
             FEC_NACIMIENTO: app.ui.GetDateValue('#FEC_NACIMIENTO'),
@@ -101,13 +104,12 @@ app.CotizacionViajero = (function () {
         app.ui.SetDropDownNumericValue('#cod_fracc_pago', data.cod_fracc_pago, true);
         app.ui.SetDateValue('#fec_efec_poliza', data.fec_efec_poliza);
         $('#fec_vcto_poliza_group').data("DateTimePicker").minDate($('#fec_efec_poliza_group').data("DateTimePicker").date());
-        //app.ui.SetDateValue('#fec_vcto_poliza', data.fec_vcto_poliza);
         $('#TIP_PLAN').val(data.TIP_PLAN);
         app.ui.SetDropDownNumericValue('#TIP_PLAN', data.TIP_PLAN, true, 'I');
         $('#TIP_VIAJE').val(data.TIP_VIAJE);
         app.ui.SetDropDownNumericValue('#TIP_VIAJE', data.TIP_VIAJE, true, 'NA');
         app.ui.SetDateValue('#FEC_VIAJE', data.FEC_VIAJE);
-        $('#PAIS_ORIGEN').val(data.PAIS_ORIGEN);
+        $('#PAIS_ORIGEN').val(data.COD_PAIS_ORIGEN);
         $('#DES_DESTINO').val(data.DES_DESTINO);
         app.ui.SetNumericValue('#cantidad_riesgos', data.cantidad_riesgos);
         app.ui.SetDateValue('#FEC_NACIMIENTO', data.FEC_NACIMIENTO);
@@ -227,6 +229,11 @@ app.CotizacionViajero = (function () {
             decimalPlaces: '0',
             emptyInputBehavior: 'null'
         });
+
+        $("#PAIS_ORIGEN").append($("#PAIS_ORIGEN option").remove().sort(function (a, b) {
+            var at = $(a).text(), bt = $(b).text();
+            return (at > bt) ? 1 : ((at < bt) ? -1 : 0);
+        }));
 
         $("#DES_DESTINO").append($("#DES_DESTINO option").remove().sort(function (a, b) {
             var at = $(a).text(), bt = $(b).text();

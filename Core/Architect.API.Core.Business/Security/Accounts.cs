@@ -8,6 +8,9 @@ using System.DirectoryServices;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Web.UI;
+using Architect.API.Core.Security;
+
 
 namespace Architect.API.Core.Business.Security
 {
@@ -18,7 +21,12 @@ namespace Architect.API.Core.Business.Security
         /// </summary>
         /// <param name="authenticationRequest">Credenciales de uso.</param>
         /// <returns>Contexto de autenticación incluyendo el token que identifica la sesión del usuario.</returns>
-        public static Contracts.Security.AuthenticationResponse Authentication(Contracts.Security.AuthenticationRequest authenticationRequest, ref Contracts.Security.Token token)
+        /// 
+
+        // objeto de clase Security.Token que almacena el usuario actual
+        public static Contracts.Security.Token UserIdActual;
+
+        public static Contracts.Security.AuthenticationResponse Authentication(Contracts.Security.AuthenticationRequest authenticationRequest, ref Contracts.Security.Token token, bool firstInit = false)
         {
             Contracts.Security.AuthenticationResponse result = new Contracts.Security.AuthenticationResponse();
             Contracts.Security.UserMember user = null;
@@ -148,9 +156,9 @@ namespace Architect.API.Core.Business.Security
                         rols = DataAccess.Security.UserRoleMember.RetrieveLookByUserId(user.UserId, user.CompanyId);
                         result.Roles = rols.Select(x => x.Description).ToArray();
 
-                        //Este bloque esta duplicado en la clase token
+                        //Este bloque esta duplicado en la clase Architect.API.Core.Security.token
                         Contracts.Security.AgentInformation agentInfo = null;
-                        if (user.CompanyId == 2)
+                        if (Utilities.Helpers.Settings.StringValue("Tenant.Tron.Agent.Information").Contain(user.CompanyId.ToString()))
                         {
                             agentInfo = Tron.RetrieveAgentInformationByEmail(user.CompanyId, user.EMail);
                         }
@@ -182,6 +190,12 @@ namespace Architect.API.Core.Business.Security
                             UserName = result.UserName
                         };
                         token = tokenItem;
+
+
+                        //Solo actualizara el usuario cuando este entre desde login
+                        if (firstInit) { UserIdActual = tokenItem; }
+                        
+
                         result.Token = Architect.API.Core.Security.Accounts.GeneratorToken(tokenItem);
                         user.LoginDate = DateTime.Now;
                         user.IsLockedOut = false;
@@ -229,7 +243,7 @@ namespace Architect.API.Core.Business.Security
                                     break;
 
                                 case 3: //Clientes
-                                    result.InitialPath = "viewer/tab?id=3000";
+                                    result.InitialPath = "clientes/inicio";
                                     break;
 
                                 case 4: //Bayer
@@ -258,7 +272,7 @@ namespace Architect.API.Core.Business.Security
                             }
 
                         }
-                        if (!authenticationRequest.EmployeeMode)
+                        if (!bypass &&!authenticationRequest.EmployeeMode)
                         {
                             if (user.Password.Equals("."))
                                 result.MustChangePassword = true;
@@ -323,6 +337,36 @@ namespace Architect.API.Core.Business.Security
             return result;
         }
 
+
+
+        /// <summary>
+        /// Clase que devuelve el usuario actual
+        /// </summary>
+        public static Contracts.Security.Token ReturnUser()
+        {
+            return UserIdActual;
+        }
+
+        /// <summary>
+        /// Metodo
+        /// </summary>
+        public static List<Architect.API.Core.Contracts.Security.ColoresResponse> ReadColor()
+        {
+
+            List<Architect.API.Core.Contracts.Security.ColoresResponse> RespuestaData = Architect.API.Core.DataAccess.General.ColorKey.RetrieveAllColors();
+
+            return RespuestaData;
+        }
+		/// <summary>
+        /// Leer datos del inicio
+        /// </summary>
+        public static Architect.API.Core.Contracts.Security.ClientesInicioResponse ReadInicio(Core.Contracts.Security.Token tokenInfo)
+        {
+
+            Architect.API.Core.Contracts.Security.ClientesInicioResponse DataInicio = Architect.API.Core.DataAccess.General.ProcessData.RetrieveInicio(tokenInfo.CompanyId);
+
+            return DataInicio;
+        }			 
         private static Core.Contracts.General.LookupValue TenantInformation(string tenant)
         {
             const int companyId = 0;
@@ -657,7 +701,7 @@ namespace Architect.API.Core.Business.Security
                 }
 
                 result.UserMember.Roles = new List<Architect.Utilities.Contracts.LookUpValue> { new Architect.Utilities.Contracts.LookUpValue() { Code = roleId } };
-                result.UserMember = UserMember.Create(companyId, internalUserId, result.UserMember);
+                result.UserMember = UserMember.Create(companyId, internalUserId, result.UserMember, 1);
             }
 
             return result;

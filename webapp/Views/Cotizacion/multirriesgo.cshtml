@@ -3,33 +3,29 @@
 }
 @Styles.Render("~/Content/cssCRUD")
 <div class="row">
-    <div id="mainBlock" class="col-md-12">
+    <div id="mainBlock" class="col-md-12 p-0">
         <div class="ibox">
-            <div class="ibox-title">
-                <h5><i class="fa fa-building-o"></i>  <span id="PageTitle">Seguro multirriesgo de empresas</span><small class="m-l-sm"><span id="PageSubTitle"> Cotización</span></small> </h5>
-                <!-- Opciones -->
-                <div class="ibox-tools">
-                    <a class="fullscreen-link">
-                        <i class="fa fa-expand"></i>
-                    </a>
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-wrench"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li>
-                            <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar la información</a>
-                        </li>
-                        <li>
-                            <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
-                        </li>
-                    </ul>
+            <div class="ibox-title p-0">
+                <div class="Title_Prin py-2">
+                    <div class="title_design T1">
+                        <h5><i class="fa fa-building-o"></i> <span id="PageTitle">Seguro Multirriesgo de Empresa</span></h5><br>
+                        <small class="m-l-sm"><span id="PageSubTitle"> Cotización.</span></small>
+                    </div>
+                    <div class="title_partner T2">
+                        <p class="text-muted small">
+                            Son diversos los riesgos a los cuales se encuentran expuestos los negocios, el seguro multirriesgo empresa representa una buena opción para hacer frente a posibles eventualidades ya que es un paquete integral que se adapta a las necesidades de protección de cada empresa o negocio.
+                        </p>
+                    </div>
+                    <div class="title_partner T3 text-center">
+                        <a href="https://www.mapfre.cr/seguros-cr/seguros/empresas/multirriesgo-empresa/" target="_blank">Seguro Multirriesgo Empresa</a>
+                        <p class="mt-2 text-center">
+                            Usted hace crecer su negocio, ¡nosotros lo protegemos!
+                        </p>
+                    </div>
                 </div>
             </div>
-            <div class="ibox-content">
-                <p class="text-muted small">
-                    Son diversos los riesgos a los cuales se encuentran expuestos los negocios, el seguro multirriesgo empresa representa una buena opción para hacer frente a posibles eventualidades ya que es un paquete integral que se adapta a las necesidades de protección de cada empresa o negocio.
-                    Este producto está dirigido a las pequeñas y medianas empresas (PYMES) para amparar los bienes muebles e inmuebles de los cuales sea propietario o tome en arrendamiento y cuya pérdida o daño a los mismos le pueda originar una desmejora económica o la pérdida de su patrimonio. <a href="https://www.mapfre.cr/seguros-cr/seguros/empresas/multirriesgo-empresa/" target="_blank">Seguro multirriesgo empresa</a>, usted hace crecer su negocio, ¡nosotros lo protegemos!
-                </p>
+
+            <div class="ibox-content box_design">
                 <div class="sk-spinner sk-spinner-wave">
                     <div class="sk-rect1"></div>
                     <div class="sk-rect2"></div>
@@ -37,18 +33,37 @@
                     <div class="sk-rect4"></div>
                     <div class="sk-rect5"></div>
                 </div>
+
                 <div id="generalNotify">
                 </div>
+
                 <!-- Edit Form -->
                 <div class='form-row'>
-                    <div class='col-md-12'>
+                    <!-- Opciones -->
+                    <div class="ibox-tools">
+                        <a class="fullscreen-link">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li>
+                                <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar la información</a>
+                            </li>
+                            <li>
+                                <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class='col-md-12 m-2'>
                         <div id="VisualizationsEdt" class="animated fadeInRight">
                             <form id='VisualizationsEdtForm' class='form-horizontal' data-toggle='validator'>
                                 <fieldset>
                                     <!-- datosgenerales Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4>Datos generales</h4>
+                                            <h4><i class="fa fa-list"></i> Datos generales</h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -106,11 +121,36 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- polizagrupo Zone -->
+                                    <div class="form-row d-none" id="polizagrupoZone">
+                                        <div class="col-lg-12">
+                                            <h4><i class="fa fa-building"></i> Información de póliza grupo</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- contrato DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='contrato'>Contrato<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'></span></label>
+                                                        <select id='contrato' name='contrato' class='form-control'></select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- subcontrato DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='subcontrato'>Sub contrato<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'></span></label>
+                                                        <select id='subcontrato' name='subcontrato' class='form-control' disabled></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <!-- datosdelnegocio Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4>Datos del negocio</h4>
+                                            <h4><i class="fa fa-briefcase"></i> Datos del negocio</h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -310,7 +350,7 @@
                                     <!-- sumasaseguradaspararubros Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4>Sumas aseguradas para rubros</h4>
+                                            <h4><i class="fa fa-sliders"></i> Sumas aseguradas para rubros</h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -421,10 +461,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4>
-                                                        Coberturas
-                                                        <label id="coberturasTbl-validate" class="float-right d-none LabelValidate"></label>
-                                                    </h4>
+                                                    <h4><i class="fa fa-check-square"></i> Coberturas<label id="coberturasTbl-validate" class="float-right d-none LabelValidate"></label></h4>
                                                 </div>
 
                                             </div>
@@ -491,8 +528,11 @@
     <div id="quoteBlock" class="col-md-3 animated bounceInRight d-none">
 
         <div class="ibox">
-            <div class="ibox-title">
-                <h5>Resumen de la cotización</h5>
+            <div class="ibox-title text-center float-right">
+                <div class="quote-title">
+                    <h4><i class="fa fa-file-text-o"></i> Resumen de la cotización</h4>
+                    <span class="label label-success" style="font-size: small;">Presupuesto #<span id="presupuesto"></span></span>
+                </div>
             </div>
             <div class="ibox-content">
 

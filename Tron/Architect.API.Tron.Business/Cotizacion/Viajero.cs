@@ -26,6 +26,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 TIP_VIAJE = "NA",
                 FEC_VIAJE = DateTime.Today,
                 DES_DESTINO = "",
+                COD_PAIS_ORIGEN = "CRI",
                 cantidad_riesgos = 1
             };
 

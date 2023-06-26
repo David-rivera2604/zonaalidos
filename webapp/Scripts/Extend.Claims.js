@@ -1,0 +1,147 @@
+﻿var app = app || {};
+
+app.ExtendClaims = (function () {
+
+    async function LoadRelato(num_sini) {
+
+        app.core.api_get(`Claim/${num_sini}/Story`)
+            .then(data => {
+                if (data !== null) {
+                    $('#relato' + num_sini).html(app.ui.StringCapitalizeFormatter(data.TXT_RELATO));
+
+                } else {
+                    $('#relato' + num_sini).html('---');
+                }
+            });
+    }
+
+    return {
+        NUM_SINIFormatter: function (value, row, index, field) {
+            var status = 'fa-check';
+            var color = 'green';
+            if (row.TIP_EST_SINI == 'P') {
+                status = 'fa-clock-o';
+                color = 'yellowgreen';
+            }
+            return `<i class="fa ${status}" aria-hidden="true" style="margin: 0px 8px 0px 5px;color: ${color};" title="${app.ui.StringCapitalizeFormatter(row.NOM_TIP_EST_SINI)}"></i>` +
+                `<span  title="${app.ui.StringCapitalizeFormatter(row.NOM_CAUSA)}">` + row.NUM_SINI + '</span>' +
+                '<button type="button" name="viewClaim" class="btn btn-slim btn-sm btn-link event" title="Ver detalle del siniestro"><i class="fa fa-plus-square-o"></i></button>';
+        },
+        ASIGESFormatter: function (value, row, index, field) {
+            let comp = '';
+            let asiges = row.ASIGES;
+
+            if (asiges === null || asiges === '') {
+                asiges = '';
+            } else {
+                comp = ' <button type="button" name="viewClaimPanel" class="btn btn-slim btn-sm btn-link event" title="Ver panel de siniestro"><i class="fa fa-plus-square-o" ></i></button>';
+            }
+            return `<span>${asiges}</span>` + comp;
+        },
+        NUM_POLIZAFormatter: function (value, row, index, field) {
+            return `<span>${row.NUM_POLIZA}</span>` +
+                ' <button type="button" name="viewPolicy" class="btn btn-slim btn-sm btn-link event" title="Ver detalle de la póliza"><i class="fa fa-plus-square-o" ></i></button>';
+        },
+        NOM_ASEGFormatter: function (value, row, index, field) {
+            return `<span>${row.TIP_DOCUM_ASEG} ${row.COD_DOCUM_ASEG} - ${app.ui.StringCapitalizeFormatter(row.NOM_ASEG)} ${app.ui.StringCapitalizeFormatter(row.APE_ASEG)}</span>`;
+        },
+        FEC_SINIFormatter: function (value, row, index, field) {
+            if (row.HORA_SINI != null) {
+                value = value.replace("T00:00", "T" + row.HORA_SINI)
+            }
+            return '<span>' + moment(value).format('DD/MM/YYYY hh:mma') + '</span><br>';
+        },
+        NOM_EXPFormatter: function (value, row, index, field) {
+            return `<span>${row.NUM_EXP} - ${app.ui.StringCapitalizeFormatter(value)}</span>` +
+                ' <button type="button" name="viewClaimExp" class="btn btn-slim btn-sm btn-link event" title="Ver detalle del expediente"><i class="fa fa-plus-square-o" ></i></button>';
+        },
+        NOM_TIP_EST_SINICellStyle: function (value, row, index) {
+            if (row.TIP_EST_SINI === 'P') {
+                return {
+                    css: {
+                        'background': 'lightyellow'
+                    }
+                }
+            }
+            else
+                return {};
+        },
+        ShowClaimDetail: function (row) {
+            var html = [];
+            html.push('<div class="row">');
+            [
+                { key: 'Ocurrencia', value: `${app.ui.DateTimeValueToString(row.FEC_SINI, row.HORA_SINI, '---')}`, size: 6 },
+                { key: 'Termino', value: `${app.ui.DateTimeValueToString(row.FEC_TERM_SINI, undefined, '---')}`, size: 6 },
+                { key: 'Ramo', value: `${row.COD_RAMO} - ${app.ui.StringCapitalizeFormatter(row.NOM_RAMO)}`, size: 12 },
+                { key: 'Causa', value: `${row.COD_CAUSA_SINI} - ${app.ui.StringCapitalizeFormatter(row.NOM_CAUSA)}`, size: 12 },
+                { key: 'Descripción del riesgo', value: app.ui.StringCapitalizeFormatter(row.NOM_RIESGO), size: 12 },
+                { key: 'Tomando', value: `${row.TIP_DOCUM_TOMADOR} ${row.COD_DOCUM_TOMADOR} - ${app.ui.StringCapitalizeFormatter(row.NOM_TOMADOR)} ${app.ui.StringCapitalizeFormatter(row.APE_TOMADOR)}`, size: 12 },
+                { key: 'Asegurado', value: `${row.TIP_DOCUM_ASEG} ${row.COD_DOCUM_ASEG} - ${app.ui.StringCapitalizeFormatter(row.NOM_ASEG)} ${app.ui.StringCapitalizeFormatter(row.APE_ASEG)}`, size: 12 },
+                { key: 'Email del asegurado', value: `${row.EMAIL_ASEG}`, size: 12 },
+                { key: 'Contacto', value: `${row.TIP_DOCUM_CONTACTO} ${row.COD_DOCUM_ASEG} - ${app.ui.StringCapitalizeFormatter(row.NOM_CONTACTO)} ${app.ui.StringCapitalizeFormatter(row.APE_CONTACTO)}`, size: 12 },
+                { key: 'Email del contacto', value: `${app.ui.StringValueToString(row.EMAIL_CONTACTO, '---')}`, size: 12 },
+                { key: 'Teléfono del contacto', value: `${app.ui.StringValueToString(row.TEL_NUMERO_CONTACTO, '---')}`, size: 12 },
+                { key: 'Relato', value: `<span id="relato${row.NUM_SINI}">Buscando información del relato para el siniestro ${row.NUM_SINI}...<span>`, size: 12 }
+
+            ].forEach(function (item) {
+                html.push(`<div class="col-md-${item.size}"><div class="readonlyfield"><strong>${item.key}</strong><div>${item.value}</div></div></div>`);
+            });
+            html.push(`</div>`);
+            app.ui.ShowSideBar({ title: 'SINIESTRO #{NUM_SINI}', subtitle: 'Información', isHTML: true, HTML: html.join(''), data: row, width: '360px' });
+            LoadRelato(row.NUM_SINI);
+        },
+        ShowExpedienteDetail: function (row) {
+            var html = [];
+            html.push('<div class="row">');
+            [
+                { key: 'Apertura', value: app.ui.DateFormatter(row.FEC_APER_EXP), size: 6 },
+                { key: 'Termino', value: app.ui.DateFormatter(row.FEC_TERM_EXP), size: 6 },
+                { key: 'Reserva', value: app.ui.DecimalWithZeroFormatter(row.IMP_RESERVA), size: 6 },
+                { key: 'Estimado', value: app.ui.DecimalWithZeroFormatter(row.IMP_ESTIMADO), size: 6 },
+                { key: 'Liquidado', value: app.ui.DecimalWithZeroFormatter(row.IMP_LIQUIDADO), size: 6 },
+                { key: 'Pagado', value: app.ui.DecimalWithZeroFormatter(row.IMP_PAGADO), size: 6 },
+                { key: 'Persona relacionada al expediente', value: `${row.TIP_DOCUM} ${row.COD_DOCUM} - ${app.ui.StringCapitalizeEachWordFormatter(row.NOMBRE)} ${app.ui.StringCapitalizeEachWordFormatter(row.APELLIDOS)}`, size: 12 },
+            ].forEach(function (item) {
+                html.push(`<div class="col-md-${item.size}"><div class="readonlyfield"><strong>${item.key}</strong><div>${item.value}</div></div></div>`);
+            });
+
+            html.push('</div>');
+
+            app.ui.ShowSideBar({ title: 'EXPEDIENTE #{NUM_EXP}', subtitle: 'Información', isHTML: true, HTML: html.join(''), data: row, width: '360px' })
+        },
+
+        ShowPolicyDetail: function (row) {
+            app.ui.ShowSideBar({ title: 'PÓLIZA #{NUM_POLIZA}', subtitle: 'Información', isHTML: true, HTML: `<div id="poliza${row.NUM_POLIZA}"></div>`, data: row, width: '360px' })
+            $('.sidebar-content').toggleClass('sk-loading');
+
+            app.core.api_get(`policy/${row.NUM_POLIZA}?NUM_SPTO=${row.NUM_SPTO}&NUM_APLI=${row.NUM_APLI}&NUM_SPTO_APLI=${row.NUM_SPTO_APLI}&NUM_RIESGO=${row.NUM_RIESGO}`)
+                .then(data => {
+                    if (data?.Fixeddata?.Sucessfully && data.Fixeddata?.Data != null) {
+                        let info = data.Fixeddata.Data;
+                        let html = [];
+                        html.push('<div class="row">');
+                        [
+                            { key: 'Inicio de vigencia', value: `${app.ui.DateTimeValueToString(info.FEC_EFEC_POLIZA, undefined, '---')}`, size: 6 },
+                            { key: 'Fin de vigencia', value: `${app.ui.DateTimeValueToString(info.FEC_VCTO_POLIZA, undefined, '---')}`, size: 6 },
+                            { key: 'Ramo', value: `${info.COD_RAMO} - ${app.ui.StringCapitalizeFormatter(info.NOM_RAMO)}`, size: 12 },
+                            { key: 'Fraccionamiento', value: `${info.COD_FRACC_PAGO} - ${app.ui.StringCapitalizeFormatter(info.NOM_FRACC_PAGO)}`, size: 12 },
+                            { key: 'Moneda', value: `${info.COD_MON} - ${app.ui.StringCapitalizeFormatter(info.NOM_MON)}`, size: 12 },
+                            { key: 'Póliza grupo', value: `${app.ui.StringValueToString(info.NUM_POLIZA_GRUPO, '---')}`, size: 12 },
+                            { key: 'Contrato', value: `${app.ui.StringValueToString(info.NUM_CONTRATO, '---')}`, size: 12 },
+
+                        ].forEach(function (item) {
+                            html.push(`<div class="col-md-${item.size}"><div class="readonlyfield"><strong>${item.key}</strong><div>${item.value}</div></div></div>`);
+                        });
+                        html.push(`</div>`);
+                        $(`#poliza${row.NUM_POLIZA}`).html(html.join(''));
+                    }
+                    $('.sidebar-content').toggleClass('sk-loading');
+                });
+
+
+        },
+        ShowClaimPanel: function (row) {
+            window.location.href = app.setting.basepath + 'purdy/panel?asiges=' + row.ASIGES;
+        }
+    };
+})();

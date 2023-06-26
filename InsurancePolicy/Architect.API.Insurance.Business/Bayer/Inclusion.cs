@@ -21,12 +21,11 @@ namespace Architect.API.Insurance.Business.Bayer
         {
             string fullFileName = Path.Combine(ConfigurationManager.AppSettings["Attachments.Path"], fileName);
             bool result = false;
-
-            Dictionary<string, string> pdfInfo = Helpers.DocumentManager.Information(fullFileName);
-            if (pdfInfo.ContainsKey("SERIALNUMBER"))
+            string serialNumber = Architect.PDF.Integrations.Signature.SerialNumber(fullFileName);
+            if (serialNumber.IsNotEmpty())
             {
                 Contracts.Bayer.InclusionRequest request = Retrieve(id, tokenInfo);
-                result = request.DocumentNumber.OnlyNumbers() == pdfInfo["SERIALNUMBER"].OnlyNumbers();
+                result = request.DocumentNumber.OnlyNumbers() == serialNumber.OnlyNumbers();
                 if (result)
                 {
                     Core.Contracts.General.Attachments attachment = new Core.Contracts.General.Attachments
@@ -425,7 +424,7 @@ namespace Architect.API.Insurance.Business.Bayer
         }
 
         /// <summary>
-        /// Valida la informacion de una planilla por su identificación.
+        /// Valida la información de una planilla por su identificación.
         /// </summary>
         private static List<Core.Contracts.General.Error> Validate(Contracts.Bayer.InclusionRequest inclusionInfo)
         {
@@ -589,6 +588,18 @@ namespace Architect.API.Insurance.Business.Bayer
                     break;
             }
             return result;
+        }
+
+        public static void Delete(int companyId, int userId, int id)
+        {
+            int result = 0;
+            result = DataAccess.Policy.RiskBayer.Delete(id, companyId);
+            result = Core.Business.General.Attachment.Delete(2000, id, companyId);
+            result = DataAccess.Policy.RiskOverdraft.DeleteByIdCompanyId(id, companyId);
+            result = DataAccess.Policy.RiskQuestionnaires.DeleteByPolicyIdCompanyId(id, companyId);
+
+            result = DataAccess.Policy.RiskRoles.DeleteByPolicyId(id, companyId);
+            result = DataAccess.Policy.Risk.DeleteByIdCompanyId(id, companyId);
         }
 
     }

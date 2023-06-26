@@ -423,8 +423,8 @@
                    Aliados. No se puede visualizar un documento recién cargado.
                    Aliados. Fraccionamiento de pago por default según contrato.
                    Aliados. Active Directory. Maneja posibles estado de una cuenta.
-1.6.15  06/09/2022 Proveedores. Actualizacion del listado Beneficios
-                   Proveedores. Manejo de texto descriptivo de pre autorizacion segun el rol Proveedores_Exclusivos
+1.6.15  06/09/2022 Proveedores. Actualización del listado Beneficios
+                   Proveedores. Manejo de texto descriptivo de pre autorización según el rol Proveedores_Exclusivos
 1.6.15a 27/09/2022 Viajero Regional. Ajustes de contratos.
                    Aliados. Manejo de cuentas de acceso para la pasarela de pago.
                    Caturix. Manejo de suma asegurada según plan.
@@ -442,3 +442,63 @@
                    Bayer. Validación del 100% para beneficiarios.
                    Bayer. Datos del padrón según cédula.
 1.6.19a 28/10/2022 Aliados. Ajuste en la ruta para llamar los reportes de tron (recibos, avisos).
+1.6.20  12/12/2022 Aliados. EL logout debe mantener el modo Active Directory.
+                   MapfreMas. Cuestionarios conozca a su cliente fisico y jurídico.
+1.6.20a 12/12/2022 MapfreMas. Se corrigen las dependencia en todas las direcciones.
+                   MapfreMas. Después de cotizar siempre se debe llenar la solicitud.
+                   MapfreMas. El cuestionario kyc no aplica para Purdy o Davivienda.
+1.6.20c 15/12/2022 MapfreMas. Uso del servicio SNAP Compliance.
+1.6.21             Pagos. Ajuste en el proceso de pago para el caso de agente directo (Empleado)
+                   Saldo Deudor. Validacion del asegurado no es el mismo beneficiario
+                   Saldo Deudor. Validacion de los totales de porcentajes los beneficiarios
+1.6.22             Trazabilidad. Envio de notificaciones a los usuarios de los roles responsables de la tarea.
+                   Trazabilidad. Filtro de casos según rol del usuario.
+                   Bayer. Validación de beneficiarios requeridos más el % participación .
+1.6.23             Aliados.Cambio Estilo
+                   Aliados.Abrir Casos y dar Seguimientos en el Workflow por Tenant
+                   Aliados.Mantenimiento Colores por Tenant
+                   Aliados.Cotizacion Póliza Grupo Multirriesgo
+                   Clientes.Compra Seguros Viajero
+                   Bayer. Cambio en la expresion regular para los input de  cedulas (se quitan 0 y -)
+1.6.24  03/03/2023 Aliados. Manejo de información del agente por tenant,
+                   MapfreMas. Nuevos campos y condiciones de visibilidad parar Purdy.
+                   MapfreMas. Manejo de cotización por vigencia completa.
+                   MapfreMas. Autoselección de dropdown para facilitar el llenado de la cotización.
+                   Aliados. Cancelación de póliza desde la consulta de pólizas activas,
+                   MapfreMas. Ayuda para la selección de la marca, modelo y submodelo.
+                   Aliados. Gestiones de aprobación -> Controles técnicos.
+1.6.25  09/03/2023 Envió de correo certificado Y notificación para controles técnicos.
+                   Renovación de pólizas. 
+                   Impresión de certificados para todas las vigencias.
+                   Impresión de recibos cobras el mismo día o días anteriores.
+1.6.26  21/03/2023 Reporte de capital
+                   Reporte de cartera vigente
+                   Reporte de histórico de pago
+                   Consultas generales de pólizas madres
+                   Consultas generales vigencias anteriores
+                   Fix. Los avisos me trae la lista de contratos pero no me los carga en el selección
+                   Fix. En la consulta de avisos no me trae los recibos de un aviso.
+1.6.27  29/03/2023 Bayer. Al expirar la firma, se da la posibilidad de declinar o volver a enviar al revisor.
+                   Bayer. Borrado físico de solicitud para revisor.
+                   MapfreMas. Compliance. Ajustes para el caso de titulares jurídicos.
+1.6.28  28/04/2023 Aliados. Compliance. Mejoras Terceros. Ayuda en las direcciones. Manejo Cedulas Juridicas.
+1.6.29  28/04/2023 Aliados. Formularios KYC, Solicitud y envio a Snap para Multirriesgo y Hogar.
+	               Aliados. Validaciones en Terceros en los emisores.
+				   Aliados. Mejoras en el estilo de la App.
+				   Aliados. Pagina y mantenimiento de Inicio por Tenant.
+1.6.30  07/05/2023 Trazabilidad. Todos los casos que tiene acceso el usuario, visualiza la etapas realizadas y quien las hizo (4004)
+                   Monge. Datos de tercero, porcentaje de participación para beneficiarios y otros.
+                   Evicertia. Ajuste para identificar documento firmado, aplicado en desarrollo y rama de producción.
+                   Reportes. Cambio de imagen de firma en los reportes.
+                   Trazabilidad. Cambio en plantilla de correo para agregar los campos tomador y correduria.
+                   Trazabilidad. Se requiere aumentar la cantidad de “Campos personalizados” a 10 en total.
+                   Trazabilidad. Se requiere poder indicar si los campos personalizables son obligatorios o no.
+                   Trazabilidad. Se necesita que la herramienta permita colocar adjuntos desde la apertura de un caso.
+1.6.31  16/05/2023 Aliados. Cotizacion Viajero Se agrega lista de paises TRON para campos PAIS_ORIGEN y DES_DESTINO
+                   Aliados. Formulario para actualizar datos de los clientes.
+1.6.32  15/06/2023 Aliados. Panel para siniestros Purdy.
+1.6.33  19/06/2023 Aliados. Panel para siniestros consulta de ingreso.
+1.6.33a 20/06/2023 Aliados. Correcciones para los reporte de MapfreMas.
+1.6.33b 20/06/2023 Aliados. Se prepara reporte MapfreMas Solicitud para producción.
+1.6.33c 20/06/2023 MapfreMas. Ajuste en el campo "Plan" para manejar la opción especial para purdy.
+1.6.34  26/06/2023 MapfreMasPlus.

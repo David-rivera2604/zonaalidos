@@ -5,41 +5,13 @@ using System.Runtime.Serialization;
 
 namespace Architect.API.Tron.Contracts.Emision
 {
-    public class HogarTotal: Cotizacion.HogarTotal
+    public class HogarTotal : Cotizacion.HogarTotal
+
     {
         /// <summary>
         /// No. de póliza.
         /// </summary>
         [DataMember(), JsonProperty()] public string num_poliza { get; set; }
-        /// <summary>
-        /// Tipo plan.
-        /// </summary>
-        [DataMember(), JsonProperty()] public int tipoplan { get; set; }
-
-        /// <summary>
-        /// Número de folio.
-        /// </summary>
-        [DataMember(), JsonProperty()] public string numerodefolio { get; set; }
-        /// <summary>
-        /// Número de folio madre.
-        /// </summary>
-        [DataMember(), JsonProperty()] public string numerodefoliomadre { get; set; }
-        /// <summary>
-        /// Año de construcción.
-        /// </summary>
-        [DataMember(), JsonProperty()] public int anodeconstruccion { get; set; }
-        /// <summary>
-        /// Altura edificio.
-        /// </summary>
-        [DataMember(), JsonProperty()] public int alturaedificio { get; set; }
-        /// <summary>
-        /// Número metros construidos.
-        /// </summary>
-        [DataMember(), JsonProperty()] public int numerometrosconstruidos { get; set; }
-        /// <summary>
-        /// Número de piso.
-        /// </summary>
-        [DataMember(), JsonProperty()] public int numerodepiso { get; set; }
 
 
         /// <summary>
@@ -61,9 +33,36 @@ namespace Architect.API.Tron.Contracts.Emision
         [DataMember(), JsonProperty()] public List<Comun.tercero> terceros { get; set; }
 
         /// <summary>
+        /// Propiedad
+        /// </summary>
+        [DataMember(), JsonProperty()] public List<Comun.propiedad> propiedad { get; set; }
+
+        /// <summary>
         /// Documentos requeridos
         /// </summary>
         [DataMember(), JsonProperty()] public List<Comun.DocumentoRequerido> documentosrequeridos { get; set; }
+        [DataMember(), JsonProperty()] public string Fuente_Tomador { get; set; } = "SCOTIABANK";
+        [DataMember(), JsonProperty()] public string Modo { get; set; }
+
+        [DataMember(), JsonProperty()] public EconomicData DatosEconomicos { get; set; }
+
+        [DataMember(), JsonProperty()] public string tip_firma { get; set; } = "";
+        [DataMember(), JsonProperty()] public string tip_firmaDesc { get; set; }
+
+        [DataMember(), JsonProperty()] public string correoenvio { get; set; }
+
+        [DataMember(), JsonProperty()] public object kyc { get; set; }
+
     }
+
+    public class HogarTotalSolicitud : HogarTotal
+    {
+        [DataMember(), JsonProperty()] public Contracts.Comun.tercero titular { get; set; }
+        [DataMember(), JsonProperty()] public Contracts.Comun.tercero asegurado { get; set; }
+        [DataMember(), JsonProperty()] public Contracts.Comun.tercero acredor { get; set; }
+        [DataMember(), JsonProperty()] public string mainrole { get; set; }
+    }
+
+
 
 }

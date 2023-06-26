@@ -3,19 +3,28 @@
 }
 @Styles.Render("~/Content/cssCRUD")
 <div class="row">
-    <div id="mainBlock" class="col-md-12">
+    <div id="mainBlock" class="col-md-12 p-0">
         <div class="ibox">
-            <div class="ibox-title">
-                <h5><i class="fa fa-home"></i> <span id="PageTitle">Hogar Total</span><small class="m-l-sm"><span id="PageSubTitle"> Emisión.</span></small> </h5>
-                <!-- Opciones -->
-                <div class="ibox-tools">
-                    <a class="fullscreen-link">
-                        <i class="fa fa-expand"></i>
-                    </a>
+            <div class="ibox-title p-0">
+                <div class="Title_Prin py-2">
+                    <div class="title_design T1">
+                        <h5><i class="fa fa-home"></i> <span id="PageTitle">Hogar Total</span></h5><br>
+                        <small class="m-l-sm"><span id="PageSubTitle"> Emisión</span></small>
+                    </div>
+                    <div class="title_partner T2">
+                        <p class="text-muted small">MAPFRE le trae una nueva forma de proteger a su familia, con nuestro seguro Hogar Total. Más que un seguro contra siniestros o robos, es un seguro de protección total para su hogar; 11 riesgos de cobertura básica y 8 coberturas opcionales.</p>
+                    </div>
+                    <div class="title_partner T3 text-center">
+                        <a href="https://www.mapfre.cr/seguros-cr/seguros/hogar/hogar-total/" target="_blank">Seguro Hogar Total</a>
+                        <p class="mt-2 text-center">
+                            Más que un seguro, una protección integral.
+                        </p>
+                    </div>
                 </div>
             </div>
-            <div class="ibox-content">
-                <p class="text-muted small">MAPFRE le trae una nueva forma de proteger a su familia, con nuestro seguro Hogar Total. Más que un seguro contra siniestros o robos, es un seguro de protección total para su hogar; 11 riesgos de cobertura básica y 8 coberturas opcionales. <a href="https://www.mapfre.cr/seguros-cr/seguros/hogar/hogar-total/" target="_blank">Seguro hogar total</a>, más que un seguro, una protección integral.</p>
+
+
+            <div class="ibox-content box_design">
                 <div class="sk-spinner sk-spinner-wave">
                     <div class="sk-rect1"></div>
                     <div class="sk-rect2"></div>
@@ -25,40 +34,60 @@
                 </div>
                 <div id="generalNotify">
                 </div>
+
                 <!-- Edit Form -->
-                <div class='form-row'>
-                    <div class='col-md-12'>
+                <div class="form-row">
+                    <!-- Opciones -->
+                    <div class="ibox-tools">
+                        <a class="fullscreen-link">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                    </div>
+                    <div class="col-md-12 m-2">
                         <div id="VisualizationsEdt" class="animated fadeInRight">
-                            <form id='VisualizationsEdtForm' class='form-horizontal' data-toggle='validator'>
+                            <form id="VisualizationsEdtForm" class="form-horizontal" data-toggle="validator" data-an-count="7" data-an-form-handler="xeshw" novalidate="novalidate">
                                 <fieldset>
                                     <!-- datosgenerales Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
+                                            <div class="col-lg-4"></div>
+                                            <div class="col-lg-8"></div>
 
-                                            <h4>Datos generales</h4>
+                                            <h4><i class="fa fa-list"></i> Datos generales</h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 2px 0px 6px 0px;"></div>
                                             <div class="form-row">
 
                                                 <!-- moneda DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='moneda'>Moneda</label>
+                                                    <div class='form-group newEmision'>
+                                                        @*<i class="fa fa-money icon"></i>*@
+                                                        <label class='control-label' for='moneda'>
+                                                            Moneda
+                                                        </label>
                                                         <select id='moneda' name='moneda' class='form-control' disabled></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- fraccionamientodepago DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='fraccionamientodepago'>Fraccionamiento de pago</label>
+                                                    <div class='form-group newEmision'>
+                                                        @*<i class="fa fa-check-square icon"></i>*@
+                                                        <label class='control-label' for='fraccionamientodepago'>
+                                                            Fraccionamiento de pago
+                                                        </label>
                                                         <select id='fraccionamientodepago' name='fraccionamientodepago' class='form-control' disabled></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- iniciodevigencia DatePicker -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='iniciodevigencia'>Inicio de vigencia</label>
+                                                    <div class='form-group newEmision'>
+                                                        @*<i class="fa fa-calendar-check-o icon"></i>*@
+                                                        <label class='control-label' for='iniciodevigencia'>
+                                                            Inicio de vigencia
+                                                        </label>
                                                         <div class='input-group date' id='iniciodevigencia_group'>
                                                             <input type='text' id='iniciodevigencia' name='iniciodevigencia' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled />
                                                             <span class='input-group-addon'>
@@ -66,13 +95,17 @@
                                                             </span>
                                                         </div>
                                                         <div id='iniciodevigencia_validate'></div>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- findevigencia DatePicker -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='findevigencia'>Fin de vigencia</label>
+                                                    <div class='form-group newEmision'>
+                                                        @*<i class="fa fa-calendar-times-o icon"></i>*@
+                                                        <label class='control-label' for='findevigencia'>
+                                                            Fin de vigencia
+                                                        </label>
                                                         <div class='input-group date' id='findevigencia_group'>
                                                             <input type='text' id='findevigencia' name='findevigencia' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled />
                                                             <span class='input-group-addon'>
@@ -80,215 +113,332 @@
                                                             </span>
                                                         </div>
                                                         <div id='findevigencia_validate'></div>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                         </div>
+
                                     </div>
 
                                     <!-- datosdelhogar Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4>Datos del hogar</h4>
+                                            <h4><i class="fa fa-home"></i> Datos de la cotización</h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 2px 0px 6px 0px;"></div>
                                             <div class="form-row">
 
                                                 <!-- pais DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='pais'>País</label>
+                                                    <div class='form-group newEmision'>
+                                                        @*<i class="fa fa-globe icon"></i>*@
+                                                        <label class='control-label' for='pais'>
+                                                            País
+                                                        </label>
                                                         <select id='pais' name='pais' class='form-control' disabled></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- provincia DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='provincia'>Provincia</label>
+                                                    <div class='form-group newEmision'>
+                                                        @*<i class="fa fa-globe icon"></i>*@
+                                                        <label class='control-label' for='provincia'>
+                                                            Provincia
+                                                        </label>
                                                         <select id='provincia' name='provincia' class='form-control' disabled></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- canton DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='canton'>Cantón</label>
+                                                    <div class='form-group newEmision'>
+                                                        @*<i class="fa fa-globe icon"></i>*@
+                                                        <label class='control-label' for='canton'>
+                                                            Cantón
+                                                        </label>
                                                         <select id='canton' name='canton' class='form-control' disabled></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- distrito DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='distrito'>Distrito</label>
+                                                    <div class='form-group newEmision'>
+                                                        @*<i class="fa fa-globe icon"></i>*@
+                                                        <label class='control-label' for='distrito'>
+                                                            Distrito
+                                                        </label>
                                                         <select id='distrito' name='distrito' class='form-control' disabled></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- ocupaciondelriesgo DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='ocupaciondelriesgo'>Ocupación del riesgo</label>
+                                                    <div class='form-group newEmision'>
+                                                        @*<i class="fa fa-exclamation-circle icon"></i>*@
+                                                        <label class='control-label' for='ocupaciondelriesgo'>
+                                                            Ocupación del riesgo
+                                                        </label>
                                                         <select id='ocupaciondelriesgo' name='ocupaciondelriesgo' class='form-control' disabled></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- tipodesuscripcion DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='tipodesuscripcion'>Tipo de suscripción</label>
+                                                    <div class='form-group newEmision'>
+                                                        @*<i class="fa fa-home icon"></i>*@
+                                                        <label class='control-label' for='tipodesuscripcion'>
+                                                            Tipo de suscripción
+                                                        </label>
                                                         <select id='tipodesuscripcion' name='tipodesuscripcion' class='form-control' disabled></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- numerodepisosedificacion DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='numerodepisosedificacion'>Número de pisos edificación</label>
+                                                    <div class='form-group newEmision'>
+                                                        @*<i class="fa fa-building icon"></i>*@
+                                                        <label class='control-label' for='numerodepisosedificacion'>
+                                                            Número de pisos edificación
+                                                        </label>
                                                         <select id='numerodepisosedificacion' name='numerodepisosedificacion' class='form-control' disabled></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- tipodeestrucdelaedificacion DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='tipodeestrucdelaedificacion'>Tipo de estructura de la edificación</label>
+                                                    <div class='form-group newEmision'>
+                                                        @*<i class="fa fa-fire icon"></i>*@
+                                                        <label class='control-label' for='tipodeestrucdelaedificacion'>
+                                                            Tipo de estructura de la edificación
+                                                        </label>
                                                         <select id='tipodeestrucdelaedificacion' name='tipodeestrucdelaedificacion' class='form-control' disabled></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- mesesaampararporperdrentas Numeric -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='mesesaampararporperdrentas'>Meses a amparar por perdida de rentas</label>
+                                                    <div class='form-group newEmision'>
+                                                        @*<i class="fa fa-clock-o icon"></i>*@
+                                                        <label class='control-label' for='mesesaampararporperdrentas'>
+                                                            Meses a amparar por perdida de rentas
+                                                        </label>
                                                         <input type='text' id='mesesaampararporperdrentas' name='mesesaampararporperdrentas' class='form-control text-right' size='14' maxlength='14' disabled />
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
+
                                                 <!-- medidasdeseguridad DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='medidasdeseguridad'>Medidas de seguridad</label>
+                                                    <div class='form-group newEmision'>
+                                                        @*<i class="fa fa-shield icon"></i>*@
+                                                        <label class='control-label' for='medidasdeseguridad'>
+                                                            Medidas de seguridad
+                                                        </label>
                                                         <select id='medidasdeseguridad' name='medidasdeseguridad' class='form-control' multiple="multiple" disabled></select>
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
 
                                                 <!-- descuento DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='descuento'>Descuento</label>
+                                                    <div class='form-group newEmision'>
+                                                        @*<i class="fa fa-sort-amount-desc icon"></i>*@
+                                                        <label class='control-label' for='descuento'>
+                                                            Descuento
+                                                        </label>
                                                         <select id='descuento' name='descuento' class='form-control' disabled></select>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class="form-row">
-
-                                                <!-- tipoplan DropDownList -->
-                                                <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='tipoplan'>
-                                                            Tipo plan<span class='required-mark'
-                                                                           title='Este campo debe ser llenado de forma obligatoria'>*</span>
-                                                        </label>
-                                                        <select id='tipoplan' name='tipoplan' class='form-control'>
-                                                            <option value="1" selected>Plan Clásico</option>
-                                                            <option value="2" selected>Plan Dorado</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <!-- otrassenas Text -->
-                                                <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='otrassenas'>
-                                                            Otras señas<span class='required-mark'
-                                                                             title='Este campo debe ser llenado de forma obligatoria'>*</span>
-                                                        </label>
-                                                        <input type='text' id='otrassenas' name='otrassenas' class='form-control' size='100'
-                                                               maxlength='100' />
-                                                    </div>
-                                                </div>
-                                                <!-- numerodefolio Text -->
-                                                <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='numerodefolio'>
-                                                            Número de folio<span class='required-mark'
-                                                                                 title='Este campo debe ser llenado de forma obligatoria'>*</span>
-                                                        </label>
-                                                        <input type='text' id='numerodefolio' name='numerodefolio' class='form-control' size='100'
-                                                               maxlength='100' />
-                                                    </div>
-                                                </div>
-                                                <!-- numerodefoliomadre Text -->
-                                                <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='numerodefoliomadre'>Número de folio madre</label>
-                                                        <input type='text' id='numerodefoliomadre' name='numerodefoliomadre' class='form-control'
-                                                               size='100' maxlength='100' />
-                                                    </div>
-                                                </div>
-                                                <!-- anodeconstruccion Numeric -->
-                                                <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='anodeconstruccion'>
-                                                            Año de construcción<span class='required-mark'
-                                                                                     title='Este campo debe ser llenado de forma obligatoria'>*</span>
-                                                        </label>
-                                                        <input type='text' id='anodeconstruccion' name='anodeconstruccion'
-                                                               class='form-control text-right' size='4' maxlength='4' />
-                                                    </div>
-                                                </div>
-                                                <!-- alturaedificio Numeric -->
-                                                <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='alturaedificio'>Altura edificio</label>
-
-
-                                                        <div class='input-group'>
-                                                            <input type='text' id='alturaedificio' name='alturaedificio' class='form-control text-right'
-                                                                   size='4' maxlength='4' />
-                                                            <span class='input-group-addon'>
-                                                                <small class="text-muted" title="Metros">mts</small>
-                                                            </span>
-                                                        </div>
-                                                        <div id='alturaedificio_validate'></div>
-                                                    </div>
-                                                </div>
-                                                <!-- numerometrosconstruidos Numeric -->
-                                                <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='numerometrosconstruidos'>
-                                                            Número metros construidos<span class='required-mark'
-                                                                                           title='Este campo debe ser llenado de forma obligatoria'>*</span>
-                                                        </label>
-
-
-                                                        <div class='input-group'>
-                                                            <input type='text' id='numerometrosconstruidos' name='numerometrosconstruidos'
-                                                                   class='form-control text-right' size='5' maxlength='5' />
-                                                            <span class='input-group-addon'>
-                                                                <small class="text-muted" title="Metros">mts</small>
-                                                            </span>
-                                                        </div>
-                                                        <div id='numerometrosconstruidos_validate'></div>
-
-                                                    </div>
-                                                </div>
-                                                <!-- numerodepiso Numeric -->
-                                                <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='numerodepiso'>
-                                                            Número de piso<span class='required-mark'
-                                                                                title='Este campo debe ser llenado de forma obligatoria'>*</span>
-                                                        </label>
-                                                        <input type='text' id='numerodepiso' name='numerodepiso' class='form-control text-right'
-                                                               size='5' maxlength='5' />
+                                                        <div class="lineNE"></div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="form-row">
+                                        <div class="col-sm-12 col-md-12">
+                                            <!-- sumasaseguradas Zone -->
+                                            <div class="form-row">
+                                                <div class="col-lg-12">
+                                                    <div class="form-row">
+                                                        <div class="col">
+                                                            <h4><i class="fa fa-plus-square-o"></i> Sumas aseguradas</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 2px 0px 6px 0px;"></div>
+                                                    <div class="form-row">
+
+                                                        <!-- sAEdificio Numeric -->
+                                                        <div class='col-sm-3 col-md-3 '>
+                                                            <div class='form-group newEmision'>
+                                                                @*<i class="fa fa-building icon"></i>*@
+                                                                <label class='control-label' for='sAEdificio'>Edificio</label>
+                                                                <input type='text' id='sAEdificio' name='sAEdificio' class='form-control text-right' size='21' maxlength='21' disabled />
+                                                                <div class="lineNE"></div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- sAObjetosvaliosos Numeric -->
+                                                        <div class='col-sm-3 col-md-3'>
+                                                            <div class='form-group newEmision'>
+                                                                @*<i class="fa fa-diamond icon"></i>*@
+                                                                <label class='control-label' for='sAObjetosvaliosos'>Objetos Valiosos</label>
+                                                                <input type='text' id='sAObjetosvaliosos' name='sAObjetosvaliosos' class='form-control text-right' size='21' maxlength='21' disabled />
+                                                                <div class="lineNE"></div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- sADomocristalmarmolgranito Numeric -->
+                                                        <div class='col-sm-3 col-md-3'>
+                                                            <div class='form-group newEmision'>
+                                                                @*<i class="fa fa-square-o icon"></i>*@
+                                                                <label class='control-label newEmision' for='sADomocristalmarmolgranito'>
+                                                                    Domo, cristal, mármol, granito
+                                                                </label>
+                                                                <input type='text' id='sADomocristalmarmolgranito' name='sADomocristalmarmolgranito' class='form-control text-right' size='21' maxlength='21' disabled />
+                                                                <div class="lineNE"></div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- sAGastosalquiler Numeric -->
+                                                        <div class='col-sm-3 col-md-3'>
+                                                            <div class='form-group newEmision'>
+                                                                @*<i class="fa fa-key icon"></i>*@
+                                                                <label class='control-label' for='sAGastosalquiler'>
+                                                                    Gastos alquiler
+                                                                </label>
+                                                                <input type='text' id='sAGastosalquiler' name='sAGastosalquiler' class='form-control text-right' size='21' maxlength='21' disabled />
+                                                                <div class="lineNE"></div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- sAPerdidaderentas Numeric -->
+                                                        <div class='col-sm-3 col-md-3'>
+                                                            <div class='form-group newEmision'>
+                                                                @*<i class="fa fa-level-down icon"></i>*@
+                                                                <label class='control-label' for='sAPerdidaderentas'>
+                                                                    Pérdida de rentas
+                                                                </label>
+                                                                <input type='text' id='sAPerdidaderentas' name='sAPerdidaderentas' class='form-control text-right' size='21' maxlength='21' disabled />
+                                                                <div class="lineNE"></div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- sARespcivil DropDownList -->
+                                                        <div class='col-sm-3 col-md-3'>
+                                                            <div class='form-group newEmision'>
+                                                                @*<i class="fa fa-balance-scale icon"></i>*@
+                                                                <label class='control-label' for='sARespcivil'>
+                                                                    Responsabilidad civil
+                                                                </label>
+                                                                <select id='sARespcivil' name='sARespcivil' class='form-control' disabled></select>
+                                                                <div class="lineNE"></div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- sAMobiliario Numeric -->
+                                                        <div class='col-sm-3 col-md-3'>
+                                                            <div class='form-group newEmision'>
+                                                                @*<i class="fa fa-home icon"></i>*@
+                                                                <label class='control-label' for='sAMobiliario'>
+                                                                    sAMobiliario
+                                                                </label>
+                                                                <input type='text' id='sAMobiliario' name='sAMobiliario' class='form-control text-right' size='21' maxlength='21' disabled />
+                                                                <div class="lineNE"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="col-sm-9 col-md-12">
+                                            <!-- coberturas Grid -->
+                                            <div class="form-row" id="coberturasRow">
+                                                <div class="col-lg-12">
+                                                    <div class="form-row">
+                                                        <div class='col'>
+                                                            <h4><i class="fa fa-check-square-o"></i> Coberturas</h4>
+                                                        </div>
+                                                        <div class='col-auto'>
+                                                            <button type="button" class="btn btn-sm btn-white d-none" title="Al hacer click permite agregar un nuevo Coberturas" data-toggle="modal" id="coberturasNew"> <i class="fa fa-plus"></i> </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 2px 0px 6px 0px;"></div>
+                                                    <div class="form-row">
+                                                        <div class='col-md-12' style="padding-bottom: 20px">
+                                                            <div class="table-responsive">
+                                                                <table id="coberturasTbl" style="font-size: 11px;">
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Notificaciones  -->
+                                    <div id="quoteNotify">
+                                    </div>
+
+
+                                    <!-- plandepago Grid -->
+                                    <div class="form-row" id="plandepagoRow">
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <div class='col'>
+                                                    <h4><i class="fa fa-credit-card"></i> Plan de pago</h4>
+                                                </div>
+                                                <div class='col-auto'>
+                                                    <button type="button" class="btn btn-sm btn-white d-none" title="Al hacer click permite agregar un nuevo Plan de pago" data-toggle="modal" id="plandepagoNew"> <i class="fa fa-plus"></i> </button>
+                                                </div>
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 2px 0px 6px 0px;"></div>
+                                            <div class="form-row">
+                                                <div class='col-md-12' style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="plandepagoTbl" style="font-size: 11px;">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- datosPropiedad Grid -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <div class='col'>
+                                                    <h4>
+                                                        <i class="fa fa-home"></i> Datos de la propiedad a asegurar<label id="propiedadTbl-error" class="float-right d-none" style="color: #cc5965;
+        display: inline-block;
+        font-size: 11px;
+        font-weight: normal;
+">Debe indicar la información de la propiedad a asegurar</label>
+                                                    </h4>
+                                                </div>
+                                                <div class='col-auto'>
+                                                    <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo tercero" data-toggle="modal" id="propiedadNew"> <i class="fa fa-plus"></i> </button>
+                                                </div>
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class='col-md-12' style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="propiedadTbl" style="font-size: 11px;">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
 
                                     <!-- terceros Grid -->
                                     <div class="form-row">
@@ -297,10 +447,10 @@
                                                 <div class='col'>
                                                     <h4>
                                                         <i class="fa fa-user-o"></i> Terceros<label id="tercerosTbl-error" class="float-right d-none" style="color: #cc5965;
-        display: inline-block;
-        font-size: 11px;
-        font-weight: normal;
-">Debe indicar la información de terceros</label>
+                                                                display: inline-block;
+                                                                font-size: 11px;
+                                                                font-weight: normal;
+                                                        ">Debe indicar la información de terceros</label>
                                                     </h4>
                                                 </div>
                                                 <div class='col-auto'>
@@ -320,9 +470,28 @@
                                         </div>
                                     </div>
 
+                                    <!-- formularios Grid -->
+                                    <div class="form-row formulariosGrid d-none">
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <div class='col'>
+                                                    <h4><i class="fa fa-pencil-square-o"></i> Formularios requeridos<label id="formulariosTbl-error" class="float-right d-none LabelValidate"></label></h4>
+                                                </div>
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class='col-md-12' style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="formulariosTbl" style="font-size: 11px;">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <!-- documentosrequeridos Grid -->
-                                    <div class="form-row">
+                                    <div class="form-row documentosrequeridosGrid">
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
@@ -336,9 +505,8 @@
                                             </div>
                                             <div class="form-row">
                                                 <div class='col-md-12' style="padding-bottom: 20px">
-
-                                                    <div class="table-responsive">
-                                                        <table id="documentosrequeridosTbl" style="font-size: 11px;">
+                                                    <div class="table-responsive" style="border: none">
+                                                        <table id="documentosrequeridosTbl" style="font-size: 11px; border: 0px">
                                                         </table>
                                                     </div>
                                                 </div>
@@ -346,123 +514,29 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-row">
-                                        <div class='col-sm-9 col-md-8'>
-                                            <!-- coberturas Grid -->
-                                            <div class="form-row" id="coberturasRow">
-                                                <div class="col-lg-12">
-                                                    <div class="form-row">
-                                                        <div class='col'>
-                                                            <h4>Coberturas</h4>
-                                                        </div>
-                                                        <div class='col-auto'>
-                                                            <button type="button" class="btn btn-sm btn-white d-none" title="Al hacer click permite agregar un nuevo Coberturas" data-toggle="modal" id="coberturasNew"> <i class="fa fa-plus"></i> </button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 2px 0px 6px 0px;"></div>
-                                                    <div class="form-row">
-                                                        <div class='col-md-12' style="padding-bottom: 20px">
-                                                            <div class="table-responsive">
-                                                                <table id="coberturasTbl" style="font-size: 11px;">
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                    <!-- enviosolicitud Zone -->
+                                    <div class="col-md-12 enviosolicitudZone" id="enviosolicitudzona" style="padding: 0px">
+                                        <h4><i class="fa fa-envelope-o"></i> Destinatario para envío de solicitud</h4>
+                                        <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec"></div>
+                                        <div class="form-row">
+
+                                            <!-- tipoenvio DropDownList -->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label" for="tip_firma">Tipo de envío<span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span></label>
+                                                    <select id="tip_firma" name="tip_firma" class="form-control">
+                                                        <option value="M">FIRMA MANUAL</option>
+                                                        <option value="D">ACEPTACION DIGITAL</option>
+                                                        <option value="F">FIRMA ACEPTACION DIGITAL</option>
+                                                    </select>
                                                 </div>
                                             </div>
 
-                                        </div>
-                                        <div class='col-sm-3 col-md-4'>
-                                            <!-- sumasaseguradas Zone -->
-                                            <div class="form-row">
-                                                <div class="col-lg-12">
-                                                    <div class="form-row">
-                                                        <div class='col'>
-                                                            <h4>Sumas aseguradas</h4>
-                                                        </div>
-                                                    </div>
-                                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 2px 0px 6px 0px;"></div>
-                                                    <div class="form-row">
-
-                                                        <!-- sAEdificio Numeric -->
-                                                        <div class='col-sm-12 col-md-6'>
-                                                            <div class='form-group'>
-                                                                <label class='control-label' for='sAEdificio'>Edificio</label>
-                                                                <input type='text' id='sAEdificio' name='sAEdificio' class='form-control text-right' size='21' maxlength='21' disabled />
-                                                            </div>
-                                                        </div>
-                                                        <!-- sAObjetosvaliosos Numeric -->
-                                                        <div class='col-sm-12 col-md-6'>
-                                                            <div class='form-group'>
-                                                                <label class='control-label' for='sAObjetosvaliosos'>Objetos valiosos</label>
-                                                                <input type='text' id='sAObjetosvaliosos' name='sAObjetosvaliosos' class='form-control text-right' size='21' maxlength='21' disabled />
-                                                            </div>
-                                                        </div>
-                                                        <!-- sADomocristalmarmolgranito Numeric -->
-                                                        <div class='col-sm-12 col-md-6'>
-                                                            <div class='form-group'>
-                                                                <label class='control-label' for='sADomocristalmarmolgranito'>Domo, cristal, mármol, granito</label>
-                                                                <input type='text' id='sADomocristalmarmolgranito' name='sADomocristalmarmolgranito' class='form-control text-right' size='21' maxlength='21' disabled />
-                                                            </div>
-                                                        </div>
-                                                        <!-- sAGastosalquiler Numeric -->
-                                                        <div class='col-sm-12 col-md-6'>
-                                                            <div class='form-group'>
-                                                                <label class='control-label' for='sAGastosalquiler'>Gastos alquiler</label>
-                                                                <input type='text' id='sAGastosalquiler' name='sAGastosalquiler' class='form-control text-right' size='21' maxlength='21' disabled />
-                                                            </div>
-                                                        </div>
-                                                        <!-- sAPerdidaderentas Numeric -->
-                                                        <div class='col-sm-12 col-md-6'>
-                                                            <div class='form-group'>
-                                                                <label class='control-label' for='sAPerdidaderentas'>Pérdida de rentas</label>
-                                                                <input type='text' id='sAPerdidaderentas' name='sAPerdidaderentas' class='form-control text-right' size='21' maxlength='21' disabled />
-                                                            </div>
-                                                        </div>
-                                                        <!-- sARespcivil DropDownList -->
-                                                        <div class='col-sm-12 col-md-6'>
-                                                            <div class='form-group'>
-                                                                <label class='control-label' for='sARespcivil'>Responsabilidad civil</label>
-                                                                <select id='sARespcivil' name='sARespcivil' class='form-control' disabled></select>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- sAMobiliario Numeric -->
-                                                        <div class='col-sm-12 col-md-6'>
-                                                            <div class='form-group'>
-                                                                <label class='control-label' for='sAMobiliario'>Mobiliario</label>
-                                                                <input type='text' id='sAMobiliario' name='sAMobiliario' class='form-control text-right' size='21' maxlength='21' disabled />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                    <!-- Notificaciones  -->
-                                    <div id="quoteNotify">
-                                    </div>
-
-                                    <!-- plandepago Grid -->
-                                    <div class="form-row" id="plandepagoRow">
-                                        <div class="col-lg-12">
-                                            <div class="form-row">
-                                                <div class='col'>
-                                                    <h4>Plan de pago</h4>
-                                                </div>
-                                                <div class='col-auto'>
-                                                    <button type="button" class="btn btn-sm btn-white d-none" title="Al hacer click permite agregar un nuevo Plan de pago" data-toggle="modal" id="plandepagoNew"> <i class="fa fa-plus"></i> </button>
-                                                </div>
-                                            </div>
-                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 2px 0px 6px 0px;"></div>
-                                            <div class="form-row">
-                                                <div class='col-md-12' style="padding-bottom: 20px">
-                                                    <div class="table-responsive">
-                                                        <table id="plandepagoTbl" style="font-size: 11px;">
-                                                        </table>
-                                                    </div>
+                                            <!-- correoenvio Text -->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label" for="correoenvio">Correo<span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span></label>
+                                                    <input id="correoenvio" name="correoenvio" type="text" class="form-control" size="80" maxlength="80">
                                                 </div>
                                             </div>
                                         </div>
@@ -470,11 +544,14 @@
 
                                     <!-- Botonera -->
                                     <div class="form-row">
-                                        <div class='col-md-12'>
-                                            <button id="cotizar" type="button" class="btn btn-primary" data-doing="Emitiendo...">
+                                        <div class="col-md-12">
+                                            <button id="guardarenviar" type="button" class="btn btn-primary d-none" data-doing="Enviado solictud...">
+                                                Guardar y enviar solicitud
+                                            </button>
+                                            <button id="cotizar" type="button" class="btn btn-primary d-none" data-doing="Emitiendo...">
                                                 Emitir
                                             </button>
-                                            <input id="fileUpload" type="file" class="d-none" />
+                                            <input id="fileUpload" type="file" class="d-none">
                                         </div>
                                     </div>
                                 </fieldset>
@@ -490,7 +567,7 @@
 
         <div class="ibox">
             <div class="ibox-title">
-                <h5>Resumen</h5>
+                <h5><i class="fa fa-file-text-o"></i> Resumen</h5>
                 <div class="ibox-tools">
                     <h5><span class="label label-success float-right" style="font-size: small;">Póliza #<span id="NumPoliza"></span></span></h5>
                 </div>
@@ -526,6 +603,491 @@
 
     </div>
 
+
+
+
+    <!-- datosdelhogar Grid Modal -->
+    <div class="modal inmodal" id="propiedadModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span>
+                    </button>
+                    <h4 class="modal-title">Información de la propiedad a asegurar</h4>
+                    <small class="font-bold">Agrega información de la propiedad a asegurar </small>
+                    <small class="font-bold">¡Click! en Información Requerida o Adicional para completar el formulario</small>
+                </div>
+                <div>
+                    <ul class="modal-tab nav nav-tabs">
+                        <li class="active"><a href="#div-infoR">Información Requerida</a></li>
+                        <li><a href="#div-infoA">Información Adicional</a></li>
+                    </ul>
+                </div>
+
+                <div class="modal-body">
+                    <!-- datosdelhogar Grid Edit Form -->
+                    <div class='form-row'>
+                        <div class='col-md-12'>
+                            <div id="" class="animated fadeInRight">
+                                <form id='propiedadEdtForm' class='form-horizontal' data-toggle='validator'>
+                                    <fieldset>
+                                        <div class='form-row'>
+                                            <div class="col-lg-12 tab-content">
+
+                                                <!--TAB DH Zone-->
+                                                <div id="div-infoR" class="tab-pane fade in active">
+                                                    <h4><i class="fa fa-home"></i> Datos de la propiedad</h4>
+                                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                                    <div class="form-row">
+                                                        <!-- tipoplan DropDownList -->
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="tipoplan">
+                                                                    Tipo plan<span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span>
+                                                                </label>
+                                                                <select id="tipoplan" name="tipoplan" class="form-control">
+                                                                    <option value="1" selected="">Plan Clásico</option>
+                                                                    <option value="2" selected="">Plan Dorado</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- otrassenas Text -->
+                                                        <div class='col-sm-4 col-md-4 role-esph-visible'>
+                                                            <div class='form-group'>
+                                                                <label class='control-label' for='otrassenas'>
+                                                                    Otras señas<span class='required-mark'
+                                                                                     title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                                                </label>
+                                                                <input type='text' id='otrassenas' name='otrassenas' class='form-control' size='100'
+                                                                       maxlength='100' />
+                                                            </div>
+                                                        </div>
+                                                        <!-- numerodefolio Text -->
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="numerodefolio">
+                                                                    Número de folio<span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span>
+                                                                </label>
+                                                                <input type="text" id="numerodefolio" name="numerodefolio" class="form-control" size="100" maxlength="100">
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- anodeconstruccion Numeric -->
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="anodeconstruccion">
+                                                                    Año de construcción<span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span>
+                                                                </label>
+                                                                <input type="text" id="anodeconstruccion" name="anodeconstruccion" class="form-control text-right" size="4" maxlength="4" value="">
+                                                            </div>
+                                                        </div>
+
+
+
+                                                        <!-- numerometrosconstruidos Numeric -->
+                                                        <div class="col-sm-5 col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="numerometrosconstruidos">
+                                                                    Número metros construidos<span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span>
+                                                                </label>
+
+
+                                                                <div class="input-group">
+                                                                    <input type="text" id="numerometrosconstruidos" name="numerometrosconstruidos" class="form-control text-right" size="5" maxlength="5" value="">
+                                                                    <span class="input-group-addon">
+                                                                        <small class="text-muted" title="Metros">mts</small>
+                                                                    </span>
+                                                                </div>
+                                                                <div id="numerometrosconstruidos_validate"></div>
+
+                                                            </div>
+                                                        </div>
+                                                        <!-- numerodepiso Numeric -->
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="numerodepiso">
+                                                                    Número de pisos<span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span>
+                                                                </label>
+                                                                <input type="text" id="numerodepiso" name="numerodepiso" class="form-control text-right" size="5" maxlength="5" value="">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+                                                <!--TAB DH Zone-->
+                                                <div id="div-infoA" class="tab-pane fade">
+                                                    <h4><i class="fa fa-home"></i> Datos de la propiedad</h4>
+                                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                                    <div class="form-row">
+                                                        <!-- numerodefoliomadre Text -->
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="numerofincafilial">Número de finca filial</label>
+                                                                <input type="text" id="numerofincafilial" name="numerofincafilial" class="form-control" size="1000000" maxlength="1000000">
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- numerodefoliomadre Text -->
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="numerodefoliomadre">Número de folio madre</label>
+                                                                <input type="text" id="numerodefoliomadre" name="numerodefoliomadre" class="form-control" size="100" maxlength="100">
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- alturaedificio Numeric -->
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="alturaedificio">Altura edificio</label>
+                                                                <div class="input-group">
+                                                                    <input type="text" id="alturaedificio" name="alturaedificio" class="form-control text-right" size="4" maxlength="4" value="">
+                                                                    <span class="input-group-addon">
+                                                                        <small class="text-muted" title="Metros">mts</small>
+                                                                    </span>
+                                                                </div>
+                                                                <div id="alturaedificio_validate"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--Georeferencia-->
+                                                    <h4><i class="fa fa-globe"></i> Georeferencia</h4>
+                                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                                    <div class="form-row">
+                                                        <!-- Latitud Text -->
+                                                        <div class="col-sm-4 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="latitud">
+                                                                    Latitud
+                                                                </label>
+                                                                <div class="input-group">
+                                                                    <input type="text" id="latitud" name="latitud" class="form-control text-right valid" aria-invalid="false" placeholder="XX°XX′XX″XX">
+                                                                    <select id="NS_latitud" style="border: var(--mapfregray2) 1px solid;border-radius: 0px 5px 5px 0px;">
+                                                                        <option value="N" selected>N</option>
+                                                                        <option value="S">S</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Longitud Text -->
+                                                        <div class="col-sm-4 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="longitud">
+                                                                    Longitud
+                                                                </label>
+                                                                <div class="input-group">
+                                                                    <input type="text" id="longitud" name="longitud" class="form-control text-right valid"  aria-invalid="false" placeholder="XX°XX′XX″XX">
+                                                                    <select id="EO_longitud" style="border: var(--mapfregray2) 1px solid; border-radius: 0px 5px 5px 0px;">
+                                                                        <option value="E" selected>E</option>
+                                                                        <option value="O">O</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <!--Detalles colindantes-->
+                                                    <!--Norte Text-->
+                                                    <h4><i class="fa fa-area-chart"></i> Detalles colindantes</h4>
+                                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                                    <div class="form-row">
+                                                        <div class="col-sm-4 col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="norte">
+                                                                    Norte
+                                                                </label>
+                                                                <input type="text" id="norte" name="norte" class="form-control" size="100" maxlength="100">
+                                                            </div>
+                                                        </div>
+                                                        <!--Sur Text-->
+                                                        <div class="col-sm-4 col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="sur">
+                                                                    Sur
+                                                                </label>
+                                                                <input type="text" id="sur" name="sur" class="form-control" size="100" maxlength="100">
+                                                            </div>
+                                                        </div>
+                                                        <!--Este Text-->
+                                                        <div class="col-sm-4 col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="este">
+                                                                    Este
+                                                                </label>
+                                                                <input type="text" id="este" name="este" class="form-control" size="100" maxlength="100">
+                                                            </div>
+                                                        </div>
+
+                                                        <!--Oeste Text-->
+                                                        <div class="col-sm-4 col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="oeste">
+                                                                    Oeste
+                                                                </label>
+                                                                <input type="text" id="oeste" name="oeste" class="form-control" size="100" maxlength="100">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--Clase de Construccion-->
+                                                    <h4><i class="fa fa-wrench"></i> Clase de construcción</h4>
+                                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                                    <div class="form-row">
+
+                                                        <!--Material de la Estructura Text-->
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="material_estructura">
+                                                                    Material de la estructura
+                                                                </label>
+                                                                <input type="text" id="material_estructura" name="material_estructura" class="form-control" size="100" maxlength="100">
+                                                            </div>
+                                                        </div>
+
+                                                        <!--Tipo de mamposteria Text-->
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="mamposteria">
+                                                                    Tipo de mamposteria
+                                                                </label>
+                                                                <input type="text" id="mamposteria" name="mamposteria" class="form-control" size="100" maxlength="100">
+                                                            </div>
+                                                        </div>
+                                                        <!-- Material de las paredes internas Text-->
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="paredes_internas">
+                                                                    Material de las paredes internas
+                                                                </label>
+                                                                <input type="text" id="paredes_internas" name="paredes_internas" class="form-control" size="100" maxlength="100">
+                                                            </div>
+                                                        </div>
+                                                        <!--Material del techo Text-->
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="techo">
+                                                                    Material del techo
+                                                                </label>
+                                                                <input type="text" id="techo" name="techo" class="form-control" size="100" maxlength="100">
+                                                            </div>
+                                                        </div>
+                                                        <!--Material de los entrepisos Text-->
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="entrepisos">
+                                                                    Material de los entrepisos
+                                                                </label>
+                                                                <input type="text" id="entrepisos" name="entrepisos" class="form-control" size="100" maxlength="100">
+                                                            </div>
+                                                        </div>
+
+                                                        <!--Material del piso Text-->
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="material_piso">
+                                                                    Material del piso
+                                                                </label>
+                                                                <input type="text" id="material_piso" name="material_piso" class="form-control" size="100" maxlength="100">
+                                                            </div>
+                                                        </div>
+
+                                                        <!--sobrepeso? Select-->
+                                                        <div class="col-sm-4 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="sobrepeso">¿Existe sobrepeso en las estructuras?</label>
+                                                                <div class="form-row">
+                                                                    <div class="col-auto" style="padding-top: 6px;">
+                                                                        <div class="custom-control custom-radio custom-control-inline">
+                                                                            <input type="radio" class="custom-control-input" id="sobrepeso_1" name="sobrepeso" value="1">
+                                                                            <label class="custom-control-label" for="sobrepeso_1">Si</label>
+                                                                        </div>
+                                                                        <div class="custom-control custom-radio custom-control-inline">
+                                                                            <input type="radio" class="custom-control-input" id="sobrepeso_2" name="sobrepeso" value="2">
+                                                                            <label class="custom-control-label" for="sobrepeso_2">No</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!--El bien asegurado se encuentra en? Select-->
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="lugardelbien">El bien asegurado se encuentra</label>
+                                                                <select id="lugardelbien" name="lugardelbien" class="form-control valid" aria-invalid="false">
+                                                                    <option value="1">En una esquina</option>
+                                                                    <option value="2">En una interseccion vehicular</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <!--El bien asegurado a tenido daños previos? Select-->
+                                                        <div class="col-sm-4 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="danosprevios">El bien asegurado a tenido daños previos</label>
+                                                                <div class="form-row">
+                                                                    <div class="col-auto" style="padding-top: 6px;">
+                                                                        <div class="custom-control custom-radio custom-control-inline">
+                                                                            <input type="radio" class="custom-control-input" id="danosprevios_1" name="danosprevios" value="1">
+                                                                            <label class="custom-control-label" for="danosprevios_1">Si, fueron reparados</label>
+                                                                        </div>
+                                                                        <div class="custom-control custom-radio custom-control-inline">
+                                                                            <input type="radio" class="custom-control-input" id="danosprevios_2" name="danosprevios" value="2">
+                                                                            <label class="custom-control-label" for="danosprevios_2">No</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+
+                                                        <!-- INS_ELECT_ENTUB RadioButtonList -->
+                                                        <div class="col-sm-3 col-md-5 role-esph-visible">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="INS_ELECT_ENTUB">¿Las instalaciones eléctricas se encuentran entubadas?</label>
+                                                                <div style="padding-top: 6px;">
+                                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" class="custom-control-input" id="INS_ELECT_ENTUB_1" name="INS_ELECT_ENTUB" value="1">
+                                                                        <label class="custom-control-label" for="INS_ELECT_ENTUB_1">Si</label>
+                                                                    </div>
+                                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" class="custom-control-input" id="INS_ELECT_ENTUB_2" name="INS_ELECT_ENTUB" value="2">
+                                                                        <label class="custom-control-label" for="INS_ELECT_ENTUB_2">No</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <!-- CERCA_RI_MAR_LAG_TA_CI RadioButtonList -->
+                                                        <div class="col-sm-3 col-md-6 role-esph-visible">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="CERCA_RI_MAR_LAG_TA_CI">¿Está cerca de un río, mar, lago, talud, en la cima?</label>
+                                                                <div style="padding-top: 6px;">
+                                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" class="custom-control-input" id="CERCA_RI_MAR_LAG_TA_CI_1" name="CERCA_RI_MAR_LAG_TA_CI" value="1">
+                                                                        <label class="custom-control-label" for="CERCA_RI_MAR_LAG_TA_CI_1">Si</label>
+                                                                    </div>
+                                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" class="custom-control-input" id="CERCA_RI_MAR_LAG_TA_CI_2" name="CERCA_RI_MAR_LAG_TA_CI" value="2">
+                                                                        <label class="custom-control-label" for="CERCA_RI_MAR_LAG_TA_CI_2">No</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <!-- DISTANCIA_MTS Numeric -->
+                                                        <div class="col-sm-3 col-md-3 role-esph-visible">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="DISTANCIA_MTS">Distancia/Metros</label>
+                                                                <input type="text" id="DISTANCIA_MTS" name="DISTANCIA_MTS" class="form-control text-right" size="6" maxlength="6">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <!--Sumas Aseguradas en relacion a la vivienda-->
+                                                    <h4><i class="fa fa-home"></i> Sumas que forman parte del monto asegurado en vivienda</h4>
+                                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                                    <div class="form-row">
+                                                        <div class="col-sm-4 col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="bodega">
+                                                                    Bodegas
+                                                                </label>
+                                                                <input type="text" id="bodega" name="norte" class="form-control" size="100" maxlength="100">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-sm-4 col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="garaje">
+                                                                    Garaje
+                                                                </label>
+                                                                <input type="text" id="garaje" name="garaje" class="form-control" size="100" maxlength="100">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-sm-4 col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="tapias">
+                                                                    Tapias
+                                                                </label>
+                                                                <input type="text" id="tapias" name="tapias" class="form-control" size="100" maxlength="100">
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="col-sm-4 col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="piscina">
+                                                                    Piscinas
+                                                                </label>
+                                                                <input type="text" id="piscina" name="piscina" class="form-control" size="100" maxlength="100">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-sm-4 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="otras_sumas">
+                                                                    Otros
+                                                                </label>
+                                                                <input type="text" id="otras_sumas" name="otras_sumas" class="form-control" size="100" maxlength="100">
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Vulnerabilidad de los contenidos -->
+                                                        <div class="col-sm-6 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="Vuln_Conten">Vulnerabilidad de los contenidos</label>
+                                                                <div style="padding-top: 6px;">
+                                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" class="custom-control-input" id="VULNERABILIDAD_1" name="VULNERABILIDAD" value="1">
+                                                                        <label class="custom-control-label" for="VULNERABILIDAD_1">Baja</label>
+                                                                    </div>
+                                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" class="custom-control-input" id="VULNERABILIDAD_2" name="VULNERABILIDAD" value="2">
+                                                                        <label class="custom-control-label" for="VULNERABILIDAD_2">Regular</label>
+                                                                    </div>
+                                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" class="custom-control-input" id="VULNERABILIDAD_3" name="VULNERABILIDAD" value="3">
+                                                                        <label class="custom-control-label" for="VULNERABILIDAD_3">Alta</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="propiedadEdtFormSave" data-doing="Guardando...">
+                        Guardar
+                        cambios
+                    </button>
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <!-- terceros Grid Modal -->
     <div class="modal inmodal" id="tercerosModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -546,7 +1108,7 @@
                                     <fieldset>
                                         <div class='form-row'>
                                             <!-- tipodetercero DropDownList -->
-                                            <div class='col-sm-4 col-md-4'>
+                                            <div class='col-sm-3 col-md-3'>
                                                 <div class='form-group'>
                                                     <label class='control-label' for='tipodetercero'>
                                                         Tipo de tercero<span class='required-mark'
@@ -560,7 +1122,7 @@
                                                 </div>
                                             </div>
                                             <!-- DocumentNumber Text -->
-                                            <div class='col-sm-4 col-md-4'>
+                                            <div class='col-sm-5 col-md-5'>
                                                 <div class='form-group'>
                                                     <label class='control-label' for='DocumentNumber'>
                                                         Identificación<span class='required-mark'
@@ -588,7 +1150,8 @@
                                                     </div>
                                                     <div id='DocumentNumber_validate'></div>
                                                 </div>
-                                            </div><!-- nombre Text -->
+                                            </div>
+                                            <!-- nombre Text -->
                                             <div class='col-sm-4 col-md-4'>
                                                 <div class='form-group'>
                                                     <label class='control-label' for='nombre'>
@@ -810,7 +1373,7 @@
                                                     <!-- porcentajeacredor Numeric -->
                                                     <div class='col-sm-4 col-md-4'>
                                                         <div class='form-group'>
-                                                            <label class='control-label' for='porcentajeacredor'>Porcentaje acredor</label>
+                                                            <label class='control-label' for='porcentajeacredor'>Porcentaje acreedor</label>
                                                             <div class='input-group'>
                                                                 <input type='text' id='porcentajeacredor' name='porcentajeacredor'
                                                                        class='form-control text-right' size='3' maxlength='3' />
@@ -917,14 +1480,25 @@
         </div>
     </div>
 
+    <div id="dynamic"></div>
+
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
     <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
     <script src="@Url.Content("~/Scripts/Emision.HogarTotal.js")"></script>
+    <script src="@Url.Content("~/assets/js/multimodal.js")"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             app.HogarTotal.Init();
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $(".nav-tabs a").click(function () {
+                $(this).tab('show');
+            });
         });
     </script>
 }

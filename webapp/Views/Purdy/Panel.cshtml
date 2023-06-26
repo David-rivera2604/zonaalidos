@@ -1,0 +1,102 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<div class="ibox">
+    <div class="ibox-title">
+        <h5><span id="PageTitle">Información de un caso</span><small class="m-l-sm"><span id="PageSubTitle"> Purdy</span></small> </h5>
+        <!-- Opciones -->
+        <div class="ibox-tools">
+            <a class="fullscreen-link">
+                <i class="fa fa-expand"></i>
+            </a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <i class="fa fa-wrench"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                <li>
+                    <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar la información</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+            <div class="sk-rect4"></div>
+            <div class="sk-rect5"></div>
+        </div>
+        <div id="generalNotify">
+        </div>
+        @Html.Partial("_encabezado")
+
+        <!-- Cabecera de las pestañas -->
+        <ul class="nav nav-tabs d-none panelinfo" style="padding-top: 14px">
+            <li>
+                <a class="nav-link active show" data-toggle="tab" href="#detalleTab" id="detalleHTab">
+                    <i class="fa fa-list"></i> Detalle <span class="badge badge-danger"></span>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" data-toggle="tab" href="#eventoTab" id="eventoHTab">
+                    <i class="fa fa-bell-o"></i> Análisis del evento <span class="badge badge-danger"></span>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" data-toggle="tab" href="#danoTab" id="danoHTab">
+                    <i class="fa fa-bug"></i> Análisis de Daños<span class="badge badge-danger"></span>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" data-toggle="tab" href="#indemnizacionTab" id="indemnizacionHTab">
+                    <i class="fa fa-money"></i> Análisis de Indemnización <span class="badge badge-danger"></span>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" data-toggle="tab" href="#legalTab" id="legalHTab">
+                    <i class="fa fa-gavel"></i> Legal <span class="badge badge-danger"></span>
+                </a>
+            </li>
+        </ul>
+
+        <!-- Contenido de las pestañas  -->
+        <div class="tab-content d-none panelinfo" style="padding-top: 10px">
+            <div id="detalleTab" class="tab-pane active show fade">
+                @Html.Partial("_detalle")
+            </div>
+            <div id="eventoTab" class="tab-pane show fade">
+                @Html.Partial("_evento")
+            </div>
+            <div id="danoTab" class="tab-pane show fade">
+                @Html.Partial("_danos")
+            </div>
+            <div id="indemnizacionTab" class="tab-pane show fade">
+                @Html.Partial("_indemnizacion")
+            </div>
+            <div id="legalTab" class="tab-pane show fade">
+                @Html.Partial("_legal")
+            </div>
+        </div>
+
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/Purdy.Panel.js")"></script>
+    <script src="@Url.Content("~/Scripts/Purdy.PanelEncabezado.js")"></script>
+    <script src="@Url.Content("~/Scripts/Purdy.PanelDetalle.js")"></script>
+    <script src="@Url.Content("~/Scripts/Purdy.PanelEvento.js")"></script>
+    <script src="@Url.Content("~/Scripts/Purdy.PanelDanos.js")"></script>
+    <script src="@Url.Content("~/Scripts/Purdy.PanelIndemnizacion.js")"></script>
+    <script src="@Url.Content("~/Scripts/Purdy.PanelLegal.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.PurdyPanel.Init();
+        });
+    </script>
+}

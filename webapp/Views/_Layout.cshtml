@@ -7,80 +7,131 @@
     <title>Zona de Aliados</title>
 
     @Styles.Render("~/Content/cssMaster")
-	@Scripts.Render("~/bundles/jsMaster")
-	
-	<script src="@Url.Content("~/assets/js/plugins/jqueryformatter/jquery.formatter.js")"></script>
-	<script src="@Url.Content("~/assets/sparkline/jquery.sparkline.min.js")"></script>
-	
-	
-	<!-- Google Tag Manager -->
-		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-		})(window,document,'script','dataLayer','GTM-NL4F2ZN');</script>
-	<!-- End Google Tag Manager -->
+    @Scripts.Render("~/bundles/jsMaster")
+
+    <script src="@Url.Content("~/assets/js/plugins/jqueryformatter/jquery.formatter.js")"></script>
+    <script src="@Url.Content("~/assets/sparkline/jquery.sparkline.min.js")"></script>
+
+
+    <!-- Google Tag Manager -->
+    <script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-NL4F2ZN');</script>
+    <!-- End Google Tag Manager -->
 </head>
 
-<body class="fixed-sidebar fixed-nav fixed-nav-basic @ViewBag.theme">
+<body class="fixed-sidebar fixed-nav fixed-nav-basic Mapfre @ViewBag.theme">
 
-	<!-- Google Tag Manager (noscript) -->
-		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NL4F2ZN"
-		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-	<!-- End Google Tag Manager (noscript) -->
-	
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NL4F2ZN"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <div id="wrapper">
-        <nav class="navbar-default navbar-static-side " role="navigation">
-            <div class="sidebar-collapse">
-                <ul class="nav metismenu" id="side-menu">
-                    <li class="nav-header">
-                        <div class="dropdown profile-element">
-                            <img alt="image" src="~/logos/logo-core-alt.svg" id="tenantLogo">
-                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                                <span class="block m-t-xs font-bold" id="UserNameMaster"></span>
-                                <span class="text-muted text-xs block"><span id="TenantMaster">menu</span> <b class="caret"></b></span>
-                            </a>
-                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                                <li><a class="dropdown-item" href="~/Security/ChangePassword" title="Permite el cambio de la clave de acceso del usuario conectado">Cambio de clave de acceso</a></li>
-                                <li><a class="dropdown-item" href="~/Security/Login" title="Permite terminar la sesión del usuario">Desconectar</a></li>
-                            </ul>
-                        </div>
-                        <div class="logo-element">
-                            IN+
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+        <div id="page-wrapper" class="bg-white">
 
-        <div id="page-wrapper" class="gray-bg">
-            <div class="row border-bottom">
-                <nav class="navbar navbar-fixed-top white-bg" role="navigation" style="margin-bottom: 0">
-                    <div class="navbar-header">
-                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#">
-                            <i class="fa fa-bars"></i>
+            <div class="head_prin">
+                <div id="imgHead" class="imgHeadMapfre">
+                    <img src="../app/img/logohorizontal.jpg" style="width: 190px;height: auto;margin-top: 12px;" alt="logoMAPFRE">
+                </div>
+                <input type="checkbox" id="ham-menu">
+                <label for="ham-menu" class="ham-icon">
+                    <div class="trigger" id="trigger">
+                        <span></span>
+                    </div>
+                </label>
+                <div class="ham-menu">
+                    @*<div id="imgSide" class="imgHeadMapfre">
+                            <img src="../app/img/logohorizontal.jpg" style="width: 190px;height: auto;margin-top: 12px;" alt="logoMAPFRE">
+                            <a href="#" class="quest_mob" id="showHelp" title="Despliega la ayuda de la aplicación" style="
+                            position: absolute;
+                            right: 25px;
+                            top:10px;">
+                                <i class="fa fa-question"></i>
+                            </a>
+                        </div>*@
+                    <div class="items_ham_menu" id="MenuVertical">
+                    </div>
+                </div>
+                <div class="head_line">
+                    <div class="hList headinamci" id="side-menu" role="navigation" style="margin-bottom: 0">
+                    </div>
+                    <div class="min_menu" style="display:none" id="moremenubox">
+                        <input type="checkbox" id="more_menu">
+                        <label for="more_menu" class="more">
+                            <div class="menuicon">
+                                <span></span>
+                            </div>
+                        </label>
+                        <div id="container_moremenu">
+
+                        </div>
+                    </div>
+                    <div class="aliados">
+                        <div class="usua_head">
+                            <span class="block m-t-xs" id="UserNameMaster"></span>
+                            <ul class="hList">
+                                <nav class="megamenu_desktop">
+                                    <div class="menu dropdown">
+                                        <input type="checkbox" id="Aliados" class="inputche d-none">
+                                        <label class="level_1__item level_2__small" for="Aliados"> <a class="level_1__link  dropdown-toggle" title=""> <span><span id="TenantMaster">menu</span></span></a></label>
+                                        <ul class="menu-dropdown" aria-expanded="false">
+                                            <li>
+                                                <a href="~/Security/Login" title="Permite terminar la sesión del usuario">
+                                                    <i class="fa fa-sign-out"></i> <span class="d-sm-inline">Desconectar </span>
+                                                </a>
+                                            </li>
+                                            <li style="display: flex;align-items: center;"><a href="~/Security/ChangePassword" style="padding-top: 10px;" title="Permite el cambio de la clave de acceso del usuario conectado">Cambio de clave de acceso</a></li>
+                                        </ul>
+                                    </div>
+                                </nav>
+                                @*<nav id="megamenu" class="megamenu megamenu_desktop">
+                                        <div href="#click" class="menu dropdown">
+                                            <ul id="megamenu_level__1" class="level_1 sf-js-enabled sf-arrows">
+                                                <li class="level_1__item level_2__small" style="display: inline-block;">
+                                                    <a data-toggle="dropdown" class="level_1__link sf-with-ul " href="#">
+                                                        <span class="block dropdown-toggle"><span id="TenantMaster">menu</span></span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                            <ul class="menu-dropdown">
+                                                <li>
+                                                    <a href="~/Security/Login" title="Permite terminar la sesión del usuario">
+                                                        <i class="fa fa-sign-out"></i> <span class="d-sm-inline">Desconectar </span>
+                                                    </a>
+                                                </li>
+                                                <li><a class="dropdown-item" href="~/Security/ChangePassword" title="Permite el cambio de la clave de acceso del usuario conectado">Cambio de clave de acceso</a></li>
+                                            </ul>
+                                        </div>
+                                    </nav>*@
+                            </ul>
+
+                        </div>
+
+                        <div class="circulo">
+                            <div class="dropdown profile-element" id="logotenantHead">
+                                <img alt="image" src="~/logos/logo-core-alt.svg" id="tenantLogo">
+                            </div>
+                        </div>
+                        <a href="#" class="quest_mob" id="showHelp" title="Despliega la ayuda de la aplicación" style="
+						position: absolute;
+						right: 25px;
+						top:10px;">
+                            <i class="fa fa-question"></i>
                         </a>
                     </div>
 
-                    <ul class="nav navbar-top-links navbar-right">
-                        <li>
-                            <span id="GenericToolBar">
-                            </span>
-                        </li>
-                        <li>
-                            <a href="#" id="showHelp" title="Despliega la ayuda de la aplicación">
-                                <i class="fa fa-question"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="~/Security/Login" title="Permite terminar la sesión del usuario">
-                                <i class="fa fa-sign-out"></i> <span class="d-none d-sm-inline">Desconectar </span>
-                            </a>
-                        </li>
-                    </ul>
-
-                </nav>
+                </div>
             </div>
+
             <div class="wrapper wrapper-content animated fadeInRight">
                 <div class="row">
                     <div class="col-lg-12">
@@ -93,7 +144,7 @@
                 <div>
                     <strong title="1.6.7">
                         &copy;
-                    </strong> 2020 MAPFRE. Todos los derechos reservados.
+                    </strong> 2023 MAPFRE. Todos los derechos reservados.
                 </div>
             </div>
             <div id="right-sidebar" class="animated slideInRight ">
@@ -104,7 +155,7 @@
                             </div>
                             <div class="ibox-tools">
                                 <a class="close-link-sidebar" href="">
-                                    <i class="fa fa-times"></i>
+                                    <i class="fa fa-times-circle"></i>
                                 </a>
                             </div>
                         </div>
@@ -116,6 +167,7 @@
                                 <div class="sk-rect4"></div>
                                 <div class="sk-rect5"></div>
                             </div>
+                            <div class="sidebarContent" />
                         </div>
                     </div>
                 </div>
@@ -125,6 +177,16 @@
     <!-- @Scripts.Render("~/bundles/jsMaster") -->
     <!-- Handler for local scripts -->
     @RenderSection("scripts", required: false)
+
+    <script>
+        const trigger = document.getElementById("trigger")
+
+        trigger.addEventListener('click', () => {
+            trigger.classList.toggle('active');
+        });
+    </script>
+
+    <script src="@Url.Content("~/Scripts/LayoutView.js")"></script>
 </body>
 
 </html>

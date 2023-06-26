@@ -17,17 +17,18 @@ namespace Architect.API.Tron.Controllers
         /// <summary>
         /// Devuelve la estructura de datos asociados a un presupuesto, con información complementaria para permitir la emisión de una póliza de tipo Hogar Total
         /// </summary>
+        /// <param name="mode"></param>
         /// <param name="presupuesto"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("HogarTotalSetup/{presupuesto}")]
-        public async Task<IHttpActionResult> HogarTotalSetup(string presupuesto)
+        public async Task<IHttpActionResult> HogarTotalSetup(string presupuesto, string mode)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Emision.HogarTotal result = null;
             await Task.Run(() =>
             {
-                result = Architect.API.Tron.Business.Emision.HogarTotal.Setup(presupuesto, tokenInfo);
+                result = Business.Emision.HogarTotal.Setup(presupuesto, mode, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -43,10 +44,30 @@ namespace Architect.API.Tron.Controllers
         public async Task<IHttpActionResult> HogarTotalIssue([FromBody] Tron.Contracts.Emision.HogarTotal quoteInfo)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
-            Tron.Contracts.Cotizacion.HogarTotal result = null;
+            Tron.Contracts.Emision.HogarTotal result = null;
             await Task.Run(() =>
             {
                 result = Architect.API.Tron.Business.Emision.HogarTotal.Issue(quoteInfo, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Envío o reenvío de una solicitud asociada a un presupuesto para su firma manual o por medio de evicertia
+        /// </summary>
+        /// <param name="presupuesto"></param>
+        /// <param name="correoenvio"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("HogarTotal/EnviarSolicitud")]
+        public async Task<IHttpActionResult> ReEnviarSolicitudHT(string presupuesto, string correoenvio)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            string result = string.Empty;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Emision.HogarTotal.ReEnviarSolicitudHT(presupuesto, correoenvio, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -83,6 +104,7 @@ namespace Architect.API.Tron.Controllers
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Cotizacion.MapfreMas result = null;
+
             await Task.Run(() =>
             {
                 result = Architect.API.Tron.Business.Emision.MapfreMas.Issue(quoteInfo, tokenInfo);
@@ -131,6 +153,7 @@ namespace Architect.API.Tron.Controllers
             return Ok(result);
         }
 
+
         /// <summary>
         /// Devuelve la estructura de datos asociados a un presupuesto, con información complementaria para permitir la emisión de una póliza de tipo Multirriesgo
         /// </summary>
@@ -138,13 +161,13 @@ namespace Architect.API.Tron.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("MultirriesgoSetup/{presupuesto}")]
-        public async Task<IHttpActionResult> MultirriesgoSetup(string presupuesto)
+        public async Task<IHttpActionResult> MultirriesgoSetup(string presupuesto, string mode)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Emision.Multirriesgo result = null;
             await Task.Run(() =>
             {
-                result = Architect.API.Tron.Business.Emision.Multirriesgo.Setup(presupuesto);
+                result = Architect.API.Tron.Business.Emision.Multirriesgo.Setup(presupuesto, mode, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -164,6 +187,27 @@ namespace Architect.API.Tron.Controllers
             await Task.Run(() =>
             {
                 result = Architect.API.Tron.Business.Emision.Multirriesgo.Issue(quoteInfo, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+
+        /// <summary>
+        /// Envío o reenvío de una solicitud Multirriesgo asociada a un presupuesto para su firma manual o por medio de evicertia
+        /// </summary>
+        /// <param name="presupuesto"></param>
+        /// <param name="correoenvio"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Multirriesgo/EnviarSolicitud")]
+        public async Task<IHttpActionResult> ReEnviarSolicitudMultirriesgo(string presupuesto, string correoenvio)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            string result = string.Empty;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Emision.Multirriesgo.ReEnviarSolicitud(presupuesto, correoenvio, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -207,6 +251,7 @@ namespace Architect.API.Tron.Controllers
             return Ok(result);
         }
 
+
         /// <summary>
         /// Devuelve información de un presupuesto para la emisión de una póliza de saldo deudor.
         /// </summary>
@@ -236,6 +281,85 @@ namespace Architect.API.Tron.Controllers
             await Task.Run(() =>
             {
                 result = Architect.API.Tron.Business.Emision.SaldoDeudor.Issue(quoteInfo, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+
+        /// <summary>
+        /// Devuelve la estructura de datos asociados a un presupuesto, con información complementaria para permitir la emisión de una póliza de tipo Mapfre Más Plus
+        /// </summary>
+        /// <param name="presupuesto"></param>
+        /// <param name="mode"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("MapfreMasPlusSetup/{presupuesto}")]
+        public async Task<IHttpActionResult> MapfreMasPlusSetup(string presupuesto, string mode)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Tron.Contracts.Emision.MapfreMas  result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Emision.MapfreMasPlus.Setup(presupuesto, mode, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Realiza la validación de datos y emisión de la póliza para un producto de tipo Mapfre Más Plus
+        /// </summary>
+        /// <param name="quoteInfo"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("MapfreMasPlus")]
+        public async Task<IHttpActionResult> MapfreMasPlusIssue([FromBody] Tron.Contracts.Emision.MapfreMas quoteInfo)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Tron.Contracts.Cotizacion.MapfreMas result = null;
+
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Emision.MapfreMasPlus.Issue(quoteInfo, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Devuelve la estructura de datos asociados a un presupuesto, con información complementaria para permitir la emisión de una póliza de tipo Estudiantil
+        /// </summary>
+        /// <param name="presupuesto"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Estudiantil/{presupuesto}")]
+        public async Task<IHttpActionResult> EstudiantilSetup(string presupuesto, string mode)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Tron.Contracts.Emision.Estudiantil result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Emision.Estudiantil.Setup(presupuesto, mode, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Realiza la validación de datos y emisión de la póliza para un producto de tipo Estudiantil
+        /// </summary>
+        /// <param name="quoteInfo"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Estudiantil")]
+        public async Task<IHttpActionResult> EstudiantilIssue([FromBody] Tron.Contracts.Emision.Estudiantil quoteInfo)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Tron.Contracts.Cotizacion.Estudiantil result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Emision.Estudiantil.Issue(quoteInfo, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);

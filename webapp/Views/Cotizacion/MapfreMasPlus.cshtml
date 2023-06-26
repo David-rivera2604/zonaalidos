@@ -1,0 +1,784 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<div class="row">
+    <div id="mainBlock" class="col-md-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5><span id="PageTitle">Mapfre Más Plus</span><small class="m-l-sm"><span id="PageSubTitle"> Cotización</span></small> </h5>
+                <!-- Opciones -->
+                <div class="ibox-tools">
+                    <a class="fullscreen-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-wrench"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li>
+                            <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar la información</a>
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <p class="text-muted small">En MAPFRE Costa Rica hemos creado una amplia variedad de opciones con excelentes coberturas y valores agregados, pensados para todas las necesidades de los costarricenses. <a href="https://www.mapfre.cr/seguros-cr/seguros/autos/" target="_blank">Seguro MAPFRE MÁS PLUS</a>, El seguro que le ofrece diferentes coberturas desde responsabilidad civil, colisión y/o vuelco, robo, y coberturas adicionales.</p>
+                <div class="sk-spinner sk-spinner-wave">
+                    <div class="sk-rect1"></div>
+                    <div class="sk-rect2"></div>
+                    <div class="sk-rect3"></div>
+                    <div class="sk-rect4"></div>
+                    <div class="sk-rect5"></div>
+                </div>
+                <div id="generalNotify">
+                </div>
+                <!-- Edit Form -->
+                <div class='form-row'>
+                    <div class='col-md-12'>
+                        <div id="VisualizationsEdt" class="animated fadeInRight">
+                            <form id='VisualizationsEdtForm' class='form-horizontal' data-toggle='validator'>
+                                <fieldset>
+                                    <!-- tipodeproducto Zone -->
+                                    <div class="form-row">
+                                        <div class="col-md-4 tipodeproductoZone role-Purdy-notvisible">
+                                            <h4>Tipo de producto</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- tipo_prod RadioButtonList -->
+                                                <div class='col-sm-12 col-md-12'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='tipo_prod'>Tipo de producto</label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="tipo_prod_1" name="tipo_prod" value="basico">
+                                                                <label class="custom-control-label" for="tipo_prod_1">Básico</label>
+                                                            </div>
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="tipo_prod_2" name="tipo_prod" value="amplio">
+                                                                <label class="custom-control-label" for="tipo_prod_2">Amplio</label>
+                                                            </div>
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="tipo_prod_3" name="tipo_prod" value="plus">
+                                                                <label class="custom-control-label" for="tipo_prod_3">Plus</label>
+                                                            </div>
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="tipo_prod_4" name="tipo_prod" value="oro">
+                                                                <label class="custom-control-label" for="tipo_prod_4">Oro</label>
+                                                            </div>
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="tipo_prod_5" name="tipo_prod" value="plata">
+                                                                <label class="custom-control-label" for="tipo_prod_5">Plata</label>
+                                                            </div>
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="tipo_prod_6" name="tipo_prod" value="trebol">
+                                                                <label class="custom-control-label" for="tipo_prod_6">Trébol</label>
+                                                            </div>
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="tipo_prod_7" name="tipo_prod" value="trebolrc">
+                                                                <label class="custom-control-label" for="tipo_prod_7">Trébol RC</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <!-- datosdelcontratante Zone -->
+                                        <div class="col-md-8 contratanteZone">
+                                            <h4><i class="fa fa-user-o"></i> Datos del contratante</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- edad Numeric -->
+                                                <div class='col-sm-2 col-md-2'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='edad'>Edad<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='edad' name='edad' class='form-control text-right' size='14' maxlength='14' />
+                                                    </div>
+                                                </div>
+                                                <!-- mca_sexo DropDownList -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='mca_sexo'>Sexo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='mca_sexo' name='mca_sexo' class='form-control'></select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- nombredelcontratante Text -->
+                                                <div class='col-sm-6 col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='nombredelcontratante'>Nombre</label>
+                                                        <input type='text' id='nombredelcontratante' name='nombredelcontratante' class='form-control' size='40' maxlength='40' />
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- datosgenerales Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4><i class="fa fa-list"></i> Datos generales</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- cod_mon DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cod_mon'>Moneda<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='cod_mon' name='cod_mon' class='form-control'></select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- cod_fracc_pago DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cod_fracc_pago'>Fraccionamiento de pago<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='cod_fracc_pago' name='cod_fracc_pago' class='form-control'></select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- fec_efec_poliza DatePicker -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='fec_efec_poliza'>Inicio de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='fec_efec_poliza_group'>
+                                                            <input type='text' id='fec_efec_poliza' name='fec_efec_poliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='fec_efec_poliza_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- fec_vcto_poliza DatePicker -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='fec_vcto_poliza'>Fin de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='fec_vcto_poliza_group'>
+                                                            <input type='text' id='fec_vcto_poliza' name='fec_vcto_poliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='fec_vcto_poliza_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- polizagrupo Zone -->
+                                    <div class="form-row d-none" id="polizagrupoZone">
+                                        <div class="col-lg-12">
+                                            <h4><i class="fa fa-building"></i> Información de póliza grupo</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- contrato DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='contrato'>Contrato<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='contrato' name='contrato' class='form-control' data-autoselect='false'></select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- subcontrato DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='subcontrato'>Sub contrato<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='subcontrato' name='subcontrato' class='form-control' data-autoselect='false' disabled></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- datosdelvehiculo Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4><i class="fa fa-car"></i> Datos del vehículo</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+
+
+                                                <!-- COD_PLAN_AUTO DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='COD_PLAN_AUTO'>Plan<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='COD_PLAN_AUTO' name='COD_PLAN_AUTO' class='form-control'></select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- cod_zona_circul DropDownList -->
+                                                <div class='col-sm-3 col-md-3 role-Purdy-notvisible'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cod_zona_circul'>Zona de circulación</label>
+                                                        <select id='cod_zona_circul' name='cod_zona_circul' class='form-control'></select>
+                                                    </div>
+                                                </div>
+                                                <!-- cod_marcaHelper DropDownList -->
+                                                <div class='col-sm-3 col-md-3 d-none handler-marcaHelper'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cod_marcaHelper'>Marca<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group'>
+                                                            <input id='cod_marcaHelper' class="form-control typeahead" type="text" placeholder="Indique el detalle...">
+                                                            <span class='input-group-addon' title="Ayuda para ubicar la marca y el modelo">
+                                                                <a href="#" id="VehicleModelHelperCancel">
+                                                                    <i class="fa fa-level-up" aria-hidden="true"></i>
+                                                                </a>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- cod_marca DropDownList -->
+                                                <div class='col-sm-3 col-md-3 handler-marca'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cod_marca'>Marca<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group'>
+                                                            <select id='cod_marca' name='cod_marca' class='form-control'></select>
+                                                            <span class='input-group-addon' title="Ayuda para ubicar la marca y el modelo">
+                                                                <a href="#" id="VehicleModelHelper">
+                                                                    <i class="fa fa-filter" aria-hidden="true"></i>
+                                                                </a>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- cod_modelo DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cod_modelo'>Modelo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='cod_modelo' name='cod_modelo' class='form-control'></select>
+                                                    </div>
+                                                </div>
+                                                <!-- cod_sub_modelo DropDownList -->
+                                                <div class='col-sm-3 col-md-3 d-none role-Purdy-visible'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cod_sub_modelo'>Sub modelo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='cod_sub_modelo' name='cod_sub_modelo' class='form-control'></select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- ANIO_SUB_MODELO Numeric -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ANIO_SUB_MODELO'>Año del vehículo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='ANIO_SUB_MODELO' name='ANIO_SUB_MODELO' class='form-control text-right' size='4' maxlength='4' />
+                                                    </div>
+                                                </div>
+
+                                                <!-- IMP_VR Numeric -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='IMP_VR'>Valor del vehículo asegurado<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='IMP_VR' name='IMP_VR' class='form-control text-right' size='21' maxlength='21' />
+                                                    </div>
+                                                </div>
+
+                                                <!-- NUM_MATRICULA Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='NUM_MATRICULA'>Número de placa</label>
+                                                        <input type='text' id='NUM_MATRICULA' name='NUM_MATRICULA' class='form-control' size='20' maxlength='20' />
+                                                    </div>
+                                                </div>
+                                                <!-- COD_CHASSIS Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='COD_CHASSIS'>Número de chasis</label>
+                                                        <input type='text' id='COD_CHASSIS' name='COD_CHASSIS' class='form-control' size='20' maxlength='20' />
+                                                    </div>
+                                                </div>
+                                                <!-- NUM_MOTOR Text -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='NUM_MOTOR'>Número de motor</label>
+                                                        <input type='text' id='NUM_MOTOR' name='NUM_MOTOR' class='form-control' size='20' maxlength='20' />
+                                                    </div>
+                                                </div>
+
+                                                <!-- cod_tip_vehi DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cod_tip_vehi'>Clase del vehículo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='cod_tip_vehi' name='cod_tip_vehi' class='form-control'></select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- cod_uso_vehi DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='cod_uso_vehi'>Uso del vehículo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='cod_uso_vehi' name='cod_uso_vehi' class='form-control'></select>
+                                                    </div>
+                                                </div>
+
+
+
+                                                <!-- PCT_AJUSTE_GEN Numeric -->
+                                                <div class='col-sm-3 col-md-3 role-Purdy-notvisible'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='PCT_AJUSTE_GEN' title="Valor entre -25 y 0%">Porcentaje de ajuste comercial</label>
+                                                        <div class='input-group'>
+                                                            <input type='text' id='PCT_AJUSTE_GEN' name='PCT_AJUSTE_GEN' class='form-control text-right role-Purdy-disable' size='3' maxlength='3' title="Valor entre -25 y 0%" />
+                                                            <span class='input-group-addon'>
+                                                                <small class="text-muted">%</small>
+                                                            </span>
+                                                        </div>
+                                                        <div id='PCT_AJUSTE_GEN_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- MCA_CERO_KM RadioButtonList -->
+                                                <div class='col-sm-3 col-md-3 role-Purdy-notvisible'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='MCA_CERO_KM'>¿Es cero km?</label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="MCA_CERO_KM_1" name="MCA_CERO_KM" value="1">
+                                                                <label class="custom-control-label" for="MCA_CERO_KM_1">Si</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="MCA_CERO_KM_2" name="MCA_CERO_KM" value="2">
+                                                                <label class="custom-control-label" for="MCA_CERO_KM_2">No</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- MCA_AUTO_GPS RadioButtonList -->
+                                                <div class='col-sm-3 col-md-3 role-Purdy-notvisible'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='MCA_AUTO_GPS'>¿Tiene GPS?</label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="MCA_AUTO_GPS_1" name="MCA_AUTO_GPS" value="1">
+                                                                <label class="custom-control-label" for="MCA_AUTO_GPS_1">Si</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="MCA_AUTO_GPS_2" name="MCA_AUTO_GPS" value="2">
+                                                                <label class="custom-control-label" for="MCA_AUTO_GPS_2">No</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- MCA_AUTO_GPS_CMS RadioButtonList -->
+                                                <div class='col-sm-3 col-md-3 role-Purdy-notvisible'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='MCA_AUTO_GPS_CMS'>¿GPS con convenio del ministerio?</label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="MCA_AUTO_GPS_CMS_1" name="MCA_AUTO_GPS_CMS" value="1">
+                                                                <label class="custom-control-label" for="MCA_AUTO_GPS_CMS_1">Si</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="MCA_AUTO_GPS_CMS_2" name="MCA_AUTO_GPS_CMS" value="2">
+                                                                <label class="custom-control-label" for="MCA_AUTO_GPS_CMS_2">No</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- MCA_MONITOREO_GPS RadioButtonList -->
+                                                <div class='col-sm-3 col-md-3 role-Purdy-notvisible'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='MCA_MONITOREO_GPS'>¿GPS con monitoreo?</label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="MCA_MONITOREO_GPS_1" name="MCA_MONITOREO_GPS" value="1">
+                                                                <label class="custom-control-label" for="MCA_MONITOREO_GPS_1">Si</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="MCA_MONITOREO_GPS_2" name="MCA_MONITOREO_GPS" value="2">
+                                                                <label class="custom-control-label" for="MCA_MONITOREO_GPS_2">No</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- MCA_PRA RadioButtonList -->
+                                                <div class='col-sm-3 col-md-3 role-Purdy-notvisible'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='MCA_PRA'>¿Asegurar a primer riesgo ABS?</label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="MCA_PRA_1" name="MCA_PRA" value="1">
+                                                                <label class="custom-control-label" for="MCA_PRA_1">Si</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="MCA_PRA_2" name="MCA_PRA" value="2">
+                                                                <label class="custom-control-label" for="MCA_PRA_2">No</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- MCA_VR RadioButtonList -->
+                                                <div class='col-sm-3 col-md-3 role-Purdy-notvisible'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='MCA_VR'>¿Asegurar a valor real?</label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="MCA_VR_1" name="MCA_VR" value="1">
+                                                                <label class="custom-control-label" for="MCA_VR_1">Si</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="MCA_VR_2" name="MCA_VR" value="2">
+                                                                <label class="custom-control-label" for="MCA_VR_2">No</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <!-- MCA_DESC_CLIENTE_NUEVO RadioButtonList -->
+                                                <div class='col-sm-3 col-md-3 role-Purdy-notvisible'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='MCA_DESC_CLIENTE_NUEVO'>¿Es cliente nuevo?</label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="MCA_DESC_CLIENTE_NUEVO_1" name="MCA_DESC_CLIENTE_NUEVO" value="1">
+                                                                <label class="custom-control-label" for="MCA_DESC_CLIENTE_NUEVO_1">Si</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="MCA_DESC_CLIENTE_NUEVO_2" name="MCA_DESC_CLIENTE_NUEVO" value="2">
+                                                                <label class="custom-control-label" for="MCA_DESC_CLIENTE_NUEVO_2">No</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- ext_garantia RadioButtonList -->
+                                                <div class='col-sm-3 col-md-3 d-none role-Purdy-visible'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='ext_garantia'>¿Extensión de garantía?</label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="ext_garantia_1" name="ext_garantia" value="1">
+                                                                <label class="custom-control-label" for="ext_garantia_1">Si</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="ext_garantia_2" name="ext_garantia" value="2">
+                                                                <label class="custom-control-label" for="ext_garantia_2">No</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- sumasaseguradas Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4><i class="fa fa-sliders"></i> Sumas aseguradas</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+
+                                                <!-- IMP_AUTO_RC DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='IMP_AUTO_RC'>Responsabilidad civil<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='IMP_AUTO_RC' name='IMP_AUTO_RC' class='form-control right-align' data-autoselect='true'></select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- DED_AUTO_RC DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='DED_AUTO_RC'>Deducible responsabilidad civil<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='DED_AUTO_RC' name='DED_AUTO_RC' class='form-control' data-autoselect='true'></select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- IMP_AUTO_GMO DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='IMP_AUTO_GMO'>Gastos médicos de ocupantes<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='IMP_AUTO_GMO' name='IMP_AUTO_GMO' class='form-control right-align' data-autoselect='true'></select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- IMP_AUTO_ACO DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='IMP_AUTO_ACO'>Accidentes al conductor<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='IMP_AUTO_ACO' name='IMP_AUTO_ACO' class='form-control right-align' data-autoselect='true'></select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- IMP_AUTO_CYV Numeric -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='IMP_AUTO_CYV'>Colisión y vuelco<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='IMP_AUTO_CYV' name='IMP_AUTO_CYV' class='form-control text-right' size='21' maxlength='21' />
+                                                    </div>
+                                                </div>
+                                                <!-- DED_AUTO_CYV DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='DED_AUTO_CYV'>Deducible colisión y vuelco<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='DED_AUTO_CYV' name='DED_AUTO_CYV' class='form-control' data-autoselect='true'></select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- IMP_AUTO_RAD Numeric -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='IMP_AUTO_RAD'>Riesgos adicionales<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='IMP_AUTO_RAD' name='IMP_AUTO_RAD' class='form-control text-right' size='21' maxlength='21' />
+                                                    </div>
+                                                </div>
+                                                <!-- DED_AUTO_RAD DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='DED_AUTO_RAD'>Deducible riesgos adicionales<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='DED_AUTO_RAD' name='DED_AUTO_RAD' class='form-control' data-autoselect='true'></select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- IMP_AUTO_ROB Numeric -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='IMP_AUTO_ROB'>Robo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='IMP_AUTO_ROB' name='IMP_AUTO_ROB' class='form-control text-right' size='21' maxlength='21' />
+                                                    </div>
+                                                </div>
+                                                <!-- DED_AUTO_ROB DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='DED_AUTO_ROB'>Deducible robo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='DED_AUTO_ROB' name='DED_AUTO_ROB' class='form-control' data-autoselect='true'></select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- IMP_AUTO_EQESP Numeric -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='IMP_AUTO_EQESP'>Equipo especial</label>
+                                                        <input type='text' id='IMP_AUTO_EQESP' name='IMP_AUTO_EQESP' class='form-control text-right' size='21' maxlength='21' disabled />
+                                                    </div>
+                                                </div>
+                                                <!-- DED_AUTO_EQESP DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='DED_AUTO_EQESP'>Deducible equipo especial<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='DED_AUTO_EQESP' name='DED_AUTO_EQESP' class='form-control' data-autoselect='true' disabled></select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- IMP_AUTO_NEUM DropDownList -->
+                                                <div class='col-sm-3 col-md-3 role-Purdy-notvisible'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='IMP_AUTO_NEUM'>Garantía de neumáticos<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='IMP_AUTO_NEUM' name='IMP_AUTO_NEUM' class='form-control right-align' data-autoselect='true' disabled></select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- IMP_AUTO_MECA DropDownList -->
+                                                <div class='col-sm-3 col-md-3 role-Purdy-notvisible'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='IMP_AUTO_MECA'>Avería mecánica<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='IMP_AUTO_MECA' name='IMP_AUTO_MECA' class='form-control right-align' data-autoselect='true' disabled></select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- IMP_AUTO_CRI DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='IMP_AUTO_CRI'>Rotura de cristales<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='IMP_AUTO_CRI' name='IMP_AUTO_CRI' class='form-control right-align' data-autoselect='true' disabled></select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- DED_AUTO_CRI DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='DED_AUTO_CRI'>Deducible rotura de cristales<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='DED_AUTO_CRI' name='DED_AUTO_CRI' class='form-control' data-autoselect='true' disabled></select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- AutoSust DropDownList -->
+                                                <div class='col-sm-3 col-md-3 d-none role-Purdy-visible'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='AutoSust'>Auto sustituto<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='AutoSust' name='AutoSust' class='form-control right-align' data-autoselect='true' disabled></select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- DedudAutoSust DropDownList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='DedudAutoSust'>Deducible auto sustituto<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='DedudAutoSust' name='DedudAutoSust' class='form-control' data-autoselect='true' disabled></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- coberturas Grid -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <div class='col'>
+                                                    <h4>
+                                                        Coberturas
+                                                        <label id="coberturasTbl-validate" class="float-right d-none LabelValidate"></label>
+                                                    </h4>
+                                                </div>
+
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class='col-md-12' style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="coberturasTbl" style="font-size: 11px;">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Notificaciones  -->
+                                    <div id="quoteNotify">
+                                    </div>
+                                    <!-- Botonera -->
+                                    <div class="form-row">
+                                        <div class='col-md-12'>
+                                            <div class="modal-footer">
+                                                <button id="cotizar" type="button" class="btn  btn-primary" data-doing="Cotizando...">
+                                                    Cotizar
+                                                </button>
+                                                <button id="limpiar" type="button" class="btn btn-default" data-doing="Limpiando...">
+                                                    Limpiar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- plandepago Grid -->
+                                    <div class="form-row d-none" id="plandepagoRow">
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <div class='col'>
+                                                    <h4>Plan de pago</h4>
+                                                </div>
+
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class='col-md-12' style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="plandepagoTbl" style="font-size: 11px;">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- plandepagoFull Grid -->
+                                    <div class="form-row d-none" id="plandepagoFullRow">
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <div class='col'>
+                                                    <h4>Plan de pago vigencia completa</h4>
+                                                </div>
+
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class='col-md-12' style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="plandepagoFullTbl" style="font-size: 11px;">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div id="quoteBlock" class="col-md-3 animated bounceInRight d-none">
+
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Resumen</h5>
+                <div class="ibox-tools">
+                    <h5><span class="label label-success float-right" style="font-size: small;">Presupuesto #<span id="presupuesto"></span></span></h5>
+                </div>
+            </div>
+            <div class="ibox-content">
+
+                <div class="row">
+                    <div class="col-7 col-md-6">
+                        <span>
+                            Importe total
+                        </span>
+                        <h2 class="font-bold">
+                            <span id="importetotal">0,00</span>
+                        </h2>
+                    </div>
+                    <div class="col-5 col-md-6">
+                        <table class="text-muted small">
+                            <tr><td style="text-align:right"><span id="primaneta">0,00</span></td><td>Prima neta</td></tr>
+                            <tr><td style="text-align:right"><span id="iva">0,00</span></td><td>IVA</td></tr>
+                            <tr><td style="text-align:right"><span id="recardoporfraccionamiento">0,00</span></td><td>Recargo</td></tr>
+                            <tr class=""><td style="text-align:right"><span id="cuotas">0</span></td><td><a href="#plandepagoRow" title="Ver detalle de las cuotas">Cuotas</a></td></tr>
+                        </table>
+                    </div>
+                </div>
+                <hr>
+                <div class="m-t-sm">
+                    <div class="btn-group">
+                        <a id="emitir" href="#" class="btn btn-primary btn-sm"><i class="fa fa-check"></i> Emisión</a>
+                        <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-print"></i> Imprimir</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ibox plandepagoporfrecuencia">
+            <div class="ibox-title">
+                <h5>Importe por fraccionamiento de pago</h5>
+            </div>
+            <div class="ibox-content text-center">
+                <div class="form-row">
+                    <div class='col-md-12' style="padding-bottom: 20px">
+                        <div class="table-responsive">
+                            <table id="plandepagoporfrecuenciaTbl" style="font-size: 11px;">
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/assets/js/plugins/typehead/bootstrap3-typeahead.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
+    <script src="@Url.Content("~/Scripts/Cotizacion.MapfreMasPlus.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.CotizacionMapfreMasPlus.Init();
+        });
+    </script>
+}

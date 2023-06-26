@@ -101,7 +101,7 @@ app.ViewerQuery = (function () {
             $('html head').find('title').text(data.title);
 
         if (data.maintitle != undefined) {
-            $("#QueryMainTitle").html(data.maintitle);
+            $("#QueryTitle").html(data.maintitle);
             $('html head').find('title').text(data.maintitle);
         }
 
@@ -120,13 +120,14 @@ app.ViewerQuery = (function () {
                 var code = app.core.ReplaceAll(data.dialog.code, ".Prototype", ".Prototype" + data.index);
                 code = app.core.ReplaceAll(code, 'Init"', 'Init' + data.index + '"');
                 eval(code);
-
-                var nameClass = "Prototype" + data.index;
-                if (nameClass in app) {
-                    app[nameClass]['Changed'](function (data) {
-                        var gridControlName = "#" + index + "GridTbl";
-                        app.ViewerQuery.Refresh(undefined, $(gridControlName), _id, '');
-                    });
+                if (data.table.skipfirstload === undefined || !data.table.skipfirstload) {
+                    var nameClass = "Prototype" + data.index;
+                    if (nameClass in app) {
+                        app[nameClass]['Changed'](function (data) {
+                            var gridControlName = "#" + index + "GridTbl";
+                            app.ViewerQuery.Refresh(undefined, $(gridControlName), _id, '');
+                        });
+                    }
                 }
             }
             if (data.type != 'template') {
@@ -210,7 +211,7 @@ app.ViewerQuery = (function () {
                 $detail.append('<span class="detail-title">...</span>');
                 $detail.append('<div class="table-responsive" style="background-color: white; margin: 0px 0px 0px 10px;"><table style="font-size: 11px" id="' + id + '"></table></div>');
 
-                Child($detail.find('span'), $detail.find('table'), this.detailId, url, id);
+                Child($detail.find('span'), $detail.find('table'), this.detailId, url, id, row);
             };
         }
         else {
@@ -261,6 +262,9 @@ app.ViewerQuery = (function () {
                     if (column.colorstate != undefined) {
                         app.ViewerQuery.state[column.field] = column.colorstate;
                     }
+                    if (column.style != undefined && column.style.startsWith('function ')) {
+                        column.cellStyle = column.style.replace(/@_/g, '\\\'').parseFunction();
+                    }
                 });
             });
         }
@@ -280,6 +284,9 @@ app.ViewerQuery = (function () {
                 if (column.colorstate != undefined) {
                     app.ViewerQuery.state[column.field] = column.colorstate;
                 }
+                if (column.style != undefined && column.style.startsWith('function ')) {
+                    column.cellStyle = column.style.replace(/@_/g, '\\\'').parseFunction();
+                }
             });
         }
 
@@ -298,6 +305,24 @@ app.ViewerQuery = (function () {
         spec.onPostBody = function (data) {
             app.ui.CommonBehaviour();
         };
+        if (spec.skipfirstload != undefined && spec.skipfirstload) {
+            spec.ajax = null;
+        }
+
+
+        //spec.contextMenu = '#context-menu';
+        //spec.contextMenuButton = '.ns';
+        //spec.onContextMenuItem = function (row, $el) {
+        //    if($el.data("item") == "edit"){
+        //        alert();
+        //    }
+        //        console.log(row);            
+        //};
+        //spec.beforeContextMenuRow = function (e, row, buttonElement) {
+        //    let r = (buttonElement !=null && $(buttonElement).hasClass('ns'))
+        //    return r;
+        //};
+
         $(gridControlName).bootstrapTable(spec);
         if (spec.searchStyle != undefined) {
             $('.search').width(spec.searchStyle);
@@ -406,11 +431,11 @@ app.ViewerQuery = (function () {
         });
     };
 
-    function Child(title, $el, id, url, tableId) {
+    function Child(title, $el, id, url, tableId, row) {
         app.core.Get(app.setting.apipath + 'v1/Viewer/QuerySpecification?id=' + id + '&url=' + window.location.search.slice(1).replace(/&/g, ':'))
             .done(function (data, textStatus, jqXHR) {
                 var spec = data.table;
-                title.html(data.title);
+                title.html(data.title.supplant(row));
                 if (spec.classes === undefined) {
                     spec.classes = "table table-bordered table-hover table-index";
                 }
@@ -440,6 +465,13 @@ app.ViewerQuery = (function () {
                 spec.onPostBody = function (data) {
                     app.ui.CommonBehaviour();
                 };
+                spec.rowStyle = function (row, index) {
+                    return {
+                        css: {
+                            'vertical-align': 'top'
+                        }
+                    }
+                }
                 //spec.onRefresh = function (params) {
                 //    app.ViewerQuery.Refresh(params, $el);
                 //};
@@ -549,7 +581,7 @@ app.ViewerQuery = (function () {
             else
                 $("#QueryTitle").html('Consulta no indicada');
         },
-        Refresh: function (params, $el, xid, url, index) {
+        Refresh: function (params, $el, xid, url, index, srcData, callback) {
             var element = $('#RoleMemberGridTbl');
             var id = _id;
             var doing = true;
@@ -566,24 +598,34 @@ app.ViewerQuery = (function () {
                 url = '';
                 index = this.options.index;
             }
-
-            var nameClass = "Prototype" + index;
-            if (nameClass in app) {
-                if (app[nameClass]['IsValid'](false)) {
-                    let dialogData = app[nameClass]["Data"]();
-                    for (var p in dialogData) {
-                        if (dialogData.hasOwnProperty(p)) {
-                            url += ':' + p + '=' + dialogData[p];
-                        }
+            if (srcData != undefined) {
+                for (var p in srcData) {
+                    if (srcData.hasOwnProperty(p)) {
+                        url += ':' + p + '=' + srcData[p];
                     }
-                    if (url != undefined)
-                        url = url.replace(/T00:00:00/g, '');
-                } else {
-                    doing = false;
-                    if (params === undefined)
-                        element.bootstrapTable('load', []);
-                    else
-                        params.success([]);
+                }
+                if (url != undefined)
+                    url = url.replace(/T00:00:00/g, '');
+            }
+            else {
+                var nameClass = "Prototype" + index;
+                if (nameClass in app) {
+                    if (app[nameClass]['IsValid'](false)) {
+                        let dialogData = app[nameClass]["Data"]();
+                        for (var p in dialogData) {
+                            if (dialogData.hasOwnProperty(p)) {
+                                url += ':' + p + '=' + dialogData[p];
+                            }
+                        }
+                        if (url != undefined)
+                            url = url.replace(/T00:00:00/g, '');
+                    } else {
+                        doing = false;
+                        if (params === undefined)
+                            element.bootstrapTable('load', []);
+                        else
+                            params.success([]);
+                    }
                 }
             }
 
@@ -601,33 +643,58 @@ app.ViewerQuery = (function () {
                         });
                 }
                 else {
+                    if (params != undefined) {
+                        params.multiQuery = this.options?.multiquery;
+                    }
                     app.core.Get(app.setting.apipath + 'v1/datasource/json?id=' + id + '&sequence=' + index + '&url=' + window.location.search.slice(1).replace(/&/g, ':') + url)
                         .done(function (data, textStatus, jqXHR) {
+                            if (data == null)
+                                data = [];
+                            else {
+                                if (!Array.isArray(data)) {
+                                    if (params != undefined && params?.multiQuery != undefined)
+                                        data = data[params.multiQuery];
+                                    else
+                                        data = Object.values(data)[0];
+                                }
+                            }
+                            _data = data;
                             if (params === undefined)
-                                element.bootstrapTable('load', data !== null ? data : []);
+                                element.bootstrapTable('load', data);
                             else
-                                params.success(data !== null ? data : [])
+                                params.success(data)
                         }).always(function () {
                             element.bootstrapTable('hideLoading');
+                            if (callback !== undefined && callback !== null) {
+                                callback();
+                            }
                         });
                 }
             }
         },
-        TabRender: function (me) {
+        TabRender: function (me, href) {
             event.preventDefault();
+            if (me != null) {
+                href = me.href;
+            }
 
-            window.open(me.href, "vdetail", "toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes, top=100, height=450, left=400, width=900");
+            window.open(href, "vdetail", "toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes, top=100, height=450, left=400, width=900");
         },
         ButtonClick: function (tbl, e, name, row, index) {
             switch (name) {
                 case 'print':
                     app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/ImprimirPoliza/' + row.NUM_POLIZA + "/" + row.NUM_RIESGO, false, 'Mapfre Certificado.pdf');
                     break;
-
+                case 'printid':
+                    app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/ImprimirSegunId/' + row.ID_REPORTE, false, 'Mapfre Certificado.pdf');
+                    break;
                 case 'printr':
                     let reportPath = 'Recibo';
                     if (row.TIP_SITUACION == 'CT') {
                         reportPath = 'DepositoPrima';
+                        if (app.ui.IsSameDate(row.FEC_SITUACION, new Date())) {
+                            reportPath = 'DepositoPrimaHoy';
+                        }
                     }
                     app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/Imprimir' + reportPath + '/' + row.NUM_RECIBO, false, 'Mapfre ' + reportPath + '.pdf')
                         .done(function (data, textStatus, jqXHR) {

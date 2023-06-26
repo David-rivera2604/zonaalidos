@@ -19,11 +19,8 @@ namespace Architect.API.Tron.Business.Reglas
             string script = string.Empty;
             string result = string.Empty;
 
-            if (Utilities.Cache.Exist(cacheKey))
-            {
-                script = ((string)Utilities.Cache.GetItem(cacheKey));
-            }
-            else
+            if (!Utilities.Cache.Exist(cacheKey) || Utilities.Helpers.Settings.StringValue("Working.Mode") == "Development")
+
             {
                 Contracts.Especificacion.Producto def = Utilities.SerializeHandler<Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
 
@@ -33,6 +30,11 @@ namespace Architect.API.Tron.Business.Reglas
                     Utilities.Cache.SetItem(cacheKey, script);
                 }
             }
+            else
+            {
+                script = ((string)Utilities.Cache.GetItem(cacheKey));
+            }
+
             if (script.IsNotEmpty())
             {
                 result = (string)Decision.Runtime.Execute(key, script, data, tokenInfo, null, null, new Dictionary<string, string>() { { "keyword", keyword } })["exclude"];
@@ -43,6 +45,7 @@ namespace Architect.API.Tron.Business.Reglas
             }
             return result;
         }
+        
         internal static string BuildListasCode(string ruleFile, object data, List<Lista> listas, string keyword)
         {
             string basePath = ConfigurationManager.AppSettings["Product.Definition.Path"];
@@ -97,6 +100,7 @@ namespace Architect.API.Tron.Business.Reglas
             }
             return result;
         }
+        
         internal static string BuildCoveragesCode(string ruleFile, object data, List<Cobertura> Coberturas)
         {
             string basePath = ConfigurationManager.AppSettings["Product.Definition.Path"];
@@ -114,6 +118,7 @@ namespace Architect.API.Tron.Business.Reglas
             }
             return script.ToString();
         }
+        
         public static List<Architect.API.Core.Contracts.General.Error> Apply_Reglas(string ruleFile, object data, Core.Contracts.Security.Token tokenInfo)
         {
             string key = $"{ruleFile}.reglas";
@@ -232,7 +237,7 @@ namespace Architect.API.Tron.Business.Reglas
 
         public static List<Contracts.Comun.tercero> Apply_Terceros(string ruleFile, List<Contracts.Comun.tercero> terceros, string fuente_Tomador, Core.Contracts.Security.Token tokenInfo)
         {
-            List<Contracts.Comun.tercero> result = Apply_Terceros_int(ruleFile, terceros, fuente_Tomador, tokenInfo);
+            List<Contracts.Comun.tercero> result = Apply_Terceros_int(ruleFile, new List<Contracts.Comun.tercero>(), fuente_Tomador, tokenInfo);
 
             if (result?.Count > 0 && terceros?.Count > 0)
             {
@@ -445,6 +450,7 @@ namespace Architect.API.Tron.Business.Reglas
 
             return def;
         }
+    
     }
 
 }

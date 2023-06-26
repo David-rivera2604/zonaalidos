@@ -451,7 +451,7 @@ app.ViewerQuery = (function () {
                                     app.core.LoadScriptFile(item.include)
                                         .then(d => {
                                             Render(item);
-                                            if (app.Extend.EventHandler !== null) {
+                                            if (app.Extend !== undefined && app.Extend.EventHandler !== undefined && app.Extend.EventHandler !== null) {
                                                 app.Extend.EventHandler(_id, item.index, 'loaded');
                                             }
                                         })
@@ -533,10 +533,13 @@ app.ViewerQuery = (function () {
                     });
             }
         },
-        TabRender: function (me) {
+        TabRender: function (me, href) {
             event.preventDefault();
+            if (me != null) {
+                href = me.href;
+            }
 
-            window.open(me.href, "vdetail", "toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes, top=100, height=450, left=400, width=900");
+            window.open(href, "vdetail", "toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes, top=100, height=450, left=400, width=900");
 
         },
         ButtonClick: function (tbl, e, name, row, index) {
@@ -544,11 +547,16 @@ app.ViewerQuery = (function () {
                 case 'print':
                     app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/ImprimirPoliza/' + row.NUM_POLIZA + "/" + row.NUM_RIESGO, false, 'Mapfre Certificado.pdf');
                     break;
-
+                case 'printid':
+                    app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/ImprimirSegunId/' + row.ID_REPORTE, false, 'Mapfre Certificado.pdf');
+                    break;
                 case 'printr':
                     let reportPath = 'Recibo';
                     if (row.TIP_SITUACION == 'CT') {
                         reportPath = 'DepositoPrima';
+                        if (app.ui.IsSameDate(row.FEC_SITUACION, new Date())) {
+                            reportPath = 'DepositoPrimaHoy';
+                        }                      
                     }
                     app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/Imprimir' + reportPath + '/' + row.NUM_RECIBO, false, 'Mapfre ' + reportPath + '.pdf')
                         .done(function (data, textStatus, jqXHR) {
