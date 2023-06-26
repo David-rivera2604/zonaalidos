@@ -94,6 +94,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DBScripts", "DBScripts", "{
 		dbscripts\230518b.visualization.sql = dbscripts\230518b.visualization.sql
 		dbscripts\230520a.template.sql = dbscripts\230520a.template.sql
 		dbscripts\230613.a.panel.purdy.sql = dbscripts\230613.a.panel.purdy.sql
+		dbscripts\230620.a.lookupmaster.mm_plan.sql = dbscripts\230620.a.lookupmaster.mm_plan.sql
+		dbscripts\230621.a.lookupmaster.mmplus.sql = dbscripts\230621.a.lookupmaster.mmplus.sql
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architect.PDF.Integrations", "Core\Architect.PDF.Integrations\Architect.PDF.Integrations.csproj", "{68042445-0A60-4BED-A4A9-222A6BE98C3B}"

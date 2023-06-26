@@ -6,7 +6,7 @@ app.setting = {
     apipath: 'http://localhost:8082/aliados/api/',
     basepath: '/Aliados/',
     viewpath: 'http://localhost:8082/aliados/',
-    entityapi: 'https://appqa.mapfrecr.com/datapi/api/entity',
+    entityapi: 'https://appqa.mapfrecr.com/datapiDES/api/entity',
 };
 // CONSERVAR DEL ORIGINAL HASTA AQUI
 

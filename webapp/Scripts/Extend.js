@@ -18,6 +18,9 @@ app.Extend = (function () {
                 case 302:
                     quote = 'mapfremas';
                     break;
+                case 303:
+                    quote = 'mapfremasplus';
+                    break;
                 case 401:
                     quote = 'saldodeudor';
                     break;

@@ -239,7 +239,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 Contracts.Presupuesto.DatoFijo resultTron = Backoffice.Cotizacion.MapfreMas.Calcular(quoteTron);
                 resultInfo = MapfreMasConvertFrom.Quote(quoteInfo, resultTron);
 
-                if (resultInfo.Error.IsEmpty() && tokenInfo.Roles.Contain("PolizaGrupo"))
+                if (resultInfo.Error.IsEmpty() && tokenInfo.Roles.Contain("Purdy") && tokenInfo.Roles.Contain("PolizaGrupo"))
                 {
                     DateTime fecha_validar = quoteTron.fec_vcto_poliza.AddMonths(-1);
 
