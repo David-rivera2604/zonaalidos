@@ -15,7 +15,7 @@ namespace Architect.API.Tron.Business.Backoffice.Cotizacion
         public static Architect.API.Tron.Contracts.Presupuesto.DatoFijo Calcular(Contracts.Batch.CotizadorMapfreMasClass _class)
         {
             IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron");
-            Architect.API.Tron.Contracts.Presupuesto.DatoFijo P30Instance = Architect.API.Tron.DataAccess.CotizadorMapfreMasPlusClass.P_Cotiza(_class, currentConnection);
+            Architect.API.Tron.Contracts.Presupuesto.DatoFijo P30Instance = Architect.API.Tron.DataAccess.CotizadorMapfreMasClass.P_Cotiza(_class, currentConnection);
 
             // Guardar datos del Sub Agente en la P2000060
             if (_class.Sub_Agt)
