@@ -2264,7 +2264,7 @@ app.EmisionMultirriesgo = (function () {
                     formatter: function (value, row, index, field) {
 
                         if (row.data === null) {
-                            return '<span class="label label-secondary">Opcional</span>';
+                            return '<span class="label label-secondary">Incompleto</span>';
                         }
                         else {
                             return '<span class="label label-success">Listo</span>';
@@ -2324,7 +2324,7 @@ app.EmisionMultirriesgo = (function () {
                 }]
         });
 
-        let row = { formularioId: 1, name: 'Información de la edificación', when: null, type: 'datosvariables', data: null };
+        let row = { formularioId: 1, name: 'Información de la edificación, es requerido ingresar el año de construcción.', when: null, type: 'datosvariables', data: null };
         $('#formulariosDV').bootstrapTable('load', [row]);
     }
 

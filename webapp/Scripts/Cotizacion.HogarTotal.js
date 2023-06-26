@@ -363,7 +363,6 @@ app.HogarTotal = (function () {
         $('#print').click(function () {
             let reportName = 'HogarTotal';
             event.preventDefault();
-            data.presupuesto = quoteData.presupuesto;
             quoteData.Agente = setupData.Agente;
 
             if (localStorage.getItem('Roles').includes('ESPH')) {
