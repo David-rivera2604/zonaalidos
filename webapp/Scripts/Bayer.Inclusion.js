@@ -2,6 +2,7 @@
 
 app.BayerInclusion = (function () {
 
+    let backMode='';
     let timer;
     var id = 0;
     var mode = '';
@@ -193,6 +194,11 @@ app.BayerInclusion = (function () {
                     $('#DateEntryWork').prop("disabled", false);
                 }
                 break;
+            case 34: //En revisón por Mapfre
+                $('#inclusionMayor90DiasNotify').removeClass('d-none');
+                $('.toolbaraux').removeClass('d-none');
+                $("#VisualizationsEdtForm fieldset").prop("disabled", true);
+                break;
             case 2: //En revisión
                 //app.ui.DataEntryBehavior('#VisualizationsEdtForm', 'disabled');
                 if (statusmode === 'Review') {
@@ -205,7 +211,6 @@ app.BayerInclusion = (function () {
                     $('#VisualizationsEdtFormBack').removeClass('d-none');
                     $('#VisualizationsEdtFormRevised').removeClass('d-none');
                     $('#VisualizationsEdtFormDelete').removeClass('d-none');
-
                 }
                 break;
             case 4: //Por aceptar
@@ -238,6 +243,9 @@ app.BayerInclusion = (function () {
                 $('#VisualizationsEdtFormRevised').addClass('d-none');
                 $('#VisualizationsEdtFormDelete').addClass('d-none');
                 $('#acceptedNotify').addClass('d-none');
+                $('#inclusionMayor90DiasNotify').addClass('d-none');
+                $('.toolbaraux').addClass('d-none');
+                $("#VisualizationsEdtForm fieldset").prop("disabled", false);
                 break;
         }
     }
@@ -465,13 +473,14 @@ app.BayerInclusion = (function () {
             event.preventDefault();
             Submit_Stage('send', '#VisualizationsEdtFormSave');
         });
-        $('#VisualizationsEdtFormBack').click(function () {
-            event.preventDefault();
+        $('#VisualizationsEdtFormBack').click(function (e) {
+            e.preventDefault();
+            backMode = 'back';
             $('#right-sidebar').toggleClass('sidebar-open');
         });
-        $('#VisualizationsEdtFormBackConfirm').click(function () {
-            event.preventDefault();
-            Submit_Stage('back', '#VisualizationsEdtFormBackConfirm', $('#motivo').val(), function () {
+        $('#VisualizationsEdtFormBackConfirm').click(function (e) {
+            e.preventDefault();
+            Submit_Stage(backMode, '#VisualizationsEdtFormBackConfirm', $('#motivo').val(), function () {
                 $('#right-sidebar').toggleClass('sidebar-open');
             });
         });
@@ -495,6 +504,17 @@ app.BayerInclusion = (function () {
                             });
                     }
                 });
+        });
+
+        $('#VisualizationsEdtFormAuxRevised').click(function (e) {
+            e.preventDefault();
+            Submit_Stage('revisedAux', '#VisualizationsEdtFormDraft');
+        });
+
+        $('#VisualizationsEdtFormAuxBack').click(function (e) {
+            e.preventDefault();
+            backMode = 'backAux';
+            $('#right-sidebar').toggleClass('sidebar-open');
         });
 
         $('#ContractorName').change(function () {
@@ -612,6 +632,8 @@ app.BayerInclusion = (function () {
                 var allValid = app.ui.IsValid('#VisualizationsEdtForm', false);
                 allowSend = beneficiariosTableValid && allValid;
                 break;
+            case 'revisedAux':
+            case 'backAux':
             case 'back':
                 allowSend = true;
                 break;
@@ -640,6 +662,8 @@ app.BayerInclusion = (function () {
                             id = data.Id;
                             Status_Handler(99, null);
                             break;
+                        case 'revisedAux':
+                        case 'backAux':
                         case 'back':
                             Status_Handler(99, null);
                             break;
@@ -1229,7 +1253,6 @@ app.BayerInclusion = (function () {
         }
         return result;
     }
-
 
     return {
         Init: function () {

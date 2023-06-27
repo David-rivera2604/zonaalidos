@@ -289,8 +289,6 @@ namespace Architect.API.Insurance.Business.Bayer
                 risk.ExecutiveUserCode = tokenInfo.UserId;
                 risk.BranchOffice = tokenInfo.BranchOffice;
 
-
-
                 switch (inclusionInfo.Mode)
                 {
                     case "draft":
@@ -300,6 +298,10 @@ namespace Architect.API.Insurance.Business.Bayer
                         //Se verfica si la fecha de emisión es superior a 90 días.
                         risk.Status = inclusionInfo.IssueDate < DateTime.Now.AddDays(-90) ? 34 : 2;
                         break;
+                    case "revisedAux":
+                        risk.Status = 2;
+                        break;
+                    case "backAux":
                     case "back":
                         risk.Comments = inclusionInfo.Message;
                         risk.Status = 1;
@@ -346,13 +348,10 @@ namespace Architect.API.Insurance.Business.Bayer
                     }
                 }
 
-
-
                 if (risk.Id.IsEmpty())
                     risk = Policy.Risk.CreatePolicy(risk, tokenInfo.UserId, tokenInfo.CompanyId);
                 else
                     risk = Policy.Risk.UpdatePolicy(risk, tokenInfo.UserId, tokenInfo.CompanyId, string.Empty);
-
                 risk.Bayer = Convertions.InclusionToRiskBayer(tokenInfo.CompanyId, inclusionInfo);
                 risk.Bayer.Id = risk.Id;
                 risk.Bayer.CompanyId = risk.CompanyId;
@@ -385,7 +384,7 @@ namespace Architect.API.Insurance.Business.Bayer
                     switch (inclusionInfo.Status)
                     {
                         case 1:
-                            if (inclusionInfo.Mode == "back")
+                            if (inclusionInfo.Mode == "back" || inclusionInfo.Mode == "backAux")
                             {
                                 inclusionInfo.Message = "La inclusión fue rechaza, se envió una notificación para que se proceda a su revisión";
                                 Core.Business.General.Mail.SendByTemplate("Notify_RequestReject", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk);
