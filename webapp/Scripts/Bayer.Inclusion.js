@@ -366,6 +366,14 @@ app.BayerInclusion = (function () {
 
     function Controls_Events() {
 
+        $('#IssueDate').blur(function () {
+            if (moment().diff(app.ui.GetDateValue('#IssueDate'), 'days') >= 90) {
+                $('#inclusionMayor90DiasNotify').removeClass('d-none');
+            } else {
+                $('#inclusionMayor90DiasNotify').addClass('d-none');
+            }
+        });
+
         $("#motivo").keyup(function () {
             $("#VisualizationsEdtFormBackConfirm").prop("disabled", $('#motivo').val().length === 0);
         });
@@ -489,17 +497,9 @@ app.BayerInclusion = (function () {
                 });
         });
 
-        //$('#VisualizationsEdtFormCancel').click(function () {
-        //    app.ui.ButtonDoing('#VisualizationsEdtFormCancel');
-        //    setTimeout(() => { app.ui.ButtonDone('#VisualizationsEdtFormCancel'); }, 3000);
-        //    event.preventDefault();
-        //});
-
-
         $('#ContractorName').change(function () {
             $('#MainPolicyId').val($('#ContractorName').val());
         });
-
 
         $('#print').click(function () {
             event.preventDefault();

@@ -73,7 +73,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architect.API.Core.Security
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architect.Compliance.Integrations", "Core\Architect.Compliance.Integrations\Architect.Compliance.Integrations.csproj", "{1A9F7166-6C86-44A6-8920-CD52422A2044}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DBScripts", "DBScripts", "{98C88292-F016-41B1-B540-9B7D063476D6}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DBScripts (2)", "DBScripts (2)", "{98C88292-F016-41B1-B540-9B7D063476D6}"
 	ProjectSection(SolutionItems) = preProject
 		dbscripts\230306.a.visualization.sql = dbscripts\230306.a.visualization.sql
 		dbscripts\230306.b.template.sql = dbscripts\230306.b.template.sql
@@ -86,6 +86,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DBScripts", "DBScripts", "{
 		dbscripts\230518b.visualization.sql = dbscripts\230518b.visualization.sql
 		dbscripts\230520a.template.sql = dbscripts\230520a.template.sql
 		dbscripts\230613.a.panel.purdy.sql = dbscripts\230613.a.panel.purdy.sql
+		dbscripts\230620.a.lookupmaster.mm_plan.sql = dbscripts\230620.a.lookupmaster.mm_plan.sql
+		dbscripts\230621.a.lookupmaster.mmplus.sql = dbscripts\230621.a.lookupmaster.mmplus.sql
+		dbscripts\2306260.a.lookup.2050.34.sql = dbscripts\2306260.a.lookup.2050.34.sql
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architect.PDF.Integrations", "Core\Architect.PDF.Integrations\Architect.PDF.Integrations.csproj", "{68042445-0A60-4BED-A4A9-222A6BE98C3B}"
