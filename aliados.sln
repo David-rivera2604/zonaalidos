@@ -88,6 +88,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DBScripts (2)", "DBScripts 
 		dbscripts\230613.a.panel.purdy.sql = dbscripts\230613.a.panel.purdy.sql
 		dbscripts\230620.a.lookupmaster.mm_plan.sql = dbscripts\230620.a.lookupmaster.mm_plan.sql
 		dbscripts\230621.a.lookupmaster.mmplus.sql = dbscripts\230621.a.lookupmaster.mmplus.sql
+		dbscripts\230626.b.template.413.sql = dbscripts\230626.b.template.413.sql
 		dbscripts\2306260.a.lookup.2050.34.sql = dbscripts\2306260.a.lookup.2050.34.sql
 	EndProjectSection
 EndProject

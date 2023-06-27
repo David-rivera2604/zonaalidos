@@ -289,13 +289,16 @@ namespace Architect.API.Insurance.Business.Bayer
                 risk.ExecutiveUserCode = tokenInfo.UserId;
                 risk.BranchOffice = tokenInfo.BranchOffice;
 
+
+
                 switch (inclusionInfo.Mode)
                 {
                     case "draft":
                         risk.Status = 1;
                         break;
                     case "send":
-                        risk.Status = 2;
+                        //Se verfica si la fecha de emisión es superior a 90 días.
+                        risk.Status = inclusionInfo.IssueDate < DateTime.Now.AddDays(-90) ? 34 : 2;
                         break;
                     case "back":
                         risk.Comments = inclusionInfo.Message;
@@ -415,7 +418,10 @@ namespace Architect.API.Insurance.Business.Bayer
                                 // Se enviar documento directo al empleado para su firma digital
                                 Core.Business.General.Mail.SendByTemplate("Notify_RequestReviewed", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk, null, new string[] { archivo });
                             }
-
+                            break;
+                        case 34:
+                            inclusionInfo.Message = "La inclusión fue debidamente almacenada y enviada a Mapfre Costa Rica, queda pendiente de revisión, por que fecha la fecvha de emisión es mayor a 90 días";
+                            Core.Business.General.Mail.SendByTemplate("Notify_RequestOnReviewMapfre", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk);
                             break;
                     }
                 }
