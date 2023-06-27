@@ -30,7 +30,7 @@ app.EmisionMapfreMasPlus = (function () {
                         $('.documentosrequeridosGrid').addClass('d-none');
 
                         $('.datosgeneralesZone').removeClass('col-md-12');
-                        $('.datosgeneralesZone').addClass('col-md-7');
+                        $('.datosgeneralesZone').addClass('col-md-12');
                         $('.enviosolicitudZone').removeClass('d-none');
                     } else {
                         $('#cotizar').removeClass('d-none');
@@ -522,7 +522,7 @@ app.EmisionMapfreMasPlus = (function () {
             var others = OtherValidations();
             if (app.ui.IsValid('#VisualizationsEdtForm', false) && others === 0) {
                 app.ui.ButtonDoing('#guardarenviar');
-                app.core.Post(app.setting.apipath + 'v1/IssueMapfreMasPlus',
+                app.core.Post(app.setting.apipath + 'v1/Issue/MapfreMasPlus',
                     JSON.stringify(MapInputToObject()),
                     function (data) {
 

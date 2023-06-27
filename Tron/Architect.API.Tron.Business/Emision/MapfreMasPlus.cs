@@ -185,7 +185,7 @@ namespace Architect.API.Tron.Business.Emision
                 }
                 try
                 {
-                    if (resultQuoteInfo.num_poliza.IsNotEmpty())
+                    if (resultQuoteInfo.num_poliza.IsNotEmpty() && quoteInfo.kyc != null)
                     {
                         ComplianceSetup.Send(quoteInfo, tokenInfo);
                     }
@@ -393,11 +393,11 @@ namespace Architect.API.Tron.Business.Emision
 
             if (tokenInfo.Roles.Contain("PolizaGrupo"))
             {
-                return Core.Business.General.Report.GeneratePDFFile("mapfremasplus_solicitud", data).GetAwaiter().GetResult();
+                return Core.Business.General.Report.GeneratePDFFile("mapfremas_solicitud", data).GetAwaiter().GetResult();
             }
             else
             {
-                return Core.Business.General.Report.GeneratePDFFile("mapfremasplus_solicitud_individual", data).GetAwaiter().GetResult();
+                return Core.Business.General.Report.GeneratePDFFile("mapfremas_solicitud_individual", data).GetAwaiter().GetResult();
             }
 
 

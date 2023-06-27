@@ -12,26 +12,27 @@ namespace Architect.API.Tron.Business.Emision
         internal static void Send(Contracts.Emision.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
             JObject jsonvalues = null;
-            Architect.Compliance.Integrations.Contracts.Clientes mapInfo;
+            Architect.Compliance.Integrations.Contracts.Clientes mapInfo = null;
             Contracts.Comun.tercero titular = (from t in quoteInfo.terceros where t.tipodetercero == 0 select t).FirstOrDefault();
 
             if (quoteInfo.kyc != null)
             {
                 jsonvalues = (JObject)quoteInfo.kyc;
+                if (titular.DocumentNumberType == 4)
+                {
+                    mapInfo = Juridico(quoteInfo, jsonvalues);
+                }
+                else
+                {
+                    mapInfo = Persona(quoteInfo, jsonvalues);
+                }
             }
-
-            if (titular.DocumentNumberType == 4)
+            if (mapInfo != null)
             {
-                mapInfo = Juridico(quoteInfo, jsonvalues);
-            }
-            else
-            {
-                mapInfo = Persona(quoteInfo, jsonvalues);
-            }
-            mapInfo.ejecutivo = tokenInfo.AgentCode.ToString();
-            mapInfo.usuarioRegistro = tokenInfo.UserId.ToString();
-            mapInfo.usuario = tokenInfo.UserId;
-            mapInfo.clientesFATCA = new List<Clientesfatca>() {
+                mapInfo.ejecutivo = tokenInfo.AgentCode.ToString();
+                mapInfo.usuarioRegistro = tokenInfo.UserId.ToString();
+                mapInfo.usuario = tokenInfo.UserId;
+                mapInfo.clientesFATCA = new List<Clientesfatca>() {
                 new Clientesfatca() {
                     poseeGreenCard= "N",
                     poseeEIN= "N",
@@ -41,11 +42,11 @@ namespace Architect.API.Tron.Business.Emision
                     poseeTelefonoExtranjero= "N"
                 }
             };
-            //if (quoteInfo.terceros?.Count > 0 && quoteInfo.terceros.Where(r=> r.tipodetercero== 6) != null)
-            //{
-            //}
+                //if (quoteInfo.terceros?.Count > 0 && quoteInfo.terceros.Where(r=> r.tipodetercero== 6) != null)
+                //{
+                //}
 
-            mapInfo.clientesPatrimonio = new List<Clientespatrimonio>() {
+                mapInfo.clientesPatrimonio = new List<Clientespatrimonio>() {
                 new Clientespatrimonio()
                 {
                      descripcionPatrimonio = string.Format("{0} {1} {2} {3}", quoteInfo.cod_marcaDesc, quoteInfo.cod_modeloDesc, quoteInfo.cod_sub_modeloDesc, quoteInfo.NUM_MATRICULA ),
@@ -56,7 +57,8 @@ namespace Architect.API.Tron.Business.Emision
                 }
             };
 
-            string result = Architect.Compliance.Integrations.Business.Customers.SendCustomers(mapInfo).Result;
+                string result = Architect.Compliance.Integrations.Business.Customers.SendCustomers(mapInfo).Result;
+            }
         }
 
         private static Compliance.Integrations.Contracts.Clientes Persona(Contracts.Emision.MapfreMas quoteInfo, JObject jsonvalues)
