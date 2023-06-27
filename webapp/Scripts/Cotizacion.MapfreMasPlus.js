@@ -95,7 +95,7 @@ app.CotizacionMapfreMasPlus = (function () {
 
         setupData = JSON.parse(JSON.stringify(data));
         if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
-            lookupList.push('MM_POLIZA_GRUPO.contrato'); //, 'MM_SUB_CONTRATOS.subcontrato'
+            lookupList.push('MM_POLIZA_GRUPO_303.contrato'); //, 'MM_SUB_CONTRATOS.subcontrato'
             $('#polizagrupoZone').removeClass('d-none');
         }
         app.core.Lookups(lookupList,
@@ -130,7 +130,7 @@ app.CotizacionMapfreMasPlus = (function () {
             let contracto = app.ui.GetDropDownNumericValue('#contrato');
 
             if (contracto > 0) {
-                setupData.polizagrupo = app.core.Data().lookups.filter(i => i.Key === 'MM_POLIZA_GRUPO')[0].Lkp.filter(l => l.Code === contracto + '')[0].NUM_POLIZA;
+                setupData.polizagrupo = app.core.Data().lookups.filter(i => i.Key === 'MM_POLIZA_GRUPO_303')[0].Lkp.filter(l => l.Code === contracto + '')[0].NUM_POLIZA;
             }
 
             SettingReload();
@@ -186,7 +186,7 @@ app.CotizacionMapfreMasPlus = (function () {
                 let cod_mon = app.ui.GetDropDownNumericValue('#cod_mon');
                 app.ui.DropDownDisabled('#subcontrato', true, true);
                 app.core.Lookups([
-                    'MM_POLIZA_GRUPO.contrato'],
+                    'MM_POLIZA_GRUPO_303.contrato'],
                     function () {
                         SettingReload();
                     }, `cod_ramo=${data.cod_ramo}:cod_mon=${cod_mon}`);
