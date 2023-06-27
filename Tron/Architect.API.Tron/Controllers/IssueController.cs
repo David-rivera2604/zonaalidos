@@ -155,6 +155,26 @@ namespace Architect.API.Tron.Controllers
 
 
         /// <summary>
+        /// Devuelve posibles complementos a la información de terceros según el rol del usuario y/o fuentes del tomador de la póliza
+        /// </summary>
+        /// <param name="fuente_Tomador"></param>
+        /// <param name="terceros"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("MapfreMasPlus/Terceros/{fuente_Tomador}")]
+        public async Task<IHttpActionResult> Plus_Tercero_Complement([FromUri] string fuente_Tomador, [FromBody] List<Contracts.Comun.tercero> terceros)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            List<Contracts.Comun.tercero> result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Reglas.research.Apply_Terceros("MapfreMasPlus", terceros, fuente_Tomador, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
         /// Devuelve la estructura de datos asociados a un presupuesto, con información complementaria para permitir la emisión de una póliza de tipo Multirriesgo
         /// </summary>
         /// <param name="presupuesto"></param>

@@ -185,7 +185,7 @@ namespace Architect.API.Tron.Business.Emision
                 }
                 try
                 {
-                    if (resultQuoteInfo.num_poliza.IsNotEmpty())
+                    if (resultQuoteInfo.num_poliza.IsNotEmpty() && quoteInfo.kyc != null)
                     {
                         ComplianceSetup.Send(quoteInfo, tokenInfo);
                     }
@@ -315,7 +315,7 @@ namespace Architect.API.Tron.Business.Emision
             Contracts.Comun.tercero primaryInsured = (from t in quoteInfo.terceros where t.tipodetercero == 2 select t).First();
             if (tip_firma == Contracts.TipoDeFirma.Manual)
             {
-                Core.Business.General.Mail.SendByTemplate("MapfreMasPlus_Solicitud", tokenInfo.CompanyId, tokenInfo.UserId, 0, quoteInfo,
+                Core.Business.General.Mail.SendByTemplate("MapfreMas_Solicitud", tokenInfo.CompanyId, tokenInfo.UserId, 0, quoteInfo,
                     new Dictionary<string, string>() { { correoenvio, string.Empty } },
                     new string[] { string.Format("{0};Solicitud {1}.pdf", solicitudPDF, quoteInfo.presupuesto) });
                 submit.UniqueId = quoteInfo.presupuesto;
@@ -340,7 +340,7 @@ namespace Architect.API.Tron.Business.Emision
 
             if (tip_firma == Contracts.TipoDeFirma.Manual)
             {
-                Core.Business.General.Mail.SendByTemplate("MapfreMasPlus_Solicitud", tokenInfo.CompanyId, tokenInfo.UserId, 0, quoteInfo,
+                Core.Business.General.Mail.SendByTemplate("MapfreMas_Solicitud", tokenInfo.CompanyId, tokenInfo.UserId, 0, quoteInfo,
                     new Dictionary<string, string>() { { correoenvio, string.Empty } },
                     new string[] { string.Format("{0};Solicitud {1}.pdf", kycPDF, quoteInfo.presupuesto) });
             }
@@ -393,11 +393,11 @@ namespace Architect.API.Tron.Business.Emision
 
             if (tokenInfo.Roles.Contain("PolizaGrupo"))
             {
-                return Core.Business.General.Report.GeneratePDFFile("mapfremasplus_solicitud", data).GetAwaiter().GetResult();
+                return Core.Business.General.Report.GeneratePDFFile("mapfremas_solicitud", data).GetAwaiter().GetResult();
             }
             else
             {
-                return Core.Business.General.Report.GeneratePDFFile("mapfremasplus_solicitud_individual", data).GetAwaiter().GetResult();
+                return Core.Business.General.Report.GeneratePDFFile("mapfremas_solicitud_individual", data).GetAwaiter().GetResult();
             }
 
 
