@@ -1206,9 +1206,13 @@ app.ui = (function () {
         },
         IsSameDate: function (dateSource, dateTarget) {
             if (dateSource != undefined && dateSource != null && dateTarget != undefined && dateTarget != null) {
-                return (dateSource.getFullYear() === dateTarget.getFullYear() &&
-                    dateSource.getMonth() === dateTarget.getMonth() &&
-                    dateSource.getDay() === dateTarget.getDay())
+                let source = dateSource;
+                if (typeof value === 'string') {
+                    source = new Date(source);
+                }
+                return (source.getFullYear() === dateTarget.getFullYear() &&
+                    source.getMonth() === dateTarget.getMonth() &&
+                    source.getDay() === dateTarget.getDay())
             }
             else
                 return false;
