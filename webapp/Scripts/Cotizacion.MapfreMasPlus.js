@@ -650,7 +650,7 @@ app.CotizacionMapfreMasPlus = (function () {
                 cod_tip_vehi: { required: true },
                 cod_uso_vehi: { required: true },
                 IMP_VR: { required: true, Numeric: true },
-                PCT_AJUSTE_GEN: { min: localStorage.getItem('Roles').includes('Purdy') ? -5 : -15, max: 0, AjustePorAnoFabricacion: true },
+                PCT_AJUSTE_GEN: { min: localStorage.getItem('Roles').includes('Purdy') ? -5 : -15, max: 0, AjustePorAnoFabricacion: !localStorage.getItem('Roles').includes('Purdy') },
                 IMP_AUTO_RC: { required: true },
                 DED_AUTO_RC: { required: true },
                 IMP_AUTO_GMO: { ValorRequeridoSegunVechiculoPlan: true },
@@ -1010,15 +1010,17 @@ app.CotizacionMapfreMasPlus = (function () {
             // }
         }
 
-        let cod_marca = app.ui.GetDropDownNumericValue('#cod_marca');
-        let tipo_prod = app.ui.GetRadioStringValue('tipo_prod');
-        //31 HYUNDAI, 74 TOYOTA, 73 SUZUKI, 55 MITSUBISHI, 40 KIA, 50 MAZDA, 13 CHEVROLET, 30 HONDA
-        if ((tipo_prod === 'basico' || tipo_prod === 'amplio' || tipo_prod === 'plus') &&
-            (cod_marca === 31 || cod_marca === 74 || cod_marca === 73 || cod_marca === 55 || cod_marca === 40 || cod_marca === 50 || cod_marca === 13 || cod_marca === 30)) {
-            app.ui.SetNumericValue('#PCT_AJUSTE_GEN', 0);
-            $('#PCT_AJUSTE_GEN').prop('disabled', true);
-        } else {
-            $('#PCT_AJUSTE_GEN').prop('disabled', false);
+        if (!localStorage.getItem('Roles').includes('Purdy')) {
+            let cod_marca = app.ui.GetDropDownNumericValue('#cod_marca');
+            let tipo_prod = app.ui.GetRadioStringValue('tipo_prod');
+            //31 HYUNDAI, 74 TOYOTA, 73 SUZUKI, 55 MITSUBISHI, 40 KIA, 50 MAZDA, 13 CHEVROLET, 30 HONDA
+            if ((tipo_prod === 'basico' || tipo_prod === 'amplio' || tipo_prod === 'plus') &&
+                (cod_marca === 31 || cod_marca === 74 || cod_marca === 73 || cod_marca === 55 || cod_marca === 40 || cod_marca === 50 || cod_marca === 13 || cod_marca === 30)) {
+                app.ui.SetNumericValue('#PCT_AJUSTE_GEN', 0);
+                $('#PCT_AJUSTE_GEN').prop('disabled', true);
+            } else {
+                $('#PCT_AJUSTE_GEN').prop('disabled', false);
+            }
         }
 
         if (cod_tip_vehi === 2 && (cod_plan_auto === 31 && cod_plan_auto === 32 && cod_plan_auto == 33)) {
