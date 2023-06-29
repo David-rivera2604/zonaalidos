@@ -502,3 +502,6 @@
 1.6.33b 20/06/2023 Aliados. Se prepara reporte MapfreMas Solicitud para producción.
 1.6.33c 20/06/2023 MapfreMas. Ajuste en el campo "Plan" para manejar la opción especial para purdy.
 1.6.34  26/06/2023 MapfreMasPlus.
+1.6.35  27/06/2023 Viajero Regional Monge. Ajuste en método para obtener el token.
+                   Viajero Regional Monge. Detalle de error condicionado por variable de settings Working.Mode.
+1.6.35a 29/06/2023 MapfreMasPlus. Se habilita el porcentaje de ajuste comercial para Purdy para el rango -5 a 0.
