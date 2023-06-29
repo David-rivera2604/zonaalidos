@@ -368,15 +368,30 @@ app.CotizacionMapfreMasPlus = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-        new AutoNumeric('#PCT_AJUSTE_GEN', {
-            decimalCharacter: ',',
-            decimalCharacterAlternative: '.',
-            digitGroupSeparator: '.',
-            maximumValue: '0',
-            minimumValue: '-15',
-            decimalPlaces: '0',
-            emptyInputBehavior: 'null'
-        });
+
+        if (localStorage.getItem('Roles').includes('Purdy')) {
+            $('#PCT_AJUSTE_GEN').prop('title', 'Valor entre -5 y 0%');
+            new AutoNumeric('#PCT_AJUSTE_GEN', {
+                decimalCharacter: ',',
+                decimalCharacterAlternative: '.',
+                digitGroupSeparator: '.',
+                maximumValue: '0',
+                minimumValue: '-5',
+                decimalPlaces: '0',
+                emptyInputBehavior: 'null'
+            });
+        } else {
+            new AutoNumeric('#PCT_AJUSTE_GEN', {
+                decimalCharacter: ',',
+                decimalCharacterAlternative: '.',
+                digitGroupSeparator: '.',
+                maximumValue: '0',
+                minimumValue: '-15',
+                decimalPlaces: '0',
+                emptyInputBehavior: 'null'
+            });
+        }
+
         new AutoNumeric('#IMP_AUTO_CYV', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
