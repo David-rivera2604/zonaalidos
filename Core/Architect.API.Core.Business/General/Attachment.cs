@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.IO;
+using System.Net.Http.Headers;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web;
 using System.Web.Hosting;
 
 namespace Architect.API.Core.Business.General
@@ -147,6 +151,36 @@ namespace Architect.API.Core.Business.General
             return DataAccess.General.AttachmentEx.Update(companyId, entityType, entityId, newEntityType, newEntityId, userId) > 0;
         }
 
+        public static async Task<string[]> ReceiptWeb(int cantidad, string num_poliza)
+        {
+            List<string> files = new List<string>();
 
+            for (int i = 0; i < cantidad; i++)
+            {
+
+                HttpResponseMessage response = new HttpResponseMessage();
+
+                HttpClient Cotizacion = new HttpClient();
+                Cotizacion.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Request.Headers["Authorization"].Substring(7));
+                Cotizacion.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                Cotizacion.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
+
+
+                response = await Cotizacion.GetAsync(ConfigurationManager.AppSettings["Aliados.URL.Base"] + "/api/v1/TronCommon/ImprimirPoliza/" + num_poliza + "/" + (i + 1));
+
+                byte[] resultBytes = response.Content.ReadAsByteArrayAsync().Result;
+                string filenamenew = @"Poliza_" + num_poliza + "_Riesgo" + (i + 1) + ".pdf";
+
+                string filePath = ConfigurationManager.AppSettings["Attachments.Path"] + filenamenew;
+                File.WriteAllBytes(filePath, resultBytes);
+
+                string formatfile = string.Format("{0};Solicitud {1}.pdf", filePath, "Poliza " + num_poliza + " Riesgo " + (i + 1));
+                files.Add(formatfile);
+            }
+
+            string[] matrizfiles = files.ToArray();
+            return matrizfiles;
+        }
     }
+    
 }

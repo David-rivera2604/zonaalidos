@@ -132,6 +132,58 @@ namespace Architect.API.Insurance.Controllers
 
         }
 
+        [HttpPost]
+        [Route("SendforRol")]
+        [Authorize]
+        [AllowAnonymous]
+        public async Task<IHttpActionResult> SendforRol([FromBody] string message, [FromUri] string Rol = "")
+        {
+
+            Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info();
+
+            List<UserMember> result = Core.Business.Security.UserMember
+                .Retrieve(tokenInfo.CompanyId, tokenInfo.SecurityLevel, Rol, "");
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("ViajeroReceipt")]
+        [Authorize]
+        [AllowAnonymous]
+        public async Task<IHttpActionResult> SendReceipt([FromBody] Tron.Contracts.Emision.Viajero data)
+        {
+
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            HttpResponseMessage response = new HttpResponseMessage();
+
+            int TaskResult = 1;
+            string email = "";
+            foreach (var item in data.terceros)
+            {
+                if (item.tipodetercero == 0 || item.elaseguradoeselmismotomador == 1)
+                {
+                    email = item.correoelectronico;
+                }
+            }
+
+            string[] lis = await Core.Business.General.Attachment.ReceiptWeb(data.cantidad_riesgos, data.num_poliza);
+
+            Core.Business.General.Mail.SendEmail(
+                 new Dictionary<string, string>() { { email, string.Empty } },
+                 "Recibo de compra Seguro", "Recibos Viajero", lis);
+
+            if (TaskResult == 0)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                return Ok(lis);
+            }
+
+        }
+
     }
 
 }
