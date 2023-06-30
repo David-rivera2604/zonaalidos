@@ -34,6 +34,8 @@ app.GeneralProcessSpecStep = (function () {
         $('#FlowIdFlt').select2({ width: '100%', theme: 'bootstrap4' });
 
         $('#Roles').select2({ width: '100%', theme: 'bootstrap4' });
+        $('#References').select2({ width: '100%', theme: 'bootstrap4' });
+
 
         $(".formbtn").appendTo("#GenericToolBar");
     }
@@ -449,8 +451,8 @@ app.GeneralProcessSpecStep = (function () {
             MailToStepResponsibleCustom: $('#MailToStepResponsibleCustom').val(),
             MailToStepResponsibleTmpl: $('#MailToStepResponsibleTmpl').val(),
             PreScript: $('#PreScript').val(),
-            PostScript: $('#PostScript').val()
-
+            PostScript: $('#PostScript').val(),
+            References: JSON.stringify(app.ui.GetDropDownMultiValues('References'))
         };
         return data;
     };
@@ -481,6 +483,7 @@ app.GeneralProcessSpecStep = (function () {
 
         $('#PreScript').val(data.PreScript);
         $('#PostScript').val(data.PostScript);
+        
 
     };
 
@@ -563,6 +566,19 @@ app.GeneralProcessSpecStep = (function () {
             app.core.Get(app.setting.apipath + 'v1/ProcessSpecStep/' + row.Id)
                 .done(function (data, textStatus, jqXHR) {
                     MapObjectToInput(data);
+
+
+                    app.core.Get(app.setting.apipath + 'v1/ProcessSpecFlow/' + data.FlowId + '/References')
+                        .done(function (dataRef, textStatus, jqXHR) {
+                            var ctrol = $('select#References');
+                            ctrol.children().remove();
+                            $.each(dataRef, function () {
+                                ctrol.append($('<option />').val(this['Code']).text(this['Description']));
+                            });
+                            ctrol.select2({ width: '100%', theme: 'bootstrap4' });
+                            app.ui.SetDropDownMultiValues('References', JSON.parse(data.References) );
+                        });
+
                     $('#Name').focus();
                     $('#ProcessSpecStepEdtFormSaveContinue').addClass('d-none');
                     $('#ProcessSpecStepEdtFormSaveCopy').addClass('d-none');
@@ -571,6 +587,7 @@ app.GeneralProcessSpecStep = (function () {
                     $('#ProcessSpecStepEdtFormSave').removeClass('d-none');
                     $('#ProcessSpecStepEdtFormCancel').removeClass('d-none');
                     EdtForm_Change();
+
                 }).always(function () {
                     $('.ibox-content').toggleClass('sk-loading');
                 });
@@ -709,7 +726,7 @@ app.GeneralProcessSpecStep = (function () {
             }
         },
         New: function (row) {
-            let newRow = { Id: 0, FlowId: 0, Name: null, Description: null, StepOrder: 0, ProcessStatus: 0, ProcessLabel: null, EnableComment: false, ProgressMode: 1, SLA: 0, MailServer: 1, MailToContact: 1, MailToContactCustom: null, MailToContactTmpl: 1, MailToStepResponsible: 1, MailToStepResponsibleCustom: null, MailToStepResponsibleTmpl: 1, PreScript: null, PostScript: null }
+            let newRow = { Id: 0, FlowId: 0, Name: null, Description: null, StepOrder: 0, ProcessStatus: 0, ProcessLabel: null, EnableComment: false, ProgressMode: 1, SLA: 0, MailServer: 1, MailToContact: 1, MailToContactCustom: null, MailToContactTmpl: 1, MailToStepResponsible: 1, MailToStepResponsibleCustom: null, MailToStepResponsibleTmpl: 1, PreScript: null, PostScript: null, References: null }
             if (row !== undefined) {
                 row.Id = 0;
                 newRow = row;

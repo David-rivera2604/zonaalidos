@@ -512,3 +512,5 @@
                    Bayer. Enviar copia al correo culloa@asprose.com debe incluir el certificado y debe hacerse al darse de alta.
                           Se implementa incluyendo en el correo que se envia actualmente cuando se da de alta, a los usuarios que tenga como rol Asprose,
                           permitiendo incluir el email solitado como usuario del sistema, pero con al flexibilidad de cambios y otras inclusiones.
+1.6.37  29/06/2023 Trazabilidad. Ajustes en la pagina de etapas para indicar cuales campos seran editables.
+                   Trazabilidad. Ajustes en el panel de casos para disponibilizar los campos que seran editables según la etapa.

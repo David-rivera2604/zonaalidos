@@ -39,7 +39,7 @@ app.ui = (function () {
             var control = $('select#' + selector);
             var valueSelect = [];
 
-            if (values != null) {
+            if (values != null && Array.isArray(values)) {
                 var adapter = control.data('select2').dataAdapter;
                 var allItem = [];
                 adapter.$element.children().each(function () {

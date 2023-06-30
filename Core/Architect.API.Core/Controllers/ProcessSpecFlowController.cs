@@ -272,7 +272,7 @@ namespace Architect.API.Core.Controllers
         public async Task<HttpResponseMessage> Export([FromUri] int id)
         {
             Contracts.Security.Token tokenInfo = Security.Token.Info();
-            
+
             string ou = Architect.API.Core.Business.General.ProcessSpecFlow.Export(tokenInfo.CompanyId, tokenInfo.UserId, id);
 
             var response = new HttpResponseMessage(HttpStatusCode.OK)
@@ -316,6 +316,42 @@ namespace Architect.API.Core.Controllers
                     result = BadRequest();
                 }
             }).ConfigureAwait(false);
+            return result;
+        }
+
+        /// <summary>
+        /// Recupera una lista con los campos de referencia de un proceso.
+        /// </summary>
+        /// <param name="id">Identificador único.</param>
+        /// <returns>Lista de objetos ReferenceField.</returns>
+        [HttpGet]
+        [Route("{id:int}/References")]
+        [Authorize]
+        public async Task<IHttpActionResult> GetReferencesById([FromUri] int id)
+        {
+            Contracts.Security.Token tokenInfo = Security.Token.Info();
+            IHttpActionResult result = null;
+            List<Architect.Utilities.Contracts.LookUpValue> data = null;
+
+            if (id.IsEmpty())
+            {
+                result = BadRequest("Debe indicar el identificador del process spec flow");
+            }
+            else
+            {
+                await Task.Run(() =>
+                {
+                    data = Architect.API.Core.Business.General.ProcessSpecFlow.RetrieveReferencesById(tokenInfo.CompanyId, id);
+                    if (data.IsEmpty())
+                    {
+                        result = NotFound();
+                    }
+                    else
+                    {
+                        result = Ok(data);
+                    }
+                }).ConfigureAwait(false);
+            }
             return result;
         }
 

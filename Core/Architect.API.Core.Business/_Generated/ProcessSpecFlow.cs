@@ -1,4 +1,5 @@
-﻿using Architect.Utilities.Extensions;
+﻿using Architect.DataFactory;
+using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -61,7 +62,7 @@ namespace Architect.API.Core.Business.General
 
                     Architect.Utilities.Cache.RemoveStartWith("Process");
                     Architect.Utilities.Cache.RemoveStartWith("SpecFlow");
-                    
+
                 }
             }
             return new Architect.API.Core.Contracts.General.ProcessSpecFlowResult() { ProcessSpecFlow = result, Errors = errors };
@@ -287,6 +288,61 @@ namespace Architect.API.Core.Business.General
             if (item.Status.IsNotEmpty())
                 item.StatusDesc = Core.Business.Common.LkpDescription(companyId, "EstadoRegistro", item.Status.ToString());
 
+        }
+
+
+        public static List<Architect.Utilities.Contracts.LookUpValue> RetrieveReferencesById(int companyId, int id)
+        {
+            List<Architect.Utilities.Contracts.LookUpValue> fields = new List<Architect.Utilities.Contracts.LookUpValue>();
+            IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Research");
+            Architect.API.Core.Contracts.General.ProcessSpecFlow process = Architect.API.Core.DataAccess.General.ProcessSpecFlow.Retrieve(id, companyId, currentConnection);
+
+            if (process.IsNotEmpty())
+            {
+                if (process.ReferenceCaption1.IsNotEmpty())
+                {
+                    fields.Add(new Architect.Utilities.Contracts.LookUpValue() { Code = "Reference1", Description = process.ReferenceCaption1 });
+                }
+                if (process.ReferenceCaption2.IsNotEmpty())
+                {
+                    fields.Add(new Architect.Utilities.Contracts.LookUpValue() { Code = "Reference2", Description = process.ReferenceCaption2 });
+                }
+                if (process.ReferenceCaption3.IsNotEmpty())
+                {
+                    fields.Add(new Architect.Utilities.Contracts.LookUpValue() { Code = "Reference3", Description = process.ReferenceCaption3 });
+                }
+                if (process.ReferenceCaption4.IsNotEmpty())
+                {
+                    fields.Add(new Architect.Utilities.Contracts.LookUpValue() { Code = "Reference4", Description = process.ReferenceCaption4 });
+                }
+                if (process.ReferenceCaption5.IsNotEmpty())
+                {
+                    fields.Add(new Architect.Utilities.Contracts.LookUpValue() { Code = "Reference5", Description = process.ReferenceCaption5 });
+                }
+                if (process.ReferenceCaption6.IsNotEmpty())
+                {
+                    fields.Add(new Architect.Utilities.Contracts.LookUpValue() { Code = "Reference6", Description = process.ReferenceCaption6 });
+                }
+                if (process.ReferenceCaption7.IsNotEmpty())
+                {
+                    fields.Add(new Architect.Utilities.Contracts.LookUpValue() { Code = "Reference7", Description = process.ReferenceCaption7 });
+                }
+                if (process.ReferenceCaption8.IsNotEmpty())
+                {
+                    fields.Add(new Architect.Utilities.Contracts.LookUpValue() { Code = "Reference8", Description = process.ReferenceCaption8 });
+                }
+                if (process.ReferenceCaption9.IsNotEmpty())
+                {
+                    fields.Add(new Architect.Utilities.Contracts.LookUpValue() { Code = "Reference9", Description = process.ReferenceCaption9 });
+                }
+                if (process.ReferenceCaption10.IsNotEmpty())
+                {
+                    fields.Add(new Architect.Utilities.Contracts.LookUpValue() { Code = "Reference10", Description = process.ReferenceCaption10 });
+                }
+            }
+            currentConnection.Close();
+
+            return fields;
         }
 
     }
