@@ -148,7 +148,7 @@ namespace Architect.API.Tron.Business.Backoffice.Emision
                 {
                     p2000030Instance60.num_poliza = s2000030Instance.num_poliza;
                     //Si existe tercero no lo incluye
-                    if (!DataAccess.Batch.P2000060.Exist(p2000030Instance60.tip_docum, p2000030Instance60.cod_docum, s2000030Instance.num_poliza, p2000030Instance60.tip_benef, currentConnection))
+                    if (!DataAccess.Batch.P2000060.Exist(p2000030Instance60.tip_docum, p2000030Instance60.cod_docum, s2000030Instance.num_poliza, p2000030Instance60.tip_benef, p2000030Instance60.num_riesgo, currentConnection))
                     {
                         DataAccess.CrearPresupuesto.PP_Insert_P2000060(p2000030Instance60, currentConnection);
                     }

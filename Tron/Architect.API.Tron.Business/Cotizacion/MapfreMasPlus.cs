@@ -93,7 +93,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             if (tokenInfo.Roles.Contain("PolizaGrupo"))
             {
                 keys.AddRange(new List<string> {
-                    "MM_POLIZA_GRUPO"});
+                    "MM_POLIZA_GRUPO_303"});
             }
 
             string url = $"cod_ramo={cod_ramo}:cod_mon={cod_mon}:edad={edad}:plan={tipo_prod}:cod_marca={cod_marca}:num_contrato={num_contrato}:num_subcontrato={num_subcontrato}:num_poliza_grupo={num_poliza_grupo}:cod_modelo={cod_modelo}:anio_sub_modelo={anio_sub_modelo}:cod_tip_vehi={cod_tip_vehi}:cod_uso_vehi={cod_uso_vehi}:mca_sexo={mca_sexo}:cod_zona_circul={cod_zona_circul}:cod_plan_auto={cod_plan_auto}";
@@ -104,7 +104,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             {
                 //LookUpsForPolizaGrupo(result, values);
 
-                Core.Contracts.General.LookupValues contratosMaster = values.Find(x => x.Key == "MM_POLIZA_GRUPO");
+                Core.Contracts.General.LookupValues contratosMaster = values.Find(x => x.Key == "MM_POLIZA_GRUPO_303");
                 if (contratosMaster != null)
                 {
                     Core.Contracts.General.LookupValue contrato = contratosMaster.Lkp.Find(y => y.Code == num_contrato.ToString());
@@ -256,7 +256,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 Contracts.Batch.CotizadorMapfreMasClass quoteTron = MapfreMasConvertTo.Tron(quoteInfo, quoteInfo.cod_ramo, tokenInfo.AgentCode, tokenInfo.UserName, tokenInfo.IdentificationType, tokenInfo.Identification, tokenInfo.Roles);
                 //Architect.Common.Helpers.Serialize.SerializeToFile<Architect.API.Tron.Contracts.Batch.CotizadorMapfreMasClass>(result, @"C:\temp\mapfremas.in.xml");
 
-                Contracts.Presupuesto.DatoFijo resultTron = Backoffice.Cotizacion.MapfreMas.Calcular(quoteTron);
+                Contracts.Presupuesto.DatoFijo resultTron = Backoffice.Cotizacion.MapfreMasPlus.Calcular(quoteTron);
                 resultInfo = MapfreMasConvertFrom.Quote(quoteInfo, resultTron);
 
                 if (resultInfo.Error.IsEmpty() && tokenInfo.Roles.Contain("Purdy") && tokenInfo.Roles.Contain("PolizaGrupo"))

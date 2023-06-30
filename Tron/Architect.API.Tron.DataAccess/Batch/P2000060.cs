@@ -19,7 +19,7 @@ namespace Architect.API.Tron.DataAccess.Batch
             return result >= 1;
         }
 
-        public static bool Exist(string tip_docum, string cod_docum, string num_presupuesto, string tip_benef, IDbConnection currentConnection)
+        public static bool Exist(string tip_docum, string cod_docum, string num_presupuesto, string tip_benef, int num_riesgo, IDbConnection currentConnection)
         {
             return (int)Database.Select("SELECT COUNT(COD_DOCUM)" +
                                          " FROM P2000060" +
@@ -27,11 +27,13 @@ namespace Architect.API.Tron.DataAccess.Batch
                                           " AND COD_DOCUM=:COD_DOCUM" +
                                           " AND TIP_BENEF=:TIP_BENEF" +
                                           " AND NUM_POLIZA=:NUM_POLIZA" +
-                                          " AND COD_CIA=1")                
+                                          " AND COD_CIA=1" +
+                                          " AND NUM_RIESGO =:NUM_RIESGO")                
                         .AddParameter("TIP_DOCUM", Architect.DataFactory.Enumerations.DbType.String, 20, tip_docum)
                         .AddParameter("COD_DOCUM", Architect.DataFactory.Enumerations.DbType.String, 20, cod_docum)
                         .AddParameter("TIP_BENEF", Architect.DataFactory.Enumerations.DbType.String, 100, tip_benef)
                         .AddParameter("NUM_POLIZA", Architect.DataFactory.Enumerations.DbType.String, 20, num_presupuesto)
+                        .AddParameter("NUM_RIESGO", Architect.DataFactory.Enumerations.DbType.Int32, 5, num_riesgo)
                         .QueryScalar<Decimal>(currentConnection, "Tron") > 0;
         }
     }

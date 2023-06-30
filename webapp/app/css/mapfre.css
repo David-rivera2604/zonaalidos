@@ -90,6 +90,7 @@ body.Mapfre {
 
 .Mapfre .wrapper-content {
     margin-top: 80px;
+    margin-bottom: 80px;
 }
 
 .Mapfre #page-wrapper {
@@ -799,6 +800,10 @@ body.mini-navbar .nav-header {
     .info {
         font-size: 9px;
     }
+}
+
+@media (min-width: 768px) .col-md-12 {
+    bottom: 12px !important;
 }
 
 #page-wrapper {

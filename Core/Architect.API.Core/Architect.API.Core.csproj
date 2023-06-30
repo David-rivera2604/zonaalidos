@@ -178,6 +178,10 @@
       <Project>{6a906932-7049-4dbd-88f6-2b3f5b3b0f94}</Project>
       <Name>Architect.API.Tron.Business</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Tron\Architect.API.Tron.Contracts\Architect.API.Tron.Contracts.csproj">
+      <Project>{e45fc69a-0702-4a98-885e-f43dd79a424e}</Project>
+      <Name>Architect.API.Tron.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Architect.API.Core.Business\Architect.API.Core.Business.csproj">
       <Project>{579105b3-776b-4094-a301-87a9c42962c5}</Project>
       <Name>Architect.API.Core.Business</Name>
