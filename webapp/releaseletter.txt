@@ -505,3 +505,10 @@
 1.6.35  27/06/2023 Viajero Regional Monge. Ajuste en método para obtener el token.
                    Viajero Regional Monge. Detalle de error condicionado por variable de settings Working.Mode.
 1.6.35a 29/06/2023 MapfreMasPlus. Se habilita el porcentaje de ajuste comercial para Purdy para el rango -5 a 0.
+1.6.36  29/06/2023 Bayer. Se alertara cuando una persona se incluida de forma retroactiva con más de 90 días
+                   Bayer. La solicitud deberá quedar en un estado de revisión por parte de Mapfre en vez de ser por RRHH, para aceptar o denegar.
+                   Bayer. Si es aceptada la solicitud será transferida a RRHH, para continuar su proceso.
+                   Bayer. Si es rechazada, se notificará al empleado.
+                   Bayer. Enviar copia al correo culloa@asprose.com debe incluir el certificado y debe hacerse al darse de alta.
+                          Se implementa incluyendo en el correo que se envia actualmente cuando se da de alta, a los usuarios que tenga como rol Asprose,
+                          permitiendo incluir el email solitado como usuario del sistema, pero con al flexibilidad de cambios y otras inclusiones.

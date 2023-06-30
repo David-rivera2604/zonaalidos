@@ -40,10 +40,12 @@
                             <!-- Notificaciones  -->
                             <div id="quoteNotify">
                             </div>
-
                             <div id="acceptedNotify" class="alert alert-dismissable animated fadeInDown alert-info d-none" role="alert">
                                 <p>Su solicitud ya fue aceptada por el personal de RRHH, la misma fue enviada a su correo en forma de un archivo PDF para su respectiva firma digital, según la preferencia indicado por usted al momento de enviar la solicitud a RRHH.</p>
                                 <p>Una vez que reciba el correo mencionado, por favor proceda a firma digitalmente el archivo anexo, para luego cargar a este sistema el documento firmado usando el botón de nombre “Cargar la solicitud firmada” que se encuentra en la parte superior de la solicitud.</p>
+                            </div>
+                            <div id="inclusionMayor90DiasNotify" class="alert alert-dismissable animated fadeInDown alert-info d-none" role="alert">
+                                <p>Debido a que la fecha de ingreso a la póliza es mayor a 90 días, el proceso de inclusión deberá ser revisado por el personal de Mapfre Costa Rica, antes de ser procesado por recursos humanos.</p>
                             </div>
 
                             <div class="form-row">
@@ -461,7 +463,8 @@
                                 <div class="col-lg-12">
                                     <div class="form-row">
                                         <div class='col'>
-                                            <h4><i class="fa fa-user"></i> 
+                                            <h4>
+                                                <i class="fa fa-user"></i>
                                                 Beneficiarios de la póliza de vida<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span><label id="beneficiariosTbl-error" class="float-right d-none" style="color: #cc5965;
         display: inline-block;
         font-size: 11px;
@@ -584,6 +587,14 @@
 
                         </fieldset>
                         <input id="fileUpload" type="file" class="d-none" />
+                        <!-- Botonera auxiliar -->
+                        <div class="form-row mb-5 toolbaraux d-none">
+                            <div class='col-md-12'>
+                                <button id="VisualizationsEdtFormAuxBack" type="button" class="btn btn-danger" data-doing="Rechazando la solicitud...">Rechazar</button>
+                                <button id="VisualizationsEdtFormAuxRevised" type="button" class="btn btn-primary" data-doing="Enviando a RRHH...">Enviar a RRHH</button>
+                            </div>
+                        </div>
+
                     </form>
                 </div>
             </div>

@@ -42,7 +42,7 @@ namespace Architect.API.Insurance.Business.Bayer
                     };
                     Core.Business.General.Attachment.SyncUp(attachment);
 
-                    Signed(tokenInfo.CompanyId, id);
+                    Signed(tokenInfo.CompanyId, id, attachment);
                 }
             }
             return result;
@@ -64,14 +64,24 @@ namespace Architect.API.Insurance.Business.Bayer
 
                     foreach (Utilities.Contracts.LookUpValue item in DataAccess.Policy.Risk.RetrieveByStatus(companyId, 4))
                     {
-                        eviSignInf = DocuSign.Integrations.DocuSign.Query(item.Description).GetAwaiter().GetResult();
+                        eviSignInf = DocuSign.Integrations.DocuSign.Query(item.Description, true).GetAwaiter().GetResult();
                         if (eviSignInf != null)
                         {
                             Utilities.Log.TraceLog(" Bayer.Inclusion.EvicertiaSigned", item.Description + " outcome " + eviSignInf.outcome, "Evicertia");
                             switch (eviSignInf.outcome)
                             {
                                 case "Signed":
-                                    Signed(companyId, Convert.ToInt32(item.Code));
+                                    Core.Contracts.General.Attachments attachment = null;
+                                    foreach (DocuSign.Integrations.Contracts.affidavits affidavit in eviSignInf.affidavits)
+                                    {
+                                        if (affidavit.Signed)
+                                        {
+                                            attachment = Almacena_Documento_Firmado(item.Code, affidavit.bytes, companyId, 999);
+                                            break;
+                                        }
+                                    }
+
+                                    Signed(companyId, Convert.ToInt32(item.Code), attachment);
                                     break;
                                 case "None":
                                     break;
@@ -97,10 +107,35 @@ namespace Architect.API.Insurance.Business.Bayer
             }
         }
 
+        private static Core.Contracts.General.Attachments Almacena_Documento_Firmado(string presupuesto, string fileContent, int companyId, int userId)
+        {
+            Byte[] pdfbytes = Convert.FromBase64String(fileContent);
+            string originalFileName = "Documento firmado.pdf";
+            string fileName = string.Format("{0}.pdf", Guid.NewGuid());
+            string fullFileName = Path.Combine(ConfigurationManager.AppSettings["Attachments.Path"], fileName);
+
+            File.WriteAllBytes(fullFileName, pdfbytes);
+
+            Core.Contracts.General.Attachments attachment = new Core.Contracts.General.Attachments
+            {
+                EntityType = 2000,
+                EntityId = Convert.ToInt64(presupuesto),
+                CompanyId = companyId,
+                UpdateUserCode = userId,
+                DocumentType = 4002,
+                Description = "Solicitud con firma digital",
+                FileName = originalFileName,
+                FileSize = pdfbytes.Length,
+                FileContent = fullFileName
+            };
+            Core.Business.General.Attachment.SyncUp(attachment);
+            return attachment;
+        }
+
         /// <summary>
         /// Procesa una inclusión como firmada.
         /// </summary>
-        private static void Signed(int companyId, int id)
+        private static void Signed(int companyId, int id, Core.Contracts.General.Attachments attachment)
         {
             Risk risk = Policy.Risk.RetrievePolicyByKey(id, companyId);
             risk.Bayer = DataAccess.Policy.RiskBayer.Retrieve(id, companyId);
@@ -113,7 +148,12 @@ namespace Architect.API.Insurance.Business.Bayer
                                     Retrieve(risk.Id, new Core.Contracts.Security.Token() { CompanyId = companyId }), companyId), 1);
             risk.Annotation = medicalId.ToString();
             DataAccess.Policy.Risk.Update(risk);
-            Core.Business.General.Mail.SendByTemplate("Notify_InclusionInMedical", companyId, risk.ExecutiveUserCode, risk.ExecutiveUserCode, risk);
+            string[] attachments = new string[] { }; ;
+            if (attachment != null)
+            {
+                attachments = new string[] { string.Format("{0};{1}", attachment.FileContent, attachment.FileName) };
+            }
+            Core.Business.General.Mail.SendByTemplate("Notify_InclusionInMedical", companyId, risk.ExecutiveUserCode, risk.ExecutiveUserCode, risk, null, attachments);
         }
 
         /// <summary>
@@ -295,8 +335,13 @@ namespace Architect.API.Insurance.Business.Bayer
                         risk.Status = 1;
                         break;
                     case "send":
+                        //Se verfica si la fecha de emisión es superior a 90 días.
+                        risk.Status = inclusionInfo.IssueDate < DateTime.Now.AddDays(-90) ? 34 : 2;
+                        break;
+                    case "revisedAux":
                         risk.Status = 2;
                         break;
+                    case "backAux":
                     case "back":
                         risk.Comments = inclusionInfo.Message;
                         risk.Status = 1;
@@ -343,13 +388,10 @@ namespace Architect.API.Insurance.Business.Bayer
                     }
                 }
 
-
-
                 if (risk.Id.IsEmpty())
                     risk = Policy.Risk.CreatePolicy(risk, tokenInfo.UserId, tokenInfo.CompanyId);
                 else
                     risk = Policy.Risk.UpdatePolicy(risk, tokenInfo.UserId, tokenInfo.CompanyId, string.Empty);
-
                 risk.Bayer = Convertions.InclusionToRiskBayer(tokenInfo.CompanyId, inclusionInfo);
                 risk.Bayer.Id = risk.Id;
                 risk.Bayer.CompanyId = risk.CompanyId;
@@ -382,7 +424,7 @@ namespace Architect.API.Insurance.Business.Bayer
                     switch (inclusionInfo.Status)
                     {
                         case 1:
-                            if (inclusionInfo.Mode == "back")
+                            if (inclusionInfo.Mode == "back" || inclusionInfo.Mode == "backAux")
                             {
                                 inclusionInfo.Message = "La inclusión fue rechaza, se envió una notificación para que se proceda a su revisión";
                                 Core.Business.General.Mail.SendByTemplate("Notify_RequestReject", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk);
@@ -415,7 +457,10 @@ namespace Architect.API.Insurance.Business.Bayer
                                 // Se enviar documento directo al empleado para su firma digital
                                 Core.Business.General.Mail.SendByTemplate("Notify_RequestReviewed", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk, null, new string[] { archivo });
                             }
-
+                            break;
+                        case 34:
+                            inclusionInfo.Message = "La inclusión fue debidamente almacenada y enviada a Mapfre Costa Rica, queda pendiente de revisión, por que fecha la fecvha de emisión es mayor a 90 días";
+                            Core.Business.General.Mail.SendByTemplate("Notify_RequestOnReviewMapfre", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk);
                             break;
                     }
                 }
