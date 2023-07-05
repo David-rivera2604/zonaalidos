@@ -1237,7 +1237,6 @@
     <Content Include="Scripts\Emision.kyc.declarante.js" />
     <Content Include="Scripts\Emision.kyc.juridico.js" />
     <Content Include="Scripts\Emision.kyc.persona.js" />
-    <Content Include="Scripts\Common.Attachments.js" />
     <Content Include="Scripts\Emision.MapfreMasPlus.js" />
     <Content Include="Scripts\Emision.Terceros.js" />
     <Content Include="Scripts\Emision.SaldoDeudor.js" />
