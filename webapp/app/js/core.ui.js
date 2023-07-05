@@ -1207,7 +1207,7 @@ app.ui = (function () {
         IsSameDate: function (dateSource, dateTarget) {
             if (dateSource != undefined && dateSource != null && dateTarget != undefined && dateTarget != null) {
                 let source = dateSource;
-                if (typeof value === 'string') {
+                if (typeof source === 'string') {
                     source = new Date(source);
                 }
                 return (source.getFullYear() === dateTarget.getFullYear() &&
