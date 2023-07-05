@@ -996,12 +996,6 @@ app.CotizacionMapfreMasPlus = (function () {
 
         //$('#IMP_VR').prop('disabled', app.ui.GetRadioNumericValue('MCA_VR') === '2');
 
-        app.ui.DropDownDisabled('#DED_AUTO_CYV', !app.Cotizacion.Coberturas_Seleccionada(coberturas, 3004) || (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3004) && app.ui.GetNumericValue('#IMP_AUTO_CYV') === 0));
-
-        app.ui.DropDownDisabled('#DED_AUTO_ROB', !app.Cotizacion.Coberturas_Seleccionada(coberturas, 3006) || (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3006) && app.ui.GetNumericValue('#IMP_AUTO_ROB') === 0));
-
-        app.ui.DropDownDisabled('#DED_AUTO_EQESP', $('#IMP_AUTO_EQESP').prop('disabled') && app.ui.GetNumericValue('#IMP_AUTO_EQESP') === 0);
-
         if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
             app.ui.DropDownDisabled('#DED_AUTO_RAD', $('#IMP_AUTO_RAD').prop('disabled') && app.ui.GetNumericValue('#IMP_AUTO_RAD') === 0);
         } else {
@@ -1021,19 +1015,6 @@ app.CotizacionMapfreMasPlus = (function () {
             } else {
                 $('#PCT_AJUSTE_GEN').prop('disabled', false);
             }
-        }
-
-        if (cod_tip_vehi === 2 && (cod_plan_auto === 31 && cod_plan_auto === 32 && cod_plan_auto == 33)) {
-            //La cobertura Gastos Médicos no se toma en cuenta para el auto de uso Comercial
-            //La cobertura Accidentes no se toma en cuenta para el auto de uso Comercial
-            app.ui.DropDownDisabled('#IMP_AUTO_GMO', true);
-            app.ui.DropDownDisabled('#IMP_AUTO_ACO', true);
-        }
-        else {
-            //La cobertura Gastos Médicos no se toma en cuenta para el plan Básico
-            //La cobertura Accidentes no se toma en cuenta para el plan Básico
-            app.ui.DropDownDisabled('#IMP_AUTO_GMO', cod_plan_auto === 31);
-            app.ui.DropDownDisabled('#IMP_AUTO_ACO', cod_plan_auto === 31);
         }
 
         if (showCalculate) {
@@ -1148,9 +1129,34 @@ app.CotizacionMapfreMasPlus = (function () {
     function Coberturas_ManejoDeCapital() {
         coberturas = $('#coberturasTbl').bootstrapTable('getData');
 
+        if (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3001)) {
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_RC', false);
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_RC', false);
+        }
+        else {
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_RC', true);
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_RC', true);
+            app.ui.SetDropDownNumericValue('#IMP_AUTO_RC', -1);
+            app.ui.SetDropDownNumericValue('#DED_AUTO_RC', -1);
+        }
+        if (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3002)) {
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_GMO', false);
+        }
+        else {
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_GMO', true);
+            app.ui.SetDropDownNumericValue('#IMP_AUTO_GMO', -1);
+        }
+        if (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3003)) {
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_ACO', false);
+        }
+        else {
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_ACO', true);
+            app.ui.SetDropDownNumericValue('#IMP_AUTO_ACO', -1);
+        }
+
         if (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3004)) {
-            app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_CYV', true);
-            app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_CYV', true);
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_CYV', false);
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_CYV', false);
             app.ui.SetNumericValue('#IMP_AUTO_CYV', app.ui.GetNumericValue('#IMP_VR'));
         }
         else {
@@ -1159,9 +1165,10 @@ app.CotizacionMapfreMasPlus = (function () {
             app.ui.SetNumericValue('#IMP_AUTO_CYV', 0);
             app.ui.SetDropDownNumericValue('#DED_AUTO_CYV', -1);
         }
+
         if (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3005)) {
-            app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_RAD', true);
-            app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_RAD', true);
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_RAD', false);
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_RAD', false);
             app.ui.SetNumericValue('#IMP_AUTO_RAD', app.ui.GetNumericValue('#IMP_VR'));
         }
         else {
@@ -1171,8 +1178,8 @@ app.CotizacionMapfreMasPlus = (function () {
             app.ui.SetDropDownNumericValue('#DED_AUTO_RAD', -1);
         }
         if (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3006)) {
-            app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_ROB', true);
-            app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_ROB', true);
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_ROB', false);
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_ROB', false);
             app.ui.SetNumericValue('#IMP_AUTO_ROB', app.ui.GetNumericValue('#IMP_VR'));
         }
         else {
