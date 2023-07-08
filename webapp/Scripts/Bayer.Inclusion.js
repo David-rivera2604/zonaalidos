@@ -4,8 +4,9 @@ app.BayerInclusion = (function () {
 
     let backMode='';
     let timer;
-    var id = 0;
-    var mode = '';
+    let id = 0;
+    let mode = '';
+    let _setupData = null;
 
     function Setup(internalId) {
         id = internalId;
@@ -38,6 +39,7 @@ app.BayerInclusion = (function () {
                 if (internalId != null) {
                     app.core.Get(app.setting.apipath + 'v1/Inclusion/bayer/' + internalId)
                         .done(function (data) {
+                            _setupData = data;
                             $("#VisualizationsEdtForm fieldset").prop("disabled", false);
                             MapObjectToInput(data);
                         });
@@ -46,6 +48,7 @@ app.BayerInclusion = (function () {
                     app.core.Get(app.setting.apipath + 'v1/Inclusion/bayer/0')
                         .done(function (data) {
                             id = internalId;
+                            _setupData = data;
                             $("#VisualizationsEdtForm fieldset").prop("disabled", false);
                             MapObjectToInput(data);
                         });
@@ -70,6 +73,7 @@ app.BayerInclusion = (function () {
             ContractorName: app.ui.GetDropDownNumericValue('#ContractorName'),
             ContractorDesc: $("#ContractorName option:selected").text(),
             IssueDate: app.ui.GetDateValue('#IssueDate'),
+            EffectiveDate: app.ui.GetDateValue('#EffectiveDate'),
             IsLife: app.ui.GetDropDownStringValue('#IsLife'),
             IsHealth: app.ui.GetDropDownStringValue('#IsHealth'),
             DocumentType: $("#DocumentNumberType").data("value"),
@@ -138,6 +142,7 @@ app.BayerInclusion = (function () {
         app.ui.SetDropDownNumericValue('#ContractorName', data.ContractorName, true);
 
         app.ui.SetDateValue('#IssueDate', data.IssueDate);
+        app.ui.SetDateValue('#EffectiveDate', data.EffectiveDate);
         $('#IsLife').val(data.IsLife);
         $('#IsHealth').val(data.IsHealth);
         app.ui.SetDocumentTypeValue('#DocumentNumberType', data.DocumentType);
@@ -211,6 +216,7 @@ app.BayerInclusion = (function () {
                     $('#VisualizationsEdtFormBack').removeClass('d-none');
                     $('#VisualizationsEdtFormRevised').removeClass('d-none');
                     $('#VisualizationsEdtFormDelete').removeClass('d-none');
+                    $('#VisualizationsEdtFormDraft').removeClass('d-none');
                 }
                 break;
             case 4: //Por aceptar
@@ -263,6 +269,10 @@ app.BayerInclusion = (function () {
         });
 
         $('#IssueDate_group').datetimepicker({
+            format: 'DD/MM/YYYY',
+            locale: 'es'
+        });
+        $('#EffectiveDate_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
@@ -652,6 +662,7 @@ app.BayerInclusion = (function () {
             var uidata = MapInputToObject();
             uidata.mode = stageMode;
             uidata.Message = reason;
+            uidata.Status = _setupData.Status;
             app.ui.ButtonDoing(buttonId);
 
             app.core.Post(app.setting.apipath + 'v1/Inclusion/bayer', JSON.stringify(uidata))
@@ -700,6 +711,7 @@ app.BayerInclusion = (function () {
             rules: {
                 ContractorName: { required: true },
                 IssueDate: { required: true },
+                EffectiveDate: { required: true },
                 IsLife: { required: true },
                 IsHealth: { required: true },
                 DocumentNumber: { required: true },
@@ -728,7 +740,8 @@ app.BayerInclusion = (function () {
             },
             messages: {
                 ContractorName: { required: 'Debe indicar la filial de Bayer' },
-                IssueDate: { required: 'Debe indicar la fecha de ingreso a la póliza' },
+                IssueDate: { required: 'Debe indicar la fecha de solicitud de ingreso' },
+                EffectiveDate: { required: 'Debe indicar la fecha de ingreso a la póliza' },
                 IsLife: { required: 'Debe indicar la clase para vida' },
                 IsHealth: { required: 'Debe indicar la clase para salud' },
                 DocumentNumber: { required: 'Debe indicar el Identificación' },
