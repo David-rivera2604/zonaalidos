@@ -127,7 +127,7 @@ namespace Architect.API.Tron.Controllers
             string result = string.Empty;
             await Task.Run(() =>
             {
-                result = Architect.API.Tron.Business.Emision.MapfreMas.ReEnviarSolicitud(presupuesto, correoenvio, tokenInfo);
+                result = Architect.API.Tron.Business.Emision.Solicitud.ReEnviarSolicitud(presupuesto, correoenvio, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
