@@ -2,7 +2,7 @@
 
 app.BayerInclusion = (function () {
 
-    let backMode='';
+    let backMode = '';
     let timer;
     let id = 0;
     let mode = '';
@@ -140,8 +140,8 @@ app.BayerInclusion = (function () {
         $('#MainPolicyId').val(data.ContractorName);
 
         app.ui.SetDropDownNumericValue('#ContractorName', data.ContractorName, true);
-
         app.ui.SetDateValue('#IssueDate', data.IssueDate);
+        $('#EffectiveDate_group').data("DateTimePicker").minDate(app.ui.GetDateRawValue('#IssueDate'));
         app.ui.SetDateValue('#EffectiveDate', data.EffectiveDate);
         $('#IsLife').val(data.IsLife);
         $('#IsHealth').val(data.IsHealth);
@@ -394,6 +394,8 @@ app.BayerInclusion = (function () {
             } else {
                 $('#inclusionMayor90DiasNotify').addClass('d-none');
             }
+
+            $('#EffectiveDate_group').data("DateTimePicker").minDate(app.ui.GetDateRawValue('#IssueDate'));
         });
 
         $("#motivo").keyup(function () {
@@ -711,7 +713,7 @@ app.BayerInclusion = (function () {
             rules: {
                 ContractorName: { required: true },
                 IssueDate: { required: true },
-                EffectiveDate: { required: true },
+                EffectiveDate: { required: true, GreaterOrEqual: '#IssueDate' },
                 IsLife: { required: true },
                 IsHealth: { required: true },
                 DocumentNumber: { required: true },
@@ -741,7 +743,7 @@ app.BayerInclusion = (function () {
             messages: {
                 ContractorName: { required: 'Debe indicar la filial de Bayer' },
                 IssueDate: { required: 'Debe indicar la fecha de solicitud de ingreso' },
-                EffectiveDate: { required: 'Debe indicar la fecha de ingreso a la póliza' },
+                EffectiveDate: { required: 'Debe indicar la fecha de ingreso a la póliza', GreaterOrEqual: 'La fecha de ingreso debe ser mayor o igual a la de la solicitud' },
                 IsLife: { required: 'Debe indicar la clase para vida' },
                 IsHealth: { required: 'Debe indicar la clase para salud' },
                 DocumentNumber: { required: 'Debe indicar el Identificación' },
