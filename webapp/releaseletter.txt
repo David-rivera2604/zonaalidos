@@ -514,3 +514,9 @@
                           permitiendo incluir el email solitado como usuario del sistema, pero con al flexibilidad de cambios y otras inclusiones.
 1.6.37  29/06/2023 Trazabilidad. Ajustes en la pagina de etapas para indicar cuales campos seran editables.
                    Trazabilidad. Ajustes en el panel de casos para disponibilizar los campos que seran editables según la etapa.
+1.6.38  11/07/2023 Bayer. Se debe agregar un campo obligatorio para RRHH que indique la fecha en que se da de alta (RF01538652)
+                   Bayer. Guardar la solicitud en borrador desde el perfil de revisor (RF01477812)
+                   MapfreMasPlus. Se debe poder descargar el documento enviado desde la consulta de solicitudes enviadas.
+                   MapfreMas. Se debe poder descargar el documento enviado desde la consulta de solicitudes enviadas.
+                   Lider. Reporte de cotización. No muestra campo recargoporfraccionamiento.
+
