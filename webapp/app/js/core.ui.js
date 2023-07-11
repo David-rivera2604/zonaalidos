@@ -666,6 +666,38 @@ app.ui = (function () {
                     }
                 }, "Ingrese una fecha en el formato dd/mm/yyyy"
             );
+            $.validator.addMethod("localDate_future",
+                function (value, element) {
+                    if (this.optional(element))
+                        return true;
+                    else {
+                        if (value.match(/^(0?[1-9]|[12][0-9]|3[0-1])[/., -](0?[1-9]|1[0-2])[/., -](19|20)?\d{2}$/)) {
+                            if (moment(value, 'DD/MM/YYYY').isValid()) {
+                                var current = moment(value, 'DD/MM/YYYY').toDate();
+                                var current2 = moment(moment().format('DD/MM/YYYY'), 'DD/MM/YYYY').toDate();
+                                return (current > current2);
+                            }
+                        }
+                    }
+                }, "Ingrese una fecha en el formato dd/mm/yyyy"
+            );
+
+            $.validator.addMethod("GreaterOrEqual",
+                function (value, element, param) {
+                    if (this.optional(element))
+                        return true;
+                    else {
+                        if (value.match(/^(0?[1-9]|[12][0-9]|3[0-1])[/., -](0?[1-9]|1[0-2])[/., -](19|20)?\d{2}$/)) {
+                            if (moment(value, 'DD/MM/YYYY').isValid()) {
+                                var current = moment(value, 'DD/MM/YYYY').toDate();
+                                
+                                var current2 = moment(moment(app.ui.GetDateValue(param)).format('DD/MM/YYYY'), 'DD/MM/YYYY').toDate();
+                                return (current >= current2);
+                            }
+                        }
+                    }
+                }, "Ingrese una fecha en el formato dd/mm/yyyy"
+            );
         },
         NumericValidators: function () {
             $.validator.addMethod("Numeric",

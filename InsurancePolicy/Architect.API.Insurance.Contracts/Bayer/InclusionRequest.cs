@@ -26,9 +26,14 @@ namespace Architect.API.Insurance.Contracts.Bayer
         [DataMember(), JsonProperty()] public string ContractorDesc { get; set; }
 
         /// <summary>
-        /// Fecha de ingreso a póliza.
+        /// Fecha de solicitud de ingreso.
         /// </summary>
         [DataMember(), JsonProperty()] public DateTime IssueDate { get; set; }
+
+        /// <summary>
+        /// Fecha de ingreso a póliza.
+        /// </summary>
+        [DataMember(), JsonProperty()] public DateTime EffectiveDate { get; set; }
         /// <summary>
         /// Vida.
         /// </summary>

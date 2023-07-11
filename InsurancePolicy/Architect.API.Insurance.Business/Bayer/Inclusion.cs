@@ -208,7 +208,8 @@ namespace Architect.API.Insurance.Business.Bayer
             int id = 0;
             Contracts.Bayer.InclusionRequest result = new Contracts.Bayer.InclusionRequest()
             {
-                IssueDate = DateTime.Today
+                IssueDate = DateTime.Today,
+                EffectiveDate = DateTime.Today
             };
 
             id = DataAccess.Policy.Risk.RetrieveLastIdByExecutiveUserCode(tokenInfo.CompanyId, tokenInfo.UserId);
@@ -323,7 +324,7 @@ namespace Architect.API.Insurance.Business.Bayer
         public static Contracts.Bayer.InclusionRequest Issue(Contracts.Bayer.InclusionRequest inclusionInfo, Core.Contracts.Security.Token tokenInfo)
         {
             inclusionInfo.Errors = Validate(inclusionInfo);
-            if (inclusionInfo.Errors.Count == 0)
+            if (inclusionInfo.Errors.Count == 0 || inclusionInfo.Mode == "draft")
             {
                 Contracts.Policy.Risk risk = Convertions.InclusionToRisk(inclusionInfo);
                 risk.ExecutiveUserCode = tokenInfo.UserId;
@@ -332,7 +333,14 @@ namespace Architect.API.Insurance.Business.Bayer
                 switch (inclusionInfo.Mode)
                 {
                     case "draft":
-                        risk.Status = 1;
+                        if (inclusionInfo.Status == 0)
+                        {
+                            risk.Status = 1;
+                        }
+                        else
+                        {
+                            risk.Status = inclusionInfo.Status;
+                        }
                         break;
                     case "send":
                         //Se verfica si la fecha de emisión es superior a 90 días.
@@ -411,57 +419,63 @@ namespace Architect.API.Insurance.Business.Bayer
                 inclusionInfo.Id = risk.Id;
                 inclusionInfo.Status = risk.Status;
                 inclusionInfo.StatusDesc = risk.StatusDesc;
-
-                if (inclusionInfo.Errors.Count > 0)
+                if (inclusionInfo.Mode == "draft" && risk.Status == 2)
                 {
-                    inclusionInfo.Message = string.Format("No se puede realizar la inclusión ya que existen {0} error(es) que ameritan su atención",
-                                            inclusionInfo.Errors.Count);
+                    inclusionInfo.Message = "Cambios guardados";
                 }
                 else
                 {
-                    risk.LineOfBusinessDesc = Core.Business.Common.LkpDescription(risk.CompanyId, "LineOfBusiness", risk.LineOfBusinessCode.ToString());
-
-                    switch (inclusionInfo.Status)
+                    if (inclusionInfo.Errors.Count > 0)
                     {
-                        case 1:
-                            if (inclusionInfo.Mode == "back" || inclusionInfo.Mode == "backAux")
-                            {
-                                inclusionInfo.Message = "La inclusión fue rechaza, se envió una notificación para que se proceda a su revisión";
-                                Core.Business.General.Mail.SendByTemplate("Notify_RequestReject", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk);
-                            }
-                            break;
-                        case 2:
-                            inclusionInfo.Message = "La inclusión fue debidamente almacenada y enviada a RRHH, queda pendiente de revisión";
-                            Core.Business.General.Mail.SendByTemplate("Notify_RequestOnReview", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk);
-                            break;
-                        case 4:
-                            string name = inclusionInfo.FirstName + " " + inclusionInfo.LastName;
-                            inclusionInfo.Message = string.Format("La inclusión fue aceptada de forma exitosa bajo el número #{0}, la misma fue enviada {1} para su firma.", inclusionInfo.Id, name);
+                        inclusionInfo.Message = string.Format("No se puede realizar la inclusión ya que existen {0} error(es) que ameritan su atención",
+                                                inclusionInfo.Errors.Count);
+                    }
+                    else
+                    {
+                        risk.LineOfBusinessDesc = Core.Business.Common.LkpDescription(risk.CompanyId, "LineOfBusiness", risk.LineOfBusinessCode.ToString());
+
+                        switch (inclusionInfo.Status)
+                        {
+                            case 1:
+                                if (inclusionInfo.Mode == "back" || inclusionInfo.Mode == "backAux")
+                                {
+                                    inclusionInfo.Message = "La inclusión fue rechaza, se envió una notificación para que se proceda a su revisión";
+                                    Core.Business.General.Mail.SendByTemplate("Notify_RequestReject", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk);
+                                }
+                                break;
+                            case 2:
+                                inclusionInfo.Message = "La inclusión fue debidamente almacenada y enviada a RRHH, queda pendiente de revisión";
+                                Core.Business.General.Mail.SendByTemplate("Notify_RequestOnReview", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk);
+                                break;
+                            case 4:
+                                string name = inclusionInfo.FirstName + " " + inclusionInfo.LastName;
+                                inclusionInfo.Message = string.Format("La inclusión fue aceptada de forma exitosa bajo el número #{0}, la misma fue enviada {1} para su firma.", inclusionInfo.Id, name);
 
 
-                            string archivo = Core.Business.General.Report.GeneratePDFFile("bayer", inclusionInfo).GetAwaiter().GetResult();
+                                string archivo = Core.Business.General.Report.GeneratePDFFile("bayer", inclusionInfo).GetAwaiter().GetResult();
 
-                            if (!inclusionInfo.HasDigitalSignature)
-                            {
-                                // Se enviar documento para su firma por medio de EviCertia
-                                DocuSign.Integrations.Contracts.SubmitResult submit = DocuSign.Integrations.DocuSign.Submit(
-                                                    string.Format("{0} - Solicitud de inclusión", Core.Business.Common.LkpDescription(tokenInfo.CompanyId, "Company", tokenInfo.CompanyId.ToString())),
-                                                    string.Format("{0} - Solicitud de inclusión #{1}", Core.Business.Common.LkpDescription(tokenInfo.CompanyId, "Company", tokenInfo.CompanyId.ToString()), inclusionInfo.Id),
-                                                      name,
-                                                      inclusionInfo.PrimaryEmailAddress,
-                                                      archivo).GetAwaiter().GetResult();
-                                DataAccess.Policy.Risk.UpdateReference(tokenInfo.CompanyId, inclusionInfo.Id, submit.UniqueId);
-                            }
-                            else
-                            {
-                                // Se enviar documento directo al empleado para su firma digital
-                                Core.Business.General.Mail.SendByTemplate("Notify_RequestReviewed", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk, null, new string[] { archivo });
-                            }
-                            break;
-                        case 34:
-                            inclusionInfo.Message = "La inclusión fue debidamente almacenada y enviada a Mapfre Costa Rica, queda pendiente de revisión, por que fecha la fecvha de emisión es mayor a 90 días";
-                            Core.Business.General.Mail.SendByTemplate("Notify_RequestOnReviewMapfre", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk);
-                            break;
+                                if (!inclusionInfo.HasDigitalSignature)
+                                {
+                                    // Se enviar documento para su firma por medio de EviCertia
+                                    DocuSign.Integrations.Contracts.SubmitResult submit = DocuSign.Integrations.DocuSign.Submit(
+                                                        string.Format("{0} - Solicitud de inclusión", Core.Business.Common.LkpDescription(tokenInfo.CompanyId, "Company", tokenInfo.CompanyId.ToString())),
+                                                        string.Format("{0} - Solicitud de inclusión #{1}", Core.Business.Common.LkpDescription(tokenInfo.CompanyId, "Company", tokenInfo.CompanyId.ToString()), inclusionInfo.Id),
+                                                          name,
+                                                          inclusionInfo.PrimaryEmailAddress,
+                                                          archivo).GetAwaiter().GetResult();
+                                    DataAccess.Policy.Risk.UpdateReference(tokenInfo.CompanyId, inclusionInfo.Id, submit.UniqueId);
+                                }
+                                else
+                                {
+                                    // Se enviar documento directo al empleado para su firma digital
+                                    Core.Business.General.Mail.SendByTemplate("Notify_RequestReviewed", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk, null, new string[] { archivo });
+                                }
+                                break;
+                            case 34:
+                                inclusionInfo.Message = "La inclusión fue debidamente almacenada y enviada a Mapfre Costa Rica, queda pendiente de revisión, por que fecha la fecvha de emisión es mayor a 90 días";
+                                Core.Business.General.Mail.SendByTemplate("Notify_RequestOnReviewMapfre", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk);
+                                break;
+                        }
                     }
                 }
             }
