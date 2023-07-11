@@ -462,24 +462,6 @@ app.EmisionTercero = (function () {
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
-        new AutoNumeric('#porcentajeacredor', {
-            decimalCharacter: ',',
-            decimalCharacterAlternative: '.',
-            digitGroupSeparator: '.',
-            maximumValue: '100',
-            minimumValue: '0',
-            decimalPlaces: '0',
-            emptyInputBehavior: 'null'
-        });
-        new AutoNumeric('#porcentaje', {
-            decimalCharacter: ',',
-            decimalCharacterAlternative: '.',
-            digitGroupSeparator: '.',
-            maximumValue: '100',
-            minimumValue: '0',
-            decimalPlaces: '0',
-            emptyInputBehavior: 'null'
-        });
 
     }
 

@@ -233,7 +233,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                     case "PCT_AJUSTE_GEN":
                         if (item.val_campo != string.Empty)
                         {
-                            quoteInfo.PCT_AJUSTE_GEN = Convert.ToInt32(Convert.ToDecimal(item.val_campo));
+                            //quoteInfo.PCT_AJUSTE_GEN = Convert.ToInt32(Convert.ToDecimal(item.val_campo));
                         }
                         break;
                     case "MCA_REEMISION":
