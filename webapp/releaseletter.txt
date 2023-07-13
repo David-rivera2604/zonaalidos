@@ -521,3 +521,7 @@
                    Lider. Reporte de cotización. No muestra campo recargoporfraccionamiento.
 1.6.38a 13/07/2023 Lider. Reporte de cotización. Sale descuadrado.
 1.6.39  13/07/2023 Aliados. Se agregar nuevo setting "Compliance.Enabled" para habilitar o no el envío de información al servicio de "Compliance".
+                   Aliados. Se notifica erro en caso de no conseguir la plantilla de correo.
+                   Aliados. Se intera por los tenant que manejan agentes de tron por medio del setting Tenant.Tron.Agent.Information.
+                   Aliados. Se verifica el campo affidavit.kind para evitar error en caso de contener nulo.
+
