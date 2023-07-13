@@ -519,4 +519,5 @@
                    MapfreMasPlus. Se debe poder descargar el documento enviado desde la consulta de solicitudes enviadas.
                    MapfreMas. Se debe poder descargar el documento enviado desde la consulta de solicitudes enviadas.
                    Lider. Reporte de cotización. No muestra campo recargoporfraccionamiento.
+1.6.38a 13/07/2023 Lider. Reporte de cotización. Sale descuadrado.
 
