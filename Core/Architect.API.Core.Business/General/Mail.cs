@@ -48,6 +48,10 @@ namespace Architect.API.Core.Business.General
                 Owner = ownerUserInfo
             };
             Contracts.General.InternalTemplate tmpl = DataAccess.General.InternalTemplate.Retrieve(companyId, templateKey);
+            if (tmpl.Subject == "Plantilla no encontrada")
+            {
+                Architect.Utilities.Log.ErrorLog("GetTemplate", $"La plantilla {templateKey} no fue encontrada");
+            }
             if (tmpl.MasterTemplateId.IsNotEmpty())
             {
                 Contracts.General.InternalTemplate tmplMaster = DataAccess.General.InternalTemplate.RetrieveById(companyId, tmpl.MasterTemplateId);
@@ -118,6 +122,10 @@ namespace Architect.API.Core.Business.General
             {
 
                 Contracts.General.InternalTemplate tmpl = DataAccess.General.InternalTemplate.Retrieve(companyId, templateKey);
+                if (tmpl.Subject == "Plantilla no encontrada")
+                {
+                    Architect.Utilities.Log.ErrorLog("SendMail", $"La plantilla {templateKey} no fue encontrada");
+                }
                 if (tmpl.MasterTemplateId.IsNotEmpty())
                 {
                     Contracts.General.InternalTemplate tmplMaster = DataAccess.General.InternalTemplate.RetrieveById(companyId, tmpl.MasterTemplateId);
