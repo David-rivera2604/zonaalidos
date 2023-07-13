@@ -1,4 +1,5 @@
-﻿using Architect.API.Insurance.Contracts.Bayer;
+﻿using Architect.API.Core.Business;
+using Architect.API.Insurance.Contracts.Bayer;
 using Architect.Compliance.Integrations.Contracts;
 using Architect.Utilities.Extensions;
 using Newtonsoft.Json;
@@ -108,12 +109,6 @@ namespace Architect.API.Tron.Business.Emision
                 //TODO: Se debe incluir la validación de que de haber un Tomador, Asegurado y Conductor Habitual, pero faltan las básicas.
                 quoteInfo.DatosEconomicos = Solicitud.EconomicDataCalculate(quoteInfo);
 
-                //Utilities.SerializeHandler<Contracts.Emision.MapfreMas>.
-                //    SerializeJSONToFile(quoteInfo,
-                //        string.Format(@"{1}\mapfremas.request.{0}.json", quoteInfo.presupuesto, ConfigurationManager.AppSettings["Path.Logs"]), true, false, false);
-
-
-                //ComplianceSetup.Send(quoteInfo, tokenInfo);
 
                 Dictionary<string, string> request = Solicitud.EnviarSolicitud(quoteInfo.tip_firma, quoteInfo.correoenvio, quoteInfo, tokenInfo);
                 string kycUniqueId = String.Empty;
@@ -188,9 +183,9 @@ namespace Architect.API.Tron.Business.Emision
                 }
                 try
                 {
-                    if (resultQuoteInfo.num_poliza.IsNotEmpty())
+                    if (resultQuoteInfo.num_poliza.IsNotEmpty() && quoteInfo.kyc != null && Utilities.Helpers.Settings.BoolValue("Compliance.Enabled"))
                     {
-                        //ComplianceSetup.Send(quoteInfo, tokenInfo);
+                        ComplianceSetup.Send(quoteInfo, tokenInfo);
                     }
 
                 }

@@ -137,7 +137,10 @@ namespace Architect.API.Tron.Business.Emision
 
                     try
                     {
-                        //Compliance(quoteInfo, tokenInfo);
+                        if (quoteInfo.kyc != null && Utilities.Helpers.Settings.BoolValue("Compliance.Enabled"))
+                        {
+                            Compliance(quoteInfo, tokenInfo);
+                        }
                     }
                     catch (Exception ex)
                     {

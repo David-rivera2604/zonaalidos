@@ -110,13 +110,6 @@ namespace Architect.API.Tron.Business.Emision
                 //TODO: Se debe incluir la validación de que de haber un Tomador, Asegurado y Conductor Habitual, pero faltan las básicas.
                 quoteInfo.DatosEconomicos = Solicitud.EconomicDataCalculate(quoteInfo);
 
-                //Utilities.SerializeHandler<Contracts.Emision.MapfreMas>.
-                //    SerializeJSONToFile(quoteInfo,
-                //        string.Format(@"{1}\mapfremas.request.{0}.json", quoteInfo.presupuesto, ConfigurationManager.AppSettings["Path.Logs"]), true, false, false);
-
-
-                //ComplianceSetup.Send(quoteInfo, tokenInfo);
-
                 Dictionary<string, string> request = Solicitud.EnviarSolicitud(quoteInfo.tip_firma, quoteInfo.correoenvio, quoteInfo, tokenInfo);
                 string kycUniqueId = String.Empty;
                 //if (quoteInfo.kyc != null)
@@ -148,18 +141,9 @@ namespace Architect.API.Tron.Business.Emision
             {
                 try
                 {
-                    //Architect.Common.Helpers.Serialize.SerializeToFile<Contracts.Cotizacion.MapfreMas>(quoteInfo,
-                    //    ConfigurationManager.AppSettings["Path.Logs"] + @"\MapfreMas.emision.in.xml", true);
 
                     Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = MapfreMasConvertTo.Tron(quoteInfo);
-
-                    //Architect.Common.Helpers.Serialize.SerializeToFile<Architect.API.Tron.Contracts.Batch.p2000030>(result,
-                    //    ConfigurationManager.AppSettings["Path.Logs"] + @"\MapfreMas.emision.in.raw.xml", true);
-
                     Architect.API.Tron.Contracts.Poliza.DatoFijo result2 = Backoffice.Emision.MapfreMas.Emitir(result, false, tokenInfo);
-
-                    //Architect.Common.Helpers.Serialize.SerializeToFile<Architect.API.Tron.Contracts.Batch.a2000030>(result2,
-                    //    ConfigurationManager.AppSettings["Path.Logs"] + @"\MapfreMas.out.raw.xml", true);
 
                     resultQuoteInfo = MapfreMasConvertFrom.Quote(quoteInfo, result2);
 
@@ -191,7 +175,7 @@ namespace Architect.API.Tron.Business.Emision
                 }
                 try
                 {
-                    if (resultQuoteInfo.num_poliza.IsNotEmpty() && quoteInfo.kyc != null)
+                    if (resultQuoteInfo.num_poliza.IsNotEmpty() && quoteInfo.kyc != null && Utilities.Helpers.Settings.BoolValue("Compliance.Enabled"))
                     {
                         ComplianceSetup.Send(quoteInfo, tokenInfo);
                     }
@@ -257,7 +241,7 @@ namespace Architect.API.Tron.Business.Emision
             }
         }
 
-      
+
 
         private static string EnviarKYC(string tip_firma, string correoenvio, Contracts.Emision.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {

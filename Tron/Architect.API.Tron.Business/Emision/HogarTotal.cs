@@ -194,9 +194,9 @@ namespace Architect.API.Tron.Business.Emision
                 }
                 try
                 {
-                    if (resultQuoteInfo.num_poliza.IsNotEmpty())
+                    if (resultQuoteInfo.num_poliza.IsNotEmpty() && quoteInfo.kyc != null && Utilities.Helpers.Settings.BoolValue("Compliance.Enabled"))
                     {
-                        //Compliance(quoteInfo, tokenInfo);
+                        Compliance(quoteInfo, tokenInfo);
                     }
 
                 }
