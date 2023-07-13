@@ -212,41 +212,44 @@ namespace Architect.API.Tron.Business.Emision
             {
                 Utilities.Log.TraceLog("MapfreMasPlus.EvicertiaSigned", DateTime.Now.ToString(), "Evicertia");
                 DocuSign.Integrations.Contracts.QueryResult eviSignInf = null;
-                int companyId = 2;
-                int userId = 666;
-                foreach (Contracts.PolicyProposal item in DataAccess.PolicyProposal.RetrieveByStatus(companyId, 4))
+                foreach (string companyIdForReview in Utilities.Helpers.Settings.StringValue("Tenant.Tron.Agent.Information").Split(','))
                 {
-                    eviSignInf = DocuSign.Integrations.DocuSign.Query(item.SigningRequestId, true).GetAwaiter().GetResult();
-                    if (eviSignInf != null)
+                    int companyId = Convert.ToInt32(companyIdForReview);
+                    int userId = 666;
+                    foreach (Contracts.PolicyProposal item in DataAccess.PolicyProposal.RetrieveByStatus(companyId, 4))
                     {
-                        Utilities.Log.TraceLog("MapfreMasPlus.EvicertiaSigned", item.Id + ' ' + item.SigningRequestId + " outcome " + eviSignInf.outcome, "Evicertia");
-                        switch (eviSignInf.outcome)
+                        eviSignInf = DocuSign.Integrations.DocuSign.Query(item.SigningRequestId, true).GetAwaiter().GetResult();
+                        if (eviSignInf != null)
                         {
-                            case "Signed":
-                                DataAccess.PolicyProposal.Update_Status(item.Id, 33, item.SigningRequestId, userId);
+                            Utilities.Log.TraceLog("MapfreMasPlus.EvicertiaSigned", item.Id + ' ' + item.SigningRequestId + " outcome " + eviSignInf.outcome, "Evicertia");
+                            switch (eviSignInf.outcome)
+                            {
+                                case "Signed":
+                                    DataAccess.PolicyProposal.Update_Status(item.Id, 33, item.SigningRequestId, userId);
 
-                                foreach (DocuSign.Integrations.Contracts.affidavits affidavit in eviSignInf.affidavits)
-                                {
-                                    if (affidavit.Signed)
+                                    foreach (DocuSign.Integrations.Contracts.affidavits affidavit in eviSignInf.affidavits)
                                     {
-                                        Solicitud.Almacena_Documento_Firmado(item.ProposalId, affidavit.bytes, companyId, userId);
-                                        break;
+                                        if (affidavit.Signed)
+                                        {
+                                            Solicitud.Almacena_Documento_Firmado(item.ProposalId, affidavit.bytes, companyId, userId);
+                                            break;
+                                        }
                                     }
-                                }
-                                break;
-                            case "None":
-                                break;
-                            case "Expired":
-                                DataAccess.PolicyProposal.Update_Status(item.Id, 31, item.SigningRequestId, userId);
-                                break;
-                            case "Rejected":
-                                DataAccess.PolicyProposal.Update_Status(item.Id, 32, item.SigningRequestId, userId);
-                                break;
+                                    break;
+                                case "None":
+                                    break;
+                                case "Expired":
+                                    DataAccess.PolicyProposal.Update_Status(item.Id, 31, item.SigningRequestId, userId);
+                                    break;
+                                case "Rejected":
+                                    DataAccess.PolicyProposal.Update_Status(item.Id, 32, item.SigningRequestId, userId);
+                                    break;
+                            }
                         }
-                    }
-                    else
-                    {
-                        Utilities.Log.TraceLog("MapfreMasPlus.EvicertiaSigned", item.Id + ' ' + item.SigningRequestId + " not outcome", "Evicertia");
+                        else
+                        {
+                            Utilities.Log.TraceLog("MapfreMasPlus.EvicertiaSigned", item.Id + ' ' + item.SigningRequestId + " not outcome", "Evicertia");
+                        }
                     }
                 }
             }
@@ -257,7 +260,7 @@ namespace Architect.API.Tron.Business.Emision
             }
         }
 
-      
+
 
         private static string EnviarKYC(string tip_firma, string correoenvio, Contracts.Emision.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
