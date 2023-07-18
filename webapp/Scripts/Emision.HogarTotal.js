@@ -26,7 +26,7 @@ app.HogarTotal = (function () {
             $('#coberturasTbl').bootstrapTable('showLoading');
             app.core.Get(app.setting.apipath + 'v1/Issue/HogarTotalSetup/' + _id + '?mode=' + workMode)
                 .done(function (data, textStatus, jqXHR) {
-                    //workMode = data.Modo;
+                    workMode = data.Modo;
                     if (localStorage.getItem('Roles').includes('Purdy')) {
                         $('.Purdy').removeClass('d-none');
                         $('#Fuente_Tomador').prop("disabled", (workMode != 'draft' && workMode != 'resume'));
