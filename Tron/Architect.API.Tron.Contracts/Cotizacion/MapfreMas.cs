@@ -228,7 +228,7 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// Extensión de garantía.
         /// </summary>
         [DataMember(), JsonProperty()] public int ext_garantia { get; set; }
-        [DataMember(), JsonProperty()] public int rc_alcohol { get; set; }
+        [DataMember(), JsonProperty()] public string rc_alcohol { get; set; }
     }
 
 }
