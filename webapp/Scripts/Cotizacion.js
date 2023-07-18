@@ -65,7 +65,7 @@ app.Cotizacion = (function () {
                     ctrol.val($(element + ' option:first').val());
                     ctrol.change();
                 } else {
-                    if (!disabled && ctrol.data("autoselect") === true) {
+                    if (!disabled && ctrol.data("autoselect") === true && (ctrol.val() == null || ctrol.val() == -1)) {
                         ctrol.val($(element + ' option:first').val());
                         ctrol.change();
                     }

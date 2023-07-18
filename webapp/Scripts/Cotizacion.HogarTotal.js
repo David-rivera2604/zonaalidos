@@ -91,6 +91,7 @@ app.HogarTotal = (function () {
             'DescuentoHogarTotal.descuento'];
         if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
             lookupList.push('MM_POLIZA_GRUPO.contrato'); //, 'MM_SUB_CONTRATOS.subcontrato'
+            lookupList.push('SumasAseguradasRC.sARespcivil');
         } else {
             lookupList.push('SumasAseguradasRC.sARespcivil'); //, 'MM_SUB_CONTRATOS.subcontrato'
         };
