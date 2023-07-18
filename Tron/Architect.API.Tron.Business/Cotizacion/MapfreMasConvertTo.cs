@@ -93,6 +93,8 @@ namespace Architect.API.Tron.Business.Cotizacion
                     result.p_mca_auto_sust = "S";
                     result.p_ded_auto_sust = quoteInfo.DedudAutoSust.ToString();
                 }
+
+                result.rc_alcohol = quoteInfo.rc_alcohol;
             }
 
             if (quoteInfo.coberturas.IsNotEmpty())

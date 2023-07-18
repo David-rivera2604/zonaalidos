@@ -355,6 +355,7 @@ namespace Architect.API.Tron.Contracts.Batch
         public string num_matricula { get; set; }
         public string num_motor { get; set; }
         public string cod_chassis { get; set; }
+        public string rc_alcohol { get; set; } = "N";
 
     }
 }

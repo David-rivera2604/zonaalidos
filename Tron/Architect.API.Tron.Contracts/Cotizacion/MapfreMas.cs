@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Runtime.Serialization;
 
 namespace Architect.API.Tron.Contracts.Cotizacion
@@ -227,6 +228,7 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// Extensión de garantía.
         /// </summary>
         [DataMember(), JsonProperty()] public int ext_garantia { get; set; }
+        [DataMember(), JsonProperty()] public string rc_alcohol { get; set; } = "N";
     }
 
 }
