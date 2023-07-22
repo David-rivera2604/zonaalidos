@@ -20,7 +20,10 @@ namespace Architect.API.Tron.Business.Emision
         /// Preparara información necesaria para inicial la emision de una póliza.
         /// </summary>
         /// <param name="presupuesto">Número de presupuesto</param>
-        /// <param name="mode">"continue" para retomar un presupuesto (json), "resume" para retomar directo de una cotización de tron, "draft" para complementar la solicitud para luego retomar bajo el modo "continue".</param>
+        /// <param name="mode">
+        ///     "draft" para complementar la solicitud para luego retomar bajo el modo "continue".</param>
+        ///     "continue" para retomar un presupuesto (json), 
+        ///     "resume" para retomar directo de una cotización de tron, 
         /// <param name="tokenInfo">Información de contexto del usuario conectando.</param>
         public static Contracts.Emision.MapfreMas Setup(string presupuesto, string mode, Core.Contracts.Security.Token tokenInfo)
         {
@@ -108,7 +111,6 @@ namespace Architect.API.Tron.Business.Emision
             {
                 //TODO: Se debe incluir la validación de que de haber un Tomador, Asegurado y Conductor Habitual, pero faltan las básicas.
                 quoteInfo.DatosEconomicos = Solicitud.EconomicDataCalculate(quoteInfo);
-
 
                 Dictionary<string, string> request = Solicitud.EnviarSolicitud(quoteInfo.tip_firma, quoteInfo.correoenvio, quoteInfo, tokenInfo);
                 string kycUniqueId = String.Empty;
