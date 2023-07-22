@@ -1,4 +1,5 @@
 ﻿using Architect.API.Insurance.Contracts.Policy;
+using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
 using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
@@ -370,6 +371,15 @@ namespace Architect.API.Insurance.Business.Bayer
                         break;
 
                 }
+
+                if (risk.Status > 1 && (inclusionInfo.beneficiarios == null || inclusionInfo.beneficiarios.Count == 0))
+                {
+                    inclusionInfo.Errors = new List<Core.Contracts.General.Error>() {
+                                new Core.Contracts.General.Error() { Group = "Inclusion", Key = "DocumentNumber", Message = "Debe indicar la identificación" }                    };
+                    return inclusionInfo;
+                }
+
+
                 risk.PrimaryInsured = Convertions.InclusionToPrimaryInsured(inclusionInfo);
 
                 Contracts.Policy.RiskRoles newRole = null;
