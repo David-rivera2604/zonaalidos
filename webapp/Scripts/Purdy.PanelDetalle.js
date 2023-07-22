@@ -185,7 +185,7 @@ app.PurdyPanelDetalle = (function () {
                     if (data.claim != null) {
                         $('#numerodepoliza').html(data.claim.NUM_POLIZA);
                         $('#monedadepoliza').html(data.claim.NOM_MON);
-                        $('#tomador').html(`${data.claim.TIP_DOCUM_TOMADOR} ${data.claim.COD_DOCUM_TOMADOR} - ${data.claim.NOM_TOMADOR} ${data.claim.APE_TOMADOR}`);
+                        $('#tomador').html(`${data.claim.TIP_DOCUM_TOMADOR} ${data.claim.COD_DOCUM_TOMADOR} - ${data.claim.NOM_TOMADOR} ${app.ui.StringValueToString(data.claim.APE_TOMADOR)}`);
                         $('#coberturaafectada').html(`${data.claim.COD_CAUSA_SINI} ${data.claim.NOM_COB}`);
 
                         GetPolicy(data);

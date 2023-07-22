@@ -158,6 +158,14 @@ app.PurdyPanelLegal = (function () {
         app.core.Get(`${app.setting.entityapi}/PurdyPanelDetalle/asiges?code=${asigesCode}`)
             .done(function (dataDetalle) {
                 if (dataDetalle?.Sucessfully) {
+                    if (dataDetalle.Data != null) {
+                        dataDetalle.Data.forEach(function (item) {
+                            item.enviadoainvestigacionDesc = item.enviadoainvestigacion == null || item.enviadoainvestigacion == 2 ? 'No' : 'Si';
+                            item.enviadoaacompanamientolegaDesc = item.enviadoaacompanamientolega == null || item.enviadoaacompanamientolega == 2 ? 'No' : 'Si';
+                            item.posiblesubrogacionDesc = item.posiblesubrogacion == null || item.posiblesubrogacion == 2 ? 'No' : 'Si';
+                            item.subrogacionDesc = item.subrogacion == null || item.subrogacion == 2 ? 'No' : 'Si';
+                        });
+                    }
                     $('#detalleTbl').bootstrapTable('load', dataDetalle.Data == null ? [] : dataDetalle.Data);
                     _eventCallback('DetalleDataChange', dataDetalle.Data);
                 }
@@ -196,7 +204,7 @@ app.PurdyPanelLegal = (function () {
             detailFormatter: 'app.ui.GenericDetailFormatter',
             columns: [
                 {
-                    field: 'enviadoainvestigacion',
+                    field: 'enviadoainvestigacionDesc',
                     title: 'Enviado a investigación',
                     titleTooltip: '',
                     sortable: false,
@@ -223,7 +231,7 @@ app.PurdyPanelLegal = (function () {
                     formatter: 'app.ui.StringFormatter',
                     visible: true
                 }, {
-                    field: 'enviadoaacompanamientolega',
+                    field: 'enviadoaacompanamientolegaDesc',
                     title: 'Enviado a acompañamiento legal',
                     titleTooltip: '',
                     sortable: false,
@@ -250,7 +258,7 @@ app.PurdyPanelLegal = (function () {
                     formatter: 'app.ui.DateFormatter',
                     visible: true
                 }, {
-                    field: 'posiblesubrogacion',
+                    field: 'posiblesubrogacionDesc',
                     title: 'Posible subrogación',
                     titleTooltip: '',
                     sortable: false,
@@ -403,7 +411,7 @@ app.PurdyPanelLegal = (function () {
                     formatter: 'app.ui.DateFormatter',
                     visible: true
                 }, {
-                    field: 'subrogacion',
+                    field: 'subrogacionDesc',
                     title: 'Subrogación',
                     titleTooltip: '',
                     sortable: false,
@@ -525,12 +533,15 @@ app.PurdyPanelLegal = (function () {
             return {
                 ID: $('#detalleModal').data('id'),
                 enviadoainvestigacion: app.ui.GetRadioNumericValue('enviadoainvestigacionDet'),
+                enviadoainvestigacionDesc: app.ui.GetRadioSelectedText('enviadoainvestigacionDet'),
                 fechaenviadoainvestigacion: app.ui.GetDateValue('#fechaenviadoainvestigacionDet'),
                 requisitosporpresentarparareco: $('#requisitosporpresentarparareco').val(),
                 enviadoaacompanamientolega: app.ui.GetRadioNumericValue('enviadoaacompanamientolegaDet'),
+                enviadoaacompanamientolegaDesc: app.ui.GetRadioSelectedText('enviadoaacompanamientolegaDet'),
                 fechaenviadoaacompanamientoLeg: app.ui.GetDateValue('#fechaenviadoaacompanamientoLegDet'),
                 fechadelevento: app.ui.GetDateValue('#fechadeleventoDet'),
                 posiblesubrogacion: app.ui.GetRadioNumericValue('posiblesubrogacionDet'),
+                posiblesubrogacionDesc: app.ui.GetRadioSelectedText('posiblesubrogacionDet'),
                 fechaidentificadocomoposiblesu: app.ui.GetDateValue('#fechaidentificadocomoposiblesuDet'),
                 muertos: $('#muertos').val(),
                 lesionados: $('#lesionados').val(),
@@ -548,6 +559,7 @@ app.PurdyPanelLegal = (function () {
                 expedientejudicial: $('#expedientejudicial').val(),
                 fechasentencia: app.ui.GetDateValue('#fechasentencia'),
                 subrogacion: app.ui.GetRadioNumericValue('subrogacion'),
+                subrogacionDesc: app.ui.GetRadioSelectedText('subrogacion'),
                 montoporrecuperar: app.ui.GetNumericValue('#montoporrecuperar'),
                 montorecuperado: app.ui.GetNumericValue('#montorecuperado'),
                 saldoporrecuperar: app.ui.GetNumericValue('#saldoporrecuperar')
