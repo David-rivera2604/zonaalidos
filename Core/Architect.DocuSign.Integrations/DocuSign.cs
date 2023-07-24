@@ -121,7 +121,7 @@ namespace Architect.DocuSign.Integrations
                                 description = affidavit.description,
                                 bytes = affidavit.bytes,
                                 kind = affidavit.kind,
-                                Signed = affidavit.kind.Equals("EviSign:Main", StringComparison.CurrentCultureIgnoreCase)
+                                Signed = affidavit.kind == null ? false : affidavit.kind.Equals("EviSign:Main", StringComparison.CurrentCultureIgnoreCase)
                             });
                         }
                     }
