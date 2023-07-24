@@ -48,7 +48,7 @@
                                                 <!-- codigodeclientePer Text -->
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='codigodeclientePer'>Código de cliente<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <label class='control-label' for='codigodeclientePer'>Código de cliente</label>
                                                         <input type='text' id='codigodeclientePer' name='codigodeclientePer' class='form-control' size='40' maxlength='40' />
 
                                                     </div>
@@ -173,7 +173,7 @@
                                                 <!-- telefonoresidenciaPer Text -->
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='telefonoresidenciaPer'>Teléfono residencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <label class='control-label' for='telefonoresidenciaPer'>Teléfono residencia</label>
                                                         <div class='input-group'>
                                                             <span class='input-group-addon'>
                                                                 <span class='glyphicon glyphicon-earphone'></span>
@@ -186,7 +186,7 @@
                                                 <!-- telefonocelularPer Text -->
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='telefonocelularPer'>Teléfono celular<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <label class='control-label' for='telefonocelularPer'>Teléfono celular</label>
                                                         <div class='input-group'>
                                                             <span class='input-group-addon'>
                                                                 <span class='glyphicon glyphicon-earphone'></span>
@@ -199,7 +199,7 @@
                                                 <!-- faxPer Text -->
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='faxPer'>Fax<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <label class='control-label' for='faxPer'>Fax</label>
                                                         <div class='input-group'>
                                                             <span class='input-group-addon'>
                                                                 <span class='glyphicon glyphicon-earphone'></span>
@@ -212,7 +212,7 @@
                                                 <!-- apartadopostalPer Text -->
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='apartadopostalPer'>Apartado postal<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <label class='control-label' for='apartadopostalPer'>Apartado postal</label>
                                                         <input type='text' id='apartadopostalPer' name='apartadopostalPer' class='form-control' size='40' maxlength='40' />
 
                                                     </div>
@@ -296,9 +296,10 @@
                                             <div class="form-row">
 
                                                 <!-- OcupacionPer RadioButtonList -->
-                                                <div class='col-sm-12 col-md-12'>
+                                                <div class='col-sm-8 col-md-8'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='OcupacionPer'>Indique su ocupación o actividad actual<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+
                                                         <div style="padding-top: 6px;">
                                                             <div class="custom-control custom-radio custom-control-inline">
                                                                 <input type="radio" class="custom-control-input" id="OcupacionPer_1" name="OcupacionPer" value="1">
@@ -315,12 +316,21 @@
                                                     </div>
                                                 </div>
 
+                                                <!-- fuenteIngresosPer Text -->
+                                                <div class='col-sm-4 col-md-4 fuenteIngresosPerVisible d-none'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='fuenteIngresosPer'>Fuente de ingresos<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='fuenteIngresosPer' name='fuenteIngresosPer' class='form-control' size='60' maxlength='60' />
+
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
 
                                     <!-- datosdelaempresaolugarquegenerasusingresosencasodeserindependientePer Zone -->
-                                    <div class="form-row">
+                                    <div class="form-row empresaPerVisible d-none">
                                         <div class="col-lg-12">
                                             <h4>Datos de la empresa o lugar que genera sus ingresos en caso de ser independiente</h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>

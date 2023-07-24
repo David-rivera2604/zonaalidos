@@ -89,6 +89,7 @@ app.kycpersona = (function () {
             //Ocupación o actividad actual
             OcupacionPer: app.ui.GetRadioNumericValue('OcupacionPer'),
             OcupacionPerDesc: app.ui.GetRadioSelectedText('OcupacionPer'),
+            fuenteIngresosPer: $('#fuenteIngresosPer').val(),
 
             //Datos de la empresa o lugar que genera sus ingresos en caso de ser independiente
             nombreempresaPer: $('#nombreempresaPer').val(),
@@ -210,6 +211,7 @@ app.kycpersona = (function () {
             app.core.LookupDependency(data.domiciliopermanenteCod_prov, 'cod_localidadPer', 'Distritos', '', data.domiciliopermanenteCod_localidad, false, null, `cod_pais=${data.domiciliopermanenteCod_pais}:cod_prov=`);
             $('#direccionexactaPer').val(data.domiciliopermanenteDireccionexacta);
             app.ui.SetRadioNumericValue('OcupacionPer', data.OcupacionPer);
+            $('#fuenteIngresosPer').val(data.fuenteIngresosPer);
             $('#nombreempresaPer').val(data.nombreempresaPer);
             $('#actividadempresaPer').val(data.actividadempresaPer);
             $('#cargoempresaPer').val(data.cargoempresaPer);
@@ -323,6 +325,7 @@ app.kycpersona = (function () {
         });
 
     };
+
     function Controls_Events() {
 
         app.ui.DocumentNumberHandlerKYC('#numidentificacion', MapObjectToInput, undefined, "persona");
@@ -373,6 +376,16 @@ app.kycpersona = (function () {
             $('.peptiporelacionPerVisible').removeClass('d-none');
         else
             $('.peptiporelacionPerVisible').addClass('d-none');
+
+
+        if (app.ui.GetRadioNumericValue('OcupacionPer') === 2)
+            $('.empresaPerVisible').removeClass('d-none');
+        else
+            $('.empresaPerVisible').addClass('d-none');
+        if (app.ui.GetRadioNumericValue('OcupacionPer') === 3)
+            $('.fuenteIngresosPerVisible').removeClass('d-none');
+        else
+            $('.fuenteIngresosPerVisible').addClass('d-none');
     };
 
     function Setup_Validations() {
@@ -384,7 +397,6 @@ app.kycpersona = (function () {
                 primerapellidoPer: { required: true },
                 segundoapellidoPer: { required: true },
                 nombrePer: { required: true },
-                codigodeclientePer: { required: true },
                 numidentificacion: { required: true },
                 numidentificaciontipo: { required: true },
                 fechadecaducidadPer: { required: true },
@@ -394,10 +406,6 @@ app.kycpersona = (function () {
                 profesionPer: { required: true },
                 estadocivilPer: { required: true },
                 sexoPer: { required: true },
-                telefonoresidenciaPer: { required: true },
-                telefonocelularPer: { required: true },
-                faxPer: { required: true },
-                apartadopostalPer: { required: true },
                 correoelectronicoPer: { required: true, email: true },
                 cod_paisPer: { required: true },
                 cod_estadoPer: { required: true },
@@ -405,6 +413,7 @@ app.kycpersona = (function () {
                 cod_localidadPer: { required: true },
                 direccionexactaPer: { required: true },
                 OcupacionPer: { required: true },
+                fuenteIngresosPer: { required: true },
                 nombreempresaPer: { required: true },
                 actividadempresaPer: { required: true },
                 cargoempresaPer: { required: true },
@@ -440,7 +449,6 @@ app.kycpersona = (function () {
                 primerapellidoPer: { required: 'Debe indicar el Primer apellido' },
                 segundoapellidoPer: { required: 'Debe indicar el Segundo apellido' },
                 nombrePer: { required: 'Debe indicar el Nombre' },
-                codigodeclientePer: { required: 'Debe indicar el Código de cliente' },
                 numidentificacion: { required: 'Debe indicar el Número de identificación' },
                 numidentificaciontipo: { required: 'Debe indicar el Tipo de identificación' },
                 fechadecaducidadPer: { required: 'Debe indicar el Fecha de caducidad' },
@@ -450,10 +458,6 @@ app.kycpersona = (function () {
                 profesionPer: { required: 'Debe indicar el Profesión' },
                 estadocivilPer: { required: 'Debe indicar el Estado civil' },
                 sexoPer: { required: 'Debe indicar el Sexo' },
-                telefonoresidenciaPer: { required: 'Debe indicar el Teléfono residencia' },
-                telefonocelularPer: { required: 'Debe indicar el Teléfono celular' },
-                faxPer: { required: 'Debe indicar el Fax' },
-                apartadopostalPer: { required: 'Debe indicar el Apartado postal' },
                 correoelectronicoPer: { required: 'Debe indicar el Correo electrónico', email: 'Debe indicar un correo electrónico valido' },
                 cod_paisPer: { required: 'Debe indicar el País' },
                 cod_estadoPer: { required: 'Debe indicar el Provincia' },
@@ -461,6 +465,7 @@ app.kycpersona = (function () {
                 cod_localidadPer: { required: 'Debe indicar el Distrito' },
                 direccionexactaPer: { required: 'Debe indicar el Dirección exacta' },
                 OcupacionPer: { required: 'Debe indicar el Indique su ocupación o actividad actual' },
+                fuenteIngresosPer: { required: 'Debe indicar la fuente de los ingresos' },
                 nombreempresaPer: { required: 'Debe indicar el Nombre de la empresa o negocio' },
                 actividadempresaPer: { required: 'Debe indicar el Actividad de la empresa o negocio' },
                 cargoempresaPer: { required: 'Debe indicar el Cargo que desempeña' },
@@ -492,8 +497,6 @@ app.kycpersona = (function () {
             }
         });
     };
-
-
 
     return {
         Init: function (data) {
@@ -558,6 +561,7 @@ app.kycpersona = (function () {
                 "domiciliopermanenteCod_localidad": 0,
                 "domiciliopermanenteDireccionexacta": "",
                 "OcupacionPer": null,
+                "fuenteIngresosPer": "",
                 "nombreempresaPer": "",
                 "actividadempresaPer": "",
                 "cargoempresaPer": "",
