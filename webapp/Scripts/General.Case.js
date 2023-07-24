@@ -3,6 +3,7 @@
 app.GeneralCase = (function () {
 
     let _data = null;
+    let _enabledRef = null;
     let _managerLinks = null;
     let _instance = null;
 
@@ -13,6 +14,10 @@ app.GeneralCase = (function () {
 
         //$(".historyPanel").removeClass('d-none');
         //$('#sidebarTitle').html("<h3>Historial</h3>");
+
+        $("#ReferencesEdtForm :input").change(function () {
+            $('#ProcessStepAccept').prop("disabled", false);
+        });
 
         $('#ProcessStepAccept').click(function () {
             event.preventDefault();
@@ -140,12 +145,60 @@ app.GeneralCase = (function () {
                     $('#Reference10').parent().removeClass('d-none');
                 }
 
+                for (let i = 1; i <= 10; i++) {
+                    ReferenceHandler(dataFlow[`ReferenceCaption${i}`], dataFlow[`ReferenceType${i}`], dataFlow[`ReferenceRequired${i}`], dataFlow[`ReferenceLookupList${i}`], `Reference${i}`);
+                }
 
                 NotasDraw(data.Id);
                 AttachmentDraw(data.Id);
 
                 _managerLinks.MapObjectToInput(data);
             });
+    }
+
+    async function ReferenceHandler(caption, type, required, valueList, id) {
+        if (caption != '') {
+            if (required)
+                $("label[for='E" + id + "']").html(caption + "<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>");
+            else
+                $("label[for='E" + id + "']").html(caption);
+
+            if (valueList == '') {
+                $('#E' + id).removeClass('d-none');
+                $('#E' + id).val(_data[id]);
+            }
+            else {
+                let selectedOptions = $('#E' + id + 'List');
+                selectedOptions.removeClass('d-none');
+                selectedOptions.children().remove();
+
+                selectedOptions.append($('<option selected />').val('').text(''));
+                $.each(valueList.split(';'), function () {
+                    selectedOptions.append($('<option />').val(this).text(this));
+                });
+                selectedOptions.val(_data[id]);
+            }
+            //$('#E' + id).parent().parent().removeClass('d-none');
+        } else {
+            $('#E' + id).parent().parent().addClass('d-none');
+            $('#E' + id).addClass('d-none');
+            $('#E' + id + 'List').addClass('d-none');
+            $('#E' + id + 'List').val('');
+        }
+    }
+
+    async function EnableReference(dataRef) {
+        _enabledRef = JSON.parse(dataRef);
+        for (let i = 1; i <= 10; i++) {
+            $(`#EReference${i}`).parent().parent().addClass('d-none');
+        }
+
+        $.each(_enabledRef, function () {
+            $('#E' + this.Code).parent().parent().removeClass('d-none');
+        });
+        if (_enabledRef.length > 0) {
+            $('.references-section').removeClass('d-none');
+        }
     }
 
     function NotasDraw(entityId) {
@@ -355,8 +408,9 @@ app.GeneralCase = (function () {
                     if (current.length > 0) {
                         $('#StepDescription').html(current[0].Name);
                         $('#CurrentStep').html(current[0].Name);
+
+                        EnableReference(current[0].References);
                     }
-                    console.log(current);
                     if (data.Tasks.length > 0) {
                         $('#tasks').empty();
                         $('#Annotation').val('');
@@ -415,14 +469,26 @@ app.GeneralCase = (function () {
     }
 
     function TaskChecked(instanceId, activityId, comment, notify) {
+        let references = [];
+        $.each(_enabledRef, function () {
+            references.push({ Code: this.Code, Description: $('#E' + this.Code).val() });
+        });
+
         app.core.Put(app.setting.apipath + `v1/Process/Task/Checked/${instanceId}`,
             JSON.stringify({
+                StepId: _instance.ActivityId,
                 ActivityId: activityId,
                 Comment: comment,
-                Notify: notify
+                Notify: notify,
+                References: references
             }))
             .done(function (data, textStatus, jqXHR) {
-                EditMode({ Id: _data.Id });
+                if (activityId === 0) {
+                    $('#ProcessStepAccept').prop("disabled", true);
+                } else {
+                    EditMode({ Id: _data.Id });
+                }
+
             }).always(function () {
                 app.ui.ButtonDone('#ProcessStepAccept', false);
             });
