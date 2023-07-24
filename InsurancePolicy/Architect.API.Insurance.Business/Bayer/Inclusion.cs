@@ -1,4 +1,5 @@
 ﻿using Architect.API.Insurance.Contracts.Policy;
+using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
 using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace Architect.API.Insurance.Business.Bayer
                     };
                     Core.Business.General.Attachment.SyncUp(attachment);
 
-                    Signed(tokenInfo.CompanyId, id);
+                    Signed(tokenInfo.CompanyId, id, attachment);
                 }
             }
             return result;
@@ -64,14 +65,24 @@ namespace Architect.API.Insurance.Business.Bayer
 
                     foreach (Utilities.Contracts.LookUpValue item in DataAccess.Policy.Risk.RetrieveByStatus(companyId, 4))
                     {
-                        eviSignInf = DocuSign.Integrations.DocuSign.Query(item.Description).GetAwaiter().GetResult();
+                        eviSignInf = DocuSign.Integrations.DocuSign.Query(item.Description, true).GetAwaiter().GetResult();
                         if (eviSignInf != null)
                         {
                             Utilities.Log.TraceLog(" Bayer.Inclusion.EvicertiaSigned", item.Description + " outcome " + eviSignInf.outcome, "Evicertia");
                             switch (eviSignInf.outcome)
                             {
                                 case "Signed":
-                                    Signed(companyId, Convert.ToInt32(item.Code));
+                                    Core.Contracts.General.Attachments attachment = null;
+                                    foreach (DocuSign.Integrations.Contracts.affidavits affidavit in eviSignInf.affidavits)
+                                    {
+                                        if (affidavit.Signed)
+                                        {
+                                            attachment = Almacena_Documento_Firmado(item.Code, affidavit.bytes, companyId, 999);
+                                            break;
+                                        }
+                                    }
+
+                                    Signed(companyId, Convert.ToInt32(item.Code), attachment);
                                     break;
                                 case "None":
                                     break;
@@ -97,10 +108,35 @@ namespace Architect.API.Insurance.Business.Bayer
             }
         }
 
+        private static Core.Contracts.General.Attachments Almacena_Documento_Firmado(string presupuesto, string fileContent, int companyId, int userId)
+        {
+            Byte[] pdfbytes = Convert.FromBase64String(fileContent);
+            string originalFileName = "Documento firmado.pdf";
+            string fileName = string.Format("{0}.pdf", Guid.NewGuid());
+            string fullFileName = Path.Combine(ConfigurationManager.AppSettings["Attachments.Path"], fileName);
+
+            File.WriteAllBytes(fullFileName, pdfbytes);
+
+            Core.Contracts.General.Attachments attachment = new Core.Contracts.General.Attachments
+            {
+                EntityType = 2000,
+                EntityId = Convert.ToInt64(presupuesto),
+                CompanyId = companyId,
+                UpdateUserCode = userId,
+                DocumentType = 4002,
+                Description = "Solicitud con firma digital",
+                FileName = originalFileName,
+                FileSize = pdfbytes.Length,
+                FileContent = fullFileName
+            };
+            Core.Business.General.Attachment.SyncUp(attachment);
+            return attachment;
+        }
+
         /// <summary>
         /// Procesa una inclusión como firmada.
         /// </summary>
-        private static void Signed(int companyId, int id)
+        private static void Signed(int companyId, int id, Core.Contracts.General.Attachments attachment)
         {
             Risk risk = Policy.Risk.RetrievePolicyByKey(id, companyId);
             risk.Bayer = DataAccess.Policy.RiskBayer.Retrieve(id, companyId);
@@ -113,7 +149,12 @@ namespace Architect.API.Insurance.Business.Bayer
                                     Retrieve(risk.Id, new Core.Contracts.Security.Token() { CompanyId = companyId }), companyId), 1);
             risk.Annotation = medicalId.ToString();
             DataAccess.Policy.Risk.Update(risk);
-            Core.Business.General.Mail.SendByTemplate("Notify_InclusionInMedical", companyId, risk.ExecutiveUserCode, risk.ExecutiveUserCode, risk);
+            string[] attachments = new string[] { }; ;
+            if (attachment != null)
+            {
+                attachments = new string[] { string.Format("{0};{1}", attachment.FileContent, attachment.FileName) };
+            }
+            Core.Business.General.Mail.SendByTemplate("Notify_InclusionInMedical", companyId, risk.ExecutiveUserCode, risk.ExecutiveUserCode, risk, null, attachments);
         }
 
         /// <summary>
@@ -168,7 +209,8 @@ namespace Architect.API.Insurance.Business.Bayer
             int id = 0;
             Contracts.Bayer.InclusionRequest result = new Contracts.Bayer.InclusionRequest()
             {
-                IssueDate = DateTime.Today
+                IssueDate = DateTime.Today,
+                EffectiveDate = DateTime.Today
             };
 
             id = DataAccess.Policy.Risk.RetrieveLastIdByExecutiveUserCode(tokenInfo.CompanyId, tokenInfo.UserId);
@@ -283,7 +325,7 @@ namespace Architect.API.Insurance.Business.Bayer
         public static Contracts.Bayer.InclusionRequest Issue(Contracts.Bayer.InclusionRequest inclusionInfo, Core.Contracts.Security.Token tokenInfo)
         {
             inclusionInfo.Errors = Validate(inclusionInfo);
-            if (inclusionInfo.Errors.Count == 0)
+            if (inclusionInfo.Errors.Count == 0 || inclusionInfo.Mode == "draft")
             {
                 Contracts.Policy.Risk risk = Convertions.InclusionToRisk(inclusionInfo);
                 risk.ExecutiveUserCode = tokenInfo.UserId;
@@ -292,11 +334,23 @@ namespace Architect.API.Insurance.Business.Bayer
                 switch (inclusionInfo.Mode)
                 {
                     case "draft":
-                        risk.Status = 1;
+                        if (inclusionInfo.Status == 0)
+                        {
+                            risk.Status = 1;
+                        }
+                        else
+                        {
+                            risk.Status = inclusionInfo.Status;
+                        }
                         break;
                     case "send":
+                        //Se verfica si la fecha de emisión es superior a 90 días.
+                        risk.Status = inclusionInfo.IssueDate < DateTime.Now.AddDays(-90) ? 34 : 2;
+                        break;
+                    case "revisedAux":
                         risk.Status = 2;
                         break;
+                    case "backAux":
                     case "back":
                         risk.Comments = inclusionInfo.Message;
                         risk.Status = 1;
@@ -317,6 +371,15 @@ namespace Architect.API.Insurance.Business.Bayer
                         break;
 
                 }
+
+                if (risk.Status > 1 && (inclusionInfo.beneficiarios == null || inclusionInfo.beneficiarios.Count == 0))
+                {
+                    inclusionInfo.Errors = new List<Core.Contracts.General.Error>() {
+                                new Core.Contracts.General.Error() { Group = "Inclusion", Key = "DocumentNumber", Message = "Debe indicar la identificación" }                    };
+                    return inclusionInfo;
+                }
+
+
                 risk.PrimaryInsured = Convertions.InclusionToPrimaryInsured(inclusionInfo);
 
                 Contracts.Policy.RiskRoles newRole = null;
@@ -343,13 +406,10 @@ namespace Architect.API.Insurance.Business.Bayer
                     }
                 }
 
-
-
                 if (risk.Id.IsEmpty())
                     risk = Policy.Risk.CreatePolicy(risk, tokenInfo.UserId, tokenInfo.CompanyId);
                 else
                     risk = Policy.Risk.UpdatePolicy(risk, tokenInfo.UserId, tokenInfo.CompanyId, string.Empty);
-
                 risk.Bayer = Convertions.InclusionToRiskBayer(tokenInfo.CompanyId, inclusionInfo);
                 risk.Bayer.Id = risk.Id;
                 risk.Bayer.CompanyId = risk.CompanyId;
@@ -369,54 +429,63 @@ namespace Architect.API.Insurance.Business.Bayer
                 inclusionInfo.Id = risk.Id;
                 inclusionInfo.Status = risk.Status;
                 inclusionInfo.StatusDesc = risk.StatusDesc;
-
-                if (inclusionInfo.Errors.Count > 0)
+                if (inclusionInfo.Mode == "draft" && risk.Status == 2)
                 {
-                    inclusionInfo.Message = string.Format("No se puede realizar la inclusión ya que existen {0} error(es) que ameritan su atención",
-                                            inclusionInfo.Errors.Count);
+                    inclusionInfo.Message = "Cambios guardados";
                 }
                 else
                 {
-                    risk.LineOfBusinessDesc = Core.Business.Common.LkpDescription(risk.CompanyId, "LineOfBusiness", risk.LineOfBusinessCode.ToString());
-
-                    switch (inclusionInfo.Status)
+                    if (inclusionInfo.Errors.Count > 0)
                     {
-                        case 1:
-                            if (inclusionInfo.Mode == "back")
-                            {
-                                inclusionInfo.Message = "La inclusión fue rechaza, se envió una notificación para que se proceda a su revisión";
-                                Core.Business.General.Mail.SendByTemplate("Notify_RequestReject", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk);
-                            }
-                            break;
-                        case 2:
-                            inclusionInfo.Message = "La inclusión fue debidamente almacenada y enviada a RRHH, queda pendiente de revisión";
-                            Core.Business.General.Mail.SendByTemplate("Notify_RequestOnReview", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk);
-                            break;
-                        case 4:
-                            string name = inclusionInfo.FirstName + " " + inclusionInfo.LastName;
-                            inclusionInfo.Message = string.Format("La inclusión fue aceptada de forma exitosa bajo el número #{0}, la misma fue enviada {1} para su firma.", inclusionInfo.Id, name);
+                        inclusionInfo.Message = string.Format("No se puede realizar la inclusión ya que existen {0} error(es) que ameritan su atención",
+                                                inclusionInfo.Errors.Count);
+                    }
+                    else
+                    {
+                        risk.LineOfBusinessDesc = Core.Business.Common.LkpDescription(risk.CompanyId, "LineOfBusiness", risk.LineOfBusinessCode.ToString());
+
+                        switch (inclusionInfo.Status)
+                        {
+                            case 1:
+                                if (inclusionInfo.Mode == "back" || inclusionInfo.Mode == "backAux")
+                                {
+                                    inclusionInfo.Message = "La inclusión fue rechaza, se envió una notificación para que se proceda a su revisión";
+                                    Core.Business.General.Mail.SendByTemplate("Notify_RequestReject", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk);
+                                }
+                                break;
+                            case 2:
+                                inclusionInfo.Message = "La inclusión fue debidamente almacenada y enviada a RRHH, queda pendiente de revisión";
+                                Core.Business.General.Mail.SendByTemplate("Notify_RequestOnReview", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk);
+                                break;
+                            case 4:
+                                string name = inclusionInfo.FirstName + " " + inclusionInfo.LastName;
+                                inclusionInfo.Message = string.Format("La inclusión fue aceptada de forma exitosa bajo el número #{0}, la misma fue enviada {1} para su firma.", inclusionInfo.Id, name);
 
 
-                            string archivo = Core.Business.General.Report.GeneratePDFFile("bayer", inclusionInfo).GetAwaiter().GetResult();
+                                string archivo = Core.Business.General.Report.GeneratePDFFile("bayer", inclusionInfo).GetAwaiter().GetResult();
 
-                            if (!inclusionInfo.HasDigitalSignature)
-                            {
-                                // Se enviar documento para su firma por medio de EviCertia
-                                DocuSign.Integrations.Contracts.SubmitResult submit = DocuSign.Integrations.DocuSign.Submit(
-                                                    string.Format("{0} - Solicitud de inclusión", Core.Business.Common.LkpDescription(tokenInfo.CompanyId, "Company", tokenInfo.CompanyId.ToString())),
-                                                    string.Format("{0} - Solicitud de inclusión #{1}", Core.Business.Common.LkpDescription(tokenInfo.CompanyId, "Company", tokenInfo.CompanyId.ToString()), inclusionInfo.Id),
-                                                      name,
-                                                      inclusionInfo.PrimaryEmailAddress,
-                                                      archivo).GetAwaiter().GetResult();
-                                DataAccess.Policy.Risk.UpdateReference(tokenInfo.CompanyId, inclusionInfo.Id, submit.UniqueId);
-                            }
-                            else
-                            {
-                                // Se enviar documento directo al empleado para su firma digital
-                                Core.Business.General.Mail.SendByTemplate("Notify_RequestReviewed", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk, null, new string[] { archivo });
-                            }
-
-                            break;
+                                if (!inclusionInfo.HasDigitalSignature)
+                                {
+                                    // Se enviar documento para su firma por medio de EviCertia
+                                    DocuSign.Integrations.Contracts.SubmitResult submit = DocuSign.Integrations.DocuSign.Submit(
+                                                        string.Format("{0} - Solicitud de inclusión", Core.Business.Common.LkpDescription(tokenInfo.CompanyId, "Company", tokenInfo.CompanyId.ToString())),
+                                                        string.Format("{0} - Solicitud de inclusión #{1}", Core.Business.Common.LkpDescription(tokenInfo.CompanyId, "Company", tokenInfo.CompanyId.ToString()), inclusionInfo.Id),
+                                                          name,
+                                                          inclusionInfo.PrimaryEmailAddress,
+                                                          archivo).GetAwaiter().GetResult();
+                                    DataAccess.Policy.Risk.UpdateReference(tokenInfo.CompanyId, inclusionInfo.Id, submit.UniqueId);
+                                }
+                                else
+                                {
+                                    // Se enviar documento directo al empleado para su firma digital
+                                    Core.Business.General.Mail.SendByTemplate("Notify_RequestReviewed", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk, null, new string[] { archivo });
+                                }
+                                break;
+                            case 34:
+                                inclusionInfo.Message = "La inclusión fue debidamente almacenada y enviada a Mapfre Costa Rica, queda pendiente de revisión, por que fecha la fecvha de emisión es mayor a 90 días";
+                                Core.Business.General.Mail.SendByTemplate("Notify_RequestOnReviewMapfre", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk);
+                                break;
+                        }
                     }
                 }
             }

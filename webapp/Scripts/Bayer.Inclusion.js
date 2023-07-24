@@ -2,9 +2,11 @@
 
 app.BayerInclusion = (function () {
 
+    let backMode = '';
     let timer;
-    var id = 0;
-    var mode = '';
+    let id = 0;
+    let mode = '';
+    let _setupData = null;
 
     function Setup(internalId) {
         id = internalId;
@@ -37,6 +39,7 @@ app.BayerInclusion = (function () {
                 if (internalId != null) {
                     app.core.Get(app.setting.apipath + 'v1/Inclusion/bayer/' + internalId)
                         .done(function (data) {
+                            _setupData = data;
                             $("#VisualizationsEdtForm fieldset").prop("disabled", false);
                             MapObjectToInput(data);
                         });
@@ -45,6 +48,7 @@ app.BayerInclusion = (function () {
                     app.core.Get(app.setting.apipath + 'v1/Inclusion/bayer/0')
                         .done(function (data) {
                             id = internalId;
+                            _setupData = data;
                             $("#VisualizationsEdtForm fieldset").prop("disabled", false);
                             MapObjectToInput(data);
                         });
@@ -69,6 +73,7 @@ app.BayerInclusion = (function () {
             ContractorName: app.ui.GetDropDownNumericValue('#ContractorName'),
             ContractorDesc: $("#ContractorName option:selected").text(),
             IssueDate: app.ui.GetDateValue('#IssueDate'),
+            EffectiveDate: app.ui.GetDateValue('#EffectiveDate'),
             IsLife: app.ui.GetDropDownStringValue('#IsLife'),
             IsHealth: app.ui.GetDropDownStringValue('#IsHealth'),
             DocumentType: $("#DocumentNumberType").data("value"),
@@ -135,8 +140,9 @@ app.BayerInclusion = (function () {
         $('#MainPolicyId').val(data.ContractorName);
 
         app.ui.SetDropDownNumericValue('#ContractorName', data.ContractorName, true);
-
         app.ui.SetDateValue('#IssueDate', data.IssueDate);
+        $('#EffectiveDate_group').data("DateTimePicker").minDate(app.ui.GetDateRawValue('#IssueDate'));
+        app.ui.SetDateValue('#EffectiveDate', data.EffectiveDate);
         $('#IsLife').val(data.IsLife);
         $('#IsHealth').val(data.IsHealth);
         app.ui.SetDocumentTypeValue('#DocumentNumberType', data.DocumentType);
@@ -193,6 +199,11 @@ app.BayerInclusion = (function () {
                     $('#DateEntryWork').prop("disabled", false);
                 }
                 break;
+            case 34: //En revisón por Mapfre
+                $('#inclusionMayor90DiasNotify').removeClass('d-none');
+                $('.toolbaraux').removeClass('d-none');
+                $("#VisualizationsEdtForm fieldset").prop("disabled", true);
+                break;
             case 2: //En revisión
                 //app.ui.DataEntryBehavior('#VisualizationsEdtForm', 'disabled');
                 if (statusmode === 'Review') {
@@ -205,7 +216,7 @@ app.BayerInclusion = (function () {
                     $('#VisualizationsEdtFormBack').removeClass('d-none');
                     $('#VisualizationsEdtFormRevised').removeClass('d-none');
                     $('#VisualizationsEdtFormDelete').removeClass('d-none');
-
+                    $('#VisualizationsEdtFormDraft').removeClass('d-none');
                 }
                 break;
             case 4: //Por aceptar
@@ -242,6 +253,9 @@ app.BayerInclusion = (function () {
                 $('#VisualizationsEdtFormRevised').addClass('d-none');
                 $('#VisualizationsEdtFormDelete').addClass('d-none');
                 $('#acceptedNotify').addClass('d-none');
+                $('#inclusionMayor90DiasNotify').addClass('d-none');
+                $('.toolbaraux').addClass('d-none');
+                $("#VisualizationsEdtForm fieldset").prop("disabled", false);
                 break;
         }
     }
@@ -255,6 +269,10 @@ app.BayerInclusion = (function () {
         });
 
         $('#IssueDate_group').datetimepicker({
+            format: 'DD/MM/YYYY',
+            locale: 'es'
+        });
+        $('#EffectiveDate_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
@@ -370,6 +388,16 @@ app.BayerInclusion = (function () {
 
     function Controls_Events() {
 
+        $('#IssueDate').blur(function () {
+            if (moment().diff(app.ui.GetDateValue('#IssueDate'), 'days') >= 90) {
+                $('#inclusionMayor90DiasNotify').removeClass('d-none');
+            } else {
+                $('#inclusionMayor90DiasNotify').addClass('d-none');
+            }
+
+            $('#EffectiveDate_group').data("DateTimePicker").minDate(app.ui.GetDateRawValue('#IssueDate'));
+        });
+
         $("#motivo").keyup(function () {
             $("#VisualizationsEdtFormBackConfirm").prop("disabled", $('#motivo').val().length === 0);
         });
@@ -461,13 +489,14 @@ app.BayerInclusion = (function () {
             event.preventDefault();
             Submit_Stage('send', '#VisualizationsEdtFormSave');
         });
-        $('#VisualizationsEdtFormBack').click(function () {
-            event.preventDefault();
+        $('#VisualizationsEdtFormBack').click(function (e) {
+            e.preventDefault();
+            backMode = 'back';
             $('#right-sidebar').toggleClass('sidebar-open');
         });
-        $('#VisualizationsEdtFormBackConfirm').click(function () {
-            event.preventDefault();
-            Submit_Stage('back', '#VisualizationsEdtFormBackConfirm', $('#motivo').val(), function () {
+        $('#VisualizationsEdtFormBackConfirm').click(function (e) {
+            e.preventDefault();
+            Submit_Stage(backMode, '#VisualizationsEdtFormBackConfirm', $('#motivo').val(), function () {
                 $('#right-sidebar').toggleClass('sidebar-open');
             });
         });
@@ -493,17 +522,20 @@ app.BayerInclusion = (function () {
                 });
         });
 
-        //$('#VisualizationsEdtFormCancel').click(function () {
-        //    app.ui.ButtonDoing('#VisualizationsEdtFormCancel');
-        //    setTimeout(() => { app.ui.ButtonDone('#VisualizationsEdtFormCancel'); }, 3000);
-        //    event.preventDefault();
-        //});
+        $('#VisualizationsEdtFormAuxRevised').click(function (e) {
+            e.preventDefault();
+            Submit_Stage('revisedAux', '#VisualizationsEdtFormDraft');
+        });
 
+        $('#VisualizationsEdtFormAuxBack').click(function (e) {
+            e.preventDefault();
+            backMode = 'backAux';
+            $('#right-sidebar').toggleClass('sidebar-open');
+        });
 
         $('#ContractorName').change(function () {
             $('#MainPolicyId').val($('#ContractorName').val());
         });
-
 
         $('#print').click(function () {
             event.preventDefault();
@@ -616,6 +648,8 @@ app.BayerInclusion = (function () {
                 var allValid = app.ui.IsValid('#VisualizationsEdtForm', false);
                 allowSend = beneficiariosTableValid && allValid;
                 break;
+            case 'revisedAux':
+            case 'backAux':
             case 'back':
                 allowSend = true;
                 break;
@@ -630,6 +664,7 @@ app.BayerInclusion = (function () {
             var uidata = MapInputToObject();
             uidata.mode = stageMode;
             uidata.Message = reason;
+            uidata.Status = _setupData.Status;
             app.ui.ButtonDoing(buttonId);
 
             app.core.Post(app.setting.apipath + 'v1/Inclusion/bayer', JSON.stringify(uidata))
@@ -644,6 +679,8 @@ app.BayerInclusion = (function () {
                             id = data.Id;
                             Status_Handler(99, null);
                             break;
+                        case 'revisedAux':
+                        case 'backAux':
                         case 'back':
                             Status_Handler(99, null);
                             break;
@@ -676,6 +713,7 @@ app.BayerInclusion = (function () {
             rules: {
                 ContractorName: { required: true },
                 IssueDate: { required: true },
+                EffectiveDate: { required: true, GreaterOrEqual: '#IssueDate' },
                 IsLife: { required: true },
                 IsHealth: { required: true },
                 DocumentNumber: { required: true },
@@ -704,7 +742,8 @@ app.BayerInclusion = (function () {
             },
             messages: {
                 ContractorName: { required: 'Debe indicar la filial de Bayer' },
-                IssueDate: { required: 'Debe indicar la fecha de ingreso a la póliza' },
+                IssueDate: { required: 'Debe indicar la fecha de solicitud de ingreso' },
+                EffectiveDate: { required: 'Debe indicar la fecha de ingreso a la póliza', GreaterOrEqual: 'La fecha de ingreso debe ser mayor o igual a la de la solicitud' },
                 IsLife: { required: 'Debe indicar la clase para vida' },
                 IsHealth: { required: 'Debe indicar la clase para salud' },
                 DocumentNumber: { required: 'Debe indicar el Identificación' },
@@ -1233,7 +1272,6 @@ app.BayerInclusion = (function () {
         }
         return result;
     }
-
 
     return {
         Init: function () {

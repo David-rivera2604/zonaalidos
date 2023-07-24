@@ -28,7 +28,7 @@ namespace Architect.API.Insurance.Business.Bayer
                 ModuleCode = 0,
                 PaymentFrequency = 0,
                 IssueDate = inclusionInfo.IssueDate,
-                EffectiveDate = DateTime.MinValue,
+                EffectiveDate = inclusionInfo.EffectiveDate,
                 EndingDate = DateTime.MinValue,
                 InsuredAmount = inclusionInfo.InsuredAmount,
                 AnnualPremium = 0,
