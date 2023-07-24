@@ -526,3 +526,6 @@
                    Aliados. Se verifica el campo affidavit.kind para evitar error en caso de contener nulo.
 1.6.40  17/07/2023 Aliados. Se habilita el manejo de kyc.
                    Aliados. Ajustes a KYC según correo del 11/7 (Allison 02/03).
+1.6.41  24/07/2023 Aliados. Se corrige falla de ambigüedad de columna al verificar las etapas vencidas de un proceso.
+                   Bayer. Se agrega nueva verificación para no permitir solicitudes sin beneficiarios.
+                   MapfreMas. Ajuste para alienar cambio de nombre de campos para ser enviado al servicio snap.
