@@ -596,7 +596,7 @@
             </Item2>
             <Item3 Ref="296" ControlType="XRLabel" Name="label12" TextFormatString="{0:n2}" Multiline="true" Text="label9" TextAlignment="TopRight" SizeF="113.413177,23" LocationFloat="486.1265,0" Padding="2,2,0,0,100">
               <ExpressionBindings>
-                <Item1 Ref="297" EventName="BeforePrint" PropertyName="Text" Expression="[recardoporfraccionamiento]" />
+                <Item1 Ref="297" EventName="BeforePrint" PropertyName="Text" Expression="[recargoporfraccionamiento]" />
               </ExpressionBindings>
               <StylePriority Ref="298" UseTextAlignment="false" />
             </Item3>
@@ -770,7 +770,7 @@
             </Item4>
             <Item5 Ref="376" ControlType="XRLabel" Name="label23" TextFormatString="{0:n2}" Multiline="true" Text="label9" TextAlignment="TopRight" SizeF="113.413177,23" LocationFloat="486.1265,0" Padding="2,2,0,0,100">
               <ExpressionBindings>
-                <Item1 Ref="377" EventName="BeforePrint" PropertyName="Text" Expression="[recardoporfraccionamiento]" />
+                <Item1 Ref="377" EventName="BeforePrint" PropertyName="Text" Expression="[recargoporfraccionamiento]" />
               </ExpressionBindings>
               <StylePriority Ref="378" UseTextAlignment="false" />
             </Item5>
