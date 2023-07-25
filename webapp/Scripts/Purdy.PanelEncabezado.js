@@ -55,7 +55,7 @@ app.PurdyPanelEncabezado = (function () {
         $('#nombreasegurado').html(`${data.NOM_ASEG} ${data.APE_ASEG}`);
         $('#cedulaasegurado').html(`${data.TIP_DOCUM_ASEG} ${data.COD_DOCUM_ASEG}`);
         $('#correoasegurado').html(`<a href="mailto:${data.EMAIL_ASEG}" title="Al hacer click se podrá escribir un correo electrónico usando esta dirección">${data.EMAIL_ASEG}</a>`);
-        $('#telefonoasegurado').html(`<a href="tel:${data.TLF_NUMERO_ASEG}" title="Al hacer click se podrá llamar a este teléfono">${data.TLF_NUMERO_ASEG}</a>`);
+        $('#telefonoasegurado').html(`<a href="tel:${app.ui.StringValueToString(data.TLF_NUMERO_ASEG)}" title="Al hacer click se podrá llamar a este teléfono">${app.ui.StringValueToString(data.TLF_NUMERO_ASEG)}</a>`);
         $('#ingresodeaviso').html(`${app.ui.DateFormatter(data.FEC_DENU_SINI)} ${data.HORA_DENU_SINI}`);
         $('#fechadeleventoEnc').html(``);
         $('#noSiniestro').html(data.NUM_SINI);
