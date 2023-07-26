@@ -35,7 +35,7 @@ namespace Architect.API.Core.DataAccess.General
         public static List<Architect.API.Core.Contracts.General.ProcessInstance> RetrieveOverDueSteps(DateTime dueDate, IDbConnection connection = null)
         {
             List<Architect.API.Core.Contracts.General.ProcessInstance> result = new();
-            Database.Select("SELECT ActivityId, ProcessInstance.InstanceId, CaseId, CompanyId, EntityType, EntityId, ProcessInstance.FlowId, StepId, TaskId, Created, StartDate, EarlyDueDate, DueDate, FinishDate, PreviousActivityId, UserId, Comments, pc.SLA, UpdateUserCode, UpdateDate, LastOverDueNotify " +
+            Database.Select("SELECT ActivityId, ProcessInstance.InstanceId, CaseId, ProcessInstance.CompanyId, EntityType, EntityId, ProcessInstance.FlowId, StepId, TaskId, Created, StartDate, EarlyDueDate, DueDate, FinishDate, PreviousActivityId, ProcessInstance.UserId, Comments, pc.SLA, ProcessInstance.UpdateUserCode, ProcessInstance.UpdateDate, LastOverDueNotify " +
                               "FROM ProcessInstance " +
                               "LEFT JOIN ProcessCase pc ON pc.InstanceId = ProcessInstance.InstanceId " +
                              "WHERE FinishDate IS NULL AND NOT DueDate IS NULL AND DueDate < :DueDate " +

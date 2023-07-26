@@ -118,6 +118,12 @@ namespace Architect.API.Core.Business.General
                     Reference2 = newInstance.Reference2,
                     Reference3 = newInstance.Reference3,
                     Reference4 = newInstance.Reference4,
+                    Reference5 = newInstance.Reference5,
+                    Reference6 = newInstance.Reference6,
+                    Reference7 = newInstance.Reference7,
+                    Reference8 = newInstance.Reference8,
+                    Reference9 = newInstance.Reference9,
+                    Reference10 = newInstance.Reference10,
                     ContactMainEmail = newInstance.ContactEmail,
                     ContactMainName = newInstance.ContactName,
                     Status = spec.ProcessSpecSteps.First().ProcessStatus,
@@ -235,7 +241,63 @@ namespace Architect.API.Core.Business.General
 
         public static Contracts.General.ProcessInstance TaskCompletedByInstance(int instanceId, Contracts.General.TaskChecked checkedInformation, int userId, int companyId)
         {
-            return TaskCompleted(InstanceRuntime(instanceId, companyId), checkedInformation, userId);
+            Contracts.General.ProcessInstance result = new Contracts.General.ProcessInstance() { InstanceId = 0, ActivityId = 0, TaskDesc = "" };
+            List<Contracts.General.ProcessInstance> runtime = InstanceRuntime(instanceId, companyId);
+            if (checkedInformation.References?.Count > 0)
+            {
+                UpdateReferences(checkedInformation, userId, companyId, runtime);
+            }
+            if (checkedInformation.ActivityId != 0)
+            {
+                return TaskCompleted(runtime, checkedInformation, userId);
+            }
+            return result;
+        }
+
+        private static void UpdateReferences(Contracts.General.TaskChecked checkedInformation, int userId, int companyId, List<Contracts.General.ProcessInstance> runtime)
+        {
+            Contracts.General.ProcessInstance currentTask = runtime.First(i => i.ActivityId == checkedInformation.StepId);
+
+            Contracts.General.ProcessCase procCase = Business.General.ProcessCase.RetrieveById(companyId, runtime.First().CaseId);
+
+            foreach (var item in checkedInformation.References)
+            {
+                switch (item.Code)
+                {
+                    case "Reference1":
+                        procCase.Reference1 = item.Description;
+                        break;
+                    case "Reference2":
+                        procCase.Reference2 = item.Description;
+                        break;
+                    case "Reference3":
+                        procCase.Reference3 = item.Description;
+                        break;
+                    case "Reference4":
+                        procCase.Reference4 = item.Description;
+                        break;
+                    case "Reference5":
+                        procCase.Reference5 = item.Description;
+                        break;
+                    case "Reference6":
+                        procCase.Reference6 = item.Description;
+                        break;
+                    case "Reference7":
+                        procCase.Reference7 = item.Description;
+                        break;
+                    case "Reference8":
+                        procCase.Reference8 = item.Description;
+                        break;
+                    case "Reference9":
+                        procCase.Reference9 = item.Description;
+                        break;
+                    case "Reference10":
+                        procCase.Reference10 = item.Description;
+                        break;
+                }
+            }
+
+            ProcessCase.Update(companyId, userId, procCase.Id, procCase);
         }
 
         public static bool InstanceByEntityExist(int entityType, long entityId, int companyId)
@@ -290,7 +352,8 @@ namespace Architect.API.Core.Business.General
                     Status = step.Step.ProcessStatus,
                     Label = step.Step.ProcessLabel,
                     Wait = "on",
-                    ProgressMode = step.Step.ProgressMode
+                    ProgressMode = step.Step.ProgressMode,
+                    References = step.Step.References,
                 };
                 if (step.StartDate.IsNotEmpty())
                 {
@@ -726,7 +789,6 @@ namespace Architect.API.Core.Business.General
                     procCase = Business.General.ProcessCase.RetrieveById(companyId, caseId);
                 }
 
-
                 Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = step, Spec = spec}, mailFullList, attachments);
             }
         }
@@ -782,8 +844,7 @@ namespace Architect.API.Core.Business.General
                 {
                     procCase = ProcessCase.RetrieveById(companyId, caseId);
                 }
-
-                Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = step, Spec = spec}, mailFullList);
+                Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = step, Spec = spec }, mailFullList);
             }
         }
 
@@ -834,7 +895,7 @@ namespace Architect.API.Core.Business.General
                 {
                     procCase = ProcessCase.RetrieveById(companyId, caseId);
                 }
-                Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = entity, Spec = spec}, mailFullList);
+                Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = entity, Spec = spec }, mailFullList);
             }
         }
 

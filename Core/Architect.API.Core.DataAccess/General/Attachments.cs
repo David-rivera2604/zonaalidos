@@ -94,6 +94,7 @@ namespace Architect.API.Core.DataAccess.General
         /// <returns>Cantidad de registros creados.</returns>
         public static int CreateCustom(Architect.API.Core.Contracts.General.Attachments attachmentsItem, IDbConnection connection = null)
         {
+            byte[] fileContent = Utilities.Helpers.ByteHandler.FileToBytes(attachmentsItem.FileContent);
             if (attachmentsItem.UpdateDate.IsEmpty())
             {
                 attachmentsItem.UpdateDate = DateTime.Now;
@@ -105,8 +106,8 @@ namespace Architect.API.Core.DataAccess.General
                         .AddParameter("DocumentType", DbType.Decimal, 5, attachmentsItem.DocumentType)
                         .AddParameter("Description", DbType.AnsiString, 120, attachmentsItem.Description)
                         .AddParameter("FileName", DbType.AnsiString, 80, attachmentsItem.FileName)
-                        .AddParameter("FileSize", DbType.Decimal, 9, attachmentsItem.FileSize)
-                        .AddParameter("FileContent", DbType.Binary, 0, Utilities.Helpers.ByteHandler.FileToBytes(attachmentsItem.FileContent))
+                        .AddParameter("FileSize", DbType.Decimal, 9, fileContent.Length)
+                        .AddParameter("FileContent", DbType.Binary, 0, fileContent)
                         .AddParameter("EntityType", DbType.Decimal, 5, attachmentsItem.EntityType)
                         .AddParameter("EntityId", DbType.Decimal, 18, attachmentsItem.EntityId)
                         .AddParameter("CompanyId", DbType.Decimal, 5, attachmentsItem.CompanyId)
@@ -129,7 +130,7 @@ namespace Architect.API.Core.DataAccess.General
             }
             if (attachmentsItem.FileContent.IsNotEmpty())
             {
-                var contenido = Architect.Utilities.Helpers.ByteHandler.FileToBytes(attachmentsItem.FileContent);
+                byte[] fileContent = Architect.Utilities.Helpers.ByteHandler.FileToBytes(attachmentsItem.FileContent);
                 return Database.Update("UPDATE Attachments " +
                                           "SET CompanyId=:CompanyId, EntityType=:EntityType, EntitySubType=:EntitySubType, EntityId=:EntityId, DocumentType=:DocumentType, Description=:Description, FileName=:FileName, FileSize=:FileSize, FileContent=:FileContent, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
                                         "WHERE Id=:Id")
@@ -140,8 +141,8 @@ namespace Architect.API.Core.DataAccess.General
                                     .AddParameter("DocumentType", DbType.Decimal, 5, attachmentsItem.DocumentType)
                                     .AddParameter("Description", DbType.AnsiString, 120, attachmentsItem.Description)
                                     .AddParameter("FileName", DbType.AnsiString, 80, attachmentsItem.FileName)
-                                    .AddParameter("FileSize", DbType.Decimal, 9, attachmentsItem.FileSize)
-                                    .AddParameter("FileContent", DbType.Binary, 0, contenido)
+                                    .AddParameter("FileSize", DbType.Decimal, 9, fileContent.Length)
+                                    .AddParameter("FileContent", DbType.Binary, 0, fileContent)
                                     .AddParameter("UpdateUserCode", DbType.Decimal, 9, attachmentsItem.UpdateUserCode)
                                     .AddParameter("UpdateDate", DbType.DateTime, 0, attachmentsItem.UpdateDate)
                                     .AddParameter("Id", DbType.Decimal, 9, attachmentsItem.Id)

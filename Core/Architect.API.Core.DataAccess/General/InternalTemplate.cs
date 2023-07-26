@@ -16,6 +16,8 @@ namespace Architect.API.Core.DataAccess.General
         {
             Contracts.General.InternalTemplate result = new Contracts.General.InternalTemplate()
             {
+                MasterTemplateId = 0,
+                EmailTo = string.Empty,
                 Subject = "Plantilla no encontrada",
                 Body = "Plantilla no encontrada"
             };

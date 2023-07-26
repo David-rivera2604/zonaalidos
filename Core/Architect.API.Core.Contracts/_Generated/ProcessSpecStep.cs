@@ -121,7 +121,10 @@ namespace Architect.API.Core.Contracts.General
         [DataMember(), JsonProperty()] public DateTime UpdateDate { get; set; }
 
         [DataMember(), JsonProperty()] public string RoleNames { get; set; }
-        
+
+
+        [DataMember(), JsonProperty()] public string References { get; set; }
+
     }
 }
 
