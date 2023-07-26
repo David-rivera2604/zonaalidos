@@ -165,7 +165,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                     required = coverageSelected.Contain(item.Code);
                     coberturas.Add(new Contracts.Comun.Cobertura()
                     {
-                        seleccionado = false,
+                        seleccionado = required,
                         requerida = required,
                         codigo = Convert.ToInt32(item.Code),
                         nombre = item.Description,
@@ -391,13 +391,13 @@ namespace Architect.API.Tron.Business.Cotizacion
                     case "TRON_DEDU_CONTR:DED_AUTO_RC":
                         if (result.DED_AUTO_RC.IsEmpty() || result.DED_AUTO_RC.Count == 0)
                         {
-                            result.DED_AUTO_RC = CleanEmptyValue(itemValues.Lkp);
+                            result.DED_AUTO_RC = itemValues.Lkp;
                         }
                         break;
                     case "TRON_G1010031:DEDUC303_3001":
                         if (result.DED_AUTO_RC.IsEmpty() || result.DED_AUTO_RC.Count == 0)
                         {
-                            result.DED_AUTO_RC = CleanEmptyValue(itemValues.Lkp);
+                            result.DED_AUTO_RC = itemValues.Lkp;
                         }
                         break;
                     case "TRON_G2990019:IMP_AUTO_GMO":

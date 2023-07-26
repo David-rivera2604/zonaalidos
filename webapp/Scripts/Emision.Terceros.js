@@ -332,10 +332,10 @@ app.EmisionTercero = (function () {
                 numerodeprestamo: $('#numerodeprestamo').val(),
                 importedecesion: app.ui.GetNumericValue('#importedecesion'),
                 vencimientodecesion: app.ui.GetDateValue('#vencimientodecesion'),
-                porcentajeacredor: app.ui.GetNumericValue('#porcentajeacredor'),
+                porcentajeacredor: $('#porcentajeacredor').val(),
                 parentesco: $('#parentesco').val(),
                 parentescoDesc: $('#parentesco option:selected').text(),
-                porcentaje: app.ui.GetNumericValue('#porcentaje'),
+                porcentaje: $('#porcentaje').val(),
                 NoEditable: false
             };
         }

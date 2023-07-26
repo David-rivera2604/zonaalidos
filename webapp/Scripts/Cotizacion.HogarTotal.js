@@ -119,6 +119,8 @@ app.HogarTotal = (function () {
                     function () {
                         SettingReload();
                     }, `cod_ramo=${setupData.cod_ramo}:cod_mon=${cod_mon}`);
+
+                app.core.LookupDependency($('select#moneda').val(), 'sARespcivil', 'SumasAseguradasRC', '', null, false, null, `cod_ramo=${setupData.cod_ramo}:cod_mon=`);
             }
             else {
                 app.core.LookupDependency($('select#moneda').val(), 'sARespcivil', 'SumasAseguradasRC', '', null, false, null, `cod_ramo=${setupData.cod_ramo}:cod_mon=`);
