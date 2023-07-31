@@ -199,10 +199,10 @@ app.EmisionMapfreMas = (function () {
         app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasSettings?cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&cod_sub_modelo=${param.cod_sub_modelo}&anio_sub_modelo=${param.ANIO_SUB_MODELO}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.COD_PLAN_AUTO}&num_contrato=${param.contrato}&num_subcontrato=${param.subcontrato}&num_poliza_grupo=${param.polizagrupo}&tipo_prod=${param.tipo_prod}`)
             .done(function (settingData) {
                 fec_vcto_poliza_grupo = settingData.fec_vcto_poliza_grupo;
-                if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
+                /*if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
                     app.ui.SetDateValue('#fec_vcto_poliza', app.ui.GetDateValue('#fec_efec_poliza'))
                     app.ui.SetDateValue('#fec_vcto_poliza', settingData.fec_vcto_poliza);
-                }
+                }*/
 
                 app.ui.LookupLoad('IMP_AUTO_RC', settingData.IMP_AUTO_RC);
                 app.ui.DropDownDisabled('#IMP_AUTO_RC', settingData.IMP_AUTO_RC.length == 0);

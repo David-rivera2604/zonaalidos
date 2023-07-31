@@ -332,10 +332,10 @@ app.EmisionTercero = (function () {
                 numerodeprestamo: $('#numerodeprestamo').val(),
                 importedecesion: app.ui.GetNumericValue('#importedecesion'),
                 vencimientodecesion: app.ui.GetDateValue('#vencimientodecesion'),
-                porcentajeacredor: app.ui.GetNumericValue('#porcentajeacredor'),
+                porcentajeacredor: $('#porcentajeacredor').val(),
                 parentesco: $('#parentesco').val(),
                 parentescoDesc: $('#parentesco option:selected').text(),
-                porcentaje: app.ui.GetNumericValue('#porcentaje'),
+                porcentaje: $('#porcentaje').val(),
                 NoEditable: false
             };
         }
@@ -580,7 +580,7 @@ app.EmisionTercero = (function () {
                                 $('#TProvincia').val(item.code.COD_ESTADO);
                                 let pais = $('select#cod_pais').val();
                                 app.core.LookupDependency(item.code.COD_ESTADO, 'TCanton', 'Cantones', '', item.code.COD_PROV, false, function () {
-                                    
+
                                     app.core.LookupDependency(item.code.COD_PROV, 'TDistrito', 'Distritos', '', item.code.COD_LOCALIDAD, false, null, `cod_pais=${pais}:cod_prov=`);
 
                                 }, `cod_pais=${pais}:cod_estado=`);

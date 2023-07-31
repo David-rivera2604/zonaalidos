@@ -119,6 +119,8 @@ app.HogarTotal = (function () {
                     function () {
                         SettingReload();
                     }, `cod_ramo=${setupData.cod_ramo}:cod_mon=${cod_mon}`);
+
+                app.core.LookupDependency($('select#moneda').val(), 'sARespcivil', 'SumasAseguradasRC', '', null, false, null, `cod_ramo=${setupData.cod_ramo}:cod_mon=`);
             }
             else {
                 app.core.LookupDependency($('select#moneda').val(), 'sARespcivil', 'SumasAseguradasRC', '', null, false, null, `cod_ramo=${setupData.cod_ramo}:cod_mon=`);
@@ -416,7 +418,7 @@ app.HogarTotal = (function () {
                 sAGastosalquiler: { required: true, Numeric: true },
                 sAPerdidaderentas: { required: true, Numeric: true },
                 sARespcivil: { required: true, Numeric: true }
-                
+
             },
             messages: {
                 mesesaampararporperdrentas: { required: 'Debe indicar la cantidad de meses a amparar', Numeric: 'Debe indicar la cantidad de meses a amparar', min: 'Debe indicar indicar un valor entre 1 y 12', max: 'Debe indicar indicar un valor entre 1 y 12' },
