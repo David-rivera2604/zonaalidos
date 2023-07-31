@@ -22,6 +22,7 @@ app.EmisionMapfreMasPlus = (function () {
                     if (localStorage.getItem('Roles').includes('Purdy')) {
                         $('.Purdy').removeClass('d-none');
                         $('#Fuente_Tomador').prop("disabled", (workMode != 'draft' && workMode != 'resume'));
+                        $('#Modalidad_Pago').prop("disabled", (workMode != 'draft' && workMode != 'resume'));
                     }
 
                     if (workMode === 'draft' || workMode === 'resume') {
