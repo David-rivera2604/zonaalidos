@@ -189,6 +189,9 @@ namespace Architect.API.Tron.Business.Backoffice
                 case "205":
                     procedureName = "em_k_jrp_certificado_205_mcr.p_lista";
                     break;
+                case "230":
+                    procedureName = "em_k_jrp_certificado_230_mcr.p_lista";
+                    break;
                 case "288":
                     procedureName = "em_k_jrp_condiciones_288_mcr.p_lista";
                     break;

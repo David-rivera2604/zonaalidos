@@ -253,7 +253,7 @@ namespace Architect.API.Tron.Business
             };
         }
 
-        internal static Architect.API.Tron.Contracts.Presupuesto.DatoVariable DatoVariable(Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos, int num_riesgo, string cod_campo, string val_campo, int tip_nivel = 2, int num_secu = 1, string txt_campo = "")
+        public static Architect.API.Tron.Contracts.Presupuesto.DatoVariable DatoVariable(Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos, int num_riesgo, string cod_campo, string val_campo, int tip_nivel = 2, int num_secu = 1, string txt_campo = "")
         {
             string val_cor_campo = val_campo;
 
@@ -279,7 +279,7 @@ namespace Architect.API.Tron.Business
             };
         }
 
-        internal static List<Contracts.Presupuesto.Riesgo> DatosDelRiesgo(Contracts.Presupuesto.DatoFijo datosFijos, string nom_riesgo, int num_riesgo = 1, int ramo = 999)
+        public  static List<Contracts.Presupuesto.Riesgo> DatosDelRiesgo(Contracts.Presupuesto.DatoFijo datosFijos, string nom_riesgo, int num_riesgo = 1, int ramo = 999)
         {
             List<Contracts.Presupuesto.Riesgo> riesgos = new List<Contracts.Presupuesto.Riesgo>();
             int modalidad = 99999;
