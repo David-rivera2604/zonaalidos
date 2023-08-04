@@ -5,9 +5,11 @@ using Architect.API.Tron.Contracts.Presupuesto.API;
 using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Configuration;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +38,7 @@ namespace Aliados.Monge.Application.Poliza.Ramos
 
                 TRON_Validate(risk, ramo);
 
-                Architect.API.Tron.Contracts.Presupuesto.DatoFijo result2 = DatosFijos(risk, cod_ramo, tokenInfo.AgentCode, tokenInfo.UserName, ramo.COD_SECTOR);
+                Architect.API.Tron.Contracts.Presupuesto.DatoFijo result2 = DatosFijos(risk, cod_ramo, tokenInfo, ramo.COD_SECTOR);
                 result2.Riesgos = Architect.API.Tron.Business.Util.DatosDelRiesgo(result2, "Cotizador Seguro de tarjeta de crédito");
                 result2.Coberturas = Coberturas(risk, result2);
                 result2.DatosVariables = DatosVariables(risk, result2, ramo);
@@ -46,7 +48,7 @@ namespace Aliados.Monge.Application.Poliza.Ramos
                 result2.cod_docum = result2.Terceros.FirstOrDefault().cod_docum;
 
                 result2 = Architect.API.Tron.Business.Backoffice.Cotizacion.Generico.Calcular(result2, 3, "Riesgo emitido desde ZA Web");
-                if (result2.DatosDelProceso.txt_error == "")
+                if (result2.DatosDelProceso.txt_error.IsEmpty())
                 {
 
                     Architect.API.Tron.Contracts.Poliza.DatoFijo polizaEmitida = null;
@@ -65,28 +67,28 @@ namespace Aliados.Monge.Application.Poliza.Ramos
                             num_certificado_phx = string.Empty,
                             resumen = new Domain.Poliza.Emision.Resumen()
                             {
-                                //            primaneta = polizaEmitida.Recibos.Sum(p => p.imp_neta) + polizaEmitida.Recibos.Sum(p => p.imp_recargo),
-                                //            iVA = polizaEmitida.Recibos.Sum(p => p.imp_imptos),
-                                //            recargoporfraccionamiento = polizaEmitida.Recibos.Sum(p => p.imp_interes),
-                                //            importetotal = polizaEmitida.Recibos.Sum(p => p.imp_recibo),
-                                //            cuotas = polizaEmitida.Recibos.Count
+                                            primaneta = polizaEmitida.Recibos.Sum(p => p.imp_neta) + polizaEmitida.Recibos.Sum(p => p.imp_recargo),
+                                            iVA = polizaEmitida.Recibos.Sum(p => p.imp_imptos),
+                                            recargoporfraccionamiento = polizaEmitida.Recibos.Sum(p => p.imp_interes),
+                                            importetotal = polizaEmitida.Recibos.Sum(p => p.imp_recibo),
+                                            cuotas = polizaEmitida.Recibos.Count
                             },
                             plandepago = new List<Domain.Poliza.Emision.Plandepago>()
                         }
                     };
-                    //foreach (Architect.API.Tron.Contracts.Poliza.Recibo item in polizaEmitida.Recibos)
-                    //{
-                    //    result.message_body.plandepago.Add(new Domain.Poliza.Emision.Plandepago()
-                    //    {
-                    //        cuota = item.num_cuota,
-                    //        fechadesde = item.fec_efec_recibo,
-                    //        fechahasta = item.fec_vcto_recibo,
-                    //        primaneta = item.imp_neta + item.imp_recargo,
-                    //        iVA = item.imp_imptos,
-                    //        recargoporfraccionamiento = item.imp_interes,
-                    //        importetotal = item.imp_recibo
-                    //    });
-                    //}
+                    foreach (Architect.API.Tron.Contracts.Poliza.Recibo item in polizaEmitida.Recibos)
+                    {
+                        result.message_body.plandepago.Add(new Domain.Poliza.Emision.Plandepago()
+                        {
+                            cuota = item.num_cuota,
+                            fechadesde = item.fec_efec_recibo,
+                            fechahasta = item.fec_vcto_recibo,
+                            primaneta = item.imp_neta + item.imp_recargo,
+                            iVA = item.imp_imptos,
+                            recargoporfraccionamiento = item.imp_interes,
+                            importetotal = item.imp_recibo
+                        });
+                    }
                 }
                 else
                 {
@@ -124,9 +126,61 @@ namespace Aliados.Monge.Application.Poliza.Ramos
             return result;
         }
 
-        private static Architect.API.Tron.Contracts.Presupuesto.DatoFijo DatosFijos(Domain.Poliza.Emision.Poliza risk, int branch, int agentCode, string userName, int cod_sector)
+        private static Architect.API.Tron.Contracts.Presupuesto.DatoFijo DatosFijos(Domain.Poliza.Emision.Poliza risk, int branch, Architect.API.Core.Contracts.Security.Token tokenInfo, int cod_sector)
         {
+            int num_contrato = int.MinValue;
+            int num_subcontrato = int.MinValue;
+            string num_poliza_grupo = string.Empty;
+            DateTime fec_vcto_poliza = risk.Datos_Generales.fec_vcto_poliza;
 
+            if (risk.Datos_Variables != null)
+            {
+                DatosVariables dato = risk.Datos_Variables.Where(r => r.nombre.Equals("NUM_CONTRATO", StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                if (dato != null)
+                {
+                    risk.Datos_Variables.Remove(dato);
+                    num_contrato = Convert.ToInt32(dato.valor);
+                    if (num_contrato == 0)
+                    {
+                        num_contrato = int.MinValue;
+                    }
+                    dato = risk.Datos_Variables.Where(r => r.nombre.Equals("NUM_SUBCONTRATO", StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                    if (dato != null)
+                    {
+                        risk.Datos_Variables.Remove(dato);
+                        num_subcontrato = Convert.ToInt32(dato.valor);
+                        if (num_subcontrato == 0)
+                        {
+                            num_subcontrato = int.MinValue;
+                        }
+                    }
+                }
+                if (num_contrato != int.MinValue)
+                {
+                    string url = $"cod_ramo=230:cod_mon={risk.Datos_Generales.moneda}:num_contrato={num_contrato}:num_subcontrato={num_subcontrato}";
+                    List<Architect.API.Core.Contracts.General.LookupValues> values = Architect.API.Core.Business.Common.Lkps("MM_POLIZA_GRUPO", url, tokenInfo);
+
+
+                    Architect.API.Core.Contracts.General.LookupValues contratosMaster = values.Find(x => x.Key == "MM_POLIZA_GRUPO");
+                    if (contratosMaster != null)
+                    {
+                        Architect.API.Core.Contracts.General.LookupValue contrato = contratosMaster.Lkp.Find(y => y.Code == num_contrato.ToString());
+                        if (contrato != null)
+                        {
+                            string num_policy = (string)contrato["NUM_POLIZA"];
+                            if (num_policy.IsNotEmpty())
+                            {
+                                num_poliza_grupo = num_policy;
+                            }
+                            string vcto_poliza = (string)contrato["FEC_VCTO_POLIZA"];
+                            if (vcto_poliza.IsNotEmpty())
+                            {
+                                fec_vcto_poliza = DateTime.Parse(vcto_poliza, CultureInfo.CreateSpecificCulture("es-CR"));
+                            }
+                        }
+                    }
+                }
+            }
             return new Architect.API.Tron.Contracts.Presupuesto.DatoFijo()
             {
                 cod_cia = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_cia"]),
@@ -140,7 +194,7 @@ namespace Aliados.Monge.Application.Poliza.Ramos
                 fec_emision = DateTime.MinValue,
                 fec_emision_spto = DateTime.MinValue,
                 fec_efec_poliza = risk.Datos_Generales.fec_efec_poliza,
-                fec_vcto_poliza = risk.Datos_Generales.fec_vcto_poliza,
+                fec_vcto_poliza = fec_vcto_poliza,
                 fec_efec_spto = DateTime.MinValue,
                 fec_vcto_spto = DateTime.MinValue,
                 tip_duracion = 0,
@@ -150,15 +204,15 @@ namespace Aliados.Monge.Application.Poliza.Ramos
                 cant_renovaciones = 0,
                 num_renovaciones = 0,
                 tip_coaseguro = 0,
-                num_contrato = int.MinValue,
-                num_subcontrato = int.MinValue,
-                num_poliza_grupo = string.Empty,
+                num_contrato = num_contrato,
+                num_subcontrato = num_subcontrato,
+                num_poliza_grupo = num_poliza_grupo,
                 num_secu_grupo = 0,
                 cod_spto = 0,
                 sub_cod_spto = 0,
-                txt_motivo_spto = "Cotización realizada desde la zona de aliados, por: " + userName,
+                txt_motivo_spto = "Cotización realizada desde la zona de aliados, por: " + tokenInfo.UserName,
                 cod_cuadro_com = 100,
-                cod_agt = agentCode,
+                cod_agt = tokenInfo.AgentCode,
                 pct_agt = 0,
                 cod_org = 0,
                 cod_asesor = 0,
@@ -194,7 +248,6 @@ namespace Aliados.Monge.Application.Poliza.Ramos
 
         private static List<Architect.API.Tron.Contracts.Presupuesto.Cobertura> Coberturas(Domain.Poliza.Emision.Poliza risk, Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos, int num_riesgo = 1)
         {
-
             List<Architect.API.Tron.Contracts.Presupuesto.Cobertura> coberturas = new List<Architect.API.Tron.Contracts.Presupuesto.Cobertura>();
             Architect.API.Tron.Contracts.Presupuesto.Cobertura currentItem;
 
@@ -214,16 +267,9 @@ namespace Aliados.Monge.Application.Poliza.Ramos
                         cod_cob = item.codigo,
                         cod_ramo = datosFijos.cod_ramo,
                         num_secu = 1,
-                        suma_aseg = 0,
+                        suma_aseg = item.sumaasegurada,
                         imp_prima = 0
                     };
-                    switch (item.codigo)
-                    {
-                        case 2301:
-                        case 2302:
-                            currentItem.suma_aseg = 15000;
-                            break;
-                    }
 
                     coberturas.Add(currentItem);
                 }
@@ -317,12 +363,6 @@ namespace Aliados.Monge.Application.Poliza.Ramos
 
                 dato.num_secu = datosVariables.Count() + 1;
                 datosVariables.Add(dato);
-                //switch (item.nombre)
-                //{
-                //    case "TIP_CUENTA":
-                //        dato.txt_campo = "CREDITO";
-                //        break;
-                //}
             }
             return datosVariables;
         }
