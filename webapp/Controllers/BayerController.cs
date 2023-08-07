@@ -38,5 +38,11 @@ namespace aliados.Controllers
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
+
+        public ActionResult Carnet()
+        {
+            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
+            return View();
+        }
     }
 }
