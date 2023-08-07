@@ -37,6 +37,7 @@
       <HintPath>..\..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.9\lib\net45\System.Net.Http.Formatting.dll</HintPath>
@@ -56,6 +57,9 @@
     <Compile Include="Poliza\Certificado.cs" />
     <Compile Include="Poliza\Cancelacion.cs" />
     <Compile Include="Poliza\Emision.cs" />
+    <Compile Include="Poliza\Ramos\Util.cs" />
+    <Compile Include="Poliza\Ramos\Tarjetas.cs" />
+    <Compile Include="Poliza\Ramos\Viajero.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Seguridad\SeguridadHandler.cs" />
     <Compile Include="Traza\TrackRequest.cs" />
