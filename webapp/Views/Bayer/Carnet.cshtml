@@ -12,18 +12,14 @@
         <div class="content">
 
             <div class="personal-info">
-                <p class="personal-info-t">BAYER BUSINESS</p>
-                <p><strong>ASEGURADO: </strong>MANRIQUE CASTRO RODRIGUEZ</p>
-                <p><strong>IDENTIFICACIÓN: </strong>110140923</p>
+                <p class="personal-info-t"><span id="Contratante"></span></p>
+                <p><strong>ASEGURADO: </strong><span id="Nombres"></span></p>
+                <p><strong>IDENTIFICACIÓN: </strong><span id="Cedula"></span></p>
                 <strong>DEPENDIENTES:</strong>
-                <ul>
-                    <li>MARCELA MARTINEZ ARAYA</li>
-                    <li>JULIANA CASTRO MARTINEZ</li>
-                    <li>ANA MARIA CASTRO MARTINEZ</li>
-                </ul>
-                <p><strong>PÓLIZA: </strong>40-Q <strong>CLASE: </strong>C <strong>CERTIFICADO: </strong>0</p>
+                <ul id="Extras"></ul>
+                <p><strong>PÓLIZA: </strong><span id="Poliza"></span> <strong>CLASE: </strong><span id="Clase"></span> <strong>CERTIFICADO: </strong><span id="Certificado"></span></p>
             </div>
-            
+
         </div>
     </div>
 
@@ -46,7 +42,16 @@
             <p>Supermercado Muñoz & Nanne, Oficentro Condal, piso 1 y 7</p>
         </div>
     </div>
-
+    <script src="@Url.Content("~/assets/js/jquery.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/plugins/moment/moment.min.js")"></script>
+    <script src="@Url.Content("~/app/js/core.js")"></script>
+    <script src="@Url.Content("~/app/js/core.ui.js")"></script>
+    <script src="@Url.Content("~/Scripts/Bayer.Carnet.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.BayerCarnet.Init();
+        });
+    </script>
 </body>
 
 </html>

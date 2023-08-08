@@ -1228,6 +1228,7 @@
     <Content Include="releaseletter.txt" />
     <Content Include="Scripts\AdministrarCliente.js" />
     <Content Include="Scripts\AvisosCobro.Recibos.js" />
+    <Content Include="Scripts\Bayer.Carnet.js" />
     <Content Include="Scripts\Clientes.Index.js" />
     <Content Include="Scripts\Common.Attachments.js" />
     <Content Include="Scripts\ColoresTenant.js" />
