@@ -29,8 +29,10 @@ app.CotizacionMapfreMas = (function () {
             workMode = '&mode=draft';
         }
         else {
-            $('#emitir').html("<i class='fa fa-check'></i> Emitir");
-            workMode = '&mode=continue';
+            //$('#emitir').html("<i class='fa fa-check'></i> Emitir");
+            //workMode = '&mode=continue';
+            $('#emitir').html("<i class='fa fa-check'></i> Completar solicitud");
+            workMode = '&mode=draft';
         }
 
         $('#coberturasTbl').bootstrapTable('showLoading');

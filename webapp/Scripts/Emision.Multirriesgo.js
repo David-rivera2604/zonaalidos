@@ -223,7 +223,7 @@ app.EmisionMultirriesgo = (function () {
                 data.datosvariables = MapInputtoObjecdatosvar();
             }
         }
-        data.Modo = 'continue';
+        //data.Modo = 'continue';
         return data;
     };
 

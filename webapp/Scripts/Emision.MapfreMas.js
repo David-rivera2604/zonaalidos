@@ -253,10 +253,10 @@ app.EmisionMapfreMas = (function () {
         if (formulariosData.length > 0) {
             data.kyc = $('#formulariosTbl').bootstrapTable('getData')[0].data;
         }
-        if (!(localStorage.getItem('Roles').includes('Purdy') || localStorage.getItem('Roles').includes('Davivienda_Prendarios') ||
-            localStorage.getItem('Roles').includes('Davivienda_Leasing'))) {
-            data.Modo = 'continue';
-        }
+        //if (!(localStorage.getItem('Roles').includes('Purdy') || localStorage.getItem('Roles').includes('Davivienda_Prendarios') ||
+        //    localStorage.getItem('Roles').includes('Davivienda_Leasing'))) {
+        //    data.Modo = 'continue';
+        //}
 
         setupData = data;
         return data;
