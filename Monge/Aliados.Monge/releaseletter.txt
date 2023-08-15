@@ -11,3 +11,4 @@
                   Consulta del estado de un request.
 1.0.6  27/06/2023 Ajuste en método para obtener el token.
                   Detalle de error condicionado por variable de settings Working.Mode.
+1.0.7  07/08/2023 Se implementa el ramo 230 (prf)

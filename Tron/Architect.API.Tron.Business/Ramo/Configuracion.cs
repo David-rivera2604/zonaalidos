@@ -39,6 +39,30 @@ namespace Architect.API.Tron.Business.Ramo
                         ramo.Desgloses = DataAccess.Ramo.G2000170.Retrieve(companyId, cod_ramo, cod_modalidad, currentConnection);
                         ramo.DatosVariables = DataAccess.Ramo.G2000020.Retrieve(companyId, cod_ramo, currentConnection);
                         ramo.DatosVariablesGenericos = DataAccess.Ramo.G2000010.Retrieve(companyId, cod_ramo, currentConnection);
+
+                        List<Contracts.Ramo.G2000020> datoList = new List<Contracts.Ramo.G2000020>();
+                        foreach (Contracts.Ramo.G2000020 item in ramo.DatosVariables.OrderByDescending(r=> r.FEC_VALIDEZ))
+                        {
+                            if (!datoList.Any(r => r.COD_CAMPO == item.COD_CAMPO ))
+                            {
+                                datoList.Add(item);
+                            } else
+                            {
+
+                            }
+                        }
+                        ramo.DatosVariables = datoList;
+
+
+                        List<Contracts.Ramo.A1002150> coverList = new List<Contracts.Ramo.A1002150>();
+                        foreach (Contracts.Ramo.A1002150 item in ramo.Coberturas.OrderByDescending(r => r.FEC_VALIDEZ))
+                        {
+                            if (!coverList.Any(r => r.COD_COB == item.COD_COB))
+                            {
+                                coverList.Add(item);
+                            }
+                        }
+                        ramo.Coberturas = coverList;
                     }
 
                     currentConnection.Close();
