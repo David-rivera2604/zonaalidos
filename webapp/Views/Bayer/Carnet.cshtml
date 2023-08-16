@@ -8,6 +8,16 @@
 </head>
 
 <body>
+    <div class="ibox-content sidebar-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+            <div class="sk-rect4"></div>
+            <div class="sk-rect5"></div>
+        </div>
+        <div class="sidebarContent" />
+    </div>
     <div class="front">
         <div class="content">
 
@@ -42,8 +52,16 @@
             <p>Supermercado Muñoz & Nanne, Oficentro Condal, piso 1 y 7</p>
         </div>
     </div>
+
+    <div class="m-t-sm" style="text-align: center;">
+        <div class="btn-group">
+            <a id="print" href="#" class="btn btn-white btn-sm d-none"><i class="fa fa-print"></i> Imprimir el carnet digital</a>
+        </div>
+    </div>
+
     <script src="@Url.Content("~/assets/js/jquery.min.js")"></script>
     <script src="@Url.Content("~/assets/js/plugins/moment/moment.min.js")"></script>
+    <script src="@Url.Content("~/assets/toastr/toastr.min.js")"></script>
     <script src="@Url.Content("~/app/js/core.js")"></script>
     <script src="@Url.Content("~/app/js/core.ui.js")"></script>
     <script src="@Url.Content("~/Scripts/Bayer.Carnet.js")"></script>

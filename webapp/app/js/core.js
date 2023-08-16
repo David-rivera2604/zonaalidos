@@ -605,9 +605,38 @@ app.core = (function () {
 
     function api_ShowError() {
         toastr.error("Por favor intente nuevamente y en caso de persistir el problema contacte el personal de soporte", "Ha ocurrido un error no controlado", { timeOut: 10000, closeButton: true, progressBar: true });
-    }
+    };
 
-    ;
+    function report(reportName, data) {
+        var urlServer = app.setting.apibase + '/AliadoServReports/api/Report/Build';
+        //urlServer = 'http://localhost:5870/api/Report/Build';
+        urlServer = 'https://appqa.mapfrecr.com' + '/AliadoServReports/api/Report/Build';
+
+        let reportParameters = {
+            Source: JSON.stringify(data),
+            Type: 'pdf',
+            ReportName: reportName,
+            Path: ''
+        };
+
+        return fetch(urlServer, {
+            body: JSON.stringify(reportParameters),
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization': 'Bearer ' + localStorage.getItem('Token')
+            },
+            responseType: 'arraybuffer'
+        })
+        .then(response => {
+            if (!response.ok) {
+                api_ShowError();
+                return;
+            } else {
+                return response.json();
+            }
+        });
+    };
 
     return {
         ReplaceAll(string, search, replace) {
@@ -790,7 +819,23 @@ app.core = (function () {
                         }
                     });
             })
-        }
+        },
+        api_report: function (reportName, data) {
+            return new Promise((resolve, reject) => {
+                report(reportName, data)
+                    .then(data => {
+                        if (data === undefined) {
+                            resolve(null);
+                        } else {
+                            let file = new Blob([data.Data], { type: 'application/octet-binary' });
+                            let blob = app.core.b64StrtoBlob(data.Data, 'application/pdf');
+                            let blobUrl = URL.createObjectURL(blob);
+                            window.open(blobUrl);
+                            resolve(data);
+                        }
+                    });
+            })
+		}
     };
 })();
 $(document).ready(function () {
