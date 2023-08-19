@@ -628,14 +628,14 @@ app.core = (function () {
             },
             responseType: 'arraybuffer'
         })
-        .then(response => {
-            if (!response.ok) {
-                api_ShowError();
-                return;
-            } else {
-                return response.json();
-            }
-        });
+            .then(response => {
+                if (!response.ok) {
+                    api_ShowError();
+                    return;
+                } else {
+                    return response.json();
+                }
+            });
     };
 
     return {
@@ -742,17 +742,23 @@ app.core = (function () {
             }
             return url;
         },
-        GetXLSX: function (id, filename) {
+        GetXLSX: function (id, filename, validate) {
             let url = '';
+            let valid = true;
             if (typeof app.Prototype != "undefined") {
+
+                if (typeof validate != "undefined" && validate) {
+                    valid = app.Prototype.IsValid();
+                }
                 url = app.core.DataToURL(app.Prototype.Data());
             }
-
-            let a = document.createElement("a");
-            a.href = app.setting.apipath + 'v1/DataSource/excel?id=' + id + '&url=' + url;
-            a.download = filename;
-            a.click();
-            a.remove()
+            if (valid) {
+                let a = document.createElement("a");
+                a.href = app.setting.apipath + 'v1/DataSource/excel?id=' + id + '&url=' + url;
+                a.download = filename;
+                a.click();
+                a.remove()
+            }
         },
         ExternalCall: function (prefix, jsFile, code) {
             code = code.replace(/@_/g, '\'');
@@ -835,7 +841,7 @@ app.core = (function () {
                         }
                     });
             })
-		}
+        }
     };
 })();
 $(document).ready(function () {
