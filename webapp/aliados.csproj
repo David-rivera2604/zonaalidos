@@ -387,6 +387,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\css\carnet.css" />
     <Content Include="app\img\ajax-loader.gif" />
     <Content Include="app\js\core.ui.components.js" />
     <Content Include="app\js\core.ui.js" />
@@ -1139,6 +1140,8 @@
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="images\CarnetAtrasVacio.png" />
+    <Content Include="images\CarnetFrenteVacio.png" />
     <Content Include="images\favicon-mapfre.png" />
     <Content Include="images\favicon.png" />
     <Content Include="images\help\general_cambio_clave_1.gif" />
@@ -1225,6 +1228,7 @@
     <Content Include="releaseletter.txt" />
     <Content Include="Scripts\AdministrarCliente.js" />
     <Content Include="Scripts\AvisosCobro.Recibos.js" />
+    <Content Include="Scripts\Bayer.Carnet.js" />
     <Content Include="Scripts\Clientes.Index.js" />
     <Content Include="Scripts\Common.Attachments.js" />
     <Content Include="Scripts\ColoresTenant.js" />
@@ -1253,6 +1257,7 @@
     <Content Include="Scripts\Cotizacion.PolizaLider.js" />
     <Content Include="Scripts\Emision.Estudiantil.js" />
     <Content Include="Scripts\Emision.Viajero.js" />
+    <Content Include="Scripts\Extend.Inclusiones.js" />
     <Content Include="Scripts\Extend.Claims.js" />
     <Content Include="Scripts\Extend.Cases.js" />
     <Content Include="Scripts\Extend.CaseDetail.js" />
@@ -1753,6 +1758,8 @@
     <Content Include="Views\Purdy\_encabezado.cshtml" />
     <Content Include="Views\Purdy\Panel.cshtml" />
     <Content Include="Views\Cases\_references.cshtml" />
+    <Content Include="Views\Bayer\Carnet.cshtml" />
+    <Content Include="Reports\CarnetDigital.repx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

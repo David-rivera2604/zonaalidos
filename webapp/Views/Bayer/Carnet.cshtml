@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <title>HTML, CSS and JavaScript demo</title>
+    @Styles.Render("~/Content/cssMaster")
+    <link rel="stylesheet" href="../app/css/carnet.css">
+</head>
+
+<body>
+    <div class="ibox-content sidebar-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+            <div class="sk-rect4"></div>
+            <div class="sk-rect5"></div>
+        </div>
+        <div class="sidebarContent" />
+    </div>
+    <div class="front">
+        <div class="content">
+
+            <div class="personal-info">
+                <p class="personal-info-t"><span id="Contratante"></span></p>
+                <p><strong>ASEGURADO: </strong><span id="Nombres"></span></p>
+                <p><strong>IDENTIFICACIÓN: </strong><span id="Cedula"></span></p>
+                <strong>DEPENDIENTES:</strong>
+                <ul id="Extras"></ul>
+                <p><strong>PÓLIZA: </strong><span id="Poliza"></span> <strong>CLASE: </strong><span id="Clase"></span> <strong>CERTIFICADO: </strong><span id="Certificado"></span></p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="back">
+        <div class="contact-info">
+            <p>preautorizaciones@mapfrecr.com</p>
+            <p><span>www.mapfrecr.com</span><span class="phone">8000 627373</span></p>
+        </div>
+        <div class="insurance-details">
+            <ul>
+                <li>URGENCIAS: CO-PAGO 25%</li>
+                <li>URGENCIAS CON HOSPITALIZACION CO-PAGO: 20% DESPUES DE CUBIERTO EL DEDUCIBLE</li>
+                <li>LABORATORIOS Y RAYOS X: CO-PAGO 20%</li>
+                <li>MEDICAMENTOS: POR REEMBOLSO</li>
+                <li>CONSULTA GENERAL - ESPECIALISTA: LIMITE MAXIMO HASTA ¿50.400 CO-PAGO 20%</li>
+            </ul>
+        </div>
+        <div class="address">
+            <p>San José, Costa Rica, San pedro de Montes de Oca, costado oeste de</p>
+            <p>Supermercado Muñoz & Nanne, Oficentro Condal, piso 1 y 7</p>
+        </div>
+    </div>
+
+    <div class="m-t-sm" style="text-align: center;">
+        <div class="btn-group">
+            <a id="print" href="#" class="btn btn-white btn-sm d-none"><i class="fa fa-print"></i> Imprimir el carnet digital</a>
+        </div>
+    </div>
+
+    <script src="@Url.Content("~/assets/js/jquery.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/plugins/moment/moment.min.js")"></script>
+    <script src="@Url.Content("~/assets/toastr/toastr.min.js")"></script>
+    <script src="@Url.Content("~/app/js/core.js")"></script>
+    <script src="@Url.Content("~/app/js/core.ui.js")"></script>
+    <script src="@Url.Content("~/Scripts/Bayer.Carnet.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.BayerCarnet.Init();
+        });
+    </script>
+</body>
+
+</html>

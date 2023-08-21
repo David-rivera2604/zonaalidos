@@ -530,3 +530,6 @@
                    Bayer. Se agrega nueva verificación para no permitir solicitudes sin beneficiarios.
                    MapfreMas. Ajuste para alienar cambio de nombre de campos para ser enviado al servicio snap.
 1.6.42  08/08/2023 Aliados. Ajuste en la tarifa de riesgo en el reporte HogarTotal_ESPH.
+1.6.43  21/08/2023 Bayer. Carnet digital.
+                   Bayer. Impresión de certificado.
+                   Coope. Reporte de seguimiento de inclusiones.

@@ -2,6 +2,14 @@
 app.ui = (function () {
 
     return {
+        IntegerValueToString: function (value, defaultValue) {
+            if (value === null || value === 0) {
+                return defaultValue === undefined ? '0' : defaultValue;
+            }
+            else {
+                return value.toLocaleString('ES', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+            }
+        },
         StringValueToString: function (value, defaultValue) {
             if (value === null) {
                 return defaultValue === undefined ? '' : defaultValue;
@@ -674,7 +682,7 @@ app.ui = (function () {
                         if (value.match(/^(0?[1-9]|[12][0-9]|3[0-1])[/., -](0?[1-9]|1[0-2])[/., -](19|20)?\d{2}$/)) {
                             if (moment(value, 'DD/MM/YYYY').isValid()) {
                                 var current = moment(value, 'DD/MM/YYYY').toDate();
-                                
+
                                 var current2 = moment(moment(app.ui.GetDateValue(param)).format('DD/MM/YYYY'), 'DD/MM/YYYY').toDate();
                                 return (current >= current2);
                             }

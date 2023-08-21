@@ -91,6 +91,8 @@ app.master = (function () {
                     href = "javascript:app.master.ShowSideBar('" + item.Title + "', " + item.URLPath + ");";
                 } else if (item.Type == 8) {
                     href = "javascript:app.master.ShowSideBarExternal('" + item.Title + "', " + item.URLPath + ");";
+                } else if (item.Type == 7) {
+                    href = "javascript:window.open('" + app.setting.basepath + item.URLPath + "', 'Carnet digital', 'left=300,top=100,width=550,height=670');";
                 } else {
                     href = app.setting.basepath + item.URLPath;
                 }
@@ -188,6 +190,8 @@ app.master = (function () {
                     href = "javascript:app.master.ShowSideBar('" + item.Title + "', " + item.URLPath + ");";
                 } else if (item.Type == 8) {
                     href = "javascript:app.master.ShowSideBarExternal('" + item.Title + "', " + item.URLPath + ");";
+                } else if (item.Type == 7) {
+                    href = "javascript:window.open('" + app.setting.basepath + item.URLPath + "', 'Carnet digital', 'left=300,top=100,width=550,height=670');";
                 } else {
                     href = app.setting.basepath + item.URLPath;
                 }
