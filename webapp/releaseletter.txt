@@ -533,3 +533,7 @@
 1.6.43  21/08/2023 Bayer. Carnet digital.
                    Bayer. Impresión de certificado.
                    Coope. Reporte de seguimiento de inclusiones.
+1.6.44  29/08/2023 MapfreMas. KYC, en el apartado de “Datos de la Empresa, el “Fax” no es obligatorio.
+                   MapfreMas. KYC, En el pdf, hay unos datos que no se están visualizando por problema de mapeo.
+                   Multirrieso. Corregir el término “Georeferencia” en el formulario “Detalles de la Edificación” que corresponde al apartado “Datos Adicionales de la Edificación”.
+

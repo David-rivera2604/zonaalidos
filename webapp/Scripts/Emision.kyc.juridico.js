@@ -963,7 +963,6 @@ app.kycjuridico = (function () {
                 "actividaddelclientenaturalezadelnegocioJur": "",
                 "telefonoJur": "",
                 "faxJur": "",
-                "faxJur": "",
                 "apartadopostalJur": "",
                 "correoelectronicoJur": "",
                 "paginaWebJur": "",
