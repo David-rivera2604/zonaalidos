@@ -536,7 +536,7 @@
 1.6.44  29/08/2023 MapfreMas. KYC, en el apartado de “Datos de la Empresa, el “Fax” no es obligatorio.
                    MapfreMas. KYC, En el pdf, hay unos datos que no se están visualizando por problema de mapeo.
                    Multirrieso. Corregir el término “Georeferencia” en el formulario “Detalles de la Edificación” que corresponde al apartado “Datos Adicionales de la Edificación”.
-1.6.45  04/09/2023 Purdy. Siniestros. En el grid de balance del tab de indenmización el campo NC Repuesto se debe calcular solo para factura de respuestos.
+1.6.45  14/09/2023 Purdy. Siniestros. En el grid de balance del tab de indenmización el campo NC Repuesto se debe calcular solo para factura de respuestos.
                    Purdy. Siniestros. En el tab de evento, los campos Posible subrogación, Enviado a investigación, Enviado a acompañamiento legal y Autorización de uso póliza, deben tener la fecha del día por default.
                    Purdy. Siniestros. En el tab de evento, el campo fecha del evento debe ser de solo lectura y el valor debe ser la fecha del siniestro.
-
+                   Purdy. Siniestros. En el tab de indemnización, en la sección de balance se debe agregar un campo que muestre el saldo del “Monto total de perdida es el balance inicial del tab anterior” menos lo movimiento reflejados en el balance.
