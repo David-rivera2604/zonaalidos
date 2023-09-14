@@ -110,20 +110,23 @@ app.PurdyPanelIndemnizacion = (function () {
     };
 
     function Controls_Events() {
-
-        $("#monto").change(function () {
+        $("#monto, #tipodedocumento").change(function () {
+            let monto = 0;
             let factor = 0.0;
-            let taller = _data.damage.TALLER;
-            let marca = _data.policy.data.find(i => i.COD_CAMPO === "COD_MARCA")?.TXT_CAMPO;
-            if (taller === 1 && (marca === 'FORD' || marca === 'VOLKSWAGEN'))
-                factor = 0.10;
-            if (taller == 1 && (marca != 'FORD' && marca != 'VOLKSWAGEN'))
-                factor = 0.15;
-            if (taller != 1 && (marca === 'FORD' || marca === 'VOLKSWAGEN'))
-                factor = 0.15;
-            if (taller != 1 && (marca != 'FORD' && marca != 'VOLKSWAGEN'))
-                factor = 0.20;
-            app.ui.SetNumericValue('#nCRepuesto', app.ui.GetNumericValue('#monto') * factor);
+            if (app.ui.GetDropDownNumericValue('#tipodedocumento') === 2) {
+                let taller = _data.damage.TALLER;
+                let marca = _data.policy.data.find(i => i.COD_CAMPO === "COD_MARCA")?.TXT_CAMPO;
+                if (taller === 1 && (marca === 'FORD' || marca === 'VOLKSWAGEN'))
+                    factor = 0.10;
+                if (taller == 1 && (marca != 'FORD' && marca != 'VOLKSWAGEN'))
+                    factor = 0.15;
+                if (taller != 1 && (marca === 'FORD' || marca === 'VOLKSWAGEN'))
+                    factor = 0.15;
+                if (taller != 1 && (marca != 'FORD' && marca != 'VOLKSWAGEN'))
+                    factor = 0.20;
+                monto = app.ui.GetNumericValue('#monto');
+            }
+            app.ui.SetNumericValue('#nCRepuesto', monto * factor);
         });
 
     };
@@ -144,6 +147,7 @@ app.PurdyPanelIndemnizacion = (function () {
         app.core.Get(`${app.setting.entityapi}/PurdyPanelBalance/asiges?code=${asigesCode}`)
             .done(function (dataBalance) {
                 if (dataBalance?.Sucessfully) {
+                    let balance = _claim
                     if (dataBalance.Data != null) {
                         dataBalance.Data.forEach(function (item) {
                             item.TIPODEDOCUMENTODESC = $(`#tipodedocumento option[value=${item.TIPODEDOCUMENTO}]`).text();
@@ -151,6 +155,7 @@ app.PurdyPanelIndemnizacion = (function () {
                     }
                     $('#balanceTbl').bootstrapTable('load', dataBalance.Data == null ? [] : dataBalance.Data);
                     _eventCallback('BalanceDataChange', dataBalance.Data);
+                    CalcBalance();
                 }
             });
     };
@@ -359,7 +364,6 @@ app.PurdyPanelIndemnizacion = (function () {
         });
     };
 
-
     async function balance_table_setup() {
 
         $('#balanceTbl').bootstrapTable({
@@ -368,6 +372,7 @@ app.PurdyPanelIndemnizacion = (function () {
             pagination: true,
             smartDisplay: true,
             detailView: false,
+            showFooter: true,
             detailFormatter: 'app.ui.GenericDetailFormatter',
             columns: [
                 {
@@ -423,7 +428,13 @@ app.PurdyPanelIndemnizacion = (function () {
                     halign: 'center',
                     align: 'right',
                     formatter: 'app.ui.DecimalFormatter',
-                    visible: true
+                    visible: true,
+                    footerFormatter: function (data, value) {
+
+                        
+                            return '<span id="gbalance"></span>';
+                        
+                    }
                 }, {
                     field: 'NCREPUESTO',
                     title: 'NC Repuesto',
@@ -579,6 +590,16 @@ app.PurdyPanelIndemnizacion = (function () {
         });
     };
 
+    function CalcBalance() {
+        if (_data?.damage != null) {
+            let balance = _data.damage.PERDIDA;
+            $('#balanceTbl').bootstrapTable('getData').forEach(function (item) {
+                balance -= item.MONTO;
+                $('#gbalance').html(`Saldo: ${app.ui.NumericValueFormat(balance,2)}`);
+            });
+        }
+    };
+
     return {
         Init: function (eventCallback) {
             try {
@@ -603,6 +624,7 @@ app.PurdyPanelIndemnizacion = (function () {
             switch (src) {
                 case 'ASIGESChange':
                     if (data.claim != null) {
+                        _claim = data.claim;
                         GetMovimientosDeMontos(data.asiges);
                         GetBalance(data.asiges);
                         _emptyValueBalance.NUMERODESINIESTRO = data.claim.NUM_SINI;
@@ -624,6 +646,7 @@ app.PurdyPanelIndemnizacion = (function () {
                     _emptyValueMontos.MONTODANOOCULTOPORINDEMNIZARRE = data.damage.DANOOCULTOTOTAL;
                     _emptyValueMontos.MONTODANOOCULTOPORINDEMNIZARMA = data.damage.DANOOCULTOMANOTOTAL;
                     _data = data;
+                    CalcBalance()
                     break;
             }
         },
