@@ -62,7 +62,7 @@ app.PurdyPanelEncabezado = (function () {
         $('#tipodeindemnizacionSel').html(data.tipodeindemnizacionEnc);
         $('#categoriadesiniestroEnc').html(data.categoriadesiniestro);
         $('#analistareclamosSel').html(data.analistareclamosSel);
-        $('#analistagestora').html(data.analistagestora);
+        $('#analistagestoraEnc').html('');
         $('#detallesiniestro').html(data.TXT_DANO_VEHI);
     };
 
@@ -86,6 +86,21 @@ app.PurdyPanelEncabezado = (function () {
             app.ui.VisibleBehaviour('.tipodeindemnizacionSave', false);
             e.preventDefault();
         });
+
+        $('#analistagestora').change(function () {
+            app.ui.VisibleBehaviour('.analistagestoraSave', true);
+        });
+
+        $('#analistagestoraSave').click(function (e) {
+
+            _eventCallback('AnalistaGestoraChange', {
+                ANALISTAGESTORA: app.ui.GetDropDownNumericValue('#analistagestora'),
+                ANALISTAGESTORADESC: app.ui.GetDropDownSelectedText('#analistagestora')
+            });
+            app.ui.VisibleBehaviour('.analistagestoraSave', false);
+            e.preventDefault();
+        });
+
     };
 
     function Setup_Validations() {
@@ -136,6 +151,9 @@ app.PurdyPanelEncabezado = (function () {
                 Setup_Validations();
 
                 Controls_Events();
+
+                app.core.Lookups(['UsersByRol:Avalúos.analistagestora'], function () { }, ``);
+
             }
             catch (err) {
                 console.error("Error Init");
@@ -157,6 +175,13 @@ app.PurdyPanelEncabezado = (function () {
                     app.ui.SetDropDownNumericValue('#tipodeindemnizacion', data.event.TIPODEINDEMNIZACION);
                     $('#tipodeindemnizacionEnc').html(app.ui.GetDropDownSelectedText('#tipodeindemnizacion'));
 
+                    app.ui.SetDropDownNumericValue('#analistagestora', data.event.ANALISTAGESTORA);
+                    $('#analistagestoraEnc').html(app.ui.GetDropDownSelectedText('#analistagestora'));
+
+                    allow = localStorage.getItem('Roles').includes('Avalúos');
+                    app.ui.VisibleBehaviour('#analistagestoraEnc', !allow);
+                    app.ui.VisibleBehaviour('.analistagestoraGrp', allow);
+
                     $('#estadoMapfre').html(EstadoMapfre(data.event.TIPODEINDEMNIZACION));
                     $('#tipodeindemnizacionSel').html(data.event.TIPODEINDEMNIZACIONDESC);
                     $('#analistareclamosSel').html(data.event.ANALISTARECLAMOSDESC);
@@ -177,5 +202,3 @@ app.PurdyPanelEncabezado = (function () {
         }
     };
 })();
-
-

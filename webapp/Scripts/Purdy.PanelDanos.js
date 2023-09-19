@@ -15,6 +15,7 @@ app.PurdyPanelDanos = (function () {
             TALLERDESC: app.ui.GetDropDownSelectedText('#taller'),
             FECHAENVIODELAVALUO: app.ui.GetDateValue('#fechaenviodelavaluo'),
             PREREPUESTOS: app.ui.GetNumericValue('#prerepuestos'),
+            PREREPUESTOSDESC: app.ui.GetNumericValue('#prerepuestosdesc'),
             PREREPUESTOSIVA: app.ui.GetNumericValue('#prerepuestosiva'),
             PREREPUESTOSTOTAL: app.ui.GetNumericValue('#prerepuestostotal'),
             PREMANO: app.ui.GetNumericValue('#premano'),
@@ -25,6 +26,7 @@ app.PurdyPanelDanos = (function () {
             AUTORIZACIONDEUSOPOLIZADESC: null,
             FECHAAUTORIZACIONDEUSOPOLIZA: null,
             OT: app.ui.GetNumericValue('#oT'),
+            TIPOCAMBIO: app.ui.GetNumericValue('#TipoCambio'),
             ASESORTALLER: $('#asesorTaller').val(),
             EXPEDIENTE: $('#expediente').val(),
             ANALISTADEDANOS: app.ui.GetDropDownNumericValue('#analistadeDanos'),
@@ -66,6 +68,7 @@ app.PurdyPanelDanos = (function () {
         app.ui.SetDropDownNumericValue('#taller', data.TALLER, false);
         app.ui.SetDateValue('#fechaenviodelavaluo', data.FECHAENVIODELAVALUO);
         app.ui.SetNumericValue('#prerepuestos', data.PREREPUESTOS);
+        app.ui.SetNumericValue('#prerepuestosdesc', data.PREREPUESTOSDESC);
         app.ui.SetNumericValue('#prerepuestosiva', data.PREREPUESTOSIVA);
         app.ui.SetNumericValue('#prerepuestostotal', data.PREREPUESTOSTOTAL);
         app.ui.SetNumericValue('#premano', data.PREMANO);
@@ -75,6 +78,7 @@ app.PurdyPanelDanos = (function () {
         //app.ui.SetRadioNumericValue('autorizaciondeusopoliza', data.AUTORIZACIONDEUSOPOLIZA);
         //app.ui.SetDateValue('#fechaAutorizaciondeUsoPoliza', data.FECHAAUTORIZACIONDEUSOPOLIZA);
         app.ui.SetNumericValue('#oT', data.OT);
+        app.ui.SetNumericValue('#TipoCambio', data.TIPOCAMBIO);
         $('#asesorTaller').val(data.ASESORTALLER);
         $('#expediente').val(data.EXPEDIENTE);
         app.ui.SetDropDownNumericValue('#analistadeDanos', data.ANALISTADEDANOS, false);
@@ -114,6 +118,15 @@ app.PurdyPanelDanos = (function () {
             locale: 'es'
         });
         new AutoNumeric('#prerepuestos', {
+            decimalCharacter: ',',
+            decimalCharacterAlternative: '.',
+            digitGroupSeparator: '.',
+            maximumValue: '999999999999999999',
+            minimumValue: '0',
+            decimalPlaces: '2',
+            emptyInputBehavior: 'null'
+        });
+        new AutoNumeric('#prerepuestosdesc', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -179,6 +192,15 @@ app.PurdyPanelDanos = (function () {
         $('#fechaAutorizaciondeUsoPoliza_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es'
+        });
+        new AutoNumeric('#TipoCambio', {
+            decimalCharacter: ',',
+            decimalCharacterAlternative: '.',
+            digitGroupSeparator: '.',
+            maximumValue: '999999',
+            minimumValue: '0',
+            decimalPlaces: '2',
+            emptyInputBehavior: 'null'
         });
         new AutoNumeric('#oT', {
             decimalCharacter: ',',
@@ -397,6 +419,7 @@ app.PurdyPanelDanos = (function () {
     };
 
     function data_changed() {
+        let taller = app.ui.GetDropDownNumericValue('#taller');
 
         if (app.ui.GetDropDownNumericValue('#taller') === 1)
             $('.asesorTallerVisible').removeClass('d-none');
@@ -438,7 +461,17 @@ app.PurdyPanelDanos = (function () {
             app.ui.SetNumericValue('#danoocultomanototal', 0);
             app.ui.SetNumericValue('#otrosIIOtrosIIDanoocultomanototal', 0);
         }
+        let factor = 0.15;
+        switch (taller) {
+            case 1:
+                factor = 0.15;
+                break;
+            case 18:
+                factor = 0.2;
+                break;
+        }
 
+        app.ui.SetNumericValue('#prerepuestosdesc', app.ui.GetNumericValue('#prerepuestos') * factor);
         app.ui.SetNumericValue('#prerepuestosiva', app.ui.GetNumericValue('#prerepuestos') * 0.13);
         app.ui.SetNumericValue('#prerepuestostotal', app.ui.GetNumericValue('#prerepuestos') * 1.13);
         app.ui.SetNumericValue('#premanoiva', app.ui.GetNumericValue('#premano') * 0.13);
@@ -481,6 +514,7 @@ app.PurdyPanelDanos = (function () {
             TALLER: null,
             FECHAENVIODELAVALUO: null,
             PREREPUESTOS: null,
+            PREREPUESTOSDESC: null,
             PREREPUESTOSIVA: null,
             PREREPUESTOSTOTAL: null,
             PREMANO: null,
@@ -489,6 +523,7 @@ app.PurdyPanelDanos = (function () {
             PREPERDIDA: null,
             AUTORIZACIONDEUSOPOLIZA: 2,
             FECHAAUTORIZACIONDEUSOPOLIZA: null,
+            TIPOCAMBIO: null,
             OT: null,
             ASESORTALLER: null,
             EXPEDIENTE: null,

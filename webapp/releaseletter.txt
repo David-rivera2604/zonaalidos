@@ -540,3 +540,8 @@
                    Purdy. Siniestros. En el tab de evento, los campos Posible subrogación, Enviado a investigación, Enviado a acompañamiento legal y Autorización de uso póliza, deben tener la fecha del día por default.
                    Purdy. Siniestros. En el tab de evento, el campo fecha del evento debe ser de solo lectura y el valor debe ser la fecha del siniestro.
                    Purdy. Siniestros. En el tab de indemnización, en la sección de balance se debe agregar un campo que muestre el saldo del “Monto total de perdida es el balance inicial del tab anterior” menos lo movimiento reflejados en el balance.
+1.6.46  19/09/2023 Purdy. Siniestros. En la cabecera el campo analista gestora debe ser una lista con los usuarios con el rol avaluo y editable solo para ese rol.
+                   Purdy. Siniestros. Agregar el campo tipo de cambio en el tab de daños.
+                   Purdy. Siniestros. En el tab de daños, en la sección "monto preliminar de perdida (Respuesto)" se debe agregar el campo "Descuento", el cual será calculado según formula usanda en el Excel.
+
+                   

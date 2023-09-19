@@ -12,6 +12,7 @@ app.PurdyPanelEvento = (function () {
         var data = {
             ID: _data.ID,
             ASIGES: _data.ASIGES,
+            ANALISTAGESTORA: _data.ANALISTAGESTORA,
             FECHADELEVENTO: app.ui.GetDateValue('#fechadelevento'),
             ANALISTARECLAMOS: app.ui.GetDropDownNumericValue('#analistareclamos'),
             ANALISTARECLAMOSDESC: app.ui.GetDropDownSelectedText('#analistareclamos'),
@@ -290,6 +291,17 @@ app.PurdyPanelEvento = (function () {
 
                     Save('El tipo de indemnización, fue almacenado de forma exitosa',
                         'El tipo de indemnización, fue actualizado de forma exitosa');
+                    break;
+                case 'AnalistaGestoraChange':
+                    _data.ANALISTAGESTORA = eventData.ANALISTAGESTORA;
+                    _data.ANALISTAGESTORADESC = eventData.ANALISTAGESTORADESC;
+
+                    _loadready = true;
+                    data_changed();
+                    _loadready = false;
+
+                    Save('La analista gestora, fue almacenada de forma exitosa',
+                        'La analista gestora, fue actualizada de forma exitosa');
                     break;
                 case 'detalleChanged':
                     Get(data.asiges);
