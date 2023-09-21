@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using Architect.Utilities.Extensions;
+using Newtonsoft.Json.Linq;
 
 namespace Architect.API.Tron.Business.Emision
 {
@@ -96,6 +97,10 @@ namespace Architect.API.Tron.Business.Emision
 
 
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "ANO_CONST", quoteInfo.anodeconstruccion.ToString(), 2, 50));
+
+            JObject jsonDatos = JObject.Parse(quoteInfo.datosvariables.ToString());
+            JToken folio = jsonDatos["FOLIO_RGO1"];
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "FOLIO_RGO1", folio.Value<string>().ToString(), 2, 40));
 
             return datosVariables;
         }
