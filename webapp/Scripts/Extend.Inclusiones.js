@@ -10,7 +10,6 @@ app.Ex_Inclusiones = (function () {
                 return '';
         },
         Certificado: function (row) {
-            alert(row);
             $('.ibox-content').toggleClass('sk-loading');
             app.core.Get(app.setting.apipath + 'v1/Inclusion/bayer/' + row.Id)
                 .done(function (data) {
