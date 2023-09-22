@@ -543,5 +543,9 @@
 1.6.46  19/09/2023 Purdy. Siniestros. En la cabecera el campo analista gestora debe ser una lista con los usuarios con el rol avaluo y editable solo para ese rol.
                    Purdy. Siniestros. Agregar el campo tipo de cambio en el tab de daños.
                    Purdy. Siniestros. En el tab de daños, en la sección "monto preliminar de perdida (Respuesto)" se debe agregar el campo "Descuento", el cual será calculado según formula usanda en el Excel.
+1.6.47	20/9/2023  Multirriesgo.  Se guarda el valor  del dato variable de Folio en TRON. 
+                   Viajero. Corrección en la condicion uso de credenciales para envio a Asistencia
+                   Viajero. Corrección en el envio tomador xml de poliza a Asistencia
+                   WebConfig. Cambio en la url del WS Asistencia
 
                    
