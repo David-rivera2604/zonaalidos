@@ -214,7 +214,7 @@ namespace Architect.API.Tron.Business.Emision
 
             if (resultQuoteInfo.envio_asistencia.IsNotEmpty())
             {
-                Utilities.Log.WarningLog("Asistencia_Panama", resultQuoteInfo.envio_asistencia, "asistencia.panama");
+                Utilities.Log.WarningLog("Asistencia_Panama", resultQuoteInfo.envio_asistencia + " Poliza: " + resultQuoteInfo.num_poliza, "asistencia.panama");
             }
 
             return resultQuoteInfo;
