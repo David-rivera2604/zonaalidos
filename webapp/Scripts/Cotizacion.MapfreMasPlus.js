@@ -1072,6 +1072,10 @@ app.CotizacionMapfreMasPlus = (function () {
             .done(function (settingData) {
                 fec_vcto_poliza_grupo = settingData.fec_vcto_poliza_grupo;
                 app.ui.SetDateValue('#fec_vcto_poliza', app.ui.GetDateValue('#fec_efec_poliza'))
+                if (fec_vcto_poliza_grupo == null) {
+                    settingData.fec_vcto_poliza = app.ui.GetDateRawValue('#fec_efec_poliza');
+                    settingData.fec_vcto_poliza.setFullYear(settingData.fec_vcto_poliza.getFullYear() + 1);
+                }
                 app.ui.SetDateValue('#fec_vcto_poliza', settingData.fec_vcto_poliza);
 
                 app.ui.LookupLoad('cod_tip_vehi', settingData.cod_tip_vehi, true);
