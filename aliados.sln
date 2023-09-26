@@ -91,7 +91,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DBScripts", "DBScripts", "{
 		dbscripts\230613.a.panel.purdy.sql = dbscripts\230613.a.panel.purdy.sql
 		dbscripts\230620.a.lookupmaster.mm_plan.sql = dbscripts\230620.a.lookupmaster.mm_plan.sql
 		dbscripts\230621.a.lookupmaster.mmplus.sql = dbscripts\230621.a.lookupmaster.mmplus.sql
+		dbscripts\230626.b.template.413.sql = dbscripts\230626.b.template.413.sql
+		dbscripts\2306260.a.lookup.2050.34.sql = dbscripts\2306260.a.lookup.2050.34.sql
 		dbscripts\230628.a.visualization.400.sql = dbscripts\230628.a.visualization.400.sql
+		dbscripts\230629aa.template.Notify_InclusionInMedical.sql = dbscripts\230629aa.template.Notify_InclusionInMedical.sql
+		dbscripts\230710a.visualization.333.sql = dbscripts\230710a.visualization.333.sql
+		dbscripts\230818a.visualization.sql = dbscripts\230818a.visualization.sql
+		dbscripts\230821a.visualization.42.sql = dbscripts\230821a.visualization.42.sql
+		dbscripts\230824a.lookup.6.sql = dbscripts\230824a.lookup.6.sql
+		dbscripts\230926a.lookup.sql = dbscripts\230926a.lookup.sql
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architect.PDF.Integrations", "Core\Architect.PDF.Integrations\Architect.PDF.Integrations.csproj", "{68042445-0A60-4BED-A4A9-222A6BE98C3B}"
