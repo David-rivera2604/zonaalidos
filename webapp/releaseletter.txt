@@ -547,5 +547,7 @@
                    Viajero. Corrección en la condicion uso de credenciales para envio a Asistencia
                    Viajero. Corrección en el envio tomador xml de poliza a Asistencia
                    WebConfig. Cambio en la url del WS Asistencia
-
-                   
+1.6.48  26/09/2023 MapfreMas. KYC, En el pdf solicitud individual, hay unos datos que no se están visualizando por problema de mapeo.
+                   Avisos. En avisos de cobros no se trae los contratos de 303.
+                   MapfreMas. Fecha de vencimiento, cuando no existe vencimiento para el contrato.
+                   MapfreMasPlus. Fecha de vencimiento, cuando no existe vencimiento para el contrato.
