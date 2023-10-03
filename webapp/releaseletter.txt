@@ -551,3 +551,4 @@
                    Avisos. En avisos de cobros no se trae los contratos de 303.
                    MapfreMas. Fecha de vencimiento, cuando no existe vencimiento para el contrato.
                    MapfreMasPlus. Fecha de vencimiento, cuando no existe vencimiento para el contrato.
+1.6.49  03/10/2023 MapfreMas. MapfreMasPlus. En la seccion de terceros, agregar un campo que permite indicar que el asegurado es el mismo pagado.
