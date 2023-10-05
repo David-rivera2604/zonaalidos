@@ -310,14 +310,32 @@ namespace Architect.API.Tron.Business.Emision
 
         private static string EnviarSolicitud(string tip_firma, string correoenvio, Contracts.Emision.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
+            string filename;
+            Dictionary<string, string> result = new Dictionary<string, string>
+            {
+                { "UniqueId", string.Empty },
+                { "PDF", string.Empty },
+                { "Quote", string.Empty }
+            };
+
             DocuSign.Integrations.Contracts.SubmitResult submit = new DocuSign.Integrations.Contracts.SubmitResult();
-            string solicitudPDF = General_PDF_Solicitud(quoteInfo, tokenInfo);
+            result["PDF"] = General_PDF_Solicitud(quoteInfo, tokenInfo);
+
+            filename = string.Format("Solicitud {0}.pdf", quoteInfo.presupuesto);
+            Almacena_PDF(quoteInfo.presupuesto, result["PDF"], filename, 98, filename, tokenInfo.CompanyId, tokenInfo.UserId);
+
+            result["Quote"] = General_PDF_Cotización(quoteInfo, tokenInfo);
+
+            filename = string.Format("Cotización {0}.pdf", quoteInfo.presupuesto);
+            Almacena_PDF(quoteInfo.presupuesto, result["Quote"], filename, 98, filename, tokenInfo.CompanyId, tokenInfo.UserId);
+
             Contracts.Comun.tercero primaryInsured = (from t in quoteInfo.terceros where t.tipodetercero == 2 select t).First();
             if (tip_firma == Contracts.TipoDeFirma.Manual)
             {
                 Core.Business.General.Mail.SendByTemplate("MapfreMas_Solicitud", tokenInfo.CompanyId, tokenInfo.UserId, 0, quoteInfo,
                     new Dictionary<string, string>() { { correoenvio, string.Empty } },
-                    new string[] { string.Format("{0};Solicitud {1}.pdf", solicitudPDF, quoteInfo.presupuesto) });
+                    new string[] { string.Format("{0};Solicitud {1}.pdf", result["PDF"], quoteInfo.presupuesto),
+                                   string.Format("{0};Cotización {1}.pdf", result["Quote"], quoteInfo.presupuesto)});
                 submit.UniqueId = quoteInfo.presupuesto;
             }
             else
@@ -327,9 +345,31 @@ namespace Architect.API.Tron.Business.Emision
                                 "Solicitud de seguro, presupuesto " + quoteInfo.presupuesto,
                                 primaryInsured.nombre.CompleteFullName(primaryInsured.apellido1, primaryInsured.apellido2),
                                 correoenvio,
-                                solicitudPDF, quoteInfo.tip_firma == Contracts.TipoDeFirma.Tablet ? "Handwriting" : "WebClick").GetAwaiter().GetResult();
+                                result["PDF"], quoteInfo.tip_firma == Contracts.TipoDeFirma.Tablet ? "Handwriting" : "WebClick").GetAwaiter().GetResult();
             }
             return submit.UniqueId;
+        }
+
+        internal static void Almacena_PDF(string presupuesto, string fullFileName, string originalFileName, int documentType, string description, int companyId, int userId)
+        {
+
+            Core.Contracts.General.Attachments attachment = new Core.Contracts.General.Attachments
+            {
+                EntityType = 3000,
+                EntityId = Convert.ToInt64(presupuesto),
+                CompanyId = companyId,
+                UpdateUserCode = userId,
+                DocumentType = documentType,
+                Description = description,
+                FileName = originalFileName,
+                FileContent = fullFileName
+            };
+            Core.Business.General.Attachment.SyncUp(attachment);
+        }
+
+        private static string General_PDF_Cotización(Contracts.Cotizacion.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
+        {
+            return Core.Business.General.Report.GeneratePDFFile("mapfremas", quoteInfo).GetAwaiter().GetResult();
         }
 
         private static string EnviarKYC(string tip_firma, string correoenvio, Contracts.Emision.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
