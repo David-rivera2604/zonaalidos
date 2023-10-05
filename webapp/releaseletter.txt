@@ -552,3 +552,4 @@
                    MapfreMas. Fecha de vencimiento, cuando no existe vencimiento para el contrato.
                    MapfreMasPlus. Fecha de vencimiento, cuando no existe vencimiento para el contrato.
 1.6.49  03/10/2023 MapfreMas. MapfreMasPlus. En la sección de terceros, agregar un campo que permite indicar que el asegurado es el mismo pagado.
+1.6.50  05/10/2023 MapfreMas. MapfreMasPlus. Al momento de emitir el presupuesto se debe asociar el PDF de la cotización al mismo y en el caso de la manual dicho pdf debe adjuntarse al correo.
