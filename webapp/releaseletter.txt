@@ -555,4 +555,4 @@
 1.6.50  05/10/2023 MapfreMas. MapfreMasPlus. Al momento de emitir el presupuesto se debe asociar el PDF de la cotización al mismo y en el caso de la manual dicho pdf debe adjuntarse al correo.                   
                    MapfreMas. MapfreMasPlus. Se debe agregar en el pdf de la cotización la descripción del contrato.
                    MapfreMasPlus. Se debe agregar en el pdf de la cotización el campo rc alcohol.
-1.6.51  09/10/2023 Avisos de Cobro. Mostrar las pólizas de grupo y sus contratos como un solo control, conciderar que debe poder seleccionar solo la póliza sin contratos, conciderar que la misma página es usada por empleados.
+1.6.51  09/10/2023 Avisos de Cobro. Mostrar las pólizas de grupo y sus contratos como un solo control, considerar que debe poder seleccionar solo la póliza sin contratos, considerar que la misma página es usada por empleados.
