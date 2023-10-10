@@ -134,6 +134,10 @@ namespace Architect.API.Tron.Contracts.Comun
         /// </summary>
         [DataMember(), JsonProperty()] public int elaseguradoeselconductorhabitual { get; set; } = 2;
         /// <summary>
+        /// El asegurado es el mismo pagador.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int elaseguradoeselmismopagador { get; set; } = 2;
+        /// <summary>
         /// Número de préstamo.
         /// </summary>
         [DataMember(), JsonProperty()] public string numerodeprestamo { get; set; }
