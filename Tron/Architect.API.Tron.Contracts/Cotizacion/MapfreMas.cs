@@ -222,6 +222,7 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// </summary>
         [DataMember(), JsonProperty()] public List<Comun.PlanDePago> plandepagoFull { get; set; }
         [DataMember(), JsonProperty()] public int contrato { get; set; }
+        [DataMember(), JsonProperty()] public string contratoDesc { get; set; }
         [DataMember(), JsonProperty()] public int subcontrato { get; set; }
         [DataMember(), JsonProperty()] public string polizagrupo { get; set; }
         /// <summary>
