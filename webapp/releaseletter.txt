@@ -542,12 +542,17 @@
                    Purdy. Siniestros. En el tab de indemnización, en la sección de balance se debe agregar un campo que muestre el saldo del “Monto total de perdida es el balance inicial del tab anterior” menos lo movimiento reflejados en el balance.
 1.6.46  19/09/2023 Purdy. Siniestros. En la cabecera el campo analista gestora debe ser una lista con los usuarios con el rol avaluo y editable solo para ese rol.
                    Purdy. Siniestros. Agregar el campo tipo de cambio en el tab de daños.
-                   Purdy. Siniestros. En el tab de daños, en la sección "monto preliminar de perdida (Respuesto)" se debe agregar el campo "Descuento", el cual será calculado según formula usanda en el Excel.
+                   Purdy. Siniestros. En el tab de daños, en la sección "monto preliminar de perdida (Repuesto)" se debe agregar el campo "Descuento", el cual será calculado según formula usanda en el Excel.
 1.6.47	20/9/2023  Multirriesgo.  Se guarda el valor  del dato variable de Folio en TRON. 
-                   Viajero. Corrección en la condicion uso de credenciales para envio a Asistencia
-                   Viajero. Corrección en el envio tomador xml de poliza a Asistencia
+                   Viajero. Corrección en la condición uso de credenciales para envío a Asistencia
+                   Viajero. Corrección en el envío tomador xml de póliza a Asistencia
                    WebConfig. Cambio en la url del WS Asistencia
 1.6.48  26/09/2023 MapfreMas. KYC, En el pdf solicitud individual, hay unos datos que no se están visualizando por problema de mapeo.
                    Avisos. En avisos de cobros no se trae los contratos de 303.
                    MapfreMas. Fecha de vencimiento, cuando no existe vencimiento para el contrato.
                    MapfreMasPlus. Fecha de vencimiento, cuando no existe vencimiento para el contrato.
+1.6.49  03/10/2023 MapfreMas. MapfreMasPlus. En la sección de terceros, agregar un campo que permite indicar que el asegurado es el mismo pagado.
+1.6.50  05/10/2023 MapfreMas. MapfreMasPlus. Al momento de emitir el presupuesto se debe asociar el PDF de la cotización al mismo y en el caso de la manual dicho pdf debe adjuntarse al correo.                   
+                   MapfreMas. MapfreMasPlus. Se debe agregar en el pdf de la cotización la descripción del contrato.
+                   MapfreMasPlus. Se debe agregar en el pdf de la cotización el campo rc alcohol.
+1.6.51  09/10/2023 Avisos de Cobro. Mostrar las pólizas de grupo y sus contratos como un solo control, considerar que debe poder seleccionar solo la póliza sin contratos, considerar que la misma página es usada por empleados.

@@ -86,22 +86,11 @@
                                                 </select>
                                             </div>
                                         </div>
-
-                                        <!-- polizagrupo DropDownList -->
-                                        <div class='col-sm-3 col-md-3'>
+                                        <!-- polizagrupoHelper DropDownList -->
+                                        <div class='col-sm-6 col-md-6 handler-marcaHelper'>
                                             <div class='form-group'>
-                                                <label class='control-label' for='polizagrupo'>Póliza grupo</label>
-                                                <select id='polizagrupo' name='polizagrupo' class='form-control' data-event='clear.grid'>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <!-- contratos DropDownList -->
-                                        <div class='col-sm-3 col-md-3'>
-                                            <div class='form-group'>
-                                                <label class='control-label' for='contratos'>Contratos</label>
-                                                <select id='contratos' name='contratos' class='form-control' data-event='clear.grid'>
-                                                </select>
+                                                <label class='control-label' for='polizagrupoHelper'>Póliza grupo / Contrato</label>
+                                                <input id='polizagrupoHelper' class="form-control typeahead" type="text" placeholder="Indique el detalle...">
                                             </div>
                                         </div>
 
@@ -177,6 +166,7 @@
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/assets/js/plugins/typehead/bootstrap3-typeahead.min.js")"></script>
     <script src="@Url.Content("~/Scripts/AvisosCobro.Recibos.js")"></script>
     <script type="text/javascript">
         $(document).ready(function () {

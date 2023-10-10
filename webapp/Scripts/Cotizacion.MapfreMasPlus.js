@@ -263,6 +263,7 @@ app.CotizacionMapfreMasPlus = (function () {
             plandepago: $('#plandepagoTbl').bootstrapTable('getData'),
             plandepagoFull: $('#plandepagoFullTbl').bootstrapTable('getData'),
             contrato: app.ui.GetDropDownNumericValue('#contrato'),
+            contratoDesc: $("#contrato option:selected").text(),
             subcontrato: app.ui.GetDropDownNumericValue('#subcontrato'),
             polizagrupo: setupData.polizagrupo
         };

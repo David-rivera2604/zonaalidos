@@ -255,6 +255,15 @@ app.EmisionTercero = (function () {
                         newDriver.elaseguradoeselconductorhabitual = 2;
                         $('#tercerosTbl').bootstrapTable('append', newDriver);
                     }
+                    if (row.elaseguradoeselmismopagador === 1) {
+                        let newpayer = JSON.parse(JSON.stringify(row));
+                        newpayer.tercerosId += 1;
+                        newpayer.tipodetercero = 21;
+                        newpayer.tipodeterceroDesc = $('#tipodetercero option[value="21"]').text();
+                        newpayer.elaseguradoeselmismopagador = 1;
+                        newpayer.elaseguradoeselconductorhabitual = 2;
+                        $('#tercerosTbl').bootstrapTable('append', newpayer);
+                    }
                 }
 
                 if (row.tipodetercero === 2) {
@@ -293,6 +302,7 @@ app.EmisionTercero = (function () {
                 otrasenas: null,
                 eltomadoreselmismoasegurado: 2,
                 elaseguradoeselconductorhabitual: 2,
+                elaseguradoeselmismopagador: 2,
                 numerodeprestamo: null,
                 importedecesion: null,
                 vencimientodecesion: null,
@@ -329,6 +339,7 @@ app.EmisionTercero = (function () {
                 otrasenas: $('#otrasenas').val(),
                 eltomadoreselmismoasegurado: app.ui.GetRadioNumericValue('eltomadoreselmismoasegurado'),
                 elaseguradoeselconductorhabitual: app.ui.GetRadioNumericValue('elaseguradoeselconductorhabitual'),
+                elaseguradoeselmismopagador: app.ui.GetRadioNumericValue('elaseguradoeselmismopagador'),
                 numerodeprestamo: $('#numerodeprestamo').val(),
                 importedecesion: app.ui.GetNumericValue('#importedecesion'),
                 vencimientodecesion: app.ui.GetDateValue('#vencimientodecesion'),
@@ -371,6 +382,8 @@ app.EmisionTercero = (function () {
         $('#otrasenas').val(row.otrasenas);
         app.ui.SetRadioNumericValue('eltomadoreselmismoasegurado', row.eltomadoreselmismoasegurado)
         app.ui.SetRadioNumericValue('elaseguradoeselconductorhabitual', row.elaseguradoeselconductorhabitual)
+        app.ui.SetRadioNumericValue('elaseguradoeselmismopagador', row.elaseguradoeselmismopagador)
+
         $('#numerodeprestamo').val(row.numerodeprestamo);
         app.ui.SetNumericValue('#importedecesion', row.importedecesion);
         app.ui.SetDateValue('#vencimientodecesion', row.vencimientodecesion);

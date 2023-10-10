@@ -28,9 +28,6 @@ namespace Architect.API.Tron.Business.Emision
             Dictionary<string, string> request = EnviarSolicitud(proposal.SigningType, correoenvio, quoteInfo, tokenInfo);
             string message = string.Empty;
 
-            string filename = string.Format("Solicitud {0}.pdf", quoteInfo.presupuesto);
-            Solicitud.Almacena_PDF(quoteInfo.presupuesto, request["PDF"], filename, 98, filename, tokenInfo.CompanyId, tokenInfo.UserId);
-
             if (proposal.SigningType != Contracts.TipoDeFirma.Manual && request["UniqueId"].IsNotEmpty())
             {
                 DataAccess.PolicyProposal.Update_Status(proposal.Id, 4, request["UniqueId"], tokenInfo.UserId);
@@ -57,19 +54,33 @@ namespace Architect.API.Tron.Business.Emision
 
         internal static Dictionary<string, string> EnviarSolicitud(string tip_firma, string correoenvio, Contracts.Emision.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
+            string filename;
             Dictionary<string, string> result = new Dictionary<string, string>
             {
                 { "UniqueId", string.Empty },
-                { "PDF", string.Empty }
+                { "PDF", string.Empty },
+                { "Quote", string.Empty }
             };
             DocuSign.Integrations.Contracts.SubmitResult submit = new DocuSign.Integrations.Contracts.SubmitResult();
             result["PDF"] = General_PDF_Solicitud(quoteInfo, tokenInfo);
+
+            filename = string.Format("Solicitud {0}.pdf", quoteInfo.presupuesto);
+            Solicitud.Almacena_PDF(quoteInfo.presupuesto, result["PDF"], filename, 98, filename, tokenInfo.CompanyId, tokenInfo.UserId);
+
+            result["Quote"] = General_PDF_Cotización(quoteInfo, tokenInfo);
+
+            filename = string.Format("Cotización {0}.pdf", quoteInfo.presupuesto);
+            Solicitud.Almacena_PDF(quoteInfo.presupuesto, result["Quote"], filename, 98, filename, tokenInfo.CompanyId, tokenInfo.UserId);
+
             Contracts.Comun.tercero primaryInsured = (from t in quoteInfo.terceros where t.tipodetercero == 2 select t).First();
             if (tip_firma == Contracts.TipoDeFirma.Manual)
             {
+
+
                 Core.Business.General.Mail.SendByTemplate("MapfreMas_Solicitud", tokenInfo.CompanyId, tokenInfo.UserId, 0, quoteInfo,
                     new Dictionary<string, string>() { { correoenvio, string.Empty } },
-                    new string[] { string.Format("{0};Solicitud {1}.pdf", result["PDF"], quoteInfo.presupuesto) });
+                    new string[] { string.Format("{0};Solicitud {1}.pdf", result["PDF"], quoteInfo.presupuesto),
+                                   string.Format("{0};Cotización {1}.pdf", result["Quote"], quoteInfo.presupuesto)});
                 submit.UniqueId = quoteInfo.presupuesto;
             }
             else
@@ -129,6 +140,11 @@ namespace Architect.API.Tron.Business.Emision
             }
 
 
+        }
+
+        private static string General_PDF_Cotización(Contracts.Cotizacion.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
+        {
+            return Core.Business.General.Report.GeneratePDFFile("mapfremas", quoteInfo).GetAwaiter().GetResult();
         }
 
         internal static void Almacena_Documento_Firmado(string presupuesto, string fileContent, int companyId, int userId)

@@ -119,9 +119,6 @@ namespace Architect.API.Tron.Business.Emision
                 //    kycUniqueId = EnviarKYC(quoteInfo.tip_firma, quoteInfo.correoenvio, quoteInfo, tokenInfo);
                 //}
                 AlmacenarSolicitud(quoteInfo, quoteInfo.tip_firma == Contracts.TipoDeFirma.Manual ? 33 : 4, tokenInfo, request["UniqueId"], kycUniqueId);
-                string filename = string.Format("Solicitud {0}.pdf", quoteInfo.presupuesto);
-                Solicitud.Almacena_PDF(quoteInfo.presupuesto, request["PDF"], filename, 98, filename, tokenInfo.CompanyId, tokenInfo.UserId);
-
                 GuardaDatosVariables(quoteInfo.presupuesto, quoteInfo.cod_ramo, quoteInfo.tip_firma, quoteInfo.tip_firmaDesc, request["UniqueId"]);
                 string message = string.Empty;
                 if (request["UniqueId"].IsNotEmpty())
