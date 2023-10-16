@@ -6,7 +6,7 @@ app.setting = {
     apipath: 'http://localhost:8082/aliados/api/',
     basepath: '/Aliados/',
     viewpath: 'http://localhost:8082/aliados/',
-    entityapi: 'https://appqa.mapfrecr.com/datapides/api/entity'
+    entityapi: 'https://appqa.mapfrecr.com/datapi/api/entity'
 };
 // CONSERVAR DEL ORIGINAL HASTA AQUI
 
@@ -73,6 +73,10 @@ app.core = (function () {
         //    }
         //};
         //req.send();
+
+        if (url.startsWith('excel.')) {
+            url = app.setting.apipath + 'v1/DataSource/excel?id=' + url.substring(6);
+        }
         let blobType = 'application/pdf';
         if (filename === null) {
             filename = new Date() + ".pdf";
