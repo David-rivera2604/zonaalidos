@@ -50,6 +50,7 @@ app.core = (function () {
     let lookupData = [];
 
     function GetPDF(url, download, filename, callback) {
+        let excel = false;
         //var req = new XMLHttpRequest();
         //req.open("GET", url, true);
         //req.responseType = "blob";
@@ -76,6 +77,8 @@ app.core = (function () {
 
         if (url.startsWith('excel.')) {
             url = app.setting.apipath + 'v1/DataSource/excel?id=' + url.substring(6);
+            excel = true;
+            $('.ibox-content').toggleClass('sk-loading');
         }
         let blobType = 'application/pdf';
         if (filename === null) {
@@ -112,10 +115,15 @@ app.core = (function () {
             if (callback !== undefined && callback !== null) {
                 callback();
             }
+            if (excel)
+                $('.ibox-content').toggleClass('sk-loading');
+
         }).catch(function (error) {
             if (callback !== undefined && callback !== null) {
                 callback();
             }
+            if (excel)
+                $('.ibox-content').toggleClass('sk-loading');
             toastr.error("Por favor intente nuevamente y en caso de persistir el problema contacte el personal de soporte", "Ha ocurrido un error no controlado", { timeOut: 10000, closeButton: true, progressBar: true });
             error.json().then(body => {
                 console.info('%c Error ', 'color: white; background-color: #D33F49', body.ExceptionMessage);
