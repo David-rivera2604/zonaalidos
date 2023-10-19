@@ -23,13 +23,13 @@ namespace Architect.API.Insurance.Controllers
         /// Busqueda de información de residentes de Costa Rica.
         /// </summary>
         /// <param name="id">Identificación.</param>
-        /// <param name="docType">Tipo de Identificacion.</param>																 
+        /// <param name="docType">Tipo de identificación.</param>																 
         /// <returns>Información de la personal.</returns>
         [HttpGet]
         [Route("{id}")]
         [AllowAnonymous]
         [ResponseType(typeof(Contracts.Policy.Insured))]
-        public async Task<IHttpActionResult> InsuredByIdentification([FromUri] string id, int docType)
+        public async Task<IHttpActionResult> InsuredByIdentification([FromUri] string id, int docType = 1)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Contracts.Policy.Insured result = null;
