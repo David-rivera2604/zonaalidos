@@ -29,7 +29,7 @@ namespace Architect.API.Insurance.Controllers
         [Route("{id}")]
         [AllowAnonymous]
         [ResponseType(typeof(Contracts.Policy.Insured))]
-        public async Task<IHttpActionResult> InsuredByIdentification([FromUri] string id, int docType)
+        public async Task<IHttpActionResult> InsuredByIdentification([FromUri] string id, int docType = 1)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Contracts.Policy.Insured result = null;
