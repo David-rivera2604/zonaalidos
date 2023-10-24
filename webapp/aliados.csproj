@@ -868,7 +868,6 @@
     <Content Include="assets\formiojs\formio.utils.js" />
     <Content Include="assets\formiojs\formio.utils.min.js" />
     <Content Include="assets\img\profile_small.jpg" />
-    <Content Include="assets\jquery\core.js" />
     <Content Include="assets\jquery\jquery.js" />
     <Content Include="assets\jquery\jquery.min.js" />
     <Content Include="assets\jquery\jquery.slim.js" />

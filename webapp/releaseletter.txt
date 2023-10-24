@@ -556,5 +556,5 @@
                    MapfreMas. MapfreMasPlus. Se debe agregar en el pdf de la cotización la descripción del contrato.
                    MapfreMasPlus. Se debe agregar en el pdf de la cotización el campo rc alcohol.
 1.6.51  09/10/2023 Avisos de Cobro. Mostrar las pólizas de grupo y sus contratos como un solo control, considerar que debe poder seleccionar solo la póliza sin contratos, considerar que la misma página es usada por empleados.
-1.6.52  19/10/2023 Carro fácil. No receuipera la información del asegurado al digitar la cédula.
+1.6.52  19/10/2023 Carro fácil. No recupera la información del asegurado al digitar la cédula.
                    Aliados. Se actualiza la libreria jquery de la versión 3.4.1 a la 3.7.1 por reportes de seguridad.
