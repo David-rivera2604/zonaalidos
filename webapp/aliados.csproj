@@ -1330,6 +1330,23 @@
     <Content Include="Scripts\Security.UserMember.js" />
     <Content Include="Scripts\Security.UserRoleMember.js" />
     <Content Include="Web.config" />
+    <Content Include="widgets\pagoDirecto\assets\American-Express.png" />
+    <Content Include="widgets\pagoDirecto\assets\background-card.svg" />
+    <Content Include="widgets\pagoDirecto\assets\backgroundCardRed.png" />
+    <Content Include="widgets\pagoDirecto\assets\cbanco.svg" />
+    <Content Include="widgets\pagoDirecto\assets\ccahorro.svg" />
+    <Content Include="widgets\pagoDirecto\assets\credit.svg" />
+    <Content Include="widgets\pagoDirecto\assets\creditBack.svg" />
+    <Content Include="widgets\pagoDirecto\assets\discover.svg" />
+    <Content Include="widgets\pagoDirecto\assets\jcb.svg" />
+    <Content Include="widgets\pagoDirecto\assets\mastercard.svg" />
+    <Content Include="widgets\pagoDirecto\assets\pse.png" />
+    <Content Include="widgets\pagoDirecto\assets\silice.png" />
+    <Content Include="widgets\pagoDirecto\assets\telered.png" />
+    <Content Include="widgets\pagoDirecto\assets\visa.svg" />
+    <Content Include="widgets\pagoDirecto\index.html" />
+    <Content Include="widgets\pagoDirecto\widget-pago-directo.css" />
+    <Content Include="widgets\pagoDirecto\widget-pago-directo.js" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\AddAuthTokenHeaderParameter.cs" />
@@ -1766,6 +1783,8 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <Content Include="widgets\pagoDirecto\assets\yappy.webp" />
+    <Content Include="widgets\pagoDirecto\readme.md" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -7,6 +7,7 @@ app.PurdyPanelIndemnizacion = (function () {
     let _data = null;
     let _loadready = false;
     let _changed = false;
+    let _deducible = 0;
 
     let _emptyValueBalance = {
         ID: null,
@@ -431,9 +432,9 @@ app.PurdyPanelIndemnizacion = (function () {
                     visible: true,
                     footerFormatter: function (data, value) {
 
-                        
-                            return '<span id="gbalance"></span>';
-                        
+
+                        return '<span id="gbalance"></span>';
+
                     }
                 }, {
                     field: 'NCREPUESTO',
@@ -592,11 +593,10 @@ app.PurdyPanelIndemnizacion = (function () {
 
     function CalcBalance() {
         if (_data?.damage != null) {
-            let balance = _data.damage.PERDIDA;
-            $('#balanceTbl').bootstrapTable('getData').forEach(function (item) {
-                balance -= item.MONTO;
-                $('#gbalance').html(`Saldo: ${app.ui.NumericValueFormat(balance,2)}`);
-            });
+            let totaFactMoRep = $('#balanceTbl').bootstrapTable('getData').filter(i => i.TIPODEDOCUMENTO === 1 || i.TIPODEDOCUMENTO === 2)?.reduce((accumulator, item) => { return accumulator + item.MONTO; }, 0);
+            let balance = _data.damage.PERDIDA - (totaFactMoRep + _data.damage.DEPRECIACIONYEXCLUSIONES + _deducible);
+
+            $('#gbalance').html(`Saldo: ${app.ui.NumericValueFormat(balance, 2)}`);
         }
     };
 
@@ -620,7 +620,7 @@ app.PurdyPanelIndemnizacion = (function () {
                 console.error(err);
             }
         },
-        Event: async function (src, data) {
+        Event: async function (src, data, eventData) {
             switch (src) {
                 case 'ASIGESChange':
                     if (data.claim != null) {
@@ -647,6 +647,10 @@ app.PurdyPanelIndemnizacion = (function () {
                     _emptyValueMontos.MONTODANOOCULTOPORINDEMNIZARMA = data.damage.DANOOCULTOMANOTOTAL;
                     _data = data;
                     CalcBalance()
+                    break;
+                case 'DetalleDeducible':
+                    _deducible = eventData;
+                    CalcBalance();
                     break;
             }
         },

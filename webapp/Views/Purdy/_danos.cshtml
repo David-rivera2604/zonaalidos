@@ -193,11 +193,19 @@
                                                 </div><div id='perdidatotal_validate'></div>
                                             </div>
                                             <div class='col tipodeperdidatotalVisible d-none'>
-                                                <select id='tipodeperdidatotal' name='tipodeperdidatotal' class='form-control role-Avalúos-enable' disabled>
-                                                    <option value='1'>Estructural</option>
-                                                    <option value='2'>Financiera</option>
-                                                </select>
-                                                <small class="form-text text-muted">Tipo de pérdida total</small>
+                                                <div class="form-row">
+                                                    <div class='col-sm-6 col-md-6'>
+                                                        <select id='tipodeperdidatotal' name='tipodeperdidatotal' class='form-control role-Avalúos-enable' disabled>
+                                                            <option value='1'>Estructural</option>
+                                                            <option value='2'>Financiera</option>
+                                                        </select>
+                                                        <small class="form-text text-muted">Tipo de pérdida total</small>
+                                                    </div>
+                                                    <div class='col-sm-6 col-md-6'>
+                                                        <input type='text' id='PERDIDATMONTO' name='PERDIDATMONTO' class='form-control role-Avalúos-enable text-right' size='26' maxlength='26' disabled />
+                                                        <small class="form-text text-muted">Monto total</small>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -319,7 +327,7 @@
                                                     </div>
                                                     <div class='col-sm-3 col-md-3'>
                                                         <input type='text' id='prerepuestosdesc' name='prerepuestosdesc' class='form-control text-right' size='26' maxlength='26' disabled />
-                                                        <small class="form-text text-muted">Descuento</small>
+                                                        <small class="form-text text-muted" id="porprerepuestosdesc">Descuento</small>
                                                     </div>
                                                     <div class='col-sm-3 col-md-3'>
                                                         <input type='text' id='prerepuestosiva' name='prerepuestosiva' class='form-control text-right' size='26' maxlength='26' disabled />
@@ -374,7 +382,7 @@
                                                 <label class='control-label' for='perdrepuesto'>Monto total de pérdida (Repuestos)</label>
                                                 <div class="form-row">
                                                     <div class='col-sm-3 col-md-3'>
-                                                        <input type='text' id='perdrepuesto' name='perdrepuesto' class='form-control text-right role-Avalúos-enable' size='26' maxlength='26' disabled />
+                                                        <input type='text' id='perdrepuesto' name='perdrepuesto' class='form-control text-right' size='26' maxlength='26' disabled />
                                                         <small class="form-text text-muted">Neto</small>
                                                     </div>
                                                     <div class='col-sm-3 col-md-3'>
@@ -398,7 +406,7 @@
                                                 <label class='control-label' for='perdmano'>Monto total de pérdida (Mano de Obra)</label>
                                                 <div class="form-row">
                                                     <div class='col-sm-4 col-md-4'>
-                                                        <input type='text' id='perdmano' name='perdmano' class='form-control text-right role-Avalúos-enable' size='26' maxlength='26' disabled />
+                                                        <input type='text' id='perdmano' name='perdmano' class='form-control text-right' size='26' maxlength='26' disabled />
                                                         <small class="form-text text-muted">Neto</small>
                                                     </div>
                                                     <div class='col-sm-4 col-md-4'>

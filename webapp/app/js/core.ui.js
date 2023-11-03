@@ -273,7 +273,7 @@ app.ui = (function () {
             }
         },
         StringFormatter: function (value, row, index, field) {
-            if (value === null || value === 0)
+            if (value === undefined || value === null || value === 0)
                 return '';
             else
                 return value;

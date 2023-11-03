@@ -2,6 +2,7 @@
 
 app.PurdyPanelEvento = (function () {
 
+    let _dep = { empresa: '', primaanual: 0, deducible: 0 };
     let _eventCallback = null;
     let _data = null;
     let _claim = null;
@@ -39,7 +40,10 @@ app.PurdyPanelEvento = (function () {
             AUTORIZACIONDEUSOPOLIZA: app.ui.GetRadioNumericValue('autorizaciondeusopolizaEvent'),
             AUTORIZACIONDEUSOPOLIZADESC: app.ui.GetRadioSelectedText('autorizaciondeusopolizaEvent'),
             FECHAAUTORIZACIONDEUSOPOLIZA: app.ui.GetDateValue('#fechaautorizaciondeusopolizaEvent'),
-            DETALLESINIESTRO: null
+            DETALLESINIESTRO: null,
+            EMPRESA: _dep.empresa,
+            PRIMAANUAL: _dep.primaanual,
+            DEDUCIBLE: _dep.deducible
         };
 
         return data;
@@ -305,6 +309,13 @@ app.PurdyPanelEvento = (function () {
                     break;
                 case 'detalleChanged':
                     Get(data.asiges);
+                    break;
+                case 'PolicyDataChange':
+                    _dep.empresa = eventData.empresa;
+                    break;
+                case 'CoverageDataChange':
+                    _dep.deducible = eventData.deducible;
+                    _dep.primaanual = eventData.primaanual;
                     break;
             }
         }
