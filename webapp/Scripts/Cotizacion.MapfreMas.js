@@ -444,7 +444,7 @@ app.CotizacionMapfreMas = (function () {
             $('#fec_vcto_poliza_group').data("DateTimePicker").minDate(minDate);
 
             if (fec_vcto_poliza_grupo != null) {
-                app.ui.SetDateValue('#fec_vcto_poliza', fec_vcto_poliza);
+                app.ui.SetDateValue('#fec_vcto_poliza', fec_vcto_poliza_grupo);
             } else {
                 let fec_vcto = app.ui.GetDateRawValue('#fec_efec_poliza');
                 fec_vcto.setFullYear(fec_vcto.getFullYear() + 1);
