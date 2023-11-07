@@ -36,6 +36,7 @@ app.PurdyPanelDanos = (function () {
             ANALISTADEDANOSDESC: app.ui.GetDropDownSelectedText('#analistadeDanos'),
             DEPRECIACIONYEXCLUSIONES: app.ui.GetNumericValue('#depreciacionyexclusiones'),
             PERDREPUESTO: app.ui.GetNumericValue('#perdrepuesto'),
+            PERDREPUESTODESC: app.ui.GetNumericValue('#perdrepuestodesc'),
             PERDREPUESTOIVA: app.ui.GetNumericValue('#perdrepuestoiva'),
             PERDREPUESTOTOTAL: app.ui.GetNumericValue('#perdrepuestototal'),
             PERDMANO: app.ui.GetNumericValue('#perdmano'),
@@ -61,6 +62,7 @@ app.PurdyPanelDanos = (function () {
             DANOOCULTOMANO: app.ui.GetNumericValue('#danoocultomano'),
             DANOOCULTOMANOIVA: app.ui.GetNumericValue('#danoocultomanoiva'),
             DANOOCULTOMANOTOTAL: app.ui.GetNumericValue('#danoocultomanototal'),
+            DANOOCULTODESC: app.ui.GetNumericValue('#danoocultodesc'),    
             OTROSIIOTROSIIDANOCULMANOTOTAL: app.ui.GetNumericValue('#otrosIIOtrosIIDanoocultomanototal'),
             PERDIDATMONTO: app.ui.GetNumericValue('#PERDIDATMONTO'),
             PERDIDATMONTOCOL: 0,
@@ -101,6 +103,7 @@ app.PurdyPanelDanos = (function () {
         app.ui.SetNumericValue('#depreciacionyexclusiones', data.DEPRECIACIONYEXCLUSIONES);
 
         app.ui.SetNumericValue('#perdrepuesto', data.PERDREPUESTO);
+        app.ui.SetNumericValue('#perdrepuestodesc', data.PERDREPUESTODESC);
         app.ui.SetNumericValue('#perdrepuestoiva', data.PERDREPUESTOIVA);
         app.ui.SetNumericValue('#perdrepuestototal', data.PERDREPUESTOTOTAL);
         app.ui.SetNumericValue('#perdmano', data.PERDMANO);
@@ -117,6 +120,7 @@ app.PurdyPanelDanos = (function () {
         $('#observaciones').val(data.OBSERVACIONES);
         app.ui.SetNumericValue('#danoocultomontoRepuestosDanooculto', data.DANOOCULTOMONTOREPDANOOCULTO);
         app.ui.SetNumericValue('#danoocultoiva', data.DANOOCULTOIVA);
+        app.ui.SetNumericValue('#danoocultodesc', data.DANOOCULTODESC);
         app.ui.SetNumericValue('#danoocultototal', data.DANOOCULTOTOTAL);
         app.ui.SetNumericValue('#danoocultomano', data.DANOOCULTOMANO);
         app.ui.SetNumericValue('#danoocultomanoiva', data.DANOOCULTOMANOIVA);
@@ -248,6 +252,15 @@ app.PurdyPanelDanos = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
+        new AutoNumeric('#perdrepuestodesc', {
+            decimalCharacter: ',',
+            decimalCharacterAlternative: '.',
+            digitGroupSeparator: '.',
+            maximumValue: '999999999999999999',
+            minimumValue: '0',
+            decimalPlaces: '2',
+            emptyInputBehavior: 'null'
+        });
         new AutoNumeric('#perdrepuestoiva', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
@@ -307,6 +320,15 @@ app.PurdyPanelDanos = (function () {
             locale: 'es'
         });
         new AutoNumeric('#danoocultomontoRepuestosDanooculto', {
+            decimalCharacter: ',',
+            decimalCharacterAlternative: '.',
+            digitGroupSeparator: '.',
+            maximumValue: '999999999999999999',
+            minimumValue: '0',
+            decimalPlaces: '2',
+            emptyInputBehavior: 'null'
+        });
+        new AutoNumeric('#danoocultodesc', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -483,6 +505,7 @@ app.PurdyPanelDanos = (function () {
             $('#observaciones').val('');
             app.ui.SetNumericValue('#danoocultomontoRepuestosDanooculto', 0);
             app.ui.SetNumericValue('#danoocultoiva', 0);
+            app.ui.SetNumericValue('#danoocultodesc', 0);
             app.ui.SetNumericValue('#danoocultototal', 0);
             app.ui.SetNumericValue('#danoocultomano', 0);
             app.ui.SetNumericValue('#danoocultomanoiva', 0);
@@ -500,45 +523,50 @@ app.PurdyPanelDanos = (function () {
 
         }
 
-        let prerepuestosdesc = app.ui.GetNumericValue('#prerepuestos') * factor;
-        let prerepuestossubtotal = app.ui.GetNumericValue('#prerepuestos') - prerepuestosdesc;
+        let danoocultomontoRep = app.ui.GetNumericValue('#danoocultomontoRepuestosDanooculto');
+        let danoocultodesc = danoocultomontoRep * factor;
+        let danoocultomontoRepsubtotal = danoocultomontoRep - danoocultodesc;
+        $('#pordanoocultodesc').html((factor * 100).toString() + ' % Descuento');
+        $('#pordanoocultodesc').attr('title', ' Empresa ' + _empresa);
+        app.ui.SetNumericValue('#danoocultodesc', danoocultodesc);
+        app.ui.SetNumericValue('#danoocultoiva', danoocultomontoRepsubtotal * 0.13);
+        app.ui.SetNumericValue('#danoocultototal', danoocultomontoRepsubtotal * 1.13);
+        app.ui.SetNumericValue('#danoocultomanoiva', app.ui.GetNumericValue('#danoocultomano') * 0.13);
+        app.ui.SetNumericValue('#danoocultomanototal', app.ui.GetNumericValue('#danoocultomano') * 1.13);
+        app.ui.SetNumericValue('#otrosIIOtrosIIDanoocultomanototal', (danoocultomontoRepsubtotal * 1.13) + (app.ui.GetNumericValue('#danoocultomano') * 1.13));
+
+        let prerepuestos = app.ui.GetNumericValue('#prerepuestos');
+        let prerepuestosdesc = prerepuestos * factor;
+        let prerepuestossubtotal = prerepuestos - prerepuestosdesc;
+        $('#porprerepuestosdesc').html((factor * 100).toString() + ' % Descuento');
+        $('#porprerepuestosdesc').attr('title', ' Empresa ' + _empresa);
         app.ui.SetNumericValue('#prerepuestosdesc', prerepuestosdesc);
         app.ui.SetNumericValue('#prerepuestosiva', prerepuestossubtotal * 0.13);
         app.ui.SetNumericValue('#prerepuestostotal', prerepuestossubtotal * 1.13);
-
-        $('#porprerepuestosdesc').html((factor * 100).toString() + ' % Descuento');
-        $('#porprerepuestosdesc').attr('title', ' Empresa ' + _empresa);
-
         app.ui.SetNumericValue('#premanoiva', app.ui.GetNumericValue('#premano') * 0.13);
         app.ui.SetNumericValue('#premanototal', app.ui.GetNumericValue('#premano') * 1.13);
-
         $('#preperdida').attr('title', _deducible.toString() + ' de deducible');
-
-
         let preperdida = (prerepuestossubtotal * 1.13) + (app.ui.GetNumericValue('#premano') * 1.13) - _deducible - app.ui.GetNumericValue('#depreciacionyexclusiones');
         if (preperdida < 0) {
             preperdida = 0;
         }
+        $('#porperdrepuestodesc').html((factor * 100).toString() + ' % Descuento');
+        $('#porperdrepuestodesc').attr('title', ' Empresa ' + _empresa);
         app.ui.SetNumericValue('#preperdida', preperdida);
 
-
         app.ui.SetNumericValue('#perdrepuesto', app.ui.GetNumericValue('#danoocultomontoRepuestosDanooculto') + app.ui.GetNumericValue('#prerepuestos'));
-
+        app.ui.SetNumericValue('#perdrepuestodesc', app.ui.GetNumericValue('#danoocultodesc') + app.ui.GetNumericValue('#prerepuestosdesc'));
+        app.ui.SetNumericValue('#perdrepuestoiva', app.ui.GetNumericValue('#danoocultoiva') + app.ui.GetNumericValue('#prerepuestosiva'));
+        app.ui.SetNumericValue('#perdrepuestototal', app.ui.GetNumericValue('#danoocultototal') + app.ui.GetNumericValue('#prerepuestostotal'));
         app.ui.SetNumericValue('#perdmano', app.ui.GetNumericValue('#danoocultomano') + app.ui.GetNumericValue('#premano'));
+        app.ui.SetNumericValue('#perdmanoiva', app.ui.GetNumericValue('#danoocultomanoiva') + app.ui.GetNumericValue('#premanoiva'));
+        app.ui.SetNumericValue('#perdmanototal', app.ui.GetNumericValue('#otrosIIOtrosIIDanoocultomanototal') + app.ui.GetNumericValue('#preperdida'));
+        let perdida = app.ui.GetNumericValue('#perdrepuestototal') + app.ui.GetNumericValue('#perdmanototal') - _deducible - app.ui.GetNumericValue('#depreciacionyexclusiones');
+        if (perdida < 0) {
+            perdida = 0;
+        }
+        app.ui.SetNumericValue('#perdida', perdida);
 
-
-
-        app.ui.SetNumericValue('#perdrepuestoiva', app.ui.GetNumericValue('#perdrepuesto') * 0.13);
-        app.ui.SetNumericValue('#perdrepuestototal', app.ui.GetNumericValue('#perdrepuesto') * 1.13);
-        app.ui.SetNumericValue('#perdmanoiva', app.ui.GetNumericValue('#perdmano') * 0.13);
-        app.ui.SetNumericValue('#perdmanototal', app.ui.GetNumericValue('#perdmano') * 1.13);
-        app.ui.SetNumericValue('#perdida', app.ui.GetNumericValue('#perdrepuestototal') + app.ui.GetNumericValue('#perdmanototal') - _deducible - app.ui.GetNumericValue('#depreciacionyexclusiones'));
-
-        app.ui.SetNumericValue('#danoocultoiva', app.ui.GetNumericValue('#danoocultomontoRepuestosDanooculto') * 0.13);
-        app.ui.SetNumericValue('#danoocultototal', app.ui.GetNumericValue('#danoocultomontoRepuestosDanooculto') * 1.13);
-        app.ui.SetNumericValue('#danoocultomanoiva', app.ui.GetNumericValue('#danoocultomano') * 0.13);
-        app.ui.SetNumericValue('#danoocultomanototal', app.ui.GetNumericValue('#danoocultomano') * 1.13);
-        app.ui.SetNumericValue('#otrosIIOtrosIIDanoocultomanototal', (app.ui.GetNumericValue('#danoocultomontoRepuestosDanooculto') * 1.13) + (app.ui.GetNumericValue('#danoocultomano') * 1.13));
 
         if (_loadready) {
             _changed = true;
@@ -579,6 +607,7 @@ app.PurdyPanelDanos = (function () {
             ANALISTADEDANOS: null,
             DEPRECIACIONYEXCLUSIONES: null,
             PERDREPUESTO: null,
+            PERDREPUESTODESC: null,
             PERDREPUESTOIVA: null,
             PERDREPUESTOTOTAL: null,
             PERDMANO: null,
@@ -595,6 +624,7 @@ app.PurdyPanelDanos = (function () {
             OBSERVACIONES: null,
             DANOOCULTOMONTOREPDANOOCULTO: null,
             DANOOCULTOIVA: null,
+            DANOOCULTODESC: null,
             DANOOCULTOTOTAL: null,
             DANOOCULTOMANO: null,
             DANOOCULTOMANOIVA: null,
