@@ -138,6 +138,7 @@ app.PurdyPanelEvento = (function () {
         }
         else {
             $('.fechaidentificadocomoPosibleSubrogacionVisible').addClass('d-none');
+            app.ui.SetDateValue('#fechaidentificadocomoPosibleSubrogacion', null);
         }
 
         if (app.ui.GetRadioNumericValue('enviadoaInvestigacion') === 1) {
@@ -148,6 +149,7 @@ app.PurdyPanelEvento = (function () {
         }
         else {
             $('.fechaenviadoainvestigacionVisible').addClass('d-none');
+            app.ui.SetDateValue('#fechaenviadoainvestigacion', null);
         }
 
         if (app.ui.GetRadioNumericValue('enviadoaacompanamientoLegal') === 1) {
@@ -158,6 +160,7 @@ app.PurdyPanelEvento = (function () {
         }
         else {
             $('.fechaenviadoaacompanamientoLegalVisible').addClass('d-none');
+            app.ui.SetDateValue('#fechaenviadoaacompanamientoLegal', null);
         }
         if (app.ui.GetRadioNumericValue('autorizaciondeusopolizaEvent') === 1) {
             $('.fechaautorizaciondeusopolizaEventVisible').removeClass('d-none');
@@ -165,8 +168,10 @@ app.PurdyPanelEvento = (function () {
                 app.ui.SetDateValue('#fechaautorizaciondeusopolizaEvent', new Date());
             }
         }
-        else
+        else {
             $('.fechaautorizaciondeusopolizaEventVisible').addClass('d-none');
+            app.ui.SetDateValue('#fechaautorizaciondeusopolizaEvent', null);
+        }
         if (_loadready) {
             _changed = true;
         }
@@ -313,8 +318,10 @@ app.PurdyPanelEvento = (function () {
                 case 'PolicyDataChange':
                     _dep.empresa = eventData.empresa;
                     break;
+                case 'DetalleDeducible':
+                    _dep.deducible = eventData;
+                    break;
                 case 'CoverageDataChange':
-                    _dep.deducible = eventData.deducible;
                     _dep.primaanual = eventData.primaanual;
                     break;
             }

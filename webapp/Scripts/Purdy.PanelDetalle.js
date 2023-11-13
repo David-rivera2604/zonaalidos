@@ -130,28 +130,16 @@ app.PurdyPanelDetalle = (function () {
     };
 
     async function GetCoverages(data) {
-
-        $('#deducible').html('---');
         $('#primaanual').html('---');
 
         app.core.Get(`${app.setting.entityapi}/policy/${data.claim.NUM_POLIZA}/Coverages?NUM_SPTO=${data.claim.NUM_SPTO}&NUM_APLI=${data.claim.NUM_APLI}&NUM_SPTO_APLI=${data.claim.NUM_SPTO_APLI}&NUM_RIESGO=${data.claim.NUM_RIESGO}`)
             .done(function (coverages) {
                 if (coverages?.Sucessfully && coverages.Data != null) {
-
-                    let deducible = coverages.Data.find(i => i.COD_COB === data.claim.COD_CAUSA_SINI)?.NOM_FRANQUICIA;
-
-                    $('#deducible').html(`${app.ui.StringFormatter(deducible)}`);
-
-                    deducible = deducible === undefined ? 0 : Number(deducible.replace(/[^0-9\.]+/g, ""));
-
                     let primaanual = coverages.Data.reduce((accumulator, item) => { return accumulator + item.IMP_TOTAL; }, 0);
 
                     $('#primaanual').html(`${app.ui.DecimalFormatter(primaanual)}`);
-
-                    _eventCallback('DetalleDeducible', deducible);
-
                     _eventCallback('CoverageDataChange', {
-                        deducible: deducible, primaanual: primaanual, coverages: coverages.Data
+                        primaanual: primaanual, coverages: coverages.Data
                     });
                 }
             });
@@ -209,12 +197,29 @@ app.PurdyPanelDetalle = (function () {
                         $('#numerodepoliza').html(data.claim.NUM_POLIZA);
                         $('#monedadepoliza').html(data.claim.NOM_MON);
                         $('#tomador').html(`${data.claim.TIP_DOCUM_TOMADOR} ${data.claim.COD_DOCUM_TOMADOR} - ${data.claim.NOM_TOMADOR} ${app.ui.StringValueToString(data.claim.APE_TOMADOR)}`);
-                        $('#coberturaafectada').html(`${data.claim.COD_CAUSA_SINI} ${data.claim.NOM_COB}`);
+                        
+
+                        let deducible = 0;
+                        let deducibleDesc = '';
+                        data.claim.Coberturas.forEach(function (item) {
+
+                            deducible += Number(item.NOM_FRANQUICIA.replace(/[^0-9\.]+/g, ""));
+                            if (deducibleDesc != '')
+                                deducibleDesc += ', ';
+                            deducibleDesc += `${item.COD_COB} ${item.NOM_COB}`;
+                        })
+                        deducible = 60000;
+                        $('#coberturaafectada').html(deducibleDesc);
+                        $('#deducible').html(`${app.ui.DecimalFormatter(deducible)}`);
+                        
+                        _eventCallback('DetalleDeducible', deducible);
+
 
                         GetPolicy(data);
                         GetCoverages(data);
                         GetPremiums(data);
                     } else {
+                        $('#deducible').html('---');
                         $('#numerodepoliza').html('');
                         $('#monedadepoliza').html('');
                         $('#tomador').html('');

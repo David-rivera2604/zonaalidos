@@ -518,7 +518,7 @@ app.PurdyPanelDanos = (function () {
                 factor = _empresa === 'Purdy Auto' ? 0.15 : 0.10;
                 break;
             default: //otros talleres
-                factor = _empresa === 'Purdy Auto' ? 0.25 : 0.15;
+                factor = _empresa === 'Purdy Auto' ? 0.20 : 0.15;
                 break;
 
         }
@@ -560,7 +560,7 @@ app.PurdyPanelDanos = (function () {
         app.ui.SetNumericValue('#perdrepuestototal', app.ui.GetNumericValue('#danoocultototal') + app.ui.GetNumericValue('#prerepuestostotal'));
         app.ui.SetNumericValue('#perdmano', app.ui.GetNumericValue('#danoocultomano') + app.ui.GetNumericValue('#premano'));
         app.ui.SetNumericValue('#perdmanoiva', app.ui.GetNumericValue('#danoocultomanoiva') + app.ui.GetNumericValue('#premanoiva'));
-        app.ui.SetNumericValue('#perdmanototal', app.ui.GetNumericValue('#otrosIIOtrosIIDanoocultomanototal') + app.ui.GetNumericValue('#preperdida'));
+        app.ui.SetNumericValue('#perdmanototal', app.ui.GetNumericValue('#perdmano') + app.ui.GetNumericValue('#perdmanoiva'));
         let perdida = app.ui.GetNumericValue('#perdrepuestototal') + app.ui.GetNumericValue('#perdmanototal') - _deducible - app.ui.GetNumericValue('#depreciacionyexclusiones');
         if (perdida < 0) {
             perdida = 0;

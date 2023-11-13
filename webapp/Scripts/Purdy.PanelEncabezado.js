@@ -12,7 +12,9 @@ app.PurdyPanelEncabezado = (function () {
                 app.ui.VisibleBehaviour('#tipodeindemnizacionEnc', true);
                 app.ui.VisibleBehaviour('.tipodeindemnizacionGrp', false);
 
-                if (data != null) {
+                if (data?.General?.Data != null) {
+                    data.General.Data.Coberturas = data.Coberturas.Data;
+                    data = data.General.Data;                    
                     app.ui.NotifyClear();
                     $('.panelinfo').removeClass('d-none');
                     data.ASIGES = code;

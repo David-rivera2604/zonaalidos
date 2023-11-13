@@ -593,9 +593,22 @@ app.PurdyPanelIndemnizacion = (function () {
 
     function CalcBalance() {
         if (_data?.damage != null) {
-            let totaFactMoRep = $('#balanceTbl').bootstrapTable('getData').filter(i => i.TIPODEDOCUMENTO === 1 || i.TIPODEDOCUMENTO === 2)?.reduce((accumulator, item) => { return accumulator + item.MONTO; }, 0);
-            let balance = _data.damage.PERDIDA - (totaFactMoRep + _data.damage.DEPRECIACIONYEXCLUSIONES + _deducible);
+            let rows = $('#balanceTbl').bootstrapTable('getData');
+            let totaFactMoRep = rows.filter(r => r.TIPODEDOCUMENTO != 3).reduce((accumulator, item) => { return accumulator + item.MONTO - item.NCREPUESTO; }, 0) -
+                                rows.filter(r => r.TIPODEDOCUMENTO === 3).reduce((accumulator, item) => { return accumulator + item.MONTO - item.NCREPUESTO; }, 0);
+            let base = _data.damage.PERDREPUESTO - _data.damage.PERDREPUESTODESC + _data.damage.PERDMANO - _data.damage.DEPRECIACIONYEXCLUSIONES - _deducible;
+            let balance = base - totaFactMoRep;
 
+            console.log('PERDREPUESTO', _data.damage.PERDREPUESTO);
+            console.log('PERDREPUESTODESC', _data.damage.PERDREPUESTODESC);
+            console.log('PERDMANO', _data.damage.PERDMANO);
+
+
+
+            console.log('base', base);
+            console.log('totaFactMoRep', totaFactMoRep);
+            console.log('DEPRECIACIONYEXCLUSIONES', _data.damage.DEPRECIACIONYEXCLUSIONES);
+            console.log('_deducible', _deducible);
             $('#gbalance').html(`Saldo: ${app.ui.NumericValueFormat(balance, 2)}`);
         }
     };

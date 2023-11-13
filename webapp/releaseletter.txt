@@ -561,3 +561,4 @@
 1.6.53  03/11/2023 Purdy. Siniestros. Correcciones y mejoras al panel del siniestro de purdy.
                    MapfreMas. MapfreMasPlus. Corrección para la fecha de vencimiento de pólizas grupo.
 1.6.54  06/11/2023 Purdy. Siniestros. Correcciones y mejoras al panel del siniestro de purdy.
+1.6.55  13/11/2023 Purdy. Siniestros. Correcciones y mejoras al panel del siniestro de purdy.

@@ -1280,6 +1280,7 @@
     <Content Include="Scripts\ManagerLinks.UI.js" />
     <Content Include="Scripts\Manual.Siniestro.js" />
     <Content Include="Scripts\Extend.js" />
+    <Content Include="Scripts\Payment - Copy.js" />
     <Content Include="Scripts\Payment.js" />
     <Content Include="Scripts\policy.edit.cuestionariocovid.js" />
     <Content Include="Scripts\policy.products.js" />
