@@ -208,7 +208,6 @@ app.PurdyPanelDetalle = (function () {
                                 deducibleDesc += ', ';
                             deducibleDesc += `${item.COD_COB} ${item.NOM_COB}`;
                         })
-                        deducible = 60000;
                         $('#coberturaafectada').html(deducibleDesc);
                         $('#deducible').html(`${app.ui.DecimalFormatter(deducible)}`);
                         
