@@ -66,7 +66,10 @@ namespace Architect.API.Tron.Business.Emision
                     result.terceros = Reglas.research.Apply_Terceros("HogarTotal", result.terceros, result.Fuente_Tomador, tokenInfo);
                 }
 
-                result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("HogarTotal", null, 0, tokenInfo);
+                if (!tokenInfo.Roles.Contain("Formularios_digitales"))
+                {
+                    result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("HogarTotal", null, 0, tokenInfo);
+                }
 
                 if (mode == "continue")
                 {
@@ -96,7 +99,14 @@ namespace Architect.API.Tron.Business.Emision
 
             if (tryOnTron)
             {
-                result.Modo = "draft";
+                if (tokenInfo.Roles.Contain("Formularios_digitales"))
+                {
+                    result.Modo = "draft";
+                }
+                else
+                {
+                    result.Modo = mode;
+                }
             }
             return result;
         }

@@ -64,11 +64,14 @@ namespace Architect.API.Tron.Business.Emision
                 }
                 if (result.documentosrequeridos == null)
                 {
-                    result.documentosrequeridos = new List<Contracts.Comun.DocumentoRequerido>
+                    if (!tokenInfo.Roles.Contain("Formularios_digitales"))
                     {
-                    new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=1, tipo = "Expediente Cliente", DArchivoEsperado="Expediente Cliente.pdf", Grupo="F"  },
-                    new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=2, tipo = "Expediente Póliza" , DArchivoEsperado="Expediente Póliza.pdf", Grupo="F" },
-                    };
+                        result.documentosrequeridos = new List<Contracts.Comun.DocumentoRequerido>
+                            {
+                            new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=1, tipo = "Expediente Cliente", DArchivoEsperado="Expediente Cliente.pdf", Grupo="F"  },
+                            new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=2, tipo = "Expediente Póliza" , DArchivoEsperado="Expediente Póliza.pdf", Grupo="F" },
+                            };
+                    }
                 }
             }
             return result;
