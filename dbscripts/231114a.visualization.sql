@@ -1,0 +1,4 @@
+INSERT INTO VISUALIZATIONS (ID,"SEQUENCE","TYPE",CAPTION,DESCRIPTION,"STATEMENT",ICON,ICONCLASS,VALUEFORMAT,ENTITYTYPE,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,SPECIFICATION,CONNECTIONNAME,STATEMENTTYPE,DIALOG,STATEMENTEXTEND,"KEY",JAVASCRIPTTOINCLUDE) VALUES (9006,1,9,'Enviar enlace de pago','Panel',NULL,NULL,NULL,NULL,NULL,1,1,888,TIMESTAMP'2023-03-31 00:00:00.0',NULL,NULL,NULL,'Enviar enlace de pago|titulo
+|zona|12
+ Enviar por Correo|Boton|name=ESendBtn;click=app.Payment.SendLink(''Correo'',{NUM_POLIZA},{NUM_RECIBO});class=btn-danger btn-outline btn-block m-t
+ Enviar por WhatsApp|Boton|name=WSendBtn;click=app.Payment.SendLink(''WhatsApp'',{NUM_POLIZA},{NUM_RECIBO});class=btn-danger btn-outline btn-block m-t',NULL,NULL,NULL);

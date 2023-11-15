@@ -515,10 +515,10 @@ app.PurdyPanelDanos = (function () {
         let factor = 0.15;
         switch (taller) {
             case 1: //Purdy Auto SA
-                factor = _empresa === 'Purdy Auto' ? 0.15 : 0.10;
+                factor = _empresa === 'Purdy Motor' ? 0.15 : 0.10;
                 break;
             default: //otros talleres
-                factor = _empresa === 'Purdy Auto' ? 0.20 : 0.15;
+                factor = _empresa === 'Purdy Motor' ? 0.20 : 0.15;
                 break;
 
         }

@@ -29,7 +29,7 @@ WITH balance AS (SELECT ROW_NUMBER () OVER (PARTITION BY ASIGES ORDER BY ID) BLi
    AND a.num_spto IN (select max(aa.num_spto) from a2000030 aa JOIN a2990700 t on t.cod_cia = aa.cod_cia and t.num_poliza = aa.num_poliza and t.num_spto = aa.num_spto and t.num_apli = aa.num_apli and t.num_spto_apli = aa.num_spto_apli and t.tip_situacion = 'CT' where aa.cod_cia  = a.cod_cia and aa.num_poliza = a.NUM_POLIZA AND aa.mca_spto_anulado = 'N')
    AND num_recibo IN (select t.num_recibo from a2990700 t where t.cod_cia = a.cod_cia and t.num_poliza = a.num_poliza and t.num_spto = a.num_spto and t.num_apli = a.num_apli and t.num_spto_apli = a.num_spto_apli and t.tip_situacion = 'CT')) "PrimasPagadas", 
        eve.deducible "Deducible ORIGINAL", 
-       dano.TipoCambio "Tipo de Cambio", dano.deduciblecol "DEDUCIBLE EN COLONES", dano.deducibledol "Deducible en dolares", 
+       dano.TipoCambio "Tipo de Cambio", dano.deduciblecol "Deducible en colones", dano.deducibledol "Deducible en dolares", 
        DECODE(eve.enviadoaInvestigacion, 1, 'Si', 'No') "Enviado a Investigación", DECODE(eve.posiblesubrogacion, 1, 'Si', 'No')  "Enviado a subrogación POR PURDY-posible sub", eve.FECHAPOSIBLESUBROGACION "Fecha enviado a Subrogación", 
        NULL "Subrogación Aprobada-llena Adm", 
        DECODE(eve.enviadoaacompanamientoLegal, 1, 'Si', 'No') "Enviado a acompañamiento Legal", eve.FECHAENVIADOACOMPALEGAL "Fecha enviado a compañamiento", 
@@ -53,18 +53,15 @@ ELSE NVL(dano.perdidatmonto,0)+(dano.perdrepuesto - dano.prerepuestosdesc)+NVL(d
 END /DECODE(dano.TipoCambio, NULL, 1, 0, 1, dano.TipoCambio) AS NUMBER(18,2)) "Total Monto indemnizar $", 
        dano.fechasolicitado "Fecha daño Oculto", dano.observaciones "Daño Oculto Observación",
        CAST(dano.danoocultomano/16800 AS NUMBER(18,2)) "Horas Daño Oculto", dano.danoocultomano "MO x costo de Hora", 
-       dano.danoocultomanototal "DAÑO OCULTO MO CON IVA IVA", dano.danoocultomano  "DAÑO OCULTO MO SIN IVA",  CAST( dano.danoocultomanototal/DECODE(dano.TipoCambio, NULL, 1, 0, 1, dano.TipoCambio) AS NUMBER(18,2)) "MO DAÑO OCULTO $",
+       dano.danoocultomanototal "DAÑO OCULTO MO CON IVA", dano.danoocultomano  "DAÑO OCULTO MO SIN IVA",  CAST( dano.danoocultomanototal/DECODE(dano.TipoCambio, NULL, 1, 0, 1, dano.TipoCambio) AS NUMBER(18,2)) "MO DAÑO OCULTO $",
        dano.danoocultototal "DAÑO OCULTO REP CON IVA", dano.DANOOCULTOMONTOREPDANOOCULTO "DAÑO OCULTO REP SIN IVA", dano.danoocultodesc "NC REP DAÑO OCULTO", 
        dano.DANOOCULTOMONTOREPDANOOCULTO-dano.danoocultodesc "Total Rep Daño Oculto",  
        CAST( dano.danoocultototal/DECODE(dano.TipoCambio, NULL, 1, 0, 1, dano.TipoCambio) AS NUMBER(18,2)) "RE DAÑO OCULTO $", 
-       dano.danoocultomano+dano.danoocultototal "Total Daño Oculto", 
+       dano.danoocultomano+dano.DANOOCULTOMONTOREPDANOOCULTO-dano.danoocultodesc "Total Daño Oculto", 
        NULL "AJUSTE POR DIFERENCIA EN PRECIOS DE REP",
-       CAST(CASE WHEN eve.TIPODEINDEMNIZACION= 8 THEN 0
-WHEN NVL(dano.perdidatmonto,0)+(dano.perdrepuesto - dano.prerepuestosdesc)+NVL(dano.premano,0) = 0 THEN 0
-ELSE NVL(dano.perdidatmonto,0)+(dano.perdrepuesto - dano.prerepuestosdesc)+NVL(dano.premano,0)-dano.deduciblecol
-END AS NUMBER(18,2)) + dano.DANOOCULTOMANO+dano.DANOOCULTOTOTAL "Total a indemnizar Daño Oculto Final", 
+       (dano.DANOOCULTOMANO+dano.PREMANO) + (dano.prerepuestos - dano.prerepuestosdesc+dano.DANOOCULTOMONTOREPDANOOCULTO-dano.danoocultodesc) - dano.deduciblecol "Total a indemnizar Daño Oculto Final", 
        dano.DANOOCULTOMANO+dano.PREMANO "Total MO", 
-       dano.DANOOCULTOTOTAL+(dano.perdrepuesto - dano.prerepuestosdesc) "Total Rep", 
+       dano.prerepuestos - dano.prerepuestosdesc+dano.DANOOCULTOMONTOREPDANOOCULTO-dano.danoocultodesc "Total Rep", 
        pm.Fecha "Fecha Liquidación Parcial MO", TO_CHAR(pm.Fecha, 'Month', 'NLS_DATE_LANGUAGE = spanish') "Mes Pago Mano Obra Parcial", pm.NumeroDeDocumento "# Factura MO Parcial", pm.Monto "Parcial MO (Sin IVA)", 
        dedu.Fecha "Fecha Pago Deducible", TO_CHAR(dedu.Fecha, 'Month', 'NLS_DATE_LANGUAGE = spanish') "Mes Pago Deducible", dedu.monto "NC por Deducible (Taller)", NULL "Deducible Gestora", NULL "NC Otros Cargos", NULL "TOTAL MO", 
        b1.Fecha "Fecha Liquidación Parcial Repuestos 1", TO_CHAR(b1.Fecha, 'Month', 'NLS_DATE_LANGUAGE = spanish') "Mes Pago RE 1", b1.NumeroDeDocumento "# Factura Parcial RE 1", b1.Monto "Parcial RE (Sin IVA) SUBTOTAL", b1.NCRepuesto "NC REPUESTOS 1", 
@@ -75,9 +72,13 @@ END AS NUMBER(18,2)) + dano.DANOOCULTOMANO+dano.DANOOCULTOTOTAL "Total a indemni
        b5.Fecha "Fecha Liquidación Parcial Repuestos 5", TO_CHAR(b5.Fecha, 'Month', 'NLS_DATE_LANGUAGE = spanish') "Mes Pago RE 5", b5.NumeroDeDocumento "# Factura Parcial RE 5", b5.Monto "Parcial RE (Sin IVA) SUBTOTAL", b5.NCRepuesto "NC REPUESTOS 5", 
        b6.Fecha "Fecha Liquidación Parcial Repuestos 6", TO_CHAR(b6.Fecha, 'Month', 'NLS_DATE_LANGUAGE = spanish') "Mes Pago RE 6", b6.NumeroDeDocumento "# Factura Parcial RE 6", b6.Monto "Parcial RE (Sin IVA) SUBTOTAL", b6.NCRepuesto "NC REPUESTOS 6",
        NVL(b2.Monto,0) - NVL(b2.NCRepuesto,0) + NVL(b3.Monto,0) - NVL(b3.NCRepuesto,0) + NVL(b4.Monto,0) - NVL(b4.NCRepuesto,0) + NVL(b5.Monto,0) - NVL(b5.NCRepuesto,0) + NVL(b6.Monto,0) - NVL(b6.NCRepuesto,0) "LIQUIDACION FINAL 2", 
-       NULL "TOTAL PAGADO FINAL", NULL "Fecha Pago Perdida Total", NULL "Mes Pago Perdida Total", NULL "Monto Perdida Total EN LA MONEDA DE PAGO",
+       (pm.Monto + b1.Monto - b1.NCRepuesto)+ (NVL(b2.Monto,0) - NVL(b2.NCRepuesto,0) + NVL(b3.Monto,0) - NVL(b3.NCRepuesto,0) + NVL(b4.Monto,0) - NVL(b4.NCRepuesto,0) + NVL(b5.Monto,0) - NVL(b5.NCRepuesto,0) + NVL(b6.Monto,0) - NVL(b6.NCRepuesto,0)) "Total pagado final", 
+       NULL "Fecha Pago Perdida Total", NULL "Mes Pago Perdida Total", NULL "Monto Perdida Total EN LA MONEDA DE PAGO",
        NULL "Monto Perdida DOLARIZADO final", NULL "salvamento MONTO VENDIDO O RECUPERADO SIN IVA", 
-       ajuste.Monto "Ajuste", NULL "PENDIENTE X LIQUIDAR FINAL", 
+       ajuste.Monto "Ajuste", 
+       (dano.PERDREPUESTO - dano.PERDREPUESTODESC + dano.PERDMANO - dano.DEPRECIACIONYEXCLUSIONES - dano.deduciblecol ) -
+	   ((SELECT SUM(Monto-NCREPUESTO) FROM Aliados.PurdyPanelBalance bt1 WHERE bt1.ASIGES = a80.OBS AND bt1.tipodedocumento != 3) -
+	   (SELECT SUM(Monto-NCREPUESTO) FROM Aliados.PurdyPanelBalance bt2 WHERE bt2.ASIGES = a80.OBS AND bt2.tipodedocumento = 3)) "Pendiente x liquidar final", 
        ajuste.Observacion "Observación ajuste", NULL "RECUPERADO EN SUBROGACION", NULL "Monto a recuperar total de subrogacion", NULL "Monto ingresado de subrogacion", 
        NULL "saldo subrogacion", NULL "SUBROGACIÓN-OBSERVACIONES", NULL "CodigoCXC", NULL "NombredeCXCSubrogación", 
        NULL "FECHA TOMADO POR LEGAL", NULL "POSIBLE SUBROGACIÓN X ABOGADO", NULL "CASO REAL DE SUBROGACION-ABODADO SENTENCIA O CONCILIACION", 

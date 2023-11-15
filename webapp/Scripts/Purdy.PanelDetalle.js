@@ -116,12 +116,12 @@ app.PurdyPanelDetalle = (function () {
                     dataVar = policy.Data.Variabledata.Data;
                     data.data = dataVar;
                     data.marca = ShowValue(dataVar.filter(i => i.COD_CAMPO === "COD_MARCA"), 'marca', 'TXT_CAMPO');
-                    data.empresa = 'Purdy Auto';
+                    data.empresa = 'Purdy Motor';
                     ShowValue(dataVar.filter(i => i.COD_CAMPO === "NUM_MATRICULA"), 'placa', 'VAL_CAMPO');
                     ShowValue(dataVar.filter(i => i.COD_CAMPO === "COD_CHASSIS"), 'chasis', 'VAL_CAMPO');
                     ShowValue(dataVar.filter(i => i.COD_CAMPO === "IMP_VR"), 'valorasegurado', 'TXT_CAMPO');
                     ShowValue(dataVar.filter(i => i.COD_CAMPO === "COD_USO_VEHI"), 'usodepoliza', 'TXT_CAMPO');
-                    if (data.marca === 'FORD' || data.marca === 'VOLKWAGEN') {
+                    if (data.marca === 'FORD' || data.marca === 'VOLKSWAGEN') {
                         data.empresa = 'Automotriz';
                     }
                     _eventCallback('PolicyDataChange', data);
@@ -208,7 +208,6 @@ app.PurdyPanelDetalle = (function () {
                                 deducibleDesc += ', ';
                             deducibleDesc += `${item.COD_COB} ${item.NOM_COB}`;
                         })
-                        deducible = 60000;
                         $('#coberturaafectada').html(deducibleDesc);
                         $('#deducible').html(`${app.ui.DecimalFormatter(deducible)}`);
                         
