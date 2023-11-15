@@ -7,7 +7,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <_PublishTargetUrl>D:\publish\aliados.webapp</_PublishTargetUrl>
-    <History>True|2023-10-19T20:56:35.6400323Z;False|2023-10-19T13:43:27.3948608-06:00;True|2023-10-05T16:50:33.5413186-06:00;True|2023-10-03T11:02:36.8876800-06:00;True|2023-08-21T12:38:22.1326655-06:00;True|2023-07-25T10:00:53.5560111-06:00;True|2023-07-17T13:03:23.0185872-06:00;True|2023-07-11T17:33:11.9586905-06:00;True|2023-06-26T16:46:20.6411186-06:00;True|2023-06-24T21:57:38.6257670-06:00;False|2023-06-06T17:19:36.9117666-06:00;True|2023-05-25T18:25:34.0889484-06:00;True|2022-10-28T11:58:35.2089966-06:00;True|2022-10-03T08:39:05.7918673-06:00;True|2022-09-27T11:35:23.1880587-06:00;True|2022-09-27T10:20:18.8885607-06:00;True|2022-08-31T08:04:15.3178811-06:00;True|2022-08-30T05:43:46.0025586-06:00;True|2022-08-26T10:59:21.9909351-06:00;True|2022-08-22T12:49:35.9399378-06:00;True|2022-08-12T08:13:20.9559955-06:00;True|2022-08-11T07:25:04.5195340-06:00;True|2022-08-08T13:06:52.5002931-06:00;True|2022-08-08T13:04:28.5562002-06:00;True|2022-08-02T18:38:30.1135825-06:00;True|2022-08-02T18:37:39.8175745-06:00;True|2022-08-02T18:35:19.3063226-06:00;True|2022-08-01T12:33:05.8754002-06:00;True|2022-06-22T13:37:15.8638867-06:00;True|2022-06-21T07:16:18.9781596-06:00;True|2022-06-20T06:21:04.6241846-06:00;False|2022-06-08T10:13:16.2658035-06:00;False|2022-05-09T12:01:48.3359305-06:00;False|2022-05-09T11:55:56.6207945-06:00;False|2022-05-09T11:55:14.2917355-06:00;True|2022-04-07T11:53:22.1091020-06:00;True|2022-04-07T08:19:26.7479397-06:00;False|2022-04-07T08:17:50.3587344-06:00;True|2022-03-10T19:06:04.2879914-06:00;True|2022-02-10T16:47:56.6619082-06:00;True|2022-02-04T09:39:59.6370251-06:00;True|2022-01-28T11:00:53.1242614-06:00;True|2022-01-27T14:55:50.6366454-06:00;True|2022-01-27T14:51:07.1606620-06:00;True|2022-01-27T14:31:08.6860336-06:00;True|2022-01-25T07:42:39.0009490-06:00;True|2021-12-21T19:28:57.1121850-06:00;True|2021-12-18T06:52:54.7625602-06:00;True|2021-11-22T20:50:48.6411114-06:00;True|2021-11-17T06:57:21.8756389-06:00;True|2021-11-11T18:40:39.7126148-06:00;True|2021-11-05T05:54:22.6607640-06:00;True|2021-11-04T07:05:25.7813004-06:00;True|2021-11-01T19:02:19.7864986-06:00;True|2021-10-31T22:46:04.4873545-06:00;True|2021-10-26T20:27:10.9315338-06:00;True|2021-10-25T19:35:11.2983085-06:00;True|2021-10-18T07:41:05.3750880-06:00;True|2021-10-13T20:02:24.0429016-06:00;True|2021-09-27T22:45:41.3782536-06:00;True|2021-09-01T21:16:39.8715626-06:00;True|2021-08-18T18:08:57.3507723-06:00;True|2021-08-10T19:10:05.4335058-06:00;True|2021-08-06T06:44:31.0888529-06:00;True|2021-07-25T18:56:36.6102420-06:00;True|2021-07-21T18:08:36.9509399-06:00;True|2021-07-15T18:07:24.6393385-06:00;True|2021-07-14T13:03:59.7982618-06:00;True|2021-07-12T23:01:51.6614570-06:00;True|2021-07-12T22:54:54.6266556-06:00;True|2021-07-07T00:09:46.7467812-06:00;True|2021-07-01T05:45:45.5990637-06:00;True|2021-06-28T17:51:45.5557139-06:00;True|2021-06-28T16:08:47.6563216-06:00;True|2021-06-24T20:07:56.7724154-06:00;True|2021-06-23T18:31:07.6891073-06:00;True|2021-06-23T17:30:52.3820936-06:00;True|2021-06-15T12:59:17.9548534-06:00;True|2021-06-15T12:45:58.3412159-06:00;True|2021-06-14T20:08:20.2866373-06:00;True|2021-05-31T07:24:48.3601937-06:00;True|2021-05-31T06:19:56.1376676-06:00;True|2021-05-31T06:17:05.8507068-06:00;True|2021-05-28T14:09:06.8354616-06:00;True|2021-05-28T08:15:49.9322071-06:00;True|2021-05-13T23:25:58.8113122-06:00;True|2021-05-11T22:10:13.3370184-06:00;True|2021-04-30T13:41:34.5709382-06:00;True|2021-04-30T07:27:20.8373132-06:00;True|2021-04-28T17:43:01.0742083-06:00;True|2021-04-28T07:08:57.0000076-06:00;True|2021-04-21T19:57:48.6034687-06:00;True|2021-04-20T14:41:22.6857854-06:00;True|2021-04-19T18:05:57.5251563-06:00;True|2021-04-16T06:54:30.4752825-06:00;True|2021-04-12T19:25:47.4007448-06:00;True|2021-04-12T15:11:05.9440714-06:00;True|2021-04-12T07:17:35.9640964-06:00;True|2021-04-08T13:40:04.3678209-06:00;True|2021-04-06T20:35:32.4482308-06:00;</History>
+    <History>True|2023-11-15T13:56:42.4407520Z;False|2023-11-15T07:55:17.8631297-06:00;False|2023-11-15T07:52:51.3417791-06:00;True|2023-10-19T14:56:35.6400323-06:00;False|2023-10-19T13:43:27.3948608-06:00;True|2023-10-05T16:50:33.5413186-06:00;True|2023-10-03T11:02:36.8876800-06:00;True|2023-08-21T12:38:22.1326655-06:00;True|2023-07-25T10:00:53.5560111-06:00;True|2023-07-17T13:03:23.0185872-06:00;True|2023-07-11T17:33:11.9586905-06:00;True|2023-06-26T16:46:20.6411186-06:00;True|2023-06-24T21:57:38.6257670-06:00;False|2023-06-06T17:19:36.9117666-06:00;True|2023-05-25T18:25:34.0889484-06:00;True|2022-10-28T11:58:35.2089966-06:00;True|2022-10-03T08:39:05.7918673-06:00;True|2022-09-27T11:35:23.1880587-06:00;True|2022-09-27T10:20:18.8885607-06:00;True|2022-08-31T08:04:15.3178811-06:00;True|2022-08-30T05:43:46.0025586-06:00;True|2022-08-26T10:59:21.9909351-06:00;True|2022-08-22T12:49:35.9399378-06:00;True|2022-08-12T08:13:20.9559955-06:00;True|2022-08-11T07:25:04.5195340-06:00;True|2022-08-08T13:06:52.5002931-06:00;True|2022-08-08T13:04:28.5562002-06:00;True|2022-08-02T18:38:30.1135825-06:00;True|2022-08-02T18:37:39.8175745-06:00;True|2022-08-02T18:35:19.3063226-06:00;True|2022-08-01T12:33:05.8754002-06:00;True|2022-06-22T13:37:15.8638867-06:00;True|2022-06-21T07:16:18.9781596-06:00;True|2022-06-20T06:21:04.6241846-06:00;False|2022-06-08T10:13:16.2658035-06:00;False|2022-05-09T12:01:48.3359305-06:00;False|2022-05-09T11:55:56.6207945-06:00;False|2022-05-09T11:55:14.2917355-06:00;True|2022-04-07T11:53:22.1091020-06:00;True|2022-04-07T08:19:26.7479397-06:00;False|2022-04-07T08:17:50.3587344-06:00;True|2022-03-10T19:06:04.2879914-06:00;True|2022-02-10T16:47:56.6619082-06:00;True|2022-02-04T09:39:59.6370251-06:00;True|2022-01-28T11:00:53.1242614-06:00;True|2022-01-27T14:55:50.6366454-06:00;True|2022-01-27T14:51:07.1606620-06:00;True|2022-01-27T14:31:08.6860336-06:00;True|2022-01-25T07:42:39.0009490-06:00;True|2021-12-21T19:28:57.1121850-06:00;True|2021-12-18T06:52:54.7625602-06:00;True|2021-11-22T20:50:48.6411114-06:00;True|2021-11-17T06:57:21.8756389-06:00;True|2021-11-11T18:40:39.7126148-06:00;True|2021-11-05T05:54:22.6607640-06:00;True|2021-11-04T07:05:25.7813004-06:00;True|2021-11-01T19:02:19.7864986-06:00;True|2021-10-31T22:46:04.4873545-06:00;True|2021-10-26T20:27:10.9315338-06:00;True|2021-10-25T19:35:11.2983085-06:00;True|2021-10-18T07:41:05.3750880-06:00;True|2021-10-13T20:02:24.0429016-06:00;True|2021-09-27T22:45:41.3782536-06:00;True|2021-09-01T21:16:39.8715626-06:00;True|2021-08-18T18:08:57.3507723-06:00;True|2021-08-10T19:10:05.4335058-06:00;True|2021-08-06T06:44:31.0888529-06:00;True|2021-07-25T18:56:36.6102420-06:00;True|2021-07-21T18:08:36.9509399-06:00;True|2021-07-15T18:07:24.6393385-06:00;True|2021-07-14T13:03:59.7982618-06:00;True|2021-07-12T23:01:51.6614570-06:00;True|2021-07-12T22:54:54.6266556-06:00;True|2021-07-07T00:09:46.7467812-06:00;True|2021-07-01T05:45:45.5990637-06:00;True|2021-06-28T17:51:45.5557139-06:00;True|2021-06-28T16:08:47.6563216-06:00;True|2021-06-24T20:07:56.7724154-06:00;True|2021-06-23T18:31:07.6891073-06:00;True|2021-06-23T17:30:52.3820936-06:00;True|2021-06-15T12:59:17.9548534-06:00;True|2021-06-15T12:45:58.3412159-06:00;True|2021-06-14T20:08:20.2866373-06:00;True|2021-05-31T07:24:48.3601937-06:00;True|2021-05-31T06:19:56.1376676-06:00;True|2021-05-31T06:17:05.8507068-06:00;True|2021-05-28T14:09:06.8354616-06:00;True|2021-05-28T08:15:49.9322071-06:00;True|2021-05-13T23:25:58.8113122-06:00;True|2021-05-11T22:10:13.3370184-06:00;True|2021-04-30T13:41:34.5709382-06:00;True|2021-04-30T07:27:20.8373132-06:00;True|2021-04-28T17:43:01.0742083-06:00;True|2021-04-28T07:08:57.0000076-06:00;True|2021-04-21T19:57:48.6034687-06:00;True|2021-04-20T14:41:22.6857854-06:00;True|2021-04-19T18:05:57.5251563-06:00;True|2021-04-16T06:54:30.4752825-06:00;True|2021-04-12T19:25:47.4007448-06:00;True|2021-04-12T15:11:05.9440714-06:00;</History>
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
@@ -30,7 +30,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/19/2022 07:41:09</publishTime>
     </File>
     <File Include="app/js/core.ui.js">
-      <publishTime>10/19/2023 13:33:01</publishTime>
+      <publishTime>11/03/2023 07:36:45</publishTime>
     </File>
     <File Include="app/js/DateValidators.js">
       <publishTime>10/21/2019 20:48:07</publishTime>
@@ -3219,10 +3219,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/19/2022 07:41:11</publishTime>
     </File>
     <File Include="bin/aliados.dll">
-      <publishTime>10/19/2023 14:55:35</publishTime>
+      <publishTime>11/15/2023 07:55:45</publishTime>
     </File>
     <File Include="bin/aliados.pdb">
-      <publishTime>10/19/2023 14:55:35</publishTime>
+      <publishTime>11/15/2023 07:55:45</publishTime>
     </File>
     <File Include="bin/Antlr3.Runtime.dll">
       <publishTime>09/10/2013 10:29:20</publishTime>
@@ -3231,37 +3231,37 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/10/2013 10:29:20</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>10/19/2023 14:55:51</publishTime>
+      <publishTime>11/15/2023 07:56:02</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>10/19/2023 14:55:51</publishTime>
+      <publishTime>11/15/2023 07:56:02</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Business.dll">
-      <publishTime>10/19/2023 13:37:08</publishTime>
+      <publishTime>11/15/2023 07:34:58</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Business.dll.config">
       <publishTime>07/24/2023 15:56:17</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Business.pdb">
-      <publishTime>10/19/2023 13:37:08</publishTime>
+      <publishTime>11/15/2023 07:34:58</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Contracts.dll">
-      <publishTime>10/19/2023 13:37:05</publishTime>
+      <publishTime>11/15/2023 07:34:55</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Contracts.dll.config">
       <publishTime>07/19/2022 07:41:08</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Contracts.pdb">
-      <publishTime>10/19/2023 13:37:05</publishTime>
+      <publishTime>11/15/2023 07:34:55</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.DataAccess.dll">
-      <publishTime>10/19/2023 13:37:06</publishTime>
+      <publishTime>11/15/2023 07:34:56</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.DataAccess.dll.config">
       <publishTime>07/24/2023 15:56:17</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.DataAccess.pdb">
-      <publishTime>10/19/2023 13:37:06</publishTime>
+      <publishTime>11/15/2023 07:34:56</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.DataFactory.dll">
       <publishTime>01/28/2022 10:58:57</publishTime>
@@ -3273,58 +3273,58 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/28/2022 10:58:57</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.dll">
-      <publishTime>10/19/2023 14:55:27</publishTime>
+      <publishTime>11/15/2023 07:55:38</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.dll.config">
       <publishTime>07/24/2023 15:56:17</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.pdb">
-      <publishTime>10/19/2023 14:55:27</publishTime>
+      <publishTime>11/15/2023 07:55:38</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Security.dll">
-      <publishTime>10/19/2023 13:37:06</publishTime>
+      <publishTime>11/15/2023 07:34:56</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Security.dll.config">
       <publishTime>07/24/2023 15:56:17</publishTime>
     </File>
     <File Include="bin/Architect.API.Core.Security.pdb">
-      <publishTime>10/19/2023 13:37:06</publishTime>
+      <publishTime>11/15/2023 07:34:56</publishTime>
     </File>
     <File Include="bin/Architect.API.Insurance.Business.dll">
-      <publishTime>10/19/2023 14:55:29</publishTime>
+      <publishTime>11/15/2023 07:55:39</publishTime>
     </File>
     <File Include="bin/Architect.API.Insurance.Business.dll.config">
       <publishTime>07/24/2023 15:56:17</publishTime>
     </File>
     <File Include="bin/Architect.API.Insurance.Business.pdb">
-      <publishTime>10/19/2023 14:55:29</publishTime>
+      <publishTime>11/15/2023 07:55:39</publishTime>
     </File>
     <File Include="bin/Architect.API.Insurance.Contracts.dll">
-      <publishTime>10/19/2023 13:37:09</publishTime>
+      <publishTime>11/15/2023 07:34:59</publishTime>
     </File>
     <File Include="bin/Architect.API.Insurance.Contracts.dll.config">
       <publishTime>07/24/2023 15:56:17</publishTime>
     </File>
     <File Include="bin/Architect.API.Insurance.Contracts.pdb">
-      <publishTime>10/19/2023 13:37:09</publishTime>
+      <publishTime>11/15/2023 07:34:59</publishTime>
     </File>
     <File Include="bin/Architect.API.Insurance.DataAccess.dll">
-      <publishTime>10/19/2023 13:37:10</publishTime>
+      <publishTime>11/15/2023 07:35:00</publishTime>
     </File>
     <File Include="bin/Architect.API.Insurance.DataAccess.dll.config">
       <publishTime>07/24/2023 15:56:17</publishTime>
     </File>
     <File Include="bin/Architect.API.Insurance.DataAccess.pdb">
-      <publishTime>10/19/2023 13:37:10</publishTime>
+      <publishTime>11/15/2023 07:35:00</publishTime>
     </File>
     <File Include="bin/Architect.API.Insurance.dll">
-      <publishTime>10/19/2023 14:55:30</publishTime>
+      <publishTime>11/15/2023 07:55:40</publishTime>
     </File>
     <File Include="bin/Architect.API.Insurance.dll.config">
       <publishTime>07/24/2023 15:56:17</publishTime>
     </File>
     <File Include="bin/Architect.API.Insurance.pdb">
-      <publishTime>10/19/2023 14:55:30</publishTime>
+      <publishTime>11/15/2023 07:55:40</publishTime>
     </File>
     <File Include="bin/Architect.API.Product.Business.dll">
       <publishTime>02/10/2022 16:46:14</publishTime>
@@ -3360,40 +3360,40 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/10/2022 16:46:14</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.Business.dll">
-      <publishTime>10/19/2023 13:37:12</publishTime>
+      <publishTime>11/15/2023 07:35:01</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.Business.dll.config">
       <publishTime>07/24/2023 15:56:17</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.Business.pdb">
-      <publishTime>10/19/2023 13:37:12</publishTime>
+      <publishTime>11/15/2023 07:35:01</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.Contracts.dll">
-      <publishTime>10/19/2023 13:37:10</publishTime>
+      <publishTime>11/15/2023 07:35:00</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.Contracts.dll.config">
       <publishTime>07/24/2023 15:56:18</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.Contracts.pdb">
-      <publishTime>10/19/2023 13:37:10</publishTime>
+      <publishTime>11/15/2023 07:35:00</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.DataAccess.dll">
-      <publishTime>10/19/2023 13:37:11</publishTime>
+      <publishTime>11/15/2023 07:35:00</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.DataAccess.dll.config">
       <publishTime>07/24/2023 15:56:18</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.DataAccess.pdb">
-      <publishTime>10/19/2023 13:37:11</publishTime>
+      <publishTime>11/15/2023 07:35:00</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.dll">
-      <publishTime>10/19/2023 13:37:13</publishTime>
+      <publishTime>11/15/2023 07:35:03</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.dll.config">
       <publishTime>07/24/2023 15:56:18</publishTime>
     </File>
     <File Include="bin/Architect.API.Tron.pdb">
-      <publishTime>10/19/2023 13:37:13</publishTime>
+      <publishTime>11/15/2023 07:35:03</publishTime>
     </File>
     <File Include="bin/Architect.Common.dll">
       <publishTime>12/21/2021 19:26:15</publishTime>
@@ -3414,10 +3414,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/21/2021 19:26:17</publishTime>
     </File>
     <File Include="bin/Architect.Compliance.Integrations.dll">
-      <publishTime>10/19/2023 13:37:04</publishTime>
+      <publishTime>11/15/2023 07:34:55</publishTime>
     </File>
     <File Include="bin/Architect.Compliance.Integrations.pdb">
-      <publishTime>10/19/2023 13:37:04</publishTime>
+      <publishTime>11/15/2023 07:34:55</publishTime>
     </File>
     <File Include="bin/Architect.Data.Source.dll">
       <publishTime>07/24/2023 15:56:18</publishTime>
@@ -3438,13 +3438,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/10/2022 16:47:08</publishTime>
     </File>
     <File Include="bin/Architect.DataFactory.dll">
-      <publishTime>10/19/2023 13:37:04</publishTime>
+      <publishTime>11/15/2023 07:34:55</publishTime>
     </File>
     <File Include="bin/Architect.DataFactory.dll.config">
       <publishTime>07/24/2023 15:56:17</publishTime>
     </File>
     <File Include="bin/Architect.DataFactory.pdb">
-      <publishTime>10/19/2023 13:37:04</publishTime>
+      <publishTime>11/15/2023 07:34:55</publishTime>
     </File>
     <File Include="bin/Architect.Decision.dll">
       <publishTime>07/24/2023 15:56:18</publishTime>
@@ -3456,10 +3456,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/10/2022 16:46:12</publishTime>
     </File>
     <File Include="bin/Architect.DocuSign.Integrations.dll">
-      <publishTime>10/19/2023 13:37:04</publishTime>
+      <publishTime>11/15/2023 07:34:55</publishTime>
     </File>
     <File Include="bin/Architect.DocuSign.Integrations.pdb">
-      <publishTime>10/19/2023 13:37:04</publishTime>
+      <publishTime>11/15/2023 07:34:55</publishTime>
     </File>
     <File Include="bin/Architect.Domain.Excel.Import.dll">
       <publishTime>07/24/2023 15:56:18</publishTime>
@@ -3480,49 +3480,49 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/10/2022 16:46:13</publishTime>
     </File>
     <File Include="bin/Architect.Extend.Integrations.dll">
-      <publishTime>10/19/2023 13:37:10</publishTime>
+      <publishTime>11/15/2023 07:35:00</publishTime>
     </File>
     <File Include="bin/Architect.Extend.Integrations.dll.config">
       <publishTime>07/24/2023 15:56:17</publishTime>
     </File>
     <File Include="bin/Architect.Extend.Integrations.pdb">
-      <publishTime>10/19/2023 13:37:10</publishTime>
+      <publishTime>11/15/2023 07:35:00</publishTime>
     </File>
     <File Include="bin/Architect.Extend.Integrations.XmlSerializers.dll">
       <publishTime>11/01/2021 11:37:55</publishTime>
     </File>
     <File Include="bin/Architect.Insurance.Contracts.dll">
-      <publishTime>10/19/2023 13:37:02</publishTime>
+      <publishTime>11/15/2023 07:34:54</publishTime>
     </File>
     <File Include="bin/Architect.Insurance.Contracts.pdb">
-      <publishTime>10/19/2023 13:37:02</publishTime>
+      <publishTime>11/15/2023 07:34:54</publishTime>
     </File>
     <File Include="bin/Architect.Insurance.Services.dll">
-      <publishTime>10/19/2023 13:37:04</publishTime>
+      <publishTime>11/15/2023 07:34:55</publishTime>
     </File>
     <File Include="bin/Architect.Insurance.Services.dll.config">
       <publishTime>07/24/2023 15:56:17</publishTime>
     </File>
     <File Include="bin/Architect.Insurance.Services.pdb">
-      <publishTime>10/19/2023 13:37:04</publishTime>
+      <publishTime>11/15/2023 07:34:55</publishTime>
     </File>
     <File Include="bin/Architect.Payment.Integrations.dll">
-      <publishTime>10/19/2023 13:37:05</publishTime>
+      <publishTime>11/15/2023 07:34:55</publishTime>
     </File>
     <File Include="bin/Architect.Payment.Integrations.dll.config">
       <publishTime>07/24/2023 15:56:17</publishTime>
     </File>
     <File Include="bin/Architect.Payment.Integrations.pdb">
-      <publishTime>10/19/2023 13:37:05</publishTime>
+      <publishTime>11/15/2023 07:34:55</publishTime>
     </File>
     <File Include="bin/Architect.PDF.Integrations.dll">
-      <publishTime>10/19/2023 13:37:02</publishTime>
+      <publishTime>11/15/2023 07:34:54</publishTime>
     </File>
     <File Include="bin/Architect.PDF.Integrations.dll.config">
       <publishTime>07/24/2023 15:56:17</publishTime>
     </File>
     <File Include="bin/Architect.PDF.Integrations.pdb">
-      <publishTime>10/19/2023 13:37:02</publishTime>
+      <publishTime>11/15/2023 07:34:54</publishTime>
     </File>
     <File Include="bin/Architect.SmartGenerate.dll">
       <publishTime>07/24/2023 15:56:18</publishTime>
@@ -3531,28 +3531,28 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/10/2022 16:46:09</publishTime>
     </File>
     <File Include="bin/Architect.Utilities.dll">
-      <publishTime>10/19/2023 13:37:02</publishTime>
+      <publishTime>11/15/2023 07:34:54</publishTime>
     </File>
     <File Include="bin/Architect.Utilities.Excel.dll">
-      <publishTime>10/19/2023 13:37:03</publishTime>
+      <publishTime>11/15/2023 07:34:54</publishTime>
     </File>
     <File Include="bin/Architect.Utilities.Excel.dll.config">
       <publishTime>07/24/2023 15:56:17</publishTime>
     </File>
     <File Include="bin/Architect.Utilities.Excel.pdb">
-      <publishTime>10/19/2023 13:37:03</publishTime>
+      <publishTime>11/15/2023 07:34:54</publishTime>
     </File>
     <File Include="bin/Architect.Utilities.pdb">
-      <publishTime>10/19/2023 13:37:02</publishTime>
+      <publishTime>11/15/2023 07:34:54</publishTime>
     </File>
     <File Include="bin/Architect.WS.Integrations.dll">
-      <publishTime>10/19/2023 13:37:11</publishTime>
+      <publishTime>11/15/2023 07:35:01</publishTime>
     </File>
     <File Include="bin/Architect.WS.Integrations.dll.config">
       <publishTime>07/24/2023 15:56:18</publishTime>
     </File>
     <File Include="bin/Architect.WS.Integrations.pdb">
-      <publishTime>10/19/2023 13:37:11</publishTime>
+      <publishTime>11/15/2023 07:35:01</publishTime>
     </File>
     <File Include="bin/BouncyCastle.Crypto.dll">
       <publishTime>10/19/2021 05:53:32</publishTime>
@@ -4683,7 +4683,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/13/2020 20:55:33</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>10/19/2023 14:55:43</publishTime>
+      <publishTime>11/15/2023 07:55:51</publishTime>
     </File>
     <File Include="products/Actividad_Economica_List.json">
       <publishTime>07/24/2023 15:56:19</publishTime>
@@ -4779,7 +4779,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/24/2021 07:25:35</publishTime>
     </File>
     <File Include="releaseletter.txt">
-      <publishTime>10/19/2023 13:33:15</publishTime>
+      <publishTime>11/13/2023 07:43:01</publishTime>
     </File>
     <File Include="Reports/bayer.repx">
       <publishTime>09/27/2022 12:34:24</publishTime>
@@ -4956,10 +4956,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/22/2023 16:52:21</publishTime>
     </File>
     <File Include="Scripts/Cotizacion.MapfreMas.js">
-      <publishTime>10/19/2023 13:33:01</publishTime>
+      <publishTime>10/31/2023 12:19:17</publishTime>
     </File>
     <File Include="Scripts/Cotizacion.MapfreMasPlus.js">
-      <publishTime>10/19/2023 13:33:01</publishTime>
+      <publishTime>10/31/2023 12:19:22</publishTime>
     </File>
     <File Include="Scripts/Cotizacion.Multirriesgo.js">
       <publishTime>10/19/2023 13:33:01</publishTime>
@@ -5004,10 +5004,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/19/2023 13:33:01</publishTime>
     </File>
     <File Include="Scripts/Emision.MapfreMas.js">
-      <publishTime>10/19/2023 13:33:01</publishTime>
+      <publishTime>10/31/2023 12:18:23</publishTime>
     </File>
     <File Include="Scripts/Emision.MapfreMasPlus.js">
-      <publishTime>09/22/2023 16:52:21</publishTime>
+      <publishTime>10/31/2023 12:18:37</publishTime>
     </File>
     <File Include="Scripts/Emision.Multirriesgo.js">
       <publishTime>10/19/2023 13:33:01</publishTime>
@@ -5118,7 +5118,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/19/2022 07:41:09</publishTime>
     </File>
     <File Include="Scripts/Payment.js">
-      <publishTime>02/02/2023 09:13:38</publishTime>
+      <publishTime>11/15/2023 07:27:18</publishTime>
     </File>
     <File Include="Scripts/policy.common.js">
       <publishTime>07/19/2022 07:41:09</publishTime>
@@ -5187,19 +5187,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/03/2023 20:13:23</publishTime>
     </File>
     <File Include="Scripts/Purdy.PanelDanos.js">
-      <publishTime>10/19/2023 13:33:01</publishTime>
+      <publishTime>11/14/2023 15:07:49</publishTime>
     </File>
     <File Include="Scripts/Purdy.PanelDetalle.js">
-      <publishTime>09/22/2023 16:52:21</publishTime>
+      <publishTime>11/14/2023 15:07:46</publishTime>
     </File>
     <File Include="Scripts/Purdy.PanelEncabezado.js">
-      <publishTime>10/19/2023 13:33:01</publishTime>
+      <publishTime>11/13/2023 07:43:01</publishTime>
     </File>
     <File Include="Scripts/Purdy.PanelEvento.js">
-      <publishTime>10/19/2023 13:33:01</publishTime>
+      <publishTime>11/13/2023 07:43:01</publishTime>
     </File>
     <File Include="Scripts/Purdy.PanelIndemnizacion.js">
-      <publishTime>10/19/2023 13:33:01</publishTime>
+      <publishTime>11/14/2023 12:37:02</publishTime>
     </File>
     <File Include="Scripts/Purdy.PanelLegal.js">
       <publishTime>09/22/2023 16:52:21</publishTime>
@@ -5598,7 +5598,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/24/2023 15:56:18</publishTime>
     </File>
     <File Include="Views/Purdy/_danos.cshtml">
-      <publishTime>10/19/2023 13:33:01</publishTime>
+      <publishTime>11/06/2023 20:12:05</publishTime>
     </File>
     <File Include="Views/Purdy/_detalle.cshtml">
       <publishTime>07/24/2023 15:56:18</publishTime>
@@ -5685,7 +5685,64 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/24/2023 15:56:18</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/19/2023 13:43:19</publishTime>
+      <publishTime>11/15/2023 07:52:34</publishTime>
+    </File>
+    <File Include="widgets/pagoDirecto/assets/American-Express.png">
+      <publishTime>09/27/2023 09:32:30</publishTime>
+    </File>
+    <File Include="widgets/pagoDirecto/assets/background-card.svg">
+      <publishTime>09/27/2023 09:32:30</publishTime>
+    </File>
+    <File Include="widgets/pagoDirecto/assets/backgroundCardRed.png">
+      <publishTime>09/27/2023 09:32:30</publishTime>
+    </File>
+    <File Include="widgets/pagoDirecto/assets/cbanco.svg">
+      <publishTime>09/27/2023 09:32:30</publishTime>
+    </File>
+    <File Include="widgets/pagoDirecto/assets/ccahorro.svg">
+      <publishTime>09/27/2023 09:32:30</publishTime>
+    </File>
+    <File Include="widgets/pagoDirecto/assets/credit.svg">
+      <publishTime>09/27/2023 09:32:30</publishTime>
+    </File>
+    <File Include="widgets/pagoDirecto/assets/creditBack.svg">
+      <publishTime>09/27/2023 09:32:30</publishTime>
+    </File>
+    <File Include="widgets/pagoDirecto/assets/discover.svg">
+      <publishTime>09/27/2023 09:32:30</publishTime>
+    </File>
+    <File Include="widgets/pagoDirecto/assets/jcb.svg">
+      <publishTime>09/27/2023 09:32:30</publishTime>
+    </File>
+    <File Include="widgets/pagoDirecto/assets/mastercard.svg">
+      <publishTime>09/27/2023 09:32:30</publishTime>
+    </File>
+    <File Include="widgets/pagoDirecto/assets/pse.png">
+      <publishTime>09/27/2023 09:32:30</publishTime>
+    </File>
+    <File Include="widgets/pagoDirecto/assets/silice.png">
+      <publishTime>09/27/2023 09:32:30</publishTime>
+    </File>
+    <File Include="widgets/pagoDirecto/assets/telered.png">
+      <publishTime>09/27/2023 09:32:30</publishTime>
+    </File>
+    <File Include="widgets/pagoDirecto/assets/visa.svg">
+      <publishTime>09/27/2023 09:32:30</publishTime>
+    </File>
+    <File Include="widgets/pagoDirecto/assets/yappy.webp">
+      <publishTime>09/27/2023 09:32:30</publishTime>
+    </File>
+    <File Include="widgets/pagoDirecto/index.html">
+      <publishTime>09/28/2023 13:44:42</publishTime>
+    </File>
+    <File Include="widgets/pagoDirecto/readme.md">
+      <publishTime>09/27/2023 09:32:30</publishTime>
+    </File>
+    <File Include="widgets/pagoDirecto/widget-pago-directo.css">
+      <publishTime>09/29/2023 11:15:34</publishTime>
+    </File>
+    <File Include="widgets/pagoDirecto/widget-pago-directo.js">
+      <publishTime>09/29/2023 11:15:34</publishTime>
     </File>
   </ItemGroup>
 </Project>

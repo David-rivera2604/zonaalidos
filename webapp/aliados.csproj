@@ -1280,7 +1280,6 @@
     <Content Include="Scripts\ManagerLinks.UI.js" />
     <Content Include="Scripts\Manual.Siniestro.js" />
     <Content Include="Scripts\Extend.js" />
-    <Content Include="Scripts\Payment - Copy.js" />
     <Content Include="Scripts\Payment.js" />
     <Content Include="Scripts\policy.edit.cuestionariocovid.js" />
     <Content Include="Scripts\policy.products.js" />
@@ -1584,7 +1583,6 @@
     <Content Include="documents\CertificadoComplemento\302\boletacargoautomatico.pdf" />
     <Content Include="data\carga_masiva_saldo_deudor.xlsx" />
     <Content Include="data\dummy.json" />
-    <Content Include="data\temp.zip" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>
