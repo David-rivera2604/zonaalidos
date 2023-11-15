@@ -562,3 +562,4 @@
                    MapfreMas. MapfreMasPlus. Corrección para la fecha de vencimiento de pólizas grupo.
 1.6.54  06/11/2023 Purdy. Siniestros. Correcciones y mejoras al panel del siniestro de purdy.
 1.6.55  13/11/2023 Purdy. Siniestros. Correcciones y mejoras al panel del siniestro de purdy.
+1.6.56  15/11/2023 Se habilita el proceso de llenado Formularios Digitales (Solicitud, Kyc, consentimiento) por medio de un Rol.
