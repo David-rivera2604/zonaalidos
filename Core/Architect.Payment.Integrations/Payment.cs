@@ -12,6 +12,55 @@ namespace Architect.Payment.Integrations
     public static class Payment
     {
 
+        /// <summary>
+        /// Permite la creación de un sesión para realizar un pago.
+        /// </summary>
+        public async static Task<Contracts.SessionInformation> NewSessionV2(int companyId, int userId, int cod_agt, Contracts.PaymentInformation payInfo, string ipAddress, string userAgent)
+        {
+            Contracts.OnlinePayment track = Business.OnlinePayment.Create(companyId, userId, new Contracts.OnlinePayment()
+            {
+                CompanyId = companyId,
+                DocumentType = IdentificationTypeConvert(payInfo.DocumentType),
+                DocumentNumber = payInfo.Document,
+                FirstName = payInfo.FirstName,
+                LastName = payInfo.LastName,
+                PrimaryEmailAddress = payInfo.Email,
+                PhoneNumberMobile = payInfo.Mobile,
+                AgentCode = cod_agt,
+                PolicyId = payInfo.PolicyId,
+                BillNumber = payInfo.BillNumber,
+                Currency = CurrencyConvert(payInfo.Currency),
+                Amount = payInfo.Amount,
+                Reference = string.Format("{0}-{1}", payInfo.PolicyId, payInfo.BillNumber),
+                Description = payInfo.Description,
+                IssueDate = DateTime.Now,
+                StatusDate = DateTime.Now,
+                Status = 1
+            });
+
+            payInfo.Reference = string.Format("{0}-{1}-{2}", payInfo.PolicyId, payInfo.BillNumber, track.Id);
+
+            Contracts.SessionInformation result = new SessionInformation() { Status = Providers.Placetopay.Webcheckout.ST_INIT, RequestId = track.Id.ToString() };
+            result.Reference = payInfo.Reference;
+
+            track.Reference = string.Format("{0}-{1}-{2}", payInfo.PolicyId, payInfo.BillNumber, track.Id);
+            track.IssueDate = DateTime.Now;
+            track.StatusDate = DateTime.Now;
+            track.RequestID = Convert.ToInt64(result.RequestId);
+            track.ProcessUrl = result.ProcessUrl;
+            track.ProviderStatus = result.Status == Providers.Placetopay.Webcheckout.ST_OK ? Providers.Placetopay.Webcheckout.ST_INIT : result.Status;
+            track.Reason = result.Reason;
+            track.ResponseData = result.rawData;
+            track.Status = Providers.Placetopay.Webcheckout.StatusConvert(track.ProviderStatus);
+            track.SettingId = result.SettingId;
+
+            Business.OnlinePayment.UpdateNewSession(track);
+
+            Utilities.Log.WarningLog("Payment.NewSession", string.Format("requestId={0}, SettingId={1}", result.RequestId, result.SettingId), "payment");
+
+            return result;
+        }
+
         public static string NotifySignature(Architect.Payment.Integrations.Contracts.NotifyRequest notify, int currency, int settingId, int companyId)
         {
             Utilities.Log.WarningLog("Payment.NotifySignature", string.Format("requestId={0}, SettingId={1}", notify.requestId, settingId), "payment");
@@ -153,7 +202,7 @@ namespace Architect.Payment.Integrations
         /// <summary>
         /// Actualiza la información relacionada con un pago.
         /// </summary>
-        private static OnlinePayment UpdateStatus(int userId, OnlinePayment currentRecord, Architect.Payment.Integrations.Contracts.InformationRequest result)
+        public static OnlinePayment UpdateStatus(int userId, OnlinePayment currentRecord, Architect.Payment.Integrations.Contracts.InformationRequest result)
         {
             currentRecord.StatusDate = DateTime.Now;
             currentRecord.ProviderStatus = result.status;
