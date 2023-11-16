@@ -16,11 +16,14 @@ app.HogarTotal = (function () {
             $('#descuento').prop("disabled", true);
         }
 
-        $('#emitir').html("<i class='fa fa-check'></i> Completar solicitud");
-        workMode = '&mode=draft';
-
-        //$('#emitir').html("<i class='fa fa-check'></i> Emitir");
-        //workMode = '&mode=continue';
+        if (localStorage.getItem('Roles').includes('Formularios_digitales')) {
+            $('#emitir').html("<i class='fa fa-check'></i> Completar solicitud");
+            workMode = '&mode=draft';
+        }
+        else {
+            $('#emitir').html("<i class='fa fa-check'></i> Emitir");
+            workMode = '&mode=continue';
+        }
 
         $('#coberturasTbl').bootstrapTable('showLoading');
         app.core.Get(app.setting.apipath + 'v1/Quote/HogarTotalSetup')

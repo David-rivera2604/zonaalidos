@@ -64,7 +64,10 @@ namespace Architect.API.Tron.Business.Emision
                     result.terceros = Reglas.research.Apply_Terceros("MapfreMas", result.terceros, result.Fuente_Tomador, tokenInfo);
                 }
 
-                result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("MapfreMas", null, result.MCA_CERO_KM, tokenInfo);
+                if (!tokenInfo.Roles.Contain("Formularios_digitales"))
+                {
+                    result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("MapfreMas", null, result.MCA_CERO_KM, tokenInfo);
+                }
 
                 if (mode == "continue")
                 {
@@ -99,7 +102,16 @@ namespace Architect.API.Tron.Business.Emision
 
             if (tryOnTron)
             {
-                result.Modo = "draft";
+                if (tokenInfo.Roles.Contain("Purdy") || tokenInfo.Roles.Contain("Formularios_digitales") ||
+                    tokenInfo.Roles.Contain("Davivienda_Prendarios") || tokenInfo.Roles.Contain("Davivienda_Leasing"))
+                {
+                    result.Modo = "draft";
+                }
+                else
+                {
+                    result.Modo = mode;
+                }
+           
             }
             return result;
         }
