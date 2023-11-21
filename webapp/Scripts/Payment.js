@@ -63,7 +63,7 @@ app.Payment = (function () {
                         .done(function (session) {
                             if (session != null && session.Status == "OK") {
                                 if (lightbox) {
-                                    app.core.LoadScriptFile("https://secure.placetopay.com/redirection/lightbox.min.js")
+                                    app.core.LoadScriptFile("https://checkout.placetopay.com/lightbox.min.js")
                                         .then(d => {
                                             P.on('response', function (data) {
                                                 app.core.Post(app.setting.apipath + 'v1/Pagos/Sesion/' + session.RequestId, null)
