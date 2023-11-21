@@ -19,6 +19,8 @@ namespace Architect.Payment.Integrations.Contracts.v2
         public string subtotal { get; set; }
         public string impuestos { get; set; }
         public string concepto { get; set; }
+
+        public string urlReturn { get; set; }
         public string urlWebhook { get; set; }
         public string countryCode { get; set; }
         public bool contratoFrontal { get; set; }
@@ -27,10 +29,10 @@ namespace Architect.Payment.Integrations.Contracts.v2
 
         public class Item
         {
-            //public int cantidad { get; set; }
-            //public string producto { get; set; }
-            //public float precio { get; set; }
-            //public string moneda { get; set; }
+            public int cantidad { get; set; }
+            public string producto { get; set; }
+            public double precio { get; set; }
+            public string moneda { get; set; }
         }
 
         /// <summary>

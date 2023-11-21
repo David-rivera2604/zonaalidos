@@ -75,10 +75,17 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                         impuestos = "0",
                         total = recibo.IMP_RECIBO.ToString().Replace(",", "."),
                         urlWebhook = string.Empty,
-                        items = new Payment.Integrations.Contracts.v2.PaymentInformation.Item[] { },
-                        Status = string.Empty,
+                        items = new Payment.Integrations.Contracts.v2.PaymentInformation.Item[] { new Payment.Integrations.Contracts.v2.PaymentInformation.Item{
+                            cantidad= 1,
+                            moneda= "CRC",
+                            precio= recibo.IMP_RECIBO,
+                            producto=string.Format("MAPFRE: {0}. POLIZA #{1} RECIBO #{2}", recibo.NOM_RAMO, num_poliza, num_recibo)
+                        } },
+                        Status = string.Empty
                     };
-
+                    payInfov2.emailCliente = "solernelson@gmail.com";
+                    payInfov2.telefonoCliente = "+50672155569";
+                    payInfov2.urlWebhook = "https://webhook.site/702fe79f-c080-4317-a194-71f0a62d70fc";
                 }
                 else
                 {
@@ -88,6 +95,14 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                         Reason = cantidadRemesados == 0 ? "Recibo no encontrado o no está pendiente de pago." : "No puede pagar este recibo, ya que la póliza tiene recibos remesados."
                     };
                 }
+            }
+            else
+            {
+                payInfov2 = new Payment.Integrations.Contracts.v2.PaymentInformation()
+                {
+                    Status = session.Status,
+                    Reason = session.Reason
+                };
             }
             return payInfov2;
         }
@@ -145,12 +160,49 @@ namespace Architect.API.Tron.Business.Backoffice.v2
 
         }
 
-
-        private static async Task Verify(Payment.Integrations.Contracts.OnlinePayment currentRecord)
+        /// <summary>
+        /// Permite el envio de un link de pago.
+        /// </summary>
+        public async static Task<Payment.Integrations.Contracts.v2.PaymentInformation> SendPaymentLink(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo, string mode)
         {
-            Architect.Payment.Integrations.Contracts.InformationRequest result = await Payment.Integrations.Payment.VerifyUpdateStatus(currentRecord, currentRecord.UpdateUserCode, true);
+
+            string token = await Architect.Payment.Integrations.Providers.Silice.Payment.signin();
+
+            Payment.Integrations.Contracts.v2.PaymentInformation payInfov2 = await CrearSesion(tokenInfo, ipAddress, userAgent, num_poliza, num_recibo);
+
+            if (payInfov2 != null)
+            {
 
 
+                payInfov2.urlReturn = payInfov2.urlWebhook;
+
+                string reciboId = await Architect.Payment.Integrations.Providers.Silice.Payment.recibo(token, payInfov2);
+
+                switch (mode)
+                {
+                    case "Correo":
+                        payInfov2.Reason = await Architect.Payment.Integrations.Providers.Silice.Payment.CobroSendEmail(token, reciboId);
+                        break;
+                    case "WhatsApp":
+                        payInfov2.Reason = await Architect.Payment.Integrations.Providers.Silice.Payment.CobroMensajeAutomata(token, reciboId);
+                        break;
+                }
+
+                if (payInfov2.Reason.StartsWith("Error. ", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    payInfov2.Status = "FAIL";
+
+                    Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveByRequestID(Convert.ToInt64(payInfov2.ordenId));
+                    Architect.Payment.Integrations.Payment.UpdateStatus(currentRecord.UpdateUserCode, currentRecord,
+                        new Payment.Integrations.Contracts.InformationRequest()
+                        {
+                            status = "FAIL",
+                            reason = payInfov2.Reason
+                        });
+
+                }
+            }
+            return payInfov2;
         }
 
 

@@ -20,6 +20,10 @@ namespace Architect.API.Tron.Contracts
         /// </summary>
         public Int64 num_recibo { get; set; }
 
+        /// <summary>
+        /// Indica el modo de uso
+        /// </summary>
+        public string mode { get; set; }
     }
 
 }

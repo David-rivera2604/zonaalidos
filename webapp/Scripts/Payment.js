@@ -110,24 +110,24 @@ app.Payment = (function () {
                                         $("body").append('<widget-pagos style="width: 570px; max-height: 50%; position: fixed; left: 20%; top: 40%; right: auto;"></widget-pagos>');
                                         widgetPagos = document.querySelector("widget-pagos");
                                     }
-
-                                    session.emailCliente = 'solernelson@gmail.com';
-                                    session.telefonoCliente = '+50672155569';
-                                    session.urlWebhook = 'https://webhook.site/702fe79f-c080-4317-a194-71f0a62d70fc';
-
                                     const recibo = JSON.stringify(session);
 
                                     console.log(recibo);
 
                                     widgetPagos.addEventListener('loginComplete', (e) => {
-                                        console.log(e);
+                                        console.log('loginComplete', e);
                                         if (e.detail) {
                                             console.log('se ha completado el login, se puede abrir el modal')
                                             widgetPagos.setAttribute('show-modal', recibo);
                                         }
-                                    })
+                                    });
 
-                                    widgetPagos.setAttribute("login", "");
+                                    document.addEventListener('resultadoDisponible', (e) => {
+                                        console.log('resultadoDisponible', e);
+                                        app.ViewerQuery.Refresh(undefined, $('#1GridTbl'), 3000, '', 1);
+                                    });
+
+                                    widgetPagos.setAttribute('login', '');
                                 });
                             }
                             else {
@@ -154,15 +154,25 @@ app.Payment = (function () {
         },
         SendLink: function (tipo, poliza, recibo) {
             console.log(tipo, poliza, recibo);
-            alert("SendLink");
-
-
-
             app.ui.ButtonDoing('#WSendBtn');
             app.ui.ButtonDoing('#ESendBtn');
-            app.ui.CloseSideBar();
-            app.ui.ButtonDoing('#WSendBtn');
-            app.ui.ButtonDoing('#ESendBtn');
+
+            app.core.Post(app.setting.apipath + 'v2/Pagos/SendPaymentLink', JSON.stringify({ mode: tipo, num_poliza: poliza, num_recibo: recibo }))
+                .done(function (data) {
+                    console.log(data);
+
+                    app.ui.ShowAlert('generalNotify', 'alert-danger', data.Reason);
+
+                    // resolve({ status: data.status, message: data.message, data: data });
+
+                    app.ui.CloseSideBar();
+                    app.ui.ButtonDoing('#WSendBtn');
+                    app.ui.ButtonDoing('#ESendBtn');
+
+                });
+
+
+
         }
     };
 })();
