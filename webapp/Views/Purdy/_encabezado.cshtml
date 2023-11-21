@@ -139,8 +139,17 @@
                         <!-- analistagestora DropDownList -->
                         <div class='col-sm-3 col-md-3'>
                             <div class='form-group'>
-                                <label class='control-label' for='analistagestora'>Analista gestora</label>
-                                <div id='analistagestora' class="readonly"></div>
+                                <label class='control-label' for='analistagestoraEnc'>Analista gestora</label>
+                                <div id='analistagestoraEnc' class="readonly"></div>
+                                <div class="input-group d-none analistagestoraGrp-visible">
+                                    <select id='analistagestora' name='analistagestora' class='form-control'>
+                                    </select>
+                                    <span class="input-group-append d-none analistagestoraSave-visible">
+                                        <button id="analistagestoraSave" type="button" class="btn btn-primary">
+                                            Guardar cambio
+                                        </button>
+                                    </span>
+                                </div>
                             </div>
                         </div>
 

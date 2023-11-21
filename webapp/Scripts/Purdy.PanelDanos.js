@@ -4,8 +4,13 @@ app.PurdyPanelDanos = (function () {
 
     let _eventCallback = null;
     let _data = null;
+    let _claim = null;
     let _loadready = false;
     let _changed = false;
+    let _deducible = 0;
+    let _deducibleColOld = 0;
+    let _deducibleCol = 0;
+    let _empresa = '';
 
     function MapInputToObject() {
         var data = {
@@ -15,6 +20,7 @@ app.PurdyPanelDanos = (function () {
             TALLERDESC: app.ui.GetDropDownSelectedText('#taller'),
             FECHAENVIODELAVALUO: app.ui.GetDateValue('#fechaenviodelavaluo'),
             PREREPUESTOS: app.ui.GetNumericValue('#prerepuestos'),
+            PREREPUESTOSDESC: app.ui.GetNumericValue('#prerepuestosdesc'),
             PREREPUESTOSIVA: app.ui.GetNumericValue('#prerepuestosiva'),
             PREREPUESTOSTOTAL: app.ui.GetNumericValue('#prerepuestostotal'),
             PREMANO: app.ui.GetNumericValue('#premano'),
@@ -25,12 +31,14 @@ app.PurdyPanelDanos = (function () {
             AUTORIZACIONDEUSOPOLIZADESC: null,
             FECHAAUTORIZACIONDEUSOPOLIZA: null,
             OT: app.ui.GetNumericValue('#oT'),
+            TIPOCAMBIO: app.ui.GetNumericValue('#TipoCambio'),
             ASESORTALLER: $('#asesorTaller').val(),
             EXPEDIENTE: $('#expediente').val(),
             ANALISTADEDANOS: app.ui.GetDropDownNumericValue('#analistadeDanos'),
             ANALISTADEDANOSDESC: app.ui.GetDropDownSelectedText('#analistadeDanos'),
             DEPRECIACIONYEXCLUSIONES: app.ui.GetNumericValue('#depreciacionyexclusiones'),
             PERDREPUESTO: app.ui.GetNumericValue('#perdrepuesto'),
+            PERDREPUESTODESC: app.ui.GetNumericValue('#perdrepuestodesc'),
             PERDREPUESTOIVA: app.ui.GetNumericValue('#perdrepuestoiva'),
             PERDREPUESTOTOTAL: app.ui.GetNumericValue('#perdrepuestototal'),
             PERDMANO: app.ui.GetNumericValue('#perdmano'),
@@ -56,8 +64,22 @@ app.PurdyPanelDanos = (function () {
             DANOOCULTOMANO: app.ui.GetNumericValue('#danoocultomano'),
             DANOOCULTOMANOIVA: app.ui.GetNumericValue('#danoocultomanoiva'),
             DANOOCULTOMANOTOTAL: app.ui.GetNumericValue('#danoocultomanototal'),
-            OTROSIIOTROSIIDANOCULMANOTOTAL: app.ui.GetNumericValue('#otrosIIOtrosIIDanoocultomanototal')
+            DANOOCULTODESC: app.ui.GetNumericValue('#danoocultodesc'),
+            OTROSIIOTROSIIDANOCULMANOTOTAL: app.ui.GetNumericValue('#otrosIIOtrosIIDanoocultomanototal'),
+            PERDIDATMONTO: app.ui.GetNumericValue('#PERDIDATMONTO'),
+            PERDIDATMONTOCOL: 0,
+            PERDIDATMONTODOL: 0,
+            DEDUCIBLECOL: 0,
+            DEDUCIBLEDOL: 0
         };
+        if (data.TIPOCAMBIO > 0 && data.PERDIDATMONTO > 0) {
+            data.PERDIDATMONTOCOL = _claim.COD_MON === 2 ? data.PERDIDATMONTO * data.TIPOCAMBIO : data.PERDIDATMONTO;
+            data.PERDIDATMONTODOL = _claim.COD_MON === 2 ? data.PERDIDATMONTO : data.PERDIDATMONTO / data.TIPOCAMBIO;
+        }
+        if (data.TIPOCAMBIO > 0 && _deducible > 0) {
+            data.DEDUCIBLECOL = _claim.COD_MON === 2 ? _deducible * data.TIPOCAMBIO : _deducible;
+            data.DEDUCIBLEDOL = _claim.COD_MON === 2 ? _deducible : _deducible / data.TIPOCAMBIO;
+        }
         return data;
     };
 
@@ -66,6 +88,7 @@ app.PurdyPanelDanos = (function () {
         app.ui.SetDropDownNumericValue('#taller', data.TALLER, false);
         app.ui.SetDateValue('#fechaenviodelavaluo', data.FECHAENVIODELAVALUO);
         app.ui.SetNumericValue('#prerepuestos', data.PREREPUESTOS);
+        app.ui.SetNumericValue('#prerepuestosdesc', data.PREREPUESTOSDESC);
         app.ui.SetNumericValue('#prerepuestosiva', data.PREREPUESTOSIVA);
         app.ui.SetNumericValue('#prerepuestostotal', data.PREREPUESTOSTOTAL);
         app.ui.SetNumericValue('#premano', data.PREMANO);
@@ -75,12 +98,14 @@ app.PurdyPanelDanos = (function () {
         //app.ui.SetRadioNumericValue('autorizaciondeusopoliza', data.AUTORIZACIONDEUSOPOLIZA);
         //app.ui.SetDateValue('#fechaAutorizaciondeUsoPoliza', data.FECHAAUTORIZACIONDEUSOPOLIZA);
         app.ui.SetNumericValue('#oT', data.OT);
+        app.ui.SetNumericValue('#TipoCambio', data.TIPOCAMBIO);
         $('#asesorTaller').val(data.ASESORTALLER);
         $('#expediente').val(data.EXPEDIENTE);
         app.ui.SetDropDownNumericValue('#analistadeDanos', data.ANALISTADEDANOS, false);
         app.ui.SetNumericValue('#depreciacionyexclusiones', data.DEPRECIACIONYEXCLUSIONES);
 
         app.ui.SetNumericValue('#perdrepuesto', data.PERDREPUESTO);
+        app.ui.SetNumericValue('#perdrepuestodesc', data.PERDREPUESTODESC);
         app.ui.SetNumericValue('#perdrepuestoiva', data.PERDREPUESTOIVA);
         app.ui.SetNumericValue('#perdrepuestototal', data.PERDREPUESTOTOTAL);
         app.ui.SetNumericValue('#perdmano', data.PERDMANO);
@@ -97,11 +122,15 @@ app.PurdyPanelDanos = (function () {
         $('#observaciones').val(data.OBSERVACIONES);
         app.ui.SetNumericValue('#danoocultomontoRepuestosDanooculto', data.DANOOCULTOMONTOREPDANOOCULTO);
         app.ui.SetNumericValue('#danoocultoiva', data.DANOOCULTOIVA);
+        app.ui.SetNumericValue('#danoocultodesc', data.DANOOCULTODESC);
         app.ui.SetNumericValue('#danoocultototal', data.DANOOCULTOTOTAL);
         app.ui.SetNumericValue('#danoocultomano', data.DANOOCULTOMANO);
         app.ui.SetNumericValue('#danoocultomanoiva', data.DANOOCULTOMANOIVA);
         app.ui.SetNumericValue('#danoocultomanototal', data.DANOOCULTOMANOTOTAL);
         app.ui.SetNumericValue('#otrosIIOtrosIIDanoocultomanototal', data.OTROSIIOTROSIIDANOCULMANOTOTAL);
+
+        app.ui.SetNumericValue('#PERDIDATMONTO', data.PERDIDATMONTO);
+
 
         data_changed();
         _changed = false;
@@ -114,6 +143,15 @@ app.PurdyPanelDanos = (function () {
             locale: 'es'
         });
         new AutoNumeric('#prerepuestos', {
+            decimalCharacter: ',',
+            decimalCharacterAlternative: '.',
+            digitGroupSeparator: '.',
+            maximumValue: '999999999999999999',
+            minimumValue: '0',
+            decimalPlaces: '2',
+            emptyInputBehavior: 'null'
+        });
+        new AutoNumeric('#prerepuestosdesc', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -180,6 +218,15 @@ app.PurdyPanelDanos = (function () {
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
+        new AutoNumeric('#TipoCambio', {
+            decimalCharacter: ',',
+            decimalCharacterAlternative: '.',
+            digitGroupSeparator: '.',
+            maximumValue: '999999',
+            minimumValue: '0',
+            decimalPlaces: '2',
+            emptyInputBehavior: 'null'
+        });
         new AutoNumeric('#oT', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
@@ -199,6 +246,15 @@ app.PurdyPanelDanos = (function () {
             emptyInputBehavior: 'null'
         });
         new AutoNumeric('#perdrepuesto', {
+            decimalCharacter: ',',
+            decimalCharacterAlternative: '.',
+            digitGroupSeparator: '.',
+            maximumValue: '999999999999999999',
+            minimumValue: '0',
+            decimalPlaces: '2',
+            emptyInputBehavior: 'null'
+        });
+        new AutoNumeric('#perdrepuestodesc', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
@@ -274,6 +330,15 @@ app.PurdyPanelDanos = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
+        new AutoNumeric('#danoocultodesc', {
+            decimalCharacter: ',',
+            decimalCharacterAlternative: '.',
+            digitGroupSeparator: '.',
+            maximumValue: '999999999999999999',
+            minimumValue: '0',
+            decimalPlaces: '2',
+            emptyInputBehavior: 'null'
+        });
         new AutoNumeric('#danoocultoiva', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
@@ -328,6 +393,15 @@ app.PurdyPanelDanos = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
+        new AutoNumeric('#PERDIDATMONTO', {
+            decimalCharacter: ',',
+            decimalCharacterAlternative: '.',
+            digitGroupSeparator: '.',
+            maximumValue: '999999999999999999',
+            minimumValue: '0',
+            decimalPlaces: '2',
+            emptyInputBehavior: 'null'
+        });
         $('#fechasolicitado_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es'
@@ -342,7 +416,7 @@ app.PurdyPanelDanos = (function () {
             data_changed();
         });
 
-        $('#PurdyPanelDanosEdtFormSave').click(function () {
+        $('#PurdyPanelDanosEdtFormSave').click(function (e) {
 
             if (app.ui.IsValid('#PurdyPanelDanosEdtForm', false)) {
                 app.ui.ButtonDoing('#PurdyPanelDanosEdtFormSave');
@@ -386,17 +460,18 @@ app.PurdyPanelDanos = (function () {
                         });
                 }
             }
-            event.preventDefault();
+            e.preventDefault();
         });
 
-        $('#PurdyPanelDanosEdtFormCancel').click(function () {
+        $('#PurdyPanelDanosEdtFormCancel').click(function (e) {
             Get(_data.ASIGES);
-            event.preventDefault();
+            e.preventDefault();
         });
 
     };
 
     function data_changed() {
+        let taller = app.ui.GetDropDownNumericValue('#taller');
 
         if (app.ui.GetDropDownNumericValue('#taller') === 1)
             $('.asesorTallerVisible').removeClass('d-none');
@@ -422,9 +497,19 @@ app.PurdyPanelDanos = (function () {
             $('.tipodeperdidatotalVisible').removeClass('d-none');
         else
             $('.tipodeperdidatotalVisible').addClass('d-none');
+        if (_claim != null) {
+            let tipoCambio = app.ui.GetNumericValue('#TipoCambio');
+            if (tipoCambio === 0)
+                tipoCambio = 1;
+            _deducibleCol = _claim.COD_MON === 2 ? _deducible * tipoCambio : _deducible;
 
+            if (_deducibleCol != _deducibleColOld) {
+                _deducibleColOld = _deducibleCol;
+                _eventCallback('DetalleDeducibleCol', _deducibleCol);
+            }
 
-
+            console.log('_deducibleCol', _deducibleCol);
+        }
         app.ui.VisibleBehaviour('.presentadanooculto', app.ui.GetRadioNumericValue('presentadanooculto') === 1);
 
         if (app.ui.GetRadioNumericValue('presentadanooculto') === 2) {
@@ -432,31 +517,68 @@ app.PurdyPanelDanos = (function () {
             $('#observaciones').val('');
             app.ui.SetNumericValue('#danoocultomontoRepuestosDanooculto', 0);
             app.ui.SetNumericValue('#danoocultoiva', 0);
+            app.ui.SetNumericValue('#danoocultodesc', 0);
             app.ui.SetNumericValue('#danoocultototal', 0);
             app.ui.SetNumericValue('#danoocultomano', 0);
             app.ui.SetNumericValue('#danoocultomanoiva', 0);
             app.ui.SetNumericValue('#danoocultomanototal', 0);
             app.ui.SetNumericValue('#otrosIIOtrosIIDanoocultomanototal', 0);
         }
+        let factor = 0.15;
+        switch (taller) {
+            case 1: //Purdy Auto SA
+                factor = _empresa === 'Purdy Motor' ? 0.15 : 0.10;
+                break;
+            default: //otros talleres
+                factor = _empresa === 'Purdy Motor' ? 0.20 : 0.15;
+                break;
 
-        app.ui.SetNumericValue('#prerepuestosiva', app.ui.GetNumericValue('#prerepuestos') * 0.13);
-        app.ui.SetNumericValue('#prerepuestostotal', app.ui.GetNumericValue('#prerepuestos') * 1.13);
-        app.ui.SetNumericValue('#premanoiva', app.ui.GetNumericValue('#premano') * 0.13);
-        app.ui.SetNumericValue('#premanototal', app.ui.GetNumericValue('#premano') * 1.13);
-        app.ui.SetNumericValue('#preperdida', (app.ui.GetNumericValue('#prerepuestos') * 1.13) + (app.ui.GetNumericValue('#premano') * 1.13));
+        }
 
-
-        app.ui.SetNumericValue('#perdrepuestoiva', app.ui.GetNumericValue('#perdrepuesto') * 0.13);
-        app.ui.SetNumericValue('#perdrepuestototal', app.ui.GetNumericValue('#perdrepuesto') * 1.13);
-        app.ui.SetNumericValue('#perdmanoiva', app.ui.GetNumericValue('#perdmano') * 0.13);
-        app.ui.SetNumericValue('#perdmanototal', app.ui.GetNumericValue('#perdmano') * 1.13);
-        app.ui.SetNumericValue('#perdida', (app.ui.GetNumericValue('#perdrepuesto') * 1.13) + (app.ui.GetNumericValue('#perdmano') * 1.13));
-
-        app.ui.SetNumericValue('#danoocultoiva', app.ui.GetNumericValue('#danoocultomontoRepuestosDanooculto') * 0.13);
-        app.ui.SetNumericValue('#danoocultototal', app.ui.GetNumericValue('#danoocultomontoRepuestosDanooculto') * 1.13);
+        let danoocultomontoRep = app.ui.GetNumericValue('#danoocultomontoRepuestosDanooculto');
+        let danoocultodesc = danoocultomontoRep * factor;
+        let danoocultomontoRepsubtotal = danoocultomontoRep - danoocultodesc;
+        $('#pordanoocultodesc').html((factor * 100).toString() + ' % Descuento');
+        $('#pordanoocultodesc').attr('title', ' Empresa ' + _empresa);
+        app.ui.SetNumericValue('#danoocultodesc', danoocultodesc);
+        app.ui.SetNumericValue('#danoocultoiva', danoocultomontoRepsubtotal * 0.13);
+        app.ui.SetNumericValue('#danoocultototal', danoocultomontoRepsubtotal * 1.13);
         app.ui.SetNumericValue('#danoocultomanoiva', app.ui.GetNumericValue('#danoocultomano') * 0.13);
         app.ui.SetNumericValue('#danoocultomanototal', app.ui.GetNumericValue('#danoocultomano') * 1.13);
-        app.ui.SetNumericValue('#otrosIIOtrosIIDanoocultomanototal', (app.ui.GetNumericValue('#danoocultomontoRepuestosDanooculto') * 1.13) + (app.ui.GetNumericValue('#danoocultomano') * 1.13));
+        app.ui.SetNumericValue('#otrosIIOtrosIIDanoocultomanototal', (danoocultomontoRepsubtotal * 1.13) + (app.ui.GetNumericValue('#danoocultomano') * 1.13));
+
+        let prerepuestos = app.ui.GetNumericValue('#prerepuestos');
+        let prerepuestosdesc = prerepuestos * factor;
+        let prerepuestossubtotal = prerepuestos - prerepuestosdesc;
+        $('#porprerepuestosdesc').html((factor * 100).toString() + ' % Descuento');
+        $('#porprerepuestosdesc').attr('title', ' Empresa ' + _empresa);
+        app.ui.SetNumericValue('#prerepuestosdesc', prerepuestosdesc);
+        app.ui.SetNumericValue('#prerepuestosiva', prerepuestossubtotal * 0.13);
+        app.ui.SetNumericValue('#prerepuestostotal', prerepuestossubtotal * 1.13);
+        app.ui.SetNumericValue('#premanoiva', app.ui.GetNumericValue('#premano') * 0.13);
+        app.ui.SetNumericValue('#premanototal', app.ui.GetNumericValue('#premano') * 1.13);
+        $('#preperdida').attr('title', _deducibleCol.toString() + ' de deducible');
+        let preperdida = (prerepuestossubtotal * 1.13) + (app.ui.GetNumericValue('#premano') * 1.13) - _deducibleCol - app.ui.GetNumericValue('#depreciacionyexclusiones');
+        if (preperdida < 0) {
+            preperdida = 0;
+        }
+        $('#porperdrepuestodesc').html((factor * 100).toString() + ' % Descuento');
+        $('#porperdrepuestodesc').attr('title', ' Empresa ' + _empresa);
+        app.ui.SetNumericValue('#preperdida', preperdida);
+
+        app.ui.SetNumericValue('#perdrepuesto', app.ui.GetNumericValue('#danoocultomontoRepuestosDanooculto') + app.ui.GetNumericValue('#prerepuestos'));
+        app.ui.SetNumericValue('#perdrepuestodesc', app.ui.GetNumericValue('#danoocultodesc') + app.ui.GetNumericValue('#prerepuestosdesc'));
+        app.ui.SetNumericValue('#perdrepuestoiva', app.ui.GetNumericValue('#danoocultoiva') + app.ui.GetNumericValue('#prerepuestosiva'));
+        app.ui.SetNumericValue('#perdrepuestototal', app.ui.GetNumericValue('#danoocultototal') + app.ui.GetNumericValue('#prerepuestostotal'));
+        app.ui.SetNumericValue('#perdmano', app.ui.GetNumericValue('#danoocultomano') + app.ui.GetNumericValue('#premano'));
+        app.ui.SetNumericValue('#perdmanoiva', app.ui.GetNumericValue('#danoocultomanoiva') + app.ui.GetNumericValue('#premanoiva'));
+        app.ui.SetNumericValue('#perdmanototal', app.ui.GetNumericValue('#perdmano') + app.ui.GetNumericValue('#perdmanoiva'));
+        let perdida = app.ui.GetNumericValue('#perdrepuestototal') + app.ui.GetNumericValue('#perdmanototal') - _deducibleCol - app.ui.GetNumericValue('#depreciacionyexclusiones');
+        if (perdida < 0) {
+            perdida = 0;
+        }
+        app.ui.SetNumericValue('#perdida', perdida);
+
 
         if (_loadready) {
             _changed = true;
@@ -481,6 +603,7 @@ app.PurdyPanelDanos = (function () {
             TALLER: null,
             FECHAENVIODELAVALUO: null,
             PREREPUESTOS: null,
+            PREREPUESTOSDESC: null,
             PREREPUESTOSIVA: null,
             PREREPUESTOSTOTAL: null,
             PREMANO: null,
@@ -489,12 +612,14 @@ app.PurdyPanelDanos = (function () {
             PREPERDIDA: null,
             AUTORIZACIONDEUSOPOLIZA: 2,
             FECHAAUTORIZACIONDEUSOPOLIZA: null,
+            TIPOCAMBIO: null,
             OT: null,
             ASESORTALLER: null,
             EXPEDIENTE: null,
             ANALISTADEDANOS: null,
             DEPRECIACIONYEXCLUSIONES: null,
             PERDREPUESTO: null,
+            PERDREPUESTODESC: null,
             PERDREPUESTOIVA: null,
             PERDREPUESTOTOTAL: null,
             PERDMANO: null,
@@ -511,13 +636,15 @@ app.PurdyPanelDanos = (function () {
             OBSERVACIONES: null,
             DANOOCULTOMONTOREPDANOOCULTO: null,
             DANOOCULTOIVA: null,
+            DANOOCULTODESC: null,
             DANOOCULTOTOTAL: null,
             DANOOCULTOMANO: null,
             DANOOCULTOMANOIVA: null,
             DANOOCULTOMANOTOTAL: null,
             OTROSIIOTROSIIDANOCULMANOTOTAL: null,
             UPDATEUSERCODE: null,
-            UPDATEDATE: null
+            UPDATEDATE: null,
+            PERDIDATMONTO: null
         };
         return data;
     };
@@ -549,7 +676,7 @@ app.PurdyPanelDanos = (function () {
                 app.core.Lookups(['UsersByRol:Avalúos.analistadeDanos'],
                     function () {
                         MapObjectToInput(EmptyPurdyPanelDano());
-                        
+
                     }, ``);
             }
             catch (err) {
@@ -557,13 +684,14 @@ app.PurdyPanelDanos = (function () {
                 console.error(err);
             }
         },
-        Event: async function (src, data) {
+        Event: async function (src, data, eventData) {
             switch (src) {
                 case 'ASIGESChange':
                     _loadready = false;
                     if (data.claim != null) {
+                        _claim = data.claim;
                         Get(data.asiges);
-                    } else {                        
+                    } else {
                         MapObjectToInput(EmptyPurdyPanelDano());
                         app.ui.SetRadioNumericValue('autorizaciondeusopoliza', 2);
                         app.ui.SetDateValue('#fechaAutorizaciondeUsoPoliza', null);
@@ -572,6 +700,14 @@ app.PurdyPanelDanos = (function () {
                 case 'EventoDataChange':
                     app.ui.SetRadioNumericValue('autorizaciondeusopoliza', data.event.AUTORIZACIONDEUSOPOLIZA);
                     app.ui.SetDateValue('#fechaAutorizaciondeUsoPoliza', data.event.FECHAAUTORIZACIONDEUSOPOLIZA);
+                    data_changed();
+                    break;
+                case 'DetalleDeducible':
+                    _deducible = eventData;
+                    data_changed();
+                    break;
+                case 'PolicyDataChange':
+                    _empresa = eventData.empresa;
                     data_changed();
                     break;
             }

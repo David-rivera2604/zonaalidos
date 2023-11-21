@@ -50,6 +50,7 @@ app.core = (function () {
     let lookupData = [];
 
     function GetPDF(url, download, filename, callback) {
+        let excel = false;
         //var req = new XMLHttpRequest();
         //req.open("GET", url, true);
         //req.responseType = "blob";
@@ -73,6 +74,12 @@ app.core = (function () {
         //    }
         //};
         //req.send();
+
+        if (url.startsWith('excel.')) {
+            url = app.setting.apipath + 'v1/DataSource/excel?id=' + url.substring(6);
+            excel = true;
+            $('.ibox-content').toggleClass('sk-loading');
+        }
         let blobType = 'application/pdf';
         if (filename === null) {
             filename = new Date() + ".pdf";
@@ -108,10 +115,15 @@ app.core = (function () {
             if (callback !== undefined && callback !== null) {
                 callback();
             }
+            if (excel)
+                $('.ibox-content').toggleClass('sk-loading');
+
         }).catch(function (error) {
             if (callback !== undefined && callback !== null) {
                 callback();
             }
+            if (excel)
+                $('.ibox-content').toggleClass('sk-loading');
             toastr.error("Por favor intente nuevamente y en caso de persistir el problema contacte el personal de soporte", "Ha ocurrido un error no controlado", { timeOut: 10000, closeButton: true, progressBar: true });
             error.json().then(body => {
                 console.info('%c Error ', 'color: white; background-color: #D33F49', body.ExceptionMessage);
@@ -605,9 +617,38 @@ app.core = (function () {
 
     function api_ShowError() {
         toastr.error("Por favor intente nuevamente y en caso de persistir el problema contacte el personal de soporte", "Ha ocurrido un error no controlado", { timeOut: 10000, closeButton: true, progressBar: true });
-    }
+    };
 
-    ;
+    function report(reportName, data) {
+        var urlServer = app.setting.apibase + '/AliadoServReports/api/Report/Build';
+        //urlServer = 'http://localhost:5870/api/Report/Build';
+        urlServer = 'https://appqa.mapfrecr.com' + '/AliadoServReports/api/Report/Build';
+
+        let reportParameters = {
+            Source: JSON.stringify(data),
+            Type: 'pdf',
+            ReportName: reportName,
+            Path: ''
+        };
+
+        return fetch(urlServer, {
+            body: JSON.stringify(reportParameters),
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization': 'Bearer ' + localStorage.getItem('Token')
+            },
+            responseType: 'arraybuffer'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    api_ShowError();
+                    return;
+                } else {
+                    return response.json();
+                }
+            });
+    };
 
     return {
         ReplaceAll(string, search, replace) {
@@ -713,17 +754,23 @@ app.core = (function () {
             }
             return url;
         },
-        GetXLSX: function (id, filename) {
+        GetXLSX: function (id, filename, validate) {
             let url = '';
+            let valid = true;
             if (typeof app.Prototype != "undefined") {
+
+                if (typeof validate != "undefined" && validate) {
+                    valid = app.Prototype.IsValid();
+                }
                 url = app.core.DataToURL(app.Prototype.Data());
             }
-
-            let a = document.createElement("a");
-            a.href = app.setting.apipath + 'v1/DataSource/excel?id=' + id + '&url=' + url;
-            a.download = filename;
-            a.click();
-            a.remove()
+            if (valid) {
+                let a = document.createElement("a");
+                a.href = app.setting.apipath + 'v1/DataSource/excel?id=' + id + '&url=' + url;
+                a.download = filename;
+                a.click();
+                a.remove()
+            }
         },
         ExternalCall: function (prefix, jsFile, code) {
             code = code.replace(/@_/g, '\'');
@@ -787,6 +834,22 @@ app.core = (function () {
                                 api_ShowError();
                                 resolve(null);
                             }
+                        }
+                    });
+            })
+        },
+        api_report: function (reportName, data) {
+            return new Promise((resolve, reject) => {
+                report(reportName, data)
+                    .then(data => {
+                        if (data === undefined) {
+                            resolve(null);
+                        } else {
+                            let file = new Blob([data.Data], { type: 'application/octet-binary' });
+                            let blob = app.core.b64StrtoBlob(data.Data, 'application/pdf');
+                            let blobUrl = URL.createObjectURL(blob);
+                            window.open(blobUrl);
+                            resolve(data);
                         }
                     });
             })

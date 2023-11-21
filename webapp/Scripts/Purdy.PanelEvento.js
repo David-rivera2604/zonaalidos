@@ -2,8 +2,10 @@
 
 app.PurdyPanelEvento = (function () {
 
+    let _dep = { empresa: '', primaanual: 0, deducible: 0 };
     let _eventCallback = null;
     let _data = null;
+    let _claim = null;
     let _loadready = false;
     let _changed = false;
 
@@ -11,6 +13,7 @@ app.PurdyPanelEvento = (function () {
         var data = {
             ID: _data.ID,
             ASIGES: _data.ASIGES,
+            ANALISTAGESTORA: _data.ANALISTAGESTORA,
             FECHADELEVENTO: app.ui.GetDateValue('#fechadelevento'),
             ANALISTARECLAMOS: app.ui.GetDropDownNumericValue('#analistareclamos'),
             ANALISTARECLAMOSDESC: app.ui.GetDropDownSelectedText('#analistareclamos'),
@@ -37,7 +40,10 @@ app.PurdyPanelEvento = (function () {
             AUTORIZACIONDEUSOPOLIZA: app.ui.GetRadioNumericValue('autorizaciondeusopolizaEvent'),
             AUTORIZACIONDEUSOPOLIZADESC: app.ui.GetRadioSelectedText('autorizaciondeusopolizaEvent'),
             FECHAAUTORIZACIONDEUSOPOLIZA: app.ui.GetDateValue('#fechaautorizaciondeusopolizaEvent'),
-            DETALLESINIESTRO: null
+            DETALLESINIESTRO: null,
+            EMPRESA: _dep.empresa,
+            PRIMAANUAL: _dep.primaanual,
+            DEDUCIBLE: _dep.deducible
         };
 
         return data;
@@ -45,7 +51,7 @@ app.PurdyPanelEvento = (function () {
 
     function MapObjectToInput(data) {
         _loadready = false;
-        app.ui.SetDateValue('#fechadelevento', data.FECHADELEVENTO);
+        app.ui.SetDateValue('#fechadelevento', _claim != null ? _claim.FEC_DENU_SINI : null);
         app.ui.SetDropDownNumericValue('#analistareclamos', data.ANALISTARECLAMOS, false);
         app.ui.SetDropDownNumericValue('#motivonoProcede', data.MOTIVONOPROCEDE, false);
         $('#detallenoprocede').val(data.DETALLENOPROCEDE);
@@ -124,26 +130,53 @@ app.PurdyPanelEvento = (function () {
             $('.detallenoprocedeVisible').removeClass('d-none');
         else
             $('.detallenoprocedeVisible').addClass('d-none');
-        if (app.ui.GetRadioNumericValue('posiblesubrogacion') === 1)
+        if (app.ui.GetRadioNumericValue('posiblesubrogacion') === 1) {
             $('.fechaidentificadocomoPosibleSubrogacionVisible').removeClass('d-none');
-        else
+            if (app.ui.GetDateValue('#fechaidentificadocomoPosibleSubrogacion') === '0001-01-01T00:00:00') {
+                app.ui.SetDateValue('#fechaidentificadocomoPosibleSubrogacion', new Date());
+            }
+        }
+        else {
             $('.fechaidentificadocomoPosibleSubrogacionVisible').addClass('d-none');
-        if (app.ui.GetRadioNumericValue('enviadoaInvestigacion') === 1)
+            app.ui.SetDateValue('#fechaidentificadocomoPosibleSubrogacion', null);
+        }
+
+        if (app.ui.GetRadioNumericValue('enviadoaInvestigacion') === 1) {
             $('.fechaenviadoainvestigacionVisible').removeClass('d-none');
-        else
+            if (app.ui.GetDateValue('#fechaenviadoainvestigacion') === '0001-01-01T00:00:00') {
+                app.ui.SetDateValue('#fechaenviadoainvestigacion', new Date());
+            }
+        }
+        else {
             $('.fechaenviadoainvestigacionVisible').addClass('d-none');
-        if (app.ui.GetRadioNumericValue('enviadoaacompanamientoLegal') === 1)
+            app.ui.SetDateValue('#fechaenviadoainvestigacion', null);
+        }
+
+        if (app.ui.GetRadioNumericValue('enviadoaacompanamientoLegal') === 1) {
             $('.fechaenviadoaacompanamientoLegalVisible').removeClass('d-none');
-        else
+            if (app.ui.GetDateValue('#fechaenviadoaacompanamientoLegal') === '0001-01-01T00:00:00') {
+                app.ui.SetDateValue('#fechaenviadoaacompanamientoLegal', new Date());
+            }
+        }
+        else {
             $('.fechaenviadoaacompanamientoLegalVisible').addClass('d-none');
-        if (app.ui.GetRadioNumericValue('autorizaciondeusopolizaEvent') === 1)
+            app.ui.SetDateValue('#fechaenviadoaacompanamientoLegal', null);
+        }
+        if (app.ui.GetRadioNumericValue('autorizaciondeusopolizaEvent') === 1) {
             $('.fechaautorizaciondeusopolizaEventVisible').removeClass('d-none');
-        else
+            if (app.ui.GetDateValue('#fechaautorizaciondeusopolizaEvent') === '0001-01-01T00:00:00') {
+                app.ui.SetDateValue('#fechaautorizaciondeusopolizaEvent', new Date());
+            }
+        }
+        else {
             $('.fechaautorizaciondeusopolizaEventVisible').addClass('d-none');
+            app.ui.SetDateValue('#fechaautorizaciondeusopolizaEvent', null);
+        }
         if (_loadready) {
             _changed = true;
         }
         app.ui.CustomBehaviour('eventChanged', _loadready && _changed);
+
 
     };
 
@@ -210,6 +243,7 @@ app.PurdyPanelEvento = (function () {
                 });
         }
     };
+
     async function Get(asigesCode) {
         app.core.Get(`${app.setting.entityapi}/PurdyPanelEvento/asiges?code=${asigesCode}`)
             .done(function (dataEvento) {
@@ -267,8 +301,28 @@ app.PurdyPanelEvento = (function () {
                     Save('El tipo de indemnización, fue almacenado de forma exitosa',
                         'El tipo de indemnización, fue actualizado de forma exitosa');
                     break;
+                case 'AnalistaGestoraChange':
+                    _data.ANALISTAGESTORA = eventData.ANALISTAGESTORA;
+                    _data.ANALISTAGESTORADESC = eventData.ANALISTAGESTORADESC;
+
+                    _loadready = true;
+                    data_changed();
+                    _loadready = false;
+
+                    Save('La analista gestora, fue almacenada de forma exitosa',
+                        'La analista gestora, fue actualizada de forma exitosa');
+                    break;
                 case 'detalleChanged':
                     Get(data.asiges);
+                    break;
+                case 'PolicyDataChange':
+                    _dep.empresa = eventData.empresa;
+                    break;
+                case 'DetalleDeducible':
+                    _dep.deducible = eventData;
+                    break;
+                case 'CoverageDataChange':
+                    _dep.primaanual = eventData.primaanual;
                     break;
             }
         }
