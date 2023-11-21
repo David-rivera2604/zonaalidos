@@ -94,7 +94,7 @@ app.PurdyPanelIndemnizacion = (function () {
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
             maximumValue: '999999999999999999',
-            minimumValue: '0',
+            minimumValue: '-99999999999999999',
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
@@ -594,20 +594,23 @@ app.PurdyPanelIndemnizacion = (function () {
     function CalcBalance() {
         if (_data?.damage != null) {
             let rows = $('#balanceTbl').bootstrapTable('getData');
-            let totaFactMoRep = rows.filter(r => r.TIPODEDOCUMENTO != 3).reduce((accumulator, item) => { return accumulator + item.MONTO - item.NCREPUESTO; }, 0) -
-                                rows.filter(r => r.TIPODEDOCUMENTO === 3).reduce((accumulator, item) => { return accumulator + item.MONTO - item.NCREPUESTO; }, 0);
+            //let totaFactMoRep = rows.filter(r => r.TIPODEDOCUMENTO != 3).reduce((accumulator, item) => { return accumulator + item.MONTO - item.NCREPUESTO; }, 0) -
+            //    rows.filter(r => r.TIPODEDOCUMENTO === 3).reduce((accumulator, item) => { return accumulator + item.MONTO - item.NCREPUESTO; }, 0);
+
+            let totaFactMoRep = rows.reduce((accumulator, item) => { return accumulator + item.MONTO - item.NCREPUESTO; }, 0);
+
             let base = _data.damage.PERDREPUESTO - _data.damage.PERDREPUESTODESC + _data.damage.PERDMANO - _data.damage.DEPRECIACIONYEXCLUSIONES - _deducible;
             let balance = base - totaFactMoRep;
             console.clear();
-            console.log('PERDREPUESTO', _data.damage.PERDREPUESTO);
-            console.log('PERDREPUESTODESC', _data.damage.PERDREPUESTODESC);
-            console.log('PERDMANO', _data.damage.PERDMANO);
-            console.log('DEPRECIACIONYEXCLUSIONES', _data.damage.DEPRECIACIONYEXCLUSIONES);
-            console.log('_deducible', _deducible);
+            console.log('- PERDREPUESTO', _data.damage.PERDREPUESTO);
+            console.log('- PERDREPUESTODESC', _data.damage.PERDREPUESTODESC);
+            console.log('- PERDMANO', _data.damage.PERDMANO);
+            console.log('- DEPRECIACIONYEXCLUSIONES', _data.damage.DEPRECIACIONYEXCLUSIONES);
+            console.log('- _deducible', _deducible);
 
-            console.log('base', base);
-            console.log('totaFactMoRep', totaFactMoRep);
-            console.log('balance', balance);
+            console.log('- base', base);
+            console.log('- totaFactMoRep', totaFactMoRep);
+            console.log('- balance', balance);
 
             $('#gbalance').html(`Saldo: ${app.ui.NumericValueFormat(balance, 2)}`);
         }
@@ -662,6 +665,7 @@ app.PurdyPanelIndemnizacion = (function () {
                     CalcBalance()
                     break;
                 case 'DetalleDeducible':
+                case 'DetalleDeducibleCol':
                     _deducible = eventData;
                     CalcBalance();
                     break;
