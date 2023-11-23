@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
 using Architect.Utilities.Extensions;
@@ -84,7 +85,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                         Status = string.Empty
                     };
                     payInfov2.emailCliente = "solernelson@gmail.com";
-                    payInfov2.telefonoCliente = "+50672155569";
+                    payInfov2.telefonoCliente = "50672155569";
                     payInfov2.urlWebhook = "https://webhook.site/702fe79f-c080-4317-a194-71f0a62d70fc";
                 }
                 else
@@ -166,25 +167,29 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         public async static Task<Payment.Integrations.Contracts.v2.PaymentInformation> SendPaymentLink(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo, string mode)
         {
 
-            string token = await Architect.Payment.Integrations.Providers.Silice.Payment.signin();
+            HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
+
+            client.DefaultRequestHeaders.Authorization = null;
+            string token = await Architect.Payment.Integrations.Providers.Silice.Payment.signin(client);
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
             Payment.Integrations.Contracts.v2.PaymentInformation payInfov2 = await CrearSesion(tokenInfo, ipAddress, userAgent, num_poliza, num_recibo);
 
-            if (payInfov2 != null)
+            if (payInfov2 != null && payInfov2.Status != "FAIL")
             {
 
 
                 payInfov2.urlReturn = payInfov2.urlWebhook;
 
-                string reciboId = await Architect.Payment.Integrations.Providers.Silice.Payment.recibo(token, payInfov2);
+                string reciboId = await Architect.Payment.Integrations.Providers.Silice.Payment.recibo(client, payInfov2);
 
                 switch (mode)
                 {
                     case "Correo":
-                        payInfov2.Reason = await Architect.Payment.Integrations.Providers.Silice.Payment.CobroSendEmail(token, reciboId);
+                        payInfov2.Reason = await Architect.Payment.Integrations.Providers.Silice.Payment.CobroSendEmail(client, reciboId);
                         break;
                     case "WhatsApp":
-                        payInfov2.Reason = await Architect.Payment.Integrations.Providers.Silice.Payment.CobroMensajeAutomata(token, reciboId);
+                        payInfov2.Reason = await Architect.Payment.Integrations.Providers.Silice.Payment.CobroMensajeAutomata(client, reciboId);
                         break;
                 }
 

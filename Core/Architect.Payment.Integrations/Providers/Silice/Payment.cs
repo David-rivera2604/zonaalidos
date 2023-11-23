@@ -13,12 +13,13 @@ namespace Architect.Payment.Integrations.Providers.Silice
     public static class Payment
     {
 
-        public async static Task<string> signin()
+        public async static Task<string> signin(HttpClient client)
         {
             string result = string.Empty;
             var json = JsonConvert.SerializeObject(new { username = "ser_colon", password = "Silice2022" });
             var data = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
+            //HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
+            client.DefaultRequestHeaders.Authorization = null;
             var response = await client.PostAsync("https://api-qa.dspayment.zone/api/v2/auth/signin", data);
             string resultResponse = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
@@ -36,13 +37,15 @@ namespace Architect.Payment.Integrations.Providers.Silice
             return result;
         }
 
-        public async static Task<string> recibo(string token, Architect.Payment.Integrations.Contracts.v2.PaymentInformation payInfov2)
+        public async static Task<string> recibo(HttpClient client, Architect.Payment.Integrations.Contracts.v2.PaymentInformation payInfov2)
         {
             string reciboId = string.Empty;
-            var json = JsonConvert.SerializeObject(payInfov2);
+
+
+                var json = JsonConvert.SerializeObject(payInfov2);
             var data = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+           // HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
+            //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             var response = await client.PostAsync("https://api-qa.dspayment.zone/api/v2/recibo/shopping_car", data);
             string resultResponse = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode && resultResponse.IsNotEmpty())
@@ -56,13 +59,13 @@ namespace Architect.Payment.Integrations.Providers.Silice
             return reciboId;
         }
 
-        public async static Task<string> CobroSendEmail(string token, string reciboId)
+        public async static Task<string> CobroSendEmail(HttpClient client, string reciboId)
         {
             string result = string.Empty;
             var json = JsonConvert.SerializeObject(new { reciboId = reciboId });
             var data = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            //HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
+            //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             var response = await client.PostAsync("https://api-qa.dspayment.zone/api/v2/cobro/sendEmail", data);
             string resultResponse = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode && resultResponse.IsNotEmpty())
@@ -82,13 +85,13 @@ namespace Architect.Payment.Integrations.Providers.Silice
             return result;
         }
 
-        public async static Task<string> CobroMensajeAutomata(string token, string reciboId)
+        public async static Task<string> CobroMensajeAutomata(HttpClient client, string reciboId)
         {
             string result = string.Empty;
             var json = JsonConvert.SerializeObject(new { reciboId = reciboId });
             var data = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            //HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
+            //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             var response = await client.PostAsync("https://api-qa.dspayment.zone/api/v2/cobro/mensajeAutomata", data);
             string resultResponse = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode && resultResponse.IsNotEmpty())
