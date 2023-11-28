@@ -342,6 +342,23 @@ app.EmisionMapfreMas = (function () {
         $('#IMP_AUTO_MECA').val(data.IMP_AUTO_MECA);
         $('#IMP_AUTO_CRI').val(data.IMP_AUTO_CRI);
         $('#DED_AUTO_CRI').val(data.DED_AUTO_CRI);
+        if (data.kyc != null) {
+            let titular = data.terceros.filter(i => i.tipodetercero == 0);
+            let row = {
+                formularioId: 1,
+                name: 'Conozca a su cliente persona',
+                when: new Date(),
+                type: 'kycpersona',
+                data: data.kyc
+            };
+            if (titular[0].DocumentNumberType == 4) {
+                row.name = 'Conozca a su cliente Jurídico';
+                row.type = 'kycjuridico';
+            }
+            $('#formulariosTbl').bootstrapTable('append', row);
+        }
+        else
+            $('#formulariosTbl').bootstrapTable('load', {});
     }
 
     function TipoTercero_Filtro() {
