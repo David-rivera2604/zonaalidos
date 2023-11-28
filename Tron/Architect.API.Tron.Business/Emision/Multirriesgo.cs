@@ -62,14 +62,19 @@ namespace Architect.API.Tron.Business.Emision
                 {
                     result.terceros = Reglas.research.Apply_Terceros("Multirriesgos", result.terceros, result.Fuente_Tomador, tokenInfo);
                 }
-                if (result.documentosrequeridos == null)
+
+                if (!tokenInfo.Roles.Contain("Formularios_digitales"))
                 {
-                    result.documentosrequeridos = new List<Contracts.Comun.DocumentoRequerido>
+                    if (result.documentosrequeridos == null)
                     {
-                    new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=1, tipo = "Expediente Cliente", DArchivoEsperado="Expediente Cliente.pdf", Grupo="F"  },
-                    new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=2, tipo = "Expediente Póliza" , DArchivoEsperado="Expediente Póliza.pdf", Grupo="F" },
-                    };
+                        result.documentosrequeridos = new List<Contracts.Comun.DocumentoRequerido>
+                        {
+                        new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=1, tipo = "Expediente Cliente", DArchivoEsperado="Expediente Cliente.pdf", Grupo="F"  },
+                        new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=2, tipo = "Expediente Póliza" , DArchivoEsperado="Expediente Póliza.pdf", Grupo="F" },
+                        };
+                    }   
                 }
+
             }
             return result;
         }
@@ -137,7 +142,10 @@ namespace Architect.API.Tron.Business.Emision
 
                     try
                     {
-                        //Compliance(quoteInfo, tokenInfo);
+                        if (resultQuoteInfo.num_poliza.IsNotEmpty() && quoteInfo.kyc != null && Utilities.Helpers.Settings.BoolValue("Compliance.Enabled"))
+                        {
+                            Compliance(quoteInfo, tokenInfo);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -145,8 +153,12 @@ namespace Architect.API.Tron.Business.Emision
                     }
 
 
-                    Contracts.PolicyProposal proposal = DataAccess.PolicyProposal.RetrieveByProposalId(quoteInfo.presupuesto, tokenInfo.CompanyId);
-                    //DataAccess.PolicyProposal.Update_Status(proposal.Id, 10, quoteInfo.presupuesto, tokenInfo.UserId);
+                    
+                    if (tokenInfo.Roles.Contain("Formularios_digitales"))
+                    {
+                        Contracts.PolicyProposal proposal = DataAccess.PolicyProposal.RetrieveByProposalId(quoteInfo.presupuesto, tokenInfo.CompanyId);
+                        DataAccess.PolicyProposal.Update_Status(proposal.Id, 10, quoteInfo.presupuesto, tokenInfo.UserId);
+                    }
                 }
             }
 

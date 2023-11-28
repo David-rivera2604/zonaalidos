@@ -6,7 +6,7 @@ app.Extend = (function () {
         EmisionFormatter: function (value, row, index, field) {
             let quote = '', mode = 'continue';
             if (localStorage.getItem('Roles').includes('Purdy') || localStorage.getItem('Roles').includes('Davivienda_Prendarios') ||
-                localStorage.getItem('Roles').includes('Davivienda_Leasing')) {
+                localStorage.getItem('Roles').includes('Davivienda_Leasing') || localStorage.getItem('Roles').includes('Formularios_digitales')) {
                 quote = '', mode = 'resume';
             }
             switch (row.COD_RAMO) {

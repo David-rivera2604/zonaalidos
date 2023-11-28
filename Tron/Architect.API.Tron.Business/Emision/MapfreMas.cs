@@ -60,7 +60,10 @@ namespace Architect.API.Tron.Business.Emision
                     result.terceros = Reglas.research.Apply_Terceros("MapfreMas", result.terceros, result.Fuente_Tomador, tokenInfo);
                 }
 
-                result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("MapfreMas", null, result.MCA_CERO_KM, tokenInfo);
+                if (!tokenInfo.Roles.Contain("Formularios_digitales"))
+                {
+                    result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("MapfreMas", null, result.MCA_CERO_KM, tokenInfo);
+                }
 
                 if (mode == "continue")
                 {
@@ -95,7 +98,15 @@ namespace Architect.API.Tron.Business.Emision
 
             if (tryOnTron)
             {
-                result.Modo = "draft";
+                if (tokenInfo.Roles.Contain("Purdy") || tokenInfo.Roles.Contain("Formularios_digitales") ||
+                    tokenInfo.Roles.Contain("Davivienda_Prendarios") || tokenInfo.Roles.Contain("Davivienda_Leasing"))
+                {
+                    result.Modo = "draft";
+                }
+                else
+                {
+                    result.Modo = mode;
+                }
             }
             return result;
         }
@@ -106,25 +117,18 @@ namespace Architect.API.Tron.Business.Emision
             if (quoteInfo.Modo == "draft" || quoteInfo.Modo == "resume")
             {
                 //TODO: Se debe incluir la validación de que de haber un Tomador, Asegurado y Conductor Habitual, pero faltan las básicas.
-                quoteInfo.DatosEconomicos = EconomicDataCalculate(quoteInfo);
+                quoteInfo.DatosEconomicos = Solicitud.EconomicDataCalculate(quoteInfo);
 
-                //Utilities.SerializeHandler<Contracts.Emision.MapfreMas>.
-                //    SerializeJSONToFile(quoteInfo,
-                //        string.Format(@"{1}\mapfremas.request.{0}.json", quoteInfo.presupuesto, ConfigurationManager.AppSettings["Path.Logs"]), true, false, false);
-
-
-                //ComplianceSetup.Send(quoteInfo, tokenInfo);
-
-                string uniqueId = EnviarSolicitud(quoteInfo.tip_firma, quoteInfo.correoenvio, quoteInfo, tokenInfo);
+                Dictionary<string, string> request = Solicitud.EnviarSolicitud(quoteInfo.tip_firma, quoteInfo.correoenvio, quoteInfo, tokenInfo);
                 string kycUniqueId = String.Empty;
                 //if (quoteInfo.kyc != null)
                 //{
                 //    kycUniqueId = EnviarKYC(quoteInfo.tip_firma, quoteInfo.correoenvio, quoteInfo, tokenInfo);
                 //}
-                AlmacenarSolicitud(quoteInfo, quoteInfo.tip_firma == Contracts.TipoDeFirma.Manual ? 33 : 4, tokenInfo, uniqueId, kycUniqueId);
-                GuardaDatosVariables(quoteInfo.presupuesto, quoteInfo.cod_ramo, quoteInfo.tip_firma, quoteInfo.tip_firmaDesc, uniqueId);
+                AlmacenarSolicitud(quoteInfo, quoteInfo.tip_firma == Contracts.TipoDeFirma.Manual ? 33 : 4, tokenInfo, request["UniqueId"], kycUniqueId);
+                GuardaDatosVariables(quoteInfo.presupuesto, quoteInfo.cod_ramo, quoteInfo.tip_firma, quoteInfo.tip_firmaDesc, request["UniqueId"]);
                 string message = string.Empty;
-                if (uniqueId.IsNotEmpty())
+                if (request["UniqueId"].IsNotEmpty())
                 {
                     message = string.Format("La solicitud fue enviada de forma exitosa usando el tipo de envío indicado ({0})", quoteInfo.tip_firmaDesc);
                 }
@@ -164,7 +168,8 @@ namespace Architect.API.Tron.Business.Emision
                         //Se cambian los adjuntos creados al número de presupuesto al número de póliza generado
                         Core.Business.General.Attachment.ChangeEntityId(tokenInfo.CompanyId, 3000, Convert.ToInt64(resultQuoteInfo.presupuesto), 3000, Convert.ToInt64(resultQuoteInfo.num_poliza), tokenInfo.UserId);
 
-                        if (tokenInfo.Roles.Contain("Purdy") || tokenInfo.Roles.Contain("Davivienda_Prendarios") || tokenInfo.Roles.Contain("Davivienda_Leasing"))
+                        if (tokenInfo.Roles.Contain("Purdy") || tokenInfo.Roles.Contain("Davivienda_Prendarios") || tokenInfo.Roles.Contain("Davivienda_Leasing") ||
+                            tokenInfo.Roles.Contain("Formularios_digitales"))
                         {
                             DataAccess.PolicyProposal.Update_Status(resultQuoteInfo.presupuesto, resultQuoteInfo.num_poliza, tokenInfo.CompanyId, 10, tokenInfo.UserId);
                         }
@@ -185,9 +190,9 @@ namespace Architect.API.Tron.Business.Emision
                 }
                 try
                 {
-                    if (resultQuoteInfo.num_poliza.IsNotEmpty())
+                    if (resultQuoteInfo.num_poliza.IsNotEmpty() && quoteInfo.kyc != null && Utilities.Helpers.Settings.BoolValue("Compliance.Enabled"))
                     {
-                        //ComplianceSetup.Send(quoteInfo, tokenInfo);
+                        ComplianceSetup.Send(quoteInfo, tokenInfo);
                     }
 
                 }
@@ -199,6 +204,7 @@ namespace Architect.API.Tron.Business.Emision
             }
             return resultQuoteInfo;
         }
+
 
         public static string ReEnviarSolicitud(string presupuesto, string correoenvio, Core.Contracts.Security.Token tokenInfo)
         {

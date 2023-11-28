@@ -66,7 +66,10 @@ namespace Architect.API.Tron.Business.Emision
                     result.terceros = Reglas.research.Apply_Terceros("HogarTotal", result.terceros, result.Fuente_Tomador, tokenInfo);
                 }
 
-                result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("HogarTotal", null, 0, tokenInfo);
+                if (!tokenInfo.Roles.Contain("Formularios_digitales"))
+                {
+                    result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("HogarTotal", null, 0, tokenInfo);
+                }
 
                 if (mode == "continue")
                 {
@@ -96,7 +99,14 @@ namespace Architect.API.Tron.Business.Emision
 
             if (tryOnTron)
             {
-                result.Modo = "draft";
+                if (tokenInfo.Roles.Contain("Formularios_digitales"))
+                {
+                    result.Modo = "draft";
+                }
+                else
+                {
+                    result.Modo = mode;
+                }
             }
             return result;
         }
@@ -174,7 +184,7 @@ namespace Architect.API.Tron.Business.Emision
                         //Se cambian los adjuntos creados al número de presupuesto al número de póliza generado
                         Core.Business.General.Attachment.ChangeEntityId(tokenInfo.CompanyId, 3000, Convert.ToInt64(resultQuoteInfo.presupuesto), 3000, Convert.ToInt64(resultQuoteInfo.num_poliza), tokenInfo.UserId);
 
-                        if (tokenInfo.Roles.Contain("Purdy") || tokenInfo.Roles.Contain("Davivienda_Prendarios") || tokenInfo.Roles.Contain("Davivienda_Leasing"))
+                        if (tokenInfo.Roles.Contain("Formularios_digitales"))
                         {
                             DataAccess.PolicyProposal.Update_Status(resultQuoteInfo.presupuesto, resultQuoteInfo.num_poliza, tokenInfo.CompanyId, 10, tokenInfo.UserId);
                         }
@@ -194,9 +204,9 @@ namespace Architect.API.Tron.Business.Emision
                 }
                 try
                 {
-                    if (resultQuoteInfo.num_poliza.IsNotEmpty())
+                    if (resultQuoteInfo.num_poliza.IsNotEmpty() && quoteInfo.kyc != null && Utilities.Helpers.Settings.BoolValue("Compliance.Enabled"))
                     {
-                        //Compliance(quoteInfo, tokenInfo);
+                        Compliance(quoteInfo, tokenInfo);
                     }
 
                 }

@@ -22,7 +22,7 @@ app.EmisionMapfreMas = (function () {
             $('#coberturasTbl').bootstrapTable('showLoading');
             app.core.Get(app.setting.apipath + 'v1/Issue/MapfreMasSetup/' + _id + '?mode=' + workMode)
                 .done(function (data, textStatus, jqXHR) {
-                    //workMode = data.Modo;
+                    workMode = data.Modo;
                     if (localStorage.getItem('Roles').includes('Purdy')) {
                         $('.Purdy').removeClass('d-none');
                         $('#Fuente_Tomador').prop("disabled", (workMode != 'draft' && workMode != 'resume'));
@@ -253,10 +253,10 @@ app.EmisionMapfreMas = (function () {
         if (formulariosData.length > 0) {
             data.kyc = $('#formulariosTbl').bootstrapTable('getData')[0].data;
         }
-        if (!(localStorage.getItem('Roles').includes('Purdy') || localStorage.getItem('Roles').includes('Davivienda_Prendarios') ||
-            localStorage.getItem('Roles').includes('Davivienda_Leasing'))) {
-            data.Modo = 'continue';
-        }
+        //if (!(localStorage.getItem('Roles').includes('Purdy') || localStorage.getItem('Roles').includes('Davivienda_Prendarios') ||
+        //    localStorage.getItem('Roles').includes('Davivienda_Leasing'))) {
+        //    data.Modo = 'continue';
+        //}
 
         setupData = data;
         return data;
@@ -342,6 +342,25 @@ app.EmisionMapfreMas = (function () {
         $('#IMP_AUTO_MECA').val(data.IMP_AUTO_MECA);
         $('#IMP_AUTO_CRI').val(data.IMP_AUTO_CRI);
         $('#DED_AUTO_CRI').val(data.DED_AUTO_CRI);
+        if (data.kyc != null) {
+            let titular = data.terceros.filter(i => i.tipodetercero == 0);
+            let row = {
+                formularioId: 1,
+                name: 'Conozca a su cliente persona',
+                when: new Date(),
+                type: 'kycpersona',
+                data: data.kyc
+            };
+
+            if (titular[0].DocumentNumberType == 4) {
+                row.name = 'Conozca a su cliente Jurídico';
+                row.type = 'kycjuridico';
+            }
+
+            $('#formulariosTbl').bootstrapTable('append', row);
+        }
+        else
+            $('#formulariosTbl').bootstrapTable('load', {});
     }
 
     function TipoTercero_Filtro() {
@@ -469,7 +488,7 @@ app.EmisionMapfreMas = (function () {
 
             $('#fec_vcto_poliza_group').data("DateTimePicker").minDate(minDate);
             if (fec_vcto_poliza_grupo != null) {
-                app.ui.SetDateValue('#fec_vcto_poliza', fec_vcto_poliza);
+                app.ui.SetDateValue('#fec_vcto_poliza', fec_vcto_poliza_grupo);
             } else {
                 let fec_vcto = app.ui.GetDateRawValue('#fec_efec_poliza');
                 fec_vcto.setFullYear(fec_vcto.getFullYear() + 1);

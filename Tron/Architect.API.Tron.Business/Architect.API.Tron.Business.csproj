@@ -94,6 +94,7 @@
     <Compile Include="Emision\SaldoDeudor.cs" />
     <Compile Include="Emision\SaldoDeudorConvert.cs" />
     <Compile Include="Emision\Estudiantil.cs" />
+    <Compile Include="Emision\Solicitud.cs" />
     <Compile Include="Emision\Viajero.cs" />
     <Compile Include="Emision\EstudiantilConvertFrom.cs" />
     <Compile Include="Emision\ViajeroConvertFrom.cs" />
