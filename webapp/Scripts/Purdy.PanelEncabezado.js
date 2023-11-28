@@ -12,7 +12,9 @@ app.PurdyPanelEncabezado = (function () {
                 app.ui.VisibleBehaviour('#tipodeindemnizacionEnc', true);
                 app.ui.VisibleBehaviour('.tipodeindemnizacionGrp', false);
 
-                if (data != null) {
+                if (data?.General?.Data != null) {
+                    data.General.Data.Coberturas = data.Coberturas.Data;
+                    data = data.General.Data;                    
                     app.ui.NotifyClear();
                     $('.panelinfo').removeClass('d-none');
                     data.ASIGES = code;
@@ -52,17 +54,17 @@ app.PurdyPanelEncabezado = (function () {
     function MapObjectToInput(data) {
         $('#estadoMapfre').html(EstadoMapfre(data.tipodeindemnizacionEnc));
         $('#NUM_POLIZA').html(data.NUM_POLIZA);
-        $('#nombreasegurado').html(`${data.NOM_ASEG} ${data.APE_ASEG}`);
-        $('#cedulaasegurado').html(`${data.TIP_DOCUM_ASEG} ${data.COD_DOCUM_ASEG}`);
-        $('#correoasegurado').html(`<a href="mailto:${data.EMAIL_ASEG}" title="Al hacer click se podrá escribir un correo electrónico usando esta dirección">${data.EMAIL_ASEG}</a>`);
+        $('#nombreasegurado').html(`${app.ui.StringValueToString(data.NOM_ASEG)} ${app.ui.StringValueToString(data.APE_ASEG)}`);
+        $('#cedulaasegurado').html(`${app.ui.StringValueToString(data.TIP_DOCUM_ASEG)} ${app.ui.StringValueToString(data.COD_DOCUM_ASEG)}`);
+        $('#correoasegurado').html(`<a href="mailto:${app.ui.StringValueToString(data.EMAIL_ASEG)}" title="Al hacer click se podrá escribir un correo electrónico usando esta dirección">${app.ui.StringValueToString(data.EMAIL_ASEG)}</a>`);
         $('#telefonoasegurado').html(`<a href="tel:${app.ui.StringValueToString(data.TLF_NUMERO_ASEG)}" title="Al hacer click se podrá llamar a este teléfono">${app.ui.StringValueToString(data.TLF_NUMERO_ASEG)}</a>`);
-        $('#ingresodeaviso').html(`${app.ui.DateFormatter(data.FEC_DENU_SINI)} ${data.HORA_DENU_SINI}`);
+        $('#ingresodeaviso').html(`${app.ui.DateFormatter(data.FEC_DENU_SINI)} ${app.ui.StringValueToString(data.HORA_DENU_SINI)}`);
         $('#fechadeleventoEnc').html(``);
         $('#noSiniestro').html(data.NUM_SINI);
         $('#tipodeindemnizacionSel').html(data.tipodeindemnizacionEnc);
         $('#categoriadesiniestroEnc').html(data.categoriadesiniestro);
         $('#analistareclamosSel').html(data.analistareclamosSel);
-        $('#analistagestora').html(data.analistagestora);
+        $('#analistagestoraEnc').html('');
         $('#detallesiniestro').html(data.TXT_DANO_VEHI);
     };
 
@@ -86,6 +88,21 @@ app.PurdyPanelEncabezado = (function () {
             app.ui.VisibleBehaviour('.tipodeindemnizacionSave', false);
             e.preventDefault();
         });
+
+        $('#analistagestora').change(function () {
+            app.ui.VisibleBehaviour('.analistagestoraSave', true);
+        });
+
+        $('#analistagestoraSave').click(function (e) {
+
+            _eventCallback('AnalistaGestoraChange', {
+                ANALISTAGESTORA: app.ui.GetDropDownNumericValue('#analistagestora'),
+                ANALISTAGESTORADESC: app.ui.GetDropDownSelectedText('#analistagestora')
+            });
+            app.ui.VisibleBehaviour('.analistagestoraSave', false);
+            e.preventDefault();
+        });
+
     };
 
     function Setup_Validations() {
@@ -136,6 +153,9 @@ app.PurdyPanelEncabezado = (function () {
                 Setup_Validations();
 
                 Controls_Events();
+
+                app.core.Lookups(['UsersByRol:Avalúos.analistagestora'], function () { }, ``);
+
             }
             catch (err) {
                 console.error("Error Init");
@@ -157,6 +177,13 @@ app.PurdyPanelEncabezado = (function () {
                     app.ui.SetDropDownNumericValue('#tipodeindemnizacion', data.event.TIPODEINDEMNIZACION);
                     $('#tipodeindemnizacionEnc').html(app.ui.GetDropDownSelectedText('#tipodeindemnizacion'));
 
+                    app.ui.SetDropDownNumericValue('#analistagestora', data.event.ANALISTAGESTORA);
+                    $('#analistagestoraEnc').html(app.ui.GetDropDownSelectedText('#analistagestora'));
+
+                    allow = localStorage.getItem('Roles').includes('Avalúos');
+                    app.ui.VisibleBehaviour('#analistagestoraEnc', !allow);
+                    app.ui.VisibleBehaviour('.analistagestoraGrp', allow);
+
                     $('#estadoMapfre').html(EstadoMapfre(data.event.TIPODEINDEMNIZACION));
                     $('#tipodeindemnizacionSel').html(data.event.TIPODEINDEMNIZACIONDESC);
                     $('#analistareclamosSel').html(data.event.ANALISTARECLAMOSDESC);
@@ -177,5 +204,3 @@ app.PurdyPanelEncabezado = (function () {
         }
     };
 })();
-
-
