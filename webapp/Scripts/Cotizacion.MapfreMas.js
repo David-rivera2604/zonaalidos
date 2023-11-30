@@ -8,8 +8,7 @@ app.CotizacionMapfreMas = (function () {
 
     let fec_vcto_poliza_grupo = null;
     let modelHelper = [];
-    let settings = [];
-    let roles = [];
+
     var workMode = '';
     var setupData = null;
     var quoteData = null;
@@ -1124,44 +1123,11 @@ app.CotizacionMapfreMas = (function () {
                     callback();
                 }
                 CoverageReload();
-                DefaultSettings();
+                app.Cotizacion.DefaultSettings('MapfreMas');
             });
 
     }
 
-    function DefaultSettings() {
-
-        if (settings.length === 0) {
-            app.core.Get(`${app.setting.entityapi}/QuoteSetting?code=MapfreMas`)
-                .done(function (resp) {
-                    if (resp?.Sucessfully) {
-                        settings = resp.Data;
-                        roles = JSON.parse(localStorage.getItem('Roles'));
-                        QuoteSettings();
-                    }
-                });
-        } else
-            QuoteSettings();
-    };
-
-    function QuoteSettings() {
-        roles.forEach(function (role) {
-            settings.filter(r => r.Role === role).forEach(function (item) {
-                
-                let name = '#' + item.Field;
-                switch (item.Type) {
-                    case 'DropDownNumericValue':
-                        let value = Number(item.Value);
-                        if (app.ui.GetDropDownNumericValue(name) != value) {
-                            console.log("  ", item);
-                            app.ui.SetDropDownNumericValue(name, item.Value);
-                            $(name).change();
-                        }
-                        break;
-                }
-            });
-        });
-    };
 
     function CoverageReload() {
         //  int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto

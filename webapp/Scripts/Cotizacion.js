@@ -2,6 +2,9 @@
 
 app.Cotizacion = (function () {
 
+    let settings = [];
+    let roles = [];
+
     return {
         Imprimir: function (name, data) {
             var urlServer = app.setting.apibase + '/AliadoServReports/api/Report/Build';
@@ -71,6 +74,38 @@ app.Cotizacion = (function () {
                     }
                 }
             }
+        },
+        DefaultSettings: function (code) {
+
+            if (settings.length === 0) {
+                app.core.Get(`${app.setting.entityapi}/QuoteSetting?code=${code}`)
+                    .done(function (resp) {
+                        if (resp?.Sucessfully) {
+                            settings = resp.Data;
+                            roles = JSON.parse(localStorage.getItem('Roles'));
+                            app.Cotizacion.QuoteSettings();
+                        }
+                    });
+            } else
+                app.Cotizacion.QuoteSettings();
+        },
+        QuoteSettings: function () {
+            roles.forEach(function (role) {
+                settings.filter(r => r.Role === role).forEach(function (item) {
+
+                    let name = '#' + item.Field;
+                    switch (item.Type) {
+                        case 'DropDownNumericValue':
+                            let value = Number(item.Value);
+                            if (app.ui.GetDropDownNumericValue(name) != value) {
+                                console.log("  ", item);
+                                app.ui.SetDropDownNumericValue(name, item.Value);
+                                $(name).change();
+                            }
+                            break;
+                    }
+                });
+            });
         }
     };
 })();
