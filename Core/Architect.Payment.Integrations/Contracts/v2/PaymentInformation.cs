@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,6 +28,26 @@ namespace Architect.Payment.Integrations.Contracts.v2
         public Item[] items { get; set; }
 
 
+        //public DataExtra dataExtra { get; set; }
+
+        //public Address address { get; set; }
+        public class Address
+        {
+            public string address1 { get; set; }
+            public string address2 { get; set; }
+            public string address3 { get; set; }
+            public string postalCode { get; set; }
+            public string city { get; set; }
+            public string state { get; set; }
+            public string countryCode { get; set; }
+
+
+        }
+        public class DataExtra
+        {
+            public string id { get; set; }
+
+        }
         public class Item
         {
             public int cantidad { get; set; }
@@ -35,13 +56,16 @@ namespace Architect.Payment.Integrations.Contracts.v2
             public string moneda { get; set; }
         }
 
-        /// <summary>
-        /// Estado de una petición o pago.
-        /// </summary>
+        //public string origen { get; set; }
+
+
+        // <summary>
+        // Estado de una petición o pago.
+        // </summary>
         public string Status { get; set; }
-        /// <summary>
-        /// Código del motivo proporcionado.
-        /// </summary>        
+        // <summary>
+        // Código del motivo proporcionado.
+        // </summary>        
         public string Reason { get; set; }
     }
 }

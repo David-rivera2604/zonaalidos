@@ -28,7 +28,10 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             Payment.Integrations.Contracts.SessionInformation session = await Payment.Integrations.Payment.VerifySession(tokenInfo.CompanyId, num_poliza, num_recibo);
             if (session == null)
             {
-                payInfov2 = new Payment.Integrations.Contracts.v2.PaymentInformation() { Status = string.Empty };
+                payInfov2 = new Payment.Integrations.Contracts.v2.PaymentInformation()
+                {
+                    Status = string.Empty
+                };
                 int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
                 IsEmployee = tokenInfo.Roles.Contain("Empleado");
                 Contracts.Vistas.Recibo recibo = null;
@@ -69,24 +72,28 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                         documentoCliente = string.Format("{0} {1}", recibo.TIP_DOCUM, recibo.COD_DOCUM),
                         nombreCliente = string.Format("{0} {1}", recibo.NOM_TERCERO, recibo.APE1_TERCERO),
                         emailCliente = recibo.EMAIL.IfEmpty(recibo.TXT_EMAIL),
-                        telefonoCliente = recibo.TLF_MOVIL.IfEmpty(recibo.TLF_NUMERO),
+                        telefonoCliente = recibo.TLF_MOVIL.IfEmpty("506" + recibo.TLF_NUMERO),
                         contratoFrontal = false,
                         concepto = string.Format("MAPFRE: {0}. POLIZA #{1} RECIBO #{2}", recibo.NOM_RAMO, num_poliza, num_recibo),
                         subtotal = recibo.IMP_RECIBO.ToString().Replace(",", "."),
                         impuestos = "0",
                         total = recibo.IMP_RECIBO.ToString().Replace(",", "."),
                         urlWebhook = string.Empty,
+                        //origen = "pau",
+                        //countryCode = "Silice",
                         items = new Payment.Integrations.Contracts.v2.PaymentInformation.Item[] { new Payment.Integrations.Contracts.v2.PaymentInformation.Item{
                             cantidad= 1,
-                            moneda= "CRC",
+                            moneda= recibo.COD_MON == 1? "CRC" : "USD",
                             precio= recibo.IMP_RECIBO,
                             producto=string.Format("MAPFRE: {0}. POLIZA #{1} RECIBO #{2}", recibo.NOM_RAMO, num_poliza, num_recibo)
-                        } },
-                        Status = string.Empty
+                        }  },
+                        //dataExtra = new Payment.Integrations.Contracts.v2.PaymentInformation.DataExtra() { id = "enviadopormapfre" },
+                        ////address = new Payment.Integrations.Contracts.v2.PaymentInformation.Address() { address1 = "panamá", address2 = "herrera", address3 = "chitre", postalCode = "507", city = "chitre", state = "nl", countryCode = "" }
                     };
-                    payInfov2.emailCliente = "solernelson@gmail.com";
-                    payInfov2.telefonoCliente = "50672155569";
-                    payInfov2.urlWebhook = "https://webhook.site/702fe79f-c080-4317-a194-71f0a62d70fc";
+                    //payInfov2.emailCliente = "solernelson@gmail.com";
+                    //payInfov2.telefonoCliente = "50672155569";
+                    payInfov2.urlWebhook = Utilities.Helpers.Settings.StringValue("Payment.Silice.urlWebhook");
+                    payInfov2.Status = string.Empty;
                 }
                 else
                 {
@@ -157,8 +164,6 @@ namespace Architect.API.Tron.Business.Backoffice.v2
 
             }
 
-
-
         }
 
         /// <summary>
@@ -186,10 +191,10 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 switch (mode)
                 {
                     case "Correo":
-                        payInfov2.Reason = await Architect.Payment.Integrations.Providers.Silice.Payment.CobroSendEmail(client, reciboId);
+                        payInfov2.Reason = await Architect.Payment.Integrations.Providers.Silice.Payment.CobroSendEmail(client, reciboId, payInfov2.emailCliente);
                         break;
                     case "WhatsApp":
-                        payInfov2.Reason = await Architect.Payment.Integrations.Providers.Silice.Payment.CobroMensajeAutomata(client, reciboId);
+                        payInfov2.Reason = await Architect.Payment.Integrations.Providers.Silice.Payment.CobroMensajeAutomata(client, reciboId, payInfov2.telefonoCliente);
                         break;
                 }
 
@@ -207,7 +212,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
 
                 }
             }
-            return payInfov2;
+            return new Payment.Integrations.Contracts.v2.PaymentInformation() { Status = payInfov2.Status, Reason = payInfov2.Reason };
         }
 
 
