@@ -140,7 +140,7 @@ namespace Architect.API.Tron.Business.Emision
 
                     try
                     {
-                        if (quoteInfo.kyc != null && Utilities.Helpers.Settings.BoolValue("Compliance.Enabled"))
+                        if (resultQuoteInfo.num_poliza.IsNotEmpty() && quoteInfo.kyc != null && Utilities.Helpers.Settings.BoolValue("Compliance.Enabled"))
                         {
                             Compliance(quoteInfo, tokenInfo);
                         }
@@ -151,8 +151,11 @@ namespace Architect.API.Tron.Business.Emision
                     }
 
 
-                    Contracts.PolicyProposal proposal = DataAccess.PolicyProposal.RetrieveByProposalId(quoteInfo.presupuesto, tokenInfo.CompanyId);
-                    //DataAccess.PolicyProposal.Update_Status(proposal.Id, 10, quoteInfo.presupuesto, tokenInfo.UserId);
+                    if (tokenInfo.Roles.Contain("Formularios_digitales"))
+                    {
+                        Contracts.PolicyProposal proposal = DataAccess.PolicyProposal.RetrieveByProposalId(quoteInfo.presupuesto, tokenInfo.CompanyId);
+                        DataAccess.PolicyProposal.Update_Status(proposal.Id, 10, quoteInfo.presupuesto, tokenInfo.UserId);
+                    }
                 }
             }
 
