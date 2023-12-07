@@ -96,11 +96,37 @@ app.Cotizacion = (function () {
                     let name = '#' + item.Field;
                     switch (item.Type) {
                         case 'DropDownNumericValue':
-                            let value = Number(item.Value);
-                            if (app.ui.GetDropDownNumericValue(name) != value) {
-                                console.log("  ", item);
-                                app.ui.SetDropDownNumericValue(name, item.Value);
-                                $(name).change();
+                            if (item.AllowedValues != null && item.AllowedValues != '') {
+                                item.AllowedValues = ',' + item.AllowedValues + ',';
+                                let toRemove = '';
+                                document.querySelectorAll(name + ' option').forEach(function (option, index, array) {
+                                    if (item.AllowedValues.indexOf(',' + option.value + ',') === -1)
+                                        toRemove += '[value="' + option.value + '"],';
+                                });
+                                if (toRemove != '') {
+                                    $(name).find(toRemove.substring(0, toRemove.length - 1)).remove();
+                                }
+                                if (item.Field === 'cod_marca') {
+                                    $("#VehicleModelHelper").parent().addClass('d-none'); 
+                                }
+                            }
+                            if (item.ValuesToRemove != null && item.ValuesToRemove != '') {
+                                item.ValuesToRemove.split(",").forEach(function (value, index, array) {
+                                    $(name + ' option[value="' + value + '"').remove();
+                                });
+                                if (item.Field === 'cod_marca') {
+                                    $("#VehicleModelHelper").parent().addClass('d-none');
+                                }
+                            }
+                            if (item.Value != null && item.Value != '') {
+                                let value = Number(item.Value);
+                                if (app.ui.GetDropDownNumericValue(name) != value) {
+                                    app.ui.SetDropDownNumericValue(name, item.Value);
+                                    $(name).change();
+                                }
+                            }
+                            if (item.Disable === 1) {
+                                app.ui.DropDownDisabled(name, true, false);
                             }
                             break;
                     }
