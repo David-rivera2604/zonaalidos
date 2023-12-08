@@ -83,6 +83,9 @@ app.Cotizacion = (function () {
                         if (resp?.Sucessfully) {
                             settings = resp.Data;
                             roles = JSON.parse(localStorage.getItem('Roles'));
+                            if (settings === null) {
+                                settings = [];
+                            }
                             app.Cotizacion.QuoteSettings();
                         }
                     });
@@ -95,6 +98,30 @@ app.Cotizacion = (function () {
 
                     let name = '#' + item.Field;
                     switch (item.Type) {
+                        case 'TextValue':
+                            if (item.Value != null && item.Value != '') {
+                                let value = item.Value;
+                                if ($(name).val() != value) {
+                                    $(name).val(item.Value);
+                                    $(name).change();
+                                }
+                            }
+                            if (item.Disable === 1) {
+                                $(name).prop('disabled', true);
+                            }
+                            break;
+                        case 'NumericValue':
+                            if (item.Value != null && item.Value != '') {
+                                let value = Number(item.Value);
+                                if (app.ui.GetNumericValue(name) != value) {
+                                    app.ui.SetNumericValue(name, value);
+                                    $(name).change();
+                                }
+                            }
+                            if (item.Disable === 1) {
+                                $(name).prop('disabled', true);
+                            }
+                            break;
                         case 'DropDownNumericValue':
                             if (item.AllowedValues != null && item.AllowedValues != '') {
                                 item.AllowedValues = ',' + item.AllowedValues + ',';
@@ -107,7 +134,7 @@ app.Cotizacion = (function () {
                                     $(name).find(toRemove.substring(0, toRemove.length - 1)).remove();
                                 }
                                 if (item.Field === 'cod_marca') {
-                                    $("#VehicleModelHelper").parent().addClass('d-none'); 
+                                    $("#VehicleModelHelper").parent().addClass('d-none');
                                 }
                             }
                             if (item.ValuesToRemove != null && item.ValuesToRemove != '') {
