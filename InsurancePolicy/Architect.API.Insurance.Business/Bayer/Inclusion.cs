@@ -331,6 +331,11 @@ namespace Architect.API.Insurance.Business.Bayer
                 risk.ExecutiveUserCode = tokenInfo.UserId;
                 risk.BranchOffice = tokenInfo.BranchOffice;
 
+                if (risk.EffectiveDate.IsEmpty())
+                {
+                    risk.EffectiveDate = risk.IssueDate;
+                }
+
                 switch (inclusionInfo.Mode)
                 {
                     case "draft":
@@ -375,7 +380,7 @@ namespace Architect.API.Insurance.Business.Bayer
                 if (risk.Status > 1 && (inclusionInfo.beneficiarios == null || inclusionInfo.beneficiarios.Count == 0))
                 {
                     inclusionInfo.Errors = new List<Core.Contracts.General.Error>() {
-                                new Core.Contracts.General.Error() { Group = "Inclusion", Key = "DocumentNumber", Message = "Debe indicar la identificación" }                    };
+                                new Core.Contracts.General.Error() { Group = "Inclusion", Key = "DocumentNumber", Message = "Debe existir al menos un beneficiario" }                    };
                     return inclusionInfo;
                 }
 

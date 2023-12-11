@@ -48,3 +48,345 @@ INSERT INTO RESTENDPOINTS (ID, "PATH", "SEQUENCE", VERB, SUMMARY, DESCRIPTION, S
 
 INSERT INTO QUOTESETTING (ID,COMPANYID,QUOTE,ROLENAME,FIELDNAME,FIELDTYPE,FIELDVALUE,FIELDORDER,UPDATEUSERCODE,UPDATEDATE,DISABLE,ALLOWEDVALUES,VALUESTOREMOVE) VALUES (2,12,'MapfreMas','Purdy','cod_marca','DropDownNumericValue',NULL,2,6329,TIMESTAMP'2023-11-29 00:00:00.0',0,'26,45,74',NULL);
 INSERT INTO QUOTESETTING (ID,COMPANYID,QUOTE,ROLENAME,FIELDNAME,FIELDTYPE,FIELDVALUE,FIELDORDER,UPDATEUSERCODE,UPDATEDATE,DISABLE,ALLOWEDVALUES,VALUESTOREMOVE) VALUES (1,12,'MapfreMas','Purdy','contrato','DropDownNumericValue','10001',1,6329,TIMESTAMP'2023-11-29 00:00:00.0',0,NULL,NULL);
+
+
+
+acarranzap@purdymo.com
+
+http://localhost:8082/Aliados/emision/mapfremas?presupuesto=3022300245777&mode=draft
+
+Ajustes purdy
+acarranzap@purdymo.com
+
+
+MapfreMasPlus
+desarrollo
+acarranza
+2023
+
+lfcoronadoh@purdymo.com
+Lfcoro23$
+
+emisionpersonales@mapfrecr.com
+
+{
+  "clienteID": "pruebas-grupomonge",
+  "secretID": "APPGMGZARGCA$092022"
+}
+
+DateTime.Now.WeekOfMonth()
+DateTime.Now.NumericDayOfWeek()) > lunes es 1
+DateTime.Now.Hour
+
+aliados\purdy.pruebas\purdy.pruebas.doctor.killer.4318
+
+guada10
+*5Iw7_
+
+stephanie.madrigal@davivienda.cr
+soporte3
+
+coopenaepruebas@mapfrecr.com
+Coopenae-Credecoop, Cotizadores, Pago, PolizaGrupo, Saldo_Deudor
+2022
+
+comercialpruebas@mafrecr.com
+Cotizadores, Pago, Saldo_Deudor
+
+
+pruebas-grupomonge
+
+Renyor94
+
+TRON2000
+
+pruebas-grupomonge
+APPGMGZARGCA$092022
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNb25nZSBQcnVlYmFzIiwiVXNlcklkIjoiMzQzIiwiQm9keSI6IjQwMzlGQkEzM0QwOTA1MjU4ODcxQzg0RTI0QzlDN0NGNzk1QTkwRjcyMzU4ODhGNTQ0MTU4MkZCQ0E4MEJDMDg0RTRGNTcwNzI5QUNDNUJDQUNCMERFMTkxNzNBODlFQzlCQzc4MDMyMzg0QUY3MTJFRDQ4OUFDNUQ4NkI1NUQwM0M4OTQxOTQ2MkNBRTk2Nzg0NUQ4RTFBODNDOEY3QTIyOEIxRTAzN0M1RTZBMDUwODcwMTA3MERERDgyRjBENjFGRTA3NTNDQzcxMEU1OEFGNzY1NkRFMTYyRDlBREZBMzU4NTdGODgwMDA3RDU0QkRENUI0NEMyQUU4QjI1QUQ1NEI3QkNEQzg1RTMzNjQyQzM5QjhEODVDQ0I0RjA0RUVEMEQ1REY1QTE1MjE5MzU4NkU2OTM2MjNFMzFBNkJENkUwMjY0NzVENTlBREIzRUM0RThFMkVEMjFEMEIzRkI5Q0VDODU4REM5RDdENTU1MzI4MDA4NzEyNkFGMzc4RjgzMzk4QUUzMUU2RjMxOTJCOTA1QTY2RDQzNzRBQzk2Q0NERTcxREI4RTZGOUYxODI4NzM0QUE5QjkyMEMxRDVFODk5RUFDOENDNTc1ODdBNTQ1Njg0MzM2MEE5QUMyMTYxNUQzNjA2ODYwN0VFN0VCMkVEN0NCQjg5MEQ0NTEzNkEyMjI0Mzk3NDVFMzU2NzFGRkY2Qjg1QzlBMTY3REQ5QkQ3RjZFMjQ5QjVDRTI5QkE5NERCQkZDRDYzNzJCOUE2QzI2MDBCMTFFQTlFNURBMEY5OUQ2NDEwNUUyRkUyMUQ2NDJEOEM1MTZENjcxRkMzMkU3RTc3MEVBQkI4NjU4RDA1MkEzMEU4NTZDOTAwNzk5N0Y5RTVBRTA0NDhDOEJFQTEzMjJDQzQwRkVBNTU1NzQzMTkzNjY0Njc4MDBBRTY0NDVGRTFCRTI5M0E4NjE5RDM4NkE3RTc0RUYzRDRGQzkxNjk4MzEwM0Q2OUJFMTQ4Q0M1NDg1NkY1Rjg2OUE4RTFFQUJCQ0QzNTg1NTZBMEY2N0IzREUwRkUxNjhENjk2MDNCQzVBQ0ZGNURDNDBFMURDRUM4QjA3RTA3MENEMzc0RjE3QjkwNzVCOTQyNDcwQzU0NDc3MzNFNEM3REM5RUI2MzY5ODhFQ0Y0N0ZGMzI3OUIzODFEQTFBRDJENkNBRjZBQjJCNjEwMzgxNzcwMkYyN0U1REVCMDZGRDNDODdGOUY3MDJGNENBRkM4NzI4M0RBRjMyRjYwOTIwRSIsImp0aSI6ImY5NmFhOGJlLTIxNWQtNDc4Zi1hYWM4LWY0NDYwNmI1ZWMwYyIsImV4cCI6MTY4NzQ0NjA4MCwiaXNzIjoiSXNzdWVyIiwiYXVkIjoiQXVkaWVuY2UifQ._TA_EXq3EtGlGEQ6wzrXuBPcIBMTaiZj24VdmgzXtI4
+
+admin
+Renyor94
+
+viajero.pruebas
+
+agente.prueba401
+
+royner.acosta
+
+select t.id, t.companyid, t.entityid, t.documenttype, t.description, t.filename, t.rowid from ATTACHMENTS t where t.entitytype=3000 and documenttype=99
+
+
+acarranzap@purdymo.com
+
+
+daviviendapren@pruebas.com
+6329
+
+PENDIENTES
+
+select t.*, t.rowid from VISUALIZATIONS t 
+where (t.id = 3000 and t.sequence=1) or (t.id = 3001 and t.sequence=1) or (t.id = 402 and t.sequence=1);
+
+
+
+kiara.siles@mapfrecr.com
+
+
+CEDULA
+
+
+
+
+
+
+select * from lookupmaster where key = 'ProcessByRol' for update
+select t.*, t.rowid from VISUALIZATIONS t where t.id in (4000,4002)
+
+
+
+
+davivienda
+6329
+
+
+3022200168635
+
+
+3022110199168
+
+Reporte de capital
+viewer/viewer?id=342
+Reporte de cartera vigente
+viewer/viewer?id=343
+Reporte de historico de pago
+viewer/viewer?id=344
+Consultas generales de polizas madres
+viewer/viewer?id=345
+Consultas generales vigencias anteriores
+viewer/viewer?id=346
+
+
+select t.*, t.rowid from VISUALIZATIONS t where t.id = 400 order by t.id , t.sequence
+
+select t.*, t.rowid from VISUALIZATIONS t where t.id in (300,342,343,344,345,346,4000,4003) order by t.id, t.sequence
+
+select * from rolemember where  userid < 20
+
+select * from lookupmaster order by lookupid where key like 'MM_SubModelosVehiculos'
+
+
+
+SELECT 
+ID, SEQUENCE,
+   CAPTION, DESCRIPTION, 
+   STATEMENT, SPECIFICATION, DIALOG, 
+   CONNECTIONNAME, JAVASCRIPTTOINCLUDE
+FROM VISUALIZATIONS where not DIALOG is null order by id, sequence;
+
+
+
+select * from usermember where  userid < 20
+
+
+MultiQuery.begin
+ open {user:cursor} for select * from usermember where  userid < 20;
+ open {role:cursor} for select * from rolemember;
+end;
+
+
+http://localhost:8082/Aliados/api/v1/datasource/json?id=777&sequence=1&url=id=777:p_num_poliza=3022110102184
+
+
+
+select * from (
+select 'A1001397' tabla, 'ALMACENAMIENTO DE CONSENTIMIENTOS' summary, count(num_sini) filas from A1001397 where num_sini=101130223003326 UNION 
+select 'A1004006' tabla, 'ANOTACIONES EN LA AGENDA PENDIENTES Y  RESUELTAS' summary, count(num_sini) filas from A1004006 where num_sini=101130223003326 UNION 
+select 'A2000220' tabla, 'CONTROL TECNICO DEL SINIESTRO' summary, count(num_sini) filas from A2000220 where num_sini=101130223003326 UNION 
+select 'A2000310_4_MCR' tabla, 'FACT TABLE SINIESTROS' summary, count(num_sini) filas from A2000310_4_MCR where num_sini=101130223003326 UNION 
+select 'A2000310_MCR' tabla, 'FACT TABLE SINIESTROS' summary, count(num_sini) filas from A2000310_MCR where num_sini=101130223003326 UNION 
+select 'A2000311_4_MCR' tabla, 'FACT TABLE SINIESTROS' summary, count(num_sini) filas from A2000311_4_MCR where num_sini=101130223003326 UNION 
+select 'A2000410_MCR' tabla, 'FACT TABLE SINIESTROS' summary, count(num_sini) filas from A2000410_MCR where num_sini=101130223003326 UNION 
+select 'A2000411_MCR' tabla, 'FACT TABLE LIQUIDACIONES' summary, count(num_sini) filas from A2000411_MCR where num_sini=101130223003326 UNION 
+select 'A2500120_MAC' tabla, 'TABLA TEMPORAL PARA SOPORTAR LA EMISIÓN DE LOS MOVIMIENTOS DE SINIESTROS PARA EL ANÁLISIS DEL NO PROPORCIONAL' summary, count(num_sini) filas from A2500120_MAC where num_sini=101130223003326 UNION 
+select 'A2500270' tabla, 'DETALLE DE LA CARGA DE OPERACIONES DE REASEGURO POR CONTRATO / MOVIMIENTO' summary, count(num_sini) filas from A2500270 where num_sini=101130223003326 UNION 
+select 'A2500270_02122020TEMP' tabla, '' summary, count(num_sini) filas from A2500270_02122020TEMP where num_sini=101130223003326 UNION 
+select 'A2500270_BKP_2013MAR07' tabla, '' summary, count(num_sini) filas from A2500270_BKP_2013MAR07 where num_sini=101130223003326 UNION 
+select 'A2500270_RESPALDO' tabla, '' summary, count(num_sini) filas from A2500270_RESPALDO where num_sini=101130223003326 UNION 
+select 'A2501700' tabla, 'CABECERA DE PAGOS DE SINIESTROS EN REASEGURO NO PROPORCIONAL' summary, count(num_sini) filas from A2501700 where num_sini=101130223003326 UNION 
+select 'A2501701' tabla, 'DETALLE DE CESION A CONTRATOS DE PAGOS DE SINIESTROS EN REASEGURO NO PROPORCIONAL' summary, count(num_sini) filas from A2501701 where num_sini=101130223003326 UNION 
+select 'A2501702' tabla, 'CABECERA DE VALORACIONES DE SINIESTROS EN REASEGURO NO PROPORCIONAL' summary, count(num_sini) filas from A2501702 where num_sini=101130223003326 UNION 
+select 'A2501703' tabla, 'DETALLE DE CESION A CONTRATOS DE VALORACIONES DE SINIESTROS EN REASEGURO NO PROPORCIONAL' summary, count(num_sini) filas from A2501703 where num_sini=101130223003326 UNION 
+select 'A2501710' tabla, 'MODIFICACIÓN DE DISTRIBUCION DE REASEGURO DE SINIESTROS' summary, count(num_sini) filas from A2501710 where num_sini=101130223003326 UNION 
+select 'A3000000' tabla, 'DATOS FIJOS DE FACTURAS. (MODULO  DE FACTURACION)' summary, count(num_sini) filas from A3000000 where num_sini=101130223003326 UNION 
+select 'A3000010' tabla, 'DESGLOSE DE LAS FACTURAS (MODULO DE FACTURACION)   ' summary, count(num_sini) filas from A3000010 where num_sini=101130223003326 UNION 
+select 'A3000020' tabla, 'IMPORTES NO AMPARADOS DE LAS FACTURAS (MODULO DE FACTURACION)' summary, count(num_sini) filas from A3000020 where num_sini=101130223003326 UNION 
+select 'A3000040' tabla, 'SEGUNDAS LIQUIDACIONES (MODULO DE FACTURACION)' summary, count(num_sini) filas from A3000040 where num_sini=101130223003326 UNION 
+select 'A3000500' tabla, 'DATOS FIJOS DEL PLAN DE RENTA MENSUAL (P.R.M.) ' summary, count(num_sini) filas from A3000500 where num_sini=101130223003326 UNION 
+select 'A3000510' tabla, 'BENEFICIARIOS DEL P.R.M.' summary, count(num_sini) filas from A3000510 where num_sini=101130223003326 UNION 
+select 'A3000520' tabla, 'CUOTAS EXTRAS DEL P.R.M.' summary, count(num_sini) filas from A3000520 where num_sini=101130223003326 UNION 
+select 'A3000530' tabla, 'LIQUIDACIONES DEL P.R.M. ' summary, count(num_sini) filas from A3000530 where num_sini=101130223003326 UNION 
+select 'A3001700' tabla, 'DATOS FIJOS DE LAS  LIQUIDACIONES DE EXPEDIENTES' summary, count(num_sini) filas from A3001700 where num_sini=101130223003326 UNION 
+select 'A3001800' tabla, 'DESGLOSE DE LAS LIQUIDACIONES DE EXPEDIENTES ' summary, count(num_sini) filas from A3001800 where num_sini=101130223003326 UNION 
+select 'A3001910' tabla, 'DESGLOSE DE LA FACTURACION MULTIPLE' summary, count(num_sini) filas from A3001910 where num_sini=101130223003326 UNION 
+select 'A5021600' tabla, 'REGISTRO DIARIO DE OPERACIONES' summary, count(num_sini) filas from A5021600 where num_sini=101130223003326 UNION 
+select 'A5021600_30072015' tabla, '' summary, count(num_sini) filas from A5021600_30072015 where num_sini=101130223003326 UNION 
+select 'A5021600_BAK_18012022' tabla, '' summary, count(num_sini) filas from A5021600_BAK_18012022 where num_sini=101130223003326 UNION 
+select 'A5021600_HIST' tabla, 'REGISTRO DIARIO DE OPERACIONES HISTORICO CASOS DE AJUSTE' summary, count(num_sini) filas from A5021600_HIST where num_sini=101130223003326 UNION 
+select 'A5021601' tabla, 'REGISTRO DIARIO DE OPERACIONES PARA DIFERENCIA DE CAJA' summary, count(num_sini) filas from A5021601 where num_sini=101130223003326 UNION 
+select 'A5021609' tabla, 'REGISTRO DE FACTURAS' summary, count(num_sini) filas from A5021609 where num_sini=101130223003326 UNION 
+select 'A5021900' tabla, 'HISTORICO DE REGISTRO DIARIO DE OPERACIONES' summary, count(num_sini) filas from A5021900 where num_sini=101130223003326 UNION 
+select 'A5021900_11022019' tabla, '' summary, count(num_sini) filas from A5021900_11022019 where num_sini=101130223003326 UNION 
+select 'A7000000' tabla, 'ERRORES ECONOMICOS DEL CUADRE DE SINIESTROS' summary, count(num_sini) filas from A7000000 where num_sini=101130223003326 UNION 
+select 'A7000001' tabla, 'ERRORES NO ECONOMICOS DEL CUADRE DE SINIESTROS' summary, count(num_sini) filas from A7000001 where num_sini=101130223003326 UNION 
+select 'A7000900' tabla, 'DATOS FIJOS DEL SINIESTRO ' summary, count(num_sini) filas from A7000900 where num_sini=101130223003326 UNION 
+select 'A7000905' tabla, 'DOCUMENTOS DEL SINIESTRO' summary, count(num_sini) filas from A7000905 where num_sini=101130223003326 UNION 
+select 'A7000930' tabla, 'CAUSAS DEL  SINIESTRO' summary, count(num_sini) filas from A7000930 where num_sini=101130223003326 UNION 
+select 'A7000940' tabla, 'TESTIGOS' summary, count(num_sini) filas from A7000940 where num_sini=101130223003326 UNION 
+select 'A7000950' tabla, 'DATOS GENERALES DEL SINIESTRO AUTOS' summary, count(num_sini) filas from A7000950 where num_sini=101130223003326 UNION 
+select 'A7000956' tabla, 'PERJUDICADOS DE GENERALES' summary, count(num_sini) filas from A7000956 where num_sini=101130223003326 UNION 
+select 'A7000960' tabla, 'LUGAR DE OCURRENCIA DEL SINIESTRO NO AUTOS.' summary, count(num_sini) filas from A7000960 where num_sini=101130223003326 UNION 
+select 'A7000970' tabla, 'ENTES RELACIONADOS CON EL SINIESTRO' summary, count(num_sini) filas from A7000970 where num_sini=101130223003326 UNION 
+select 'A7000971' tabla, 'RELATO DEL SINIESTRO' summary, count(num_sini) filas from A7000971 where num_sini=101130223003326 UNION 
+select 'A7000972' tabla, 'DATOS GENERALES DEL SINIESTRO SALUD' summary, count(num_sini) filas from A7000972 where num_sini=101130223003326 UNION 
+select 'A7000973' tabla, 'DATOS CONTRARIOS DEL SINIESTRO' summary, count(num_sini) filas from A7000973 where num_sini=101130223003326 UNION 
+select 'A7000974' tabla, 'DATOS LESIONADOS DEL SINIESTRO' summary, count(num_sini) filas from A7000974 where num_sini=101130223003326 UNION 
+select 'A7000975' tabla, 'DATOS DEL ASEGURADO SINIESTRO AUTOS' summary, count(num_sini) filas from A7000975 where num_sini=101130223003326 UNION 
+select 'A7000976' tabla, 'DATOS DE LA DEFENSA PENAL DEL SINIESTRO' summary, count(num_sini) filas from A7000976 where num_sini=101130223003326 UNION 
+select 'A7000977' tabla, 'NO VALE, HAY QUE BORRARLA' summary, count(num_sini) filas from A7000977 where num_sini=101130223003326 UNION 
+select 'A7000978' tabla, 'ASEGURADO SINIESTRO NO AUTOS' summary, count(num_sini) filas from A7000978 where num_sini=101130223003326 UNION 
+select 'A7000985' tabla, 'DATOS COASEGURO ACEPTADO DEL SINIESTRO' summary, count(num_sini) filas from A7000985 where num_sini=101130223003326 UNION 
+select 'A7000988' tabla, 'ACCESORIOS SINIESTRADOS' summary, count(num_sini) filas from A7000988 where num_sini=101130223003326 UNION 
+select 'A7001000' tabla, 'DATOS FIJOS DEL EXPEDIENTE' summary, count(num_sini) filas from A7001000 where num_sini=101130223003326 UNION 
+select 'A7001001_MCR' tabla, 'SOLICITUDES PARA EL CAMBIO DE VALORACIO' summary, count(num_sini) filas from A7001001_MCR where num_sini=101130223003326 UNION 
+select 'A7001005' tabla, 'SINIESTROS/EXPEDIENTES CANDIDATOS SUPLEMENTOS DE BAJA CAPITAL' summary, count(num_sini) filas from A7001005 where num_sini=101130223003326 UNION 
+select 'A7001010' tabla, 'DOCUMENTOS DEL EXPEDIENTE' summary, count(num_sini) filas from A7001010 where num_sini=101130223003326 UNION 
+select 'A7001020' tabla, 'HISTORICO DE ASIGNACIONES DE TRAMITADORES /SUPERVISORES ' summary, count(num_sini) filas from A7001020 where num_sini=101130223003326 UNION 
+select 'A7001030' tabla, 'HISTORICO DE CAUSAS DEL EXPEDIENTE' summary, count(num_sini) filas from A7001030 where num_sini=101130223003326 UNION 
+select 'A7001030_SUB_MCR' tabla, '' summary, count(num_sini) filas from A7001030_SUB_MCR where num_sini=101130223003326 UNION 
+select 'A7001040' tabla, 'DATOS DEL CONTRARIO DEL EXPEDIENTE' summary, count(num_sini) filas from A7001040 where num_sini=101130223003326 UNION 
+select 'A7001050' tabla, 'DATOS DEL LESIONADO DEL EXPEDIENTE' summary, count(num_sini) filas from A7001050 where num_sini=101130223003326 UNION 
+select 'A7001056' tabla, 'DATOS DEL PERJUDICADO DEL EXPEDIENTE' summary, count(num_sini) filas from A7001056 where num_sini=101130223003326 UNION 
+select 'A7001060' tabla, 'DATOS DEL ASEGURADO DEL EXPEDIENTE NO AUTOS' summary, count(num_sini) filas from A7001060 where num_sini=101130223003326 UNION 
+select 'A7001070' tabla, 'DATOS DE LA DEFENSA PENAL DEL EXPEDIENTE' summary, count(num_sini) filas from A7001070 where num_sini=101130223003326 UNION 
+select 'A7001071' tabla, 'DATOS FIJOS DE ESPEDIENTES DE SALUD' summary, count(num_sini) filas from A7001071 where num_sini=101130223003326 UNION 
+select 'A7001072' tabla, 'NO VALE, HAY QUE BORRARLA' summary, count(num_sini) filas from A7001072 where num_sini=101130223003326 UNION 
+select 'A7001080' tabla, 'DATOS DEL ASEGURADO DEL EXPEDIENTE DE AUTOS' summary, count(num_sini) filas from A7001080 where num_sini=101130223003326 UNION 
+select 'A7001090' tabla, 'NO VALE, HAY QUE BORRARLA' summary, count(num_sini) filas from A7001090 where num_sini=101130223003326 UNION 
+select 'A7002010' tabla, 'OBJETOS VALIOSOS SINIESTRADOS DEL EXPEDIENTE' summary, count(num_sini) filas from A7002010 where num_sini=101130223003326 UNION 
+select 'A7002200' tabla, 'RESERVAS DE SINIESTROS A FIN DE MES' summary, count(num_sini) filas from A7002200 where num_sini=101130223003326 UNION 
+select 'A7005000' tabla, 'DATOS GENERALES DE LOS JUICIOS' summary, count(num_sini) filas from A7005000 where num_sini=101130223003326 UNION 
+select 'A7005010' tabla, 'RELACION DE JUICIOS POR SINIESTRO/EXPEDIENTE' summary, count(num_sini) filas from A7005010 where num_sini=101130223003326 UNION 
+select 'A7005020' tabla, 'HISTORICA DE ABOGADOS DEL JUICIO' summary, count(num_sini) filas from A7005020 where num_sini=101130223003326 UNION 
+select 'A7005030' tabla, 'HISTORICO DE IMPORTES DEL JUICIO' summary, count(num_sini) filas from A7005030 where num_sini=101130223003326 UNION 
+select 'A7005040' tabla, 'PERSONAS RELACIONADA CON EL JUICIO' summary, count(num_sini) filas from A7005040 where num_sini=101130223003326 UNION 
+select 'A7006000' tabla, 'DATOS GENERALES DE LAS  PERITACIONES' summary, count(num_sini) filas from A7006000 where num_sini=101130223003326 UNION 
+select 'A7006001' tabla, 'ORDENES DE REPARACION' summary, count(num_sini) filas from A7006001 where num_sini=101130223003326 UNION 
+select 'A7006010' tabla, 'VALORACIONES DE INSPECCION/PERITACION' summary, count(num_sini) filas from A7006010 where num_sini=101130223003326 UNION 
+select 'A7006020' tabla, 'DANIOS DE LAS INSPECCIONES/PERITACIONES' summary, count(num_sini) filas from A7006020 where num_sini=101130223003326 UNION 
+select 'A7006040' tabla, 'DATOS DE LAS INSPECCIONES/PERITACIONES POR EXPEDIENTES' summary, count(num_sini) filas from A7006040 where num_sini=101130223003326 UNION 
+select 'A7006050' tabla, 'DATOS DE LAS VISITAS DE UNA INSPECCION/PERITACION' summary, count(num_sini) filas from A7006050 where num_sini=101130223003326 UNION 
+select 'A7006055' tabla, 'HISTORICO DE PERITOS DE UNA INSPECCION/PERITACION' summary, count(num_sini) filas from A7006055 where num_sini=101130223003326 UNION 
+select 'A7006060' tabla, 'DATOS DEL RESULTADO DE UNA INSPECCION/PERITACION' summary, count(num_sini) filas from A7006060 where num_sini=101130223003326 UNION 
+select 'A7007000' tabla, 'REGISTRO DE ENTRADA Y SALIDA DE LOS INVENTARIOS' summary, count(num_sini) filas from A7007000 where num_sini=101130223003326 UNION 
+select 'A7007091' tabla, 'DATOS GENERALES DE EXPEDIENTES DE SALVAMENTOS' summary, count(num_sini) filas from A7007091 where num_sini=101130223003326 UNION 
+select 'A7007092' tabla, 'NO VALE, HAY QUE BORRARLA' summary, count(num_sini) filas from A7007092 where num_sini=101130223003326 UNION 
+select 'A7009020_MCR' tabla, 'CLAIMS VARIABLE DATA' summary, count(num_sini) filas from A7009020_MCR where num_sini=101130223003326 UNION 
+select 'A7009025_MCR' tabla, 'CLAIMS EVENTS' summary, count(num_sini) filas from A7009025_MCR where num_sini=101130223003326 UNION 
+select 'A7009900' tabla, 'LIQUIDACIONES DE ORDENES INSPECCION/PERITACION' summary, count(num_sini) filas from A7009900 where num_sini=101130223003326 UNION 
+select 'A7400000' tabla, 'SINIESTROS' summary, count(num_sini) filas from A7400000 where num_sini=101130223003326 UNION 
+select 'A7400001' tabla, 'EXPEDIENTES' summary, count(num_sini) filas from A7400001 where num_sini=101130223003326 UNION 
+select 'A7400002' tabla, 'MOVIMIENTOS ECONÓMICOS DEL EXPEDIENTE' summary, count(num_sini) filas from A7400002 where num_sini=101130223003326 UNION 
+select 'A7500000' tabla, 'PLAN DE TRAMITACION' summary, count(num_sini) filas from A7500000 where num_sini=101130223003326 UNION 
+select 'A7500010' tabla, 'CONFIRMACIONES DEL TRAMITADOR' summary, count(num_sini) filas from A7500010 where num_sini=101130223003326 UNION 
+select 'A7990010' tabla, 'SINIESTROS RECHAZADOS POR CONTROL TECNICO' summary, count(num_sini) filas from A7990010 where num_sini=101130223003326 UNION 
+select 'A9000004' tabla, 'ANALISIS DE AGENTES' summary, count(num_sini) filas from A9000004 where num_sini=101130223003326 UNION 
+select 'A9800052' tabla, 'TABLA REPOSITORIO DE DATOS DE SINIESTROS PARA ESTAD.' summary, count(num_sini) filas from A9800052 where num_sini=101130223003326 UNION 
+select 'A9800053' tabla, 'TABLA ANEXA REPOSITORIO DE DATOS DE SINIESTROS PARA ESTAD.' summary, count(num_sini) filas from A9800053 where num_sini=101130223003326 UNION 
+select 'A9970002' tabla, 'ANOTACIONES EN LA AGENDA PENDIENTES' summary, count(num_sini) filas from A9970002 where num_sini=101130223003326 UNION 
+select 'A9970003' tabla, 'ANOTACIONES EN LA AGENDA RESUELTAS      ' summary, count(num_sini) filas from A9970003 where num_sini=101130223003326 UNION 
+select 'B3000500' tabla, 'BUZON DE LOS PLANES DE RENTA DE UN EXPEDIENTE' summary, count(num_sini) filas from B3000500 where num_sini=101130223003326 UNION 
+select 'B3000515' tabla, 'BUZON DE LOS BENEFICIARIOS DEL PLAN DE RENTA' summary, count(num_sini) filas from B3000515 where num_sini=101130223003326 UNION 
+select 'B3000520' tabla, 'BUZON DE LAS CUOTAS EXTRAS DE UN PLAN DE RENTA' summary, count(num_sini) filas from B3000520 where num_sini=101130223003326 UNION 
+select 'B3001700' tabla, 'BUZON LIQUIDACIONES DE EXPEDIENTES' summary, count(num_sini) filas from B3001700 where num_sini=101130223003326 UNION 
+select 'B3001800' tabla, 'BUZON DESGLOSE DE LAS LIQUIDACIONES DE EXPEDIENTES' summary, count(num_sini) filas from B3001800 where num_sini=101130223003326 UNION 
+select 'B7000900' tabla, 'BUZON DE DATOS FIJOS DEL SINIESTRO ' summary, count(num_sini) filas from B7000900 where num_sini=101130223003326 UNION 
+select 'B7000910' tabla, 'MAESTRA PROCESOS MASIVO DE SINIESTROS' summary, count(num_sini) filas from B7000910 where num_sini=101130223003326 UNION 
+select 'B7000920' tabla, 'ERRORES PROCESOS MASIVO DE SINIESTROS' summary, count(num_sini) filas from B7000920 where num_sini=101130223003326 UNION 
+select 'B7000930' tabla, 'BUZON DE CAUSAS DE SINIESTROS' summary, count(num_sini) filas from B7000930 where num_sini=101130223003326 UNION 
+select 'B7000940' tabla, 'BUZON DE TESTIGOS SINIESTRO ' summary, count(num_sini) filas from B7000940 where num_sini=101130223003326 UNION 
+select 'B7000950' tabla, 'BUZON DATOS FIJOS SINIESTRO AUTOS' summary, count(num_sini) filas from B7000950 where num_sini=101130223003326 UNION 
+select 'B7000956' tabla, 'BUZON DATOS PERJUDICADO SINIESTRO' summary, count(num_sini) filas from B7000956 where num_sini=101130223003326 UNION 
+select 'B7000960' tabla, 'BUZON DATOS FIJOS SINIESTRO NO AUTOS' summary, count(num_sini) filas from B7000960 where num_sini=101130223003326 UNION 
+select 'B7000970' tabla, 'BUZON ENTES RELACIONADOS SINIESTRO' summary, count(num_sini) filas from B7000970 where num_sini=101130223003326 UNION 
+select 'B7000971' tabla, 'BUZON RELATO SINIESTRO' summary, count(num_sini) filas from B7000971 where num_sini=101130223003326 UNION 
+select 'B7000973' tabla, 'BUZON DATOS CONTRARIO SINIESTRO' summary, count(num_sini) filas from B7000973 where num_sini=101130223003326 UNION 
+select 'B7000974' tabla, 'BUZON DATOS LESIONADO SINIESTRO' summary, count(num_sini) filas from B7000974 where num_sini=101130223003326 UNION 
+select 'B7000975' tabla, 'BUZON DATOS ASEGURADO DE AUTOS SINIESTRO' summary, count(num_sini) filas from B7000975 where num_sini=101130223003326 UNION 
+select 'B7000976' tabla, 'BUZON DATOS DEFENSA PENAL SINIESTRO' summary, count(num_sini) filas from B7000976 where num_sini=101130223003326 UNION 
+select 'B7000988' tabla, 'BUZON DATOS DE ACCESIORIOS SINIESTRADOS' summary, count(num_sini) filas from B7000988 where num_sini=101130223003326 UNION 
+select 'B7001030' tabla, 'BUZON DE CAUSAS DEL EXPEDIENTE' summary, count(num_sini) filas from B7001030 where num_sini=101130223003326 UNION 
+select 'B7001040' tabla, 'BUZON DATOS DEL CONTRARIO EXPEDIENTE' summary, count(num_sini) filas from B7001040 where num_sini=101130223003326 UNION 
+select 'B7001050' tabla, 'BUZON DATOS DE LESIONADO  EXPEDIENTE' summary, count(num_sini) filas from B7001050 where num_sini=101130223003326 UNION 
+select 'B7001060' tabla, 'BUZON ASEGURADO NO AUTOS EXPEDIENTE' summary, count(num_sini) filas from B7001060 where num_sini=101130223003326 UNION 
+select 'B7001070' tabla, 'BUZON DATOS DEFENSA PENAL  EXPEDIENTE' summary, count(num_sini) filas from B7001070 where num_sini=101130223003326 UNION 
+select 'B7001080' tabla, 'BUZON DATOS ASEGURADOS AUTOS EXPEDIENTE' summary, count(num_sini) filas from B7001080 where num_sini=101130223003326 UNION 
+select 'B7001200' tabla, 'BUZON DE LOS MOVIMIENTOS ECONOMICOS DEL EXPEDIENTE' summary, count(num_sini) filas from B7001200 where num_sini=101130223003326 UNION 
+select 'B7005000' tabla, 'BUZON DATOS GENERALES DE LOS JUICIOS' summary, count(num_sini) filas from B7005000 where num_sini=101130223003326 UNION 
+select 'B7005010' tabla, 'BUZON ASOCIACION DEL SINIESTRO/EXPEDIENTE AL JUICIO' summary, count(num_sini) filas from B7005010 where num_sini=101130223003326 UNION 
+select 'B7006001' tabla, 'BUZON DE ORDENES DE COBRO/PAGO INSPECCION/PERITACION' summary, count(num_sini) filas from B7006001 where num_sini=101130223003326 UNION 
+select 'B7006010' tabla, 'BUZON VALORACIONES DE INSPECCION/PERITACION' summary, count(num_sini) filas from B7006010 where num_sini=101130223003326 UNION 
+select 'B7006020' tabla, 'BUZON DANIOS DE INSPECCION/PERITACION' summary, count(num_sini) filas from B7006020 where num_sini=101130223003326 UNION 
+select 'B7006050' tabla, 'BUZON SOLICITUD DE INSPECCION/PERITACION' summary, count(num_sini) filas from B7006050 where num_sini=101130223003326 UNION 
+select 'B7006060' tabla, 'BUZON RESULTADO DE INSPECCION/PERITACION ' summary, count(num_sini) filas from B7006060 where num_sini=101130223003326 UNION 
+select 'B7007000' tabla, 'BUZON DE SALVAMENTOS REGISTRO DE ENTRADA Y SALIDA DEL INVENTARIO' summary, count(num_sini) filas from B7007000 where num_sini=101130223003326 UNION 
+select 'B7007010' tabla, 'BUZON DE SALVAMENTOS DATOS GENERALES DE INVENTARIOS' summary, count(num_sini) filas from B7007010 where num_sini=101130223003326 UNION 
+select 'B7009020_MCR' tabla, 'BATCH CLAIMS VARIABLE DATA' summary, count(num_sini) filas from B7009020_MCR where num_sini=101130223003326 UNION 
+select 'B7009025_MCR' tabla, 'BATCH CLAIMS EVENTS' summary, count(num_sini) filas from B7009025_MCR where num_sini=101130223003326 UNION 
+select 'B7500000' tabla, 'BUZON DE AVISOS DEL PLAN DE TRAMTIACION' summary, count(num_sini) filas from B7500000 where num_sini=101130223003326 UNION 
+select 'G7000140' tabla, 'SACO DE NUMERACION DE SINIESTROS' summary, count(num_sini) filas from G7000140 where num_sini=101130223003326 UNION 
+select 'H7000900' tabla, 'HISTORICO DE DATOS FIJOS DEL SINIESTRO' summary, count(num_sini) filas from H7000900 where num_sini=101130223003326 UNION 
+select 'H7001200' tabla, 'HISTORICO DE MOVIMIENTOS ECONOMICO DEL EXPEDIENTE' summary, count(num_sini) filas from H7001200 where num_sini=101130223003326 UNION 
+select 'LISTADO_SINIESTRO_CG' tabla, '' summary, count(num_sini) filas from LISTADO_SINIESTRO_CG where num_sini=101130223003326 UNION 
+select 'MRESERVA' tabla, 'TABLA DE LISTADOS DE SINIESTROS  ( CIERRE MENSUAL DE SINIESTROS)' summary, count(num_sini) filas from MRESERVA where num_sini=101130223003326 UNION 
+select 'RESUM_SINI' tabla, '' summary, count(num_sini) filas from RESUM_SINI where num_sini=101130223003326 UNION 
+select 'SINI1' tabla, '' summary, count(num_sini) filas from SINI1 where num_sini=101130223003326 UNION 
+select 'TEJESINI' tabla, '' summary, count(num_sini) filas from TEJESINI where num_sini=101130223003326 UNION 
+select 'TEMPORAL' tabla, '' summary, count(num_sini) filas from TEMPORAL where num_sini=101130223003326 UNION 
+select 'TSESTAUT' tabla, 'TABLA DE LESIONADOS PRUEBA JAVA EST. EXPEDIENTES' summary, count(num_sini) filas from TSESTAUT where num_sini=101130223003326 UNION 
+select 'TSESTJAVA' tabla, 'TABLA DE LESIONADOS PRUEBA JAVA EST. EXPEDIENTES' summary, count(num_sini) filas from TSESTJAVA where num_sini=101130223003326 UNION 
+select 'TSESTPRUE' tabla, 'TABLA DE LESIONADOS PRUEBA JAVA EST. EXPEDIENTES' summary, count(num_sini) filas from TSESTPRUE where num_sini=101130223003326 UNION 
+select 'TSESTSINI' tabla, 'TABLA DE LESIONADOS PRUEBA JAVA EST. SINIESTROS' summary, count(num_sini) filas from TSESTSINI where num_sini=101130223003326 UNION 
+select 'X1001390' tabla, 'TRANSITORIA PARA CONSULTA DE CODIGOS DE DOCUMENTO' summary, count(num_sini) filas from X1001390 where num_sini=101130223003326 UNION 
+select 'X2000900_MCR' tabla, 'TEMPORAL PARA CREACION DE ORDENES DE PAGO' summary, count(num_sini) filas from X2000900_MCR where num_sini=101130223003326 UNION 
+select 'X2000900_MCR_20201005' tabla, '' summary, count(num_sini) filas from X2000900_MCR_20201005 where num_sini=101130223003326 UNION 
+select 'X2500270' tabla, 'TRANSITORIA DE DETALLE DE LA CARGA DE OPERACIONES DE REASEGURO POR CONTRATO PARA CONSULTA DE SINIESTROS DE REASEGURO' summary, count(num_sini) filas from X2500270 where num_sini=101130223003326 UNION 
+select 'X2501700' tabla, 'TRANSITORIA CABECERA DE PAGOS DE SINIESTROS EN REASEGURO NO PROPORCIONAL' summary, count(num_sini) filas from X2501700 where num_sini=101130223003326 UNION 
+select 'X2501701' tabla, 'TRANSITORIA DETALLE DE CESION A CONTRATOS DE PAGOS DE SINIESTROS EN REASEGURO NO PROPORCIONAL' summary, count(num_sini) filas from X2501701 where num_sini=101130223003326 UNION 
+select 'X2501702' tabla, 'TRANSITORIA CABECERA DE VALORACIONES DE SINIESTROS EN REASEGURO NO PROPORCIONAL' summary, count(num_sini) filas from X2501702 where num_sini=101130223003326 UNION 
+select 'X2501703' tabla, 'TRANSITORIA DETALLE DE CESION A CONTRATOS DE VALORACIONES DE SINIESTROS EN REASEGURO NO PROPORCIONAL' summary, count(num_sini) filas from X2501703 where num_sini=101130223003326 UNION 
+select 'X2800002' tabla, 'TRANSITORIA PARA LA CONSULTA DE SINIESTROS DE COASEGURO' summary, count(num_sini) filas from X2800002 where num_sini=101130223003326 UNION 
+select 'X5020009_MCR' tabla, 'RESERVAS POR RAMO CONTABLE' summary, count(num_sini) filas from X5020009_MCR where num_sini=101130223003326 UNION 
+select 'X5020020' tabla, '' summary, count(num_sini) filas from X5020020 where num_sini=101130223003326 UNION 
+select 'X5021600' tabla, 'TRANSITORIA DEL REGISTRO DIARIO' summary, count(num_sini) filas from X5021600 where num_sini=101130223003326 UNION 
+select 'X7000001' tabla, 'TABLA TRANSITORIA PARA LA CONSULTA GENERICA DE SINIESTROS' summary, count(num_sini) filas from X7000001 where num_sini=101130223003326 
+) where filas > 0
+
+
+
+
+
+{"url":"https://qa.upayment.app//orden/HNP3MzE8p3qS","sessionId":"HNP3MzE8p3qS","reciboId":"655bed68bd902617e49a03cd","refernecia":"+573058152154"}
+
+
+
+{"ordenId":"3057","documentoCliente":"CJU 3101748267","total":"53.26","nombreCliente":"RIO CHICO 7048 ","emailCliente":"solernelson@gmail.com","telefonoCliente":"+50672155569","subtotal":"53.26","impuestos":"0","concepto":"MAPFRE: MAPFRE MAS. POLIZA #3022110106457 RECIBO #7392952","urlReturn":"https://webhook.site/702fe79f-c080-4317-a194-71f0a62d70fc","urlWebhook":"https://webhook.site/702fe79f-c080-4317-a194-71f0a62d70fc","countryCode":null,"contratoFrontal":false,"items":[{"cantidad":1,"producto":"MAPFRE: MAPFRE MAS. POLIZA #3022110106457 RECIBO #7392952","precio":53.26,"moneda":"CRC"}],"Status":"","Reason":null}
+
+
+
+
+
+app.core.Post(`app.setting.apipath + 'v1/Common/SendEmail`, JSON.stringify(new {To: 'solernelson@hotmail', Subject: 'Test', Body: 'Test email'}))
+                        .done(function (data) {
+						console.log(data);
+                        });
