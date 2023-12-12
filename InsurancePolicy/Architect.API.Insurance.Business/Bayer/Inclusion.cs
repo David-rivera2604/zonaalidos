@@ -486,7 +486,7 @@ namespace Architect.API.Insurance.Business.Bayer
                                 }
                                 break;
                             case 34:
-                                inclusionInfo.Message = "La inclusión fue debidamente almacenada y enviada a Mapfre Costa Rica, queda pendiente de revisión, por que fecha la fecvha de emisión es mayor a 90 días";
+                                inclusionInfo.Message = "La inclusión fue debidamente almacenada y enviada a Mapfre Costa Rica, queda pendiente de revisión, por que fecha la fecha de emisión es mayor a 90 días";
                                 Core.Business.General.Mail.SendByTemplate("Notify_RequestOnReviewMapfre", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk);
                                 break;
                         }
