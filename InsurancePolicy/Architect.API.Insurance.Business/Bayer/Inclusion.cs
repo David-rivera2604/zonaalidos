@@ -380,10 +380,9 @@ namespace Architect.API.Insurance.Business.Bayer
                 if (risk.Status > 1 && (inclusionInfo.beneficiarios == null || inclusionInfo.beneficiarios.Count == 0))
                 {
                     inclusionInfo.Errors = new List<Core.Contracts.General.Error>() {
-                                new Core.Contracts.General.Error() { Group = "Inclusion", Key = "DocumentNumber", Message = "Debe existir al menos un beneficiario" }                    };
+                                new Core.Contracts.General.Error() { Group = "beneficiarios", Key = "*", Message = "Debe existir al menos un beneficiario" }                    };
                     return inclusionInfo;
                 }
-
 
                 risk.PrimaryInsured = Convertions.InclusionToPrimaryInsured(inclusionInfo);
 
@@ -504,6 +503,15 @@ namespace Architect.API.Insurance.Business.Bayer
         {
             const string group = "Inclusion";
             List<Core.Contracts.General.Error> result = new List<Core.Contracts.General.Error>();
+
+
+            //IssueDate:
+            if (inclusionInfo.IssueDate.IsEmpty())
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "IssueDate", Message = "Debe indicar la fecha de alta para la póliza" });
+
+            //EffectiveDate:
+            if (inclusionInfo.EffectiveDate.IsEmpty())
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "EffectiveDate", Message = "Debe indicar el inicio de vigencia para la póliza" });
 
 
             //DocumentNumber:
