@@ -236,6 +236,7 @@ namespace Architect.API.Insurance.Business.Bayer
             {
                 Id = risk.Id,
                 IssueDate = risk.IssueDate,
+                EffectiveDate = risk.EffectiveDate,
                 InsuredAmount = risk.InsuredAmount,
                 Status = risk.Status,
                 StatusDesc = risk.StatusDesc,

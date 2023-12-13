@@ -331,6 +331,11 @@ namespace Architect.API.Insurance.Business.Bayer
                 risk.ExecutiveUserCode = tokenInfo.UserId;
                 risk.BranchOffice = tokenInfo.BranchOffice;
 
+                if (risk.EffectiveDate.IsEmpty())
+                {
+                    risk.EffectiveDate = risk.IssueDate;
+                }
+
                 switch (inclusionInfo.Mode)
                 {
                     case "draft":
@@ -375,10 +380,9 @@ namespace Architect.API.Insurance.Business.Bayer
                 if (risk.Status > 1 && (inclusionInfo.beneficiarios == null || inclusionInfo.beneficiarios.Count == 0))
                 {
                     inclusionInfo.Errors = new List<Core.Contracts.General.Error>() {
-                                new Core.Contracts.General.Error() { Group = "Inclusion", Key = "DocumentNumber", Message = "Debe indicar la identificación" }                    };
+                                new Core.Contracts.General.Error() { Group = "beneficiarios", Key = "*", Message = "Debe existir al menos un beneficiario" }                    };
                     return inclusionInfo;
                 }
-
 
                 risk.PrimaryInsured = Convertions.InclusionToPrimaryInsured(inclusionInfo);
 
@@ -482,7 +486,7 @@ namespace Architect.API.Insurance.Business.Bayer
                                 }
                                 break;
                             case 34:
-                                inclusionInfo.Message = "La inclusión fue debidamente almacenada y enviada a Mapfre Costa Rica, queda pendiente de revisión, por que fecha la fecvha de emisión es mayor a 90 días";
+                                inclusionInfo.Message = "La inclusión fue debidamente almacenada y enviada a Mapfre Costa Rica, queda pendiente de revisión, por que fecha la fecha de emisión es mayor a 90 días";
                                 Core.Business.General.Mail.SendByTemplate("Notify_RequestOnReviewMapfre", tokenInfo.CompanyId, tokenInfo.UserId, risk.ExecutiveUserCode, risk);
                                 break;
                         }
@@ -499,6 +503,15 @@ namespace Architect.API.Insurance.Business.Bayer
         {
             const string group = "Inclusion";
             List<Core.Contracts.General.Error> result = new List<Core.Contracts.General.Error>();
+
+
+            //IssueDate:
+            if (inclusionInfo.IssueDate.IsEmpty())
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "IssueDate", Message = "Debe indicar la fecha de alta para la póliza" });
+
+            //EffectiveDate:
+            if (inclusionInfo.EffectiveDate.IsEmpty())
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "EffectiveDate", Message = "Debe indicar el inicio de vigencia para la póliza" });
 
 
             //DocumentNumber:
