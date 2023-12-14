@@ -109,6 +109,9 @@ app.Cotizacion = (function () {
                             if (item.Disable === 1) {
                                 $(name).prop('disabled', true);
                             }
+                            if (item.Visible === 0) {
+                                $(name).parent().parent().addClass('d-none');
+                            }
                             break;
                         case 'NumericValue':
                             if (item.Value != null && item.Value != '') {
@@ -120,6 +123,9 @@ app.Cotizacion = (function () {
                             }
                             if (item.Disable === 1) {
                                 $(name).prop('disabled', true);
+                            }
+                            if (item.Visible === 0) {
+                                $(name).parent().parent().addClass('d-none');
                             }
                             break;
                         case 'DropDownNumericValue':
@@ -154,6 +160,9 @@ app.Cotizacion = (function () {
                             }
                             if (item.Disable === 1) {
                                 app.ui.DropDownDisabled(name, true, false);
+                            }
+                            if (item.Visible === 0) {
+                                $(name).parent().parent().addClass('d-none');
                             }
                             break;
                     }
