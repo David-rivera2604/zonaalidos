@@ -128,6 +128,22 @@ app.Cotizacion = (function () {
                                 $(name).parent().parent().addClass('d-none');
                             }
                             break;
+                        case 'RadioStringValue':
+                            if (item.Value != null && item.Value != '') {
+                                app.ui.SetRadioStringValue(item.Field, item.Value);
+                            }
+                            if (item.Disable === 1) {
+                                $('input:radio[name=' + item.Field + ']').prop('disabled', true);
+                            }
+                            if (item.Visible === 0) {
+                                $('input:radio[name=' + item.Field + ']').parent().parent().parent().parent().addClass('d-none');
+                            }                            
+                            break;
+                        case 'Zone':
+                            if (item.Visible === 0) {
+                                $('.' + item.Field).addClass('d-none');
+                            }
+                            break;
                         case 'DropDownNumericValue':
                             if (item.AllowedValues != null && item.AllowedValues != '') {
                                 item.AllowedValues = ',' + item.AllowedValues + ',';
