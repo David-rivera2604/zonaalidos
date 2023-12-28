@@ -153,6 +153,7 @@
     <Compile Include="Controllers\ProcessController.cs" />
     <Compile Include="Controllers\RoleMemberController.cs" />
     <Compile Include="Controllers\SecurityCasesController.cs" />
+    <Compile Include="Controllers\SendAttachmentsController.cs" />
     <Compile Include="Controllers\TemplateController.cs" />
     <Compile Include="Controllers\UserMemberController.cs" />
     <Compile Include="Controllers\VisualizationsController.cs" />
