@@ -74,8 +74,6 @@ namespace Architect.API.Tron.Business.Emision
                         };
                     }
                 }
-
-            }
         }
             return result;
         }
