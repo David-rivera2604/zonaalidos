@@ -17,7 +17,6 @@ app.CotizacionEstudiantil = (function () {
 
                 let lookupList = [
                     'MonedasPorRamo.cod_mon',
-                    'FrecuenciaDePagoPorRamo.cod_fracc_pago',
                     'TRON_TAVID000.COD_PLAN_AP'];
 
                 setupData = JSON.parse(JSON.stringify(data));

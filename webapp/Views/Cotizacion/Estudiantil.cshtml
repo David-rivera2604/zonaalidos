@@ -48,33 +48,60 @@
                             <form id='EstudiantilEdtForm' class='form-horizontal' data-toggle='validator'>
                                 <fieldset>
                                     <!-- datosgenerales Zone -->
-                                    @Html.Partial("_datosgenerales")
+                                    <div class="col-lg-12">
+                                        <h4>Datos generales</h4>
+                                        <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                        <div class="form-row">
 
-                                    <!-- polizagrupo Zone -->
-                                    <!--<div class="form-row d-none" id="polizagrupoZone">
-                                        <div class="col-lg-12">
-                                            <h4><i class="fa fa-building"></i> Información de póliza grupo</h4>
-                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-                                            <div class="form-row">-->
-
-                                                <!-- contrato DropDownList -->
-                                                <!--<div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='contrato'>Contrato<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <select id='contrato' name='contrato' class='form-control'></select>
-                                                    </div>
-                                                </div>-->
-
-                                                <!-- subcontrato DropDownList -->
-                                                <!--<div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='subcontrato'>Sub contrato<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <select id='subcontrato' name='subcontrato' class='form-control' disabled></select>
-                                                    </div>
+                                            <!-- cod_mon DropDownList -->
+                                            <div class='col-sm-3 col-md-3'>
+                                                <div class='form-group'>
+                                                    <label class='control-label' for='cod_mon'>Moneda<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <select id='cod_mon' name='cod_mon' class='form-control'>
+                                                    </select>
                                                 </div>
                                             </div>
+
+                                            <!-- cod_fracc_pago DropDownList -->
+                                            <div class='col-sm-3 col-md-3'>
+                                                <div class='form-group'>
+                                                    <label class='control-label' for='cod_fracc_pago'>Fraccionamiento de pago<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <select id='cod_fracc_pago' name='cod_fracc_pago' class='form-control'>
+                                                        <option value="1">ANUAL</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <!-- fec_efec_poliza DatePicker -->
+                                            <div class='col-sm-3 col-md-3'>
+                                                <div class='form-group'>
+                                                    <label class='control-label' for='fec_efec_poliza'>Inicio de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <div class='input-group date' id='fec_efec_poliza_group'>
+                                                        <input type='text' id='fec_efec_poliza' name='fec_efec_poliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                        <span class='input-group-addon'>
+                                                            <span class='glyphicon glyphicon-calendar'></span>
+                                                        </span>
+                                                    </div>
+                                                    <div id='fec_efec_poliza_validate'></div>
+                                                </div>
+                                            </div>
+
+                                            <!-- fec_vcto_poliza DatePicker -->
+                                            <div class='col-sm-3 col-md-3'>
+                                                <div class='form-group'>
+                                                    <label class='control-label' for='fec_vcto_poliza'>Fin de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <div class='input-group date' id='fec_vcto_poliza_group'>
+                                                        <input type='text' id='fec_vcto_poliza' name='fec_vcto_poliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                        <span class='input-group-addon'>
+                                                            <span class='glyphicon glyphicon-calendar'></span>
+                                                        </span>
+                                                    </div>
+                                                    <div id='fec_vcto_poliza_validate'></div>
+                                                </div>
+                                            </div>
+
                                         </div>
-                                    </div>-->
+                                    </div>
 
                                     <!-- datosdelasegurado Zone -->
                                     <div class="form-row">
@@ -115,49 +142,49 @@
                                                 </div>
 
                                             </div>
-                                                <!-- informaciongeneral Zone -->
-                                                <div class="form-row">
-                                                    <div class="col-lg-12">
-                                                        <h4><i class="fa fa-file-text-o"></i> Información general</h4>
-                                                        <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-                                                        <div class="form-row">
-                                                            <!-- Cedencial Estudiantil Text -->
-                                                            <div class='col-sm-3 col-md-3'>
-                                                                <div class='form-group'>
-                                                                    <label class='control-label' for='TXT_CRED_ESTUD'>Credencial Estudiantil<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                                    <input type='text' id='TXT_CRED_ESTUD' name='TXT_CRED_ESTUD' class='form-control' size='20' maxlength='20' />
-                                                                </div>
+                                            <!-- informaciongeneral Zone -->
+                                            <div class="form-row">
+                                                <div class="col-lg-12">
+                                                    <h4><i class="fa fa-file-text-o"></i> Información general</h4>
+                                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                                    <div class="form-row">
+                                                        <!-- Cedencial Estudiantil Text -->
+                                                        <div class='col-sm-3 col-md-3'>
+                                                            <div class='form-group'>
+                                                                <label class='control-label' for='TXT_CRED_ESTUD'>Credencial Estudiantil<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                                <input type='text' id='TXT_CRED_ESTUD' name='TXT_CRED_ESTUD' class='form-control' size='20' maxlength='20' />
                                                             </div>
-                                                            <!--Plan-->
-                                                            <div class='col-sm-3 col-md-3'>
-                                                                <div class='form-group'>
-                                                                    <label class='control-label' for='COD_PLAN_AP'>Plan<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                                    <select id='COD_PLAN_AP' name='COD_PLAN_AP' class='form-control'>
-                                                                    </select>
-                                                                </div>
+                                                        </div>
+                                                        <!--Plan-->
+                                                        <div class='col-sm-3 col-md-3'>
+                                                            <div class='form-group'>
+                                                                <label class='control-label' for='COD_PLAN_AP'>Plan<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                                <select id='COD_PLAN_AP' name='COD_PLAN_AP' class='form-control'>
+                                                                </select>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    
-                                        <!-- coberturas y plandepago Grid -->
-                                        @Html.Partial("_coberturaPlan")
+                                    </div>
 
-                                        <!-- Botonera -->
-                                        <div class="form-row">
-                                            <div class='col-md-12'>
-                                                <div class="modal-footer">
-                                                    <button id="cotizar" type="button" class="btn  btn-primary" data-doing="Cotizando...">
-                                                        Cotizar
-                                                    </button>
-                                                    <button id="limpiar" type="button" class="btn btn-default" data-doing="Limpiando...">
-                                                        Limpiar
-                                                    </button>
-                                                </div>
+                                    <!-- coberturas y plandepago Grid -->
+                                    @Html.Partial("_coberturaPlan")
+
+                                    <!-- Botonera -->
+                                    <div class="form-row">
+                                        <div class='col-md-12'>
+                                            <div class="modal-footer">
+                                                <button id="cotizar" type="button" class="btn  btn-primary" data-doing="Cotizando...">
+                                                    Cotizar
+                                                </button>
+                                                <button id="limpiar" type="button" class="btn btn-default" data-doing="Limpiando...">
+                                                    Limpiar
+                                                </button>
                                             </div>
                                         </div>
+                                    </div>
 
                                 </fieldset>
                             </form>

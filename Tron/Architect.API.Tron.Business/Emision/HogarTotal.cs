@@ -505,9 +505,16 @@ namespace Architect.API.Tron.Business.Emision
         {
             Contracts.Comun.tercero titular = (from t in quoteInfo.terceros where t.tipodetercero == 0 select t).FirstOrDefault();
             JObject jsonvalues = null;
+            DateTime fechanaci = new DateTime(1900, 01, 01, 0, 00, 20);
+
             if (quoteInfo.kyc != null)
             {
                 jsonvalues = (JObject)quoteInfo.kyc;
+            }
+
+            if (titular.DocumentNumberType != 4)
+            {
+                fechanaci = titular.fechadenacimiento;
             }
 
             Architect.Compliance.Integrations.Contracts.Clientes mapInfo = new Compliance.Integrations.Contracts.Clientes()
@@ -523,7 +530,7 @@ namespace Architect.API.Tron.Business.Emision
                 fechaUltimaActualizacion = DateTime.Now,
                 descripcionCuenta = titular.nombre.CompleteFullName(titular.apellido1, titular.apellido2),
                 numeroIdentificacionEntidad = titular.DocumentNumber,
-                fechaNacimiento = titular.fechadenacimiento,
+                fechaNacimiento = fechanaci,
                 ejecutivo = tokenInfo.AgentCode.ToString(),
                 genero = "",
                 estadoCivil = "",
@@ -1087,7 +1094,20 @@ namespace Architect.API.Tron.Business.Emision
                 mapInfo.clientesPolizas[0].prima = (int)quoteInfo.DatosEconomicos.annualgrosspremium;
             }
 
-
+            if (titular.DocumentNumberType != 4)
+            {
+               mapInfo.clientesNacionalidades = null;
+               mapInfo.clientesFATCA = null;
+               mapInfo.clientesIngresos = null;
+               mapInfo.clientesFondosTerceros = null;
+               mapInfo.clientesPatrimonio = null;
+               mapInfo.clientesFuncionesPEP = null;
+               mapInfo.clientesTransacciones = null;
+               mapInfo.clientesOtrosAtributos = null;
+               mapInfo.clientesSocios = null;
+               mapInfo.clientesRelaciones = null;
+               mapInfo.clientesNacionalidades = null;
+            }
 
             string result = Architect.Compliance.Integrations.Business.Customers.SendCustomers(mapInfo).Result;
         }

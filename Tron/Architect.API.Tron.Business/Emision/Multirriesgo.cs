@@ -62,19 +62,17 @@ namespace Architect.API.Tron.Business.Emision
                 {
                     result.terceros = Reglas.research.Apply_Terceros("Multirriesgos", result.terceros, result.Fuente_Tomador, tokenInfo);
                 }
-
-                if (!tokenInfo.Roles.Contain("Formularios_digitales"))
+                if (result.documentosrequeridos == null)
                 {
-                    if (result.documentosrequeridos == null)
+                    if (!tokenInfo.Roles.Contain("Formularios_digitales"))
                     {
                         result.documentosrequeridos = new List<Contracts.Comun.DocumentoRequerido>
-                        {
-                        new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=1, tipo = "Expediente Cliente", DArchivoEsperado="Expediente Cliente.pdf", Grupo="F"  },
-                        new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=2, tipo = "Expediente Póliza" , DArchivoEsperado="Expediente Póliza.pdf", Grupo="F" },
-                        };
-                    }   
+                            {
+                            new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=1, tipo = "Expediente Cliente", DArchivoEsperado="Expediente Cliente.pdf", Grupo="F"  },
+                            new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=2, tipo = "Expediente Póliza" , DArchivoEsperado="Expediente Póliza.pdf", Grupo="F" },
+                            };
+                    }
                 }
-
             }
             return result;
         }
@@ -153,7 +151,6 @@ namespace Architect.API.Tron.Business.Emision
                     }
 
 
-                    
                     if (tokenInfo.Roles.Contain("Formularios_digitales"))
                     {
                         Contracts.PolicyProposal proposal = DataAccess.PolicyProposal.RetrieveByProposalId(quoteInfo.presupuesto, tokenInfo.CompanyId);
@@ -424,6 +421,7 @@ namespace Architect.API.Tron.Business.Emision
         {
             JObject jsonvalues = null;
             Contracts.Comun.tercero titular = (from t in quoteInfo.terceros where t.tipodetercero == 0 select t).FirstOrDefault();
+            DateTime fechanaci = new DateTime(1900, 01, 01, 0, 00, 20);
 
             if (quoteInfo.kyc != null)
             {
@@ -435,6 +433,11 @@ namespace Architect.API.Tron.Business.Emision
             {
                 numidenti = numidenti.Remove(0, 1);
                 numidenti = numidenti.Replace("-", string.Empty);
+            }
+
+            if (titular.DocumentNumberType != 4)
+            {
+                fechanaci = titular.fechadenacimiento;
             }
 
             Architect.Compliance.Integrations.Contracts.Clientes mapInfo = new Compliance.Integrations.Contracts.Clientes()
@@ -454,7 +457,7 @@ namespace Architect.API.Tron.Business.Emision
                 fechaVencimientoIdentificacion = new DateTime(1900, 1, 1),
                 lugarExpedicionIdentificacion = "Costa Rica",
                 fechaUltimaActualizacion = DateTime.Now,
-                fechaNacimiento = titular.fechadenacimiento,
+                fechaNacimiento = fechanaci,
                 ejecutivo = tokenInfo.AgentCode.ToString(),
                 estado = "A",
                 estadoXML = "X",
@@ -854,6 +857,20 @@ namespace Architect.API.Tron.Business.Emision
                 mapInfo.clientesPolizas[0].prima = (int)quoteInfo.DatosEconomicos.annualgrosspremium;
             }
 
+            if (titular.DocumentNumberType != 4)
+            {
+                mapInfo.clientesNacionalidades = null;
+                mapInfo.clientesFATCA = null;
+                mapInfo.clientesIngresos = null;
+                mapInfo.clientesFondosTerceros = null;
+                mapInfo.clientesPatrimonio = null;
+                mapInfo.clientesFuncionesPEP = null;
+                mapInfo.clientesTransacciones = null;
+                mapInfo.clientesOtrosAtributos = null;
+                mapInfo.clientesSocios = null;
+                mapInfo.clientesRelaciones = null;
+                mapInfo.clientesNacionalidades = null;
+            }
 
 
             string result = Architect.Compliance.Integrations.Business.Customers.SendCustomers(mapInfo).Result;
