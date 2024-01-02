@@ -227,7 +227,7 @@ namespace Architect.API.Tron.Business.Emision
             Architect.Compliance.Integrations.Contracts.Clientes mapInfo = new Compliance.Integrations.Contracts.Clientes()
             {
                 tipoIdentificacion = 2,
-                numeroIdentificacion = jsonvalues.TokenStringValue("numerocedulajuridicaJur"),
+                numeroIdentificacion = jsonvalues.TokenStringValue("numidentificacion"),
                 nombreCliente = string.Empty,
                 primerApellido = string.Empty,
                 segundoApellido = string.Empty,
@@ -236,7 +236,7 @@ namespace Architect.API.Tron.Business.Emision
                 nombreComercial = jsonvalues.TokenStringValue("nombrecomercialJur"),
                 fechaUltimaActualizacion = DateTime.Now,
                 descripcionCuenta = jsonvalues.TokenStringValue("nombrecomercialJur"),
-                numeroIdentificacionEntidad = jsonvalues.TokenStringValue("numerocedulajuridicaJur"),
+                numeroIdentificacionEntidad = jsonvalues.TokenStringValue("numidentificacion"),
                 fechaNacimiento = jsonvalues.TokenDateTimeValue("fechadeconstitucionJur"),
                 estado = "A",
                 estadoXML = "X",
