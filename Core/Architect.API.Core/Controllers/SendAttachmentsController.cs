@@ -1,13 +1,10 @@
 ﻿using Microsoft.Web.Http;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http.Description;
 using System.Web.Http;
-using Architect.Utilities.Extensions;
 using Architect.API.Core.Business.Security;
+using System.IO;
 
 namespace Architect.API.Core.Controllers
 {
@@ -17,7 +14,7 @@ namespace Architect.API.Core.Controllers
     [ApiVersion("1.0")]
     [Authorize]
     [RoutePrefix("api/v{version:apiVersion}/SendAttachments")]
-    [ApiExplorerSettings(IgnoreApi = true)]
+    //[ApiExplorerSettings(IgnoreApi = true)]
     public class SendAttachmentsController : ApiController
     {
         /// <summary>
@@ -27,59 +24,67 @@ namespace Architect.API.Core.Controllers
 
 
         /// <summary>
-        /// Guarda adjuntos en la tabla Attachments.
+        /// Recibe documentos a ser asociados a una póliza emitida.
         /// </summary>
-        /// <param name="item">Instancia del objecto Attachment.</param>
-        /// <returns>Información del registro creado en la tabla Attachments.</returns>
         [HttpPost]
         [Route("")]
         [Authorize]
-        public async Task<IHttpActionResult> Post([FromBody] Architect.API.Core.Contracts.General.ProcessCase item)
+        public async Task<IHttpActionResult> SendAttachments(Architect.API.Core.Contracts.General.Attachment_customers.Attachments_customer attachments)
         {
-            //usuario que envio la solicitud del caso.   
-            UsuaActual = Accounts.ReturnUser();
-
-            item.UserSend = UsuaActual.UserId;
-
-            IHttpActionResult result = BadRequest();
-
-            if (item.IsEmpty())
-            {
-                return BadRequest("Debe indicar un processcase");
-            }
             Contracts.Security.Token tokenInfo = Security.Token.Info();
-            await Task.Run(() =>
-            {
+            Architect.API.Core.Contracts.General.Attachments _documento;
 
-                Architect.API.Core.Contracts.General.ProcessCaseResult created = Architect.API.Core.Business.General.ProcessCase.Create(tokenInfo.CompanyId, tokenInfo.UserId, item);
+            Architect.API.Core.Contracts.General.GenericResponse result = new Contracts.General.GenericResponse 
+            {
+            Successful = true,
+            Reason = "Adjuntos recibidos correctamente"
+            };
+
+            try { 
+
+                if (attachments.entity_id == null)
+                {
+                    return BadRequest("Debe indicar el entity_id");
+                }
+                if(attachments.attachments_list == null){
+                    return BadRequest("Debe existir una lista de documentos");
+                }
+
+                foreach (Contracts.General.Attachment_customers.Attachment_customer documento in attachments.attachments_list)
+                {
+                    byte[] bytes = Convert.FromBase64String(documento.file_content_base64);
+                    string filename = string.Format("{0}{1}", Architect.Utilities.Helpers.Settings.StringValue("Attachments.Path"), documento.file_name);
+                    using (var stream = new FileStream(filename, FileMode.Create))
+                    {
+                        stream.Write(bytes, 0, bytes.Length);
+                        stream.Flush();
+                    }
+
+                    _documento = new Architect.API.Core.Contracts.General.Attachments()
+                    {
+                        EntityType = 3000,
+                        EntityId = Int64.Parse(attachments.entity_id),
+                        EntitySubType = 0,
+                        CompanyId = tokenInfo.CompanyId,
+                        UpdateUserCode = tokenInfo.UserId,
+                        DocumentType = documento.document_type,
+                        Description = documento.file_name,
+                        FileName = documento.file_name,
+                        FileSize = Int32.Parse(documento.file_size),
+                        FileContent = filename
+                    };
+                    Architect.API.Core.Business.General.Attachment.SyncUp(_documento);
+                }
+
+                return Ok(result);
+            
+           }
+            catch(Exception ex)
+            {
                 
-
-                if (created.Errors.Count == 0)
-                {
-                    result = Created(string.Format("{0}/{1}", Request.RequestUri.AbsoluteUri.Substring(0, Request.RequestUri.AbsoluteUri.LastIndexOf("/")), created.ProcessCase.Id), new { Id = created.ProcessCase.Id, UpdateDate = created.ProcessCase.UpdateDate });
-                }
-                else
-                {
-                    result = ErrorHandler(created.Errors);
-                }
-            }).ConfigureAwait(false);
-            return result;
-        }
-
-        /// <summary>
-        /// Manejo general de los error de validación.
-        /// </summary>
-        /// <param name="errors">Lista de errores de validación.</param>
-        /// <returns>Repuesta de tipo BadRequest con el detalle de los errores de validación.</returns>
-        private IHttpActionResult ErrorHandler(List<Contracts.General.Error> errors)
-        {
-            ModelState.Clear();
-            foreach (Contracts.General.Error errorItem in errors)
-            {
-                //string.Format("{0}.{1}:{2}", s.Group, s.Key, s.Message)
-                ModelState.AddModelError(string.Format("{0}.{1}", errorItem.Group, errorItem.Key), errorItem.Message);
+                return BadRequest(ex.Message);
             }
-            return BadRequest(ModelState);
         }
+
     }
 }
