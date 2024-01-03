@@ -563,3 +563,5 @@
 1.6.54  06/11/2023 Purdy. Siniestros. Correcciones y mejoras al panel del siniestro de purdy.
 1.6.55  13/11/2023 Purdy. Siniestros. Correcciones y mejoras al panel del siniestro de purdy.
 1.6.56  15/11/2023 Se habilita el proceso de llenado Formularios Digitales (Solicitud, Kyc, consentimiento) por medio de un Rol.
+                   MapfreMas y MapfreMasPlus. Manejo de valores por default por medio de un rol.
+1.6.57  03/01/2024 Se agrega api SendAttachment. Para enviar adjuntos desde las integraciones con los clientes.
