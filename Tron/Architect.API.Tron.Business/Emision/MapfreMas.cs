@@ -1,4 +1,6 @@
-﻿using Architect.API.Insurance.Contracts.Bayer;
+﻿using Architect.API.Core.Business.General;
+using Architect.API.Core.Contracts;
+using Architect.API.Insurance.Contracts.Bayer;
 using Architect.Compliance.Integrations.Contracts;
 using Architect.Utilities.Extensions;
 using Newtonsoft.Json;
@@ -131,6 +133,7 @@ namespace Architect.API.Tron.Business.Emision
                 if (request["UniqueId"].IsNotEmpty())
                 {
                     message = string.Format("La solicitud fue enviada de forma exitosa usando el tipo de envío indicado ({0})", quoteInfo.tip_firmaDesc);
+                    AlmacenarDatosKYC(quoteInfo.kyc);
                 }
                 else
                 {
@@ -483,6 +486,21 @@ namespace Architect.API.Tron.Business.Emision
                 ProposalData = Newtonsoft.Json.JsonConvert.SerializeObject(quoteInfo),
                 UpdateUserCode = tokenInfo.UserId
             });
+        }
+        private static void AlmacenarDatosKYC(dynamic kyc)
+        {
+
+            if (kyc["numidentificaciontipo"] == 1 || kyc["numidentificaciontipo"] == 2 || kyc["numidentificaciontipo"] == 3)
+            {
+                Kycpersona deserializedKyc = JsonConvert.DeserializeObject<Kycpersona>(JsonConvert.SerializeObject(kyc));
+                int result = KycBussines.Insert_or_UpdateKYCpersona(deserializedKyc);
+            }
+            else if (kyc["razonsocialJur"] != "")
+            {
+                KycJuridico deserializedKyc = JsonConvert.DeserializeObject<KycJuridico>(JsonConvert.SerializeObject(kyc));
+                int result = KycBussines.Insert_or_UpdateKYCjuridico(deserializedKyc);
+            }
+
         }
 
         private static void GuardaDatosVariables(string presupuesto, int cod_ramo, string tipoenvio, string tipoenvioDesc, string uniqueId)
