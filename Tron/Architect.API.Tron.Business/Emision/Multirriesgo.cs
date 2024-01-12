@@ -110,7 +110,10 @@ namespace Architect.API.Tron.Business.Emision
                 if (uniqueId.IsNotEmpty())
                 {
                     message = string.Format("La solicitud fue enviada de forma exitosa usando el tipo de envío indicado ({0})", quoteInfo.tip_firmaDesc);
-                    AlmacenarDatosKYC(quoteInfo.kyc);
+                    if (quoteInfo.kyc.IsNotEmpty())
+                    {
+                        AlmacenarDatosKYC(quoteInfo.kyc);
+                    }
                 }
                 else
                 {

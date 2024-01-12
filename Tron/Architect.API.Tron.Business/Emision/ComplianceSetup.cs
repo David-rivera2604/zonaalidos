@@ -18,22 +18,22 @@ namespace Architect.API.Tron.Business.Emision
             Contracts.Comun.tercero titular = (from t in quoteInfo.terceros where t.tipodetercero == 0 select t).FirstOrDefault();
 
 
-            //if (quoteInfo.kyc != null)
-            //{
-            //    jsonvalues = (JObject)quoteInfo.kyc;
-            //    if (titular.DocumentNumberType == 4)
-            //    {
-            //        mapInfo = Juridico(quoteInfo, jsonvalues);
-            //        KycJuridico kycjuridico = JsonConvert.DeserializeObject<KycJuridico>(JsonConvert.SerializeObject(quoteInfo.kyc));
-            //        Core.Business.General.KycBussines.Insert_or_UpdateKYCjuridico(kycjuridico);
-            //    }
-            //    else
-            //    {
-            //        mapInfo = Persona(quoteInfo, jsonvalues);
-            //        Kycpersona kycpersona = JsonConvert.DeserializeObject<Kycpersona>(JsonConvert.SerializeObject(quoteInfo.kyc));
-            //        Core.Business.General.KycBussines.Insert_or_UpdateKYCpersona(kycpersona);
-            //    }
-            //}
+            if (quoteInfo.kyc != null)
+            {
+                jsonvalues = (JObject)quoteInfo.kyc;
+                if (titular.DocumentNumberType == 4)
+                {
+                    mapInfo = Juridico(quoteInfo, jsonvalues);
+                    //KycJuridico kycjuridico = JsonConvert.DeserializeObject<KycJuridico>(JsonConvert.SerializeObject(quoteInfo.kyc));
+                    //Core.Business.General.KycBussines.Insert_or_UpdateKYCjuridico(kycjuridico);
+                }
+                else
+                {
+                    mapInfo = Persona(quoteInfo, jsonvalues);
+                    //Kycpersona kycpersona = JsonConvert.DeserializeObject<Kycpersona>(JsonConvert.SerializeObject(quoteInfo.kyc));
+                    //Core.Business.General.KycBussines.Insert_or_UpdateKYCpersona(kycpersona);
+                }
+            }
             if (mapInfo != null)
             {
                 mapInfo.ejecutivo = tokenInfo.AgentCode.ToString();
@@ -276,7 +276,7 @@ namespace Architect.API.Tron.Business.Emision
                 paisOrigen = jsonvalues.TokenInt32Value("paisdeconstitucionJur"),
                 genero = "X",
                 estadoCivil = "X",
-                actividadEconomica = jsonvalues.TokenInt32Value("actividaddelclientenaturalezadelnegocioJur"),
+                actividadEconomica = 1, //jsonvalues.TokenInt32Value("actividaddelclientenaturalezadelnegocioJur"),
                 montoIngresoMensual = jsonvalues.TokenDoubleValue("ingresomensualestimado"),
                 inversionInicial = jsonvalues.TokenInt32Value("montoValorasegurado")
             };
