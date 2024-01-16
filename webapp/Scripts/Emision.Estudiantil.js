@@ -52,7 +52,7 @@ app.EmisionEstudiantil = (function () {
                     showCalculate = true;
                     if (data.resumen != null) {
                         var moneda = "$ ";
-                        if (data.moneda == 1) {
+                        if (data.cod_mon == 1) {
                             moneda = "₡ "
                         }
                         $('#importetotal').html(moneda + data.resumen.importetotal.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
