@@ -8,6 +8,7 @@ app.CotizacionMapfreMas = (function () {
 
     let fec_vcto_poliza_grupo = null;
     let modelHelper = [];
+
     var workMode = '';
     var setupData = null;
     var quoteData = null;
@@ -939,7 +940,6 @@ app.CotizacionMapfreMas = (function () {
         });
     }
 
-
     function plandepagoporfrecuencia_table_setup() {
 
         $('#plandepagoporfrecuenciaTbl').bootstrapTable({
@@ -1123,9 +1123,11 @@ app.CotizacionMapfreMas = (function () {
                     callback();
                 }
                 CoverageReload();
+                app.Cotizacion.DefaultSettings('MapfreMas');
             });
 
     }
+
 
     function CoverageReload() {
         //  int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto

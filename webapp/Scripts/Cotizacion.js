@@ -2,6 +2,9 @@
 
 app.Cotizacion = (function () {
 
+    let settings = [];
+    let roles = [];
+
     return {
         Imprimir: function (name, data) {
             var urlServer = app.setting.apibase + '/AliadoServReports/api/Report/Build';
@@ -71,6 +74,116 @@ app.Cotizacion = (function () {
                     }
                 }
             }
+        },
+        DefaultSettings: function (code) {
+
+            if (settings.length === 0) {
+                app.core.Get(`${app.setting.entityapi}/QuoteSetting?code=${code}`)
+                    .done(function (resp) {
+                        if (resp?.Sucessfully) {
+                            settings = resp.Data;
+                            roles = JSON.parse(localStorage.getItem('Roles'));
+                            if (settings === null) {
+                                settings = [];
+                            }
+                            app.Cotizacion.QuoteSettings();
+                        }
+                    });
+            } else
+                app.Cotizacion.QuoteSettings();
+        },
+        QuoteSettings: function () {
+            roles.forEach(function (role) {
+                settings.filter(r => r.Role === role).forEach(function (item) {
+
+                    let name = '#' + item.Field;
+                    switch (item.Type) {
+                        case 'TextValue':
+                            if (item.Value != null && item.Value != '') {
+                                let value = item.Value;
+                                if ($(name).val() != value) {
+                                    $(name).val(item.Value);
+                                    $(name).change();
+                                }
+                            }
+                            if (item.Disable === 1) {
+                                $(name).prop('disabled', true);
+                            }
+                            if (item.Visible === 0) {
+                                $(name).parent().parent().addClass('d-none');
+                            }
+                            break;
+                        case 'NumericValue':
+                            if (item.Value != null && item.Value != '') {
+                                let value = Number(item.Value);
+                                if (app.ui.GetNumericValue(name) != value) {
+                                    app.ui.SetNumericValue(name, value);
+                                    $(name).change();
+                                }
+                            }
+                            if (item.Disable === 1) {
+                                $(name).prop('disabled', true);
+                            }
+                            if (item.Visible === 0) {
+                                $(name).parent().parent().addClass('d-none');
+                            }
+                            break;
+                        case 'RadioStringValue':
+                            if (item.Value != null && item.Value != '') {
+                                app.ui.SetRadioStringValue(item.Field, item.Value);
+                            }
+                            if (item.Disable === 1) {
+                                $('input:radio[name=' + item.Field + ']').prop('disabled', true);
+                            }
+                            if (item.Visible === 0) {
+                                $('input:radio[name=' + item.Field + ']').parent().parent().parent().parent().addClass('d-none');
+                            }                            
+                            break;
+                        case 'Zone':
+                            if (item.Visible === 0) {
+                                $('.' + item.Field).addClass('d-none');
+                            }
+                            break;
+                        case 'DropDownNumericValue':
+                            if (item.AllowedValues != null && item.AllowedValues != '') {
+                                item.AllowedValues = ',' + item.AllowedValues + ',';
+                                let toRemove = '';
+                                document.querySelectorAll(name + ' option').forEach(function (option, index, array) {
+                                    if (item.AllowedValues.indexOf(',' + option.value + ',') === -1)
+                                        toRemove += '[value="' + option.value + '"],';
+                                });
+                                if (toRemove != '') {
+                                    $(name).find(toRemove.substring(0, toRemove.length - 1)).remove();
+                                }
+                                if (item.Field === 'cod_marca') {
+                                    $("#VehicleModelHelper").parent().addClass('d-none');
+                                }
+                            }
+                            if (item.ValuesToRemove != null && item.ValuesToRemove != '') {
+                                item.ValuesToRemove.split(",").forEach(function (value, index, array) {
+                                    $(name + ' option[value="' + value + '"').remove();
+                                });
+                                if (item.Field === 'cod_marca') {
+                                    $("#VehicleModelHelper").parent().addClass('d-none');
+                                }
+                            }
+                            if (item.Value != null && item.Value != '') {
+                                let value = Number(item.Value);
+                                if (app.ui.GetDropDownNumericValue(name) != value) {
+                                    app.ui.SetDropDownNumericValue(name, item.Value);
+                                    $(name).change();
+                                }
+                            }
+                            if (item.Disable === 1) {
+                                app.ui.DropDownDisabled(name, true, false);
+                            }
+                            if (item.Visible === 0) {
+                                $(name).parent().parent().addClass('d-none');
+                            }
+                            break;
+                    }
+                });
+            });
         }
     };
 })();

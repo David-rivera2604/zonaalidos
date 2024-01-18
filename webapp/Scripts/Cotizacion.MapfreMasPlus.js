@@ -1110,6 +1110,7 @@ app.CotizacionMapfreMasPlus = (function () {
                     callback();
                 }
                 CoverageReload();
+                app.Cotizacion.DefaultSettings('MapfreMasPlus');
             });
 
     }
