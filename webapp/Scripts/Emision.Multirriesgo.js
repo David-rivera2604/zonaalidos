@@ -2076,7 +2076,7 @@ app.EmisionMultirriesgo = (function () {
                 data.append('EntityType', 3000);
                 data.append('EntityId', setupData.presupuesto);
                 data.append('DocumentType', 99);
-                data.append('Description', arr[0]);
+                data.append('Description', arr[0].name);
                 for (index = 0; index < arr.length; index++) {
                     data.append('files', arr[index]);
                 }
