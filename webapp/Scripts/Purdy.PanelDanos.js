@@ -72,6 +72,13 @@ app.PurdyPanelDanos = (function () {
             DEDUCIBLECOL: 0,
             DEDUCIBLEDOL: 0
         };
+        if (_claim.COD_MON === 2) {
+            data.PERDIDATMONTODOL = data.PERDIDATMONTO;
+            data.DEDUCIBLEDOL = _deducible;
+        } else {
+            data.PERDIDATMONTOCOL = data.PERDIDATMONTO;
+            data.DEDUCIBLECOL = _deducible;
+        }
         if (data.TIPOCAMBIO > 0 && data.PERDIDATMONTO > 0) {
             data.PERDIDATMONTOCOL = _claim.COD_MON === 2 ? data.PERDIDATMONTO * data.TIPOCAMBIO : data.PERDIDATMONTO;
             data.PERDIDATMONTODOL = _claim.COD_MON === 2 ? data.PERDIDATMONTO : data.PERDIDATMONTO / data.TIPOCAMBIO;
