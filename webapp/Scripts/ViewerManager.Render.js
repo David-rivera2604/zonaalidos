@@ -128,6 +128,14 @@ app.ViewerQuery = (function () {
                             app.ViewerQuery.Refresh(undefined, $(gridControlName), _id, '');
                         });
                     }
+                } else {
+                    var nameClass = "Prototype" + data.index;
+                    if (nameClass in app) {                        
+                        app[nameClass]['Changed'](function (data) {
+                            var gridControlName = "#" + index + "GridTbl";
+                            $(gridControlName).bootstrapTable('load', []);
+                        });
+                    }
                 }
             }
             if (data.type != 'template') {
