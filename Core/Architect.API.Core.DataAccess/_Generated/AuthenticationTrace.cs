@@ -25,7 +25,7 @@ namespace Architect.API.Core.DataAccess.Security
             if (authenticationtraceItem.UpdateDate.IsEmpty())
             {
                 authenticationtraceItem.UpdateDate = DateTime.Now;
-            }    
+            }
             return Database.Insert("AuthenticationTrace", ExecuteMode.CommandBuilder)
                     .Column("Id", DbType.Decimal, 9, authenticationtraceItem.Id)
                     .Column("CompanyId", DbType.Decimal, 5, authenticationtraceItem.CompanyId)
@@ -37,6 +37,25 @@ namespace Architect.API.Core.DataAccess.Security
                     .Column("Reason", DbType.AnsiString, 60, authenticationtraceItem.Reason)
                     .Column("UserAgent", DbType.AnsiString, 512, authenticationtraceItem.UserAgent)
                     .Execute(connection, "Research");
+        }
+
+        public static int Create(Architect.API.Core.Contracts.Security.AuthenticationTrace authenticationtraceItem, Session session)
+        {
+            if (authenticationtraceItem.UpdateDate.IsEmpty())
+            {
+                authenticationtraceItem.UpdateDate = DateTime.Now;
+            }
+            return Database.Insert("AuthenticationTrace", ExecuteMode.CommandBuilder)
+                    .Column("Id", DbType.Decimal, 9, authenticationtraceItem.Id)
+                    .Column("CompanyId", DbType.Decimal, 5, authenticationtraceItem.CompanyId)
+                    .Column("EffectDate", DbType.DateTime, 9, authenticationtraceItem.EffectDate)
+                    .Column("IPAddress", DbType.AnsiString, 20, authenticationtraceItem.IPAddress)
+                    .Column("UserName", DbType.AnsiString, 35, authenticationtraceItem.UserName)
+                    .Column("UserId", DbType.Decimal, 9, authenticationtraceItem.UserId)
+                    .Column("TraceType", DbType.Decimal, 5, authenticationtraceItem.TraceType)
+                    .Column("Reason", DbType.AnsiString, 60, authenticationtraceItem.Reason)
+                    .Column("UserAgent", DbType.AnsiString, 512, authenticationtraceItem.UserAgent)
+                    .Execute(session);
         }
 
         /// <summary>
@@ -175,6 +194,14 @@ namespace Architect.API.Core.DataAccess.Security
             return (int)Database.Select("SELECT NVL(MAX(Id),0) " +
                                      "FROM AuthenticationTrace")
                                 .QueryScalar<Decimal>(connection, "Research");
+        }
+
+        public static int RetrieveLastKey(DataFactory.Session session)
+        {
+
+            return (int)Database.Select("SELECT NVL(MAX(Id),0) " +
+                                     "FROM AuthenticationTrace")
+                                .QueryScalar<Decimal>(session);
         }
 
         /// <summary>
