@@ -73,27 +73,11 @@ app.PurdyPanelEvento = (function () {
     };
 
     function Controls_setup() {
-        $('#fechadelevento_group').datetimepicker({
-            format: 'DD/MM/YYYY',
-            locale: 'es'
-        });
-        $('#fechaidentificadocomoPosibleSubrogacion_group').datetimepicker({
-            format: 'DD/MM/YYYY',
-            locale: 'es'
-        });
-        $('#fechaenviadoainvestigacion_group').datetimepicker({
-            format: 'DD/MM/YYYY',
-            locale: 'es'
-        });
-        $('#fechaenviadoaacompanamientoLegal_group').datetimepicker({
-            format: 'DD/MM/YYYY',
-            locale: 'es'
-        });
-        $('#fechaautorizaciondeusopolizaEvent_group').datetimepicker({
-            format: 'DD/MM/YYYY',
-            locale: 'es'
-        });
-
+        app.ui.NewDateWidget('#fechadelevento');
+        app.ui.NewDateWidget('#fechaidentificadocomoPosibleSubrogacion');
+        app.ui.NewDateWidget('#fechaenviadoainvestigacion');
+        app.ui.NewDateWidget('#fechaenviadoaacompanamientoLegal');
+        app.ui.NewDateWidget('#fechaautorizaciondeusopolizaEvent');
     };
 
     function Controls_Events() {
@@ -210,7 +194,7 @@ app.PurdyPanelEvento = (function () {
             app.core.Post(`${app.setting.entityapi}/PurdyPanelEvento`, JSON.stringify(submitData))
                 .done(function (created) {
                     if (created?.Sucessfully) {
-                        _data.ID = created.Data.Next.NEXTID
+                        _data.ID = created.Data.Next.Data.NEXTID
                         _loadready = true;
                         _changed = false;
                         app.ui.CustomBehaviour('eventChanged', false);
@@ -252,10 +236,10 @@ app.PurdyPanelEvento = (function () {
                         dataEvento.Data = EmptyPurdyPanelEvento();
                         dataEvento.Data.ASIGES = asigesCode;
                     }
+                    _data = dataEvento.Data;
                     MapObjectToInput(dataEvento.Data);
                     dataEvento.Data.ANALISTARECLAMOSDESC = app.ui.GetDropDownSelectedText('#analistareclamos');
-                    dataEvento.Data.CATEGORIADESINIESTRODESC = app.ui.GetDropDownSelectedText('#categoriadesiniestro');
-                    _data = dataEvento.Data;
+                    dataEvento.Data.CATEGORIADESINIESTRODESC = app.ui.GetDropDownSelectedText('#categoriadesiniestro');                    
                     _eventCallback('EventoDataChange', dataEvento.Data);
                 }
             });

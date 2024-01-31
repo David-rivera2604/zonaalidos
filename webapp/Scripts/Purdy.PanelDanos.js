@@ -433,7 +433,7 @@ app.PurdyPanelDanos = (function () {
                         .done(function (created) {
                             if (created?.Sucessfully) {
                                 _data = submitData
-                                _data.ID = created.Data.Next.NEXTID
+                                _data.ID = created.Data.Next.Data.NEXTID
                                 _loadready = true;
                                 _changed = false;
                                 _eventCallback('DanosDataChange', _data);
@@ -664,8 +664,8 @@ app.PurdyPanelDanos = (function () {
                         dataDanos.Data = EmptyPurdyPanelDano();
                         dataDanos.Data.ASIGES = asigesCode;
                     }
-                    MapObjectToInput(dataDanos.Data);
                     _data = dataDanos.Data;
+                    MapObjectToInput(dataDanos.Data);                    
                     _eventCallback('DanosDataChange', dataDanos.Data);
                 }
             });
