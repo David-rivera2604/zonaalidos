@@ -1263,6 +1263,35 @@ app.ui = (function () {
         NotifyClear: function (msg, title, settings) {
 
             toastr.remove();
+        },
+        NewDateWidget: function (selector) {
+            let settings = {
+                format: 'DD/MM/YYYY',
+                locale: 'es',
+                minDate: new Date('1900-01-01T00:00:00')
+            };
+            return $(selector + '_group').datetimepicker(settings);
+        },
+        NewNumericWidget: function (selector, options = '', minimumValue = '0', maximumValue = '999999999999999999', decimalPlaces = '2') {
+
+            options = ',' + options.toLowerCase() + ',';
+            if (options.includes(',allownegative,') && minimumValue === '0') {
+                minimumValue = '-99999999999999999';
+            }
+            if (options.includes(',integer,') && minimumValue === '0') {
+                decimalPlaces = '0';
+            }
+
+            let settings = {
+                decimalCharacter: ',',
+                decimalCharacterAlternative: '.',
+                digitGroupSeparator: '.',
+                minimumValue: minimumValue,
+                maximumValue: maximumValue,
+                decimalPlaces: decimalPlaces,
+                emptyInputBehavior: 'null'
+            };
+            return new AutoNumeric(selector, settings);
         }
     };
 })();

@@ -31,83 +31,15 @@ app.PurdyPanelIndemnizacion = (function () {
     };
 
     function Controls_setup() {
-        new AutoNumeric('#montoInicialporIndemnizar', {
-            decimalCharacter: ',',
-            decimalCharacterAlternative: '.',
-            digitGroupSeparator: '.',
-            maximumValue: '999999999999999999',
-            minimumValue: '0',
-            decimalPlaces: '2',
-            emptyInputBehavior: 'null'
-        });
-        new AutoNumeric('#montoInicialporIndemnizarRepuestos', {
-            decimalCharacter: ',',
-            decimalCharacterAlternative: '.',
-            digitGroupSeparator: '.',
-            maximumValue: '999999999999999999',
-            minimumValue: '0',
-            decimalPlaces: '2',
-            emptyInputBehavior: 'null'
-        });
-        new AutoNumeric('#montoInicialporIndemnizarManodeObra', {
-            decimalCharacter: ',',
-            decimalCharacterAlternative: '.',
-            digitGroupSeparator: '.',
-            maximumValue: '999999999999999999',
-            minimumValue: '0',
-            decimalPlaces: '2',
-            emptyInputBehavior: 'null'
-        });
-        new AutoNumeric('#montoDanoOcultoporIndemnizar', {
-            decimalCharacter: ',',
-            decimalCharacterAlternative: '.',
-            digitGroupSeparator: '.',
-            maximumValue: '999999999999999999',
-            minimumValue: '0',
-            decimalPlaces: '2',
-            emptyInputBehavior: 'null'
-        });
-        new AutoNumeric('#montoDanoOcultoporIndemnizarRepuestos', {
-            decimalCharacter: ',',
-            decimalCharacterAlternative: '.',
-            digitGroupSeparator: '.',
-            maximumValue: '999999999999999999',
-            minimumValue: '0',
-            decimalPlaces: '2',
-            emptyInputBehavior: 'null'
-        });
-        new AutoNumeric('#montoDanoOcultoporIndemnizarManodeObra', {
-            decimalCharacter: ',',
-            decimalCharacterAlternative: '.',
-            digitGroupSeparator: '.',
-            maximumValue: '999999999999999999',
-            minimumValue: '0',
-            decimalPlaces: '2',
-            emptyInputBehavior: 'null'
-        });
-        $('#fecha_group').datetimepicker({
-            format: 'DD/MM/YYYY',
-            locale: 'es'
-        });
-        new AutoNumeric('#monto', {
-            decimalCharacter: ',',
-            decimalCharacterAlternative: '.',
-            digitGroupSeparator: '.',
-            maximumValue: '999999999999999999',
-            minimumValue: '-99999999999999999',
-            decimalPlaces: '2',
-            emptyInputBehavior: 'null'
-        });
-        new AutoNumeric('#nCRepuesto', {
-            decimalCharacter: ',',
-            decimalCharacterAlternative: '.',
-            digitGroupSeparator: '.',
-            maximumValue: '999999999999999999',
-            minimumValue: '0',
-            decimalPlaces: '2',
-            emptyInputBehavior: 'null'
-        });
-
+        app.ui.NewNumericWidget('#montoInicialporIndemnizar');
+        app.ui.NewNumericWidget('#montoInicialporIndemnizarRepuestos');
+        app.ui.NewNumericWidget('#montoInicialporIndemnizarManodeObra');
+        app.ui.NewNumericWidget('#montoDanoOcultoporIndemnizar');
+        app.ui.NewNumericWidget('#montoDanoOcultoporIndemnizarRepuestos');
+        app.ui.NewNumericWidget('#montoDanoOcultoporIndemnizarManodeObra');
+        app.ui.NewDateWidget('#fecha');
+        app.ui.NewNumericWidget('#monto', 'AllowNegative');
+        app.ui.NewNumericWidget('#nCRepuesto');
     };
 
     function Controls_Events() {

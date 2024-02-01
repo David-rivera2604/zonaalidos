@@ -89,6 +89,7 @@
     <Compile Include="Exceptions\DataAccessException.cs" />
     <Compile Include="Handlers\UtilityHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Session.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>

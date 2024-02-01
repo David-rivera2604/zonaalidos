@@ -587,6 +587,11 @@ namespace Architect.DataFactory
 
         #region QueriesScalar
 
+        public T QueryScalar<T>(Session session)
+        {
+            return QueryScalar<T>(session.dbConnection);
+        }
+
         public T QueryScalar<T>(IDbConnection connection, string connectionStringName)
         {
             if (connection != null)
@@ -630,6 +635,11 @@ namespace Architect.DataFactory
 
         #region Execute
 
+        public int Execute(Session session)
+        {
+                return Execute(session.dbConnection);
+
+        }
         public int Execute(IDbConnection connection, string connectionStringName)
         {
             if (connection != null)
@@ -941,7 +951,7 @@ namespace Architect.DataFactory
                             }
                         }
 
-           
+
                         OracleDataAdapter oda = new OracleDataAdapter(cmmd);
                         oda.Fill(result);
 
