@@ -565,3 +565,6 @@
 1.6.56  15/11/2023 Se habilita el proceso de llenado Formularios Digitales (Solicitud, Kyc, consentimiento) por medio de un Rol.
                    MapfreMas y MapfreMasPlus. Manejo de valores por default por medio de un rol.
 1.6.57  03/01/2024 Se agrega api SendAttachment. Para enviar adjuntos desde las integraciones con los clientes.
+1.6.58  01/02/2024 Tron. Api Imprimir poliza en Base64.
+                   Rules. Mapfremas y plus se ajustan las reglas segun lo que hay en prd.
+                   Coopeservidores. Se agrega validacion de pedir obligatorio los adjuntos en la emision.
