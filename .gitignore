@@ -60,3 +60,12 @@ Thumbs.db
 **/[Pp]ackages/*
 /.vs/aliados
 /webapp/Properties/PublishProfiles/FolderProfile.pubxml.user
+/Core/Architect.API.Core/.vs/Architect.API.Core.csproj.dtbcache.json
+/Core/Architect.API.Core.Contracts/.vs/Architect.API.Core.Contracts.csproj.dtbcache.json
+/Core/Architect.Payment.Integrations/.vs/Architect.Payment.Integrations.csproj.dtbcache.json
+/Monge/Aliados.Monge.Application/.vs/Aliados.Monge.Application.csproj.dtbcache.json
+/Tron/Architect.API.Tron.Business/.vs/Architect.API.Tron.Business.csproj.dtbcache.json
+/Tron/Architect.API.Tron.Contracts/.vs/Architect.API.Tron.Contracts.csproj.dtbcache.json
+/webapp/.vs/aliados.csproj.dtbcache.json
+/Tron/Architect.API.Tron/.vs/Architect.API.Tron.csproj.dtbcache.json
+/webapp/Properties/PublishProfiles/FolderProfile.pubxml.user
