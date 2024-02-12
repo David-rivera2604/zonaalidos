@@ -23,7 +23,7 @@ namespace Architect.API.Tron.Business.DocumentGenerator
             if (datos is Contracts.Emision.MultirriesgoSolicitud)
             {
                 MultirriesgoSolicitud multirriesgoSolicitud = datos;
-                if (tokenInfo.Roles.Contain("PolizaGrupo") && multirriesgoSolicitud.polizagrupo != null)
+                if (tokenInfo.Roles.Contain("PolizaGrupo") && multirriesgoSolicitud.polizagrupo != string.Empty)
                 {
                     filenamenew = @"MultiriesgoSolicitud(Colectiva)_" + multirriesgoSolicitud.presupuesto.Replace(" ", "").Trim() + ".pdf";
                     PlantillaPdf = @"MultiriesgoSolicitud_Colectiva_Juridico.pdf";
@@ -96,7 +96,7 @@ namespace Architect.API.Tron.Business.DocumentGenerator
                     PlantillaPdf = @"HogarTotalSolicitudMIP_.pdf";
                     filenamenew = @"HogarTotalSolicitudMIP_" + presupuesto.Replace(" ", "").Trim() + ".pdf"; //Modalidad Individual Persona
                 }
-                else if (tokenInfo.Roles.Contain("PolizaGrupo") && hogartotalSolicitud.polizagrupo != null) // Poliza Grupo
+                else if (tokenInfo.Roles.Contain("PolizaGrupo") && hogartotalSolicitud.polizagrupo != string.Empty) // Poliza Grupo
                 {
                     PlantillaPdf = @"HogarTotalSolicitudMCPG_.pdf";
                     filenamenew = @"HogarTotalSolicitudMCPG_" + presupuesto.Replace(" ", "").Trim() + ".pdf"; //Modalidad Colectiva Poliza Grupo Rol Coopenae    
