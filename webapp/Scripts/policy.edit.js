@@ -148,7 +148,8 @@ app.PolicyEdit = (function () {
             result = false;
         if (!$('#prestamosHTabHeader').hasClass('d-none') && !app.prestamo.IsValid())
             result = false;
-        //result = app.attachment.IsValid() && result;
+        if (localStorage.getItem('Tenant').includes('Coopeservidores')) 
+            result = app.attachment.IsValid() && result;
         return result;
     };
 

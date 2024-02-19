@@ -52,7 +52,10 @@
     <Compile Include="Contracts\PaymentInformation.cs" />
     <Compile Include="Contracts\PaymentSettings.cs" />
     <Compile Include="Contracts\SessionInformation.cs" />
+    <Compile Include="Contracts\v2\DatosTarjeta.cs" />
+    <Compile Include="Contracts\v2\DatosTarjetaBase.cs" />
     <Compile Include="Contracts\v2\PaymentInformation.cs" />
+    <Compile Include="Contracts\v2\TokenizerRequest.cs" />
     <Compile Include="Contracts\v2\WebhookRequest.cs" />
     <Compile Include="DataAccess\OnlinePayment.cs" />
     <Compile Include="DataAccess\PaymentSettings.cs" />

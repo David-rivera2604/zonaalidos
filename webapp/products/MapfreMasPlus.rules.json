@@ -436,6 +436,16 @@
       "Nombre": "MM_MarcasVehiculos",
       "Condicion": "({El Rol del usuario sea igual a Cotizadores})",
       "Exclusion": "3,14,37,46,57,58,63,81,87,92,105,181,217,273,354,367,384,392,440,565,701,704,706,709,713"
+    },
+    {
+      "Nombre": "TRON_DEDU_CONTR:DED_AUTO_EQESP",
+      "Condicion": "({El Rol del usuario sea igual a Purdy})",
+      "Exclusion": "2,248,244,5"
+    },
+    {
+      "Nombre": "TRON_G1010031:DEDUC303_3007",
+      "Condicion": "({El Rol del usuario sea igual a Purdy})",
+      "Exclusion": "2,248,244,5"
     }
   ],
   "Reglas": [

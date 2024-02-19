@@ -1,4 +1,5 @@
 ﻿using Architect.DataFactory;
+using Architect.DataFactory;
 using Architect.Utilities.Extensions;
 using System.Data;
 
@@ -36,6 +37,20 @@ namespace Architect.API.Tron.DataAccess
                         .Parameter("P_TLF_NUMERO", Architect.DataFactory.Enumerations.DbType.String, 10, tercero.tlf_numero)
                         .Parameter("P_EMAIL", Architect.DataFactory.Enumerations.DbType.String, 95, tercero.email)
                         .Execute(currentConnection, "Tron") != 0);
+        }
+
+        public static bool Update(int cod_cia, string tip_docum, string cod_docum, string num_tarjeta, IDbConnection currentConnection)
+        {
+            var result = Database.Update("UPDATE A1001331 " +
+                                           " SET NUM_TARJETA = :NUM_TARJETA, " +
+                                               " FEC_ACTU = SYSDATE" +
+                                         " WHERE COD_CIA = :COD_CIA AND TIP_DOCUM = :TIP_DOCUM AND COD_DOCUM = :COD_DOCUM")
+                .AddParameter("NUM_TARJETA", Architect.DataFactory.Enumerations.DbType.String, 20, num_tarjeta)
+                .AddParameter("COD_CIA", Architect.DataFactory.Enumerations.DbType.Decimal, 5, cod_cia)
+                .AddParameter("TIP_DOCUM", Architect.DataFactory.Enumerations.DbType.String, 3, tip_docum)
+                .AddParameter("COD_DOCUM", Architect.DataFactory.Enumerations.DbType.String, 20, cod_docum)
+                .Execute(currentConnection, "Tron");
+            return result >= 1;
         }
 
     }

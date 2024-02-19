@@ -59,6 +59,7 @@
     <Compile Include="AvisosDeCobro\ReciboRespose.cs" />
     <Compile Include="Batch\a2000500.cs" />
     <Compile Include="Batch\Respuesta.cs" />
+    <Compile Include="Comun\Certificado.cs" />
     <Compile Include="Comun\PlanDePago.cs" />
     <Compile Include="Comun\DocumentoRequerido.cs" />
     <Compile Include="Comun\Cobertura.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Comun\Vehiculo.cs" />
     <Compile Include="Cotizacion\Estudiantil.cs" />
     <Compile Include="Emision\Estudiantil.cs" />
+    <Compile Include="Pagos\Tarjeta.cs" />
     <Compile Include="Poliza\Parameters\ControlTecnicoParametros.cs" />
     <Compile Include="Cotizacion\HogarTotalSettings.cs" />
     <Compile Include="Cotizacion\plandepagoporfrecuencia.cs" />

@@ -593,7 +593,7 @@ app.CotizacionMapfreMas = (function () {
         );
         $.validator.addMethod("AnoFabricacion",
             function (value, element, params) {
-                if (localStorage.getItem('Roles').includes('Privilegios') || localStorage.getItem('Roles').includes('Purdy') || localStorage.getItem('Roles').includes('Red_Afecta'))
+                if (localStorage.getItem('Roles').includes('Privilegios') || localStorage.getItem('Roles').includes('Purdy') || localStorage.getItem('Roles').includes('Comercial_Mapfre'))
                     return true;
                 else {
                     let nvalue = parseInt(value, 10);

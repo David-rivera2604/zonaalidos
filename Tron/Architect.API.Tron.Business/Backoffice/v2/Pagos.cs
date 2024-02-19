@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
+using Architect.Payment.Integrations.Contracts.v2;
 using Architect.Utilities.Extensions;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Utilities.Net;
@@ -213,6 +214,73 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 }
             }
             return new Payment.Integrations.Contracts.v2.PaymentInformation() { Status = payInfov2.Status, Reason = payInfov2.Reason };
+        }
+
+
+        public static void TokenizeTarjetas()
+        {
+            int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
+            HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
+
+            client.DefaultRequestHeaders.Authorization = null;
+            string token = Architect.Payment.Integrations.Providers.Silice.Payment.signin(client).Result;
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            List<Contracts.Pagos.Tarjeta> pendientes = Architect.API.Tron.DataAccess.Pagos.Tarjetas.PendientesPorTokenizar(cod_cia);
+
+            List<DatosTarjeta> datosTajetas = new List<DatosTarjeta>();
+
+            //Se crea una lista de tarjetas a tokenizar a partir de la información de tron
+            foreach (Contracts.Pagos.Tarjeta pendiente in pendientes)
+            {
+                datosTajetas.Add(new DatosTarjeta
+                {
+                    number = pendiente.NUM_TARJETA,
+                    holder_name = pendiente.NOM_TERCERO.CompleteFullName(pendiente.NOM2_TERCERO, pendiente.APE1_TERCERO, pendiente.APE2_TERCERO),
+                    expiry_month = pendiente.FEC_VCTO_TARJETA.Month,
+                    expiry_year = pendiente.FEC_VCTO_TARJETA.Year,
+                    method = "tarjeta",
+                    typeMethod = "AHO",
+                    email = pendiente.EMAIL,
+                    cod_docum = pendiente.COD_DOCUM,
+                    tip_docum = pendiente.TIP_DOCUM,
+                    token = string.Empty
+                });
+            }
+
+
+            //datosTajetas.Add(
+            //    new DatosTarjeta
+            //    {
+            //        number = "5548611347622781",
+            //        holder_name = "Heng Chiagoziem",
+            //        expiry_month = 9,
+            //        expiry_year = 2024,
+            //        method = "tarjeta",
+            //        typeMethod = "AHO",
+            //        email = "solernelson@gmail.com",
+            //        cod_docum = "6329255"
+            //    });
+            //datosTajetas.Add(
+            //    new DatosTarjeta
+            //    {
+            //        number = "5520175928229665",
+            //        holder_name = "Helin Desheriyev",
+            //        expiry_month = 11,
+            //        expiry_year = 2026,
+            //        method = "tarjeta",
+            //        typeMethod = "AHO",
+            //        email = "solernelson@hotmail.com",
+            //        cod_docum = "10509880"
+            //    }
+            //);
+
+            List<DatosTarjeta> result = Architect.Payment.Integrations.Providers.Silice.Payment.tokenize(client, datosTajetas).Result;
+
+            foreach (DatosTarjeta tarjeta in result.Where(r => r.token != string.Empty).ToList())
+            {
+                DataAccess.A1001331.Update(cod_cia, tarjeta.tip_docum, tarjeta.cod_docum, tarjeta.card, null);
+            }
         }
 
 
