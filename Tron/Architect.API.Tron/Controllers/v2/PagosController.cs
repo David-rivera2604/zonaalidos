@@ -67,17 +67,20 @@ namespace Architect.API.Tron.Controllers.v2
             return Ok(result);
         }
 
+        /// <summary>
+        /// Procesar el resultado del pago para los recibos con cobro recurrente.
+        /// </summary>
         [HttpPost]
-        [AllowAnonymous]
-        [Route("RecurringReceipts")]
-        public async Task<IHttpActionResult> RecurringReceipts(JObject request)
+        [Route("RecurringReceipts")]        
+        public async Task<IHttpActionResult> RecurringReceipts([FromBody] Payment.Integrations.Contracts.v2.ReciboResponse request)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
-            Utilities.Log.TraceLog("RecurringReceipts", request.ToString());
+            string result = await Request.Content.ReadAsStringAsync();
+
+            Utilities.Log.TraceLog("RecurringReceipts", result);
             //string ipAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
             //string userAgent = Request.Headers.UserAgent.ToString();
-
 
             return Ok(string.Empty);
         }

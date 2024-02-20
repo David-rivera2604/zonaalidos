@@ -217,6 +217,10 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             return new Payment.Integrations.Contracts.v2.PaymentInformation() { Status = payInfov2.Status, Reason = payInfov2.Reason };
         }
 
+
+        /// <summary>
+        /// Proceso 'Batch', que envía a tokenizar las tarjetas de créditos registradas en tron.
+        /// </summary>
         public static void TokenizeTarjetas()
         {
             int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
@@ -269,6 +273,9 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             }
         }
 
+        /// <summary>
+        /// Proceso 'Batch', que envía a cobro los recibos pendiente con cobro recurrente.
+        /// </summary>
         public static void PendientesRecurrentesAlCobro()
         {
             int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
@@ -309,7 +316,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                         impuestos = "0",
                         emailCliente = email,
                         total = pendiente.IMP_RECIBO.ToString(),
-                        ordenId = pendiente.NUM_RECIBO.ToString(),
+                        ordenId = string.Format("{0}.{1}", pendiente.NUM_POLIZA, pendiente.NUM_RECIBO),
                         origen = "api",
                         expectedCollectionPaidDate = DateTime.Today,
                         moneda = pendiente.NOM_MON,
