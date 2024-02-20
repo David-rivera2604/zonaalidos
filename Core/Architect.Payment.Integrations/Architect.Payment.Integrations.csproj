@@ -52,6 +52,7 @@
     <Compile Include="Contracts\PaymentInformation.cs" />
     <Compile Include="Contracts\PaymentSettings.cs" />
     <Compile Include="Contracts\SessionInformation.cs" />
+    <Compile Include="Contracts\v2\ReciboRequest.cs" />
     <Compile Include="Contracts\v2\DatosTarjeta.cs" />
     <Compile Include="Contracts\v2\DatosTarjetaBase.cs" />
     <Compile Include="Contracts\v2\PaymentInformation.cs" />

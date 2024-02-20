@@ -91,6 +91,7 @@
     <Compile Include="Batch\P2000060.cs" />
     <Compile Include="Impresion.cs" />
     <Compile Include="LeerPresupuesto.cs" />
+    <Compile Include="Pagos\Recibos.cs" />
     <Compile Include="Pagos\Tarjetas.cs" />
     <Compile Include="PolicyProposalEx.cs" />
     <Compile Include="PolicyProposal.cs" />

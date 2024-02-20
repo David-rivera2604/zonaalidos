@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Architect.API.Insurance.Contracts.Bayer;
 using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
 using Architect.Payment.Integrations.Contracts.v2;
 using Architect.Utilities.Extensions;
@@ -216,66 +217,51 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             return new Payment.Integrations.Contracts.v2.PaymentInformation() { Status = payInfov2.Status, Reason = payInfov2.Reason };
         }
 
-
         public static void TokenizeTarjetas()
         {
             int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
+
+            List<Contracts.Pagos.Tarjeta> pendientes = Architect.API.Tron.DataAccess.Pagos.Tarjetas.PendientesPorTokenizar(cod_cia, Utilities.Helpers.Settings.IntegerValue("Payment.Tokenize.Cantidad.Tarjetas", 5));
+
+            List<DatosTarjeta> datosTajetas = new List<DatosTarjeta>();
+            string email = string.Empty;
+            //Se crea una lista de tarjetas a tokenizar a partir de la información de tron
+            foreach (Contracts.Pagos.Tarjeta pendiente in pendientes)
+            {
+                email = pendiente.EMAIL;
+                if (!string.IsNullOrEmpty(email))
+                    email = pendiente.EMAIL_COM;
+                if (!string.IsNullOrEmpty(email))
+                    email = pendiente.TXT_EMAIL;
+
+                if (!string.IsNullOrEmpty(email))
+                {
+                    datosTajetas.Add(new DatosTarjeta
+                    {
+                        number = pendiente.NUM_TARJETA,
+                        holder_name = pendiente.NOM_TERCERO.CompleteFullName(pendiente.NOM2_TERCERO, pendiente.APE1_TERCERO, pendiente.APE2_TERCERO),
+                        expiry_month = pendiente.FEC_VCTO_TARJETA.Month,
+                        expiry_year = pendiente.FEC_VCTO_TARJETA.Year,
+                        method = "tarjeta",
+                        typeMethod = "AHO",
+                        email = pendiente.EMAIL,
+                        cod_docum = pendiente.COD_DOCUM,
+                        tip_docum = pendiente.TIP_DOCUM,
+                        token = string.Empty
+                    });
+                    datosTajetas.Last().holder_name = "test." + datosTajetas.Last().holder_name;
+                    datosTajetas.Last().email = "test." + datosTajetas.Last().email;
+                }
+            }
+
+
             HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
 
             client.DefaultRequestHeaders.Authorization = null;
             string token = Architect.Payment.Integrations.Providers.Silice.Payment.signin(client).Result;
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
-            List<Contracts.Pagos.Tarjeta> pendientes = Architect.API.Tron.DataAccess.Pagos.Tarjetas.PendientesPorTokenizar(cod_cia);
-
-            List<DatosTarjeta> datosTajetas = new List<DatosTarjeta>();
-
-            //Se crea una lista de tarjetas a tokenizar a partir de la información de tron
-            foreach (Contracts.Pagos.Tarjeta pendiente in pendientes)
-            {
-                datosTajetas.Add(new DatosTarjeta
-                {
-                    number = pendiente.NUM_TARJETA,
-                    holder_name = pendiente.NOM_TERCERO.CompleteFullName(pendiente.NOM2_TERCERO, pendiente.APE1_TERCERO, pendiente.APE2_TERCERO),
-                    expiry_month = pendiente.FEC_VCTO_TARJETA.Month,
-                    expiry_year = pendiente.FEC_VCTO_TARJETA.Year,
-                    method = "tarjeta",
-                    typeMethod = "AHO",
-                    email = pendiente.EMAIL,
-                    cod_docum = pendiente.COD_DOCUM,
-                    tip_docum = pendiente.TIP_DOCUM,
-                    token = string.Empty
-                });
-            }
-
-
-            //datosTajetas.Add(
-            //    new DatosTarjeta
-            //    {
-            //        number = "5548611347622781",
-            //        holder_name = "Heng Chiagoziem",
-            //        expiry_month = 9,
-            //        expiry_year = 2024,
-            //        method = "tarjeta",
-            //        typeMethod = "AHO",
-            //        email = "solernelson@gmail.com",
-            //        cod_docum = "6329255"
-            //    });
-            //datosTajetas.Add(
-            //    new DatosTarjeta
-            //    {
-            //        number = "5520175928229665",
-            //        holder_name = "Helin Desheriyev",
-            //        expiry_month = 11,
-            //        expiry_year = 2026,
-            //        method = "tarjeta",
-            //        typeMethod = "AHO",
-            //        email = "solernelson@hotmail.com",
-            //        cod_docum = "10509880"
-            //    }
-            //);
-
-            List<DatosTarjeta> result = Architect.Payment.Integrations.Providers.Silice.Payment.tokenize(client, datosTajetas).Result;
+            List<DatosTarjeta> result = Architect.Payment.Integrations.Providers.Silice.Payment.Tokenize(client, datosTajetas).Result;
 
             foreach (DatosTarjeta tarjeta in result.Where(r => r.token != string.Empty).ToList())
             {
@@ -283,6 +269,64 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             }
         }
 
+        public static void PendientesRecurrentesAlCobro()
+        {
+            int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
+            List<Contracts.Pagos.Recibo> pendientes = Architect.API.Tron.DataAccess.Pagos.Recibos.PendientesRecurrentesAlCobro(cod_cia, Utilities.Helpers.Settings.IntegerValue("Payment.Recurrente.Cantidad.Recibos", 5));
+
+            ReciboRequest reciboReq = new ReciboRequest()
+            {
+                procesoId = Guid.NewGuid().ToString(),
+                bankCode = "0",
+                convenioType = "0",
+                convenioCode = "0",
+                envioType = "0",
+                envioDate = DateTime.Today,
+                numPlan = "0",
+                trnExterna = true,
+                items = new List<Item>()
+            };
+            string email = string.Empty;
+            int count = 0;
+            double total = 0;
+            foreach (Contracts.Pagos.Recibo pendiente in pendientes)
+            {
+                email = pendiente.EMAIL;
+                if (!string.IsNullOrEmpty(email))
+                    email = pendiente.EMAIL_COM;
+                if (!string.IsNullOrEmpty(email))
+                    email = pendiente.TXT_EMAIL;
+
+                if (!string.IsNullOrEmpty(email))
+                {
+                    total += pendiente.IMP_RECIBO;
+                    count++;
+
+                    reciboReq.items.Add(new Item()
+                    {
+                        productCode = "0",
+                        subtotal = pendiente.IMP_RECIBO.ToString(),
+                        impuestos = "0",
+                        emailCliente = email,
+                        total = pendiente.IMP_RECIBO.ToString(),
+                        ordenId = pendiente.NUM_RECIBO.ToString(),
+                        origen = "api",
+                        expectedCollectionPaidDate = DateTime.Today,
+                        moneda = pendiente.NOM_MON,
+                        concepto = string.Format("MAPFRE: {0}. POLIZA #{1} RECIBO #{2}", pendiente.NOM_RAMO, pendiente.NUM_POLIZA, pendiente.NUM_RECIBO),
+                    });
+                }
+            }
+            reciboReq.totalItems = count;
+            reciboReq.totalCompleto = total;
+
+            HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
+
+            client.DefaultRequestHeaders.Authorization = null;
+            string token = Architect.Payment.Integrations.Providers.Silice.Payment.signin(client).Result;
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            string result = Architect.Payment.Integrations.Providers.Silice.Payment.RecibosRecurrentes(client, reciboReq).Result;
+        }
 
     }
 }

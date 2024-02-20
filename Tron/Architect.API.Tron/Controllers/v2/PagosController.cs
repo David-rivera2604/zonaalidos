@@ -66,5 +66,20 @@ namespace Architect.API.Tron.Controllers.v2
 
             return Ok(result);
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("RecurringReceipts")]
+        public async Task<IHttpActionResult> RecurringReceipts(JObject request)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+
+            Utilities.Log.TraceLog("RecurringReceipts", request.ToString());
+            //string ipAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
+            //string userAgent = Request.Headers.UserAgent.ToString();
+
+
+            return Ok(string.Empty);
+        }
     }
 }

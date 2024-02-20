@@ -13,7 +13,7 @@ namespace Architect.API.Tron.DataAccess.Pagos
         /// <summary>
         /// Extrae la información de tarjetas a ser tokenizadas.
         /// </summary>
-        public static List<Contracts.Pagos.Tarjeta> PendientesPorTokenizar(int cod_cia)
+        public static List<Contracts.Pagos.Tarjeta> PendientesPorTokenizar(int cod_cia, int fetchRows)
         {
             List<Contracts.Pagos.Tarjeta> result = new List<Contracts.Pagos.Tarjeta>();
             string filter = string.Empty;
@@ -26,8 +26,9 @@ namespace Architect.API.Tron.DataAccess.Pagos
                               LEFT JOIN A1001331 A31 ON A31.COD_CIA=A99.COD_CIA AND A31.TIP_DOCUM=A99.TIP_DOCUM AND A31.COD_DOCUM=A99.COD_DOCUM
                               LEFT JOIN A5020021 A21 ON A21.TIP_TARJETA=A31.TIP_TARJETA
                               LEFT JOIN A5020022 A22 ON A22.COD_CIA=A99.COD_CIA AND A22.TIP_TARJETA=A31.TIP_TARJETA AND A22.COD_TARJETA=A31.COD_TARJETA
-                             WHERE A99.COD_CIA=:cod_cia AND NOT A31.NUM_TARJETA IS NULL AND INSTR(A31.NUM_TARJETA, '*')=0 FETCH FIRST 20 ROWS ONLY")
+                             WHERE A99.COD_CIA=:cod_cia AND NOT A31.NUM_TARJETA IS NULL AND INSTR(A31.NUM_TARJETA, '*')=0 FETCH FIRST :fetchRows ROWS ONLY")
                     .AddParameter("cod_cia", DbType.Int32, 22, cod_cia)
+                    .AddParameter("fetchRows", DbType.Int32, 22, fetchRows)
                     .Query("Tron", new Action<IDataReader>((reader) =>
                     {
                         result.Add(new Architect.API.Tron.Contracts.Pagos.Tarjeta()
@@ -56,5 +57,6 @@ namespace Architect.API.Tron.DataAccess.Pagos
 
             return result;
         }
+
     }
 }

@@ -40,7 +40,11 @@ namespace Architect.Payment.Integrations.Providers.Silice
                     result = jsonvalues.TokenStringValue("data.token");
                 }
             }
-
+            else
+            {
+                Utilities.Log.ErrorLog("Silice.Payment.signin", response.ReasonPhrase);
+                Utilities.Log.ErrorLog("Silice.Payment.signin", resultResponse);
+            }
             return result;
         }
 
@@ -62,7 +66,11 @@ namespace Architect.Payment.Integrations.Providers.Silice
                 reciboId = jsonvalues.TokenStringValue("reciboId");
 
             }
-
+            else
+            {
+                Utilities.Log.ErrorLog("Silice.Payment.recibo", response.ReasonPhrase);
+                Utilities.Log.ErrorLog("Silice.Payment.recibo", resultResponse);
+            }
             return reciboId;
         }
 
@@ -88,7 +96,11 @@ namespace Architect.Payment.Integrations.Providers.Silice
                     result = "Error. " + jsonvalues.TokenStringValue("menssage");
                 }
             }
-
+            else
+            {
+                Utilities.Log.ErrorLog("Silice.Payment.CobroSendEmail", response.ReasonPhrase);
+                Utilities.Log.ErrorLog("Silice.Payment.CobroSendEmail", resultResponse);
+            }
             return result;
         }
 
@@ -113,28 +125,15 @@ namespace Architect.Payment.Integrations.Providers.Silice
                     result = "Error. " + jsonvalues.TokenStringValue("menssage");
                 }
             }
-
+            else
+            {
+                Utilities.Log.ErrorLog("Silice.Payment.CobroMensajeAutomata", response.ReasonPhrase);
+                Utilities.Log.ErrorLog("Silice.Payment.CobroMensajeAutomata", resultResponse);
+            }
             return result;
         }
 
-        private async static Task<string> genpwdcryto(HttpClient client)
-        {
-            string claveCifrado = string.Empty;
-
-            var response = await client.GetAsync(Utilities.Helpers.Settings.StringValue("Payment.Silice.urlBase") + "/v2/user/genpwdcryto");
-            string resultResponse = await response.Content.ReadAsStringAsync();
-            if (response.IsSuccessStatusCode && resultResponse.IsNotEmpty())
-            {
-                JObject jsonvalues = JObject.Parse(resultResponse);
-
-                claveCifrado = jsonvalues.TokenStringValue("data");
-
-            }
-
-            return claveCifrado;
-        }
-
-        public async static Task<List<DatosTarjeta>> tokenize(HttpClient client, List<DatosTarjeta> datosTajetas)
+        public async static Task<List<DatosTarjeta>> Tokenize(HttpClient client, List<DatosTarjeta> datosTajetas)
         {
             string claveCifrado = await genpwdcryto(client);
 
@@ -168,9 +167,53 @@ namespace Architect.Payment.Integrations.Providers.Silice
                     tarjeta.clientId = jsonvalues.TokenStringValue("data.clientId");
                     tarjeta.token = jsonvalues.TokenStringValue("data.token");
                 }
+                else
+                {
+                    Utilities.Log.ErrorLog("Silice.Payment.Tokenize", response.ReasonPhrase);
+                    Utilities.Log.ErrorLog("Silice.Payment.Tokenize", resultResponse);
+                }
             }
 
             return datosTajetas;
+        }
+
+
+        public async static Task<string> RecibosRecurrentes(HttpClient client, ReciboRequest recibos)
+        {
+            string result = string.Empty;
+            var json = JsonConvert.SerializeObject(recibos);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("Payment.Silice.urlBase") + "/v2/recibo/envioCR", data);
+            string resultResponse = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode && resultResponse.IsNotEmpty())
+            {
+                JObject jsonvalues = JObject.Parse(resultResponse);
+
+                result = jsonvalues.TokenStringValue("status");
+            }
+            else
+            {
+                Utilities.Log.ErrorLog("Silice.Payment.RecibosRecurrentes", response.ReasonPhrase);
+                Utilities.Log.ErrorLog("Silice.Payment.RecibosRecurrentes", resultResponse);
+            }
+            return result;
+        }
+
+        private async static Task<string> genpwdcryto(HttpClient client)
+        {
+            string claveCifrado = string.Empty;
+
+            var response = await client.GetAsync(Utilities.Helpers.Settings.StringValue("Payment.Silice.urlBase") + "/v2/user/genpwdcryto");
+            string resultResponse = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode && resultResponse.IsNotEmpty())
+            {
+                JObject jsonvalues = JObject.Parse(resultResponse);
+
+                claveCifrado = jsonvalues.TokenStringValue("data");
+
+            }
+
+            return claveCifrado;
         }
 
         private static string CodifTarjeta(string textoPlano, string pwd)
