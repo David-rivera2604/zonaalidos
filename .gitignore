@@ -70,3 +70,6 @@ Thumbs.db
 /Core/Architect.Payment.Integrations/.vs/Architect.Payment.Integrations.csproj.dtbcache.json
 /Core/Architect.API.Core.Contracts/.vs/Architect.API.Core.Contracts.csproj.dtbcache.json
 /Core/Architect.API.Core/.vs/Architect.API.Core.csproj.dtbcache.json
+/Tron/Architect.API.Tron.DataAccess/Architect.API.Tron.DataAccess.csproj.user
+/Tron/Architect.API.Tron.DataAccess/.vs/Architect.API.Tron.DataAccess.csproj.dtbcache.json
+/Kernel/Architect.DataFactory/.vs/Architect.DataFactory.csproj.dtbcache.json

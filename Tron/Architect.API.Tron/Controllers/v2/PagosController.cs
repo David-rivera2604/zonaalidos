@@ -1,4 +1,5 @@
 ﻿using Microsoft.Web.Http;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -66,5 +67,48 @@ namespace Architect.API.Tron.Controllers.v2
 
             return Ok(result);
         }
+
+        /// <summary>
+        /// Procesar el resultado del pago para los recibos con cobro recurrente.
+        /// </summary>
+        [HttpPost]
+        [Route("RecurringReceipts")]
+        [Authorize(Roles = "Silice")]
+        public async Task<IHttpActionResult> RecurringReceipts([FromBody] Payment.Integrations.Contracts.v2.ReciboResponse request)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+
+            var json = JsonConvert.SerializeObject(request);
+
+
+            Utilities.Log.TraceLog("RecurringReceipts", json);
+            //string ipAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
+            //string userAgent = Request.Headers.UserAgent.ToString();
+
+            return Ok(string.Empty);
+        }
+
+        [HttpGet]
+        [Route("silicet")]
+        [AllowAnonymous]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public async Task<IHttpActionResult> silicet()
+        {
+            int recordCount = Architect.API.Tron.Business.Backoffice.v2.Pagos.TokenizeTarjetas();
+
+            return Ok(recordCount);
+        }
+
+        [HttpGet]
+        [Route("silicer")]
+        [AllowAnonymous]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public async Task<IHttpActionResult> silicer()
+        {
+            int recordCount = Architect.API.Tron.Business.Backoffice.v2.Pagos.PendientesRecurrentesAlCobro();
+
+            return Ok(recordCount);
+        }
+
     }
 }
