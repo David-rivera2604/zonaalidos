@@ -10,6 +10,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Web.UI;
 using Architect.API.Core.Security;
+using System.DirectoryServices.ActiveDirectory;
+using System.Threading.Tasks;
 
 
 namespace Architect.API.Core.Business.Security
@@ -756,6 +758,51 @@ namespace Architect.API.Core.Business.Security
                 response = 1;
             }
             return response;
+        }
+
+        /// <summary>
+        /// Permite autenticar un usuario por medio de sus credenciales.
+        public static async Task<Architect.API.Core.Contracts.Seguridad.RespuestaSeguridad> Token(string clienteID, string secretID, string ipAddress, string userAgent)
+        {
+            Architect.API.Core.Contracts.Seguridad.RespuestaSeguridad result = null;
+            return result;
+            try
+            {
+                if (string.IsNullOrEmpty(clienteID) || string.IsNullOrEmpty(secretID))
+                {
+                    return result;
+                }
+                else
+                {
+                    Architect.API.Core.Contracts.Security.Token token = null;
+
+                    AuthenticationResponse response = Architect.API.Core.Business.Security.Accounts.Authentication(new AuthenticationRequest()
+                    {
+                        Tenant = "Aliados",
+                        Email = clienteID,
+                        Password = secretID,
+                        IPAddress = ipAddress,
+                        UserAgent = userAgent
+                    }, ref token);
+
+                    if (response != null)
+                    {
+                        result = new Architect.API.Core.Contracts.Seguridad.RespuestaSeguridad()
+                        {
+                            access_token = response.Token,
+                            token_type = "Bearer",
+                            expires_in = response.ExpiresIn
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Architect.Utilities.Log.ErrorLog(ex);
+            }
+
+
+            return result;
         }
     }
 }

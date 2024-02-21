@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Architect.API.Core.Controllers
 {
@@ -297,6 +298,37 @@ namespace Architect.API.Core.Controllers
             await Task.Run(() => result = Security.Session.SessionById(id)).ConfigureAwait(false);
 
             return Ok(result);
+        }
+
+
+        /// <summary>
+        /// Permite validar las credenciales de acceso y generar un token que permite el consumo de las APIs.
+        /// </summary>
+        [HttpPost]
+        [Route("Token")]
+        [AllowAnonymous]
+        [ResponseType(typeof(Architect.API.Core.Contracts.Seguridad.RespuestaSeguridad))]
+        public async Task<IHttpActionResult> Token(Architect.API.Core.Contracts.Seguridad.SolicitudAcceso solicitud)
+        {
+            if (solicitud.IsEmpty() || solicitud.clienteID.IsEmpty() || solicitud.secretID.IsEmpty())
+            {
+                return BadRequest("Debe indicar la credenciales de acceso");
+            }
+
+            string IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
+            string useragent = Request.Headers.UserAgent.ToString();
+
+            Architect.API.Core.Contracts.Seguridad.RespuestaSeguridad result = Architect.API.Core.Business.Security.Accounts.Token(solicitud.clienteID, solicitud.secretID, IPAddress, useragent).Result;
+
+            if (result != null && !result.access_token.IsEmpty())
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return Unauthorized();
+            }
+
         }
 
     }
