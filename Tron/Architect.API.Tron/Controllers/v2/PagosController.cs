@@ -1,4 +1,5 @@
 ﻿using Microsoft.Web.Http;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -71,14 +72,16 @@ namespace Architect.API.Tron.Controllers.v2
         /// Procesar el resultado del pago para los recibos con cobro recurrente.
         /// </summary>
         [HttpPost]
-        [Route("RecurringReceipts")]        
+        [Route("RecurringReceipts")]
+        [Authorize(Roles = "Silice")]
         public async Task<IHttpActionResult> RecurringReceipts([FromBody] Payment.Integrations.Contracts.v2.ReciboResponse request)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
-            string result = await Request.Content.ReadAsStringAsync();
+            var json = JsonConvert.SerializeObject(request);
 
-            Utilities.Log.TraceLog("RecurringReceipts", result);
+
+            Utilities.Log.TraceLog("RecurringReceipts", json);
             //string ipAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
             //string userAgent = Request.Headers.UserAgent.ToString();
 
