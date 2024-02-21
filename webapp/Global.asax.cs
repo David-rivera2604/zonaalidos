@@ -91,6 +91,11 @@ namespace aliados
                     Cron.MinuteInterval(docuSignInterval));
             }
 
+            //BackgroundJob.Enqueue(() => 
+            //    Architect.API.Tron.Business.Backoffice.v2.Pagos.TokenizeTarjetas());
+
+            //BackgroundJob.Enqueue(() =>
+            //    Architect.API.Tron.Business.Backoffice.v2.Pagos.PendientesRecurrentesAlCobro());
 
 
             //var recurringJobs = Hangfire.JobStorage.Current.GetConnection().GetRecurringJobs().ToList();

@@ -26,7 +26,6 @@ namespace Architect.Payment.Integrations.Contracts.v2
 
     internal class Dataextra
     {
-        public string productExternal { get; set; }
         public string externalClientId { get; set; }
     }
 

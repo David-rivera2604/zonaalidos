@@ -9,6 +9,7 @@ using Architect.API.Insurance.Contracts.Bayer;
 using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
 using Architect.Payment.Integrations.Contracts.v2;
 using Architect.Utilities.Extensions;
+using Microsoft.Win32;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Utilities.Net;
 
@@ -221,11 +222,12 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         /// <summary>
         /// Proceso 'Batch', que envía a tokenizar las tarjetas de créditos registradas en tron.
         /// </summary>
-        public static void TokenizeTarjetas()
+        public static int TokenizeTarjetas()
         {
+            int recordCount = 0;
             int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
 
-            List<Contracts.Pagos.Tarjeta> pendientes = Architect.API.Tron.DataAccess.Pagos.Tarjetas.PendientesPorTokenizar(cod_cia, Utilities.Helpers.Settings.IntegerValue("Payment.Tokenize.Cantidad.Tarjetas", 5));
+            List<Contracts.Pagos.Tarjeta> pendientes = Architect.API.Tron.DataAccess.Pagos.Tarjetas.PendientesPorTokenizar(cod_cia, Utilities.Helpers.Settings.IntegerValue("Payment.Tokenize.Cantidad.Tarjetas", 50));
 
             List<DatosTarjeta> datosTajetas = new List<DatosTarjeta>();
             string email = string.Empty;
@@ -270,14 +272,18 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             foreach (DatosTarjeta tarjeta in result.Where(r => r.token != string.Empty).ToList())
             {
                 DataAccess.A1001331.Update(cod_cia, tarjeta.tip_docum, tarjeta.cod_docum, tarjeta.card, null);
+                DataAccess.Pagos.Tarjetas.CreateBoveda(tarjeta.tip_docum, tarjeta.cod_docum, tarjeta.card, tarjeta.token, tarjeta.clientId);
+                recordCount++;
             }
+            return recordCount;
         }
 
         /// <summary>
         /// Proceso 'Batch', que envía a cobro los recibos pendiente con cobro recurrente.
         /// </summary>
-        public static void PendientesRecurrentesAlCobro()
+        public static int PendientesRecurrentesAlCobro()
         {
+            int recordCount = 0;
             int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
             List<Contracts.Pagos.Recibo> pendientes = Architect.API.Tron.DataAccess.Pagos.Recibos.PendientesRecurrentesAlCobro(cod_cia, Utilities.Helpers.Settings.IntegerValue("Payment.Recurrente.Cantidad.Recibos", 5));
 
@@ -321,8 +327,11 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                         expectedCollectionPaidDate = DateTime.Today,
                         moneda = pendiente.NOM_MON,
                         concepto = string.Format("MAPFRE: {0}. POLIZA #{1} RECIBO #{2}", pendiente.NOM_RAMO, pendiente.NUM_POLIZA, pendiente.NUM_RECIBO),
+                        token = pendiente.TOKEN
                     });
+                    reciboReq.items.Last().emailCliente = "test." + reciboReq.items.Last().emailCliente;
                 }
+                recordCount++;
             }
             reciboReq.totalItems = count;
             reciboReq.totalCompleto = total;
@@ -333,6 +342,8 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             string token = Architect.Payment.Integrations.Providers.Silice.Payment.signin(client).Result;
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             string result = Architect.Payment.Integrations.Providers.Silice.Payment.RecibosRecurrentes(client, reciboReq).Result;
+
+            return recordCount;
         }
 
     }

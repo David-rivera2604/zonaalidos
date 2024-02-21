@@ -1,4 +1,5 @@
 ﻿using Architect.DataFactory;
+using Architect.DataFactory.Enumerations;
 using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
@@ -58,5 +59,17 @@ namespace Architect.API.Tron.DataAccess.Pagos
             return result;
         }
 
+
+        public static int CreateBoveda(string TIP_DOCUM, string COD_DOCUM, string CARD, string TOKEN, string CLIENTID, IDbConnection connection = null)
+        {
+            return Database.Insert("BOVEDA", ExecuteMode.CommandBuilder)
+                    .Column("TIP_DOCUM", DbType.AnsiString, 3, TIP_DOCUM)
+                    .Column("COD_DOCUM", DbType.AnsiString, 20, COD_DOCUM)
+                    .Column("CARD", DbType.AnsiString, 80, CARD)
+                    .Column("TOKEN", DbType.AnsiString, 120, TOKEN)
+                    .Column("CLIENTID", DbType.AnsiString, 80, CLIENTID)
+                    .Column("UpdateDate", DbType.DateTime, 0, DateTime.Now)
+                    .Execute(connection, "Research");
+        }
     }
 }

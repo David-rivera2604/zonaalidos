@@ -26,6 +26,7 @@ namespace Architect.API.Tron.Contracts.Pagos
         public string EMAIL { get; set; }
         public string EMAIL_COM { get; set; }
         public string TXT_EMAIL { get; set; }
+        public string TOKEN { get; set; }
 
 
     }

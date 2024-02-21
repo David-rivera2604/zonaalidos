@@ -36,6 +36,7 @@ namespace Architect.Payment.Integrations.Contracts.v2
         public DateTime expectedCollectionPaidDate { get; set; }
         public string moneda { get; set; }
         public string concepto { get; set; }
+        public string token { get; set; }
 
     }
 

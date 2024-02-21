@@ -19,8 +19,9 @@ namespace Architect.API.Tron.DataAccess.Pagos
             string filter = string.Empty;
 
             Database.Select(@"SELECT C.NUM_RECIBO, C.FEC_EFEC_RECIBO, SUM(C.IMP_RECIBO) IMP_RECIBO, A400.COD_MON_ISO NOM_MON, A.NUM_POLIZA, a1800.nom_ramo, A.TIP_DOCUM, A.COD_DOCUM, A99.NOM_TERCERO, A99.NOM2_TERCERO, A99.APE1_TERCERO, A99.APE2_TERCERO,
-  		                             A1331.TLF_NUMERO, A1331.TLF_NUMERO_COM, A1331.EMAIL, A1331.EMAIL_COM, A1331.TXT_EMAIL
+  		                             A1331.TLF_NUMERO, A1331.TLF_NUMERO_COM, A1331.EMAIL, A1331.EMAIL_COM, A1331.TXT_EMAIL, B.TOKEN
                                 FROM A2000030 A
+                                JOIN ALIADOS.BOVEDA B ON B.TIP_DOCUM=A.TIP_DOCUM AND B.COD_DOCUM=A.COD_DOCUM
                                 JOIN A2990700 C 
                                     ON C.COD_CIA  = A.COD_CIA
                                     AND C.NUM_SPTO  <= A.NUM_SPTO
@@ -31,7 +32,7 @@ namespace Architect.API.Tron.DataAccess.Pagos
                                     AND C.TIP_GESTOR IN ('TA')
                                     AND TRUNC(C.FEC_EFEC_RECIBO) = TRUNC(SYSDATE)
                                 JOIN A1001399 A99 ON A99.COD_CIA  = A.COD_CIA AND A99.TIP_DOCUM = A.TIP_DOCUM AND A99.COD_DOCUM = A.COD_DOCUM
-                                JOIN A1001331 A1331 ON A1331.COD_CIA  = A.COD_CIA AND A1331.TIP_DOCUM = A.TIP_DOCUM AND A1331.COD_DOCUM = A.COD_DOCUM AND INSTR(A1331.NUM_TARJETA, '*')>0
+                                JOIN A1001331 A1331 ON A1331.COD_CIA  = A.COD_CIA AND A1331.TIP_DOCUM = A.TIP_DOCUM AND A1331.COD_DOCUM = A.COD_DOCUM
                                 JOIN A1000400 A400 ON A400.COD_MON = C.COD_MON
                                 JOIN A1001800 a1800 ON a1800.COD_CIA=A.COD_CIA AND a1800.COD_RAMO = A.COD_RAMO
                                 WHERE A.COD_CIA = :cod_cia
@@ -41,7 +42,7 @@ namespace Architect.API.Tron.DataAccess.Pagos
                                                         WHERE A230.COD_CIA    = A.COD_CIA
                                                         AND A230.NUM_POLIZA = A.NUM_POLIZA )
                                 GROUP BY A.NUM_POLIZA, a1800.nom_ramo, A.TIP_DOCUM, A.COD_DOCUM, A99.NOM_TERCERO, A99.NOM2_TERCERO, A99.APE1_TERCERO, A99.APE2_TERCERO,
-   			                            A1331.TLF_NUMERO, A1331.TLF_NUMERO_COM, A1331.EMAIL, A1331.EMAIL_COM, A1331.TXT_EMAIL, C.NUM_RECIBO, C.FEC_EFEC_RECIBO, A400.COD_MON_ISO 
+   			                            A1331.TLF_NUMERO, A1331.TLF_NUMERO_COM, A1331.EMAIL, A1331.EMAIL_COM, A1331.TXT_EMAIL, C.NUM_RECIBO, C.FEC_EFEC_RECIBO, A400.COD_MON_ISO, B.TOKEN
                                 FETCH FIRST :fetchRows ROWS ONLY")
                     .AddParameter("cod_cia", DbType.Int32, 22, cod_cia)
                     .AddParameter("fetchRows", DbType.Int32, 22, fetchRows)
@@ -65,7 +66,8 @@ namespace Architect.API.Tron.DataAccess.Pagos
                             TLF_NUMERO_COM = reader.StringValue("TLF_NUMERO_COM"),
                             EMAIL = reader.StringValue("EMAIL"),
                             EMAIL_COM = reader.StringValue("EMAIL_COM"),
-                            TXT_EMAIL = reader.StringValue("TXT_EMAIL")
+                            TXT_EMAIL = reader.StringValue("TXT_EMAIL"),
+                            TOKEN = reader.StringValue("TOKEN")
                         });
                     }));
 

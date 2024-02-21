@@ -149,7 +149,6 @@ namespace Architect.Payment.Integrations.Providers.Silice
                         fiscal_number = tarjeta.cod_docum,
                         dataExtra = new Dataextra()
                         {
-                            productExternal = "CCC",
                             externalClientId = tarjeta.cod_docum
                         },
                     },

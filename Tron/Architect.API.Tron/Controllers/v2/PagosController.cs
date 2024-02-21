@@ -87,5 +87,28 @@ namespace Architect.API.Tron.Controllers.v2
 
             return Ok(string.Empty);
         }
+
+        [HttpGet]
+        [Route("silicet")]
+        [AllowAnonymous]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public async Task<IHttpActionResult> silicet()
+        {
+            int recordCount = Architect.API.Tron.Business.Backoffice.v2.Pagos.TokenizeTarjetas();
+
+            return Ok(recordCount);
+        }
+
+        [HttpGet]
+        [Route("silicer")]
+        [AllowAnonymous]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public async Task<IHttpActionResult> silicer()
+        {
+            int recordCount = Architect.API.Tron.Business.Backoffice.v2.Pagos.PendientesRecurrentesAlCobro();
+
+            return Ok(recordCount);
+        }
+
     }
 }
