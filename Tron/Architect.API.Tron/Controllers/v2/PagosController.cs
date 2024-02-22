@@ -1,4 +1,5 @@
-﻿using Microsoft.Web.Http;
+﻿using Architect.Payment.Integrations.Contracts.v2;
+using Microsoft.Web.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -79,11 +80,9 @@ namespace Architect.API.Tron.Controllers.v2
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             var json = JsonConvert.SerializeObject(request);
-
-
             Utilities.Log.TraceLog("RecurringReceipts", json);
-            //string ipAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
-            //string userAgent = Request.Headers.UserAgent.ToString();
+
+            await Business.Backoffice.v2.Pagos.RecurringReceipts(request);
 
             return Ok(string.Empty);
         }

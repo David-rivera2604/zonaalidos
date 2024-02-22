@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Data;
 using System.Linq;
 using System.Net;
@@ -297,7 +298,8 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 envioDate = DateTime.Today,
                 numPlan = "0",
                 trnExterna = true,
-                items = new List<Item>()
+                items = new List<Item>(),
+                urlWebhook = string.Format("{0}/v2/Pagos/RecurringReceipts", Utilities.Helpers.Settings.StringValue("Payment.Silice.urlBase"))
             };
             string email = string.Empty;
             int count = 0;
@@ -322,7 +324,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                         impuestos = "0",
                         emailCliente = email,
                         total = pendiente.IMP_RECIBO.ToString(),
-                        ordenId = string.Format("{0}.{1}", pendiente.NUM_POLIZA, pendiente.NUM_RECIBO),
+                        ordenId = pendiente.NUM_RECIBO.ToString(),
                         origen = "api",
                         expectedCollectionPaidDate = DateTime.Today,
                         moneda = pendiente.NOM_MON,
@@ -344,6 +346,46 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             string result = Architect.Payment.Integrations.Providers.Silice.Payment.RecibosRecurrentes(client, reciboReq).Result;
 
             return recordCount;
+        }
+
+        /// <summary>
+        /// Procesar el resultado del pago para los recibos con cobro recurrente.
+        /// </summary>
+        public async static Task RecurringReceipts(Payment.Integrations.Contracts.v2.ReciboResponse request)
+        {
+            int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
+            int num_recibo = 0;
+            foreach (Payment.Integrations.Contracts.v2.ReciboResponseItem item in request.items)
+            {
+                num_recibo = Convert.ToInt32(item.ordenId);
+                Contracts.Pagos.Recibo recibo = Architect.API.Tron.DataAccess.Pagos.Recibos.ReciboAlCobro(cod_cia, num_recibo);
+                if (recibo != null)
+                {
+                    Architect.Payment.Integrations.Contracts.InformationRequest result = new Payment.Integrations.Contracts.InformationRequest()
+                    {
+                        status = item.status == "Aprobado" ? "APPROVED" : "",
+                        date = null,
+                        authorization = item.resultado_pasarela.authorization,
+                        total = recibo.IMP_RECIBO,
+                        currency = recibo.NOM_MON,
+                        ipAddress = null,
+                        lastDigits = item.card_number,
+                        payerName = recibo.NOM_TERCERO,
+                        payerSurname = recibo.APE1_TERCERO,
+                        paymentMethodName = null,
+                        OnlinePayment = new Payment.Integrations.Contracts.OnlinePayment()
+                        {
+                            CompanyId = 0,
+                            UpdateUserCode = 0,
+                            RequestID = num_recibo,
+                            PolicyId = recibo.NUM_POLIZA,
+                            BillNumber = num_recibo,
+                            Amount = recibo.IMP_RECIBO
+                        }
+                    };
+                    bool tronPayment = await Backoffice.Pagos.TronPayment(result, 999999);
+                }
+            }
         }
 
     }
