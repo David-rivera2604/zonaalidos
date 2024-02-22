@@ -174,7 +174,7 @@ namespace Architect.API.Core.Contracts
         /// <summary>
         /// Monto de la prima
         /// </summary>
-        public int montoprima { get; set; }
+        public double montoprima { get; set; }
         /// <summary>
         /// Tipo de prima
         /// </summary>
