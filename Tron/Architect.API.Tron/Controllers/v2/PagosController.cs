@@ -93,7 +93,12 @@ namespace Architect.API.Tron.Controllers.v2
         [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IHttpActionResult> silicet()
         {
-            int recordCount = Architect.API.Tron.Business.Backoffice.v2.Pagos.TokenizeTarjetas();
+            int recordCount = 0;
+
+            await Task.Run(() =>
+            {
+                recordCount = Architect.API.Tron.Business.Backoffice.v2.Pagos.TokenizeTarjetas();
+            }).ConfigureAwait(false);
 
             return Ok(recordCount);
         }
@@ -104,7 +109,13 @@ namespace Architect.API.Tron.Controllers.v2
         [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IHttpActionResult> silicer()
         {
-            int recordCount = Architect.API.Tron.Business.Backoffice.v2.Pagos.PendientesRecurrentesAlCobro();
+            int recordCount = 0;
+
+            await Task.Run(() =>
+            {
+                recordCount = Architect.API.Tron.Business.Backoffice.v2.Pagos.PendientesRecurrentesAlCobro();
+            }).ConfigureAwait(false);
+
 
             return Ok(recordCount);
         }

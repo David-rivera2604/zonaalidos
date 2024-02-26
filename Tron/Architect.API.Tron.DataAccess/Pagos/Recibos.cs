@@ -21,7 +21,7 @@ namespace Architect.API.Tron.DataAccess.Pagos
             Database.Select(@"SELECT C.NUM_RECIBO, C.FEC_EFEC_RECIBO, SUM(C.IMP_RECIBO) IMP_RECIBO, A400.COD_MON_ISO NOM_MON, A.NUM_POLIZA, a1800.nom_ramo, A.TIP_DOCUM, A.COD_DOCUM, A99.NOM_TERCERO, A99.NOM2_TERCERO, A99.APE1_TERCERO, A99.APE2_TERCERO,
   		                             A1331.TLF_NUMERO, A1331.TLF_NUMERO_COM, A1331.EMAIL, A1331.EMAIL_COM, A1331.TXT_EMAIL, B.TOKEN
                                 FROM A2000030 A
-                                JOIN ALIADOS.BOVEDA B ON B.TIP_DOCUM=A.TIP_DOCUM AND B.COD_DOCUM=A.COD_DOCUM
+                                JOIN ALIADOS.BOVEDA B ON B.TIP_DOCUM=A.TIP_DOCUM AND B.COD_DOCUM=A.COD_DOCUM AND B.STATUS=1 
                                 JOIN A2990700 C 
                                     ON C.COD_CIA  = A.COD_CIA
                                     AND C.NUM_SPTO  <= A.NUM_SPTO
@@ -85,7 +85,7 @@ namespace Architect.API.Tron.DataAccess.Pagos
             Database.Select(@"SELECT C.NUM_RECIBO, C.FEC_EFEC_RECIBO, SUM(C.IMP_RECIBO) IMP_RECIBO, A400.COD_MON_ISO NOM_MON, A.NUM_POLIZA, a1800.nom_ramo, A.TIP_DOCUM, A.COD_DOCUM, A99.NOM_TERCERO, A99.NOM2_TERCERO, A99.APE1_TERCERO, A99.APE2_TERCERO,
   		                             A1331.TLF_NUMERO, A1331.TLF_NUMERO_COM, A1331.EMAIL, A1331.EMAIL_COM, A1331.TXT_EMAIL, B.TOKEN
                                 FROM A2000030 A
-                                JOIN ALIADOS.BOVEDA B ON B.TIP_DOCUM=A.TIP_DOCUM AND B.COD_DOCUM=A.COD_DOCUM
+                                JOIN ALIADOS.BOVEDA B ON B.TIP_DOCUM=A.TIP_DOCUM AND B.COD_DOCUM=A.COD_DOCUM AND B.STATUS=1 
                                 JOIN A2990700 C 
                                     ON C.COD_CIA  = A.COD_CIA
                                     AND C.NUM_SPTO  <= A.NUM_SPTO
@@ -106,9 +106,8 @@ namespace Architect.API.Tron.DataAccess.Pagos
                                                         WHERE A230.COD_CIA    = A.COD_CIA
                                                         AND A230.NUM_POLIZA = A.NUM_POLIZA )
                                 GROUP BY A.NUM_POLIZA, a1800.nom_ramo, A.TIP_DOCUM, A.COD_DOCUM, A99.NOM_TERCERO, A99.NOM2_TERCERO, A99.APE1_TERCERO, A99.APE2_TERCERO,
-   			                            A1331.TLF_NUMERO, A1331.TLF_NUMERO_COM, A1331.EMAIL, A1331.EMAIL_COM, A1331.TXT_EMAIL, C.NUM_RECIBO, C.FEC_EFEC_RECIBO, A400.COD_MON_ISO, B.TOKEN
-                                FETCH FIRST :fetchRows ROWS ONLY")
-                    .AddParameter("fetchRows", DbType.Int32, 22, num_recibo)
+   			                            A1331.TLF_NUMERO, A1331.TLF_NUMERO_COM, A1331.EMAIL, A1331.EMAIL_COM, A1331.TXT_EMAIL, C.NUM_RECIBO, C.FEC_EFEC_RECIBO, A400.COD_MON_ISO, B.TOKEN")
+                    .AddParameter("num_recibo", DbType.Int32, 22, num_recibo)
                     .AddParameter("cod_cia", DbType.Int32, 22, cod_cia)
                     .Query("Tron", new Action<IDataReader>((reader) =>
                     {

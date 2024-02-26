@@ -236,9 +236,9 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             foreach (Contracts.Pagos.Tarjeta pendiente in pendientes)
             {
                 email = pendiente.EMAIL;
-                if (!string.IsNullOrEmpty(email))
+                if (string.IsNullOrEmpty(email))
                     email = pendiente.EMAIL_COM;
-                if (!string.IsNullOrEmpty(email))
+                if (string.IsNullOrEmpty(email))
                     email = pendiente.TXT_EMAIL;
 
                 if (!string.IsNullOrEmpty(email))
@@ -263,17 +263,20 @@ namespace Architect.API.Tron.Business.Backoffice.v2
 
 
             HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
-
+            client.Timeout = TimeSpan.FromSeconds(10);
             client.DefaultRequestHeaders.Authorization = null;
             string token = Architect.Payment.Integrations.Providers.Silice.Payment.signin(client).Result;
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
             List<DatosTarjeta> result = Architect.Payment.Integrations.Providers.Silice.Payment.Tokenize(client, datosTajetas).Result;
 
-            foreach (DatosTarjeta tarjeta in result.Where(r => r.token != string.Empty).ToList())
+            foreach (DatosTarjeta tarjeta in result)
             {
-                DataAccess.A1001331.Update(cod_cia, tarjeta.tip_docum, tarjeta.cod_docum, tarjeta.card, null);
-                DataAccess.Pagos.Tarjetas.CreateBoveda(tarjeta.tip_docum, tarjeta.cod_docum, tarjeta.card, tarjeta.token, tarjeta.clientId);
+                if (tarjeta.token != string.Empty)
+                {
+                    DataAccess.A1001331.Update(cod_cia, tarjeta.tip_docum, tarjeta.cod_docum, tarjeta.card, null);
+                }
+                DataAccess.Pagos.Tarjetas.CreateBoveda(tarjeta.tip_docum, tarjeta.cod_docum, tarjeta.card, tarjeta.token, tarjeta.clientId, tarjeta.status, tarjeta.reason);
                 recordCount++;
             }
             return recordCount;
@@ -339,7 +342,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             reciboReq.totalCompleto = total;
 
             HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
-
+            client.Timeout = TimeSpan.FromSeconds(3);
             client.DefaultRequestHeaders.Authorization = null;
             string token = Architect.Payment.Integrations.Providers.Silice.Payment.signin(client).Result;
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);

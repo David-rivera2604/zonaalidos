@@ -56,5 +56,15 @@ namespace Architect.Utilities.Extensions
             }
             return result;
         }
+        public static bool TokenBoolValue(this JObject instance, string path, bool defaultValue =false)
+        {
+            bool result = defaultValue;
+            JToken jvalue = instance.SelectToken(path);
+            if (jvalue != null)
+            {
+                result = jvalue.Value<bool>();
+            }
+            return result;
+        }
     }
 }

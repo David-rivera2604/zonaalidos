@@ -16,5 +16,8 @@ namespace Architect.Payment.Integrations.Contracts.v2
         public string card { get; set; }
         public string token { get; set; }
         public string clientId { get; set; }
+
+        public bool status { get; set; }
+        public string reason{ get; set; }
     }
 }

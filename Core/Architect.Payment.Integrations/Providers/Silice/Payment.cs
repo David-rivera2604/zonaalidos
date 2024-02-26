@@ -162,12 +162,22 @@ namespace Architect.Payment.Integrations.Providers.Silice
                 {
                     JObject jsonvalues = JObject.Parse(resultResponse);
 
+                    tarjeta.status = jsonvalues.TokenBoolValue("status");
+
+                    if (tarjeta.status) { 
                     tarjeta.card = jsonvalues.TokenStringValue("data.card");
                     tarjeta.clientId = jsonvalues.TokenStringValue("data.clientId");
                     tarjeta.token = jsonvalues.TokenStringValue("data.token");
+                    } else
+                    {
+                        tarjeta.reason = jsonvalues.TokenStringValue("menssage");
+                    }
                 }
                 else
                 {
+                    tarjeta.status = false;
+                    tarjeta.reason = response.ReasonPhrase;
+
                     Utilities.Log.ErrorLog("Silice.Payment.Tokenize", response.ReasonPhrase);
                     Utilities.Log.ErrorLog("Silice.Payment.Tokenize", resultResponse);
                 }

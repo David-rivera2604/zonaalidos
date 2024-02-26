@@ -27,7 +27,7 @@ namespace Architect.API.Tron.DataAccess.Pagos
                               LEFT JOIN A1001331 A31 ON A31.COD_CIA=A99.COD_CIA AND A31.TIP_DOCUM=A99.TIP_DOCUM AND A31.COD_DOCUM=A99.COD_DOCUM
                               LEFT JOIN A5020021 A21 ON A21.TIP_TARJETA=A31.TIP_TARJETA
                               LEFT JOIN A5020022 A22 ON A22.COD_CIA=A99.COD_CIA AND A22.TIP_TARJETA=A31.TIP_TARJETA AND A22.COD_TARJETA=A31.COD_TARJETA
-                             WHERE A99.COD_CIA=:cod_cia AND NOT A31.NUM_TARJETA IS NULL AND INSTR(A31.NUM_TARJETA, '*')=0 FETCH FIRST :fetchRows ROWS ONLY")
+                             WHERE A99.COD_CIA=:cod_cia AND NOT A31.NUM_TARJETA IS NULL AND INSTR(A31.NUM_TARJETA, '*')=0 AND (NOT A31.EMAIL IS NULL OR  NOT A31.EMAIL_COM IS NULL OR NOT A31.TXT_EMAIL IS NULL ) FETCH FIRST :fetchRows ROWS ONLY")
                     .AddParameter("cod_cia", DbType.Int32, 22, cod_cia)
                     .AddParameter("fetchRows", DbType.Int32, 22, fetchRows)
                     .Query("Tron", new Action<IDataReader>((reader) =>
@@ -60,16 +60,46 @@ namespace Architect.API.Tron.DataAccess.Pagos
         }
 
 
-        public static int CreateBoveda(string TIP_DOCUM, string COD_DOCUM, string CARD, string TOKEN, string CLIENTID, IDbConnection connection = null)
+        public static int CreateBoveda(string TIP_DOCUM, string COD_DOCUM, string CARD, string TOKEN, string CLIENTID, bool STATUS, string REASON, IDbConnection connection = null)
         {
-            return Database.Insert("BOVEDA", ExecuteMode.CommandBuilder)
-                    .Column("TIP_DOCUM", DbType.AnsiString, 3, TIP_DOCUM)
-                    .Column("COD_DOCUM", DbType.AnsiString, 20, COD_DOCUM)
-                    .Column("CARD", DbType.AnsiString, 80, CARD)
-                    .Column("TOKEN", DbType.AnsiString, 120, TOKEN)
-                    .Column("CLIENTID", DbType.AnsiString, 80, CLIENTID)
-                    .Column("UpdateDate", DbType.DateTime, 0, DateTime.Now)
-                    .Execute(connection, "Research");
+            int result = 0;
+
+            int recordCount = (int)Database.Select("SELECT COUNT(COD_DOCUM) " +
+                              "FROM BOVEDA " +
+                             "WHERE TIP_DOCUM=:TIP_DOCUM AND COD_DOCUM=:COD_DOCUM")
+                            .AddParameter("TIP_DOCUM", DbType.AnsiString, 3, TIP_DOCUM)
+                            .AddParameter("COD_DOCUM", DbType.AnsiString, 20, COD_DOCUM)
+                            .QueryScalar<Decimal>(connection, "Research");
+
+            if (recordCount == 0)
+            {
+                result = Database.Insert("BOVEDA", ExecuteMode.CommandBuilder)
+                                .Column("TIP_DOCUM", DbType.AnsiString, 3, TIP_DOCUM)
+                                .Column("COD_DOCUM", DbType.AnsiString, 20, COD_DOCUM)
+                                .Column("CARD", DbType.AnsiString, 80, CARD)
+                                .Column("TOKEN", DbType.AnsiString, 120, TOKEN)
+                                .Column("CLIENTID", DbType.AnsiString, 80, CLIENTID)
+                                .Column("STATUS", DbType.Int32, 1, STATUS ? 1 : 0)
+                                .Column("REASON", DbType.AnsiString, 100, REASON)
+                                .Column("UpdateDate", DbType.DateTime, 0, DateTime.Now)
+                                .Execute(connection, "Research");
+            }
+            else
+            {
+                result = Database.Update("BOVEDA", ExecuteMode.CommandBuilder)
+                                .Column("CARD", DbType.AnsiString, 80, CARD)
+                                .Column("TOKEN", DbType.AnsiString, 120, TOKEN)
+                                .Column("CLIENTID", DbType.AnsiString, 80, CLIENTID)
+                                .Column("STATUS", DbType.Int32, 1, STATUS ? 1 : 0)
+                                .Column("REASON", DbType.AnsiString, 100, REASON)
+                                .Column("UpdateDate", DbType.DateTime, 0, DateTime.Now)
+                                .Filter("TIP_DOCUM", DbType.AnsiString, 3, TIP_DOCUM)
+                                .Filter("COD_DOCUM", DbType.AnsiString, 20, COD_DOCUM)
+                                .Execute(connection, "Research");
+            }
+
+
+            return result;
         }
     }
 }
