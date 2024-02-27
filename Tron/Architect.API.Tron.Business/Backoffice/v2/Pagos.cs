@@ -342,7 +342,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             reciboReq.totalCompleto = total;
 
             HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
-            client.Timeout = TimeSpan.FromSeconds(3);
+            //client.Timeout = TimeSpan.FromSeconds(3);
             client.DefaultRequestHeaders.Authorization = null;
             string token = Architect.Payment.Integrations.Providers.Silice.Payment.signin(client).Result;
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
