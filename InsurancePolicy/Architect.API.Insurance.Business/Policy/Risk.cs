@@ -727,7 +727,7 @@ namespace Architect.API.Insurance.Business.Policy
                 foreach (Contracts.Policy.RiskRoles newItem in newList)
                 {
                     // if (newItem.RoleId.IsNotEmpty())
-                    toAdd = currentList.Find(r => r.DocumentNumber == newItem.DocumentNumber);
+                    toAdd = currentList.Find(r => r.Type == newItem.Type && r.DocumentNumber == newItem.DocumentNumber);
 
                     if (toAdd.IsEmpty())
                     {
