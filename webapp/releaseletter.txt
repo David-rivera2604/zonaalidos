@@ -568,3 +568,4 @@
 1.6.58  01/02/2024 Tron. Api Imprimir poliza en Base64.
                    Rules. Mapfremas y plus se ajustan las reglas segun lo que hay en prd.
                    Coopeservidores. Se agrega validacion de pedir obligatorio los adjuntos en la emision.
+1.6.59  04/03/2024 Bayer. Permite crear solicitudes sin beneficiarios.
