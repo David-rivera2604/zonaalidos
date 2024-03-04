@@ -69,3 +69,6 @@ Thumbs.db
 /webapp/.vs/aliados.csproj.dtbcache.json
 /Tron/Architect.API.Tron/.vs/Architect.API.Tron.csproj.dtbcache.json
 /webapp/Properties/PublishProfiles/FolderProfile.pubxml.user
+/Kernel/Architect.DataFactory/.vs/Architect.DataFactory.csproj.dtbcache.json
+/Tron/Architect.API.Tron.DataAccess/.vs/Architect.API.Tron.DataAccess.csproj.dtbcache.json
+/Tron/Architect.API.Tron.DataAccess/Architect.API.Tron.DataAccess.csproj.user

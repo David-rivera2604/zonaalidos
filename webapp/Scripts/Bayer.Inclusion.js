@@ -205,7 +205,6 @@ app.BayerInclusion = (function () {
                 $("#VisualizationsEdtForm fieldset").prop("disabled", true);
                 break;
             case 2: //En revisión
-                //app.ui.DataEntryBehavior('#VisualizationsEdtForm', 'disabled');
                 if (statusmode === 'Review') {
                     $('.role-Revisor-visible').removeClass('d-none');
                     if (localStorage.getItem('Tenant') === 'Caturix') {
@@ -217,7 +216,8 @@ app.BayerInclusion = (function () {
                     $('#VisualizationsEdtFormRevised').removeClass('d-none');
                     $('#VisualizationsEdtFormDelete').removeClass('d-none');
                     $('#VisualizationsEdtFormDraft').removeClass('d-none');
-                }
+                } else
+                    app.ui.DataEntryBehavior('#VisualizationsEdtForm', 'disabled');
                 break;
             case 4: //Por aceptar
                 let data = MapInputToObject();
