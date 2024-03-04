@@ -59,6 +59,7 @@
     <Compile Include="AvisosDeCobro\ReciboRespose.cs" />
     <Compile Include="Batch\a2000500.cs" />
     <Compile Include="Batch\Respuesta.cs" />
+    <Compile Include="Comun\Certificado.cs" />
     <Compile Include="Comun\PlanDePago.cs" />
     <Compile Include="Comun\DocumentoRequerido.cs" />
     <Compile Include="Comun\Cobertura.cs" />
