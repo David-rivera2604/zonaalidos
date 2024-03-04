@@ -1,4 +1,5 @@
 ﻿using Architect.API.Core.Contracts.General;
+using Architect.API.Tron.Contracts.Comun;
 using Microsoft.Web.Http;
 using System;
 using System.Collections.Generic;
@@ -303,6 +304,39 @@ namespace Architect.API.Tron.Controllers
             result.Content.Headers.ContentLength = dataStream.Length;
             return result;
         }
+        /// <summary>
+        /// Descarga un certificado de una póliza en base64
+        /// </summary>
+        /// <param name="num_poliza"></param>
+        /// <param name="num_riesgo"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("ImprimirPolizaB64/{num_poliza}/{num_riesgo}")]
+        public async Task<IHttpActionResult> ImprimirPolizaB64([FromUri] string num_poliza, int num_riesgo = 1)
+        {
+            try
+            {
+                Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
+                object result = null;
+                byte[] content = Business.Backoffice.Common.ImprimirPoliza(num_poliza, num_riesgo);
+
+                Certificado certificado = new Certificado()
+                {
+                    certificado = Convert.ToBase64String(content)
+                };
+
+                result = certificado;
+
+                return Ok(result);
+            }
+
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+        }
     }
 }
+
