@@ -2,6 +2,7 @@
 using Architect.API.Core.Business.General;
 using Architect.API.Core.Contracts;
 using Architect.API.Insurance.Contracts.Bayer;
+using Architect.API.Tron.Business.Backoffice.Emision;
 using Architect.Compliance.Integrations.Contracts;
 using Architect.Utilities.Extensions;
 using Newtonsoft.Json;
@@ -214,6 +215,13 @@ namespace Architect.API.Tron.Business.Emision
                 }
 
             }
+
+            if (resultQuoteInfo.Error.IsNotEmpty())
+            {
+                resultQuoteInfo.Error = FormatoErrores.FormatearError(resultQuoteInfo.Error);
+                resultQuoteInfo.Mensaje = resultQuoteInfo.Error;
+            }
+           
             return resultQuoteInfo;
         }
 

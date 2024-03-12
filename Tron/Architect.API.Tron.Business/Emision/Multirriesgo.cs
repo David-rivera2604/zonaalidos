@@ -431,12 +431,30 @@ namespace Architect.API.Tron.Business.Emision
                 jsonvalues = (JObject)quoteInfo.kyc;
             }
 
-            string numidenti = titular.DocumentNumber;
-            if (titular.DocumentNumberType == 1)
+            int tipoIdenditificacion = titular.DocumentNumberType;
+            switch (tipoIdenditificacion)
             {
-                numidenti = numidenti.Remove(0, 1);
-                numidenti = numidenti.Replace("-", string.Empty);
+                case 1: //Nacional
+                    tipoIdenditificacion = 1;
+                    break;
+                case 2://Residente
+                    tipoIdenditificacion = 3;
+                    break;
+                case 3://Pasaporte
+                    tipoIdenditificacion = 5;
+                    break;
+                case 4: //Juridico
+                    tipoIdenditificacion = 2;
+                    break;
             }
+
+            string numidenti =  Util.IdentificationFormat (titular.DocumentNumberType, titular.DocumentNumber);
+
+            //if (titular.DocumentNumberType == 1)
+            //{
+            //    numidenti = numidenti.Remove(0, 1);
+            //    numidenti = numidenti.Replace("-", string.Empty);
+            //}
 
             if (titular.DocumentNumberType != 4)
             {
@@ -447,7 +465,7 @@ namespace Architect.API.Tron.Business.Emision
             {
 
 
-                tipoIdentificacion = titular.DocumentNumberType,
+                tipoIdentificacion = tipoIdenditificacion,
                 numeroIdentificacion = numidenti,
                 nombreCliente = titular.nombre,
                 primerApellido = titular.apellido1,
@@ -456,8 +474,8 @@ namespace Architect.API.Tron.Business.Emision
                 razonSocial = String.Empty,
                 nombreComercial = String.Empty,
                 descripcionCuenta = titular.nombre.CompleteFullName(titular.apellido1, titular.apellido2),
-                numeroIdentificacionEntidad = titular.DocumentNumber,
-                fechaVencimientoIdentificacion = new DateTime(1900, 1, 1),
+                numeroIdentificacionEntidad = numidenti,
+                fechaVencimientoIdentificacion = titular.DocumentNumberType == 4 ? jsonvalues.TokenDateTimeValue("fechadecaducidadJur") : jsonvalues.TokenDateTimeValue("fechadecaducidadPer"), //new DateTime(1900, 1, 1),
                 lugarExpedicionIdentificacion = "Costa Rica",
                 fechaUltimaActualizacion = DateTime.Now,
                 fechaNacimiento = fechanaci,
@@ -660,7 +678,7 @@ namespace Architect.API.Tron.Business.Emision
                 if (jsonvalues != null)
                 {
                     mapInfo.paisOrigen = jsonvalues.TokenInt32Value("paisdeconstitucionJur");
-                    mapInfo.fechaVencimientoIdentificacion = jsonvalues.TokenDateTimeValue("fechadecaducidadPer");
+                    mapInfo.fechaVencimientoIdentificacion = titular.DocumentNumberType == 4 ? jsonvalues.TokenDateTimeValue("fechadecaducidadJur") : jsonvalues.TokenDateTimeValue("fechadecaducidadPer");
                     Clientesrepresentante representante = new Clientesrepresentante()
                     {
 
@@ -806,7 +824,7 @@ namespace Architect.API.Tron.Business.Emision
 
                     mapInfo.profesion = jsonvalues.TokenInt32Value("profesionPer");
                     mapInfo.paisOrigen = jsonvalues.TokenInt32Value("paisdenacimientoPer");
-                    mapInfo.fechaVencimientoIdentificacion = jsonvalues.TokenDateTimeValue("fechadecaducidadPer");
+                    mapInfo.fechaVencimientoIdentificacion = titular.DocumentNumberType == 4 ? jsonvalues.TokenDateTimeValue("fechadecaducidadJur") : jsonvalues.TokenDateTimeValue("fechadecaducidadPer");
 
                     mapInfo.clientesNacionalidades = new[] { new Clientesnacionalidade() { nacionalidad = jsonvalues.TokenInt32Value("nacionalidadPer") } };
                     string telefonocelularPer = jsonvalues.TokenStringValue("telefonocelularPer");

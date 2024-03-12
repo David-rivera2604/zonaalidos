@@ -71,10 +71,28 @@ namespace Architect.API.Tron.Business.Emision
         private static Compliance.Integrations.Contracts.Clientes Persona(Contracts.Emision.MapfreMas quoteInfo, JObject jsonvalues)
         {
 
+            int tipoIdenditificacion = Convert.ToInt32(jsonvalues.TokenStringValue("numidentificaciontipo"));
+            switch (tipoIdenditificacion)
+            {
+                case 1: //Nacional
+                    tipoIdenditificacion = 1; 
+                    break;
+                case 2://Residente
+                    tipoIdenditificacion = 3; 
+                    break;
+                case 3://Pasaporte
+                    tipoIdenditificacion = 5;  
+                    break;
+                case 4: //Otro
+                    tipoIdenditificacion = 9;
+                    break;
+            }
+                        
+
             Architect.Compliance.Integrations.Contracts.Clientes mapInfo = new Compliance.Integrations.Contracts.Clientes()
             {
-                tipoIdentificacion = 1,
-                numeroIdentificacion = jsonvalues.TokenStringValue("numidentificacion"),
+                tipoIdentificacion = tipoIdenditificacion,
+                numeroIdentificacion = Util.IdentificationFormat(Convert.ToInt32(jsonvalues.TokenStringValue("numidentificaciontipo")), jsonvalues.TokenStringValue("numidentificacion")),
                 nombreCliente = jsonvalues.TokenStringValue("nombrePer"),
                 primerApellido = jsonvalues.TokenStringValue("primerapellidoPer"),
                 segundoApellido = jsonvalues.TokenStringValue("segundoapellidoPer"),
@@ -83,7 +101,7 @@ namespace Architect.API.Tron.Business.Emision
                 nombreComercial = String.Empty,
                 fechaUltimaActualizacion = DateTime.Now,
                 descripcionCuenta = jsonvalues.TokenStringValue("nombrePer").CompleteFullName(jsonvalues.TokenStringValue("primerapellidoPer"), jsonvalues.TokenStringValue("segundoapellidoPer")),
-                numeroIdentificacionEntidad = jsonvalues.TokenStringValue("numidentificacion"),
+                numeroIdentificacionEntidad = Util.IdentificationFormat(Convert.ToInt32(jsonvalues.TokenStringValue("numidentificaciontipo")), jsonvalues.TokenStringValue("numidentificacion")),
                 fechaNacimiento = jsonvalues.TokenDateTimeValue("fechadenacimientoPer"),
                 estado = "A",
                 estadoXML = "X",
@@ -231,9 +249,20 @@ namespace Architect.API.Tron.Business.Emision
 
         private static Compliance.Integrations.Contracts.Clientes Juridico(Contracts.Emision.MapfreMas quoteInfo, JObject jsonvalues)
         {
+            int tipoIdenditificacion = Convert.ToInt32(jsonvalues.TokenStringValue("tipodecedulajuridicaJur"));
+            switch (tipoIdenditificacion)
+            {
+                case 1: //Nacional
+                    tipoIdenditificacion = 2;
+                    break;
+                case 2://Extranjera
+                    tipoIdenditificacion = 6;
+                    break;
+            }
+
             Architect.Compliance.Integrations.Contracts.Clientes mapInfo = new Compliance.Integrations.Contracts.Clientes()
             {
-                tipoIdentificacion = 2,
+                tipoIdentificacion = tipoIdenditificacion,
                 numeroIdentificacion = jsonvalues.TokenStringValue("numidentificacion"),
                 nombreCliente = string.Empty,
                 primerApellido = string.Empty,
@@ -278,7 +307,7 @@ namespace Architect.API.Tron.Business.Emision
                 estadoCivil = "X",
                 actividadEconomica = 1, //jsonvalues.TokenInt32Value("actividaddelclientenaturalezadelnegocioJur"),
                 montoIngresoMensual = jsonvalues.TokenDoubleValue("ingresomensualestimado"),
-                inversionInicial = jsonvalues.TokenInt32Value("montoValorasegurado")
+                inversionInicial = 1 //jsonvalues.TokenInt32Value("montoValorasegurado")
             };
 
 

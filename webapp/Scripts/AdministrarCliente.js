@@ -2,7 +2,7 @@
 
 function clientes_documentNumberCallBack(data) {
     if (data != null) {
-        $('#nombre').val((data.FirstName + ' ' + data.MiddleName).trim());
+        $('#nombre').val((data.FirstName).trim());
         $('#apellido1').val(data.LastName);
         $('#apellido2').val(data.SecondLastName);
         $('#PhoneNumber').val(data.PhoneNumber);

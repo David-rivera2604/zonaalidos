@@ -520,10 +520,27 @@ namespace Architect.API.Tron.Business.Emision
                 fechanaci = titular.fechadenacimiento;
             }
 
+            int tipoIdenditificacion = titular.DocumentNumberType;
+            switch (tipoIdenditificacion)
+            {
+                case 1: //Nacional
+                    tipoIdenditificacion = 1;
+                    break;
+                case 2://Residente
+                    tipoIdenditificacion = 3;
+                    break;
+                case 3://Pasaporte
+                    tipoIdenditificacion = 5;
+                    break;
+                case 4: //Juridico
+                    tipoIdenditificacion = 2;
+                    break;
+            }
+
             Architect.Compliance.Integrations.Contracts.Clientes mapInfo = new Compliance.Integrations.Contracts.Clientes()
             {
-                tipoIdentificacion = titular.DocumentNumberType,
-                numeroIdentificacion = titular.DocumentNumber,
+                tipoIdentificacion = tipoIdenditificacion,
+                numeroIdentificacion = Util.IdentificationFormat(titular.DocumentNumberType, titular.DocumentNumber),
                 nombreCliente = titular.nombre,
                 primerApellido = titular.apellido1,
                 segundoApellido = titular.apellido2,
@@ -532,7 +549,7 @@ namespace Architect.API.Tron.Business.Emision
                 nombreComercial = String.Empty,
                 fechaUltimaActualizacion = DateTime.Now,
                 descripcionCuenta = titular.nombre.CompleteFullName(titular.apellido1, titular.apellido2),
-                numeroIdentificacionEntidad = titular.DocumentNumber,
+                numeroIdentificacionEntidad = Util.IdentificationFormat(titular.DocumentNumberType, titular.DocumentNumber),
                 fechaNacimiento = fechanaci,
                 ejecutivo = tokenInfo.AgentCode.ToString(),
                 genero = "",
@@ -651,8 +668,8 @@ namespace Architect.API.Tron.Business.Emision
                     Clientesrepresentante representantesLegales = new Clientesrepresentante()
                     {
                         nombre = titular.nombre,
-                        tipoIdentificacionRepresentante = titular.DocumentNumberType,
-                        numeroIdentificacionRepresentante = mapInfo.numeroIdentificacion,
+                        tipoIdentificacionRepresentante = tipoIdenditificacion,
+                        numeroIdentificacionRepresentante = Util.IdentificationFormat(titular.DocumentNumberType, mapInfo.numeroIdentificacion),
                         segundoNombre = string.Empty,
                         cargo = jsonvalues.TokenStringValue("posiciondentrodelaempresaJur"),
                         estadoCivil = jsonvalues.TokenStringValue("estadocivilJur", "X"),
@@ -824,12 +841,14 @@ namespace Architect.API.Tron.Business.Emision
             }
             else
             {
-                if (titular.DocumentNumberType == 1)
-                {
-                    var removeLine = titular.DocumentNumber.Replace("-", string.Empty);
-                    var numberChanged = removeLine.Remove(0, 1);
-                    mapInfo.numeroIdentificacion = numberChanged;
-                }
+                //if (titular.DocumentNumberType == 1)
+                //{
+                //    var removeLine = titular.DocumentNumber.Replace("-", string.Empty);
+                //    var numberChanged = removeLine.Remove(0, 1);
+                //    mapInfo.numeroIdentificacion = numberChanged;
+                //}
+
+                mapInfo.numeroIdentificacion  = Util.IdentificationFormat(titular.DocumentNumberType, titular.DocumentNumber);
 
                 mapInfo.genero = titular.tercerosMca_sexo == 1 ? "M" : "F";
                 mapInfo.estadoCivil = titular.estadoCivil;
@@ -881,8 +900,8 @@ namespace Architect.API.Tron.Business.Emision
                     Clientesrelacione personasRelacionadas = new Clientesrelacione()
                     {
                         nombre = titular.nombre,
-                        tipoIdentificacionRelacion = titular.DocumentNumberType,
-                        numeroIdentificacionRelacion = mapInfo.numeroIdentificacion,
+                        tipoIdentificacionRelacion = tipoIdenditificacion,
+                        numeroIdentificacionRelacion = Util.IdentificationFormat(titular.DocumentNumberType, mapInfo.numeroIdentificacion),
                         fechaVencimientoIdentificacion = mapInfo.fechaVencimientoIdentificacion,
                         segundoNombre = string.Empty,
                         titular = titular.tipodetercero == 1 ? "S" : "N",
@@ -937,8 +956,8 @@ namespace Architect.API.Tron.Business.Emision
 
                     Clientesrepresentante beneficiarios = new Clientesrepresentante()
                     {
-                        tipoIdentificacionRepresentante = titular.DocumentNumberType,
-                        numeroIdentificacionRepresentante = titular.DocumentNumber,
+                        tipoIdentificacionRepresentante = tipoIdenditificacion, 
+                        numeroIdentificacionRepresentante = Util.IdentificationFormat(titular.DocumentNumberType, titular.DocumentNumber),
                         nombre = titular.nombre,
                         fechaVencimiento = mapInfo.fechaVencimientoIdentificacion,
                         segundoNombre = string.Empty,

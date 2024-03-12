@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Backoffice\AvisoCobro.cs" />
     <Compile Include="Backoffice\Cotizacion\MapfreMasPlus.cs" />
+    <Compile Include="Backoffice\Emision\FormatoErrores.cs" />
     <Compile Include="Backoffice\Pagos.cs" />
     <Compile Include="Backoffice\Poliza.cs" />
     <Compile Include="Backoffice\Common.cs" />
