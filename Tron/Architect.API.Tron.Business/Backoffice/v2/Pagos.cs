@@ -228,7 +228,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             int recordCount = 0;
             int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
 
-            List<Contracts.Pagos.Tarjeta> pendientes = Architect.API.Tron.DataAccess.Pagos.Tarjetas.PendientesPorTokenizar(cod_cia, Utilities.Helpers.Settings.IntegerValue("Payment.Tokenize.Cantidad.Tarjetas", 50));
+            List<Contracts.Pagos.Tarjeta> pendientes = Architect.API.Tron.DataAccess.Pagos.Tarjetas.PendientesPorTokenizar(cod_cia, Utilities.Helpers.Settings.IntegerValue("Payment.Silice.Tokenize.Cantidad.Tarjetas", 50));
 
             List<DatosTarjeta> datosTajetas = new List<DatosTarjeta>();
             string email = string.Empty;
@@ -289,7 +289,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         {
             int recordCount = 0;
             int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
-            List<Contracts.Pagos.Recibo> pendientes = Architect.API.Tron.DataAccess.Pagos.Recibos.PendientesRecurrentesAlCobro(cod_cia, Utilities.Helpers.Settings.IntegerValue("Payment.Recurrente.Cantidad.Recibos", 5));
+            List<Contracts.Pagos.Recibo> pendientes = Architect.API.Tron.DataAccess.Pagos.Recibos.PendientesRecurrentesAlCobro(cod_cia, Utilities.Helpers.Settings.IntegerValue("Payment.Silice.RecurringReceipts.Cantidad.Recibos", 5));
 
             ReciboRequest reciboReq = new ReciboRequest()
             {
