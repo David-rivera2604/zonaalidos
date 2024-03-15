@@ -279,6 +279,7 @@ app.CotizacionMapfreMas = (function () {
             subcontrato: app.ui.GetDropDownNumericValue('#subcontrato'),
             polizagrupo: setupData.polizagrupo,
             mc_cuotas_gratis: app.ui.GetRadioStringValue('mc_cuotas_gratis'),
+            //num_cuotas_gratis: app.ui.GetDropDownNumericValue('#num_cuotas_gratis')
             num_cuotas_gratis: app.ui.GetDropDownNumericValue('#num_cuotas_gratis')
         };
     }
@@ -562,19 +563,35 @@ app.CotizacionMapfreMas = (function () {
             event.preventDefault();
         });
 
+        //const radioSi = document.getElementById("mc_cuotas_gratis_1");
+        //const radioNo = document.getElementById("mc_cuotas_gratis_2");
+        //radioSi.addEventListener("change", function () {
+        //    if (this.checked) {
+        //        app.ui.DropDownDisabled('#num_cuotas_gratis', false);
+        //    }
+        //});
+        //radioNo.addEventListener("change", function () {
+        //    if (this.checked) {
+        //        $('#num_cuotas_gratis').val(0);
+        //        app.ui.DropDownDisabled('#num_cuotas_gratis', true);
+        //    }
+        //});
+
         const radioSi = document.getElementById("mc_cuotas_gratis_1");
         const radioNo = document.getElementById("mc_cuotas_gratis_2");
         radioSi.addEventListener("change", function () {
             if (this.checked) {
-                app.ui.DropDownDisabled('#num_cuotas_gratis', false);
+                $('#num_cuotas_gratis').prop('disabled', false);
             }
         });
         radioNo.addEventListener("change", function () {
             if (this.checked) {
                 $('#num_cuotas_gratis').val(0);
-                app.ui.DropDownDisabled('#num_cuotas_gratis', true);
+                $('#num_cuotas_gratis').prop('disabled', true);
             }
         });
+
+        
 
     }
 

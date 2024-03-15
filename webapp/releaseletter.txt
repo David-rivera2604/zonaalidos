@@ -569,3 +569,10 @@
                    Rules. Mapfremas y plus se ajustan las reglas segun lo que hay en prd.
                    Coopeservidores. Se agrega validacion de pedir obligatorio los adjuntos en la emision.
 1.6.59  04/03/2024 Bayer. Permite crear solicitudes sin beneficiarios.
+1.6.60  15/03/2024 Actualizar Clientes. Correcion en Actualizar clientes que invertia el dia y mes de fecha nacimiento
+                   TRON Formato Cedulas. Se actualiza la funcion del formato de Cedula para guardar clientes en tron
+                   SnapCompliance Formato Cedulas. Se toma el mismo formato de cedula que guarda en Tron para enviar Clientes en Snap. Multirriesgo, Hogar
+                   SnapCompliance. Se ajusta formato cedulas del cliente y el tipo de cedula para personas fisicas solo se estaba enviando 1 fijo.
+                   MapfreMas Validaciones de Terceros en la emision.
+                   MapfreMas Se agrega funcion para transcribir errores de emision.
+                   Mapfre Mas. Se agrega datos variables  MCA_CUOTAS_GRATIS y NUM_CUOTAS_GRATIS para cotizar en Purdy
