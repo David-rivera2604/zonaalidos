@@ -277,7 +277,9 @@ app.CotizacionMapfreMas = (function () {
             contrato: app.ui.GetDropDownNumericValue('#contrato'),
             contratoDesc: $("#contrato option:selected").text(),
             subcontrato: app.ui.GetDropDownNumericValue('#subcontrato'),
-            polizagrupo: setupData.polizagrupo
+            polizagrupo: setupData.polizagrupo,
+            mc_cuotas_gratis: app.ui.GetRadioStringValue('mc_cuotas_gratis'),
+            num_cuotas_gratis: app.ui.GetDropDownNumericValue('#num_cuotas_gratis')
         };
     }
 
@@ -303,19 +305,18 @@ app.CotizacionMapfreMas = (function () {
             data.COD_PLAN_AUTO = $("#COD_PLAN_AUTO option:first").val();
         }
         $('#COD_PLAN_AUTO').val(data.COD_PLAN_AUTO);
-
         app.ui.SetNumericValue('#ANIO_SUB_MODELO', data.ANIO_SUB_MODELO);
         app.ui.SetRadioNumericValue('MCA_CERO_KM', data.MCA_CERO_KM);
         app.ui.SetRadioNumericValue('MCA_AUTO_GPS', data.MCA_AUTO_GPS);
         app.ui.SetRadioNumericValue('MCA_AUTO_GPS_CMS', data.MCA_AUTO_GPS_CMS);
         app.ui.SetRadioNumericValue('MCA_MONITOREO_GPS', data.MCA_MONITOREO_GPS);
         app.ui.SetRadioNumericValue('ext_garantia', data.ext_garantia);
-
         app.ui.SetRadioNumericValue('MCA_PRA', data.MCA_PRA);
         app.ui.SetRadioNumericValue('MCA_VR', data.MCA_VR);
         app.ui.SetNumericValue('#IMP_VR', data.IMP_VR);
         app.ui.SetRadioNumericValue('MCA_DESC_CLIENTE_NUEVO', data.MCA_DESC_CLIENTE_NUEVO);
         app.ui.SetNumericValue('#PCT_AJUSTE_GEN', data.PCT_AJUSTE_GEN);
+        app.ui.SetRadioStringValue('mc_cuotas_gratis', data.mc_cuotas_gratis);
         $('#IMP_AUTO_RC').val(data.IMP_AUTO_RC);
         $('#DED_AUTO_RC').val(data.DED_AUTO_RC);
         $('#IMP_AUTO_GMO').val(data.IMP_AUTO_GMO);
@@ -560,6 +561,21 @@ app.CotizacionMapfreMas = (function () {
             $('.handler-marca').removeClass('d-none');
             event.preventDefault();
         });
+
+        const radioSi = document.getElementById("mc_cuotas_gratis_1");
+        const radioNo = document.getElementById("mc_cuotas_gratis_2");
+        radioSi.addEventListener("change", function () {
+            if (this.checked) {
+                app.ui.DropDownDisabled('#num_cuotas_gratis', false);
+            }
+        });
+        radioNo.addEventListener("change", function () {
+            if (this.checked) {
+                $('#num_cuotas_gratis').val(0);
+                app.ui.DropDownDisabled('#num_cuotas_gratis', true);
+            }
+        });
+
     }
 
     function Setup_Validations() {
