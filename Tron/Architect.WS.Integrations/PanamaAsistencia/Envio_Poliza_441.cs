@@ -584,14 +584,15 @@ namespace Architect.WS.Integrations.PanamaAsistencia
                 xml = stringwriter.ToString();
             }
 
-            //Llamado a Web Service Panama
-            wsWarranty4SoapClient ws = new wsWarranty4SoapClient();
+           Utilities.Log.WarningLog("Envio Asistencia_Panama", xml + " Poliza: " + resultQuoteInfo.num_poliza, "asistencia.panama");
+
+           //Llamado a Web Service Panama
+           wsWarranty4SoapClient ws = new wsWarranty4SoapClient();
             ws.Open();
             var respuesta = ws.issuing(token, xml);
             ws.Abort();
 
-           Utilities.Log.WarningLog("Envio Asistencia_Panama", xml + " Poliza: " + resultQuoteInfo.num_poliza, "asistencia.panama");
-
+           
                 //lectura del xml de resultado 
                 resultado = respuesta.Rows[0]["description"].ToString();
 
