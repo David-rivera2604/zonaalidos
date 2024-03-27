@@ -1869,7 +1869,7 @@
             </Item37>
             <Item38 Ref="855" ControlType="XRLabel" Name="IngresoMensualEstimadoField" SizeF="191.6962,16" LocationFloat="126.410446,545.1325" Font="Times New Roman, 8pt" Borders="Right, Bottom">
               <ExpressionBindings>
-                <Item1 Ref="856" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[ingresomensualestimadoPer]" />
+                <Item1 Ref="856" EventName="BeforePrint" PropertyName="Text" Expression="[kyc].[ingresomensualestimado]" />
               </ExpressionBindings>
               <StylePriority Ref="857" UseFont="false" UseBorders="false" />
             </Item38>
