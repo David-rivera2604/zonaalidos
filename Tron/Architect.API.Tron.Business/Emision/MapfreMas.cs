@@ -218,6 +218,7 @@ namespace Architect.API.Tron.Business.Emision
 
             if (resultQuoteInfo.Error.IsNotEmpty())
             {
+                Utilities.Log.ErrorLog("Presupuesto: " + quoteInfo.presupuesto, resultQuoteInfo.Mensaje, "Issue.MapfreMas");
                 resultQuoteInfo.Error = FormatoErrores.FormatearError(resultQuoteInfo.Error);
                 resultQuoteInfo.Mensaje = resultQuoteInfo.Error;
             }

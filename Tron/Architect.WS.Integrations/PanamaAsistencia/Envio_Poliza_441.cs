@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 using Architect.WS.Integrations.wsWarranty4;
+using Architect.Utilities.Extensions;
 
 namespace Architect.WS.Integrations.PanamaAsistencia
 {
@@ -583,14 +584,17 @@ namespace Architect.WS.Integrations.PanamaAsistencia
                 xml = stringwriter.ToString();
             }
 
-            //Llamado a Web Service Panama
-            wsWarranty4SoapClient ws = new wsWarranty4SoapClient();
+           Utilities.Log.WarningLog("Envio Asistencia_Panama", xml + " Poliza: " + resultQuoteInfo.num_poliza, "asistencia.panama");
+
+           //Llamado a Web Service Panama
+           wsWarranty4SoapClient ws = new wsWarranty4SoapClient();
             ws.Open();
             var respuesta = ws.issuing(token, xml);
             ws.Abort();
 
-            //lectura del xml de resultado 
-            resultado = respuesta.Rows[0]["description"].ToString();
+           
+                //lectura del xml de resultado 
+                resultado = respuesta.Rows[0]["description"].ToString();
 
             if (resultado.Contains("<file>"))
             {
