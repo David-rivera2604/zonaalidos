@@ -2463,11 +2463,10 @@ app.EmisionMapfreMas = (function () {
                                                 formularioRow.data.telefonoresidenciaPer = mainHolder[0].numerodetelefono;
 
                                                 formularioRow.data.domiciliopermanenteCod_pais = mainHolder[0].cod_pais;
-                                                formularioRow.data.cod_paisPer = mainHolder[0].cod_pais;
-                                                formularioRow.data.cod_estadoPer = mainHolder[0].TProvincia;
-                                                formularioRow.data.cod_provPer = mainHolder[0].TCanton;
-                                                formularioRow.data.cod_localidadPer = mainHolder[0].TDistrito;
-                                                formularioRow.data.direccionexactaPer = mainHolder[0].otrasenas;
+                                                formularioRow.data.domiciliopermanenteCod_estado = mainHolder[0].TProvincia;
+                                                formularioRow.data.domiciliopermanenteCod_prov = mainHolder[0].TCanton;
+                                                formularioRow.data.domiciliopermanenteCod_localidad = mainHolder[0].TDistrito;
+                                                formularioRow.data.domiciliopermanenteDireccionexacta = mainHolder[0].otrasenas;
 
                                                 ref.Init(formularioRow.data);
                                                 ref.AcceptCallBack(app.EmisionMapfreMas.Accept);
@@ -2495,11 +2494,11 @@ app.EmisionMapfreMas = (function () {
                                                 formularioRow.data.numidentificacion = mainHolder[0].DocumentNumber;
                                                 formularioRow.data.correoelectronicoJur = mainHolder[0].correoelectronico;
 
-                                                formularioRow.data.cod_paisJur = mainHolder[0].cod_pais;
-                                                formularioRow.data.cod_estadoJur = mainHolder[0].TProvincia;
-                                                formularioRow.data.cod_provJur = mainHolder[0].TCanton;
-                                                formularioRow.data.cod_localidadJur = mainHolder[0].TDistrito;
-                                                formularioRow.data.direccionexactaJur = mainHolder[0].otrasenas;
+                                                formularioRow.data.domiciliocomercialCod_pais = mainHolder[0].cod_pais;
+                                                formularioRow.data.domiciliocomercialCod_estado = mainHolder[0].TProvincia;
+                                                formularioRow.data.domiciliocomercialCod_prov = mainHolder[0].TCanton;
+                                                formularioRow.data.domiciliocomercialCod_localidad = mainHolder[0].TDistrito;
+                                                formularioRow.data.domiciliocomercialDireccionexacta = mainHolder[0].otrasenas;
 
                                                 ref.Init(formularioRow.data);
                                                 ref.AcceptCallBack(app.EmisionMapfreMas.Accept);
@@ -2556,7 +2555,8 @@ app.EmisionMapfreMas = (function () {
     };
 
     function formulariosMode() {
-        return ((workMode === 'draft' || workMode === 'resume') && !localStorage.getItem('Roles').includes('Purdy') && !localStorage.getItem('Roles').includes('Davivienda_Prendarios') && !localStorage.getItem('Roles').includes('Davivienda_Leasing'));
+        //return ((workMode === 'draft' || workMode === 'resume') && !localStorage.getItem('Roles').includes('Purdy') && !localStorage.getItem('Roles').includes('Davivienda_Prendarios') && !localStorage.getItem('Roles').includes('Davivienda_Leasing'));
+        return true;
     }
 
     return {
