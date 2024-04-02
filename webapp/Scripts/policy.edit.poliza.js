@@ -5,6 +5,8 @@ app.poliza = (function () {
     var productAlias = null;
     var EntryAllowed = null;
     var reviewMode = false;
+    var prodDef = null;
+    var moduleFilter = false;
 
     function Init_Controls() {
 
@@ -111,6 +113,7 @@ app.poliza = (function () {
         app.core.Get(app.setting.apipath + 'v1/Policy/ProductDefinition?productAlias=' + productAlias, null,
             function (data) {
 
+                prodDef = data;
                 if (data.Behavior != null && data.Behavior != '') {
                     eval(data.Behavior);
                 }
@@ -152,8 +155,12 @@ app.poliza = (function () {
                     }
                 }
 
+                moduleFilter = false;
                 $.each(data.Modules, function () {
                     module.append($('<option />').val(this['Code']).text(this['Description']));
+                    if (!moduleFilter && this['CurrencyAllowed'] != null) {
+                        moduleFilter = true;
+                    }
                 });
                 if (data.Modules.length === 1) {
                     module.val(data.Modules[0].Code);
@@ -203,6 +210,34 @@ app.poliza = (function () {
     };
 
     function Event_Controls() {
+
+
+
+        $('#Currency').change(function () {
+            if (moduleFilter) {
+
+
+                let module = $('select#ModuleCode');
+                let currency = app.ui.GetDropDownNumericValue('#Currency');
+                let moduleOption = productModules.filter(i => i.CurrencyAllowed.includes(currency));
+                module.children().remove();
+                $.each(moduleOption, function () {
+                    module.append($('<option />').val(this['Code']).text(this['Description']));
+                });
+
+                if (moduleOption.length === 1) {
+                    module.val(moduleOption[0].Code);
+                    module.prop("disabled", true);
+                    Calculate();
+                }
+                else {
+                    module.val(-1);
+                    module.prop("disabled", false);
+                }
+            }
+        });
+
+
         $('#ModuleCode').change(function () {
             Calculate();
         });

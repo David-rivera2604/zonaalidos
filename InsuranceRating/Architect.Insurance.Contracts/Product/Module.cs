@@ -76,6 +76,14 @@ namespace Architect.Insurance.Contracts.Product
         public string StatusDescription { get; set; }
 
         /// <summary>
+        /// Indica las monedas permitas para el módulo, en caso de se ser una la misma se usa como la seleccionada.
+        /// </summary>
+        [DataMember(EmitDefaultValue = false)]
+        [XmlAttribute("currencyallowed")]
+        [DefaultValue("")]
+        public string currencyallowed { get; set; }
+
+        /// <summary>
         /// Coberturas.
         /// </summary>
         /// <remarks>VT.GEN_COVER,VT.TAB_COVROL,VT.LIFE_COVER</remarks>
