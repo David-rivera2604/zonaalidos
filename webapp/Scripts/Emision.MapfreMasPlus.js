@@ -9,7 +9,7 @@ app.EmisionMapfreMasPlus = (function () {
     let setupData = null;
     let showCalculate = false;
     let rowDocumentosrequeridos = null;
-
+    let mca_cuotas_gratis = 'N';
     function Setup() {
         var _id = app.core.URLStringValue('presupuesto');
         if (_id != '') {
@@ -333,6 +333,7 @@ app.EmisionMapfreMasPlus = (function () {
             $('#plandepagoTbl').bootstrapTable('load', {});
 
         TipoTercero_Filtro();
+        mca_cuotas_gratis = data.mc_cuotas_gratis;
     }
 
     function MapObjectToInput(data) {
@@ -808,15 +809,17 @@ app.EmisionMapfreMasPlus = (function () {
 
     function OtherValidations() {
         let result = 0;
-        let message = 'Debe indicar la información de terceros';
+        let message = 'Verifique la información de terceros';
         let terceros = $('#tercerosTbl').bootstrapTable('getData');
         let terceroserrors = (terceros.length === 0);
+        
 
-        if (!terceroserrors && (workMode === 'draft' || workMode === 'resume')) {
+        if (!terceroserrors && (workMode === 'draft' || workMode === 'resume' || workMode === 'continue')) {
             let holder = terceros.filter(i => i.tipodetercero === 0);
             let insured = terceros.filter(i => i.tipodetercero === 2);
             let driver = terceros.filter(i => i.tipodetercero === 3);
             let bene = terceros.filter(i => i.tipodetercero === 6);
+            let pagador = terceros.filter(i => i.tipodetercero === 21);
 
             if (holder.length === 0) {
                 message += ', indique el tomador';
@@ -836,7 +839,13 @@ app.EmisionMapfreMasPlus = (function () {
                     terceroserrors = true;
                 }
             }
+            if ((pagador.length == 0) && (mca_cuotas_gratis == 'S')) {
+                message += ', Si posee cuotas gratis , indique el pagador.';
+                terceroserrors = true;
+            }
         }
+        
+
         if (terceroserrors) {
             $('#tercerosTbl-error').html(message);
             $('#tercerosTbl-error').removeClass('d-none');
