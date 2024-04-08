@@ -1388,44 +1388,83 @@ app.EmisionMapfreMasPlus = (function () {
                         .then(d => {
                             let ref = formularioRow.type === 'kycpersona' ? app.kycpersona : app.kycjuridico;
                             if (formularioRow.data === null) {
-                                formularioRow.data = ref.InitData();
+                                formularioRow.data = ref.InitData(false);
                                 if (formularioRow.type === 'kycpersona') {
+                                    if (app.ui.IsDocumentNumberValid(mainHolder[0].DocumentNumberType, mainHolder[0].DocumentNumber)) {
+                                        var value = mainHolder[0].DocumentNumber.replace(/-/g, '');
+                                        app.core.Get(app.setting.apipath + 'v1/KYC/' + "persona" + "?id=" + value)
+                                            .done(function (data, textStatus, jqXHR) {
+                                                if (data != null) {
+                                                    for (const a in formularioRow.data) {
+                                                        for (const b in data) {
+                                                            if (a == b) {
+                                                                formularioRow.data[a] = data[b]
+                                                            }
+                                                        }
+                                                    }
+
+                                                }
+                                                else {
+                                                    formularioRow.data.nacionalidadPer = 188;
+                                                    formularioRow.data.paisdenacimientoPer = 188;
+                                                }
+
+                                                formularioRow.data.primerapellidoPer = mainHolder[0].apellido1;
+                                                formularioRow.data.segundoapellidoPer = mainHolder[0].apellido2;
+                                                formularioRow.data.nombrePer = mainHolder[0].nombre;
+                                                formularioRow.data.fechadenacimientoPer = mainHolder[0].fechadenacimiento;
+                                                formularioRow.data.correoelectronicoPer = mainHolder[0].correoelectronico;
+                                                formularioRow.data.sexoPer = mainHolder[0].tercerosMca_sexo;
+                                                formularioRow.data.numidentificacion = mainHolder[0].DocumentNumber;
+                                                formularioRow.data.numidentificaciontipo = mainHolder[0].DocumentNumberType;
+                                                formularioRow.data.estadocivilPer = mainHolder[0].estadoCivil;
+                                                formularioRow.data.telefonoresidenciaPer = mainHolder[0].numerodetelefono;
+
+                                                formularioRow.data.domiciliopermanenteCod_pais = mainHolder[0].cod_pais;
+                                                formularioRow.data.domiciliopermanenteCod_estado = mainHolder[0].TProvincia;
+                                                formularioRow.data.domiciliopermanenteCod_prov = mainHolder[0].TCanton;
+                                                formularioRow.data.domiciliopermanenteCod_localidad = mainHolder[0].TDistrito;
+                                                formularioRow.data.domiciliopermanenteDireccionexacta = mainHolder[0].otrasenas;
+
+                                                ref.Init(formularioRow.data);
+                                                ref.AcceptCallBack(app.EmisionMapfreMas.Accept);
+                                            })
+                                    }
+                                }
+                                else {
+                                    if (app.ui.IsDocumentNumberValid(mainHolder[0].DocumentNumberType, mainHolder[0].DocumentNumber)) {
+                                        var value = mainHolder[0].DocumentNumber.replace(/-/g, '');
+                                        app.core.Get(app.setting.apipath + 'v1/KYC/' + "juridico" + "?id=" + value)
+                                            .done(function (data, textStatus, jqXHR) {
+                                                if (data != null) {
+                                                    for (const a in formularioRow.data) {
+                                                        for (const b in data) {
+                                                            if (a == b) {
+                                                                formularioRow.data[a] = data[b]
+                                                            }
+                                                        }
+                                                    }
+                                                }
 
 
+                                                formularioRow.data.nombrecomercialJur = mainHolder[0].nombre;
+                                                formularioRow.data.razonsocialJur = mainHolder[0].nombre;
+                                                formularioRow.data.numidentificacion = mainHolder[0].DocumentNumber;
+                                                formularioRow.data.correoelectronicoJur = mainHolder[0].correoelectronico;
 
-                                    formularioRow.data.primerapellidoPer = mainHolder[0].apellido1;
-                                    formularioRow.data.segundoapellidoPer = mainHolder[0].apellido2;
-                                    formularioRow.data.nombrePer = mainHolder[0].nombre;
-                                    formularioRow.data.fechadenacimientoPer = mainHolder[0].fechadenacimiento;
-                                    formularioRow.data.correoelectronicoPer = mainHolder[0].correoelectronico;
-                                    formularioRow.data.tercerosMca_sexo = mainHolder[0].tercerosMca_sexo;
-                                    formularioRow.data.numerodeidentificacionPer = mainHolder[0].DocumentNumber;
-                                    formularioRow.data.tipodeidentificacionPer = mainHolder[0].DocumentNumberType;
-                                    formularioRow.data.estadocivilPer = mainHolder[0].estadoCivil;
-                                    formularioRow.data.telefonoresidenciaPer = mainHolder[0].numerodetelefono;
+                                                formularioRow.data.domiciliocomercialCod_pais = mainHolder[0].cod_pais;
+                                                formularioRow.data.domiciliocomercialCod_estado = mainHolder[0].TProvincia;
+                                                formularioRow.data.domiciliocomercialCod_prov = mainHolder[0].TCanton;
+                                                formularioRow.data.domiciliocomercialCod_localidad = mainHolder[0].TDistrito;
+                                                formularioRow.data.domiciliocomercialDireccionexacta = mainHolder[0].otrasenas;
 
-                                    formularioRow.data.cod_paisPer = mainHolder[0].cod_pais;
-                                    formularioRow.data.cod_estadoPer = mainHolder[0].TProvincia;
-                                    formularioRow.data.cod_provPer = mainHolder[0].TCanton;
-                                    formularioRow.data.cod_localidadPer = mainHolder[0].TDistrito;
-                                    formularioRow.data.direccionexactaPer = mainHolder[0].otrasenas;
-
-                                } else {
-                                    formularioRow.data.nombrecomercialJur = mainHolder[0].nombre;
-                                    formularioRow.data.razonsocialJur = mainHolder[0].nombre;
-                                    formularioRow.data.numerocedulajuridicaJur = mainHolder[0].DocumentNumber;
-                                    formularioRow.data.correoelectronicoJur = mainHolder[0].correoelectronico;
-
-                                    formularioRow.data.cod_paisJur = mainHolder[0].cod_pais;
-                                    formularioRow.data.cod_estadoJur = mainHolder[0].TProvincia;
-                                    formularioRow.data.cod_provJur = mainHolder[0].TCanton;
-                                    formularioRow.data.cod_localidadJur = mainHolder[0].TDistrito;
-                                    formularioRow.data.direccionexactaJur = mainHolder[0].otrasenas;
+                                                ref.Init(formularioRow.data);
+                                                ref.AcceptCallBack(app.EmisionMapfreMas.Accept);
+                                            })
+                                    }
 
                                 }
                             }
-                            ref.Init(formularioRow.data);
-                            ref.AcceptCallBack(app.EmisionMapfreMasPlus.Accept);
                         })
                         .catch(err => {
                             console.error(err);

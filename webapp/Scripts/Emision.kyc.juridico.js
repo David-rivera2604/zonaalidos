@@ -21,6 +21,19 @@ app.kycjuridico = (function () {
                         }
                         app.ui.SetDropDownNumericValue('#Act_Economica', setupData.actividadEconomica, true);
                         app.ui.SetDropDownNumericValue('#Act_EconomicaRep', setupData.actividadEconomicaRep, true);
+
+                        $('#Act_Economica').select2({
+                            width: '100%', theme: 'bootstrap4', dropdownParent: $("#kycjuridicoModal .modal-content"),
+                            language: { noResults: function () { return "No hay resultado"; }, searching: function () { return "Buscando.."; } }
+                        });
+                        $('#participacionaccionariaAct_Economica').select2({
+                            width: '100%', theme: 'bootstrap4', dropdownParent: $("#participacionaccionariaJurModal .modal-content"),
+                            language: { noResults: function () { return "No hay resultado"; }, searching: function () { return "Buscando.."; } }
+                        });
+                        $('#Act_EconomicaRep').select2({
+                            width: '100%', theme: 'bootstrap4', dropdownParent: $("#kycjuridicoModal .modal-content"),
+                            language: { noResults: function () { return "No hay resultado"; }, searching: function () { return "Buscando.."; } }
+                        });
                     });
             }, `cod_pais=CRI`);
 
@@ -799,7 +812,7 @@ app.kycjuridico = (function () {
                 participacionaccionariaPepRelacionJur: isNaN(app.ui.GetRadioNumericValue("peprelacionSocioJur")) == true ? 2 : app.ui.GetRadioNumericValue("peprelacionSocioJur"),
                 participacionaccionariaPepRelacionJurDesc: app.ui.GetRadioSelectedText("peprelacionSocioJur"),
                 peptiporelacionSocioJur: $("#peptiporelacionSocioJur").val(),
-                participacionaccionariaArt15Jur: isNaN(app.ui.GetRadioNumericValue("actividadesart15SocioJur")) == true ? 2 : app.ui.GetRadioNumericValue("actividadesart15SocioJur") ,
+                participacionaccionariaArt15Jur: isNaN(app.ui.GetRadioNumericValue("actividadesart15SocioJur")) == true ? 2 : app.ui.GetRadioNumericValue("actividadesart15SocioJur"),
                 participacionaccionariaArt15JurDesc: app.ui.GetRadioSelectedText("actividadesart15SocioJur"),
                 participacionaccionariaAct_Economica: app.ui.GetDropDownNumericValue("#participacionaccionariaAct_Economica"),
                 participacionaccionariaAct_EconomicaDesc: app.ui.GetDropDownSelectedText("#participacionaccionariaAct_Economica")
@@ -835,7 +848,7 @@ app.kycjuridico = (function () {
         $("[name=pepcargoSocioJur]").change();
         app.ui.SetRadioNumericValue("peprelacionSocioJur", row.participacionaccionariaPepRelacionJur);
         $("#peptiporelacionSocioJur").val(row.peptiporelacionSocioJur);
-        
+
         app.ui.SetRadioNumericValue("actividadesart15SocioJur", row.participacionaccionariaArt15Jur);
         app.ui.SetDropDownNumericValue("#participacionaccionariaAct_Economica", row.participacionaccionariaAct_Economica);
         $("[name=peprelacionSocioJur]").change();
@@ -1008,7 +1021,7 @@ app.kycjuridico = (function () {
                 "identificacionEIN": 0,
                 "contribuyenteUSA": 0,
                 "domicilioExtranjero": 0,
-                "paisDomicilio":0,
+                "paisDomicilio": 0,
                 "poseeTelefonoExtranjero": 0,
                 "aportaXMLFATCA": 0,
                 "valorcanalingreso": 1,

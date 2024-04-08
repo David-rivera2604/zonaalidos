@@ -18,7 +18,10 @@ app.kycpersona = (function () {
                         }
 
                         app.ui.SetDropDownNumericValue('#Act_Economica', setupData.actividadEconomica, true);
-
+                        $('#Act_Economica').select2({
+                            width: '100%', theme: 'bootstrap4', dropdownParent: $("#kycpersonaModal .modal-content"),
+                            language: { noResults: function () { return "No hay resultado"; }, searching: function () { return "Buscando.."; } }
+                        });
                     });
 
             }, `cod_pais=CRI`);
