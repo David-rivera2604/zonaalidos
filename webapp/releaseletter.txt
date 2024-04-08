@@ -577,3 +577,5 @@
                    MapfreMas Se agrega funcion para transcribir errores de emision.
                    Mapfre Mas. Se agrega datos variables  MCA_CUOTAS_GRATIS y NUM_CUOTAS_GRATIS para cotizar en Purdy
 1.6.60a 18/03/2024 Mapfre Mas Plus. Se agrega datos variables  MCA_CUOTAS_GRATIS y NUM_CUOTAS_GRATIS para cotizar en Purdy
+1.6.61  08/04/2024 Saldo Deudor. Manejo para poder condicionar el plan según la moneda indicada.
+
