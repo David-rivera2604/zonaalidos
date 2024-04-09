@@ -13,6 +13,7 @@ app.EmisionMapfreMas = (function () {
     var setupData = null;
     var showCalculate = false;
     var rowDocumentosrequeridos = null;
+    let mca_cuotas_gratis = 'N';
 
     function Setup() {
         var _id = app.core.URLStringValue('presupuesto');
@@ -322,6 +323,8 @@ app.EmisionMapfreMas = (function () {
             $('#plandepagoTbl').bootstrapTable('load', {});
 
         TipoTercero_Filtro();
+        mca_cuotas_gratis = data.mc_cuotas_gratis;
+
     }
 
     function MapObjectToInput(data) {
@@ -814,11 +817,11 @@ app.EmisionMapfreMas = (function () {
 
     function OtherValidations() {
         let result = 0;
-        let message = 'Debe verificar la información de terceros';
+        let message = 'Verifque la información de terceros';
         let terceros = $('#tercerosTbl').bootstrapTable('getData');
         let vehiculo = $('#vehiculoTbl').bootstrapTable('getData');
         let terceroserrors = (terceros.length === 0);
-
+        
         //if (vehiculo.length === 0) {
         //    $('#vehiculoTbl-error').removeClass('d-none');
         //    result = result + 1;
@@ -828,6 +831,7 @@ app.EmisionMapfreMas = (function () {
             let insured = terceros.filter(i => i.tipodetercero === 2);
             let driver = terceros.filter(i => i.tipodetercero === 3);
             let bene = terceros.filter(i => i.tipodetercero === 6);
+            let pagador = terceros.filter(i => i.tipodetercero === 21);
 
             if (holder.length === 0) {
                 message += ', indique el tomador';
@@ -855,6 +859,10 @@ app.EmisionMapfreMas = (function () {
             else {
                 terceroserrors = false;
                 message = '';
+            }
+            if ((pagador.length == 0) && (mca_cuotas_gratis == 'S')) {
+                message += ', Si posee cuotas gratis , indique el pagador.';
+                terceroserrors = true;
             }
         }
         if (terceroserrors) {
@@ -1291,7 +1299,7 @@ app.EmisionMapfreMas = (function () {
                     type: "error"
                 }
             }
-            else if (TerceroValida != undefined && TerceroTomador["tercerosId"] != Tercero.tercerosId && Tercero.tipodetercero == 2) {
+            else if (TerceroValida.length > 0 && TerceroTomador["tercerosId"] != Tercero.tercerosId && Tercero.tipodetercero == 2) {
                 return Rules = {
                     Event: "Update",
                     Error: true,
@@ -1300,7 +1308,7 @@ app.EmisionMapfreMas = (function () {
                     type: "error"
                 }
             }
-            else if (TerceroValida != undefined && TerceroTomador["tercerosId"] != Tercero.tercerosId && Tercero.tipodetercero == 3) {
+            else if (TerceroValida.length > 0 && TerceroTomador["tercerosId"] != Tercero.tercerosId && Tercero.tipodetercero == 3) {
                 return Rules = {
                     Event: "Update",
                     Error: true,
@@ -1309,7 +1317,7 @@ app.EmisionMapfreMas = (function () {
                     type: "error"
                 }
             }
-            else if (TerceroValida != undefined && TerceroTomador["tercerosId"] != Tercero.tercerosId && Tercero.tipodetercero == 21) {
+            else if (TerceroValida.length > 0 && TerceroTomador["tercerosId"] != Tercero.tercerosId && Tercero.tipodetercero == 21) {
                 return Rules = {
                     Event: "Update",
                     Error: true,
@@ -1363,7 +1371,7 @@ app.EmisionMapfreMas = (function () {
                     type: "error"
                 }
             }
-            else if (TerceroValida != undefined && Tercero.tipodetercero == 2) {
+            else if (TerceroValida.length > 0 && Tercero.tipodetercero == 2) {
                 return Rules = {
                     Event: "Insert",
                     Error: true,
@@ -1372,7 +1380,7 @@ app.EmisionMapfreMas = (function () {
                     type: "error"
                 }
             }
-            else if (TerceroValida != undefined && Tercero.tipodetercero == 3) {
+            else if (TerceroValida.length > 0 && Tercero.tipodetercero == 3) {
                 return Rules = {
                     Event: "Insert",
                     Error: true,
@@ -1381,7 +1389,7 @@ app.EmisionMapfreMas = (function () {
                     type: "error"
                 }
             }
-            else if (TerceroValida != undefined && Tercero.tipodetercero == 21) {
+            else if (TerceroValida.length > 0 && Tercero.tipodetercero == 21) {
                 return Rules = {
                     Event: "Insert",
                     Error: true,
@@ -2555,8 +2563,7 @@ app.EmisionMapfreMas = (function () {
     };
 
     function formulariosMode() {
-        //return ((workMode === 'draft' || workMode === 'resume') && !localStorage.getItem('Roles').includes('Purdy') && !localStorage.getItem('Roles').includes('Davivienda_Prendarios') && !localStorage.getItem('Roles').includes('Davivienda_Leasing'));
-        return true;
+        return ((workMode === 'draft' || workMode === 'resume') && !localStorage.getItem('Roles').includes('Purdy') && !localStorage.getItem('Roles').includes('Davivienda_Prendarios') && !localStorage.getItem('Roles').includes('Davivienda_Leasing'));
     }
 
     return {
