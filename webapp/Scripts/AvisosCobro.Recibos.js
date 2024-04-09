@@ -154,7 +154,7 @@ app.AvisosRecibos = (function () {
 
             if (app.ui.IsValid('#PrototypeEdtForm', false)) {
                 let payload = MapInputToObject();
-                payload.Lista_Recibos = $('#recibosTbl').bootstrapTable('getData').filter(i => i.seleccionado).map(u => u.Num_Recibo).join(';');
+                payload.Lista_Recibos = $('#recibosTbl').bootstrapTable('getData').filter(i => i.Seleccionado).map(u => u.Num_Recibo).join(';');
 
                 app.ui.ButtonDoing('#GeneraAvisos');
                 app.core.Post(app.setting.apipath + 'v1/AvisoCobro/Generar',
@@ -233,7 +233,7 @@ app.AvisosRecibos = (function () {
         if ($('#generalNotify').html().length > 10) {
             $('#generalNotify').html('');
         }
-        $('#GeneraAvisos').prop("disabled", $('#recibosTbl').bootstrapTable('getData').filter(i => i.seleccionado).length == 0);
+        $('#GeneraAvisos').prop("disabled", $('#recibosTbl').bootstrapTable('getData').filter(i => i.Seleccionado).length == 0);
 
         if (changedCallback !== undefined && changedCallback !== null)
             changedCallback(MapInputToObject());
@@ -242,7 +242,7 @@ app.AvisosRecibos = (function () {
             console.log(e);
             let checked = $("[name='btSelectAll']").is(":checked");
             $('#recibosTbl').bootstrapTable('getData').forEach(function (item) {
-                item.seleccionado = checked;
+                item.Seleccionado = checked;
             })
         }
     };
@@ -279,7 +279,7 @@ app.AvisosRecibos = (function () {
             clickToSelect: true,
             columns: [
                 {
-                    field: 'seleccionado',
+                    field: 'Seleccionado',
                     align: 'center',
                     titleTooltip: 'Permite seleccionar el recibo para crear el aviso de cobro',
                     checkbox: true
@@ -372,12 +372,12 @@ app.AvisosRecibos = (function () {
 
         $('#recibosTbl').on('check-all.bs.table', function () {
             $('#recibosTbl').bootstrapTable('getData').forEach(function (item) {
-                item.seleccionado = true;
+                item.Seleccionado = true;
             })
         });
         $('#recibosTbl').on('uncheck-all.bs.table', function () {
             $('#recibosTbl').bootstrapTable('getData').forEach(function (item) {
-                item.seleccionado = false;
+                item.Seleccionado = false;
             })
         });
 
