@@ -154,7 +154,7 @@ app.AvisosRecibos = (function () {
 
             if (app.ui.IsValid('#PrototypeEdtForm', false)) {
                 let payload = MapInputToObject();
-                payload.Lista_Recibos = $('#recibosTbl').bootstrapTable('getData').filter(i => i.Seleccionado).map(u => u.Num_Recibo).join(';');
+                payload.Lista_Recibos = $('#recibosTbl').bootstrapTable('getSelections').filter(i => i.Seleccionado).map(u => u.Num_Recibo).join(';');
 
                 app.ui.ButtonDoing('#GeneraAvisos');
                 app.core.Post(app.setting.apipath + 'v1/AvisoCobro/Generar',
@@ -276,6 +276,7 @@ app.AvisosRecibos = (function () {
             search: true,
             searchAlign: 'left',
             maintainMetaData: true,
+            maintainSelected: true,
             clickToSelect: true,
             columns: [
                 {
