@@ -233,7 +233,7 @@ app.AvisosRecibos = (function () {
         if ($('#generalNotify').html().length > 10) {
             $('#generalNotify').html('');
         }
-        $('#GeneraAvisos').prop("disabled", $('#recibosTbl').bootstrapTable('getData').filter(i => i.Seleccionado).length == 0);
+        $('#GeneraAvisos').prop("disabled", $('#recibosTbl').bootstrapTable('getSelections').filter(i => i.Seleccionado).length == 0);
 
         if (changedCallback !== undefined && changedCallback !== null)
             changedCallback(MapInputToObject());
