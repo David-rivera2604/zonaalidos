@@ -379,21 +379,22 @@ namespace Architect.API.Tron.Business
 
         internal static string IdentificationFormat(int identificationType, string documentNumber)
         {
-            string result = documentNumber.OnlyNumbers();
+            string result = string.Empty;
 
             switch (identificationType)
             {
                 case 1: //Cédula
+                    result = documentNumber.OnlyNumbers();
                     result = result.Substring(1);
                     break;
                 case 2: //Residencia
-                    result = result.Substring(1);
+                    result = documentNumber.OnlyNumbers();
                     break;
                 case 3: //Pasaporte
-                    result = result.Substring(1);
+                    result = documentNumber;
                     break;
                 case 4: //Cédula jurídica
-                    result = result;
+                    result = documentNumber.OnlyNumbers();
                     break;
                     //CIN
                     //EEX

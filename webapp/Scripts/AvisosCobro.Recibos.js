@@ -319,7 +319,28 @@ app.AvisosRecibos = (function () {
                     formatter: function (value, row, index, field) {
                         return `<span>${row.Tip_Docum_Tom} ${row.Cod_Docum_Tom} - ${row.Nom_Tomador}</span>`;
                     }
-                }            ]
+                },
+                 {
+                    field: 'mca_cuota_gratis',
+                    title: 'Marca Cuotas Gratis',
+                    titleTooltip: 'Marca Cuotas Gratis',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                },
+                {
+                    field: 'tip_docum_pag',
+                    title: 'Pagador',
+                    titleTooltip: 'Pagador',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: function (value, row, index, field) {
+                        return `<span>${row.tip_docum_pag} ${row.cod_docum_pag} - ${row.nom_pagador}</span>`;
+                    }
+                }  ]
         });
 
         $('#recibosTbl').on('check.bs.table', function () {

@@ -265,7 +265,10 @@ app.CotizacionMapfreMasPlus = (function () {
             contrato: app.ui.GetDropDownNumericValue('#contrato'),
             contratoDesc: $("#contrato option:selected").text(),
             subcontrato: app.ui.GetDropDownNumericValue('#subcontrato'),
-            polizagrupo: setupData.polizagrupo
+            olizagrupo: setupData.polizagrupo,
+            mc_cuotas_gratis: app.ui.GetRadioStringValue('mc_cuotas_gratis'),
+            //num_cuotas_gratis: app.ui.GetDropDownNumericValue('#num_cuotas_gratis')
+            num_cuotas_gratis: app.ui.GetDropDownNumericValue('#num_cuotas_gratis')
         };
     }
 
@@ -304,6 +307,7 @@ app.CotizacionMapfreMasPlus = (function () {
         app.ui.SetNumericValue('#IMP_VR', data.IMP_VR);
         app.ui.SetRadioNumericValue('MCA_DESC_CLIENTE_NUEVO', data.MCA_DESC_CLIENTE_NUEVO);
         app.ui.SetNumericValue('#PCT_AJUSTE_GEN', data.PCT_AJUSTE_GEN);
+        app.ui.SetRadioStringValue('mc_cuotas_gratis', data.mc_cuotas_gratis);
         $('#IMP_AUTO_RC').val(data.IMP_AUTO_RC);
         $('#DED_AUTO_RC').val(data.DED_AUTO_RC);
         $('#IMP_AUTO_GMO').val(data.IMP_AUTO_GMO);
@@ -563,6 +567,34 @@ app.CotizacionMapfreMasPlus = (function () {
             $('.handler-marcaHelper').addClass('d-none');
             $('.handler-marca').removeClass('d-none');
             e.preventDefault();
+        });
+
+
+        //const radioSi = document.getElementById("mc_cuotas_gratis_1");
+        //const radioNo = document.getElementById("mc_cuotas_gratis_2");
+        //radioSi.addEventListener("change", function () {
+        //    if (this.checked) {
+        //        app.ui.DropDownDisabled('#num_cuotas_gratis', false);
+        //    }
+        //});
+        //radioNo.addEventListener("change", function () {
+        //    if (this.checked) {
+        //        $('#num_cuotas_gratis').val(0);
+        //        app.ui.DropDownDisabled('#num_cuotas_gratis', true);
+        //    }
+        //});
+        const radioSi = document.getElementById("mc_cuotas_gratis_1");
+        const radioNo = document.getElementById("mc_cuotas_gratis_2");
+        radioSi.addEventListener("change", function () {
+            if (this.checked) {
+                $('#num_cuotas_gratis').prop('disabled', false);
+            }
+        });
+        radioNo.addEventListener("change", function () {
+            if (this.checked) {
+                $('#num_cuotas_gratis').val(0);
+                $('#num_cuotas_gratis').prop('disabled', true);
+            }
         });
     }
 

@@ -80,5 +80,10 @@ namespace Architect.API.Tron.Contracts.AvisosDeCobro
         /// Nombre del asegurado
         /// </summary>
         public string Nom_Tomador { get; set; }
+        public string mca_cuota_gratis { get; set; }
+        public string tip_docum_pag { get; set; }
+        public string cod_docum_pag { get; set; }
+        public string nom_pagador { get; set; }
+
     }
 }
