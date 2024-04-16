@@ -80,7 +80,7 @@ namespace Architect.API.Tron.DataAccess
         {
             return Database.Select("SELECT id_report" +
                              " FROM (SELECT id_report FROM tronweb_reports " +
-                                    " WHERE fec_created >= TO_DATE('" + DateTime.Today.ToString("dd/MM/yy") + "', 'DD/MM/YY') ORDER BY fec_created DESC)" +
+                                    " WHERE fec_created >= TO_DATE('" + DateTime.Today.ToString("dd/MM/yy") + "', 'DD/MM/YY') and COD_USER = 'TRON2000' ORDER BY fec_created DESC)" +
                             " WHERE ROWNUM = 1")
                             .QueryScalar<Decimal>(currentConnection, "Tron").ToString();
         }
