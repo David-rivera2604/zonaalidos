@@ -265,7 +265,7 @@ app.CotizacionMapfreMasPlus = (function () {
             contrato: app.ui.GetDropDownNumericValue('#contrato'),
             contratoDesc: $("#contrato option:selected").text(),
             subcontrato: app.ui.GetDropDownNumericValue('#subcontrato'),
-            olizagrupo: setupData.polizagrupo,
+            polizagrupo: setupData.polizagrupo,
             mc_cuotas_gratis: app.ui.GetRadioStringValue('mc_cuotas_gratis'),
             //num_cuotas_gratis: app.ui.GetDropDownNumericValue('#num_cuotas_gratis')
             num_cuotas_gratis: app.ui.GetDropDownNumericValue('#num_cuotas_gratis')
