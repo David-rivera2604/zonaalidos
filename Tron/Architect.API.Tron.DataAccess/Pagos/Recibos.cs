@@ -13,7 +13,7 @@ namespace Architect.API.Tron.DataAccess.Pagos
         /// <summary>
         /// Extrae la información de recibos para pago recurrentes.
         /// </summary>
-        public static List<Contracts.Pagos.Recibo> PendientesRecurrentesAlCobro(int cod_cia, int fetchRows)
+        public static List<Contracts.Pagos.Recibo> PendientesRecurrentesAlCobro(int cod_cia, DateTime fec_efect_recibo, int fetchRows)
         {
             List<Contracts.Pagos.Recibo> result = new List<Contracts.Pagos.Recibo>();
             string filter = string.Empty;
@@ -30,7 +30,7 @@ namespace Architect.API.Tron.DataAccess.Pagos
                                     AND C.NUM_SPTO_APLI = A.NUM_SPTO_APLI
                                     AND C.TIP_SITUACION IN ('RE','EP')    
                                     AND C.TIP_GESTOR IN ('TA')
-                                    AND TRUNC(C.FEC_EFEC_RECIBO) = TRUNC(SYSDATE)
+                                    AND TRUNC(C.FEC_EFEC_RECIBO) = TRUNC(:fec_efect_recibo)
                                 JOIN A1001399 A99 ON A99.COD_CIA  = A.COD_CIA AND A99.TIP_DOCUM = A.TIP_DOCUM AND A99.COD_DOCUM = A.COD_DOCUM
                                 JOIN A1001331 A1331 ON A1331.COD_CIA  = A.COD_CIA AND A1331.TIP_DOCUM = A.TIP_DOCUM AND A1331.COD_DOCUM = A.COD_DOCUM
                                 JOIN A1000400 A400 ON A400.COD_MON = C.COD_MON
@@ -44,6 +44,7 @@ namespace Architect.API.Tron.DataAccess.Pagos
                                 GROUP BY A.NUM_POLIZA, a1800.nom_ramo, A.TIP_DOCUM, A.COD_DOCUM, A99.NOM_TERCERO, A99.NOM2_TERCERO, A99.APE1_TERCERO, A99.APE2_TERCERO,
    			                            A1331.TLF_NUMERO, A1331.TLF_NUMERO_COM, A1331.EMAIL, A1331.EMAIL_COM, A1331.TXT_EMAIL, C.NUM_RECIBO, C.FEC_EFEC_RECIBO, A400.COD_MON_ISO, B.TOKEN
                                 FETCH FIRST :fetchRows ROWS ONLY")
+                    .AddParameter("fec_efect_recibo", DbType.Date, 0, fec_efect_recibo)
                     .AddParameter("cod_cia", DbType.Int32, 22, cod_cia)
                     .AddParameter("fetchRows", DbType.Int32, 22, fetchRows)
                     .Query("Tron", new Action<IDataReader>((reader) =>

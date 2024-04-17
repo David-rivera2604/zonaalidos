@@ -82,9 +82,9 @@ namespace Architect.API.Tron.Controllers.v2
             var json = JsonConvert.SerializeObject(request);
             Utilities.Log.TraceLog("RecurringReceipts", json);
 
-            await Business.Backoffice.v2.Pagos.RecurringReceipts(request);
+            string result = await Business.Backoffice.v2.Pagos.RecurringReceipts(request);
 
-            return Ok(string.Empty);
+            return Ok(result);
         }
 
         [HttpGet]
@@ -104,16 +104,16 @@ namespace Architect.API.Tron.Controllers.v2
         }
 
         [HttpGet]
-        [Route("silicer")]
+        [Route("silicer/{fec_efect_recibo:DateTime}")]
         [AllowAnonymous]
         [ApiExplorerSettings(IgnoreApi = true)]
-        public async Task<IHttpActionResult> silicer()
+        public async Task<IHttpActionResult> silicer(DateTime fec_efect_recibo)
         {
             int recordCount = 0;
 
             await Task.Run(() =>
             {
-                recordCount = Architect.API.Tron.Business.Backoffice.v2.Pagos.PendientesRecurrentesAlCobro();
+                recordCount = Architect.API.Tron.Business.Backoffice.v2.Pagos.PendientesRecurrentesAlCobro(fec_efect_recibo);
             }).ConfigureAwait(false);
 
 
