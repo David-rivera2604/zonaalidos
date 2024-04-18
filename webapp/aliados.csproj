@@ -1822,6 +1822,10 @@
       <Project>{e8317ab3-7807-4fcf-8520-b80340b4eb7d}</Project>
       <Name>Architect.Utilities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\sicop\Architect.SICOP.Integrations\Architect.SICOP.Integrations.csproj">
+      <Project>{9ddfbc75-0a39-4a36-9301-169bac63a801}</Project>
+      <Name>Architect.SICOP.Integrations</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Tron\Architect.API.Tron.Business\Architect.API.Tron.Business.csproj">
       <Project>{6a906932-7049-4dbd-88f6-2b3f5b3b0f94}</Project>
       <Name>Architect.API.Tron.Business</Name>
