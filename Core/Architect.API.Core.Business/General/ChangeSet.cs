@@ -38,9 +38,12 @@ namespace Architect.API.Core.Business.General
         /// <param name="entitySource">Instancia de la entidad que original el evento.</param>
         public static void Create(int entityType, Int64 entityId, int companyId, string action, string summary, int userId, object entitySource)
         {
+
+            IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Research");
+            IDbTransaction dbTransaction = currentConnection.BeginTransaction();
             Core.Contracts.General.ChangeSet item = new Core.Contracts.General.ChangeSet
             {
-                Id = Core.DataAccess.General.ChangeSet.RetrieveLastKey() + 1,
+                Id = Core.DataAccess.General.ChangeSet.RetrieveLastKey(currentConnection) + 1,
                 EntityType = entityType,
                 EntityId = entityId,
                 CompanyId = companyId,
@@ -49,7 +52,9 @@ namespace Architect.API.Core.Business.General
                 UpdateUserCode = userId,
                 UpdateDate = DateTime.Now
             };
-            Core.DataAccess.General.ChangeSet.Create(item);
+            Core.DataAccess.General.ChangeSet.Create(item, currentConnection);
+            dbTransaction.Commit();
+            currentConnection.Close();
 
             Task.Run(() => Rule.Runtime(companyId, userId, entityType, action, entitySource));
             //_ = Rule.Runtime(companyId, userId, entityType, action, entitySource);
@@ -67,7 +72,7 @@ namespace Architect.API.Core.Business.General
         /// <param name="entitySource">Instancia de la entidad que original el evento.</param>
         public static Int64 Create(int entityType, int companyId, string action, string summary, int userId, object entitySource)
         {
-            Int64 processId = Architect.API.Core.DataAccess.General.ChangeSet.RetrieveLastEntityId(2007, companyId)+1;
+            Int64 processId = Architect.API.Core.DataAccess.General.ChangeSet.RetrieveLastEntityId(2007, companyId) + 1;
 
             summary = summary.Replace("%ProcessId%", processId.ToString());
             Core.Contracts.General.ChangeSet item = new Core.Contracts.General.ChangeSet
