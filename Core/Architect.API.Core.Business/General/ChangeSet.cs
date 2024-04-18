@@ -38,18 +38,23 @@ namespace Architect.API.Core.Business.General
         /// <param name="entitySource">Instancia de la entidad que original el evento.</param>
         public static void Create(int entityType, Int64 entityId, int companyId, string action, string summary, int userId, object entitySource)
         {
-            Core.Contracts.General.ChangeSet item = new Core.Contracts.General.ChangeSet
+            using (DataFactory.Session session = new DataFactory.Session("Research"))
             {
-                Id = Core.DataAccess.General.ChangeSet.RetrieveLastKey() + 1,
-                EntityType = entityType,
-                EntityId = entityId,
-                CompanyId = companyId,
-                Action = action,
-                Summary = summary,
-                UpdateUserCode = userId,
-                UpdateDate = DateTime.Now
-            };
-            Core.DataAccess.General.ChangeSet.Create(item);
+
+                Core.Contracts.General.ChangeSet item = new Core.Contracts.General.ChangeSet
+                {
+                    Id = Core.DataAccess.General.ChangeSet.RetrieveLastKey(session) + 1,
+                    EntityType = entityType,
+                    EntityId = entityId,
+                    CompanyId = companyId,
+                    Action = action,
+                    Summary = summary,
+                    UpdateUserCode = userId,
+                    UpdateDate = DateTime.Now
+                };
+                Core.DataAccess.General.ChangeSet.Create(item, session);
+                session.CommitAndClose();
+            }
 
             Task.Run(() => Rule.Runtime(companyId, userId, entityType, action, entitySource));
             //_ = Rule.Runtime(companyId, userId, entityType, action, entitySource);

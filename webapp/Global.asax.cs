@@ -68,13 +68,13 @@ namespace aliados
             //Monitor de transacciones de pago pendientes
             if (Architect.Utilities.Helpers.Settings.StringValue("Payment.Placetopay.Sonda.ExecutionTime").IsNotEmpty())
             {
-                
-                RecurringJob.AddOrUpdate("Payment.Sonda", 
+
+                RecurringJob.AddOrUpdate("Payment.Sonda",
                     () => Architect.API.Tron.Business.Backoffice.Pagos.Monitor(),
                     Architect.Utilities.Helpers.Settings.StringValue("Payment.Placetopay.Sonda.ExecutionTime"));
             }
 
-           // Architect.API.Insurance.Business.Policy.DigitalSignature.VerifyDocuSigned();
+            // Architect.API.Insurance.Business.Policy.DigitalSignature.VerifyDocuSigned();
             int docuSignInterval = Convert.ToInt32(ConfigurationManager.AppSettings["DocuSign.Interval.Review"]);
             if (docuSignInterval > 0)
             {
@@ -95,7 +95,7 @@ namespace aliados
             if (Architect.Utilities.Helpers.Settings.StringValue("Payment.Silice.RecurringReceipts.ExecutionTime").IsNotEmpty())
             {
                 RecurringJob.AddOrUpdate("Payment.Silice.RecurringReceipts",
-                    () => Architect.API.Tron.Business.Backoffice.v2.Pagos.PendientesRecurrentesAlCobro(),
+                    () => Architect.API.Tron.Business.Backoffice.v2.Pagos.PendientesRecurrentesAlCobro(DateTime.Today),
                     Architect.Utilities.Helpers.Settings.StringValue("Payment.Silice.RecurringReceipts.ExecutionTime"));
             }
 
