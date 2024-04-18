@@ -23,7 +23,10 @@ app.kycpersona = (function () {
                             language: { noResults: function () { return "No hay resultado"; }, searching: function () { return "Buscando.."; } }
                         });
                     });
-
+                $('#profesionPer').select2({
+                    width: '100%', theme: 'bootstrap4', dropdownParent: $("#kycpersonaModal .modal-content"),
+                    language: { noResults: function () { return "No hay resultado"; }, searching: function () { return "Buscando.."; } }
+                });
             }, `cod_pais=CRI`);
 
 
