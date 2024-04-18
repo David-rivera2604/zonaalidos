@@ -578,4 +578,10 @@
                    Mapfre Mas. Se agrega datos variables  MCA_CUOTAS_GRATIS y NUM_CUOTAS_GRATIS para cotizar en Purdy
 1.6.60a 18/03/2024 Mapfre Mas Plus. Se agrega datos variables  MCA_CUOTAS_GRATIS y NUM_CUOTAS_GRATIS para cotizar en Purdy
 1.6.61  08/04/2024 Saldo Deudor. Manejo para poder condicionar el plan según la moneda indicada.
+1.6.62  18/04/2024 MapfreMas. KYC Si bien se completa la información de manera manual en el formulario, cuando se le envía el documento al cliente. ejemplo: el salario, la empresa, etc.
+                   MapfreMas. Consentimiento informado: Se completa la información, llega en blanco datos del cliente.
+                   KYC. Buscador de profesiones:  Poco amigable con la búsqueda y listado incompleto de profesiones y oficios
+                   KYC. Buscador de actividad económica: Igual al anterior.
+                   KYC. Domicilio permanente: Dado que es un dato que se reitera, el sistema debería en automático cargarlo, con solo una vez digitado,
+
 
