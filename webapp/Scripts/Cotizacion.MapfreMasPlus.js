@@ -42,6 +42,11 @@ app.CotizacionMapfreMasPlus = (function () {
                     $('#plandepagoRow').removeClass('d-none');
                     $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
 
+                    if (localStorage.getItem('Roles').includes('Cafsa')) {
+                        var tabla = document.getElementById('plandepagoTbl');
+                        tabla.classList.add('Cafsa');
+                    }
+
                     if (data.plandepagoFull != null && data.plandepagoFull.length > 0) {
                         $('#plandepagoFullRow').removeClass('d-none');
                         $('#plandepagoFullTbl').bootstrapTable('load', data.plandepagoFull);
