@@ -83,6 +83,11 @@ app.PolicyEdit = (function () {
             ShowHeaderStatus(statusDesc);
 
         switch (status) {
+            case 1:
+                $("#AttachmentsEdt fieldset").prop("disabled", false);
+                $("#NewAttachment").removeClass('d-none');
+                break;
+
             case 3:
             case 4:
             case 10:
@@ -136,6 +141,8 @@ app.PolicyEdit = (function () {
 
     function IsValid() {
         var result = true;
+        var attachment = app.attachment.InputToObject();
+
         if (!app.asegurado.IsValid())
             result = false;
         if (!app.cuestionario.IsValid())
@@ -148,7 +155,12 @@ app.PolicyEdit = (function () {
             result = false;
         if (!$('#prestamosHTabHeader').hasClass('d-none') && !app.prestamo.IsValid())
             result = false;
-        //result = app.attachment.IsValid() && result;
+        if (localStorage.getItem('Tenant').includes('Coopeservidores')) {
+            if (!attachment.length > 0) {
+                $('#adjuntosHTab .badge').html('Es obligatorio cargar al menos un documento');
+                result = false;
+            }
+        }
         return result;
     };
 
@@ -414,3 +426,4 @@ app.PolicyEdit = (function () {
         }
     };
 }());
+y
