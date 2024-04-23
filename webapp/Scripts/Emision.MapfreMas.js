@@ -324,6 +324,7 @@ app.EmisionMapfreMas = (function () {
 
         TipoTercero_Filtro();
         mca_cuotas_gratis = data.mc_cuotas_gratis;
+
     }
 
     function MapObjectToInput(data) {
@@ -1318,7 +1319,7 @@ app.EmisionMapfreMas = (function () {
                     type: "error"
                 }
             }
-            else if (TerceroValida.length > 0 && Tercero.tipodetercero == 21) {
+            else if (TerceroValida.length > 0 && TerceroTomador["tercerosId"] != Tercero.tercerosId && Tercero.tipodetercero == 21) {
                 return Rules = {
                     Event: "Update",
                     Error: true,
@@ -1372,7 +1373,7 @@ app.EmisionMapfreMas = (function () {
                     type: "error"
                 }
             }
-            else if (TerceroValida != undefined && Tercero.tipodetercero == 2) {
+            else if (TerceroValida.length > 0 && Tercero.tipodetercero == 2) {
                 return Rules = {
                     Event: "Insert",
                     Error: true,
@@ -1381,7 +1382,7 @@ app.EmisionMapfreMas = (function () {
                     type: "error"
                 }
             }
-            else if (TerceroValida != undefined && Tercero.tipodetercero == 3) {
+            else if (TerceroValida.length > 0 && Tercero.tipodetercero == 3) {
                 return Rules = {
                     Event: "Insert",
                     Error: true,
@@ -1390,7 +1391,7 @@ app.EmisionMapfreMas = (function () {
                     type: "error"
                 }
             }
-            else if (TerceroValida != undefined && Tercero.tipodetercero == 21) {
+            else if (TerceroValida.length > 0 && Tercero.tipodetercero == 21) {
                 return Rules = {
                     Event: "Insert",
                     Error: true,
