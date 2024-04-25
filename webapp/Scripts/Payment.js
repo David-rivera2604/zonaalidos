@@ -101,18 +101,20 @@ app.Payment = (function () {
                                 $('.ibox-content').toggleClass('sk-loading');
                                 console.log(dataRequest);
 
-                                $('head').append('<link rel="stylesheet" type="text/css" href="https://dsp-microservice-nestjs.s3.sa-east-1.amazonaws.com/54frts28t/widget-pago-directo.css">');
+                                $('head').append('<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.min.css">');
+                                $('head').append('<link rel="stylesheet" type="text/css" href="https://dsp-microservice-nestjs.s3.sa-east-1.amazonaws.com/54frts28t/new-widget-pago.css">');
+                                $('head').append('<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js">');
+                                
+                                app.core.LoadScriptFile('https://dsp-microservice-nestjs.s3.sa-east-1.amazonaws.com/54frts28t/new-widget-pago.js').then(d => {
 
-                                app.core.LoadScriptFile('https://dsp-microservice-nestjs.s3.sa-east-1.amazonaws.com/54frts28t/widget-pago-directo.js').then(d => {
-
-                                    let widgetPagos = document.querySelector("widget-pagos");
+                                    let widgetPagos = document.querySelector("new-widget-pago");
                                     if (widgetPagos === null) {
-                                        $("body").append('<widget-pagos style="width: 570px; max-height: 50%; position: fixed; left: 20%; top: 40%; right: auto;"></widget-pagos>');
-                                        widgetPagos = document.querySelector("widget-pagos");
+                                        $("body").append('<new-widget-pago login></new-widget-pago>');
+                                        widgetPagos = document.querySelector("new-widget-pago");
                                     }
                                     const recibo = JSON.stringify(session);
 
-                                    console.log(recibo);
+                                    console.log('init',recibo);
 
                                     widgetPagos.addEventListener('loginComplete', (e) => {
                                         console.log('loginComplete', e);
