@@ -119,6 +119,10 @@ namespace Architect.API.Tron.DataAccess
                                     Tip_Docum_Tom = reader.StringValue("tip_docum_tom"),
                                     Cod_Docum_Tom = reader.StringValue("cod_docum_tom"),
                                     Nom_Tomador = reader.StringValue("nom_tomador"),
+                                    mca_cuota_gratis = reader.StringValue("txt_mca_cuota_gratis"),
+                                    tip_docum_pag = reader.StringValue("tip_docum_pag"),
+                                    cod_docum_pag = reader.StringValue("cod_docum_pag"),
+                                    nom_pagador = reader.StringValue("nom_pagador"),
 
                                 });
                                 break;

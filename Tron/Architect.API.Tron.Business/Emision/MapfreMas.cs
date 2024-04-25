@@ -1,6 +1,7 @@
 ﻿using Architect.API.Core.Business.General;
 using Architect.API.Core.Contracts;
 using Architect.API.Insurance.Contracts.Bayer;
+using Architect.API.Tron.Business.Backoffice.Emision;
 using Architect.Compliance.Integrations.Contracts;
 using Architect.Utilities.Extensions;
 using Newtonsoft.Json;
@@ -208,6 +209,14 @@ namespace Architect.API.Tron.Business.Emision
                 }
 
             }
+
+            if (resultQuoteInfo.Error.IsNotEmpty())
+            {
+                Utilities.Log.ErrorLog("Presupuesto: " + quoteInfo.presupuesto, resultQuoteInfo.Mensaje, "Issue.MapfreMas");
+                resultQuoteInfo.Error = FormatoErrores.FormatearError(resultQuoteInfo.Error);
+                resultQuoteInfo.Mensaje = resultQuoteInfo.Error;
+            }
+
             return resultQuoteInfo;
         }
 
@@ -444,7 +453,7 @@ namespace Architect.API.Tron.Business.Emision
             }
 
             if (tokenInfo.Roles.Contain("PolizaGrupo") && !((quoteInfo.polizagrupo == "3022310199235") || (quoteInfo.polizagrupo == null) || (quoteInfo.polizagrupo == ""))) //Bariloche
-                {
+            {
                 return Core.Business.General.Report.GeneratePDFFile("mapfremas_solicitud", data).GetAwaiter().GetResult();
             }
             else

@@ -230,6 +230,8 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// </summary>
         [DataMember(), JsonProperty()] public int ext_garantia { get; set; }
         [DataMember(), JsonProperty()] public string rc_alcohol { get; set; } = "N";
+        [DataMember(), JsonProperty()] public string mc_cuotas_gratis { get; set; } = "N";
+        [DataMember(), JsonProperty()] public int num_cuotas_gratis { get; set; }
     }
 
 }

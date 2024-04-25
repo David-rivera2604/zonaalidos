@@ -30,6 +30,15 @@ app.VariacionesMapfreMas = (function () {
                             $('#cod_chassis').val(item.val_campo_act);
                             $('#cod_chassis').data('oldvalue', item.val_campo_act);
                             break;
+                        case 'MCA_CUOTAS_GRATIS':
+                            app.ui.SetRadioStringValue('mc_cuotas_gratis', item.val_campo_act);
+                            $('#mc_cuotas_gratis').val(item.val_campo_act);
+                            $('#mc_cuotas_gratis').data('oldvalue', item.val_campo_act);
+                            break;
+                        case 'NUM_CUOTAS_GRATIS':
+                            $('#num_cuotas_gratis').val(item.val_campo_act);
+                            $('#num_cuotas_gratis').data('oldvalue', item.val_campo_act);
+                            break;
                     }
                 });
             });
@@ -41,7 +50,9 @@ app.VariacionesMapfreMas = (function () {
         variacion.Detalle = [
             { cod_campo: 'NUM_MATRICULA', val_campo_ant: $('#num_matricula').data('oldvalue'), val_campo_act: $('#num_matricula').val() },
             { cod_campo: 'NUM_MOTOR', val_campo_ant: $('#num_motor').data('oldvalue'), val_campo_act: $('#num_motor').val() },
-            { cod_campo: 'COD_CHASSIS', val_campo_ant: $('#cod_chassis').data('oldvalue'), val_campo_act: $('#cod_chassis').val() }];
+            { cod_campo: 'COD_CHASSIS', val_campo_ant: $('#cod_chassis').data('oldvalue'), val_campo_act: $('#cod_chassis').val() },
+            { cod_campo: 'MCA_CUOTAS_GRATIS', val_campo_ant: $('#mc_cuotas_gratis').data('oldvalue'), val_campo_act: app.ui.GetRadioStringValue('mc_cuotas_gratis') },
+            { cod_campo: 'NUM_CUOTAS_GRATIS', val_campo_ant: $('#num_cuotas_gratis').data('oldvalue'), val_campo_act: $('#num_cuotas_gratis').val() }];
         return variacion;
     }
 
@@ -59,7 +70,9 @@ app.VariacionesMapfreMas = (function () {
             $('#VariacionesEdtFormSave').prop("disabled",
                 $('#num_matricula').data('oldvalue') === $('#num_matricula').val() &&
                 $('#num_motor').data('oldvalue') === $('#num_motor').val() &&
-                $('#cod_chassis').data('oldvalue') === $('#cod_chassis').val());
+                $('#cod_chassis').data('oldvalue') === $('#cod_chassis').val() &&
+                $('#mc_cuotas_gratis').data('oldvalue') === app.ui.GetRadioStringValue('mc_cuotas_gratis') &&
+                $('#num_cuotas_gratis').data('oldvalue') === $('#num_cuotas_gratis').val());
         });
 
         $('#VariacionesEdtFormSave').click(function () {
@@ -72,6 +85,8 @@ app.VariacionesMapfreMas = (function () {
                         $('#num_matricula').data('oldvalue', $('#num_matricula').val());
                         $('#num_motor').data('oldvalue', $('#num_motor').val());
                         $('#cod_chassis').data('oldvalue', $('#cod_chassis').val());
+                        $('#mc_cuotas_gratis').data('oldvalue', app.ui.GetRadioStringValue('mc_cuotas_gratis'));
+                        $('#num_cuotas_gratis').data('oldvalue', $('#num_cuotas_gratis').val());
                     }).always(function () {
                         app.ui.ButtonDone('#VariacionesEdtFormSave');
                         $('#VariacionesEdtFormSave').prop("disabled", true);

@@ -41,6 +41,7 @@ namespace Architect.Extend.Integrations.Tron
         public static int UpdateClienteContacto(Insured DatosClientesItem, IDbConnection connection = null)
         {
             string civilStatus = "0";
+            DatosClientesItem.BirthDate = DateTime.ParseExact(Convert.ToString(DatosClientesItem.BirthDate), "M/d/yyyy H:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
             switch (DatosClientesItem.CivilStatus.ToString())
             {
                 case "1":

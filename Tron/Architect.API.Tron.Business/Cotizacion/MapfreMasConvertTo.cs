@@ -74,7 +74,9 @@ namespace Architect.API.Tron.Business.Cotizacion
                 num_matricula = quoteInfo.NUM_MATRICULA,
                 num_motor = quoteInfo.NUM_MOTOR,
                 cod_chassis = quoteInfo.COD_CHASSIS,
-                p_ext_garantia = quoteInfo.ext_garantia == 1 ? "S" : "N"
+                p_ext_garantia = quoteInfo.ext_garantia == 1 ? "S" : "N",
+                mc_cuotas_gratis = quoteInfo.mc_cuotas_gratis,
+                num_cuotas_gratis = quoteInfo.num_cuotas_gratis
             };
 
             //result.tip_docum = tip_documComboBox.Value

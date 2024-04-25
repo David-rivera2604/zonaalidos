@@ -32,7 +32,7 @@ namespace Architect.API.Tron.DataAccess
                             "   AND A20.MCA_VIGENTE = 'S'" +
                             "   AND A20.MCA_BAJA_RIESGO = 'N'" +
                             "   AND A20.MCA_VIGENTE_APLI = 'S'" +
-                            "   AND A20.COD_CAMPO IN ('NUM_MATRICULA', 'COD_CHASSIS', 'NUM_MOTOR')" +
+                            "   AND A20.COD_CAMPO IN ('NUM_MATRICULA', 'COD_CHASSIS', 'NUM_MOTOR','MCA_CUOTAS_GRATIS','NUM_CUOTAS_GRATIS')" +
                             " ORDER BY A20.TIP_NIVEL, A20.NUM_SECU")
                     .AddParameter("cod_cia", Architect.DataFactory.Enumerations.DbType.Int32, 2, cod_cia)
                     .AddParameter("num_poliza", Architect.DataFactory.Enumerations.DbType.String, 13, num_poliza)
