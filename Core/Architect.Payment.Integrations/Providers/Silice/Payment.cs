@@ -120,9 +120,12 @@ namespace Architect.Payment.Integrations.Providers.Silice
                 {
                     result = "El enlace de pago fue enviado al teléfono " + phone + " del cliente";
                 }
-                else
+                else if(!string.IsNullOrEmpty( jsonvalues.TokenStringValue("menssage")))
                 {
                     result = "Error. " + jsonvalues.TokenStringValue("menssage");
+                } else
+                {
+                    result = "Error. " + jsonvalues.TokenStringValue("data");
                 }
             }
             else

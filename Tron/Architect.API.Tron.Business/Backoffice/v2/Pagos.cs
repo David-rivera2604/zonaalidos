@@ -191,6 +191,12 @@ namespace Architect.API.Tron.Business.Backoffice.v2
 
                 payInfov2.urlReturn = payInfov2.urlWebhook;
 
+                payInfov2.telefonoCliente = payInfov2.telefonoCliente.Replace("-", "");
+                if (!payInfov2.telefonoCliente.StartsWith("506"))
+                {
+                    payInfov2.telefonoCliente = "506"+payInfov2.telefonoCliente;
+                }
+
                 string reciboId = await Architect.Payment.Integrations.Providers.Silice.Payment.recibo(client, payInfov2);
 
                 switch (mode)
@@ -321,9 +327,9 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 foreach (Contracts.Pagos.Recibo pendiente in pendientes)
                 {
                     email = pendiente.EMAIL;
-                    if (!string.IsNullOrEmpty(email))
+                    if (string.IsNullOrEmpty(email))
                         email = pendiente.EMAIL_COM;
-                    if (!string.IsNullOrEmpty(email))
+                    if (string.IsNullOrEmpty(email))
                         email = pendiente.TXT_EMAIL;
 
                     if (!string.IsNullOrEmpty(email))
