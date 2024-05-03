@@ -84,6 +84,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                         impuestos = "0",
                         total = recibo.IMP_RECIBO.ToString().Replace(",", "."),
                         urlWebhook = string.Empty,
+                        moneda = recibo.COD_MON == 1 ? "CRC" : "USD",
                         //origen = "pau",
                         //countryCode = "Silice",
                         items = new Payment.Integrations.Contracts.v2.PaymentInformation.Item[] { new Payment.Integrations.Contracts.v2.PaymentInformation.Item{

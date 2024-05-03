@@ -101,11 +101,9 @@ app.Payment = (function () {
                                 $('.ibox-content').toggleClass('sk-loading');
                                 console.log(dataRequest);
 
-                                $('head').append('<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.min.css">');
-                                $('head').append('<link rel="stylesheet" type="text/css" href="https://dsp-microservice-nestjs.s3.sa-east-1.amazonaws.com/54frts28t/new-widget-pago.css">');
-                                $('head').append('<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js">');
+                                $('head').append('<link rel="stylesheet" type="text/css" href="https://dsp-microservice-nestjs.s3.sa-east-1.amazonaws.com/54frts28t/widget-pago-directo.css">');
                                 
-                                app.core.LoadScriptFile('https://dsp-microservice-nestjs.s3.sa-east-1.amazonaws.com/54frts28t/new-widget-pago.js').then(d => {
+                                app.core.LoadScriptFile('https://dsp-microservice-nestjs.s3.sa-east-1.amazonaws.com/54frts28t/widget-pago-directo.js').then(d => {
 
                                     let widgetPagos = document.querySelector("new-widget-pago");
                                     if (widgetPagos === null) {
