@@ -583,5 +583,5 @@
                    KYC. Buscador de profesiones:  Poco amigable con la búsqueda y listado incompleto de profesiones y oficios
                    KYC. Buscador de actividad económica: Igual al anterior.
                    KYC. Domicilio permanente: Dado que es un dato que se reitera, el sistema debería en automático cargarlo, con solo una vez digitado,
-
+1.6.63  03/05/2024 
 
