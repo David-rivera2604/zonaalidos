@@ -23,6 +23,7 @@ namespace Architect.Payment.Integrations.Contracts.v2
 
         public string urlReturn { get; set; }
         public string urlWebhook { get; set; }
+        public string moneda { get; set; }
         public string countryCode { get; set; }
         public bool contratoFrontal { get; set; }
         public Item[] items { get; set; }
