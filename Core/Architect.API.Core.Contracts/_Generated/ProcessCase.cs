@@ -123,6 +123,11 @@ namespace Architect.API.Core.Contracts.General
         /// ID del usuario enviando el caso.
         /// </summary>
         public int UserSend { get; set; }
+
+        /// <summary>
+        /// ID del usuario enviando el caso.
+        /// </summary>
+        public int TotalDays { get; set; }
     }
 }
 
