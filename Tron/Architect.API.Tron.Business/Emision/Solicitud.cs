@@ -130,7 +130,7 @@ namespace Architect.API.Tron.Business.Emision
                 data.mainrole = "Purdy";
             }
 
-            if (tokenInfo.Roles.Contain("PolizaGrupo") && !((quoteInfo.polizagrupo == "3022310199235") || (quoteInfo.polizagrupo == null))) //Bariloche
+            if (tokenInfo.Roles.Contain("PolizaGrupo") && !((quoteInfo.polizagrupo == "3022310199235") || (quoteInfo.polizagrupo == null) || quoteInfo.polizagrupo == "")) //Bariloche
             {
                 return Core.Business.General.Report.GeneratePDFFile("mapfremas_solicitud", data).GetAwaiter().GetResult();
             }

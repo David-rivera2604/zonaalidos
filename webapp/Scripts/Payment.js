@@ -105,10 +105,10 @@ app.Payment = (function () {
                                 
                                 app.core.LoadScriptFile('https://dsp-microservice-nestjs.s3.sa-east-1.amazonaws.com/54frts28t/widget-pago-directo.js').then(d => {
 
-                                    let widgetPagos = document.querySelector("new-widget-pago");
+                                    let widgetPagos = document.querySelector("widget-pagos");
                                     if (widgetPagos === null) {
-                                        $("body").append('<new-widget-pago login></new-widget-pago>');
-                                        widgetPagos = document.querySelector("new-widget-pago");
+                                        $("body").append('<widget-pagos></widget-pagos>');
+                                        widgetPagos = document.querySelector("widget-pagos");
                                     }
                                     const recibo = JSON.stringify(session);
 

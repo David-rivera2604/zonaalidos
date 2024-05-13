@@ -149,6 +149,8 @@ app.GeneralCase = (function () {
                     ReferenceHandler(dataFlow[`ReferenceCaption${i}`], dataFlow[`ReferenceType${i}`], dataFlow[`ReferenceRequired${i}`], dataFlow[`ReferenceLookupList${i}`], `Reference${i}`);
                 }
 
+                $('#TotalDays').html(data.TotalDays);
+
                 NotasDraw(data.Id);
                 AttachmentDraw(data.Id);
 
