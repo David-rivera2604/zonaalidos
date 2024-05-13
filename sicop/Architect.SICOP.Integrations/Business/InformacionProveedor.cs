@@ -1,4 +1,6 @@
-﻿using Architect.SICOP.Integrations.SupplierInfoWS;
+﻿using Architect.SICOP.Integrations.RcvGurtWS;
+using Architect.SICOP.Integrations.ResultGurtWS;
+using Architect.SICOP.Integrations.SupplierInfoWS;
 using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
@@ -9,9 +11,9 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace Architect.SICOP.Integrations
+namespace Architect.SICOP.Integrations.Business
 {
-    public class Test
+    public class InformacionProveedor
     {
 
         static public Contracts.SUPPLIER_INFO SupplierInfo(string supplier_identifier)
@@ -49,5 +51,6 @@ namespace Architect.SICOP.Integrations
 
             return info;
         }
+
     }
 }
