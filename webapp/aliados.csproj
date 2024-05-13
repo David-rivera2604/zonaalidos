@@ -1263,6 +1263,7 @@
     <Content Include="Scripts\Extend.AvisosCobro.js" />
     <Content Include="Scripts\Extend.Cases.js" />
     <Content Include="Scripts\Extend.Policy.js" />
+    <Content Include="Scripts\Form.Ext.SICOP.js" />
     <Content Include="Scripts\General.Case.js" />
     <Content Include="Scripts\General.NewCase.js" />
     <Content Include="Scripts\General.PaymentSettings.js" />
@@ -1322,6 +1323,7 @@
     <Content Include="Scripts\Dashboard.Render.js" />
     <Content Include="Scripts\Security.Register.js" />
     <Content Include="Scripts\Variaciones.MapfreMas.js" />
+    <Content Include="Scripts\Viewer.Form.js" />
     <Content Include="Scripts\ViewerManager.Render.js" />
     <Content Include="Scripts\ViewerTab.Render.js" />
     <Content Include="Scripts\Viewer.Render.js" />
@@ -1777,6 +1779,7 @@
     <Content Include="Views\Cases\_references.cshtml" />
     <Content Include="Views\Bayer\Carnet.cshtml" />
     <Content Include="Reports\CarnetDigital.repx" />
+    <Content Include="Views\Viewer\Form.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
