@@ -128,6 +128,8 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         public async static Task Webhook(Architect.Payment.Integrations.Contracts.v2.WebhookRequest webhookRequest)
         {
 
+            Utilities.Log.WarningLog("Payment.Webhook", JsonConvert.SerializeObject(webhookRequest), "payment");
+
             Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveByRequestID(Convert.ToInt64(webhookRequest.ordenId));
             if (currentRecord != null)
             {
@@ -167,9 +169,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                     }
                     bool tronPayment = await Backoffice.Pagos.TronPayment(result, result.OnlinePayment.AgentCode);
                 }
-
             }
-
         }
 
         /// <summary>
