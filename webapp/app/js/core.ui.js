@@ -106,7 +106,7 @@ app.ui = (function () {
             return (($(selector).val() !== '') ? $(selector + '_group').data('DateTimePicker').date().format('YYYY-MM-DDT00:00:00') : moment('0001-01-01T00:00:00').format('YYYY-MM-DDT00:00:00'));
         },
         SetDateValue: function (selector, value) {
-            if (value === null || value.toString() === '0001-01-01T00:00:00')
+            if (value == undefined || value === null || value.toString() === '0001-01-01T00:00:00')
                 $(selector + '_group').data("DateTimePicker").date(null);
             else
                 $(selector + '_group').data("DateTimePicker").date(moment(value));
@@ -200,19 +200,25 @@ app.ui = (function () {
             if (max != undefined && value > max) {
                 value = max;
             }
+            if (value == undefined)
+                value = null;
+
             AutoNumeric.set(selector, value);
         },
-        SetRadioNumericValue: function (name, value) {
+        SetRadioNumericValue: function (name, value, defaultValue) {
             $('input:radio[name=' + name + '][value=' + value + ']').prop('checked', true);
+            if ($('input:radio[name=' + name + ']:checked').val() === null && (defaultValue != undefined && defaultValue != null)) {
+                $('input:radio[name=' + name + '][value=' + defaultValue + ']').prop('checked', true);
+            }
         },
-        SetRadioStringValue: function (name, value) {
+        SetRadioStringValue: function (name, value, defaultValue) {
             $('input:radio[name=' + name + '][value=' + value + ']').prop('checked', true);
+            if (($('input:radio[name=' + name + ']:checked').val() === undefined || $('input:radio[name=' + name + ']:checked').val() === null) && (defaultValue != undefined && defaultValue != null)) {
+                $('input:radio[name=' + name + '][value=' + defaultValue + ']').prop('checked', true);
+            }
         },
         GetRadioNumericValue: function (name) {
             return parseInt($('input:radio[name=' + name + ']:checked').val(), 10);
-        },
-        SetRadioStringValue: function (name, value) {
-            $('input:radio[name=' + name + '][value=' + value + ']').prop('checked', true);
         },
         GetRadioStringValue: function (name) {
             return $('input:radio[name=' + name + ']:checked').val();
@@ -454,6 +460,10 @@ app.ui = (function () {
             else {
                 error.insertAfter(element);
             }
+        },
+        Today: function () {
+            var value = new Date();
+            return value;
         },
         Yesterday: function () {
             var value = new Date();
@@ -1256,6 +1266,9 @@ app.ui = (function () {
         Error: function (msg) {
             app.ui.Error(msg, '', { timeOut: 9000, closeButton: true, progressBar: true });
         },
+        Info: function (msg) {
+            toastr.info(msg, '', { timeOut: 9000, closeButton: true, progressBar: true });
+        },
         Error: function (msg, title, settings) {
 
             toastr.error(msg, title, settings);
@@ -1292,6 +1305,9 @@ app.ui = (function () {
                 emptyInputBehavior: 'null'
             };
             return new AutoNumeric(selector, settings);
+        },
+        Redirect: function (url) {
+            window.location.href = url;
         }
     };
 })();
