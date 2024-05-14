@@ -15,10 +15,7 @@ namespace Architect.SICOP.WcfService
     {
         public Contracts.ExecGurtReponse ExecGurtWService(Contracts.ExecGurtRequest value)
         {
-
-            Utilities.Log.WarningLog("ExecGurtWService", JsonConvert.SerializeObject(value));
-
-            return new Contracts.ExecGurtReponse { Confirmation = "01", Msg_err = "test" };
+            return Business.ElectronicWarranty.Ejecutar_O_Liberar(value);
         }
 
     }

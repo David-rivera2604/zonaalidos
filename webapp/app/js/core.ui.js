@@ -356,6 +356,10 @@ app.ui = (function () {
             if (row?.Cod_Mon == 2) currency = '$ ';
             if (row?.COD_MON == 1) currency = '₡ ';
             if (row?.COD_MON == 2) currency = '$ ';
+            if (row?.MONEDA == 'CRC') currency = '₡ ';
+            if (row?.MONEDA == 'USD') currency = '$ ';
+            if (row?.Moneda == 'CRC') currency = '₡ ';
+            if (row?.Moneda == 'USD') currency = '$ ';
             return currency + value.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         },
         DateFormatter: function (value, row, index, field) {
