@@ -34,7 +34,7 @@ WHERE P.Guarantee_sequencenumber = (SELECT max(Guarantee_sequencenumber) FROM El
 				"sortable": true,
 				"halign": "center",
 				"align": "center",
-				"format": "<a href=''../viewer/Form?id=NotificarGarantia&code={GUARANTEE_NUMBER}'' title=''Ver #{GUARANTEE_NUMBER}''>{GUARANTEE_NUMBER} - {GUARANTEE_SEQUENCENUMBER}</a>"
+				"format": "<a href=''../viewer/Form?id=NotificarGarantia&code={GUARANTEE_NUMBER}'' title=''Modificar la garantía #{GUARANTEE_NUMBER}''>{GUARANTEE_NUMBER} - {GUARANTEE_SEQUENCENUMBER}</a>"
 			},		
 {
 				"field": "METODO",
