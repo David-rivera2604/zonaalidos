@@ -238,5 +238,13 @@ app.Form_Ext_SICOP = (function () {
                 }
             };
         },
+        ActionFormatter: function (value, row, index, field) {
+            let buttons = '<button name="editar"  type="button" class="btn btn-sm btn-white event" title="Permite modificar la garantía"><i class="fa fa-pencil"></i></button>';
+
+            if (row.METODO != null) {
+                buttons += '<button name="liberar" type="button" class="btn btn-sm btn-white event" title="Permite liberar/ejecutar la garantía"><i class="fa fa-asterisk"></i></button>';
+            }
+            return '<span class=columnBtn>' + buttons + '</span>';
+        }
     };
 })();
