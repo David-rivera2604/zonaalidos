@@ -140,6 +140,9 @@ namespace Architect.Payment.Integrations.Providers.Silice
         {
             string claveCifrado = await genpwdcryto(client);
 
+
+            Utilities.Log.TraceLog("Tokenize list", JsonConvert.SerializeObject(datosTajetas), "payment");
+
             foreach (DatosTarjeta tarjeta in datosTajetas)
             {
                 var json = JsonConvert.SerializeObject(new TokenizerRequest()
@@ -158,6 +161,7 @@ namespace Architect.Payment.Integrations.Providers.Silice
                     origen = "widget",
                     validar = true
                 });
+                Utilities.Log.TraceLog("Tokenize item", json, "payment");
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
                 var response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("Payment.Silice.urlBase") + "/v2/tarjetas-dsp/tokenizeapi", data);
                 string resultResponse = await response.Content.ReadAsStringAsync();

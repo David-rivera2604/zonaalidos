@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Architect.API.Core.Business.General;
 using Architect.API.Insurance.Contracts.Bayer;
+using Architect.API.Tron.DataAccess.Pagos;
 using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
 using Architect.Payment.Integrations.Contracts.v2;
 using Architect.Utilities.Extensions;
@@ -128,7 +129,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         public async static Task Webhook(Architect.Payment.Integrations.Contracts.v2.WebhookRequest webhookRequest)
         {
 
-            Utilities.Log.WarningLog("Payment.Webhook", JsonConvert.SerializeObject(webhookRequest), "payment");
+            Utilities.Log.TraceLog("Payment.Webhook", JsonConvert.SerializeObject(webhookRequest), "payment");
 
             Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveByRequestID(Convert.ToInt64(webhookRequest.ordenId));
             if (currentRecord != null)
@@ -191,11 +192,12 @@ namespace Architect.API.Tron.Business.Backoffice.v2
 
 
                 payInfov2.urlReturn = payInfov2.urlWebhook;
+                payInfov2.urlReturn = "https://mapfre.cr";
 
                 payInfov2.telefonoCliente = payInfov2.telefonoCliente.Replace("-", "");
                 if (!payInfov2.telefonoCliente.StartsWith("506"))
                 {
-                    payInfov2.telefonoCliente = "506"+payInfov2.telefonoCliente;
+                    payInfov2.telefonoCliente = "506" + payInfov2.telefonoCliente;
                 }
 
                 string reciboId = await Architect.Payment.Integrations.Providers.Silice.Payment.recibo(client, payInfov2);
@@ -368,6 +370,12 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 reciboReq.totalItems = count;
                 reciboReq.totalCompleto = total;
 
+
+                Utilities.Log.TraceLog("RecurringReceipts", JsonConvert.SerializeObject(reciboReq), "payment");
+
+
+
+
                 HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
                 //client.Timeout = TimeSpan.FromSeconds(3);
                 client.DefaultRequestHeaders.Authorization = null;
@@ -397,7 +405,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 {
                     num_recibo = Convert.ToInt32(item.ordenId);
                     Contracts.Pagos.Recibo recibo = Architect.API.Tron.DataAccess.Pagos.Recibos.ReciboAlCobro(cod_cia, num_recibo);
-                    if (recibo != null)
+                    if (recibo != null && item.status == "Aprobado")
                     {
                         procesados++;
                         Architect.Payment.Integrations.Contracts.InformationRequest result = new Payment.Integrations.Contracts.InformationRequest()
