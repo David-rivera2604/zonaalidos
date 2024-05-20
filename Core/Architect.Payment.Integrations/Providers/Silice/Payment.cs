@@ -10,6 +10,7 @@ using System.Security.Cryptography;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Architect.Payment.Integrations.Providers.Silice
 {
@@ -120,10 +121,11 @@ namespace Architect.Payment.Integrations.Providers.Silice
                 {
                     result = "El enlace de pago fue enviado al teléfono " + phone + " del cliente";
                 }
-                else if(!string.IsNullOrEmpty( jsonvalues.TokenStringValue("menssage")))
+                else if (!string.IsNullOrEmpty(jsonvalues.TokenStringValue("menssage")))
                 {
                     result = "Error. " + jsonvalues.TokenStringValue("menssage");
-                } else
+                }
+                else
                 {
                     result = "Error. " + jsonvalues.TokenStringValue("data");
                 }
@@ -171,11 +173,13 @@ namespace Architect.Payment.Integrations.Providers.Silice
 
                     tarjeta.status = jsonvalues.TokenBoolValue("status");
 
-                    if (tarjeta.status) { 
-                    tarjeta.card = jsonvalues.TokenStringValue("data.card");
-                    tarjeta.clientId = jsonvalues.TokenStringValue("data.clientId");
-                    tarjeta.token = jsonvalues.TokenStringValue("data.token");
-                    } else
+                    if (tarjeta.status)
+                    {
+                        tarjeta.card = jsonvalues.TokenStringValue("data.card");
+                        tarjeta.clientId = jsonvalues.TokenStringValue("data.clientId");
+                        tarjeta.token = jsonvalues.TokenStringValue("data.token");
+                    }
+                    else
                     {
                         tarjeta.reason = jsonvalues.TokenStringValue("menssage");
                     }
@@ -213,6 +217,33 @@ namespace Architect.Payment.Integrations.Providers.Silice
                 Utilities.Log.ErrorLog("Silice.Payment.RecibosRecurrentes", resultResponse);
             }
             return result;
+        }
+
+        public async static void TrackOnlinePayment(int companyId, int userId, Architect.Payment.Integrations.Contracts.v2.Item item,
+            string policyId, long billNumber, double amount, string documentType, string document, string firstName, string lastName, string mobile)
+        {
+            Contracts.OnlinePayment track = Business.OnlinePayment.Create(companyId, userId, new Contracts.OnlinePayment()
+            {
+                CompanyId = companyId,
+                DocumentType = Architect.Payment.Integrations.Payment.IdentificationTypeConvert(documentType),
+                DocumentNumber = document,
+                FirstName = firstName,
+                LastName = lastName,
+                PrimaryEmailAddress = item.emailCliente,
+                PhoneNumberMobile = mobile,
+                AgentCode = 0,
+                PolicyId = policyId,
+                BillNumber = billNumber,
+                Currency = Architect.Payment.Integrations.Payment.CurrencyConvert(item.moneda),
+                Amount = amount,
+                Reference = string.Format("{0}-{1}", policyId, billNumber),
+                Description = item.concepto,
+                IssueDate = DateTime.Now,
+                StatusDate = DateTime.Now,
+                Status = 1,
+                RecurringReceipt = true
+            });
+
         }
 
         private async static Task<string> genpwdcryto(HttpClient client)

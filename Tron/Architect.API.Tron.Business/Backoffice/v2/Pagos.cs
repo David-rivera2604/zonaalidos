@@ -340,7 +340,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                         total += pendiente.IMP_RECIBO;
                         count++;
 
-                        reciboReq.items.Add(new Item()
+                        Item newItem = new Item()
                         {
                             productCode = "0",
                             subtotal = pendiente.IMP_RECIBO.ToString(),
@@ -353,17 +353,20 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                             moneda = pendiente.NOM_MON,
                             concepto = string.Format("MAPFRE: {0}. POLIZA #{1} RECIBO #{2}", pendiente.NOM_RAMO, pendiente.NUM_POLIZA, pendiente.NUM_RECIBO),
                             token = pendiente.TOKEN
-                        });
+                        };
+                        reciboReq.items.Add(newItem);
                         if (string.IsNullOrEmpty(prefix))
                         {
-                            reciboReq.items.Last().emailCliente = reciboReq.items.Last().emailCliente;
+                            newItem.emailCliente = reciboReq.items.Last().emailCliente;
                         }
                         else
                         {
-                            reciboReq.items.Last().emailCliente = prefix;
+                            newItem.emailCliente = prefix;
                         }
 
-
+                        Architect.Payment.Integrations.Providers.Silice.Payment.TrackOnlinePayment(cod_cia, 0, newItem, 
+                            pendiente.NUM_POLIZA, pendiente.NUM_RECIBO, pendiente.IMP_RECIBO, 
+                            pendiente.TIP_DOCUM, pendiente.COD_DOCUM, pendiente.NOM_TERCERO, pendiente.APE1_TERCERO, pendiente.TLF_NUMERO);
                     }
                     recordCount++;
                 }
@@ -385,6 +388,9 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             }
             return recordCount;
         }
+
+
+
 
         /// <summary>
         /// Procesar el resultado del pago para los recibos con cobro recurrente.
