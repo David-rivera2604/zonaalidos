@@ -257,4 +257,4 @@ WHERE P.Guarantee_sequencenumber = (SELECT max(Guarantee_sequencenumber) FROM El
 			}
 		]
 	}
-}'),NULL,NULL,NULL,'Test',NULL,1,6329,TIMESTAMP'2024-05-13 00:00:00');
+}'),NULL,NULL,NULL,'Research',NULL,1,6329,TIMESTAMP'2024-05-13 00:00:00');
