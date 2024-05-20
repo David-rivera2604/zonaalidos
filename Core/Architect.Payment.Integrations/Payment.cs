@@ -221,7 +221,7 @@ namespace Architect.Payment.Integrations
 
 
 
-        private static int IdentificationTypeConvert(string identificationType)
+        public static int IdentificationTypeConvert(string identificationType)
         {
             int type = 0;
 
@@ -253,7 +253,7 @@ namespace Architect.Payment.Integrations
             return type;
         }
 
-        private static int CurrencyConvert(string currency)
+        public static int CurrencyConvert(string currency)
         {
             int result = 0;
             switch (currency)
