@@ -364,9 +364,9 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                             newItem.emailCliente = prefix;
                         }
 
-                        Architect.Payment.Integrations.Providers.Silice.Payment.TrackOnlinePayment(cod_cia, 0, newItem, 
-                            pendiente.NUM_POLIZA, pendiente.NUM_RECIBO, pendiente.IMP_RECIBO, 
-                            pendiente.TIP_DOCUM, pendiente.COD_DOCUM, pendiente.NOM_TERCERO, pendiente.APE1_TERCERO, pendiente.TLF_NUMERO);
+                        Architect.Payment.Integrations.Providers.Silice.Payment.TrackOnlinePayment(cod_cia, 0, newItem,
+                            pendiente.NUM_POLIZA, pendiente.NUM_RECIBO, pendiente.IMP_RECIBO,
+                            pendiente.TIP_DOCUM, pendiente.COD_DOCUM, pendiente.NOM_TERCERO, pendiente.APE1_TERCERO, pendiente.TLF_NUMERO, reciboReq.procesoId);
                     }
                     recordCount++;
                 }
@@ -411,12 +411,14 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 {
                     num_recibo = Convert.ToInt32(item.ordenId);
                     Contracts.Pagos.Recibo recibo = Architect.API.Tron.DataAccess.Pagos.Recibos.ReciboAlCobro(cod_cia, num_recibo);
-                    if (recibo != null && item.status == "Aprobado")
+                    Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveByRequestID(Convert.ToInt64(num_recibo));
+                    if (recibo != null)
                     {
                         procesados++;
                         Architect.Payment.Integrations.Contracts.InformationRequest result = new Payment.Integrations.Contracts.InformationRequest()
                         {
-                            status = item.status == "Aprobado" ? "APPROVED" : "",
+                            status = item.status == "Aprobado" ? "APPROVED" : item.status,
+                            message = string.Format("original status {0}", item.status),
                             date = null,
                             authorization = item.resultado_pasarela.authorization,
                             total = recibo.IMP_RECIBO,
@@ -426,6 +428,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                             payerName = recibo.NOM_TERCERO,
                             payerSurname = recibo.APE1_TERCERO,
                             paymentMethodName = null,
+                            receipt = item.resultado_pasarela.receipt,
                             OnlinePayment = new Payment.Integrations.Contracts.OnlinePayment()
                             {
                                 CompanyId = 0,
@@ -436,7 +439,11 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                                 Amount = recibo.IMP_RECIBO
                             }
                         };
-                        bool tronPayment = await Backoffice.Pagos.TronPayment(result, 999999);
+                        Architect.Payment.Integrations.Payment.UpdateStatus(currentRecord.UpdateUserCode, currentRecord, result);
+                        if (item.status == "Aprobado")
+                        {
+                            bool tronPayment = await Backoffice.Pagos.TronPayment(result, 999999);
+                        }
                     }
 
 

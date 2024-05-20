@@ -111,6 +111,7 @@ namespace Architect.Payment.Integrations.Contracts
 
         public bool RecurringReceipt { get; set; }
 
+        public string ProcessId { get; set; }
 
     }
 }

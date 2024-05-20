@@ -26,8 +26,8 @@ namespace Architect.Payment.Integrations.DataAccess
             {
                 onlinepaymentItem.UpdateDate = DateTime.Now;
             }
-            return Database.Insert("INSERT INTO OnlinePayment (Id, CompanyId, DocumentType, DocumentNumber, FirstName, LastName, PrimaryEmailAddress, PhoneNumberMobile, AgentCode, PolicyId, BillNumber, Currency, Amount, Reference, Description, IssueDate, StatusDate, RequestID, ProcessUrl, ProviderStatus, ResponseData, Status, Reason, UpdateUserCode, UpdateDate, SettingId, RecurringReceipt) " +
-                                                 "VALUES(:Id, :CompanyId, :DocumentType, :DocumentNumber, :FirstName, :LastName, :PrimaryEmailAddress, :PhoneNumberMobile, :AgentCode, :PolicyId, :BillNumber, :Currency, :Amount, :Reference, :Description, :IssueDate, :StatusDate, :RequestID, :ProcessUrl, :ProviderStatus, :ResponseData, :Status, :Reason, :UpdateUserCode, :UpdateDate, :SettingId, :RecurringReceipt)")
+            return Database.Insert("INSERT INTO OnlinePayment (Id, CompanyId, DocumentType, DocumentNumber, FirstName, LastName, PrimaryEmailAddress, PhoneNumberMobile, AgentCode, PolicyId, BillNumber, Currency, Amount, Reference, Description, IssueDate, StatusDate, RequestID, ProcessUrl, ProviderStatus, ResponseData, Status, Reason, UpdateUserCode, UpdateDate, SettingId, RecurringReceipt, ProcessId) " +
+                                                 "VALUES(:Id, :CompanyId, :DocumentType, :DocumentNumber, :FirstName, :LastName, :PrimaryEmailAddress, :PhoneNumberMobile, :AgentCode, :PolicyId, :BillNumber, :Currency, :Amount, :Reference, :Description, :IssueDate, :StatusDate, :RequestID, :ProcessUrl, :ProviderStatus, :ResponseData, :Status, :Reason, :UpdateUserCode, :UpdateDate, :SettingId, :RecurringReceipt, :ProcessId)")
                             .AddParameter("Id", DbType.Decimal, 9, onlinepaymentItem.Id)
                             .AddParameter("CompanyId", DbType.Decimal, 5, onlinepaymentItem.CompanyId)
                             .AddParameter("DocumentType", DbType.Decimal, 8, onlinepaymentItem.DocumentType)
@@ -55,6 +55,7 @@ namespace Architect.Payment.Integrations.DataAccess
                             .AddParameter("UpdateDate", DbType.DateTime, 0, onlinepaymentItem.UpdateDate)
                             .AddParameter("SettingId", DbType.Decimal, 9, onlinepaymentItem.SettingId)
                             .AddParameter("RecurringReceipt", DbType.Decimal, 1, onlinepaymentItem.RecurringReceipt ? 1 : 0)
+                            .AddParameter("ProcessId", DbType.AnsiString, 36, onlinepaymentItem.ProcessId)
                             .Execute(connection, "Research");
         }
 

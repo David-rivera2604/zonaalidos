@@ -220,7 +220,7 @@ namespace Architect.Payment.Integrations.Providers.Silice
         }
 
         public async static void TrackOnlinePayment(int companyId, int userId, Architect.Payment.Integrations.Contracts.v2.Item item,
-            string policyId, long billNumber, double amount, string documentType, string document, string firstName, string lastName, string mobile)
+            string policyId, long billNumber, double amount, string documentType, string document, string firstName, string lastName, string mobile, string processId)
         {
             Contracts.OnlinePayment track = Business.OnlinePayment.Create(companyId, userId, new Contracts.OnlinePayment()
             {
@@ -240,8 +240,11 @@ namespace Architect.Payment.Integrations.Providers.Silice
                 Description = item.concepto,
                 IssueDate = DateTime.Now,
                 StatusDate = DateTime.Now,
-                Status = 1,
-                RecurringReceipt = true
+                Status = 3,
+                ProviderStatus= Providers.Placetopay.Webcheckout.ST_PENDING,
+                RecurringReceipt = true,
+                ProcessId = processId,
+                RequestID = billNumber
             });
 
         }
