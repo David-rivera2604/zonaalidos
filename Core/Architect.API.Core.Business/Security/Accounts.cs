@@ -196,7 +196,7 @@ namespace Architect.API.Core.Business.Security
 
                         //Solo actualizara el usuario cuando este entre desde login
                         if (firstInit) { UserIdActual = tokenItem; }
-                        
+
 
                         result.Token = Architect.API.Core.Security.Accounts.GeneratorToken(tokenItem);
                         user.LoginDate = DateTime.Now;
@@ -274,7 +274,7 @@ namespace Architect.API.Core.Business.Security
                             }
 
                         }
-                        if (!bypass &&!authenticationRequest.EmployeeMode)
+                        if (!bypass && !authenticationRequest.EmployeeMode)
                         {
                             if (user.Password.Equals("."))
                                 result.MustChangePassword = true;
@@ -359,7 +359,7 @@ namespace Architect.API.Core.Business.Security
 
             return RespuestaData;
         }
-		/// <summary>
+        /// <summary>
         /// Leer datos del inicio
         /// </summary>
         public static Architect.API.Core.Contracts.Security.ClientesInicioResponse ReadInicio(Core.Contracts.Security.Token tokenInfo)
@@ -368,7 +368,7 @@ namespace Architect.API.Core.Business.Security
             Architect.API.Core.Contracts.Security.ClientesInicioResponse DataInicio = Architect.API.Core.DataAccess.General.ProcessData.RetrieveInicio(tokenInfo.CompanyId);
 
             return DataInicio;
-        }			 
+        }
         private static Core.Contracts.General.LookupValue TenantInformation(string tenant)
         {
             const int companyId = 0;
@@ -802,6 +802,20 @@ namespace Architect.API.Core.Business.Security
             }
 
 
+            return result;
+        }
+        public static Contracts.Security.UserMember Profile(int companyId, int userId)
+        {
+            Contracts.Security.UserMember result = null;
+            Architect.API.Core.Contracts.Security.UserMember user = Architect.API.Core.DataAccess.Security.UserMember.Retrieve(userId, companyId);
+            if (user != null)
+            {
+                result = new Contracts.Security.UserMember
+                {
+                    EMail = user.EMail,
+                    PhoneNumber = user.PhoneNumber
+                };
+            }
             return result;
         }
     }

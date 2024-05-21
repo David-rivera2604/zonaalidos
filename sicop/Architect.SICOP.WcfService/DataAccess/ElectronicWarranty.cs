@@ -1,6 +1,7 @@
 ﻿using Architect.DataFactory;
 using Architect.DataFactory.Enumerations;
 using Architect.Utilities.Extensions;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -32,13 +33,15 @@ namespace Architect.SICOP.WcfService.DataAccess
                 }));
             return result;
         }
-
-        public static int Update(int id, string metodo, string codigo_Proceso)
+        public static int Update(int id, string metodo, string codigo_Proceso, decimal amount, string contents, string cuenta_Cliente)
         {
             return Database.Update("ElectronicWarranty", ExecuteMode.CommandBuilder)
-                    .Column("Metodo", DbType.AnsiString, 1, metodo)
-                    .Column("Codigo_Proceso", DbType.AnsiString, 16, codigo_Proceso)
-                    .Column("FECHA_PROCESO", DbType.DateTime, 0, DateTime.Now)
+                    .Column("ex_amount", DbType.Double, 22, amount)
+                    .Column("ex_contents", DbType.AnsiString, 200, contents)
+                    .Column("ex_Cuenta_Cliente", DbType.AnsiString, 20, cuenta_Cliente)
+                    .Column("ex_Metodo", DbType.AnsiString, 1, metodo)
+                    .Column("ex_Codigo_Proceso", DbType.AnsiString, 16, codigo_Proceso)
+                    .Column("ex_FECHA_PROCESO", DbType.DateTime, 0, DateTime.Now)
                     .Filter("ID", DbType.Decimal, 9, id)
                     .Execute(null, "Research");
         }

@@ -31,56 +31,64 @@ app.Form_Ext_SICOP = (function () {
 
         $('#btnNotify').click(function (e) {
             if (spec.IsValid(true)) {
+                $('#generalNotify').html('');
                 app.ui.ButtonDoing('#btnNotify');
                 let entry = spec.Data();
                 if (entry.Tipo_de_modification == undefined)
                     entry.Tipo_de_modification = '';
 
-                if (id == null) {
-                    app.core.dataapi('POST', 'ElectronicWarranty', entry)
-                        .then(warranty => {
-                            if (warranty != null) {
-                                entry.ID = warranty.Next.Data.NEXTID;
-                                SendNotificarGarantia(entry);
-                            }
-                        }).finally(() => {
-                            app.ui.ButtonDone('#btnNotify');
-                        });
-                } else {
-                    entry.ID = id;
-                    SendNotificarGarantia(entry);
-                    app.ui.ButtonDone('#btnNotify');
-                }
+                app.core.dataapi('POST', 'ElectronicWarranty', entry)
+                    .then(warranty => {
+                        if (warranty != null) {
+                            entry.ID = warranty.Next.Data.NEXTID;
+                            app.core.Post(app.setting.apipath + 'v1/SICOP/NotificarGarantia', JSON.stringify(entry))
+                                .done(function (posted) {
+                                    if (posted != null) {
+                                        entry.Confirmation = posted.Confirmation;
+                                        entry.Msg_err = posted.Msg_err;
+                                        app.core.dataapi('PUT', `ElectronicWarranty/Notify/${entry.ID}`, { ID: entry.ID, Confirmation: posted.Confirmation, Msg_err: posted.Msg_err })
+                                            .then(xx => {
+                                                console.log(xx);
+                                            });
+                                        if (posted.Confirmation != '0') {
+                                            app.ui.Error(posted.Msg_err);
+                                            app.ui.ShowAlert('generalNotify', 'alert-danger', `<b> <i class="fa fa-check"></i> ${posted.Msg_err}</b>`);
+                                        } else {
+                                            let msg = 'Se ha realizado la notificación de forma exitosa';
+                                            if (entry.Tipo_de_modification != '')
+                                                msg = 'Se ha realizado la modificación de forma exitosa';
+                                            app.ui.Success(posted.msg);
+                                            app.ui.ShowAlert('generalNotify', 'alert-success', `<b> <i class="fa fa-check"></i> ${msg}</b>`);
+                                            $("#NotificarGarantiaEdtForm fieldset").prop("disabled", true);
+                                            $("#btnNotify").addClass('d-none');
+                                        }
+                                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                                    }
+                                });
+                        }
+                    }).finally(() => {
+                        app.ui.ButtonDone('#btnNotify');
+                    });
             }
             e.preventDefault();
         });
 
-        let code = app.core.URLStringValue('code');
+        let code = app.core.URLStringValue('code', '');
         if (code != '') {
             GetWarranty(spec, code, true, ProcWarranty);
         } else {
-            spec.SetData({ Guarantee_sequencenumber: '00', Moneda: 'CRC', Issue_date: app.ui.Today(), Guarantee_type_code: 'BG', Guarantee_payment_code: '07', Guarantee_identifier: '3101560179', Guarantee_name: 'MAPFRE SEGUROS COSTA RICA SOCIEDAD ANONIMA' });
+            InitWarranty(spec);
         }
     };
-    async function SendNotificarGarantia(entry) {
-        app.core.Post(app.setting.apipath + 'v1/SICOP/NotificarGarantia', JSON.stringify(entry))
-            .done(function (posted) {
-                if (posted != null) {
-                    entry.Confirmation = posted.Confirmation;
-                    entry.Msg_err = posted.Msg_err;
-                    app.core.dataapi('PUT', `ElectronicWarranty/${entry.ID}`, entry)
-                        .then(xx => {
-                            console.log(xx);
-                        });
-                    if (posted.Confirmation != '0') {
-                        app.ui.Error(posted.Msg_err);
-                    } else {
-                        app.ui.Success(posted.Msg_err);
-                    }
-                }
-            });
-    };
 
+    async function InitWarranty(spec, code) {
+        app.core.Get(app.setting.apipath + `v1/Security/Profile`)
+            .done(function (data) {
+                console.log(data);
+                spec.SetData({ Guarantee_number: code, Guarantee_sequencenumber: '00', Moneda: 'CRC', Issue_date: app.ui.Today(), Guarantee_type_code: 'BG', Guarantee_payment_code: '07', Guarantee_identifier: '3101560179', Guarantee_name: 'MAPFRE SEGUROS COSTA RICA SOCIEDAD ANONIMA', Guarantee_charge_person_name: localStorage.getItem('Username'), Guarantee_charge_person_email: data.EMail, Guarantee_telephone_number: data.PhoneNumber });
+            });
+
+    };
     async function ProcWarranty(spec, code, linked, warranty) {
         if (warranty != null) {
             id = null;
@@ -107,6 +115,7 @@ app.Form_Ext_SICOP = (function () {
             }
         } else {
             id = null;
+            InitWarranty(spec, code);
             $('.Tipo_de_modificationToggle').addClass('d-none');
         }
     };
@@ -119,33 +128,33 @@ app.Form_Ext_SICOP = (function () {
     };
 
     async function NotificarLiberacion(spec, formName) {
-        //spec.SetData({
-        //    "Guarantee_number": "6329255",
-        //    "Guarantee_sequencenumber": "01",
-        //    "Guarantee_identifier": "3101560179",
-        //    "Execute_release_amount": 15000000,
-        //    "Execute_release_contents": "Prueba",
-        //    "Transaction_num": "123456789",
-        //    "Date_time": "2024-04-30T00:00:00",
-        //    "Moneda": "CRC",
-        //    "MonedaDesc": "",
-        //    "Cuenta_cliente": "987654321"
-        //});
-
         $('#btnNotify').click(function (e) {
             if (spec.IsValid(true)) {
+                $('#generalNotify').html('');
                 app.ui.ButtonDoing('#btnNotify');
                 let entry = spec.Data();
+                entry.ID = id;
                 console.log(entry);
 
                 app.core.Post(app.setting.apipath + 'v1/SICOP/NotificarLiberacion', JSON.stringify(entry))
                     .done(function (posted) {
                         console.log(posted);
+
+                        app.core.dataapi('PUT', `ElectronicWarranty/Release/${entry.ID}`, { ID: entry.ID, Confirmation: posted.Confirmation, Msg_err: posted.Msg_err, Execute_release_contents: entry.Execute_release_contents, Transaction_num: entry.Transaction_num })
+                            .then(xx => {
+                                console.log(xx);
+                            });
+
                         if (posted.Msg_err != '') {
                             app.ui.Error(posted.Msg_err);
+                            app.ui.ShowAlert('generalNotify', 'alert-danger', `<b> <i class="fa fa-check"></i> ${posted.Msg_err}</b>`);
                         } else {
                             app.ui.Success(posted.Msg_err);
+                            app.ui.ShowAlert('generalNotify', 'alert-success', `<b> <i class="fa fa-check"></i> ${posted.Msg_err}</b>`);
+                            $("#NotificarGarantiaEdtForm fieldset").prop("disabled", true);
+                            $("#btnNotify").addClass('d-none');                            
                         }
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
                     }).always(function () {
                         app.ui.ButtonDone('#btnNotify');
                     });
@@ -161,7 +170,8 @@ app.Form_Ext_SICOP = (function () {
 
     async function ProcWarrantyLib(spec, code, linked, warranty) {
         id = warranty.ID;
-        warranty.Execute_release_amount = warranty.Guarantee_amount;
+        warranty.Cuenta_cliente = warranty.Ex_Cuenta_cliente;
+        warranty.Execute_release_amount = warranty.Ex_Amount;
         spec.SetData(warranty);
     };
 
@@ -241,7 +251,7 @@ app.Form_Ext_SICOP = (function () {
         ActionFormatter: function (value, row, index, field) {
             let buttons = '<button name="editar"  type="button" class="btn btn-sm btn-white event" title="Permite modificar la garantía"><i class="fa fa-pencil"></i></button>';
 
-            if (row.METODO != null) {
+            if (row.EX_METODO != null) {
                 buttons += '<button name="liberar" type="button" class="btn btn-sm btn-white event" title="Permite liberar/ejecutar la garantía"><i class="fa fa-asterisk"></i></button>';
             }
             return '<span class=columnBtn>' + buttons + '</span>';

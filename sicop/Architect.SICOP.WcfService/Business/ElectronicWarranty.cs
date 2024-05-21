@@ -43,7 +43,10 @@ namespace Architect.SICOP.WcfService.Business
 
                 if (result.Confirmation == "0")
                 {
-                    DataAccess.ElectronicWarranty.Update(warranty.ID, value.Metodo, value.codigo_proceso);
+                    DataAccess.ElectronicWarranty.Update(warranty.ID, value.Metodo, value.codigo_proceso, value.Amount, value.Contents, value.cuenta_Cliente);
+
+                    API.Core.Business.General.Mail.SendByTemplate("Notify_ReleaseGuarantee", 0, value);
+
                 }
             }
             else
@@ -51,7 +54,7 @@ namespace Architect.SICOP.WcfService.Business
                 result.Confirmation = "3";
                 result.Msg_err = "La solicitud no puede estar vacia";
             }
-            
+
 
             return result;
         }

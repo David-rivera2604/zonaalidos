@@ -331,5 +331,27 @@ namespace Architect.API.Core.Controllers
 
         }
 
+        [HttpGet]
+        [Route("Profile")]
+        public async Task<IHttpActionResult> Profile()
+        {
+            Core.Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Contracts.Security.UserMember result = null;
+
+            await Task.Run(() => result = Business.Security.Accounts.Profile(tokenInfo.CompanyId, tokenInfo.UserId)).ConfigureAwait(false);
+
+            if (result != null )
+            {
+                return Ok(new {
+                    EMail = result.EMail,
+                    PhoneNumber = result.PhoneNumber
+                } );
+            }
+            else
+            {
+                return NotFound();
+            }            
+        }
+
     }
 }
