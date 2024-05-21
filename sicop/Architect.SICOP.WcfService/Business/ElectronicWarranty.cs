@@ -43,10 +43,13 @@ namespace Architect.SICOP.WcfService.Business
 
                 if (result.Confirmation == "0")
                 {
+                    if (value.Metodo == "0")
+                        value.MetodoDesc = "ejecutar";
+                    if (value.Metodo == "1")
+                        value.MetodoDesc = "liberar";
                     DataAccess.ElectronicWarranty.Update(warranty.ID, value.Metodo, value.codigo_proceso, value.Amount, value.Contents, value.cuenta_Cliente);
 
-                    API.Core.Business.General.Mail.SendByTemplate("Notify_ReleaseGuarantee", 0, value);
-
+                    API.Core.Business.General.Mail.EnqueueSend("Default", 0, 0, 0, "Notify_ReleaseGuarantee", null, null, null, value, null);
                 }
             }
             else

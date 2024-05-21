@@ -19,6 +19,8 @@ namespace Architect.SICOP.WcfService.Contracts
         [DataMember] public string Moneda { get; set; }
         [DataMember] public string Metodo { get; set; }
 
+        [IgnoreDataMember] public string MetodoDesc { get; set; }
+
         [DataMember] public string cuenta_Cliente { get; set; }
         [DataMember] public string codigo_proceso { get; set; }
 
