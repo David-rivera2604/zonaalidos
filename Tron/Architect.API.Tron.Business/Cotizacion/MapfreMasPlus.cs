@@ -1,5 +1,6 @@
 ﻿using Architect.API.Core.Contracts.General;
 using Architect.API.Core.Contracts.Security;
+using Architect.API.Tron.Business.Backoffice.Emision;
 using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
 using Architect.Utilities.Contracts;
 using Architect.Utilities.Extensions;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Architect.API.Tron.Business.Cotizacion
@@ -253,6 +255,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             {
                 quoteInfo.presupuesto = string.Empty;
                 quoteInfo.resumen = null;
+                quoteInfo.NUM_MATRICULA = Regex.Replace(quoteInfo.NUM_MATRICULA, @"[^a-zA-Z0-9]", String.Empty);
                 Contracts.Batch.CotizadorMapfreMasClass quoteTron = MapfreMasConvertTo.Tron(quoteInfo, quoteInfo.cod_ramo, tokenInfo.AgentCode, tokenInfo.UserName, tokenInfo.IdentificationType, tokenInfo.Identification, tokenInfo.Roles);
                 //Architect.Common.Helpers.Serialize.SerializeToFile<Architect.API.Tron.Contracts.Batch.CotizadorMapfreMasClass>(result, @"C:\temp\mapfremas.in.xml");
 
@@ -292,21 +295,31 @@ namespace Architect.API.Tron.Business.Cotizacion
                         quoteTron.fec_vcto_poliza = quoteTron.fec_vcto_poliza.AddYears(1);
 
                         // Cotiza Vigencia completa
-                        Contracts.Presupuesto.DatoFijo resultTronFull = Backoffice.Cotizacion.MapfreMas.Calcular(quoteTron);
+                        Contracts.Presupuesto.DatoFijo resultTronFull = Backoffice.Cotizacion.MapfreMasPlus.Calcular(quoteTron);
 
                         quoteInfo.plandepagoFull = new List<Contracts.Comun.PlanDePago>();
-                        foreach (Architect.API.Tron.Contracts.Presupuesto.Recibo item in resultTronFull.Recibos)
+                        if (resultTronFull.Recibos != null && resultTronFull.Recibos.Count() > 0)
                         {
-                            quoteInfo.plandepagoFull.Add(new Contracts.Comun.PlanDePago()
+                            foreach (Architect.API.Tron.Contracts.Presupuesto.Recibo item in resultTronFull.Recibos)
                             {
-                                cuota = item.num_cuota,
-                                fechadesde = item.fec_efec_recibo,
-                                fechahasta = item.fec_vcto_recibo,
-                                primaneta = item.imp_neta + item.imp_recargo,
-                                iVA = item.imp_imptos,
-                                recargoporfraccionamiento = item.imp_interes,
-                                importetotal = item.imp_recibo
-                            });
+                                quoteInfo.plandepagoFull.Add(new Contracts.Comun.PlanDePago()
+                                {
+                                    cuota = item.num_cuota,
+                                    fechadesde = item.fec_efec_recibo,
+                                    fechahasta = item.fec_vcto_recibo,
+                                    primaneta = item.imp_neta + item.imp_recargo,
+                                    iVA = item.imp_imptos,
+                                    recargoporfraccionamiento = item.imp_interes,
+                                    importetotal = item.imp_recibo
+                                });
+                            }
+                        }
+                        else
+                        {
+                            if (resultTronFull.Coberturas?.Count == 1)
+                            {
+                                resultInfo.Mensaje = FormatoErrores.FormatearError(resultTronFull.Coberturas[0].txt_error);
+                            }
                         }
                     }
                 }

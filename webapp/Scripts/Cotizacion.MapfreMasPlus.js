@@ -204,7 +204,7 @@ app.CotizacionMapfreMasPlus = (function () {
     }
 
     function MapInputToObject() {
-        return {
+        let data = {
             cod_ramo: setupData.cod_ramo,
             edad: app.ui.GetNumericValue('#edad'),
             nombredelcontratante: $('#nombredelcontratante').val(),
@@ -275,6 +275,8 @@ app.CotizacionMapfreMasPlus = (function () {
             //num_cuotas_gratis: app.ui.GetDropDownNumericValue('#num_cuotas_gratis')
             num_cuotas_gratis: app.ui.GetDropDownNumericValue('#num_cuotas_gratis')
         };
+        data.NUM_MATRICULA = data.NUM_MATRICULA.replace(/[^a-zA-Z0-9]/g, "");
+        return data;
     }
 
     function MapObjectToInput_First(data) {

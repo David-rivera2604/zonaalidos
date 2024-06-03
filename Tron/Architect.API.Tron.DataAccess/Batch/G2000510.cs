@@ -41,7 +41,17 @@ namespace Architect.API.Tron.DataAccess.Batch
             }
             catch(Exception ex)
             {
-                result.txt_error = ex.Message;
+                Utilities.Log.ErrorLog("ExecutePolicyFromQuotation", "ExecutePolicyFromQuotation", ex);
+
+                if (ex.InnerException != null && ex.InnerException.Message.IsNotEmpty())
+                {
+                    result.txt_error = ex.InnerException.Message;
+                }
+                else
+                {
+                    result.txt_error = ex.Message;
+                }
+
                 return result;
             }
  
