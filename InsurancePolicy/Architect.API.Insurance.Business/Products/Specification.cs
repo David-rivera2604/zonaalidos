@@ -79,6 +79,7 @@ namespace Architect.API.Insurance.Business.Products
                         MaximumAge = moduleAllowed.Coverages.FirstOrDefault().MaximumAge,
                         MinimumInsuredAmount = moduleAllowed.Coverages.FirstOrDefault().MinimumInsuredAmount,
                         MaximumInsuredAmount = moduleAllowed.Coverages.FirstOrDefault().MaximumInsuredAmount,
+                        CurrencyAllowed = moduleAllowed.currencyallowed
                     };
                     result.Modules.Add(item);
                     if (product.Modules.Count == 1)

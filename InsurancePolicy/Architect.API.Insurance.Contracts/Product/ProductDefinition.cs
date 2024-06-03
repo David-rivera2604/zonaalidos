@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace Architect.API.Insurance.Contracts.Product
 {
@@ -123,5 +126,9 @@ namespace Architect.API.Insurance.Contracts.Product
         /// Monto de prima fija mensual.
         /// </summary>
         public decimal FixedMonthlyPremium { get; set; }
+        /// <summary>
+        /// Indica las monedas permitas para el módulo, en caso de se ser una la misma se usa como la seleccionada.
+        /// </summary>
+        public string CurrencyAllowed { get; set; }
     }
 }

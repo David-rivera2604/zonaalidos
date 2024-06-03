@@ -324,6 +324,7 @@ app.EmisionMapfreMas = (function () {
 
         TipoTercero_Filtro();
         mca_cuotas_gratis = data.mc_cuotas_gratis;
+
     }
 
     function MapObjectToInput(data) {
@@ -1281,7 +1282,7 @@ app.EmisionMapfreMas = (function () {
     }
 
     function terceros_table_rules(Event, TercerosList, Tercero) {
-        let TerceroTomador = TercerosList.filter(i => i.tipodetercero === "0")[0];
+        let TerceroTomador = TercerosList.filter(i => i.tipodetercero === 0)[0];
         let TerceroValida = TercerosList.filter(i => i.tipodetercero == Tercero.tipodetercero);
         let Rules = {
             Event: "",
@@ -1295,8 +1296,8 @@ app.EmisionMapfreMas = (function () {
                 return Rules = {
                     Event: "Update",
                     Error: true,
-                    title: "Existe 1 error",
-                    message: "No pueden haber mas de dos tomadores",
+                    title: "Alerta",
+                    message: "Recordar que no pueden haber mas de dos tomadores",
                     type: "error"
                 }
             }
@@ -1304,8 +1305,8 @@ app.EmisionMapfreMas = (function () {
                 return Rules = {
                     Event: "Update",
                     Error: true,
-                    title: "Existe 1 error",
-                    message: "No pueden haber mas de dos Asegurados",
+                    title: "Alerta",
+                    message: "Recordar que no pueden haber mas de dos Asegurados",
                     type: "error"
                 }
             }
@@ -1313,17 +1314,17 @@ app.EmisionMapfreMas = (function () {
                 return Rules = {
                     Event: "Update",
                     Error: true,
-                    title: "Existe 1 error",
-                    message: "No pueden haber mas de dos Conductores",
+                    title: "Alerta",
+                    message: "Recordar que no pueden haber mas de dos Conductores",
                     type: "error"
                 }
             }
-            else if (TerceroValida.length > 0 && Tercero.tipodetercero == 21) {
+            else if (TerceroValida.length > 0 && TerceroTomador["tercerosId"] != Tercero.tercerosId && Tercero.tipodetercero == 21) {
                 return Rules = {
                     Event: "Update",
                     Error: true,
-                    title: "Existe 1 error",
-                    message: "No pueden haber mas de dos Pagadores",
+                    title: "Alerta",
+                    message: "Recordar que no pueden haber mas de dos Pagadores",
                     type: "error"
                 }
             }
@@ -1372,7 +1373,7 @@ app.EmisionMapfreMas = (function () {
                     type: "error"
                 }
             }
-            else if (TerceroValida != undefined && Tercero.tipodetercero == 2) {
+            else if (TerceroValida.length > 0 && Tercero.tipodetercero == 2) {
                 return Rules = {
                     Event: "Insert",
                     Error: true,
@@ -1381,7 +1382,7 @@ app.EmisionMapfreMas = (function () {
                     type: "error"
                 }
             }
-            else if (TerceroValida != undefined && Tercero.tipodetercero == 3) {
+            else if (TerceroValida.length > 0 && Tercero.tipodetercero == 3) {
                 return Rules = {
                     Event: "Insert",
                     Error: true,
@@ -1390,7 +1391,7 @@ app.EmisionMapfreMas = (function () {
                     type: "error"
                 }
             }
-            else if (TerceroValida != undefined && Tercero.tipodetercero == 21) {
+            else if (TerceroValida.length > 0 && Tercero.tipodetercero == 21) {
                 return Rules = {
                     Event: "Insert",
                     Error: true,
