@@ -292,21 +292,24 @@ namespace Architect.API.Tron.Business.Cotizacion
                         quoteTron.fec_vcto_poliza = quoteTron.fec_vcto_poliza.AddYears(1);
 
                         // Cotiza Vigencia completa
-                        Contracts.Presupuesto.DatoFijo resultTronFull = Backoffice.Cotizacion.MapfreMas.Calcular(quoteTron);
+                        Contracts.Presupuesto.DatoFijo resultTronFull = Backoffice.Cotizacion.MapfreMasPlus.Calcular(quoteTron);
 
                         quoteInfo.plandepagoFull = new List<Contracts.Comun.PlanDePago>();
-                        foreach (Architect.API.Tron.Contracts.Presupuesto.Recibo item in resultTronFull.Recibos)
+                        if (resultTronFull.Recibos != null && resultTronFull.Recibos.Count > 0)
                         {
-                            quoteInfo.plandepagoFull.Add(new Contracts.Comun.PlanDePago()
+                            foreach (Architect.API.Tron.Contracts.Presupuesto.Recibo item in resultTronFull.Recibos)
                             {
-                                cuota = item.num_cuota,
-                                fechadesde = item.fec_efec_recibo,
-                                fechahasta = item.fec_vcto_recibo,
-                                primaneta = item.imp_neta + item.imp_recargo,
-                                iVA = item.imp_imptos,
-                                recargoporfraccionamiento = item.imp_interes,
-                                importetotal = item.imp_recibo
-                            });
+                                quoteInfo.plandepagoFull.Add(new Contracts.Comun.PlanDePago()
+                                {
+                                    cuota = item.num_cuota,
+                                    fechadesde = item.fec_efec_recibo,
+                                    fechahasta = item.fec_vcto_recibo,
+                                    primaneta = item.imp_neta + item.imp_recargo,
+                                    iVA = item.imp_imptos,
+                                    recargoporfraccionamiento = item.imp_interes,
+                                    importetotal = item.imp_recibo
+                                });
+                            }
                         }
                     }
                 }
