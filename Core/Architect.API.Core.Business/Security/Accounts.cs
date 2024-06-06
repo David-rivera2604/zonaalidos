@@ -12,6 +12,8 @@ using System.Web.UI;
 using Architect.API.Core.Security;
 using System.DirectoryServices.ActiveDirectory;
 using System.Threading.Tasks;
+using Architect.API.Core.Contracts.General;
+using System.Text.RegularExpressions;
 
 
 namespace Architect.API.Core.Business.Security
@@ -30,6 +32,11 @@ namespace Architect.API.Core.Business.Security
 
         public static Contracts.Security.AuthenticationResponse Authentication(Contracts.Security.AuthenticationRequest authenticationRequest, ref Contracts.Security.Token token, bool firstInit = false)
         {
+
+
+
+
+
             Contracts.Security.AuthenticationResponse result = new Contracts.Security.AuthenticationResponse();
             Contracts.Security.UserMember user = null;
             List<Contracts.Security.RoleMember> rols = null;
@@ -276,9 +283,9 @@ namespace Architect.API.Core.Business.Security
                         }
                         if (!bypass && !authenticationRequest.EmployeeMode)
                         {
-                            if (user.Password.Equals("."))
-                                result.MustChangePassword = true;
-                            else
+                            //if (user.Password.Equals("."))
+                            //    result.MustChangePassword = true;
+                            //else
                                 result.MustChangePassword = (user.PasswordChangedDate.AddDays(Architect.Utilities.Helpers.Settings.IntegerValue("Security.Password.Expiration", 90)) <= DateTime.Today);
                         }
                         Architect.API.Core.Security.Session.Create(new Contracts.Security.Activity()
