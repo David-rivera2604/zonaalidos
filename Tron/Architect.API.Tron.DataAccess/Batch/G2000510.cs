@@ -41,10 +41,21 @@ namespace Architect.API.Tron.DataAccess.Batch
             }
             catch(Exception ex)
             {
-                result.txt_error = ex.Message;
+                Utilities.Log.ErrorLog("ExecutePolicyFromQuotation", "ExecutePolicyFromQuotation", ex);
+
+                if (ex.InnerException != null && ex.InnerException.Message.IsNotEmpty())
+                {
+                    result.txt_error = ex.InnerException.Message;
+                }
+                else
+                {
+                    result.txt_error = ex.Message;
+                }
+
                 return result;
+
             }
- 
+
         }
 
         public static Architect.API.Tron.Contracts.Batch.Proceso Execute(Architect.API.Tron.Contracts.Batch.Proceso g2000510Instance, IDbConnection currentConnection)
