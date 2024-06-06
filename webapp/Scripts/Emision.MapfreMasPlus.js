@@ -10,6 +10,7 @@ app.EmisionMapfreMasPlus = (function () {
     let showCalculate = false;
     let rowDocumentosrequeridos = null;
     let mca_cuotas_gratis = 'N';
+
     function Setup() {
         var _id = app.core.URLStringValue('presupuesto');
         if (_id != '') {
@@ -269,6 +270,7 @@ app.EmisionMapfreMasPlus = (function () {
         if (formulariosData.length > 0) {
             data.kyc = $('#formulariosTbl').bootstrapTable('getData')[0].data;
         }
+        data.NUM_MATRICULA = data.NUM_MATRICULA.replace(/[^a-zA-Z0-9]/g, "");
         setupData = data;
         return data;
     }

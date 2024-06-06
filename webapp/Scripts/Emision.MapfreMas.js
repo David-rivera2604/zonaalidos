@@ -258,7 +258,7 @@ app.EmisionMapfreMas = (function () {
         //    localStorage.getItem('Roles').includes('Davivienda_Leasing'))) {
         //    data.Modo = 'continue';
         //}
-
+        data.NUM_MATRICULA = data.NUM_MATRICULA.replace(/[^a-zA-Z0-9]/g, "");
         setupData = data;
         return data;
     }

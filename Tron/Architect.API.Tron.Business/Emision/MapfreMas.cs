@@ -14,6 +14,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Text.RegularExpressions;
 
 namespace Architect.API.Tron.Business.Emision
 {
@@ -122,6 +123,7 @@ namespace Architect.API.Tron.Business.Emision
         public static Contracts.Emision.MapfreMas Issue(Contracts.Emision.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.Emision.MapfreMas resultQuoteInfo = null;
+            quoteInfo.NUM_MATRICULA = Regex.Replace(quoteInfo.NUM_MATRICULA, @"[^a-zA-Z0-9]", String.Empty);
             if (quoteInfo.Modo == "draft" || quoteInfo.Modo == "resume")
             {
                 //TODO: Se debe incluir la validación de que de haber un Tomador, Asegurado y Conductor Habitual, pero faltan las básicas.
