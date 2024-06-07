@@ -1,8 +1,11 @@
 ﻿var app = app || {};
 
 app.Form_Ext_SICOP = (function () {
+
     let id = null;
     let oldValue = '';
+    let _warranty = null;
+
     async function NotificarGarantia(spec, formName) {
 
         $(`#${formName}EdtForm`).validate(); $("#Guarantee_sequencenumber").rules('add', { minlength: 2, messages: { minlength: "Por favor ingrese al menos {0} caracteres" } });
@@ -89,6 +92,7 @@ app.Form_Ext_SICOP = (function () {
             });
 
     };
+
     async function ProcWarranty(spec, code, linked, warranty) {
         if (warranty != null) {
             id = null;
@@ -140,7 +144,13 @@ app.Form_Ext_SICOP = (function () {
                     .done(function (posted) {
                         console.log(posted);
 
-                        app.core.dataapi('PUT', `ElectronicWarranty/Release/${entry.ID}`, { ID: entry.ID, Confirmation: posted.Confirmation, Msg_err: posted.Msg_err, Execute_release_contents: entry.Execute_release_contents, Transaction_num: entry.Transaction_num })
+                        if (posted.Msg_err == '') {
+                            if (_warranty.Ex_Metodo == '1')
+                                _warranty.Ex_Metodo = '9';
+                            else
+                                _warranty.Ex_Metodo = '8';
+                        }
+                        app.core.dataapi('PUT', `ElectronicWarranty/Release`, { ID: entry.ID, Confirmation: posted.Confirmation, Msg_err: posted.Msg_err, Execute_release_contents: entry.Execute_release_contents, Transaction_num: entry.Transaction_num, Date_time: entry.Date_time, Ex_Metodo: _warranty.Ex_Metodo })
                             .then(xx => {
                                 console.log(xx);
                             });
@@ -149,10 +159,15 @@ app.Form_Ext_SICOP = (function () {
                             app.ui.Error(posted.Msg_err);
                             app.ui.ShowAlert('generalNotify', 'alert-danger', `<b> <i class="fa fa-check"></i> ${posted.Msg_err}</b>`);
                         } else {
+                            if (_warranty.Ex_Metodo == '9')
+                                posted.Msg_err = 'Liberación exitosa';
+                            else
+                                posted.Msg_err = 'Ejecución exitosa';
+
                             app.ui.Success(posted.Msg_err);
                             app.ui.ShowAlert('generalNotify', 'alert-success', `<b> <i class="fa fa-check"></i> ${posted.Msg_err}</b>`);
                             $("#NotificarGarantiaEdtForm fieldset").prop("disabled", true);
-                            $("#btnNotify").addClass('d-none');                            
+                            $("#btnNotify").addClass('d-none');
                         }
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                     }).always(function () {
@@ -172,6 +187,7 @@ app.Form_Ext_SICOP = (function () {
         id = warranty.ID;
         warranty.Cuenta_cliente = warranty.Ex_Cuenta_cliente;
         warranty.Execute_release_amount = warranty.Ex_Amount;
+        _warranty = warranty;
         spec.SetData(warranty);
     };
 
@@ -207,6 +223,7 @@ app.Form_Ext_SICOP = (function () {
             e.preventDefault();
         });
     };
+
     function Proveedor(supplierId, callback) {
         let result = null;
         app.core.Get(app.setting.apipath + `v1/SICOP/InformacionProveedor?id=${supplierId}`)
@@ -214,7 +231,6 @@ app.Form_Ext_SICOP = (function () {
                 callback(data);
             });
     };
-
 
     return {
         Init: function (spec, formName) {
@@ -251,10 +267,25 @@ app.Form_Ext_SICOP = (function () {
         ActionFormatter: function (value, row, index, field) {
             let buttons = '<button name="editar"  type="button" class="btn btn-sm btn-white event" title="Permite modificar la garantía"><i class="fa fa-pencil"></i></button>';
 
-            if (row.EX_METODO != null) {
-                buttons += '<button name="liberar" type="button" class="btn btn-sm btn-white event" title="Permite liberar/ejecutar la garantía"><i class="fa fa-asterisk"></i></button>';
+            if (row.EX_METODO == '0' || row.EX_METODO == '1') {
+                buttons += '<button name="liberar" type="button" class="btn btn-sm btn-white event" title="Permite liberar/ejecutar la garantía"><i class="fa fa-asterisk text-danger"></i></button>';
             }
             return '<span class=columnBtn>' + buttons + '</span>';
+        },
+        EstadoFormatter: function (value, row, index, field) {
+            let desc = 'Activa';
+            let color = 'primary';
+
+            switch (value) {
+                case '0': desc = 'Ejecutar'; color = 'danger'; break;
+                case '1': desc = 'Liberar'; color = 'warning'; break;
+                case '8': desc = 'Ejecutado'; color = 'primary'; break;
+                case '9': desc = 'Liberado'; color = 'success'; break;
+            }
+            if (value == null)
+                return desc;
+            else
+                return '<span class="badge badge-' + color + '">' + desc + '</span>';
         }
     };
 })();
