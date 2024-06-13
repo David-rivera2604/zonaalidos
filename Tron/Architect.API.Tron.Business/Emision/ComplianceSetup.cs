@@ -75,19 +75,19 @@ namespace Architect.API.Tron.Business.Emision
             switch (tipoIdenditificacion)
             {
                 case 1: //Nacional
-                    tipoIdenditificacion = 1; 
+                    tipoIdenditificacion = 1;
                     break;
                 case 2://Residente
-                    tipoIdenditificacion = 3; 
+                    tipoIdenditificacion = 3;
                     break;
                 case 3://Pasaporte
-                    tipoIdenditificacion = 5;  
+                    tipoIdenditificacion = 5;
                     break;
                 case 4: //Otro
                     tipoIdenditificacion = 9;
                     break;
             }
-                        
+
 
             Architect.Compliance.Integrations.Contracts.Clientes mapInfo = new Compliance.Integrations.Contracts.Clientes()
             {
@@ -243,6 +243,21 @@ namespace Architect.API.Tron.Business.Emision
                     break;
             }
 
+            if (jsonvalues.TokenStringValue("OcupacionPer") == "1" ||
+                jsonvalues.TokenStringValue("OcupacionPer") == "2")
+            {
+                mapInfo.clientesIngresos = new[] { new Clientesingreso()
+                {
+                    actividadEconomica = mapInfo.actividadEconomica,
+                    cargo = jsonvalues.TokenStringValue("cargoempresaPer"),
+                    telefonoCentral = jsonvalues.TokenStringValue("telefonoempresaPer"),
+                    origenRecursos = jsonvalues.TokenInt32Value("correspondenciaOrigendelosfondosPer"),
+                    sustentoOtraPersonas = "S",
+                    moneda = quoteInfo.cod_mon,
+                    monto = jsonvalues.TokenInt32Value("ingresomensualestimado"),
+                    direccion = jsonvalues.TokenStringValue("domiciliocomercialCod_paisDesc") + "-" + " " + jsonvalues.TokenStringValue("domiciliocomercialCod_estadoDesc") + "-" + " " + jsonvalues.TokenStringValue("domiciliocomercialCod_provDesc") + "-" + " " + jsonvalues.TokenStringValue("domiciliocomercialCod_localidadDesc")
+                } };
+            }
 
             return mapInfo;
         }
