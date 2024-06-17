@@ -87,7 +87,7 @@ namespace aliados
             if (Architect.Utilities.Helpers.Settings.StringValue("Payment.Silice.Tokenize.ExecutionTime").IsNotEmpty())
             {
                 RecurringJob.AddOrUpdate("Payment.Silice.TokenizeTarjetas",
-                    () => Architect.API.Tron.Business.Backoffice.v2.Pagos.TokenizeTarjetas(),
+                    () => Architect.API.Tron.Business.Backoffice.v2.Pagos.TokenizeTarjetas(string.Empty),
                     Architect.Utilities.Helpers.Settings.StringValue("Payment.Silice.Tokenize.ExecutionTime"));
             }
 
