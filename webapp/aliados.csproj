@@ -1263,6 +1263,8 @@
     <Content Include="Scripts\Extend.AvisosCobro.js" />
     <Content Include="Scripts\Extend.Cases.js" />
     <Content Include="Scripts\Extend.Policy.js" />
+    <Content Include="Scripts\Form.Ext.AltasBajas.js" />
+    <Content Include="Scripts\Form.Ext.Altas.js" />
     <Content Include="Scripts\Form.Ext.SICOP.js" />
     <Content Include="Scripts\General.Case.js" />
     <Content Include="Scripts\General.NewCase.js" />
