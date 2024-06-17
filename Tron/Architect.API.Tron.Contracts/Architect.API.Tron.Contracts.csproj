@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AltasBajas\Request\Poliza.cs" />
+    <Compile Include="AltasBajas\Response\Poliza.cs" />
     <Compile Include="AvisosDeCobro\AvisoConsultaResponse.cs" />
     <Compile Include="AvisosDeCobro\AvisoResponse.cs" />
     <Compile Include="AvisosDeCobro\AvisosBaseResponse.cs" />

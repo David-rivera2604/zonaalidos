@@ -151,5 +151,33 @@ namespace Architect.API.Tron.Controllers
             });
         }
 
+        [HttpPost]
+        [Route("Altas")]
+        [Authorize]
+        public async Task<IHttpActionResult> Altas([FromBody] Architect.API.Tron.Contracts.AltasBajas.Request.Poliza poliza)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Contracts.Poliza.API.Poliza result = null;
+            //await Task.Run(() =>
+            //{
+            //    result = Architect.API.Tron.Business.Cotizacion.API.Issue(presupuesto, tokenInfo);
+            //}).ConfigureAwait(false);
+            return Ok(poliza);
+        }
+
+        [HttpPost]
+        [Route("Bajas")]
+        [Authorize]
+        public async Task<IHttpActionResult> Bajas([FromBody] Architect.API.Tron.Contracts.AltasBajas.Request.Poliza poliza)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Contracts.Poliza.API.Poliza result = null;
+            //await Task.Run(() =>
+            //{
+            //    result = Architect.API.Tron.Business.Cotizacion.API.Issue(presupuesto, tokenInfo);
+            //}).ConfigureAwait(false);
+            return Ok(poliza);
+        }
+
     }
 }
