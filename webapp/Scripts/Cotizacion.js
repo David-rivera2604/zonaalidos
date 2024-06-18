@@ -4,6 +4,7 @@ app.Cotizacion = (function () {
 
     let settings = [];
     let roles = [];
+    let _data = {};
 
     return {
         Imprimir: function (name, data) {
@@ -137,7 +138,7 @@ app.Cotizacion = (function () {
                             }
                             if (item.Visible === 0) {
                                 $('input:radio[name=' + item.Field + ']').parent().parent().parent().parent().addClass('d-none');
-                            }                            
+                            }
                             break;
                         case 'Zone':
                             if (item.Visible === 0) {
@@ -183,6 +184,27 @@ app.Cotizacion = (function () {
                             break;
                     }
                 });
+            });
+        },
+        CustomAgentHandler: function (prefix, data) {
+            app.core.Lookups([`Agents.${prefix}agt_cod`],
+                function () {
+                    _data = data;
+                    $(`#${prefix}agt_cod`).select2({
+                        width: '100%', theme: 'bootstrap4',
+                        language: { noResults: function () { return "No hay resultado"; }, searching: function () { return "Buscando.."; } }
+                    });
+                }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}`);
+
+
+            // Dependencies events
+            $(`#${prefix}agt_cod`).on('change', function () {
+                let agt_cod = app.ui.GetDropDownNumericValue(`select#${prefix}agt_cod`);
+
+                app.core.Lookups([`CuadroComPorAgente.${prefix}cod_cuadro_com`],
+                    function () {
+                    }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:agt_cod=${agt_cod}`);
+
             });
         }
     };

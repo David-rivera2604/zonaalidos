@@ -110,6 +110,11 @@ app.CotizacionMapfreMas = (function () {
         if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
             lookupList.push('MM_POLIZA_GRUPO.contrato'); //, 'MM_SUB_CONTRATOS.subcontrato'
             $('#polizagrupoZone').removeClass('d-none');
+            app.Cotizacion.CustomAgentHandler('pg_', setupData);
+            $('#pg_custom_agent').removeClass('d-none');
+        } else {
+            app.Cotizacion.CustomAgentHandler('', setupData);
+            $('#_custom_agent').removeClass('d-none');
         }
         app.core.Lookups(lookupList,
             function () {
@@ -1110,7 +1115,8 @@ app.CotizacionMapfreMas = (function () {
 
             num_contrato: app.ui.GetDropDownNumericValue('#contrato'),
             num_subcontrato: app.ui.GetDropDownNumericValue('#subcontrato'),
-            num_poliza_grupo: setupData.polizagrupo == null ? '' : setupData.polizagrupo
+            num_poliza_grupo: setupData.polizagrupo == null ? '' : setupData.polizagrupo,
+            agt_cod: app.ui.GetDropDownNumericValue('#pg_agt_cod')
         };
     }
 
