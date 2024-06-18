@@ -233,12 +233,12 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         /// <summary>
         /// Proceso 'Batch', que envía a tokenizar las tarjetas de créditos registradas en tron.
         /// </summary>
-        public static int TokenizeTarjetas()
+        public static int TokenizeTarjetas(string cod_docum)
         {
             int recordCount = 0;
             int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
             string prefix = Utilities.Helpers.Settings.StringValue("EMail.Test", string.Empty);
-            List<Contracts.Pagos.Tarjeta> pendientes = Architect.API.Tron.DataAccess.Pagos.Tarjetas.PendientesPorTokenizar(cod_cia, Utilities.Helpers.Settings.IntegerValue("Payment.Silice.Tokenize.Cantidad.Tarjetas", 50));
+            List<Contracts.Pagos.Tarjeta> pendientes = Architect.API.Tron.DataAccess.Pagos.Tarjetas.PendientesPorTokenizar(cod_cia, Utilities.Helpers.Settings.IntegerValue("Payment.Silice.Tokenize.Cantidad.Tarjetas", 50), cod_docum);
 
             List<DatosTarjeta> datosTajetas = new List<DatosTarjeta>();
             string email = string.Empty;

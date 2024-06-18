@@ -97,7 +97,23 @@ namespace Architect.API.Tron.Controllers.v2
 
             await Task.Run(() =>
             {
-                recordCount = Architect.API.Tron.Business.Backoffice.v2.Pagos.TokenizeTarjetas();
+                recordCount = Architect.API.Tron.Business.Backoffice.v2.Pagos.TokenizeTarjetas(string.Empty);
+            }).ConfigureAwait(false);
+
+            return Ok(recordCount);
+        }
+
+        [HttpGet]
+        [Route("silicet/{cod_docum}")]
+        [AllowAnonymous]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public async Task<IHttpActionResult> silicetpuntual(string cod_docum = "")
+        {
+            int recordCount = 0;
+
+            await Task.Run(() =>
+            {
+                recordCount = Architect.API.Tron.Business.Backoffice.v2.Pagos.TokenizeTarjetas(cod_docum);
             }).ConfigureAwait(false);
 
             return Ok(recordCount);
