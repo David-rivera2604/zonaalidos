@@ -75,7 +75,7 @@ namespace Architect.API.Core.Controllers
         public async Task<IHttpActionResult> Get([FromUri] string filter = "", int beginIndex = 1, int endIndex = int.MaxValue)
         {
             //Usuario actual para filtrar la informacion
-            UsuaActual = Accounts.ReturnUser();
+           int UsuaActual = Accounts.ReturnUser().UserId;
 
             Contracts.Security.Token tokenInfo = Security.Token.Info();
 
@@ -83,16 +83,10 @@ namespace Architect.API.Core.Controllers
 
             await Task.Run(() =>
             {
-                result = Architect.API.Core.Business.General.ProcessCase.Retrieve(tokenInfo.CompanyId, filter, beginIndex, endIndex);
+                result = Architect.API.Core.Business.General.ProcessCase.Retrieve(tokenInfo.CompanyId, filter, beginIndex, endIndex, UsuaActual);
             }).ConfigureAwait(false);
 
-            //Filtro para cuando la api es llamada con CaseAliados
-            if (filter == "CaseAliados")
-            {
-                result.RemoveAll(s => s.UserSend != UsuaActual.UserId);
-            }
-
-
+            
             if (result.IsEmpty())
             {
                 return NotFound();
