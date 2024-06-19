@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Architect.API.Tron.Business.Cotizacion
 {
@@ -233,6 +234,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             {
                 quoteInfo.presupuesto = string.Empty;
                 quoteInfo.resumen = null;
+                quoteInfo.NUM_MATRICULA = Regex.Replace(quoteInfo.NUM_MATRICULA, @"[^a-zA-Z0-9]", String.Empty);
                 Contracts.Batch.CotizadorMapfreMasClass quoteTron = MapfreMasConvertTo.Tron(quoteInfo, quoteInfo.cod_ramo, tokenInfo.AgentCode, tokenInfo.UserName, tokenInfo.IdentificationType, tokenInfo.Identification, tokenInfo.Roles);
                 //Architect.Common.Helpers.Serialize.SerializeToFile<Architect.API.Tron.Contracts.Batch.CotizadorMapfreMasClass>(result, @"C:\temp\mapfremas.in.xml");
 

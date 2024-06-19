@@ -383,15 +383,17 @@ app.kycpersona = (function () {
         else
             $('.peptiporelacionPerVisible').addClass('d-none');
 
-
-        if (app.ui.GetRadioNumericValue('OcupacionPer') === 2)
+        let ocupation = app.ui.GetRadioNumericValue('OcupacionPer');
+        if (ocupation === 1 || ocupation === 2)
             $('.empresaPerVisible').removeClass('d-none');
         else
             $('.empresaPerVisible').addClass('d-none');
-        if (app.ui.GetRadioNumericValue('OcupacionPer') === 3)
+
+        if (ocupation === 3)
             $('.fuenteIngresosPerVisible').removeClass('d-none');
         else
             $('.fuenteIngresosPerVisible').addClass('d-none');
+
     };
 
     function Setup_Validations() {

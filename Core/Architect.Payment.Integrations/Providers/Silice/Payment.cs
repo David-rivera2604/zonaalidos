@@ -112,7 +112,7 @@ namespace Architect.Payment.Integrations.Providers.Silice
             var data = new StringContent(json, Encoding.UTF8, "application/json");
             //HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
             //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-            var response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("Payment.Silice.urlBase") + "/v2/cobro/mensajeAutomata", data);
+            var response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("Payment.Silice.urlBase") + "/v2/cobro/envioNotificacion", data);
             string resultResponse = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode && resultResponse.IsNotEmpty())
             {
@@ -127,7 +127,7 @@ namespace Architect.Payment.Integrations.Providers.Silice
                 }
                 else
                 {
-                    result = "Error. " + jsonvalues.TokenStringValue("data");
+                    result = "Error. " + jsonvalues.TokenStringValue("error");
                 }
             }
             else
@@ -219,7 +219,7 @@ namespace Architect.Payment.Integrations.Providers.Silice
             return result;
         }
 
-        public async static void TrackOnlinePayment(int companyId, int userId, Architect.Payment.Integrations.Contracts.v2.Item item,
+        public async static Task<int> TrackOnlinePayment(int companyId, int userId, Architect.Payment.Integrations.Contracts.v2.Item item,
             string policyId, long billNumber, double amount, string documentType, string document, string firstName, string lastName, string mobile, string processId)
         {
             Contracts.OnlinePayment track = Business.OnlinePayment.Create(companyId, userId, new Contracts.OnlinePayment()
@@ -246,7 +246,7 @@ namespace Architect.Payment.Integrations.Providers.Silice
                 ProcessId = processId,
                 RequestID = billNumber
             });
-
+            return track.Id;
         }
 
         private async static Task<string> genpwdcryto(HttpClient client)

@@ -233,12 +233,12 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         /// <summary>
         /// Proceso 'Batch', que envía a tokenizar las tarjetas de créditos registradas en tron.
         /// </summary>
-        public static int TokenizeTarjetas()
+        public static int TokenizeTarjetas(string cod_docum)
         {
             int recordCount = 0;
             int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
             string prefix = Utilities.Helpers.Settings.StringValue("EMail.Test", string.Empty);
-            List<Contracts.Pagos.Tarjeta> pendientes = Architect.API.Tron.DataAccess.Pagos.Tarjetas.PendientesPorTokenizar(cod_cia, Utilities.Helpers.Settings.IntegerValue("Payment.Silice.Tokenize.Cantidad.Tarjetas", 50));
+            List<Contracts.Pagos.Tarjeta> pendientes = Architect.API.Tron.DataAccess.Pagos.Tarjetas.PendientesPorTokenizar(cod_cia, Utilities.Helpers.Settings.IntegerValue("Payment.Silice.Tokenize.Cantidad.Tarjetas", 50), cod_docum);
 
             List<DatosTarjeta> datosTajetas = new List<DatosTarjeta>();
             string email = string.Empty;
@@ -293,6 +293,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 if (tarjeta.token != string.Empty)
                 {
                     DataAccess.A1001331.Update(cod_cia, tarjeta.tip_docum, tarjeta.cod_docum, tarjeta.card, null);
+                    DataAccess.Pagos.Num_Tarjeta_mcr.Update(cod_cia, tarjeta.tip_docum, tarjeta.cod_docum, tarjeta.card, null);
                 }
                 DataAccess.Pagos.Tarjetas.CreateBoveda(tarjeta.tip_docum, tarjeta.cod_docum, tarjeta.card, tarjeta.token, tarjeta.clientId, tarjeta.status, tarjeta.reason);
                 recordCount++;
@@ -327,6 +328,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 string email = string.Empty;
                 int count = 0;
                 double total = 0;
+                int id = 0;
                 foreach (Contracts.Pagos.Recibo pendiente in pendientes)
                 {
                     email = pendiente.EMAIL;
@@ -364,9 +366,11 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                             newItem.emailCliente = prefix;
                         }
 
-                        Architect.Payment.Integrations.Providers.Silice.Payment.TrackOnlinePayment(cod_cia, 0, newItem,
+                        id = Payment.Integrations.Providers.Silice.Payment.TrackOnlinePayment(cod_cia, 0, newItem,
                             pendiente.NUM_POLIZA, pendiente.NUM_RECIBO, pendiente.IMP_RECIBO,
-                            pendiente.TIP_DOCUM, pendiente.COD_DOCUM, pendiente.NOM_TERCERO, pendiente.APE1_TERCERO, pendiente.TLF_NUMERO, reciboReq.procesoId);
+                            pendiente.TIP_DOCUM, pendiente.COD_DOCUM, pendiente.NOM_TERCERO, pendiente.APE1_TERCERO, pendiente.TLF_NUMERO, reciboReq.procesoId).Result;
+
+                        newItem.ordenId = id.ToString();
                     }
                     recordCount++;
                 }
@@ -409,9 +413,12 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 int procesados = 0;
                 foreach (Payment.Integrations.Contracts.v2.ReciboResponseItem item in request.items)
                 {
-                    num_recibo = Convert.ToInt32(item.ordenId);
+
+                    Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveById(cod_cia, Convert.ToInt32(item.ordenId));
+
+                    num_recibo = Convert.ToInt32(currentRecord.BillNumber);
                     Contracts.Pagos.Recibo recibo = Architect.API.Tron.DataAccess.Pagos.Recibos.ReciboAlCobro(cod_cia, num_recibo);
-                    Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveByRequestID(Convert.ToInt64(num_recibo));
+
                     if (recibo != null)
                     {
                         procesados++;

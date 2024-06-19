@@ -49,7 +49,10 @@ namespace Architect.SICOP.WcfService.Business
                         value.MetodoDesc = "liberar";
                     DataAccess.ElectronicWarranty.Update(warranty.ID, value.Metodo, value.codigo_proceso, value.Amount, value.Contents, value.cuenta_Cliente);
 
-                    API.Core.Business.General.Mail.EnqueueSend("Default", 0, 0, 0, "Notify_ReleaseGuarantee", null, null, null, value, null);
+                    API.Core.Business.General.Mail.EnqueueSend("Default",
+                        Utilities.Helpers.Settings.IntegerValue("Default.CompanyId", 100),
+                        Utilities.Helpers.Settings.IntegerValue("Default.UserId", 0), 
+                        0, "Notify_ReleaseGuarantee", null, null, null, value, null);
                 }
             }
             else

@@ -15,7 +15,7 @@ namespace Architect.SICOP.WcfService.DataAccess
         {
             Contracts.ElectronicWarranty result = null;
             Database.Select(
-                @"SELECT ID, Guarantee_sequencenumber, Moneda, Metodo, Codigo_Proceso
+                @"SELECT ID, Guarantee_sequencenumber, Moneda, Ex_Metodo, Ex_Codigo_Proceso
                     FROM ElectronicWarranty P
                    WHERE Guarantee_number = :Guarantee_number
                      AND P.Guarantee_sequencenumber = (SELECT max(Guarantee_sequencenumber) FROM ElectronicWarranty M WHERE M.Guarantee_number = P.Guarantee_number)")
@@ -27,8 +27,8 @@ namespace Architect.SICOP.WcfService.DataAccess
                         ID = reader.IntegerValue("ID"),
                         Guarantee_sequencenumber = reader.StringValue("Guarantee_sequencenumber"),
                         Moneda = reader.StringValue("Moneda"),
-                        Metodo = reader.StringValue("Metodo"),
-                        Codigo_Proceso = reader.StringValue("Codigo_Proceso")
+                        Metodo = reader.StringValue("Ex_Metodo"),
+                        Codigo_Proceso = reader.StringValue("Ex_Codigo_Proceso")
                     };
                 }));
             return result;
