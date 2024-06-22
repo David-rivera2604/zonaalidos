@@ -726,11 +726,14 @@
                                         </div>
                                     </div>
 
+                                    <!-- VerificarDomicilio Zone -->
+                                    @Html.Partial("_verificardomicilio")
+
                                     <!-- Botonera -->
                                     <div class="form-row">
                                         <div class='col-md-12'>
                                             <div class="modal-footer">
-                                                <button id="guardarenviar" type="button" class="btn btn-primary d-none" data-doing="Enviado solictud...">
+                                                <button id="guardarenviar" type="button" class="btn btn-primary d-none" data-doing="Enviado solicitud...">
                                                     Guardar y enviar solicitud
                                                 </button>
                                                 <button id="cotizar" type="button" class="btn btn-primary d-none" data-doing="Emitiendo...">
