@@ -8,32 +8,32 @@ using System.Threading.Tasks;
 namespace Architect.API.Tron.Contracts.AltasBajas.Request
 {
 
-    public class Poliza : Base
+    public class SPCall: Base
     {
+        [StringLength(1)]
+        public string TIP_DE_PROCESO { get; set; }
+        /// <summary>
+        /// Fecha manejada como string en formato DD/MM/AAAA
+        /// </summary>
+        public string FEC_EFEC_SPTO { get; set; }
+        /// <summary>
+        /// Fecha manejada como string en formato DD/MM/AAAA
+        /// </summary>
+        public string FEC_VCTO_SPTO { get; set; }
+
+        /// Fecha manejada como string en formato DD/MM/AAAA
+        /// </summary>
+        public string FEC_NAC_ASEG { get; set; }
 
         /// <summary>
         /// Fecha manejada como string en formato DD/MM/AAAA
         /// </summary>
-        public DateTime EFEC_SPTO { get; set; }
+        public string FEC_INI_PRESTAMO { get; set; }
         /// <summary>
         /// Fecha manejada como string en formato DD/MM/AAAA
         /// </summary>
-        public DateTime VCTO_SPTO { get; set; }
-
-        /// Fecha manejada como string en formato DD/MM/AAAA
-        /// </summary>
-        public DateTime NAC_ASEG { get; set; }
-
-        /// <summary>
-        /// Fecha manejada como string en formato DD/MM/AAAA
-        /// </summary>
-        public DateTime INI_PRESTAMO { get; set; }
-        /// <summary>
-        /// Fecha manejada como string en formato DD/MM/AAAA
-        /// </summary>
-        public DateTime VCTO_PRESTAMO { get; set; }
+        public string FEC_VCTO_PRESTAMO { get; set; }
 
     }
+
 }
-
-

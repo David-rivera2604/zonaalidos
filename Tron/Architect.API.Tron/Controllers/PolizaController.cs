@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Xml.Schema;
 
 namespace Architect.API.Tron.Controllers
 {
@@ -157,12 +158,42 @@ namespace Architect.API.Tron.Controllers
         public async Task<IHttpActionResult> Altas([FromBody] Architect.API.Tron.Contracts.AltasBajas.Request.Poliza poliza)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
-            Contracts.Poliza.API.Poliza result = null;
+            Architect.API.Tron.Contracts.AltasBajas.Response.Poliza result = new Contracts.AltasBajas.Response.Poliza();
+
+            Contracts.AltasBajas.Request.SPCall sp = new Contracts.AltasBajas.Request.SPCall()
+            {
+                NUM_POLIZA_GRUPO = poliza.NUM_POLIZA_GRUPO,
+                NUM_CONTRATO = poliza.NUM_CONTRATO,
+                RAMO = poliza.RAMO,
+                TIP_DOCUM_ASEG = poliza.TIP_DOCUM_ASEG.IdentificationType(),
+                COD_DOCUM_ASEG = poliza.COD_DOCUM_ASEG,
+                NOM_TERCERO_ASEG = poliza.NOM_TERCERO_ASEG,
+                APE_TERCERO_ASEG = poliza.APE_TERCERO_ASEG,
+                MCA_SEXO_ASEG = poliza.MCA_SEXO_ASEG == "1" ? "M" : "F",
+                NACIONALIDAD_ASEG = poliza.NACIONALIDAD_ASEG,
+                COD_ESTADO = poliza.COD_ESTADO,
+                COD_PROVINCIA = poliza.COD_PROVINCIA,
+                COD_LOCALIDAD = poliza.COD_LOCALIDAD,
+                DOMICILIO = poliza.DOMICILIO,
+                NUM_PRESTAMO = poliza.NUM_PRESTAMO,
+                IMP_SUMA_ASEG = poliza.IMP_SUMA_ASEG,
+                IMP_PRIMA_INFORMADA = poliza.IMP_PRIMA_INFORMADA,
+                ID_CRED_ESTUDIANTE = poliza.ID_CRED_ESTUDIANTE,
+                MCA_ASISTENCIA = poliza.MCA_ASISTENCIA,
+                IMP_SUMA_MUERTE = poliza.IMP_SUMA_MUERTE,
+                FEC_EFEC_SPTO = poliza.EFEC_SPTO.ToString("dd/MM/yyyy"),
+                FEC_VCTO_SPTO = poliza.VCTO_SPTO.ToString("dd/MM/yyyy"),
+                FEC_NAC_ASEG = poliza.NAC_ASEG.ToString("dd/MM/yyyy"),
+                FEC_INI_PRESTAMO = poliza.INI_PRESTAMO.ToString("dd/MM/yyyy"),
+                FEC_VCTO_PRESTAMO = poliza.VCTO_PRESTAMO.ToString("dd/MM/yyyy"),
+                TIP_DE_PROCESO = "N"
+            };
+
             //await Task.Run(() =>
             //{
             //    result = Architect.API.Tron.Business.Cotizacion.API.Issue(presupuesto, tokenInfo);
             //}).ConfigureAwait(false);
-            return Ok(poliza);
+            return Ok(sp);
         }
 
         [HttpPost]
