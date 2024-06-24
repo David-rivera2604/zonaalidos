@@ -20,7 +20,9 @@ namespace Architect.API.Tron.Contracts.AltasBajas.Request
         /// Fecha manejada como string en formato DD/MM/AAAA
         /// </summary>
         public string FEC_VCTO_SPTO { get; set; }
-
+        [StringLength(3)]
+        public string TIP_DOCUM_ASEG { get; set; }
+        /// <summary>
         /// Fecha manejada como string en formato DD/MM/AAAA
         /// </summary>
         public string FEC_NAC_ASEG { get; set; }

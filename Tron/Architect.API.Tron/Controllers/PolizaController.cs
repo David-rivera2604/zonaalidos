@@ -165,7 +165,7 @@ namespace Architect.API.Tron.Controllers
                 NUM_POLIZA_GRUPO = poliza.NUM_POLIZA_GRUPO,
                 NUM_CONTRATO = poliza.NUM_CONTRATO,
                 RAMO = poliza.RAMO,
-                TIP_DOCUM_ASEG = poliza.TIP_DOCUM_ASEG.IdentificationType(),
+                TIP_DOCUM_ASEG = poliza.COD_DOCUM_ASEGType.IdentificationType(),
                 COD_DOCUM_ASEG = poliza.COD_DOCUM_ASEG,
                 NOM_TERCERO_ASEG = poliza.NOM_TERCERO_ASEG,
                 APE_TERCERO_ASEG = poliza.APE_TERCERO_ASEG,

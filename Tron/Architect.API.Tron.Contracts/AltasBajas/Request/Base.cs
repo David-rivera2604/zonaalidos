@@ -14,8 +14,7 @@ namespace Architect.API.Tron.Contracts.AltasBajas.Request
         public string NUM_POLIZA_GRUPO { get; set; }
         public int NUM_CONTRATO { get; set; }
         public int RAMO { get; set; }
-        [StringLength(3)]
-        public string TIP_DOCUM_ASEG { get; set; }
+
         [StringLength(20)]
         public string COD_DOCUM_ASEG { get; set; }
         [StringLength(20)]

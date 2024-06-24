@@ -10,27 +10,11 @@ namespace Architect.API.Tron.Contracts.AltasBajas.Request
 
     public class Poliza : Base
     {
-
-        /// <summary>
-        /// Fecha manejada como string en formato DD/MM/AAAA
-        /// </summary>
         public DateTime EFEC_SPTO { get; set; }
-        /// <summary>
-        /// Fecha manejada como string en formato DD/MM/AAAA
-        /// </summary>
         public DateTime VCTO_SPTO { get; set; }
-
-        /// Fecha manejada como string en formato DD/MM/AAAA
-        /// </summary>
+        public string COD_DOCUM_ASEGType { get; set; }
         public DateTime NAC_ASEG { get; set; }
-
-        /// <summary>
-        /// Fecha manejada como string en formato DD/MM/AAAA
-        /// </summary>
         public DateTime INI_PRESTAMO { get; set; }
-        /// <summary>
-        /// Fecha manejada como string en formato DD/MM/AAAA
-        /// </summary>
         public DateTime VCTO_PRESTAMO { get; set; }
 
     }
