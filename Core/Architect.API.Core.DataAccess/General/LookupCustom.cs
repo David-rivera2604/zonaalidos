@@ -215,5 +215,43 @@ namespace Architect.API.Core.DataAccess.General
 
             return result;
         }
+        public static List<Contracts.General.Lookup> RetrieveByLookupExtendedMasterKey(int lookupId, int language, int companyId, IDbConnection connection = null)
+        {
+            var result = new List<Contracts.General.Lookup>();
+
+            string key = string.Format("LookupEx.{0}.{1}.{2}", lookupId, language, companyId);
+            if (Architect.Utilities.Cache.NotExist(key))
+            {
+                Database.Select(@"SELECT Code, Description, HomologousCode, ExtendNumberValue1, ExtendNumberValue2, ExtendStringValue1, ExtendStringValue2
+                               FROM Lookup
+                              WHERE LookupId=:LookupId AND CompanyId=:CompanyId AND Language=:Language AND RecordStatus=1
+                           ORDER BY QueryOrder, Description")
+                       .AddParameter("LookupId", DbType.Decimal, 9, lookupId)
+                       .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                       .AddParameter("Language", DbType.Decimal, 5, language)
+                      //.Cache()
+                      .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
+                      {
+                          result.Add(new Contracts.General.Lookup()
+                          {
+                              Code = (int)Math.Round(reader.NumericValue("Code")),
+                              Description = reader.StringValue("Description"),
+                              HomologousCode = reader.StringValue("HomologousCode"),
+                              ExtendNumberValue1 = reader.DoubleValue("ExtendNumberValue1"),
+                              ExtendNumberValue2 = reader.DoubleValue("ExtendNumberValue2"),
+                              ExtendStringValue1 = reader.StringValue("ExtendStringValue1"),
+                              ExtendStringValue2 = reader.StringValue("ExtendStringValue2")
+                          });
+                      }));
+
+                Architect.Utilities.Cache.SetItem(key, result);
+            }
+            else
+            {
+                result = (List<Contracts.General.Lookup>)Architect.Utilities.Cache.GetItem(key);
+            }
+
+            return result;
+        }
     }
 }
