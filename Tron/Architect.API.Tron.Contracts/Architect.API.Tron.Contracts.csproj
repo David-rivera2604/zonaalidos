@@ -156,6 +156,10 @@
     <Compile Include="Ramo\A1001403.cs" />
     <Compile Include="Tables\a1002150.cs" />
     <Compile Include="Tables\ta301003.cs" />
+    <Compile Include="Tramitacion\Request\Siniestro.cs" />
+    <Compile Include="Tramitacion\Response\Tramite.cs" />
+    <Compile Include="Tramitacion\Response\Nivel.cs" />
+    <Compile Include="Tramitacion\Response\Siniestro.cs" />
     <Compile Include="Vistas\Recibo.cs" />
   </ItemGroup>
   <ItemGroup>
