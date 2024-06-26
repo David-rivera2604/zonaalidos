@@ -31,6 +31,8 @@ namespace Architect.API.Tron.Contracts.AltasBajas.Response
         public string COBERTURAS { get; set; }
         public string PRIMA_TOTAL { get; set; }
         public string OBSERVACION { get; set; }
+
+        public string ERROR { get; set; }
     }
 
     public class RECIBO
