@@ -36,7 +36,7 @@ namespace Architect.API.Tron.Contracts.AltasBajas.Request
         /// </summary>
         public string FEC_VCTO_PRESTAMO { get; set; }
 
-        public string COD_PLAN_AP { get; set; }
+        
 
     }
 }

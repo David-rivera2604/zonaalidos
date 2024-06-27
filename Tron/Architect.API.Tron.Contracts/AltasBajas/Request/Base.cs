@@ -38,6 +38,8 @@ namespace Architect.API.Tron.Contracts.AltasBajas.Request
         [StringLength(1)]
         public string MCA_ASISTENCIA { get; set; }
         public double IMP_SUMA_MUERTE { get; set; }
+
+        public string COD_PLAN_AP { get; set; }
     }
 
 }

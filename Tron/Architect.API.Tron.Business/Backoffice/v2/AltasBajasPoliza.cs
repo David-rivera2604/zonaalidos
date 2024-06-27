@@ -56,6 +56,7 @@ namespace Architect.API.Tron.Business.Backoffice
                 FEC_NAC_ASEG = poliza.NAC_ASEG.ToString("dd/MM/yyyy"),
                 FEC_INI_PRESTAMO = poliza.INI_PRESTAMO.ToString("dd/MM/yyyy"),
                 FEC_VCTO_PRESTAMO = poliza.VCTO_PRESTAMO.ToString("dd/MM/yyyy"),
+                COD_PLAN_AP = poliza.COD_PLAN_AP,
                 TIP_DE_PROCESO = "N"
             };
 
