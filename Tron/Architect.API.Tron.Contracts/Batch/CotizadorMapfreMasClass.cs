@@ -58,6 +58,9 @@ namespace Architect.API.Tron.Contracts.Batch
         /// </summary>
         public int cod_agt { get; set; } = 0;
 
+        public int cod_cuadro_com { get; set; } = 0;
+        
+
         /// <summary>
         ///
         /// </summary>
