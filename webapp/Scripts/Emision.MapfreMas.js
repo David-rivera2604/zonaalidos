@@ -39,7 +39,8 @@ app.EmisionMapfreMas = (function () {
                         $('.datosgeneralesZone').addClass('col-md-7');
                         $('.enviosolicitudZone').removeClass('d-none');
                     } else {
-                        $('#cotizar').removeClass('d-none');
+                        //$('#cotizar').removeClass('d-none');
+                        $('.VerificarDomicilio').removeClass('d-none');
                         $("#cotizar").appendTo("#GenericToolBar");
                     }
 
@@ -134,6 +135,7 @@ app.EmisionMapfreMas = (function () {
                     $('#coberturasTbl').bootstrapTable('load', data.coberturas);
                     $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
                     $('#NumPoliza').html(data.num_poliza);
+                    $('.VerificarDomicilio').addClass('d-none');
                     $('#cotizar').addClass('d-none');
 
                     ReadOnly_End();
@@ -560,10 +562,19 @@ app.EmisionMapfreMas = (function () {
             event.preventDefault();
         });
 
-        $('#print').click(function () {
-            event.preventDefault();
+        $('#print').click(function (e) {
+            e.preventDefault();
             app.ui.ShowSideBar({ title: 'Enviar certificado por correo', subtitle: 'Póliza #{NUM_POLIZA}', id: 9000, data: { NUM_POLIZA: setupData.num_poliza, NUM_RIESGO: 1 } })
         });
+
+        $('input:radio[name=DomicilioVerificado]').click(function (e) {
+            if (app.ui.GetRadioStringValue('DomicilioVerificado') === 'S') {
+                $('#cotizar').removeClass('d-none');
+            } else {
+                $('#cotizar').addClass('d-none');
+            }
+        });
+
     }
 
     function Setup_Validations() {
@@ -821,12 +832,12 @@ app.EmisionMapfreMas = (function () {
         let terceros = $('#tercerosTbl').bootstrapTable('getData');
         let vehiculo = $('#vehiculoTbl').bootstrapTable('getData');
         let terceroserrors = (terceros.length === 0);
-        
+
         //if (vehiculo.length === 0) {
         //    $('#vehiculoTbl-error').removeClass('d-none');
         //    result = result + 1;
         //}
-        if (!terceroserrors && (workMode === 'draft' || workMode === 'resume' || workMode === 'continue' )) {
+        if (!terceroserrors && (workMode === 'draft' || workMode === 'resume' || workMode === 'continue')) {
             let holder = terceros.filter(i => i.tipodetercero === 0);
             let insured = terceros.filter(i => i.tipodetercero === 2);
             let driver = terceros.filter(i => i.tipodetercero === 3);
@@ -926,7 +937,7 @@ app.EmisionMapfreMas = (function () {
                     ids.add(tercero.tipodetercero);
                 }
             }
-            
+
         }
         return false;
     }

@@ -521,40 +521,48 @@ app.ui = (function () {
                 persistent: false
             });
             $(documentNumberElement + 'TypeMenu a').click(function () {
+                $(documentNumberElement).data('current', '');
                 app.ui.DocumentTypeHandler(this, documentNumberElement, 'Identification', callbackDocType);
             });
             $(documentNumberElement).on('blur', function () {
-                var validation = app.ui.IsDocumentNumberValid($(documentNumberElement + 'Type').data('value'), $(documentNumberElement).val());
-                if (validation.result) {
-                    $(documentNumberElement).addClass('loading');
-                    var encodedDocNum = encodeURIComponent($(documentNumberElement).val());
-                    var docType = $(documentNumberElement + 'Type').data('value');
-                    if (docType == 1) {
-                        var apiUrl = app.setting.apipath + 'v1/Insured/' + $(documentNumberElement).val().replace(/-/g, '') + '?docType=' + docType;
+                let oldValue = $(documentNumberElement).data('current');
+                let documentNumber = $(documentNumberElement).val();
+                let docType = $(documentNumberElement + 'Type').data('value');
+                if (oldValue != documentNumber) {
+                    let validation = app.ui.IsDocumentNumberValid(docType, documentNumber);
+                    if (validation.result) {
+                        let encodedDocNum = encodeURIComponent(documentNumber);
+                        let apiUrl = '';
+                        $(documentNumberElement).data('current', documentNumber);
+                        $(documentNumberElement).addClass('loading');
+                        
+                        if (docType == 1) {
+                            apiUrl = app.setting.apipath + 'v1/Insured/' + documentNumber.replace(/-/g, '') + '?docType=' + docType;
 
-                    } else {
-                        var apiUrl = app.setting.apipath + 'v1/Insured/' + (docType != 1 && docType != 2 ? encodedDocNum : parseInt(0 + $(documentNumberElement).val().replace(/-/g, ''), 10)) + '?docType=' + docType;
-                    }
-                    app.core.Get(apiUrl).done(function (data, textStatus, jqXHR) {
-                        if (data != null && data.FirstName !== null) {
-                            if (data.MiddleName === null) data.MiddleName = '';
-                            if (data.LastName === null) data.LastName = '';
-                            if (data.SecondLastName === null) data.SecondLastName = '';
                         } else {
-                            data = null;
+                            apiUrl = app.setting.apipath + 'v1/Insured/' + (docType != 1 && docType != 2 ? encodedDocNum : parseInt(0 + $(documentNumberElement).val().replace(/-/g, ''), 10)) + '?docType=' + docType;
                         }
-                        if (callbackDone) callbackDone(data);
-                    }).always(function () {
-                        $(documentNumberElement).removeClass('loading');
-                    });
-                    $(documentNumberElement).formatter({
-                        pattern: validation.pattern,
-                        persistent: false,
-                    });
+                        
+                        app.core.Get(apiUrl).done(function (data, textStatus, jqXHR) {
+                            if (data != null && data.FirstName !== null) {
+                                if (data.MiddleName === null) data.MiddleName = '';
+                                if (data.LastName === null) data.LastName = '';
+                                if (data.SecondLastName === null) data.SecondLastName = '';
+                            } else {
+                                data = null;
+                            }
+                            if (callbackDone) callbackDone(data);
+                        }).always(function () {
+                            $(documentNumberElement).removeClass('loading');
+                        });
+                        $(documentNumberElement).formatter({
+                            pattern: validation.pattern,
+                            persistent: false,
+                        });
+                    }
                 }
             });
         },
-
         DocumentNumberHandlerKYC: function (documentNumberElement, callbackDone, callbackDocumentType, TypeKYC) {
             var typedocument;
             let documenttype = documentNumberElement + "tipo"

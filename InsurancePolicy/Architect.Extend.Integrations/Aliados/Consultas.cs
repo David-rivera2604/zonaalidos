@@ -1,6 +1,8 @@
 ﻿using Architect.DataFactory;
 using Architect.Utilities.Extensions;
 using System;
+using System.ComponentModel.Design;
+using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
 using DbType = Architect.DataFactory.Enumerations.DbType;
 
@@ -49,7 +51,8 @@ namespace Architect.Extend.Integrations.Aliados
                                 PhoneType = reader.IntegerValue("PhoneType"),
                                 PhoneNumber = reader.StringValue("PhoneNumber"),
                                 CountryOfNationality = reader.IntegerValue("CountryOfNationality"),
-                                Source = "Aliados"
+                                Source = "Aliados",
+                                CountryOfNationalityISO = ""
                             };
                             if (result.PhoneNumber.Length > 4 && result.PhoneNumber.Length < 9)
                             {
@@ -59,6 +62,15 @@ namespace Architect.Extend.Integrations.Aliados
                             {
                                 result.SecondLastName = result.LastName.Substring(result.LastName.IndexOf(" ") + 1).Capitalize();
                                 result.LastName = result.LastName.Substring(0, result.LastName.IndexOf(" "));
+                            }
+
+                            if (result.CountryOfNationality > 0)
+                            {
+                                Architect.API.Core.Contracts.General.Lookup lks = Architect.API.Core.Business.Common.LpkExByCode("Pais", result.CountryOfNationality, 0);
+                                if (lks != null)
+                                {
+                                    result.CountryOfNationalityISO = lks.ExtendStringValue2;
+                                }
                             }
 
                         }));

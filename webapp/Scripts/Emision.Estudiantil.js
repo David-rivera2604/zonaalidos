@@ -40,6 +40,7 @@ app.EmisionEstudiantil = (function () {
 
 
                     $('#emitir').addClass('d-none');
+                    $('.VerificarDomicilio').addClass('d-none');
                     $('#tercerosNew').addClass('d-none');
 
 
@@ -168,7 +169,8 @@ app.EmisionEstudiantil = (function () {
         //    date: null
 
         //});
-
+        $('#emitir').addClass('d-none');
+        $('.VerificarDomicilio').removeClass('d-none');
         $("#emitir").appendTo("#GenericToolBar");
         $("#limpiar").appendTo("#GenericToolBar");
     };
@@ -241,6 +243,14 @@ app.EmisionEstudiantil = (function () {
         $('#print').click(function () {
             event.preventDefault();
             app.ui.ShowSideBar({ title: 'Enviar certificado por correo', subtitle: 'Póliza #{NUM_POLIZA}', id: 9000, data: { NUM_POLIZA: setupData.num_poliza, NUM_RIESGO: setupData.cantidad_riesgos * -1 } })
+        });
+
+        $('input:radio[name=DomicilioVerificado]').click(function (e) {
+            if (app.ui.GetRadioStringValue('DomicilioVerificado') === 'S') {
+                $('#emitir').removeClass('d-none');
+            } else {
+                $('#emitir').addClass('d-none');
+            }
         });
 
     };

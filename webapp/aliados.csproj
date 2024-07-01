@@ -1784,6 +1784,7 @@
     <Content Include="Views\Bayer\Carnet.cshtml" />
     <Content Include="Reports\CarnetDigital.repx" />
     <Content Include="Views\Viewer\Form.cshtml" />
+    <Content Include="Views\Emision\_verificardomicilio.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -3,6 +3,7 @@ using Architect.Utilities.Extensions;
 using FastMember;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace Architect.API.Core.Business
 {
@@ -360,7 +361,12 @@ namespace Architect.API.Core.Business
             Architect.API.Core.Contracts.General.TenantLookup tenantLkpMaster = Architect.API.Core.Business.General.LookupMaster.TenantInformation(key, companyId);
             return DataAccess.General.LookupCustom.RetrieveLpkByHomologousCode(tenantLkpMaster.LookupId, 1, homologousCode, tenantLkpMaster.CompanyId);
         }
-
+        public static Contracts.General.Lookup LpkExByCode(string key, int code, int companyId)
+        {
+            Architect.API.Core.Contracts.General.TenantLookup tenantLkpMaster = Architect.API.Core.Business.General.LookupMaster.TenantInformation(key, companyId);
+            List<Contracts.General.Lookup> result = DataAccess.General.LookupCustom.RetrieveByLookupExtendedMasterKey(tenantLkpMaster.LookupId, 1, tenantLkpMaster.CompanyId);
+            return result.Where(r => r.Code == code).FirstOrDefault();
+        }
 
         public static List<Architect.Utilities.Contracts.LookUpValue> Cache(string prefix)
         {
