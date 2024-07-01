@@ -584,4 +584,5 @@
                    KYC. Buscador de actividad económica: Igual al anterior.
                    KYC. Domicilio permanente: Dado que es un dato que se reitera, el sistema debería en automático cargarlo, con solo una vez digitado,
 1.6.63  03/05/2024 
+1.6.64  01/07/2024 Pasarela. Ajuste en el llamado al package de pago en Mapfre.
 

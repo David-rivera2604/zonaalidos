@@ -30,7 +30,8 @@ app.EmisionMultirriesgo = (function () {
                         $('.Solictud_DatosVar').removeClass('d-none');
                         $('#PageSubTitle').text("Emision Solicitud de Seguro")
                     } else {
-                        $('#cotizar').removeClass('d-none');
+                        //$('#cotizar').removeClass('d-none');
+                        $('.VerificarDomicilio').removeClass('d-none');
                         $("#cotizar").appendTo("#GenericToolBar");
                     }
 
@@ -59,6 +60,7 @@ app.EmisionMultirriesgo = (function () {
 
 
                     $('#cotizar').addClass('d-none');
+                    $('.VerificarDomicilio').addClass('d-none');
                     $('#tercerosNew').addClass('d-none');
 
                     $('#anodeconstruccion').replaceWith('<div>' + $('#anodeconstruccion').val() + '</div>');
@@ -760,6 +762,14 @@ app.EmisionMultirriesgo = (function () {
         $('#print').click(function () {
             event.preventDefault();
             app.ui.ShowSideBar({ title: 'Enviar certificado por correo', subtitle: 'Póliza #{NUM_POLIZA}', id: 9000, data: { NUM_POLIZA: setupData.num_poliza, NUM_RIESGO: 1 } })
+        });
+
+        $('input:radio[name=DomicilioVerificado]').click(function (e) {
+            if (app.ui.GetRadioStringValue('DomicilioVerificado') === 'S') {
+                $('#cotizar').removeClass('d-none');
+            } else {
+                $('#cotizar').addClass('d-none');
+            }
         });
     };
 

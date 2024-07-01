@@ -795,7 +795,7 @@ app.core = (function () {
         },
         LoadScriptFile: function (url, async = true, type = "text/javascript") {
             if (!url.startsWith('http')) {
-                url = app.setting.basepath + 'Scripts/' + url;
+                url = app.setting.basepath + 'scripts/' + url;
             }
             return new Promise((resolve, reject) => {
                 try {
