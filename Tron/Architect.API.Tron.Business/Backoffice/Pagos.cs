@@ -70,7 +70,7 @@ namespace Architect.API.Tron.Business.Backoffice
                 {
                     result.OnlinePayment.AgentCode = 999999;
                 }
-                bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode);
+                bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode, "Placetopay");
 
             }
         }
@@ -169,7 +169,7 @@ namespace Architect.API.Tron.Business.Backoffice
                 {
                     result.OnlinePayment.AgentCode = 999999;
                 }
-                bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode);
+                bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode, "Placetopay");
 
             }
 
@@ -179,10 +179,25 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Procesa el pago de un recibo en tron.
         /// </summary>
-        public async static Task<bool> TronPayment(Architect.Payment.Integrations.Contracts.InformationRequest request, int agentCode)
+        public async static Task<bool> TronPayment(Architect.Payment.Integrations.Contracts.InformationRequest request, int agentCode, string source)
         {
             string tipoPagador = "A";
             string pagador = agentCode.ToString();
+            string cuenta = "";
+
+            switch (source)
+            {
+                case "RecurringReceipts":
+                    cuenta = request.currency == "CRC" ? "BAC01" : "BAC02";
+                    break;
+                case "Widget&Link":
+                    cuenta = request.currency == "CRC" ? "HSBC1" : "HSBC2";
+                    break;
+
+                default:
+                    cuenta = source;
+                    break;
+            }
 
             //En el caso de que no se trate de un agente, se asume que es un cliente tomador
             if (agentCode.IsEmpty() && request.OnlinePayment.UpdateUserCode.IsNotEmpty())
@@ -209,6 +224,7 @@ namespace Architect.API.Tron.Business.Backoffice
                     moneda = request.currency,
                     direccionIP = request.ipAddress,
                     huellaNavegador = (string)null,
+                    cuenta = cuenta,
                     tarjeta = new
                     {
                         bin = string.Empty,
