@@ -2,6 +2,8 @@
 
 app.ExtendClaims = (function () {
 
+    let attr = '';
+
     async function LoadRelato(num_sini) {
 
         app.core.api_get(`Claim/${num_sini}/Story`)
@@ -16,16 +18,21 @@ app.ExtendClaims = (function () {
     }
 
     return {
+        Init: function () {
+            if (app.core.URLStringValue('id') == '361') {
+                attr = 'invisible';
+            }
+        },
         NUM_SINIFormatter: function (value, row, index, field) {
-            var status = 'fa-check';
-            var color = 'green';
+            let status = 'fa-check';
+            let color = 'green';
             if (row.TIP_EST_SINI == 'P') {
                 status = 'fa-clock-o';
                 color = 'yellowgreen';
             }
             return `<i class="fa ${status}" aria-hidden="true" style="margin: 0px 8px 0px 5px;color: ${color};" title="${app.ui.StringCapitalizeFormatter(row.NOM_TIP_EST_SINI)}"></i>` +
                 `<span  title="${app.ui.StringCapitalizeFormatter(row.NOM_CAUSA)}">` + row.NUM_SINI + '</span>' +
-                '<button type="button" name="viewClaim" class="btn btn-slim btn-sm btn-link event" title="Ver detalle del siniestro"><i class="fa fa-plus-square-o"></i></button>';
+                `<button type="button" name="viewClaim" class="btn btn-slim btn-sm btn-link ${attr} event" title="Ver detalle del siniestro"><i class="fa fa-plus-square-o"></i></button>`;
         },
         ASIGESFormatter: function (value, row, index, field) {
             let comp = '';
@@ -40,10 +47,14 @@ app.ExtendClaims = (function () {
         },
         NUM_POLIZAFormatter: function (value, row, index, field) {
             return `<span>${row.NUM_POLIZA}</span>` +
-                ' <button type="button" name="viewPolicy" class="btn btn-slim btn-sm btn-link event" title="Ver detalle de la póliza"><i class="fa fa-plus-square-o" ></i></button>';
+                ` <button type="button" name="viewPolicy" class="btn btn-slim btn-sm btn-link ${attr} event" title="Ver detalle de la póliza"><i class="fa fa-plus-square-o" ></i></button>`;
         },
         NOM_ASEGFormatter: function (value, row, index, field) {
             return `<span>${row.TIP_DOCUM_ASEG} ${row.COD_DOCUM_ASEG} - ${app.ui.StringCapitalizeFormatter(row.NOM_ASEG)} ${app.ui.StringCapitalizeFormatter(row.APE_ASEG)}</span>`;
+        },
+        NOM_ASEG2Formatter: function (value, row, index, field) {
+            return `<span>${row.TIP_DOCUM_ASEG} ${row.COD_DOCUM_ASEG} - ${app.ui.StringCapitalizeFormatter(row.NOM_ASEG)} ${app.ui.StringCapitalizeFormatter(row.APE_ASEG)}</span>` +
+                `<button type="button" name="viewTercero" class="btn btn-slim btn-sm btn-link ${attr} event" title="Ver detalle del tercero"><i class="fa fa-plus-square-o"></i></button>`;
         },
         FEC_SINIFormatter: function (value, row, index, field) {
             if (row.HORA_SINI != null) {
@@ -52,8 +63,18 @@ app.ExtendClaims = (function () {
             return '<span>' + moment(value).format('DD/MM/YYYY hh:mma') + '</span><br>';
         },
         NOM_EXPFormatter: function (value, row, index, field) {
-            return `<span>${row.NUM_EXP} - ${app.ui.StringCapitalizeFormatter(value)}</span>` +
-                ' <button type="button" name="viewClaimExp" class="btn btn-slim btn-sm btn-link event" title="Ver detalle del expediente"><i class="fa fa-plus-square-o" ></i></button>';
+            let status = 'fa-check';
+            let color = 'green';
+            if (row.TIP_EST_EXP == 'P') {
+                status = 'fa-clock-o';
+                color = 'yellowgreen';
+            }
+            if (value == null)
+                return '';
+            else
+                return `<i class="fa ${status}" aria-hidden="true" style="margin: 0px 8px 0px 5px;color: ${color};" title="${app.ui.StringCapitalizeFormatter(row.NOM_TIP_EST_EXP)}"></i>` +
+                    `<span>${row.NUM_EXP} - ${app.ui.StringCapitalizeFormatter(value)}</span>` +
+                    ` <button type="button" name="viewClaimExp" class="btn btn-slim btn-sm btn-link ${attr} event" title="Ver detalle del expediente"><i class="fa fa-plus-square-o" ></i></button>`;
         },
         NOM_TIP_EST_SINICellStyle: function (value, row, index) {
             if (row.TIP_EST_SINI === 'P') {
@@ -68,12 +89,24 @@ app.ExtendClaims = (function () {
         },
         ShowClaimDetail: function (row) {
             var html = [];
+
+            let d = $('#1GridTbl').bootstrapTable('getData').filter(r => r.NUM_SINI == row.NUM_SINI);
+
+            let reserva = d.reduce((accumulator, item) => { return accumulator + item.IMP_RESERVA; }, 0);
+            let estimado = d.reduce((accumulator, item) => { return accumulator + item.IMP_ESTIMADO; }, 0);
+            let liquidado = d.reduce((accumulator, item) => { return accumulator + item.IMP_LIQUIDADO; }, 0);
+            let pagado = d.reduce((accumulator, item) => { return accumulator + item.IMP_PAGADO; }, 0);
+            
             html.push('<div class="row">');
             [
                 { key: 'Ocurrencia', value: `${app.ui.DateTimeValueToString(row.FEC_SINI, row.HORA_SINI, '---')}`, size: 6 },
                 { key: 'Termino', value: `${app.ui.DateTimeValueToString(row.FEC_TERM_SINI, undefined, '---')}`, size: 6 },
                 { key: 'Ramo', value: `${row.COD_RAMO} - ${app.ui.StringCapitalizeFormatter(row.NOM_RAMO)}`, size: 12 },
                 { key: 'Causa', value: `${row.COD_CAUSA_SINI} - ${app.ui.StringCapitalizeFormatter(row.NOM_CAUSA)}`, size: 12 },
+                { key: 'Reserva', value: app.ui.DecimalWithZeroFormatter(reserva), size: 6 },
+                { key: 'Estimado', value: app.ui.DecimalWithZeroFormatter(estimado), size: 6 },
+                { key: 'Liquidado', value: app.ui.DecimalWithZeroFormatter(liquidado), size: 6 },
+                { key: 'Pagado', value: app.ui.DecimalWithZeroFormatter(pagado), size: 6 },
                 { key: 'Descripción del riesgo', value: app.ui.StringCapitalizeFormatter(row.NOM_RIESGO), size: 12 },
                 { key: 'Tomando', value: `${row.TIP_DOCUM_TOMADOR} ${row.COD_DOCUM_TOMADOR} - ${app.ui.StringCapitalizeFormatter(row.NOM_TOMADOR)} ${app.ui.StringCapitalizeFormatter(row.APE_TOMADOR)}`, size: 12 },
                 { key: 'Asegurado', value: `${row.TIP_DOCUM_ASEG} ${row.COD_DOCUM_ASEG} - ${app.ui.StringCapitalizeFormatter(row.NOM_ASEG)} ${app.ui.StringCapitalizeFormatter(row.APE_ASEG)}`, size: 12 },
@@ -81,8 +114,7 @@ app.ExtendClaims = (function () {
                 { key: 'Contacto', value: `${row.TIP_DOCUM_CONTACTO} ${row.COD_DOCUM_ASEG} - ${app.ui.StringCapitalizeFormatter(row.NOM_CONTACTO)} ${app.ui.StringCapitalizeFormatter(row.APE_CONTACTO)}`, size: 12 },
                 { key: 'Email del contacto', value: `${app.ui.StringValueToString(row.EMAIL_CONTACTO, '---')}`, size: 12 },
                 { key: 'Teléfono del contacto', value: `${app.ui.StringValueToString(row.TEL_NUMERO_CONTACTO, '---')}`, size: 12 },
-                { key: 'Relato', value: `<span id="relato${row.NUM_SINI}">Buscando información del relato para el siniestro ${row.NUM_SINI}...<span>`, size: 12 }
-
+                { key: 'Relato', value: `<span id="relato${row.NUM_SINI}">Buscando información del relato para el siniestro ${row.NUM_SINI}...<span>`, size: 12 },
             ].forEach(function (item) {
                 html.push(`<div class="col-md-${item.size}"><div class="readonlyfield"><strong>${item.key}</strong><div>${item.value}</div></div></div>`);
             });
@@ -96,11 +128,12 @@ app.ExtendClaims = (function () {
             [
                 { key: 'Apertura', value: app.ui.DateFormatter(row.FEC_APER_EXP), size: 6 },
                 { key: 'Termino', value: app.ui.DateFormatter(row.FEC_TERM_EXP), size: 6 },
+                { key: 'Estado', value: app.ui.StringCapitalizeFormatter(row.NOM_TIP_EST_EXP), size: 12 },
                 { key: 'Reserva', value: app.ui.DecimalWithZeroFormatter(row.IMP_RESERVA), size: 6 },
                 { key: 'Estimado', value: app.ui.DecimalWithZeroFormatter(row.IMP_ESTIMADO), size: 6 },
                 { key: 'Liquidado', value: app.ui.DecimalWithZeroFormatter(row.IMP_LIQUIDADO), size: 6 },
                 { key: 'Pagado', value: app.ui.DecimalWithZeroFormatter(row.IMP_PAGADO), size: 6 },
-                { key: 'Persona relacionada al expediente', value: `${row.TIP_DOCUM} ${row.COD_DOCUM} - ${app.ui.StringCapitalizeEachWordFormatter(row.NOMBRE)} ${app.ui.StringCapitalizeEachWordFormatter(row.APELLIDOS)}`, size: 12 },
+                { key: 'Persona relacionada al expediente', value: row.COD_DOCUM == null ? '---': `${row.TIP_DOCUM} ${row.COD_DOCUM} - ${app.ui.StringCapitalizeEachWordFormatter(row.NOMBRE)} ${app.ui.StringCapitalizeEachWordFormatter(row.APELLIDOS)}`, size: 12 },
             ].forEach(function (item) {
                 html.push(`<div class="col-md-${item.size}"><div class="readonlyfield"><strong>${item.key}</strong><div>${item.value}</div></div></div>`);
             });
@@ -108,6 +141,22 @@ app.ExtendClaims = (function () {
             html.push('</div>');
 
             app.ui.ShowSideBar({ title: 'EXPEDIENTE #{NUM_EXP}', subtitle: 'Información', isHTML: true, HTML: html.join(''), data: row, width: '360px' })
+        },
+        ShowTercero: function (row) {
+            var html = [];
+            html.push('<div class="row">');
+            [
+                { key: 'Identificación', value: `${row.TIP_DOCUM_ASEG} ${row.COD_DOCUM_ASEG}`, size: 12 },
+                { key: 'Nombre', value: `${app.ui.StringCapitalizeFormatter(row.NOM_ASEG)}`, size: 6 },
+                { key: 'Apellido', value: `${app.ui.StringCapitalizeFormatter(row.APE_ASEG)}`, size: 6 },
+                { key: 'Email', value: `${row.EMAIL_ASEG}`, size: 12 },
+            ].forEach(function (item) {
+                html.push(`<div class="col-md-${item.size}"><div class="readonlyfield"><strong>${item.key}</strong><div>${item.value}</div></div></div>`);
+            });
+
+            html.push('</div>');
+
+            app.ui.ShowSideBar({ title: 'TERCERO #{TIP_DOCUM_ASEG} {COD_DOCUM_ASEG}', subtitle: 'Información', isHTML: true, HTML: html.join(''), data: row, width: '360px' })
         },
 
         ShowPolicyDetail: function (row) {
@@ -126,8 +175,12 @@ app.ExtendClaims = (function () {
                             { key: 'Ramo', value: `${info.COD_RAMO} - ${app.ui.StringCapitalizeFormatter(info.NOM_RAMO)}`, size: 12 },
                             { key: 'Fraccionamiento', value: `${info.COD_FRACC_PAGO} - ${app.ui.StringCapitalizeFormatter(info.NOM_FRACC_PAGO)}`, size: 12 },
                             { key: 'Moneda', value: `${info.COD_MON} - ${app.ui.StringCapitalizeFormatter(info.NOM_MON)}`, size: 12 },
-                            { key: 'Póliza grupo', value: `${app.ui.StringValueToString(info.NUM_POLIZA_GRUPO, '---')}`, size: 12 },
-                            { key: 'Contrato', value: `${app.ui.StringValueToString(info.NUM_CONTRATO, '---')}`, size: 12 },
+                            { key: 'Póliza grupo', value: `${app.ui.StringValueToString(info.NUM_POLIZA_GRUPO, '---')}`, size: 6 },
+                            { key: 'Contrato', value: `${app.ui.StringValueToString(info.NUM_CONTRATO, '---')}`, size: 6 },
+                            { key: 'Descripción del riesgo', value: app.ui.StringCapitalizeFormatter(row.NOM_RIESGO), size: 12 },
+                            { key: 'Tomando', value: `${row.TIP_DOCUM_TOMADOR} ${row.COD_DOCUM_TOMADOR} - ${app.ui.StringCapitalizeFormatter(row.NOM_TOMADOR)} ${app.ui.StringCapitalizeFormatter(row.APE_TOMADOR)}`, size: 12 },
+                            { key: 'Asegurado', value: `${row.TIP_DOCUM_ASEG} ${row.COD_DOCUM_ASEG} - ${app.ui.StringCapitalizeFormatter(row.NOM_ASEG)} ${app.ui.StringCapitalizeFormatter(row.APE_ASEG)}`, size: 12 },
+                            { key: 'Email del asegurado', value: `${row.EMAIL_ASEG}`, size: 12 },
 
                         ].forEach(function (item) {
                             html.push(`<div class="col-md-${item.size}"><div class="readonlyfield"><strong>${item.key}</strong><div>${item.value}</div></div></div>`);
@@ -142,6 +195,21 @@ app.ExtendClaims = (function () {
         },
         ShowClaimPanel: function (row) {
             window.location.href = app.setting.basepath + 'purdy/panel?asiges=' + row.ASIGES;
+        },
+        EventHandler: function (id, index, stage) {
+            console.log(id, index, stage);
+
+            if (id != undefined && stage == 'onPostBody') {
+                $(id + ' tbody tr').on('mouseover', function () {
+                    $(this).find('.btn-link').removeClass('invisible'); $(this).siblings().find('.btn-link').addClass('invisible');
+                });
+            }
         }
     };
 })();
+
+if (app.core.URLStringValue('id') == '361') {
+    app.Extend = app.Extend || {};
+    app.Extend.EventHandler = app.ExtendClaims.EventHandler;
+}
+app.ExtendClaims.Init();

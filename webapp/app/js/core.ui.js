@@ -285,13 +285,13 @@ app.ui = (function () {
                 return value;
         },
         StringCapitalizeFormatter: function (value, row, index, field) {
-            if (value === null || value === 0 || typeof value === 'object')
+            if (value === undefined || value === null || value === 0 || typeof value === 'object')
                 return '';
             else
                 return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
         },
         StringCapitalizeEachWordFormatter: function (value, row, index, field) {
-            if (value === null || value === 0 || typeof value === 'object')
+            if (value === undefined || value === null || value === 0 || typeof value === 'object')
                 return '';
             else {
                 var words = value.split(" ");

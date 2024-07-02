@@ -312,6 +312,9 @@ app.ViewerQuery = (function () {
         };
         spec.onPostBody = function (data) {
             app.ui.CommonBehaviour();
+            if (app.Extend != undefined && app.Extend.EventHandler != undefined && app.Extend.EventHandler !== null) {
+                app.Extend.EventHandler(spec.id, spec.index, 'onPostBody');
+            }
         };
         if (spec.skipfirstload != undefined && spec.skipfirstload) {
             spec.ajax = null;
@@ -472,6 +475,9 @@ app.ViewerQuery = (function () {
                 spec.maintainMetaData = true;
                 spec.onPostBody = function (data) {
                     app.ui.CommonBehaviour();
+                    if (app.Extend != undefined && app.Extend.EventHandler != undefined && app.Extend.EventHandler !== null) {
+                        app.Extend.EventHandler(spec.id, spec.index, 'onPostBody');
+                    }
                 };
                 spec.rowStyle = function (row, index) {
                     return {
@@ -549,7 +555,7 @@ app.ViewerQuery = (function () {
                                     app.core.LoadScriptFile(item.include)
                                         .then(d => {
                                             Render(item);
-                                            if (app.Extend.EventHandler !== null) {
+                                            if (app.Extend != undefined && app.Extend.EventHandler != undefined && app.Extend.EventHandler !== null) {
                                                 app.Extend.EventHandler(_id, item.index, 'loaded');
                                             }
                                         })
