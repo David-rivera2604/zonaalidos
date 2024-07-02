@@ -96,7 +96,7 @@ app.ExtendClaims = (function () {
             let estimado = d.reduce((accumulator, item) => { return accumulator + item.IMP_ESTIMADO; }, 0);
             let liquidado = d.reduce((accumulator, item) => { return accumulator + item.IMP_LIQUIDADO; }, 0);
             let pagado = d.reduce((accumulator, item) => { return accumulator + item.IMP_PAGADO; }, 0);
-            
+
             html.push('<div class="row">');
             [
                 { key: 'Ocurrencia', value: `${app.ui.DateTimeValueToString(row.FEC_SINI, row.HORA_SINI, '---')}`, size: 6 },
@@ -133,7 +133,7 @@ app.ExtendClaims = (function () {
                 { key: 'Estimado', value: app.ui.DecimalWithZeroFormatter(row.IMP_ESTIMADO), size: 6 },
                 { key: 'Liquidado', value: app.ui.DecimalWithZeroFormatter(row.IMP_LIQUIDADO), size: 6 },
                 { key: 'Pagado', value: app.ui.DecimalWithZeroFormatter(row.IMP_PAGADO), size: 6 },
-                { key: 'Persona relacionada al expediente', value: row.COD_DOCUM == null ? '---': `${row.TIP_DOCUM} ${row.COD_DOCUM} - ${app.ui.StringCapitalizeEachWordFormatter(row.NOMBRE)} ${app.ui.StringCapitalizeEachWordFormatter(row.APELLIDOS)}`, size: 12 },
+                { key: 'Persona relacionada al expediente', value: row.COD_DOCUM == null ? '---' : `${row.TIP_DOCUM} ${row.COD_DOCUM} - ${app.ui.StringCapitalizeEachWordFormatter(row.NOMBRE)} ${app.ui.StringCapitalizeEachWordFormatter(row.APELLIDOS)}`, size: 12 },
             ].forEach(function (item) {
                 html.push(`<div class="col-md-${item.size}"><div class="readonlyfield"><strong>${item.key}</strong><div>${item.value}</div></div></div>`);
             });
@@ -143,20 +143,50 @@ app.ExtendClaims = (function () {
             app.ui.ShowSideBar({ title: 'EXPEDIENTE #{NUM_EXP}', subtitle: 'Información', isHTML: true, HTML: html.join(''), data: row, width: '360px' })
         },
         ShowTercero: function (row) {
-            var html = [];
-            html.push('<div class="row">');
-            [
-                { key: 'Identificación', value: `${row.TIP_DOCUM_ASEG} ${row.COD_DOCUM_ASEG}`, size: 12 },
-                { key: 'Nombre', value: `${app.ui.StringCapitalizeFormatter(row.NOM_ASEG)}`, size: 6 },
-                { key: 'Apellido', value: `${app.ui.StringCapitalizeFormatter(row.APE_ASEG)}`, size: 6 },
-                { key: 'Email', value: `${row.EMAIL_ASEG}`, size: 12 },
-            ].forEach(function (item) {
-                html.push(`<div class="col-md-${item.size}"><div class="readonlyfield"><strong>${item.key}</strong><div>${item.value}</div></div></div>`);
-            });
+            app.ui.ShowSideBar({ title: 'TERCERO - {TIP_DOCUM_ASEG} {COD_DOCUM_ASEG}', subtitle: 'Información', isHTML: true, HTML: `<div id="tercero${row.COD_DOCUM_ASEG}"></div>`, data: row, width: '360px' })
 
-            html.push('</div>');
+            $('.sidebar-content').toggleClass('sk-loading');
 
-            app.ui.ShowSideBar({ title: 'TERCERO #{TIP_DOCUM_ASEG} {COD_DOCUM_ASEG}', subtitle: 'Información', isHTML: true, HTML: html.join(''), data: row, width: '360px' })
+            app.core.api_get(`client/${row.COD_DOCUM_ASEG}`)
+                .then(data => {
+                    if (data != null) {
+                        let info = data;
+                        let html = [];
+                        let isEmpleado = localStorage.getItem('Roles').includes('Empleado');
+                        html.push('<div class="row">');
+                        [
+                            { key: 'Identificación', value: `${info.TIP_DOCUM} ${info.COD_DOCUM}`, size: 6, visible: true },
+                            { key: 'Nombre', value: `${app.ui.StringCapitalizeFormatter(info.NOM_TERCERO)}`, size: 6, visible: true },
+                            { key: 'Apellido', value: `${app.ui.StringCapitalizeFormatter(info.APE1_TERCERO)}`, size: 6, visible: true },
+                            { key: 'Nacimiento', value: `${app.ui.DateTimeValueToString(info.FEC_NACIMIENTO, undefined, '---')}`, size: 6, visible: true },
+                            { key: 'Teléfono', value: `${app.ui.StringValueToString(info.TLF_NUMERO, '---')}`, size: 6, visible: true },
+                            { key: 'Celular', value: `${app.ui.StringValueToString(info.TLF_MOVIL, '---')}`, size: 6, visible: true },
+                            { key: 'Email', value: `${info.EMAIL}`, size: 6, visible: true },
+                            { key: '', value: '', size: 6, visible: true },
+
+                            { key: 'Domicilio', value: `${app.ui.StringCapitalizeFormatter(info.NOM_DOMICILIO1)}`, size: 12, visible: true },
+                            { key: 'Provincia', value: `${app.ui.StringCapitalizeFormatter(info.NOM_ESTADO)}`, size: 6, visible: true },
+                            { key: 'Cantón', value: `${app.ui.StringCapitalizeFormatter(info.NOM_PROV)}`, size: 6, visible: true },
+                            { key: 'Distrito', value: `${app.ui.StringCapitalizeFormatter(info.NOM_LOCALIDAD)}`, size: 6, visible: true },
+                            { key: '', value: '', size: 6, visible: true },
+
+                            { key: 'Tipo de tarjeta', value: `${app.ui.StringValueToString(info.NOM_TIP_TARJETA, '---')} - ${app.ui.StringValueToString(info.NOM_TARJETA, '---')}`, size: 12, visible: isEmpleado },
+                            { key: 'Tarjeta', value: `${app.ui.StringValueToString(info.NUM_TARJETA, '---')}`, size: 6, visible: isEmpleado },
+                            { key: 'Vencimiento', value: `${app.ui.DateTimeValueToString(info.FEC_VCTO_TARJETA, undefined, '---')}`, size: 6, visible: isEmpleado },
+                            { key: '', value: '', size: 6, visible: isEmpleado },
+
+                            { key: 'Contacto', value: `${app.ui.StringValueToString(info.NOM_CONTACTO, '---')} ${app.ui.StringValueToString(info.APELLIDO_CONTACTO)}`, size: 12, visible: true },
+                            { key: 'Observación', value: `${app.ui.StringValueToString(info.OBS_ASEGURADO, '---')}`, size: 12, visible: true },
+
+                        ].forEach(function (item) {
+                            if (item.visible)
+                                html.push(`<div class="col-md-${item.size}"><div class="readonlyfield"><strong>${item.key}</strong><div>${item.value}</div></div></div>`);
+                        });
+                        html.push(`</div>`);
+                        $(`#tercero${row.COD_DOCUM_ASEG}`).html(html.join(''));
+                    }
+                    $('.sidebar-content').toggleClass('sk-loading');
+                });
         },
 
         ShowPolicyDetail: function (row) {
@@ -190,8 +220,6 @@ app.ExtendClaims = (function () {
                     }
                     $('.sidebar-content').toggleClass('sk-loading');
                 });
-
-
         },
         ShowClaimPanel: function (row) {
             window.location.href = app.setting.basepath + 'purdy/panel?asiges=' + row.ASIGES;
