@@ -188,7 +188,7 @@ app.EmisionMapfreMas = (function () {
                 SettingReload(function () {
                     MapObjectToInput(data);
                 });
-            }, `cod_ramo=${data.cod_ramo}:cod_pais=CRI:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}:num_contrato=${data.contrato}`);
+            }, `cod_ramo=${data.cod_ramo}:cod_pais=CRI:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}:num_contrato=${data.contrato}:cod_agt=${data.cod_agt}`);
 
 
     }
@@ -199,7 +199,7 @@ app.EmisionMapfreMas = (function () {
         param.tipo_prod = $('input:radio[name=tipo_prod]:checked').val();
         param.cod_marca = app.ui.GetDropDownNumericValue('#cod_marca');
 
-        app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasSettings?cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&cod_sub_modelo=${param.cod_sub_modelo}&anio_sub_modelo=${param.ANIO_SUB_MODELO}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.COD_PLAN_AUTO}&num_contrato=${param.contrato}&num_subcontrato=${param.subcontrato}&num_poliza_grupo=${param.polizagrupo}&tipo_prod=${param.tipo_prod}`)
+        app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasSettings?cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&cod_sub_modelo=${param.cod_sub_modelo}&anio_sub_modelo=${param.ANIO_SUB_MODELO}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.COD_PLAN_AUTO}&num_contrato=${param.contrato}&num_subcontrato=${param.subcontrato}&num_poliza_grupo=${param.polizagrupo}&tipo_prod=${param.tipo_prod}&cod_agt=${param.cod_agt}`)
             .done(function (settingData) {
                 fec_vcto_poliza_grupo = settingData.fec_vcto_poliza_grupo;
                 /*if (localStorage.getItem('Roles').includes('PolizaGrupo')) {

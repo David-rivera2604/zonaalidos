@@ -22,6 +22,8 @@ namespace Architect.API.Tron.Business.Cotizacion
                 polizagrupo = tronQuoteInfo.num_poliza_grupo,
                 tipo_prod = "basico",
                 tipo_prodDesc = "Básico",
+                cod_agt = tronQuoteInfo.cod_agt,
+                cod_cuadro_com = tronQuoteInfo.cod_cuadro_com,
                 coberturas = new List<Contracts.Comun.Cobertura>()
             };
 
