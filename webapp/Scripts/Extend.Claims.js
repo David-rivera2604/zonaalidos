@@ -126,6 +126,8 @@ app.ExtendClaims = (function () {
             var html = [];
             html.push('<div class="row">');
             [
+                { key: 'Expediente', value: `${row.TIP_EXP} - ${app.ui.StringCapitalizeFormatter(row.NOM_EXP)}`, size: 12 },
+                { key: 'Ocurrencia', value: app.ui.DateFormatter(row.FEC_OCURRENCIA), size: 6 },
                 { key: 'Apertura', value: app.ui.DateFormatter(row.FEC_APER_EXP), size: 6 },
                 { key: 'Termino', value: app.ui.DateFormatter(row.FEC_TERM_EXP), size: 6 },
                 { key: 'Estado', value: app.ui.StringCapitalizeFormatter(row.NOM_TIP_EST_EXP), size: 12 },
