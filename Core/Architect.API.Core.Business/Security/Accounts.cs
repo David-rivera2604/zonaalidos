@@ -10,6 +10,10 @@ using System.Linq;
 using System.Security.Claims;
 using System.Web.UI;
 using Architect.API.Core.Security;
+using System.DirectoryServices.ActiveDirectory;
+using System.Threading.Tasks;
+using Architect.API.Core.Contracts.General;
+using System.Text.RegularExpressions;
 
 
 namespace Architect.API.Core.Business.Security
@@ -28,6 +32,11 @@ namespace Architect.API.Core.Business.Security
 
         public static Contracts.Security.AuthenticationResponse Authentication(Contracts.Security.AuthenticationRequest authenticationRequest, ref Contracts.Security.Token token, bool firstInit = false)
         {
+
+
+
+
+
             Contracts.Security.AuthenticationResponse result = new Contracts.Security.AuthenticationResponse();
             Contracts.Security.UserMember user = null;
             List<Contracts.Security.RoleMember> rols = null;
@@ -194,7 +203,7 @@ namespace Architect.API.Core.Business.Security
 
                         //Solo actualizara el usuario cuando este entre desde login
                         if (firstInit) { UserIdActual = tokenItem; }
-                        
+
 
                         result.Token = Architect.API.Core.Security.Accounts.GeneratorToken(tokenItem);
                         user.LoginDate = DateTime.Now;
@@ -272,11 +281,11 @@ namespace Architect.API.Core.Business.Security
                             }
 
                         }
-                        if (!bypass &&!authenticationRequest.EmployeeMode)
+                        if (!bypass && !authenticationRequest.EmployeeMode)
                         {
-                            if (user.Password.Equals("."))
-                                result.MustChangePassword = true;
-                            else
+                            //if (user.Password.Equals("."))
+                            //    result.MustChangePassword = true;
+                            //else
                                 result.MustChangePassword = (user.PasswordChangedDate.AddDays(Architect.Utilities.Helpers.Settings.IntegerValue("Security.Password.Expiration", 90)) <= DateTime.Today);
                         }
                         Architect.API.Core.Security.Session.Create(new Contracts.Security.Activity()
@@ -357,7 +366,7 @@ namespace Architect.API.Core.Business.Security
 
             return RespuestaData;
         }
-		/// <summary>
+        /// <summary>
         /// Leer datos del inicio
         /// </summary>
         public static Architect.API.Core.Contracts.Security.ClientesInicioResponse ReadInicio(Core.Contracts.Security.Token tokenInfo)
@@ -366,7 +375,7 @@ namespace Architect.API.Core.Business.Security
             Architect.API.Core.Contracts.Security.ClientesInicioResponse DataInicio = Architect.API.Core.DataAccess.General.ProcessData.RetrieveInicio(tokenInfo.CompanyId);
 
             return DataInicio;
-        }			 
+        }
         private static Core.Contracts.General.LookupValue TenantInformation(string tenant)
         {
             const int companyId = 0;
@@ -756,6 +765,65 @@ namespace Architect.API.Core.Business.Security
                 response = 1;
             }
             return response;
+        }
+
+        /// <summary>
+        /// Permite autenticar un usuario por medio de sus credenciales.
+        public static async Task<Architect.API.Core.Contracts.Seguridad.RespuestaSeguridad> Token(string clienteID, string secretID, string ipAddress, string userAgent)
+        {
+            Architect.API.Core.Contracts.Seguridad.RespuestaSeguridad result = null;
+            return result;
+            try
+            {
+                if (string.IsNullOrEmpty(clienteID) || string.IsNullOrEmpty(secretID))
+                {
+                    return result;
+                }
+                else
+                {
+                    Architect.API.Core.Contracts.Security.Token token = null;
+
+                    AuthenticationResponse response = Architect.API.Core.Business.Security.Accounts.Authentication(new AuthenticationRequest()
+                    {
+                        Tenant = "Aliados",
+                        Email = clienteID,
+                        Password = secretID,
+                        IPAddress = ipAddress,
+                        UserAgent = userAgent
+                    }, ref token);
+
+                    if (response != null)
+                    {
+                        result = new Architect.API.Core.Contracts.Seguridad.RespuestaSeguridad()
+                        {
+                            access_token = response.Token,
+                            token_type = "Bearer",
+                            expires_in = response.ExpiresIn
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Architect.Utilities.Log.ErrorLog(ex);
+            }
+
+
+            return result;
+        }
+        public static Contracts.Security.UserMember Profile(int companyId, int userId)
+        {
+            Contracts.Security.UserMember result = null;
+            Architect.API.Core.Contracts.Security.UserMember user = Architect.API.Core.DataAccess.Security.UserMember.Retrieve(userId, companyId);
+            if (user != null)
+            {
+                result = new Contracts.Security.UserMember
+                {
+                    EMail = user.EMail,
+                    PhoneNumber = user.PhoneNumber
+                };
+            }
+            return result;
         }
     }
 }

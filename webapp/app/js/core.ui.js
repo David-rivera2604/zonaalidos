@@ -106,7 +106,7 @@ app.ui = (function () {
             return (($(selector).val() !== '') ? $(selector + '_group').data('DateTimePicker').date().format('YYYY-MM-DDT00:00:00') : moment('0001-01-01T00:00:00').format('YYYY-MM-DDT00:00:00'));
         },
         SetDateValue: function (selector, value) {
-            if (value === null || value.toString() === '0001-01-01T00:00:00')
+            if (value == undefined || value === null || value.toString() === '0001-01-01T00:00:00')
                 $(selector + '_group').data("DateTimePicker").date(null);
             else
                 $(selector + '_group').data("DateTimePicker").date(moment(value));
@@ -200,19 +200,25 @@ app.ui = (function () {
             if (max != undefined && value > max) {
                 value = max;
             }
+            if (value == undefined)
+                value = null;
+
             AutoNumeric.set(selector, value);
         },
-        SetRadioNumericValue: function (name, value) {
+        SetRadioNumericValue: function (name, value, defaultValue) {
             $('input:radio[name=' + name + '][value=' + value + ']').prop('checked', true);
+            if ($('input:radio[name=' + name + ']:checked').val() === null && (defaultValue != undefined && defaultValue != null)) {
+                $('input:radio[name=' + name + '][value=' + defaultValue + ']').prop('checked', true);
+            }
         },
-        SetRadioStringValue: function (name, value) {
+        SetRadioStringValue: function (name, value, defaultValue) {
             $('input:radio[name=' + name + '][value=' + value + ']').prop('checked', true);
+            if (($('input:radio[name=' + name + ']:checked').val() === undefined || $('input:radio[name=' + name + ']:checked').val() === null) && (defaultValue != undefined && defaultValue != null)) {
+                $('input:radio[name=' + name + '][value=' + defaultValue + ']').prop('checked', true);
+            }
         },
         GetRadioNumericValue: function (name) {
             return parseInt($('input:radio[name=' + name + ']:checked').val(), 10);
-        },
-        SetRadioStringValue: function (name, value) {
-            $('input:radio[name=' + name + '][value=' + value + ']').prop('checked', true);
         },
         GetRadioStringValue: function (name) {
             return $('input:radio[name=' + name + ']:checked').val();
@@ -279,13 +285,13 @@ app.ui = (function () {
                 return value;
         },
         StringCapitalizeFormatter: function (value, row, index, field) {
-            if (value === null || value === 0 || typeof value === 'object')
+            if (value === undefined || value === null || value === 0 || typeof value === 'object')
                 return '';
             else
                 return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
         },
         StringCapitalizeEachWordFormatter: function (value, row, index, field) {
-            if (value === null || value === 0 || typeof value === 'object')
+            if (value === undefined || value === null || value === 0 || typeof value === 'object')
                 return '';
             else {
                 var words = value.split(" ");
@@ -350,6 +356,10 @@ app.ui = (function () {
             if (row?.Cod_Mon == 2) currency = '$ ';
             if (row?.COD_MON == 1) currency = '₡ ';
             if (row?.COD_MON == 2) currency = '$ ';
+            if (row?.MONEDA == 'CRC') currency = '₡ ';
+            if (row?.MONEDA == 'USD') currency = '$ ';
+            if (row?.Moneda == 'CRC') currency = '₡ ';
+            if (row?.Moneda == 'USD') currency = '$ ';
             return currency + value.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         },
         DateFormatter: function (value, row, index, field) {
@@ -455,6 +465,10 @@ app.ui = (function () {
                 error.insertAfter(element);
             }
         },
+        Today: function () {
+            var value = new Date();
+            return value;
+        },
         Yesterday: function () {
             var value = new Date();
             value.setDate(value.getDate() - 1);
@@ -507,40 +521,48 @@ app.ui = (function () {
                 persistent: false
             });
             $(documentNumberElement + 'TypeMenu a').click(function () {
+                $(documentNumberElement).data('current', '');
                 app.ui.DocumentTypeHandler(this, documentNumberElement, 'Identification', callbackDocType);
             });
             $(documentNumberElement).on('blur', function () {
-                var validation = app.ui.IsDocumentNumberValid($(documentNumberElement + 'Type').data('value'), $(documentNumberElement).val());
-                if (validation.result) {
-                    $(documentNumberElement).addClass('loading');
-                    var encodedDocNum = encodeURIComponent($(documentNumberElement).val());
-                    var docType = $(documentNumberElement + 'Type').data('value');
-                    if (docType == 1) {
-                        var apiUrl = app.setting.apipath + 'v1/Insured/' + $(documentNumberElement).val().replace(/-/g, '') + '?docType=' + docType;
+                let oldValue = $(documentNumberElement).data('current');
+                let documentNumber = $(documentNumberElement).val();
+                let docType = $(documentNumberElement + 'Type').data('value');
+                if (oldValue != documentNumber) {
+                    let validation = app.ui.IsDocumentNumberValid(docType, documentNumber);
+                    if (validation.result) {
+                        let encodedDocNum = encodeURIComponent(documentNumber);
+                        let apiUrl = '';
+                        $(documentNumberElement).data('current', documentNumber);
+                        $(documentNumberElement).addClass('loading');
+                        
+                        if (docType == 1) {
+                            apiUrl = app.setting.apipath + 'v1/Insured/' + documentNumber.replace(/-/g, '') + '?docType=' + docType;
 
-                    } else {
-                        var apiUrl = app.setting.apipath + 'v1/Insured/' + (docType != 1 && docType != 2 ? encodedDocNum : parseInt(0 + $(documentNumberElement).val().replace(/-/g, ''), 10)) + '?docType=' + docType;
-                    }
-                    app.core.Get(apiUrl).done(function (data, textStatus, jqXHR) {
-                        if (data != null && data.FirstName !== null) {
-                            if (data.MiddleName === null) data.MiddleName = '';
-                            if (data.LastName === null) data.LastName = '';
-                            if (data.SecondLastName === null) data.SecondLastName = '';
                         } else {
-                            data = null;
+                            apiUrl = app.setting.apipath + 'v1/Insured/' + (docType != 1 && docType != 2 ? encodedDocNum : parseInt(0 + $(documentNumberElement).val().replace(/-/g, ''), 10)) + '?docType=' + docType;
                         }
-                        if (callbackDone) callbackDone(data);
-                    }).always(function () {
-                        $(documentNumberElement).removeClass('loading');
-                    });
-                    $(documentNumberElement).formatter({
-                        pattern: validation.pattern,
-                        persistent: false,
-                    });
+                        
+                        app.core.Get(apiUrl).done(function (data, textStatus, jqXHR) {
+                            if (data != null && data.FirstName !== null) {
+                                if (data.MiddleName === null) data.MiddleName = '';
+                                if (data.LastName === null) data.LastName = '';
+                                if (data.SecondLastName === null) data.SecondLastName = '';
+                            } else {
+                                data = null;
+                            }
+                            if (callbackDone) callbackDone(data);
+                        }).always(function () {
+                            $(documentNumberElement).removeClass('loading');
+                        });
+                        $(documentNumberElement).formatter({
+                            pattern: validation.pattern,
+                            persistent: false,
+                        });
+                    }
                 }
             });
         },
-
         DocumentNumberHandlerKYC: function (documentNumberElement, callbackDone, callbackDocumentType, TypeKYC) {
             var typedocument;
             let documenttype = documentNumberElement + "tipo"
@@ -1256,6 +1278,9 @@ app.ui = (function () {
         Error: function (msg) {
             app.ui.Error(msg, '', { timeOut: 9000, closeButton: true, progressBar: true });
         },
+        Info: function (msg) {
+            toastr.info(msg, '', { timeOut: 9000, closeButton: true, progressBar: true });
+        },
         Error: function (msg, title, settings) {
 
             toastr.error(msg, title, settings);
@@ -1263,6 +1288,38 @@ app.ui = (function () {
         NotifyClear: function (msg, title, settings) {
 
             toastr.remove();
+        },
+        NewDateWidget: function (selector) {
+            let settings = {
+                format: 'DD/MM/YYYY',
+                locale: 'es',
+                minDate: new Date('1900-01-01T00:00:00')
+            };
+            return $(selector + '_group').datetimepicker(settings);
+        },
+        NewNumericWidget: function (selector, options = '', minimumValue = '0', maximumValue = '999999999999999999', decimalPlaces = '2') {
+
+            options = ',' + options.toLowerCase() + ',';
+            if (options.includes(',allownegative,') && minimumValue === '0') {
+                minimumValue = '-99999999999999999';
+            }
+            if (options.includes(',integer,') && minimumValue === '0') {
+                decimalPlaces = '0';
+            }
+
+            let settings = {
+                decimalCharacter: ',',
+                decimalCharacterAlternative: '.',
+                digitGroupSeparator: '.',
+                minimumValue: minimumValue,
+                maximumValue: maximumValue,
+                decimalPlaces: decimalPlaces,
+                emptyInputBehavior: 'null'
+            };
+            return new AutoNumeric(selector, settings);
+        },
+        Redirect: function (url) {
+            window.location.href = url;
         }
     };
 })();

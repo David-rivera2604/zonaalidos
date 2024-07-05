@@ -1260,6 +1260,7 @@
     <Content Include="Scripts\Extend.AvisosCobro.js" />
     <Content Include="Scripts\Extend.Cases.js" />
     <Content Include="Scripts\Extend.Policy.js" />
+    <Content Include="Scripts\Form.Ext.SICOP.js" />
     <Content Include="Scripts\General.Case.js" />
     <Content Include="Scripts\General.NewCase.js" />
     <Content Include="Scripts\General.PaymentSettings.js" />
@@ -1319,6 +1320,7 @@
     <Content Include="Scripts\Dashboard.Render.js" />
     <Content Include="Scripts\Security.Register.js" />
     <Content Include="Scripts\Variaciones.MapfreMas.js" />
+    <Content Include="Scripts\Viewer.Form.js" />
     <Content Include="Scripts\ViewerManager.Render.js" />
     <Content Include="Scripts\ViewerTab.Render.js" />
     <Content Include="Scripts\Viewer.Render.js" />
@@ -1754,6 +1756,7 @@
     <Content Include="Views\Purdy\_encabezado.cshtml" />
     <Content Include="Views\Purdy\Panel.cshtml" />
     <Content Include="Views\Cases\_references.cshtml" />
+    <Content Include="Views\Viewer\Form.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1796,6 +1799,10 @@
     <ProjectReference Include="..\Kernel\Architect.Utilities\Architect.Utilities.csproj">
       <Project>{e8317ab3-7807-4fcf-8520-b80340b4eb7d}</Project>
       <Name>Architect.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sicop\Architect.SICOP.Integrations\Architect.SICOP.Integrations.csproj">
+      <Project>{9ddfbc75-0a39-4a36-9301-169bac63a801}</Project>
+      <Name>Architect.SICOP.Integrations</Name>
     </ProjectReference>
     <ProjectReference Include="..\Tron\Architect.API.Tron.Business\Architect.API.Tron.Business.csproj">
       <Project>{6a906932-7049-4dbd-88f6-2b3f5b3b0f94}</Project>

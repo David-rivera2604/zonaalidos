@@ -3525,3 +3525,17 @@ div#container_moremenu {
 #plandepagoTbl.Cafsa tr:nth-child(2) td:nth-child(7) {
     font-weight: bold;
 }
+
+.Mapfre .btn-on-primary {
+    margin-top: 22px;
+    background-color: var(--mapfrered1);
+    border-color: var(--mapfrered1);
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+}
+
+    .Mapfre .btn-on-primary:hover, .Mapfre .btn-on-primary:focus, .Mapfre .btn-on-primary.focus {
+        background-color: var(--mapfrered2);
+        border-color: var(--mapfrered2);
+        color: rgb(255, 255, 255);
+    }

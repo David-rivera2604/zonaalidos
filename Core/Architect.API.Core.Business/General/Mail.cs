@@ -58,8 +58,8 @@ namespace Architect.API.Core.Business.General
 
                 tmpl.Body = tmplMaster.Body.Replace("{Content}", tmpl.Body);
             }
-            result.Add("Subject", Smart.Format(CultureInfo.CreateSpecificCulture("es-CR"), tmpl.Subject, context));
-            result.Add("Body", Smart.Format(CultureInfo.CreateSpecificCulture("es-CR"), tmpl.Body, context));
+            result.Add("Subject", Smart.Format(CultureInfo.CreateSpecificCulture("es-ES"), tmpl.Subject, context));
+            result.Add("Body", Smart.Format(CultureInfo.CreateSpecificCulture("es-ES"), tmpl.Body, context));
             return result;
         }
 
@@ -111,6 +111,7 @@ namespace Architect.API.Core.Business.General
             }
             object context = new
             {
+                Today = DateTime.Now,
                 Data = entity,
                 Company = tenantInfo,
                 CurrentUser = currentUserInfo,
@@ -133,9 +134,9 @@ namespace Architect.API.Core.Business.General
                     tmpl.Body = tmplMaster.Body.Replace("{Content}", tmpl.Body);
                 }
 
-                subject = Smart.Format(CultureInfo.CreateSpecificCulture("es-CR"), tmpl.Subject, context);
+                subject = Smart.Format(CultureInfo.CreateSpecificCulture("es-ES"), tmpl.Subject, context);
                 Smart.Default.Settings.Parser.ErrorAction = ParseErrorAction.Ignore;
-                body = Smart.Format(CultureInfo.CreateSpecificCulture("es-CR"), tmpl.Body, context);
+                body = Smart.Format(CultureInfo.CreateSpecificCulture("es-ES"), tmpl.Body, context);
 
                 foreach (string emailToken in tmpl.EmailTo.Split(','))
                 {
@@ -184,8 +185,8 @@ namespace Architect.API.Core.Business.General
             }
             else
             {
-                subject = Smart.Format(CultureInfo.CreateSpecificCulture("es-CR"), subject, context);
-                body = Smart.Format(CultureInfo.CreateSpecificCulture("es-CR"), body, context);
+                subject = Smart.Format(CultureInfo.CreateSpecificCulture("es-ES"), subject, context);
+                body = Smart.Format(CultureInfo.CreateSpecificCulture("es-ES"), body, context);
 
             }
             if (testEmail.IsNotEmpty())
@@ -341,9 +342,9 @@ namespace Architect.API.Core.Business.General
         /// Este método es usado desde las reglas.
         public static void Send(string eMail, string subject, string body, object entity)
         {
-            string subjectResult = Smart.Format(CultureInfo.CreateSpecificCulture("es-CR"), subject, entity);
+            string subjectResult = Smart.Format(CultureInfo.CreateSpecificCulture("es-ES"), subject, entity);
 
-            string bodyTResult = Smart.Format(CultureInfo.CreateSpecificCulture("es-CR"), body, entity);
+            string bodyTResult = Smart.Format(CultureInfo.CreateSpecificCulture("es-ES"), body, entity);
 
             Send(new Dictionary<string, string>() { { eMail, string.Empty } }, subjectResult, bodyTResult);
         }

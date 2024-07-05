@@ -505,3 +505,4 @@
 1.6.35  27/06/2023 Viajero Regional Monge. Ajuste en método para obtener el token.
                    Viajero Regional Monge. Detalle de error condicionado por variable de settings Working.Mode.
 1.6.35a 29/06/2023 MapfreMasPlus. Se habilita el porcentaje de ajuste comercial para Purdy para el rango -5 a 0.
+1.6.36  05/07/2024 SICOP.
