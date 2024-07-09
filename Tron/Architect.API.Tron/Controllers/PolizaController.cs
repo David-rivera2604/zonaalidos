@@ -159,7 +159,7 @@ namespace Architect.API.Tron.Controllers
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
-            Contracts.AltasBajas.Response.Poliza result = await Business.Backoffice.AltasBajasPoliza.Alta(poliza);
+            Contracts.AltasBajas.Response.Poliza result = await Business.Backoffice.AltasBajasPoliza.AltasBajas(poliza, true);
 
             return Ok(result);
         }
@@ -171,9 +171,9 @@ namespace Architect.API.Tron.Controllers
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
-            Contracts.AltasBajas.Response.Poliza result = await Business.Backoffice.AltasBajasPoliza.Alta(poliza);
+            Contracts.AltasBajas.Response.Poliza result = await Business.Backoffice.AltasBajasPoliza.AltasBajas(poliza, false);
 
-            return Ok(poliza);
+            return Ok(result);
         }
 
     }

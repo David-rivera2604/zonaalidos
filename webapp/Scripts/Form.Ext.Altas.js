@@ -40,6 +40,30 @@ app.Form_Ext_Altas = (function () {
         "IMP_SUMA_MUERTE": 0
     };
 
+
+    function update_info_poliza_grupo() {
+        let contracto = app.ui.GetDropDownNumericValue('#NUM_CONTRATO');
+        let setdefaultVcto = true;
+        if (contracto > 0) {
+            let _polizagrupo = app.core.Data().lookups.filter(i => i.Key === 'Contratos_v2')[0].Lkp.filter(l => l.Code === contracto + '')[0];
+
+            if (_polizagrupo != null) {
+                $('#NUM_POLIZA_GRUPO').val(_polizagrupo.NUM_POLIZA);
+                $('#MONEDA').val(_polizagrupo.NOM_MON);
+                if (_polizagrupo.FEC_VCTO_POLIZA != null) {
+                    app.ui.SetDateValue('#VCTO_SPTO', moment(_polizagrupo.FEC_VCTO_POLIZA, 'DD/MM/YYYY').toDate());
+                    setdefaultVcto = false;
+                }
+            }
+        }
+
+        if (setdefaultVcto) {
+            let newvcto = app.ui.GetDateRawValue('#EFEC_SPTO');
+            newvcto.setFullYear(newvcto.getFullYear() + 1);
+            app.ui.SetDateValue('#VCTO_SPTO', newvcto);
+        }
+    };
+
     return {
         Init: function (spec, formName) {
             let cod_pais = 'CRI';
@@ -101,22 +125,21 @@ app.Form_Ext_Altas = (function () {
                     $('#NUM_POLIZA_GRUPO').val('');
                     $('#MONEDA').val('');
 
-                }, options.Base + `:cod_ramo=${cod_ramo}:agt=343`);
+                }, options.Base + `:cod_ramo=${cod_ramo}`);
+            });
+
+            $('#EFEC_SPTO').blur(function () {
+                let minDate = app.ui.GetDateRawValue('#EFEC_SPTO');
+                minDate.setDate(minDate.getDate() + 1);
+
+                $('#VCTO_SPTO_group').data("DateTimePicker").minDate(minDate);
+
+                update_info_poliza_grupo();
             });
 
             $('#NUM_CONTRATO').on('change', function () {
-                let contracto = app.ui.GetDropDownNumericValue('#NUM_CONTRATO');
-
-                if (contracto > 0) {
-                    let _polizagrupo = app.core.Data().lookups.filter(i => i.Key === 'Contratos_v2')[0].Lkp.filter(l => l.Code === contracto + '')[0];
-
-                    if (_polizagrupo != null) {
-                        $('#NUM_POLIZA_GRUPO').val(_polizagrupo.NUM_POLIZA);
-                        $('#MONEDA').val(_polizagrupo.NOM_MON);
-                    }
-                }
+                update_info_poliza_grupo();
             });
-
 
             $('#testdata').val(JSON.stringify(_test));
 

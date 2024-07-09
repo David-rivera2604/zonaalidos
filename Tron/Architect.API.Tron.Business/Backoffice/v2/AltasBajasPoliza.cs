@@ -27,7 +27,7 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Permite la creación de un sesión para realizar un pago.
         /// </summary>
-        public async static Task<Contracts.AltasBajas.Response.Poliza> Alta(Contracts.AltasBajas.Request.Poliza poliza)
+        public async static Task<Contracts.AltasBajas.Response.Poliza> AltasBajas(Contracts.AltasBajas.Request.Poliza poliza, bool alta)
         {
 
             Contracts.AltasBajas.Request.SPCall sp = new Contracts.AltasBajas.Request.SPCall()
@@ -57,16 +57,15 @@ namespace Architect.API.Tron.Business.Backoffice
                 FEC_INI_PRESTAMO = poliza.INI_PRESTAMO.ToString("dd/MM/yyyy"),
                 FEC_VCTO_PRESTAMO = poliza.VCTO_PRESTAMO.ToString("dd/MM/yyyy"),
                 COD_PLAN_AP = poliza.COD_PLAN_AP,
-                TIP_DE_PROCESO = "N"
+                TIP_DE_PROCESO = alta ? "N": "A"
             };
 
             string json = JsonConvert.SerializeObject(sp);
-            string result = DataAccess.PorRamo.EM_K_ALTA_BAJA_POLIZA_WEB_MCR(json);
+            string resultjson = DataAccess.PorRamo.EM_K_ALTA_BAJA_POLIZA_WEB_MCR(json);
 
-            Contracts.AltasBajas.Response.Poliza re = JsonConvert.DeserializeObject<Contracts.AltasBajas.Response.Poliza>(result);
+            Contracts.AltasBajas.Response.Poliza result = JsonConvert.DeserializeObject<Contracts.AltasBajas.Response.Poliza>(resultjson);
 
-
-            return re;
+            return result;
         }
 
     }
