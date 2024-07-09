@@ -110,6 +110,9 @@ app.CotizacionMapfreMas = (function () {
         if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
             lookupList.push('MM_POLIZA_GRUPO.contrato'); //, 'MM_SUB_CONTRATOS.subcontrato'
             $('#polizagrupoZone').removeClass('d-none');
+            app.Cotizacion.CustomAgentHandler('pg_', setupData);
+        } else {
+            app.Cotizacion.CustomAgentHandler('', setupData);
         }
         app.core.Lookups(lookupList,
             function () {
@@ -118,7 +121,7 @@ app.CotizacionMapfreMas = (function () {
                     MapObjectToInput(data);
                     data_changed();
                 });
-            }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}`, 'v1/TronCommon/Lkps');
+            }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}:cod_agt=${data.cod_agt}`, 'v1/TronCommon/Lkps');
 
         // Dependencies events
         $('#cod_marca').on('change', function () {
@@ -133,10 +136,11 @@ app.CotizacionMapfreMas = (function () {
                 contrato: app.ui.GetDropDownNumericValue('#contrato'),
                 subcontrato: app.ui.GetDropDownNumericValue('#subcontrato'),
                 polizagrupo: setupData.polizagrupo,
-                p_fec_validez: moment().format('YYYYMMDD')
+                p_fec_validez: moment().format('YYYYMMDD'),
+                cod_agt: app.Cotizacion.AgentCode()
             }
             app.core.Lookups(['MM_SubModelosVehiculos.cod_sub_modelo'], null,
-                `cod_marca=${data.cod_marca}:cod_modelo=${data.cod_modelo}:p_fec_validez=${data.p_fec_validez}:polizagrupo=${data.polizagrupo}:contrato=${data.contrato}`, 'v1/TronCommon/Lkps');
+                `cod_marca=${data.cod_marca}:cod_modelo=${data.cod_modelo}:p_fec_validez=${data.p_fec_validez}:polizagrupo=${data.polizagrupo}:contrato=${data.contrato}:cod_agt=${data.cod_agt}`, 'v1/TronCommon/Lkps');
         });
 
         $('#contrato').on('change', function () {
@@ -165,7 +169,8 @@ app.CotizacionMapfreMas = (function () {
                 edad: app.ui.GetNumericValue('#edad'),
                 cod_mon: app.ui.GetDropDownNumericValue('#cod_mon'),
                 tipo_prod: $('input:radio[name=tipo_prod]:checked').val(),
-                cod_marca: app.ui.GetDropDownNumericValue('#cod_marca')
+                cod_marca: app.ui.GetDropDownNumericValue('#cod_marca'),
+                cod_agt: app.Cotizacion.AgentCode()
             };
 
             if (data.tipo_prod === 'trebolrc') {
@@ -185,7 +190,7 @@ app.CotizacionMapfreMas = (function () {
                         $("#COD_PLAN_AUTO").val($("#COD_PLAN_AUTO option:first").val());
                     }
                     SettingReload();
-                }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}`);
+                }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}:cod_agt=${data.cod_agt}`);
 
         });
 
@@ -197,12 +202,13 @@ app.CotizacionMapfreMas = (function () {
 
             if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
                 let cod_mon = app.ui.GetDropDownNumericValue('#cod_mon');
+                let cod_agt =app.Cotizacion.AgentCode()
                 app.ui.DropDownDisabled('#subcontrato', true, true);
                 app.core.Lookups([
                     'MM_POLIZA_GRUPO.contrato'],
                     function () {
                         SettingReload();
-                    }, `cod_ramo=${data.cod_ramo}:cod_mon=${cod_mon}`);
+                    }, `cod_ramo=${data.cod_ramo}:cod_mon=${cod_mon}:cod_agt=${cod_agt}`);
             } else {
                 SettingReload();
             }
@@ -280,7 +286,10 @@ app.CotizacionMapfreMas = (function () {
             polizagrupo: setupData.polizagrupo,
             mc_cuotas_gratis: app.ui.GetRadioStringValue('mc_cuotas_gratis'),
             //num_cuotas_gratis: app.ui.GetDropDownNumericValue('#num_cuotas_gratis')
-            num_cuotas_gratis: app.ui.GetDropDownNumericValue('#num_cuotas_gratis')
+            num_cuotas_gratis: app.ui.GetDropDownNumericValue('#num_cuotas_gratis'),
+            cod_agt: app.Cotizacion.AgentCode(),
+            cod_cuadro_com: app.Cotizacion.CuadroCom()
+
         };
         data.NUM_MATRICULA = data.NUM_MATRICULA.replace(/[^a-zA-Z0-9]/g, "");
         return data;
@@ -517,7 +526,8 @@ app.CotizacionMapfreMas = (function () {
 
         $('#VehicleModelHelper').click(function () {
             if (modelHelper.length === 0) {
-                app.core.Get(app.setting.apipath + 'v1/datasource/VehicleModelHelper')
+                let cod_agt = app.Cotizacion.AgentCode();
+                app.core.Get(app.setting.apipath + 'v1/datasource/VehicleModelHelper?cod_agt' + cod_agt)
                     .done(function (data) {
                         modelHelper = data;
                         let source = [];
@@ -538,11 +548,12 @@ app.CotizacionMapfreMas = (function () {
                                             contrato: app.ui.GetDropDownNumericValue('#contrato'),
                                             subcontrato: app.ui.GetDropDownNumericValue('#subcontrato'),
                                             polizagrupo: setupData.polizagrupo,
-                                            p_fec_validez: moment().format('YYYYMMDD')
+                                            p_fec_validez: moment().format('YYYYMMDD'),
+                                            cod_agt: app.Cotizacion.AgentCode()
                                         }
                                         app.core.Lookups(['MM_SubModelosVehiculos.cod_sub_modelo'], function () {
                                             $('#cod_sub_modelo').val(item.code.COD_SUB_MODELO);
-                                        }, `cod_marca=${data.cod_marca}:cod_modelo=${data.cod_modelo}:p_fec_validez=${data.p_fec_validez}:polizagrupo=${data.polizagrupo}:contrato=${data.contrato}`, 'v1/TronCommon/Lkps');
+                                        }, `cod_marca=${data.cod_marca}:cod_modelo=${data.cod_modelo}:p_fec_validez=${data.p_fec_validez}:polizagrupo=${data.polizagrupo}:contrato=${data.contrato}:cod_agt=${data.cod_agt}`, 'v1/TronCommon/Lkps');
                                     }
                                 }, `cod_marca=`, 'v1/TronCommon/LkpChild');
                                 $('.handler-marcaHelper').addClass('d-none');
@@ -1110,14 +1121,15 @@ app.CotizacionMapfreMas = (function () {
 
             num_contrato: app.ui.GetDropDownNumericValue('#contrato'),
             num_subcontrato: app.ui.GetDropDownNumericValue('#subcontrato'),
-            num_poliza_grupo: setupData.polizagrupo == null ? '' : setupData.polizagrupo
+            num_poliza_grupo: setupData.polizagrupo == null ? '' : setupData.polizagrupo,
+            cod_agt: app.Cotizacion.AgentCode()
         };
     }
 
     function SettingReload(callback) {
         var param = SettingParameter();
 
-        app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasSettings?cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&cod_sub_modelo=${param.cod_sub_modelo}&anio_sub_modelo=${param.anio_sub_modelo}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.cod_plan_auto}&num_contrato=${param.num_contrato}&num_subcontrato=${param.num_subcontrato}&num_poliza_grupo=${param.num_poliza_grupo}&tipo_prod=${param.tipo_prod}`)
+        app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasSettings?cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&cod_sub_modelo=${param.cod_sub_modelo}&anio_sub_modelo=${param.anio_sub_modelo}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.cod_plan_auto}&num_contrato=${param.num_contrato}&num_subcontrato=${param.num_subcontrato}&num_poliza_grupo=${param.num_poliza_grupo}&tipo_prod=${param.tipo_prod}&cod_agt=${param.cod_agt}`)
             .done(function (settingData) {
                 fec_vcto_poliza_grupo = settingData.fec_vcto_poliza_grupo;
                 app.ui.SetDateValue('#fec_vcto_poliza', app.ui.GetDateValue('#fec_efec_poliza'));
@@ -1168,7 +1180,7 @@ app.CotizacionMapfreMas = (function () {
         //  int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto
         var param = SettingParameter();
         $('#coberturasTbl').bootstrapTable('showLoading');
-        app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasCoverages?cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&cod_sub_modelo=${param.cod_sub_modelo}&anio_sub_modelo=${param.anio_sub_modelo}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.cod_plan_auto}&num_contrato=${param.num_contrato}&num_subcontrato=${param.num_subcontrato}&num_poliza_grupo=${param.num_poliza_grupo}`)
+        app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasCoverages?cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&cod_sub_modelo=${param.cod_sub_modelo}&anio_sub_modelo=${param.anio_sub_modelo}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.cod_plan_auto}&num_contrato=${param.num_contrato}&num_subcontrato=${param.num_subcontrato}&num_poliza_grupo=${param.num_poliza_grupo}&cod_agt=${param.cod_agt}`)
             .done(function (data) {
                 if (data != null) {
                     $('#coberturasTbl').bootstrapTable('load', data);
