@@ -188,10 +188,10 @@ namespace Architect.API.Tron.Business.Backoffice
             switch (source)
             {
                 case "RecurringReceipts":
-                    cuenta = request.currency == "CRC" ? "BAC01" : "BAC02";
+                    cuenta = request.currency == "1" ? "BAC01" : "BAC02";
                     break;
                 case "Widget&Link":
-                    cuenta = request.currency == "CRC" ? "HSBC1" : "HSBC2";
+                    cuenta = request.currency == "1" ? "HSBC1" : "HSBC2";
                     break;
 
                 default:
