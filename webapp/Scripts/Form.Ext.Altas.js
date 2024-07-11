@@ -2,8 +2,6 @@
 
 app.Form_Ext_Altas = (function () {
 
-    let _polizagrupo = {};
-
     let _test = {
         "RAMO": 401,
         "RAMODesc": "Saldo deudor declarativo",
@@ -83,7 +81,7 @@ app.Form_Ext_Altas = (function () {
             if (_polizagrupo != null) {
                 $('#NUM_POLIZA_GRUPO').val(_polizagrupo.NUM_POLIZA);
                 $('#MONEDA').val(_polizagrupo.NOM_MON);
-                if (_polizagrupo.FEC_VCTO_POLIZA != null) {
+                if (_polizagrupo.FEC_VCTO_POLIZA != null && _polizagrupo.FEC_VCTO_POLIZA != '') {
                     app.ui.SetDateValue('#VCTO_SPTO', moment(_polizagrupo.FEC_VCTO_POLIZA, 'DD/MM/YYYY').toDate());
                     setdefaultVcto = false;
                 }
@@ -136,6 +134,21 @@ app.Form_Ext_Altas = (function () {
             };
 
             spec.SetOptions(options);
+
+            $.validator.addMethod("ContratoVencido", function (value, element, params) {
+                let result = true;
+                let _polizagrupo = app.core.Data().lookups.filter(i => i.Key === 'Contratos_v2')[0].Lkp.filter(l => l.Code === value + '')[0];
+
+                if (_polizagrupo != null && _polizagrupo.FEC_VCTO_POLIZA != null && _polizagrupo.FEC_VCTO_POLIZA != '') {
+                    let vcto = moment(_polizagrupo.FEC_VCTO_POLIZA, 'DD/MM/YYYY').toDate();
+                    result = (vcto > app.ui.Today())
+                    if (!result) {
+                        $('#NUM_CONTRATO').rules('add', { messages: { ContratoVencido: `La póliza grupo se encuentra vencida ${_polizagrupo.FEC_VCTO_POLIZA}` } });
+                    }
+                }
+                return result;
+            });
+            $(`#${formName}EdtForm`).validate(); $("#NUM_CONTRATO").rules('add', { ContratoVencido: true, messages: { ContratoVencido: "La póliza grupo se encuentra vencida" } });
 
             app.core.Lookups(options.Lookups,
                 function () {
