@@ -202,7 +202,7 @@ app.CotizacionMapfreMas = (function () {
 
             if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
                 let cod_mon = app.ui.GetDropDownNumericValue('#cod_mon');
-                let cod_agt =app.Cotizacion.AgentCode()
+                let cod_agt = app.Cotizacion.AgentCode()
                 app.ui.DropDownDisabled('#subcontrato', true, true);
                 app.core.Lookups([
                     'MM_POLIZA_GRUPO.contrato'],
@@ -1065,18 +1065,21 @@ app.CotizacionMapfreMas = (function () {
             $('#PCT_AJUSTE_GEN').prop('disabled', false);
         }
 
-        if (cod_tip_vehi === 2 && (cod_plan_auto === 31 && cod_plan_auto === 32 && cod_plan_auto == 33)) {
-            //La cobertura Gastos Médicos no se toma en cuenta para el auto de uso Comercial
-            //La cobertura Accidentes no se toma en cuenta para el auto de uso Comercial
-            app.ui.DropDownDisabled('#IMP_AUTO_GMO', true);
-            app.ui.DropDownDisabled('#IMP_AUTO_ACO', true);
-        }
-        else {
-            //La cobertura Gastos Médicos no se toma en cuenta para el plan Básico
-            //La cobertura Accidentes no se toma en cuenta para el plan Básico
-            app.ui.DropDownDisabled('#IMP_AUTO_GMO', cod_plan_auto === 31);
-            app.ui.DropDownDisabled('#IMP_AUTO_ACO', cod_plan_auto === 31);
-        }
+        //if (cod_tip_vehi === 2 && (cod_plan_auto === 31 && cod_plan_auto === 32 && cod_plan_auto == 33)) {
+        //    //La cobertura Gastos Médicos no se toma en cuenta para el auto de uso Comercial
+        //    //La cobertura Accidentes no se toma en cuenta para el auto de uso Comercial
+        //    app.ui.DropDownDisabled('#IMP_AUTO_GMO', true);
+        //    app.ui.DropDownDisabled('#IMP_AUTO_ACO', true);
+        //}
+        //else {
+        //    //La cobertura Gastos Médicos no se toma en cuenta para el plan Básico
+        //    //La cobertura Accidentes no se toma en cuenta para el plan Básico
+        //    app.ui.DropDownDisabled('#IMP_AUTO_GMO', cod_plan_auto === 31);
+        //    app.ui.DropDownDisabled('#IMP_AUTO_ACO', cod_plan_auto === 31);
+        //}
+
+        app.ui.DropDownDisabled('#IMP_AUTO_GMO', !app.Cotizacion.Coberturas_Seleccionada(coberturas, 3002), true);
+        app.ui.DropDownDisabled('#IMP_AUTO_ACO', !app.Cotizacion.Coberturas_Seleccionada(coberturas, 3003), true);
 
         if (showCalculate) {
             $('#plandepagoRow').addClass('d-none');

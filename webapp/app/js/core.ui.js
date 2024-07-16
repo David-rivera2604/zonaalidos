@@ -1158,7 +1158,9 @@ app.ui = (function () {
             if (current && !disabled && $(element).data("autoselect") === true) {
                 $(element).val($('select' + element + ' option:first').val());
             }
-
+            if (disabled &&  $(element).data("cleanondisabled") === true) {
+                $(element).prop("selectedIndex", -1);
+            }
         },
         Download: function (fileName, id) {
             fileName = fileName.toLowerCase();
