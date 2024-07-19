@@ -266,6 +266,10 @@ namespace Architect.API.Tron.Controllers
             Tron.Contracts.Cotizacion.MapfreMas result = null;
             await Task.Run(() =>
             {
+                if (quoteInfo !=null && quoteInfo.cod_agt == 0)
+                {
+                    quoteInfo.cod_agt = tokenInfo.AgentCode;
+                }
                 result = Architect.API.Tron.Business.Cotizacion.MapfreMas.Quote(quoteInfo, tokenInfo);
             })
                 .ConfigureAwait(false);
