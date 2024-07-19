@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>View</title>
+    @Scripts.Render("~/bundles/jsMaster")
+    <style>
+/*        svg {
+            width: 95%;
+            height: 95%;
+        }*/
+/*
+        div.xmermaid {
+            margin-left: 0 !important;
+            text-align: center;
+            resize: both;
+            overflow: auto;
+            margin-bottom: 2px;
+            position: relative;
+            max-height: 100%;
+            max-width: 100%;
+        }*/
+
+        .xmermaid svg {
+            max-width: 100%;
+            height: 100%;
+        }
+
+/*            div.xmermaid::after {
+                content: '';
+                display: block;
+                width: 10px;
+                height: 10px;
+                background-color: yellowgreen;
+                position: absolute;
+                right: 0;
+                bottom: 0;
+            }*/
+    </style>
+</head>
+<body>
+    <div id="chart" class="xmermaid someClass">
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //mermaid.init({
+            //    startOnLoad: true,
+            //    noteMargin: 10
+            //});
+            mermaid.initialize({ startOnLoad: false });
+
+            let _id = app.core.URLNumericValue('id');
+            let _type = app.core.URLStringValue('type');
+
+            // Example of using the render function
+            const drawDiagram = async function (graphDefinition) {
+                element = document.querySelector('#chart');
+                const { svg } = await mermaid.render('graphDiv', graphDefinition);
+                element.innerHTML = svg;
+
+
+                var svgs = d3.selectAll(".someClass svg");
+                svgs.each(function () {
+                    var svg = d3.select(this);
+                    svg.html("<g>" + svg.html() + "</g>");
+                    var inner = svg.select("g");
+                    var zoom = d3.zoom().on("zoom", function (event) {
+                        inner.attr("transform", event.transform);
+                    });
+                    svg.call(zoom);
+
+                    svg.call(zoom.transform, d3.zoomIdentity.scale(1).translate(-10, -150));
+
+                });
+            };
+
+
+
+            app.core.Get(app.setting.apipath + `v1/ProcessSpecFlow/${_id}/diagram/${_type}`)
+                .done(function (data, textStatus, jqXHR) {
+
+
+
+
+                    // Example of using the render function
+
+
+
+
+
+
+                    let x = '\n'+data.source.replaceAll('\r', '');
+                    //$('.someClass').text('\n'+x);
+                    drawDiagram(x);
+
+                    //mermaid.init({ noteMargin: 10 }, ".someClass");
+
+                    //var svgs = d3.selectAll(".someClass svg");
+                    //svgs.each(function () {
+                    //    var svg = d3.select(this);
+                    //    svg.html("<g>" + svg.html() + "</g>");
+                    //    var inner = svg.select("g");
+                    //    var zoom = d3.zoom().on("zoom", function (event) {
+                    //        inner.attr("transform", event.transform);
+                    //    });
+                    //    svg.call(zoom);
+
+                    //    svg.call(zoom.transform, d3.zoomIdentity.scale(4).translate(-10, -150));
+
+                    //});
+
+                }).always(function () {
+
+                });
+
+
+
+        });
+    </script>
+
+
+</body>
+</html>
