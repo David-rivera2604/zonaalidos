@@ -535,14 +535,14 @@ app.ui = (function () {
                         let apiUrl = '';
                         $(documentNumberElement).data('current', documentNumber);
                         $(documentNumberElement).addClass('loading');
-                        
+
                         if (docType == 1) {
                             apiUrl = app.setting.apipath + 'v1/Insured/' + documentNumber.replace(/-/g, '') + '?docType=' + docType;
 
                         } else {
                             apiUrl = app.setting.apipath + 'v1/Insured/' + (docType != 1 && docType != 2 ? encodedDocNum : parseInt(0 + $(documentNumberElement).val().replace(/-/g, ''), 10)) + '?docType=' + docType;
                         }
-                        
+
                         app.core.Get(apiUrl).done(function (data, textStatus, jqXHR) {
                             if (data != null && data.FirstName !== null) {
                                 if (data.MiddleName === null) data.MiddleName = '';
@@ -1148,18 +1148,20 @@ app.ui = (function () {
         },
         DropDownDisabled: function (element, disabled, clean) {
             let current = $(element).is(':disabled');
-            $(element).prop("disabled", disabled);
-            if (current && !disabled && $(element + ' option').length == 1) {
-                $(element).prop("selectedIndex", 0);
-            }
-            if (clean != undefined && clean) {
-                $(element).prop("selectedIndex", -1);
-            }
-            if (current && !disabled && $(element).data("autoselect") === true) {
-                $(element).val($('select' + element + ' option:first').val());
-            }
-            if (disabled &&  $(element).data("cleanondisabled") === true) {
-                $(element).prop("selectedIndex", -1);
+            if (disabled != current) {
+                $(element).prop("disabled", disabled);
+                if (current && !disabled && $(element + ' option').length == 1) {
+                    $(element).prop("selectedIndex", 0);
+                }
+                if (clean != undefined && clean) {
+                    $(element).prop("selectedIndex", -1);
+                }
+                if (current && !disabled && $(element).data("autoselect") === true) {
+                    $(element).val($('select' + element + ' option:first').val());
+                }
+                if (disabled && $(element).data("cleanondisabled") === true) {
+                    $(element).prop("selectedIndex", -1);
+                }
             }
         },
         Download: function (fileName, id) {
