@@ -2,8 +2,6 @@
 
 app.Form_Ext_Altas = (function () {
 
-    let _polizagrupo = {};
-
     let _test = {
         "RAMO": 401,
         "RAMODesc": "Saldo deudor declarativo",
@@ -38,6 +36,63 @@ app.Form_Ext_Altas = (function () {
         "MCA_ASISTENCIA": 2,
         "MCA_ASISTENCIADesc": "No",
         "IMP_SUMA_MUERTE": 0
+    };
+
+    function show(row) {
+
+        //            let row = { NUM_POLIZA: "4012200005031", FEC_EFEC_SPTO: app.ui.Today(), FEC_VCTO_SPTO: app.ui.Today(), PRIMA_TOTAL: "CRC-9.100.00", COBERTURAS: " aasdAS D ;alsdk ;D as;dlKAS DA;SLDKa", OBSERVACION: " aasdAS D ;alsdk ;D as;dlKAS DA;SLDKa" }
+
+
+        var html = [];
+
+
+        html.push('<div class="row">');
+
+        [
+            { key: 'Inicio de vigencia', value: app.ui.StringValueToString(row.FEC_EFEC_SPTO, '---'), size: 6 },
+            { key: 'Fin de vigencia', value: app.ui.StringValueToString(row.FEC_VCTO_SPTO, '---'), size: 6 },
+            { key: 'Prima total', value: `${app.ui.StringValueToString(row.PRIMA_TOTAL, '---')}`, size: 6 },
+            { key: 'Coberturas', value: `${app.ui.StringValueToString(row.COBERTURAS, '---')}`, size: 12 },
+            { key: 'Observación', value: `${app.ui.StringValueToString(row.OBSERVACION, '---')}`, size: 12 }
+        ].forEach(function (item) {
+            html.push(`<div class="col-md-${item.size}"><div class="readonlyfield"><strong>${item.key}</strong><div>${item.value}</div></div></div>`);
+        });
+        html.push(`</div>`);
+
+        html.push(`<div class="col-md-12"><div class="row">`);
+        html.push('<table class="table table-hover margin bottom">');
+        html.push('<thead><tr><th style="width: 1%" class="text-center">No.</th><th>Recibo</th><th class="text-center">Monto</th></tr></thead><tbody>');
+        row.RECIBOS.forEach(function (item, index) {
+            html.push(`<tr><td class="text-center">${index + 1}</td><td> ${item.NUM_RECIBO}</td><td class="text-center"><span class="label label-primary">${item.MONTO}</span></td></tr>`);
+        });
+        html.push('</tbody></table>');
+        html.push(`</div></div>`);
+        app.ui.ShowSideBar({ title: 'PÓLIZA #{NUM_POLIZA}', subtitle: 'La póliza fue emitida de forma exitosa', isHTML: true, HTML: html.join(''), data: row, width: '380px' });
+
+        $('.sidebar-content').toggleClass('sk-loading');
+    }
+
+    function update_info_poliza_grupo() {
+        let contracto = app.ui.GetDropDownNumericValue('#NUM_CONTRATO');
+        let setdefaultVcto = true;
+        if (contracto > 0) {
+            let _polizagrupo = app.core.Data().lookups.filter(i => i.Key === 'Contratos_v2')[0].Lkp.filter(l => l.Code === contracto + '')[0];
+
+            if (_polizagrupo != null) {
+                $('#NUM_POLIZA_GRUPO').val(_polizagrupo.NUM_POLIZA);
+                $('#MONEDA').val(_polizagrupo.NOM_MON);
+                if (_polizagrupo.FEC_VCTO_POLIZA != null && _polizagrupo.FEC_VCTO_POLIZA != '') {
+                    app.ui.SetDateValue('#VCTO_SPTO', moment(_polizagrupo.FEC_VCTO_POLIZA, 'DD/MM/YYYY').toDate());
+                    setdefaultVcto = false;
+                }
+            }
+        }
+
+        if (setdefaultVcto) {
+            let newvcto = app.ui.GetDateRawValue('#EFEC_SPTO');
+            newvcto.setFullYear(newvcto.getFullYear() + 1);
+            app.ui.SetDateValue('#VCTO_SPTO', newvcto);
+        }
     };
 
     return {
@@ -80,6 +135,21 @@ app.Form_Ext_Altas = (function () {
 
             spec.SetOptions(options);
 
+            $.validator.addMethod("ContratoVencido", function (value, element, params) {
+                let result = true;
+                let _polizagrupo = app.core.Data().lookups.filter(i => i.Key === 'Contratos_v2')[0].Lkp.filter(l => l.Code === value + '')[0];
+
+                if (_polizagrupo != null && _polizagrupo.FEC_VCTO_POLIZA != null && _polizagrupo.FEC_VCTO_POLIZA != '') {
+                    let vcto = moment(_polizagrupo.FEC_VCTO_POLIZA, 'DD/MM/YYYY').toDate();
+                    result = (vcto > app.ui.Today())
+                    if (!result) {
+                        $('#NUM_CONTRATO').rules('add', { messages: { ContratoVencido: `La póliza grupo se encuentra vencida ${_polizagrupo.FEC_VCTO_POLIZA}` } });
+                    }
+                }
+                return result;
+            });
+            $(`#${formName}EdtForm`).validate(); $("#NUM_CONTRATO").rules('add', { ContratoVencido: true, messages: { ContratoVencido: "La póliza grupo se encuentra vencida" } });
+
             app.core.Lookups(options.Lookups,
                 function () {
                     app.ui.SetDropDownStringValue('#NACIONALIDAD_ASEG', 'CRI', false);
@@ -101,22 +171,21 @@ app.Form_Ext_Altas = (function () {
                     $('#NUM_POLIZA_GRUPO').val('');
                     $('#MONEDA').val('');
 
-                }, options.Base + `:cod_ramo=${cod_ramo}:agt=343`);
+                }, options.Base + `:cod_ramo=${cod_ramo}`);
+            });
+
+            $('#EFEC_SPTO').blur(function () {
+                let minDate = app.ui.GetDateRawValue('#EFEC_SPTO');
+                minDate.setDate(minDate.getDate() + 1);
+
+                $('#VCTO_SPTO_group').data("DateTimePicker").minDate(minDate);
+
+                update_info_poliza_grupo();
             });
 
             $('#NUM_CONTRATO').on('change', function () {
-                let contracto = app.ui.GetDropDownNumericValue('#NUM_CONTRATO');
-
-                if (contracto > 0) {
-                    let _polizagrupo = app.core.Data().lookups.filter(i => i.Key === 'Contratos_v2')[0].Lkp.filter(l => l.Code === contracto + '')[0];
-
-                    if (_polizagrupo != null) {
-                        $('#NUM_POLIZA_GRUPO').val(_polizagrupo.NUM_POLIZA);
-                        $('#MONEDA').val(_polizagrupo.NOM_MON);
-                    }
-                }
+                update_info_poliza_grupo();
             });
-
 
             $('#testdata').val(JSON.stringify(_test));
 
@@ -165,7 +234,10 @@ app.Form_Ext_Altas = (function () {
 
                                     $("#EmitirPolizaEdtForm fieldset").prop("disabled", true);
                                     $("#btnIssue").addClass('d-none');
-                                    $(".resultadoToggle").removeClass('d-none');
+                                    //$(".resultadoToggle").removeClass('d-none');
+
+                                    show(posted);
+
                                 } else {
                                     console.error(posted);
                                     app.ui.Error(posted.OBSERVACION || posted.ERROR);
@@ -180,7 +252,13 @@ app.Form_Ext_Altas = (function () {
                 e.preventDefault();
             });
 
-            app.ui.SetDropDownNumericValue('#RAMO', 0, false);
+            let code = app.core.URLStringValue('ramo');
+            if (code != '') {
+                app.ui.SetDropDownNumericValue('#RAMO', code, false);
+                $('#RAMO').change();
+            } else {
+                app.ui.SetDropDownNumericValue('#RAMO', 0, false);
+            }
             app.ui.SetRadioNumericValue('MCA_SEXO_ASEG', 0);
             app.ui.SetRadioNumericValue('MCA_ASISTENCIA', 2);
             let today = app.ui.Today();
