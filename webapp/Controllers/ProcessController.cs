@@ -5,6 +5,11 @@ namespace aliados.Controllers
 {
     public class ProcessController : Controller
     {
+        public ActionResult Diagram()
+        {
+            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
+            return View();
+        }
         public ActionResult Instance()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];

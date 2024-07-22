@@ -17,6 +17,91 @@ namespace Architect.API.Core.Business.General
     public static partial class ProcessSpecFlow
     {
 
+        public static string Diagram(int companyId, int userId, int id, string diagramType)
+        {
+            Contracts.General.ProcessSpecFlow spec = DataAccess.General.Process.Specification.Retrieve(id, companyId, 0);
+            StringBuilder result = new StringBuilder();
+
+            switch (diagramType.ToLower())
+            {
+                case "sequence":
+                    result.AppendLine("sequenceDiagram");
+                    result.AppendLine("  autonumber");
+                    foreach (Contracts.General.ProcessSpecStep step in spec.ProcessSpecSteps)
+                    {
+                        foreach (Contracts.General.ProcessSpecTask task in step.ProcessSpecTasks)
+                        {
+                            if (task.Type == 10 && task.Action != "0")
+                            {
+                                Contracts.General.ProcessSpecStep action = spec.ProcessSpecSteps.Where(r => r.Id == Convert.ToInt32(task.Action)).FirstOrDefault();
+
+                                result.AppendFormat("  S{0} {1} ->> S{2} {3}:{4}", step.StepOrder, step.Name.Capitalize(), action.StepOrder, action.Name.Capitalize(), task.Name.Capitalize());
+
+                                result.AppendLine();
+                            }
+                        }
+
+                    }
+                    break;
+                case "flowchart":
+                    result.AppendLine("flowchart TD");
+                    foreach (Contracts.General.ProcessSpecStep step in spec.ProcessSpecSteps)
+                    {
+                        foreach (Contracts.General.ProcessSpecTask task in step.ProcessSpecTasks)
+                        {
+                            if (task.Type == 10 && task.Action != "0")
+                            {
+                                Contracts.General.ProcessSpecStep action = spec.ProcessSpecSteps.Where(r => r.Id == Convert.ToInt32(task.Action)).FirstOrDefault();
+
+                                result.AppendFormat("  S{0}[{1}] --> |{4}| S{2}[{3}]", step.StepOrder, step.Name.Capitalize(),
+                                                                                 action.StepOrder, action.Name.Capitalize(),
+                                                                                 task.Name.Capitalize());
+
+                                result.AppendLine();
+                            }
+                        }
+
+                    }
+                    break;
+                case "statediagram":
+                    Contracts.General.ProcessSpecStep first = null;
+                    Contracts.General.ProcessSpecStep last = null;
+                    result.AppendLine("stateDiagram-v2");
+                    foreach (Contracts.General.ProcessSpecStep step in spec.ProcessSpecSteps)
+                    {
+                        result.AppendFormat("  S{0} : S{0} {1}", step.StepOrder, step.Name.Capitalize());
+                        result.AppendLine();
+                    }
+                    foreach (Contracts.General.ProcessSpecStep step in spec.ProcessSpecSteps)
+                    {
+                        if (first == null)
+                        {
+                            first = step;
+                            result.AppendFormat("  [*] --> S{0}", step.StepOrder, step.Name.Capitalize());
+                            result.AppendLine();
+                        }
+                        foreach (Contracts.General.ProcessSpecTask task in step.ProcessSpecTasks)
+                        {
+                            if (task.Type == 10 && task.Action != "0")
+                            {
+                                Contracts.General.ProcessSpecStep action = spec.ProcessSpecSteps.Where(r => r.Id == Convert.ToInt32(task.Action)).FirstOrDefault();
+
+                                result.AppendFormat("  S{0} --> S{2}:{4}", step.StepOrder, step.Name.Capitalize(),
+                                                                                 action.StepOrder, action.Name.Capitalize(),
+                                                                                 task.Name.Capitalize());
+
+                                result.AppendLine();
+                            }
+                        }
+                        last = step;
+                    }
+                    result.AppendFormat("  S{0} --> [*]", last.StepOrder, last.Name.Capitalize());
+                    result.AppendLine();
+                    break;
+            }
+            return result.ToString();
+        }
+
         public static bool Import(int companyId, int userId, string stored, string fileSize, string fileName)
         {
             string fullPath = Path.Combine(HostingEnvironment.MapPath(ConfigurationManager.AppSettings["Files.Path"]), stored);

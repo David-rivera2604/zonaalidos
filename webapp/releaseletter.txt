@@ -586,3 +586,5 @@
 1.6.63  03/05/2024 
 1.6.64  01/07/2024 Pasarela. Ajuste en el llamado al package de pago en Mapfre.
 1.6.65  01/07/2024 MapfreMas. Opción para emisión web para empleado. Cotización seleccionando intermediario.
+1.6.66  02/07/2024 Aliados. Consulta de póliza para productos 117, 194 y 401.
+                   Aliados. Consulta de siniestros para productos 117, 194 y 401.

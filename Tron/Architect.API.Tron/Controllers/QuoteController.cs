@@ -218,12 +218,16 @@ namespace Architect.API.Tron.Controllers
         /// </summary>
         [HttpGet]
         [Route("MapfreMasSettings")]
-        public async Task<IHttpActionResult> MapfreMasSettings(int cod_ramo, int cod_mon, int cod_marca, int cod_modelo, int cod_sub_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int num_contrato, int num_subcontrato, string num_poliza_grupo, string tipo_prod, int cod_agt)
+        public async Task<IHttpActionResult> MapfreMasSettings(int cod_ramo, int cod_mon, int cod_marca, int cod_modelo, int cod_sub_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int num_contrato, int num_subcontrato, string num_poliza_grupo, string tipo_prod, int cod_agt = 0)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Cotizacion.MapfreMasSettings result = null;
             await Task.Run(() =>
             {
+                if (cod_agt== 0)
+                {
+                    cod_agt = tokenInfo.AgentCode;
+                }
                 result = Architect.API.Tron.Business.Cotizacion.MapfreMas.Settings(cod_ramo, cod_mon, cod_marca, cod_modelo, cod_sub_modelo, anio_sub_modelo, cod_tip_vehi, cod_uso_vehi, mca_sexo, cod_zona_circul, edad, cod_plan_auto, num_contrato, num_subcontrato, num_poliza_grupo, tipo_prod, cod_agt, tokenInfo);
             })
                 .ConfigureAwait(false);
@@ -235,12 +239,16 @@ namespace Architect.API.Tron.Controllers
         /// </summary>
         [HttpGet]
         [Route("MapfreMasCoverages")]
-        public async Task<IHttpActionResult> MapfreMasCoverages(int cod_ramo, int cod_mon, int cod_marca, int cod_modelo, int cod_sub_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int num_contrato, int num_subcontrato, string num_poliza_grupo, int cod_agt)
+        public async Task<IHttpActionResult> MapfreMasCoverages(int cod_ramo, int cod_mon, int cod_marca, int cod_modelo, int cod_sub_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int num_contrato, int num_subcontrato, string num_poliza_grupo, int cod_agt = 0)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             List<Tron.Contracts.Comun.Cobertura> result = null;
             await Task.Run(() =>
             {
+                if (cod_agt == 0)
+                {
+                    cod_agt = tokenInfo.AgentCode;
+                }
                 result = Architect.API.Tron.Business.Cotizacion.MapfreMas.CoverageByDefault(cod_ramo, cod_mon, cod_marca, cod_modelo, cod_sub_modelo, anio_sub_modelo, cod_tip_vehi, cod_uso_vehi, mca_sexo, cod_zona_circul, edad, cod_plan_auto, num_contrato, num_subcontrato, num_poliza_grupo, tokenInfo);
             })
                 .ConfigureAwait(false);
@@ -258,6 +266,10 @@ namespace Architect.API.Tron.Controllers
             Tron.Contracts.Cotizacion.MapfreMas result = null;
             await Task.Run(() =>
             {
+                if (quoteInfo !=null && quoteInfo.cod_agt == 0)
+                {
+                    quoteInfo.cod_agt = tokenInfo.AgentCode;
+                }
                 result = Architect.API.Tron.Business.Cotizacion.MapfreMas.Quote(quoteInfo, tokenInfo);
             })
                 .ConfigureAwait(false);
