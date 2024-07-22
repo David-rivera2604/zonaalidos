@@ -1786,6 +1786,7 @@
     <Content Include="Views\Viewer\Form.cshtml" />
     <Content Include="Views\Emision\_verificardomicilio.cshtml" />
     <Content Include="Views\Process\diagram.cshtml" />
+    <Content Include="Views\Cotizacion\_polizagrupo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
