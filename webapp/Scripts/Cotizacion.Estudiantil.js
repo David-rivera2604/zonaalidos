@@ -11,6 +11,10 @@ app.CotizacionEstudiantil = (function () {
     function Setup()
     {
 
+        let selectedOptions = $('select#cod_fracc_pago');
+        selectedOptions.children().remove();
+        selectedOptions.append($('<option />').val('1').text('ANUAL'));
+
         app.core.Get(app.setting.apipath + 'v1/Quote/EstudiantilSetup', null,
             function (data) {
                 setupData = data;

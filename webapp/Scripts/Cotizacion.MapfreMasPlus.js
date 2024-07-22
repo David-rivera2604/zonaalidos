@@ -363,6 +363,9 @@ app.CotizacionMapfreMasPlus = (function () {
             format: 'DD/MM/YYYY',
             locale: 'es'
         });
+
+        $('#fec_vcto_poliza_group').prop('disabled', true);
+
         new AutoNumeric('#ANIO_SUB_MODELO', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
