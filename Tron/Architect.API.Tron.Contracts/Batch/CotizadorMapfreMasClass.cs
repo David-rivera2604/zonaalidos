@@ -359,6 +359,9 @@ namespace Architect.API.Tron.Contracts.Batch
         public string rc_alcohol { get; set; } = "N";
         public string mc_cuotas_gratis { get; set; } = "N";
         public int num_cuotas_gratis { get; set;} = 0;
+
+        public string nombredelcontratante { get; set; }
         
+
     }
 }

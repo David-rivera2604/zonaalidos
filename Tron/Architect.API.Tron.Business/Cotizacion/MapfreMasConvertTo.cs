@@ -77,7 +77,8 @@ namespace Architect.API.Tron.Business.Cotizacion
                 cod_chassis = quoteInfo.COD_CHASSIS,
                 p_ext_garantia = quoteInfo.ext_garantia == 1 ? "S" : "N",
                 mc_cuotas_gratis = quoteInfo.mc_cuotas_gratis,
-                num_cuotas_gratis = quoteInfo.num_cuotas_gratis
+                num_cuotas_gratis = quoteInfo.num_cuotas_gratis,
+                nombredelcontratante = quoteInfo.nombredelcontratante
             };
 
             //result.tip_docum = tip_documComboBox.Value

@@ -66,7 +66,7 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         [DataMember(), JsonProperty()] public string cod_modeloDesc { get; set; }
 
 
-        
+
         /// <summary>
         /// Sub Modelo.
         /// </summary>
@@ -232,7 +232,10 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         [DataMember(), JsonProperty()] public string rc_alcohol { get; set; } = "N";
         [DataMember(), JsonProperty()] public string mc_cuotas_gratis { get; set; } = "N";
         [DataMember(), JsonProperty()] public int num_cuotas_gratis { get; set; }
-        
+
+
+        [DataMember(), JsonProperty()] public string nombredelcontratante { get; set; }
+
     }
 
 }
