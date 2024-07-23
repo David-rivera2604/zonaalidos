@@ -588,3 +588,5 @@
 1.6.65  01/07/2024 MapfreMas. Opción para emisión web para empleado. Cotización seleccionando intermediario.
 1.6.66  02/07/2024 Aliados. Consulta de póliza para productos 117, 194 y 401.
                    Aliados. Consulta de siniestros para productos 117, 194 y 401.
+1.6.67  22/07/2024 Aliados.	Opción para emisión web para empleado. Cotización seleccionando intermediario.
+                   Aliados.	Purdy. No llega el nombre del cliente en los documento de la cotización enviado por correo.
