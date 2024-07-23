@@ -1,15 +1,19 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>View</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Zona de Aliados</title>
+    @Styles.Render("~/Content/cssMaster")
+
     @Scripts.Render("~/bundles/jsMaster")
     <style>
-/*        svg {
+        /*        svg {
             width: 95%;
             height: 95%;
         }*/
-/*
+        /*
         div.xmermaid {
             margin-left: 0 !important;
             text-align: center;
@@ -26,7 +30,7 @@
             height: 100%;
         }
 
-/*            div.xmermaid::after {
+        /*            div.xmermaid::after {
                 content: '';
                 display: block;
                 width: 10px;
@@ -39,6 +43,14 @@
     </style>
 </head>
 <body>
+    <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+        <div class="btn-group mr-2" role="group" aria-label="First group">
+            <button type="button" class="btn btn-secondary">sequence</button>
+            <button type="button" class="btn btn-secondary">flowchart</button>
+            <button type="button" class="btn btn-secondary">statediagram</button>
+        </div>
+    </div>
+
     <div id="chart" class="xmermaid someClass">
     </div>
 
@@ -55,9 +67,23 @@
             let _id = app.core.URLNumericValue('id');
             let _type = app.core.URLStringValue('type');
 
+            function adjustDivHeight() {
+                element = document.querySelector('#chart');
+                element.style.width = document.documentElement.clientWidth + 'px';
+                element.style.height = document.documentElement.clientHeight + 'px';
+            }
+
+
+            // Ajustar la altura del div cuando cambie el tamaño de la ventana
+            window.onresize = adjustDivHeight;
+
             // Example of using the render function
             const drawDiagram = async function (graphDefinition) {
-                element = document.querySelector('#chart');
+
+
+
+                adjustDivHeight();
+
                 const { svg } = await mermaid.render('graphDiv', graphDefinition);
                 element.innerHTML = svg;
 
@@ -72,7 +98,7 @@
                     });
                     svg.call(zoom);
 
-                    svg.call(zoom.transform, d3.zoomIdentity.scale(1).translate(-10, -150));
+                    svg.call(zoom.transform, d3.zoomIdentity.scale(1).translate(0, 0));
 
                 });
             };
@@ -92,7 +118,7 @@
 
 
 
-                    let x = '\n'+data.source.replaceAll('\r', '');
+                    let x = '\n' + data.source.replaceAll('\r', '');
                     //$('.someClass').text('\n'+x);
                     drawDiagram(x);
 
@@ -117,6 +143,10 @@
                 });
 
 
+            $('.btn').click(function (e) {
+                window.location.replace(`Diagram?id=${_id}&type=${e.currentTarget.innerText}`);
+                e.stopPropagation();
+            });
 
         });
     </script>

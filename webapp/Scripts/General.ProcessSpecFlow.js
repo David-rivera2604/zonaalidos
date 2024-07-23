@@ -97,6 +97,7 @@ app.GeneralProcessSpecFlow = (function () {
                     events: 'ProcessSpecFlowGridTbl_Events',
                     formatter: function (value, row, index, field) {
                         return '<button type="button" class="btn btn-sm btn-white edit" title="Al hacer click permite la edición de los datos del process spec flow de la fila"> <i class="fa fa-pencil"></i> </button>' +
+                            '<button type="button" class="btn btn-sm btn-white diagram" title="Al hacer click permite ver un diagrama del proceso de la fila"> <i class="fa fa-sitemap"></i> </button>' +
                             '<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar los datos del process spec flow de la fila"> <i class="fa fa-close"></i> </button>';
                     },
                     cellStyle: function (value, row, index) {
@@ -846,6 +847,10 @@ window.ProcessSpecFlowGridTbl_Events = {
     },
     'click .edit': function (e, value, row, index) {
         app.GeneralProcessSpecFlow.EditRow(row);
+        e.stopPropagation();
+    },
+    'click .diagram': function (e, value, row, index) {
+        window.open(app.setting.viewpath + `/Process/Diagram?id=${row.Id}&type=sequence`, "Diagrama", "width=500, height=450, titlebar=no, location=NO");
         e.stopPropagation();
     }
 };
