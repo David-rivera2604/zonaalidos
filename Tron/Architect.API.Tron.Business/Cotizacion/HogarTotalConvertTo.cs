@@ -57,7 +57,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 sub_cod_spto = 0,
                 txt_motivo_spto = string.Empty,
                 cod_cuadro_com = 0,
-                cod_agt = 0,
+                cod_agt = quoteInfo.cod_agt,
                 pct_agt = 0,
                 cod_org = 0,
                 cod_asesor = 0,
@@ -126,8 +126,8 @@ namespace Architect.API.Tron.Business.Cotizacion
                 }
 
 
-                datosFijos.cod_cuadro_com = 100;
-                datosFijos.cod_agt = agentCode;
+                datosFijos.cod_cuadro_com = quoteInfo.cod_cuadro_com == 0 ? 100 : quoteInfo.cod_cuadro_com;
+                datosFijos.cod_agt = quoteInfo.cod_agt;
             }
             datosFijos.txt_motivo_spto = "Cotización realizada desde la zona de aliados, por: " + userName;
 

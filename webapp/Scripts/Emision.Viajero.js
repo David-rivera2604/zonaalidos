@@ -95,7 +95,7 @@ app.EmisionViajero = (function () {
             function () {
                 MapObjectToInput(data);
                 ReadOnly();
-            }, `cod_ramo=441:cod_mon=2:cod_pais=CRI`);
+            }, `cod_ramo=441:cod_mon=2:cod_pais=CRI:cod_agt=${data.cod_agt}`);
 
         // Dependencies events
         $('#TProvincia').on('change', function () {

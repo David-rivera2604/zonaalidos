@@ -22,7 +22,8 @@ namespace Architect.API.Tron.Business.Cotizacion
                 fec_efec_poliza = DateTime.Today,
                 fec_vcto_poliza = DateTime.Today.AddYears(1),
                 TXT_CRED_ESTUD = "",
-                COD_PLAN_AP = 1001
+                COD_PLAN_AP = 1001,
+                cod_agt = tokenInfo.AgentCode
             };
 
             int cod_cia = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_cia"]);

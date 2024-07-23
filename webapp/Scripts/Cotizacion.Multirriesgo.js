@@ -13,6 +13,9 @@ app.CotizacionMultirriesgo = (function () {
             .done(function (data, textStatus, jqXHR) {
                 if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
                     $('#polizagrupoZone').removeClass('d-none');
+                    app.Cotizacion.CustomAgentHandler('pg_', setupData);
+                } else {
+                    app.Cotizacion.CustomAgentHandler('', setupData);
                 }
                 Init_Lookups(data);
             });
@@ -95,7 +98,7 @@ app.CotizacionMultirriesgo = (function () {
         app.core.Lookups(lookupList,
             function () {
                 MapObjectToInput(data);
-            }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:cod_pais=${data.cod_pais}:cod_tip_ocup=${data.cod_ramo}%:cod_estado=${data.cod_estado}:cod_prov=${data.cod_prov}`);
+            }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:cod_pais=${data.cod_pais}:cod_tip_ocup=${data.cod_ramo}%:cod_estado=${data.cod_estado}:cod_prov=${data.cod_prov}:cod_agt=${data.cod_agt}`);
 
         // Dependencies events
         $('#cod_estado').on('change', function () {
@@ -131,12 +134,13 @@ app.CotizacionMultirriesgo = (function () {
             num_contrato: app.ui.GetDropDownNumericValue('#contrato'),
             num_subcontrato: app.ui.GetDropDownNumericValue('#subcontrato'),
             num_poliza_grupo: setupData.polizagrupo,
-            cod_mon: app.ui.GetDropDownNumericValue('#cod_mon')
+            cod_mon: app.ui.GetDropDownNumericValue('#cod_mon'),
+            cod_agt: app.Cotizacion.AgentCode()
         };
 
         $('#coberturasTbl').bootstrapTable('showLoading');
 
-        app.core.Get(app.setting.apipath + 'v1/Quote/MultirriesgoSettings?' + `cod_ramo=${data.cod_ramo}&num_contrato=${data.num_contrato}&num_subcontrato=${data.num_subcontrato}&num_poliza_grupo=${data.num_poliza_grupo}&cod_mon=${data.cod_mon}`)
+        app.core.Get(app.setting.apipath + 'v1/Quote/MultirriesgoSettings?' + `cod_ramo=${data.cod_ramo}&num_contrato=${data.num_contrato}&num_subcontrato=${data.num_subcontrato}&num_poliza_grupo=${data.num_poliza_grupo}&cod_mon=${data.cod_mon}&cod_agt=${param.cod_agt}`)
             .done(function (settingData) {
                 app.ui.SetDateValue('#fec_vcto_poliza', app.ui.GetDateValue('#fec_efec_poliza'))
                 app.ui.SetDateValue('#fec_vcto_poliza', settingData.fec_vcto_poliza);
@@ -206,7 +210,9 @@ app.CotizacionMultirriesgo = (function () {
             plandepago: $('#plandepagoTbl').bootstrapTable('getData'),
             contrato: app.ui.GetDropDownNumericValue('#contrato'),
             subcontrato: app.ui.GetDropDownNumericValue('#subcontrato'),
-            polizagrupo: setupData.polizagrupo
+            polizagrupo: setupData.polizagrupo,
+            cod_agt: app.Cotizacion.AgentCode(),
+            cod_cuadro_com: app.Cotizacion.CuadroCom()
         };
         return data;
     };

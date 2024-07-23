@@ -176,7 +176,7 @@ app.EmisionMultirriesgo = (function () {
                 MapObjectToInput(data);
                 ReadOnly();
                 $("#tercerosNew").removeClass('d-none')
-            }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:cod_pais=${data.cod_pais}:cod_tip_ocup=${data.cod_ramo}%:cod_estado=${data.cod_estado}:cod_prov=${data.cod_prov}`);
+            }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:cod_pais=${data.cod_pais}:cod_tip_ocup=${data.cod_ramo}%:cod_estado=${data.cod_estado}:cod_prov=${data.cod_prov}:cod_agt=${data.cod_agt}`);
 
 
 

@@ -168,7 +168,7 @@ app.HogarTotal = (function () {
                 MapObjectToInput(data);
                 ReadOnly();
                 $("#tercerosNew").removeClass('d-none')
-            }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.moneda}:cod_pais=${data.pais}:cod_tip_ocup=${data.cod_ramo}%:cod_estado=${data.provincia}:cod_prov=${data.canton}`);
+            }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.moneda}:cod_pais=${data.pais}:cod_tip_ocup=${data.cod_ramo}%:cod_estado=${data.provincia}:cod_prov=${data.canton}:cod_agt=${data.cod_agt}`);
 
         // Dependencies events
         $('#provincia').on('change', function () {

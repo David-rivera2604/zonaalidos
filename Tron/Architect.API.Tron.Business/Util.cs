@@ -96,7 +96,7 @@ namespace Architect.API.Tron.Business
             }
 
 
-            datosFijos.cod_cuadro_com = 100;
+            datosFijos.cod_cuadro_com = quoteInfo.cod_cuadro_com == 0 ? 100 : quoteInfo.cod_cuadro_com;
             datosFijos.cod_agt = agentCode;
 
             datosFijos.txt_motivo_spto = "Cotización realizada desde la zona de aliados, por: " + userName;
@@ -279,12 +279,12 @@ namespace Architect.API.Tron.Business
             };
         }
 
-        public  static List<Contracts.Presupuesto.Riesgo> DatosDelRiesgo(Contracts.Presupuesto.DatoFijo datosFijos, string nom_riesgo, int num_riesgo = 1, int ramo = 999)
+        public static List<Contracts.Presupuesto.Riesgo> DatosDelRiesgo(Contracts.Presupuesto.DatoFijo datosFijos, string nom_riesgo, int num_riesgo = 1, int ramo = 999)
         {
             List<Contracts.Presupuesto.Riesgo> riesgos = new List<Contracts.Presupuesto.Riesgo>();
             int modalidad = 99999;
 
-            if (ramo == 194) 
+            if (ramo == 194)
                 modalidad = 19401;
             else
                 modalidad = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_modalidad"]);

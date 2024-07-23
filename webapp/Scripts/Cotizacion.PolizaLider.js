@@ -55,6 +55,9 @@ app.CotizacionPolizaLider = (function () {
 
     function Init_Lookups(data) {
         setupData = JSON.parse(JSON.stringify(data));
+
+        app.Cotizacion.CustomAgentHandler('', setupData);
+
         app.core.Lookups([
             'MonedasPorRamo.cod_mon',
             'FrecuenciaDePagoPorRamo.cod_fracc_pago',
@@ -71,7 +74,7 @@ app.CotizacionPolizaLider = (function () {
             function () {
                 MapObjectToInput(data);
                 Coberturas_ManejoDeCapital();
-            }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:cod_pais=${data.cod_pais}:cod_tip_ocup=${data.cod_ramo}%:cod_estado=${data.cod_estado}:cod_prov=${data.cod_prov}:cod_marca=${data.COD_MARCA}`);
+            }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:cod_pais=${data.cod_pais}:cod_tip_ocup=${data.cod_ramo}%:cod_estado=${data.cod_estado}:cod_prov=${data.cod_prov}:cod_marca=${data.COD_MARCA}:cod_agt=${data.cod_agt}`);
 
         // Dependencies events
         $('#COD_MARCA').on('change', function () {
@@ -112,6 +115,8 @@ app.CotizacionPolizaLider = (function () {
             IMP_AUTO_CRI: app.ui.GetDropDownNumericValue('#IMP_AUTO_CRI'),
             coberturas: $('#coberturasTbl').bootstrapTable('getData'),
             plandepago: $('#plandepagoTbl').bootstrapTable('getData'),
+            cod_agt: app.Cotizacion.AgentCode(),
+            cod_cuadro_com: app.Cotizacion.CuadroCom()
 
         };
         return data;

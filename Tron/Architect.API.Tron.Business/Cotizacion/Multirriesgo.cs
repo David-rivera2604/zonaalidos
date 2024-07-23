@@ -33,7 +33,8 @@ namespace Architect.API.Tron.Business.Cotizacion
                 cod_tipo_pared = 1,
                 MCA_EXTIN_INC = 2,
                 cod_tip_rgo_idn = 1,
-                Agente = tokenInfo.UserName
+                Agente = tokenInfo.UserName,
+                cod_agt = tokenInfo.AgentCode
             };
 
             int cod_cia = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_cia"]);

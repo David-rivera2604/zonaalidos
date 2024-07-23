@@ -62,31 +62,22 @@ namespace Architect.API.Tron.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("HogarTotalSettings")]
-        public async Task<IHttpActionResult> HogarTotalSettings(int cod_ramo, int num_contrato, int num_subcontrato, string num_poliza_grupo, int cod_mon)
+        public async Task<IHttpActionResult> HogarTotalSettings(int cod_ramo, int num_contrato, int num_subcontrato, string num_poliza_grupo, int cod_mon, int cod_agt = 0)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Cotizacion.HogarTotalSettings result = null;
             await Task.Run(() =>
             {
-                result = Architect.API.Tron.Business.Cotizacion.HogarTotal.Settings(cod_ramo, num_contrato, num_subcontrato, num_poliza_grupo, cod_mon, tokenInfo);
+                if (cod_agt == 0)
+                {
+                    cod_agt = tokenInfo.AgentCode;
+                }
+                result = Architect.API.Tron.Business.Cotizacion.HogarTotal.Settings(cod_ramo, num_contrato, num_subcontrato, num_poliza_grupo, cod_mon, cod_agt, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
         }
 
-        [HttpGet]
-        [Route("MultirriesgoSettings")]
-        public async Task<IHttpActionResult> MultiriesgoSettings(int cod_ramo, int num_contrato, int num_subcontrato, string num_poliza_grupo, int cod_mon)
-        {
-            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
-            Tron.Contracts.Cotizacion.HogarTotalSettings result = null;
-            await Task.Run(() =>
-            {
-                result = Architect.API.Tron.Business.Cotizacion.HogarTotal.Settings(cod_ramo, num_contrato, num_subcontrato, num_poliza_grupo, cod_mon, tokenInfo);
-            })
-                .ConfigureAwait(false);
-            return Ok(result);
-        }
 
         /// <summary>
         /// Realiza la validación de datos y cálculo necesarios para obtener una cotización o presupuesto de un producto de tipo Hogar Total
@@ -101,6 +92,10 @@ namespace Architect.API.Tron.Controllers
             Tron.Contracts.Cotizacion.HogarTotal result = null;
             await Task.Run(() =>
             {
+                if (quoteInfo != null && quoteInfo.cod_agt == 0)
+                {
+                    quoteInfo.cod_agt = tokenInfo.AgentCode;
+                }
                 result = Architect.API.Tron.Business.Cotizacion.HogarTotal.Quote(quoteInfo, tokenInfo);
             })
                 .ConfigureAwait(false);
@@ -129,6 +124,25 @@ namespace Architect.API.Tron.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("MultirriesgoSettings")]
+        public async Task<IHttpActionResult> MultiriesgoSettings(int cod_ramo, int num_contrato, int num_subcontrato, string num_poliza_grupo, int cod_mon, int cod_agt = 0)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Tron.Contracts.Cotizacion.HogarTotalSettings result = null;
+            await Task.Run(() =>
+            {
+                if (cod_agt == 0)
+                {
+                    cod_agt = tokenInfo.AgentCode;
+                }
+                result = Architect.API.Tron.Business.Cotizacion.HogarTotal.Settings(cod_ramo, num_contrato, num_subcontrato, num_poliza_grupo, cod_mon, cod_agt, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+
         /// <summary>
         /// Realiza la validación de datos y cálculo necesarios para obtener una cotización o presupuesto de un producto de tipo Multirriesgo
         /// </summary>
@@ -142,6 +156,10 @@ namespace Architect.API.Tron.Controllers
             Tron.Contracts.Cotizacion.Multirriesgo result = null;
             await Task.Run(() =>
             {
+                if (quoteInfo != null && quoteInfo.cod_agt == 0)
+                {
+                    quoteInfo.cod_agt = tokenInfo.AgentCode;
+                }
                 result = Architect.API.Tron.Business.Cotizacion.Multirriesgo.Quote(quoteInfo, tokenInfo);
             })
                 .ConfigureAwait(false);
@@ -183,6 +201,10 @@ namespace Architect.API.Tron.Controllers
             Tron.Contracts.Cotizacion.PolizaLider result = null;
             await Task.Run(() =>
             {
+                if (quoteInfo != null && quoteInfo.cod_agt == 0)
+                {
+                    quoteInfo.cod_agt = tokenInfo.AgentCode;
+                }
                 result = Architect.API.Tron.Business.Cotizacion.PolizaLider.Quote(quoteInfo, tokenInfo);
             })
                 .ConfigureAwait(false);
@@ -311,6 +333,10 @@ namespace Architect.API.Tron.Controllers
             Tron.Contracts.Cotizacion.Viajero result = null;
             await Task.Run(() =>
             {
+                if (quoteInfo != null && quoteInfo.cod_agt == 0)
+                {
+                    quoteInfo.cod_agt = tokenInfo.AgentCode;
+                }
                 result = Architect.API.Tron.Business.Cotizacion.Viajero.Quote(quoteInfo, tokenInfo);
             })
                 .ConfigureAwait(false);
@@ -339,26 +365,6 @@ namespace Architect.API.Tron.Controllers
         }
 
         /// <summary>
-        /// Realiza la validación de datos y cálculo necesarios para obtener una cotización o presupuesto de un producto de tipo Saldo Deudor
-        /// </summary>
-        /// <param name="quoteInfo"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("SaldoDeudorQuote")]
-        public async Task<IHttpActionResult> SaldoDeudorQuote([FromBody] Tron.Contracts.Cotizacion.SaldoDeudor quoteInfo)
-        {
-            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
-            Tron.Contracts.Cotizacion.SaldoDeudor result = null;
-            await Task.Run(() =>
-            {
-                //tokenInfo.AgentCode = 180;
-                result = Architect.API.Tron.Business.Cotizacion.SaldoDeudor.Quote(quoteInfo, tokenInfo);
-            })
-                .ConfigureAwait(false);
-            return Ok(result);
-        }
-
-        /// <summary>
         /// Recupera lista de valores para sumas aseguradas de coberturas o valores deducibles según el rol del usuario
         /// </summary>
         /// <param name="cod_ramo"></param>
@@ -369,13 +375,17 @@ namespace Architect.API.Tron.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("SaldoDeudorSettings")]
-        public async Task<IHttpActionResult> SaldoDeudorSettings(int cod_ramo, int num_contrato, int num_subcontrato, string num_poliza_grupo, int cod_mon)
+        public async Task<IHttpActionResult> SaldoDeudorSettings(int cod_ramo, int num_contrato, int num_subcontrato, string num_poliza_grupo, int cod_mon, int cod_agt = 0)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Cotizacion.SaldoDeudorSettings result = null;
             await Task.Run(() =>
             {
-                result = Architect.API.Tron.Business.Cotizacion.SaldoDeudor.Settings(cod_ramo, num_contrato, num_subcontrato, num_poliza_grupo, cod_mon, tokenInfo);
+                if (cod_agt == 0)
+                {
+                    cod_agt = tokenInfo.AgentCode;
+                }
+                result = Architect.API.Tron.Business.Cotizacion.SaldoDeudor.Settings(cod_ramo, num_contrato, num_subcontrato, num_poliza_grupo, cod_mon, cod_agt, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -396,6 +406,31 @@ namespace Architect.API.Tron.Controllers
             await Task.Run(() =>
             {
                 result = Architect.API.Tron.Business.Cotizacion.SaldoDeudor.calcula_imc(estatura, peso, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+
+        /// <summary>
+        /// Realiza la validación de datos y cálculo necesarios para obtener una cotización o presupuesto de un producto de tipo Saldo Deudor
+        /// </summary>
+        /// <param name="quoteInfo"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("SaldoDeudorQuote")]
+        public async Task<IHttpActionResult> SaldoDeudorQuote([FromBody] Tron.Contracts.Cotizacion.SaldoDeudor quoteInfo)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Tron.Contracts.Cotizacion.SaldoDeudor result = null;
+            await Task.Run(() =>
+            {
+                if (quoteInfo != null && quoteInfo.cod_agt == 0)
+                {
+                    quoteInfo.cod_agt = tokenInfo.AgentCode;
+                }
+                //tokenInfo.AgentCode = 180;
+                result = Architect.API.Tron.Business.Cotizacion.SaldoDeudor.Quote(quoteInfo, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -430,13 +465,17 @@ namespace Architect.API.Tron.Controllers
         /// </summary>
         [HttpGet]
         [Route("MapfreMasPlusSettings")]
-        public async Task<IHttpActionResult> MapfreMasPlusSettings(int cod_ramo, int cod_mon, int cod_marca, int cod_modelo, int cod_sub_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int num_contrato, int num_subcontrato, string num_poliza_grupo, string tipo_prod)
+        public async Task<IHttpActionResult> MapfreMasPlusSettings(int cod_ramo, int cod_mon, int cod_marca, int cod_modelo, int cod_sub_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int num_contrato, int num_subcontrato, string num_poliza_grupo, string tipo_prod, int cod_agt = 0)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Cotizacion.MapfreMasSettings result = null;
             await Task.Run(() =>
             {
-                result = Architect.API.Tron.Business.Cotizacion.MapfreMasPlus.Settings(cod_ramo, cod_mon, cod_marca, cod_modelo, cod_sub_modelo, anio_sub_modelo, cod_tip_vehi, cod_uso_vehi, mca_sexo, cod_zona_circul, edad, cod_plan_auto, num_contrato, num_subcontrato, num_poliza_grupo, tipo_prod, tokenInfo);
+                if (cod_agt == 0)
+                {
+                    cod_agt = tokenInfo.AgentCode;
+                }
+                result = Architect.API.Tron.Business.Cotizacion.MapfreMasPlus.Settings(cod_ramo, cod_mon, cod_marca, cod_modelo, cod_sub_modelo, anio_sub_modelo, cod_tip_vehi, cod_uso_vehi, mca_sexo, cod_zona_circul, edad, cod_plan_auto, num_contrato, num_subcontrato, num_poliza_grupo, tipo_prod, cod_agt, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -447,12 +486,16 @@ namespace Architect.API.Tron.Controllers
         /// </summary>
         [HttpGet]
         [Route("MapfreMasPlusCoverages")]
-        public async Task<IHttpActionResult> MapfreMasPlusCoverages(int cod_ramo, int cod_mon, int cod_marca, int cod_modelo, int cod_sub_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int num_contrato, int num_subcontrato, string num_poliza_grupo)
+        public async Task<IHttpActionResult> MapfreMasPlusCoverages(int cod_ramo, int cod_mon, int cod_marca, int cod_modelo, int cod_sub_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int num_contrato, int num_subcontrato, string num_poliza_grupo, int cod_agt = 0)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             List<Tron.Contracts.Comun.Cobertura> result = null;
             await Task.Run(() =>
             {
+                if (cod_agt == 0)
+                {
+                    cod_agt = tokenInfo.AgentCode;
+                }
                 result = Architect.API.Tron.Business.Cotizacion.MapfreMasPlus.CoverageByDefault(cod_ramo, cod_mon, cod_marca, cod_modelo, cod_sub_modelo, anio_sub_modelo, cod_tip_vehi, cod_uso_vehi, mca_sexo, cod_zona_circul, edad, cod_plan_auto, num_contrato, num_subcontrato, num_poliza_grupo, tokenInfo);
             })
                 .ConfigureAwait(false);
@@ -470,6 +513,10 @@ namespace Architect.API.Tron.Controllers
             Tron.Contracts.Cotizacion.MapfreMas result = null;
             await Task.Run(() =>
             {
+                if (quoteInfo != null && quoteInfo.cod_agt == 0)
+                {
+                    quoteInfo.cod_agt = tokenInfo.AgentCode;
+                }
                 result = Architect.API.Tron.Business.Cotizacion.MapfreMasPlus.Quote(quoteInfo, tokenInfo);
             })
                 .ConfigureAwait(false);
@@ -511,6 +558,10 @@ namespace Architect.API.Tron.Controllers
             Tron.Contracts.Cotizacion.Estudiantil result = null;
             await Task.Run(() =>
             {
+                if (quoteInfo != null && quoteInfo.cod_agt == 0)
+                {
+                    quoteInfo.cod_agt = tokenInfo.AgentCode;
+                }
                 result = Architect.API.Tron.Business.Cotizacion.Estudiantil.Quote(quoteInfo, tokenInfo);
             })
                 .ConfigureAwait(false);

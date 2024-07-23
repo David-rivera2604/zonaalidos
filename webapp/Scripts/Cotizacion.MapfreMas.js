@@ -202,7 +202,7 @@ app.CotizacionMapfreMas = (function () {
 
             if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
                 let cod_mon = app.ui.GetDropDownNumericValue('#cod_mon');
-                let cod_agt = app.Cotizacion.AgentCode()
+                let cod_agt = app.Cotizacion.AgentCode();
                 app.ui.DropDownDisabled('#subcontrato', true, true);
                 app.core.Lookups([
                     'MM_POLIZA_GRUPO.contrato'],

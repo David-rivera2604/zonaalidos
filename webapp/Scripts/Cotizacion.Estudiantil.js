@@ -25,11 +25,13 @@ app.CotizacionEstudiantil = (function () {
 
                 setupData = JSON.parse(JSON.stringify(data));
 
+                app.Cotizacion.CustomAgentHandler('', setupData);
+
                 app.core.Lookups(lookupList,
                     function () {
                         setupData = data;
                         MapObjectToInput(data);
-                    }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}`);
+                    }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:cod_agt=${data.cod_agt}`);
 
             });
         
@@ -49,9 +51,9 @@ app.CotizacionEstudiantil = (function () {
             COD_PLAN_AP: app.ui.GetDropDownNumericValue('#COD_PLAN_AP'),
             NOM_PLAN_AP: $("#COD_PLAN_AP option:selected").text(),
             coberturas: $('#coberturasTbl').bootstrapTable('getData'),
-            plandepago: $('#plandepagoTbl').bootstrapTable('getData')
-            
-            
+            plandepago: $('#plandepagoTbl').bootstrapTable('getData'),
+            cod_agt: app.Cotizacion.AgentCode(),
+            cod_cuadro_com: app.Cotizacion.CuadroCom()
         };
         return data;
     };

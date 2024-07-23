@@ -86,6 +86,10 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         [DataMember(), JsonProperty()] public string Agente { get; set; }
 
         [DataMember(), JsonProperty()] public List<Core.Contracts.General.Error> Errors { get; set; }
+
+        [DataMember(), JsonProperty()] public int cod_agt { get; set; }
+
+        [DataMember(), JsonProperty()] public int cod_cuadro_com { get; set; }
     }
 
 }

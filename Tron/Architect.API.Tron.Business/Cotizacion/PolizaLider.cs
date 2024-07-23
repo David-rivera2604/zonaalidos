@@ -33,7 +33,8 @@ namespace Architect.API.Tron.Business.Cotizacion
                 MCA_AUTO_GPS = 2,
                 mca_HogarTotal = 2,
                 MCA_AUTO_GPS_CMS = 2,
-                Agente = tokenInfo.UserName
+                Agente = tokenInfo.UserName,
+                cod_agt = tokenInfo.AgentCode
             };
 
             int cod_cia = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_cia"]);

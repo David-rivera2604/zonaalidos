@@ -33,6 +33,9 @@ app.CotizacionSaldoDeudor = (function () {
                 if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
                     lookupList.push('MM_POLIZA_GRUPO.contrato');
                     $('#polizagrupoZone').removeClass('d-none');
+                    app.Cotizacion.CustomAgentHandler('pg_', setupData);
+                } else {
+                    app.Cotizacion.CustomAgentHandler('', setupData);
                 }
 
                 setupData = JSON.parse(JSON.stringify(data));
@@ -42,7 +45,7 @@ app.CotizacionSaldoDeudor = (function () {
                         setupData = data;
                         MapObjectToInput(data);
                         Dynamic_Event_Controls();
-                    }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}`);
+                    }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:cod_agt=${data.cod_agt}`);
 
             });
 
@@ -389,12 +392,13 @@ app.CotizacionSaldoDeudor = (function () {
             num_contrato: app.ui.GetDropDownNumericValue('#contrato'),
             num_subcontrato: app.ui.GetDropDownNumericValue('#subcontrato'),
             num_poliza_grupo: setupData.polizagrupo,
-            cod_mon: app.ui.GetDropDownNumericValue('#cod_mon')
+            cod_mon: app.ui.GetDropDownNumericValue('#cod_mon'),
+            cod_agt: app.Cotizacion.AgentCode()
         };
 
         $('#coberturasTbl').bootstrapTable('showLoading');
 
-        app.core.Get(app.setting.apipath + 'v1/Quote/SaldoDeudorSettings?' + `cod_ramo=${data.cod_ramo}&num_contrato=${data.num_contrato}&num_subcontrato=${data.num_subcontrato}&num_poliza_grupo=${data.num_poliza_grupo}&cod_mon=${data.cod_mon}`)
+        app.core.Get(app.setting.apipath + 'v1/Quote/SaldoDeudorSettings?' + `cod_ramo=${data.cod_ramo}&num_contrato=${data.num_contrato}&num_subcontrato=${data.num_subcontrato}&num_poliza_grupo=${data.num_poliza_grupo}&cod_mon=${data.cod_mon}&cod_agt=${data.cod_agt}`)
             .done(function (settingData) {
 
                 app.ui.SetDateValue('#fec_vcto_poliza', app.ui.GetDateValue('#fec_efec_poliza'))

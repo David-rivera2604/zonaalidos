@@ -9,12 +9,14 @@ app.CotizacionViajero = (function () {
 
         app.core.Get(app.setting.apipath + 'v1/Quote/ViajeroSetup', null,
             function (data) {
+                app.Cotizacion.CustomAgentHandler('', data);
+
                 app.core.Lookups(['MonedasPorRamo.cod_mon', 'FrecuenciaDePagoPorRamo.cod_fracc_pago', 'TRON_G2990006:TIP_PLAN.TIP_PLAN', 'TRON_G2990006:TIP_VIAJE.TIP_VIAJE', 'TRON_A1002090.COD_MODALIDAD',
                     'TRON_A1000101.PAIS_ORIGEN', 'TRON_A1000101.DES_DESTINO'],
                     function () {
                         setupData = data;
                         MapObjectToInput(data);
-                    }, `cod_ramo=441:cod_mon=2`);
+                    }, `cod_ramo=441:cod_mon=2:cod_agt=${data.cod_agt}`);
 
             });
     };

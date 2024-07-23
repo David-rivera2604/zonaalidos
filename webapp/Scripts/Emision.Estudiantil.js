@@ -91,7 +91,7 @@ app.EmisionEstudiantil = (function () {
             function () {
                 MapObjectToInput(data);
                 ReadOnly();
-            }, `cod_ramo=194:cod_mon=1:cod_pais=CRI`);
+            }, `cod_ramo=194:cod_mon=1:cod_pais=CRI:cod_agt=${data.cod_agt}`);
 
         // Dependencies events
         $('#TProvincia').on('change', function () {

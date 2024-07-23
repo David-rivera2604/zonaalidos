@@ -49,7 +49,7 @@ app.EmisionSaldoDeudor = (function () {
                             ReadOnly();
                             $('#plandepagoporfrecuencia').removeClass('d-none');
                             $('#plandepagoRow').removeClass('d-none');
-                        }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:cod_pais=CRI`);
+                        }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:cod_pais=CRI:cod_agt=${data.cod_agt}`);
 
                 });
         }
