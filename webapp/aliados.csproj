@@ -1228,6 +1228,8 @@
     <Content Include="Scripts\Cotizacion.Coberturas.js" />
     <Content Include="Scripts\Cotizacion.MapfreMasPlus.js" />
     <Content Include="Scripts\Cotizacion.Estudiantil.js" />
+    <Content Include="Scripts\Multirriesgo.Emision.js" />
+    <Content Include="Scripts\Multirriesgo.Cotizacion.js" />
     <Content Include="Scripts\Cotizacion.SaldoDeudor.enfermedadesexcluidas.js" />
     <Content Include="Scripts\CreateCase_Aliados.js" />
     <Content Include="Scripts\Emision.kyc.declarante.js" />
@@ -1353,6 +1355,7 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\UnhandledExceptionLogger.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\MultirriesgoController.cs" />
     <Compile Include="Controllers\PurdyController.cs" />
     <Compile Include="Controllers\DocuSignController.cs" />
     <Compile Include="Controllers\AvisosController.cs" />
@@ -1775,6 +1778,8 @@
     <Content Include="Views\Bayer\Carnet.cshtml" />
     <Content Include="Reports\CarnetDigital.repx" />
     <Content Include="Views\Viewer\Form.cshtml" />
+    <Content Include="Views\Multirriesgo\Cotizacion.cshtml" />
+    <Content Include="Views\Multirriesgo\Emision.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
