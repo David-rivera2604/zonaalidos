@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Architect.Utilities.Extensions;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 
 namespace Architect.API.Tron.Business.Multirriesgo
@@ -25,6 +27,56 @@ namespace Architect.API.Tron.Business.Multirriesgo
                     primatotal = item.IMP_TOTAL,
                     deducible = item.NOM_FRANQUICIA
                 });
+            }
+            return coberturas;
+        }
+
+        /// <summary>
+        /// Recupera la configuración de coberturas por defecto.
+        /// </summary>
+        internal static List<Contracts.Comun.Cobertura> CoverageByGroupByDefault(bool isCoope, int cod_cia, int cod_ramo, DateTime fec_validez, string cobIncludeFilter, List<Contracts.Ramo.G2990026> coberturaGrupo)
+        {
+            string cod_cobExcludeFilter = string.Empty;
+            string selected = string.Empty;
+            int cod_modalidad = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_modalidad"]);
+
+            List<Contracts.Comun.Cobertura> coberturas = new List<Contracts.Comun.Cobertura>();
+            if (cobIncludeFilter.IsEmpty())
+            {
+                if (isCoope)
+                {
+                    cod_cobExcludeFilter = "2001, 2009, 2007, 2017,2018, 2034, 2010, 2055, 2056, 2057, 2012, 2014";
+                }
+                else
+                {
+                    cod_modalidad = 99999;
+                    cod_cobExcludeFilter = "2001, 2009";
+                    selected = ",2002,2024,2027,";
+                }
+            }
+            else
+            {
+                cod_modalidad = 99999;
+            }
+            Contracts.Comun.Cobertura currentCoverage;
+            foreach (Architect.API.Tron.Contracts.Ramo.a1002150 item in Architect.API.Tron.DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, cod_cobExcludeFilter, cobIncludeFilter))
+            {
+                currentCoverage = new Contracts.Comun.Cobertura()
+                {
+                    seleccionado = selected.Contains(item.COD_COB.ToString()),
+                    requerida = item.MCA_OBLIGATORIO == "S",
+                    codigo = item.COD_COB,
+                    nombre = item.NOM_COB,
+                    capital = item.SUMA_ASEG,
+                    primatotal = item.IMP_TOTAL,
+                    deducible = item.NOM_FRANQUICIA,
+                    error = item.TXT_ERROR
+                };
+                if (coberturaGrupo.IsNotEmpty())
+                {
+                    currentCoverage.requerida = coberturaGrupo.Any(r => r.COD_COB == item.COD_COB && r.MCA_OBLIGATORIO == "S");
+                }
+                coberturas.Add(currentCoverage);
             }
             return coberturas;
         }

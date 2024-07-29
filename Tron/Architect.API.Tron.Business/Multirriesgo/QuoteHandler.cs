@@ -1,6 +1,8 @@
 ﻿using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Globalization;
 
 namespace Architect.API.Tron.Business.Multirriesgo
 {
@@ -40,6 +42,55 @@ namespace Architect.API.Tron.Business.Multirriesgo
                 cod_ramo,
                 Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_modalidad"), 
                 DateTime.Today);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Recupera lista de valores para sumas aseguradas de coberturas o valores deducibles según el rol del usuario
+        /// </summary>
+        public static Tron.Contracts.Cotizacion.MultirriesgoSettings Settings(int cod_ramo, int num_contrato, int num_subcontrato, string num_poliza_grupo, int cod_mon, Core.Contracts.Security.Token tokenInfo)
+        {
+            Tron.Contracts.Cotizacion.MultirriesgoSettings result = new Contracts.Cotizacion.MultirriesgoSettings();
+            List<string> keys = new List<string> { };
+            if (tokenInfo.Roles.Contain("PolizaGrupo"))
+            {
+                keys.AddRange(new List<string> { "MM_POLIZA_GRUPO", "HT_CAPITAL_RC" });
+            }
+
+            string url = $"cod_ramo={cod_ramo}:num_contrato={num_contrato}:num_subcontrato={num_subcontrato}:num_poliza_grupo={num_poliza_grupo}:cod_mon={cod_mon}";
+            List<Core.Contracts.General.LookupValues> values = Core.Business.Common.Lkps(string.Join(",", keys), url, tokenInfo);
+
+            result.fec_vcto_poliza = DateTime.Today.AddYears(1);
+            if (tokenInfo.Roles.Contain("PolizaGrupo"))
+            {
+                result.SumasAseguradasRC = values.Find(x => x.Key == "HT_CAPITAL_RC").Lkp;
+
+                Core.Contracts.General.LookupValues contratosMaster = values.Find(x => x.Key == "MM_POLIZA_GRUPO");
+                if (contratosMaster != null)
+                {
+                    Core.Contracts.General.LookupValue contrato = contratosMaster.Lkp.Find(y => y.Code == num_contrato.ToString());
+                    if (contrato != null)
+                    {
+                        string vcto_poliza = (string)contrato["FEC_VCTO_POLIZA"];
+                        if (vcto_poliza.IsNotEmpty())
+                        {
+                            result.fec_vcto_poliza = DateTime.Parse(vcto_poliza, CultureInfo.CreateSpecificCulture("es-CR"));
+                        }
+                    }
+                }
+
+                if (num_contrato > 0)
+                {
+                    bool IsCoope = false;
+                    int cod_cia = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_cia"]);
+                    DateTime fec_validez = DateTime.Today;
+
+                    List<Contracts.Ramo.G2990026> coberturaGrupo = DataAccess.PorRamo.Coberturas_por_contrato2(cod_ramo, num_contrato);
+                    string cod_cobIncludeFilter = Util.Convert_CoverageListToString(coberturaGrupo);
+                    result.coberturas = Helpers.CoverageByGroupByDefault(IsCoope, cod_cia, cod_ramo, fec_validez, cod_cobIncludeFilter, coberturaGrupo);
+                }
+            }
 
             return result;
         }

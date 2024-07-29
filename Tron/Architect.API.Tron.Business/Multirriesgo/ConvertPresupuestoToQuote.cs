@@ -367,23 +367,8 @@ namespace Architect.API.Tron.Business.Multirriesgo
             }
             if (quoteInfo.Error != null)
             {
+                quoteInfo.Error = Backoffice.Emision.FormatoErrores.FormatearError(quoteInfo.Error);
                 quoteInfo.Mensaje = quoteInfo.Error;
-                if (quoteInfo.Mensaje.StartsWith("ORA-", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    if (quoteInfo.Mensaje.IndexOf(':') > 0)
-                    {
-                        quoteInfo.Mensaje = quoteInfo.Mensaje.Substring(quoteInfo.Mensaje.IndexOf(':') + 1).Trim();
-                    }
-                    //if (quoteInfo.Mensaje.IndexOf(']') > 0)
-                    //{
-                    //    quoteInfo.Mensaje = quoteInfo.Mensaje.Substring(quoteInfo.Mensaje.IndexOf(']') + 1).Trim();
-                    //}
-                    //if (quoteInfo.Mensaje.IndexOf('<') > 0)
-                    //{
-                    //    quoteInfo.Mensaje = quoteInfo.Mensaje.Substring(0, quoteInfo.Mensaje.IndexOf('<')).Trim();
-                    //}
-                    quoteInfo.Mensaje = quoteInfo.Mensaje.Substring(0, 1).ToUpper() + quoteInfo.Mensaje.Substring(1).ToLower();
-                }
             }
             return quoteInfo;
         }

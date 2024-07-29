@@ -2,10 +2,10 @@
 
 app.CotizacionMultirriesgo = (function () {
 
-    var setupData = null;
-    var quoteData = null;
-    var showCalculate = false;
-    var workMode = '';
+    let setupData = null;
+    let quoteData = null;
+    let showCalculate = false;
+    let workMode = '';
 
     function Setup() {
         $('#coberturasTbl').bootstrapTable('showLoading');
@@ -180,6 +180,7 @@ app.CotizacionMultirriesgo = (function () {
             cod_tipo_techoDesc: $("#cod_tipo_techo option:selected").text(),
             cod_tipo_pared: app.ui.GetDropDownNumericValue('#cod_tipo_pared'),
             cod_tipo_paredDesc: $("#cod_tipo_pared option:selected").text(),
+            IMP_EDIFICIO: app.ui.GetNumericValue('#IMP_EDIFICIO'),
             IMP_EDIFICIO: app.ui.GetNumericValue('#IMP_EDIFICIO'),
             cod_tip_med_rob: app.ui.GetDropDownNumericValue('#cod_tip_med_rob'),
             IMP_DOMOS_TOTAL: app.ui.GetNumericValue('#IMP_DOMOS_TOTAL'),
@@ -449,16 +450,16 @@ app.CotizacionMultirriesgo = (function () {
             app.ui.SetDateValue('#fec_vcto_poliza', fec_vcto);
         });
 
-        $('#cotizar').click(function () {
+        $('#cotizar').click(function (e) {
 
             if (app.ui.IsValid('#VisualizationsEdtForm', false)) {
                 app.ui.ButtonDoing('#cotizar');
                 Quote();
             }
-            event.preventDefault();
+            e.preventDefault();
         });
 
-        $('#limpiar').click(function () {
+        $('#limpiar').click(function (e) {
             app.ui.ButtonDoing('#limpiar');
             $('#mainBlock').removeClass('col-md-9');
             $('#mainBlock').addClass('col-md-12');
@@ -466,11 +467,11 @@ app.CotizacionMultirriesgo = (function () {
             $('#plandepagoRow').addClass('d-none');
             MapObjectToInput(setupData);
             app.ui.ButtonDone('#limpiar');
-            event.preventDefault();
+            e.preventDefault();
         });
 
-        $('#print').click(function () {
-            event.preventDefault();
+        $('#print').click(function (e) {
+            e.preventDefault();
             let data = MapInputToObject();
             data.plandepagoporfrecuencia = quoteData.plandepagoporfrecuencia;
             data.presupuesto = quoteData.presupuesto;
@@ -478,9 +479,14 @@ app.CotizacionMultirriesgo = (function () {
             app.Cotizacion.Imprimir('Multirriesgo', data);
         });
 
-        $('#emitir').click(function () {
-            event.preventDefault();
-            window.location.replace(app.setting.basepath + 'emision/multirriesgo?presupuesto=' + quoteData.presupuesto + workMode);
+        $('#emitir').click(function (e) {
+            e.preventDefault();
+            if (localStorage.getItem('Roles').includes('Formularios_digitales')) {
+                window.location.replace(app.setting.basepath + 'multirriesgo/solicitud?presupuesto=' + quoteData.presupuesto + workMode);
+            }
+            else {
+                window.location.replace(app.setting.basepath + 'multirriesgo/emision?presupuesto=' + quoteData.presupuesto + workMode);
+            }           
         });
 
     };
@@ -542,7 +548,7 @@ app.CotizacionMultirriesgo = (function () {
                 IMP_BIE_TEM_DES: { AtLeastOne: 'IMP_MOBILIARIO,IMP_MAQUINARIA,IMP_EQUIP_ELEC,IMP_EQUIP_ELEC_M,IMP_MERCADERIA,IMP_BIE_TEM_DES,IMP_BIE_INT,IMP_OBJ_ESP_VAL' },
                 IMP_BIE_INT: { AtLeastOne: 'IMP_MOBILIARIO,IMP_MAQUINARIA,IMP_EQUIP_ELEC,IMP_EQUIP_ELEC_M,IMP_MERCADERIA,IMP_BIE_TEM_DES,IMP_BIE_INT,IMP_OBJ_ESP_VAL' },
                 IMP_OBJ_ESP_VAL: { AtLeastOne: 'IMP_MOBILIARIO,IMP_MAQUINARIA,IMP_EQUIP_ELEC,IMP_EQUIP_ELEC_M,IMP_MERCADERIA,IMP_BIE_TEM_DES,IMP_BIE_INT,IMP_OBJ_ESP_VAL' }
-                
+
             },
             messages: {
                 cod_mon: { required: 'Debe indicar el Moneda' },
@@ -569,7 +575,7 @@ app.CotizacionMultirriesgo = (function () {
                 IMP_BIE_TEM_DES: { AtLeastOne: 'Debe indicar al menos una suma asegurada para rubros' },
                 IMP_BIE_INT: { AtLeastOne: 'Debe indicar al menos una suma asegurada para rubros' },
                 IMP_OBJ_ESP_VAL: { AtLeastOne: 'Debe indicar al menos una suma asegurada para rubros' }
-                
+
             }
         });
     };
@@ -851,7 +857,6 @@ app.CotizacionMultirriesgo = (function () {
             $('#NUM_EXTIN_INC').val(-1);
         }
 
-
         if (Coberturas_Seleccionada(coberturas, 2008) ||
             Coberturas_Seleccionada(coberturas, 2009) ||
             Coberturas_Seleccionada(coberturas, 2010) ||
@@ -946,7 +951,6 @@ app.CotizacionMultirriesgo = (function () {
         }
         else {
             Coberturas_ComportamientoDependencia('#cod_tip_med_rdm', true);
-            app.ui.SetNumericValue('#cod_tip_med_rdm', 0);
             $("#cod_tip_med_rdm").val(-1);
         }
         if (Coberturas_Seleccionada(coberturas, 2023)) {

@@ -38,10 +38,10 @@ namespace Architect.API.Tron.Controllers
         public async Task<IHttpActionResult> QuoteSettings(int cod_ramo, int num_contrato, int num_subcontrato, string num_poliza_grupo, int cod_mon)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
-            Tron.Contracts.Cotizacion.HogarTotalSettings result = null;
+            Tron.Contracts.Cotizacion.MultirriesgoSettings result = null;
             await Task.Run(() =>
             {
-                result = Business.Cotizacion.HogarTotal.Settings(cod_ramo, num_contrato, num_subcontrato, num_poliza_grupo, cod_mon, tokenInfo);
+                result = Business.Multirriesgo.QuoteHandler.Settings(cod_ramo, num_contrato, num_subcontrato, num_poliza_grupo, cod_mon, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);

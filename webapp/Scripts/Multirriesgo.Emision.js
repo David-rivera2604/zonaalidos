@@ -2,13 +2,13 @@
 
 app.EmisionMultirriesgo = (function () {
 
-    var workMode = '';
-    var setupData = null;
-    var showCalculate = false;
-    var rowDocumentosrequeridos = null;
+    let workMode = '';
+    let setupData = null;
+    let showCalculate = false;
+    let rowDocumentosrequeridos = null;
 
     function Setup() {
-        var _id = app.core.URLStringValue('presupuesto');
+        let _id = app.core.URLStringValue('presupuesto');
         if (_id != '') {
             workMode = app.core.URLStringValue('mode');
 
@@ -199,7 +199,7 @@ app.EmisionMultirriesgo = (function () {
     }
 
     function MapInputToObject() {
-        var data = setupData;
+        let data = setupData;
         data.num_poliza = null
         data.Mensaje = null
         data.Error = null
@@ -365,9 +365,7 @@ app.EmisionMultirriesgo = (function () {
             $('#tipodetercero option[value="3"]').attr('enabled', 'enabled');
         }
 
-
         formularios_handler();
-
     }
 
     function Controls_setup() {
@@ -1070,7 +1068,6 @@ app.EmisionMultirriesgo = (function () {
         return result;
     }
 
-
     function terceros_table_setup() {
 
         $('#tercerosTbl').bootstrapTable({
@@ -1728,8 +1725,6 @@ app.EmisionMultirriesgo = (function () {
             $('#correoelectronico').val(data.PrimaryEmailAddress);
             $('#numerodetelefono').val(data.PhoneNumber);
 
-
-
             //function LookupDependency(parentValue, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url) {
 
             app.core.LookupDependency(data.Province, 'TCanton', 'Cantones', '', data.Canton, false, null, 'cod_pais=CRI:cod_estado=');
@@ -1738,11 +1733,6 @@ app.EmisionMultirriesgo = (function () {
             //$('#TCanton').val(data.Canton);
             //$('#TDistrito').val(data.District);
             $('#otrasenas').val(data.AddressDetail);
-
-
-
-
-
         }
     }
 
@@ -1787,7 +1777,6 @@ app.EmisionMultirriesgo = (function () {
         });
 
     };
-
 
     function documentosrequeridos_table_setup() {
 
@@ -2509,6 +2498,7 @@ app.EmisionMultirriesgo = (function () {
 
         return dataVar;
     }
+
     function MapObjectoinputdatosvar(data) {
         $('#num_folio').val(data.FOLIO_RGO1)
         $('#num_finca').val(data.NUM_FINCA_FILIAL)
@@ -2571,7 +2561,6 @@ app.EmisionMultirriesgo = (function () {
         return ((workMode === 'draft' || workMode === 'resume') && !localStorage.getItem('Roles').includes('Purdy') && !localStorage.getItem('Roles').includes('Davivienda_Prendarios') && !localStorage.getItem('Roles').includes('Davivienda_Leasing'));
     }
 
-
     return {
         Init: function () {
             Setup();
@@ -2592,8 +2581,6 @@ app.EmisionMultirriesgo = (function () {
             documentosrequeridos_controls_Events();
 
             formularios_table_setup();
-
-
         },
         tercerosEditRow: function (row) {
             terceros_table_row_edit(row);
