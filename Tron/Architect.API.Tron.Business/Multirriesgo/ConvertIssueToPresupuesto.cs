@@ -144,7 +144,7 @@ namespace Architect.API.Tron.Business.Multirriesgo
                 tip_benef = tipodetercero.ToString(),
                 num_secu = 1,
                 tip_docum = item.DocumentNumberType.ToString().IdentificationType(),
-                cod_docum = Util.IdentificationFormat(item.DocumentNumberType, item.DocumentNumber),
+                cod_docum = item.DocumentNumber.DocumentNumber(item.DocumentNumberType.ToString()),
                 mca_principal = "N",
                 mca_calculo = "N",
                 mca_baja = "N",
