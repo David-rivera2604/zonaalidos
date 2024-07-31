@@ -39,7 +39,7 @@ namespace Architect.API.Tron.Business.Multirriesgo
                 //Contracts.PolicyProposal proposal = DataAccess.PolicyProposal.RetrieveByProposalId(presupuesto, tokenInfo.CompanyId);
 
                 Contracts.Presupuesto.DatoFijo P30Instance = DataAccess.LeerPresupuesto.Presupuesto(1, presupuesto, 0, 0, 0, null, true);
-                Contracts.Cotizacion.Multirriesgo resultInfo2 = Cotizacion.MultirriesgoConvertFrom.Quote(Cotizacion.MultirriesgoConvertFrom.Quote(P30Instance), P30Instance);
+                Contracts.Cotizacion.Multirriesgo resultInfo2 = ConvertPresupuestoToQuote.Quote(ConvertPresupuestoToQuote.Quote(P30Instance), P30Instance);
 
                 Utilities.Cache.SetItem(key, Newtonsoft.Json.JsonConvert.SerializeObject(resultInfo2), -1);
             }

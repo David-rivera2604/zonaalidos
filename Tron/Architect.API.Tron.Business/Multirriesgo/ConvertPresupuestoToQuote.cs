@@ -16,6 +16,7 @@ namespace Architect.API.Tron.Business.Multirriesgo
             {
                 cod_fracc_pago = tronQuoteInfo.cod_fracc_pago,
                 cod_mon = tronQuoteInfo.cod_mon,
+                cod_ramo = tronQuoteInfo.cod_ramo,
                 fec_efec_poliza = tronQuoteInfo.fec_efec_poliza,
                 fec_vcto_poliza = tronQuoteInfo.fec_vcto_poliza,
                 coberturas = new List<Contracts.Comun.Cobertura>()
