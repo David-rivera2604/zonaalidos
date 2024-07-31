@@ -1,6 +1,7 @@
 ﻿var app = app || {};
 
 app.CotizacionMultirriesgo = (function () {
+    const grouped_coverage_management = true;
 
     let setupData = null;
     let quoteData = null;
@@ -486,7 +487,7 @@ app.CotizacionMultirriesgo = (function () {
             }
             else {
                 window.location.replace(app.setting.basepath + 'multirriesgo/emision?presupuesto=' + quoteData.presupuesto + workMode);
-            }           
+            }
         });
 
     };
@@ -830,6 +831,25 @@ app.CotizacionMultirriesgo = (function () {
 
     function Coberturas_ManejoDeCapital() {
         var coberturas = $('#coberturasTbl').bootstrapTable('getData');
+
+        if (grouped_coverage_management) {
+            cob2001Selected = Coberturas_Seleccionada(coberturas, 2001);
+            coberturas.filter(r => [2002, 2024, 2025, 2026, 2004].includes(r.codigo)).forEach(function (item, index) {
+                item.seleccionado = cob2001Selected;
+            });
+
+            cob2009Selected = Coberturas_Seleccionada(coberturas, 2009);
+            coberturas.filter(r => [2010, 2055, 2056, 2057, 2012].includes(r.codigo)).forEach(function (item, index) {
+                item.seleccionado = cob2009Selected;
+            });
+
+            $('#coberturasTbl').bootstrapTable('load', coberturas);
+            coberturas.forEach(function (value, index) {
+                $('[name=btSelectItem][data-index=' + index + ']').prop('disabled',
+                    [2002, 2024, 2025, 2026, 2004].includes(value.codigo) || [2010, 2055, 2056, 2057, 2012].includes(value.codigo));
+            });
+        }
+
 
         if (Coberturas_Seleccionada(coberturas, 2001) ||
             Coberturas_Seleccionada(coberturas, 2002) ||
