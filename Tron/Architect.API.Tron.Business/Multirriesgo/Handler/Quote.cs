@@ -1,18 +1,17 @@
 ﻿using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Globalization;
 
-namespace Architect.API.Tron.Business.Multirriesgo
+namespace Architect.API.Tron.Business.Multirriesgo.Handler
 {
-    public static class QuoteHandler
+    public static class Quote
     {
 
         /// <summary>
         /// Prepara la información inicial la para la preparación de un presupuesto.
         /// </summary>
-        public static Contracts.Cotizacion.Multirriesgo QuoteSetup(int cod_ramo, Core.Contracts.Security.Token tokenInfo)
+        public static Contracts.Cotizacion.Multirriesgo Setup(int cod_ramo, Core.Contracts.Security.Token tokenInfo)
         {
             bool IsCoope = false;
             Contracts.Cotizacion.Multirriesgo result = new Contracts.Cotizacion.Multirriesgo()
@@ -37,10 +36,10 @@ namespace Architect.API.Tron.Business.Multirriesgo
                 Agente = tokenInfo.UserName
             };
 
-            result.coberturas = Helpers.CoverageByDefault(IsCoope, 
-                Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1), 
+            result.coberturas = Common.CoverageByDefault(IsCoope,
+                Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1),
                 cod_ramo,
-                Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_modalidad"), 
+                Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_modalidad"),
                 DateTime.Today);
 
             return result;
@@ -83,12 +82,12 @@ namespace Architect.API.Tron.Business.Multirriesgo
                 if (num_contrato > 0)
                 {
                     bool IsCoope = false;
-                    int cod_cia = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_cia"]);
+                    int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia");
                     DateTime fec_validez = DateTime.Today;
 
                     List<Contracts.Ramo.G2990026> coberturaGrupo = DataAccess.PorRamo.Coberturas_por_contrato2(cod_ramo, num_contrato);
                     string cod_cobIncludeFilter = Util.Convert_CoverageListToString(coberturaGrupo);
-                    result.coberturas = Helpers.CoverageByGroupByDefault(IsCoope, cod_cia, cod_ramo, fec_validez, cod_cobIncludeFilter, coberturaGrupo);
+                    result.coberturas = Common.CoverageByGroupByDefault(IsCoope, cod_cia, cod_ramo, fec_validez, cod_cobIncludeFilter, coberturaGrupo);
                 }
             }
 
@@ -98,7 +97,7 @@ namespace Architect.API.Tron.Business.Multirriesgo
         /// <summary>
         /// Realiza la validación de datos y cálculo necesarios para obtener una cotización o presupuesto de un producto de tipo multirriesgo.
         /// </summary>
-        public static Contracts.Cotizacion.Multirriesgo Quote(Contracts.Cotizacion.Multirriesgo quoteInfo, Core.Contracts.Security.Token tokenInfo)
+        public static Contracts.Cotizacion.Multirriesgo Apply(Contracts.Cotizacion.Multirriesgo quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.Cotizacion.Multirriesgo resultInfo = quoteInfo;
 
@@ -108,10 +107,10 @@ namespace Architect.API.Tron.Business.Multirriesgo
                 bool IsCoope = false;
                 quoteInfo.presupuesto = string.Empty;
                 quoteInfo.resumen = null;
-                Contracts.Presupuesto.DatoFijo quoteTron = ConvertQuoteToPresupuesto.Tron(quoteInfo, IsCoope, quoteInfo.cod_ramo, tokenInfo.AgentCode, tokenInfo.UserName);
+                Contracts.Presupuesto.DatoFijo quoteTron = Convert.QuoteToPresupuesto.Tron(quoteInfo, IsCoope, quoteInfo.cod_ramo, tokenInfo.AgentCode, tokenInfo.UserName);
 
                 Contracts.Presupuesto.DatoFijo resultTron = Backoffice.Cotizacion.Generico.Calcular(quoteTron);
-                resultInfo = ConvertPresupuestoToQuote.Quote(quoteInfo, resultTron);
+                resultInfo = Convert.PresupuestoToQuote.Quote(quoteInfo, resultTron);
 
                 Architect.Utilities.Cache.SetItem(
                     string.Format("multirriesgo.{0}", resultInfo.presupuesto),
@@ -119,8 +118,8 @@ namespace Architect.API.Tron.Business.Multirriesgo
 
                 if (resultInfo.presupuesto.IsNotEmpty())
                 {
-                    Core.Business.General.ChangeSet.Create(3000, 
-                        Convert.ToInt32(resultInfo.presupuesto.Substring(4)), tokenInfo.CompanyId, "Cotización Multirriesgo", "Presupuesto #" + resultInfo.presupuesto, tokenInfo.UserId, resultInfo);
+                    Core.Business.General.ChangeSet.Create(3000,
+                        System.Convert.ToInt32(resultInfo.presupuesto.Substring(4)), tokenInfo.CompanyId, "Cotización Multirriesgo", "Presupuesto #" + resultInfo.presupuesto, tokenInfo.UserId, resultInfo);
                 }
             }
             return resultInfo;
@@ -135,7 +134,7 @@ namespace Architect.API.Tron.Business.Multirriesgo
             List<Core.Contracts.General.Error> result = new List<Core.Contracts.General.Error>();
 
             //Coberturas:
-            if (!Helpers.Rule_AtLeastOneCoverageSelected(source))
+            if (!Common.Rule_AtLeastOneCoverageSelected(source))
             {
                 result.Add(new Core.Contracts.General.Error() { Group = "Table", Key = "coberturasTbl", Message = "Debe seleccionar al menos una cobertura" });
             }
@@ -163,25 +162,25 @@ namespace Architect.API.Tron.Business.Multirriesgo
 
             //*: Sumas aseguradas maxima en colones
             if (result.Count == 0 && tokenInfo.Roles.Contain("Agente") && source.cod_mon == 1 &&
-                Helpers.Util_TotalSumInsured(source) > 375000000)
+                Common.Util_TotalSumInsured(source) > 375000000)
             {
                 result.Add(new Core.Contracts.General.Error() { Group = group, Key = "*", Message = "Debido a su perfil de usuario, solo puede cotizar hasta 375.000.000,00 colones" });
             }
             //*: Sumas aseguradas maxima en dolares
             if (result.Count == 0 && tokenInfo.Roles.Contain("Agente") && source.cod_mon == 2 &&
-                Helpers.Util_TotalSumInsured(source) > 750000)
+                Common.Util_TotalSumInsured(source) > 750000)
             {
                 result.Add(new Core.Contracts.General.Error() { Group = group, Key = "*", Message = "Debido a su perfil de usuario, solo puede cotizar hasta $750.000,00 dolares" });
             }
             //*: contenidos en colones
-            if (result.Count == 0 && tokenInfo.Roles.Contain("Agente") && (Helpers.Util_CoverageSelected(source, 2008) || Helpers.Util_CoverageSelected(source, 2009)) &&
-                source.cod_mon == 1 && Helpers.Util_TotalSumInsuredContenido(source) > 0 && Helpers.Util_TotalSumInsuredContenido(source) < 7000000)
+            if (result.Count == 0 && tokenInfo.Roles.Contain("Agente") && (Common.Util_CoverageSelected(source, 2008) || Common.Util_CoverageSelected(source, 2009)) &&
+                source.cod_mon == 1 && Common.Util_TotalSumInsuredContenido(source) > 0 && Common.Util_TotalSumInsuredContenido(source) < 7000000)
             {
                 result.Add(new Core.Contracts.General.Error() { Group = group, Key = "*", Message = "Debido a su perfil de usuario, no puede tarifar contenidos menores a 7.000.000,00 colones" });
             }
             //*: contenidos en dolares
-            if (result.Count == 0 && tokenInfo.Roles.Contain("Agente") && (Helpers.Util_CoverageSelected(source, 2008) || Helpers.Util_CoverageSelected(source, 2009)) &&
-                source.cod_mon == 2 && Helpers.Util_TotalSumInsuredContenido(source) > 0 && Helpers.Util_TotalSumInsuredContenido(source) < 14000)
+            if (result.Count == 0 && tokenInfo.Roles.Contain("Agente") && (Common.Util_CoverageSelected(source, 2008) || Common.Util_CoverageSelected(source, 2009)) &&
+                source.cod_mon == 2 && Common.Util_TotalSumInsuredContenido(source) > 0 && Common.Util_TotalSumInsuredContenido(source) < 14000)
             {
                 result.Add(new Core.Contracts.General.Error() { Group = group, Key = "*", Message = "Debido a su perfil de usuario, no puede tarifar contenidos menores a $14.000,00 dolares" });
             }

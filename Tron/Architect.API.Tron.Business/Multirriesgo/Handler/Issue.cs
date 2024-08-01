@@ -3,15 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data;
-using Newtonsoft.Json.Linq;
 using Architect.API.Core.Business.General;
 using Architect.API.Core.Contracts;
 using Newtonsoft.Json;
-using Architect.Compliance.Integrations.Contracts;
 
-namespace Architect.API.Tron.Business.Multirriesgo
+namespace Architect.API.Tron.Business.Multirriesgo.Handler
 {
-    public static class IssueHandler
+    public static class Issue
     {
         /// <summary>
         /// Prepara la información inicial la para la preparación de una póliza.
@@ -39,7 +37,7 @@ namespace Architect.API.Tron.Business.Multirriesgo
                 //Contracts.PolicyProposal proposal = DataAccess.PolicyProposal.RetrieveByProposalId(presupuesto, tokenInfo.CompanyId);
 
                 Contracts.Presupuesto.DatoFijo P30Instance = DataAccess.LeerPresupuesto.Presupuesto(1, presupuesto, 0, 0, 0, null, true);
-                Contracts.Cotizacion.Multirriesgo resultInfo2 = ConvertPresupuestoToQuote.Quote(ConvertPresupuestoToQuote.Quote(P30Instance), P30Instance);
+                Contracts.Cotizacion.Multirriesgo resultInfo2 = Convert.PresupuestoToQuote.Quote(Convert.PresupuestoToQuote.Quote(P30Instance), P30Instance);
 
                 Utilities.Cache.SetItem(key, Newtonsoft.Json.JsonConvert.SerializeObject(resultInfo2), -1);
             }
@@ -71,7 +69,7 @@ namespace Architect.API.Tron.Business.Multirriesgo
         /// <summary>
         /// Realiza la validación de datos y emisión de la póliza para un producto de tipo multirriesgo.
         /// </summary>
-        public static Contracts.Emision.Multirriesgo Issue(Contracts.Emision.Multirriesgo quoteInfo, Core.Contracts.Security.Token tokenInfo)
+        public static Contracts.Emision.Multirriesgo Apply(Contracts.Emision.Multirriesgo quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
 
             Contracts.Emision.Multirriesgo resultQuoteInfo = null;
@@ -90,9 +88,9 @@ namespace Architect.API.Tron.Business.Multirriesgo
                     quoteInfo.kyc = kycpersona;
                 }
 
-                quoteInfo.DatosEconomicos = RequestHandler.EconomicDataCalculate(quoteInfo);
+                quoteInfo.DatosEconomicos = Request.EconomicDataCalculate(quoteInfo);
 
-                string uniqueId = RequestHandler.EnviarSolicitud(quoteInfo.tip_firma, quoteInfo.correoenvio, quoteInfo, tokenInfo);
+                string uniqueId = Request.EnviarSolicitud(quoteInfo.tip_firma, quoteInfo.correoenvio, quoteInfo, tokenInfo);
                 string kycUniqueId = String.Empty;
 
                 AlmacenarSolicitud(quoteInfo, quoteInfo.tip_firma == Contracts.TipoDeFirma.Manual ? 33 : 4, tokenInfo, uniqueId, kycUniqueId);
@@ -120,24 +118,24 @@ namespace Architect.API.Tron.Business.Multirriesgo
             else
             {
 
-                Contracts.Presupuesto.DatoFijo result = ConvertIssueToPresupuesto.Tron(quoteInfo);
+                Contracts.Presupuesto.DatoFijo result = Convert.IssueToPresupuesto.Tron(quoteInfo);
 
                 Contracts.Poliza.DatoFijo result2 = Backoffice.Emision.Generico.Emitir(result, tokenInfo);
 
-                resultQuoteInfo = ConvertPolizaToIssue.Quote(quoteInfo, result2);
+                resultQuoteInfo = Convert.PolizaToIssue.Quote(quoteInfo, result2);
 
                 if (resultQuoteInfo.num_poliza.IsNotEmpty())
                 {
-                    Core.Business.General.ChangeSet.Create(3000, Convert.ToInt32(resultQuoteInfo.num_poliza.Substring(4)), tokenInfo.CompanyId, "Emisión Multirriesgo", "Póliza #" + resultQuoteInfo.num_poliza, tokenInfo.UserId, resultQuoteInfo);
+                    Core.Business.General.ChangeSet.Create(3000, System.Convert.ToInt32(resultQuoteInfo.num_poliza.Substring(4)), tokenInfo.CompanyId, "Emisión Multirriesgo", "Póliza #" + resultQuoteInfo.num_poliza, tokenInfo.UserId, resultQuoteInfo);
 
                     //Se cambian los adjuntos creados al número de presupuesto al número de póliza generado
-                    Core.Business.General.Attachment.ChangeEntityId(tokenInfo.CompanyId, 3000, Convert.ToInt64(resultQuoteInfo.presupuesto), 3000, Convert.ToInt64(resultQuoteInfo.num_poliza), tokenInfo.UserId);
+                    Core.Business.General.Attachment.ChangeEntityId(tokenInfo.CompanyId, 3000, System.Convert.ToInt64(resultQuoteInfo.presupuesto), 3000, System.Convert.ToInt64(resultQuoteInfo.num_poliza), tokenInfo.UserId);
 
                     try
                     {
                         if (resultQuoteInfo.num_poliza.IsNotEmpty() && quoteInfo.kyc != null && Utilities.Helpers.Settings.BoolValue("Compliance.Enabled"))
                         {
-                            ComplianceHandler.Compliance(quoteInfo, tokenInfo);
+                            Handler.Compliance.Apply(quoteInfo, tokenInfo);
                         }
                     }
                     catch (Exception ex)
@@ -156,7 +154,7 @@ namespace Architect.API.Tron.Business.Multirriesgo
 
             return resultQuoteInfo;
         }
- 
+
         private static void AlmacenarSolicitud(Contracts.Emision.Multirriesgo quoteInfo, int status, Core.Contracts.Security.Token tokenInfo, string uniqueId, string signingRequest2Id = "")
         {
             Contracts.Comun.tercero primaryInsured = (from t in quoteInfo.terceros where t.tipodetercero == 2 select t).First();
@@ -207,7 +205,7 @@ namespace Architect.API.Tron.Business.Multirriesgo
             }
 
         }
-        
+
         private static void AlmacenarDatosKYC(dynamic kyc)
         {
 
@@ -221,7 +219,7 @@ namespace Architect.API.Tron.Business.Multirriesgo
             }
 
         }
-        
+
         private static void GuardaDatosVariables(Contracts.Emision.Multirriesgo quoteInfo, string presupuesto, int cod_ramo, string tipoenvio, string tipoenvioDesc, string uniqueId)
         {
 
@@ -288,6 +286,6 @@ namespace Architect.API.Tron.Business.Multirriesgo
 
             currentConnection.Close();
         }
-   
+
     }
 }

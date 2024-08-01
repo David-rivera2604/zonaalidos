@@ -2,19 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Data;
 using Newtonsoft.Json.Linq;
-using Architect.API.Core.Business.General;
 using Architect.API.Core.Contracts;
 using Newtonsoft.Json;
 using Architect.Compliance.Integrations.Contracts;
 
-namespace Architect.API.Tron.Business.Multirriesgo
+namespace Architect.API.Tron.Business.Multirriesgo.Handler
 {
-     static class ComplianceHandler
+    static class Compliance
     {
-        
-        internal static string Compliance(Contracts.Emision.Multirriesgo quoteInfo, Core.Contracts.Security.Token tokenInfo)
+
+        internal static string Apply(Contracts.Emision.Multirriesgo quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
             JObject jsonvalues = null;
             Contracts.Comun.tercero titular = (from t in quoteInfo.terceros where t.tipodetercero == 0 select t).FirstOrDefault();
@@ -42,7 +40,7 @@ namespace Architect.API.Tron.Business.Multirriesgo
                     break;
             }
 
-            string numidenti =  Util.IdentificationFormat (titular.DocumentNumberType, titular.DocumentNumber);
+            string numidenti = Util.IdentificationFormat(titular.DocumentNumberType, titular.DocumentNumber);
 
             //if (titular.DocumentNumberType == 1)
             //{
@@ -55,7 +53,7 @@ namespace Architect.API.Tron.Business.Multirriesgo
                 fechanaci = titular.fechadenacimiento;
             }
 
-            Architect.Compliance.Integrations.Contracts.Clientes mapInfo = new Compliance.Integrations.Contracts.Clientes()
+            Architect.Compliance.Integrations.Contracts.Clientes mapInfo = new Architect.Compliance.Integrations.Contracts.Clientes()
             {
 
 
@@ -116,21 +114,21 @@ namespace Architect.API.Tron.Business.Multirriesgo
             //origenFondos
             //paisOrigen = "111111"
             //profesion
-            mapInfo.clientesUbicaciones = new List<Compliance.Integrations.Contracts.Clientesubicacione>()
+            mapInfo.clientesUbicaciones = new List<Architect.Compliance.Integrations.Contracts.Clientesubicacione>()
             {
-                new Compliance.Integrations.Contracts.Clientesubicacione()
+                new Architect.Compliance.Integrations.Contracts.Clientesubicacione()
                 {
                     tipoUbicacion = 1,
                     divisionTerritorial = 99999,
                     descripcionUbicacion = titular.numerodetelefono
                 },
-                new Compliance.Integrations.Contracts.Clientesubicacione()
+                new Architect.Compliance.Integrations.Contracts.Clientesubicacione()
                 {
                     tipoUbicacion = 3,
                     divisionTerritorial = 99999,
                     descripcionUbicacion = titular.correoelectronico
                 },
-                new Compliance.Integrations.Contracts.Clientesubicacione()
+                new Architect.Compliance.Integrations.Contracts.Clientesubicacione()
                 {
                     tipoUbicacion = 4,
                     divisionTerritorial = titular.TDistrito,
@@ -424,7 +422,7 @@ namespace Architect.API.Tron.Business.Multirriesgo
                     string telefonocelularPer = jsonvalues.TokenStringValue("telefonocelularPer");
                     if (telefonocelularPer.IsNotEmpty())
                     {
-                        mapInfo.clientesUbicaciones.Add(new Compliance.Integrations.Contracts.Clientesubicacione()
+                        mapInfo.clientesUbicaciones.Add(new Architect.Compliance.Integrations.Contracts.Clientesubicacione()
                         {
                             tipoUbicacion = 2,
                             divisionTerritorial = 99999,
@@ -446,9 +444,9 @@ namespace Architect.API.Tron.Business.Multirriesgo
             mapInfo.clientesFATCA = new List<Clientesfatca>() { FATCA };
             mapInfo.clientesTransacciones = new[] { Transacciones };
             mapInfo.clientesIngresos = new[] { Ingresos };
-            mapInfo.clientesPolizas = new List<Compliance.Integrations.Contracts.Clientespoliza>()
+            mapInfo.clientesPolizas = new List<Architect.Compliance.Integrations.Contracts.Clientespoliza>()
             {
-                new Compliance.Integrations.Contracts.Clientespoliza()
+                new Architect.Compliance.Integrations.Contracts.Clientespoliza()
                 {
                     numeroPoliza = quoteInfo.num_poliza,
                     descripcionPoliza = "Multirriesgo",
@@ -489,6 +487,6 @@ namespace Architect.API.Tron.Business.Multirriesgo
             string result = Architect.Compliance.Integrations.Business.Customers.SendCustomers(mapInfo).Result;
             return result;
         }
-    
+
     }
 }

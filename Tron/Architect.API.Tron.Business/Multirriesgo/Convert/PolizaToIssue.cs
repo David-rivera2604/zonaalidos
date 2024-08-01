@@ -1,11 +1,10 @@
 ﻿using Architect.Utilities.Extensions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Architect.API.Tron.Business.Multirriesgo
+namespace Architect.API.Tron.Business.Multirriesgo.Convert
 {
-    internal class ConvertPolizaToIssue
+    internal class PolizaToIssue
     {
         internal static Contracts.Emision.Multirriesgo Quote(Contracts.Emision.Multirriesgo quoteInfo, Contracts.Poliza.DatoFijo tronQuoteInfo)
         {
@@ -16,7 +15,7 @@ namespace Architect.API.Tron.Business.Multirriesgo
                 {
                     quoteInfo.Error = tronQuoteInfo.Calculado.Coberturas.First().TXT_ERROR;
                 }
-                foreach (   Contracts.Poliza.CoberturaCalculada item in tronQuoteInfo.Calculado.Coberturas)
+                foreach (Contracts.Poliza.CoberturaCalculada item in tronQuoteInfo.Calculado.Coberturas)
                 {
                     foreach (Contracts.Comun.Cobertura itemQuote in quoteInfo.coberturas)
                     {
@@ -96,6 +95,6 @@ namespace Architect.API.Tron.Business.Multirriesgo
 
             return quoteInfo;
         }
-    
+
     }
 }

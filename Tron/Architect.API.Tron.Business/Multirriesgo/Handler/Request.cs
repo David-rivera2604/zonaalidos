@@ -5,9 +5,9 @@ using System.Linq;
 using System.IO;
 using Architect.API.Tron.Business.DocumentGenerator;
 
-namespace Architect.API.Tron.Business.Multirriesgo
+namespace Architect.API.Tron.Business.Multirriesgo.Handler
 {
-    public static class RequestHandler
+    public static class Request
     {
 
         public static string ReEnviarSolicitud(string presupuesto, string correoenvio, Core.Contracts.Security.Token tokenInfo)

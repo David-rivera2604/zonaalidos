@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using Architect.Utilities.Extensions;
 using Newtonsoft.Json.Linq;
 
-namespace Architect.API.Tron.Business.Multirriesgo
+namespace Architect.API.Tron.Business.Multirriesgo.Convert
 {
-    internal static class ConvertIssueToPresupuesto
+    internal static class IssueToPresupuesto
     {
 
         internal static Contracts.Presupuesto.DatoFijo Tron(Contracts.Emision.Multirriesgo quoteInfo)
@@ -25,12 +24,12 @@ namespace Architect.API.Tron.Business.Multirriesgo
             //Datos fijos del presupuesto
              Contracts.Presupuesto.DatoFijo datosFijos = new  Contracts.Presupuesto.DatoFijo()
             {
-                cod_cia = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_cia"]),
+                cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia"),
                 num_poliza = quoteInfo.presupuesto,
                 num_spto = 0,
                 num_apli = 0,
                 num_spto_apli = 0,
-                cod_sector = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.Multirriesgo.cod_sector"]),
+                cod_sector = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.Multirriesgo.cod_sector"),
                 cod_ramo = branch,
                 fec_validez = DateTime.MinValue,
                 fec_emision = DateTime.MinValue,
@@ -57,9 +56,9 @@ namespace Architect.API.Tron.Business.Multirriesgo
                 pct_agt = 0,
                 cod_org = 0,
                 cod_asesor = 0,
-                cod_nivel1 = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_nivel1"]),
-                cod_nivel2 = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_nivel2"]),
-                cod_nivel3 = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_nivel3"]),
+                cod_nivel1 = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_nivel1"),
+                cod_nivel2 = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_nivel2"),
+                cod_nivel3 = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_nivel3"),
                 cod_compensacion = 0,
                 pct_regulariza = 0,
                 cod_indice = 0,
@@ -89,6 +88,7 @@ namespace Architect.API.Tron.Business.Multirriesgo
 
             return datosFijos;
         }
+
         internal static List<Contracts.Presupuesto.DatoVariable> DatosVariable(Contracts.Emision.Multirriesgo quoteInfo, Contracts.Presupuesto.DatoFijo datosFijos)
         {
             List<Contracts.Presupuesto.DatoVariable> datosVariables = new List<Contracts.Presupuesto.DatoVariable>();
@@ -131,6 +131,7 @@ namespace Architect.API.Tron.Business.Multirriesgo
 
             return datosFijos.Terceros;
         }
+
         internal static Contracts.Presupuesto.Tercero TerceroPresupuesto(Contracts.Presupuesto.DatoFijo datosFijos, Contracts.Comun.tercero item, int tipodetercero)
         {
             Contracts.Presupuesto.Tercero result = new Contracts.Presupuesto.Tercero()
@@ -177,6 +178,7 @@ namespace Architect.API.Tron.Business.Multirriesgo
 
             return result;
         }
+
         internal static Contracts.Presupuesto.DetalleDeTercero CambioTerceroPresupuesto(Contracts.Presupuesto.DatoFijo datosFijos, Contracts.Comun.tercero item)
         {
             Contracts.Presupuesto.DetalleDeTercero result = new Contracts.Presupuesto.DetalleDeTercero()

@@ -1,12 +1,11 @@
 ﻿using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 
-namespace Architect.API.Tron.Business.Multirriesgo
+namespace Architect.API.Tron.Business.Multirriesgo.Convert
 {
-    public static class ConvertQuoteToPresupuesto
+    public static class QuoteToPresupuesto
     {
 
         internal static Architect.API.Tron.Contracts.Presupuesto.DatoFijo Tron(Contracts.Cotizacion.Multirriesgo quoteInfo, bool isCoope, int branch, int agentCode, string userName)
@@ -26,16 +25,16 @@ namespace Architect.API.Tron.Business.Multirriesgo
             //Datos fijos del presupuesto
             Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos = new Architect.API.Tron.Contracts.Presupuesto.DatoFijo()
             {
-                cod_cia = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_cia"]),
-                cod_sector = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.HogarTotal.cod_sector"]),
+                cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia"),
+                cod_sector = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.HogarTotal.cod_sector"),
                 cod_ramo = branch,
                 num_poliza = string.Empty,
                 num_spto = 0,
                 num_apli = 0,
                 num_spto_apli = 0,
-                cod_nivel1 = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_nivel1"]),
-                cod_nivel2 = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_nivel2"]),
-                cod_nivel3 = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_nivel3"]),
+                cod_nivel1 = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_nivel1"),
+                cod_nivel2 = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_nivel2"),
+                cod_nivel3 = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_nivel3"),
                 num_poliza_grupo = quoteInfo.polizagrupo,
                 num_subcontrato = quoteInfo.subcontrato,
                 num_contrato = quoteInfo.contrato,
@@ -111,8 +110,8 @@ namespace Architect.API.Tron.Business.Multirriesgo
                 //Obtener informacion del agente y cuadro comision
                 foreach (Architect.API.Tron.Contracts.Batch.p_lee_g2990000 item in Architect.API.Tron.DataAccess.PorRamo.AgenteyCuadroDeComision(datosFijos.cod_cia, datosFijos.cod_ramo, datosFijos.num_contrato))
                 {
-                    datosFijos.cod_agt = Convert.ToInt32(item.cod_agt);
-                    datosFijos.cod_cuadro_com = Convert.ToInt32(item.cod_cuadro_com);
+                    datosFijos.cod_agt = System.Convert.ToInt32(item.cod_agt);
+                    datosFijos.cod_cuadro_com = System.Convert.ToInt32(item.cod_cuadro_com);
                 }
             }
             else

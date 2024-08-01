@@ -26,7 +26,7 @@ namespace Architect.API.Tron.Controllers
             Architect.API.Tron.Contracts.Cotizacion.Multirriesgo result = null;
             await Task.Run(() =>
             {
-                result = Business.Multirriesgo.QuoteHandler.QuoteSetup(204, tokenInfo);
+                result = Business.Multirriesgo.Handler.Quote.Setup(204, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -41,7 +41,7 @@ namespace Architect.API.Tron.Controllers
             Tron.Contracts.Cotizacion.MultirriesgoSettings result = null;
             await Task.Run(() =>
             {
-                result = Business.Multirriesgo.QuoteHandler.Settings(cod_ramo, num_contrato, num_subcontrato, num_poliza_grupo, cod_mon, tokenInfo);
+                result = Business.Multirriesgo.Handler.Quote.Settings(cod_ramo, num_contrato, num_subcontrato, num_poliza_grupo, cod_mon, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -58,7 +58,7 @@ namespace Architect.API.Tron.Controllers
             Tron.Contracts.Cotizacion.Multirriesgo result = null;
             await Task.Run(() =>
             {
-                result = Business.Multirriesgo.QuoteHandler.Quote(quoteInfo, tokenInfo);
+                result = Business.Multirriesgo.Handler.Quote.Apply(quoteInfo, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -76,7 +76,7 @@ namespace Architect.API.Tron.Controllers
             Tron.Contracts.Emision.Multirriesgo result = null;
             await Task.Run(() =>
             {
-                result = Business.Multirriesgo.IssueHandler.Setup(presupuesto, mode, tokenInfo);
+                result = Business.Multirriesgo.Handler.Issue.Setup(presupuesto, mode, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -93,7 +93,7 @@ namespace Architect.API.Tron.Controllers
             Tron.Contracts.Cotizacion.Multirriesgo result = null;
             await Task.Run(() =>
             {
-                result = Business.Multirriesgo.IssueHandler.Issue(quoteInfo, tokenInfo);
+                result = Business.Multirriesgo.Handler.Issue.Apply(quoteInfo, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -111,7 +111,7 @@ namespace Architect.API.Tron.Controllers
             string result = string.Empty;
             await Task.Run(() =>
             {
-                result = Business.Multirriesgo.RequestHandler.ReEnviarSolicitud(presupuesto, correoenvio, tokenInfo);
+                result = Business.Multirriesgo.Handler.Request.ReEnviarSolicitud(presupuesto, correoenvio, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);

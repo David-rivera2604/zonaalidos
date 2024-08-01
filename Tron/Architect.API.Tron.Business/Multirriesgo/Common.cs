@@ -1,15 +1,13 @@
 ﻿using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 
 namespace Architect.API.Tron.Business.Multirriesgo
 {
-    static class Helpers
+    static class Common
     {
-
-          internal static List<Contracts.Comun.Cobertura> CoverageByDefault(bool isCoope, int cod_cia, int cod_ramo, int cod_modalidad, DateTime fec_validez)
+        internal static List<Contracts.Comun.Cobertura> CoverageByDefault(bool isCoope, int cod_cia, int cod_ramo, int cod_modalidad, DateTime fec_validez)
         {
             string cod_cobExcludeFilter = "2019";
             string selected = "2001,2002,2024,2025,2026,2027";
@@ -38,7 +36,7 @@ namespace Architect.API.Tron.Business.Multirriesgo
         {
             string cod_cobExcludeFilter = string.Empty;
             string selected = string.Empty;
-            int cod_modalidad = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_modalidad"]);
+            int cod_modalidad = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_modalidad");
 
             List<Contracts.Comun.Cobertura> coberturas = new List<Contracts.Comun.Cobertura>();
             if (cobIncludeFilter.IsEmpty())
