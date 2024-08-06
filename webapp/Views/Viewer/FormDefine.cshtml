@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Zona de Aliados</title>
+    @Styles.Render("~/Content/cssMaster")
+
+    @Scripts.Render("~/bundles/jsMaster")
+</head>
+<body>
+    <div class='form-row'>
+        <div class='col-md-12'>
+            <form id='VisualizationsEdtForm' class='form-horizontal' data-toggle='validator'>
+                <fieldset>
+                    <div class="form-row">
+                        <div class='col-md-12'>
+                            <div class='form-group'>
+                                <button id="apply1" type="button" class="btn btn-block btn-danger" style="margin-bottom: 3px">Aplicar</button>
+                                <input type='text' id='key' name='key' class='form-control' size='50' maxlength='50' value="prototipo" />
+                                <textarea id='specification' class='form-control' size='4096' maxlength='4096' style="font-family: monospace;font-size: medium;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#specification').keyup(function (event) {
+                var keycode = (event.keyCode ? event.keyCode : event.which);
+                if (keycode == '13' || keycode == '27') {
+                    window.opener.app.ViewerFormBuilder.Redraw($('#specification').val(), $('#key').val());
+                } else {
+                    if (keycode == '9') {
+                        let ctrl1 = document.getElementById("specification")
+                        var inicio_selección = ctrl1.selectionStart;
+                        var fin_selección = ctrl1.selectionEnd;
+                        let ctrl = $('#specification');
+                        var texto = ctrl.val();
+
+                        var fin_texto = texto.length
+
+                        var inicio = texto.slice(0, inicio_selección);
+                        var centro = texto.slice(inicio_selección, fin_selección);
+                        var fin = texto.slice(fin_selección, fin_texto);
+
+                        if (centro != '') {
+                            var lista = centro.split("\n");
+                            l = lista.length - 1;
+
+                            lista.forEach(function (item, index) {
+                                inicio += ' ' + item;
+                                if (index < l) {
+                                    inicio += '\n';
+                                }
+                            });
+                            inicio += fin;
+
+                            $('#specification').val(inicio);
+                            window.opener.app.ViewerFormBuilder.Redraw($('#specification').val(), $('#key').val());
+                        }
+                    }
+                }
+            });
+
+            $('#apply1').click(function (e) {
+                e.stopPropagation();
+                window.opener.app.ViewerFormBuilder.Redraw($('#specification').val(), $('#key').val());
+            });
+
+            function adjustDivHeight() {
+                element = document.querySelector('#specification');
+                element.style.height = document.documentElement.clientHeight - 100 + 'px';
+            }
+
+            window.onresize = adjustDivHeight;
+            adjustDivHeight();
+        });
+    </script>
+
+</body>
+</html>

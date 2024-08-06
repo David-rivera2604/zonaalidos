@@ -1,0 +1,63 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<!-- RoleMember -->
+<div class="ibox">
+    <div class="ibox-title">
+        <h5 id="formTitle"></h5>
+        <!-- Opciones -->
+        @*<div class="ibox-tools">
+                <a class="tool-filter">
+                    <i class="fa fa-filter" title="Visualiza el filtro avanzado..."></i>
+                </a>
+                <a class="tool-new">
+                    <i class="fa fa-plus" title="Crear un nuevo rol"></i>
+                </a>
+                <a class="fullscreen-link">
+                    <i class="fa fa-expand" title="Expande la zona de trabajo"></i>
+                </a>
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="Opciones adicionales...">
+                    <i class="fa fa-wrench"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li>
+                        <a href="#" class="dropdown-item tool-new"><i class="fa fa-plus"></i> Crear un nuevo rol</a>
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-item tool-filter"><i class="fa fa-filter"></i> Despliega el filtro avanzado...</a>
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar los roles</a>
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-item tool-audit" data-toggle="modal" data-target="#myModal5"><i class="fa fa-clock-o"></i> Historial...</a>
+                    </li>
+                </ul>
+            </div>*@
+    </div>
+    <div class="ibox-content render">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+            <div class="sk-rect4"></div>
+            <div class="sk-rect5"></div>
+        </div>
+        <div id="generalNotify">
+        </div>
+
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/Viewer.FormBuilder.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // app.ViewerFormBuilder.Init();
+        });
+    </script>
+}

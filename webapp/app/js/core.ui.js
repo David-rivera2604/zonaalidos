@@ -1322,6 +1322,12 @@ app.ui = (function () {
             };
             return new AutoNumeric(selector, settings);
         },
+        NewIdentificationWidget: function (selector) {
+            return $(selector).formatter({ pattern: '0{{9}}-{{9999}}-{{9999}}', persistent: false });
+        },
+        NewPhoneWidget: function (selector) {
+            return $(selector).formatter({ pattern: '{{9999}}-{{9999}}', persistent: false });
+        },
         Redirect: function (url) {
             window.location.href = url;
         }
