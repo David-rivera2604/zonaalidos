@@ -136,7 +136,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             {
                 Architect.Payment.Integrations.Contracts.InformationRequest result = new Payment.Integrations.Contracts.InformationRequest()
                 {
-                    status = webhookRequest.status == "Aprobado" ? "APPROVED" : "",
+                    status = webhookRequest.status.IndexOf("aprobad", StringComparison.CurrentCultureIgnoreCase) > -1 ? "APPROVED" : "",
                     date = null,
                     authorization = webhookRequest.resultado_pasarela.authorization,
                     total = currentRecord.Amount,
@@ -323,7 +323,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                     numPlan = "0",
                     trnExterna = true,
                     items = new List<Item>(),
-                    urlWebhook = string.Format("{0}/v2/Pagos/RecurringReceipts", Utilities.Helpers.Settings.StringValue("Payment.Silice.urlBase"))
+                    urlWebhook = string.Format("{0}/v2/Pagos/RecurringReceipts", Utilities.Helpers.Settings.StringValue("Payment.Silice.urlWebhook"))
                 };
                 string email = string.Empty;
                 int count = 0;
@@ -424,7 +424,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                         procesados++;
                         Architect.Payment.Integrations.Contracts.InformationRequest result = new Payment.Integrations.Contracts.InformationRequest()
                         {
-                            status = item.status == "Aprobado" ? "APPROVED" : item.status,
+                            status = item.status.IndexOf("aprobad", StringComparison.CurrentCultureIgnoreCase) > -1 ? "APPROVED" : item.status,
                             message = string.Format("original status {0}", item.status),
                             date = null,
                             authorization = item.resultado_pasarela.authorization,
@@ -447,7 +447,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                             }
                         };
                         Architect.Payment.Integrations.Payment.UpdateStatus(currentRecord.UpdateUserCode, currentRecord, result);
-                        if (item.status == "Aprobado")
+                        if (item.status.IndexOf("aprobad", StringComparison.CurrentCultureIgnoreCase) > -1)
                         {
                             bool tronPayment = await Backoffice.Pagos.TronPayment(result, 999999, "RecurringReceipts");
                         }
