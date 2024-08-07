@@ -429,7 +429,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                             date = null,
                             authorization = item.resultado_pasarela.authorization,
                             total = recibo.IMP_RECIBO,
-                            currency = recibo.NOM_MON,
+                            currency = currentRecord.Currency.ToString(),
                             ipAddress = null,
                             lastDigits = item.card_number,
                             payerName = recibo.NOM_TERCERO,
