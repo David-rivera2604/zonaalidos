@@ -1,14 +1,13 @@
 ﻿using Architect.Utilities.Extensions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Architect.API.Tron.Business.Cotizacion
+namespace Architect.API.Tron.Business.Multirriesgo.Convert
 {
-    internal static class MultirriesgoConvertFrom
+    internal static class PresupuestoToQuote
     {
 
-        internal static Contracts.Cotizacion.Multirriesgo Quote(Architect.API.Tron.Contracts.Presupuesto.DatoFijo tronQuoteInfo)
+        internal static Contracts.Cotizacion.Multirriesgo Quote(Contracts.Presupuesto.DatoFijo tronQuoteInfo)
         {
             //Contracts.Cotizacion.Multirriesgo result = DatosFijos(tronQuoteInfo);
 
@@ -41,8 +40,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             return quoteInfo;
         }
 
-
-        private static Contracts.Cotizacion.Multirriesgo DatosVariable(Contracts.Cotizacion.Multirriesgo quoteInfo, Architect.API.Tron.Contracts.Presupuesto.DatoFijo tronQuoteInfo)
+        private static Contracts.Cotizacion.Multirriesgo DatosVariable(Contracts.Cotizacion.Multirriesgo quoteInfo, Contracts.Presupuesto.DatoFijo tronQuoteInfo)
         {
             foreach (Contracts.Presupuesto.DatoVariable item in tronQuoteInfo.DatosVariables)
             {
@@ -52,73 +50,73 @@ namespace Architect.API.Tron.Business.Cotizacion
                         quoteInfo.cod_pais = item.val_campo;
                         break;
                     case "COD_ESTADO": // PROVINCIA
-                        quoteInfo.cod_estado = Convert.ToInt32(item.val_campo);
+                        quoteInfo.cod_estado = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "COD_PROV": // CANTÓN
-                        quoteInfo.cod_prov = Convert.ToInt32(item.val_campo);
+                        quoteInfo.cod_prov = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "COD_LOCALIDAD": // DISTRITO
-                        quoteInfo.cod_localidad = Convert.ToInt32(item.val_campo);
+                        quoteInfo.cod_localidad = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "NUM_PISOS_EDIF": // NÚMERO DE PISOS EDIFICACIÓN
-                        quoteInfo.num_pisos_edif = Convert.ToInt32(item.val_campo);
+                        quoteInfo.num_pisos_edif = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "COD_TIPO_ESTRUC": // TIPO DE ESTRUC DE LA EDIFICACI
-                        quoteInfo.cod_tipo_estruc = Convert.ToInt32(item.val_campo);
+                        quoteInfo.cod_tipo_estruc = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "COD_TIPO_TECHO": // TIPO DE TECHO DE EDIFICACIÓN
-                        quoteInfo.cod_tipo_techo = Convert.ToInt32(item.val_campo);
+                        quoteInfo.cod_tipo_techo = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "COD_TIPO_PARED": // TIPO DE PARED DE EDIFICACIÓN
-                        quoteInfo.cod_tipo_pared = Convert.ToInt32(item.val_campo);
+                        quoteInfo.cod_tipo_pared = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "OTRA_SENAS_RGO1": // OTRAS SEÑAS DEL RIESGO
                         quoteInfo.otrassenasdelriesgo = item.val_campo;
                         break;
                     case "COD_TIP_EDIF": // TIPO DE EDIFICACIÓN
-                        quoteInfo.cod_tip_edit = Convert.ToInt32(item.val_campo);
+                        quoteInfo.cod_tip_edit = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "MCA_EXTIN_INC": // ¿POSEE EXTINTORES DE INCENDIO?
-                        quoteInfo.MCA_EXTIN_INC = Convert.ToInt32(item.val_campo);
+                        quoteInfo.MCA_EXTIN_INC = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "NUM_EXTIN_INC": // CUANTOS EXTINTORES DE INCENDIO
-                        quoteInfo.NUM_EXTIN_INC = Convert.ToInt32(item.val_campo);
+                        quoteInfo.NUM_EXTIN_INC = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "COD_TIP_RGO_IDN": // TIP DE RIESG POR INTER DE NEG
-                        quoteInfo.cod_tip_rgo_idn = Convert.ToInt32(item.val_campo);
+                        quoteInfo.cod_tip_rgo_idn = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "COD_TIPO_OCUP_RGO": // OCUPACIÓN DEL RIESGO
-                        quoteInfo.cod_tip_ocup = Convert.ToInt32(item.val_campo);
+                        quoteInfo.cod_tip_ocup = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "IMP_EDIFICIO": // S.A. EDIFICIO
-                        quoteInfo.IMP_EDIFICIO = Convert.ToInt32(item.val_campo);
+                        quoteInfo.IMP_EDIFICIO = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "IMP_MOBILIARIO": // S.A. MOBILIARIO
-                        quoteInfo.IMP_MOBILIARIO = Convert.ToInt32(item.val_campo);
+                        quoteInfo.IMP_MOBILIARIO = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "IMP_MERCADERIA": // S.A. MERCADERÍA
-                        quoteInfo.IMP_MERCADERIA = Convert.ToInt32(item.val_campo);
+                        quoteInfo.IMP_MERCADERIA = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "IMP_BIE_TEM_DES": // S.A. BIENES TEMPO. DESP.
-                        quoteInfo.IMP_BIE_TEM_DES = Convert.ToInt32(item.val_campo);
+                        quoteInfo.IMP_BIE_TEM_DES = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "IMP_BIE_INT": // S.A. BIENES A LA INTERPERIE
-                        quoteInfo.IMP_BIE_INT = Convert.ToInt32(item.val_campo);
+                        quoteInfo.IMP_BIE_INT = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "IMP_OBJ_ESP_VAL": // S.A. OBJETOS DE ESPECIAL VALOR
-                        quoteInfo.IMP_OBJ_ESP_VAL = Convert.ToInt32(item.val_campo);
+                        quoteInfo.IMP_OBJ_ESP_VAL = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "IMP_MAQUINARIA": // S.A. MAQUINARIA
-                        quoteInfo.IMP_MAQUINARIA = Convert.ToInt32(item.val_campo);
+                        quoteInfo.IMP_MAQUINARIA = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "IMP_EQUIP_ELEC": // S.A. EQUIPOS ELECT. (NO MÓVIL)
-                        quoteInfo.IMP_EQUIP_ELEC = Convert.ToInt32(item.val_campo);
+                        quoteInfo.IMP_EQUIP_ELEC = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "IMP_EQUIP_ELEC_M": // S.A. EQUIPOS ELECT. (MÓVIL)
-                        quoteInfo.IMP_EQUIP_ELEC_M = Convert.ToInt32(item.val_campo);
+                        quoteInfo.IMP_EQUIP_ELEC_M = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "NUM_MED_INC": // ¿# MEDIDAS CONTRA INCENDIOS?
-                        if (Convert.ToInt32(item.val_campo) > 0 && tronQuoteInfo.Ocurrencias?.Count > 0)
+                        if (System.Convert.ToInt32(item.val_campo) > 0 && tronQuoteInfo.Ocurrencias?.Count > 0)
                         {
                             foreach (Contracts.Presupuesto.Ocurrencia ocurrencia in from t in tronQuoteInfo.Ocurrencias where t.cod_campo == "COD_TIP_MED_INC" orderby t.num_ocurrencia select t)
                             {
@@ -131,7 +129,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                         }
                         break;
                     case "NUM_MED_ROB": // ¿# MEDIDAS SEGURIDAD ROBO?
-                        if (Convert.ToInt32(item.val_campo) > 0 && tronQuoteInfo.Ocurrencias?.Count > 0)
+                        if (System.Convert.ToInt32(item.val_campo) > 0 && tronQuoteInfo.Ocurrencias?.Count > 0)
                         {
                             quoteInfo.cod_tip_med_rob = string.Empty;
                             foreach (Contracts.Presupuesto.Ocurrencia ocurrencia in from t in tronQuoteInfo.Ocurrencias where t.cod_campo == "COD_TIP_MED_ROB" orderby t.num_ocurrencia select t)
@@ -145,19 +143,19 @@ namespace Architect.API.Tron.Business.Cotizacion
                         }
                         break;
                     case "IMP_DOMOS_TOTAL": // S.A. DOMO,CRISTAL,MÁRMOL,GRAN.
-                        quoteInfo.IMP_DOMOS_TOTAL = Convert.ToInt32(item.val_campo);
+                        quoteInfo.IMP_DOMOS_TOTAL = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "IMP_GAS_ALQ": // S.A. GASTOS DE ALQUILER
-                        quoteInfo.IMP_GAS_ALQ = Convert.ToInt32(item.val_campo);
+                        quoteInfo.IMP_GAS_ALQ = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "COB_PDR_MESES": // MESES A AMPARAR POR PERD RENTA
-                        quoteInfo.COB_PDR_MESES = Convert.ToInt32(item.val_campo);
+                        quoteInfo.COB_PDR_MESES = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "IMP_PER_REN": // S.A. PÉRDIDA DE RENTAS
-                        quoteInfo.IMP_PER_REN = Convert.ToInt32(item.val_campo);
+                        quoteInfo.IMP_PER_REN = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "NUM_MED_BR": // ¿# MEDIDAS PARA BIENES REFRI.?
-                        if (Convert.ToInt32(item.val_campo) > 0 && tronQuoteInfo.Ocurrencias?.Count > 0)
+                        if (System.Convert.ToInt32(item.val_campo) > 0 && tronQuoteInfo.Ocurrencias?.Count > 0)
                         {
                             quoteInfo.cod_tip_med_rob = string.Empty;
                             foreach (Contracts.Presupuesto.Ocurrencia ocurrencia in from t in tronQuoteInfo.Ocurrencias where t.cod_campo == "COD_TIP_MED_BR" orderby t.num_ocurrencia select t)
@@ -171,10 +169,10 @@ namespace Architect.API.Tron.Business.Cotizacion
                         }
                         break;
                     case "IMP_MER_TRA": // S.A. MERCANCÍA EN TRÁNSITO
-                        quoteInfo.IMP_MER_TRA = Convert.ToInt32(item.val_campo);
+                        quoteInfo.IMP_MER_TRA = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "NUM_MED_RDM": // ¿# MEDIDAS PARA ROT. DE MAQ.?
-                        if (Convert.ToInt32(item.val_campo) > 0 && tronQuoteInfo.Ocurrencias?.Count > 0)
+                        if (System.Convert.ToInt32(item.val_campo) > 0 && tronQuoteInfo.Ocurrencias?.Count > 0)
                         {
                             quoteInfo.cod_tip_med_rdm = string.Empty;
                             foreach (Contracts.Presupuesto.Ocurrencia ocurrencia in from t in tronQuoteInfo.Ocurrencias where t.cod_campo == "COD_TIP_MED_RDM" orderby t.num_ocurrencia select t)
@@ -188,10 +186,10 @@ namespace Architect.API.Tron.Business.Cotizacion
                         }
                         break;
                     case "COB_IDN_MESES": // MESES A AMPARAR X INTE DE NEG
-                        quoteInfo.COB_IDN_MESES = Convert.ToInt32(item.val_campo);
+                        quoteInfo.COB_IDN_MESES = System.Convert.ToInt32(item.val_campo);
                         break;
                     case "IMP_INT_NEG": // S.A. INTERRUPCIÓN DE NEGOCIOS
-                        quoteInfo.IMP_INT_NEG = Convert.ToInt32(item.val_campo);
+                        quoteInfo.IMP_INT_NEG = System.Convert.ToInt32(item.val_campo);
                         break;
 
 
@@ -268,7 +266,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             return quoteInfo;
         }
 
-        internal static Contracts.Cotizacion.Multirriesgo Quote(Contracts.Cotizacion.Multirriesgo quoteInfo, Architect.API.Tron.Contracts.Presupuesto.DatoFijo tronQuoteInfo)
+        internal static Contracts.Cotizacion.Multirriesgo Quote(Contracts.Cotizacion.Multirriesgo quoteInfo, Contracts.Presupuesto.DatoFijo tronQuoteInfo)
         {
 
             if (tronQuoteInfo.Coberturas != null)
@@ -278,7 +276,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                     quoteInfo.Error = tronQuoteInfo.Coberturas[0].txt_error;
                 }
 
-                foreach (Architect.API.Tron.Contracts.Presupuesto.Cobertura item in tronQuoteInfo.Coberturas)
+                foreach (Contracts.Presupuesto.Cobertura item in tronQuoteInfo.Coberturas)
                 {
                     foreach (Contracts.Comun.Cobertura itemQuote in quoteInfo.coberturas)
                     {
@@ -315,7 +313,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 double importeAnual = 0;
                 bool setvalues = true;
                 quoteInfo.plandepago = new List<Contracts.Comun.PlanDePago>();
-                foreach (Architect.API.Tron.Contracts.Presupuesto.Recibo item in tronQuoteInfo.Recibos)
+                foreach (Contracts.Presupuesto.Recibo item in tronQuoteInfo.Recibos)
                 {
                     importeAnual = item.imp_recibo;
                     quoteInfo.plandepago.Add(new Contracts.Comun.PlanDePago()
@@ -346,7 +344,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 {
                     double amount = 0;
                     quoteInfo.plandepagoporfrecuencia = new List<Contracts.Cotizacion.plandepagoporfrecuencia>();
-                    foreach (Architect.API.Tron.Contracts.Ramo.A1001403 item in Architect.API.Tron.DataAccess.PorRamo.FrecuenciaDePago(tronQuoteInfo.cod_cia, tronQuoteInfo.cod_ramo, tronQuoteInfo.cod_mon))
+                    foreach (Contracts.Ramo.A1001403 item in Architect.API.Tron.DataAccess.PorRamo.FrecuenciaDePago(tronQuoteInfo.cod_cia, tronQuoteInfo.cod_ramo, tronQuoteInfo.cod_mon))
                     {
                         amount = (importeAnual / item.cod_fracc_pago) + ((importeAnual / item.cod_fracc_pago) * (item.pct_fracc_pago / 100));
                         quoteInfo.plandepagoporfrecuencia.Add(new Contracts.Cotizacion.plandepagoporfrecuencia()
@@ -368,25 +366,11 @@ namespace Architect.API.Tron.Business.Cotizacion
             }
             if (quoteInfo.Error != null)
             {
+                quoteInfo.Error = Backoffice.Emision.FormatoErrores.FormatearError(quoteInfo.Error);
                 quoteInfo.Mensaje = quoteInfo.Error;
-                if (quoteInfo.Mensaje.StartsWith("ORA-", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    if (quoteInfo.Mensaje.IndexOf(':') > 0)
-                    {
-                        quoteInfo.Mensaje = quoteInfo.Mensaje.Substring(quoteInfo.Mensaje.IndexOf(':') + 1).Trim();
-                    }
-                    //if (quoteInfo.Mensaje.IndexOf(']') > 0)
-                    //{
-                    //    quoteInfo.Mensaje = quoteInfo.Mensaje.Substring(quoteInfo.Mensaje.IndexOf(']') + 1).Trim();
-                    //}
-                    //if (quoteInfo.Mensaje.IndexOf('<') > 0)
-                    //{
-                    //    quoteInfo.Mensaje = quoteInfo.Mensaje.Substring(0, quoteInfo.Mensaje.IndexOf('<')).Trim();
-                    //}
-                    quoteInfo.Mensaje = quoteInfo.Mensaje.Substring(0, 1).ToUpper() + quoteInfo.Mensaje.Substring(1).ToLower();
-                }
             }
             return quoteInfo;
         }
+
     }
 }

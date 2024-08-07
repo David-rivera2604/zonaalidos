@@ -1240,6 +1240,8 @@
     <Content Include="Scripts\Cotizacion.Coberturas.js" />
     <Content Include="Scripts\Cotizacion.MapfreMasPlus.js" />
     <Content Include="Scripts\Cotizacion.Estudiantil.js" />
+    <Content Include="Scripts\Multirriesgo.Emision.js" />
+    <Content Include="Scripts\Multirriesgo.Cotizacion.js" />	
     <Content Include="Scripts\Cotizacion.SaldoDeudor.enfermedadesexcluidas.js" />
     <Content Include="Scripts\CreateCase_Aliados.js" />
     <Content Include="Scripts\Emision.kyc.declarante.js" />
@@ -1794,6 +1796,8 @@
     <Content Include="Views\Cotizacion\_polizagrupo.cshtml" />
     <Content Include="Views\Viewer\FormBuilder.cshtml" />
     <Content Include="Views\Viewer\FormDefine.cshtml" />
+    <Content Include="Views\Multirriesgo\Cotizacion.cshtml" />
+    <Content Include="Views\Multirriesgo\Emision.cshtml" />	
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
