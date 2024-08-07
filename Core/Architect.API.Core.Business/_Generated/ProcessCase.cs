@@ -96,9 +96,15 @@ namespace Architect.API.Core.Business.General
         /// <param name="beginIndex">Indice inicial para el paginado.</param>
         /// <param name="endIndex">Indice final para el paginado.</param>
         /// <returns>Lista de instancias de ProcessCase.</returns>
-        public static List<Architect.API.Core.Contracts.General.ProcessCase> Retrieve(int companyId, string filter, int beginIndex, int endIndex)
+        public static List<Architect.API.Core.Contracts.General.ProcessCase> Retrieve(int companyId, string filter, int beginIndex, int endIndex, int UsuaActual = 0)
         {
             List<Architect.API.Core.Contracts.General.ProcessCase> result = Architect.API.Core.DataAccess.General.ProcessCase.RetrieveAll(companyId, Architect.API.Core.DataAccess.General.ProcessCase.FilterBuilder(filter), beginIndex, endIndex);
+
+            //Filtro para cuando la api es llamada con CaseAliados
+            if (filter == "CaseAliados")
+            {
+                result.RemoveAll(s => s.UserSend != UsuaActual);
+            }
 
             foreach (Architect.API.Core.Contracts.General.ProcessCase item in result)
             {

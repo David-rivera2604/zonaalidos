@@ -420,11 +420,26 @@ namespace Architect.API.Core.DataAccess.General
 
             //Agregado para la lectura del usuario que envio el caso
             item.UserSend = reader.IntegerValue("UserSend");
-            item.TotalDays = reader.IntegerValue("TotalDays");
+            if (DataReaderContainsColumn(reader, "TotalDays"))
+            {
+                item.TotalDays = reader.IntegerValue("TotalDays");
+            }
             return item;
         }
 
- 
+        private static bool DataReaderContainsColumn(System.Data.IDataReader reader, string columnName)
+        {
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                if (reader.GetName(i).Equals(columnName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
 
     }
 

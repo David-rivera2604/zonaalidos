@@ -1,9 +1,11 @@
-﻿using Microsoft.Web.Http;
+﻿using Architect.Utilities.Extensions;
+using Microsoft.Web.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -27,7 +29,7 @@ namespace Architect.API.Tron.Controllers
         [HttpGet]
         [Route("Purdy")]
         [ResponseType(typeof(List<Contracts.Siniestro.Purdy.Siniestro>))]
-        public async Task<IHttpActionResult> Informacion([FromUri] DateTime startDate, [FromUri]  DateTime endDate)
+        public async Task<IHttpActionResult> Informacion([FromUri] DateTime startDate, [FromUri] DateTime endDate)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             List<Contracts.Siniestro.Purdy.Siniestro> result = null;
@@ -51,5 +53,39 @@ namespace Architect.API.Tron.Controllers
             return Ok();
         }
 
+
+        [HttpPost]
+        [Route("Tramitacion")]
+        [Authorize]
+        public async Task<IHttpActionResult> Tramitacion([FromBody] Contracts.Tramitacion.Request.Siniestro siniestro)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Contracts.Tramitacion.Response.Siniestro result = new Contracts.Tramitacion.Response.Siniestro()
+            {
+                num_sini = siniestro.NUM_SINI,
+                ID_TIP_RESPUESTA = "1",
+                nivel = new List<Contracts.Tramitacion.Response.Nivel>() {
+                    new Contracts.Tramitacion.Response.Nivel() {
+                         nom_nivel="uno",
+                         tramite = new List<Contracts.Tramitacion.Response.Tramite>()
+                         {
+                             new Contracts.Tramitacion.Response.Tramite()
+                             {
+                                  nom_tramite="nombre",
+                                   observacion="observacion"
+                             }
+                         }
+                    }
+                }
+            };
+
+
+
+            //await Task.Run(() =>
+            //{
+            //    result = Architect.API.Tron.Business.Cotizacion.API.Issue(presupuesto, tokenInfo);
+            //}).ConfigureAwait(false);
+            return Ok(result);
+        }
     }
 }

@@ -145,7 +145,7 @@ namespace Architect.API.Tron.Business
 
             if (tokenInfo.Roles.Contain("PolizaGrupo"))
             {
-                List<Core.Contracts.General.LookupValues> values = Core.Business.Common.Lkps("MM_POLIZA_GRUPO", $"cod_ramo={quoteTron.cod_ramo}:cod_mon={quoteTron.cod_mon}", tokenInfo);
+                List<Core.Contracts.General.LookupValues> values = Core.Business.Common.Lkps("MM_POLIZA_GRUPO", $"cod_ramo={quoteTron.cod_ramo}:cod_mon={quoteTron.cod_mon}:cod_agt={quoteTron.cod_agt}", tokenInfo);
                 Core.Contracts.General.LookupValues contratosMaster = values.Find(x => x.Key == "MM_POLIZA_GRUPO");
                 if (contratosMaster != null)
                 {

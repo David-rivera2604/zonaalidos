@@ -168,7 +168,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                     {
                         result.OnlinePayment.AgentCode = 999999;
                     }
-                    bool tronPayment = await Backoffice.Pagos.TronPayment(result, result.OnlinePayment.AgentCode);
+                    bool tronPayment = await Backoffice.Pagos.TronPayment(result, result.OnlinePayment.AgentCode, "Widget&Link");
                 }
             }
         }
@@ -449,7 +449,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                         Architect.Payment.Integrations.Payment.UpdateStatus(currentRecord.UpdateUserCode, currentRecord, result);
                         if (item.status == "Aprobado")
                         {
-                            bool tronPayment = await Backoffice.Pagos.TronPayment(result, 999999);
+                            bool tronPayment = await Backoffice.Pagos.TronPayment(result, 999999, "RecurringReceipts");
                         }
                     }
 

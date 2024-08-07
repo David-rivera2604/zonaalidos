@@ -19,6 +19,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 nom_tercero = string.Empty,
                 mca_sexo = quoteInfo.mca_sexo.ToString(),
                 cod_agt = agentCode,
+                cod_cuadro_com = quoteInfo.cod_cuadro_com,
                 cod_mon = quoteInfo.cod_mon,
                 cod_fracc_pago = quoteInfo.cod_fracc_pago,
                 fec_efec_poliza = quoteInfo.fec_efec_poliza,

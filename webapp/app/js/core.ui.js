@@ -285,13 +285,13 @@ app.ui = (function () {
                 return value;
         },
         StringCapitalizeFormatter: function (value, row, index, field) {
-            if (value === null || value === 0 || typeof value === 'object')
+            if (value === undefined || value === null || value === 0 || typeof value === 'object')
                 return '';
             else
                 return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
         },
         StringCapitalizeEachWordFormatter: function (value, row, index, field) {
-            if (value === null || value === 0 || typeof value === 'object')
+            if (value === undefined || value === null || value === 0 || typeof value === 'object')
                 return '';
             else {
                 var words = value.split(" ");
@@ -521,40 +521,48 @@ app.ui = (function () {
                 persistent: false
             });
             $(documentNumberElement + 'TypeMenu a').click(function () {
+                $(documentNumberElement).data('current', '');
                 app.ui.DocumentTypeHandler(this, documentNumberElement, 'Identification', callbackDocType);
             });
             $(documentNumberElement).on('blur', function () {
-                var validation = app.ui.IsDocumentNumberValid($(documentNumberElement + 'Type').data('value'), $(documentNumberElement).val());
-                if (validation.result) {
-                    $(documentNumberElement).addClass('loading');
-                    var encodedDocNum = encodeURIComponent($(documentNumberElement).val());
-                    var docType = $(documentNumberElement + 'Type').data('value');
-                    if (docType == 1) {
-                        var apiUrl = app.setting.apipath + 'v1/Insured/' + $(documentNumberElement).val().replace(/-/g, '') + '?docType=' + docType;
+                let oldValue = $(documentNumberElement).data('current');
+                let documentNumber = $(documentNumberElement).val();
+                let docType = $(documentNumberElement + 'Type').data('value');
+                if (oldValue != documentNumber) {
+                    let validation = app.ui.IsDocumentNumberValid(docType, documentNumber);
+                    if (validation.result) {
+                        let encodedDocNum = encodeURIComponent(documentNumber);
+                        let apiUrl = '';
+                        $(documentNumberElement).data('current', documentNumber);
+                        $(documentNumberElement).addClass('loading');
 
-                    } else {
-                        var apiUrl = app.setting.apipath + 'v1/Insured/' + (docType != 1 && docType != 2 ? encodedDocNum : parseInt(0 + $(documentNumberElement).val().replace(/-/g, ''), 10)) + '?docType=' + docType;
-                    }
-                    app.core.Get(apiUrl).done(function (data, textStatus, jqXHR) {
-                        if (data != null && data.FirstName !== null) {
-                            if (data.MiddleName === null) data.MiddleName = '';
-                            if (data.LastName === null) data.LastName = '';
-                            if (data.SecondLastName === null) data.SecondLastName = '';
+                        if (docType == 1) {
+                            apiUrl = app.setting.apipath + 'v1/Insured/' + documentNumber.replace(/-/g, '') + '?docType=' + docType;
+
                         } else {
-                            data = null;
+                            apiUrl = app.setting.apipath + 'v1/Insured/' + (docType != 1 && docType != 2 ? encodedDocNum : parseInt(0 + $(documentNumberElement).val().replace(/-/g, ''), 10)) + '?docType=' + docType;
                         }
-                        if (callbackDone) callbackDone(data);
-                    }).always(function () {
-                        $(documentNumberElement).removeClass('loading');
-                    });
-                    $(documentNumberElement).formatter({
-                        pattern: validation.pattern,
-                        persistent: false,
-                    });
+
+                        app.core.Get(apiUrl).done(function (data, textStatus, jqXHR) {
+                            if (data != null && data.FirstName !== null) {
+                                if (data.MiddleName === null) data.MiddleName = '';
+                                if (data.LastName === null) data.LastName = '';
+                                if (data.SecondLastName === null) data.SecondLastName = '';
+                            } else {
+                                data = null;
+                            }
+                            if (callbackDone) callbackDone(data);
+                        }).always(function () {
+                            $(documentNumberElement).removeClass('loading');
+                        });
+                        $(documentNumberElement).formatter({
+                            pattern: validation.pattern,
+                            persistent: false,
+                        });
+                    }
                 }
             });
         },
-
         DocumentNumberHandlerKYC: function (documentNumberElement, callbackDone, callbackDocumentType, TypeKYC) {
             var typedocument;
             let documenttype = documentNumberElement + "tipo"
@@ -1140,17 +1148,21 @@ app.ui = (function () {
         },
         DropDownDisabled: function (element, disabled, clean) {
             let current = $(element).is(':disabled');
-            $(element).prop("disabled", disabled);
-            if (current && !disabled && $(element + ' option').length == 1) {
-                $(element).prop("selectedIndex", 0);
+            if (disabled != current) {
+                $(element).prop("disabled", disabled);
+                if (current && !disabled && $(element + ' option').length == 1) {
+                    $(element).prop("selectedIndex", 0);
+                }
+                if (clean != undefined && clean) {
+                    $(element).prop("selectedIndex", -1);
+                }
+                if (current && !disabled && $(element).data("autoselect") === true) {
+                    $(element).val($('select' + element + ' option:first').val());
+                }
+                if (disabled && $(element).data("cleanondisabled") === true) {
+                    $(element).prop("selectedIndex", -1);
+                }
             }
-            if (clean != undefined && clean) {
-                $(element).prop("selectedIndex", -1);
-            }
-            if (current && !disabled && $(element).data("autoselect") === true) {
-                $(element).val($('select' + element + ' option:first').val());
-            }
-
         },
         Download: function (fileName, id) {
             fileName = fileName.toLowerCase();
@@ -1309,6 +1321,12 @@ app.ui = (function () {
                 emptyInputBehavior: 'null'
             };
             return new AutoNumeric(selector, settings);
+        },
+        NewIdentificationWidget: function (selector) {
+            return $(selector).formatter({ pattern: '0{{9}}-{{9999}}-{{9999}}', persistent: false });
+        },
+        NewPhoneWidget: function (selector) {
+            return $(selector).formatter({ pattern: '{{9999}}-{{9999}}', persistent: false });
         },
         Redirect: function (url) {
             window.location.href = url;

@@ -64,6 +64,7 @@
     <Compile Include="Backoffice\Cotizacion\PolizaLider.cs" />
     <Compile Include="Backoffice\Emision\Generico.cs" />
     <Compile Include="Backoffice\Emision\MapfreMas.cs" />
+    <Compile Include="Backoffice\v2\AltasBajasPoliza.cs" />
     <Compile Include="Backoffice\v2\Pagos.cs" />
     <Compile Include="Clientes\Support.cs" />
     <Compile Include="Cotizacion\API.cs" />

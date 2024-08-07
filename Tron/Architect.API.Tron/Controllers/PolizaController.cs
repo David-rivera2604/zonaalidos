@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Xml.Schema;
 
 namespace Architect.API.Tron.Controllers
 {
@@ -157,12 +158,10 @@ namespace Architect.API.Tron.Controllers
         public async Task<IHttpActionResult> Altas([FromBody] Architect.API.Tron.Contracts.AltasBajas.Request.Poliza poliza)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
-            Contracts.Poliza.API.Poliza result = null;
-            //await Task.Run(() =>
-            //{
-            //    result = Architect.API.Tron.Business.Cotizacion.API.Issue(presupuesto, tokenInfo);
-            //}).ConfigureAwait(false);
-            return Ok(poliza);
+
+            Contracts.AltasBajas.Response.Poliza result = await Business.Backoffice.AltasBajasPoliza.AltasBajas(poliza, true);
+
+            return Ok(result);
         }
 
         [HttpPost]
@@ -171,12 +170,10 @@ namespace Architect.API.Tron.Controllers
         public async Task<IHttpActionResult> Bajas([FromBody] Architect.API.Tron.Contracts.AltasBajas.Request.Poliza poliza)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
-            Contracts.Poliza.API.Poliza result = null;
-            //await Task.Run(() =>
-            //{
-            //    result = Architect.API.Tron.Business.Cotizacion.API.Issue(presupuesto, tokenInfo);
-            //}).ConfigureAwait(false);
-            return Ok(poliza);
+
+            Contracts.AltasBajas.Response.Poliza result = await Business.Backoffice.AltasBajasPoliza.AltasBajas(poliza, false);
+
+            return Ok(result);
         }
 
     }

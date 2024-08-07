@@ -35,7 +35,8 @@ app.EmisionMapfreMasPlus = (function () {
                         $('.datosgeneralesZone').addClass('col-md-12');
                         $('.enviosolicitudZone').removeClass('d-none');
                     } else {
-                        $('#cotizar').removeClass('d-none');
+                        //$('#cotizar').removeClass('d-none');
+                        $('.VerificarDomicilio').removeClass('d-none');
                         $("#cotizar").appendTo("#GenericToolBar");
                     }
 
@@ -131,7 +132,7 @@ app.EmisionMapfreMasPlus = (function () {
                     $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
                     $('#NumPoliza').html(data.num_poliza);
                     $('#cotizar').addClass('d-none');
-
+                    $('.VerificarDomicilio').addClass('d-none');
                     ReadOnly_End();
 
                     $('#mainBlock').removeClass('col-md-12');
@@ -557,6 +558,14 @@ app.EmisionMapfreMasPlus = (function () {
         $('#print').click(function () {
             event.preventDefault();
             app.ui.ShowSideBar({ title: 'Enviar certificado por correo', subtitle: 'Póliza #{NUM_POLIZA}', id: 9000, data: { NUM_POLIZA: setupData.num_poliza, NUM_RIESGO: 1 } })
+        });
+
+        $('input:radio[name=DomicilioVerificado]').click(function (e) {
+            if (app.ui.GetRadioStringValue('DomicilioVerificado') === 'S') {
+                $('#cotizar').removeClass('d-none');
+            } else {
+                $('#cotizar').addClass('d-none');
+            }
         });
     }
 

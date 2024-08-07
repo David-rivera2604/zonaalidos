@@ -28,9 +28,13 @@ namespace Architect.API.Tron.Contracts.AltasBajas.Response
         /// </summary>
         public string FEC_VCTO_SPTO { get; set; }
         public List<RECIBO> RECIBOS { get; set; }
+        public List<RECIBO> RECIBOS_RECAUDADOS { get; set; }
+        public List<RECIBO> RECIBOS_ANULADOS { get; set; }
         public string COBERTURAS { get; set; }
         public string PRIMA_TOTAL { get; set; }
         public string OBSERVACION { get; set; }
+
+        public string ERROR { get; set; }
     }
 
     public class RECIBO
