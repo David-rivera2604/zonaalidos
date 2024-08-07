@@ -590,3 +590,6 @@
                    Aliados. Consulta de siniestros para productos 117, 194 y 401.
 1.6.67  22/07/2024 Aliados.	Opción para emisión web para empleado. Cotización seleccionando intermediario.
                    Aliados.	Purdy. No llega el nombre del cliente en los documento de la cotización enviado por correo.
+1.6.68  07/08/2024 Aliados.	Merge general.
+                   Pasarela. Ajustes en ruta de Webhook para pago recuerrentes.
+                   Pasarela. Ajuste en condiciones que usan el status en los webhook.
