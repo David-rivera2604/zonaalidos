@@ -19,7 +19,7 @@ app.CotizacionSaldoDeudor = (function () {
 
         app.core.Get(app.setting.apipath + 'v1/Quote/SaldoDeudorSetup', null,
             function (data) {
-                setupData = data;
+                setupData = JSON.parse(JSON.stringify(data));
 
                 let lookupList = [
                     'MonedasPorRamo.cod_mon',
@@ -38,7 +38,7 @@ app.CotizacionSaldoDeudor = (function () {
                     app.Cotizacion.CustomAgentHandler('', setupData);
                 }
 
-                setupData = JSON.parse(JSON.stringify(data));
+                
 
                 app.core.Lookups(lookupList,
                     function () {

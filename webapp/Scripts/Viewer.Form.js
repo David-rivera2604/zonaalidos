@@ -7,7 +7,7 @@ app.ViewerForm = (function () {
             if (_id != '') {
                 $('.ibox-content').toggleClass('sk-loading');
 
-                app.core.Get(app.setting.apipath + `v1/Viewer/Form/${_id}?version=3`)
+                app.core.Get(app.setting.apipath + `v1/Viewer/Form/${_id}?version=2`)
                     .done(function (data, textStatus, jqXHR) {
                         $('#formTitle').html(data.Caption);
                         let html = data.HTML.supplant({});

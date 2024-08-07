@@ -13,9 +13,9 @@ app.CotizacionMultirriesgo = (function () {
             .done(function (data, textStatus, jqXHR) {
                 if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
                     $('#polizagrupoZone').removeClass('d-none');
-                    app.Cotizacion.CustomAgentHandler('pg_', setupData);
+                    app.Cotizacion.CustomAgentHandler('pg_', data);
                 } else {
-                    app.Cotizacion.CustomAgentHandler('', setupData);
+                    app.Cotizacion.CustomAgentHandler('', data);
                 }
                 Init_Lookups(data);
             });
@@ -140,7 +140,7 @@ app.CotizacionMultirriesgo = (function () {
 
         $('#coberturasTbl').bootstrapTable('showLoading');
 
-        app.core.Get(app.setting.apipath + 'v1/Quote/MultirriesgoSettings?' + `cod_ramo=${data.cod_ramo}&num_contrato=${data.num_contrato}&num_subcontrato=${data.num_subcontrato}&num_poliza_grupo=${data.num_poliza_grupo}&cod_mon=${data.cod_mon}&cod_agt=${param.cod_agt}`)
+        app.core.Get(app.setting.apipath + 'v1/Quote/MultirriesgoSettings?' + `cod_ramo=${data.cod_ramo}&num_contrato=${data.num_contrato}&num_subcontrato=${data.num_subcontrato}&num_poliza_grupo=${data.num_poliza_grupo}&cod_mon=${data.cod_mon}&cod_agt=${data.cod_agt}`)
             .done(function (settingData) {
                 app.ui.SetDateValue('#fec_vcto_poliza', app.ui.GetDateValue('#fec_efec_poliza'))
                 app.ui.SetDateValue('#fec_vcto_poliza', settingData.fec_vcto_poliza);

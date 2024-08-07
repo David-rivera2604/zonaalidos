@@ -79,6 +79,8 @@ app.HogarTotal = (function () {
     };
 
     function Init_Lookups(data) {
+        setupData = JSON.parse(JSON.stringify(data));
+
         let lookupList = [
             'MonedasPorRamo.moneda',
             'FrecuenciaDePagoPorRamo.fraccionamientodepago',
@@ -101,7 +103,7 @@ app.HogarTotal = (function () {
             app.Cotizacion.CustomAgentHandler('', setupData);
             
         };
-        setupData = JSON.parse(JSON.stringify(data));
+        
         app.core.Lookups(lookupList,
             function () {
                 MapObjectToInput(data);
@@ -162,7 +164,7 @@ app.HogarTotal = (function () {
 
         $('#coberturasTbl').bootstrapTable('showLoading');
 
-        app.core.Get(app.setting.apipath + 'v1/Quote/HogarTotalSettings?' + `cod_ramo=${data.cod_ramo}&num_contrato=${data.num_contrato}&num_subcontrato=${data.num_subcontrato}&num_poliza_grupo=${data.num_poliza_grupo}&cod_mon=${data.cod_mon}&cod_agt=${param.cod_agt}`)
+        app.core.Get(app.setting.apipath + 'v1/Quote/HogarTotalSettings?' + `cod_ramo=${data.cod_ramo}&num_contrato=${data.num_contrato}&num_subcontrato=${data.num_subcontrato}&num_poliza_grupo=${data.num_poliza_grupo}&cod_mon=${data.cod_mon}&cod_agt=${data.cod_agt}`)
             .done(function (settingData) {
                 app.ui.SetDateValue('#findevigencia', app.ui.GetDateValue('#iniciodevigencia'))
                 app.ui.SetDateValue('#findevigencia', settingData.fec_vcto_poliza);
