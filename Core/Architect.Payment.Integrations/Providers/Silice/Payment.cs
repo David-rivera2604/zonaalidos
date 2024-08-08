@@ -220,7 +220,7 @@ namespace Architect.Payment.Integrations.Providers.Silice
         }
 
         public async static Task<int> TrackOnlinePayment(int companyId, int userId, Architect.Payment.Integrations.Contracts.v2.Item item,
-            string policyId, long billNumber, double amount, string documentType, string document, string firstName, string lastName, string mobile, string processId)
+            string policyId, long billNumber, double amount, string documentType, string document, string firstName, string lastName, string mobile, int agentcode, string processId)
         {
             Contracts.OnlinePayment track = Business.OnlinePayment.Create(companyId, userId, new Contracts.OnlinePayment()
             {
@@ -231,7 +231,7 @@ namespace Architect.Payment.Integrations.Providers.Silice
                 LastName = lastName,
                 PrimaryEmailAddress = item.emailCliente,
                 PhoneNumberMobile = mobile,
-                AgentCode = 0,
+                AgentCode = agentcode,
                 PolicyId = policyId,
                 BillNumber = billNumber,
                 Currency = Architect.Payment.Integrations.Payment.CurrencyConvert(item.moneda),

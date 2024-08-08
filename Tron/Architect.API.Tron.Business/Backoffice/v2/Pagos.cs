@@ -368,7 +368,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
 
                         id = Payment.Integrations.Providers.Silice.Payment.TrackOnlinePayment(cod_cia, 0, newItem,
                             pendiente.NUM_POLIZA, pendiente.NUM_RECIBO, pendiente.IMP_RECIBO,
-                            pendiente.TIP_DOCUM, pendiente.COD_DOCUM, pendiente.NOM_TERCERO, pendiente.APE1_TERCERO, pendiente.TLF_NUMERO, reciboReq.procesoId).Result;
+                            pendiente.TIP_DOCUM, pendiente.COD_DOCUM, pendiente.NOM_TERCERO, pendiente.APE1_TERCERO, pendiente.TLF_NUMERO, pendiente.COD_AGT, reciboReq.procesoId).Result;
 
                         newItem.ordenId = id.ToString();
                     }
@@ -449,7 +449,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                         Architect.Payment.Integrations.Payment.UpdateStatus(currentRecord.UpdateUserCode, currentRecord, result);
                         if (item.status.IndexOf("aprobad", StringComparison.CurrentCultureIgnoreCase) > -1)
                         {
-                            bool tronPayment = await Backoffice.Pagos.TronPayment(result, 999999, "RecurringReceipts");
+                            bool tronPayment = await Backoffice.Pagos.TronPayment(result, currentRecord.AgentCode, "RecurringReceipts");
                         }
                     }
 

@@ -14,6 +14,7 @@ namespace Architect.API.Tron.Contracts.Pagos
         public double IMP_RECIBO { get; set; }
         public string NOM_MON { get; set; }
         public string NUM_POLIZA { get; set; }
+        public int COD_AGT { get; set; }
         public string NOM_RAMO { get; set; }
         public string TIP_DOCUM { get; set; }
         public string COD_DOCUM { get; set; }

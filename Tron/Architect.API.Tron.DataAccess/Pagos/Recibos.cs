@@ -18,7 +18,7 @@ namespace Architect.API.Tron.DataAccess.Pagos
             List<Contracts.Pagos.Recibo> result = new List<Contracts.Pagos.Recibo>();
             string filter = string.Empty;
 
-            Database.Select(@"SELECT C.NUM_RECIBO, C.FEC_EFEC_RECIBO, SUM(C.IMP_RECIBO) IMP_RECIBO, A400.COD_MON_ISO NOM_MON, A.NUM_POLIZA, a1800.nom_ramo, A.TIP_DOCUM, A.COD_DOCUM, A99.NOM_TERCERO, A99.NOM2_TERCERO, A99.APE1_TERCERO, A99.APE2_TERCERO,
+            Database.Select(@"SELECT C.NUM_RECIBO, C.FEC_EFEC_RECIBO, SUM(C.IMP_RECIBO) IMP_RECIBO, A400.COD_MON_ISO NOM_MON, A.NUM_POLIZA, A.COD_AGT, a1800.nom_ramo, A.TIP_DOCUM, A.COD_DOCUM, A99.NOM_TERCERO, A99.NOM2_TERCERO, A99.APE1_TERCERO, A99.APE2_TERCERO,
   		                             A1331.TLF_NUMERO, A1331.TLF_NUMERO_COM, A1331.EMAIL, A1331.EMAIL_COM, A1331.TXT_EMAIL, B.TOKEN
                                 FROM A2000030 A
                                 JOIN ALIADOS.BOVEDA B ON B.TIP_DOCUM=A.TIP_DOCUM AND B.COD_DOCUM=A.COD_DOCUM AND B.STATUS=1 
@@ -41,7 +41,7 @@ namespace Architect.API.Tron.DataAccess.Pagos
                                                         FROM A2000030 A230
                                                         WHERE A230.COD_CIA    = A.COD_CIA
                                                         AND A230.NUM_POLIZA = A.NUM_POLIZA )
-                                GROUP BY A.NUM_POLIZA, a1800.nom_ramo, A.TIP_DOCUM, A.COD_DOCUM, A99.NOM_TERCERO, A99.NOM2_TERCERO, A99.APE1_TERCERO, A99.APE2_TERCERO,
+                                GROUP BY A.NUM_POLIZA, A.COD_AGT, a1800.nom_ramo, A.TIP_DOCUM, A.COD_DOCUM, A99.NOM_TERCERO, A99.NOM2_TERCERO, A99.APE1_TERCERO, A99.APE2_TERCERO,
    			                            A1331.TLF_NUMERO, A1331.TLF_NUMERO_COM, A1331.EMAIL, A1331.EMAIL_COM, A1331.TXT_EMAIL, C.NUM_RECIBO, C.FEC_EFEC_RECIBO, A400.COD_MON_ISO, B.TOKEN
                                 FETCH FIRST :fetchRows ROWS ONLY")
                     .AddParameter("fec_efect_recibo", DbType.Date, 0, fec_efect_recibo)
@@ -56,6 +56,7 @@ namespace Architect.API.Tron.DataAccess.Pagos
                             IMP_RECIBO = reader.DoubleValue("IMP_RECIBO"),
                             NOM_MON = reader.StringValue("NOM_MON"),
                             NUM_POLIZA = reader.StringValue("NUM_POLIZA"),
+                            COD_AGT = reader.IntegerValue("COD_AGT"),
                             NOM_RAMO = reader.StringValue("NOM_RAMO"),
                             TIP_DOCUM = reader.StringValue("TIP_DOCUM"),
                             COD_DOCUM = reader.StringValue("COD_DOCUM"),
