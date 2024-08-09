@@ -26,7 +26,8 @@ app.EmisionSaldoDeudor = (function () {
                 $('.datosgeneralesZone').addClass('col-md-7');
                 $('.enviosolicitudZone').removeClass('d-none');
             } else {
-                $('#cotizar').removeClass('d-none');
+                //$('#cotizar').removeClass('d-none');
+                $('.VerificarDomicilio').removeClass('d-none');
                 $("#cotizar").appendTo("#GenericToolBar");
                 $('#cuestionario_form').addClass('d-none');
                 $('.enviosolicitudZone').addClass('d-none');
@@ -48,7 +49,7 @@ app.EmisionSaldoDeudor = (function () {
                             ReadOnly();
                             $('#plandepagoporfrecuencia').removeClass('d-none');
                             $('#plandepagoRow').removeClass('d-none');
-                        }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:cod_pais=CRI`);
+                        }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:cod_pais=CRI:cod_agt=${data.cod_agt}`);
 
                 });
         }
@@ -72,7 +73,7 @@ app.EmisionSaldoDeudor = (function () {
 
                     $('#NumPoliza').html(data.num_poliza);
                     $('#cotizar').addClass('d-none');
-
+                    $('.VerificarDomicilio').addClass('d-none');
                     $('#coberturasRow').removeClass('d-none');
                     $('#coberturasTbl').bootstrapTable('load', data.coberturas);
                     Coberturas_ManejoGeneral();
@@ -429,6 +430,14 @@ app.EmisionSaldoDeudor = (function () {
         $('#TCanton').on('change', function () {
             var pais = $('select#cod_pais').val();
             app.core.LookupDependency($('select#TCanton').val(), 'TDistrito', 'Distritos', '', null, false, null, `cod_pais=${pais}:cod_prov=`);
+        });
+
+        $('input:radio[name=DomicilioVerificado]').click(function (e) {
+            if (app.ui.GetRadioStringValue('DomicilioVerificado') === 'S') {
+                $('#cotizar').removeClass('d-none');
+            } else {
+                $('#cotizar').addClass('d-none');
+            }
         });
 
     };

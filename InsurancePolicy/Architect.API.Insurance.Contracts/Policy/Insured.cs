@@ -110,7 +110,7 @@ namespace Architect.API.Insurance.Contracts.Policy
         /// País de nacionalidad.
         /// </summary>
         [DataMember(), JsonProperty()] public int CountryOfNationality { get; set; }
-
+        [DataMember(), JsonProperty()] public string CountryOfNationalityISO { get; set; }
         [DataMember(), JsonProperty()] public string Source { get; set; }
     }
 }

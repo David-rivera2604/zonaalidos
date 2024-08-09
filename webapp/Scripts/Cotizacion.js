@@ -4,6 +4,8 @@ app.Cotizacion = (function () {
 
     let settings = [];
     let roles = [];
+    let _data = {};
+    let _prefix = '';
 
     return {
         Imprimir: function (name, data) {
@@ -137,7 +139,7 @@ app.Cotizacion = (function () {
                             }
                             if (item.Visible === 0) {
                                 $('input:radio[name=' + item.Field + ']').parent().parent().parent().parent().addClass('d-none');
-                            }                            
+                            }
                             break;
                         case 'Zone':
                             if (item.Visible === 0) {
@@ -184,6 +186,66 @@ app.Cotizacion = (function () {
                     }
                 });
             });
+        },
+        CustomAgentHandler: function (prefix, data) {
+
+            _data = data;
+            _prefix = prefix;
+
+            if (localStorage.getItem('Roles').includes('Emisión MAPFRE')) {
+
+                app.core.Lookups([`Agents.${prefix}agt_cod`],
+                    function () {
+
+                        $(`#${prefix}agt_cod`).select2({
+                            width: '100%', theme: 'bootstrap4',
+                            language: { noResults: function () { return "No hay resultado"; }, searching: function () { return "Buscando.."; } }
+                        });
+
+                        app.ui.SetDropDownNumericValue(`#${prefix}agt_cod`, data.cod_agt);
+
+                        $(`#${prefix}agt_cod`).trigger('change');
+
+
+                    }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}`);
+
+
+                // Dependencies events
+                $(`#${prefix}agt_cod`).on('change', function () {
+                    let agt_cod = app.ui.GetDropDownNumericValue(`select#${prefix}agt_cod`);
+
+                    app.core.Lookups([`CuadroComPorAgente.${prefix}cod_cuadro_com`],
+                        function () {
+                            $(`#${prefix}cod_cuadro_com`).prop("disabled", $(`#${prefix}cod_cuadro_com`).children().length == 0);
+                        }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:agt_cod=${agt_cod}`);
+                    $('#cod_mon').trigger('change');
+                });
+
+
+                $(`.${prefix}custom_agent`).removeClass('d-none');
+            }
+        },
+        AgentCode: function () {
+            if (localStorage.getItem('Roles').includes('Emisión MAPFRE')) {
+                if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
+                    return app.ui.GetDropDownNumericValue('#pg_agt_cod')
+                } else {
+                    return app.ui.GetDropDownNumericValue('#agt_cod')
+                }
+            } else {
+                return _data.cod_agt;
+            }
+        },
+        CuadroCom: function () {
+            if (localStorage.getItem('Roles').includes('Emisión MAPFRE')) {
+                if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
+                    return app.ui.GetDropDownNumericValue('#pg_cod_cuadro_com')
+                } else {
+                    return app.ui.GetDropDownNumericValue('#cod_cuadro_com')
+                }
+            } else {
+                return _data.cod_agt;
+            }
         }
     };
 })();

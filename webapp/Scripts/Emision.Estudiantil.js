@@ -40,6 +40,7 @@ app.EmisionEstudiantil = (function () {
 
 
                     $('#emitir').addClass('d-none');
+                    $('.VerificarDomicilio').addClass('d-none');
                     $('#tercerosNew').addClass('d-none');
 
 
@@ -90,7 +91,7 @@ app.EmisionEstudiantil = (function () {
             function () {
                 MapObjectToInput(data);
                 ReadOnly();
-            }, `cod_ramo=194:cod_mon=1:cod_pais=CRI`);
+            }, `cod_ramo=194:cod_mon=1:cod_pais=CRI:cod_agt=${data.cod_agt}`);
 
         // Dependencies events
         $('#TProvincia').on('change', function () {
@@ -168,7 +169,8 @@ app.EmisionEstudiantil = (function () {
         //    date: null
 
         //});
-
+        $('#emitir').addClass('d-none');
+        $('.VerificarDomicilio').removeClass('d-none');
         $("#emitir").appendTo("#GenericToolBar");
         $("#limpiar").appendTo("#GenericToolBar");
     };
@@ -241,6 +243,14 @@ app.EmisionEstudiantil = (function () {
         $('#print').click(function () {
             event.preventDefault();
             app.ui.ShowSideBar({ title: 'Enviar certificado por correo', subtitle: 'Póliza #{NUM_POLIZA}', id: 9000, data: { NUM_POLIZA: setupData.num_poliza, NUM_RIESGO: setupData.cantidad_riesgos * -1 } })
+        });
+
+        $('input:radio[name=DomicilioVerificado]').click(function (e) {
+            if (app.ui.GetRadioStringValue('DomicilioVerificado') === 'S') {
+                $('#emitir').removeClass('d-none');
+            } else {
+                $('#emitir').addClass('d-none');
+            }
         });
 
     };
@@ -1586,7 +1596,7 @@ app.EmisionEstudiantil = (function () {
 
 window.tercerosTbl_Events = {
     'click .delete': function (e, value, row, index) {
-        toastr.warning("Si está seguro de querer eliminar el tercero '" + row.nombre + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.Emisionestudiantil.tercerosDeleteRow(row); } });
+        toastr.warning("Si está seguro de querer eliminar el tercero '" + row.nombre + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionEstudiantil.tercerosDeleteRow(row); } });
         e.stopPropagation();
     },
     'click .edit': function (e, value, row, index) {
@@ -1596,7 +1606,7 @@ window.tercerosTbl_Events = {
 };
 window.documentosrequeridosTbl_Events = {
     'click .delete': function (e, value, row, index) {
-        toastr.warning("Si está seguro de querer limpiar el documento requerido '" + row.DNombre + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.Emisionestudiantil.documentosrequeridosDeleteRow(row); } });
+        toastr.warning("Si está seguro de querer limpiar el documento requerido '" + row.DNombre + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionEstudiantil.documentosrequeridosDeleteRow(row); } });
         e.stopPropagation();
     },
     'click .edit': function (e, value, row, index) {

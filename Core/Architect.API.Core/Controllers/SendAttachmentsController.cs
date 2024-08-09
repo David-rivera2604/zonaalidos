@@ -34,21 +34,19 @@ namespace Architect.API.Core.Controllers
             Contracts.Security.Token tokenInfo = Security.Token.Info();
             Architect.API.Core.Contracts.General.Attachments _documento;
 
-            Architect.API.Core.Contracts.General.GenericResponse result = new Contracts.General.GenericResponse
+            Architect.API.Core.Contracts.General.GenericResponse result = new Contracts.General.GenericResponse 
             {
-                Successful = true,
-                Reason = "Adjuntos recibidos correctamente"
+            Successful = true,
+            Reason = "Adjuntos recibidos correctamente"
             };
 
-            try
-            {
+            try { 
 
                 if (attachments.entity_id == null)
                 {
                     return BadRequest("Debe indicar el entity_id");
                 }
-                if (attachments.attachments_list == null)
-                {
+                if(attachments.attachments_list == null){
                     return BadRequest("Debe existir una lista de documentos");
                 }
 
@@ -79,11 +77,11 @@ namespace Architect.API.Core.Controllers
                 }
 
                 return Ok(result);
-
-            }
-            catch (Exception ex)
+            
+           }
+            catch(Exception ex)
             {
-
+                
                 return BadRequest(ex.Message);
             }
         }

@@ -38,6 +38,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 numerodepisosedificacion = 1,
                 tipodeestrucdelaedificacion = 1,
                 Agente = tokenInfo.UserName,
+                cod_agt = tokenInfo.AgentCode
                 //CERCA_RI_MAR_LAG_TA_CI = 2,
                 //DISTANCIA_MTS = 0,
                 //INS_ELECT_ENTUB = 2
@@ -57,7 +58,7 @@ namespace Architect.API.Tron.Business.Cotizacion
         /// <summary>
         /// Recupera lista de valores para sumas aseguradas de coberturas o valores deducibles según el rol del usuario
         /// </summary>
-        public static Tron.Contracts.Cotizacion.HogarTotalSettings Settings(int cod_ramo, int num_contrato, int num_subcontrato, string num_poliza_grupo, int cod_mon, Core.Contracts.Security.Token tokenInfo)
+        public static Tron.Contracts.Cotizacion.HogarTotalSettings Settings(int cod_ramo, int num_contrato, int num_subcontrato, string num_poliza_grupo, int cod_mon, int cod_agt, Core.Contracts.Security.Token tokenInfo)
         {
             Tron.Contracts.Cotizacion.HogarTotalSettings result = new Contracts.Cotizacion.HogarTotalSettings();
             List<string> keys = new List<string> { };
@@ -66,7 +67,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 keys.AddRange(new List<string> { "MM_POLIZA_GRUPO", "HT_CAPITAL_RC" });
             }
 
-            string url = $"cod_ramo={cod_ramo}:num_contrato={num_contrato}:num_subcontrato={num_subcontrato}:num_poliza_grupo={num_poliza_grupo}:cod_mon={cod_mon}";
+            string url = $"cod_ramo={cod_ramo}:num_contrato={num_contrato}:num_subcontrato={num_subcontrato}:num_poliza_grupo={num_poliza_grupo}:cod_mon={cod_mon}:cod_agt={cod_agt}";
             List<Core.Contracts.General.LookupValues> values = Core.Business.Common.Lkps(string.Join(",", keys), url, tokenInfo);
 
             result.fec_vcto_poliza = DateTime.Today.AddYears(1);

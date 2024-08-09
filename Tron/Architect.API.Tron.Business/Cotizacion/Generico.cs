@@ -64,7 +64,10 @@ namespace Architect.API.Tron.Business.Cotizacion
             quote.fec_efec_poliza = fec_validez;
             quote.fec_vcto_poliza = fec_validez.AddYears(1);
             quote.Agente = tokenInfo.UserName;
+            quote.cod_agt = tokenInfo.AgentCode;
             quote.coberturas = Generico.Coberturas(Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia"), cod_ramo, fec_validez, nom_prod, quote, tokenInfo);
+
+
             return quote;
         }
 

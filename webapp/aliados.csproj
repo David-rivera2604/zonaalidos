@@ -61,12 +61,17 @@
     <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="Architect.Data.Source">
+    <Reference Include="Architect.Data.Source, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\runtime\Architect.Data.Source.dll</HintPath>
     </Reference>
     <Reference Include="Architect.Data.Viewer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\runtime\Architect.Data.Viewer.dll</HintPath>
+    </Reference>
+    <Reference Include="Architect.SmartGenerate, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\runtime\Architect.SmartGenerate.dll</HintPath>
     </Reference>
     <Reference Include="DocumentFormat.OpenXml, Version=2.20.0.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
       <HintPath>..\packages\DocumentFormat.OpenXml.2.20.0\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
@@ -387,6 +392,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\css\carnet.css" />
     <Content Include="app\img\ajax-loader.gif" />
     <Content Include="app\js\core.ui.components.js" />
     <Content Include="app\js\core.ui.js" />
@@ -867,7 +873,6 @@
     <Content Include="assets\formiojs\formio.utils.js" />
     <Content Include="assets\formiojs\formio.utils.min.js" />
     <Content Include="assets\img\profile_small.jpg" />
-    <Content Include="assets\jquery\core.js" />
     <Content Include="assets\jquery\jquery.js" />
     <Content Include="assets\jquery\jquery.min.js" />
     <Content Include="assets\jquery\jquery.slim.js" />
@@ -1139,6 +1144,8 @@
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="images\CarnetAtrasVacio.png" />
+    <Content Include="images\CarnetFrenteVacio.png" />
     <Content Include="images\favicon-mapfre.png" />
     <Content Include="images\favicon.png" />
     <Content Include="images\help\general_cambio_clave_1.gif" />
@@ -1225,6 +1232,7 @@
     <Content Include="releaseletter.txt" />
     <Content Include="Scripts\AdministrarCliente.js" />
     <Content Include="Scripts\AvisosCobro.Recibos.js" />
+    <Content Include="Scripts\Bayer.Carnet.js" />
     <Content Include="Scripts\Clientes.Index.js" />
     <Content Include="Scripts\Common.Attachments.js" />
     <Content Include="Scripts\ColoresTenant.js" />
@@ -1232,12 +1240,13 @@
     <Content Include="Scripts\Cotizacion.Coberturas.js" />
     <Content Include="Scripts\Cotizacion.MapfreMasPlus.js" />
     <Content Include="Scripts\Cotizacion.Estudiantil.js" />
+    <Content Include="Scripts\Multirriesgo.Emision.js" />
+    <Content Include="Scripts\Multirriesgo.Cotizacion.js" />
     <Content Include="Scripts\Cotizacion.SaldoDeudor.enfermedadesexcluidas.js" />
     <Content Include="Scripts\CreateCase_Aliados.js" />
     <Content Include="Scripts\Emision.kyc.declarante.js" />
     <Content Include="Scripts\Emision.kyc.juridico.js" />
     <Content Include="Scripts\Emision.kyc.persona.js" />
-    <Content Include="Scripts\Common.Attachments.js" />
     <Content Include="Scripts\Emision.MapfreMasPlus.js" />
     <Content Include="Scripts\Emision.Terceros.js" />
     <Content Include="Scripts\Emision.SaldoDeudor.js" />
@@ -1254,12 +1263,16 @@
     <Content Include="Scripts\Cotizacion.PolizaLider.js" />
     <Content Include="Scripts\Emision.Estudiantil.js" />
     <Content Include="Scripts\Emision.Viajero.js" />
+    <Content Include="Scripts\Extend.Inclusiones.js" />
     <Content Include="Scripts\Extend.Claims.js" />
     <Content Include="Scripts\Extend.Cases.js" />
     <Content Include="Scripts\Extend.CaseDetail.js" />
     <Content Include="Scripts\Extend.AvisosCobro.js" />
     <Content Include="Scripts\Extend.Cases.js" />
     <Content Include="Scripts\Extend.Policy.js" />
+    <Content Include="Scripts\Form.Ext.Bajas.js" />
+    <Content Include="Scripts\Form.Ext.Altas.js" />
+    <Content Include="Scripts\Form.Ext.GarantiaNotificar.js" />
     <Content Include="Scripts\Form.Ext.SICOP.js" />
     <Content Include="Scripts\General.Case.js" />
     <Content Include="Scripts\General.NewCase.js" />
@@ -1320,6 +1333,7 @@
     <Content Include="Scripts\Dashboard.Render.js" />
     <Content Include="Scripts\Security.Register.js" />
     <Content Include="Scripts\Variaciones.MapfreMas.js" />
+    <Content Include="Scripts\Viewer.FormBuilder.js" />
     <Content Include="Scripts\Viewer.Form.js" />
     <Content Include="Scripts\ViewerManager.Render.js" />
     <Content Include="Scripts\ViewerTab.Render.js" />
@@ -1329,6 +1343,23 @@
     <Content Include="Scripts\Security.UserMember.js" />
     <Content Include="Scripts\Security.UserRoleMember.js" />
     <Content Include="Web.config" />
+    <Content Include="widgets\pagoDirecto\assets\American-Express.png" />
+    <Content Include="widgets\pagoDirecto\assets\background-card.svg" />
+    <Content Include="widgets\pagoDirecto\assets\backgroundCardRed.png" />
+    <Content Include="widgets\pagoDirecto\assets\cbanco.svg" />
+    <Content Include="widgets\pagoDirecto\assets\ccahorro.svg" />
+    <Content Include="widgets\pagoDirecto\assets\credit.svg" />
+    <Content Include="widgets\pagoDirecto\assets\creditBack.svg" />
+    <Content Include="widgets\pagoDirecto\assets\discover.svg" />
+    <Content Include="widgets\pagoDirecto\assets\jcb.svg" />
+    <Content Include="widgets\pagoDirecto\assets\mastercard.svg" />
+    <Content Include="widgets\pagoDirecto\assets\pse.png" />
+    <Content Include="widgets\pagoDirecto\assets\silice.png" />
+    <Content Include="widgets\pagoDirecto\assets\telered.png" />
+    <Content Include="widgets\pagoDirecto\assets\visa.svg" />
+    <Content Include="widgets\pagoDirecto\index.html" />
+    <Content Include="widgets\pagoDirecto\widget-pago-directo.css" />
+    <Content Include="widgets\pagoDirecto\widget-pago-directo.js" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\AddAuthTokenHeaderParameter.cs" />
@@ -1338,6 +1369,7 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\UnhandledExceptionLogger.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\MultirriesgoController.cs" />
     <Compile Include="Controllers\PurdyController.cs" />
     <Compile Include="Controllers\DocuSignController.cs" />
     <Compile Include="Controllers\AvisosController.cs" />
@@ -1564,6 +1596,7 @@
     <Content Include="documents\boletacargoautomatico.pdf" />
     <Content Include="documents\CertificadoComplemento\302\boletacargoautomatico.pdf" />
     <Content Include="data\carga_masiva_saldo_deudor.xlsx" />
+    <Content Include="data\dummy.json" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1756,13 +1789,24 @@
     <Content Include="Views\Purdy\_encabezado.cshtml" />
     <Content Include="Views\Purdy\Panel.cshtml" />
     <Content Include="Views\Cases\_references.cshtml" />
+    <Content Include="Views\Bayer\Carnet.cshtml" />
+    <Content Include="Reports\CarnetDigital.repx" />
     <Content Include="Views\Viewer\Form.cshtml" />
+    <Content Include="Views\Emision\_verificardomicilio.cshtml" />
+    <Content Include="Views\Process\diagram.cshtml" />
+    <Content Include="Views\Cotizacion\_polizagrupo.cshtml" />
+    <Content Include="Views\Viewer\FormBuilder.cshtml" />
+    <Content Include="Views\Viewer\FormDefine.cshtml" />
+    <Content Include="Views\Multirriesgo\Cotizacion.cshtml" />
+    <Content Include="Views\Multirriesgo\Emision.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <Content Include="widgets\pagoDirecto\assets\yappy.webp" />
+    <Content Include="widgets\pagoDirecto\readme.md" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

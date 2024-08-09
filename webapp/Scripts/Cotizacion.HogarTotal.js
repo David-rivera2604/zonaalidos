@@ -79,6 +79,8 @@ app.HogarTotal = (function () {
     };
 
     function Init_Lookups(data) {
+        setupData = JSON.parse(JSON.stringify(data));
+
         let lookupList = [
             'MonedasPorRamo.moneda',
             'FrecuenciaDePagoPorRamo.fraccionamientodepago',
@@ -95,14 +97,17 @@ app.HogarTotal = (function () {
         if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
             lookupList.push('MM_POLIZA_GRUPO.contrato'); //, 'MM_SUB_CONTRATOS.subcontrato'
             lookupList.push('SumasAseguradasRC.sARespcivil');
+            app.Cotizacion.CustomAgentHandler('pg_', setupData);
         } else {
             lookupList.push('SumasAseguradasRC.sARespcivil'); //, 'MM_SUB_CONTRATOS.subcontrato'
+            app.Cotizacion.CustomAgentHandler('', setupData);
+            
         };
-        setupData = JSON.parse(JSON.stringify(data));
+        
         app.core.Lookups(lookupList,
             function () {
                 MapObjectToInput(data);
-            }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.moneda}:cod_pais=${data.pais}:cod_tip_ocup=${data.cod_ramo}%:cod_estado=${data.provincia}:cod_prov=${data.canton}`);
+            }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.moneda}:cod_pais=${data.pais}:cod_tip_ocup=${data.cod_ramo}%:cod_estado=${data.provincia}:cod_prov=${data.canton}:cod_agt=${data.cod_agt}`);
 
         // Dependencies events
         $('#provincia').on('change', function () {
@@ -153,12 +158,13 @@ app.HogarTotal = (function () {
             num_contrato: app.ui.GetDropDownNumericValue('#contrato'),
             num_subcontrato: app.ui.GetDropDownNumericValue('#subcontrato'),
             num_poliza_grupo: setupData.polizagrupo,
-            cod_mon: app.ui.GetDropDownNumericValue('#moneda')
+            cod_mon: app.ui.GetDropDownNumericValue('#moneda'),
+            cod_agt: app.Cotizacion.AgentCode()
         };
 
         $('#coberturasTbl').bootstrapTable('showLoading');
 
-        app.core.Get(app.setting.apipath + 'v1/Quote/HogarTotalSettings?' + `cod_ramo=${data.cod_ramo}&num_contrato=${data.num_contrato}&num_subcontrato=${data.num_subcontrato}&num_poliza_grupo=${data.num_poliza_grupo}&cod_mon=${data.cod_mon}`)
+        app.core.Get(app.setting.apipath + 'v1/Quote/HogarTotalSettings?' + `cod_ramo=${data.cod_ramo}&num_contrato=${data.num_contrato}&num_subcontrato=${data.num_subcontrato}&num_poliza_grupo=${data.num_poliza_grupo}&cod_mon=${data.cod_mon}&cod_agt=${data.cod_agt}`)
             .done(function (settingData) {
                 app.ui.SetDateValue('#findevigencia', app.ui.GetDateValue('#iniciodevigencia'))
                 app.ui.SetDateValue('#findevigencia', settingData.fec_vcto_poliza);
@@ -206,7 +212,9 @@ app.HogarTotal = (function () {
             plandepago: $('#plandepagoTbl').bootstrapTable('getData'),
             contrato: app.ui.GetDropDownNumericValue('#contrato'),
             subcontrato: app.ui.GetDropDownNumericValue('#subcontrato'),
-            polizagrupo: setupData.polizagrupo
+            polizagrupo: setupData.polizagrupo,
+            cod_agt: app.Cotizacion.AgentCode(),
+            cod_cuadro_com: app.Cotizacion.CuadroCom()
         };
         return data;
     };
@@ -421,7 +429,7 @@ app.HogarTotal = (function () {
                 sAGastosalquiler: { required: true, Numeric: true },
                 sAPerdidaderentas: { required: true, Numeric: true },
                 sARespcivil: { required: true, Numeric: true }
-                
+
             },
             messages: {
                 mesesaampararporperdrentas: { required: 'Debe indicar la cantidad de meses a amparar', Numeric: 'Debe indicar la cantidad de meses a amparar', min: 'Debe indicar indicar un valor entre 1 y 12', max: 'Debe indicar indicar un valor entre 1 y 12' },

@@ -505,4 +505,91 @@
 1.6.35  27/06/2023 Viajero Regional Monge. Ajuste en método para obtener el token.
                    Viajero Regional Monge. Detalle de error condicionado por variable de settings Working.Mode.
 1.6.35a 29/06/2023 MapfreMasPlus. Se habilita el porcentaje de ajuste comercial para Purdy para el rango -5 a 0.
-1.6.36  05/07/2024 SICOP.
+1.6.36  29/06/2023 Bayer. Se alertara cuando una persona se incluida de forma retroactiva con más de 90 días
+                   Bayer. La solicitud deberá quedar en un estado de revisión por parte de Mapfre en vez de ser por RRHH, para aceptar o denegar.
+                   Bayer. Si es aceptada la solicitud será transferida a RRHH, para continuar su proceso.
+                   Bayer. Si es rechazada, se notificará al empleado.
+                   Bayer. Enviar copia al correo culloa@asprose.com debe incluir el certificado y debe hacerse al darse de alta.
+                          Se implementa incluyendo en el correo que se envia actualmente cuando se da de alta, a los usuarios que tenga como rol Asprose,
+                          permitiendo incluir el email solitado como usuario del sistema, pero con al flexibilidad de cambios y otras inclusiones.
+1.6.37  29/06/2023 Trazabilidad. Ajustes en la pagina de etapas para indicar cuales campos seran editables.
+                   Trazabilidad. Ajustes en el panel de casos para disponibilizar los campos que seran editables según la etapa.
+1.6.38  11/07/2023 Bayer. Se debe agregar un campo obligatorio para RRHH que indique la fecha en que se da de alta (RF01538652)
+                   Bayer. Guardar la solicitud en borrador desde el perfil de revisor (RF01477812)
+                   MapfreMasPlus. Se debe poder descargar el documento enviado desde la consulta de solicitudes enviadas.
+                   MapfreMas. Se debe poder descargar el documento enviado desde la consulta de solicitudes enviadas.
+                   Lider. Reporte de cotización. No muestra campo recargoporfraccionamiento.
+1.6.38a 13/07/2023 Lider. Reporte de cotización. Sale descuadrado.
+1.6.39  13/07/2023 Aliados. Se agregar nuevo setting "Compliance.Enabled" para habilitar o no el envío de información al servicio de "Compliance".
+                   Aliados. Se notifica error en caso de no conseguir la plantilla de correo.
+                   Aliados. Se itera por los tenant que manejan agentes de tron por medio del setting Tenant.Tron.Agent.Information.
+                   Aliados. Se verifica el campo affidavit.kind para evitar error en caso de contener nulo.
+1.6.40  17/07/2023 Aliados. Se habilita el manejo de kyc.
+                   Aliados. Ajustes a KYC según correo del 11/7 (Allison 02/03).
+1.6.41  24/07/2023 Aliados. Se corrige falla de ambigüedad de columna al verificar las etapas vencidas de un proceso.
+                   Bayer. Se agrega nueva verificación para no permitir solicitudes sin beneficiarios.
+                   MapfreMas. Ajuste para alienar cambio de nombre de campos para ser enviado al servicio snap.
+1.6.42  08/08/2023 Aliados. Ajuste en la tarifa de riesgo en el reporte HogarTotal_ESPH.
+1.6.43  21/08/2023 Bayer. Carnet digital.
+                   Bayer. Impresión de certificado.
+                   Coope. Reporte de seguimiento de inclusiones.
+1.6.44  29/08/2023 MapfreMas. KYC, en el apartado de “Datos de la Empresa, el “Fax” no es obligatorio.
+                   MapfreMas. KYC, En el pdf, hay unos datos que no se están visualizando por problema de mapeo.
+                   Multirrieso. Corregir el término “Georeferencia” en el formulario “Detalles de la Edificación” que corresponde al apartado “Datos Adicionales de la Edificación”.
+1.6.45  14/09/2023 Purdy. Siniestros. En el grid de balance del tab de indenmización el campo NC Repuesto se debe calcular solo para factura de respuestos.
+                   Purdy. Siniestros. En el tab de evento, los campos Posible subrogación, Enviado a investigación, Enviado a acompañamiento legal y Autorización de uso póliza, deben tener la fecha del día por default.
+                   Purdy. Siniestros. En el tab de evento, el campo fecha del evento debe ser de solo lectura y el valor debe ser la fecha del siniestro.
+                   Purdy. Siniestros. En el tab de indemnización, en la sección de balance se debe agregar un campo que muestre el saldo del “Monto total de perdida es el balance inicial del tab anterior” menos lo movimiento reflejados en el balance.
+1.6.46  19/09/2023 Purdy. Siniestros. En la cabecera el campo analista gestora debe ser una lista con los usuarios con el rol avaluo y editable solo para ese rol.
+                   Purdy. Siniestros. Agregar el campo tipo de cambio en el tab de daños.
+                   Purdy. Siniestros. En el tab de daños, en la sección "monto preliminar de perdida (Repuesto)" se debe agregar el campo "Descuento", el cual será calculado según formula usanda en el Excel.
+1.6.47	20/9/2023  Multirriesgo.  Se guarda el valor  del dato variable de Folio en TRON. 
+                   Viajero. Corrección en la condición uso de credenciales para envío a Asistencia
+                   Viajero. Corrección en el envío tomador xml de póliza a Asistencia
+                   WebConfig. Cambio en la url del WS Asistencia
+1.6.48  26/09/2023 MapfreMas. KYC, En el pdf solicitud individual, hay unos datos que no se están visualizando por problema de mapeo.
+                   Avisos. En avisos de cobros no se trae los contratos de 303.
+                   MapfreMas. Fecha de vencimiento, cuando no existe vencimiento para el contrato.
+                   MapfreMasPlus. Fecha de vencimiento, cuando no existe vencimiento para el contrato.
+1.6.49  03/10/2023 MapfreMas. MapfreMasPlus. En la sección de terceros, agregar un campo que permite indicar que el asegurado es el mismo pagado.
+1.6.50  05/10/2023 MapfreMas. MapfreMasPlus. Al momento de emitir el presupuesto se debe asociar el PDF de la cotización al mismo y en el caso de la manual dicho pdf debe adjuntarse al correo.                   
+                   MapfreMas. MapfreMasPlus. Se debe agregar en el pdf de la cotización la descripción del contrato.
+                   MapfreMasPlus. Se debe agregar en el pdf de la cotización el campo rc alcohol.
+1.6.51  09/10/2023 Avisos de Cobro. Mostrar las pólizas de grupo y sus contratos como un solo control, considerar que debe poder seleccionar solo la póliza sin contratos, considerar que la misma página es usada por empleados.
+1.6.52  19/10/2023 Carro fácil. No recupera la información del asegurado al digitar la cédula.
+                   Aliados. Se actualiza la libreria jquery de la versión 3.4.1 a la 3.7.1 por reportes de seguridad.
+1.6.53  03/11/2023 Purdy. Siniestros. Correcciones y mejoras al panel del siniestro de purdy.
+                   MapfreMas. MapfreMasPlus. Corrección para la fecha de vencimiento de pólizas grupo.
+1.6.54  06/11/2023 Purdy. Siniestros. Correcciones y mejoras al panel del siniestro de purdy.
+1.6.55  13/11/2023 Purdy. Siniestros. Correcciones y mejoras al panel del siniestro de purdy.
+1.6.56  15/11/2023 Se habilita el proceso de llenado Formularios Digitales (Solicitud, Kyc, consentimiento) por medio de un Rol.
+                   MapfreMas y MapfreMasPlus. Manejo de valores por default por medio de un rol.
+1.6.57  03/01/2024 Se agrega api SendAttachment. Para enviar adjuntos desde las integraciones con los clientes.
+1.6.58  01/02/2024 Tron. Api Imprimir poliza en Base64.
+                   Rules. Mapfremas y plus se ajustan las reglas segun lo que hay en prd.
+                   Coopeservidores. Se agrega validacion de pedir obligatorio los adjuntos en la emision.
+1.6.59  04/03/2024 Bayer. Permite crear solicitudes sin beneficiarios.
+1.6.60  15/03/2024 Actualizar Clientes. Correcion en Actualizar clientes que invertia el dia y mes de fecha nacimiento
+                   TRON Formato Cedulas. Se actualiza la funcion del formato de Cedula para guardar clientes en tron
+                   SnapCompliance Formato Cedulas. Se toma el mismo formato de cedula que guarda en Tron para enviar Clientes en Snap. Multirriesgo, Hogar
+                   SnapCompliance. Se ajusta formato cedulas del cliente y el tipo de cedula para personas fisicas solo se estaba enviando 1 fijo.
+                   MapfreMas Validaciones de Terceros en la emision.
+                   MapfreMas Se agrega funcion para transcribir errores de emision.
+                   Mapfre Mas. Se agrega datos variables  MCA_CUOTAS_GRATIS y NUM_CUOTAS_GRATIS para cotizar en Purdy
+1.6.60a 18/03/2024 Mapfre Mas Plus. Se agrega datos variables  MCA_CUOTAS_GRATIS y NUM_CUOTAS_GRATIS para cotizar en Purdy
+1.6.61  08/04/2024 Saldo Deudor. Manejo para poder condicionar el plan según la moneda indicada.
+1.6.62  18/04/2024 MapfreMas. KYC Si bien se completa la información de manera manual en el formulario, cuando se le envía el documento al cliente. ejemplo: el salario, la empresa, etc.
+                   MapfreMas. Consentimiento informado: Se completa la información, llega en blanco datos del cliente.
+                   KYC. Buscador de profesiones:  Poco amigable con la búsqueda y listado incompleto de profesiones y oficios
+                   KYC. Buscador de actividad económica: Igual al anterior.
+                   KYC. Domicilio permanente: Dado que es un dato que se reitera, el sistema debería en automático cargarlo, con solo una vez digitado,
+1.6.63  03/05/2024 
+1.6.64  01/07/2024 Pasarela. Ajuste en el llamado al package de pago en Mapfre.
+1.6.65  01/07/2024 MapfreMas. Opción para emisión web para empleado. Cotización seleccionando intermediario.
+1.6.66  02/07/2024 Aliados. Consulta de póliza para productos 117, 194 y 401.
+                   Aliados. Consulta de siniestros para productos 117, 194 y 401.
+1.6.67  22/07/2024 Aliados.	Opción para emisión web para empleado. Cotización seleccionando intermediario.
+                   Aliados.	Purdy. No llega el nombre del cliente en los documento de la cotización enviado por correo.
+1.6.68  07/08/2024 Aliados.	Merge general.
+                   Pasarela. Ajustes en ruta de Webhook para pago recuerrentes.
+                   Pasarela. Ajuste en condiciones que usan el status en los webhook.

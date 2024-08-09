@@ -51,30 +51,7 @@
                                     @Html.Partial("_datosgenerales")
 
                                     <!-- polizagrupo Zone -->
-                                    <div class="form-row d-none" id="polizagrupoZone">
-                                        <div class="col-lg-12">
-                                            <h4><i class="fa fa-building"></i> Información de póliza grupo</h4>
-                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-                                            <div class="form-row">
-
-                                                <!-- contrato DropDownList -->
-                                                <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='contrato'>Contrato<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <select id='contrato' name='contrato' class='form-control'></select>
-                                                    </div>
-                                                </div>
-
-                                                <!-- subcontrato DropDownList -->
-                                                <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='subcontrato'>Sub contrato<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <select id='subcontrato' name='subcontrato' class='form-control' disabled></select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    @Html.Partial("_polizagrupo")
 
                                     <!-- datosdelasegurado Zone -->
                                     <div class="form-row">

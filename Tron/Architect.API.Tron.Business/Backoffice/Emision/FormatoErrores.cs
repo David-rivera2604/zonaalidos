@@ -38,28 +38,15 @@ namespace Architect.API.Tron.Business.Backoffice.Emision
                 }
             }
 
-            if (error == "Error en base de datos" || error.StartsWith("ORA-", StringComparison.CurrentCultureIgnoreCase))
+            if (error == "Error en base de datos" || error.StartsWith("ORA-", StringComparison.CurrentCultureIgnoreCase)  )
             {
                 try
                 {
-                    MatchCollection coincidencias = Regex.Matches(errorSource, @"ORA-(\d{5}): (.+)");
-                    int numerror;
-                    error = string.Empty;
-                    foreach (Match coincidencia in coincidencias)
+                    error = NewMethod(errorSource, @"ORA-(\d{5}): (.+)");
+                    if (string.IsNullOrEmpty(error))
                     {
-                        numerror = Convert.ToInt32("0" + coincidencia.Groups[1].Value.OnlyNumbers());
-
-                        if (numerror > 20000 && numerror <= 20999)
-                        {
-                            error = coincidencia.Groups[2].Value;
-                        }
+                        error = NewMethod(errorSource, @"TRN-(\d{5}): (.+)");
                     }
-                    error = error.Trim();
-                    error = error + "  ";
-                    error = error.Substring(0, 1).ToUpper() + error.Substring(1).ToLower();
-                    error = error.Replace("\n", "");
-                    error = error.Replace("\r", "");
-                    error = error.Trim();
                 }
                 catch (Exception)
                 {
@@ -72,6 +59,29 @@ namespace Architect.API.Tron.Business.Backoffice.Emision
             return error;
         }
 
+        private static string NewMethod(string errorSource, string pattern)
+        {
+            string error;
+            MatchCollection coincidencias = Regex.Matches(errorSource, pattern);
+            int numerror;
+            error = string.Empty;
+            foreach (Match coincidencia in coincidencias)
+            {
+                numerror = Convert.ToInt32("0" + coincidencia.Groups[1].Value.OnlyNumbers());
+
+                if (numerror > 20000 && numerror <= 20999)
+                {
+                    error = coincidencia.Groups[2].Value;
+                }
+            }
+            error = error.Trim();
+            error = error + "  ";
+            error = error.Substring(0, 1).ToUpper() + error.Substring(1).ToLower();
+            error = error.Replace("\n", "");
+            error = error.Replace("\r", "");
+            error = error.Trim();
+            return error;
+        }
     }
 }
 

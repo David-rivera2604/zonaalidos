@@ -40,6 +40,7 @@ app.EmisionViajero = (function () {
 
 
                     $('#emitir').addClass('d-none');
+                    $('.VerificarDomicilio').addClass('d-none');
                     $('#tercerosNew').addClass('d-none');
 
 
@@ -94,7 +95,7 @@ app.EmisionViajero = (function () {
             function () {
                 MapObjectToInput(data);
                 ReadOnly();
-            }, `cod_ramo=441:cod_mon=2:cod_pais=CRI`);
+            }, `cod_ramo=441:cod_mon=2:cod_pais=CRI:cod_agt=${data.cod_agt}`);
 
         // Dependencies events
         $('#TProvincia').on('change', function () {
@@ -180,7 +181,8 @@ app.EmisionViajero = (function () {
             date: null
 
         });
-
+        $('#emitir').addClass('d-none');
+        $('.VerificarDomicilio').removeClass('d-none');
         $("#emitir").appendTo("#GenericToolBar");
         $("#limpiar").appendTo("#GenericToolBar");
     };
@@ -253,6 +255,14 @@ app.EmisionViajero = (function () {
         $('#print').click(function () {
             event.preventDefault();
             app.ui.ShowSideBar({ title: 'Enviar certificado por correo', subtitle: 'Póliza #{NUM_POLIZA}', id: 9000, data: { NUM_POLIZA: setupData.num_poliza, NUM_RIESGO: setupData.cantidad_riesgos * -1 } })
+        });
+
+        $('input:radio[name=DomicilioVerificado]').click(function (e) {
+            if (app.ui.GetRadioStringValue('DomicilioVerificado') === 'S') {
+                $('#emitir').removeClass('d-none');
+            } else {
+                $('#emitir').addClass('d-none');
+            }
         });
 
     };

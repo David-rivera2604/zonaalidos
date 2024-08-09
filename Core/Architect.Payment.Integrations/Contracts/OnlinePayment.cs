@@ -108,7 +108,10 @@ namespace Architect.Payment.Integrations.Contracts
         /// Identifica la configuración de acceso usada por la sesión.
         /// </summary>
         public int SettingId { get; set; }
-        
+
+        public bool RecurringReceipt { get; set; }
+
+        public string ProcessId { get; set; }
 
     }
 }

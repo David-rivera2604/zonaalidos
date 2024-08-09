@@ -437,11 +437,10 @@ namespace Architect.WS.Integrations.PanamaAsistencia
             {
                 Architect.API.Tron.Contracts.Integraciones.PanamaAsistencia.InsuredData insuredData = new Architect.API.Tron.Contracts.Integraciones.PanamaAsistencia.InsuredData();
 
-                    if (terceros.tipodetercero == 2 || (terceros.tipodetercero == 0 && terceros.eltomadoreselmismoasegurado == 1))
-
-                    {
-                        //Edad 
-                        DateTime nacimiento = terceros.fechadenacimiento; //Fecha de nacimiento
+                if (terceros.tipodetercero == 2 || (terceros.tipodetercero == 0 && terceros.eltomadoreselmismoasegurado == 1))
+                {
+                    //Edad 
+                    DateTime nacimiento = terceros.fechadenacimiento; //Fecha de nacimiento
                     int edad = DateTime.Today.AddTicks(-nacimiento.Ticks).Year - 1;
 
                     insuredData.TxtNmAsegurado = terceros.nombre;
@@ -524,8 +523,8 @@ namespace Architect.WS.Integrations.PanamaAsistencia
             {
                 Architect.API.Tron.Contracts.Integraciones.PanamaAsistencia.TomadorData tomador_data = new Architect.API.Tron.Contracts.Integraciones.PanamaAsistencia.TomadorData();
 
-                    if (terceros.tipodetercero == 0 || (terceros.tipodetercero == 2 && terceros.elaseguradoeselmismotomador == 1))
-                    {
+                if (terceros.tipodetercero == 0 || (terceros.tipodetercero == 2 && terceros.elaseguradoeselmismotomador == 1))
+                {
                     tomador_data.TxtNmAsegurado_policyHolder = terceros.nombre;
                     tomador_data.TxtApeAsegurado_policyHolder = terceros.apellido1 + " " + terceros.apellido2;
                     tomador_data.TxtIdFiscal_policyHolder = terceros.DocumentNumber.Replace("-", "").Substring(1);
@@ -585,15 +584,15 @@ namespace Architect.WS.Integrations.PanamaAsistencia
                 xml = stringwriter.ToString();
             }
 
-            Utilities.Log.WarningLog("Envio Asistencia_Panama", xml + " Poliza: " + resultQuoteInfo.num_poliza, "asistencia.panama");
+           Utilities.Log.WarningLog("Envio Asistencia_Panama", xml + " Poliza: " + resultQuoteInfo.num_poliza, "asistencia.panama");
 
-            //Llamado a Web Service Panama
-            wsWarranty4SoapClient ws = new wsWarranty4SoapClient();
+           //Llamado a Web Service Panama
+           wsWarranty4SoapClient ws = new wsWarranty4SoapClient();
             ws.Open();
             var respuesta = ws.issuing(token, xml);
             ws.Abort();
 
-
+           
                 //lectura del xml de resultado 
                 resultado = respuesta.Rows[0]["description"].ToString();
 

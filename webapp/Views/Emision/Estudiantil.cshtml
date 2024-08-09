@@ -112,18 +112,17 @@
 
                                                 <!-- FEC_NACIMIENTO DatePicker -->
                                                 <!--<div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='FEC_NACIMIENTO'>Fecha de nacimiento<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <div class='input-group date' id='FEC_NACIMIENTO_group'>
-                                                            <input type='text' id='FEC_NACIMIENTO' name='FEC_NACIMIENTO' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
-                                                            <span class='input-group-addon'>
-                                                                <span class='glyphicon glyphicon-calendar'></span>
-                                                            </span>
-                                                        </div>
-                                                        <div id='FEC_NACIMIENTO_validate'></div>
-                                                    </div>
-                                                </div>-->
-
+                    <div class='form-group'>
+                        <label class='control-label' for='FEC_NACIMIENTO'>Fecha de nacimiento<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                        <div class='input-group date' id='FEC_NACIMIENTO_group'>
+                            <input type='text' id='FEC_NACIMIENTO' name='FEC_NACIMIENTO' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                            <span class='input-group-addon'>
+                                <span class='glyphicon glyphicon-calendar'></span>
+                            </span>
+                        </div>
+                        <div id='FEC_NACIMIENTO_validate'></div>
+                    </div>
+                </div>-->
                                                 <!-- MCA_SEXO RadioButtonList -->
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
@@ -240,6 +239,8 @@
                                         </div>
                                     </div>
 
+                                    <!-- VerificarDomicilio Zone -->
+                                    @Html.Partial("_verificardomicilio")
 
                                     @*@ibox-content-footer@*@
                                 </fieldset>

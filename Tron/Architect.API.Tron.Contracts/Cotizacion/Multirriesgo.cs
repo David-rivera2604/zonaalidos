@@ -10,10 +10,6 @@ namespace Architect.API.Tron.Contracts.Cotizacion
     {
 
         /// <summary>
-        /// Ramo.
-        /// </summary>
-        [DataMember(), JsonProperty()] public int cod_ramo { get; set; }
-        /// <summary>
         /// Moneda.
         /// </summary>
         [DataMember(), JsonProperty()] public int cod_mon { get; set; }

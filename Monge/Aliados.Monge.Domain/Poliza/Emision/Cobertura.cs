@@ -15,5 +15,10 @@ namespace Aliados.Monge.Domain.Poliza.Emision
         /// Código de cobertura.
         /// </summary>
         public int codigo { get; set; }
+
+        /// <summary>
+        /// Suma asegurada.
+        /// </summary>
+        public double sumaasegurada { get; set; }
     }
 }

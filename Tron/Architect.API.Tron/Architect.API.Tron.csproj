@@ -47,6 +47,7 @@
     <Reference Include="System.Net.Http.Formatting, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.9\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Cors, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.Cors.5.2.9\lib\net45\System.Web.Cors.dll</HintPath>
     </Reference>
@@ -64,8 +65,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\CreateSession.cs" />
+    <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Controllers\IssueController.cs" />
     <Compile Include="Controllers\AvisoCobroController.cs" />
+    <Compile Include="Controllers\MultirriesgoController.cs" />
+    <Compile Include="Controllers\v2\PagosController.cs" />
     <Compile Include="Controllers\SiniestroController.cs" />
     <Compile Include="Controllers\PolizaController.cs" />
     <Compile Include="Controllers\PagosController.cs" />
@@ -75,6 +79,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Architect.API.Core.Business\Architect.API.Core.Business.csproj">
+      <Project>{579105b3-776b-4094-a301-87a9c42962c5}</Project>
+      <Name>Architect.API.Core.Business</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Architect.API.Core.Contracts\Architect.API.Core.Contracts.csproj">
       <Project>{29b21bef-8c87-4a9d-8b37-fecc57cd03c7}</Project>
       <Name>Architect.API.Core.Contracts</Name>

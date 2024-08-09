@@ -46,6 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AltasBajas\Request\Base.cs" />
+    <Compile Include="AltasBajas\Request\SPCall.cs" />
+    <Compile Include="AltasBajas\Request\Poliza.cs" />
+    <Compile Include="AltasBajas\Response\Poliza.cs" />
     <Compile Include="AvisosDeCobro\AvisoConsultaResponse.cs" />
     <Compile Include="AvisosDeCobro\AvisoResponse.cs" />
     <Compile Include="AvisosDeCobro\AvisosBaseResponse.cs" />
@@ -67,7 +71,10 @@
     <Compile Include="Comun\Tercero.cs" />
     <Compile Include="Comun\Vehiculo.cs" />
     <Compile Include="Cotizacion\Estudiantil.cs" />
+    <Compile Include="Cotizacion\MultirriesgoSettings.cs" />
     <Compile Include="Emision\Estudiantil.cs" />
+    <Compile Include="Pagos\Recibo.cs" />
+    <Compile Include="Pagos\Tarjeta.cs" />
     <Compile Include="Poliza\Parameters\ControlTecnicoParametros.cs" />
     <Compile Include="Cotizacion\HogarTotalSettings.cs" />
     <Compile Include="Cotizacion\plandepagoporfrecuencia.cs" />
@@ -150,6 +157,10 @@
     <Compile Include="Ramo\A1001403.cs" />
     <Compile Include="Tables\a1002150.cs" />
     <Compile Include="Tables\ta301003.cs" />
+    <Compile Include="Tramitacion\Request\Siniestro.cs" />
+    <Compile Include="Tramitacion\Response\Tramite.cs" />
+    <Compile Include="Tramitacion\Response\Nivel.cs" />
+    <Compile Include="Tramitacion\Response\Siniestro.cs" />
     <Compile Include="Vistas\Recibo.cs" />
   </ItemGroup>
   <ItemGroup>

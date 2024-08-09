@@ -18,9 +18,15 @@ app.kycpersona = (function () {
                         }
 
                         app.ui.SetDropDownNumericValue('#Act_Economica', setupData.actividadEconomica, true);
-
+                        $('#Act_Economica').select2({
+                            width: '100%', theme: 'bootstrap4', dropdownParent: $("#kycpersonaModal .modal-content"),
+                            language: { noResults: function () { return "No hay resultado"; }, searching: function () { return "Buscando.."; } }
+                        });
                     });
-
+                $('#profesionPer').select2({
+                    width: '100%', theme: 'bootstrap4', dropdownParent: $("#kycpersonaModal .modal-content"),
+                    language: { noResults: function () { return "No hay resultado"; }, searching: function () { return "Buscando.."; } }
+                });
             }, `cod_pais=CRI`);
 
 
@@ -377,15 +383,17 @@ app.kycpersona = (function () {
         else
             $('.peptiporelacionPerVisible').addClass('d-none');
 
-
-        if (app.ui.GetRadioNumericValue('OcupacionPer') === 2)
+        let ocupation = app.ui.GetRadioNumericValue('OcupacionPer');
+        if (ocupation === 1 || ocupation === 2)
             $('.empresaPerVisible').removeClass('d-none');
         else
             $('.empresaPerVisible').addClass('d-none');
-        if (app.ui.GetRadioNumericValue('OcupacionPer') === 3)
+
+        if (ocupation === 3)
             $('.fuenteIngresosPerVisible').removeClass('d-none');
         else
             $('.fuenteIngresosPerVisible').addClass('d-none');
+
     };
 
     function Setup_Validations() {
@@ -418,7 +426,6 @@ app.kycpersona = (function () {
                 actividadempresaPer: { required: true },
                 cargoempresaPer: { required: true },
                 telefonoempresaPer: { required: true },
-                faxempresaPer: { required: true },
                 domiciliocomercialCod_paisPer: { required: true },
                 domiciliocomercialCod_estadoPer: { required: true },
                 domiciliocomercialCod_provPer: { required: true },
@@ -470,7 +477,6 @@ app.kycpersona = (function () {
                 actividadempresaPer: { required: 'Debe indicar el Actividad de la empresa o negocio' },
                 cargoempresaPer: { required: 'Debe indicar el Cargo que desempeña' },
                 telefonoempresaPer: { required: 'Debe indicar el Teléfono' },
-                faxempresaPer: { required: 'Debe indicar el Fax' },
                 domiciliocomercialCod_paisPer: { required: 'Debe indicar el País' },
                 domiciliocomercialCod_estadoPer: { required: 'Debe indicar el Provincia' },
                 domiciliocomercialCod_provPer: { required: 'Debe indicar el Cantón' },

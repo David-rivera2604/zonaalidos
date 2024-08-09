@@ -62,19 +62,18 @@ namespace Architect.API.Tron.Business.Emision
                 {
                     result.terceros = Reglas.research.Apply_Terceros("Multirriesgos", result.terceros, result.Fuente_Tomador, tokenInfo);
                 }
-
-                if (!tokenInfo.Roles.Contain("Formularios_digitales"))
+                if (result.documentosrequeridos == null)
                 {
-                    if (result.documentosrequeridos == null)
+                    if (!tokenInfo.Roles.Contain("Formularios_digitales"))
                     {
                         result.documentosrequeridos = new List<Contracts.Comun.DocumentoRequerido>
-                        {
-                        new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=1, tipo = "Expediente Cliente", DArchivoEsperado="Expediente Cliente.pdf", Grupo="F"  },
-                        new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=2, tipo = "Expediente Póliza" , DArchivoEsperado="Expediente Póliza.pdf", Grupo="F" },
-                        };
+                            {
+                            new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=1, tipo = "Expediente Cliente", DArchivoEsperado="Expediente Cliente.pdf", Grupo="F"  },
+                            new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=2, tipo = "Expediente Póliza" , DArchivoEsperado="Expediente Póliza.pdf", Grupo="F" },
+                            };
                     }
                 }
-        }
+            }
             return result;
         }
 
@@ -431,6 +430,7 @@ namespace Architect.API.Tron.Business.Emision
             {
                 jsonvalues = (JObject)quoteInfo.kyc;
             }
+
             int tipoIdenditificacion = titular.DocumentNumberType;
             switch (tipoIdenditificacion)
             {
@@ -448,7 +448,8 @@ namespace Architect.API.Tron.Business.Emision
                     break;
             }
 
-            string numidenti = Util.IdentificationFormat(titular.DocumentNumberType, titular.DocumentNumber);
+            string numidenti =  Util.IdentificationFormat (titular.DocumentNumberType, titular.DocumentNumber);
+
             //if (titular.DocumentNumberType == 1)
             //{
             //    numidenti = numidenti.Remove(0, 1);
@@ -823,7 +824,7 @@ namespace Architect.API.Tron.Business.Emision
 
                     mapInfo.profesion = jsonvalues.TokenInt32Value("profesionPer");
                     mapInfo.paisOrigen = jsonvalues.TokenInt32Value("paisdenacimientoPer");
-                    mapInfo.fechaVencimientoIdentificacion = jsonvalues.TokenDateTimeValue("fechadecaducidadPer");
+                    mapInfo.fechaVencimientoIdentificacion = titular.DocumentNumberType == 4 ? jsonvalues.TokenDateTimeValue("fechadecaducidadJur") : jsonvalues.TokenDateTimeValue("fechadecaducidadPer");
 
                     mapInfo.clientesNacionalidades = new[] { new Clientesnacionalidade() { nacionalidad = jsonvalues.TokenInt32Value("nacionalidadPer") } };
                     string telefonocelularPer = jsonvalues.TokenStringValue("telefonocelularPer");

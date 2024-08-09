@@ -6,7 +6,7 @@
     <div id="mainBlock" class="col-md-12">
         <div class="ibox">
             <div class="ibox-title">
-                <h5><span id="PageTitle">MAPFRE   303</span><small class="m-l-sm"><span id="PageSubTitle"> Cotización</span></small> </h5>
+                <h5><span id="PageTitle">Mapfre Más Plus</span><small class="m-l-sm"><span id="PageSubTitle"> Cotización</span></small> </h5>
                 <!-- Opciones -->
                 <div class="ibox-tools">
                     <a class="fullscreen-link">
@@ -26,7 +26,7 @@
                 </div>
             </div>
             <div class="ibox-content">
-                <p class="text-muted small">En MAPFRE Costa Rica hemos creado una amplia variedad de opciones con excelentes coberturas y valores agregados, pensados para todas las necesidades de los costarricenses. <a href="https://www.mapfre.cr/seguros-cr/seguros/autos/" target="_blank">Seguro MAPFRE 303</a>, El seguro que le ofrece diferentes coberturas desde responsabilidad civil, colisión y/o vuelco, robo, y coberturas adicionales.</p>
+                <p class="text-muted small">En MAPFRE Costa Rica hemos creado una amplia variedad de opciones con excelentes coberturas y valores agregados, pensados para todas las necesidades de los costarricenses. <a href="https://www.mapfre.cr/seguros-cr/seguros/autos/" target="_blank">Seguro MAPFRE MÁS PLUS</a>, El seguro que le ofrece diferentes coberturas desde responsabilidad civil, colisión y/o vuelco, robo, y coberturas adicionales.</p>
                 <div class="sk-spinner sk-spinner-wave">
                     <div class="sk-rect1"></div>
                     <div class="sk-rect2"></div>
@@ -123,85 +123,10 @@
                                     </div>
 
                                     <!-- datosgenerales Zone -->
-                                    <div class="form-row">
-                                        <div class="col-lg-12">
-                                            <h4><i class="fa fa-list"></i> Datos generales</h4>
-                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-                                            <div class="form-row">
-
-                                                <!-- cod_mon DropDownList -->
-                                                <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='cod_mon'>Moneda<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <select id='cod_mon' name='cod_mon' class='form-control'></select>
-                                                    </div>
-                                                </div>
-
-                                                <!-- cod_fracc_pago DropDownList -->
-                                                <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='cod_fracc_pago'>Fraccionamiento de pago<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <select id='cod_fracc_pago' name='cod_fracc_pago' class='form-control'></select>
-                                                    </div>
-                                                </div>
-
-                                                <!-- fec_efec_poliza DatePicker -->
-                                                <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='fec_efec_poliza'>Inicio de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <div class='input-group date' id='fec_efec_poliza_group'>
-                                                            <input type='text' id='fec_efec_poliza' name='fec_efec_poliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
-                                                            <span class='input-group-addon'>
-                                                                <span class='glyphicon glyphicon-calendar'></span>
-                                                            </span>
-                                                        </div>
-                                                        <div id='fec_efec_poliza_validate'></div>
-                                                    </div>
-                                                </div>
-
-                                                <!-- fec_vcto_poliza DatePicker -->
-                                                <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='fec_vcto_poliza'>Fin de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <div class='input-group date' id='fec_vcto_poliza_group'>
-                                                            <input type='text' id='fec_vcto_poliza' name='fec_vcto_poliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' disabled />
-                                                            <span class='input-group-addon'>
-                                                                <span class='glyphicon glyphicon-calendar'></span>
-                                                            </span>
-                                                        </div>
-                                                        <div id='fec_vcto_poliza_validate'></div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
+                                    @Html.Partial("_datosgenerales")
 
                                     <!-- polizagrupo Zone -->
-                                    <div class="form-row d-none" id="polizagrupoZone">
-                                        <div class="col-lg-12">
-                                            <h4><i class="fa fa-building"></i> Información de póliza grupo</h4>
-                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-                                            <div class="form-row">
-
-                                                <!-- contrato DropDownList -->
-                                                <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='contrato'>Contrato<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <select id='contrato' name='contrato' class='form-control' data-autoselect='false'></select>
-                                                    </div>
-                                                </div>
-
-                                                <!-- subcontrato DropDownList -->
-                                                <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='subcontrato'>Sub contrato<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <select id='subcontrato' name='subcontrato' class='form-control' data-autoselect='false' disabled></select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    @Html.Partial("_polizagrupo")
 
                                     <!-- datosdelvehiculo Zone -->
                                     <div class="form-row">
@@ -482,6 +407,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
                                                 <!-- Mc Cuotas Gratis RadioButtonList -->
                                                 <div class='col-sm-3 col-md-3 d-none role-Purdy-visible'>
                                                     <div class='form-group'>
@@ -500,25 +426,25 @@
                                                 </div>
                                                 <!-- Num Meses Gratis DropDownList -->
                                                 @*<div class='col-sm-3 col-md-3 role-Purdy-visible d-none'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='num_cuotas_gratis'>Número de Cuotas Gratis</label>
-                                                        <select id='num_cuotas_gratis' name='num_cuotas_gratis' class='form-control' disabled>
-                                                            <option value=0>CERO MESES</option>
-                                                            <option value=1>UN MES</option>
-                                                            <option value=2>DOS MESES</option>
-                                                            <option value=3>TRES MESES</option>
-                                                            <option value=4>CUATRO MESES</option>
-                                                            <option value=5>CINCO MESES</option>
-                                                            <option value=6>SEIS MESES</option>
-                                                            <option value=7>SIETE MESES</option>
-                                                            <option value=8>OCHO MESES</option>
-                                                            <option value=9>NUEVE MESES</option>
-                                                            <option value=10>DIEZ MESES</option>
-                                                            <option value=11>ONCE MESES</option>
-                                                            <option value=12>DOCE MESES</option>
-                                                        </select>
-                                                    </div>
-                                                </div>*@
+                        <div class='form-group'>
+                            <label class='control-label' for='num_cuotas_gratis'>Número de Cuotas Gratis</label>
+                            <select id='num_cuotas_gratis' name='num_cuotas_gratis' class='form-control' disabled>
+                                <option value=0>CERO MESES</option>
+                                <option value=1>UN MES</option>
+                                <option value=2>DOS MESES</option>
+                                <option value=3>TRES MESES</option>
+                                <option value=4>CUATRO MESES</option>
+                                <option value=5>CINCO MESES</option>
+                                <option value=6>SEIS MESES</option>
+                                <option value=7>SIETE MESES</option>
+                                <option value=8>OCHO MESES</option>
+                                <option value=9>NUEVE MESES</option>
+                                <option value=10>DIEZ MESES</option>
+                                <option value=11>ONCE MESES</option>
+                                <option value=12>DOCE MESES</option>
+                            </select>
+                        </div>
+                    </div>*@
                                                 <div class='col-sm-3 col-md-3 role-Purdy-visible d-none'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='num_cuotas_gratis'>Número de Cuotas Gratis</label>
@@ -527,7 +453,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
 
                                             </div>
                                         </div>

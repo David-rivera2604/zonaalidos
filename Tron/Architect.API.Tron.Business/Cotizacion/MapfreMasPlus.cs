@@ -1,5 +1,6 @@
 ﻿using Architect.API.Core.Contracts.General;
 using Architect.API.Core.Contracts.Security;
+using Architect.API.Tron.Business.Backoffice.Emision;
 using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
 using Architect.Utilities.Contracts;
 using Architect.Utilities.Extensions;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Architect.API.Tron.Business.Cotizacion
@@ -52,7 +54,8 @@ namespace Architect.API.Tron.Business.Cotizacion
                 IMP_AUTO_RC = 50000000,
                 DED_AUTO_RC = 1,
                 IMP_AUTO_CRI = 750000,
-                Agente = tokenInfo.UserName
+                Agente = tokenInfo.UserName,
+                cod_agt = tokenInfo.AgentCode
             };
             result.coberturas = CoverageByDefault(result.cod_ramo, result.cod_mon, result.cod_marca, result.cod_modelo, result.cod_sub_modelo, result.ANIO_SUB_MODELO, result.cod_tip_vehi, result.cod_uso_vehi, result.mca_sexo, result.cod_zona_circul, result.edad, result.COD_PLAN_AUTO, 0, 0, string.Empty, tokenInfo);
 
@@ -62,7 +65,7 @@ namespace Architect.API.Tron.Business.Cotizacion
         /// <summary>
         /// Recupera lista de valores para sumas aseguradas de coberturas o valores deducibles según el rol del usuario
         /// </summary>
-        public static Contracts.Cotizacion.MapfreMasSettings Settings(int cod_ramo, int cod_mon, int cod_marca, int cod_modelo, int cod_sub_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int num_contrato, int num_subcontrato, string num_poliza_grupo, string tipo_prod, Core.Contracts.Security.Token tokenInfo)
+        public static Contracts.Cotizacion.MapfreMasSettings Settings(int cod_ramo, int cod_mon, int cod_marca, int cod_modelo, int cod_sub_modelo, int anio_sub_modelo, int cod_tip_vehi, int cod_uso_vehi, int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto, int num_contrato, int num_subcontrato, string num_poliza_grupo, string tipo_prod, int cod_agt, Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.Cotizacion.MapfreMasSettings result = new Contracts.Cotizacion.MapfreMasSettings();
             Contracts.Cotizacion.MapfreMas data = new Contracts.Cotizacion.MapfreMas()
@@ -96,7 +99,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                     "MM_POLIZA_GRUPO_303"});
             }
 
-            string url = $"cod_ramo={cod_ramo}:cod_mon={cod_mon}:edad={edad}:plan={tipo_prod}:cod_marca={cod_marca}:num_contrato={num_contrato}:num_subcontrato={num_subcontrato}:num_poliza_grupo={num_poliza_grupo}:cod_modelo={cod_modelo}:anio_sub_modelo={anio_sub_modelo}:cod_tip_vehi={cod_tip_vehi}:cod_uso_vehi={cod_uso_vehi}:mca_sexo={mca_sexo}:cod_zona_circul={cod_zona_circul}:cod_plan_auto={cod_plan_auto}";
+            string url = $"cod_ramo={cod_ramo}:cod_mon={cod_mon}:edad={edad}:plan={tipo_prod}:cod_marca={cod_marca}:num_contrato={num_contrato}:num_subcontrato={num_subcontrato}:num_poliza_grupo={num_poliza_grupo}:cod_modelo={cod_modelo}:anio_sub_modelo={anio_sub_modelo}:cod_tip_vehi={cod_tip_vehi}:cod_uso_vehi={cod_uso_vehi}:mca_sexo={mca_sexo}:cod_zona_circul={cod_zona_circul}:cod_plan_auto={cod_plan_auto}:cod_agt={cod_agt}";
             List<Core.Contracts.General.LookupValues> values = Core.Business.Common.Lkps(string.Join(",", keys), url, tokenInfo);
 
             //result.fec_vcto_poliza = DateTime.Today.AddYears(1);
@@ -118,7 +121,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                         }
                     }
                 }
-                result.cod_fracc_pago = Architect.API.Tron.DataAccess.PorRamo.FrecuenciaDePagoPorContrato(1, cod_ramo, num_contrato, tokenInfo.AgentCode);
+                result.cod_fracc_pago = Architect.API.Tron.DataAccess.PorRamo.FrecuenciaDePagoPorContrato(1, cod_ramo, num_contrato, cod_agt);
             }
 
             LookUps(result, values, data, tokenInfo);
@@ -253,7 +256,8 @@ namespace Architect.API.Tron.Business.Cotizacion
             {
                 quoteInfo.presupuesto = string.Empty;
                 quoteInfo.resumen = null;
-                Contracts.Batch.CotizadorMapfreMasClass quoteTron = MapfreMasConvertTo.Tron(quoteInfo, quoteInfo.cod_ramo, tokenInfo.AgentCode, tokenInfo.UserName, tokenInfo.IdentificationType, tokenInfo.Identification, tokenInfo.Roles);
+                quoteInfo.NUM_MATRICULA = Regex.Replace(quoteInfo.NUM_MATRICULA, @"[^a-zA-Z0-9]", String.Empty);
+                Contracts.Batch.CotizadorMapfreMasClass quoteTron = MapfreMasConvertTo.Tron(quoteInfo, quoteInfo.cod_ramo, quoteInfo.cod_agt, tokenInfo.UserName, tokenInfo.IdentificationType, tokenInfo.Identification, tokenInfo.Roles);
                 //Architect.Common.Helpers.Serialize.SerializeToFile<Architect.API.Tron.Contracts.Batch.CotizadorMapfreMasClass>(result, @"C:\temp\mapfremas.in.xml");
 
                 Contracts.Presupuesto.DatoFijo resultTron = Backoffice.Cotizacion.MapfreMasPlus.Calcular(quoteTron);
@@ -295,7 +299,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                         Contracts.Presupuesto.DatoFijo resultTronFull = Backoffice.Cotizacion.MapfreMasPlus.Calcular(quoteTron);
 
                         quoteInfo.plandepagoFull = new List<Contracts.Comun.PlanDePago>();
-                        if (resultTronFull.Recibos != null && resultTronFull.Recibos.Count > 0)
+                        if (resultTronFull.Recibos != null && resultTronFull.Recibos.Count() > 0)
                         {
                             foreach (Architect.API.Tron.Contracts.Presupuesto.Recibo item in resultTronFull.Recibos)
                             {
@@ -309,6 +313,13 @@ namespace Architect.API.Tron.Business.Cotizacion
                                     recargoporfraccionamiento = item.imp_interes,
                                     importetotal = item.imp_recibo
                                 });
+                            }
+                        }
+                        else
+                        {
+                            if (resultTronFull.Coberturas?.Count == 1)
+                            {
+                                resultInfo.Mensaje = FormatoErrores.FormatearError(resultTronFull.Coberturas[0].txt_error);
                             }
                         }
                     }

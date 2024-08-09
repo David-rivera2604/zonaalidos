@@ -255,7 +255,6 @@ app.EmisionTercero = (function () {
                         newDriver.elaseguradoeselconductorhabitual = 2;
                         $('#tercerosTbl').bootstrapTable('append', newDriver);
                     }
-
                     if (row.elaseguradoeselmismopagador === 1) {
                         let newpayer = JSON.parse(JSON.stringify(row));
                         newpayer.tercerosId += 1;
@@ -303,6 +302,7 @@ app.EmisionTercero = (function () {
                 otrasenas: null,
                 eltomadoreselmismoasegurado: 2,
                 elaseguradoeselconductorhabitual: 2,
+                elaseguradoeselmismopagador: 2,
                 numerodeprestamo: null,
                 importedecesion: null,
                 vencimientodecesion: null,
@@ -380,9 +380,10 @@ app.EmisionTercero = (function () {
         app.core.LookupDependency(row.TCanton, 'TDistrito', 'Distritos', '', row.TDistrito, false, null, `cod_pais=${row.cod_pais}:cod_prov=`);
 
         $('#otrasenas').val(row.otrasenas);
-        app.ui.SetRadioNumericValue('eltomadoreselmismoasegurado', row.eltomadoreselmismoasegurado);
-        app.ui.SetRadioNumericValue('elaseguradoeselconductorhabitual', row.elaseguradoeselconductorhabitual);
-        app.ui.SetRadioNumericValue('elaseguradoeselmismopagador', row.elaseguradoeselmismopagador);
+        app.ui.SetRadioNumericValue('eltomadoreselmismoasegurado', row.eltomadoreselmismoasegurado)
+        app.ui.SetRadioNumericValue('elaseguradoeselconductorhabitual', row.elaseguradoeselconductorhabitual)
+        app.ui.SetRadioNumericValue('elaseguradoeselmismopagador', row.elaseguradoeselmismopagador)
+
         $('#numerodeprestamo').val(row.numerodeprestamo);
         app.ui.SetNumericValue('#importedecesion', row.importedecesion);
         app.ui.SetDateValue('#vencimientodecesion', row.vencimientodecesion);
@@ -592,7 +593,7 @@ app.EmisionTercero = (function () {
                                 $('#TProvincia').val(item.code.COD_ESTADO);
                                 let pais = $('select#cod_pais').val();
                                 app.core.LookupDependency(item.code.COD_ESTADO, 'TCanton', 'Cantones', '', item.code.COD_PROV, false, function () {
-                                    
+
                                     app.core.LookupDependency(item.code.COD_PROV, 'TDistrito', 'Distritos', '', item.code.COD_LOCALIDAD, false, null, `cod_pais=${pais}:cod_prov=`);
 
                                 }, `cod_pais=${pais}:cod_estado=`);

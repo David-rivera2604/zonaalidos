@@ -32,7 +32,6 @@ app.VariacionesMapfreMas = (function () {
                             break;
                         case 'MCA_CUOTAS_GRATIS':
                             app.ui.SetRadioStringValue('mc_cuotas_gratis', item.val_campo_act);
-                            $('#mc_cuotas_gratis').val(item.val_campo_act);
                             $('#mc_cuotas_gratis').data('oldvalue', item.val_campo_act);
                             break;
                         case 'NUM_CUOTAS_GRATIS':

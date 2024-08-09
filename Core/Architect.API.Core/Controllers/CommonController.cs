@@ -339,6 +339,36 @@ namespace Architect.API.Core.Controllers
         }
 
 
+        /// <summary>
+        /// Permite el envío de correos electrónico.
+        /// </summary>
+        [HttpPost]
+        [Route("SendEmail")]
+        [Authorize]
+        public async Task<IHttpActionResult> SendEmail([FromBody] Architect.API.Core.Contracts.General.SendEMail item)
+        {
+            IHttpActionResult result = BadRequest();
+            if (item.IsEmpty())
+            {
+                return BadRequest("Debe indicar una solicitud de envio de correo");
+            }
+            if (item.To.IsEmpty() || item.Subject.IsEmpty() || item.Body.IsEmpty())
+            {
+                return BadRequest("Debe indicar todos los parámetros (to, subject, body)");
+            }
+
+            Contracts.Security.Token tokenInfo = Security.Token.Info();
+            await Task.Run(() =>
+            {
+                Dictionary<string, string> receip = new Dictionary<string, string>();
+                foreach (var email in item.To.Split(';'))
+                {
+                    receip.Add(email, string.Empty);
+                }
+                Core.Business.General.Mail.SendEmail(receip, item.Subject, item.Body);
+            }).ConfigureAwait(false);
+            return Ok(true);
+        }
 
     }
 }

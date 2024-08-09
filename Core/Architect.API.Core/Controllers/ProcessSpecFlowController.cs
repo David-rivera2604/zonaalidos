@@ -355,5 +355,44 @@ namespace Architect.API.Core.Controllers
             return result;
         }
 
+        [HttpGet]
+        [Route("{id:int}/diagram/{diagramType}")]
+        [Authorize]
+        public async Task<IHttpActionResult> Diagram([FromUri] int id, [FromUri] string diagramType)
+        {
+            Contracts.Security.Token tokenInfo = Security.Token.Info();
+
+            string ou = Architect.API.Core.Business.General.ProcessSpecFlow.Diagram(tokenInfo.CompanyId, tokenInfo.UserId, id, diagramType);
+
+             return Ok(new
+            {
+                source = ou
+            });
+        }
+
+
+        //[HttpGet]
+        //[Route("{id:int}/diagram/{diagramType}")]
+        //[Authorize]
+        //public async Task<HttpResponseMessage> Diagram([FromUri] int id, [FromUri] string diagramType)
+        //{
+        //    Contracts.Security.Token tokenInfo = Security.Token.Info();
+
+        //    string ou = Architect.API.Core.Business.General.ProcessSpecFlow.Diagram(tokenInfo.CompanyId, tokenInfo.UserId, id, diagramType);
+
+        //    var response = new HttpResponseMessage(HttpStatusCode.OK)
+        //    {
+        //        Content = new StringContent(ou, Encoding.Default, "application/text")
+
+        //    };
+        //    //result.Flush();
+        //    //result.Close();
+        //    //response.Content.Headers.ContentType = new MediaTypeHeaderValue(MimeMapping.GetMimeMapping("json"));
+        //    //response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+        //    //{
+        //    //    FileName = "process_" + id.ToString() + ".json"
+        //    //};
+        //    return response;
+        //}
     }
 }

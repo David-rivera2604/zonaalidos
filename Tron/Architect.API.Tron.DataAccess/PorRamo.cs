@@ -13,6 +13,23 @@ namespace Architect.API.Tron.DataAccess
     public static class PorRamo
     {
 
+        public static string EM_K_ALTA_BAJA_POLIZA_WEB_MCR(string json, IDbConnection connection = null)
+        {
+            string result = string.Empty;
+
+            List<DataFactory.Contracts.Parameter> parameters = Database.ParameterList()
+                .AddParameter("v_json_str", DbType.String, 4000, json)
+                .AddParameter("v_est_salida", DbType.String, 4000, result, ParameterDirection.Output).Parameters;
+
+            Database.Procedure("EM_K_ALTA_BAJA_POLIZA_WEB_MCR.p_inicio")
+                        .AddParameter(parameters)
+                        .Execute(connection, "Tron");
+            result = parameters.Find(r => r.Name == "v_est_salida").Value.ToString();
+
+            return result;
+        }
+
+
         /// <summary>
         /// Proceso de cobro automático de recibos por la WEB
         /// </summary>

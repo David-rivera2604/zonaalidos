@@ -42,7 +42,8 @@ app.HogarTotal = (function () {
                         $('.datosgeneralesZone').addClass('col-md-7');
                         $('.enviosolicitudZone').removeClass('d-none');
                     } else {
-                        $('#cotizar').removeClass('d-none');
+                        //$('#cotizar').removeClass('d-none');
+                        $('.VerificarDomicilio').removeClass('d-none');
                         $("#cotizar").appendTo("#GenericToolBar");
                         $("#enviosolicitudzona").addClass('d-none');
                     }
@@ -108,6 +109,7 @@ app.HogarTotal = (function () {
                     $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
                     $('#NumPoliza').html(data.num_poliza);
                     $('#cotizar').addClass('d-none');
+                    $('.VerificarDomicilio').addClass('d-none');
                     ReadOnly_End();
 
                     $('#tercerosNew').addClass('d-none');
@@ -166,7 +168,7 @@ app.HogarTotal = (function () {
                 MapObjectToInput(data);
                 ReadOnly();
                 $("#tercerosNew").removeClass('d-none')
-            }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.moneda}:cod_pais=${data.pais}:cod_tip_ocup=${data.cod_ramo}%:cod_estado=${data.provincia}:cod_prov=${data.canton}`);
+            }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.moneda}:cod_pais=${data.pais}:cod_tip_ocup=${data.cod_ramo}%:cod_estado=${data.provincia}:cod_prov=${data.canton}:cod_agt=${data.cod_agt}`);
 
         // Dependencies events
         $('#provincia').on('change', function () {
@@ -526,6 +528,15 @@ app.HogarTotal = (function () {
             event.preventDefault();
             app.ui.ShowSideBar({ title: 'Enviar certificado por correo', subtitle: 'Póliza #{NUM_POLIZA}', id: 9000, data: { NUM_POLIZA: setupData.num_poliza, NUM_RIESGO: 1 } })
         });
+
+        $('input:radio[name=DomicilioVerificado]').click(function (e) {
+            if (app.ui.GetRadioStringValue('DomicilioVerificado') === 'S') {
+                $('#cotizar').removeClass('d-none');
+            } else {
+                $('#cotizar').addClass('d-none');
+            }
+        });
+
     };
 
     function Setup_Validations() {

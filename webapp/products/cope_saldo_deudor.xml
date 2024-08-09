@@ -1,58 +1,61 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ProductMaster xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" description="Seguro colectivo saldos deudores colones" title="Seguro colectivo de vida" subtitle="Saldo deudores colones">
-	<CurrenciesAllowed>
-		<CurrencyAllowed currencycode="1" description="Colón costarricense" />
-	</CurrenciesAllowed>
-	<Modules>
-		<Module modulecode="1" description="Plan 1 - Máx. 35.000.000.00">
-			<Coverages>
-				<Coverage coveragecode="1" description="COB-A Básica - Muerte por cualquier causa" insuredamountcalculationtype="10" fixedrate="10.56" premiumcalculationtype="3" billingcode="1" maximuminsuredamount="35000000" maximumage="64" minimumage="18" />
-				<Coverage coveragecode="2" description="CCOB-B Opcional - Incapacidad total y permanente" insuredamountcalculationtype="10" coveragecodecontainspremium="1" billingcode="1" />
-			</Coverages>
-		</Module>
-		<Module modulecode="2" description="Plan 2 - Máx. 12.000.000.00">
-			<Coverages>
-				<Coverage coveragecode="1" description="COB-A Básica - Muerte por cualquier causa" insuredamountcalculationtype="10" fixedrate="25.56" premiumcalculationtype="3" billingcode="1" maximuminsuredamount="12000000" maximumage="74" minimumage="65" />
-				<Coverage coveragecode="2" description="CCOB-B Opcional - Incapacidad total y permanente" insuredamountcalculationtype="10" coveragecodecontainspremium="1" billingcode="1" />
-			</Coverages>
-		</Module>
-		<Module modulecode="3" description="Plan 3 - Máx. 8.000.000.00">
-			<Coverages>
-				<Coverage coveragecode="1" description="COB-A Básica - Muerte por cualquier causa" insuredamountcalculationtype="10" fixedrate="33.60" premiumcalculationtype="3" billingcode="1" maximuminsuredamount="8000000" minimumage="75" maximumage="99" />
-				<Coverage coveragecode="2" description="CCOB-B Opcional - Incapacidad total y permanente" insuredamountcalculationtype="10" coveragecodecontainspremium="1" billingcode="1" />
-			</Coverages>
-		</Module>
-		<Module modulecode="4" description="Plan 4 mayor de 75 años - Máx. 12.000.000.00">
-			<Coverages>
-				<Coverage coveragecode="1" description="COB-A Básica - Muerte por cualquier causa" insuredamountcalculationtype="10" fixedrate="3.87" premiumcalculationtype="3" billingcode="1" maximuminsuredamount="12000000" minimumage="75" maximumage="99" />
-				<Coverage coveragecode="2" description="CCOB-B Opcional - Incapacidad total y permanente" insuredamountcalculationtype="10" coveragecodecontainspremium="1" />
-			</Coverages>
-		</Module>
-	</Modules>
-	<PaymentFrequenciesAllowed>
-		<PaymentFrequencyAllowed paymentfrequencycode="1" description="Mensual" />
-	</PaymentFrequenciesAllowed>
-	<BillingConcepts>
-		<BillingConcept billingcode="1" description="Prima" />
-		<BillingConcept billingcode="2" description="Impuestos">
-			<Details>
-				<BillingDetail code="1" description="IVA" type="3" percentage="2">
-					<Conditions>
-						<BillingDetailCondition applieson="1" applyoncode="1" />
-					</Conditions>
-				</BillingDetail>
-			</Details>
-		</BillingConcept>
-	</BillingConcepts>
-	<DataEntrySectionsAllowed>
-		<DataEntrySection code="Insured" description="Asegurado" required="true" />
-		<DataEntrySection code="Questionnaires" description="Cuestionario de Salud" />
-		<DataEntrySection code="Covid" description="Cuestionario de Covid" active="true" />
-		<DataEntrySection code="Policy" description="Póliza" required="true" />
-		<DataEntrySection code="Overdraft" description="Prestamos" required="true" />
-		<DataEntrySection code="Attachments" description="Adjuntos" />
-	</DataEntrySectionsAllowed>
-	<Settings>
-		<Setting name="Parent.Policy.Effective" description="Fecha de efecto de la póliza matriz" value="2019-03-01T00:00:00"/>
-	</Settings>
+  <CurrenciesAllowed>
+    <CurrencyAllowed currencycode="1" description="Colón costarricense" />
+  </CurrenciesAllowed>
+  <Modules>
+    <Module modulecode="1" description="Plan 1 - Máx. 35.000.000.00">
+      <Coverages>
+        <Coverage coveragecode="1" description="COB-A Básica - Muerte por cualquier causa" insuredamountcalculationtype="10" fixedrate="19.68" premiumcalculationtype="3" billingcode="1" maximuminsuredamount="35000000" maximumage="64" minimumage="18" />
+        <Coverage coveragecode="2" description="CCOB-B Opcional - Incapacidad total y permanente" insuredamountcalculationtype="10" coveragecodecontainspremium="1" billingcode="1" />
+      </Coverages>
+    </Module>
+    <Module modulecode="2" description="Plan 2 - Máx. 12.000.000.00">
+      <Coverages>
+        <Coverage coveragecode="1" description="COB-A Básica - Muerte por cualquier causa" insuredamountcalculationtype="10" fixedrate="47.52" premiumcalculationtype="3" billingcode="1" maximuminsuredamount="12000000" maximumage="74" minimumage="65" />
+        <Coverage coveragecode="2" description="CCOB-B Opcional - Incapacidad total y permanente" insuredamountcalculationtype="10" coveragecodecontainspremium="1" billingcode="1" />
+      </Coverages>
+    </Module>
+    <Module modulecode="3" description="Plan 3 - Máx. 8.000.000.00">
+      <Coverages>
+        <Coverage coveragecode="1" description="COB-A Básica - Muerte por cualquier causa" insuredamountcalculationtype="10" fixedrate="62.52" premiumcalculationtype="3" billingcode="1" maximuminsuredamount="8000000" minimumage="75" maximumage="99" />
+        <Coverage coveragecode="2" description="CCOB-B Opcional - Incapacidad total y permanente" insuredamountcalculationtype="10" coveragecodecontainspremium="1" billingcode="1" />
+      </Coverages>
+    </Module>
+    <Module modulecode="4" description="Plan 4 mayor de 75 años - Máx. 12.000.000.00">
+      <Coverages>
+        <Coverage coveragecode="1" description="COB-A Básica - Muerte por cualquier causa" insuredamountcalculationtype="10" fixedrate="86.40" premiumcalculationtype="3" billingcode="1" maximuminsuredamount="12000000" minimumage="75" maximumage="99" />
+        <Coverage coveragecode="2" description="CCOB-B Opcional - Incapacidad total y permanente" insuredamountcalculationtype="10" coveragecodecontainspremium="1" />
+      </Coverages>
+    </Module>
+  </Modules>
+  <PaymentFrequenciesAllowed>
+    <PaymentFrequencyAllowed paymentfrequencycode="1" description="Mensual" />
+  </PaymentFrequenciesAllowed>
+  <BillingConcepts>
+    <BillingConcept billingcode="1" description="Prima" />
+    <BillingConcept billingcode="2" description="Impuestos">
+      <Details>
+        <BillingDetail code="1" description="IVA" type="3" percentage="2">
+          <Conditions>
+            <BillingDetailCondition applieson="1" applyoncode="1" />
+          </Conditions>
+        </BillingDetail>
+      </Details>
+    </BillingConcept>
+  </BillingConcepts>
+  <DataEntrySectionsAllowed>
+    <DataEntrySection code="Insured" description="Asegurado" required="true" />
+    <DataEntrySection code="Questionnaires" description="Cuestionario de Salud" />
+    <DataEntrySection code="Covid" description="Cuestionario de Covid" active="true" />
+    <DataEntrySection code="Policy" description="Póliza" required="true" />
+    <DataEntrySection code="Overdraft" description="Prestamos" required="true" />
+    <DataEntrySection code="Attachments" description="Adjuntos" />
+  </DataEntrySectionsAllowed>
+  <Underwriting>
+    <Rule description="La edad del asegurado es mayor a 64 años" condition="data.PrimaryInsured.BirthDate.Age() > 64" />
+  </Underwriting>
+  <Settings>
+    <Setting name="Parent.Policy.Effective" description="Fecha de efecto de la póliza matriz" value="2021-03-01T00:00:00"/>
+  </Settings>
 </ProductMaster>

@@ -54,7 +54,7 @@ app.Extend = (function () {
             if (ramo == 201) { producto = 'HogarTotal'; }
             if (ramo == 202) { producto = 'Multirriesgo'; }
 
-            app.ui.GetApi('v1/Issue/' + producto + '/EnviarSolicitud?presupuesto=' + id + '&correoenvio=' + correo);
+            app.ui.GetApi('v1/Issue/'+ producto +'/EnviarSolicitud?presupuesto=' + id + '&correoenvio=' + correo);
         }
 
     };

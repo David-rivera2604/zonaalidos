@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Architect.API.Core.Security;
+using System;
 using System.Data;
+using System.IO;
 
 namespace Architect.API.Core.Business.Security
 {
@@ -7,17 +9,17 @@ namespace Architect.API.Core.Business.Security
     {
         public static void Create(Architect.API.Core.Contracts.Security.AuthenticationTrace item)
         {
-            IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Research");
+            //item.Id = DataAccess.Security.AuthenticationTrace.RetrieveLastKey() + 1;
+            //item.EffectDate = DateTime.Now;
+            //DataAccess.Security.AuthenticationTrace.Create(item);
 
-            IDbTransaction dbTransaction = currentConnection.BeginTransaction();
-
-            item.Id = DataAccess.Security.AuthenticationTrace.RetrieveLastKey(currentConnection) + 1;
-            item.EffectDate = DateTime.Now;
-            DataAccess.Security.AuthenticationTrace.Create(item, currentConnection);
-
-            dbTransaction.Commit();
-
-            currentConnection.Close();
+            using (DataFactory.Session session = new DataFactory.Session("Research"))
+            {
+                item.Id = DataAccess.Security.AuthenticationTrace.RetrieveLastKey(session) + 1;
+                item.EffectDate = DateTime.Now;
+                DataAccess.Security.AuthenticationTrace.Create(item, session);
+                session.CommitAndClose();
+            }
 
         }
     }

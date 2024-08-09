@@ -28,6 +28,7 @@ namespace aliados
             //Master
             bundles.Add(new StyleBundle("~/Content/cssMaster").Include(
                        "~/assets/bootstrap/css/bootstrap.css",
+                       "~/assets/css/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css",
                        "~/assets/font-awesome/css/font-awesome.css",
                        "~/assets/toastr/toastr.min.css",
                        "~/assets/css/animate.css",
@@ -39,6 +40,7 @@ namespace aliados
                         "~/assets/bootstrap/js/bootstrap.js",
                         "~/assets/js/plugins/moment/moment-with-locales.min.js",
                         "~/assets//jquery-validation/jquery.validate.js",
+                        "~/assets/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js",
                         "~/app/js/core.js",
                         "~/app/js/core.ui.js",
                         "~/app/js/core.ui.components.js",

@@ -100,8 +100,9 @@ namespace Architect.API.Core.DataAccess.General
         {
             Architect.API.Core.Contracts.General.ProcessCase result = null;
             //Agregado provisional Sebastian UserSend
-            Database.Select("SELECT Id, ProcessCase.CompanyId, Title, Description, Priority, InstanceId, CurrentStepId, Reference1, Reference2, Reference3, Reference4, Reference5, Reference6, Reference7, Reference8, Reference9, Reference10, ContactMainName, ContactMainEmail, Status, Label, SubStatus, SubLabel, FlowId, ProcessCase.UserId, SLA, ProcessCase.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessCase.UpdateDate, UserSend, " +
-                             "(SELECT ROUND(COALESCE(MAX(FINISHDATE), SYSDATE) - MIN(CREATED)) AS DAYS_DIFFERENCE FROM (SELECT ENTITYID, FINISHDATE, CREATED, ROW_NUMBER() OVER(PARTITION BY ENTITYID ORDER BY CREATED DESC) AS rn FROM processinstance WHERE ENTITYID = ProcessCase.Id AND COMPANYID = ProcessCase.CompanyId) WHERE rn = 1 GROUP BY ENTITYID) TotalDays " + "FROM ProcessCase LEFT JOIN UserMember um ON um.UserId = ProcessCase.UpdateUserCode " +
+            Database.Select("SELECT Id, ProcessCase.CompanyId, Title, Description, Priority, InstanceId, CurrentStepId, Reference1, Reference2, Reference3, Reference4, Reference5, Reference6, Reference7, Reference8, Reference9, Reference10, ContactMainName, ContactMainEmail, Status, Label, SubStatus, SubLabel, FlowId, ProcessCase.UserId, SLA, ProcessCase.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessCase.UpdateDate, UserSend, " + 
+                             "(SELECT ROUND(COALESCE(MAX(FINISHDATE), SYSDATE) - MIN(CREATED)) AS DAYS_DIFFERENCE FROM (SELECT ENTITYID, FINISHDATE, CREATED, ROW_NUMBER() OVER(PARTITION BY ENTITYID ORDER BY CREATED DESC) AS rn FROM processinstance WHERE ENTITYID = ProcessCase.Id AND COMPANYID = ProcessCase.CompanyId) WHERE rn = 1 GROUP BY ENTITYID) TotalDays " +
+                              "FROM ProcessCase LEFT JOIN UserMember um ON um.UserId = ProcessCase.UpdateUserCode " +
                              "WHERE ProcessCase.Id=:Id AND ProcessCase.CompanyId=:CompanyId")
                         .AddParameter("Id", DbType.Decimal, 9, id)
                         .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
@@ -419,11 +420,26 @@ namespace Architect.API.Core.DataAccess.General
 
             //Agregado para la lectura del usuario que envio el caso
             item.UserSend = reader.IntegerValue("UserSend");
-            item.TotalDays = reader.IntegerValue("TotalDays");
+            if (DataReaderContainsColumn(reader, "TotalDays"))
+            {
+                item.TotalDays = reader.IntegerValue("TotalDays");
+            }
             return item;
         }
 
- 
+        private static bool DataReaderContainsColumn(System.Data.IDataReader reader, string columnName)
+        {
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                if (reader.GetName(i).Equals(columnName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
 
     }
 

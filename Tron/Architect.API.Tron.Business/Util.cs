@@ -96,7 +96,7 @@ namespace Architect.API.Tron.Business
             }
 
 
-            datosFijos.cod_cuadro_com = 100;
+            datosFijos.cod_cuadro_com = quoteInfo.cod_cuadro_com == 0 ? 100 : quoteInfo.cod_cuadro_com;
             datosFijos.cod_agt = agentCode;
 
             datosFijos.txt_motivo_spto = "Cotización realizada desde la zona de aliados, por: " + userName;
@@ -145,7 +145,7 @@ namespace Architect.API.Tron.Business
 
             if (tokenInfo.Roles.Contain("PolizaGrupo"))
             {
-                List<Core.Contracts.General.LookupValues> values = Core.Business.Common.Lkps("MM_POLIZA_GRUPO", $"cod_ramo={quoteTron.cod_ramo}:cod_mon={quoteTron.cod_mon}", tokenInfo);
+                List<Core.Contracts.General.LookupValues> values = Core.Business.Common.Lkps("MM_POLIZA_GRUPO", $"cod_ramo={quoteTron.cod_ramo}:cod_mon={quoteTron.cod_mon}:cod_agt={quoteTron.cod_agt}", tokenInfo);
                 Core.Contracts.General.LookupValues contratosMaster = values.Find(x => x.Key == "MM_POLIZA_GRUPO");
                 if (contratosMaster != null)
                 {
@@ -253,7 +253,7 @@ namespace Architect.API.Tron.Business
             };
         }
 
-        internal static Architect.API.Tron.Contracts.Presupuesto.DatoVariable DatoVariable(Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos, int num_riesgo, string cod_campo, string val_campo, int tip_nivel = 2, int num_secu = 1, string txt_campo = "")
+        public static Architect.API.Tron.Contracts.Presupuesto.DatoVariable DatoVariable(Architect.API.Tron.Contracts.Presupuesto.DatoFijo datosFijos, int num_riesgo, string cod_campo, string val_campo, int tip_nivel = 2, int num_secu = 1, string txt_campo = "")
         {
             string val_cor_campo = val_campo;
 
@@ -279,12 +279,12 @@ namespace Architect.API.Tron.Business
             };
         }
 
-        internal static List<Contracts.Presupuesto.Riesgo> DatosDelRiesgo(Contracts.Presupuesto.DatoFijo datosFijos, string nom_riesgo, int num_riesgo = 1, int ramo = 999)
+        public static List<Contracts.Presupuesto.Riesgo> DatosDelRiesgo(Contracts.Presupuesto.DatoFijo datosFijos, string nom_riesgo, int num_riesgo = 1, int ramo = 999)
         {
             List<Contracts.Presupuesto.Riesgo> riesgos = new List<Contracts.Presupuesto.Riesgo>();
             int modalidad = 99999;
 
-            if (ramo == 194) 
+            if (ramo == 194)
                 modalidad = 19401;
             else
                 modalidad = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_modalidad"]);
@@ -394,7 +394,7 @@ namespace Architect.API.Tron.Business
                     result = documentNumber;
                     break;
                 case 4: //Cédula jurídica
-                    result = documentNumber.OnlyNumbers();
+                    result = documentNumber.OnlyNumbers(); ;
                     break;
                     //CIN
                     //EEX

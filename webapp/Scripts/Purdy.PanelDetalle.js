@@ -202,8 +202,9 @@ app.PurdyPanelDetalle = (function () {
                         let deducible = 0;
                         let deducibleDesc = '';
                         data.claim.Coberturas.forEach(function (item) {
-
-                            deducible += Number(item.NOM_FRANQUICIA.replace(/[^0-9\.]+/g, ""));
+                            if (item.NOM_FRANQUICIA != null) {
+                                deducible += Number(item.NOM_FRANQUICIA.replace(/[^0-9\.]+/g, ""));
+                            }
                             if (deducibleDesc != '')
                                 deducibleDesc += ', ';
                             deducibleDesc += `${item.COD_COB} ${item.NOM_COB}`;

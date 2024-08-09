@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>WidgetPagoDirecto</title>
+  <base href="./">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="widget-pago-directo/widget-pago-directo.css">
+</head>
+
+<body>
+
+  <button id="button" style="opacity:0;"> abrir modal</button>
+  <widget-pagos style="width: 410px;
+  max-height: 50%;
+  position: fixed;
+  left: 20%;
+  top: 20%;
+  right: auto;"></widget-pagos>
+
+  <script src="widget-pago-directo/widget-pago-directo.js"></script>
+  <script>
+    const button = document.querySelector("button")
+    const widgetPagos = document.querySelector("widget-pagos")
+
+    widgetPagos.addEventListener('loginComplete', (e) => {
+      // ver readme
+      if (e.detail) {
+        console.log('se ha completado el login, se puede abrir el modal')
+        button.style.opacity = 1;
+        button.addEventListener("click", () => {
+          widgetPagos.setAttribute('show-modal', recibo)
+        })
+      }
+    })
+    // parametro a enviar cuando se qiera hacer login
+    // widgetPagos.setAttribute("login", "")
+    const recibo = JSON.stringify({
+      documentoCliente: "",
+      total: "",
+      nombreCliente: "",
+      emailCliente: "",
+      telefonoCliente: "",
+      subtotal: "",
+      impuestos: "",
+      concepto: "",
+      urlWebhook: "",
+      countryCode: "",
+      contratoFrontal: false,
+      items: []
+    })
+
+
+  </script>
+</body>
+
+</html>

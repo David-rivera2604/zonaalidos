@@ -37,6 +37,24 @@ namespace Architect.API.Core.DataAccess.General
                             .AddParameter("UpdateDate", DbType.DateTime, 0, changesetItem.UpdateDate)
                             .Execute(connection, "Research");
         }
+        public static int Create(Architect.API.Core.Contracts.General.ChangeSet changesetItem, Session session)
+        {
+            if (changesetItem.UpdateDate.IsEmpty())
+            {
+                changesetItem.UpdateDate = DateTime.Now;
+            }
+            return Database.Insert("INSERT INTO ChangeSet (Id, CompanyId, EntityType, EntityId, Action, Summary, UpdateUserCode, UpdateDate) " +
+                                                 "VALUES(:Id, :CompanyId, :EntityType, :EntityId, :Action, :Summary, :UpdateUserCode, :UpdateDate)")
+                            .AddParameter("Id", DbType.Decimal, 9, changesetItem.Id)
+                            .AddParameter("CompanyId", DbType.Decimal, 5, changesetItem.CompanyId)
+                            .AddParameter("EntityType", DbType.Decimal, 5, changesetItem.EntityType)
+                            .AddParameter("EntityId", DbType.Decimal, 18, changesetItem.EntityId)
+                            .AddParameter("Action", DbType.AnsiString, 40, changesetItem.Action)
+                            .AddParameter("Summary", DbType.AnsiString, 256, changesetItem.Summary)
+                            .AddParameter("UpdateUserCode", DbType.Decimal, 9, changesetItem.UpdateUserCode)
+                            .AddParameter("UpdateDate", DbType.DateTime, 0, changesetItem.UpdateDate)
+                            .Execute(session);
+        }
 
         /// <summary>
         /// Crea una lista de registros en la tabla ChangeSet.
@@ -174,6 +192,14 @@ namespace Architect.API.Core.DataAccess.General
             return (int)Database.Select("SELECT NVL(MAX(Id),0) " +
                                      "FROM ChangeSet")
                                 .QueryScalar<Decimal>(connection, "Research");
+        }
+
+        public static int RetrieveLastKey(DataFactory.Session session)
+        {
+
+            return (int)Database.Select("SELECT NVL(MAX(Id),0) " +
+                                     "FROM ChangeSet")
+                                .QueryScalar<Decimal>(session);
         }
 
         /// <summary>

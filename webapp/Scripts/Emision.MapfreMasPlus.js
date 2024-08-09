@@ -35,7 +35,8 @@ app.EmisionMapfreMasPlus = (function () {
                         $('.datosgeneralesZone').addClass('col-md-12');
                         $('.enviosolicitudZone').removeClass('d-none');
                     } else {
-                        $('#cotizar').removeClass('d-none');
+                        //$('#cotizar').removeClass('d-none');
+                        $('.VerificarDomicilio').removeClass('d-none');
                         $("#cotizar").appendTo("#GenericToolBar");
                     }
 
@@ -131,7 +132,7 @@ app.EmisionMapfreMasPlus = (function () {
                     $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
                     $('#NumPoliza').html(data.num_poliza);
                     $('#cotizar').addClass('d-none');
-
+                    $('.VerificarDomicilio').addClass('d-none');
                     ReadOnly_End();
 
                     $('#mainBlock').removeClass('col-md-12');
@@ -182,7 +183,7 @@ app.EmisionMapfreMasPlus = (function () {
                 SettingReload(function () {
                     MapObjectToInput(data);
                 });
-            }, `cod_ramo=${data.cod_ramo}:cod_pais=CRI:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}:num_contrato=${data.contrato}`);
+            }, `cod_ramo=${data.cod_ramo}:cod_pais=CRI:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}:num_contrato=${data.contrato}:cod_agt=${data.cod_agt}`);
 
 
     }
@@ -213,7 +214,7 @@ app.EmisionMapfreMasPlus = (function () {
     function SettingReload(callback) {
         var param = SettingParameter();
 
-        app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasPlusSettings?cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&cod_sub_modelo=${param.cod_sub_modelo}&anio_sub_modelo=${param.anio_sub_modelo}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.cod_plan_auto}&num_contrato=${param.num_contrato}&num_subcontrato=${param.num_subcontrato}&num_poliza_grupo=${param.num_poliza_grupo}&tipo_prod=${param.tipo_prod}`)
+        app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasPlusSettings?cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&cod_sub_modelo=${param.cod_sub_modelo}&anio_sub_modelo=${param.anio_sub_modelo}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.cod_plan_auto}&num_contrato=${param.num_contrato}&num_subcontrato=${param.num_subcontrato}&num_poliza_grupo=${param.num_poliza_grupo}&tipo_prod=${param.tipo_prod}&cod_agt=${param.cod_agt}`)
             .done(function (settingData) {
                 fec_vcto_poliza_grupo = settingData.fec_vcto_poliza_grupo;
                 /*if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
@@ -270,6 +271,7 @@ app.EmisionMapfreMasPlus = (function () {
         if (formulariosData.length > 0) {
             data.kyc = $('#formulariosTbl').bootstrapTable('getData')[0].data;
         }
+        data.NUM_MATRICULA = data.NUM_MATRICULA.replace(/[^a-zA-Z0-9]/g, "");
         setupData = data;
         return data;
     }
@@ -557,6 +559,14 @@ app.EmisionMapfreMasPlus = (function () {
             event.preventDefault();
             app.ui.ShowSideBar({ title: 'Enviar certificado por correo', subtitle: 'Póliza #{NUM_POLIZA}', id: 9000, data: { NUM_POLIZA: setupData.num_poliza, NUM_RIESGO: 1 } })
         });
+
+        $('input:radio[name=DomicilioVerificado]').click(function (e) {
+            if (app.ui.GetRadioStringValue('DomicilioVerificado') === 'S') {
+                $('#cotizar').removeClass('d-none');
+            } else {
+                $('#cotizar').addClass('d-none');
+            }
+        });
     }
 
     function Setup_Validations() {
@@ -813,12 +823,14 @@ app.EmisionMapfreMasPlus = (function () {
         let message = 'Verifique la información de terceros';
         let terceros = $('#tercerosTbl').bootstrapTable('getData');
         let terceroserrors = (terceros.length === 0);
+        
 
         if (!terceroserrors && (workMode === 'draft' || workMode === 'resume' || workMode === 'continue')) {
             let holder = terceros.filter(i => i.tipodetercero === 0);
             let insured = terceros.filter(i => i.tipodetercero === 2);
             let driver = terceros.filter(i => i.tipodetercero === 3);
             let bene = terceros.filter(i => i.tipodetercero === 6);
+            let pagador = terceros.filter(i => i.tipodetercero === 21);
 
             if (holder.length === 0) {
                 message += ', indique el tomador';
@@ -838,12 +850,12 @@ app.EmisionMapfreMasPlus = (function () {
                     terceroserrors = true;
                 }
             }
+            if ((pagador.length == 0) && (mca_cuotas_gratis == 'S')) {
+                message += ', Si posee cuotas gratis , indique el pagador.';
+                terceroserrors = true;
+            }
         }
-        if ((pagador.length == 0) && (mca_cuotas_gratis == 'S')) {
-            message += ', Si posee cuotas gratis , indique el pagador.';
-            terceroserrors = true;
-        }
-    }
+        
 
         if (terceroserrors) {
             $('#tercerosTbl-error').html(message);
@@ -1387,44 +1399,83 @@ app.EmisionMapfreMasPlus = (function () {
                         .then(d => {
                             let ref = formularioRow.type === 'kycpersona' ? app.kycpersona : app.kycjuridico;
                             if (formularioRow.data === null) {
-                                formularioRow.data = ref.InitData();
+                                formularioRow.data = ref.InitData(false);
                                 if (formularioRow.type === 'kycpersona') {
+                                    if (app.ui.IsDocumentNumberValid(mainHolder[0].DocumentNumberType, mainHolder[0].DocumentNumber)) {
+                                        var value = mainHolder[0].DocumentNumber.replace(/-/g, '');
+                                        app.core.Get(app.setting.apipath + 'v1/KYC/' + "persona" + "?id=" + value)
+                                            .done(function (data, textStatus, jqXHR) {
+                                                if (data != null) {
+                                                    for (const a in formularioRow.data) {
+                                                        for (const b in data) {
+                                                            if (a == b) {
+                                                                formularioRow.data[a] = data[b]
+                                                            }
+                                                        }
+                                                    }
+
+                                                }
+                                                else {
+                                                    formularioRow.data.nacionalidadPer = 188;
+                                                    formularioRow.data.paisdenacimientoPer = 188;
+                                                }
+
+                                                formularioRow.data.primerapellidoPer = mainHolder[0].apellido1;
+                                                formularioRow.data.segundoapellidoPer = mainHolder[0].apellido2;
+                                                formularioRow.data.nombrePer = mainHolder[0].nombre;
+                                                formularioRow.data.fechadenacimientoPer = mainHolder[0].fechadenacimiento;
+                                                formularioRow.data.correoelectronicoPer = mainHolder[0].correoelectronico;
+                                                formularioRow.data.sexoPer = mainHolder[0].tercerosMca_sexo;
+                                                formularioRow.data.numidentificacion = mainHolder[0].DocumentNumber;
+                                                formularioRow.data.numidentificaciontipo = mainHolder[0].DocumentNumberType;
+                                                formularioRow.data.estadocivilPer = mainHolder[0].estadoCivil;
+                                                formularioRow.data.telefonoresidenciaPer = mainHolder[0].numerodetelefono;
+
+                                                formularioRow.data.domiciliopermanenteCod_pais = mainHolder[0].cod_pais;
+                                                formularioRow.data.domiciliopermanenteCod_estado = mainHolder[0].TProvincia;
+                                                formularioRow.data.domiciliopermanenteCod_prov = mainHolder[0].TCanton;
+                                                formularioRow.data.domiciliopermanenteCod_localidad = mainHolder[0].TDistrito;
+                                                formularioRow.data.domiciliopermanenteDireccionexacta = mainHolder[0].otrasenas;
+
+                                                ref.Init(formularioRow.data);
+                                                ref.AcceptCallBack(app.EmisionMapfreMas.Accept);
+                                            })
+                                    }
+                                }
+                                else {
+                                    if (app.ui.IsDocumentNumberValid(mainHolder[0].DocumentNumberType, mainHolder[0].DocumentNumber)) {
+                                        var value = mainHolder[0].DocumentNumber.replace(/-/g, '');
+                                        app.core.Get(app.setting.apipath + 'v1/KYC/' + "juridico" + "?id=" + value)
+                                            .done(function (data, textStatus, jqXHR) {
+                                                if (data != null) {
+                                                    for (const a in formularioRow.data) {
+                                                        for (const b in data) {
+                                                            if (a == b) {
+                                                                formularioRow.data[a] = data[b]
+                                                            }
+                                                        }
+                                                    }
+                                                }
 
 
+                                                formularioRow.data.nombrecomercialJur = mainHolder[0].nombre;
+                                                formularioRow.data.razonsocialJur = mainHolder[0].nombre;
+                                                formularioRow.data.numidentificacion = mainHolder[0].DocumentNumber;
+                                                formularioRow.data.correoelectronicoJur = mainHolder[0].correoelectronico;
 
-                                    formularioRow.data.primerapellidoPer = mainHolder[0].apellido1;
-                                    formularioRow.data.segundoapellidoPer = mainHolder[0].apellido2;
-                                    formularioRow.data.nombrePer = mainHolder[0].nombre;
-                                    formularioRow.data.fechadenacimientoPer = mainHolder[0].fechadenacimiento;
-                                    formularioRow.data.correoelectronicoPer = mainHolder[0].correoelectronico;
-                                    formularioRow.data.tercerosMca_sexo = mainHolder[0].tercerosMca_sexo;
-                                    formularioRow.data.numerodeidentificacionPer = mainHolder[0].DocumentNumber;
-                                    formularioRow.data.tipodeidentificacionPer = mainHolder[0].DocumentNumberType;
-                                    formularioRow.data.estadocivilPer = mainHolder[0].estadoCivil;
-                                    formularioRow.data.telefonoresidenciaPer = mainHolder[0].numerodetelefono;
+                                                formularioRow.data.domiciliocomercialCod_pais = mainHolder[0].cod_pais;
+                                                formularioRow.data.domiciliocomercialCod_estado = mainHolder[0].TProvincia;
+                                                formularioRow.data.domiciliocomercialCod_prov = mainHolder[0].TCanton;
+                                                formularioRow.data.domiciliocomercialCod_localidad = mainHolder[0].TDistrito;
+                                                formularioRow.data.domiciliocomercialDireccionexacta = mainHolder[0].otrasenas;
 
-                                    formularioRow.data.cod_paisPer = mainHolder[0].cod_pais;
-                                    formularioRow.data.cod_estadoPer = mainHolder[0].TProvincia;
-                                    formularioRow.data.cod_provPer = mainHolder[0].TCanton;
-                                    formularioRow.data.cod_localidadPer = mainHolder[0].TDistrito;
-                                    formularioRow.data.direccionexactaPer = mainHolder[0].otrasenas;
-
-                                } else {
-                                    formularioRow.data.nombrecomercialJur = mainHolder[0].nombre;
-                                    formularioRow.data.razonsocialJur = mainHolder[0].nombre;
-                                    formularioRow.data.numerocedulajuridicaJur = mainHolder[0].DocumentNumber;
-                                    formularioRow.data.correoelectronicoJur = mainHolder[0].correoelectronico;
-
-                                    formularioRow.data.cod_paisJur = mainHolder[0].cod_pais;
-                                    formularioRow.data.cod_estadoJur = mainHolder[0].TProvincia;
-                                    formularioRow.data.cod_provJur = mainHolder[0].TCanton;
-                                    formularioRow.data.cod_localidadJur = mainHolder[0].TDistrito;
-                                    formularioRow.data.direccionexactaJur = mainHolder[0].otrasenas;
+                                                ref.Init(formularioRow.data);
+                                                ref.AcceptCallBack(app.EmisionMapfreMas.Accept);
+                                            })
+                                    }
 
                                 }
                             }
-                            ref.Init(formularioRow.data);
-                            ref.AcceptCallBack(app.EmisionMapfreMasPlus.Accept);
                         })
                         .catch(err => {
                             console.error(err);

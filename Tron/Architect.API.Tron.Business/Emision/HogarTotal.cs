@@ -848,7 +848,7 @@ namespace Architect.API.Tron.Business.Emision
                 //    mapInfo.numeroIdentificacion = numberChanged;
                 //}
 
-                mapInfo.numeroIdentificacion = Util.IdentificationFormat(titular.DocumentNumberType, titular.DocumentNumber);
+                mapInfo.numeroIdentificacion  = Util.IdentificationFormat(titular.DocumentNumberType, titular.DocumentNumber);
 
                 mapInfo.genero = titular.tercerosMca_sexo == 1 ? "M" : "F";
                 mapInfo.estadoCivil = titular.estadoCivil;
@@ -956,7 +956,7 @@ namespace Architect.API.Tron.Business.Emision
 
                     Clientesrepresentante beneficiarios = new Clientesrepresentante()
                     {
-                        tipoIdentificacionRepresentante = tipoIdenditificacion,
+                        tipoIdentificacionRepresentante = tipoIdenditificacion, 
                         numeroIdentificacionRepresentante = Util.IdentificationFormat(titular.DocumentNumberType, titular.DocumentNumber),
                         nombre = titular.nombre,
                         fechaVencimiento = mapInfo.fechaVencimientoIdentificacion,

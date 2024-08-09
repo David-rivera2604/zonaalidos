@@ -44,64 +44,74 @@ namespace Architect.API.Tron.Business.Backoffice.Cotizacion
                     quoteInfo.tip_docum = "CNA";
                     quoteInfo.cod_docum = "999999999";
                 }
-
-                DataAccess.CrearPresupuesto.PP_Insert_P2000030(quoteInfo, currentConnection);
-
-                Crea_Riesgos(quoteInfo, currentConnection);
-
-                Crea_DatosVariables(quoteInfo.num_poliza, quoteInfo.DatosVariables, currentConnection);
-                datosVariable = quoteInfo.DatosVariables;
-
-                Crea_Ocurrencias(quoteInfo, currentConnection);
-
-                Crea_P170(quoteInfo, currentConnection);
-
-                Crea_Terceros(quoteInfo, currentConnection);
-
-                Crea_Coberturas(quoteInfo, currentConnection);
-
-                Crea_P1331(quoteInfo, currentConnection);
-
-
-                g2000510Instance = DataAccess.Batch.G2000510.Execute(g2000510Instance, currentConnection);
-                if (g2000510Instance.txt_error.IsEmpty())
+                try
                 {
-                    if (tip_mvto_batch == 8)
+
+
+                    DataAccess.CrearPresupuesto.PP_Insert_P2000030(quoteInfo, currentConnection);
+
+                    Crea_Riesgos(quoteInfo, currentConnection);
+
+                    Crea_DatosVariables(quoteInfo.num_poliza, quoteInfo.DatosVariables, currentConnection);
+                    datosVariable = quoteInfo.DatosVariables;
+
+                    Crea_Ocurrencias(quoteInfo, currentConnection);
+
+                    Crea_P170(quoteInfo, currentConnection);
+
+                    Crea_Terceros(quoteInfo, currentConnection);
+
+                    Crea_Coberturas(quoteInfo, currentConnection);
+
+                    Crea_P1331(quoteInfo, currentConnection);
+
+
+                    g2000510Instance = DataAccess.Batch.G2000510.Execute(g2000510Instance, currentConnection);
+                    if (g2000510Instance.txt_error.IsEmpty())
                     {
-                        quoteInfo = DataAccess.LeerPresupuesto.Presupuesto(quoteInfo.cod_cia, g2000510Instance.num_poliza_definitivo, 0, 0, 0, currentConnection, true, "onlyresult");
+                        if (tip_mvto_batch == 8)
+                        {
+                            quoteInfo = DataAccess.LeerPresupuesto.Presupuesto(quoteInfo.cod_cia, g2000510Instance.num_poliza_definitivo, 0, 0, 0, currentConnection, true, "onlyresult");
+                        }
                     }
+                    else
+                    {
+                        Utilities.Log.WarningLog("Cotizacion.Generico.txt_error", g2000510Instance.txt_error, "tron");
+                        Utilities.Log.WarningLog("Cotizacion.Generico.txt_ruta_error", g2000510Instance.txt_ruta_error, "tron");
+                    }
+
+                    quoteInfo.DatosDelProceso = g2000510Instance;
+
+
                 }
-                else
+                catch (Exception ex)
                 {
-                    Utilities.Log.WarningLog("Cotizacion.Generico.txt_error", g2000510Instance.txt_error, "tron");
-                    Utilities.Log.WarningLog("Cotizacion.Generico.txt_ruta_error", g2000510Instance.txt_ruta_error, "tron");
+
+                    throw new Architect.Utilities.Exceptions.CustomException(Backoffice.Emision.FormatoErrores.FormatearError(ex.Message), ex);
                 }
+                //Actualiza_txt_campo(quoteInfo.num_poliza, datosVariable, currentConnection);
 
-                quoteInfo.DatosDelProceso = g2000510Instance;
-
-               //Actualiza_txt_campo(quoteInfo.num_poliza, datosVariable, currentConnection);
-                
                 currentConnection.Close();
 
             }
-              return quoteInfo;
+            return quoteInfo;
         }
 
-        private  static void Actualiza_txt_campo(string num_presupuesto, List<Contracts.Presupuesto.DatoVariable> dato_variable, IDbConnection currentConnection)
+        private static void Actualiza_txt_campo(string num_presupuesto, List<Contracts.Presupuesto.DatoVariable> dato_variable, IDbConnection currentConnection)
         {
             foreach (Contracts.Presupuesto.DatoVariable datosVariable in dato_variable)
-            { 
+            {
                 switch (datosVariable.cod_campo)
                 {
                     case "DES_DESTINO":
-                         DataAccess.DatosVariables.Agrega_txt_campo(num_presupuesto, datosVariable.cod_campo, datosVariable.txt_campo, currentConnection);
-                         break;
+                        DataAccess.DatosVariables.Agrega_txt_campo(num_presupuesto, datosVariable.cod_campo, datosVariable.txt_campo, currentConnection);
+                        break;
                     case "ORI_ORIGEN":
-                         DataAccess.DatosVariables.Agrega_txt_campo(num_presupuesto, datosVariable.cod_campo, datosVariable.txt_campo, currentConnection);
-                         break;
+                        DataAccess.DatosVariables.Agrega_txt_campo(num_presupuesto, datosVariable.cod_campo, datosVariable.txt_campo, currentConnection);
+                        break;
 
                 }
-                
+
             }
         }
 

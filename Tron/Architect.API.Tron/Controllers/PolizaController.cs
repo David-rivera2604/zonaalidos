@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Xml.Schema;
 
 namespace Architect.API.Tron.Controllers
 {
@@ -149,6 +150,30 @@ namespace Architect.API.Tron.Controllers
                 Success = (result == "Póliza renovada correctamente."),
                 Reason = result
             });
+        }
+
+        [HttpPost]
+        [Route("Altas")]
+        [Authorize]
+        public async Task<IHttpActionResult> Altas([FromBody] Architect.API.Tron.Contracts.AltasBajas.Request.Poliza poliza)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+
+            Contracts.AltasBajas.Response.Poliza result = await Business.Backoffice.AltasBajasPoliza.AltasBajas(poliza, true);
+
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("Bajas")]
+        [Authorize]
+        public async Task<IHttpActionResult> Bajas([FromBody] Architect.API.Tron.Contracts.AltasBajas.Request.Poliza poliza)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+
+            Contracts.AltasBajas.Response.Poliza result = await Business.Backoffice.AltasBajasPoliza.AltasBajas(poliza, false);
+
+            return Ok(result);
         }
 
     }

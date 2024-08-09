@@ -317,7 +317,7 @@ namespace Architect.API.Tron.Controllers
             try
             {
                 Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
-
+                
                 object result = null;
                 byte[] content = Business.Backoffice.Common.ImprimirPoliza(num_poliza, num_riesgo);
 
@@ -332,11 +332,10 @@ namespace Architect.API.Tron.Controllers
             }
 
             catch (Exception e)
-            {
+            {                
                 return BadRequest(e.Message);
             }
 
         }
     }
 }
-

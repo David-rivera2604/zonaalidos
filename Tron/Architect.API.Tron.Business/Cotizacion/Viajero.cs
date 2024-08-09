@@ -27,7 +27,9 @@ namespace Architect.API.Tron.Business.Cotizacion
                 FEC_VIAJE = DateTime.Today,
                 DES_DESTINO = "",
                 COD_PAIS_ORIGEN = "CRI",
-                cantidad_riesgos = 1
+                cantidad_riesgos = 1,
+                Agente = tokenInfo.UserName,
+                cod_agt = tokenInfo.AgentCode
             };
 
             bool IsCoope = false;

@@ -84,6 +84,5 @@ namespace Architect.API.Tron.Contracts.AvisosDeCobro
         public string tip_docum_pag { get; set; }
         public string cod_docum_pag { get; set; }
         public string nom_pagador { get; set; }
-
     }
 }

@@ -136,7 +136,7 @@ namespace Architect.API.Tron.Business.Emision
             }
             else
             {
-                Contracts.Presupuesto.DatoFijo result = SaldoDeudorConvert.ToTron(quoteInfo, Cotizacion.SaldoDeudor.COD_RAMO, tokenInfo.AgentCode, tokenInfo.UserName);
+                Contracts.Presupuesto.DatoFijo result = SaldoDeudorConvert.ToTron(quoteInfo, Cotizacion.SaldoDeudor.COD_RAMO, quoteInfo.cod_agt, tokenInfo.UserName);
 
                 Contracts.Poliza.DatoFijo result2 = Backoffice.Emision.Generico.Emitir(result, tokenInfo);
 

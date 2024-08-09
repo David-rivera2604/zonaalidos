@@ -62,6 +62,7 @@ namespace Architect.API.Tron.Business.Backoffice.Cotizacion
             datosVariables.Add(Util.DatoVariable(datoFijo, datoFijo.num_riesgos, "NUM_MATRICULA", _class.num_matricula, 2, 7));
             datosVariables.Add(Util.DatoVariable(datoFijo, datoFijo.num_riesgos, "NUM_MOTOR", _class.num_motor, 2, 8));
             datosVariables.Add(Util.DatoVariable(datoFijo, datoFijo.num_riesgos, "COD_CHASSIS", _class.cod_chassis, 2, 12));
+            datosVariables.Add(Util.DatoVariable(datoFijo, datoFijo.num_riesgos, "NOM_CLIENTE", _class.nombredelcontratante, 2, 13));
 
             foreach (Contracts.Presupuesto.DatoVariable dato in datosVariables)
             {

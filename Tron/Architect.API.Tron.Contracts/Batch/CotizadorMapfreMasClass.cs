@@ -58,6 +58,9 @@ namespace Architect.API.Tron.Contracts.Batch
         /// </summary>
         public int cod_agt { get; set; } = 0;
 
+        public int cod_cuadro_com { get; set; } = 0;
+        
+
         /// <summary>
         ///
         /// </summary>
@@ -355,6 +358,10 @@ namespace Architect.API.Tron.Contracts.Batch
         public string cod_chassis { get; set; }
         public string rc_alcohol { get; set; } = "N";
         public string mc_cuotas_gratis { get; set; } = "N";
-        public int num_cuotas_gratis { get; set; } = 0;
+        public int num_cuotas_gratis { get; set;} = 0;
+
+        public string nombredelcontratante { get; set; }
+        
+
     }
 }

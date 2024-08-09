@@ -1,0 +1,156 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Zona de Aliados</title>
+    @Styles.Render("~/Content/cssMaster")
+
+    @Scripts.Render("~/bundles/jsMaster")
+    <style>
+        /*        svg {
+            width: 95%;
+            height: 95%;
+        }*/
+        /*
+        div.xmermaid {
+            margin-left: 0 !important;
+            text-align: center;
+            resize: both;
+            overflow: auto;
+            margin-bottom: 2px;
+            position: relative;
+            max-height: 100%;
+            max-width: 100%;
+        }*/
+
+        .xmermaid svg {
+            max-width: 100%;
+            height: 100%;
+        }
+
+        /*            div.xmermaid::after {
+                content: '';
+                display: block;
+                width: 10px;
+                height: 10px;
+                background-color: yellowgreen;
+                position: absolute;
+                right: 0;
+                bottom: 0;
+            }*/
+    </style>
+</head>
+<body>
+    <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+        <div class="btn-group mr-2" role="group" aria-label="First group">
+            <button type="button" class="btn btn-secondary">sequence</button>
+            <button type="button" class="btn btn-secondary">flowchart</button>
+            <button type="button" class="btn btn-secondary">statediagram</button>
+        </div>
+    </div>
+
+    <div id="chart" class="xmermaid someClass">
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //mermaid.init({
+            //    startOnLoad: true,
+            //    noteMargin: 10
+            //});
+            mermaid.initialize({ startOnLoad: false });
+
+            let _id = app.core.URLNumericValue('id');
+            let _type = app.core.URLStringValue('type');
+
+            function adjustDivHeight() {
+                element = document.querySelector('#chart');
+                element.style.width = document.documentElement.clientWidth + 'px';
+                element.style.height = document.documentElement.clientHeight + 'px';
+            }
+
+
+            // Ajustar la altura del div cuando cambie el tamaño de la ventana
+            window.onresize = adjustDivHeight;
+
+            // Example of using the render function
+            const drawDiagram = async function (graphDefinition) {
+
+
+
+                adjustDivHeight();
+
+                const { svg } = await mermaid.render('graphDiv', graphDefinition);
+                element.innerHTML = svg;
+
+
+                var svgs = d3.selectAll(".someClass svg");
+                svgs.each(function () {
+                    var svg = d3.select(this);
+                    svg.html("<g>" + svg.html() + "</g>");
+                    var inner = svg.select("g");
+                    var zoom = d3.zoom().on("zoom", function (event) {
+                        inner.attr("transform", event.transform);
+                    });
+                    svg.call(zoom);
+
+                    svg.call(zoom.transform, d3.zoomIdentity.scale(1).translate(0, 0));
+
+                });
+            };
+
+
+
+            app.core.Get(app.setting.apipath + `v1/ProcessSpecFlow/${_id}/diagram/${_type}`)
+                .done(function (data, textStatus, jqXHR) {
+
+
+
+
+                    // Example of using the render function
+
+
+
+
+
+
+                    let x = '\n' + data.source.replaceAll('\r', '');
+                    //$('.someClass').text('\n'+x);
+                    drawDiagram(x);
+
+                    //mermaid.init({ noteMargin: 10 }, ".someClass");
+
+                    //var svgs = d3.selectAll(".someClass svg");
+                    //svgs.each(function () {
+                    //    var svg = d3.select(this);
+                    //    svg.html("<g>" + svg.html() + "</g>");
+                    //    var inner = svg.select("g");
+                    //    var zoom = d3.zoom().on("zoom", function (event) {
+                    //        inner.attr("transform", event.transform);
+                    //    });
+                    //    svg.call(zoom);
+
+                    //    svg.call(zoom.transform, d3.zoomIdentity.scale(4).translate(-10, -150));
+
+                    //});
+
+                }).always(function () {
+
+                });
+
+
+            $('.btn').click(function (e) {
+                window.location.replace(`Diagram?id=${_id}&type=${e.currentTarget.innerText}`);
+                e.stopPropagation();
+            });
+
+        });
+    </script>
+
+
+</body>
+</html>

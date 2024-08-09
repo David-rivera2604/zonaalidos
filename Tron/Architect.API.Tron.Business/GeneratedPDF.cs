@@ -97,7 +97,7 @@ namespace Architect.API.Tron.Business.DocumentGenerator
                     filenamenew = @"HogarTotalSolicitudMIP_" + presupuesto.Replace(" ", "").Trim() + ".pdf"; //Modalidad Individual Persona
                 }
                 else if (tokenInfo.Roles.Contain("PolizaGrupo") && !(hogartotalSolicitud.polizagrupo != string.Empty || hogartotalSolicitud.polizagrupo != null)) // Poliza Grupo
-                {
+                    {
                     PlantillaPdf = @"HogarTotalSolicitudMCPG_.pdf";
                     filenamenew = @"HogarTotalSolicitudMCPG_" + presupuesto.Replace(" ", "").Trim() + ".pdf"; //Modalidad Colectiva Poliza Grupo Rol Coopenae    
 

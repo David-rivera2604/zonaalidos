@@ -216,7 +216,7 @@ app.BayerInclusion = (function () {
                     $('#VisualizationsEdtFormRevised').removeClass('d-none');
                     $('#VisualizationsEdtFormDelete').removeClass('d-none');
                     $('#VisualizationsEdtFormDraft').removeClass('d-none');
-                } else
+                } else 
                     app.ui.DataEntryBehavior('#VisualizationsEdtForm', 'disabled');
                 break;
             case 4: //Por aceptar
