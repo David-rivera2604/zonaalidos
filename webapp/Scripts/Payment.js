@@ -5,7 +5,7 @@ app.Payment = (function () {
         Recibo: function (row, id, sequence, lightbox = true) {
             let mode = localStorage.getItem('Payment');
             let data = { num_poliza: '', num_recibo: 0 };
-            mode = 'silice';
+            mode = ''; //silice
             if ((id == 310 && sequence == 2) ||
                 (id == 3001 && sequence == 1) ||
                 (id == 410 && sequence == 1)) {
