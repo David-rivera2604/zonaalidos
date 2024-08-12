@@ -1,11 +1,12 @@
 ﻿var app = app || {};
 
+
 app.Payment = (function () {
     return {
         Recibo: function (row, id, sequence, lightbox = true) {
             let mode = localStorage.getItem('Payment');
             let data = { num_poliza: '', num_recibo: 0 };
-            mode = 'silice';
+            mode = '';
             if ((id == 310 && sequence == 2) ||
                 (id == 3001 && sequence == 1) ||
                 (id == 410 && sequence == 1)) {
@@ -14,20 +15,23 @@ app.Payment = (function () {
             $("#generalNotify").html("");
             $('.ibox-content').toggleClass('sk-loading');
 
-            if (mode = 'silice' && id == 3001 && sequence == 1) {
-                app.Payment.SiliceWidget({ num_poliza: row.NUM_POLIZA, num_recibo: row.NUM_RECIBO, raw: row }, lightbox)
-                    .catch(err => {
-                        app.ui.ShowAlert('generalNotify', 'alert-danger', err.message);
-                    }).then(d => {
-                        $('.ibox-content').toggleClass('sk-loading');
-                    });
-            } else if (mode = 'silice' && id == 310 && sequence == 2) {
-                app.Payment.SilicePaymentLink(row)
-                    .catch(err => {
-                        app.ui.ShowAlert('generalNotify', 'alert-danger', err.message);
-                    }).then(d => {
-                        $('.ibox-content').toggleClass('sk-loading');
-                    });
+            if (mode == 'silice') {
+                if (id == 3001 && sequence == 1) {
+                    app.Payment.SiliceWidget({ num_poliza: row.NUM_POLIZA, num_recibo: row.NUM_RECIBO, raw: row }, lightbox)
+                        .catch(err => {
+                            app.ui.ShowAlert('generalNotify', 'alert-danger', err.message);
+                        }).then(d => {
+                            $('.ibox-content').toggleClass('sk-loading');
+                        });
+                }
+                if (id == 310 && sequence == 2) {
+                    app.Payment.SilicePaymentLink(row)
+                        .catch(err => {
+                            app.ui.ShowAlert('generalNotify', 'alert-danger', err.message);
+                        }).then(d => {
+                            $('.ibox-content').toggleClass('sk-loading');
+                        });
+                }
             } else {
                 app.Payment.Process(data, lightbox)
                     .catch(err => {
@@ -102,7 +106,7 @@ app.Payment = (function () {
                                 console.log(dataRequest);
 
                                 $('head').append('<link rel="stylesheet" type="text/css" href="https://dsp-microservice-nestjs.s3.sa-east-1.amazonaws.com/54frts28t/widget-pago-directo.css">');
-                                
+
                                 app.core.LoadScriptFile('https://dsp-microservice-nestjs.s3.sa-east-1.amazonaws.com/54frts28t/widget-pago-directo.js').then(d => {
 
                                     let widgetPagos = document.querySelector("widget-pagos");
@@ -112,7 +116,7 @@ app.Payment = (function () {
                                     }
                                     const recibo = JSON.stringify(session);
 
-                                    console.log('init',recibo);
+                                    console.log('init', recibo);
 
                                     widgetPagos.addEventListener('loginComplete', (e) => {
                                         console.log('loginComplete', e);
