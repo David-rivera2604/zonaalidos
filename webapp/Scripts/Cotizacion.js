@@ -244,7 +244,7 @@ app.Cotizacion = (function () {
                     return app.ui.GetDropDownNumericValue('#cod_cuadro_com')
                 }
             } else {
-                return _data.cod_agt;
+                return _data.cod_cuadro_com;
             }
         }
     };
