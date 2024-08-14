@@ -195,7 +195,7 @@ namespace Architect.API.Tron.Business.Backoffice
                     break;
 
                 default:
-                    cuenta = source;
+                    cuenta = request.currency == "1" || request.currency == "CRC" ? "HSBC1" : "HSBC2";
                     break;
             }
 

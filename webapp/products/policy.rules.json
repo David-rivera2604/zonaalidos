@@ -2,7 +2,7 @@
   "Reglas": [
   ],
   "Comportamientos": [
-    {
+     {
       "Condicion": "{Aliado} es igual a {Coope} y {La edad del asegurado} sea mayor o igual a 61",
       "Descripcion": "Debe indicar el cuestionario de Covid",
       "Accion": "Show.CV"

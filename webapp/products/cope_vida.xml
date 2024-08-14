@@ -1,36 +1,38 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ProductMaster xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" description="Seguro colectivo de vida colones" title="Seguro vida Mapfre colectivo" subtitle="Colones">
-	<CurrenciesAllowed>
-		<CurrencyAllowed currencycode="1" description="Colón costarricense" />
-	</CurrenciesAllowed>
-	<Modules>
-		<Module modulecode="1" description="8.000.000" selected="true">
-			<Coverages>
-				<Coverage coveragecode="1" description="COB-A Básica - Muerte por cualquier causa" insuredamountcalculationtype="2" fixedinsuredamount="8000000" premiumcalculationtype="4" fixedpremium="54000" billingcode="1" />
-				<Coverage coveragecode="2" description="COB-B Opcional - Muerte accidental y desmembramiento" coveragecodecontainspremium="1" billingcode="1" />
-				<Coverage coveragecode="3" description="COB-C Opcional – Incapacidad total y permanente" insuredamountcalculationtype="2" fixedinsuredamount="8000000" coveragecodecontainspremium="1" billingcode="1" />
-				<Coverage coveragecode="4" description="COB-D Opcional – Gastos funerarios" insuredamountcalculationtype="2" fixedinsuredamount="250000" coveragecodecontainspremium="1" billingcode="1" />
-				<Coverage coveragecode="5" description="COB-E Opcional – Coordinación de ambulancia" coveragecodecontainspremium="1" billingcode="1" />
-				<Coverage coveragecode="6" description="COB-F Opcional - Asistencia médica telefónica 24 hrs" coveragecodecontainspremium="1" billingcode="1" />
-			</Coverages>
-		</Module>
-	</Modules>
-	<PaymentFrequenciesAllowed>
-		<PaymentFrequencyAllowed paymentfrequencycode="1" description="Mensual" />
-	</PaymentFrequenciesAllowed>
-	<BillingConcepts>
-		<BillingConcept billingcode="1" description="Prima" />
-	</BillingConcepts>
-	<DataEntrySectionsAllowed>
-		<DataEntrySection code="Insured" description="Asegurado" required="true" />
-		<DataEntrySection code="Questionnaires" description="Cuestionario de Salud" />
-		<DataEntrySection code="Covid" description="Cuestionario de Covid" active="true" />
-		<DataEntrySection code="Beneficiaries" description="Beneficiarios" required="true" />
-		<DataEntrySection code="Policy" description="Póliza" required="true"/>
-		<DataEntrySection code="Attachments" description="Adjuntos" />
-	</DataEntrySectionsAllowed>
-	<Settings>
-		<Setting name="Parent.Policy.Effective" description="Fecha de efecto de la póliza matriz" value="2019-03-01T00:00:00"/>
-		<Setting name="Request.Sign.Enabled" description="Indica que es necesario la firma del documento previo a su emisión" value="false"/>
-	</Settings>
+  <CurrenciesAllowed>
+    <CurrencyAllowed currencycode="1" description="Colón costarricense" />
+  </CurrenciesAllowed>
+  <Modules>
+    <Module modulecode="1" description="8.000.000" selected="true">
+      <Coverages>
+        <Coverage coveragecode="1" description="COB-A Básica - Muerte por cualquier causa" insuredamountcalculationtype="2" fixedinsuredamount="8000000" premiumcalculationtype="4" fixedpremium="54000" billingcode="1" />
+        <Coverage coveragecode="2" description="COB-B Opcional - Muerte accidental y desmembramiento" coveragecodecontainspremium="1" billingcode="1" />
+        <Coverage coveragecode="3" description="COB-C Opcional – Incapacidad total y permanente" insuredamountcalculationtype="2" fixedinsuredamount="8000000" coveragecodecontainspremium="1" billingcode="1" />
+        <Coverage coveragecode="4" description="COB-D Opcional – Gastos funerarios" insuredamountcalculationtype="2" fixedinsuredamount="250000" coveragecodecontainspremium="1" billingcode="1" />
+        <Coverage coveragecode="5" description="COB-E Opcional – Coordinación de ambulancia" coveragecodecontainspremium="1" billingcode="1" />
+        <Coverage coveragecode="6" description="COB-F Opcional - Asistencia médica telefónica 24 hrs" coveragecodecontainspremium="1" billingcode="1" />
+      </Coverages>
+    </Module>
+  </Modules>
+  <PaymentFrequenciesAllowed>
+    <PaymentFrequencyAllowed paymentfrequencycode="1" description="Mensual" />
+  </PaymentFrequenciesAllowed>
+  <BillingConcepts>
+    <BillingConcept billingcode="1" description="Prima" />
+  </BillingConcepts>
+  <DataEntrySectionsAllowed>
+    <DataEntrySection code="Insured" description="Asegurado" required="true" />
+    <DataEntrySection code="Questionnaires" description="Cuestionario de Salud" />
+    <DataEntrySection code="Covid" description="Cuestionario de Covid" active="true" />
+    <DataEntrySection code="Beneficiaries" description="Beneficiarios" required="true" />
+    <DataEntrySection code="Policy" description="Póliza" required="true"/>
+    <DataEntrySection code="Attachments" description="Adjuntos" />
+  </DataEntrySectionsAllowed>
+  <Underwriting>
+    <Rule description="La edad del asegurado es mayor a 64 años" condition="data.PrimaryInsured.BirthDate.Age() > 64" />
+  </Underwriting>
+  <Settings>
+    <Setting name="Parent.Policy.Effective" description="Fecha de efecto de la póliza matriz" value="2019-03-01T00:00:00"/>
+  </Settings>
 </ProductMaster>

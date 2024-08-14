@@ -62,15 +62,17 @@ namespace Architect.API.Tron.Business.Emision
                 {
                     result.terceros = Reglas.research.Apply_Terceros("Multirriesgos", result.terceros, result.Fuente_Tomador, tokenInfo);
                 }
-                if (result.documentosrequeridos == null)
+
+                if (!tokenInfo.Roles.Contain("Formularios_digitales"))
                 {
-                    if (!tokenInfo.Roles.Contain("Formularios_digitales"))
+                    if (result.documentosrequeridos == null)
                     {
                         result.documentosrequeridos = new List<Contracts.Comun.DocumentoRequerido>
-                            {
-                            new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=1, tipo = "Expediente Cliente", DArchivoEsperado="Expediente Cliente.pdf", Grupo="F"  },
-                            new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=2, tipo = "Expediente Póliza" , DArchivoEsperado="Expediente Póliza.pdf", Grupo="F" },
-                            };
+                        {
+                        new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=1, tipo = "Expediente Cliente", DArchivoEsperado="Expediente Cliente.pdf", Grupo="F"  },
+                        new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=2, tipo = "Expediente Póliza" , DArchivoEsperado="Expediente Póliza.pdf", Grupo="F" },
+                        };
+
                     }
                 }
             }

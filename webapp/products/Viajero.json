@@ -1,7 +1,7 @@
 {
   "Terceros": [
     {
-      "Role": "ESPH",
+      "Role": "Davivienda_",
       "Detalles": [
         {
           "tip_benef": "0",
@@ -32,42 +32,36 @@
   ],
   "DocumentosRequeridos": [
     {
-      "Role": "asegurado_fisico",
+      "Role": "_default_asegurado_fisico",
       "Detalles": [
         {
           "descripcion": "Copia de la cédula de identidad",
           "archivo": "CEDULA.docx",
           "requerido": true
         },
-
+        
         {
-          "descripcion": "Comprobante de pago",
-          "archivo": "Comprobante.pdf",
+          "descripcion": "Solicitud de seguro firmada",
+          "archivo": "SOLICITUD.pdf",
           "requerido": true
         }
       ]
     },
     {
-      "Role": "asegurado_juridico",
+      "Role": "_default_asegurado_juridico",
       "Detalles": [
         {
           "descripcion": "Copia de la cédula de identidad",
           "archivo": "CEDULA.docx",
           "requerido": true
         },
-
+        
         {
-          "descripcion": "Comprobante de pago",
-          "archivo": "Comprobante.pdf",
+          "descripcion": "Solicitud de seguro firmada",
+          "archivo": "SOLICITUD.pdf",
           "requerido": true
         }
       ]
-    }
-  ],
-  "Coberturas": [
-    {
-      "Condicion": "{Siempre}",
-      "Exclusion": "9998"
     }
   ]
 }
