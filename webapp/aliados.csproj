@@ -1238,6 +1238,8 @@
     <Content Include="Scripts\ColoresTenant.js" />
     <Content Include="Scripts\CompraSegurosClients.js" />
     <Content Include="Scripts\Cotizacion.Coberturas.js" />
+    <Content Include="Scripts\HogarTotal.Emision.js" />
+    <Content Include="Scripts\HogarTotal.Cotizacion.js" />
     <Content Include="Scripts\Cotizacion.MapfreMasPlus.js" />
     <Content Include="Scripts\Cotizacion.Estudiantil.js" />
     <Content Include="Scripts\Multirriesgo.Emision.js" />
@@ -1369,6 +1371,7 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\UnhandledExceptionLogger.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\HogatTotalController.cs" />
     <Compile Include="Controllers\MultirriesgoController.cs" />
     <Compile Include="Controllers\PurdyController.cs" />
     <Compile Include="Controllers\DocuSignController.cs" />
@@ -1799,6 +1802,8 @@
     <Content Include="Views\Viewer\FormDefine.cshtml" />
     <Content Include="Views\Multirriesgo\Cotizacion.cshtml" />
     <Content Include="Views\Multirriesgo\Emision.cshtml" />
+    <Content Include="Views\HogarTotal\Cotizacion.cshtml" />
+    <Content Include="Views\HogarTotal\Emision.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
