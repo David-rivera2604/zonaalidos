@@ -35,13 +35,13 @@ namespace Architect.API.Tron.Controllers
 
         [HttpGet]
         [Route("QuoteSettings")]
-        public async Task<IHttpActionResult> QuoteSettings(int cod_ramo, int num_contrato, int num_subcontrato, string num_poliza_grupo, int cod_mon)
+        public async Task<IHttpActionResult> QuoteSettings(int cod_ramo, int num_contrato, int num_subcontrato, string num_poliza_grupo, int cod_mon, int cod_agt = 0)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Tron.Contracts.Cotizacion.MultirriesgoSettings result = null;
             await Task.Run(() =>
             {
-                result = Business.Multirriesgo.Handler.Quote.Settings(cod_ramo, num_contrato, num_subcontrato, num_poliza_grupo, cod_mon, tokenInfo);
+                result = Business.Multirriesgo.Handler.Quote.Settings(cod_ramo, num_contrato, num_subcontrato, num_poliza_grupo, cod_mon, cod_agt, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -58,6 +58,10 @@ namespace Architect.API.Tron.Controllers
             Tron.Contracts.Cotizacion.Multirriesgo result = null;
             await Task.Run(() =>
             {
+                if (quoteInfo != null && quoteInfo.cod_agt == 0)
+                {
+                    quoteInfo.cod_agt = tokenInfo.AgentCode;
+                }
                 result = Business.Multirriesgo.Handler.Quote.Apply(quoteInfo, tokenInfo);
             })
                 .ConfigureAwait(false);

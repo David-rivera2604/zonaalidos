@@ -39,7 +39,7 @@ namespace Architect.API.Tron.Business.Multirriesgo.Convert
                 num_subcontrato = quoteInfo.subcontrato,
                 num_contrato = quoteInfo.contrato,
                 cod_agt = agentCode,
-                cod_cuadro_com = 0,
+                cod_cuadro_com = quoteInfo.cod_cuadro_com,
                 cod_fracc_pago = quoteInfo.cod_fracc_pago,
                 cod_mon = quoteInfo.cod_mon,
                 fec_efec_poliza = quoteInfo.fec_efec_poliza,
@@ -129,15 +129,8 @@ namespace Architect.API.Tron.Business.Multirriesgo.Convert
                     datosFijos.num_subcontrato = 0;
                 }
 
-                if (agentCode == 999999)
-                {
-                    datosFijos.cod_cuadro_com = 0;
-                }
-                else
-                {
-                    datosFijos.cod_cuadro_com = 100;
-
-                }
+                datosFijos.cod_cuadro_com = quoteInfo.cod_cuadro_com == 0 ? 100 : quoteInfo.cod_cuadro_com;
+                datosFijos.cod_agt = quoteInfo.cod_agt;
             }
             datosFijos.txt_motivo_spto = "Cotización realizada desde la zona de aliados, por: " + userName;
 

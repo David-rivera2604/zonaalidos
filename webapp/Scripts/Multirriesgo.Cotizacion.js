@@ -14,6 +14,9 @@ app.CotizacionMultirriesgo = (function () {
             .done(function (data, textStatus, jqXHR) {
                 if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
                     $('#polizagrupoZone').removeClass('d-none');
+                    app.Cotizacion.CustomAgentHandler('pg_', data);
+                } else {
+                    app.Cotizacion.CustomAgentHandler('', data);
                 }
                 Init_Lookups(data);
             });
@@ -96,7 +99,7 @@ app.CotizacionMultirriesgo = (function () {
         app.core.Lookups(lookupList,
             function () {
                 MapObjectToInput(data);
-            }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:cod_pais=${data.cod_pais}:cod_tip_ocup=${data.cod_ramo}%:cod_estado=${data.cod_estado}:cod_prov=${data.cod_prov}`);
+            }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:cod_pais=${data.cod_pais}:cod_tip_ocup=${data.cod_ramo}%:cod_estado=${data.cod_estado}:cod_prov=${data.cod_prov}:cod_agt=${data.cod_agt}`);
 
         // Dependencies events
         $('#cod_estado').on('change', function () {
@@ -132,12 +135,13 @@ app.CotizacionMultirriesgo = (function () {
             num_contrato: app.ui.GetDropDownNumericValue('#contrato'),
             num_subcontrato: app.ui.GetDropDownNumericValue('#subcontrato'),
             num_poliza_grupo: setupData.polizagrupo,
-            cod_mon: app.ui.GetDropDownNumericValue('#cod_mon')
+            cod_mon: app.ui.GetDropDownNumericValue('#cod_mon'),
+            cod_agt: app.Cotizacion.AgentCode()
         };
 
         $('#coberturasTbl').bootstrapTable('showLoading');
 
-        app.core.Get(app.setting.apipath + 'v1/Multirriesgo/QuoteSettings?' + `cod_ramo=${data.cod_ramo}&num_contrato=${data.num_contrato}&num_subcontrato=${data.num_subcontrato}&num_poliza_grupo=${data.num_poliza_grupo}&cod_mon=${data.cod_mon}`)
+        app.core.Get(app.setting.apipath + 'v1/Multirriesgo/QuoteSettings?' + `cod_ramo=${data.cod_ramo}&num_contrato=${data.num_contrato}&num_subcontrato=${data.num_subcontrato}&num_poliza_grupo=${data.num_poliza_grupo}&cod_mon=${data.cod_mon}&cod_agt=${data.cod_agt}`)
             .done(function (settingData) {
                 app.ui.SetDateValue('#fec_vcto_poliza', app.ui.GetDateValue('#fec_efec_poliza'))
                 app.ui.SetDateValue('#fec_vcto_poliza', settingData.fec_vcto_poliza);
@@ -182,7 +186,6 @@ app.CotizacionMultirriesgo = (function () {
             cod_tipo_pared: app.ui.GetDropDownNumericValue('#cod_tipo_pared'),
             cod_tipo_paredDesc: $("#cod_tipo_pared option:selected").text(),
             IMP_EDIFICIO: app.ui.GetNumericValue('#IMP_EDIFICIO'),
-            IMP_EDIFICIO: app.ui.GetNumericValue('#IMP_EDIFICIO'),
             cod_tip_med_rob: app.ui.GetDropDownNumericValue('#cod_tip_med_rob'),
             IMP_DOMOS_TOTAL: app.ui.GetNumericValue('#IMP_DOMOS_TOTAL'),
             IMP_GAS_ALQ: app.ui.GetNumericValue('#IMP_GAS_ALQ'),
@@ -208,7 +211,9 @@ app.CotizacionMultirriesgo = (function () {
             plandepago: $('#plandepagoTbl').bootstrapTable('getData'),
             contrato: app.ui.GetDropDownNumericValue('#contrato'),
             subcontrato: app.ui.GetDropDownNumericValue('#subcontrato'),
-            polizagrupo: setupData.polizagrupo
+            polizagrupo: setupData.polizagrupo,
+            cod_agt: app.Cotizacion.AgentCode(),
+            cod_cuadro_com: app.Cotizacion.CuadroCom()
         };
         return data;
     };
@@ -549,7 +554,6 @@ app.CotizacionMultirriesgo = (function () {
                 IMP_BIE_TEM_DES: { AtLeastOne: 'IMP_MOBILIARIO,IMP_MAQUINARIA,IMP_EQUIP_ELEC,IMP_EQUIP_ELEC_M,IMP_MERCADERIA,IMP_BIE_TEM_DES,IMP_BIE_INT,IMP_OBJ_ESP_VAL' },
                 IMP_BIE_INT: { AtLeastOne: 'IMP_MOBILIARIO,IMP_MAQUINARIA,IMP_EQUIP_ELEC,IMP_EQUIP_ELEC_M,IMP_MERCADERIA,IMP_BIE_TEM_DES,IMP_BIE_INT,IMP_OBJ_ESP_VAL' },
                 IMP_OBJ_ESP_VAL: { AtLeastOne: 'IMP_MOBILIARIO,IMP_MAQUINARIA,IMP_EQUIP_ELEC,IMP_EQUIP_ELEC_M,IMP_MERCADERIA,IMP_BIE_TEM_DES,IMP_BIE_INT,IMP_OBJ_ESP_VAL' }
-
             },
             messages: {
                 cod_mon: { required: 'Debe indicar el Moneda' },
@@ -576,7 +580,6 @@ app.CotizacionMultirriesgo = (function () {
                 IMP_BIE_TEM_DES: { AtLeastOne: 'Debe indicar al menos una suma asegurada para rubros' },
                 IMP_BIE_INT: { AtLeastOne: 'Debe indicar al menos una suma asegurada para rubros' },
                 IMP_OBJ_ESP_VAL: { AtLeastOne: 'Debe indicar al menos una suma asegurada para rubros' }
-
             }
         });
     };
@@ -849,7 +852,6 @@ app.CotizacionMultirriesgo = (function () {
                     [2002, 2024, 2025, 2026, 2004].includes(value.codigo) || [2010, 2055, 2056, 2057, 2012].includes(value.codigo));
             });
         }
-
 
         if (Coberturas_Seleccionada(coberturas, 2001) ||
             Coberturas_Seleccionada(coberturas, 2002) ||
