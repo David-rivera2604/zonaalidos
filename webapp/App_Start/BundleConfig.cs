@@ -65,7 +65,8 @@ namespace aliados
                                          "~/assets/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js",
                                          "~/assets/js/plugins/jqueryformatter/jquery.formatter.js",
                                          "~/assets/js/plugins/autonumeric/autoNumeric.min.js",
-                                         "~/assets/select2/js/select2.min.js"));
+                                         "~/assets/select2/js/select2.min.js",
+                                         "~/assets/js/plugins/typehead/bootstrap3-typeahead.min.js"));
 
             //Query View
             bundles.Add(new StyleBundle("~/Content/cssView").Include(
