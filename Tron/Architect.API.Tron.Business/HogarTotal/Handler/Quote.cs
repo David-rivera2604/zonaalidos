@@ -115,12 +115,12 @@ namespace Architect.API.Tron.Business.HogarTotal.Handler
             {
                 if (isCoope)
                 {
-                    cod_cobExcludeFilter = "2001, 2009, 2007, 2017,2018, 2034, 2010, 2055, 2056, 2057, 2012, 2014";
+                    cod_cobExcludeFilter = "2007, 2017,2018, 2034, 2010, 2055, 2056, 2057, 2012, 2014";
                 }
                 else
                 {
                     cod_modalidad = 99999;
-                    cod_cobExcludeFilter = "2001, 2009";
+                    cod_cobExcludeFilter = "";
                     selected = ",2002,2024,2027,";
                 }
             }
