@@ -106,6 +106,7 @@
     <Compile Include="General\AttachmentEx.cs" />
     <Compile Include="General\Attachments.cs" />
     <Compile Include="General\ChangeSet.cs" />
+    <Compile Include="General\Setting.cs" />
     <Compile Include="General\CustomFields.cs" />
     <Compile Include="General\LookupCustom.cs" />
     <Compile Include="General\InternalTemplate.cs" />

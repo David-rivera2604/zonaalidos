@@ -14,6 +14,7 @@ using System.DirectoryServices.ActiveDirectory;
 using System.Threading.Tasks;
 using Architect.API.Core.Contracts.General;
 using System.Text.RegularExpressions;
+using SmartFormat.Core.Settings;
 
 
 namespace Architect.API.Core.Business.Security
@@ -37,7 +38,7 @@ namespace Architect.API.Core.Business.Security
 
 
 
-            Contracts.Security.AuthenticationResponse result = new Contracts.Security.AuthenticationResponse();
+            Contracts.Security.AuthenticationResponse result = new Contracts.Security.AuthenticationResponse() { Settings = new List<SettingItem>() };
             Contracts.Security.UserMember user = null;
             List<Contracts.Security.RoleMember> rols = null;
             int companyId = 0;
@@ -196,7 +197,8 @@ namespace Architect.API.Core.Business.Security
                             SubAgentCode = agentInfo.cod_sub_agt,
                             IdentificationType = agentInfo.tip_docum,
                             Identification = agentInfo.cod_docum,
-                            UserName = result.UserName
+                            UserName = result.UserName,
+                            Settings= new List<SettingItem>()
                         };
                         token = tokenItem;
 
@@ -204,7 +206,20 @@ namespace Architect.API.Core.Business.Security
                         //Solo actualizara el usuario cuando este entre desde login
                         if (firstInit) { UserIdActual = tokenItem; }
 
+                        List<Contracts.General.Setting> settings = DataAccess.General.Setting.Retrieve(user.CompanyId);
+                        if (settings.Count > 0)
+                        {
+                            foreach (Contracts.General.Setting item in settings.Where(r => r.LocalStorageEnabled))
+                            {
+                                result.Settings.Add(new SettingItem() { Key = item.Key, Value = item.Value });
+                            }
 
+                            foreach (Contracts.General.Setting item in settings.Where(r => r.TokenEnabled))
+                            {
+                                tokenItem.Settings.Add(new SettingItem() { Key = item.Key, Value = item.Value });
+                            }
+
+                        }
                         result.Token = Architect.API.Core.Security.Accounts.GeneratorToken(tokenItem);
                         user.LoginDate = DateTime.Now;
                         user.IsLockedOut = false;
@@ -281,12 +296,13 @@ namespace Architect.API.Core.Business.Security
                             }
 
                         }
+
                         if (!bypass && !authenticationRequest.EmployeeMode)
                         {
                             //if (user.Password.Equals("."))
                             //    result.MustChangePassword = true;
                             //else
-                                result.MustChangePassword = (user.PasswordChangedDate.AddDays(Architect.Utilities.Helpers.Settings.IntegerValue("Security.Password.Expiration", 90)) <= DateTime.Today);
+                            result.MustChangePassword = (user.PasswordChangedDate.AddDays(Architect.Utilities.Helpers.Settings.IntegerValue("Security.Password.Expiration", 90)) <= DateTime.Today);
                         }
                         Architect.API.Core.Security.Session.Create(new Contracts.Security.Activity()
                         {

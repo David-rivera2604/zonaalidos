@@ -1,4 +1,6 @@
-﻿namespace Architect.API.Core.Contracts.Security
+﻿using System.Collections.Generic;
+
+namespace Architect.API.Core.Contracts.Security
 {
     /// <summary>
     /// Respuesta para una solictud de acceso
@@ -48,5 +50,12 @@
         /// E-Mail del Usuario.
         /// </summary>
         public string EMail { get; set; }
+
+        public List<SettingItem> Settings { get; set; }
+    }
+    public class SettingItem
+    {
+        public string Key { get; set; }
+        public string Value { get; set; }
     }
 }

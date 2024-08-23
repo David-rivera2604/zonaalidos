@@ -52,6 +52,10 @@ app.login = (function () {
                     .done(function (data, textStatus, jqXHR) {
                         if (data.Reason == null) {
                             if (!data.MustChangePassword) {
+
+                                data.Settings?.forEach(item => {
+                                    localStorage.setItem(item.Key, item.Value);
+                                });
                                 localStorage.setItem('Username', data.UserName);
                                 localStorage.setItem('Tenant', data.Tenant);
                                 localStorage.setItem('Color1Tenant', data.Color1Tenant);

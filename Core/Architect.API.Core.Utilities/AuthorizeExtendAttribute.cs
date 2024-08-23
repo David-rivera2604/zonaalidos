@@ -107,6 +107,11 @@ namespace Architect.API.Core.Security
                         identity.AddClaim(new Claim("AgentCode", tokenInfo.AgentCode.ToString()));
                         identity.AddClaim(new Claim("SubAgentCode", tokenInfo.SubAgentCode.ToString()));
 
+                        foreach (var item in tokenInfo.Settings)
+                        {
+                            identity.AddClaim(new Claim(item.Key, item.Value));
+                        }
+
                         IPrincipal principal = new GenericPrincipal(identity, tokenInfo.Roles.Split(','));
                         Thread.CurrentPrincipal = principal;
 
