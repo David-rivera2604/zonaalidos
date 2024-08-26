@@ -3,6 +3,7 @@ using Architect.Payment.Integrations.Providers.Placetopay.Contracts;
 using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -71,7 +72,7 @@ namespace Architect.Payment.Integrations
         /// <summary>
         /// Permite la creación de un sesión para realizar un pago.
         /// </summary>
-        public async static Task<Contracts.SessionInformation> VerifySession(int companyId, string policyId, Int64 billNumber)
+        public async static Task<Contracts.SessionInformation> VerifySession(int companyId, string policyId, Int64 billNumber, int timeout)
         {
             Contracts.SessionInformation current = null;
             Contracts.OnlinePayment currenTrack = Business.OnlinePayment.RetrieveByPolicyAndBill(companyId, policyId, billNumber);
@@ -80,12 +81,26 @@ namespace Architect.Payment.Integrations
             {
                 if (currenTrack.ProviderStatus == Providers.Placetopay.Webcheckout.ST_INIT || currenTrack.ProviderStatus == Providers.Placetopay.Webcheckout.ST_PENDING)
                 {
-
-                    current = new Contracts.SessionInformation()
+                    TimeSpan diff = DateTime.Now - currenTrack.IssueDate;
+                    int createdMin = (int)diff.TotalMinutes;
+                    if (createdMin >= timeout)
                     {
-                        Status = "FAIL",
-                        Reason = string.Format("El recibo #{0} se encuentra en un proceso de pago que no ha terminado", billNumber)
-                    };
+                        currenTrack.ProviderStatus = "FAILED";
+                        currenTrack.Status = 6;
+                        currenTrack.StatusDate = DateTime.Now;
+                        currenTrack.Reason = "INIT Timeout";
+                        currenTrack.UpdateDate = DateTime.Now;
+
+                        Business.OnlinePayment.Update(currenTrack);
+                    }
+                    else
+                    {
+                        current = new Contracts.SessionInformation()
+                        {
+                            Status = "FAIL",
+                            Reason = string.Format("El recibo #{0} se encuentra en un proceso de pago que no ha terminado", billNumber)
+                        };
+                    }
                 }
             }
             return current;

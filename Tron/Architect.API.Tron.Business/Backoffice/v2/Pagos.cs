@@ -14,6 +14,7 @@ using Architect.Payment.Integrations.Contracts.v2;
 using Architect.Utilities.Extensions;
 using Microsoft.Win32;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Utilities.Net;
 
 namespace Architect.API.Tron.Business.Backoffice.v2
@@ -31,7 +32,8 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         public async static Task<Payment.Integrations.Contracts.v2.PaymentInformation> CrearSesion(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo)
         {
             Payment.Integrations.Contracts.v2.PaymentInformation payInfov2 = null;
-            Payment.Integrations.Contracts.SessionInformation session = await Payment.Integrations.Payment.VerifySession(tokenInfo.CompanyId, num_poliza, num_recibo);
+            int timeout = Core.Business.General.DynamicSetting.IntegerValue(tokenInfo, "Payment.Silice.Init.Timeout", 5);
+            Payment.Integrations.Contracts.SessionInformation session = await Payment.Integrations.Payment.VerifySession(tokenInfo.CompanyId, num_poliza, num_recibo, timeout);
             if (session == null)
             {
                 payInfov2 = new Payment.Integrations.Contracts.v2.PaymentInformation()
@@ -50,6 +52,10 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 if (cantidadRemesados == 0)
                 {
                     recibo = DataAccess.PorRamo.Informacion_de_un_Recibo(cod_cia, tokenInfo.AgentCode, tokenInfo.IdentificationType.IdentificationType(), tokenInfo.Identification.DocumentNumber(tokenInfo.IdentificationType), num_poliza, num_recibo);
+
+                    if (recibo != null) { 
+                    }
+
                 }
                 if (recibo != null)
                 {

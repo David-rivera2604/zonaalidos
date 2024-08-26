@@ -160,6 +160,7 @@
     <Compile Include="General\ProcessSpecStep.cs" />
     <Compile Include="General\ProcessSpecTask.cs" />
     <Compile Include="General\Report.cs" />
+    <Compile Include="General\DynamicSetting.cs" />
     <Compile Include="General\WhiteList.cs" />
     <Compile Include="Security\RoleMember.cs" />
     <Compile Include="_Generated\ChangeInicio.cs" />
