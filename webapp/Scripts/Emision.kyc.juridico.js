@@ -40,10 +40,10 @@ app.kycjuridico = (function () {
                     language: { noResults: function () { return "No hay resultado"; }, searching: function () { return "Buscando.."; } }
                 });
                 $('#participacionaccionariaProfesionJur').select2({
-                    width: '100%', theme: 'bootstrap4', dropdownParent: $("#kycjuridicoModal .modal-content"),
+                    width: '100%', theme: 'bootstrap4', dropdownParent: $("#participacionaccionariaJurModal .modal-content"),
                     language: { noResults: function () { return "No hay resultado"; }, searching: function () { return "Buscando.."; } }
                 });
-                
+
 
             }, `cod_pais=CRI`);
 
