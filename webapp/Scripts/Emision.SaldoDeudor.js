@@ -12,6 +12,7 @@ app.EmisionSaldoDeudor = (function () {
     let text = '';
 
     function Setup() {
+        app.ui.CommonBehaviour();
         let _id = app.core.URLStringValue('presupuesto');
         if (_id != '') {
             workMode = app.core.URLStringValue('mode');
