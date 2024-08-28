@@ -484,7 +484,7 @@ namespace Architect.API.Tron.Business.Emision
                 ejecutivo = tokenInfo.AgentCode.ToString(),
                 estado = "A",
                 estadoXML = "X",
-                usuarioRegistro = tokenInfo.UserId.ToString(),
+                usuarioRegistro = tokenInfo.AgentCode.ToString(),
                 administFondosTercero = "N",
                 usuario = tokenInfo.UserId,
                 esApnfd = "N",

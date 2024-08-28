@@ -37,7 +37,7 @@ namespace Architect.API.Tron.Business.Emision
             if (mapInfo != null)
             {
                 mapInfo.ejecutivo = tokenInfo.AgentCode.ToString();
-                mapInfo.usuarioRegistro = tokenInfo.UserId.ToString();
+                mapInfo.usuarioRegistro = tokenInfo.AgentCode.ToString(); //tokenInfo.UserId.ToString();
                 mapInfo.usuario = tokenInfo.UserId;
                 mapInfo.clientesFATCA = new List<Clientesfatca>() {
                 new Clientesfatca() {
@@ -130,7 +130,9 @@ namespace Architect.API.Tron.Business.Emision
                 lugarExpedicionIdentificacion = "Costa Rica",
                 fechaVencimientoIdentificacion = jsonvalues.TokenDateTimeValue("fechadecaducidadPer"),
                 fechaProximaActualizacion = new DateTime(1900, 1, 1),
-                descripcionInversionInicial = String.Empty
+                descripcionInversionInicial = String.Empty,
+                montoIngresoMensual = jsonvalues.TokenDoubleValue("ingresomensualestimado"),
+                inversionInicial = jsonvalues.TokenInt32Value("montoValorasegurado")
             };
 
 
