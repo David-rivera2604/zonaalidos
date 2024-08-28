@@ -132,8 +132,8 @@ namespace Architect.API.Tron.Business.Emision
                 fechaProximaActualizacion = new DateTime(1900, 1, 1),
                 descripcionInversionInicial = String.Empty,
                 montoIngresoMensual = jsonvalues.TokenDoubleValue("ingresomensualestimado"),
-                inversionInicial = jsonvalues.TokenInt32Value("montoValorasegurado")
-            };
+                inversionInicial = 1//jsonvalues.TokenInt32Value("montoValorasegurado")
+            }; 
 
 
             //KYC
