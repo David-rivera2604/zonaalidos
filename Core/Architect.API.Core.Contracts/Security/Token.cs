@@ -1,4 +1,6 @@
-﻿namespace Architect.API.Core.Contracts.Security
+﻿using System.Collections.Generic;
+
+namespace Architect.API.Core.Contracts.Security
 {
     /// <summary>
     /// Información el token
@@ -54,5 +56,8 @@
         /// </summary>
         public string UserName { get; set; }
 
+        public List<SettingItem> Settings { get; set; }
+
     }
+
 }

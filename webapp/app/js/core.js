@@ -304,6 +304,10 @@ app.core = (function () {
                 }
                 break;
             case 401:
+                let path = window.location.pathname.toLowerCase();
+                if (path.endsWith('/cases/case') || path.endsWith('/viewer/viewer')) {
+                    localStorage.setItem('lasthref', window.location.href);
+                }
                 window.location.replace(app.setting.basepath + "Security/Login");
                 break;
             case 404:

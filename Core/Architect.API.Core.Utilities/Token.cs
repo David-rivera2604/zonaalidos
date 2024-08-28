@@ -19,7 +19,7 @@ namespace Architect.API.Core.Security
         {
             Contracts.Security.Token result = new Contracts.Security.Token() { CompanyId = 0, BranchOffice = 0, Roles = string.Empty, ManagerId = 0, SecurityLevel = 0, UserId = 0 };
 
-            if (HttpContext.Current?.User != null )
+            if (HttpContext.Current?.User != null)
             {
                 System.Security.Claims.ClaimsPrincipal user = (System.Security.Claims.ClaimsPrincipal)HttpContext.Current.User;
 
@@ -32,7 +32,7 @@ namespace Architect.API.Core.Security
 
         public static Contracts.Security.Token Info()
         {
-            Contracts.Security.Token result = new Contracts.Security.Token() { CompanyId = 0, BranchOffice = 0, Roles = string.Empty, ManagerId = 0, SecurityLevel = 0, UserId = 0 };
+            Contracts.Security.Token result = new Contracts.Security.Token() { CompanyId = 0, BranchOffice = 0, Roles = string.Empty, ManagerId = 0, SecurityLevel = 0, UserId = 0, Settings = new List<Contracts.Security.SettingItem>() };
 
             if (HttpContext.Current?.User != null && result.CompanyId != 0)
             {
@@ -49,6 +49,14 @@ namespace Architect.API.Core.Security
                 result.IdentificationType = user.Claims.FirstOrDefault(c => c.Type == "IdentificationType").Value;
                 result.Identification = user.Claims.FirstOrDefault(c => c.Type == "Identification").Value;
                 result.UserName = user.Claims.FirstOrDefault(c => c.Type == "UserName").Value;
+
+                foreach (var claim in user.Claims)
+                {
+                    if (claim.Type.StartsWith("app.", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        result.Settings.Add(new Contracts.Security.SettingItem() { Key=  claim.Type.Substring(4), Value = claim.Value});
+                    }
+                }
             }
 
             if (result.CompanyId == 0 && HttpContext.Current?.Request?.Headers != null)
@@ -77,14 +85,14 @@ namespace Architect.API.Core.Security
                     result = Accounts.GeneratorToken(User2Token(user));
 
                     Session.Create(new Contracts.Security.Activity()
-                        {
-                            Token = result,
-                            CompanyId = user.CompanyId,
-                            UserId = user.UserId,
-                            UserName = user.UserName,
-                            EMail = user.EMail,
-                            IP = ipAddress
-                        });
+                    {
+                        Token = result,
+                        CompanyId = user.CompanyId,
+                        UserId = user.UserId,
+                        UserName = user.UserName,
+                        EMail = user.EMail,
+                        IP = ipAddress
+                    });
                 }
             }
             return result;
@@ -189,7 +197,7 @@ namespace Architect.API.Core.Security
                 }
                 else
                 {
-                    result = new Contracts.Security.Token() { CompanyId = 0, BranchOffice = 0, Roles = string.Empty, ManagerId = 0, SecurityLevel = 0, UserId = 0 };
+                    result = new Contracts.Security.Token() { CompanyId = 0, BranchOffice = 0, Roles = string.Empty, ManagerId = 0, SecurityLevel = 0, UserId = 0, Settings= new List<Contracts.Security.SettingItem>() };
                 }
             }
 

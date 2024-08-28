@@ -16,6 +16,7 @@ app.EmisionMapfreMas = (function () {
     let mca_cuotas_gratis = 'N';
 
     function Setup() {
+        app.ui.CommonBehaviour();
         var _id = app.core.URLStringValue('presupuesto');
         if (_id != '') {
             workMode = app.core.URLStringValue('mode');

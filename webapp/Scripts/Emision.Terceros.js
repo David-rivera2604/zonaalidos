@@ -255,7 +255,7 @@ app.EmisionTercero = (function () {
                         newDriver.elaseguradoeselconductorhabitual = 2;
                         $('#tercerosTbl').bootstrapTable('append', newDriver);
                     }
-                    if (row.elaseguradoeselmismopagador === 1) {
+                    if (localStorage.getItem('Roles').includes('Purdy') && row.elaseguradoeselmismopagador === 1) {
                         let newpayer = JSON.parse(JSON.stringify(row));
                         newpayer.tercerosId += 1;
                         newpayer.tipodetercero = 21;

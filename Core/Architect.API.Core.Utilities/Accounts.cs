@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Web.Http.Results;
 
 namespace Architect.API.Core.Security
 {
@@ -17,12 +18,16 @@ namespace Architect.API.Core.Security
         {
             var securityKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(Architect.Utilities.Helpers.Settings.StringValue("Jwt:SecretKey")));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-            var claims = new[] {
+            List<Claim> claims = new List<Claim> {
                                     new Claim(JwtRegisteredClaimNames.Sub, userInfo.UserName),
                                     new Claim("UserId", userInfo.UserId.ToString()),
                                     new Claim("Body",Architect.Utilities.Helpers.CryptSupport.EncryptString(Architect.Utilities.SerializeHandler<Contracts.Security.Token>.Serialize(userInfo).CompressString())),
                                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                                 };
+            foreach (var item in userInfo.Settings)
+            {
+                claims.Add(new Claim(item.Key, item.Value));
+            }
             var token = new JwtSecurityToken(
                                             issuer: Architect.Utilities.Helpers.Settings.StringValue("Jwt:Issuer"),
                                             audience: Architect.Utilities.Helpers.Settings.StringValue("Jwt:Audience"),

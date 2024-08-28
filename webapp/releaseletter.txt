@@ -593,3 +593,8 @@
 1.6.68  07/08/2024 Aliados.	Merge general.
                    Pasarela. Ajustes en ruta de Webhook para pago recuerrentes.
                    Pasarela. Ajuste en condiciones que usan el status en los webhook.
+1.6.69  23/08/2024 Multirriesgo. Manejo de coberturas agrupadas par multirriesgo 202
+                   Trazabilidad. Redireccionamiento a ultima pagina ejecutada (mejora para visualizacion de casos)
+                   Pasarela. Settings para indicar cual pasarela estara disponible por tenant
+1.6.70  27/08/2024 Pasarela. Manejo de tiempo maximo de sesion de pago de un recibo
+                   Aliados. Cambio para hacer visible el tipo de tercero pagador solo para los usuarios con el rol Purdy, también se condiciona el check "El asegurado es el mismo pagador".

@@ -4,9 +4,14 @@
 
 app.login = (function () {
 
+    let lasthref = '';
+
     let employeeMode = window.location.href.toLowerCase().endsWith("/mapfre");
 
     function Init_Controls() {
+        app.login.lasthref = localStorage.getItem('lasthref');
+        localStorage.removeItem('lasthref');
+
     };
 
     function Init_Lookups() {
@@ -47,6 +52,10 @@ app.login = (function () {
                     .done(function (data, textStatus, jqXHR) {
                         if (data.Reason == null) {
                             if (!data.MustChangePassword) {
+
+                                data.Settings?.forEach(item => {
+                                    localStorage.setItem(item.Key, item.Value);
+                                });
                                 localStorage.setItem('Username', data.UserName);
                                 localStorage.setItem('Tenant', data.Tenant);
                                 localStorage.setItem('Color1Tenant', data.Color1Tenant);
@@ -63,7 +72,12 @@ app.login = (function () {
                                 $('#Send').prop("disabled", true);
                                 $('#Send').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Accediendo...');
                                 status = 'redirect';
-                                window.location.replace(app.setting.basepath + data.InitialPath);
+                                if (app.login.lasthref == null) {
+                                    window.location.replace(app.setting.basepath + data.InitialPath);
+                                } else {
+                                    window.location.replace(app.login.lasthref);
+                                }
+                                
                             } else {
 
                                 $('#ForgotMail').val(data.EMail);
