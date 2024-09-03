@@ -598,3 +598,10 @@
                    Pasarela. Settings para indicar cual pasarela estara disponible por tenant
 1.6.70  27/08/2024 Pasarela. Manejo de tiempo maximo de sesion de pago de un recibo
                    Aliados. Cambio para hacer visible el tipo de tercero pagador solo para los usuarios con el rol Purdy, también se condiciona el check "El asegurado es el mismo pagador".
+1.6.71  03/09/2024 Reporte Siniestros Mapfre:
+                     Manejar rango de fecha basado en la fecha de balance del panel de purdy.
+                     Manejo opcional de filtro por agente.
+                     Columna AI del Excel seria columna Monto de PurdyBalance (Agrupado por fecha y tipo de movimiento)
+                     Columna AQ seria columna Fecha de PurdyBalance.
+                     Columna BG seria la descripción del tipo de documento de PurdyBalance.
+                   Purdy. Siniestros. Ajuste en el tab de Balance, para que la fecha sea obligatoria.

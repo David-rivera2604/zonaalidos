@@ -518,8 +518,16 @@ app.PurdyPanelIndemnizacion = (function () {
         app.ui.DateValidators();
         $("#balanceEdtForm").validate({
             errorPlacement: app.ui.ErrorPlacement,
-            rules: {},
-            messages: {}
+            rules: {
+                fecha: {
+                    required: true
+                }
+            },
+            messages: {
+                fecha: {
+                    required: 'Debe indicar la fecha'
+                }
+            }
         });
     };
 

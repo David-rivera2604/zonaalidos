@@ -769,11 +769,14 @@ app.core = (function () {
                 url = app.core.DataToURL(app.Prototype.Data());
             }
             if (valid) {
+                $('.ibox-content').toggleClass('sk-loading');
                 let a = document.createElement("a");
                 a.href = app.setting.apipath + 'v1/DataSource/excel?id=' + id + '&url=' + url;
+                console.log(a.href);
                 a.download = filename;
                 a.click();
                 a.remove()
+                $('.ibox-content').toggleClass('sk-loading');
             }
         },
         ExternalCall: function (prefix, jsFile, code) {
