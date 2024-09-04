@@ -286,6 +286,9 @@ namespace Architect.API.Tron.Business.Multirriesgo.Convert
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "MCA_COB_AE",
                    quoteInfo.coberturas.Count(c => c.seleccionado == true && (c.codigo == 2027)) > 0 ? "S" : "N"));
 
+            // Porcentaje de ajuste comercial
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "PCT_AJUSTE_GEN", quoteInfo.PCT_AJUSTE_GEN.ToString(),2,64));
+
             return datosVariables;
         }
 
