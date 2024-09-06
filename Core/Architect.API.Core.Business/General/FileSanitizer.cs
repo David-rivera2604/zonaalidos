@@ -79,7 +79,12 @@ namespace Architect.API.Core.Business.General
             }
         };
 
-        // Función principal para validar el formato del archivo
+       
+        /// <summary>
+        /// Función principal para validar el formato del archivo
+        /// </summary>
+        /// <param name="file">File de processamiento.</param>
+        /// <returns></returns>
         public static bool IsValidFileFormat(this HttpPostedFile file)
         {
             if (file.IsNotEmpty())
