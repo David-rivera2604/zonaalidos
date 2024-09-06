@@ -12,6 +12,7 @@ using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Architect.API.Core.Business.General;
 
 namespace Architect.API.Core.Controllers
 {
@@ -163,7 +164,7 @@ namespace Architect.API.Core.Controllers
                 for (int i = 0; i < httpContext.Request.Files.Count; i++)
                 {
                     HttpPostedFile httpPostedFile = httpContext.Request.Files[i];
-                    if (httpPostedFile != null)
+                    if (httpPostedFile.IsValidFileFormat())
                     {
                         int size = httpPostedFile.ContentLength;
                         int id = 0;
