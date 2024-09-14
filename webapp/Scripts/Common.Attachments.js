@@ -120,14 +120,23 @@ app.Attachments = (function () {
             }
         });
 
-        $('#fileUploadModal').on('change', function () {
+        $('#fileUploadModal').on('change', function (e) {
             app.core.UpLoadFile('#AttachmentEdtForm', '#fileUploadModal',
-                function (fileList) {
-                    $('#AttachmentFileName').val(fileList[0].FileName);
-                    $('#AttachmentStored').val(fileList[0].StoredFileName);
-                    $('#AttachmentFileSize').val(fileList[0].Size);
-                    $('#AttachmentDescription').val(app.ui.StringCapitalizeFormatter(fileList[0].FileName.substring(0, fileList[0].FileName.indexOf('.'))));
-                    $('#AttachmentDescription').select().focus()
+                function (fileList, error) {
+                    if (error) {
+                        document.getElementById('fileUploadModal').value = null;
+                        $('#AttachmentFileName').val(fileList[0].name);
+                        $('#AttachmentFileName').select().focus();
+                        $('#AttachmentEdtForm').validate().valid();
+                        $('#AttachmentDescription').select().focus();
+                    }
+                    else {
+                        $('#AttachmentFileName').val(fileList[0].FileName);
+                        $('#AttachmentStored').val(fileList[0].StoredFileName);
+                        $('#AttachmentFileSize').val(fileList[0].Size);
+                        $('#AttachmentDescription').val(app.ui.StringCapitalizeFormatter(fileList[0].FileName.substring(0, fileList[0].FileName.indexOf('.'))));
+                        $('#AttachmentDescription').select().focus();
+                    }
                 });
         });
 
@@ -153,7 +162,11 @@ app.Attachments = (function () {
                     required: true
                 },
                 AttachmentFileName: {
-                    required: true
+                    required: true,
+                    extension: "docx|pdf|png"
+                },
+                fileUploadModal: {
+                    extension: "docx|pdf|png"
                 }
             },
             messages: {
@@ -164,7 +177,11 @@ app.Attachments = (function () {
                     required: 'Debe indicar el tipo de documento'
                 },
                 AttachmentFileName: {
-                    required: 'Debe indicar un archivo'
+                    required: 'Debe indicar un archivo',
+                    extension: 'Debe indicar un archivo con un tipo valido (docx, pdf, png)'
+                },
+                fileUploadModal: {
+                    extension: 'Debeeee indicar un archivo con un tipo valido (docx, pdf, png)'
                 }
             }
         });

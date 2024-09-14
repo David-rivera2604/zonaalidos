@@ -13,6 +13,7 @@ using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Architect.API.Core.Business.General;
+using System.Security.Cryptography;
 
 namespace Architect.API.Core.Controllers
 {
@@ -194,9 +195,13 @@ namespace Architect.API.Core.Controllers
                         result.Add(new { FileName = httpPostedFile.FileName, StoredFileName = fileName, Size = size, Id = id });
                     }
                     else
-                        throw new Architect.Utilities.Exceptions.ApplicationException($"El archivo {httpPostedFile.FileName} no es válido para su tipo");
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, new { Message = $"El archivo {httpPostedFile.FileName} no es válido para su tipo" });
+                    }
                 }
             }
+
+
 
             return Request.CreateResponse(HttpStatusCode.Created, result);
         }

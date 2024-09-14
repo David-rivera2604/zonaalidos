@@ -1,4 +1,5 @@
-﻿using Architect.Utilities.Extensions;
+﻿using Architect.Utilities;
+using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,8 +12,14 @@ using System.Web;
 
 namespace Architect.API.Core.Business.General
 {
+    /// <summary>
+    /// Realiza la sanitización de los archivos de entrada utilizando los números mágicos del encabezado para validar su integridad y formato.
+    /// 
+    /// Los formatos soportados son: XLS, XLSX, DOC, DOCX, JSON y PNG.
+    /// </summary>
     public static class FileSanitizer
     {
+
         // Definir los encabezados para diferentes tipos de archivos
         private static readonly byte[] PdfHeader = { 0x25, 0x50, 0x44, 0x46 }; // PDF (Encabezado de archivos PDF)
         private static readonly byte[] DocxHeader = { 0x50, 0x4B, 0x03, 0x04 }; // PK (Encabezado de archivos DOCX y XLSX)
@@ -22,69 +29,68 @@ namespace Architect.API.Core.Business.General
 
         // Diccionario para mapear tipos MIME a funciones de validación
         private static Dictionary<string, Func<HttpPostedFile, byte[], bool>> _types = new Dictionary<string, Func<HttpPostedFile, byte[], bool>>()
-        {
-            // Validar archivos XLSX
-            { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", (file, header) =>
-                {
-                    var result = false;
-                    // Verificar si el encabezado coincide con el de XLSX
-                    if (header.SequenceEqual(XlsxHeader))
-                        result = IsValidDocxFile(file.InputStream, false); // Validar el archivo como DOCX (en este caso XLSX)
-                    return result;
+            {
+                // Validar archivos XLSX
+                { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", (file, header) =>
+                    {
+                        var result = false;
+                        // Verificar si el encabezado coincide con el de XLSX
+                        if (header.SequenceEqual(XlsxHeader))
+                            result = IsValidDocxFile(file.InputStream, false); // Validar el archivo como DOCX (en este caso XLSX)
+                        return result;
+                    }
+                },
+                // Validar archivos XLS
+                { "application/vnd.ms-excel",  (file, header) =>
+                    {
+                        var result = false;
+                        // Verificar si el encabezado coincide con el de XLS
+                        if (header.SequenceEqual(XlsHeader))
+                           result = true; // Considerar el archivo como válido
+                        return result;
+                    }
+                },
+                // Validar archivos DOCX
+                { "application/vnd.openxmlformats-officedocument.wordprocessingml.document", (file, header) =>
+                    {
+                        var result = false;
+                        // Verificar si el encabezado coincide con el de DOCX
+                        if (header.SequenceEqual(DocxHeader))
+                            result = IsValidDocxFile(file.InputStream, true); // Validar el archivo como DOCX (Word)
+                        return result;
+                    }
+                },
+                // Validar archivos PDF
+                { "application/pdf", (file, header) =>
+                    {
+                        var result = false;
+                        // Verificar si el encabezado coincide con el de PDF
+                        result = header.SequenceEqual(PdfHeader);
+                        return result;
+                    }
+                },
+                // Validar archivos PNG
+                { "image/png", (file, header) =>
+                    {
+                        // Verificar si el encabezado coincide con el de PNG
+                        var result = header.SequenceEqual(PngHeader);
+                        return result;
+                    }
+                },
+                // Validar archivos JSON
+                { "application/json", (file, header) =>
+                    {
+                        var result = IsValidJsonFile(file); // Validar si el archivo contiene JSON válido
+                        return result;
+                    }
                 }
-            },
-            // Validar archivos XLS
-            { "application/vnd.ms-excel",  (file, header) =>
-                {
-                    var result = false;
-                    // Verificar si el encabezado coincide con el de XLS
-                    if (header.SequenceEqual(XlsHeader))
-                       result = true; // Considerar el archivo como válido
-                    return result;
-                }
-            },
-            // Validar archivos DOCX
-            { "application/vnd.openxmlformats-officedocument.wordprocessingml.document", (file, header) =>
-                {
-                    var result = false;
-                    // Verificar si el encabezado coincide con el de DOCX
-                    if (header.SequenceEqual(DocxHeader))
-                        result = IsValidDocxFile(file.InputStream, true); // Validar el archivo como DOCX (Word)
-                    return result;
-                }
-            },
-            // Validar archivos PDF
-            { "application/pdf", (file, header) =>
-                {
-                    var result = false;
-                    // Verificar si el encabezado coincide con el de PDF
-                    result = header.SequenceEqual(PdfHeader);
-                    return result;
-                }
-            },
-            // Validar archivos PNG
-            { "image/png", (file, header) =>
-                {
-                    // Verificar si el encabezado coincide con el de PNG
-                    var result = header.SequenceEqual(PngHeader);
-                    return result;
-                }
-            },
-            // Validar archivos JSON
-            { "application/json", (file, header) =>
-                {
-                    var result = IsValidJsonFile(file); // Validar si el archivo contiene JSON válido
-                    return result;
-                }
-            }
-        };
+            };
 
-       
         /// <summary>
         /// Función principal para validar el formato del archivo
         /// </summary>
-        /// <param name="file">File de processamiento.</param>
-        /// <returns></returns>
+        /// <param name="file">El archivo a validar</param>
+        /// <returns>True si el archivo es válido, de lo contrario False</returns>
         public static bool IsValidFileFormat(this HttpPostedFile file)
         {
             if (file.IsNotEmpty())
@@ -102,11 +108,16 @@ namespace Architect.API.Core.Business.General
                 // Usar la función correspondiente para validar el archivo basado en su encabezado
                 return _types[key](file, header);
             }
-            else 
+            else
                 return false;
         }
 
-        // Validar archivos DOCX (o XLSX, que tienen una estructura similar)
+        /// <summary>
+        /// Validar archivos DOCX (o XLSX, que tienen una estructura similar)
+        /// </summary>
+        /// <param name="inputStream">El flujo de entrada del archivo</param>
+        /// <param name="isWord">Indica si el archivo es un documento Word</param>
+        /// <returns>True si el archivo es válido, de lo contrario False</returns>
         private static bool IsValidDocxFile(Stream inputStream, bool isWord)
         {
             // Definir el archivo principal a verificar (Word o Excel)
@@ -132,7 +143,12 @@ namespace Architect.API.Core.Business.General
             return ValidateDocxArchive(inputStream, typeOffice);
         }
 
-        // Validar la estructura interna de un archivo DOCX o XLSX (ZIP)
+        /// <summary>
+        /// Validar la estructura interna de un archivo DOCX o XLSX (ZIP)
+        /// </summary>
+        /// <param name="stream">El flujo de entrada del archivo</param>
+        /// <param name="typeOffice">El tipo de archivo a verificar (Word o Excel)</param>
+        /// <returns>True si el archivo es válido, de lo contrario False</returns>
         private static bool ValidateDocxArchive(Stream stream, string typeOffice)
         {
             bool hasDocumentXml = false;
@@ -172,7 +188,11 @@ namespace Architect.API.Core.Business.General
             return hasDocumentXml && hasContentTypesXml && hasRelsFolder;
         }
 
-        // Validar si el archivo JSON tiene un formato válido
+        /// <summary>
+        /// Validar si el archivo JSON tiene un formato válido
+        /// </summary>
+        /// <param name="file">El archivo JSON a validar</param>
+        /// <returns>True si el archivo es un JSON válido, de lo contrario False</returns>
         private static bool IsValidJsonFile(HttpPostedFile file)
         {
             try
@@ -202,5 +222,6 @@ namespace Architect.API.Core.Business.General
                 return false; // Otro error
             }
         }
+
     }
 }

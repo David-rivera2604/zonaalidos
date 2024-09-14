@@ -192,43 +192,53 @@ app.core = (function () {
         let arr = $(uploadCtrolId).prop('files');
         let message = '';
         let elementInstance = $(formId).validate();
+        let isValid = !elementInstance.valid();
 
-        for (index = 0; index < arr.length; index++) {
-            if (arr[index].size >= 31457280) {
-                if (message != '') {
-                    message = message & ', ';
-                }
-                message = message & 'El tamaño del archivo ' + arr[index].name + 'es mayor a 30mb';
-            }
+        if (arr.length == 0) {
+            return;
         }
-        if (message != '') {
-            elementInstance.showErrors({ 'FileName': message });
-        }
-        else {
-            app.ui.ButtonDoing(uploadCtrolId);
-            var fileData = new FormData();
+        if ($(uploadCtrolId).valid()) {
+
+
             for (index = 0; index < arr.length; index++) {
-                fileData.append('files', arr[index]);
-            }
-            $.ajax({
-                type: "POST",
-                enctype: 'multipart/form-data',
-                url: app.setting.apipath + 'v1/Common/Upload',
-                data: fileData,
-                processData: false,
-                contentType: false,
-                cache: false,
-                timeout: 600000,
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                if (arr[index].size >= 31457280) {
+                    if (message != '') {
+                        message = message & ', ';
+                    }
+                    message = message & 'El tamaño del archivo ' + arr[index].name + 'es mayor a 30mb';
                 }
-            }).done(function (fileList) {
-                callback(fileList);
-            }).fail(function (jqXHR, textStatus, errorThrown) {
-                ajaxErrorHandler(jqXHR, errorThrown);
-            }).always(function () {
-                app.ui.ButtonDone(uploadCtrolId)
-            });
+            }
+            if (message != '') {
+                elementInstance.showErrors({ 'FileName': message });
+            }
+            else {
+                app.ui.ButtonDoing(uploadCtrolId);
+                var fileData = new FormData();
+                for (index = 0; index < arr.length; index++) {
+                    fileData.append('files', arr[index]);
+                }
+                $.ajax({
+                    type: "POST",
+                    enctype: 'multipart/form-data',
+                    url: app.setting.apipath + 'v1/Common/Upload',
+                    data: fileData,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    timeout: 600000,
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                    }
+                }).done(function (fileList) {
+                    callback(fileList, false);
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    ajaxErrorHandler(jqXHR, errorThrown);
+                }).always(function () {
+                    app.ui.ButtonDone(uploadCtrolId)
+                });
+            }
+        } else {
+            callback([arr[0]], true);
         }
     }
 
