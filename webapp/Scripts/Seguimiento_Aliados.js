@@ -34,10 +34,10 @@ app.EspecifiCase = (function () {
                 $('#Title').focus();
                 $("#ContenCase").addClass("d-none");
                 RefreshProcess(data.InstanceId);
-                
+
                 setTimeout(function () {
                     $("#ContenCase").removeClass("d-none");
-                },50)
+                }, 50)
                 $("#Cases_Info").removeClass("d-none");
             }).always(function () {
                 $('.ibox-content').toggleClass('sk-loading');
@@ -96,7 +96,7 @@ app.EspecifiCase = (function () {
                         return result;
 
                     }
-                },{
+                }, {
                     field: 'FinishDate',
                     title: 'Completado',
                     class: 'd-none d-sm-table-cell',
@@ -111,7 +111,7 @@ app.EspecifiCase = (function () {
     //Funcion para toda la carga de la informacion de tabla, estado, y progreso de un caso en especifico
     async function RefreshProcess(instanceId) {
 
-        app.CentralCase.Get(app.setting.apipath + 'v1/Process/Instance/' + instanceId + '/3', tokenAl,false)
+        app.CentralCase.Get(app.setting.apipath + 'v1/Process/Instance/' + instanceId + '/3', tokenAl, false)
             .done(function (data, textStatus, jqXHR) {
                 _instance = data;
                 if (data.Steps) {
@@ -153,6 +153,7 @@ app.EspecifiCase = (function () {
 app.CaseInfo = (function () {
     return {
         Init: function ($el, xid, url, index) {
+
             app.core.Get(app.setting.apipath + 'v1/CasesSecurity/Create?Tenant=' + localStorage.getItem("Tenant"))
                 .done(function (data, textStatus, jqXHR) {
                     tokenAl = data.TokenAliado
@@ -169,7 +170,7 @@ app.CaseInfo = (function () {
                         url = '';
                     }
 
-                    app.CentralCase.Get(/*Api1*/  app.setting.apipath + 'v1/ProcessCase?filter=CaseAliados'  /*Api2*/ /*app.setting.apipath + 'v1/datasource/json?id=4000&sequence=' + index + '&url=' + window.location.search.slice(1).replace(/&/g, ':') + url*/, tokenAl,false)
+                    app.CentralCase.Get(/*Api1*/  app.setting.apipath + 'v1/ProcessCase?filter=CaseAliados'  /*Api2*/ /*app.setting.apipath + 'v1/datasource/json?id=4000&sequence=' + index + '&url=' + window.location.search.slice(1).replace(/&/g, ':') + url*/, tokenAl, false)
                         .done(function (data) {
                             data.forEach(function (row, index, array) {
 
@@ -178,8 +179,9 @@ app.CaseInfo = (function () {
                                 /*Api2 */  /*$('#Casos_Lista').append(`<div class="Content_Case" id="${IntanceCase}" onclick="app.CaseInfo.State(${IntanceCase})"><div class="Column_Conte CodCase"><i class="fa fa-caret-right" aria-hidden="true"> </i><p> ${row.ID}</p></div><div class="Column_Conte Asun"> <p>${row.TITLE}</p></div><div class="Column_Conte StatusDes"><p>${row.STATUSDESC}</p></div></div>`); */
                             });
                         });
+                    $("#AttachmentTbl-error").parent().addClass("d-none");
                 })
-            
+
         },
         State: function (InstanceID) {
             var element = $("#" + InstanceID)
@@ -187,17 +189,21 @@ app.CaseInfo = (function () {
                 $(this).removeClass("activo");
             })
             element.addClass("activo")
-            
+
+            app.Attachments.Init({ EntityType: 1304, Id: InstanceID, PostByEachRow: true });
+            app.Notes.Init({ EntityType: 1304, Id: InstanceID, PostByEachRow: true });
+
+
             app.CentralCase.Get(app.setting.apipath + 'v1/Process/Instance/' + InstanceID + '/3', tokenAl, false)
                 .done(function (data, textStatus, jqXHR) {
                     app.EspecifiCase.EditRow(data);
-                    
+
                 })
         },
         Busqueda: function (busqueda, datfil) {
             busqueda = busqueda.toLowerCase();
             datfil = datfil.toLowerCase();
-            if (busqueda == "" && datfil =="todos") {
+            if (busqueda == "" && datfil == "todos") {
                 $(".table1 div.Content_Case").each(function () {
                     $(this).each(function () {
                         $(this).removeClass("d-none");
@@ -207,38 +213,38 @@ app.CaseInfo = (function () {
             else {
                 $(".table1 div.Content_Case").each(function () {
                     $(this).each(function () {
-                            $(this).each(function () {
-                                var value = this.innerText
-                                value = value.toLowerCase();
-                                if (value.indexOf(busqueda) >= 0) {
+                        $(this).each(function () {
+                            var value = this.innerText
+                            value = value.toLowerCase();
+                            if (value.indexOf(busqueda) >= 0) {
 
-                                    var filtro = false
-                                    if (datfil != "todos") {
-                                        filtro = true
-                                    }
+                                var filtro = false
+                                if (datfil != "todos") {
+                                    filtro = true
+                                }
 
-                                    if (filtro) {
-                                        if (value.indexOf(datfil) >= 0) {
-                                            $(this).removeClass("d-none");
-                                        }
-                                        else {
-                                            $(this).addClass("d-none");
-                                        }
+                                if (filtro) {
+                                    if (value.indexOf(datfil) >= 0) {
+                                        $(this).removeClass("d-none");
                                     }
                                     else {
-                                        $(this).removeClass("d-none");
+                                        $(this).addClass("d-none");
                                     }
                                 }
                                 else {
-                                    $(this).addClass("d-none");
+                                    $(this).removeClass("d-none");
                                 }
-                            })                                         
+                            }
+                            else {
+                                $(this).addClass("d-none");
+                            }
+                        })
                     })
 
                 })
             }
 
-    },
+        },
     };
 })();
 

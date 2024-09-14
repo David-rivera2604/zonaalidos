@@ -98,7 +98,7 @@ app.Attachments = (function () {
                             FileContent: row.Stored
                         }))
                         .done(function (data) {
-                            AttachmentDraw(_data.Id);
+                            AttachmentDraw();
                         }).always(function () {
                             app.ui.ButtonDone('#AttachmentEdtFormSave')
                             $('#AttachmentModal').modal('hide');
@@ -170,9 +170,9 @@ app.Attachments = (function () {
         });
     };
 
-    function AttachmentDraw(entityId) {
+    function AttachmentDraw() {
         $('#AttachmentGridTbl').bootstrapTable('showLoading');
-        app.core.Get(app.setting.apipath + `v1/Common/Attachments?entityType=1304&entityId=${entityId}`)
+        app.core.Get(app.setting.apipath + `v1/Common/Attachments?entityType=${_data.EntityType}&entityId=${_data.Id}`)
             .done(function (data) {
                 $('#AttachmentGridTbl').bootstrapTable('load', data !== null ? data : []);
             }).always(function () {
@@ -226,10 +226,13 @@ app.Attachments = (function () {
         //{ EntityType: 1304, Id: 0, PostByEachRow: false }
         Init: function (data) {
             try {
+                if (_data == null) {
+                    Attachment_List_Setup();
+                    Setup_Attachment_Validations();
+                }
                 _data = data;
+                AttachmentDraw();
 
-                Attachment_List_Setup();
-                Setup_Attachment_Validations();
             }
             catch (err) {
                 console.error("Error Init");
@@ -253,7 +256,7 @@ app.Attachments = (function () {
                                 app.core.Delete(app.setting.apipath + `v1/Common/Attachments/${row.Id}`)
                                     .done(function (data, textStatus, jqXHR) {
                                         toastr.success("El adjunto '" + row.FileName + "' fue eliminado", "", { timeOut: 5000, closeButton: true, progressBar: true });
-                                        AttachmentDraw(_data.Id);
+                                        AttachmentDraw();
                                     });
                             }
                         });
