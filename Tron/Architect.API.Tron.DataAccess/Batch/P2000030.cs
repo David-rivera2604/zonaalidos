@@ -39,5 +39,16 @@ namespace Architect.API.Tron.DataAccess.Batch
             return result >= 1;
         }
 
+        public static bool UpdateCod_fracc_pago(int cod_fracc_pago, string num_poliza, IDbConnection currentConnection)
+        {
+            var result = Database.Update("UPDATE P2000030 " +
+                                           " SET cod_fracc_pago = :cod_fracc_pago " +
+                                         " WHERE NUM_POLIZA = :NUM_POLIZA")
+                     .AddParameter("cod_fracc_pago", Architect.DataFactory.Enumerations.DbType.Int32, 2, cod_fracc_pago)
+                     .AddParameter("NUM_POLIZA", Architect.DataFactory.Enumerations.DbType.String, 13, num_poliza)
+                     .Execute(currentConnection, "Tron");
+            return result >= 1;
+        }
+
     }
 }

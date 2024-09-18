@@ -14,7 +14,7 @@ app.Form_Ext_SICOP = (function () {
         $(`#${formName}EdtForm`).validate(); $("#Supplier_identifier").rules('add', { minlength: 10, messages: { minlength: "Por favor ingrese al menos {0} caracteres" } });
         $(`#${formName}EdtForm`).validate(); $("#Guarantee_identifier").rules('add', { minlength: 10, messages: { minlength: "Por favor ingrese al menos {0} caracteres" } });
 
-        $('#Issue_date_group').data("DateTimePicker").minDate(app.ui.Today());
+        //('#Issue_date_group').data("DateTimePicker").minDate(app.ui.Today());
 
         $('#Guarantee_number').change(function (e) {
             let guarantee_number = $('#Guarantee_number').val();

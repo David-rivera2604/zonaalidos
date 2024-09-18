@@ -53,7 +53,7 @@ app.EmisionMapfreMas = (function () {
     function ReadOnly() {
         $('input[name=tipo_prod').first().parent().parent().replaceWith('<div>' + $('input:radio[name=tipo_prod]:checked').next().html() + '</div>')
         $('#cod_mon').replaceWith('<div>' + $('#cod_mon option:selected').text() + '</div>');
-        $('#cod_fracc_pago').replaceWith('<div>' + $('#cod_fracc_pago option:selected').text() + '</div>');
+        //$('#cod_fracc_pago').replaceWith('<div>' + $('#cod_fracc_pago option:selected').text() + '</div>');
         //$('#fec_efec_poliza_group').replaceWith('<div>' + $('#fec_efec_poliza').val() + '</div>');
         //$('#fec_vcto_poliza_group').replaceWith('<div>' + $('#fec_vcto_poliza').val() + '</div>');
         $('#COD_PLAN_AUTO').replaceWith('<div>' + $('#COD_PLAN_AUTO option:selected').text() + '</div>');
@@ -234,6 +234,7 @@ app.EmisionMapfreMas = (function () {
 
     function MapInputToObject() {
         var data = setupData;
+        data.cod_fracc_pago = app.ui.GetDropDownNumericValue('#cod_fracc_pago');
         data.fec_efec_poliza = app.ui.GetDateValue('#fec_efec_poliza');
         data.fec_vcto_poliza = app.ui.GetDateValue('#fec_vcto_poliza');
         data.Fuente_Tomador = $('#Fuente_Tomador').val();
