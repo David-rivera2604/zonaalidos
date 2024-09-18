@@ -213,7 +213,8 @@ app.CotizacionMultirriesgo = (function () {
             subcontrato: app.ui.GetDropDownNumericValue('#subcontrato'),
             polizagrupo: setupData.polizagrupo,
             cod_agt: app.Cotizacion.AgentCode(),
-            cod_cuadro_com: app.Cotizacion.CuadroCom()
+            cod_cuadro_com: app.Cotizacion.CuadroCom(),
+            PCT_AJUSTE_GEN: app.ui.GetNumericValue('#PCT_AJUSTE_GEN')
         };
         return data;
     };
@@ -268,6 +269,7 @@ app.CotizacionMultirriesgo = (function () {
         else
             $('#plandepagoTbl').bootstrapTable('load', {});
         Coberturas_ManejoDeCapital();
+        app.ui.SetNumericValue('#PCT_AJUSTE_GEN', data.PCT_AJUSTE_GEN);
     };
 
     function Controls_setup() {
@@ -435,6 +437,15 @@ app.CotizacionMultirriesgo = (function () {
             decimalPlaces: '0',
             emptyInputBehavior: 'null'
         });
+        new AutoNumeric('#PCT_AJUSTE_GEN', {
+            decimalCharacter: ',',
+            decimalCharacterAlternative: '.',
+            digitGroupSeparator: '.',
+            maximumValue: '0',
+            minimumValue: '-25',
+            decimalPlaces: '0',
+            emptyInputBehavior: 'null'
+        });
         $("#cotizar").appendTo("#GenericToolBar");
         $("#limpiar").appendTo("#GenericToolBar");
     };
@@ -553,7 +564,8 @@ app.CotizacionMultirriesgo = (function () {
                 IMP_MERCADERIA: { AtLeastOne: 'IMP_MOBILIARIO,IMP_MAQUINARIA,IMP_EQUIP_ELEC,IMP_EQUIP_ELEC_M,IMP_MERCADERIA,IMP_BIE_TEM_DES,IMP_BIE_INT,IMP_OBJ_ESP_VAL' },
                 IMP_BIE_TEM_DES: { AtLeastOne: 'IMP_MOBILIARIO,IMP_MAQUINARIA,IMP_EQUIP_ELEC,IMP_EQUIP_ELEC_M,IMP_MERCADERIA,IMP_BIE_TEM_DES,IMP_BIE_INT,IMP_OBJ_ESP_VAL' },
                 IMP_BIE_INT: { AtLeastOne: 'IMP_MOBILIARIO,IMP_MAQUINARIA,IMP_EQUIP_ELEC,IMP_EQUIP_ELEC_M,IMP_MERCADERIA,IMP_BIE_TEM_DES,IMP_BIE_INT,IMP_OBJ_ESP_VAL' },
-                IMP_OBJ_ESP_VAL: { AtLeastOne: 'IMP_MOBILIARIO,IMP_MAQUINARIA,IMP_EQUIP_ELEC,IMP_EQUIP_ELEC_M,IMP_MERCADERIA,IMP_BIE_TEM_DES,IMP_BIE_INT,IMP_OBJ_ESP_VAL' }
+                IMP_OBJ_ESP_VAL: { AtLeastOne: 'IMP_MOBILIARIO,IMP_MAQUINARIA,IMP_EQUIP_ELEC,IMP_EQUIP_ELEC_M,IMP_MERCADERIA,IMP_BIE_TEM_DES,IMP_BIE_INT,IMP_OBJ_ESP_VAL' },
+                cod_tip_ocup: { required: true }
             },
             messages: {
                 cod_mon: { required: 'Debe indicar el Moneda' },
@@ -579,7 +591,8 @@ app.CotizacionMultirriesgo = (function () {
                 IMP_MERCADERIA: { AtLeastOne: 'Debe indicar al menos una suma asegurada para rubros' },
                 IMP_BIE_TEM_DES: { AtLeastOne: 'Debe indicar al menos una suma asegurada para rubros' },
                 IMP_BIE_INT: { AtLeastOne: 'Debe indicar al menos una suma asegurada para rubros' },
-                IMP_OBJ_ESP_VAL: { AtLeastOne: 'Debe indicar al menos una suma asegurada para rubros' }
+                IMP_OBJ_ESP_VAL: { AtLeastOne: 'Debe indicar al menos una suma asegurada para rubros' },
+                cod_tip_ocup: { required: 'Debe indicar la ocupacion del riesgo' }
             }
         });
     };

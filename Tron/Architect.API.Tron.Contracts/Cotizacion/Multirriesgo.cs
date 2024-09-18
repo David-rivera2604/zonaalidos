@@ -173,6 +173,9 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         [DataMember(), JsonProperty()] public int contrato { get; set; }
         [DataMember(), JsonProperty()] public int subcontrato { get; set; }
         [DataMember(), JsonProperty()] public string polizagrupo { get; set; }
+
+        [DataMember(), JsonProperty()] public int PCT_AJUSTE_GEN { get; set; } = 0;
+
     }
 
 }
