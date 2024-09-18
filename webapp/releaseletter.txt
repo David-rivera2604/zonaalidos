@@ -605,3 +605,4 @@
                      Columna AQ seria columna Fecha de PurdyBalance.
                      Columna BG seria la descripción del tipo de documento de PurdyBalance.
                    Purdy. Siniestros. Ajuste en el tab de Balance, para que la fecha sea obligatoria.
+1.6.72  16/09/2024 Trazabilidad. Manejo de notas y adjuntos en el seguimiento de los casos.

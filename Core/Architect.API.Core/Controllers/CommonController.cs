@@ -12,6 +12,8 @@ using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Architect.API.Core.Business.General;
+using System.Security.Cryptography;
 
 namespace Architect.API.Core.Controllers
 {
@@ -117,7 +119,6 @@ namespace Architect.API.Core.Controllers
                 {
                     result = Created(string.Format("{0}/{1}", Request.RequestUri.AbsoluteUri.Substring(0, Request.RequestUri.AbsoluteUri.LastIndexOf("/")), item.Id), new { Id = item.Id, UpdateDate = item.UpdateDate });
                 }
-
             }).ConfigureAwait(false);
             return result;
         }
@@ -163,14 +164,13 @@ namespace Architect.API.Core.Controllers
                 for (int i = 0; i < httpContext.Request.Files.Count; i++)
                 {
                     HttpPostedFile httpPostedFile = httpContext.Request.Files[i];
-                    if (httpPostedFile != null)
+                    if (httpPostedFile.IsValidFileFormat())
                     {
                         int size = httpPostedFile.ContentLength;
                         int id = 0;
                         string fileName = string.Format("{0}{1}", Guid.NewGuid(), Path.GetExtension(httpPostedFile.FileName));
                         string fullFileName = Path.Combine(HostingEnvironment.MapPath(ConfigurationManager.AppSettings["Files.Path"]), fileName);
                         httpPostedFile.SaveAs(fullFileName);
-
 
                         if (httpContext.Request.Form?.Get("entityType") != null &&
                             httpContext.Request.Form?.Get("entityId") != null &&
@@ -194,10 +194,14 @@ namespace Architect.API.Core.Controllers
                         }
                         result.Add(new { FileName = httpPostedFile.FileName, StoredFileName = fileName, Size = size, Id = id });
                     }
-
-
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, new { Message = $"El archivo {httpPostedFile.FileName} no es válido para su tipo" });
+                    }
                 }
             }
+
+
 
             return Request.CreateResponse(HttpStatusCode.Created, result);
         }
@@ -321,7 +325,6 @@ namespace Architect.API.Core.Controllers
             return result;
         }
 
-
         /// <summary>
         /// Manejo general de los error de validación.
         /// </summary>
@@ -337,7 +340,6 @@ namespace Architect.API.Core.Controllers
             }
             return BadRequest(ModelState);
         }
-
 
         /// <summary>
         /// Permite el envío de correos electrónico.
@@ -369,6 +371,5 @@ namespace Architect.API.Core.Controllers
             }).ConfigureAwait(false);
             return Ok(true);
         }
-
     }
 }

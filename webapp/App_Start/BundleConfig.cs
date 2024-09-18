@@ -40,6 +40,7 @@ namespace aliados
                         "~/assets/bootstrap/js/bootstrap.js",
                         "~/assets/js/plugins/moment/moment-with-locales.min.js",
                         "~/assets//jquery-validation/jquery.validate.js",
+                        "~/assets//jquery-validation/additional-methods.js",
                         "~/assets/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js",
                         "~/app/js/core.js",
                         "~/app/js/core.ui.js",

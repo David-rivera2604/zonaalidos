@@ -98,7 +98,7 @@ app.Attachments = (function () {
                             FileContent: row.Stored
                         }))
                         .done(function (data) {
-                            AttachmentDraw(_data.Id);
+                            AttachmentDraw();
                         }).always(function () {
                             app.ui.ButtonDone('#AttachmentEdtFormSave')
                             $('#AttachmentModal').modal('hide');
@@ -120,14 +120,23 @@ app.Attachments = (function () {
             }
         });
 
-        $('#fileUploadModal').on('change', function () {
+        $('#fileUploadModal').on('change', function (e) {
             app.core.UpLoadFile('#AttachmentEdtForm', '#fileUploadModal',
-                function (fileList) {
-                    $('#AttachmentFileName').val(fileList[0].FileName);
-                    $('#AttachmentStored').val(fileList[0].StoredFileName);
-                    $('#AttachmentFileSize').val(fileList[0].Size);
-                    $('#AttachmentDescription').val(app.ui.StringCapitalizeFormatter(fileList[0].FileName.substring(0, fileList[0].FileName.indexOf('.'))));
-                    $('#AttachmentDescription').select().focus()
+                function (fileList, error) {
+                    if (error) {
+                        document.getElementById('fileUploadModal').value = null;
+                        $('#AttachmentFileName').val(fileList[0].name);
+                        $('#AttachmentFileName').select().focus();
+                        $('#AttachmentEdtForm').validate().valid();
+                        $('#AttachmentDescription').select().focus();
+                    }
+                    else {
+                        $('#AttachmentFileName').val(fileList[0].FileName);
+                        $('#AttachmentStored').val(fileList[0].StoredFileName);
+                        $('#AttachmentFileSize').val(fileList[0].Size);
+                        $('#AttachmentDescription').val(app.ui.StringCapitalizeFormatter(fileList[0].FileName.substring(0, fileList[0].FileName.indexOf('.'))));
+                        $('#AttachmentDescription').select().focus();
+                    }
                 });
         });
 
@@ -153,7 +162,11 @@ app.Attachments = (function () {
                     required: true
                 },
                 AttachmentFileName: {
-                    required: true
+                    required: true,
+                    extension: "docx|pdf|png"
+                },
+                fileUploadModal: {
+                    extension: "docx|pdf|png"
                 }
             },
             messages: {
@@ -164,15 +177,19 @@ app.Attachments = (function () {
                     required: 'Debe indicar el tipo de documento'
                 },
                 AttachmentFileName: {
-                    required: 'Debe indicar un archivo'
+                    required: 'Debe indicar un archivo',
+                    extension: 'Debe indicar un archivo con un tipo valido (docx, pdf, png)'
+                },
+                fileUploadModal: {
+                    extension: 'Debeeee indicar un archivo con un tipo valido (docx, pdf, png)'
                 }
             }
         });
     };
 
-    function AttachmentDraw(entityId) {
+    function AttachmentDraw() {
         $('#AttachmentGridTbl').bootstrapTable('showLoading');
-        app.core.Get(app.setting.apipath + `v1/Common/Attachments?entityType=1304&entityId=${entityId}`)
+        app.core.Get(app.setting.apipath + `v1/Common/Attachments?entityType=${_data.EntityType}&entityId=${_data.Id}`)
             .done(function (data) {
                 $('#AttachmentGridTbl').bootstrapTable('load', data !== null ? data : []);
             }).always(function () {
@@ -226,10 +243,13 @@ app.Attachments = (function () {
         //{ EntityType: 1304, Id: 0, PostByEachRow: false }
         Init: function (data) {
             try {
+                if (_data == null) {
+                    Attachment_List_Setup();
+                    Setup_Attachment_Validations();
+                }
                 _data = data;
+                AttachmentDraw();
 
-                Attachment_List_Setup();
-                Setup_Attachment_Validations();
             }
             catch (err) {
                 console.error("Error Init");
@@ -253,7 +273,7 @@ app.Attachments = (function () {
                                 app.core.Delete(app.setting.apipath + `v1/Common/Attachments/${row.Id}`)
                                     .done(function (data, textStatus, jqXHR) {
                                         toastr.success("El adjunto '" + row.FileName + "' fue eliminado", "", { timeOut: 5000, closeButton: true, progressBar: true });
-                                        AttachmentDraw(_data.Id);
+                                        AttachmentDraw();
                                     });
                             }
                         });

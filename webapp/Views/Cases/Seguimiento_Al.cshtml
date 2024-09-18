@@ -4,7 +4,7 @@
 @Styles.Render("~/Content/cssCRUD")
 
 <div class="row">
-    <div class="col-md-7">
+    <div class="col-md-5">
         <div class="row">
 
             <div class="Casos_St">
@@ -61,54 +61,75 @@
         </div>
 
     </div>
-    <div id="Cases_Info" class="col-md-4 d-none EspeCaseBox">
-        
-        <div class="row">
-            <div class="row animated fadeInRight">
-                <div class="ibox-title EstTi">
-                    <h5><i class="fa fa-th-list" aria-hidden="true"></i> Estado del Caso</h5>
-                </div>
-                <div class="animated fadeInRight" id="ContenCase" style="width: 96%;">
-                    <div class="col-sm-12">
-                        <!-- ProcessCase -->
-                        <div class="ibox">
-                            <div class="Title_Case">
-                                <h5>
-                                    <i class="fa fa-inbox"></i> <span id="Title" title="Descripción del caso"></span>
-                                    <small class="m-l-sm"><span id="FlowIdDesc" title="Proceso asociado al caso"></span></small>
-                                </h5>
+    <div id="Cases_Info" class="col-md-7 d-none XEspeCaseBox">
 
-                            </div>
-                            <div class="row">
-                                <div class="Progres_Bar">
-                                    <div class="col infoCase">
-                                        <small class="stats-label">Etapa actual</small>
-                                        <p id="CurrentStep" class="fw-600"></p>
-                                    </div>
-                                    <div class="col infoCase">
-                                        <small class="stats-label">Progreso</small>
-                                        <div class="progress" style="margin: 0px 2px 20px 2px;">
-                                            <div style="width: 0%;" class="progress-bar progress-bar-danger ProgreCase"></div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row animated fadeInRight">
+                    <div class="ibox-title EstTi">
+                        <h5><i class="fa fa-th-list" aria-hidden="true"></i> Estado del Caso</h5>
+                    </div>
+                    <div class="animated fadeInRight" id="ContenCase" style="width: 96%;">
+                        <div class="col-sm-12">
+                            <!-- ProcessCase -->
+                            <div class="ibox">
+                                <div class="Title_Case">
+                                    <h5>
+                                        <i class="fa fa-inbox"></i> <span id="Title" title="Descripción del caso"></span>
+                                        <small class="m-l-sm"><span id="FlowIdDesc" title="Proceso asociado al caso"></span></small>
+                                    </h5>
+
+                                </div>
+                                <div class="row">
+                                    <div class="Progres_Bar">
+                                        <div class="col infoCase">
+                                            <small class="stats-label">Etapa actual</small>
+                                            <p id="CurrentStep" class="fw-600"></p>
+                                        </div>
+                                        <div class="col infoCase">
+                                            <small class="stats-label">Progreso</small>
+                                            <div class="progress" style="margin: 0px 2px 20px 2px;">
+                                                <div style="width: 0%;" class="progress-bar progress-bar-danger ProgreCase"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="row ">
-                            <div class="col-lg-12">
-                                <div id="tabs" class="tabs-container">
-                                    <div class="tab-content">
-                                        <!-- Seguimiento -->
-                                        <div role="tabpanel" id="Seguimiento" class="tab-pane active">
-                                            <div class="panel-body CaseTab">
-                                                <div class='row'>
-                                                    <div id="Stages" class='col-md-12'>
-                                                        <div class="table-responsive Table_State" style="padding: 0px 2px 0px 2px; overflow-x:unset;">
-                                                            <table id="ProcessGridTbl" style="font-size: 12px" class="table table-bordered table-hover table-index "></table>
+                        <div class="col-md-12">
+                            <div class="row ">
+                                <div class="col-lg-12">
+                                    <div id="tabs" class="tabs-container">
+                                        <ul class="nav nav-tabs" role="tablist">
+                                            <li><a class="nav-link" data-toggle="tab" href="#Seguimiento"><i class="fa fa-sitemap"></i> Seguimiento</a></li>
+                                            <li><a class="nav-link" data-toggle="tab" href="#Notas"><i class="fa fa-edit"></i> Notas</a></li>
+                                            <li><a class="nav-link" data-toggle="tab" href="#Adjuntos"><i class="fa fa-paperclip"></i> Adjuntos</a></li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <!-- Seguimiento -->
+                                            <div role="tabpanel" id="Seguimiento" class="tab-pane active">
+                                                <div class="panel-body CaseTab">
+                                                    <div class='row'>
+                                                        <div id="Stages" class='col-md-12'>
+                                                            <div class="table-responsive Table_State" style="padding: 0px 2px 0px 2px; overflow-x:unset;">
+                                                                <table id="ProcessGridTbl" style="font-size: 12px" class="table table-bordered table-hover table-index "></table>
+                                                            </div>
                                                         </div>
                                                     </div>
+                                                </div>
+                                            </div>
+                                            <!-- Notas -->
+                                            <div role="tabpanel" id="Notas" class="tab-pane">
+                                                <div class="panel-body">
+                                                    <!-- Attachments Grid -->
+                                                    @Html.Partial("../Common/_notes")
+                                                </div>
+                                            </div>
+
+                                            <!-- Adjuntos -->
+                                            <div role="tabpanel" id="Adjuntos" class="tab-pane">
+                                                <div class="panel-body">
+                                                    @Html.Partial("../Common/_attachments_grid")
                                                 </div>
                                             </div>
                                         </div>
@@ -117,15 +138,14 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
-                
             </div>
         </div>
     </div>
-
+    <!-- Attachments Grid Modal -->
+    @Html.Partial("../Common/_attachments_modal")
 </div>
-
-
 
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
@@ -134,6 +154,8 @@
     <script src="@Url.Content("~/assets/tableExport.jquery.plugin/tableExport.min.js")"></script>
     <script src="@Url.Content("~/assets/bootstrap-table/extensions/export/bootstrap-table-export.js")"></script>
     <script src="@Url.Content("~/assets/template7/template7.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/Common.Attachments.js")"></script>
+    <script src="@Url.Content("~/Scripts/Common.Notes.js")"></script>
     <script src="@Url.Content("~/Scripts/Seguimiento_Aliados.js")"></script>
     <script src="@Url.Content("~/Scripts/CreateCase_Aliados.js")"></script>
     <script src="@Url.Content("~/Scripts/ManagerLinks.UI.js")"></script>

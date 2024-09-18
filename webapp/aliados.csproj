@@ -1234,6 +1234,7 @@
     <Content Include="Scripts\AvisosCobro.Recibos.js" />
     <Content Include="Scripts\Bayer.Carnet.js" />
     <Content Include="Scripts\Clientes.Index.js" />
+    <Content Include="Scripts\Common.Notes.js" />
     <Content Include="Scripts\Common.Attachments.js" />
     <Content Include="Scripts\ColoresTenant.js" />
     <Content Include="Scripts\CompraSegurosClients.js" />
@@ -1760,8 +1761,6 @@
     <Content Include="Reports\KYC_Juridico.repx" />
     <Content Include="Reports\KYC_Persona.repx" />
     <Content Include="Reports\MapfreMas_Solicitud_Individual.repx" />
-    <Content Include="Views\Common\_attachments_grid.cshtml" />
-    <Content Include="Views\Common\_attachments_modal.cshtml" />
     <Content Include="Reports\pdf\Consentimiento para Uso de Datos Personales.pdf" />
     <Content Include="Reports\pdf\HogarTotalSolicitudMCPG_.pdf" />
     <Content Include="Reports\pdf\HogarTotalSolicitudMIJ_.pdf" />
@@ -1804,6 +1803,7 @@
     <Content Include="Views\Multirriesgo\Emision.cshtml" />
     <Content Include="Views\HogarTotal\Cotizacion.cshtml" />
     <Content Include="Views\HogarTotal\Emision.cshtml" />
+    <Content Include="Views\Common\_notes.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
