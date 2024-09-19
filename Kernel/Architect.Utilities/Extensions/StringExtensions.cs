@@ -298,6 +298,7 @@ namespace Architect.Utilities.Extensions
 
         public static bool Contain(this string value, string findValue)
         {
+            if (value == null) return false;
             return string.Format(",{0},", value.ToLower()).Contains(string.Format(",{0},", findValue.ToLower()));
         }
 
