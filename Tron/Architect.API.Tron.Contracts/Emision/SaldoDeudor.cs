@@ -35,7 +35,10 @@ namespace Architect.API.Tron.Contracts.Emision
         [DataMember(), JsonProperty()] public string Modo { get; set; }
 
         [DataMember(), JsonProperty()] public List<Questionary> Questionary { get; set; }
-
+        /// <summary>
+        /// Conozca a su cliente
+        /// </summary>
+        [DataMember(), JsonProperty()] public Comun.ConoceTuCliente ConoceTuCliente { get; set; }
     }
  
     [Serializable(), DataContract()]

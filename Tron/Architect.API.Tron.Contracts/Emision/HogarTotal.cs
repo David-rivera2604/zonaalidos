@@ -53,6 +53,11 @@ namespace Architect.API.Tron.Contracts.Emision
 
         [DataMember(), JsonProperty()] public object kyc { get; set; }
 
+        /// <summary>
+        /// Conozca a su cliente
+        /// </summary>
+        [DataMember(), JsonProperty()] public Comun.ConoceTuCliente ConoceTuCliente { get; set; }
+
     }
 
     public class HogarTotalSolicitud : HogarTotal

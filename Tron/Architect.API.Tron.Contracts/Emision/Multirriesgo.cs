@@ -41,6 +41,10 @@ namespace Architect.API.Tron.Contracts.Emision
         [DataMember(), JsonProperty()] public string kyctipo { get; set; }
         [DataMember(), JsonProperty()] public object kyc { get; set; }
         [DataMember(), JsonProperty()] public object datosvariables { get; set; }
+        /// <summary>
+        /// Conozca a su cliente
+        /// </summary>
+        [DataMember(), JsonProperty()] public Comun.ConoceTuCliente ConoceTuCliente { get; set; }
     }
     public class MultirriesgoSolicitud : Multirriesgo
     {

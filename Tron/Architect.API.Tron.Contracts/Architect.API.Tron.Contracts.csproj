@@ -73,6 +73,7 @@
     <Compile Include="Cotizacion\Estudiantil.cs" />
     <Compile Include="Cotizacion\MultirriesgoSettings.cs" />
     <Compile Include="Emision\Estudiantil.cs" />
+    <Compile Include="Comun\ConoceTuCliente.cs" />
     <Compile Include="Pagos\Recibo.cs" />
     <Compile Include="Pagos\Tarjeta.cs" />
     <Compile Include="Poliza\Parameters\ControlTecnicoParametros.cs" />
