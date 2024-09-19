@@ -427,7 +427,7 @@
       "Campo": "ANIO_SUB_MODELO"
     },
     {
-      "Condicion": "{La Marca del vehículo} sea igual a 60 y {El Año del vehículo} sea menor a {6 años de antigüedad} y {El Rol del usuario no sea igual a Privilegios}",
+      "Condicion": "{La Marca del vehículo} sea igual a 60 y {El Año del vehículo} sea menor a 2018 y {El Rol del usuario no sea igual a Privilegios}",
       "Mensaje": "Para un Peugeot, el año del vehículo debe superior al año 2018",
       "Campo": "ANIO_SUB_MODELO"
     },
