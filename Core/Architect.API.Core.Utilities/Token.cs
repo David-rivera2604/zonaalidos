@@ -100,7 +100,7 @@ namespace Architect.API.Core.Security
 
         private static Contracts.Security.Token User2Token(Architect.API.Core.Contracts.Security.UserMember user)
         {
-            Contracts.Security.Token result = new Contracts.Security.Token() { CompanyId = 0, BranchOffice = 0, Roles = string.Empty, ManagerId = 0, SecurityLevel = 0, UserId = 0 };
+            Contracts.Security.Token result = new Contracts.Security.Token() { CompanyId = 0, BranchOffice = 0, Roles = string.Empty, ManagerId = 0, SecurityLevel = 0, UserId = 0, Settings = new List<Contracts.Security.SettingItem>() };
             List<Architect.API.Core.Contracts.Security.RoleMember> rols = DataAccess.Security.UserRoleMember.RetrieveLookByUserId(user.UserId, user.CompanyId);
 
             result.CompanyId = user.CompanyId;
@@ -113,6 +113,7 @@ namespace Architect.API.Core.Security
             result.Identification = user.Identification;
             result.UserName = string.Format("{0} {1}", user.FirstName, user.LastName).Trim();
             result.Expires = DateTime.Now.AddMinutes(Architect.Utilities.Helpers.Settings.IntegerValue("Session.Timeout", 30));
+
 
             //Este bloque esta duplicado en la clase account
             if (Utilities.Helpers.Settings.StringValue("Tenant.Tron.Agent.Information").Contain(user.CompanyId.ToString()))
@@ -131,12 +132,22 @@ namespace Architect.API.Core.Security
                 result.IdentificationType = result.IdentificationType.IdentificationType();
                 result.Identification = Convert.ToInt64(result.Identification.OnlyNumbers()).ToString();
             }
+
+            List<Contracts.General.Setting> settings = DataAccess.General.Setting.Retrieve(user.CompanyId);
+            if (settings.Count > 0)
+            {
+                foreach (Contracts.General.Setting item in settings.Where(r => r.TokenEnabled))
+                {
+                    result.Settings.Add(new Architect.API.Core.Contracts.Security.SettingItem() { Key = item.Key, Value = item.Value });
+                }
+
+            }
             return result;
         }
 
         public static Contracts.Security.Token AccessKeyInfo(string accessKey)
         {
-            Contracts.Security.Token result = new Contracts.Security.Token() { CompanyId = 0, BranchOffice = 0, Roles = string.Empty, ManagerId = 0, SecurityLevel = 0, UserId = 0 };
+            Contracts.Security.Token result = new Contracts.Security.Token() { CompanyId = 0, BranchOffice = 0, Roles = string.Empty, ManagerId = 0, SecurityLevel = 0, UserId = 0, Settings= new List<Contracts.Security.SettingItem>() };
 
             if (accessKey.IsNotEmpty())
             {
