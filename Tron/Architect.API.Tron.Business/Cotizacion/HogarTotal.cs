@@ -118,7 +118,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             {
                 if (isCoope)
                 {
-                    cod_cobExcludeFilter = "2007, 2017, 2018, 2034, 2010, 2055, 2056, 2057, 2012, 2014";
+                    cod_cobExcludeFilter = "2007, 2017, 2018, 2034, 2010, 2055, 2056, 2057, 2012";
                 }
                 else
                 {

@@ -717,14 +717,14 @@ app.HogarTotal = (function () {
             });
 
             cob2009Selected = Coberturas_Seleccionada(coberturas, 2009);
-            coberturas.filter(r => [2010, 2055, 2056, 2057, 2012, 2014].includes(r.codigo)).forEach(function (item, index) {
+            coberturas.filter(r => [2010, 2055, 2056, 2057, 2012].includes(r.codigo)).forEach(function (item, index) {
                 item.seleccionado = cob2009Selected;
             });
 
             $('#coberturasTbl').bootstrapTable('load', coberturas);
             coberturas.forEach(function (value, index) {
                 $('[name=btSelectItem][data-index=' + index + ']').prop('disabled',
-                    [2002, 2024, 2025, 2026, 2004].includes(value.codigo) || [2010, 2055, 2056, 2057, 2012, 2014].includes(value.codigo));
+                    [2002, 2024, 2025, 2026, 2004].includes(value.codigo) || [2010, 2055, 2056, 2057, 2012].includes(value.codigo));
             });
         }
 
