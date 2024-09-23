@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Backoffice\Batch\SinPlaca.cs" />
     <Compile Include="Backoffice\AvisoCobro.cs" />
     <Compile Include="Backoffice\Cotizacion\MapfreMasPlus.cs" />
     <Compile Include="Backoffice\Emision\FormatoErrores.cs" />

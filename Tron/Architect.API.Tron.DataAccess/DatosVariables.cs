@@ -48,7 +48,7 @@ namespace Architect.API.Tron.DataAccess
             return result;
         }
 
-        public static void AplicarVariacion(int cod_ramo, string num_poliza, int num_riesgo, string cod_campo, string val_campo_ant, string val_campo_act, DateTime fec_validez, string txt_obs, IDbConnection currentConnection)
+        public static void AplicarVariacion(int cod_ramo, string num_poliza, int num_riesgo, string cod_campo, string val_campo_ant, string val_campo_act, DateTime fec_validez, string txt_obs, IDbConnection currentConnection = null)
         {
 
             Database.Procedure("em_k_batch_spto_var_mcr.pp_despliega_variacion")

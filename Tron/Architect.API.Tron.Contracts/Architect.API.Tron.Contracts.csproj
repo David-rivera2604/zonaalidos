@@ -117,6 +117,13 @@
     <Compile Include="Ramo\G2000170.cs" />
     <Compile Include="Ramo\G2000180.cs" />
     <Compile Include="Ramo\G2990026.cs" />
+    <Compile Include="Robots\Assessment.cs" />
+    <Compile Include="Robots\CivilRegistrationRequest.cs" />
+    <Compile Include="Robots\Engine.cs" />
+    <Compile Include="Robots\EnrollmentAppointments.cs" />
+    <Compile Include="Robots\GeneralCharacteristicsVehicle.cs" />
+    <Compile Include="Robots\Owner.cs" />
+    <Compile Include="Robots\Enumerations\Type.cs" />
     <Compile Include="Siniestro\Purdy\DetalleDeSiniestro.cs" />
     <Compile Include="Siniestro\Purdy\Siniestro.cs" />
     <Compile Include="Siniestro\Purdy\SiniestroPurdyBase.cs" />
