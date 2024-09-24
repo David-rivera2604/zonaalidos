@@ -46,6 +46,9 @@ namespace Architect.API.Tron.Business.Backoffice.Emision
                 //Emitir a la fecha del día
                 Util.ChangeEffectiveDate(s2000030Instance, tokenInfo, currentConnection);
 
+                //Cambio de Fraccionamiento de Pago
+                Util.ChangeCod_fracc_pago(s2000030Instance, tokenInfo, currentConnection);
+
                 Sincroniza_DetalleDeTerceros(s2000030Instance, currentConnection, g2000510Instance);
 
                 Sincroniza_DatosVariables(s2000030Instance, currentConnection);

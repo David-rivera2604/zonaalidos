@@ -61,11 +61,8 @@ namespace Architect.API.Tron.Business.HogarTotal.Handler
                     result.terceros = Reglas.research.Apply_Terceros("HogarTotal", result.terceros, result.Fuente_Tomador, tokenInfo);
                 }
 
-                if (!tokenInfo.Roles.Contain("Formularios_digitales"))
-                {
                     result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("HogarTotal", null, 0, tokenInfo);
-                }
-
+                
                 if (mode == "continue")
                 {
                     List<Core.Contracts.General.AttachmentView> attachments = Core.Business.General.Attachment.RetrieveByEntity(3000, System.Convert.ToInt64(presupuesto), tokenInfo.CompanyId);

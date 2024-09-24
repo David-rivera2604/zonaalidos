@@ -75,7 +75,7 @@ app.EmisionMultirriesgo = (function () {
                     showCalculate = true;
                     if (data.resumen != null) {
                         var moneda = "$ ";
-                        if (data.moneda == 1) {
+                        if (data.cod_mon == 1) {
                             moneda = "₡ "
                         }
                         $('#importetotal').html(moneda + data.resumen.importetotal.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
@@ -95,7 +95,7 @@ app.EmisionMultirriesgo = (function () {
 
     function ReadOnly() {
         $('#cod_mon').replaceWith('<div>' + $('#cod_mon option:selected').text() + '</div>');
-        $('#cod_fracc_pago').replaceWith('<div>' + $('#cod_fracc_pago option:selected').text() + '</div>');
+        //$('#cod_fracc_pago').replaceWith('<div>' + $('#cod_fracc_pago option:selected').text() + '</div>');
         $('#fec_efec_poliza_group').replaceWith('<div>' + $('#fec_efec_poliza').val() + '</div>');
         $('#fec_vcto_poliza_group').replaceWith('<div>' + $('#fec_vcto_poliza').val() + '</div>');
         $('#cod_pais').replaceWith('<div>' + $('#cod_pais option:selected').text() + '</div>');
@@ -202,6 +202,7 @@ app.EmisionMultirriesgo = (function () {
 
     function MapInputToObject() {
         var data = setupData;
+        data.cod_fracc_pago = app.ui.GetDropDownNumericValue('#cod_fracc_pago');
         data.num_poliza = null
         data.Mensaje = null
         data.Error = null

@@ -66,10 +66,7 @@ namespace Architect.API.Tron.Business.Emision
                     result.terceros = Reglas.research.Apply_Terceros("HogarTotal", result.terceros, result.Fuente_Tomador, tokenInfo);
                 }
 
-                if (!tokenInfo.Roles.Contain("Formularios_digitales"))
-                {
                     result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("HogarTotal", null, 0, tokenInfo);
-                }
 
                 if (mode == "continue")
                 {
