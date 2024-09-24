@@ -22,11 +22,11 @@ namespace Architect.API.Tron.Business.Backoffice.Batch
         /// </summary>  
         public static async Task RetrieveUnregisteredVehiclesAsync(int endIndex = 0)
         {
-            string dataapiUrlSetting = Utilities.Helpers.Settings.StringValue("Aliados.URL.DataApi", "https://appqa.mapfrecr.com/datapides/api/entity");
+            string dataapiUrlSetting = Core.Business.Settings.StringValue("Aliados.URL.DataApi", "https://appqa.mapfrecr.com/datapides/api/entity");
 
             if (endIndex == 0)
             {
-                endIndex = Utilities.Helpers.Settings.IntegerValue("Batch.SinPlaca.Cantidad.Vehiculos", 9);
+                endIndex = Core.Business.Settings.IntegerValue("Batch.SinPlaca.Cantidad.Vehiculos", 9);
             }
 
             List<object> vehiculos = new List<object>();
@@ -56,7 +56,7 @@ namespace Architect.API.Tron.Business.Backoffice.Batch
         /// </summary>
         public static async Task ProcessLicensePlateUpdateAsync(List<Contracts.Robots.CivilRegistrationRequest> vehicles)
         {
-            string dataapiUrlSetting = Utilities.Helpers.Settings.StringValue("Aliados.URL.DataApi", "https://appqa.mapfrecr.com/datapides/api/entity");
+            string dataapiUrlSetting = Core.Business.Settings.StringValue("Aliados.URL.DataApi", "https://appqa.mapfrecr.com/datapides/api/entity");
 
             foreach (var vehicleInf in vehicles)
             {
@@ -90,8 +90,8 @@ namespace Architect.API.Tron.Business.Backoffice.Batch
         /// </summary>
         private static async Task SubmitVehicleInfoQueryAsync(List<object> vehiculos)
         {
-            string callbackUrlSetting = Utilities.Helpers.Settings.StringValue("Batch.SinPlaca.Callback", "https://webhook.site/041ed213-07ae-4584-af92-d6e6ed43ad0f");
-            string robotsUrlSetting = Utilities.Helpers.Settings.StringValue("Aliados.URL.Robots", "https://appqa.mapfrecr.com/robots.registro.cr/api");
+            string callbackUrlSetting = Core.Business.Settings.StringValue("Batch.SinPlaca.Callback", "https://webhook.site/041ed213-07ae-4584-af92-d6e6ed43ad0f");
+            string robotsUrlSetting = Core.Business.Settings.StringValue("Aliados.URL.Robots", "https://appqa.mapfrecr.com/robots.registro.cr/api");
 
             var json = JsonConvert.SerializeObject(new { callbackUrl = callbackUrlSetting, queries = vehiculos });
             var data = new StringContent(json, Encoding.UTF8, "application/json");
