@@ -29,7 +29,7 @@ namespace Architect.API.Tron.Controllers
         public async Task<IHttpActionResult> Informacion([FromUri] int endIndex = 9)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
-            await Business.Backoffice.Batch.SinPlaca.SolicitarInformacionDeVehiculosAsync(endIndex);
+            await Business.Backoffice.Batch.SinPlaca.RetrieveUnregisteredVehiclesAsync(endIndex);
             return Ok();
         }
 
@@ -42,7 +42,7 @@ namespace Architect.API.Tron.Controllers
         public async Task<IHttpActionResult> SinPlacaCallback([FromBody] List<Contracts.Robots.CivilRegistrationRequest> vehicles)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
-            await Business.Backoffice.Batch.SinPlaca.AplicaCambioDePlacaAsync(vehicles);
+            await Business.Backoffice.Batch.SinPlaca.ProcessLicensePlateUpdateAsync(vehicles);
             return Ok();
         }
 
