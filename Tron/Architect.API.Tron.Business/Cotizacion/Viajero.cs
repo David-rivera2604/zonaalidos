@@ -92,7 +92,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 quoteInfo.presupuesto = string.Empty;
                 quoteInfo.resumen = null;
 
-                Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = ViajeroConvert.ToTron(quoteInfo, COD_RAMO, tokenInfo.AgentCode, tokenInfo.UserName, tokenInfo.CompanyId);
+                Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = ViajeroConvert.ToTron(quoteInfo, COD_RAMO, quoteInfo.cod_agt, tokenInfo.UserName, tokenInfo.CompanyId);
 
                 result = Backoffice.Cotizacion.Generico.Calcular(result);
 
