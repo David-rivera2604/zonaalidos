@@ -79,7 +79,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 bool IsCoope = false;
                 quoteInfo.presupuesto = string.Empty;
                 quoteInfo.resumen = null;
-                Architect.API.Tron.Contracts.Batch.CotizadorPolizaLiderClass result = PolizaLiderConvertTo.Tron(quoteInfo, IsCoope, COD_RAMO, tokenInfo.AgentCode, tokenInfo.UserName, tokenInfo.IdentificationType, tokenInfo.Identification);
+                Architect.API.Tron.Contracts.Batch.CotizadorPolizaLiderClass result = PolizaLiderConvertTo.Tron(quoteInfo, IsCoope, COD_RAMO, quoteInfo.cod_agt, tokenInfo.UserName, tokenInfo.IdentificationType, tokenInfo.Identification);
                 //Architect.Common.Helpers.Serialize.SerializeToFile<Architect.API.Tron.Contracts.Batch.CotizadorPolizaLiderClass>(result, @"C:\temp\poliza.lider.in.xml");
 
                 Architect.API.Tron.Contracts.Presupuesto.DatoFijo resultInt = Backoffice.Cotizacion.PolizaLider.Calcular(result);

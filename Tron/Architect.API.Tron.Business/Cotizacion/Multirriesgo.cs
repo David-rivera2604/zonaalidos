@@ -123,7 +123,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 bool IsCoope = false;
                 quoteInfo.presupuesto = string.Empty;
                 quoteInfo.resumen = null;
-                Architect.API.Tron.Contracts.Presupuesto.DatoFijo quoteTron = MultirriesgoConvertTo.Tron(quoteInfo, IsCoope, COD_RAMO, tokenInfo.AgentCode, tokenInfo.UserName);
+                Architect.API.Tron.Contracts.Presupuesto.DatoFijo quoteTron = MultirriesgoConvertTo.Tron(quoteInfo, IsCoope, COD_RAMO, quoteInfo.cod_agt, tokenInfo.UserName);
                 //Architect.Common.Helpers.Serialize.SerializeToFile<Architect.API.Tron.Contracts.Batch.p2000030>(result, @"C:\temp\Multirriesgo.in.xml");
 
                 //Utilities.SerializeHandler<Architect.API.Tron.Contracts.Presupuesto.DatoFijo>.SerializeJSONToFile(quoteTron, string.Format(@"c:\temp\multi.rriesgo.proposal.json"), true, false, false);

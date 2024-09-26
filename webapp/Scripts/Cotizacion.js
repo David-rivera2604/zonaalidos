@@ -5,6 +5,7 @@ app.Cotizacion = (function () {
     let settings = [];
     let roles = [];
     let _data = {};
+    let _monedaField = false;
     let _prefix = '';
 
     return {
@@ -189,6 +190,10 @@ app.Cotizacion = (function () {
         },
         CustomAgentHandler: function (prefix, data) {
 
+            if (data?.cod_mon == undefined) {
+                data.cod_mon = data.moneda; //Hogar
+                _monedaField = true;
+            }
             _data = data;
             _prefix = prefix;
 
@@ -218,7 +223,10 @@ app.Cotizacion = (function () {
                         function () {
                             $(`#${prefix}cod_cuadro_com`).prop("disabled", $(`#${prefix}cod_cuadro_com`).children().length == 0);
                         }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:agt_cod=${agt_cod}`);
-                    $('#cod_mon').trigger('change');
+                    if (_monedaField)
+                        $('#moneda').trigger('change');
+                    else
+                        $('#cod_mon').trigger('change');
                 });
 
 
