@@ -129,14 +129,14 @@ namespace Architect.API.Tron.Controllers
         public async Task<IHttpActionResult> MultiriesgoSettings(int cod_ramo, int num_contrato, int num_subcontrato, string num_poliza_grupo, int cod_mon, int cod_agt = 0)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
-            Tron.Contracts.Cotizacion.HogarTotalSettings result = null;
+            Tron.Contracts.Cotizacion.MultirriesgoSettings result = null;
             await Task.Run(() =>
             {
                 if (cod_agt == 0)
                 {
                     cod_agt = tokenInfo.AgentCode;
                 }
-                result = Architect.API.Tron.Business.Cotizacion.HogarTotal.Settings(cod_ramo, num_contrato, num_subcontrato, num_poliza_grupo, cod_mon, cod_agt, tokenInfo);
+                result = Architect.API.Tron.Business.Cotizacion.Multirriesgo.Settings(cod_ramo, num_contrato, num_subcontrato, num_poliza_grupo, cod_mon, cod_agt, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);

@@ -127,6 +127,23 @@ app.CotizacionMultirriesgo = (function () {
                 },
                 `cod_ramo=${setupData.cod_ramo}:num_contrato=`);
         });
+
+        $('#cod_mon').on('change', function () {
+
+            if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
+                let cod_mon = app.ui.GetDropDownNumericValue('#cod_mon');
+                let cod_agt = app.Cotizacion.AgentCode();
+                app.ui.DropDownDisabled('#subcontrato', true, true);
+                app.core.Lookups([
+                    'MM_POLIZA_GRUPO.contrato'],
+                    function () {
+                        SettingReload();
+                    }, `cod_ramo=${data.cod_ramo}:cod_mon=${cod_mon}:cod_agt=${cod_agt}`);
+            } else {
+                SettingReload();
+            }
+
+        });
     }
 
     function SettingReload() {
@@ -145,6 +162,7 @@ app.CotizacionMultirriesgo = (function () {
             .done(function (settingData) {
                 app.ui.SetDateValue('#fec_vcto_poliza', app.ui.GetDateValue('#fec_efec_poliza'))
                 app.ui.SetDateValue('#fec_vcto_poliza', settingData.fec_vcto_poliza);
+                app.ui.LookupLoad('cod_tip_ocup', settingData.cod_tip_ocup);
 
                 if (settingData.coberturas != null)
                     $('#coberturasTbl').bootstrapTable('load', settingData.coberturas);

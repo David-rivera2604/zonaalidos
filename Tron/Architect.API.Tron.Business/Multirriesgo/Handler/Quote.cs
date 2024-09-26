@@ -55,7 +55,7 @@ namespace Architect.API.Tron.Business.Multirriesgo.Handler
             List<string> keys = new List<string> { };
             if (tokenInfo.Roles.Contain("PolizaGrupo"))
             {
-                keys.AddRange(new List<string> { "MM_POLIZA_GRUPO", "HT_CAPITAL_RC" });
+                keys.AddRange(new List<string> { "MM_POLIZA_GRUPO", "TiposOcupacionContrato" });
             }
 
             string url = $"cod_ramo={cod_ramo}:num_contrato={num_contrato}:num_subcontrato={num_subcontrato}:num_poliza_grupo={num_poliza_grupo}:cod_mon={cod_mon}:cod_agt={cod_agt}";
@@ -64,7 +64,7 @@ namespace Architect.API.Tron.Business.Multirriesgo.Handler
             result.fec_vcto_poliza = DateTime.Today.AddYears(1);
             if (tokenInfo.Roles.Contain("PolizaGrupo"))
             {
-                result.SumasAseguradasRC = values.Find(x => x.Key == "HT_CAPITAL_RC").Lkp;
+                result.cod_tip_ocup = values.Find(x => x.Key == "TiposOcupacionContrato").Lkp;
 
                 Core.Contracts.General.LookupValues contratosMaster = values.Find(x => x.Key == "MM_POLIZA_GRUPO");
                 if (contratosMaster != null)

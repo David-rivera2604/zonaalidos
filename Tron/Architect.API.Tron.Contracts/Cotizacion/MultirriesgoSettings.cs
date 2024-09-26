@@ -23,6 +23,12 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// </summary>
         [DataMember(), JsonProperty()] public List<Comun.Cobertura> coberturas { get; set; }
 
+        /// <summary>
+        /// Tipo de Ocupacion.
+        /// </summary>
+        [DataMember(), JsonProperty()] public List<Architect.API.Core.Contracts.General.LookupValue> cod_tip_ocup { get; set; }
+
+
     }
 
 }
