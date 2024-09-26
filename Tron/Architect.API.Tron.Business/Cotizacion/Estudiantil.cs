@@ -70,7 +70,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 quoteInfo.presupuesto = string.Empty;
                 quoteInfo.resumen = null;
 
-                Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = EstudiantilConvert.ToTron(quoteInfo, COD_RAMO, tokenInfo.AgentCode, tokenInfo.UserName);
+                Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = EstudiantilConvert.ToTron(quoteInfo, COD_RAMO, quoteInfo.cod_agt, tokenInfo.UserName);
 
                 result = Backoffice.Cotizacion.Generico.Calcular(result);
 

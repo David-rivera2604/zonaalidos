@@ -279,13 +279,18 @@
       "Role": "Formularios_digitales",
       "Detalles": [
         {
-          "descripcion": "Cédula de cliente por ambos lados",
-          "archivo": "Cédula_del_cliente_ambos_lados.pdf",
+          "descripcion": "Cédula de cliente vigente por ambos lados",
+          "archivo": "Cédula_del_cliente_vigente_ambos_lados.pdf",
           "requerido": true
         },
         {
           "descripcion": "Fotos del Riesgo",
           "archivo": "Fotos_del_riesgo.pdf",
+          "requerido": true
+        },
+        {
+          "descripcion": "Formulario de Inspección",
+          "archivo": "Formulario_de_Inspeccion.pdf",
           "requerido": true
         }
       ]
