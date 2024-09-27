@@ -385,5 +385,43 @@ namespace Architect.API.Tron.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Devuelve la estructura de datos asociados a un presupuesto, con información complementaria para permitir la emisión de una póliza de tipo Accidentes personales
+        /// </summary>
+        /// <param name="presupuesto"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("AccidentesPersonales/{presupuesto}")]
+        public async Task<IHttpActionResult> AccidentesPersonalesSetup(string presupuesto, string mode)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Tron.Contracts.Emision.AccidentesPersonales result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Emision.AccidentesPersonales.Setup(presupuesto, mode, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Realiza la validación de datos y emisión de la póliza para un producto de tipo Accidentes personales
+        /// </summary>
+        /// <param name="quoteInfo"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("AccidentesPersonales")]
+        public async Task<IHttpActionResult> AccidentesPersonalesIssue([FromBody] Tron.Contracts.Emision.AccidentesPersonales quoteInfo)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Tron.Contracts.Cotizacion.AccidentesPersonales result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Emision.AccidentesPersonales.Issue(quoteInfo, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
     }
 }

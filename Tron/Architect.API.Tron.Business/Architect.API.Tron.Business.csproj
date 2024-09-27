@@ -68,6 +68,8 @@
     <Compile Include="Backoffice\v2\AltasBajasPoliza.cs" />
     <Compile Include="Backoffice\v2\Pagos.cs" />
     <Compile Include="Clientes\Support.cs" />
+    <Compile Include="Cotizacion\AccidentesPersonales.cs" />
+    <Compile Include="Cotizacion\AccidentesPersonalesConvert.cs" />
     <Compile Include="Cotizacion\API.cs" />
     <Compile Include="Cotizacion\APIConvertTo.cs" />
     <Compile Include="Cotizacion\Generico.cs" />
@@ -90,6 +92,9 @@
     <Compile Include="Cotizacion\Viajero.cs" />
     <Compile Include="Cotizacion\EstudiantilConvert.cs" />
     <Compile Include="Cotizacion\ViajeroConvert.cs" />
+    <Compile Include="Emision\AccidentesPersonales.cs" />
+    <Compile Include="Emision\AccidentesPersonalesConvertFrom.cs" />
+    <Compile Include="Emision\AccidentesPersonalesConvertTo.cs" />
     <Compile Include="Emision\ComplianceSetup.cs" />
     <Compile Include="Emision\MapfreMasPlus.cs" />
     <Compile Include="Emision\MultirriesgoConvertFrom.cs" />

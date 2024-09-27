@@ -1,0 +1,228 @@
+﻿﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<div class="row">
+    <div id="mainBlock" class="col-md-12 p-0">
+        <div class="ibox">
+            <div class="ibox-title p-0">
+                <div class="Title_Prin py-3">
+                    <div class="title_design T1">
+                        <h5><i class="fa fa-money"></i> <span id="PageTitle">AutoExpedible Accidentes Personales</span></h5><br>
+                        <small class="m-l-sm"><span id="PageSubTitle"> Cotización.</span></small>
+                    </div>
+                    <div class="title_partner T2">
+                        <p class="text-muted small">MAPFRE le trae una nueva forma de proteger a su familia, suscribiendose a este seguro Accidentes Personales. Les respaldaremos cumpliendo los compromisos que de ella se derivan en relación con los riesgos asumidos por su medio.</p>
+
+
+
+
+                    </div>
+                    <div class="title_partner T3 text-center">
+                        <a href="https://www.mapfre.cr/contacto/" target="_blank">AutoExpedible Accidentes Personales</a>
+
+
+
+                        <p class="mt-2 text-center">
+                            ¡Nosotros lo protegemos!
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="ibox-content box_design">
+                <div class="sk-spinner sk-spinner-wave">
+                    <div class="sk-rect1"></div>
+                    <div class="sk-rect2"></div>
+                    <div class="sk-rect3"></div>
+                    <div class="sk-rect4"></div>
+                    <div class="sk-rect5"></div>
+                </div>
+                <div id="generalNotify">
+                </div>
+                <!-- Edit Form -->
+                <div class='form-row'>
+                    <div class='col-md-12 m-2'>
+                        <div id="SaldoDeudorEdt" class="animated fadeInRight">
+                            <form id='EstudiantilEdtForm' class='form-horizontal' data-toggle='validator'>
+                                <fieldset>
+                                    <!-- datosgenerales Zone -->
+                                    <div class="col-lg-12">
+                                        <h4>Modalidad</h4>
+                                        <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                        <div class="form-row">
+                                            <!-- cod_modalidad DropDownList -->
+                                            <div class='col-sm-3 col-md-3'>
+                                                <div class='form-group'>
+                                                    <label class='control-label' for='COD_MODALIDAD'>Modalidad<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <select id='COD_MODALIDAD' name='COD_MODALIDAD' class='form-control'>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- datosgenerales Zone -->
+                                    <div class="col-lg-12">
+                                        <h4>Datos generales</h4>
+                                        <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                        <div class="form-row">
+                                            <!-- cod_mon DropDownList -->
+                                            <div class='col-sm-3 col-md-3'>
+                                                <div class='form-group'>
+                                                    <label class='control-label' for='cod_mon'>Moneda<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <select id='cod_mon' name='cod_mon' class='form-control'>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!-- cod_fracc_pago DropDownList -->
+                                            <div class='col-sm-3 col-md-3'>
+                                                <div class='form-group'>
+                                                    <label class='control-label' for='cod_fracc_pago'>Fraccionamiento de pago<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <select id='cod_fracc_pago' name='cod_fracc_pago' class='form-control'>
+                                                        <option value="1">ANUAL</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!-- fec_efec_poliza DatePicker -->
+                                            <div class='col-sm-3 col-md-3'>
+                                                <div class='form-group'>
+                                                    <label class='control-label' for='fec_efec_poliza'>Inicio de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <div class='input-group date' id='fec_efec_poliza_group'>
+                                                        <input type='text' id='fec_efec_poliza' name='fec_efec_poliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                        <span class='input-group-addon'>
+                                                            <span class='glyphicon glyphicon-calendar'></span>
+                                                        </span>
+                                                    </div>
+                                                    <div id='fec_efec_poliza_validate'></div>
+                                                </div>
+                                            </div>
+                                            <!-- fec_vcto_poliza DatePicker -->
+                                            <div class='col-sm-3 col-md-3'>
+                                                <div class='form-group'>
+                                                    <label class='control-label' for='fec_vcto_poliza'>Fin de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                    <div class='input-group date' id='fec_vcto_poliza_group'>
+                                                        <input type='text' id='fec_vcto_poliza' name='fec_vcto_poliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                        <span class='input-group-addon'>
+                                                            <span class='glyphicon glyphicon-calendar'></span>
+                                                        </span>
+                                                    </div>
+                                                    <div id='fec_vcto_poliza_validate'></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- datosdelasegurado Zone -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4><i class="fa fa-user-circle-o"></i> Datos del asegurado</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <!-- FEC_NACIMIENTO DatePicker -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='FEC_NACIMIENTO'>Fecha de nacimiento<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div class='input-group date' id='FEC_NACIMIENTO_group'>
+                                                            <input type='text' id='FEC_NACIMIENTO' name='FEC_NACIMIENTO' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
+                                                        </div>
+                                                        <div id='FEC_NACIMIENTO_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- MCA_SEXO RadioButtonList -->
+                                                <div class='col-sm-3 col-md-3'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='MCA_SEXO'>Sexo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="MCA_SEXO_1" name="MCA_SEXO" value="0">
+                                                                <label class="custom-control-label" for="MCA_SEXO_1">Femenino</label>
+                                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="MCA_SEXO_2" name="MCA_SEXO" value="1">
+                                                                <label class="custom-control-label" for="MCA_SEXO_2">Masculino</label>
+                                                            </div>
+                                                        </div>
+                                                        <div id='MCA_SEXO_validate'></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- informaciongeneral Zone -->
+                                            <div class="form-row">
+                                                <div class="col-lg-12">
+                                                    <h4><i class="fa fa-file-text-o"></i> Información general</h4>
+                                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                                    <div class="form-row">
+                                                        <!-- Cedencial Estudiantil Text -->
+                                                        @*<div class='col-sm-3 col-md-3'>
+                                                                <div class='form-group'>
+                                                                    <label class='control-label' for='TXT_CRED_ESTUD'>Credencial Estudiantil<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                                    <input type='text' id='TXT_CRED_ESTUD' name='TXT_CRED_ESTUD' class='form-control' size='20' maxlength='20' />
+                                                                </div>
+                                                            </div>*@
+                                                        <!--Actividad Asoc. a Ocupación-->
+                                                        <div class='col-sm-3 col-md-3'>
+                                                            <div class='form-group'>
+                                                                <label class='control-label' for='COD_OCUPACION'>Actividad Asoc. a Ocupación<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                                <select id='COD_OCUPACION' name='COD_OCUPACION' class='form-control'>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <!--Plan-->
+                                                        <div class='col-sm-3 col-md-3'>
+                                                            <div class='form-group'>
+                                                                <label class='control-label' for='COD_PLAN_AP'>Plan<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                                <select id='COD_PLAN_AP' name='COD_PLAN_AP' class='form-control'>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <!--Días de Deducible Renta Diaria-->
+                                                        <div class='col-sm-3 col-md-3'>
+                                                            <div class='form-group'>
+                                                                <label class='control-label' for='COD_DEDUCIBLE'>Días de Deducible Renta Diaria<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                                <select id='COD_DEDUCIBLE' name='COD_DEDUCIBLE' class='form-control'>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- coberturas y plandepago Grid -->
+                                    @Html.Partial("_coberturaPlan")
+                                    <!-- Botonera -->
+                                    <div class="form-row">
+                                        <div class='col-md-12'>
+                                            <div class="modal-footer">
+                                                <button id="cotizar" type="button" class="btn  btn-primary" data-doing="Cotizando...">
+                                                    Cotizar
+                                                </button>
+                                                <button id="limpiar" type="button" class="btn btn-default" data-doing="Limpiando...">
+                                                    Limpiar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Resumen Block -->
+    @Html.Partial("_resumen")
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
+    <script src="@Url.Content("~/Scripts/Cotizacion.AccidentesPersonales.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.CotizacionAccidentesPersonales.Init();
+        });
+    </script>
+}

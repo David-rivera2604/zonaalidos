@@ -1239,6 +1239,7 @@
     <Content Include="Scripts\ColoresTenant.js" />
     <Content Include="Scripts\CompraSegurosClients.js" />
     <Content Include="Scripts\Cotizacion.Coberturas.js" />
+    <Content Include="Scripts\Emision.AccidentesPersonales.js" />
     <Content Include="Scripts\HogarTotal.Emision.js" />
     <Content Include="Scripts\HogarTotal.Cotizacion.js" />
     <Content Include="Scripts\Cotizacion.MapfreMasPlus.js" />
@@ -1625,6 +1626,7 @@
     <Content Include="products\Multirriesgos.vocabulary.json" />
     <Content Include="products\MapfreMasPlus.vocabulary.json" />
     <Content Include="products\MapfreMasPlus.rules.json" />
+    <Content Include="products\AccidentesPersonales.rules.json" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\Policy\index.cshtml" />
     <Content Include="Views\Policy\Listv3.cshtml" />
@@ -1804,6 +1806,9 @@
     <Content Include="Views\HogarTotal\Cotizacion.cshtml" />
     <Content Include="Views\HogarTotal\Emision.cshtml" />
     <Content Include="Views\Common\_notes.cshtml" />
+    <Content Include="Scripts\Cotizacion.AccidentesPersonales.js" />
+    <Content Include="Views\Cotizacion\AccidentesPersonales.cshtml" />
+    <Content Include="Views\Emision\AccidentesPersonales.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
