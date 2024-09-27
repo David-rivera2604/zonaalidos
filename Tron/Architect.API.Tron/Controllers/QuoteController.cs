@@ -570,5 +570,42 @@ namespace Architect.API.Tron.Controllers
 
         #endregion
 
+        #region Accidentes Personales
+        /// <summary>
+        /// Devuelve la estructura de datos con los valores por defecto para una cotización de tipo estudiantil
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("AccidentesPersonalesSetup")]
+        public async Task<IHttpActionResult> AccidentesPersonalesSetup()
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Architect.API.Tron.Contracts.Cotizacion.AccidentesPersonales result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Cotizacion.AccidentesPersonales.Setup(tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+        /// <summary>
+        /// Realiza la validación de datos y cálculo necesarios para obtener una cotización o presupuesto de un producto de accidentes personales
+        /// </summary>
+        /// <param name="quoteInfo"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("AccidentesPersonalesQuote")]
+        public async Task<IHttpActionResult> AccidentesPersonalesQuote([FromBody] Tron.Contracts.Cotizacion.AccidentesPersonales quoteInfo)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Tron.Contracts.Cotizacion.AccidentesPersonales result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Cotizacion.AccidentesPersonales.Quote(quoteInfo, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+        #endregion
     }
 }
