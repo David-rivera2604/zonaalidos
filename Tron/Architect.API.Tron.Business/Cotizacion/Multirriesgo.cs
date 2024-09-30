@@ -3,6 +3,7 @@ using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 
 namespace Architect.API.Tron.Business.Cotizacion
 {
@@ -47,6 +48,47 @@ namespace Architect.API.Tron.Business.Cotizacion
             return result;
         }
 
+        /// <summary>
+        /// Recupera lista de valores para sumas aseguradas de coberturas o valores deducibles según el rol del usuario
+        /// </summary>
+        public static Tron.Contracts.Cotizacion.MultirriesgoSettings Settings(int cod_ramo, int num_contrato, int num_subcontrato, string num_poliza_grupo, int cod_mon, int cod_agt, Core.Contracts.Security.Token tokenInfo)
+        {
+            Tron.Contracts.Cotizacion.MultirriesgoSettings result = new Contracts.Cotizacion.MultirriesgoSettings();
+            List<string> keys = new List<string> { };
+            if (tokenInfo.Roles.Contain("PolizaGrupo"))
+            {
+                keys.AddRange(new List<string> { "MM_POLIZA_GRUPO", "TiposOcupacionContrato" });
+            }
+
+            string url = $"cod_ramo={cod_ramo}:num_contrato={num_contrato}:num_subcontrato={num_subcontrato}:num_poliza_grupo={num_poliza_grupo}:cod_mon={cod_mon}:cod_agt={cod_agt}";
+            
+            List<Core.Contracts.General.LookupValues> values = Core.Business.Common.Lkps(string.Join(",", keys), url, tokenInfo);
+
+            result.fec_vcto_poliza = DateTime.Today.AddYears(1);
+
+            if (tokenInfo.Roles.Contain("PolizaGrupo"))
+            {
+                result.cod_tip_ocup = values.Find(x => x.Key == "TiposOcupacionContrato").Lkp;
+
+                Core.Contracts.General.LookupValues contratosMaster = values.Find(x => x.Key == "MM_POLIZA_GRUPO");
+                if (contratosMaster != null)
+                {
+                    Core.Contracts.General.LookupValue contrato = contratosMaster.Lkp.Find(y => y.Code == num_contrato.ToString());
+                    if (contrato != null)
+                    {
+                        string vcto_poliza = (string)contrato["FEC_VCTO_POLIZA"];
+                        if (vcto_poliza.IsNotEmpty())
+                        {
+                            result.fec_vcto_poliza = DateTime.Parse(vcto_poliza, CultureInfo.CreateSpecificCulture("es-CR"));
+                        }
+                    }
+                }
+
+            }
+
+            return result;
+        }
+
 
         internal static List<Contracts.Comun.Cobertura> CoverageByDefault(bool isCoope, int cod_cia, int cod_ramo, DateTime fec_validez)
         {
@@ -81,7 +123,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 bool IsCoope = false;
                 quoteInfo.presupuesto = string.Empty;
                 quoteInfo.resumen = null;
-                Architect.API.Tron.Contracts.Presupuesto.DatoFijo quoteTron = MultirriesgoConvertTo.Tron(quoteInfo, IsCoope, COD_RAMO, tokenInfo.AgentCode, tokenInfo.UserName);
+                Architect.API.Tron.Contracts.Presupuesto.DatoFijo quoteTron = MultirriesgoConvertTo.Tron(quoteInfo, IsCoope, COD_RAMO, quoteInfo.cod_agt, tokenInfo.UserName);
                 //Architect.Common.Helpers.Serialize.SerializeToFile<Architect.API.Tron.Contracts.Batch.p2000030>(result, @"C:\temp\Multirriesgo.in.xml");
 
                 //Utilities.SerializeHandler<Architect.API.Tron.Contracts.Presupuesto.DatoFijo>.SerializeJSONToFile(quoteTron, string.Format(@"c:\temp\multi.rriesgo.proposal.json"), true, false, false);

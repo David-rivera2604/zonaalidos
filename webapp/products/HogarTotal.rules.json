@@ -97,6 +97,21 @@
           "requerido": true
         }
       ]
+    },
+	{
+      "Role": "Formularios_digitales",
+      "Detalles": [
+        {
+          "descripcion": "Cédula de cliente por ambos lados",
+          "archivo": "Cédula_del_cliente_ambos_lados.pdf",
+          "requerido": true
+        },
+        {
+          "descripcion": "Fotos del Riesgo",
+          "archivo": "Fotos_del_riesgo.pdf",
+          "requerido": true
+        }
+      ]
     }
   ],
   "Coberturas": [

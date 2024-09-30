@@ -49,8 +49,8 @@ namespace Architect.API.Core.DataAccess.General
                             .AddParameter("CompanyId", DbType.Decimal, 5, changesetItem.CompanyId)
                             .AddParameter("EntityType", DbType.Decimal, 5, changesetItem.EntityType)
                             .AddParameter("EntityId", DbType.Decimal, 18, changesetItem.EntityId)
-                            .AddParameter("Action", DbType.AnsiString, 40, changesetItem.Action)
-                            .AddParameter("Summary", DbType.AnsiString, 256, changesetItem.Summary)
+                            .AddParameter("Action", DbType.AnsiString, 120, changesetItem.Action)
+                            .AddParameter("Summary", DbType.AnsiString, 1024, changesetItem.Summary)
                             .AddParameter("UpdateUserCode", DbType.Decimal, 9, changesetItem.UpdateUserCode)
                             .AddParameter("UpdateDate", DbType.DateTime, 0, changesetItem.UpdateDate)
                             .Execute(session);

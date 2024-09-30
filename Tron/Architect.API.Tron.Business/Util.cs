@@ -754,5 +754,10 @@ namespace Architect.API.Tron.Business
             return result;
         }
 
+        internal static void ChangeCod_fracc_pago(Contracts.Presupuesto.DatoFijo quoteTron, Core.Contracts.Security.Token tokenInfo, IDbConnection currentConnection)
+        {
+            DataAccess.Batch.P2000030.UpdateCod_fracc_pago(quoteTron.cod_fracc_pago, quoteTron.num_poliza, currentConnection);
+        }
+
     }
 }

@@ -56,7 +56,7 @@ app.HogarTotal = (function () {
     function ReadOnly() {
 
         $('#moneda').replaceWith("<div>" + $('#moneda option:selected').text() + "</div>");
-        $('#fraccionamientodepago').replaceWith("<div>" + $('#fraccionamientodepago option:selected').text() + "</div>");
+        //$('#fraccionamientodepago').replaceWith("<div>" + $('#fraccionamientodepago option:selected').text() + "</div>");
         $('#iniciodevigencia_group').replaceWith("<div>" + $('#iniciodevigencia').val() + "</div>");
         $('#findevigencia_group').replaceWith("<div>" + $('#findevigencia').val() + "</div>");
 
@@ -195,7 +195,7 @@ app.HogarTotal = (function () {
 
     function MapInputToObject() {
         var data = setupData;
-
+        data.fraccionamientodepago = app.ui.GetDropDownNumericValue('#fraccionamientodepago');
         data.tip_firma = $('#tip_firma').val();
         data.tip_firmaDesc = $("#tip_firma option:selected").text();
         data.correoenvio = $('#correoenvio').val();

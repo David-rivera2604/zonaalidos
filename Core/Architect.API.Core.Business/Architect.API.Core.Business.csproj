@@ -150,6 +150,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Settings.cs" />
     <Compile Include="General\FileSanitizer.cs" />
     <Compile Include="General\KycBussines.cs" />
     <Compile Include="General\Notes.cs" />

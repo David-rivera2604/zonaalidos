@@ -108,7 +108,7 @@ namespace Architect.API.Core.Contracts
         /// <summary>
         /// Ingresos mensuales estimados persona
         /// </summary>
-        public int ingresomensualestimado { get; set; }
+        public double ingresomensualestimado { get; set; }
         /// <summary>
         /// No. Fondos Propios o de terceros
         /// </summary>

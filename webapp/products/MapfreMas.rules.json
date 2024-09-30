@@ -274,6 +274,26 @@
           "requerido": true
         }
       ]
+    },
+	{
+      "Role": "Formularios_digitales",
+      "Detalles": [
+        {
+          "descripcion": "Cédula de cliente vigente por ambos lados",
+          "archivo": "Cédula_del_cliente_vigente_ambos_lados.pdf",
+          "requerido": true
+        },
+        {
+          "descripcion": "Fotos del Riesgo",
+          "archivo": "Fotos_del_riesgo.pdf",
+          "requerido": true
+        },
+        {
+          "descripcion": "Formulario de Inspección",
+          "archivo": "Formulario_de_Inspeccion.pdf",
+          "requerido": true
+        }
+      ]
     }
   ],
   "Coberturas": [
@@ -412,8 +432,8 @@
       "Campo": "ANIO_SUB_MODELO"
     },
     {
-      "Condicion": "{La Marca del vehículo} sea igual a 60 y {El Año del vehículo} sea menor a {3 años de antigüedad} y {El Rol del usuario no sea igual a Privilegios}",
-      "Mensaje": "Para un Peugeot, el año del vehículo no debe superior a 3 años de antigüedad",
+      "Condicion": "{La Marca del vehículo} sea igual a 60 y {El Año del vehículo} sea menor a 2018 y {El Rol del usuario no sea igual a Privilegios}",
+      "Mensaje": "Para un Peugeot, el año del vehículo debe superior al año 2018",
       "Campo": "ANIO_SUB_MODELO"
     },
     {

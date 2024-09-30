@@ -63,17 +63,31 @@ namespace Architect.API.Tron.Business.Emision
                     result.terceros = Reglas.research.Apply_Terceros("Multirriesgos", result.terceros, result.Fuente_Tomador, tokenInfo);
                 }
 
-                if (!tokenInfo.Roles.Contain("Formularios_digitales"))
-                {
-                    if (result.documentosrequeridos == null)
-                    {
-                        result.documentosrequeridos = new List<Contracts.Comun.DocumentoRequerido>
-                        {
-                        new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=1, tipo = "Expediente Cliente", DArchivoEsperado="Expediente Cliente.pdf", Grupo="F"  },
-                        new Contracts.Comun.DocumentoRequerido() { documentosrequeridosId=2, tipo = "Expediente Póliza" , DArchivoEsperado="Expediente Póliza.pdf", Grupo="F" },
-                        };
+                result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("Multirriesgos", null, 0, tokenInfo);
 
+                if (mode == "continue")
+                {
+                    List<Core.Contracts.General.AttachmentView> attachments = Core.Business.General.Attachment.RetrieveByEntity(3000, Convert.ToInt64(presupuesto), tokenInfo.CompanyId);
+
+                    if (attachments?.Count > 0)
+                    {
+                        foreach (Core.Contracts.General.AttachmentView attachment in attachments)
+                        {
+                            result.documentosrequeridos.Add(new Contracts.Comun.DocumentoRequerido()
+                            {
+                                DStored = attachment.FileName,
+                                documentosrequeridosId = attachment.Id,
+                                tipo = "Genérico",
+                                DArchivoEsperado = attachment.FileName,
+                                DDescripcion = attachment.Description,
+                                DNombre = attachment.FileName,
+                                DFecha = attachment.UpdateDate,
+                                DTamano = attachment.FileSize,
+                                Grupo = "F"
+                            });
+                        }
                     }
+
                 }
             }
             return result;

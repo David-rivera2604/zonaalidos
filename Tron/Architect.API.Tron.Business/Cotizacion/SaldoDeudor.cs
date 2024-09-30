@@ -116,7 +116,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 quoteInfo.presupuesto = string.Empty;
                 quoteInfo.resumen = null;
 
-                Contracts.Presupuesto.DatoFijo result = SaldoDeudorConvert.ToTron(quoteInfo, COD_RAMO, tokenInfo.AgentCode, tokenInfo.UserName);
+                Contracts.Presupuesto.DatoFijo result = SaldoDeudorConvert.ToTron(quoteInfo, COD_RAMO, quoteInfo.cod_agt, tokenInfo.UserName);
                 result = Backoffice.Cotizacion.Generico.Calcular(result);
 
                 resultInfo = LookupComplements((Contracts.Cotizacion.SaldoDeudor)Util.FromTron_CoberturasResult(quoteInfo, result, 11), tokenInfo);

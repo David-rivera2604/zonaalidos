@@ -115,7 +115,7 @@ namespace Architect.API.Tron.Business.HogarTotal.Handler
             {
                 if (isCoope)
                 {
-                    cod_cobExcludeFilter = "2007, 2017,2018, 2034, 2010, 2055, 2056, 2057, 2012, 2014";
+                    cod_cobExcludeFilter = "2007, 2017,2018, 2034, 2010, 2055, 2056, 2057, 2012";
                 }
                 else
                 {
@@ -168,7 +168,7 @@ namespace Architect.API.Tron.Business.HogarTotal.Handler
                 //Architect.Common.Helpers.Serialize.SerializeToFile<Contracts.Cotizacion.HogarTotal>(quoteInfo,
                 //    ConfigurationManager.AppSettings["Path.Logs"] + @"\hogartotal.in.xml", true);
 
-                Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = Convert.QuoteToPresupuesto.Tron(quoteInfo, IsCoope, quoteInfo.cod_ramo, tokenInfo.AgentCode, tokenInfo.UserName);
+                Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = Convert.QuoteToPresupuesto.Tron(quoteInfo, IsCoope, quoteInfo.cod_ramo, quoteInfo.cod_agt, tokenInfo.UserName);
 
 
 //                Utilities.SerializeHandler<Architect.API.Tron.Contracts.Presupuesto.DatoFijo>.SerializeJSONToFile(result, string.Format(@"c:\temp\hogar.total.proposal.json"), true, false, false);

@@ -1,0 +1,71 @@
+{
+  "Terceros": [
+    {
+      "Role": "ESPH",
+      "Detalles": [
+        {
+          "tip_benef": "0",
+          "tip_docum": "CJU",
+          "cod_docum": "3101046008",
+          "nom_tercero": "BANCO DAVIVIENDA (COSTA RICA) SOCIEDAD ANONIMA",
+          "email": "IRIAKNA.HERNANDEZ@DAVIVIENDA.CR",
+          "cod_pais": "CRI",
+          "cod_estado": 1,
+          "cod_prov": 101,
+          "cod_localidad": 10101,
+          "nom_domicilio1": "SAN JOSE"
+        },
+        {
+          "tip_benef": "8",
+          "tip_docum": "CJU",
+          "cod_docum": "3101046008",
+          "nom_tercero": "BANCO DAVIVIENDA (COSTA RICA) SOCIEDAD ANONIMA",
+          "email": "IRIAKNA.HERNANDEZ@DAVIVIENDA.CR",
+          "cod_pais": "CRI",
+          "cod_estado": 1,
+          "cod_prov": 101,
+          "cod_localidad": 10101,
+          "nom_domicilio1": "SAN JOSE"
+        }
+      ]
+    }
+  ],
+  "DocumentosRequeridos": [
+    {
+      "Role": "_default_asegurado_fisico",
+      "Detalles": [
+        {
+          "descripcion": "Copia de la cédula de identidad",
+          "archivo": "CEDULA.docx",
+          "requerido": true
+        },
+        {
+          "descripcion": "Comprobante de pago",
+          "archivo": "Comprobante.pdf",
+          "requerido": true
+        }
+      ]
+    },
+    {
+      "Role": "_default_asegurado_juridico",
+      "Detalles": [
+        {
+          "descripcion": "Copia de la cédula de identidad",
+          "archivo": "CEDULA.docx",
+          "requerido": true
+        },
+        {
+          "descripcion": "Comprobante de pago",
+          "archivo": "Comprobante.pdf",
+          "requerido": true
+        }
+      ]
+    }
+  ],
+  "Coberturas": [
+    {
+      "Condicion": "{Siempre}",
+      "Exclusion": "9998"
+    }
+  ]
+}
