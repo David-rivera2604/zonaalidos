@@ -136,6 +136,7 @@ app.Form_Ext_Bajas = (function () {
                 e.preventDefault();
             });
 
+            $('.ibox-content').toggleClass('sk-loading');            
             app.core.dataapi('GET', `PolicyToCancel/${poliza}`)
                 .then(data => {
                     console.log(data);
@@ -212,6 +213,7 @@ app.Form_Ext_Bajas = (function () {
                         app.ui.SetRadioNumericValue('MCA_ASISTENCIA', data.MCA_COBRA_ASISTENCIA);
                         $("#btnIssue").prop("disabled", false);
                     }
+                    $('.ibox-content').toggleClass('sk-loading');
                 });
 
         }
