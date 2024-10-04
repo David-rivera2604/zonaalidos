@@ -21,10 +21,6 @@ namespace Architect.API.Tron.Contracts.Emision
         /// </summary>
         [DataMember(), JsonProperty()] public List<Comun.DocumentoRequerido> documentosrequeridos { get; set; }
 
-        /// <summary>
-        /// Conozca a su cliente
-        /// </summary>
-        [DataMember(), JsonProperty()] public Comun.ConoceTuCliente ConoceTuCliente { get; set; }
     }
   
 

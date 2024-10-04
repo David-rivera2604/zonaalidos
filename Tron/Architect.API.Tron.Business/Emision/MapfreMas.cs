@@ -68,8 +68,8 @@ namespace Architect.API.Tron.Business.Emision
                     result.terceros = Reglas.research.Apply_Terceros("MapfreMas", result.terceros, result.Fuente_Tomador, tokenInfo);
                 }
 
-                    result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("MapfreMas", null, result.MCA_CERO_KM, tokenInfo);
-                
+                result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("MapfreMas", null, result.MCA_CERO_KM, tokenInfo);
+
                 if (mode == "continue")
                 {
                     List<Core.Contracts.General.AttachmentView> attachments = Core.Business.General.Attachment.RetrieveByEntity(3000, Convert.ToInt64(presupuesto), tokenInfo.CompanyId);
@@ -112,7 +112,7 @@ namespace Architect.API.Tron.Business.Emision
                 {
                     result.Modo = mode;
                 }
-           
+
             }
             return result;
         }
@@ -121,6 +121,14 @@ namespace Architect.API.Tron.Business.Emision
         {
             Contracts.Emision.MapfreMas resultQuoteInfo = null;
             quoteInfo.NUM_MATRICULA = Regex.Replace(quoteInfo.NUM_MATRICULA, @"[^a-zA-Z0-9]", String.Empty);
+
+            // En caso de que el objeto kyc este vacio (información provista por la UI de aliados),
+            // pero el objeto ConoceTuCliente no lo sea (información provista por el api),
+            // se asigna el valor de ConoceTuCliente a kyc
+            if (quoteInfo.kyc == null && quoteInfo.ConoceTuCliente != null)
+            {
+                quoteInfo.kyc = quoteInfo.ConoceTuCliente;
+            }
             if (quoteInfo.Modo == "draft" || quoteInfo.Modo == "resume")
             {
                 //TODO: Se debe incluir la validación de que de haber un Tomador, Asegurado y Conductor Habitual, pero faltan las básicas.
@@ -139,8 +147,9 @@ namespace Architect.API.Tron.Business.Emision
                 if (request["UniqueId"].IsNotEmpty())
                 {
                     message = string.Format("La solicitud fue enviada de forma exitosa usando el tipo de envío indicado ({0})", quoteInfo.tip_firmaDesc);
-                    
-                    if(quoteInfo.kyc.IsNotEmpty()){
+
+                    if (quoteInfo.kyc.IsNotEmpty())
+                    {
                         AlmacenarDatosKYC(quoteInfo.kyc);
                     }
                 }
@@ -221,7 +230,7 @@ namespace Architect.API.Tron.Business.Emision
                 resultQuoteInfo.Error = FormatoErrores.FormatearError(resultQuoteInfo.Error);
                 resultQuoteInfo.Mensaje = resultQuoteInfo.Error;
             }
-           
+
             return resultQuoteInfo;
         }
 

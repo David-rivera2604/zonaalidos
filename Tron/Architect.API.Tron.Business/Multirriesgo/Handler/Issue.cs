@@ -65,6 +65,11 @@ namespace Architect.API.Tron.Business.Multirriesgo.Handler
         {
 
             Contracts.Emision.Multirriesgo resultQuoteInfo = null;
+            
+            if (quoteInfo.kyc == null && quoteInfo.ConoceTuCliente != null)
+            {
+                quoteInfo.kyc = quoteInfo.ConoceTuCliente;
+            }
 
             if (quoteInfo.Modo == "draft" || quoteInfo.Modo == "resume")
             {

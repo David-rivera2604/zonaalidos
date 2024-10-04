@@ -96,6 +96,7 @@
     <Compile Include="Emision\AccidentesPersonalesConvertFrom.cs" />
     <Compile Include="Emision\AccidentesPersonalesConvertTo.cs" />
     <Compile Include="Emision\ComplianceSetup.cs" />
+    <Compile Include="Emision\ConoceTuCliente.cs" />
     <Compile Include="Emision\MapfreMasPlus.cs" />
     <Compile Include="Emision\MultirriesgoConvertFrom.cs" />
     <Compile Include="Emision\MapfreMasConvertFrom.cs" />

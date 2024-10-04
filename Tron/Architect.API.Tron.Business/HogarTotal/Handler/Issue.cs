@@ -107,6 +107,15 @@ namespace Architect.API.Tron.Business.HogarTotal.Handler
         {
 
             Contracts.Emision.HogarTotal resultQuoteInfo = null;
+
+            // En caso de que el objeto kyc este vacio (información provista por la UI de aliados),
+            // pero el objeto ConoceTuCliente no lo sea (información provista por el api),
+            // se asigna el valor de ConoceTuCliente a kyc
+            if (quoteInfo.kyc == null && quoteInfo.ConoceTuCliente != null)
+            {
+                quoteInfo.kyc = quoteInfo.ConoceTuCliente;
+            }
+
             if (quoteInfo.Modo == "draft" || quoteInfo.Modo == "resume")
             {
                 Contracts.Comun.tercero tomador = (from t in quoteInfo.terceros where t.tipodetercero == 0 select t).FirstOrDefault();

@@ -107,6 +107,15 @@ namespace Architect.API.Tron.Business.Emision
         {
             Contracts.Emision.MapfreMas resultQuoteInfo = null;
             quoteInfo.NUM_MATRICULA = Regex.Replace(quoteInfo.NUM_MATRICULA, @"[^a-zA-Z0-9]", string.Empty);
+
+            // En caso de que el objeto kyc este vacio (información provista por la UI de aliados),
+            // pero el objeto ConoceTuCliente no lo sea (información provista por el api),
+            // se asigna el valor de ConoceTuCliente a kyc
+            if (quoteInfo.kyc == null && quoteInfo.ConoceTuCliente != null)
+            {
+                quoteInfo.kyc = quoteInfo.ConoceTuCliente;
+            }
+
             if (quoteInfo.Modo == "draft" || quoteInfo.Modo == "resume")
             {
                 //TODO: Se debe incluir la validación de que de haber un Tomador, Asegurado y Conductor Habitual, pero faltan las básicas.
