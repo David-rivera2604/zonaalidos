@@ -20,18 +20,18 @@ namespace Architect.API.Tron.Business.Backoffice.Batch
         /// <summary>  
         /// Ubica los vehículos que no tienen placa para solicitar su información.  
         /// </summary>  
-        public static async Task RetrieveUnregisteredVehiclesAsync(int endIndex = 0)
+        public static async Task RetrieveUnregisteredVehiclesAsync(int offset, int size)
         {
             string dataapiUrlSetting = Core.Business.Settings.StringValue("Aliados.URL.DataApi", "https://appqa.mapfrecr.com/datapides/api/entity");
 
-            if (endIndex == 0)
+            if (size == 0)
             {
-                endIndex = Core.Business.Settings.IntegerValue("Batch.SinPlaca.Cantidad.Vehiculos", 9);
+                size = Core.Business.Settings.IntegerValue("Batch.SinPlaca.Cantidad.Vehiculos", 9);
             }
 
             List<object> vehiculos = new List<object>();
 
-            JObject response = await GetDataFromDataAPIAsync($"{dataapiUrlSetting}/sinplaca?endIndex={endIndex}").ConfigureAwait(false);
+            JObject response = await GetDataFromDataAPIAsync($"{dataapiUrlSetting}/sinplaca?beginIndex={offset + 1}&endIndex={offset + size}").ConfigureAwait(false);
 
             if (response.IsSuccess())
             {

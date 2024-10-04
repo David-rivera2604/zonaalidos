@@ -26,10 +26,10 @@ namespace Architect.API.Tron.Controllers
         [HttpPost]
         [Route("SinPlaca")]
         [AllowAnonymous]
-        public async Task<IHttpActionResult> Informacion([FromUri] int endIndex = 9)
+        public async Task<IHttpActionResult> Informacion([FromUri] int offset = 0,[FromUri] int size = 9)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
-            await Business.Backoffice.Batch.SinPlaca.RetrieveUnregisteredVehiclesAsync(endIndex);
+            await Business.Backoffice.Batch.SinPlaca.RetrieveUnregisteredVehiclesAsync(offset, size);
             return Ok();
         }
 

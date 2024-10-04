@@ -58,7 +58,7 @@ namespace Architect.API.Tron.DataAccess
                                 .Parameter("p_cod_campo", Architect.DataFactory.Enumerations.DbType.String, 20, cod_campo)
                                 .Parameter("p_val_campo_ant", Architect.DataFactory.Enumerations.DbType.String, 50, val_campo_ant)
                                 .Parameter("p_val_campo_act", Architect.DataFactory.Enumerations.DbType.String, 50, val_campo_act)
-                                .Parameter("p_fec_validez", Architect.DataFactory.Enumerations.DbType.String, 18, fec_validez.ToString("ddmmyyyy"))
+                                .Parameter("p_fec_validez", Architect.DataFactory.Enumerations.DbType.String, 18, fec_validez.ToString("ddMMyyyy"))
                                 .Parameter("p_txt_obs", Architect.DataFactory.Enumerations.DbType.String, 400, txt_obs)
                                 .Parameter("p_cod_usr", Architect.DataFactory.Enumerations.DbType.String, 8, "COTIZWEB")
                                 .Execute(currentConnection, "Tron");
