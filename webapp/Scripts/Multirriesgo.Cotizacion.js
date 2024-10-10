@@ -21,14 +21,7 @@ app.CotizacionMultirriesgo = (function () {
                 Init_Lookups(data);
             });
 
-        if (localStorage.getItem('Roles').includes('Formularios_digitales')) {
-            $('#emitir').html("<i class='fa fa-check'></i> Completar solicitud");
-            workMode = '&mode=draft';
-        }
-        else {
-            $('#emitir').html("<i class='fa fa-check'></i> Emitir");
-            workMode = '&mode=continue';
-        }
+        workMode = '&mode=draft';
     };
 
     function Quote() {
@@ -516,12 +509,14 @@ app.CotizacionMultirriesgo = (function () {
 
         $('#emitir').click(function (e) {
             e.preventDefault();
-            if (localStorage.getItem('Roles').includes('Formularios_digitales')) {
-                window.location.replace(app.setting.basepath + 'multirriesgo/solicitud?presupuesto=' + quoteData.presupuesto + workMode);
-            }
-            else {
-                window.location.replace(app.setting.basepath + 'multirriesgo/emision?presupuesto=' + quoteData.presupuesto + workMode);
-            }
+            //if (localStorage.getItem('Roles').includes('Formularios_digitales')) {
+            //    window.location.replace(app.setting.basepath + 'multirriesgo/solicitud?presupuesto=' + quoteData.presupuesto + workMode);
+            //}
+            //else {
+            //    window.location.replace(app.setting.basepath + 'multirriesgo/emision?presupuesto=' + quoteData.presupuesto + workMode);
+            //}
+
+            window.location.replace(app.setting.basepath + 'multirriesgo/solicitud?presupuesto=' + quoteData.presupuesto + workMode);
         });
 
     };

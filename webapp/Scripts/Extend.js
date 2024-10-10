@@ -4,11 +4,11 @@ app.Extend = (function () {
 
     return {
         EmisionFormatter: function (value, row, index, field) {
-            let quote = '', mode = 'continue';
-            if (localStorage.getItem('Roles').includes('Purdy') || localStorage.getItem('Roles').includes('Davivienda_Prendarios') ||
-                localStorage.getItem('Roles').includes('Davivienda_Leasing') || localStorage.getItem('Roles').includes('Formularios_digitales')) {
-                quote = '', mode = 'resume';
-            }
+            let quote = '', mode = 'resume';
+            //if (localStorage.getItem('Roles').includes('Purdy') || localStorage.getItem('Roles').includes('Davivienda_Prendarios') ||
+            //    localStorage.getItem('Roles').includes('Davivienda_Leasing')) {
+            //    quote = '', mode = 'resume';
+            //}
             switch (row.COD_RAMO) {
                 case 194:
                     quote = 'estudiantil';
