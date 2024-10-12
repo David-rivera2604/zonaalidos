@@ -21,14 +21,8 @@ app.CotizacionMultirriesgo = (function () {
                 Init_Lookups(data);
             });
 
-        if (localStorage.getItem('Roles').includes('Formularios_digitales')) {
-            $('#emitir').html("<i class='fa fa-check'></i> Completar solicitud");
-            workMode = '&mode=draft';
-        }
-        else {
-            $('#emitir').html("<i class='fa fa-check'></i> Emitir");
-            workMode = '&mode=continue';
-        }
+        $('#emitir').html("<i class='fa fa-check'></i> Completar solicitud");
+        workMode = '&mode=draft';
     };
 
     function Quote() {

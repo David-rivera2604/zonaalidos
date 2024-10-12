@@ -286,6 +286,19 @@ app.EmisionMapfreMasPlus = (function () {
         $('#cod_mon').val(data.cod_mon);
         $('#cod_fracc_pago').val(data.cod_fracc_pago);
         $('#tip_firma').val(data.tip_firma);
+
+        if (localStorage.getItem('Roles').includes('Purdy')) {
+            const data = {
+                tip_firma: 'valorSeleccionado',
+                opciones: [
+                    { valor: 'M', texto: 'FIRMA MANUAL' },
+                    { valor: 'F', texto: 'FIRMA ACEPTACION DIGITAL' }
+                ]
+            };
+            $('#tip_firma').html(data.opciones.map(opcion =>
+                `<option value="${opcion.valor}">${opcion.texto}</option>`).join('')).val(data.tip_firma);
+        }
+        
         $('#Modalidad_Pago').val(data.Modalidad_Pago);
 
         app.ui.SetDateValue('#fec_efec_poliza', data.fec_efec_poliza);
@@ -1440,7 +1453,7 @@ app.EmisionMapfreMasPlus = (function () {
                                                 formularioRow.data.domiciliopermanenteDireccionexacta = mainHolder[0].otrasenas;
 
                                                 ref.Init(formularioRow.data);
-                                                ref.AcceptCallBack(app.EmisionMapfreMas.Accept);
+                                                ref.AcceptCallBack(app.EmisionMapfreMasPlus.Accept);
                                             })
                                     }
                                 }
@@ -1472,7 +1485,7 @@ app.EmisionMapfreMasPlus = (function () {
                                                 formularioRow.data.domiciliocomercialDireccionexacta = mainHolder[0].otrasenas;
 
                                                 ref.Init(formularioRow.data);
-                                                ref.AcceptCallBack(app.EmisionMapfreMas.Accept);
+                                                ref.AcceptCallBack(app.EmisionMapfreMasPlus.Accept);
                                             })
                                     }
 
@@ -1526,7 +1539,8 @@ app.EmisionMapfreMasPlus = (function () {
     };
 
     function formulariosMode() {
-        return ((workMode === 'draft' || workMode === 'resume') && !localStorage.getItem('Roles').includes('Purdy') && !localStorage.getItem('Roles').includes('Davivienda_Prendarios') && !localStorage.getItem('Roles').includes('Davivienda_Leasing'));
+        //return ((workMode === 'draft' || workMode === 'resume') && !localStorage.getItem('Roles').includes('Purdy') && !localStorage.getItem('Roles').includes('Davivienda_Prendarios') && !localStorage.getItem('Roles').includes('Davivienda_Leasing'));
+        return ((workMode === 'draft' || workMode === 'resume') && !localStorage.getItem('Roles').includes('Purdy'));
     }
 
     return {

@@ -140,12 +140,8 @@ namespace Architect.API.Tron.Business.Multirriesgo.Handler
                         Utilities.Log.ErrorLog("Issue.Compliance", "Fail send compliance information", ex);
                     }
 
-
-                    if (tokenInfo.Roles.Contain("Formularios_digitales"))
-                    {
                         Contracts.PolicyProposal proposal = DataAccess.PolicyProposal.RetrieveByProposalId(quoteInfo.presupuesto, tokenInfo.CompanyId);
                         DataAccess.PolicyProposal.Update_Status(proposal.Id, 10, quoteInfo.presupuesto, tokenInfo.UserId);
-                    }
                 }
             }
 

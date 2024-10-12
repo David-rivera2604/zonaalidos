@@ -192,13 +192,13 @@
       "Role": "_default_asegurado_fisico",
       "Detalles": [
         {
-          "descripcion": "Expediente Cliente",
-          "archivo": "EXPEDIENTE_CLIENTE.pdf",
+          "descripcion": "Cédula de cliente por ambos lados",
+          "archivo": "Cédula_del_cliente_ambos_lados.pdf",
           "requerido": true
         },
         {
-          "descripcion": "expendiente Póliza",
-          "archivo": "EXPEDIENTE_POLIZA.pdf",
+          "descripcion": "Fotos del Riesgo",
+          "archivo": "Fotos_del_riesgo.pdf",
           "requerido": true
         }
       ]
@@ -207,13 +207,13 @@
       "Role": "_default_asegurado_juridico",
       "Detalles": [
         {
-          "descripcion": "Expediente Cliente",
-          "archivo": "EXPEDIENTE_CLIENTE.pdf",
+          "descripcion": "Cédula de cliente por ambos lados",
+          "archivo": "Cédula_del_cliente_ambos_lados.pdf",
           "requerido": true
         },
         {
-          "descripcion": "expendiente Póliza",
-          "archivo": "EXPEDIENTE_POLIZA.pdf",
+          "descripcion": "Fotos del Riesgo",
+          "archivo": "Fotos_del_riesgo.pdf",
           "requerido": true
         }
       ]

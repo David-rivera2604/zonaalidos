@@ -96,14 +96,7 @@ namespace Architect.API.Tron.Business.Emision
 
             if (tryOnTron)
             {
-                if (tokenInfo.Roles.Contain("Formularios_digitales"))
-                {
-                    result.Modo = "draft";
-                }
-                else
-                {
-                    result.Modo = mode;
-                }
+                result.Modo = "draft";
             }
             return result;
         }
@@ -193,10 +186,7 @@ namespace Architect.API.Tron.Business.Emision
                         //Se cambian los adjuntos creados al número de presupuesto al número de póliza generado
                         Core.Business.General.Attachment.ChangeEntityId(tokenInfo.CompanyId, 3000, Convert.ToInt64(resultQuoteInfo.presupuesto), 3000, Convert.ToInt64(resultQuoteInfo.num_poliza), tokenInfo.UserId);
 
-                        if (tokenInfo.Roles.Contain("Formularios_digitales"))
-                        {
                             DataAccess.PolicyProposal.Update_Status(resultQuoteInfo.presupuesto, resultQuoteInfo.num_poliza, tokenInfo.CompanyId, 10, tokenInfo.UserId);
-                        }
 
                         resultQuoteInfo.Mensaje = null;
                         resultQuoteInfo.Error = null;

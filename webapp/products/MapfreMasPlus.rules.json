@@ -192,33 +192,18 @@
       "Role": "_default_asegurado_fisico",
       "Detalles": [
         {
-          "descripcion": "Copia de la cédula de identidad",
-          "archivo": "CEDULA.docx",
+          "descripcion": "Cédula de cliente vigente por ambos lados",
+          "archivo": "Cédula_del_cliente_vigente_ambos_lados.pdf",
           "requerido": true
         },
         {
-          "descripcion": "Comprobante de entrega de condiciones generales",
-          "archivo": "CONDICIONES.pdf",
+          "descripcion": "Fotos del Riesgo",
+          "archivo": "Fotos_del_riesgo.pdf",
           "requerido": true
         },
         {
-          "descripcion": "Consentimiento para uso de datos personales",
-          "archivo": "CONSENTIMIENTO.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Formato de validación de domicilio",
-          "archivo": "DOMICILIO.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Conozca a su cliente (KYC)",
-          "archivo": "KYC.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Solicitud de seguro firmada",
-          "archivo": "SOLICITUD.pdf",
+          "descripcion": "Formulario de Inspección",
+          "archivo": "Formulario_de_Inspeccion.pdf",
           "requerido": true
         }
       ]
@@ -227,48 +212,18 @@
       "Role": "_default_asegurado_juridico",
       "Detalles": [
         {
-          "descripcion": "Copia de la cédula de identidad",
-          "archivo": "CEDULA.docx",
+          "descripcion": "Cédula de cliente vigente por ambos lados",
+          "archivo": "Cédula_del_cliente_vigente_ambos_lados.pdf",
           "requerido": true
         },
         {
-          "descripcion": "Represéntate legal",
-          "archivo": "REPRESENTANTE LEGAL.docx",
+          "descripcion": "Fotos del Riesgo",
+          "archivo": "Fotos_del_riesgo.pdf",
           "requerido": true
         },
         {
-          "descripcion": "Participación accionaria",
-          "archivo": "PARTICIPACION ACCIONARIA.docx",
-          "requerido": true
-        },
-        {
-          "descripcion": "Certificado de participación",
-          "archivo": "CERTIFICADO PARTICIPACION.docx",
-          "requerido": true
-        },
-        {
-          "descripcion": "Comprobante de entrega de condiciones generales",
-          "archivo": "CONDICIONES.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Consentimiento para uso de datos personales",
-          "archivo": "CONSENTIMIENTO.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Formato de validación de domicilio",
-          "archivo": "DOMICILIO.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Conozca a su cliente (KYC)",
-          "archivo": "KYC.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Solicitud de seguro firmada",
-          "archivo": "SOLICITUD.pdf",
+          "descripcion": "Formulario de Inspección",
+          "archivo": "Formulario_de_Inspeccion.pdf",
           "requerido": true
         }
       ]
