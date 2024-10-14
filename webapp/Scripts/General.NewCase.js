@@ -374,7 +374,7 @@ app.GeneralNewCase = (function () {
             Event_Controls();
             Setup_Validations();
 
-            app.Attachments.Init({ PostByEachRow: false });
+            app.Attachments.Init({ EntityType: 1304, Id: 0, PostByEachRow: false });
         },
         New: function (row) {
             let newRow = { Id: 0, Title: null, Description: null, Priority: 4, InstanceId: 0, Reference1: null, Reference2: null, Reference3: null, Reference4: null, Reference5: null, Reference6: null, Reference7: null, Reference8: null, Reference9: null, Reference10: null, ContactMainName: null, ContactMainEmail: null, Status: 0, Label: null, SubStatus: 0, SubLabel: null, FlowId: null, UserId: null }
