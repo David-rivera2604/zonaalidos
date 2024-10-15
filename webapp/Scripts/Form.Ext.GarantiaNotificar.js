@@ -99,6 +99,7 @@
     async Init(spec, formName) {
         spec._datasrc = {};
         this.ctx = spec;
+        $('.ibox-content').toggleClass('sk-loading');
 
         $('#Issue_date_group').data("DateTimePicker").minDate(app.ui.Today());
 
