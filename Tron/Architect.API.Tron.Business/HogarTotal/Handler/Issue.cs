@@ -115,7 +115,15 @@ namespace Architect.API.Tron.Business.HogarTotal.Handler
             // se asigna el valor de ConoceTuCliente a kyc
             if (quoteInfo.kyc == null && quoteInfo.ConoceTuCliente != null)
             {
-                quoteInfo.kyc = quoteInfo.ConoceTuCliente;
+                if (quoteInfo.ConoceTuCliente.Persona != null)
+                {
+                    quoteInfo.kyc = JObject.Parse(JsonConvert.SerializeObject(quoteInfo.ConoceTuCliente.Persona));
+                }
+                if (quoteInfo.ConoceTuCliente.Juridico != null)
+                {
+                    quoteInfo.kyc = JObject.Parse(JsonConvert.SerializeObject(quoteInfo.ConoceTuCliente.Juridico));
+                }
+                quoteInfo.ConoceTuCliente = null;
             }
 
             if (quoteInfo.Modo == "draft" || quoteInfo.Modo == "resume")

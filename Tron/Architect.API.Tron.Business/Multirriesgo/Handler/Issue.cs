@@ -6,6 +6,7 @@ using System.Data;
 using Architect.API.Core.Business.General;
 using Architect.API.Core.Contracts;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Architect.API.Tron.Business.Multirriesgo.Handler
 {
@@ -68,7 +69,15 @@ namespace Architect.API.Tron.Business.Multirriesgo.Handler
             
             if (quoteInfo.kyc == null && quoteInfo.ConoceTuCliente != null)
             {
-                quoteInfo.kyc = quoteInfo.ConoceTuCliente;
+                if (quoteInfo.ConoceTuCliente.Persona != null)
+                {
+                    quoteInfo.kyc = JObject.Parse(JsonConvert.SerializeObject(quoteInfo.ConoceTuCliente.Persona));
+                }
+                if (quoteInfo.ConoceTuCliente.Juridico != null)
+                {
+                    quoteInfo.kyc = JObject.Parse(JsonConvert.SerializeObject(quoteInfo.ConoceTuCliente.Juridico));
+                }
+                quoteInfo.ConoceTuCliente = null;
             }
 
             if (quoteInfo.Modo == "draft" || quoteInfo.Modo == "resume")

@@ -103,15 +103,15 @@ namespace Architect.API.Tron.Business.Emision
 
             if (tryOnTron)
             {
-              //  if (tokenInfo.Roles.Contain("Purdy") ||
-              //      tokenInfo.Roles.Contain("Davivienda_Prendarios") || tokenInfo.Roles.Contain("Davivienda_Leasing"))
-              //  {
-              //      result.Modo = "draft";
-              //  }
-              //  else
-              //  {
-                    result.Modo = mode;
-              //  }
+                //  if (tokenInfo.Roles.Contain("Purdy") ||
+                //      tokenInfo.Roles.Contain("Davivienda_Prendarios") || tokenInfo.Roles.Contain("Davivienda_Leasing"))
+                //  {
+                //      result.Modo = "draft";
+                //  }
+                //  else
+                //  {
+                result.Modo = mode;
+                //  }
 
             }
             return result;
@@ -127,7 +127,15 @@ namespace Architect.API.Tron.Business.Emision
             // se asigna el valor de ConoceTuCliente a kyc
             if (quoteInfo.kyc == null && quoteInfo.ConoceTuCliente != null)
             {
-                quoteInfo.kyc = quoteInfo.ConoceTuCliente;
+                if (quoteInfo.ConoceTuCliente.Persona != null)
+                {
+                    quoteInfo.kyc = JObject.Parse(JsonConvert.SerializeObject(quoteInfo.ConoceTuCliente.Persona));
+                }
+                if (quoteInfo.ConoceTuCliente.Juridico != null)
+                {
+                    quoteInfo.kyc = JObject.Parse(JsonConvert.SerializeObject(quoteInfo.ConoceTuCliente.Juridico));
+                }
+                quoteInfo.ConoceTuCliente = null;
             }
             if (quoteInfo.Modo == "draft" || quoteInfo.Modo == "resume")
             {
@@ -191,7 +199,7 @@ namespace Architect.API.Tron.Business.Emision
 
                         //if (tokenInfo.Roles.Contain("Purdy") || tokenInfo.Roles.Contain("Davivienda_Prendarios") || tokenInfo.Roles.Contain("Davivienda_Leasing"))
                         //{
-                            DataAccess.PolicyProposal.Update_Status(resultQuoteInfo.presupuesto, resultQuoteInfo.num_poliza, tokenInfo.CompanyId, 10, tokenInfo.UserId);
+                        DataAccess.PolicyProposal.Update_Status(resultQuoteInfo.presupuesto, resultQuoteInfo.num_poliza, tokenInfo.CompanyId, 10, tokenInfo.UserId);
                         //}
 
                         resultQuoteInfo.Mensaje = null;
