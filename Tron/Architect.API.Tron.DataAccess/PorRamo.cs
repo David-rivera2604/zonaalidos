@@ -80,9 +80,10 @@ namespace Architect.API.Tron.DataAccess
 
 
             Database.Select(
-@"SELECT a30.COD_RAMO, a1800.nom_ramo, a30.TIP_DOCUM, a30.COD_DOCUM, v1390.NOM_TERCERO, v1390.NOM2_TERCERO, v1390.APE1_TERCERO, v1390.APE2_TERCERO, a1331.email, a1331.TXT_EMAIL, a1331.tlf_numero, a1331.TLF_MOVIL, a700.cod_mon, SUM(a700.imp_recibo) imp_recibo, a1331.TIP_TARJETA, a1331.COD_TARJETA, a1331.NUM_TARJETA
+@"SELECT a30.COD_RAMO, a1800.nom_ramo, a200.NOM_SECTOR, a30.TIP_DOCUM, a30.COD_DOCUM, v1390.NOM_TERCERO, v1390.NOM2_TERCERO, v1390.APE1_TERCERO, v1390.APE2_TERCERO, a1331.email, a1331.TXT_EMAIL, a1331.tlf_numero, a1331.TLF_MOVIL, a700.cod_mon, SUM(a700.imp_recibo) imp_recibo, a1331.TIP_TARJETA, a1331.COD_TARJETA, a1331.NUM_TARJETA
   FROM a2000030 a30
   JOIN A1001800 a1800 ON a1800.COD_CIA=a30.COD_CIA AND a1800.COD_RAMO = a30.COD_RAMO
+  JOIN A1000200 a200 ON a200.COD_CIA=a30.COD_CIA AND a200.COD_SECTOR = a30.COD_SECTOR
   JOIN a1001331 a1331 ON a1331.COD_CIA=a30.COD_CIA AND a1331.TIP_DOCUM = a30.TIP_DOCUM AND a1331.COD_DOCUM = a30.COD_DOCUM
   JOIN (SELECT DISTINCT COD_CIA, TIP_DOCUM, COD_DOCUM, NOM_TERCERO, NOM2_TERCERO, APE1_TERCERO, APE2_TERCERO FROM v1001390) v1390 ON v1390.COD_CIA=a30.COD_CIA AND v1390.TIP_DOCUM = a30.TIP_DOCUM AND v1390.COD_DOCUM = a30.COD_DOCUM
   JOIN a2990700 a700 ON a700.COD_CIA=a30.COD_CIA AND a700.NUM_POLIZA= a30.NUM_POLIZA AND a700.num_spto = a30.num_spto AND a700.num_apli = a30.num_apli AND a700.num_poliza = a30.num_poliza AND a700.num_spto_apli = a30.num_spto_apli AND a700.NUM_RECIBO = :NUM_RECIBO AND a700.TIP_SITUACION = 'EP'
@@ -90,7 +91,7 @@ namespace Architect.API.Tron.DataAccess
   AND a30.NUM_POLIZA = :NUM_POLIZA" + filter +
 @" AND a30.mca_spto_anulado   = 'N'
   AND a30.mca_poliza_anulada = 'N'
- GROUP BY a30.COD_RAMO, a1800.nom_ramo, a30.TIP_DOCUM, a30.COD_DOCUM, v1390.NOM_TERCERO, v1390.NOM2_TERCERO, v1390.APE1_TERCERO, v1390.APE2_TERCERO, a1331.email, a1331.TXT_EMAIL, a1331.tlf_numero, a1331.TLF_MOVIL, a700.cod_mon, a1331.TIP_TARJETA, a1331.COD_TARJETA, a1331.NUM_TARJETA")
+ GROUP BY a30.COD_RAMO, a1800.nom_ramo, a200.NOM_SECTOR, a30.TIP_DOCUM, a30.COD_DOCUM, v1390.NOM_TERCERO, v1390.NOM2_TERCERO, v1390.APE1_TERCERO, v1390.APE2_TERCERO, a1331.email, a1331.TXT_EMAIL, a1331.tlf_numero, a1331.TLF_MOVIL, a700.cod_mon, a1331.TIP_TARJETA, a1331.COD_TARJETA, a1331.NUM_TARJETA")
                         .AddParameter("NUM_RECIBO", DbType.Decimal, 11, num_recibo)
                         .AddParameter("COD_CIA", DbType.Decimal, 5, cod_cia)
                         .AddParameter("NUM_POLIZA", DbType.AnsiString, 13, num_poliza)
@@ -101,6 +102,7 @@ namespace Architect.API.Tron.DataAccess
                             {
                                 COD_RAMO = reader.IntegerValue("COD_RAMO"),
                                 NOM_RAMO = reader.StringValue("NOM_RAMO"),
+                                NOM_SECTOR = reader.StringValue("NOM_SECTOR"),
                                 TIP_DOCUM = reader.StringValue("TIP_DOCUM"),
                                 COD_DOCUM = reader.StringValue("COD_DOCUM"),
                                 NOM_TERCERO = reader.StringValue("NOM_TERCERO"),

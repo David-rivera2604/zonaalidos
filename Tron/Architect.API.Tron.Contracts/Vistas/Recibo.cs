@@ -10,6 +10,7 @@ namespace Architect.API.Tron.Contracts.Vistas
     {
         public int COD_RAMO { get; set; }
         public string NOM_RAMO { get; set; }
+        public string NOM_SECTOR { get; set; }
         public string TIP_DOCUM { get; set; }
         public string COD_DOCUM { get; set; }
         public string NOM_TERCERO { get; set; }

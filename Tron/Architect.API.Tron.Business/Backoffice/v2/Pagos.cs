@@ -70,7 +70,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                         Mobile = recibo.TLF_MOVIL.IfEmpty(recibo.TLF_NUMERO),
                         PolicyId = num_poliza,
                         BillNumber = num_recibo,
-                        Description = string.Format("MAPFRE: {0}. POLIZA #{1} RECIBO #{2}", recibo.NOM_RAMO, num_poliza, num_recibo),
+                        Description = string.Format("MAPFRE: {3}. {0}. POLIZA #{1} RECIBO #{2}", recibo.NOM_RAMO, num_poliza, num_recibo, recibo.NOM_SECTOR),
                         Currency = recibo.COD_MON.ToString(),
                         Amount = recibo.IMP_RECIBO
                     };
@@ -86,7 +86,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                         emailCliente = recibo.EMAIL.IfEmpty(recibo.TXT_EMAIL),
                         telefonoCliente = recibo.TLF_MOVIL.IfEmpty("506" + recibo.TLF_NUMERO),
                         contratoFrontal = false,
-                        concepto = string.Format("MAPFRE: {0}. POLIZA #{1} RECIBO #{2}", recibo.NOM_RAMO, num_poliza, num_recibo),
+                        concepto = string.Format("MAPFRE: {3}. {0}. POLIZA #{1} RECIBO #{2}", recibo.NOM_RAMO, num_poliza, num_recibo, recibo.NOM_SECTOR),
                         subtotal = recibo.IMP_RECIBO.ToString().Replace(",", "."),
                         impuestos = "0",
                         total = recibo.IMP_RECIBO.ToString().Replace(",", "."),
@@ -98,7 +98,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                             cantidad= 1,
                             moneda= recibo.COD_MON == 1? "CRC" : "USD",
                             precio= recibo.IMP_RECIBO,
-                            producto=string.Format("MAPFRE: {0}. POLIZA #{1} RECIBO #{2}", recibo.NOM_RAMO, num_poliza, num_recibo)
+                            producto=string.Format("MAPFRE: {3}. {0}. POLIZA #{1} RECIBO #{2}", recibo.NOM_RAMO, num_poliza, num_recibo, recibo.NOM_SECTOR)
                         }  },
                         //dataExtra = new Payment.Integrations.Contracts.v2.PaymentInformation.DataExtra() { id = "enviadopormapfre" },
                         ////address = new Payment.Integrations.Contracts.v2.PaymentInformation.Address() { address1 = "panamá", address2 = "herrera", address3 = "chitre", postalCode = "507", city = "chitre", state = "nl", countryCode = "" }
@@ -359,7 +359,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                             origen = "api",
                             expectedCollectionPaidDate = DateTime.Today,
                             moneda = pendiente.NOM_MON,
-                            concepto = string.Format("MAPFRE: {0}. POLIZA #{1} RECIBO #{2}", pendiente.NOM_RAMO, pendiente.NUM_POLIZA, pendiente.NUM_RECIBO),
+                            concepto = string.Format("MAPFRE: {3}. {0}. POLIZA #{1} RECIBO #{2}", pendiente.NOM_RAMO, pendiente.NUM_POLIZA, pendiente.NUM_RECIBO, pendiente.NOM_SECTOR),
                             token = pendiente.TOKEN
                         };
                         reciboReq.items.Add(newItem);

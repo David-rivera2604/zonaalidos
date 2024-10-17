@@ -18,7 +18,7 @@ namespace Architect.API.Tron.DataAccess.Pagos
             List<Contracts.Pagos.Recibo> result = new List<Contracts.Pagos.Recibo>();
             string filter = string.Empty;
 
-            Database.Select(@"SELECT C.NUM_RECIBO, C.FEC_EFEC_RECIBO, SUM(C.IMP_RECIBO) IMP_RECIBO, A400.COD_MON_ISO NOM_MON, A.NUM_POLIZA, A.COD_AGT, a1800.nom_ramo, A.TIP_DOCUM, A.COD_DOCUM, A99.NOM_TERCERO, A99.NOM2_TERCERO, A99.APE1_TERCERO, A99.APE2_TERCERO,
+            Database.Select(@"SELECT C.NUM_RECIBO, C.FEC_EFEC_RECIBO, SUM(C.IMP_RECIBO) IMP_RECIBO, A400.COD_MON_ISO NOM_MON, A.NUM_POLIZA, A.COD_AGT, a1800.nom_ramo, a200.NOM_SECTOR, A.TIP_DOCUM, A.COD_DOCUM, A99.NOM_TERCERO, A99.NOM2_TERCERO, A99.APE1_TERCERO, A99.APE2_TERCERO,
   		                             A1331.TLF_NUMERO, A1331.TLF_NUMERO_COM, A1331.EMAIL, A1331.EMAIL_COM, A1331.TXT_EMAIL, B.TOKEN
                                 FROM A2000030 A
                                 JOIN ALIADOS.BOVEDA B ON B.TIP_DOCUM=A.TIP_DOCUM AND B.COD_DOCUM=A.COD_DOCUM AND B.STATUS=1 
@@ -35,13 +35,14 @@ namespace Architect.API.Tron.DataAccess.Pagos
                                 JOIN A1001331 A1331 ON A1331.COD_CIA  = A.COD_CIA AND A1331.TIP_DOCUM = A.TIP_DOCUM AND A1331.COD_DOCUM = A.COD_DOCUM
                                 JOIN A1000400 A400 ON A400.COD_MON = C.COD_MON
                                 JOIN A1001800 a1800 ON a1800.COD_CIA=A.COD_CIA AND a1800.COD_RAMO = A.COD_RAMO
+                                JOIN A1000200 a200 ON a200.COD_CIA=A.COD_CIA AND a200.COD_SECTOR = A.COD_SECTOR 
                                 WHERE A.COD_CIA = :cod_cia
                                     AND A.MCA_POLIZA_ANULADA  = 'N'
                                     AND A.NUM_SPTO = ( SELECT MAX(A230.NUM_SPTO)
                                                         FROM A2000030 A230
                                                         WHERE A230.COD_CIA    = A.COD_CIA
                                                         AND A230.NUM_POLIZA = A.NUM_POLIZA )
-                                GROUP BY A.NUM_POLIZA, A.COD_AGT, a1800.nom_ramo, A.TIP_DOCUM, A.COD_DOCUM, A99.NOM_TERCERO, A99.NOM2_TERCERO, A99.APE1_TERCERO, A99.APE2_TERCERO,
+                                GROUP BY A.NUM_POLIZA, A.COD_AGT, a1800.nom_ramo, a200.NOM_SECTOR, A.TIP_DOCUM, A.COD_DOCUM, A99.NOM_TERCERO, A99.NOM2_TERCERO, A99.APE1_TERCERO, A99.APE2_TERCERO,
    			                            A1331.TLF_NUMERO, A1331.TLF_NUMERO_COM, A1331.EMAIL, A1331.EMAIL_COM, A1331.TXT_EMAIL, C.NUM_RECIBO, C.FEC_EFEC_RECIBO, A400.COD_MON_ISO, B.TOKEN
                                 FETCH FIRST :fetchRows ROWS ONLY")
                     .AddParameter("fec_efect_recibo", DbType.Date, 0, fec_efect_recibo)
@@ -58,6 +59,7 @@ namespace Architect.API.Tron.DataAccess.Pagos
                             NUM_POLIZA = reader.StringValue("NUM_POLIZA"),
                             COD_AGT = reader.IntegerValue("COD_AGT"),
                             NOM_RAMO = reader.StringValue("NOM_RAMO"),
+                            NOM_SECTOR = reader.StringValue("NOM_SECTOR"),
                             TIP_DOCUM = reader.StringValue("TIP_DOCUM"),
                             COD_DOCUM = reader.StringValue("COD_DOCUM"),
                             NOM_TERCERO = reader.StringValue("NOM_TERCERO"),
