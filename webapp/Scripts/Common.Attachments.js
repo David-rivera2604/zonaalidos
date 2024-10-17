@@ -134,9 +134,9 @@ app.Attachments = (function () {
                     console.log(fileList, error);
                     if (!error) {
                         let currentRows = $('#AttachmentGridTbl').bootstrapTable('getData');
-                        let nextId = 100;
+                        let nextId = -100;
                         if (currentRows?.length > 0)
-                            nextId = 100 + Math.max.apply(Math, currentRows.map(function (o) { return o.Id == 10 ? o.Id : null; }));
+                            nextId = -100 - Math.max.apply(Math, currentRows.map(function (o) { return o.Id == 10 ? o.Id : null; }));
 
 
                         $('#AttachmentGridTbl').bootstrapTable('showLoading');
@@ -147,6 +147,7 @@ app.Attachments = (function () {
                                 DocumentTypeDesc: 'General',
                                 FileName: value.FileName,
                                 Stored: value.StoredFileName,
+                                FileContent: value.StoredFileName,
                                 FileSize: value.Size,
                                 Description: app.ui.StringCapitalizeFormatter(value.FileName.substring(0, value.FileName.indexOf('.')))
                             };
@@ -170,7 +171,7 @@ app.Attachments = (function () {
                             } else {
                                 if (row.Id === null) {
                                     row.Id = nextId;
-                                    nextId += 10
+                                    nextId -= 10
                                 }
                                 if ($('#AttachmentModal').data('Id') != null) {
                                     $('#AttachmentGridTbl').bootstrapTable('updateByUniqueId', { Id: row.Id, row: row });

@@ -89,6 +89,11 @@ namespace Architect.API.Core.Business.General
         {
             attachment.CompanyId = companyId;
             attachment.UpdateUserCode = userId;
+            if (attachment.Id.IsNotEmpty() && attachment.Id < 0)
+            {
+                attachment.Id = 0;
+            }
+
             if (attachment.FileContent.IsNotEmpty())
             {
                 attachment.FileContent = Path.Combine(ConfigurationManager.AppSettings["Attachments.Path"], attachment.FileContent);
@@ -182,5 +187,5 @@ namespace Architect.API.Core.Business.General
             return matrizfiles;
         }
     }
-    
+
 }
