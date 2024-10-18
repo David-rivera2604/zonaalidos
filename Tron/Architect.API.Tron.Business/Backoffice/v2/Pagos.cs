@@ -52,10 +52,6 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 if (cantidadRemesados == 0)
                 {
                     recibo = DataAccess.PorRamo.Informacion_de_un_Recibo(cod_cia, tokenInfo.AgentCode, tokenInfo.IdentificationType.IdentificationType(), tokenInfo.Identification.DocumentNumber(tokenInfo.IdentificationType), num_poliza, num_recibo);
-
-                    if (recibo != null) { 
-                    }
-
                 }
                 if (recibo != null)
                 {
@@ -315,7 +311,9 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             int recordCount = 0;
             int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
             string prefix = Utilities.Helpers.Settings.StringValue("EMail.Test", string.Empty);
-            List<Contracts.Pagos.Recibo> pendientes = Architect.API.Tron.DataAccess.Pagos.Recibos.PendientesRecurrentesAlCobro(cod_cia, fec_efect_recibo, Utilities.Helpers.Settings.IntegerValue("Payment.Silice.RecurringReceipts.Cantidad.Recibos", 5));
+            string filter = Core.Business.Settings.StringValue("Payment.Silice.RecurringReceipts.Filter.Policies", string.Empty);
+            int limitCount = Utilities.Helpers.Settings.IntegerValue("Payment.Silice.RecurringReceipts.Limit.Count", 5);
+            List<Contracts.Pagos.Recibo> pendientes = Architect.API.Tron.DataAccess.Pagos.Recibos.PendientesRecurrentesAlCobro(cod_cia, fec_efect_recibo, limitCount, filter);
             if (pendientes.Count > 0)
             {
                 ReciboRequest reciboReq = new ReciboRequest()
