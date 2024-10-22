@@ -613,3 +613,4 @@
                    Purdy. Siniestros reporte. Se agregan campos de autorización de uso de póliza y se corrige el nombre del tomador.
                    Pasarela. Silice. Se agrega el sector en la descripción de los recibos al cobro.
                    Pasarela. Silice. Se agrega filtro opcional para limitar los recibos según una lista con el número de pólizas (Payment.Silice.RecurringReceipts.Filter.Policies).
+1.6.77  22/10/2024 Trazabilidad. Se habilita la carga múltiple de archivos al momento de editar un caso para un proceso.
