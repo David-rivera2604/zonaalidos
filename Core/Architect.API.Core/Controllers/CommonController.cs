@@ -189,6 +189,10 @@ namespace Architect.API.Core.Controllers
                                 FileSize = size,
                                 FileContent = fullFileName
                             };
+                            if (attachment.Description == "#filename#")
+                            {
+                                attachment.Description = System.IO.Path.GetFileNameWithoutExtension( httpPostedFile.FileName);
+                            }
                             attachment = Architect.API.Core.Business.General.Attachment.SyncUp(attachment);
                             id = attachment.Id;
                         }

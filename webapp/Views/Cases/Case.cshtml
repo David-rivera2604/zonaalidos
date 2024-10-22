@@ -157,7 +157,7 @@
                                     <fieldset>
                                         @Html.Partial("_references")
                                     </fieldset>
-     
+
                                 </form>
 
                                 <div class='row'>
@@ -228,56 +228,8 @@
                         <!-- Adjuntos -->
                         <div role="tabpanel" id="Adjuntos" class="tab-pane">
                             <div class="panel-body">
-                                <div class="row">
-                                    <div class='col'>
-                                    </div>
-                                    <div class='col-auto'>
-                                        <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo adjunto" data-toggle="modal" id="AttachmentNew"> <i class="fa fa-plus"></i> </button>
-                                    </div>
-                                </div>
-                                @*<div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>*@
-                                <div class='row'>
-                                    <div class='col-md-12'>
-                                        <div class="table-responsive animated bounceInRight" style="padding: 0px 2px 0px 2px;">
-                                            <table id="AttachmentGridTbl" style="font-size: 12px" class="table table-bordered table-hover table-index"></table>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                @*<div class="form-row attachment">
-                                        <div class="col-lg-12">
-                                            <div class="form-row">
-                                                <div class='col-md-12' style="padding-bottom: 20px">
-                                                    <p>
-                                                        <span><i class="fa fa-paperclip"></i> 2 attachments - </span>
-                                                        <a href="#">Download all</a>
-                                                        |
-                                                        <a href="#">View all images</a>
-                                                    </p>
-                                                    <div class="attachment">
-                                                        <div class="file-box">
-                                                            <div class="file">
-                                                                <a href="#">
-                                                                    <span class="corner"></span>
-
-                                                                    <div class="icon">
-                                                                        <i class="fa fa-file"></i>
-                                                                    </div>
-                                                                    <div class="file-name">
-                                                                        ejemplo.con.firma.pdf
-                                                                        <br>
-                                                                        <small>Creado: Mar 30, 2021</small>
-                                                                    </div>
-                                                                </a>
-                                                            </div>
-
-                                                        </div>
-                                                        <div class="clearfix"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>*@
+                                <!-- Attachments Grid -->
+                                @Html.Partial("../Common/_attachments_grid")
                             </div>
                         </div>
 
@@ -323,178 +275,14 @@
         </div>
     </div>
 
-    @*<div class="col-md-12">
-            <div class="row">
-                <div class="ibox">
-                    <div class="ibox-title">
-                        <h5>
-                            <i class="fa fa-inbox"></i> <span id="Title" title="Descripción del caso"></span>
-                            <small class="m-l-sm"><span id="FlowIdDesc" title="Proceso asociado al caso"></span></small>
-                        </h5>
-                        <div class="ibox-tools">
-                            <span id="StatusDesc" class="label" title="Estado/Etiqueta actual"></span>
-                            <a class="collapse-link" href="">
-                                <i class="fa fa-chevron-down"></i>
-                            </a>
-                            <a href="" class="Historial-link" title="Historial">
-                                <i class="fa fa-clock-o"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content ">
-                    </div>
-
-                </div>
-
-            </div>
-        </div>*@
-    @*<div class="historyPanel d-none">
-            <div class="client-detail">
-
-                <div class="full-height-scroll">
-                    <div id="vertical-timeline" class="vertical-container dark-timeline">
-                        <div class="vertical-timeline-block">
-                            <div class="vertical-timeline-icon gray-bg">
-                                <i class="fa fa-coffee"></i>
-                            </div>
-                            <div class="vertical-timeline-content">
-                                <p>
-                                    Conference on the sales results for the previous year.
-                                </p>
-                                <span class="vertical-date small text-muted"> 2:10 pm - 12.06.2014 </span>
-                            </div>
-                        </div>
-                        <div class="vertical-timeline-block">
-                            <div class="vertical-timeline-icon gray-bg">
-                                <i class="fa fa-briefcase"></i>
-                            </div>
-                            <div class="vertical-timeline-content">
-                                <p>
-                                    Many desktop publishing packages and web page editors now use Lorem.
-                                </p>
-                                <span class="vertical-date small text-muted"> 4:20 pm - 10.05.2014 </span>
-                            </div>
-                        </div>
-                        <div class="vertical-timeline-block">
-                            <div class="vertical-timeline-icon gray-bg">
-                                <i class="fa fa-bolt"></i>
-                            </div>
-                            <div class="vertical-timeline-content">
-                                <p>
-                                    There are many variations of passages of Lorem Ipsum available.
-                                </p>
-                                <span class="vertical-date small text-muted"> 06:10 pm - 11.03.2014 </span>
-                            </div>
-                        </div>
-                        <div class="vertical-timeline-block">
-                            <div class="vertical-timeline-icon navy-bg">
-                                <i class="fa fa-warning"></i>
-                            </div>
-                            <div class="vertical-timeline-content">
-                                <p>
-                                    The generated Lorem Ipsum is therefore.
-                                </p>
-                                <span class="vertical-date small text-muted"> 02:50 pm - 03.10.2014 </span>
-                            </div>
-                        </div>
-                        <div class="vertical-timeline-block">
-                            <div class="vertical-timeline-icon gray-bg">
-                                <i class="fa fa-coffee"></i>
-                            </div>
-                            <div class="vertical-timeline-content">
-                                <p>
-                                    Conference on the sales results for the previous year.
-                                </p>
-                                <span class="vertical-date small text-muted"> 2:10 pm - 12.06.2014 </span>
-                            </div>
-                        </div>
-                        <div class="vertical-timeline-block">
-                            <div class="vertical-timeline-icon gray-bg">
-                                <i class="fa fa-briefcase"></i>
-                            </div>
-                            <div class="vertical-timeline-content">
-                                <p>
-                                    Many desktop publishing packages and web page editors now use Lorem.
-                                </p>
-                                <span class="vertical-date small text-muted"> 4:20 pm - 10.05.2014 </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>*@
-
-    <!-- Attachment Grid Modal -->
-    <div class="modal inmodal" id="AttachmentModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content animated bounceInRight">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <h4 class="modal-title">Documentos requeridos</h4>
-                    <small class="font-bold">Permite agregar un nuevo documentos requerido o editar uno ya existente</small>
-                </div>
-                <div class="modal-body">
-                    <!-- Attachment Grid Edit Form -->
-                    <div class='form-row'>
-                        <div class='col-md-12'>
-                            <div id="AttachmentEdt" class="animated fadeInRight">
-                                <form id='AttachmentEdtForm' class='form-horizontal' data-toggle='validator'>
-                                    <fieldset>
-                                        <div class='form-row'>
-                                            <!-- tipo -->
-                                            <div class='col-sm-3 col-md-3'>
-                                                <div class='form-group'>
-                                                    <label class='control-label' for='AttachmentDocumentType'>Tipo de documento<span class='required-mark'>*</span></label>
-                                                    <select id='AttachmentDocumentType' name='AttachmentDocumentType' class='form-control' disabled>
-                                                        <option value="1">General</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <!-- FileName -->
-                                            <div class='col-sm-6 col-md-9'>
-                                                <div class='form-group'>
-                                                    <label class='control-label' for='AttachmentFileName'>Archivo<span class='required-mark'>*</span></label>
-                                                    <div class="input-group">
-                                                        <input id='AttachmentFileName' name='AttachmentFileName' type='text' class='form-control' size='80' maxlength='80' placeholder="Indique el archivo a procesar..." readonly>
-                                                        <input id="AttachmentStored" type="hidden" value="" />
-                                                        <input id="AttachmentFileSize" type="hidden" value="" />
-                                                        <div class="input-group-append">
-                                                            <span class="btn btn-default fileinput-button" title="Permite seleccionar el archivo a ser procesado">
-                                                                <span>Examinar...</span>
-                                                                <input id="fileUploadModal" type="file" />
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div id='AttachmentFileName_validate'></div>
-                                                </div>
-                                            </div>
-                                            <!-- Description -->
-                                            <div class='col-sm-3 col-md-12'>
-                                                <div class='form-group'>
-                                                    <label class='control-label' for='AttachmentDescription'>Descripción<span class='required-mark'>*</span></label>
-                                                    <input id='AttachmentDescription' name='AttachmentDescription' type='text' class='form-control' size='120' maxlength='120'>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="AttachmentEdtFormSave" data-doing="Guardando...">Guardar cambios</button>
-                    <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Attachments Grid Modal -->
+    @Html.Partial("../Common/_attachments_modal")
 
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/Common.Attachments.js")"></script>
     <script src="@Url.Content("~/Scripts/ManagerLinks.UI.js")"></script>
     <script src="@Url.Content("~/Scripts/General.Case.js")"></script>
     <script type="text/javascript">

@@ -129,46 +129,36 @@ app.Attachments = (function () {
         });
 
         $('#MultiFileUploadModal').on('change', function (e) {
-            app.core.UpLoadFile('#AttachmentEdtForm', '#MultiFileUploadModal',
+            let documentType = 1;
+            let description = 'General';
+            if (_data.PostByEachRow) {
+                documentType = 1;
+                description = '#filename#';
+            }
+            app.core.UpLoadFileExV2('#AttachmentEdtForm', '#MultiFileUploadModal', _data.EntityType, _data.Id, documentType, description,
                 function (fileList, error) {
                     console.log(fileList, error);
                     if (!error) {
-                        let currentRows = $('#AttachmentGridTbl').bootstrapTable('getData');
-                        let nextId = -100;
-                        if (currentRows?.length > 0)
-                            nextId = -100 - Math.max.apply(Math, currentRows.map(function (o) { return o.Id == 10 ? o.Id : null; }));
-
-
                         $('#AttachmentGridTbl').bootstrapTable('showLoading');
-                        $.each(fileList, function (key, value) {
-                            row = {
-                                Id: null,
-                                DocumentType: 1,
-                                DocumentTypeDesc: 'General',
-                                FileName: value.FileName,
-                                Stored: value.StoredFileName,
-                                FileContent: value.StoredFileName,
-                                FileSize: value.Size,
-                                Description: app.ui.StringCapitalizeFormatter(value.FileName.substring(0, value.FileName.indexOf('.')))
-                            };
-                            if (_data.PostByEachRow) {
-                                app.core.Post(app.setting.apipath + 'v1/Common/Attachments',
-                                    JSON.stringify({
-                                        Id: row.Id,
-                                        EntityType: _data.EntityType,
-                                        EntityId: _data.Id,
-                                        DocumentType: row.DocumentType,
-                                        Description: row.Description,
-                                        FileName: row.FileName,
-                                        FileSize: row.FileSize,
-                                        FileContent: row.Stored
-                                    }))
-                                    .done(function (data) {
-                                        AttachmentDraw();
-                                    }).always(function () {
+                        if (_data.PostByEachRow) {
+                            AttachmentDraw();
+                        } else {
+                            let currentRows = $('#AttachmentGridTbl').bootstrapTable('getData');
+                            let nextId = -100;
+                            if (currentRows?.length > 0)
+                                nextId = -100 - Math.max.apply(Math, currentRows.map(function (o) { return o.Id == 10 ? o.Id : null; }));
 
-                                    });
-                            } else {
+                            $.each(fileList, function (key, value) {
+                                row = {
+                                    Id: null,
+                                    DocumentType: 1,
+                                    DocumentTypeDesc: 'General',
+                                    FileName: value.FileName,
+                                    Stored: value.StoredFileName,
+                                    FileContent: value.StoredFileName,
+                                    FileSize: value.Size,
+                                    Description: app.ui.StringCapitalizeFormatter(value.FileName.substring(0, value.FileName.indexOf('.')))
+                                };
                                 if (row.Id === null) {
                                     row.Id = nextId;
                                     nextId -= 10
@@ -179,8 +169,8 @@ app.Attachments = (function () {
                                 else {
                                     $('#AttachmentGridTbl').bootstrapTable('append', row);
                                 }
-                            }
-                        });
+                            });
+                        }
                         $('#AttachmentGridTbl').bootstrapTable('hideLoading');
 
                     }
@@ -307,16 +297,24 @@ app.Attachments = (function () {
     }
 
     return {
-        //{ EntityType: 1304, Id: 0, PostByEachRow: false }
+        //{ EntityType: 1304, Id: 0, PostByEachRow: false, showTitle: true }
         Init: function (data) {
             try {
                 if (_data == null) {
                     Attachment_List_Setup();
                     Setup_Attachment_Validations();
                 }
+                if (data.PostByEachRow === undefined) {
+                    data.showTitPostByEachRowle = false;
+                }
+                if (data.showTitle === undefined) {
+                    data.showTitle = true;
+                }
                 _data = data;
                 AttachmentDraw();
-
+                if (!data.showTitle) {
+                    $('.AttachmentTitle').addClass('d-none');
+                }
             }
             catch (err) {
                 console.error("Error Init");
