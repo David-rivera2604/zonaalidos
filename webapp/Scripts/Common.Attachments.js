@@ -135,7 +135,7 @@ app.Attachments = (function () {
                 documentType = 1;
                 description = '#filename#';
             }
-            app.core.UpLoadFileExV2('#AttachmentEdtForm', '#MultiFileUploadModal', _data.EntityType, _data.Id, documentType, description,
+            UpLoadMultiFile('#AttachmentEdtForm', '#MultiFileUploadModal', _data.EntityType, _data.Id, documentType, description,
                 function (fileList, error) {
                     console.log(fileList, error);
                     if (!error) {
@@ -178,7 +178,7 @@ app.Attachments = (function () {
         });
 
         $('#fileUploadModal').on('change', function (e) {
-            app.core.UpLoadFile('#AttachmentEdtForm', '#fileUploadModal',
+            UpLoadFile('#AttachmentEdtForm', '#fileUploadModal',
                 function (fileList, error) {
                     if (error) {
                         document.getElementById('fileUploadModal').value = null;
@@ -294,6 +294,119 @@ app.Attachments = (function () {
         $('#AttachmentDescription').val(row.Description);
 
         md.modal('show');
+    }
+
+    function UpLoadMultiFile(formId, uploadCtrolId, entityType, entityId, documentType, description, callback) {
+        let index = 0;
+        let arr = $(uploadCtrolId).prop('files');
+        let message = '';
+        let elementInstance = $(formId).validate();
+        let isValid = !elementInstance.valid();
+
+        if (arr.length == 0) {
+            return;
+        }
+        if ($(uploadCtrolId).valid()) {
+
+            for (index = 0; index < arr.length; index++) {
+                if (arr[index].size >= 31457280) {
+                    if (message != '') {
+                        message = message & ', ';
+                    }
+                    message = message & 'El tamaño del archivo ' + arr[index].name + 'es mayor a 30mb';
+                }
+            }
+            if (message != '') {
+                elementInstance.showErrors({ 'FileName': message });
+            }
+            else {
+                app.ui.ButtonDoing(uploadCtrolId);
+                var fileData = new FormData();
+                fileData.append('EntityType', entityType);
+                fileData.append('EntityId', entityId);
+                fileData.append('DocumentType', documentType);
+                fileData.append('Description', description);
+                for (index = 0; index < arr.length; index++) {
+                    fileData.append('files', arr[index]);
+                }
+                $.ajax({
+                    type: "POST",
+                    enctype: 'multipart/form-data',
+                    url: app.setting.apipath + 'v1/Common/Upload',
+                    data: fileData,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    timeout: 600000,
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                    }
+                }).done(function (fileList) {
+                    callback(fileList, false);
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    ajaxErrorHandler(jqXHR, errorThrown);
+                }).always(function () {
+                    app.ui.ButtonDone(uploadCtrolId)
+                });
+            }
+        } else {
+            callback([arr[0]], true);
+        }
+    }
+
+    function UpLoadFile(formId, uploadCtrolId, callback) {
+        let index = 0;
+        let arr = $(uploadCtrolId).prop('files');
+        let message = '';
+        let elementInstance = $(formId).validate();
+        let isValid = !elementInstance.valid();
+
+        if (arr.length == 0) {
+            return;
+        }
+        if ($(uploadCtrolId).valid()) {
+
+
+            for (index = 0; index < arr.length; index++) {
+                if (arr[index].size >= 31457280) {
+                    if (message != '') {
+                        message = message & ', ';
+                    }
+                    message = message & 'El tamaño del archivo ' + arr[index].name + 'es mayor a 30mb';
+                }
+            }
+            if (message != '') {
+                elementInstance.showErrors({ 'FileName': message });
+            }
+            else {
+                app.ui.ButtonDoing(uploadCtrolId);
+                var fileData = new FormData();
+                for (index = 0; index < arr.length; index++) {
+                    fileData.append('files', arr[index]);
+                }
+                $.ajax({
+                    type: "POST",
+                    enctype: 'multipart/form-data',
+                    url: app.setting.apipath + 'v1/Common/Upload',
+                    data: fileData,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    timeout: 600000,
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                    }
+                }).done(function (fileList) {
+                    callback(fileList, false);
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    ajaxErrorHandler(jqXHR, errorThrown);
+                }).always(function () {
+                    app.ui.ButtonDone(uploadCtrolId)
+                });
+            }
+        } else {
+            callback([arr[0]], true);
+        }
     }
 
     return {
