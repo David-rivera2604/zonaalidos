@@ -32,7 +32,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
 
         public static string NotifySignature(Architect.Payment.Integrations.Contracts.NotifyRequest notify, int currency, int settingId, int companyId)
         {
-            return ByteArrayToString(Sha1(notify.requestId + notify.status.status + notify.status.date + SecretKey(0,CurrencyConvert(currency.ToString()), settingId, companyId)));
+            return ByteArrayToString(Sha1(notify.requestId + notify.status.status + notify.status.date + SecretKey(0, CurrencyConvert(currency.ToString()), settingId, companyId)));
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
             if (response.IsSuccessStatusCode)
             {
                 resultResponse = await response.Content.ReadAsStringAsync();
-                Contracts.InformationRequest internalResult = JsonConvert.DeserializeObject<Contracts.InformationRequest>(resultResponse);
+                Contracts.Requests.Information internalResult = JsonConvert.DeserializeObject<Contracts.Requests.Information>(resultResponse);
                 internalResult.rawData = resultResponse;
 
                 result = new Architect.Payment.Integrations.Contracts.InformationRequest()
@@ -343,6 +343,60 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
         //{
         //    string currentSignature = Convert.ToString(Sha1(notify.requestId + notify.status.status + notify.status.date + SecretKey(CurrencyConvert(currency.ToString()))));
         //}
+
+
+        public async static Task<Integrations.Providers.Placetopay.Contracts.Responses.Tokenize> Tokenize(Integrations.Providers.Placetopay.Contracts.Requests.Tokenize tokenizeRequest)
+        {
+            Integrations.Providers.Placetopay.Contracts.Responses.Tokenize tokenizeResponse = null;
+
+            var data = new StringContent(JsonConvert.SerializeObject(tokenizeRequest), Encoding.UTF8, "application/json");
+            HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
+            var response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("Payment.Placetopay.PaymentUrl") + "gateway/tokenize", data);
+            string resultResponse = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                tokenizeResponse = JsonConvert.DeserializeObject<Integrations.Providers.Placetopay.Contracts.Responses.Tokenize>(resultResponse);
+            }
+            else
+            {
+                tokenizeResponse = new Contracts.Responses.Tokenize()
+                {
+                    status = new Contracts.Status()
+                    {
+                        date = DateTime.Now.ToString("yyyy-MM-ddTHH\\:mm\\:sszzz"),
+                        status = ST_FAILED,
+                        reason = response.ReasonPhrase
+                    }
+                };
+            }
+            return tokenizeResponse;
+        }
+        public async static Task<Integrations.Providers.Placetopay.Contracts.Responses.Collect> Collect(Integrations.Providers.Placetopay.Contracts.Requests.Collect collectRequest)
+        {
+            Integrations.Providers.Placetopay.Contracts.Responses.Collect collectResponse = null;
+
+            var data = new StringContent(JsonConvert.SerializeObject(collectRequest), Encoding.UTF8, "application/json");
+            HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
+            var response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("Payment.Placetopay.PaymentUrl") + "api/collect", data);
+            string resultResponse = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                collectResponse = JsonConvert.DeserializeObject<Integrations.Providers.Placetopay.Contracts.Responses.Collect>(resultResponse);
+            }
+            else
+            {
+                collectResponse = new Contracts.Responses.Collect()
+                {
+                    status = new Contracts.Status()
+                    {
+                        date = DateTime.Now.ToString("yyyy-MM-ddTHH\\:mm\\:sszzz"),
+                        status = ST_FAILED,
+                        reason = response.ReasonPhrase
+                    }
+                };
+            }
+            return collectResponse;
+        }
 
     }
 }

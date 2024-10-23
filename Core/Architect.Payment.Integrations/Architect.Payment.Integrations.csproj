@@ -52,6 +52,15 @@
     <Compile Include="Contracts\PaymentInformation.cs" />
     <Compile Include="Contracts\PaymentSettings.cs" />
     <Compile Include="Contracts\SessionInformation.cs" />
+    <Compile Include="Providers\Placetopay\Contracts\Requests\Collect.cs" />
+    <Compile Include="Providers\Placetopay\Contracts\Requests\PaymentLink.cs" />
+    <Compile Include="Providers\Placetopay\Contracts\Responses\Collect.cs" />
+    <Compile Include="Providers\Placetopay\Contracts\Responses\PaymentLink.cs" />
+    <Compile Include="Providers\Placetopay\Contracts\Token.cs" />
+    <Compile Include="Providers\Placetopay\Contracts\Card.cs" />
+    <Compile Include="Providers\Placetopay\Contracts\Instrument.cs" />
+    <Compile Include="Providers\Placetopay\Contracts\Responses\Tokenize.cs" />
+    <Compile Include="Providers\Placetopay\Contracts\Requests\Tokenize.cs" />
     <Compile Include="Contracts\v2\ReciboResponse.cs" />
     <Compile Include="Contracts\v2\ReciboRequest.cs" />
     <Compile Include="Contracts\v2\DatosTarjeta.cs" />
@@ -68,7 +77,7 @@
     <Compile Include="Providers\Placetopay\Contracts\Auth.cs" />
     <Compile Include="Providers\Placetopay\Contracts\Person.cs" />
     <Compile Include="Providers\Placetopay\Contracts\PaymentRequest.cs" />
-    <Compile Include="Providers\Placetopay\Contracts\InformationRequest.cs" />
+    <Compile Include="Providers\Placetopay\Contracts\Requests\Information.cs" />
     <Compile Include="Providers\Placetopay\Contracts\RedirectRequest.cs" />
     <Compile Include="Providers\Placetopay\Contracts\SessionResponse.cs" />
     <Compile Include="Providers\Placetopay\Contracts\Status.cs" />
@@ -77,6 +86,7 @@
     <Compile Include="Providers\Placetopay\Contracts\Transaction.cs" />
     <Compile Include="Providers\Placetopay\Webcheckout.cs" />
     <Compile Include="Providers\Silice\Payment.cs" />
+    <Compile Include="Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

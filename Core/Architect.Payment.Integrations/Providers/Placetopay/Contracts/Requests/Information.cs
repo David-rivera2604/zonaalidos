@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
+namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts.Requests
 {
-    internal class InformationRequest
+    internal class Information
     {
         public Status status { get; set; }
 

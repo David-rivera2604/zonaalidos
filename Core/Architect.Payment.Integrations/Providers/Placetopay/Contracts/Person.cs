@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
 {
+    /// <summary>
+    /// Estructura que refleja la información de una persona involucrada en una transacción.
+    /// </summary>
     internal class Person
     {
         public string name { get; set; }

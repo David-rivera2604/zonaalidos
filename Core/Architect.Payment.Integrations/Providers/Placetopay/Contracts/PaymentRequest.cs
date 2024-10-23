@@ -19,6 +19,9 @@ namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
         /// Única referencia para la solicitud de pago
         /// </summary>
         public string description { get; set; }
+        /// <summary>
+        /// Información del monto a cobrar
+        /// </summary>
         public Amount amount { get; set; }
 
         public bool allowPartial { get; set; }
