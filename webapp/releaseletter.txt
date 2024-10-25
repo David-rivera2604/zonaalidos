@@ -614,3 +614,6 @@
                    Pasarela. Silice. Se agrega el sector en la descripción de los recibos al cobro.
                    Pasarela. Silice. Se agrega filtro opcional para limitar los recibos según una lista con el número de pólizas (Payment.Silice.RecurringReceipts.Filter.Policies).
 1.6.77  22/10/2024 Trazabilidad. Se habilita la carga múltiple de archivos al momento de editar un caso para un proceso.
+1.6.78  25/10/2024 Trazabilidad. En el campo usuario que quede el usuario con el que se está logueando en el workflow para crear el caso (Purdy, ZonaAliados)
+                   Trazabilidad. En la referencia 3 de (intermediario)  tomar el nombre del intermediario que está logueado (Agente, Corredor)
+                   Trazabilidad. Verificar notas y adjuntos porque quedan en Zona Aliados, pero no quedan en el tenant de Workflow
