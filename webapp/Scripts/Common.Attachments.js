@@ -89,6 +89,7 @@ app.Attachments = (function () {
 
                 var row = Attachment_table_row('values');
                 if (_data.PostByEachRow) {
+                    localStorage.setItem('AlternateToken', _data.AlternateToken);
                     app.core.Post(app.setting.apipath + 'v1/Common/Attachments',
                         JSON.stringify({
                             Id: row.Id,
@@ -246,6 +247,7 @@ app.Attachments = (function () {
 
     function AttachmentDraw() {
         $('#AttachmentGridTbl').bootstrapTable('showLoading');
+        localStorage.setItem('AlternateToken', _data.AlternateToken);
         app.core.Get(app.setting.apipath + `v1/Common/Attachments?entityType=${_data.EntityType}&entityId=${_data.Id}`)
             .done(function (data) {
                 $('#AttachmentGridTbl').bootstrapTable('load', data !== null ? data : []);
@@ -329,6 +331,7 @@ app.Attachments = (function () {
                 for (index = 0; index < arr.length; index++) {
                     fileData.append('files', arr[index]);
                 }
+                localStorage.setItem('AlternateToken', _data.AlternateToken);
                 $.ajax({
                     type: "POST",
                     enctype: 'multipart/form-data',
@@ -339,7 +342,14 @@ app.Attachments = (function () {
                     cache: false,
                     timeout: 600000,
                     beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                        let current = localStorage.getItem('AlternateToken');
+                        if (current != null && current != '' && current != 'null') {
+                            localStorage.removeItem('AlternateToken')
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + current);
+                        }
+                        else {
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                        }
                     }
                 }).done(function (fileList) {
                     callback(fileList, false);
@@ -384,6 +394,7 @@ app.Attachments = (function () {
                 for (index = 0; index < arr.length; index++) {
                     fileData.append('files', arr[index]);
                 }
+                localStorage.setItem('AlternateToken', _data.AlternateToken);
                 $.ajax({
                     type: "POST",
                     enctype: 'multipart/form-data',
@@ -394,7 +405,14 @@ app.Attachments = (function () {
                     cache: false,
                     timeout: 600000,
                     beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                        let current = localStorage.getItem('AlternateToken');
+                        if (current != null && current != '' && current != 'null') {
+                            localStorage.removeItem('AlternateToken')
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + current);
+                        }
+                        else {
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                        }
                     }
                 }).done(function (fileList) {
                     callback(fileList, false);
@@ -410,7 +428,7 @@ app.Attachments = (function () {
     }
 
     return {
-        //{ EntityType: 1304, Id: 0, PostByEachRow: false, showTitle: true }
+        //{ EntityType: 1304, Id: 0, PostByEachRow: false, showTitle: true, AlternateToken: '' }
         Init: function (data) {
             try {
                 if (_data == null) {
@@ -422,6 +440,9 @@ app.Attachments = (function () {
                 }
                 if (data.showTitle === undefined) {
                     data.showTitle = true;
+                }
+                if (data.AlternateToken === undefined) {
+                    data.AlternateToken = '';
                 }
                 _data = data;
                 AttachmentDraw();
@@ -449,6 +470,7 @@ app.Attachments = (function () {
                             timeOut: 5000, closeButton: true, progressBar: true,
                             onclick: function () {
                                 if (_data.PostByEachRow) {
+                                    localStorage.setItem('AlternateToken', _data.AlternateToken);
                                     app.core.Delete(app.setting.apipath + `v1/Common/Attachments/${row.Id}`)
                                         .done(function (data, textStatus, jqXHR) {
                                             toastr.success("El adjunto '" + row.FileName + "' fue eliminado", "", { timeOut: 5000, closeButton: true, progressBar: true });

@@ -190,12 +190,13 @@ app.CaseInfo = (function () {
             })
             element.addClass("activo")
 
-            app.Attachments.Init({ EntityType: 1304, Id: InstanceID, PostByEachRow: true });
-            app.Notes.Init({ EntityType: 1304, Id: InstanceID, PostByEachRow: true });
+
 
 
             app.CentralCase.Get(app.setting.apipath + 'v1/Process/Instance/' + InstanceID + '/3', tokenAl, false)
                 .done(function (data, textStatus, jqXHR) {
+                    app.Attachments.Init({ EntityType: 1304, Id: data.CaseId, PostByEachRow: true, AlternateToken: tokenAl });
+                    app.Notes.Init({ EntityType: 1304, Id: data.CaseId, PostByEachRow: true, AlternateToken: tokenAl });
                     app.EspecifiCase.EditRow(data);
 
                 })

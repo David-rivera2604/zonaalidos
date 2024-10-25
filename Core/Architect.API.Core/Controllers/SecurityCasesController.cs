@@ -67,7 +67,8 @@ namespace Architect.API.Core.Controllers
 
                     Token_Al TokenJs = new Token_Al()
                     {
-                        TokenAliado = responseItem.Token
+                        TokenAliado = responseItem.Token,
+                        user = ListElement[1].ToLower()
                     };
                     if (responseItem.Reason.IsNotEmpty())
                     {
@@ -98,5 +99,7 @@ namespace Architect.API.Core.Controllers
         /// Token de el usuario gestor de los casos.
         /// </summary>
         public string TokenAliado { get; set; }
+        public string user { get; set; }
+
     }
 }

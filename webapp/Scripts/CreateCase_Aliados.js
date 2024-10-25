@@ -1,11 +1,10 @@
 ﻿var app = app || {};
 var lookupData;
 var Token_Ali;
-
-
+var aliUser = '';
 
 app.CentralCase = (function () {
-    
+
 
     function Init_Controls() {
         new AutoNumeric('#SubStatus', {
@@ -40,7 +39,7 @@ app.CentralCase = (function () {
             let flowId = $('#FlowId').val();
             let sla = app.CentralCase.Data().lookups.filter(i => i.Key === 'ProcessByRolDetail')[0].Lkp.filter(l => l.Code === flowId + '')[0].SLA;
             $('#SLA').val(sla);
-            let dato = {Al:true}
+            let dato = { Al: true }
             app.CentralCase.Get(app.setting.apipath + 'v1/ProcessSpecFlow/' + flowId, dato, true)
                 .done(function (data, textStatus, jqXHR) {
                     ReferenceHandler(data.ReferenceCaption1, data.ReferenceLookupList1, 'Reference1');
@@ -48,6 +47,14 @@ app.CentralCase = (function () {
                     ReferenceHandler(data.ReferenceCaption3, data.ReferenceLookupList3, 'Reference3');
                     ReferenceHandler(data.ReferenceCaption4, data.ReferenceLookupList4, 'Reference4');
                     ReferenceHandler(data.ReferenceCaption5, data.ReferenceLookupList5, 'Reference5');
+
+                    if (data.ReferenceCaption3 === 'INTERMEDIARIO') {
+                        $('#Reference3').val(localStorage.getItem('Username'));
+                        $('#Reference3').prop("disabled", true);
+                    } else {
+                        $('#Reference3').prop("disabled", false);
+                    }
+
                 });
         });
 
@@ -81,10 +88,10 @@ app.CentralCase = (function () {
 
                 selectedOptions.append($('<option selected />').val('').text(''));
                 $.each(valueList.split(';'), function () {
-                    selectedOptions.append($('<option />').val(this).text(this));                    
+                    selectedOptions.append($('<option />').val(this).text(this));
                 });
 
-                
+
             }
             $('#' + id).parent().parent().removeClass('d-none');
         } else {
@@ -106,10 +113,10 @@ app.CentralCase = (function () {
     }
 
     function Init_Lookups() {
-        Lookups(['CasePriority.Priority', 'ProcessStatus.Status', 'ProcessByRolDetail.FlowId' , 'ProcessByRol.FlowId', 'Users.UserId.', 'SLA.SLA.'],
+        Lookups(['CasePriority.Priority', 'ProcessStatus.Status', 'ProcessByRolDetail.FlowId', 'ProcessByRol.FlowId', 'Users.UserId.', 'SLA.SLA.'],
             function () {
                 app.CentralCase.New();
-            }, undefined,"v1/Common/Lkps");
+            }, undefined, "v1/Common/Lkps");
     }
 
     function MapInputToObject() {
@@ -218,7 +225,8 @@ app.CentralCase = (function () {
         Init: function () {
             app.core.Get(app.setting.apipath + 'v1/CasesSecurity/Create?Tenant=' + localStorage.getItem("Tenant"))
                 .done(function (data, textStatus, jqXHR) {
-                    Token_Ali = data.TokenAliado
+                    Token_Ali = data.TokenAliado;
+                    aliUser = data.user;
                     Init_Lookups();
                     Init_Controls();
                     Event_Controls();
@@ -231,22 +239,27 @@ app.CentralCase = (function () {
                 row.Id = 0;
                 newRow = row;
             }
+            if (aliUser != null && aliUser != '') {
+                let user = app.CentralCase.Data().lookups.filter(i => i.Key === 'Users')[0].Lkp.filter(l => l.IUSERNAME === aliUser)[0];
+                if (user != null) {
+                    newRow.UserId = user.Code;
+                }
+            }
             EditMode(newRow);
+            $('#UserId').change();
         },
         Data: function () {
             return { lookups: lookupData };
         },
-        Get: function (url, TokenUse,AlTok, data, success ) {
-            return ajaxCall('GET', url, data, success, false, TokenUse, AlTok );
+        Get: function (url, TokenUse, AlTok, data, success) {
+            return ajaxCall('GET', url, data, success, false, TokenUse, AlTok);
         },
         Post: function (url, TokenUse, AlTok, data, success) {
-            return ajaxCall('POST', url, data, success, false, TokenUse, AlTok 
-                );
+            return ajaxCall('POST', url, data, success, false, TokenUse, AlTok
+            );
         },
     };
 })();
-
-
 
 function ajaxCall(type, url, data, success, token, Token_Al, AliadoTok, contentType) {
     var dataType = 'json';
@@ -288,11 +301,11 @@ function ajaxCall(type, url, data, success, token, Token_Al, AliadoTok, contentT
                     else {
                         xhr.setRequestHeader('Authorization', 'Bearer ' + Token_Al);
                     }
-}  
+                }
             }
         }
     }).done(function (data, textStatus, jqXHR) {
-        
+
         if (data != null && data.Success !== undefined) {
             if (data.Success) {
                 toastr.success(data.Reason, '', { timeOut: 7000, closeButton: true, progressBar: true });
@@ -388,7 +401,7 @@ function Lookups(keys, callback, url, path) {
             });
             if (callback !== undefined && callback !== null)
                 callback();
-        }, false,undefined,true);
+        }, false, undefined, true);
 };
 
 

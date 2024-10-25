@@ -2,10 +2,10 @@
 
 // CONSERVAR DEL ORIGINAL DESDE AQUI
 app.setting = {
-    apibase: 'http://localhost:8082',
-    apipath: 'http://localhost:8082/aliados/api/',
+    apibase: 'http://localhost:8081',
+    apipath: 'http://localhost:8081/aliados/api/',
     basepath: '/Aliados/',
-    viewpath: 'http://localhost:8082/aliados/',
+    viewpath: 'http://localhost:8081/aliados/',
     entityapi: 'https://appqa.mapfrecr.com/datapi/api/entity'
 };
 // CONSERVAR DEL ORIGINAL HASTA AQUI
@@ -267,7 +267,14 @@ app.core = (function () {
                     if (key != '') {
                         xhr.setRequestHeader('AccessKey', key);
                     } else {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                        let current = localStorage.getItem('AlternateToken');
+                        if (current != null && current != '' && current != 'null') {
+                            localStorage.removeItem('AlternateToken')
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + current);
+                        }
+                        else {
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                        }
                     }
                 }
             }
