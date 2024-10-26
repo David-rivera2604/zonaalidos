@@ -247,13 +247,18 @@ app.Attachments = (function () {
 
     function AttachmentDraw() {
         $('#AttachmentGridTbl').bootstrapTable('showLoading');
-        localStorage.setItem('AlternateToken', _data.AlternateToken);
-        app.core.Get(app.setting.apipath + `v1/Common/Attachments?entityType=${_data.EntityType}&entityId=${_data.Id}`)
-            .done(function (data) {
-                $('#AttachmentGridTbl').bootstrapTable('load', data !== null ? data : []);
-            }).always(function () {
-                $('#AttachmentGridTbl').bootstrapTable('hideLoading');
-            });
+        if (_data.Id != 0) {
+            localStorage.setItem('AlternateToken', _data.AlternateToken);
+            app.core.Get(app.setting.apipath + `v1/Common/Attachments?entityType=${_data.EntityType}&entityId=${_data.Id}`)
+                .done(function (data) {
+                    $('#AttachmentGridTbl').bootstrapTable('load', data !== null ? data : []);
+                }).always(function () {
+                    $('#AttachmentGridTbl').bootstrapTable('hideLoading');
+                });
+        } else {
+            $('#AttachmentGridTbl').bootstrapTable('load', []);
+            $('#AttachmentGridTbl').bootstrapTable('hideLoading');
+        }
     }
 
     function Attachment_table_row(mode) {

@@ -117,7 +117,7 @@
                                                     <span class='input-group-addon'>
                                                         <span class='glyphicon glyphicon-user'></span>
                                                     </span>
-                                                    <select id='UserId' name='UserId' class='form-control' disabled="disabled"  ></select>
+                                                    <select id='UserId' name='UserId' class='form-control' disabled="disabled"></select>
                                                 </div>
                                                 <div id='UserId_validate'></div>
                                             </div>
@@ -203,8 +203,10 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Attachments Grid -->
+                            @Html.Partial("../Common/_attachments_grid")
                             <div class="form-row">
-                                <div class='col-md-12'style="display: flex;justify-content: center;">
+                                <div class='col-md-12' style="display: flex;justify-content: center;">
                                     <div class="modal-footer">
                                         <button id="ProcessCaseEdtFormSave" type="button" class="btn btn-primary btn-sm" data-doing="Guardando cambios..." title="Guardar cambios">Guardar</button>
                                         <button id="ProcessCaseEdtFormCancel" type="button" class="btn btn-white btn-sm">Cancelar</button>
@@ -217,9 +219,13 @@
             </div>
         </div>
     </div>
+    <!-- Attachments Grid Modal -->
+    @Html.Partial("../Common/_attachments_modal")
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
+
+    <script src="@Url.Content("~/Scripts/Common.Attachments.js")"></script>
     <script src="@Url.Content("~/Scripts/CreateCase_Aliados.js")"></script>
 
     <script type="text/javascript">

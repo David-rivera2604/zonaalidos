@@ -139,7 +139,8 @@ app.CentralCase = (function () {
             SubLabel: $('#SubLabel').val(),
             FlowId: $('#FlowId').val(),
             UserId: $('#UserId').val(),
-            SLA: $('#SLA').val()
+            SLA: $('#SLA').val(),
+            Attachments: app.Attachments.Data()
         };
     }
 
@@ -231,6 +232,7 @@ app.CentralCase = (function () {
                     Init_Controls();
                     Event_Controls();
                     Setup_Validations();
+                    app.Attachments.Init({ EntityType: 1304, Id: 0, PostByEachRow: false, AlternateToken: Token_Ali });
                 })
         },
         New: function (row) {

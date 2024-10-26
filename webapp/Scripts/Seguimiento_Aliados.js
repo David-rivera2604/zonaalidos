@@ -39,6 +39,9 @@ app.EspecifiCase = (function () {
                     $("#ContenCase").removeClass("d-none");
                 }, 50)
                 $("#Cases_Info").removeClass("d-none");
+
+                app.Attachments.Init({ EntityType: 1304, Id: data.Id, PostByEachRow: true, AlternateToken: tokenAl });
+                app.Notes.Init({ EntityType: 1304, Id: data.Id, PostByEachRow: true, AlternateToken: tokenAl });
             }).always(function () {
                 $('.ibox-content').toggleClass('sk-loading');
             });
