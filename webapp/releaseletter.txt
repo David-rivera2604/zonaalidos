@@ -617,3 +617,4 @@
 1.6.78  25/10/2024 Trazabilidad. En el campo usuario que quede el usuario con el que se está logueando en el workflow para crear el caso (Purdy, ZonaAliados)
                    Trazabilidad. En la referencia 3 de (intermediario)  tomar el nombre del intermediario que está logueado (Agente, Corredor)
                    Trazabilidad. Verificar notas y adjuntos porque quedan en Zona Aliados, pero no quedan en el tenant de Workflow
+1.6.79  28/10/2024 Trazabilidad. Se habilita la carga de documento a la página de creación de casos para aliados.
