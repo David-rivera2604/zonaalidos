@@ -619,3 +619,4 @@
                    Trazabilidad. Verificar notas y adjuntos porque quedan en Zona Aliados, pero no quedan en el tenant de Workflow
 1.6.79  28/10/2024 Trazabilidad. Se habilita la carga de documento a la página de creación de casos para aliados.
 1.6.80  29/10/2024 Trazabilidad. Agregar el campo prioridad en las consultas 4000 y 4003, las consultas 4001 y 4002 ya tienen el campo prioridad.
+1.6.81  29/10/2024 Trazabilidad. Agregar el campo "No. Caso" en la consulta 4003.
