@@ -132,6 +132,7 @@
     <Compile Include="Security\Tron.cs" />
     <Compile Include="Security\UserRoleMember.cs" />
     <Compile Include="General\WhiteList.cs" />
+    <Compile Include="General\CustomData.cs" />
     <Compile Include="_Generated\ColorKey.cs" />
     <Compile Include="_Generated\CustomFields.cs" />
     <Compile Include="_Generated\DataSource.cs" />

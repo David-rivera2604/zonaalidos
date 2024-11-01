@@ -97,6 +97,7 @@
     <Compile Include="Security\AuthenticationResponse.cs" />
     <Compile Include="Security\UserMemberResult.cs" />
     <Compile Include="Security\UserMember.cs" />
+    <Compile Include="General\CustomData.cs" />
     <Compile Include="_Generated\Attachments.cs" />
     <Compile Include="_Generated\AuthenticationTrace.cs" />
     <Compile Include="_Generated\ChangeColorResult.cs" />
