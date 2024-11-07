@@ -26,6 +26,7 @@ namespace Architect.API.Core.Business.General
         private static readonly byte[] XlsHeader = { 0xD0, 0xCF, 0x11, 0xE0 }; // Encabezado de archivos XLS
         private static readonly byte[] XlsxHeader = { 0x50, 0x4B, 0x03, 0x04 }; // PK (Encabezado de archivos XLSX)
         private static readonly byte[] PngHeader = { 0x89, 0x50, 0x4E, 0x47 }; // PNG (Encabezado de archivos PNG)
+        private static readonly byte[] JpgHeader = { 0xFF, 0xD8, 0xFF, 0xE0 }; // JPG (Encabezado de archivos JPG)
 
         // Diccionario para mapear tipos MIME a funciones de validación
         private static Dictionary<string, Func<HttpPostedFile, byte[], bool>> _types = new Dictionary<string, Func<HttpPostedFile, byte[], bool>>()
@@ -74,6 +75,14 @@ namespace Architect.API.Core.Business.General
                     {
                         // Verificar si el encabezado coincide con el de PNG
                         var result = header.SequenceEqual(PngHeader);
+                        return result;
+                    }
+                },
+                // Validar archivos JPG
+                { "image/jpg", (file, header) =>
+                    {
+                        // Verificar si el encabezado coincide con el de JPG
+                        var result = header.SequenceEqual(JpgHeader);
                         return result;
                     }
                 },
