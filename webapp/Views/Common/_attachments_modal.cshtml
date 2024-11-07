@@ -36,11 +36,12 @@
                                                     <div class="input-group-append">
                                                         <span class="btn btn-default fileinput-button" title="Permite seleccionar el archivo a ser procesado">
                                                             <span>Examinar...</span>
-                                                            <input id="fileUploadModal" type="file" accept="application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document, image/png" />
+                                                            <input id="fileUploadModal" type="file" accept="application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, image/png" />
 
                                                         </span>
                                                     </div>
                                                 </div>
+                                                <small class="form-text text-muted">Solo se permiten archivos con extesión docx, xlsx, pdf, png</small>
                                                 <div id='AttachmentFileName_validate'></div>
                                             </div>
                                         </div>
@@ -52,7 +53,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <input id="MultiFileUploadModal" type="file" multiple="multiple" accept="application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document, image/png" class="d-none" />
+                                    <input id="MultiFileUploadModal" type="file" multiple="multiple" accept="application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, image/png" class="d-none" />
                                 </fieldset>
                             </form>
                         </div>

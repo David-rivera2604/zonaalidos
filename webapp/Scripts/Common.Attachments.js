@@ -221,10 +221,10 @@ app.Attachments = (function () {
                 },
                 AttachmentFileName: {
                     required: true,
-                    extension: "docx|pdf|png"
+                    extension: "docx|xlsx|pdf|png"
                 },
                 fileUploadModal: {
-                    extension: "docx|pdf|png"
+                    extension: "docx|xlsx|pdf|png"
                 }
             },
             messages: {
@@ -236,10 +236,10 @@ app.Attachments = (function () {
                 },
                 AttachmentFileName: {
                     required: 'Debe indicar un archivo',
-                    extension: 'Debe indicar un archivo con un tipo valido (docx, pdf, png)'
+                    extension: 'Debe indicar un archivo con un tipo valido (docx, xlsx, pdf, png)'
                 },
                 fileUploadModal: {
-                    extension: 'Debeeee indicar un archivo con un tipo valido (docx, pdf, png)'
+                    extension: 'Debe indicar un archivo con un tipo valido(docx, xlsx, pdf, png)'
                 }
             }
         });
