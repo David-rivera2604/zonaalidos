@@ -79,7 +79,7 @@ namespace Architect.API.Core.Business.General
                     }
                 },
                 // Validar archivos JPG
-                { "image/jpg", (file, header) =>
+                { "image/jpeg", (file, header) =>
                     {
                         // Verificar si el encabezado coincide con el de JPG
                         var result = header.SequenceEqual(JpgHeader);
