@@ -120,21 +120,23 @@ app.ViewerQuery = (function () {
                 var code = app.core.ReplaceAll(data.dialog.code, ".Prototype", ".Prototype" + data.index);
                 code = app.core.ReplaceAll(code, 'Init"', 'Init' + data.index + '"');
                 eval(code);
-                if (data.table.skipfirstload === undefined || !data.table.skipfirstload) {
-                    var nameClass = "Prototype" + data.index;
-                    if (nameClass in app) {
-                        app[nameClass]['Changed'](function (data) {
-                            var gridControlName = "#" + index + "GridTbl";
-                            app.ViewerQuery.Refresh(undefined, $(gridControlName), _id, '');
-                        });
-                    }
-                } else {
-                    var nameClass = "Prototype" + data.index;
-                    if (nameClass in app) {                        
-                        app[nameClass]['Changed'](function (data) {
-                            var gridControlName = "#" + index + "GridTbl";
-                            $(gridControlName).bootstrapTable('load', []);
-                        });
+                if (data.table.skipload === undefined || !data.table.skipload) {
+                    if (data.table.skipfirstload === undefined || !data.table.skipfirstload) {
+                        var nameClass = "Prototype" + data.index;
+                        if (nameClass in app) {
+                            app[nameClass]['Changed'](function (data) {
+                                var gridControlName = "#" + index + "GridTbl";
+                                app.ViewerQuery.Refresh(undefined, $(gridControlName), _id, '');
+                            });
+                        }
+                    } else {
+                        var nameClass = "Prototype" + data.index;
+                        if (nameClass in app) {
+                            app[nameClass]['Changed'](function (data) {
+                                var gridControlName = "#" + index + "GridTbl";
+                                $(gridControlName).bootstrapTable('load', []);
+                            });
+                        }
                     }
                 }
             }
@@ -595,11 +597,14 @@ app.ViewerQuery = (function () {
             else
                 $("#QueryTitle").html('Consulta no indicada');
         },
-        Refresh: function (params, $el, xid, url, index, srcData, callback) {
+        Refresh: function (params, $el, xid, url, index, srcData, callback, force) {
             var element = $('#RoleMemberGridTbl');
             var id = _id;
             var doing = true;
 
+            if (force === undefined) {
+                force = false;
+            }
             if (index === undefined) {
                 index = 1;
             }
@@ -622,23 +627,31 @@ app.ViewerQuery = (function () {
                     url = url.replace(/T00:00:00/g, '');
             }
             else {
-                var nameClass = "Prototype" + index;
-                if (nameClass in app) {
-                    if (app[nameClass]['IsValid'](false)) {
-                        let dialogData = app[nameClass]["Data"]();
-                        for (var p in dialogData) {
-                            if (dialogData.hasOwnProperty(p)) {
-                                url += ':' + p + '=' + dialogData[p];
+                let options = element.bootstrapTable('getOptions');
+                if (options.skipload != undefined && options.skipload && !force) {
+                    element.bootstrapTable('load', []);
+                    element.bootstrapTable('hideLoading');
+                    doing = false;
+                } else {
+
+                    var nameClass = "Prototype" + index;
+                    if (nameClass in app) {
+                        if (app[nameClass]['IsValid'](false)) {
+                            let dialogData = app[nameClass]["Data"]();
+                            for (var p in dialogData) {
+                                if (dialogData.hasOwnProperty(p)) {
+                                    url += ':' + p + '=' + dialogData[p];
+                                }
                             }
+                            if (url != undefined)
+                                url = url.replace(/T00:00:00/g, '');
+                        } else {
+                            doing = false;
+                            if (params === undefined)
+                                element.bootstrapTable('load', []);
+                            else
+                                params.success([]);
                         }
-                        if (url != undefined)
-                            url = url.replace(/T00:00:00/g, '');
-                    } else {
-                        doing = false;
-                        if (params === undefined)
-                            element.bootstrapTable('load', []);
-                        else
-                            params.success([]);
                     }
                 }
             }

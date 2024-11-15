@@ -622,3 +622,4 @@
 1.6.81  29/10/2024 Trazabilidad. Agregar el campo "No. Caso" en la consulta 4003.
 1.6.82  07/11/2024 Trazabilidad. Se habilita la posibilidad de subir archivo de excel.
 1.6.83  12/11/2024 Trazabilidad. Se habilita la posibilidad de subir archivo de jpg.
+1.6.84  15/11/2024 Aliados. Se agregar consulta (6000) para el call center.
