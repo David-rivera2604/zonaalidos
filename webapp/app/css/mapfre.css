@@ -3540,3 +3540,8 @@ div#container_moremenu {
         border-color: var(--mapfrered2);
         color: rgb(255, 255, 255);
     }
+
+.btn-QueryFilter {
+    float: left !important;
+    margin-top: 20px !important;
+}

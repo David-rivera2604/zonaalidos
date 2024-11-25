@@ -33,7 +33,7 @@ INSERT INTO VISUALIZATIONS (ID, "SEQUENCE", "TYPE", CAPTION, DESCRIPTION, "STATE
             "sortable": true,
             "halign": "center",
             "align": "left",
-            "formatter": "app.ui.StringFormatter",
+            "format": "<a href=''tabrender?id=302&P_NUM_POLIZA={NUM_POLIZA}'' onclick=''app.ViewerQuery.TabRender(this); return false;'' title=''Ver detalle de la póliza''>{NUM_POLIZA} <button type=''button'' class=''btn btn-slim btn-sm btn-link''><i class=''fa fa-plus-square-o''></i></button></a>",
             "visible": true,
             "rowspan": 2
         },
@@ -146,4 +146,4 @@ INSERT INTO VISUALIZATIONS (ID, "SEQUENCE", "TYPE", CAPTION, DESCRIPTION, "STATE
  Buscar por+|lista|name=tipo;datatype=string;values=D->Número de documento de identificación,P->Póliza,M->Matrícula,C->Chasis,T->Motor
  Tipo de documento+|lista|name=tip_docum;datatype=string;values=CNA->Cédula nacional,CJU->Cédula juridica,CRE->Cédula de residencia,EEX->Empresa extrajera,PAS->Pasaporte 
  Valor+|Texto(120)
- Filtrar|Boton|class=btn-form btn-primary;click=app.Extend.Query()', NULL, NULL, 'Extend.CallCenter.js');
+ Filtrar|Boton|class=btn-primary btn-QueryFilter;click=app.Extend.Query()', NULL, NULL, 'Extend.CallCenter.js');

@@ -693,7 +693,7 @@ app.ViewerQuery = (function () {
                         }).always(function () {
                             element.bootstrapTable('hideLoading');
                             if (callback !== undefined && callback !== null) {
-                                callback();
+                                callback(_data);
                             }
                         });
                 }

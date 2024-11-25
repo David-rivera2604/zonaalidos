@@ -38,7 +38,7 @@ app.Extend = (function () {
         Query: function () {
             if (app.Prototype1.IsValid()) {
                 $('.ibox-content').toggleClass('sk-loading');
-                app.ViewerQuery.Refresh(undefined, $('#1GridTbl'), 6000, '', undefined, undefined, function () {
+                app.ViewerQuery.Refresh(undefined, $('#1GridTbl'), 6000, '', undefined, undefined, function (data) {
                     $('.ibox-content').toggleClass('sk-loading');
                 }, true);
             }
