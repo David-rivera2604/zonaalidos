@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Management.Instrumentation;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -218,7 +219,7 @@ namespace Architect.API.Core.Contracts
         /// Actividad Economica
         /// </summary>
         public int actividadEconomica { get; set; }
-        
+
         /// <summary>
         /// FATCA
         /// </summary>
@@ -239,6 +240,13 @@ namespace Architect.API.Core.Contracts
         public int atributocanaldeingreso { get; set; }
         public int valorcanalingreso { get; set; }
         public string valorcanalingresoDesc { get; set; }
+
+        /// <summary>
+        /// Marca CICAC,  si aprueba o no
+        /// </summary>
+        /// 
+        public string mca_cicac { get; set; } = "N";
+        public string obs_cicac { get; set; }
     }
 
     /// <summary>

@@ -201,6 +201,10 @@ app.kycjuridico = (function () {
             mediodeenvioDesc: app.ui.GetRadioSelectedText('mediodeenvioJur'),
             especifique: $('#correspondenciaEspecifiqueJur').val(),
 
+            //CICAC
+            mca_cicac: app.ui.GetRadioStringValue('cicacPer'),
+            obs_cicac: $('#especifiquecicacPer').val(),
+
         };
         return data;
     };
@@ -291,6 +295,8 @@ app.kycjuridico = (function () {
             app.ui.SetRadioNumericValue('formadepagodelapolizaJur', data.formadepagodelapoliza);
             app.ui.SetRadioNumericValue('mediodeenvioJur', data.mediodeenvio);
             $('#correspondenciaEspecifiqueJur').val(data.especifique);
+            app.ui.SetRadioStringValue('cicacPer', data.mca_cicac);
+            $('#especifiquecicacPer').val(data.obs_cicac);
         }
     };
 
@@ -419,6 +425,17 @@ app.kycjuridico = (function () {
             event.preventDefault();
         });
 
+        $('input:radio[name=cicacPer]').change(function () {
+            var isDisabled = app.ui.GetRadioStringValue('cicacPer') === 'S';
+            $('#especifiquecicacPer').prop("disabled", isDisabled);
+            if (isDisabled) {
+                $('#especifiquecicacPer').val('EL CLIENTE AUTORIZA COMPLETAR EL CICAC');
+            } else {
+                $('#especifiquecicacPer').val('');
+            }
+        });
+
+
 
         //$('#kycjuridicoJurEdtFormCancel').click(function () {
         //    app.ui.ButtonDoing('#kycjuridicoJurEdtFormCancel');
@@ -522,6 +539,8 @@ app.kycjuridico = (function () {
                 correspondenciaEspecifiqueJur: { required: true },
                 Act_Economica: { required: true },
                 Act_EconomicaRep: { required: true },
+                cicacPer: { required: true },
+                especifiquecicacPer: { required: true },
             },
             messages: {
                 nombrecomercialJur: { required: 'Debe indicar el Nombre comercial' },
@@ -579,6 +598,8 @@ app.kycjuridico = (function () {
                 correspondenciaEspecifiqueJur: { required: 'Debe indicar el Especifique' },
                 Act_Economica: { required: 'Debe indicar la actividad economica' },
                 Act_EconomicaRep: { required: 'Debe indicar la actividad economica del representante' },
+                cicacPer: { required: 'Por favor responder la pregunta referente al CICAC' },
+                especifiquecicacPer: { required: 'Especifique un detalle a la respuesta de CICAC' },
             }
         });
     };
