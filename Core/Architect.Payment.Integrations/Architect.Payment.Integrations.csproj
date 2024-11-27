@@ -86,7 +86,9 @@
     <Compile Include="Providers\Placetopay\Contracts\Transaction.cs" />
     <Compile Include="Providers\Placetopay\Webcheckout.cs" />
     <Compile Include="Providers\Silice\Payment.cs" />
+    <Compile Include="Recurring.cs" />
     <Compile Include="Test.cs" />
+    <Compile Include="Tokenize.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

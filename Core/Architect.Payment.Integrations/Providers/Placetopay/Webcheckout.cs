@@ -1,4 +1,5 @@
-﻿using Architect.Utilities.Extensions;
+﻿using Architect.Payment.Integrations.Providers.Placetopay.Contracts;
+using Architect.Utilities.Extensions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -398,5 +399,32 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
             return collectResponse;
         }
 
+        /// <summary>
+        /// Construye la información de autenticación requerida para la solicitud de pago.
+        /// </summary>
+        public static Auth BuildAuth(string key, string currency)
+        {
+            string seed = DateTime.UtcNow.ToString("o");
+            Random random = new Random();
+            int rawNonce = random.Next(0, 1000000);
+            Auth auth;
+            byte[] hash;
+            string login = Utilities.Helpers.Settings.StringValue($"Payment.Placetopay.{key}.Login.{currency}");
+            string secretKey = Utilities.Helpers.Settings.StringValue($"Payment.Placetopay.{key}.SecretKey.{currency}");
+
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(rawNonce.ToString() + seed + secretKey));
+            }
+            auth = new Auth
+            {
+                login = login,
+                tranKey = Convert.ToBase64String(hash),
+                nonce = Convert.ToBase64String(Encoding.UTF8.GetBytes(rawNonce.ToString())),
+                seed = seed,
+            };
+
+            return auth;
+        }
     }
 }

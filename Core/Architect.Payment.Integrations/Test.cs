@@ -7,17 +7,25 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Architect.Payment.Integrations
 {
     public static class Test
     {
 
+  
         public static void DoTokenize()
         {
-            var body = new Tokenize()
+            Auth auth = Providers.Placetopay.Webcheckout.BuildAuth("d47ba34d7872700bd4859d52db7de97a", "Sc8985wd6M8RSSc9"); //Providers.Placetopay.Webcheckout.BuildAuth(0, "CRC", 0, 0);
+
+
+
+            var body = new Providers.Placetopay.Contracts.Requests.Tokenize()
             {
-                auth = Architect.Payment.Integrations.Providers.Placetopay.Webcheckout.BuildAuth(0, "CRC", 0, 0),
+                auth = auth,
                 payer = new Person()
                 {
                     name = "Diego",

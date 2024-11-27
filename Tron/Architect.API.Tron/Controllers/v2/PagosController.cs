@@ -97,7 +97,7 @@ namespace Architect.API.Tron.Controllers.v2
 
             await Task.Run(() =>
             {
-                recordCount = Architect.API.Tron.Business.Backoffice.v2.Pagos.TokenizeTarjetas(string.Empty);
+                recordCount = Business.Backoffice.v2.Pagos.TokenizeTarjetas(string.Empty);
             }).ConfigureAwait(false);
 
             return Ok(recordCount);

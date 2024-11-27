@@ -240,7 +240,10 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             int recordCount = 0;
             int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
             string prefix = Utilities.Helpers.Settings.StringValue("EMail.Test", string.Empty);
-            List<Contracts.Pagos.Tarjeta> pendientes = Architect.API.Tron.DataAccess.Pagos.Tarjetas.PendientesPorTokenizar(cod_cia, Utilities.Helpers.Settings.IntegerValue("Payment.Silice.Tokenize.Cantidad.Tarjetas", 50), cod_docum);
+            int cardCount = Core.Business.Settings.IntegerValue("Payment.Silice.Tokenize.Cantidad.Tarjetas", 50);
+            string provider = Core.Business.Settings.StringValue("Tenant.Settings.Payment.Provider");
+
+            List<Contracts.Pagos.Tarjeta> pendientes = Architect.API.Tron.DataAccess.Pagos.Tarjetas.PendientesPorTokenizar(cod_cia, cardCount, cod_docum);
 
             List<DatosTarjeta> datosTajetas = new List<DatosTarjeta>();
             string email = string.Empty;
@@ -288,7 +291,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             string token = Architect.Payment.Integrations.Providers.Silice.Payment.signin(client).Result;
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
-            List<DatosTarjeta> result = Architect.Payment.Integrations.Providers.Silice.Payment.Tokenize(client, datosTajetas).Result;
+            List<DatosTarjeta> result = Architect.Payment.Integrations.Tokenize.Request(provider, client, datosTajetas).Result;
 
             foreach (DatosTarjeta tarjeta in result)
             {
@@ -308,11 +311,15 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         /// </summary>
         public static int PendientesRecurrentesAlCobro(DateTime fec_efect_recibo)
         {
+            string provider = Core.Business.Settings.StringValue("Tenant.Settings.Payment.Provider");
+            string filter = Core.Business.Settings.StringValue("Payment.Silice.RecurringReceipts.Filter.Policies", string.Empty);
+            int limitCount = Core.Business.Settings.IntegerValue("Payment.Silice.RecurringReceipts.Limit.Count", 5);
+
             int recordCount = 0;
             int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
             string prefix = Utilities.Helpers.Settings.StringValue("EMail.Test", string.Empty);
-            string filter = Core.Business.Settings.StringValue("Payment.Silice.RecurringReceipts.Filter.Policies", string.Empty);
-            int limitCount = Utilities.Helpers.Settings.IntegerValue("Payment.Silice.RecurringReceipts.Limit.Count", 5);
+            
+            
             List<Contracts.Pagos.Recibo> pendientes = Architect.API.Tron.DataAccess.Pagos.Recibos.PendientesRecurrentesAlCobro(cod_cia, fec_efect_recibo, limitCount, filter);
             if (pendientes.Count > 0)
             {
@@ -385,20 +392,14 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 Utilities.Log.TraceLog("RecurringReceipts", JsonConvert.SerializeObject(reciboReq), "payment");
 
 
-
-
                 HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
                 //client.Timeout = TimeSpan.FromSeconds(3);
                 client.DefaultRequestHeaders.Authorization = null;
-                string token = Architect.Payment.Integrations.Providers.Silice.Payment.signin(client).Result;
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-                string result = Architect.Payment.Integrations.Providers.Silice.Payment.RecibosRecurrentes(client, reciboReq).Result;
+
+                Architect.Payment.Integrations.Recurring.Request(provider, client, reciboReq);
             }
             return recordCount;
         }
-
-
-
 
         /// <summary>
         /// Procesar el resultado del pago para los recibos con cobro recurrente.
