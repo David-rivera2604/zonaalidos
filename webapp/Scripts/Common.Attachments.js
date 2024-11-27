@@ -221,10 +221,10 @@ app.Attachments = (function () {
                 },
                 AttachmentFileName: {
                     required: true,
-                    extension: "docx|pdf|png"
+                    extension: "docx|xlsx|pdf|png|jpg"
                 },
                 fileUploadModal: {
-                    extension: "docx|pdf|png"
+                    extension: "docx|xlsx|pdf|png|jpg"
                 }
             },
             messages: {
@@ -236,10 +236,10 @@ app.Attachments = (function () {
                 },
                 AttachmentFileName: {
                     required: 'Debe indicar un archivo',
-                    extension: 'Debe indicar un archivo con un tipo valido (docx, pdf, png)'
+                    extension: 'Debe indicar un archivo con un tipo valido (docx, xlsx, pdf, png, jpg)'
                 },
                 fileUploadModal: {
-                    extension: 'Debeeee indicar un archivo con un tipo valido (docx, pdf, png)'
+                    extension: 'Debe indicar un archivo con un tipo valido(docx, xlsx, pdf, png, jpg)'
                 }
             }
         });
@@ -429,6 +429,70 @@ app.Attachments = (function () {
             }
         } else {
             callback([arr[0]], true);
+        }
+    }
+    function ajaxErrorHandler(jqXHR, errorThrown) {
+        switch (jqXHR.status) {
+            case 400:
+                if (jqXHR.responseJSON.ModelState != undefined) {
+                    $.each(jqXHR.responseJSON.ModelState, function (key, value) {
+                        var options = {};
+                        if (key.lastIndexOf('*') === -1) {
+                            options[key.split('.')[1]] = value;
+                            $('#' + key.split('.')[0] + 'EdtForm').validate().showErrors(options);
+                        } else {
+                            //app.ui.ShowAlert(key + 'Notify', 'alert-danger', value);
+                            app.ui.ShowAlert('generalNotify', 'alert-danger', value);
+                        }
+                    });
+
+                }
+                else {
+                    toastr.error(jqXHR.responseJSON.Message, "Ha ocurrido un error", { timeOut: 10000, closeButton: true, progressBar: true });
+                }
+                break;
+            case 401:
+                let path = window.location.pathname.toLowerCase();
+                if (path.endsWith('/cases/case') || path.endsWith('/viewer/viewer')) {
+                    localStorage.setItem('lasthref', window.location.href);
+                }
+                window.location.replace(app.setting.basepath + "Security/Login");
+                break;
+            case 404:
+                if (jqXHR.responseText !== undefined && jqXHR.responseText.indexOf('- 404.0 -') > -1) {
+                    console.info('%c Error ', 'color: white; background-color: #D33F49', jqXHR.status, ' - ', errorThrown);
+                }
+                else {
+                    console.info('%c Error controlado ', 'color: white; background-color: #49d33f', jqXHR.status, ' - ', jqXHR.responseText);
+                }
+                break;
+            case 500:
+                toastr.error("Por favor intente nuevamente y en caso de persistir el problema contacte el personal de soporte", "Ha ocurrido un error no controlado", { timeOut: 10000, closeButton: true, progressBar: true });
+
+                console.info('%c Error ', 'color: white; background-color: #D33F49', jqXHR.statusText);
+                console.groupCollapsed('%c Detalle ', 'color: white; background-color: #2274A5');
+                console.info(jqXHR.responseJSON.Message);
+                console.info(jqXHR.responseJSON.ExceptionType);
+                console.info(jqXHR.responseJSON.StackTrace);
+                console.groupEnd();
+
+                //console.log('%c Auth ', 'color: white; background-color: #2274A5', 'Login page rendered');
+                //console.log('%c GraphQL ', 'color: white; background-color: #95B46A', 'Get user details');
+                //console.log('%c Error ', 'color: white; background-color: #D33F49', 'Error getting user details');
+
+                break;
+            default:
+                if (jqXHR.responseJSON !== undefined) {
+                    console.info('%c Error ', 'color: white; background-color: #D33F49', jqXHR.responseJSON.ExceptionMessage);
+                    console.groupCollapsed('%c Detalle ', 'color: white; background-color: #2274A5');
+                    console.info(jqXHR.responseJSON.Message);
+                    console.info(jqXHR.responseJSON.ExceptionType);
+                    console.info(jqXHR.responseJSON.StackTrace);
+                    console.groupEnd();
+                } else {
+                    console.info('%c Error ', 'color: white; background-color: #D33F49', jqXHR.status, ' - ', errorThrown);
+                }
+
         }
     }
 
