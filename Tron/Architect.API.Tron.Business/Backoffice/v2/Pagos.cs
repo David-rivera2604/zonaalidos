@@ -242,6 +242,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             string prefix = Utilities.Helpers.Settings.StringValue("EMail.Test", string.Empty);
             int cardCount = Core.Business.Settings.IntegerValue("Payment.Silice.Tokenize.Cantidad.Tarjetas", 50);
             string provider = Core.Business.Settings.StringValue("Tenant.Settings.Payment.Provider");
+            provider = "Evertec";
 
             List<Contracts.Pagos.Tarjeta> pendientes = Architect.API.Tron.DataAccess.Pagos.Tarjetas.PendientesPorTokenizar(cod_cia, cardCount, cod_docum);
 
@@ -288,8 +289,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
             client.Timeout = TimeSpan.FromSeconds(10);
             client.DefaultRequestHeaders.Authorization = null;
-            string token = Architect.Payment.Integrations.Providers.Silice.Payment.signin(client).Result;
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
 
             List<DatosTarjeta> result = Architect.Payment.Integrations.Tokenize.Request(provider, client, datosTajetas).Result;
 
@@ -318,8 +318,8 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             int recordCount = 0;
             int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
             string prefix = Utilities.Helpers.Settings.StringValue("EMail.Test", string.Empty);
-            
-            
+
+
             List<Contracts.Pagos.Recibo> pendientes = Architect.API.Tron.DataAccess.Pagos.Recibos.PendientesRecurrentesAlCobro(cod_cia, fec_efect_recibo, limitCount, filter);
             if (pendientes.Count > 0)
             {
@@ -396,7 +396,26 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 //client.Timeout = TimeSpan.FromSeconds(3);
                 client.DefaultRequestHeaders.Authorization = null;
 
-                Architect.Payment.Integrations.Recurring.Request(provider, client, reciboReq);
+                List<Architect.Payment.Integrations.Contracts.InformationRequest> result = Architect.Payment.Integrations.Recurring.Request(provider, client, reciboReq).Result;
+
+                if (provider.Equals("Placetopay", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    foreach (Architect.Payment.Integrations.Contracts.InformationRequest item in result)
+                    {
+                        Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveById(cod_cia, Convert.ToInt32(item.reference));
+                        Architect.Payment.Integrations.Payment.UpdateStatus(currentRecord.UpdateUserCode, currentRecord, item);
+
+                        // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
+                        if (item.status == "APPROVED")
+                        {
+                            if (IsEmployee)
+                            {
+                                item.OnlinePayment.AgentCode = 999999;
+                            }
+                            bool tronPayment = Backoffice.Pagos.TronPayment(item, item.OnlinePayment.AgentCode, "Placetopay").Result;
+                        }
+                    }
+                }
             }
             return recordCount;
         }

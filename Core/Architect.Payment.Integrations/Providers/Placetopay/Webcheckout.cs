@@ -352,7 +352,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
 
             var data = new StringContent(JsonConvert.SerializeObject(tokenizeRequest), Encoding.UTF8, "application/json");
             HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
-            var response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("Payment.Placetopay.PaymentUrl") + "gateway/tokenize", data);
+            var response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("Payment.Placetopay.PaymentUrl.Recurring") + "gateway/tokenize", data);
             string resultResponse = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
@@ -376,7 +376,8 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
         {
             Integrations.Providers.Placetopay.Contracts.Responses.Collect collectResponse = null;
 
-            var data = new StringContent(JsonConvert.SerializeObject(collectRequest), Encoding.UTF8, "application/json");
+            string json = JsonConvert.SerializeObject(collectRequest, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
             HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
             var response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("Payment.Placetopay.PaymentUrl") + "api/collect", data);
             string resultResponse = await response.Content.ReadAsStringAsync();
@@ -409,8 +410,8 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
             int rawNonce = random.Next(0, 1000000);
             Auth auth;
             byte[] hash;
-            string login = Utilities.Helpers.Settings.StringValue($"Payment.Placetopay.{key}.Login.{currency}");
-            string secretKey = Utilities.Helpers.Settings.StringValue($"Payment.Placetopay.{key}.SecretKey.{currency}");
+            string login = Utilities.Helpers.Settings.StringValue($"Payment.Placetopay.Login.{key}.{currency}");
+            string secretKey = Utilities.Helpers.Settings.StringValue($"Payment.Placetopay.SecretKey.{key}.{currency}");
 
             using (SHA256 sha256 = SHA256.Create())
             {

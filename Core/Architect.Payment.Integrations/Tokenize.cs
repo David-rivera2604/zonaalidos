@@ -16,6 +16,8 @@ namespace Architect.Payment.Integrations
 
             if (provider.Equals("Silice", StringComparison.CurrentCultureIgnoreCase))
             {
+                string token = Architect.Payment.Integrations.Providers.Silice.Payment.signin(client).Result;
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
                 result = Architect.Payment.Integrations.Providers.Silice.Payment.Tokenize(client, datosTajetas).Result;
             }
             else
@@ -47,11 +49,11 @@ namespace Architect.Payment.Integrations
                     };
                     tokenResult = await Architect.Payment.Integrations.Providers.Placetopay.Webcheckout.Tokenize(body);
 
-                    if (tokenResult.status.status != Providers.Placetopay.Webcheckout.ST_OK)
+                    if (tokenResult.status.status == Providers.Placetopay.Webcheckout.ST_OK)
                     {
                         tarjeta.status = true;
                         tarjeta.token = tokenResult.instrument.token.token;
-                        tarjeta.number = tokenResult.instrument.card.number;
+                        tarjeta.card = new string('*', tarjeta.number.Length - tokenResult.instrument.token.lastDigits.Length) + tokenResult.instrument.token.lastDigits;
                     }
                     else
                     {
@@ -63,10 +65,11 @@ namespace Architect.Payment.Integrations
                     }
 
                 }
+                result = datosTajetas;
             }
 
             return result;
         }
-    
+
     }
 }
