@@ -20,7 +20,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts.Requests
         /// <summary>
         /// Datos del usuario pagador, hace referencia al dueño del medio de pago o usuario que pagó el monto solicitado.
         /// </summary>
-        //public Person payer { get; set; }
+        public Person payer { get; set; }
 
         /// <summary>
         /// Información del pago solicitado.

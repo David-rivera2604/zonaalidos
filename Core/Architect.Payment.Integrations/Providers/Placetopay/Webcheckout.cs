@@ -372,6 +372,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
             }
             return tokenizeResponse;
         }
+        
         public async static Task<Integrations.Providers.Placetopay.Contracts.Responses.Collect> Collect(Integrations.Providers.Placetopay.Contracts.Requests.Collect collectRequest)
         {
             Integrations.Providers.Placetopay.Contracts.Responses.Collect collectResponse = null;
@@ -379,7 +380,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
             string json = JsonConvert.SerializeObject(collectRequest, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
             var data = new StringContent(json, Encoding.UTF8, "application/json");
             HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
-            var response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("Payment.Placetopay.PaymentUrl") + "api/collect", data);
+            var response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("Payment.Placetopay.PaymentUrl.Recurring") + "api/collect", data);
             string resultResponse = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
@@ -427,5 +428,6 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
 
             return auth;
         }
+    
     }
 }

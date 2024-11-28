@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Architect.Payment.Integrations.Providers.Placetopay;
 
 namespace Architect.Payment.Integrations
 {
@@ -30,6 +31,15 @@ namespace Architect.Payment.Integrations
                     Providers.Placetopay.Contracts.Requests.Collect collectRequest = new Providers.Placetopay.Contracts.Requests.Collect()
                     {
                         auth = Providers.Placetopay.Webcheckout.BuildAuth("Recurring", item.moneda),
+                        payer = new Person()
+                        {
+                            name = item.firstname,
+                            surname = item.lastname,
+                            email = item.emailCliente,
+                            document = item.document,
+                            documentType = Webcheckout.IdentificationTypeConvert(item.documenttype),
+                            mobile = item.mobile
+                        },
                         payment = new Architect.Payment.Integrations.Providers.Placetopay.Contracts.PaymentRequest()
                         {
                             reference = item.ordenId,
@@ -50,7 +60,8 @@ namespace Architect.Payment.Integrations
                         expiration = DateTime.Now.AddMinutes(Utilities.Helpers.Settings.IntegerValue("Payment.Placetopay.TimeOut", 10)),
                         locale = "es_CR",
                         ipAddress = "127.0.0.1",
-                        userAgent = "MAPFRE - Aliados"
+                        userAgent = "MAPFRE - Aliados",
+                        returnUrl = Utilities.Helpers.Settings.StringValue("Payment.Placetopay.ReturnUrl.Recurring")
                     };
                     Providers.Placetopay.Contracts.Responses.Collect collectResponse = await Providers.Placetopay.Webcheckout.Collect(collectRequest);
 
@@ -65,19 +76,24 @@ namespace Architect.Payment.Integrations
                     {
                         case "APPROVED":
                         case "PENDING":
-                            Transaction payment = collectResponse.payment.First();
-                            infoItem.date = payment.status.date;
+                            Transaction payment = collectResponse.payment?.First();
+                            
                             infoItem.description = collectResponse.request.payment.description;
                             infoItem.reference = collectResponse.request.payment.reference;
-                            infoItem.currency = payment.amount.to.currency;
-                            infoItem.total = payment.amount.to.total;
-                            infoItem.paymentMethodName = payment.paymentMethodName;
-                            infoItem.lastDigits = payment.processorFields?.Find(r => r.keyword == "lastDigits")?.value;
-                            infoItem.authorization = payment.authorization;
-                            infoItem.receipt = payment.receipt;
-                            infoItem.message = payment.status.message;
+
                             infoItem.payerName = collectResponse.request?.payer?.name;
                             infoItem.payerSurname = collectResponse.request?.payer?.surname;
+                            if (payment!= null)
+                            {
+                                infoItem.date = payment.status.date;
+                                infoItem.currency = payment.amount.to.currency;
+                                infoItem.total = payment.amount.to.total;
+                                infoItem.paymentMethodName = payment.paymentMethodName;
+                                infoItem.lastDigits = payment.processorFields?.Find(r => r.keyword == "lastDigits")?.value;
+                                infoItem.authorization = payment.authorization;
+                                infoItem.receipt = payment.receipt;
+                                infoItem.message = payment.status.message;
+                            }
                             break;
                         case "REJECTED":
                             PaymentRequest paymentr = collectResponse.request.payment;

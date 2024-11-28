@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,6 +38,18 @@ namespace Architect.Payment.Integrations.Contracts.v2
         public string moneda { get; set; }
         public string concepto { get; set; }
         public string token { get; set; }
+
+
+        [JsonIgnore]
+        public string firstname { get; set; }
+        [JsonIgnore]
+        public string lastname { get; set; }
+        [JsonIgnore]
+        public string documenttype { get; set; }
+        [JsonIgnore]
+        public string document { get; set; }
+        [JsonIgnore]
+        public string mobile { get; set; }
 
     }
 

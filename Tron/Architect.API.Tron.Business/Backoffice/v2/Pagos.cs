@@ -365,7 +365,13 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                             expectedCollectionPaidDate = DateTime.Today,
                             moneda = pendiente.NOM_MON,
                             concepto = string.Format("MAPFRE: {3}. {0}. POLIZA #{1} RECIBO #{2}", pendiente.NOM_RAMO, pendiente.NUM_POLIZA, pendiente.NUM_RECIBO, pendiente.NOM_SECTOR),
-                            token = pendiente.TOKEN
+                            token = pendiente.TOKEN,
+
+                            firstname = pendiente.NOM_TERCERO,
+                            lastname = pendiente.APE1_TERCERO,
+                            documenttype = pendiente.TIP_DOCUM,
+                            document = pendiente.COD_DOCUM,
+                            mobile = pendiente.TLF_NUMERO.OnlyNumbers()
                         };
                         reciboReq.items.Add(newItem);
                         if (string.IsNullOrEmpty(prefix))
@@ -398,15 +404,19 @@ namespace Architect.API.Tron.Business.Backoffice.v2
 
                 List<Architect.Payment.Integrations.Contracts.InformationRequest> result = Architect.Payment.Integrations.Recurring.Request(provider, client, reciboReq).Result;
 
-                if (provider.Equals("Placetopay", StringComparison.CurrentCultureIgnoreCase))
+                if (provider.Equals("Evertec", StringComparison.CurrentCultureIgnoreCase))
                 {
                     foreach (Architect.Payment.Integrations.Contracts.InformationRequest item in result)
                     {
                         Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveById(cod_cia, Convert.ToInt32(item.reference));
-                        Architect.Payment.Integrations.Payment.UpdateStatus(currentRecord.UpdateUserCode, currentRecord, item);
+
+                        if (item?.status != currentRecord?.ProviderStatus)
+                        {
+                            Architect.Payment.Integrations.Payment.UpdateStatus(currentRecord.UpdateUserCode, currentRecord, item);
+                        }
 
                         // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
-                        if (item.status == "APPROVED")
+                        if (item?.status == "APPROVED")
                         {
                             if (IsEmployee)
                             {
