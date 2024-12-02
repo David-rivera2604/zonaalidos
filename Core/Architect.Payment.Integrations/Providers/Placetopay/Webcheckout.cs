@@ -70,6 +70,11 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
                         total = payInfo.Amount
                     }
                 },
+                subscription = new Subscription()
+                {
+                    reference = $"{payInfo.DocumentType}-{payInfo.Document}",
+                    description = "Suscripción automática en el app de aliados"
+                },
                 expiration = DateTime.Now.AddMinutes(Utilities.Helpers.Settings.IntegerValue("Payment.Placetopay.TimeOut", 10)),
                 ipAddress = ipAddress,
                 returnUrl = payInfo.ReturnUrl,
@@ -373,22 +378,21 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
             return tokenizeResponse;
         }
         
-        public async static Task<Integrations.Providers.Placetopay.Contracts.Responses.Collect> Collect(Integrations.Providers.Placetopay.Contracts.Requests.Collect collectRequest)
+        public async static Task<CollectTransaction> Collect(string payLoad)
         {
-            Integrations.Providers.Placetopay.Contracts.Responses.Collect collectResponse = null;
+            CollectTransaction collectResponse = null;
 
-            string json = JsonConvert.SerializeObject(collectRequest, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
-            var data = new StringContent(json, Encoding.UTF8, "application/json");
+            var data = new StringContent(payLoad, Encoding.UTF8, "application/json");
             HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
-            var response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("Payment.Placetopay.PaymentUrl.Recurring") + "api/collect", data);
+            var response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("Payment.Placetopay.PaymentUrl.Recurring") + "gateway/process", data);
             string resultResponse = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
-                collectResponse = JsonConvert.DeserializeObject<Integrations.Providers.Placetopay.Contracts.Responses.Collect>(resultResponse);
+                collectResponse = JsonConvert.DeserializeObject<Architect.Payment.Integrations.Providers.Placetopay.Contracts.CollectTransaction>(resultResponse);
             }
             else
             {
-                collectResponse = new Contracts.Responses.Collect()
+                collectResponse = new CollectTransaction()
                 {
                     status = new Contracts.Status()
                     {

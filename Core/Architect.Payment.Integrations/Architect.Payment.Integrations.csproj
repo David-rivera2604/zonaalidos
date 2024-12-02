@@ -83,6 +83,8 @@
     <Compile Include="Providers\Placetopay\Contracts\Status.cs" />
     <Compile Include="Providers\Placetopay\Contracts\NameValuePair.cs" />
     <Compile Include="Providers\Placetopay\Contracts\NotifyRequest.cs" />
+    <Compile Include="Providers\Placetopay\Contracts\CollectTransaction.cs" />
+    <Compile Include="Providers\Placetopay\Contracts\TransactionBase.cs" />
     <Compile Include="Providers\Placetopay\Contracts\Transaction.cs" />
     <Compile Include="Providers\Placetopay\Webcheckout.cs" />
     <Compile Include="Providers\Silice\Payment.cs" />

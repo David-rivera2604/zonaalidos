@@ -410,6 +410,11 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                     {
                         Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveById(cod_cia, Convert.ToInt32(item.reference));
 
+                        if (currentRecord != null)
+                        {
+                            item.OnlinePayment = currentRecord;
+                        }
+
                         if (item?.status != currentRecord?.ProviderStatus)
                         {
                             Architect.Payment.Integrations.Payment.UpdateStatus(currentRecord.UpdateUserCode, currentRecord, item);

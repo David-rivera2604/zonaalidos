@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
 {
-    internal class Transaction: TransactionBase
+    internal class CollectTransaction : TransactionBase
     {
+        public Amount amount { get; set; }
+        public AmountConversion conversion { get; set; }
 
-        public AmountConversion amount { get; set; }
-
-        public List<NameValuePair> processorFields { get; set; }
-
+        public string lastDigits { get; set; }
     }
 }

@@ -63,44 +63,40 @@ namespace Architect.Payment.Integrations
                         userAgent = "MAPFRE - Aliados",
                         returnUrl = Utilities.Helpers.Settings.StringValue("Payment.Placetopay.ReturnUrl.Recurring")
                     };
-                    Providers.Placetopay.Contracts.Responses.Collect collectResponse = await Providers.Placetopay.Webcheckout.Collect(collectRequest);
+                    string json = JsonConvert.SerializeObject(collectRequest, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+                    CollectTransaction collectResponse = await Providers.Placetopay.Webcheckout.Collect(json);
 
                     Architect.Payment.Integrations.Contracts.InformationRequest infoItem = new Architect.Payment.Integrations.Contracts.InformationRequest()
                     {
                         status = collectResponse.status.status,
-                        ipAddress = collectResponse.request?.userAgent,
-                        rawData = string.Empty
+                        ipAddress = collectRequest.userAgent,
+                        rawData = json
                     };
 
                     switch (collectResponse.status.status)
                     {
                         case "APPROVED":
-                        case "PENDING":
-                            Transaction payment = collectResponse.payment?.First();
-                            
-                            infoItem.description = collectResponse.request.payment.description;
-                            infoItem.reference = collectResponse.request.payment.reference;
 
-                            infoItem.payerName = collectResponse.request?.payer?.name;
-                            infoItem.payerSurname = collectResponse.request?.payer?.surname;
-                            if (payment!= null)
-                            {
-                                infoItem.date = payment.status.date;
-                                infoItem.currency = payment.amount.to.currency;
-                                infoItem.total = payment.amount.to.total;
-                                infoItem.paymentMethodName = payment.paymentMethodName;
-                                infoItem.lastDigits = payment.processorFields?.Find(r => r.keyword == "lastDigits")?.value;
-                                infoItem.authorization = payment.authorization;
-                                infoItem.receipt = payment.receipt;
-                                infoItem.message = payment.status.message;
-                            }
+                            infoItem.description = item.concepto;
+                            infoItem.reference = collectResponse.reference;
+
+                            infoItem.payerName = item.firstname;
+                            infoItem.payerSurname = item.lastname;
+                            infoItem.date = collectResponse.status.date;
+                            infoItem.currency = collectResponse.amount.currency;
+                            infoItem.total = collectResponse.amount.total;
+                            infoItem.paymentMethodName = collectResponse.franchise;
+                            infoItem.lastDigits = collectResponse.lastDigits;
+                            infoItem.authorization = collectResponse.authorization;
+                            infoItem.receipt = collectResponse.receipt;
+                            infoItem.message = collectResponse.status.message;
+
                             break;
                         case "REJECTED":
-                            PaymentRequest paymentr = collectResponse.request.payment;
-                            infoItem.description = collectResponse.request.payment.description;
-                            infoItem.reference = collectResponse.request.payment.reference;
-                            infoItem.currency = paymentr.amount.currency;
-                            infoItem.total = paymentr.amount.total;
+                            infoItem.description = item.concepto;
+                            infoItem.reference = collectResponse.reference;
+                            infoItem.currency = item.moneda;
+                            infoItem.total = collectResponse.amount.total;
                             infoItem.message = collectResponse.status.message;
                             infoItem.date = collectResponse.status.date;
                             break;

@@ -27,7 +27,14 @@ namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
         public bool skipResult { get; set; }
         public bool noBuyerFill { get; set; }
         public string type { get; set; }
+       // public Subscription subscription { get; set; }
 
 
+    }
+
+    internal class Subscription
+    {
+        public string reference { get; set; }
+        public string description { get; set; }
     }
 }
