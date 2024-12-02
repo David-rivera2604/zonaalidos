@@ -170,6 +170,8 @@ app.HogarTotal = (function () {
                     $('#coberturasTbl').bootstrapTable('load', settingData.coberturas);
                 else
                     $('#coberturasTbl').bootstrapTable('load', {});
+
+                Coberturas_ManejoDeCapital();
             }).always(function () {
                 $('#coberturasTbl').bootstrapTable('hideLoading');
             });
@@ -705,6 +707,8 @@ app.HogarTotal = (function () {
         var coberturas = $('#coberturasTbl').bootstrapTable('getData');
 
         if (grouped_coverage_management) {
+
+
             cob2001Selected = Coberturas_Seleccionada(coberturas, 2001);
             coberturas.filter(r => [2002, 2024, 2025, 2026, 2004].includes(r.codigo)).forEach(function (item, index) {
                 item.seleccionado = cob2001Selected;
@@ -720,6 +724,8 @@ app.HogarTotal = (function () {
                 $('[name=btSelectItem][data-index=' + index + ']').prop('disabled',
                     [2002, 2024, 2025, 2026, 2004].includes(value.codigo) || [2010, 2055, 2056, 2057, 2012].includes(value.codigo));
             });
+
+
         }
 
         if (Coberturas_Seleccionada(coberturas, 2002) || Coberturas_Seleccionada(coberturas, 2024) || Coberturas_Seleccionada(coberturas, 2025) || Coberturas_Seleccionada(coberturas, 2026) || Coberturas_Seleccionada(coberturas, 2004)) {
@@ -778,6 +784,13 @@ app.HogarTotal = (function () {
             $('#sARespcivil').val(-1);
         }
         data_changed();
+
+        $('#coberturasTbl').bootstrapTable('getData').forEach(function (value, index, array) {
+            if (value.requerida) {
+                $('[name=btSelectItem][data-index=' + index + ']').prop('disabled', value.requerida);
+            }
+        });
+        $('[name=btSelectAll]').prop('disabled', true);
     };
 
     return {

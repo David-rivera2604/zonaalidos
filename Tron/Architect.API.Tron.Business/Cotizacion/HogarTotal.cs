@@ -149,6 +149,10 @@ namespace Architect.API.Tron.Business.Cotizacion
                 {
                     currentCoverage.requerida = coberturaGrupo.Any(r => r.COD_COB == item.COD_COB && r.MCA_OBLIGATORIO == "S");
                 }
+                if (currentCoverage.requerida)
+                {
+                    currentCoverage.seleccionado =true;
+                }
                 coberturas.Add(currentCoverage);
             }
             return coberturas;
