@@ -42,6 +42,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
         public async static Task<Integrations.Contracts.SessionInformation> CreateRequest(Integrations.Contracts.PaymentInformation payInfo, string ipAddress, string userAgent, int userId, int companyId)
         {
             Contracts.SessionResponse session;
+            string prefix = Utilities.Helpers.Settings.StringValue("EMail.Test", string.Empty);
             string currency = CurrencyConvert(payInfo.Currency.ToString());
 
             if (string.IsNullOrEmpty(payInfo.ReturnUrl))
@@ -55,7 +56,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
                 {
                     name = payInfo.FirstName,
                     surname = payInfo.LastName,
-                    email = payInfo.Email,
+                    email = prefix.IsEmpty() ? payInfo.Email : prefix,
                     document = payInfo.Document,
                     documentType = IdentificationTypeConvert(payInfo.DocumentType.ToString()),
                     mobile = payInfo.Mobile.OnlyNumbers()
@@ -68,13 +69,14 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
                     {
                         currency = currency,
                         total = payInfo.Amount
-                    }
+                    },
+                    subscribe = true
                 },
-                subscription = new Subscription()
-                {
-                    reference = $"{payInfo.DocumentType}-{payInfo.Document}",
-                    description = "Suscripción automática en el app de aliados"
-                },
+                //subscription = new Subscription()
+                //{
+                //    reference = $"{payInfo.DocumentType}-{payInfo.Document}",
+                //    description = "Suscripción automática en el app de aliados"
+                //},
                 expiration = DateTime.Now.AddMinutes(Utilities.Helpers.Settings.IntegerValue("Payment.Placetopay.TimeOut", 10)),
                 ipAddress = ipAddress,
                 returnUrl = payInfo.ReturnUrl,
@@ -377,7 +379,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
             }
             return tokenizeResponse;
         }
-        
+
         public async static Task<CollectTransaction> Collect(string payLoad)
         {
             CollectTransaction collectResponse = null;

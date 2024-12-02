@@ -24,6 +24,9 @@ namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
         /// </summary>
         public Amount amount { get; set; }
 
+        public bool subscribe { get; set; }
+        
+
         //public bool allowPartial { get; set; }
 
         //private Person shipping;
