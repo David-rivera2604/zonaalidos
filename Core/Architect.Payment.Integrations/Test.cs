@@ -16,42 +16,40 @@ namespace Architect.Payment.Integrations
     public static class Test
     {
 
-  
-        public static void DoTokenize()
-        {
-            Auth auth = Providers.Placetopay.Webcheckout.BuildAuth("d47ba34d7872700bd4859d52db7de97a", "Sc8985wd6M8RSSc9"); //Providers.Placetopay.Webcheckout.BuildAuth(0, "CRC", 0, 0);
 
+        public static void Doing()
+        { 
+            
+            string reference = "31185";
+            string description = "MAPFRE: AUTOMOVILES. MAPFRE MAS. POLIZA #3021910103696 RECIBO #11049219";
+            string email = "solernelson@hotmail.com";
+            double amount = 17154.33;
+            string moneda = "CRC";
 
+            Auth auth = Providers.Placetopay.Webcheckout.BuildAuth("Recurring", moneda);
 
-            var body = new Providers.Placetopay.Contracts.Requests.Tokenize()
+            PaymentLink pl = new PaymentLink()
             {
                 auth = auth,
-                payer = new Person()
-                {
-                    name = "Diego",
-                    surname = "Calle",
-                    email = "dnetix@yopmail.com"
-                },
-                instrument = new Instrument()
-                {
-                    card = new Card()
-                    {
-                        number = "5180300000000005",
-                        expiration = "12/18",
-                        cvv = "123",
-                        installments = 3
-                    }
-                },
-                ipAddress = "127.0.0.1",
-                userAgent = "Testing"
+                locale = "es_CR",
+                name = description,
+                paymentsAllowed = 1,
+                expirationDate = DateTime.Now.AddMinutes(Utilities.Helpers.Settings.IntegerValue("Payment.Placetopay.TimeOut", 10)),
+                paymentExpiration = Utilities.Helpers.Settings.IntegerValue("Payment.Placetopay.TimeOut", 10),
+                currency = moneda,
+                amount = amount,
+                reference = reference,
+                description = description,
+                receiverEmails = new string[] { email }
             };
 
-            string json = JsonConvert.SerializeObject(body);
+
+            string pl_json = JsonConvert.SerializeObject(pl);
 
 
-            var result = Architect.Payment.Integrations.Providers.Placetopay.Webcheckout.Tokenize(body).Result;
-
+            Providers.Placetopay.Contracts.Responses.PaymentLink result = Architect.Payment.Integrations.Providers.Placetopay.Webcheckout.PaymentLink(pl).Result;
         }
 
     }
+
 }

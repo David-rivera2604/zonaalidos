@@ -39,7 +39,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts.Requests
         /// <summary>
         /// Monto total que tendrá pago que se realizara a través del link
         /// </summary>
-        public string amount { get; set; }
+        public double amount { get; set; }
         /// <summary>
         /// Referencia que sera asociada al link
         /// </summary>

@@ -428,6 +428,34 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
 
             return auth;
         }
-    
+
+        public async static Task<Contracts.Responses.PaymentLink> PaymentLink(Contracts.Requests.PaymentLink paymentLink)
+        {
+            Contracts.Responses.PaymentLink paymentLinkResponse = null;
+
+            string json = JsonConvert.SerializeObject(paymentLink, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+            HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
+            var response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("Payment.Placetopay.PaymentUrl.Recurring") + "microsites/api/payment-link", data);
+            string resultResponse = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                paymentLinkResponse = JsonConvert.DeserializeObject<Contracts.Responses.PaymentLink>(resultResponse);
+            }
+            else
+            {
+                paymentLinkResponse = new Contracts.Responses.PaymentLink()
+                {
+                    status = new Contracts.Status()
+                    {
+                        date = DateTime.Now.ToString("yyyy-MM-ddTHH\\:mm\\:sszzz"),
+                        status = ST_FAILED,
+                        reason = response.ReasonPhrase
+                    }
+                };
+            }
+            return paymentLinkResponse;
+        }
+
     }
 }
