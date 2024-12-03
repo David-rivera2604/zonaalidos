@@ -263,18 +263,13 @@ app.core = (function () {
             data: data,
             beforeSend: function (xhr) {
                 if (token) {
-                    var key = app.core.URLStringValue('key');
-                    if (key != '') {
-                        xhr.setRequestHeader('AccessKey', key);
-                    } else {
-                        let current = localStorage.getItem('AlternateToken');
-                        if (current != null && current != '' && current != 'null') {
-                            localStorage.removeItem('AlternateToken')
-                            xhr.setRequestHeader('Authorization', 'Bearer ' + current);
-                        }
-                        else {
-                            xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
-                        }
+                    let current = localStorage.getItem('AlternateToken');
+                    if (current != null && current != '' && current != 'null') {
+                        localStorage.removeItem('AlternateToken')
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + current);
+                    }
+                    else {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
                     }
                 }
             }

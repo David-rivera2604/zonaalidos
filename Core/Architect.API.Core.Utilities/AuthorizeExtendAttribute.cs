@@ -30,7 +30,7 @@ namespace Architect.API.Core.Security
             {
                 base.OnAuthorization(actionContext);
             }
-            else if (actionContext.Request.Headers.Authorization == null && HttpContext.Current.Request.Headers["AccessKey"] == null)
+            else if (actionContext.Request.Headers.Authorization == null && HttpContext.Current.Request.Headers["_AccessKey_"] == null)
             {
                 base.OnAuthorization(actionContext);
             }
@@ -59,7 +59,7 @@ namespace Architect.API.Core.Security
                 }
                 else
                 {
-                    authenticationToken = HttpContext.Current.Request.Headers["AccessKey"];
+                    authenticationToken = HttpContext.Current.Request.Headers["_AccessKey_"];
                     tokenInfo = Token.AccessKeyInfo(authenticationToken);
                     if (tokenInfo.UserId == 0)
                     {                        

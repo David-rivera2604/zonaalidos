@@ -62,42 +62,6 @@ namespace Architect.API.Core.Controllers
             return result;
         }
 
-        /// <summary>
-        /// Permite autenticar un usuario por medio de una clave de acceso (integraciones).
-        /// </summary>
-        /// <param name="accessKey">Clave de acceso.</param>
-        /// <returns>Contexto de autenticación incluyendo el token que identifica la sesión del usuario.</returns>
-        [HttpGet]
-        [Route("Access/{accessKey}")]
-        [AllowAnonymous]
-        [ResponseType(typeof(Contracts.Security.AuthenticationResponse))]
-        public async Task<IHttpActionResult> AuthenticationAccessKey([FromUri] string accessKey)
-        {
-            IHttpActionResult result = null;
-
-            if (accessKey.IsEmpty())
-            {
-                result = BadRequest("Debe indicar los datos");
-            }
-            else
-            {
-                string responseItem = null;
-                string ipAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
-
-                await Task.Run(() => responseItem = Security.Token.AccessKeyInfo2(accessKey, ipAddress)).ConfigureAwait(false);
-
-                if (responseItem.IsEmpty())
-                {
-                    result = Unauthorized();
-                }
-                else
-                {
-                    result = Ok(responseItem);
-                }
-            }
-
-            return result;
-        }
 
         /// <summary>
         /// Navegación permitida según los roles asociados al usuario del token

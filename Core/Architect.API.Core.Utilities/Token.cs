@@ -61,9 +61,9 @@ namespace Architect.API.Core.Security
 
             if (result.CompanyId == 0 && HttpContext.Current?.Request?.Headers != null)
             {
-                if (HttpContext.Current.Request.Headers["AccessKey"] != null)
+                if (HttpContext.Current.Request.Headers["_AccessKey_"] != null)
                 {
-                    result = AccessKeyInfo(HttpContext.Current.Request.Headers["AccessKey"]);
+                    result = AccessKeyInfo(HttpContext.Current.Request.Headers["_AccessKey_"]);
                 }
                 else if (HttpContext.Current.Request.Headers["Authorization"] != null)
                 {
