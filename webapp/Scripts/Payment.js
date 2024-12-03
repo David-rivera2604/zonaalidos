@@ -1,6 +1,5 @@
 ﻿var app = app || {};
 
-
 app.Payment = (function () {
     return {
         Recibo: function (row, id, sequence, lightbox = true) {
@@ -32,31 +31,39 @@ app.Payment = (function () {
                         });
                 }
             } else {
-                app.Payment.Process(data, lightbox)
-                    .catch(err => {
-                        app.ui.ShowAlert('generalNotify', 'alert-danger', err.message);
-                    }).then(d => {
-                        $('.ibox-content').toggleClass('sk-loading');
-                        if (d?.status != undefined) {
-                            switch (d.status) {
-                                case 'APPROVED':
-                                    app.ui.ShowAlert('generalNotify', 'alert-success', '<b> <i class="fa fa-check"></i> Transacción aprobada:</b> El cobro del recibo ' + row.NUM_RECIBO + ' con el número de referencia ' + d.data.reference + ', fue realizado de forma exitosa.');
-                                    break
-                                case 'REJECTED':
-                                    app.ui.ShowAlert('generalNotify', 'alert-danger', '<b> <i class="fa fa-close"></i> El pago ha sido rechazado:</b> El cobro del recibo ' + row.NUM_RECIBO + ' con el número de referencia ' + d.data.reference + ', ha sido rechazado.');
-                                    break
-                                case 'PENDING':
-                                    app.ui.ShowAlert('generalNotify', 'alert-warning', '<b> <i class="fa fa-question-circle-o"></i> El proceso de pago está pendiente:</b> El cobro del recibo ' + row.NUM_RECIBO + ' con el número de referencia ' + d.data.reference + ', está pendiente, se requiere una revisión adicional para procesar la transacción.');
-                                    break
+                if (id == 310 && sequence == 2) {
+                    app.Payment.SilicePaymentLink(row)
+                        .catch(err => {
+                            app.ui.ShowAlert('generalNotify', 'alert-danger', err.message);
+                        }).then(d => {
+                            $('.ibox-content').toggleClass('sk-loading');
+                        });
+                } else {
+                    app.Payment.Process(data, lightbox)
+                        .catch(err => {
+                            app.ui.ShowAlert('generalNotify', 'alert-danger', err.message);
+                        }).then(d => {
+                            $('.ibox-content').toggleClass('sk-loading');
+                            if (d?.status != undefined) {
+                                switch (d.status) {
+                                    case 'APPROVED':
+                                        app.ui.ShowAlert('generalNotify', 'alert-success', '<b> <i class="fa fa-check"></i> Transacción aprobada:</b> El cobro del recibo ' + row.NUM_RECIBO + ' con el número de referencia ' + d.data.reference + ', fue realizado de forma exitosa.');
+                                        break
+                                    case 'REJECTED':
+                                        app.ui.ShowAlert('generalNotify', 'alert-danger', '<b> <i class="fa fa-close"></i> El pago ha sido rechazado:</b> El cobro del recibo ' + row.NUM_RECIBO + ' con el número de referencia ' + d.data.reference + ', ha sido rechazado.');
+                                        break
+                                    case 'PENDING':
+                                        app.ui.ShowAlert('generalNotify', 'alert-warning', '<b> <i class="fa fa-question-circle-o"></i> El proceso de pago está pendiente:</b> El cobro del recibo ' + row.NUM_RECIBO + ' con el número de referencia ' + d.data.reference + ', está pendiente, se requiere una revisión adicional para procesar la transacción.');
+                                        break
+                                }
+                                if (id == 3001 && sequence == 1) {
+                                    app.ViewerQuery.Refresh(undefined, $('#1GridTbl'), 3000, '', sequence);
+                                }
                             }
-                            if (id == 310 && sequence == 2) {
-                                app.ViewerQuery.Refresh(undefined, $('#2GridTbl'), id, '', sequence);
-                            }
-                            if (id == 3001 && sequence == 1) {
-                                app.ViewerQuery.Refresh(undefined, $('#1GridTbl'), 3000, '', sequence);
-                            }
-                        }
-                    });
+                        });
+                }
+
+
             }
         },
         Process: function (dataRequest, lightbox = true) {
