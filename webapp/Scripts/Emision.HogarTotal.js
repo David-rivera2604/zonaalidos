@@ -48,6 +48,12 @@ app.HogarTotal = (function () {
                         $("#enviosolicitudzona").addClass('d-none');
                     }
 
+                    if (data.polizagrupo == '2012410199312') {
+                        $(document).ready(function () {
+                            $('#tipoplan').val("2");
+                            $('#tipoplan').prop("disabled", true);
+                        });
+                    }
                     Init_Lookups(data);
                 });
         }
@@ -1735,7 +1741,6 @@ app.HogarTotal = (function () {
         md.data('id', row.propiedadId);
 
         //Required
-        $('#tipoplan').val(row.tipoplan);
         $('#otrassenas').val(row.otrassenas);
         $('#numerodefolio').val(row.numerodefolio);
         $('#anodeconstruccion').val(row.anodeconstruccion);

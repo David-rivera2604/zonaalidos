@@ -66,7 +66,9 @@ namespace Architect.API.Tron.Business.Multirriesgo.Handler
         {
 
             Contracts.Emision.Multirriesgo resultQuoteInfo = null;
-            
+            var mca_cicac = "N";
+            var txt_cicac = "NO SE AUTORIZA";
+
             if (quoteInfo.kyc == null && quoteInfo.ConoceTuCliente != null)
             {
                 if (quoteInfo.ConoceTuCliente.Persona != null)
@@ -87,11 +89,15 @@ namespace Architect.API.Tron.Business.Multirriesgo.Handler
                 {
                     KycJuridico kycjuridico = JsonConvert.DeserializeObject<KycJuridico>(JsonConvert.SerializeObject(quoteInfo.kyc));
                     quoteInfo.kyc = kycjuridico;
+                    mca_cicac = kycjuridico.mca_cicac;
+                    txt_cicac = kycjuridico.obs_cicac;
                 }
                 else
                 {
                     Kycpersona kycpersona = JsonConvert.DeserializeObject<Kycpersona>(JsonConvert.SerializeObject(quoteInfo.kyc));
                     quoteInfo.kyc = kycpersona;
+                    mca_cicac = kycpersona.mca_cicac;
+                    txt_cicac = kycpersona.obs_cicac;
                 }
 
                 quoteInfo.DatosEconomicos = Request.EconomicDataCalculate(quoteInfo);
@@ -100,7 +106,7 @@ namespace Architect.API.Tron.Business.Multirriesgo.Handler
                 string kycUniqueId = String.Empty;
 
                 AlmacenarSolicitud(quoteInfo, quoteInfo.tip_firma == Contracts.TipoDeFirma.Manual ? 33 : 4, tokenInfo, uniqueId, kycUniqueId);
-                GuardaDatosVariables(quoteInfo, quoteInfo.presupuesto, quoteInfo.cod_ramo, quoteInfo.tip_firma, quoteInfo.tip_firmaDesc, uniqueId);
+                GuardaDatosVariables(quoteInfo, quoteInfo.presupuesto, quoteInfo.cod_ramo, quoteInfo.tip_firma, quoteInfo.tip_firmaDesc, uniqueId, mca_cicac, txt_cicac);
                 string message = string.Empty;
 
                 if (uniqueId.IsNotEmpty())
@@ -222,7 +228,7 @@ namespace Architect.API.Tron.Business.Multirriesgo.Handler
 
         }
 
-        private static void GuardaDatosVariables(Contracts.Emision.Multirriesgo quoteInfo, string presupuesto, int cod_ramo, string tipoenvio, string tipoenvioDesc, string uniqueId)
+        private static void GuardaDatosVariables(Contracts.Emision.Multirriesgo quoteInfo, string presupuesto, int cod_ramo, string tipoenvio, string tipoenvioDesc, string uniqueId, string mca_cicac, string txt_cicac)
         {
 
             IDbConnection currentConnection = DataFactory.Database.OpenConnection("Tron");
@@ -285,9 +291,49 @@ namespace Architect.API.Tron.Business.Multirriesgo.Handler
                 }, currentConnection);
             }
 
+            DataAccess.CrearPresupuesto.PP_Insert_P2000020(new Contracts.Presupuesto.DatoVariable()
+            {
+                cod_cia = 1,
+                num_poliza = presupuesto,
+                num_spto = 0,
+                num_spto_apli = 0,
+                num_riesgo = 0,
+                num_periodo = 1,
+                tip_nivel = 1,
+                cod_campo = "MCA_CICAC",
+                val_campo = mca_cicac,
+                val_cor_campo = mca_cicac,
+                txt_campo = mca_cicac,
+                num_secu = 903,
+                cod_ramo = cod_ramo,
+                num_apli = 0,
+                mca_baja_riesgo = "N",
+                mca_vigente = "S",
+                mca_vigente_apli = "S"
+            }, currentConnection);
+
+            DataAccess.CrearPresupuesto.PP_Insert_P2000020(new Contracts.Presupuesto.DatoVariable()
+            {
+                cod_cia = 1,
+                num_poliza = presupuesto,
+                num_spto = 0,
+                num_spto_apli = 0,
+                num_riesgo = 0,
+                num_periodo = 1,
+                tip_nivel = 1,
+                cod_campo = "TXT_CICAC",
+                val_campo = txt_cicac,
+                val_cor_campo = txt_cicac,
+                txt_campo = txt_cicac,
+                num_secu = 904,
+                cod_ramo = cod_ramo,
+                num_apli = 0,
+                mca_baja_riesgo = "N",
+                mca_vigente = "S",
+                mca_vigente_apli = "S"
+            }, currentConnection);
 
             currentConnection.Close();
         }
-
     }
 }

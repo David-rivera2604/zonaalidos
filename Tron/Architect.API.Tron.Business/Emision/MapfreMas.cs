@@ -121,6 +121,8 @@ namespace Architect.API.Tron.Business.Emision
         {
             Contracts.Emision.MapfreMas resultQuoteInfo = null;
             quoteInfo.NUM_MATRICULA = Regex.Replace(quoteInfo.NUM_MATRICULA, @"[^a-zA-Z0-9]", String.Empty);
+            var mca_cicac = "N";
+            var txt_cicac = "NO SE AUTORIZA";
 
             // En caso de que el objeto kyc este vacio (información provista por la UI de aliados),
             // pero el objeto ConoceTuCliente no lo sea (información provista por el api),
@@ -130,6 +132,7 @@ namespace Architect.API.Tron.Business.Emision
                 if (quoteInfo.ConoceTuCliente.Persona != null)
                 {
                     quoteInfo.kyc = JObject.Parse(JsonConvert.SerializeObject(quoteInfo.ConoceTuCliente.Persona));
+
                 }
                 if (quoteInfo.ConoceTuCliente.Juridico != null)
                 {
@@ -139,17 +142,27 @@ namespace Architect.API.Tron.Business.Emision
             }
             if (quoteInfo.Modo == "draft" || quoteInfo.Modo == "resume")
             {
-                //TODO: Se debe incluir la validación de que de haber un Tomador, Asegurado y Conductor Habitual, pero faltan las básicas.
+                Contracts.Comun.tercero tomador = (from t in quoteInfo.terceros where t.tipodetercero == 0 select t).FirstOrDefault();
+                if (tomador.DocumentNumberType == 4)
+                {
+                    KycJuridico kycjuridico = JsonConvert.DeserializeObject<KycJuridico>(JsonConvert.SerializeObject(quoteInfo.kyc));
+                    mca_cicac = kycjuridico.mca_cicac;
+                    txt_cicac = kycjuridico.obs_cicac;
+                }
+                else
+                {
+                    Kycpersona kycpersona = JsonConvert.DeserializeObject<Kycpersona>(JsonConvert.SerializeObject(quoteInfo.kyc));
+                    mca_cicac = kycpersona.mca_cicac;
+                    txt_cicac = kycpersona.obs_cicac;
+                }
+
                 quoteInfo.DatosEconomicos = Solicitud.EconomicDataCalculate(quoteInfo);
 
                 Dictionary<string, string> request = Solicitud.EnviarSolicitud(quoteInfo.tip_firma, quoteInfo.correoenvio, quoteInfo, tokenInfo);
                 string kycUniqueId = String.Empty;
-                //if (quoteInfo.kyc != null)
-                //{
-                //    kycUniqueId = EnviarKYC(quoteInfo.tip_firma, quoteInfo.correoenvio, quoteInfo, tokenInfo);
-                //}
+
                 AlmacenarSolicitud(quoteInfo, quoteInfo.tip_firma == Contracts.TipoDeFirma.Manual ? 33 : 4, tokenInfo, request["UniqueId"], kycUniqueId);
-                GuardaDatosVariables(quoteInfo.presupuesto, quoteInfo.cod_ramo, quoteInfo.tip_firma, quoteInfo.tip_firmaDesc, request["UniqueId"]);
+                GuardaDatosVariables(quoteInfo.presupuesto, quoteInfo.cod_ramo, quoteInfo.tip_firma, quoteInfo.tip_firmaDesc, request["UniqueId"], mca_cicac, txt_cicac);
                 string message = string.Empty;
 
                 if (request["UniqueId"].IsNotEmpty())
@@ -175,18 +188,9 @@ namespace Architect.API.Tron.Business.Emision
             {
                 try
                 {
-                    //Architect.Common.Helpers.Serialize.SerializeToFile<Contracts.Cotizacion.MapfreMas>(quoteInfo,
-                    //    ConfigurationManager.AppSettings["Path.Logs"] + @"\MapfreMas.emision.in.xml", true);
-
                     Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = MapfreMasConvertTo.Tron(quoteInfo);
 
-                    //Architect.Common.Helpers.Serialize.SerializeToFile<Architect.API.Tron.Contracts.Batch.p2000030>(result,
-                    //    ConfigurationManager.AppSettings["Path.Logs"] + @"\MapfreMas.emision.in.raw.xml", true);
-
                     Architect.API.Tron.Contracts.Poliza.DatoFijo result2 = Backoffice.Emision.MapfreMas.Emitir(result, false, tokenInfo);
-
-                    //Architect.Common.Helpers.Serialize.SerializeToFile<Architect.API.Tron.Contracts.Batch.a2000030>(result2,
-                    //    ConfigurationManager.AppSettings["Path.Logs"] + @"\MapfreMas.out.raw.xml", true);
 
                     resultQuoteInfo = MapfreMasConvertFrom.Quote(quoteInfo, result2);
 
@@ -371,7 +375,7 @@ namespace Architect.API.Tron.Business.Emision
 
         }
 
-        private static void GuardaDatosVariables(string presupuesto, int cod_ramo, string tipoenvio, string tipoenvioDesc, string uniqueId)
+        private static void GuardaDatosVariables(string presupuesto, int cod_ramo, string tipoenvio, string tipoenvioDesc, string uniqueId, string mca_cicac, string txt_cicac)
         {
             IDbConnection currentConnection = DataFactory.Database.OpenConnection("Tron");
 
@@ -410,6 +414,48 @@ namespace Architect.API.Tron.Business.Emision
                 val_campo = tipoenvio,
                 txt_campo = tipoenvioDesc,
                 num_secu = 103,
+                cod_ramo = cod_ramo,
+                num_apli = 0,
+                mca_baja_riesgo = "N",
+                mca_vigente = "S",
+                mca_vigente_apli = "S"
+            }, currentConnection);
+
+            DataAccess.CrearPresupuesto.PP_Insert_P2000020(new Contracts.Presupuesto.DatoVariable()
+            {
+                cod_cia = 1,
+                num_poliza = presupuesto,
+                num_spto = 0,
+                num_spto_apli = 0,
+                num_riesgo = 0,
+                num_periodo = 1,
+                tip_nivel = 1,
+                cod_campo = "MCA_CICAC",
+                val_campo = mca_cicac,
+                val_cor_campo = mca_cicac,
+                txt_campo = mca_cicac,
+                num_secu = 905,
+                cod_ramo = cod_ramo,
+                num_apli = 0,
+                mca_baja_riesgo = "N",
+                mca_vigente = "S",
+                mca_vigente_apli = "S"
+            }, currentConnection);
+
+            DataAccess.CrearPresupuesto.PP_Insert_P2000020(new Contracts.Presupuesto.DatoVariable()
+            {
+                cod_cia = 1,
+                num_poliza = presupuesto,
+                num_spto = 0,
+                num_spto_apli = 0,
+                num_riesgo = 0,
+                num_periodo = 1,
+                tip_nivel = 1,
+                cod_campo = "TXT_CICAC",
+                val_campo = txt_cicac,
+                val_cor_campo = txt_cicac,
+                txt_campo = txt_cicac,
+                num_secu = 906,
                 cod_ramo = cod_ramo,
                 num_apli = 0,
                 mca_baja_riesgo = "N",

@@ -540,11 +540,11 @@
       <Bands>
         <Item1 Ref="272" ControlType="DetailBand" Name="Detail1" HeightF="20.5357227">
           <Controls>
-            <Item1 Ref="273" ControlType="XRLabel" Name="label6" Multiline="true" Text="label6" TextAlignment="TopCenter" SizeF="170.208252,18" LocationFloat="519.7917,0" Padding="2,2,0,0,100">
+            <Item1 Ref="273" ControlType="XRLabel" Name="label6" Multiline="true" Text="label6" TextAlignment="TopCenter" SizeF="170.208252,18" LocationFloat="519.7917,0" Font="Arial, 9pt" Padding="2,2,0,0,100">
               <ExpressionBindings>
                 <Item1 Ref="274" EventName="BeforePrint" PropertyName="Text" Expression="[deducible]" />
               </ExpressionBindings>
-              <StylePriority Ref="275" UseTextAlignment="false" />
+              <StylePriority Ref="275" UseFont="false" UseTextAlignment="false" />
             </Item1>
             <Item2 Ref="276" ControlType="XRLabel" Name="label5" TextFormatString="{0:n2}" Multiline="true" Text="label5" TextAlignment="TopRight" SizeF="120.326233,18" LocationFloat="389.458984,0" Padding="2,2,0,0,100">
               <ExpressionBindings>
@@ -603,7 +603,7 @@
             </Item1>
           </Controls>
         </Item2>
-        <Item3 Ref="301" ControlType="ReportFooterBand" Name="ReportFooter1" HeightF="30.6570454" Borders="Top">
+        <Item3 Ref="301" ControlType="ReportFooterBand" Name="ReportFooter1" HeightF="41.4950562" Borders="Top">
           <Controls>
             <Item1 Ref="302" ControlType="XRLabel" Name="label18" TextFormatString="{0:n2}" Multiline="true" Text="label5" SnapLineMargin="0,0,6,0,100" TextAlignment="MiddleRight" SizeF="120.326263,26.04163" LocationFloat="389.458984,1.99999666" Padding="2,2,0,0,100">
               <ExpressionBindings>
@@ -640,11 +640,11 @@
               </ExpressionBindings>
               <StylePriority Ref="317" UseTextAlignment="false" />
             </Item3>
-            <Item4 Ref="318" ControlType="XRLabel" Name="label13" TextFormatString="{0:n2}" Multiline="true" Text="label10" TextAlignment="TopRight" SizeF="98.99957,23" LocationFloat="600.999939,0" Padding="2,2,0,0,100">
+            <Item4 Ref="318" ControlType="XRLabel" Name="label13" TextFormatString="{0:n2}" Multiline="true" Text="label10" TextAlignment="TopRight" SizeF="98.99957,23" LocationFloat="600.999939,0" Font="Arial, 9.75pt, style=Bold" Padding="2,2,0,0,100">
               <ExpressionBindings>
                 <Item1 Ref="319" EventName="BeforePrint" PropertyName="Text" Expression="[importetotal]" />
               </ExpressionBindings>
-              <StylePriority Ref="320" UseTextAlignment="false" />
+              <StylePriority Ref="320" UseFont="false" UseTextAlignment="false" />
             </Item4>
             <Item5 Ref="321" ControlType="XRLabel" Name="label8" TextFormatString="{0:dd/MM/yyyy}" Multiline="true" Text="label4" TextAlignment="TopCenter" SizeF="91.6621857,23" LocationFloat="59.574,0" Padding="2,2,0,0,100">
               <ExpressionBindings>

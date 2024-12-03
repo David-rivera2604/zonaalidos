@@ -172,7 +172,11 @@ app.kycpersona = (function () {
             //Correspondencia
             mediodeenvio: app.ui.GetRadioNumericValue('mediodeenvioPer'),
             mediodeenvioDesc: app.ui.GetRadioSelectedText('mediodeenvioPer'),
-            especifique: $('#especifiquePer').val()
+            especifique: $('#especifiquePer').val(),
+
+            //CICAC
+            mca_cicac: app.ui.GetRadioStringValue('cicacPer'),
+            obs_cicac: $('#especifiquecicacPer').val(),
         };
         return data;
     };
@@ -263,6 +267,8 @@ app.kycpersona = (function () {
             app.ui.SetRadioNumericValue('formadepagodelapolizaPer', data.formadepagodelapoliza);
             app.ui.SetRadioNumericValue('mediodeenvioPer', data.mediodeenvio);
             $('#especifiquePer').val(data.especifique);
+            app.ui.SetRadioStringValue('cicacPer', data.mca_cicac);
+            $('#especifiquecicacPer').val(data.obs_cicac);
         }
     };
 
@@ -362,6 +368,15 @@ app.kycpersona = (function () {
             event.preventDefault();
         });
 
+        $('input:radio[name=cicacPer]').change(function () {
+            var isDisabled = app.ui.GetRadioStringValue('cicacPer') === 'S';
+            $('#especifiquecicacPer').prop("disabled", isDisabled);
+            if (isDisabled) {
+                $('#especifiquecicacPer').val('EL CLIENTE AUTORIZA COMPLETAR EL CICAC');  
+            } else {
+                $('#especifiquecicacPer').val(''); 
+            }
+        });
 
         //$('#kycpersonaPerEdtFormCancel').click(function () {
         //    app.ui.ButtonDoing('#kycpersonaPerEdtFormCancel');
@@ -451,6 +466,9 @@ app.kycpersona = (function () {
                 formadepagodelapolizaPer: { required: true },
                 mediodeenvioPer: { required: true },
                 especifiquePer: { required: true },
+                cicacPer: { required: true },
+                especifiquecicacPer: { required: true },
+
             },
             messages: {
                 primerapellidoPer: { required: 'Debe indicar el Primer apellido' },
@@ -500,6 +518,8 @@ app.kycpersona = (function () {
                 formadepagodelapolizaPer: { required: 'Debe indicar el Forma de pago de la póliza' },
                 mediodeenvioPer: { required: 'Debe indicar el Favor indicar el medio por el cual desea que se le envíe información' },
                 especifiquePer: { required: 'Debe indicar el Especifique' },
+                cicacPer: { required: 'Por favor responder la pregunta referente al CICAC' },
+                especifiquecicacPer: { required: 'Especifique un detalle a la respuesta de CICAC' },
             }
         });
     };
