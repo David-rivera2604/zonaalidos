@@ -1,4 +1,5 @@
 ﻿using Architect.Utilities.Extensions;
+using Newtonsoft.Json;
 using SmartFormat;
 using SmartFormat.Core.Settings;
 using System;
@@ -330,6 +331,10 @@ namespace Architect.API.Core.Business.General
             try
             {
                 SmtpServer.Send(mail);
+                if (testEmail.IsNotEmpty())
+                {
+                    Utilities.Log.WarningLog("Context", JsonConvert.SerializeObject(context), "Mail");
+                }
             }
             catch (Exception ex)
             {

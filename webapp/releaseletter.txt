@@ -623,3 +623,9 @@
 1.6.82  07/11/2024 Trazabilidad. Se habilita la posibilidad de subir archivo de excel.
 1.6.83  12/11/2024 Trazabilidad. Se habilita la posibilidad de subir archivo de jpg.
 1.6.84  15/11/2024 Aliados. Se agregar consulta (6000) para el call center.
+1.6.85  03/12/2024 Pasarela Evertec. Tokenización de tarjetas.
+                   Pasarela Evertec. Cobro automatico de recibos.
+                   Pasarela Evertec. Link de pago  (90%).
+                   Pasarela Evertec. Subscripción de pago recurrentes (30%).
+                   Hogar. Ajuste en el manejo de coberturas requeridas para polizas de grupo.
+                   Silice. Vulnerabilidades de accesskey por url.
