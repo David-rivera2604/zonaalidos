@@ -112,6 +112,7 @@ namespace Architect.API.Core.Business.General
             object context = new
             {
                 Today = DateTime.Now,
+                Hoy = DateTime.Now.ToString("dd/MM/yyyy"),
                 Data = entity,
                 Company = tenantInfo,
                 CurrentUser = currentUserInfo,

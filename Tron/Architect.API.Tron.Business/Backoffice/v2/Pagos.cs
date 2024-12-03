@@ -180,53 +180,61 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         /// </summary>
         public async static Task<Payment.Integrations.Contracts.v2.PaymentInformation> SendPaymentLink(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo, string mode)
         {
+            Payment.Integrations.Contracts.v2.PaymentInformation payInfov2;
 
-            HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
-
-            client.DefaultRequestHeaders.Authorization = null;
-            string token = await Architect.Payment.Integrations.Providers.Silice.Payment.signin(client);
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-
-            Payment.Integrations.Contracts.v2.PaymentInformation payInfov2 = await CrearSesion(tokenInfo, ipAddress, userAgent, num_poliza, num_recibo);
-
-            if (payInfov2 != null && payInfov2.Status != "FAIL")
+            string provider = Core.Business.Settings.StringValue("Tenant.Settings.Payment.Provider");
+            if (provider.Equals("Silice", StringComparison.CurrentCultureIgnoreCase))
             {
+                HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
 
+                client.DefaultRequestHeaders.Authorization = null;
+                string token = await Architect.Payment.Integrations.Providers.Silice.Payment.signin(client);
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
-                payInfov2.urlReturn = payInfov2.urlWebhook;
-                payInfov2.urlReturn = "https://mapfre.cr";
+                payInfov2 = await CrearSesion(tokenInfo, ipAddress, userAgent, num_poliza, num_recibo);
 
-                payInfov2.telefonoCliente = payInfov2.telefonoCliente.Replace("-", "");
-                if (!payInfov2.telefonoCliente.StartsWith("506"))
+                if (payInfov2 != null && payInfov2.Status != "FAIL")
                 {
-                    payInfov2.telefonoCliente = "506" + payInfov2.telefonoCliente;
+
+
+                    payInfov2.urlReturn = payInfov2.urlWebhook;
+                    payInfov2.urlReturn = "https://mapfre.cr";
+
+                    payInfov2.telefonoCliente = payInfov2.telefonoCliente.Replace("-", "");
+                    if (!payInfov2.telefonoCliente.StartsWith("506"))
+                    {
+                        payInfov2.telefonoCliente = "506" + payInfov2.telefonoCliente;
+                    }
+
+                    string reciboId = await Architect.Payment.Integrations.Providers.Silice.Payment.recibo(client, payInfov2);
+
+                    switch (mode)
+                    {
+                        case "Correo":
+                            payInfov2.Reason = await Architect.Payment.Integrations.Providers.Silice.Payment.CobroSendEmail(client, reciboId, payInfov2.emailCliente);
+                            break;
+                        case "WhatsApp":
+                            payInfov2.Reason = await Architect.Payment.Integrations.Providers.Silice.Payment.CobroMensajeAutomata(client, reciboId, payInfov2.telefonoCliente);
+                            break;
+                    }
+
+                    if (payInfov2.Reason.StartsWith("Error. ", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        payInfov2.Status = "FAIL";
+
+                        Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveByRequestID(Convert.ToInt64(payInfov2.ordenId));
+                        Architect.Payment.Integrations.Payment.UpdateStatus(currentRecord.UpdateUserCode, currentRecord,
+                            new Payment.Integrations.Contracts.InformationRequest()
+                            {
+                                status = "FAIL",
+                                reason = payInfov2.Reason
+                            });
+
+                    }
                 }
-
-                string reciboId = await Architect.Payment.Integrations.Providers.Silice.Payment.recibo(client, payInfov2);
-
-                switch (mode)
-                {
-                    case "Correo":
-                        payInfov2.Reason = await Architect.Payment.Integrations.Providers.Silice.Payment.CobroSendEmail(client, reciboId, payInfov2.emailCliente);
-                        break;
-                    case "WhatsApp":
-                        payInfov2.Reason = await Architect.Payment.Integrations.Providers.Silice.Payment.CobroMensajeAutomata(client, reciboId, payInfov2.telefonoCliente);
-                        break;
-                }
-
-                if (payInfov2.Reason.StartsWith("Error. ", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    payInfov2.Status = "FAIL";
-
-                    Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveByRequestID(Convert.ToInt64(payInfov2.ordenId));
-                    Architect.Payment.Integrations.Payment.UpdateStatus(currentRecord.UpdateUserCode, currentRecord,
-                        new Payment.Integrations.Contracts.InformationRequest()
-                        {
-                            status = "FAIL",
-                            reason = payInfov2.Reason
-                        });
-
-                }
+            } else
+            {
+                payInfov2 = await Business.Backoffice.Pagos.SendPaymentLink(tokenInfo, ipAddress, userAgent, num_poliza, num_recibo);
             }
             return new Payment.Integrations.Contracts.v2.PaymentInformation() { Status = payInfov2.Status, Reason = payInfov2.Reason };
         }
@@ -242,7 +250,6 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             string prefix = Utilities.Helpers.Settings.StringValue("EMail.Test", string.Empty);
             int cardCount = Core.Business.Settings.IntegerValue("Payment.Silice.Tokenize.Cantidad.Tarjetas", 50);
             string provider = Core.Business.Settings.StringValue("Tenant.Settings.Payment.Provider");
-            provider = "Evertec";
 
             List<Contracts.Pagos.Tarjeta> pendientes = Architect.API.Tron.DataAccess.Pagos.Tarjetas.PendientesPorTokenizar(cod_cia, cardCount, cod_docum);
 

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Architect.API.Core.Business.General;
+using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
 using Architect.Utilities.Extensions;
 using Newtonsoft.Json;
 
@@ -98,15 +100,17 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Permite la creación de un sesión para realizar un pago.
         /// </summary>
-        public async static Task<Payment.Integrations.Contracts.SessionInformation> CrearSesion(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo)
+        public async static Task<Dictionary<string, object>> CrearSesionCore(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo)
         {
             int timeout = Core.Business.General.DynamicSetting.IntegerValue(tokenInfo, "Payment.Silice.Init.Timeout", 5);
             Payment.Integrations.Contracts.SessionInformation session = await Payment.Integrations.Payment.VerifySession(tokenInfo.CompanyId, num_poliza, num_recibo, timeout);
+            Contracts.Vistas.Recibo recibo = null;
+            Payment.Integrations.Contracts.PaymentInformation payInfo = null;
             if (session == null)
             {
                 int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
                 IsEmployee = tokenInfo.Roles.Contain("Empleado");
-                Contracts.Vistas.Recibo recibo = null;
+
                 if (IsEmployee)
                 {
                     tokenInfo.AgentCode = 999999;
@@ -119,7 +123,7 @@ namespace Architect.API.Tron.Business.Backoffice
                 }
                 if (recibo != null)
                 {
-                    Payment.Integrations.Contracts.PaymentInformation payInfo = new Payment.Integrations.Contracts.PaymentInformation()
+                    payInfo = new Payment.Integrations.Contracts.PaymentInformation()
                     {
                         FirstName = recibo.NOM_TERCERO,
                         LastName = recibo.APE1_TERCERO,
@@ -144,7 +148,17 @@ namespace Architect.API.Tron.Business.Backoffice
                     };
                 }
             }
-            return session;
+
+            return new Dictionary<string, object>() { { "session", session }, { "recibo", recibo }, { "payinfo", payInfo } };
+        }
+
+        /// <summary>
+        /// Permite la creación de un sesión para realizar un pago.
+        /// </summary>
+        public async static Task<Payment.Integrations.Contracts.SessionInformation> CrearSesion(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo)
+        {
+            Dictionary<string, object> sessionCore = await CrearSesionCore(tokenInfo, ipAddress, userAgent, num_poliza, num_recibo);
+            return (Payment.Integrations.Contracts.SessionInformation)sessionCore["session"];
         }
 
         /// <summary>
@@ -253,6 +267,26 @@ namespace Architect.API.Tron.Business.Backoffice
             Utilities.Log.WarningLog("Pagos.TronPayment", string.Format("codigo_respuesta={0}, mensaje_respuesta={1}, recibo={2}", tronCobro.codigo_respuesta, tronCobro.mensaje_respuesta, request.OnlinePayment.BillNumber), "payment");
             return (tronCobro.codigo_respuesta == "200");
         }
+
+        public async static Task<Payment.Integrations.Contracts.v2.PaymentInformation> SendPaymentLink(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo)
+        {
+            Dictionary<string, object> sessionCore = await CrearSesionCore(tokenInfo, ipAddress, userAgent, num_poliza, num_recibo);
+            Payment.Integrations.Contracts.SessionInformation session = (Payment.Integrations.Contracts.SessionInformation)sessionCore["session"];
+
+
+            if (session.Status == "OK")
+            {
+                Payment.Integrations.Contracts.PaymentInformation payInfo = (Payment.Integrations.Contracts.PaymentInformation)sessionCore["payinfo"];
+
+                Core.Business.General.Mail.SendByTemplate("Send_PaymentLink", tokenInfo.CompanyId, new { payinfo = payInfo, session = session } , new Dictionary<string, string> { { payInfo.Email, $"{payInfo.FirstName} {payInfo.LastName}" } });
+
+                session.Reason = $"El enlace de pago fue enviado al correo electrónico {payInfo.Email} del cliente";
+            }
+
+            return new Payment.Integrations.Contracts.v2.PaymentInformation() { Status = session.Status, Reason = session.Reason };
+
+        }
+
 
     }
 }
