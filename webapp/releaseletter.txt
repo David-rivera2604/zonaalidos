@@ -629,3 +629,7 @@
                    Pasarela Evertec. Subscripción de pago recurrentes (30%).
                    Hogar. Ajuste en el manejo de coberturas requeridas para polizas de grupo.
                    Silice. Vulnerabilidades de accesskey por url.
+1.6.86  03/12/2024 CICAC. Se agrega en el kyc la solicitud de informacion para el CICAC
+                          Se Guarda el Dato Variable en TRON para los productos que envian informacion de KYC
+                   Viajero. Ajuste en Reporte de Cotizacion,se quita deducible
+                   Hogar. En la emision se valida que para poliza grupo se pre selecccione y bloquee un tipo de plan
