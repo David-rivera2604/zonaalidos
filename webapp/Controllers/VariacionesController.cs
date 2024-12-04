@@ -11,5 +11,11 @@ namespace aliados.Controllers
             return View();
         }
 
+        public ActionResult MapfreMasOld()
+        {
+            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
+            return View();
+        }
+
     }
 }

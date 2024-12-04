@@ -1239,6 +1239,7 @@
     <Content Include="Scripts\ColoresTenant.js" />
     <Content Include="Scripts\CompraSegurosClients.js" />
     <Content Include="Scripts\Cotizacion.Coberturas.js" />
+    <Content Include="Scripts\Variaciones.MapfreMasOld.js" />
     <Content Include="Scripts\Emision.AccidentesPersonales.js" />
     <Content Include="Scripts\HogarTotal.Emision.js" />
     <Content Include="Scripts\HogarTotal.Cotizacion.js" />
@@ -1809,6 +1810,9 @@
     <Content Include="Scripts\Cotizacion.AccidentesPersonales.js" />
     <Content Include="Views\Cotizacion\AccidentesPersonales.cshtml" />
     <Content Include="Views\Emision\AccidentesPersonales.cshtml" />
+    <Content Include="Views\Variaciones\MapfreMasOld.cshtml" />
+    <Content Include="Views\Variaciones\_verificardomicilio.cshtml" />
+    <Content Include="Views\Variaciones\_tercero.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
