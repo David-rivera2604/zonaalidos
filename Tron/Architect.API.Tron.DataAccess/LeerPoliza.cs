@@ -41,6 +41,35 @@ namespace Architect.API.Tron.DataAccess
             return a2000030Instance;
         }
 
+        public static Architect.API.Tron.Contracts.Poliza.DatoFijo PolizaVariaciones(int cod_cia, string num_poliza, int num_spto, int num_apli, int num_spto_apli, IDbConnection currentConnection, bool loadChilds = false, string filter = "full")
+        {
+            Architect.API.Tron.Contracts.Poliza.DatoFijo a2000030Instance = PP_Lee_A2000030(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
+
+            if (a2000030Instance != null && loadChilds)
+            {
+                if (filter == "full")
+                {
+                    a2000030Instance.Riesgos = PP_Lee_A2000031(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
+                    a2000030Instance.DatosVariables = PP_Lee_A2000020(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
+                    a2000030Instance.Ocurrencias = PP_Lee_A2000025(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
+                    a2000030Instance.DesgloseEconomico = PP_Lee_A2100170(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
+                    a2000030Instance.Coberturas = PP_Lee_A2000040(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
+                    a2000030Instance.Terceros = PP_Lee_A2000060_ZA(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
+                    a2000030Instance.Recibos = PP_Lee_A2990700(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
+                }
+
+                if (filter == "full" || filter == "onlyresult")
+                {
+                    a2000030Instance.Calculado = new Contracts.Poliza.Calculado()
+                    {
+                        Coberturas = PP_Lee_A2000040_Result(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection),
+                        Recibos = PP_Lee_A2990700_Result(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection)
+                    };
+                }
+            }
+            return a2000030Instance;
+        }
+
         /// <summary>
         /// Datos fijos de la póliza
         /// </summary>
@@ -373,6 +402,52 @@ namespace Architect.API.Tron.DataAccess
         }
 
         /// <summary>
+        ///  Terceros de la póliza para variaciones
+        /// </summary>
+        private static List<Architect.API.Tron.Contracts.Poliza.Tercero> PP_Lee_A2000060_ZA(int cod_cia, string num_poliza, int num_spto, int num_apli, int num_spto_apli, IDbConnection currentConnection)
+        {
+            List<Architect.API.Tron.Contracts.Poliza.Tercero> result = new List<Architect.API.Tron.Contracts.Poliza.Tercero>();
+            Database.Procedure("EM_K_MAPFRE_BATCH_CONTRACT_MCR.PP_LEE_A2000060_ZA")
+                                           .AddParameter("P_COD_CIA", Architect.DataFactory.Enumerations.DbType.Int32, 22, cod_cia)
+                                           .AddParameter("P_NUM_POLIZA", Architect.DataFactory.Enumerations.DbType.String, 13, num_poliza)
+                                           .AddParameter("P_NUM_SPTO", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_spto)
+                                           .AddParameter("P_NUM_APLI", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_apli)
+                                           .AddParameter("P_NUM_SPTO_APLI", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_spto_apli)
+                                           .AddParameter("RC1", Architect.DataFactory.Enumerations.DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
+                                           .Query(currentConnection, "Tron", new Action<IDataReader>((reader) =>
+                                           {
+                                               result.Add(new Architect.API.Tron.Contracts.Poliza.Tercero()
+                                               {
+                                                   cod_cia = reader.IntegerValue("cod_cia"),
+                                                   num_poliza = reader.StringValue("num_poliza"),
+                                                   num_spto = reader.IntegerValue("num_spto"),
+                                                   num_apli = reader.IntegerValue("num_apli"),
+                                                   num_spto_apli = reader.IntegerValue("num_spto_apli"),
+                                                   num_riesgo = reader.IntegerValue("num_riesgo"),
+                                                   tip_benef = reader.StringValue("tip_benef"),
+                                                   num_secu = reader.IntegerValue("num_secu"),
+                                                   tip_docum = reader.StringValue("tip_docum"),
+                                                   cod_docum = reader.StringValue("cod_docum"),
+                                                   mca_principal = reader.StringValue("mca_principal"),
+                                                   mca_calculo = reader.StringValue("mca_calculo"),
+                                                   mca_baja = reader.StringValue("mca_baja"),
+                                                   mca_vigente = reader.StringValue("mca_vigente"),
+                                                   pct_participacion = reader.IntegerValue("pct_participacion"),
+                                                   fec_vcto_cesion = reader.DateTimeValue("fec_vcto_cesion"),
+                                                   imp_cesion = reader.IntegerValue("imp_cesion"),
+                                                   num_prestamo = reader.StringValue("num_prestamo"),
+                                                   tip_relac = reader.StringValue("tip_relac"),
+                                                   nom_benef = reader.StringValue("nom_benef"),
+                                                   nom_completo = reader.StringValue("nom_completo"),
+                                                   fec_nacimiento = reader.StringValue("fec_nacimiento"),
+                                                   tlf_numero = reader.StringValue("tlf_numero"),
+                                                   email = reader.StringValue("email")
+                                               });
+                                           }));
+            return result;
+        }
+
+        /// <summary>
         /// Recibos/cuotas de una póliza
         /// </summary>
         private static List<Architect.API.Tron.Contracts.Poliza.Recibo> PP_Lee_A2990700(int cod_cia, string num_poliza, int num_spto, int num_apli, int num_spto_apli, IDbConnection currentConnection)
@@ -538,6 +613,39 @@ namespace Architect.API.Tron.DataAccess
                                                });
                                            }));
             return result;
+        }
+
+        /// <summary>
+        /// Datos fijos de la póliza
+        /// </summary>
+        public static Architect.API.Tron.Contracts.Poliza.DatoFijo Lee_A2000030(int cod_cia, string num_poliza, int num_spto, int num_apli, int num_spto_apli)
+        {
+            Architect.API.Tron.Contracts.Poliza.DatoFijo a2000030Instance = null;
+            using (IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron"))
+            {
+                a2000030Instance = PP_Lee_A2000030(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
+
+                currentConnection?.Close();
+            }
+
+            return a2000030Instance;
+        }
+
+        /// <summary>
+        ///  Datos variables de la póliza
+        /// </summary>
+        public static List<Architect.API.Tron.Contracts.Poliza.DatoVariable> Lee_A2000020(int cod_cia, string num_poliza, int num_spto, int num_apli, int num_spto_apli)
+        {
+            List<Architect.API.Tron.Contracts.Poliza.DatoVariable> DatosVariables = null;
+
+            using (IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron"))
+            {
+                DatosVariables = PP_Lee_A2000020(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
+
+                currentConnection?.Close();
+            }
+
+            return DatosVariables;
         }
     }
 }

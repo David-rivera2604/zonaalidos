@@ -111,5 +111,20 @@ namespace Architect.API.Tron.Contracts.Poliza
         ///
         /// </summary>
         public string nom_benef { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public string fec_nacimiento { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public string tlf_numero { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public string email { get; set; }
     }
 }

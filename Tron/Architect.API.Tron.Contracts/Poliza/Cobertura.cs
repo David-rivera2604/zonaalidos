@@ -194,5 +194,10 @@ namespace Architect.API.Tron.Contracts.Poliza
         ///  Importe de los accesorios correspondiente a la liquidación por siniestro
         /// </summary>
         public double suma_aseg_baja_stro_acc { get; set; }
+
+        public string nom_cob { get; set; }
+        public double imp_total { get; set; }
+        public string nom_franquicia { get; set; }
+        public string txt_error { get; set; }
     }
 }

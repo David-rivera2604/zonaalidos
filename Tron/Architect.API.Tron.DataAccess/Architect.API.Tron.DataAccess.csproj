@@ -107,6 +107,9 @@
     <Compile Include="Ramo\G2000180.cs" />
     <Compile Include="Siniestro\Purdy\Siniestro.cs" />
     <Compile Include="Siniestro\Purdy\SiniestroPurdy.cs" />
+    <Compile Include="Variaciones\S2000020.cs" />
+    <Compile Include="Variaciones\S2000030.cs" />
+    <Compile Include="Variaciones\VariacionIssue.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Kernel\Architect.DataFactory\Architect.DataFactory.csproj">
