@@ -633,3 +633,5 @@
                           Se Guarda el Dato Variable en TRON para los productos que envian informacion de KYC
                    Viajero. Ajuste en Reporte de Cotizacion,se quita deducible
                    Hogar. En la emision se valida que para poliza grupo se pre selecccione y bloquee un tipo de plan
+1.6.87  04/12/2024 Se agrega Variaciones y cancelaciones para el ramo 302 y tambien se implementa la tabla de consultas de poliza para variaciones con el id 396.
+
