@@ -872,14 +872,15 @@ app.EmisionMapfreMas = (function () {
                 terceroserrors = true;
             }
             if (bene.length > 0) {
-                if (bene.reduce((total, item) => total + item.porcentaje, 0) != 100) {
+                const totalPorcentaje = bene.reduce((total, item) => total + item.porcentaje, 0);
+                if (Math.round(totalPorcentaje) !== 100) {
                     message += ', El total del porcentaje de participación para los beneficiarios debe ser el 100%';
                     terceroserrors = true;
                 }
             }
             const hayDuplicados = tieneTercerosDuplicados(terceros);
             if (hayDuplicados) {
-                message += ', No se puede duplicar los tipos de terceros: Tomador, Asegurado, Conductor y Pagador';
+                message += ', No se puede duplicar los tipos de terceros: Tomador, Asegurado, Conductor, Pagador y Beneficiario';
                 terceroserrors = true;
             }
             else {
@@ -945,14 +946,13 @@ app.EmisionMapfreMas = (function () {
     function tieneTercerosDuplicados(terceros) {
         const ids = new Set();
         for (const tercero of terceros) {
-            if (tercero.tipodetercero !== "6") {
-                if (ids.has(tercero.tipodetercero)) {
+                const condicion = `${tercero.tipodetercero}-${tercero.DocumentNumber}`;
+                if (ids.has(condicion)) {
                     return true;
                 } else {
-                    ids.add(tercero.tipodetercero);
+                    ids.add(condicion);
                 }
-            }
-
+            
         }
         return false;
     }
