@@ -53,6 +53,8 @@
     <Compile Include="Contracts\PaymentSettings.cs" />
     <Compile Include="Contracts\SessionInformation.cs" />
     <Compile Include="Providers\Placetopay\Contracts\Requests\Collect.cs" />
+    <Compile Include="Providers\Placetopay\Contracts\Requests\InstrumentValue.cs" />
+    <Compile Include="Providers\Placetopay\Contracts\Requests\subscription.cs" />
     <Compile Include="Providers\Placetopay\Contracts\Requests\PaymentLink.cs" />
     <Compile Include="Providers\Placetopay\Contracts\Responses\Collect.cs" />
     <Compile Include="Providers\Placetopay\Contracts\Responses\PaymentLink.cs" />

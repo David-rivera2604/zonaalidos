@@ -66,6 +66,11 @@ namespace Architect.Payment.Integrations.Contracts
         public string receipt { get; set; }
 
         /// <summary>
+        /// Indica si el cliente indico que queria subcribir su tarjeta para pagos futuros.
+        /// </summary>
+        public bool subscribe { get; set; }        
+
+        /// <summary>
         /// Fecha y hora en que se genera el estado de pago.
         /// </summary>
         public string date { get; set; }
