@@ -183,7 +183,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             Payment.Integrations.Contracts.v2.PaymentInformation payInfov2;
 
             string provider = Core.Business.Settings.StringValue("Tenant.Settings.Payment.Provider");
-            if (provider.Equals("Silice", StringComparison.CurrentCultureIgnoreCase))
+            if (provider.Equals("Silice", StringComparison.CurrentCultureIgnoreCase) || mode.Equals("WhatsApp", StringComparison.CurrentCultureIgnoreCase) )
             {
                 HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
 
@@ -232,7 +232,8 @@ namespace Architect.API.Tron.Business.Backoffice.v2
 
                     }
                 }
-            } else
+            }
+            else
             {
                 payInfov2 = await Business.Backoffice.Pagos.SendPaymentLink(tokenInfo, ipAddress, userAgent, num_poliza, num_recibo);
             }
@@ -292,23 +293,25 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 }
             }
 
-
-            HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
-            client.Timeout = TimeSpan.FromSeconds(10);
-            client.DefaultRequestHeaders.Authorization = null;
-
-
-            List<DatosTarjeta> result = Architect.Payment.Integrations.Tokenize.Request(provider, client, datosTajetas).Result;
-
-            foreach (DatosTarjeta tarjeta in result)
+            if (datosTajetas.Count > 0)
             {
-                if (tarjeta.token != string.Empty)
+                HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
+                client.Timeout = TimeSpan.FromSeconds(10);
+                client.DefaultRequestHeaders.Authorization = null;
+
+
+                List<DatosTarjeta> result = Architect.Payment.Integrations.Tokenize.Request(provider, client, datosTajetas).Result;
+
+                foreach (DatosTarjeta tarjeta in result)
                 {
-                    DataAccess.A1001331.Update(cod_cia, tarjeta.tip_docum, tarjeta.cod_docum, tarjeta.card, null);
-                    DataAccess.Pagos.Num_Tarjeta_mcr.Update(cod_cia, tarjeta.tip_docum, tarjeta.cod_docum, tarjeta.card, null);
+                    if (tarjeta.token != string.Empty)
+                    {
+                        DataAccess.A1001331.Update(cod_cia, tarjeta.tip_docum, tarjeta.cod_docum, tarjeta.card, null);
+                        DataAccess.Pagos.Num_Tarjeta_mcr.Update(cod_cia, tarjeta.tip_docum, tarjeta.cod_docum, tarjeta.card, null);
+                    }
+                    DataAccess.Pagos.Tarjetas.CreateBoveda(tarjeta.tip_docum, tarjeta.cod_docum, tarjeta.card, tarjeta.token, tarjeta.clientId, tarjeta.status, tarjeta.reason);
+                    recordCount++;
                 }
-                DataAccess.Pagos.Tarjetas.CreateBoveda(tarjeta.tip_docum, tarjeta.cod_docum, tarjeta.card, tarjeta.token, tarjeta.clientId, tarjeta.status, tarjeta.reason);
-                recordCount++;
             }
             return recordCount;
         }
