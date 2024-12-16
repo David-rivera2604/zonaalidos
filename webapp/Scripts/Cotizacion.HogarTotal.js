@@ -743,7 +743,7 @@ app.HogarTotal = (function () {
             if (!localStorage.getItem('Roles').includes('ESPH')) {
                 Coberturas_ComportamientoDependencia('#sAObjetosvaliosos', false);
             }
-            if (poliza_grupo == "2012410199312") {
+            if (poliza_grupo == "2012410199312" || poliza_grupo == "2012410199320") {
                 Coberturas_ComportamientoDependencia('#sAObjetosvaliosos', true);
             }
             Coberturas_ComportamientoDependencia('#sAMobiliario', false);

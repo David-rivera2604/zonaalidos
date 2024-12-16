@@ -635,4 +635,6 @@
                    Hogar. En la emision se valida que para poliza grupo se pre selecccione y bloquee un tipo de plan
 1.6.87  04/12/2024 Se agrega Variaciones y cancelaciones para el ramo 302 y tambien se implementa la tabla de consultas de poliza para variaciones con el id 396.
 1.6.88  16/12/2024 Multirriesgo. Se agrega un funcionalidad para manejo de coberturas por contrato.
+                   Variaciones. Se agrega popup para registrar coberturas - primera versión.
+
 
