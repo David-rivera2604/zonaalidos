@@ -1,4 +1,5 @@
-﻿using Architect.Utilities.Extensions;
+﻿using Architect.API.Tron.Contracts.Comun;
+using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +40,8 @@ namespace Architect.API.Tron.Business.Variaciones
                     nombre = item.nom_cob,
                     capital = item.suma_aseg,
                     primatotal = item.imp_total,
-                    deducible = item.nom_franquicia
+                    deducible = item.deducible,
+                    riesgo = item.num_riesgo
                 });
                 switch (item.cod_cob)
                 {
@@ -187,6 +189,7 @@ namespace Architect.API.Tron.Business.Variaciones
                         break;
                     case "DED_AUTO_CYV":
                         quoteInfo.DED_AUTO_CYV = Convert.ToInt32(item.val_campo);
+                        quoteInfo.DED_AUTO_CYV_Desc = item.txt_campo;
                         break;
                     case "MCA_AUTO_RAD":
                         break;
@@ -195,6 +198,7 @@ namespace Architect.API.Tron.Business.Variaciones
                         break;
                     case "DED_AUTO_RAD":
                         quoteInfo.DED_AUTO_RAD = Convert.ToInt32(item.val_campo);
+                        quoteInfo.DED_AUTO_RAD_Desc = item.txt_campo;
                         break;
                     case "MCA_AUTO_ROB":
                         break;
@@ -203,6 +207,7 @@ namespace Architect.API.Tron.Business.Variaciones
                         break;
                     case "DED_AUTO_ROB":
                         quoteInfo.DED_AUTO_ROB = Convert.ToInt32(item.val_campo);
+                        quoteInfo.DED_AUTO_ROB_Desc = item.txt_campo;
                         break;
                     case "IMP_AUTO_EQESP":
                         quoteInfo.IMP_AUTO_EQESP = Convert.ToInt32(item.val_campo);
@@ -303,7 +308,7 @@ namespace Architect.API.Tron.Business.Variaciones
 
         internal static Contracts.Variaciones.MapfreMas Quote(Contracts.Variaciones.MapfreMas quoteInfo, Architect.API.Tron.Contracts.Poliza.DatoFijo tronQuoteInfo)
         {
-
+            int riesgo = 0;
             if (tronQuoteInfo.Coberturas != null)
             {
                 if (tronQuoteInfo.Coberturas?.Count == 1)
@@ -322,12 +327,15 @@ namespace Architect.API.Tron.Business.Variaciones
                             itemQuote.nombre = item.nom_cob;
                             itemQuote.capital = item.suma_aseg;
                             itemQuote.primatotal = item.imp_total;
-                            itemQuote.deducible = item.nom_franquicia;
+                            itemQuote.deducible = item.deducible;
+                            itemQuote.riesgo = item.num_riesgo;
                             itemQuote.error = item.txt_error;
                             if (quoteInfo.presupuesto.IsEmpty())
                             {
                                 quoteInfo.presupuesto = item.num_poliza;
                             }
+
+                            riesgo = item.num_riesgo;
                             break;
                         }
                         else if (!itemQuote.seleccionado)
@@ -417,7 +425,52 @@ namespace Architect.API.Tron.Business.Variaciones
                 Terceros(quoteInfo, tronQuoteInfo);
             }
 
+            quoteInfo.AvailableCoverages = getAvailableCoverages(quoteInfo.num_poliza, riesgo);
+
             return quoteInfo;
+        }
+
+        private static List<Cobertura> getAvailableCoverages(string num_poliza, int riesgo)
+        {
+            List<Cobertura> coberturas = new List<Cobertura>();
+
+            coberturas.Add(new Cobertura
+            {
+                codigo = 1060,
+                nombre = "ASISTENCIAS",
+                capital = 0,
+                primatotal = 0,
+                deducible = "",
+                riesgo = riesgo,
+                requerida = false,
+                seleccionado = true
+            });
+
+            coberturas.Add(new Cobertura
+            {
+                codigo = 3010,
+                nombre = "COBL - AYUDA EN CAMINO",
+                capital = 0,
+                primatotal = 0,
+                deducible = "",
+                riesgo = riesgo,
+                requerida = false,
+                seleccionado = true
+            });
+
+            coberturas.Add(new Cobertura
+            {
+                codigo = 3016,
+                nombre = "TRASLADO AL AEROPUERTO",
+                capital = 0,
+                primatotal = 0,
+                deducible = "",
+                riesgo = riesgo,
+                requerida = false,
+                seleccionado = true
+            });
+
+            return coberturas;
         }
 
         internal static List<Contracts.Comun.tercero> Terceros(Contracts.Variaciones.MapfreMas quoteInfo, Contracts.Poliza.DatoFijo datosFijos)

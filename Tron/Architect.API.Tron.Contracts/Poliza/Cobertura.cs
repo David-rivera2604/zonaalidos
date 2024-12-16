@@ -1,3 +1,5 @@
+using System;
+
 namespace Architect.API.Tron.Contracts.Poliza
 {
     /// <summary>
@@ -199,5 +201,9 @@ namespace Architect.API.Tron.Contracts.Poliza
         public double imp_total { get; set; }
         public string nom_franquicia { get; set; }
         public string txt_error { get; set; }
+        public string tip_vehi { get; set; }
+        public string cod_modalidad { get; set; }
+        public string deducible { get; set; }
+        public DateTime fec_validez { get; set; }
     }
 }

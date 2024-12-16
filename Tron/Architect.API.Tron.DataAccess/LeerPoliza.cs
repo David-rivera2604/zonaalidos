@@ -53,7 +53,8 @@ namespace Architect.API.Tron.DataAccess
                     a2000030Instance.DatosVariables = PP_Lee_A2000020(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
                     a2000030Instance.Ocurrencias = PP_Lee_A2000025(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
                     a2000030Instance.DesgloseEconomico = PP_Lee_A2100170(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
-                    a2000030Instance.Coberturas = PP_Lee_A2000040(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
+                    a2000030Instance.Coberturas = PP_Lee_A2000040_ZA(cod_cia, num_poliza, currentConnection);
+                    //a2000030Instance.Coberturas = PP_Lee_A2000040(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
                     a2000030Instance.Terceros = PP_Lee_A2000060_ZA(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
                     a2000030Instance.Recibos = PP_Lee_A2990700(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
                 }
@@ -355,6 +356,70 @@ namespace Architect.API.Tron.DataAccess
                         val_franquicia_max = reader.IntegerValue("val_franquicia_max"),
                         cod_ramo = reader.IntegerValue("cod_ramo"),
                         suma_aseg_baja_stro_acc = reader.IntegerValue("suma_aseg_baja_stro_acc")
+                    });
+                }));
+            return result;
+        }
+
+        /// <summary>
+        ///  Coberturas de la póliza
+        /// </summary>
+        private static List<Architect.API.Tron.Contracts.Poliza.Cobertura> PP_Lee_A2000040_ZA(int cod_cia, string num_poliza, IDbConnection currentConnection)
+        {
+            List<Architect.API.Tron.Contracts.Poliza.Cobertura> result = new List<Architect.API.Tron.Contracts.Poliza.Cobertura>();
+            Database.Procedure("EM_K_MAPFRE_BATCH_CONTRACT_MCR.PP_LEE_A2000040_ZA")
+                .AddParameter("P_COD_CIA", Architect.DataFactory.Enumerations.DbType.Int32, 22, cod_cia)
+                .AddParameter("P_NUM_POLIZA", Architect.DataFactory.Enumerations.DbType.String, 13, num_poliza)
+                .AddParameter("RC1", Architect.DataFactory.Enumerations.DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
+                .Query(currentConnection, "Tron", new Action<IDataReader>((reader) =>
+                {
+                    result.Add(new Architect.API.Tron.Contracts.Poliza.Cobertura()
+                    {
+                        cod_cia = reader.IntegerValue("cod_cia"),
+                        num_poliza = reader.StringValue("num_poliza"),
+                        num_spto = reader.IntegerValue("num_spto"),
+                        num_apli = reader.IntegerValue("num_apli"),
+                        num_spto_apli = reader.IntegerValue("num_spto_apli"),
+                        num_riesgo = reader.IntegerValue("num_riesgo"),
+                        cod_ramo = reader.IntegerValue("cod_ramo"),
+                        cod_cob = reader.IntegerValue("cod_cob"),
+                        num_secu = reader.IntegerValue("num_secu"),
+                        nom_cob = reader.StringValue("nombre"),
+                        suma_aseg = reader.DoubleValue("capital"),
+                        imp_total = reader.DoubleValue("prima_total"),
+                        cod_franquicia = reader.IntegerValue("cod_franquicia"),
+                        tip_vehi = reader.StringValue("tip_vehi"),
+                        cod_modalidad = reader.StringValue("cod_modalidad"),
+                        deducible = reader.StringValue("deducible"),
+                        fec_validez = reader.DateTimeValue("fec_validez")
+
+                        //num_periodo = reader.IntegerValue("num_periodo"),
+                        //imp_unidad = reader.IntegerValue("imp_unidad"),
+                        //pct_participacion = reader.IntegerValue("pct_participacion"),
+                        //cod_mon_capital = reader.IntegerValue("cod_mon_capital"),
+                        //suma_aseg_baja_stro = reader.IntegerValue("suma_aseg_baja_stro"),
+                        //suma_aseg_spto = reader.DoubleValue("suma_aseg_spto"),
+                        //tasa_cob = reader.DoubleValue("tasa_cob"),
+                        //cod_limite = reader.IntegerValue("cod_limite"),
+                        //suma_aseg_sup = reader.IntegerValue("suma_aseg_sup"),
+                        //mca_baja_riesgo = reader.StringValue("mca_baja_riesgo"),
+                        //mca_vigente = reader.StringValue("mca_vigente"),
+                        //mca_vigente_apli = reader.StringValue("mca_vigente_apli"),
+                        //mca_baja_cob = reader.StringValue("mca_baja_cob"),
+                        //cod_secc_reas = reader.IntegerValue("cod_secc_reas"),
+                        //imp_agr = reader.IntegerValue("imp_agr"),
+                        //imp_agr_rel = reader.IntegerValue("imp_agr_rel"),
+                        //imp_agr_spto = reader.IntegerValue("imp_agr_spto"),
+                        //imp_agr_rel_spto = reader.IntegerValue("imp_agr_rel_spto"),
+                        //mes_base_regulariza = reader.IntegerValue("mes_base_regulariza"),
+                        //anio_base_regulariza = reader.IntegerValue("anio_base_regulariza"),
+                        //pct_enfermedad = reader.IntegerValue("pct_enfermedad"),
+                        //duracion_profesion = reader.IntegerValue("duracion_profesion"),
+                        //pct_profesion = reader.IntegerValue("pct_profesion"),
+                        //duracion_enfermedad = reader.IntegerValue("duracion_enfermedad"),
+                        //val_franquicia_min = reader.IntegerValue("val_franquicia_min"),
+                        //val_franquicia_max = reader.IntegerValue("val_franquicia_max"),
+                        //suma_aseg_baja_stro_acc = reader.IntegerValue("suma_aseg_baja_stro_acc")
                     });
                 }));
             return result;
