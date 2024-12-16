@@ -33,14 +33,14 @@ namespace Architect.API.Tron.DataAccess.Variaciones
                             {
                                 case "rc1":
 
-                                    variacionIssueResult.ProcessResult = new VariacionIssueProcessResult()
+                                    variacionIssueResult.ProcessResult.Add(new VariacionIssueProcessResult()
                                     {
                                         num_poliza = reader.StringValue("num_presupuesto"),
                                         num_riesgo = reader.IntegerValue("num_riesgo"),
                                         num_poliza_definitivo = reader.StringValue("num_poliza_definitivo"),
                                         txt_error = reader.StringValue("txt_error"),
                                         txt_ruta_error = reader.StringValue("txt_ruta_error")
-                                    };
+                                    });
 
                                     break;
                                 case "rc2":
@@ -75,6 +75,14 @@ namespace Architect.API.Tron.DataAccess.Variaciones
                             }
                         }));
                 currentConnection.Close();
+            }
+
+            if(variacionIssueResult.ProcessResult?.Count > 0)
+            {
+                variacionIssueResult.ProcessResult = variacionIssueResult.ProcessResult
+                                                                         .GroupBy(r => r.txt_error)
+                                                                         .Select(g => g.First())
+                                                                         .ToList();
             }
 
             return variacionIssueResult;

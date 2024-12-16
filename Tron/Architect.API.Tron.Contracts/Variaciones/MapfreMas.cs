@@ -95,6 +95,15 @@ namespace Architect.API.Tron.Contracts.Variaciones
         [DataMember(), JsonProperty()] public string MCA_FEC_EFEC_SYS { get; set; } = "N";
         [DataMember(), JsonProperty()] public List<Receipt> Recibos { get; set; }
         [DataMember(), JsonProperty()] public string Mca_Autoriza_CT { get; set; }
+        [DataMember(), JsonProperty()] public string DED_AUTO_CYV_Desc { get; set; }
+        [DataMember(), JsonProperty()] public string DED_AUTO_ROB_Desc { get; set; }
+        [DataMember(), JsonProperty()] public string DED_AUTO_RAD_Desc { get; set; }
+
+        /// <summary>
+        /// Coberturas
+        /// </summary>
+        [DataMember(), JsonProperty()] public List<Comun.Cobertura> AvailableCoverages { get; set; }
+        [DataMember(), JsonProperty()] public List<Comun.Cobertura> NewCoverages { get; set; }
 
     }
 

@@ -135,12 +135,50 @@ namespace Architect.API.Tron.Business.Variaciones
                     }
                 }
 
+                if(quoteInfo.NewCoverages?.Count> 0)
+                {
+                    Architect.API.Tron.Contracts.Variaciones.s2000040 s2000040Instance = new Contracts.Variaciones.s2000040();
+
+                    foreach(var item in quoteInfo.NewCoverages)
+                    {
+                        s2000040Instance = new s2000040
+                        {
+                            Fec_Tratamiento = Fec_Tratamiento,
+                            Tip_Mvto_Batch = Tip_mvto_batch,
+                            Cod_Cia = quoteInfo.cod_cia,
+                            Num_Poliza = quoteInfo.num_poliza,
+                            Num_Riesgo = item.riesgo,
+                            Cod_Cob = item.codigo,
+                            Mca_Seleccion = "*",
+                            Cod_Limite = null,
+                            Suma_Aseg = 0,
+                            Cod_Franquicia = null,
+                            Tasa_Cob = null
+                        };
+
+                        Architect.API.Tron.DataAccess.Variaciones.S2000040.Create(s2000040Instance);
+                    }
+
+                }
+
                 result = DataAccess.Variaciones.VariacionIssue.Issue(quoteInfo.cod_cia, quoteInfo.num_poliza, Fec_Tratamiento, Tip_mvto_batch, "N", quoteInfo.MCA_FEC_EFEC_SYS);
 
-                if (!string.IsNullOrEmpty(result.ProcessResult.txt_error))
+                int countError = 0;
+                if (result.ProcessResult?.Count > 0)
+                {
+                    foreach (var item in result.ProcessResult)
+                    {
+                        if (!string.IsNullOrEmpty(item.txt_error))
+                        {
+                            countError = countError + 1;
+                            Utilities.Log.ErrorLog("Variacion: " + quoteInfo.num_poliza, item.txt_error, "Variacion.Issue.MapfreMas");
+                        }
+                    }
+                }
+
+                if(countError > 0)
                 {
                     result.McaError = "S";
-                    Utilities.Log.ErrorLog("Variacion: " + result.ProcessResult.num_poliza, result.ProcessResult.txt_error, "Variacion.Issue.MapfreMas");
                 }
                 else
                 {
@@ -150,8 +188,12 @@ namespace Architect.API.Tron.Business.Variaciones
             catch (Exception ex)
             {
                 result.McaError = "S";
-                result.ProcessResult.txt_error = ex.Message;
-                Utilities.Log.ErrorLog("Cancelacion: " + result.ProcessResult.num_poliza, ex.Message, "Variacion.Cancelation.MapfreMas");
+                result.ProcessResult.Add(new VariacionIssueProcessResult
+                {
+                    num_poliza = quoteInfo.num_poliza,
+                    txt_error = ex.Message
+                });
+                Utilities.Log.ErrorLog("Cancelacion: " + quoteInfo.num_poliza, ex.Message, "Variacion.Cancelation.MapfreMas");
             }
             return result;
         }
@@ -189,10 +231,16 @@ namespace Architect.API.Tron.Business.Variaciones
             {
                 result = DataAccess.Variaciones.VariacionIssue.Issue(quoteInfo.cod_cia, quoteInfo.num_poliza, Fec_Tratamiento, Tip_mvto_batch, "S", quoteInfo.MCA_FEC_EFEC_SYS);
 
-                if (!string.IsNullOrEmpty(result.ProcessResult?.txt_error))
+                if (result.ProcessResult?.Count > 0)
                 {
-                    result.McaError = "S";
-                    Utilities.Log.ErrorLog("Cancelacion: " + result.ProcessResult.num_poliza, result.ProcessResult.txt_error, "Variacion.Cancelation.MapfreMas");
+                    foreach (var item in result.ProcessResult)
+                    {
+                        if (!string.IsNullOrEmpty(item.txt_error))
+                        {
+                            result.McaError = "S";
+                            Utilities.Log.ErrorLog("Cancelation: " + quoteInfo.num_poliza, item.txt_error, "Variacion.Cancelation.MapfreMas");
+                        }
+                    }
                 }
                 else
                 {
@@ -202,8 +250,12 @@ namespace Architect.API.Tron.Business.Variaciones
             catch (Exception ex)
             {
                 result.McaError = "S";
-                result.ProcessResult.txt_error = ex.Message;
-                Utilities.Log.ErrorLog("Cancelacion: " + result.ProcessResult.num_poliza, ex.Message, "Variacion.Cancelation.MapfreMas");
+                result.ProcessResult.Add(new VariacionIssueProcessResult
+                {
+                    num_poliza = quoteInfo.num_poliza,
+                    txt_error = ex.Message
+                });
+                Utilities.Log.ErrorLog("Cancelacion: " + quoteInfo.num_poliza, ex.Message, "Variacion.Cancelation.MapfreMas");
             }
 
             return result;
@@ -223,19 +275,31 @@ namespace Architect.API.Tron.Business.Variaciones
                 if (!resultCT)
                 {
                     result.McaError = "S";
-                    result.ProcessResult.txt_error = "Error al autorizar el CT";
-                    Utilities.Log.ErrorLog("Autorizacion-Rechazo CT: " + num_poliza, result.ProcessResult.txt_error, "Variacion.Autorizacion-Rechazo.MapfreMas");
+                    result.ProcessResult.Add(new VariacionIssueProcessResult
+                    {
+                        num_poliza = num_poliza,
+                        txt_error = "Error al autorizar el CT"
+                    });
+                    Utilities.Log.ErrorLog("Autorizacion-Rechazo CT: " + num_poliza, "Error al autorizar el CT", "Variacion.Autorizacion-Rechazo.MapfreMas");
                 }
                 else
                 {
                     result.McaError = "N";
-                    result.ProcessResult.txt_error = "Se autorizó correctamente el CT";
+                    result.ProcessResult.Add(new VariacionIssueProcessResult
+                    {
+                        num_poliza = num_poliza,
+                        txt_error = "Se autorizó correctamente el CT"
+                    });
                 }
             }
             catch (Exception ex)
             {
                 result.McaError = "S";
-                result.ProcessResult.txt_error = "Por favor intente nuevamente y en caso de persistir el problema contacte el personal de soporte";
+                result.ProcessResult.Add(new VariacionIssueProcessResult
+                {
+                    num_poliza = num_poliza,
+                    txt_error = "Por favor intente nuevamente y en caso de persistir el problema contacte el personal de soporte"
+                });
                 Utilities.Log.ErrorLog("Autorizacion-Rechazo CT: " + num_poliza, ex.Message, "Variacion.Autorizacion-Rechazo.MapfreMas");
             }
 

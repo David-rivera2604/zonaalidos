@@ -1814,6 +1814,7 @@
     <Content Include="Views\Variaciones\MapfreMasOld.cshtml" />
     <Content Include="Views\Variaciones\_verificardomicilio.cshtml" />
     <Content Include="Views\Variaciones\_tercero.cshtml" />
+    <Content Include="Views\Variaciones\_cobertura.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

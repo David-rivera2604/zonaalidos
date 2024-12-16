@@ -229,9 +229,9 @@ app.EmisionMapfreMas = (function () {
                 app.ui.LookupLoad('IMP_AUTO_MECA', settingData.IMP_AUTO_MECA);
                 app.ui.LookupLoad('IMP_AUTO_CRI', settingData.IMP_AUTO_CRI);
 
-                app.ui.LookupLoad('DED_AUTO_CYV', settingData.DED_AUTO_CYV);
-                app.ui.LookupLoad('DED_AUTO_RAD', settingData.DED_AUTO_RAD);
-                app.ui.LookupLoad('DED_AUTO_ROB', settingData.DED_AUTO_ROB);
+                app.ui.LookupLoad('DED_AUTO_CYV', app.EmisionMapfreMas.findOrAddRecordCombobox(settingData.DED_AUTO_CYV, param.DED_AUTO_CYV, param.DED_AUTO_CYV_Desc));
+                app.ui.LookupLoad('DED_AUTO_RAD', app.EmisionMapfreMas.findOrAddRecordCombobox(settingData.DED_AUTO_RAD, param.DED_AUTO_RAD, param.DED_AUTO_RAD_Desc));
+                app.ui.LookupLoad('DED_AUTO_ROB', app.EmisionMapfreMas.findOrAddRecordCombobox(settingData.DED_AUTO_ROB, param.DED_AUTO_ROB, param.DED_AUTO_ROB_Desc));
                 app.ui.LookupLoad('DED_AUTO_EQESP', settingData.DED_AUTO_EQESP);
                 app.ui.LookupLoad('DED_AUTO_CRI', settingData.DED_AUTO_CRI);
 
@@ -265,6 +265,29 @@ app.EmisionMapfreMas = (function () {
         data.DED_AUTO_RAD = app.ui.GetDropDownNumericValue('#DED_AUTO_RAD');
 
         data.NUM_MATRICULA = data.NUM_MATRICULA.replace(/[^a-zA-Z0-9]/g, "");
+
+        const Coverages = $('#coberturasTbl').bootstrapTable('getData').filter(item => item.added === true);
+
+        let NewCoverages;
+        if (Coverages) {
+            NewCoverages = Coverages.map(row => {
+                let addrow = {
+                    capital: row.capital,
+                    codigo: row.codigo,
+                    deducible: row.deducible,
+                    nombre: row.nombre,
+                    primatotal: row.primatotal,
+                    requerida: row.requerida,
+                    riesgo: row.riesgo,
+                    seleccionado: row.seleccionado
+                };
+                return addrow;
+                //NewCoverages.push(addrow);
+            })
+        }
+
+        data.NewCoverages = NewCoverages;
+
         setupData = data;
         return data;
     }
@@ -345,6 +368,7 @@ app.EmisionMapfreMas = (function () {
         TipoTercero_Filtro();
         mca_cuotas_gratis = data.mc_cuotas_gratis;
 
+        $('#coberturasNewTbl').bootstrapTable('load', data.AvailableCoverages);
     }
 
     function MapObjectToInput(data) {
@@ -615,7 +639,8 @@ app.EmisionMapfreMas = (function () {
                             toastr.info("Se generó correctamente la variación", "Variación", { timeOut: 9000, closeButton: true, progressBar: true });
                         }
                         else {
-                            toastr.error(data.ProcessResult.txt_error, "Error el emitir la variación", { timeOut: 9000, closeButton: true, progressBar: true });
+                            app.EmisionMapfreMas.custonMessageResponse(data, "Error el emitir la variación");
+                            /*toastr.error(data.ProcessResult.txt_error, "Error el emitir la variación", { timeOut: 9000, closeButton: true, progressBar: true });*/
                         }
 
                     }).always(function () {
@@ -654,7 +679,8 @@ app.EmisionMapfreMas = (function () {
                             toastr.info("Se generó correctamente la cancelación", "Cancelación", { timeOut: 9000, closeButton: true, progressBar: true });
                         }
                         else {
-                            toastr.error(data.ProcessResult.txt_error, "Error el emitir la cancelación", { timeOut: 9000, closeButton: true, progressBar: true });
+                            app.EmisionMapfreMas.custonMessageResponse(data, "Error el emitir la cancelación");
+                            //toastr.error(data.ProcessResult.txt_error, "Error el emitir la cancelación", { timeOut: 9000, closeButton: true, progressBar: true });
                         }
 
                     }).always(function () {
@@ -694,7 +720,8 @@ app.EmisionMapfreMas = (function () {
                             toastr.info("Se autorizó el CT", "Autorización", { timeOut: 9000, closeButton: true, progressBar: true });
                         }
                         else {
-                            toastr.error(data.ProcessResult.txt_error, "Error al autorizar el CT", { timeOut: 9000, closeButton: true, progressBar: true });
+                            app.EmisionMapfreMas.custonMessageResponse(data, "Error al autorizar el CT");
+                            //toastr.error(data.ProcessResult.txt_error, "Error al autorizar el CT", { timeOut: 9000, closeButton: true, progressBar: true });
                         }
 
                     }).always(function () {
@@ -735,7 +762,8 @@ app.EmisionMapfreMas = (function () {
                             toastr.info("Se rechazo el CT", "Autorización", { timeOut: 9000, closeButton: true, progressBar: true });
                         }
                         else {
-                            toastr.error(data.ProcessResult.txt_error, "Error al rechazar el CT", { timeOut: 9000, closeButton: true, progressBar: true });
+                            app.EmisionMapfreMas.custonMessageResponse(data, "Error al rechazar el CT");
+                            //toastr.error(data.ProcessResult.txt_error, "Error al rechazar el CT", { timeOut: 9000, closeButton: true, progressBar: true });
                         }
 
                     }).always(function () {
@@ -901,7 +929,7 @@ app.EmisionMapfreMas = (function () {
     function coberturas_table_setup() {
 
         $('#coberturasTbl').bootstrapTable({
-            uniqueId: 'coberturasId',
+            uniqueId: 'codigo',
             classes: 'table table-bordered table-hover table-index table-in-form',
             pagination: false,
             smartDisplay: true,
@@ -951,12 +979,159 @@ app.EmisionMapfreMas = (function () {
                     sortable: false,
                     halign: 'center',
                     align: 'left',
-                    formatter: 'app.ui.DecimalFormatter',
+                    formatter: 'app.ui.StringFormatter',
                     visible: true
-                }]
+                }, {
+                    field: 'mcanew',
+                    title: 'McaNuevo',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.IntegerFormatter',
+                    visible: false
+                },
+                {
+                    field: 'added',
+                    title: 'Agregado',
+                    halign: 'center',
+                    align: 'center',
+                    formatter: function (value) {
+                        return value
+                            ? '<i class="fa fa-check-circle text-success"></i>'
+                            : '<i class="fa fa-check-circle text-muted"></i>';
+                    }
+                },
+                {
+                    field: 'actions',
+                    title: 'Acciones',
+                    class: 'd-none d-sm-table-cell',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    events: 'coberturasTbl_Events',
+                    formatter: function (_, row) {
+                        return (row.added) ? '<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar los datos de la cobertura de la fila"> <i class="fa fa-close"></i> </button>' :'';
+                    },
+                    cellStyle: function (value, row, index) {
+                        return {
+                            css: {
+                                'white-space': 'nowrap',
+                                'vertical-align': 'top'
+                            }
+                        }
+                    }
+                }
+            ]
         });
 
-        $('#coberturasTbl').bootstrapTable('filterBy', { seleccionado: [true] })
+        $('#coberturasTbl').bootstrapTable('filterBy', { seleccionado: [true] });
+    }
+
+    function coberturasNew_table_setup() {
+
+        $('#coberturasNewTbl').bootstrapTable({
+            uniqueId: 'coberturasnewId',
+            classes: 'table table-bordered table-hover table-index table-in-form',
+            pagination: false,
+            smartDisplay: true,
+            detailView: false,
+            detailFormatter: 'app.ui.GenericDetailFormatter',
+            columns: [
+                {
+                    field: 'codigo',
+                    title: 'Código',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.IntegerFormatter',
+                    visible: true
+                }, {
+                    field: 'nombre',
+                    title: 'Nombre',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
+                    field: 'capital',
+                    title: 'Capital',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalWithZeroFormatter',
+                    visible: false
+                }, {
+                    field: 'primatotal',
+                    title: 'Prima total',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalWithZeroFormatter',
+                    visible: false
+                }, {
+                    field: 'deducible',
+                    title: 'Deducible',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: false
+                }, {
+                    field: 'riesgo',
+                    title: 'Riesgo',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.IntegerFormatter',
+                    visible: false
+                }, {
+                    field: 'seleccionar',
+                    title: 'Seleccione',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    checkbox: true,
+                    visible: true
+                }
+                //{
+                //    field: 'Actions',
+                //    title: 'Acciones',
+                //    class: 'd-none d-sm-table-cell',
+                //    titleTooltip: 'Acciones disponibles para un visualizations',
+                //    sortable: false,
+                //    halign: 'center',
+                //    align: 'center',
+                //    width: 10,
+                //    widthUnit: "%",
+                //    visible: true,
+                //    events: 'tercerosTbl_Events',
+                //    formatter: function (value, row, index, field) {
+                //        let attribute = row.NoEditable ? " disabled" : "";
+                //        return '<button type="button"' + attribute + ' class="btn btn-sm btn-white edit" title="Al hacer click permite la edición de los datos del tercero de la fila"> <i class="fa fa-pencil"></i> </button>' +
+                //            '<button type="button"' + attribute + ' class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar los datos del tercero de la fila"> <i class="fa fa-close"></i> </button>';
+                //    },
+                //    cellStyle: function (value, row, index) {
+                //        return {
+                //            css: {
+                //                'white-space': 'nowrap',
+                //                'vertical-align': 'top'
+                //            }
+                //        }
+                //    }
+                //}
+            ]
+        });
+
+        $('#coberturasNewTbl').bootstrapTable('filterBy', { seleccionado: [true] })
     }
 
     function plandepago_table_setup() {
@@ -1252,7 +1427,7 @@ app.EmisionMapfreMas = (function () {
             for (var i = 0; i < coberturas.length; i++) {
                 coberturas[i].capital = 0;
                 coberturas[i].primatotal = 0;
-                coberturas[i].deducible = '';
+                //coberturas[i].deducible = '';
                 coberturas[i].error = '';
             }
             $('#coberturasTbl').bootstrapTable('load', coberturas);
@@ -1457,135 +1632,172 @@ app.EmisionMapfreMas = (function () {
             terceros_table_row_edit();
         });
 
-        $('#tercerosEdtFormSave').click(function () {
-            let TerceroLista = $('#tercerosTbl').bootstrapTable('getData');
-            var idlist = [];
-            for (var id in TerceroLista) {
-                idlist.push(TerceroLista[id]["tercerosId"])
-            }
-            if (app.ui.IsValid('#tercerosEdtForm', false)) {
-                app.ui.ButtonDoing('#tercerosEdtFormSave');
+        $('#coberturasNew').click(function () {
+            //$('#tipodetercero').val($('#tipodetercero option[disabled!="disabled"]')[0].value);
+            //$('#tipodetercero').change();
+            //$('#DocumentNumberTypeMenu a.active').click();
 
-                var row = terceros_table_row('values');
-
-                if (row.tercerosId === null) {
-                    if (idlist.length > 0) {
-                        var lastid = Math.max(...idlist);
-                        row.tercerosId = lastid + 1;
-                    }
-                    else {
-                        row.tercerosId = 1;
-                    }
-                }
-
-
-                let Rules = terceros_table_rules($('#tercerosModal').data('id'), TerceroLista, row)
-                if (Rules.Error) {
-                    if (Rules.type == "error") {
-                        toastr.error(Rules.message, Rules.title, { timeOut: 9000, closeButton: true, progressBar: true });
-                    }
-                    else {
-                        toastr.info(Rules.message, Rules.title, { timeOut: 9000, closeButton: true, progressBar: true });
-                    }
-                    app.ui.ButtonDone('#tercerosEdtFormSave')
-                }
-                else {
-                    if (Rules.Event == "Update") {
-                        for (var a in Rules.Result) {
-                            $('#tercerosTbl').bootstrapTable('updateByUniqueId', { id: Rules.Result[a].tercerosId, row: Rules.Result[a] });
-                        }
-
-                        if (row.eltomadoreselmismoasegurado === 1 && row.tipodetercero == 0) {
-                            let AseguradoExiste = $('#tercerosTbl').bootstrapTable('getData').filter(i => i.DocumentNumber == row.DocumentNumber);
-                            AseguradoExiste = AseguradoExiste.filter(i => i.tipodetercero == 2);
-                            if (!(AseguradoExiste.length > 0)) {
-                                let newinsurance = JSON.parse(JSON.stringify(row));
-                                if (idlist.length > 0) {
-                                    var lastid = Math.max(...idlist);
-                                    newinsurance.tercerosId = lastid + 1;
-                                }
-                                else {
-                                    newinsurance.tercerosId += 1;
-                                }
-                                newinsurance.tipodetercero = '2';
-                                newinsurance.tipodeterceroDesc = $('#tipodetercero option[value="2"]').text();
-                                //$('#tercerosTbl').bootstrapTable('append', newinsurance);
-                            }
-
-                        }
-
-                        if (row.elaseguradoeselconductorhabitual === 1) {
-                            let ConductorExiste = $('#tercerosTbl').bootstrapTable('getData').filter(i => i.DocumentNumber == row.DocumentNumber);
-                            ConductorExiste = ConductorExiste.filter(i => i.tipodetercero == 3);
-                            if (!(ConductorExiste.length > 0)) {
-                                let newDriver = JSON.parse(JSON.stringify(row));
-                                if (idlist.length > 0) {
-                                    var lastid = Math.max(...idlist);
-                                    newDriver.tercerosId = lastid + 1;
-                                }
-                                else {
-                                    newDriver.tercerosId += 1;
-                                }
-                                newDriver.tipodetercero = '3';
-                                newDriver.tipodeterceroDesc = $('#tipodetercero option[value="3"]').text();
-                                //$('#tercerosTbl').bootstrapTable('append', newDriver);
-                            }
-
-                        }
-                    }
-                    else if (Rules.Event == "Insert") {
-                        // $('#tercerosTbl').bootstrapTable('append', row);
-
-                        if (row.eltomadoreselmismoasegurado === 1 && row.tipodetercero == 0) {
-                            let AseguradoExiste = $('#tercerosTbl').bootstrapTable('getData').filter(i => i.DocumentNumber == row.DocumentNumber);
-                            AseguradoExiste = AseguradoExiste.filter(i => i.tipodetercero == 2);
-                            if (!(AseguradoExiste.length > 0)) {
-                                let newinsurance = JSON.parse(JSON.stringify(row));
-                                newinsurance.tercerosId += 1;
-                                newinsurance.tipodetercero = '2';
-                                newinsurance.tipodeterceroDesc = $('#tipodetercero option[value="2"]').text();
-                                //$('#tercerosTbl').bootstrapTable('append', newinsurance);
-                            }
-                            else {
-                                let newinsurance = JSON.parse(JSON.stringify(row));
-                                newinsurance.tercerosId = AseguradoExiste[0].tercerosId;
-                                newinsurance.tipodetercero = AseguradoExiste[0].tipodetercero;
-                                newinsurance.tipodeterceroDesc = AseguradoExiste[0].tipodeterceroDesc;
-                                $('#tercerosTbl').bootstrapTable('updateByUniqueId', { id: AseguradoExiste[0].tercerosId, row: newinsurance });
-                            }
-
-                        }
-
-                        if (row.elaseguradoeselconductorhabitual === 1) {
-                            let ConductorExiste = $('#tercerosTbl').bootstrapTable('getData').filter(i => i.DocumentNumber == row.DocumentNumber);
-                            ConductorExiste = ConductorExiste.filter(i => i.tipodetercero == 3);
-                            if (!(ConductorExiste.length > 0)) {
-                                let newDriver = JSON.parse(JSON.stringify(row));
-                                newDriver.tercerosId += 2;
-                                newDriver.tipodetercero = '3';
-                                newDriver.tipodeterceroDesc = $('#tipodetercero option[value="3"]').text();
-                                //$('#tercerosTbl').bootstrapTable('append', newDriver);
-                            }
-                            else {
-                                let newDriver = JSON.parse(JSON.stringify(row));
-                                newDriver.tercerosId = ConductorExiste[0].tercerosId;
-                                newDriver.tipodetercero = ConductorExiste[0].tipodetercero;
-                                newDriver.tipodeterceroDesc = ConductorExiste[0].tipodeterceroDesc;
-                                $('#tercerosTbl').bootstrapTable('updateByUniqueId', { id: ConductorExiste[0].tercerosId, row: newDriver });
-                            }
-                        }
-                    }
-                    if (row.tipodetercero === 2) {
-                        $('#correoenvio').val(row.correoelectronico);
-                    }
-                    app.ui.ButtonDone('#tercerosEdtFormSave')
-                    $('#tercerosModal').modal('hide');
-                    formularios_handler();
-
-                }
-            }
+            coberturas_table_row_edit();
         });
 
+        //$('#tercerosEdtFormSave').click(function () {
+        //    let TerceroLista = $('#tercerosTbl').bootstrapTable('getData');
+        //    var idlist = [];
+        //    for (var id in TerceroLista) {
+        //        idlist.push(TerceroLista[id]["tercerosId"])
+        //    }
+        //    if (app.ui.IsValid('#tercerosEdtForm', false)) {
+        //        app.ui.ButtonDoing('#tercerosEdtFormSave');
+
+        //        var row = terceros_table_row('values');
+
+        //        if (row.tercerosId === null) {
+        //            if (idlist.length > 0) {
+        //                var lastid = Math.max(...idlist);
+        //                row.tercerosId = lastid + 1;
+        //            }
+        //            else {
+        //                row.tercerosId = 1;
+        //            }
+        //        }
+
+
+        //        let Rules = terceros_table_rules($('#tercerosModal').data('id'), TerceroLista, row)
+        //        if (Rules.Error) {
+        //            if (Rules.type == "error") {
+        //                toastr.error(Rules.message, Rules.title, { timeOut: 9000, closeButton: true, progressBar: true });
+        //            }
+        //            else {
+        //                toastr.info(Rules.message, Rules.title, { timeOut: 9000, closeButton: true, progressBar: true });
+        //            }
+        //            app.ui.ButtonDone('#tercerosEdtFormSave')
+        //        }
+        //        else {
+        //            if (Rules.Event == "Update") {
+        //                for (var a in Rules.Result) {
+        //                    $('#tercerosTbl').bootstrapTable('updateByUniqueId', { id: Rules.Result[a].tercerosId, row: Rules.Result[a] });
+        //                }
+
+        //                if (row.eltomadoreselmismoasegurado === 1 && row.tipodetercero == 0) {
+        //                    let AseguradoExiste = $('#tercerosTbl').bootstrapTable('getData').filter(i => i.DocumentNumber == row.DocumentNumber);
+        //                    AseguradoExiste = AseguradoExiste.filter(i => i.tipodetercero == 2);
+        //                    if (!(AseguradoExiste.length > 0)) {
+        //                        let newinsurance = JSON.parse(JSON.stringify(row));
+        //                        if (idlist.length > 0) {
+        //                            var lastid = Math.max(...idlist);
+        //                            newinsurance.tercerosId = lastid + 1;
+        //                        }
+        //                        else {
+        //                            newinsurance.tercerosId += 1;
+        //                        }
+        //                        newinsurance.tipodetercero = '2';
+        //                        newinsurance.tipodeterceroDesc = $('#tipodetercero option[value="2"]').text();
+        //                        //$('#tercerosTbl').bootstrapTable('append', newinsurance);
+        //                    }
+
+        //                }
+
+        //                if (row.elaseguradoeselconductorhabitual === 1) {
+        //                    let ConductorExiste = $('#tercerosTbl').bootstrapTable('getData').filter(i => i.DocumentNumber == row.DocumentNumber);
+        //                    ConductorExiste = ConductorExiste.filter(i => i.tipodetercero == 3);
+        //                    if (!(ConductorExiste.length > 0)) {
+        //                        let newDriver = JSON.parse(JSON.stringify(row));
+        //                        if (idlist.length > 0) {
+        //                            var lastid = Math.max(...idlist);
+        //                            newDriver.tercerosId = lastid + 1;
+        //                        }
+        //                        else {
+        //                            newDriver.tercerosId += 1;
+        //                        }
+        //                        newDriver.tipodetercero = '3';
+        //                        newDriver.tipodeterceroDesc = $('#tipodetercero option[value="3"]').text();
+        //                        //$('#tercerosTbl').bootstrapTable('append', newDriver);
+        //                    }
+
+        //                }
+        //            }
+        //            else if (Rules.Event == "Insert") {
+        //                // $('#tercerosTbl').bootstrapTable('append', row);
+
+        //                if (row.eltomadoreselmismoasegurado === 1 && row.tipodetercero == 0) {
+        //                    let AseguradoExiste = $('#tercerosTbl').bootstrapTable('getData').filter(i => i.DocumentNumber == row.DocumentNumber);
+        //                    AseguradoExiste = AseguradoExiste.filter(i => i.tipodetercero == 2);
+        //                    if (!(AseguradoExiste.length > 0)) {
+        //                        let newinsurance = JSON.parse(JSON.stringify(row));
+        //                        newinsurance.tercerosId += 1;
+        //                        newinsurance.tipodetercero = '2';
+        //                        newinsurance.tipodeterceroDesc = $('#tipodetercero option[value="2"]').text();
+        //                        //$('#tercerosTbl').bootstrapTable('append', newinsurance);
+        //                    }
+        //                    else {
+        //                        let newinsurance = JSON.parse(JSON.stringify(row));
+        //                        newinsurance.tercerosId = AseguradoExiste[0].tercerosId;
+        //                        newinsurance.tipodetercero = AseguradoExiste[0].tipodetercero;
+        //                        newinsurance.tipodeterceroDesc = AseguradoExiste[0].tipodeterceroDesc;
+        //                        $('#tercerosTbl').bootstrapTable('updateByUniqueId', { id: AseguradoExiste[0].tercerosId, row: newinsurance });
+        //                    }
+
+        //                }
+
+        //                if (row.elaseguradoeselconductorhabitual === 1) {
+        //                    let ConductorExiste = $('#tercerosTbl').bootstrapTable('getData').filter(i => i.DocumentNumber == row.DocumentNumber);
+        //                    ConductorExiste = ConductorExiste.filter(i => i.tipodetercero == 3);
+        //                    if (!(ConductorExiste.length > 0)) {
+        //                        let newDriver = JSON.parse(JSON.stringify(row));
+        //                        newDriver.tercerosId += 2;
+        //                        newDriver.tipodetercero = '3';
+        //                        newDriver.tipodeterceroDesc = $('#tipodetercero option[value="3"]').text();
+        //                        //$('#tercerosTbl').bootstrapTable('append', newDriver);
+        //                    }
+        //                    else {
+        //                        let newDriver = JSON.parse(JSON.stringify(row));
+        //                        newDriver.tercerosId = ConductorExiste[0].tercerosId;
+        //                        newDriver.tipodetercero = ConductorExiste[0].tipodetercero;
+        //                        newDriver.tipodeterceroDesc = ConductorExiste[0].tipodeterceroDesc;
+        //                        $('#tercerosTbl').bootstrapTable('updateByUniqueId', { id: ConductorExiste[0].tercerosId, row: newDriver });
+        //                    }
+        //                }
+        //            }
+        //            if (row.tipodetercero === 2) {
+        //                $('#correoenvio').val(row.correoelectronico);
+        //            }
+        //            app.ui.ButtonDone('#tercerosEdtFormSave')
+        //            $('#tercerosModal').modal('hide');
+        //            formularios_handler();
+
+        //        }
+        //    }
+        //});
+
+        $('#agregarCobertura').click(function () {
+
+            const selectedRows = $('#coberturasNewTbl').bootstrapTable('getSelections');
+            const mainTableData = $('#coberturasTbl').bootstrapTable('getData');
+
+            selectedRows.forEach(row => {
+                const exists = mainTableData.some(item => item.codigo === row.codigo);
+
+                if (exists) {
+
+                    // Obtener la celda de acciones de la fila actualizada
+                    const rowIndex = $('#coberturasTbl').bootstrapTable('getData').findIndex(r => r.codigo === row.codigo);
+                    if (rowIndex !== -1) {
+                        $('#coberturasTbl').bootstrapTable('updateCell', {
+                            index: rowIndex,
+                            field: 'added',
+                            value: true // Forzar actualización (se recalculará con el formatter)
+                        });
+                    }
+                    
+                } else {
+                    // Si no existe, agregarlo como nuevo
+                    const newRow = { ...row, added: true, requerida: false };
+                    $('#coberturasTbl').bootstrapTable('append', newRow);
+                }
+            });
+            $('#coberturasNewModal').modal('hide'); // Cerrar el popup
+
+        });
     }
 
     function terceros_table_rules(Event, TercerosList, Tercero) {
@@ -1833,8 +2045,46 @@ app.EmisionMapfreMas = (function () {
         md.modal('show');
     }
 
+    function coberturas_table_row_edit() {
+        var md = $('#coberturasNewModal').modal({ show: false });
+
+        //var formInstance = $("#tercerosEdtForm");
+        //var fvalidate = formInstance.validate();
+        //fvalidate.resetForm();
+        //row = row || terceros_table_row();
+        //md.data('id', row.tercerosId);
+        //$('#coberturasNewTbl').bootstrapTable('load', row);
+
+        md.modal('show');
+    }
+
     function terceros_table_row_delete(row) {
         $('#tercerosTbl').bootstrapTable('removeByUniqueId', row.tercerosId);
+    }
+
+    function coberturas_table_row_delete(row) {
+
+        const mainTableData = $('#coberturasTbl').bootstrapTable('getData');
+        const exists = mainTableData.find(item => item.codigo === row.codigo);
+
+        if (exists) {
+
+            if (exists.requerida) {
+                // Obtener la celda de acciones de la fila actualizada
+                const rowIndex = $('#coberturasTbl').bootstrapTable('getData').findIndex(r => r.codigo === row.codigo);
+                if (rowIndex !== -1) {
+                    $('#coberturasTbl').bootstrapTable('updateCell', {
+                        index: rowIndex,
+                        field: 'added',
+                        value: false // Forzar actualización (se recalculará con el formatter)
+                    });
+                }
+            }
+            else {
+                $('#coberturasTbl').bootstrapTable('removeByUniqueId', row.codigo);
+            }
+
+        }
     }
 
     function terceros_table_Validations() {
@@ -2884,6 +3134,7 @@ app.EmisionMapfreMas = (function () {
             Controls_setup();
             Setup_Validations();
             coberturas_table_setup();
+            coberturasNew_table_setup();
             plandepago_table_setup();
             Controls_Events();
 
@@ -2911,6 +3162,9 @@ app.EmisionMapfreMas = (function () {
         tercerosDeleteRow: function (row) {
             terceros_table_row_delete(row);
         },
+        coberturasDeleteRow: function (row) {
+            coberturas_table_row_delete(row);
+        },
         documentosrequeridosEditRow: function (row) {
             documentosrequeridos_table_row_edit(row);
         },
@@ -2934,6 +3188,32 @@ app.EmisionMapfreMas = (function () {
         },
         formularios_handler: function (src) {
             formularios_handler();
+        },
+        findOrAddRecordCombobox: function (array, code, description) {
+            if (!array) return;
+
+            const record = array.find(item => item.Code === code);
+
+            if (!record) {
+                array.push({Code: code, Description: description});
+            }
+
+            return array;
+        },
+        custonMessageResponse: function (data, title) {
+            if (!data) return;
+
+            if (data.ProcessResult.length > 0) {
+                let timeOut = 9000;
+                data.ProcessResult.forEach(function (record) {
+                    if (data.McaError === "N") {
+                        toastr.info(record.txt_error, title, { timeOut: timeOut, closeButton: true, progressBar: true });
+                        return;
+                    }
+                    toastr.error(record.txt_error, title, { timeOut: timeOut, closeButton: true, progressBar: true });
+                    timeOut += 5000;
+                });
+            }
         }
     };
 })();
@@ -2960,6 +3240,15 @@ window.tercerosTbl_Events = {
         })
     }
 };
+
+window.coberturasTbl_Events = {
+    'click .delete': function (e, value, row, index) {
+        toastr.warning("Si está seguro de querer eliminar la cobertura '" + row.nombre + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionMapfreMas.coberturasDeleteRow(row); } });
+        e.stopPropagation();
+    }
+};
+
+
 window.vehiculo_Events = {
     'click .delete': function (e, value, row, index) {
         toastr.warning("Si está seguro de querer eliminar el visualizations '" + row.vehiculodId + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionMapfreMas.vehiculoDeleteRow(row); } });
