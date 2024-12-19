@@ -3,6 +3,18 @@
 }
 @Styles.Render("~/Content/cssCRUD")
 
+@{
+    if (ViewBag.AlertMessage != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" style="background-color: #ffcc00; border: 2px solid #e6a900; color: #4d4d4d; font-size: 1em; padding: 15px;">
+             <strong>Atención:</strong> @ViewBag.AlertMessage
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color: #4d4d4d;">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+}
+
 <div class="row">
     <div class="col-md-8">
         <div class="row">
@@ -46,7 +58,7 @@
                             </div>
                         </div>
                     </div>
-                  
+
                 </div>
             </div>
 
@@ -317,16 +329,16 @@
         </div>
         <div id="buttonsToDisplay" style="display: none;">-->
         <!--<button class="btnContraste">
-        <i class="fa fa-adjust" aria-hidden="true"></i> Contraste
-    </button>-->
+            <i class="fa fa-adjust" aria-hidden="true"></i> Contraste
+        </button>-->
         <!--<button class="btnTexto">
-                <i class="fa fa-font" aria-hidden="true"></i> Tamaño de Texto <i class="fa fa-plus" id="font-up"></i> <i class="fa fa-minus" id="font-down"></i>
-            </button>
-            <button class="btnEspaciado">
-                <i class="fa fa-text-width" aria-hidden="true"></i> Espaciado de Texto
-            </button>
-        </div>
-    </div>-->
+                    <i class="fa fa-font" aria-hidden="true"></i> Tamaño de Texto <i class="fa fa-plus" id="font-up"></i> <i class="fa fa-minus" id="font-down"></i>
+                </button>
+                <button class="btnEspaciado">
+                    <i class="fa fa-text-width" aria-hidden="true"></i> Espaciado de Texto
+                </button>
+            </div>
+        </div>-->
     </div>
 </div>
 

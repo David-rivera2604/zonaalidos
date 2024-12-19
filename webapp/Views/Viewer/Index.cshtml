@@ -1,6 +1,17 @@
 ﻿@{
     Layout = "~/Views/_Layout.cshtml";
 }
+@{
+    if (ViewBag.AlertMessage != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" style="background-color: #ffcc00; border: 2px solid #e6a900; color: #4d4d4d; font-size: 1em; padding: 15px;">
+            <strong>Atención:</strong> @ViewBag.AlertMessage
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color: #4d4d4d;">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+}
 @Styles.Render("~/Content/cssCRUD")
 <!-- RoleMember -->
 <div class="ibox">
