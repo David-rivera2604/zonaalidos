@@ -131,15 +131,21 @@ namespace Architect.API.Tron.Business.Emision
                 {
                     KycJuridico kycjuridico = JsonConvert.DeserializeObject<KycJuridico>(JsonConvert.SerializeObject(quoteInfo.kyc));
                     quoteInfo.kyc = kycjuridico;
-                    mca_cicac = kycjuridico.mca_cicac;
-                    txt_cicac = kycjuridico.obs_cicac;
+                    if (!kycjuridico.IsEmpty())
+                    {
+                        mca_cicac = kycjuridico.mca_cicac;
+                        txt_cicac = kycjuridico.obs_cicac;
+                    }
                 }
                 else
                 {
                     Kycpersona kycpersona = JsonConvert.DeserializeObject<Kycpersona>(JsonConvert.SerializeObject(quoteInfo.kyc));
                     quoteInfo.kyc = kycpersona;
-                    mca_cicac = kycpersona.mca_cicac;
-                    txt_cicac = kycpersona.obs_cicac;
+                    if(!kycpersona.IsEmpty()) 
+                    {
+                        mca_cicac = kycpersona.mca_cicac;
+                        txt_cicac = kycpersona.obs_cicac;
+                    }
                 }
 
                 quoteInfo.DatosEconomicos = EconomicDataCalculate(quoteInfo);
