@@ -16,17 +16,19 @@ app.EmisionMapfreMas = (function () {
     let mca_cuotas_gratis = 'N';
     var COD_PLAN_AUTO = 0;
     var MCA_PROVISIONAL = 'N';
+    var NUM_SPTO = 0;
+    var NEW_NUM_SPTO = 0;
 
     function Setup() {
         app.ui.CommonBehaviour();
         var _id = app.core.URLStringValue('poliza');
-        var _spto = app.core.URLStringValue('spto');
+        NUM_SPTO = app.core.URLStringValue('spto');
         MCA_PROVISIONAL = app.core.URLStringValue('mca_provisional');
 
         if (_id != '') {
 
             $('#coberturasTbl').bootstrapTable('showLoading');
-            app.core.Get(app.setting.apipath + 'v1/Variaciones/MapfreMasSetup/' + _id + '/' + _spto + '/' + MCA_PROVISIONAL)
+            app.core.Get(app.setting.apipath + 'v1/Variaciones/MapfreMasSetup/' + _id + '/' + NUM_SPTO + '/' + MCA_PROVISIONAL)
                 .done(function (data, textStatus, jqXHR) {
                     if (localStorage.getItem('Roles').includes('Purdy')) {
                         $('.Purdy').removeClass('d-none');
@@ -106,19 +108,21 @@ app.EmisionMapfreMas = (function () {
         /*$('#DED_AUTO_RAD').replaceWith('<div>' + $('#DED_AUTO_RAD option:selected').text() + '</div>');*/
         //$('#IMP_AUTO_ROB').replaceWith('<div>' + $('#IMP_AUTO_ROB').val() + '</div>');
         //$('#DED_AUTO_ROB').replaceWith('<div>' + $('#DED_AUTO_ROB option:selected').text() + '</div>');
-        $('#IMP_AUTO_EQESP').replaceWith('<div>' + $('#IMP_AUTO_EQESP').val() + '</div>');
-        $('#DED_AUTO_EQESP').replaceWith('<div>' + $('#DED_AUTO_EQESP option:selected').text() + '</div>');
+        //$('#IMP_AUTO_EQESP').replaceWith('<div>' + $('#IMP_AUTO_EQESP').val() + '</div>');
+        //$('#DED_AUTO_EQESP').replaceWith('<div>' + $('#DED_AUTO_EQESP option:selected').text() + '</div>');
         $('#IMP_AUTO_NEUM').replaceWith('<div>' + $('#IMP_AUTO_NEUM option:selected').text() + '</div>');
         $('#IMP_AUTO_MECA').replaceWith('<div>' + $('#IMP_AUTO_MECA option:selected').text() + '</div>');
         //$('#IMP_AUTO_CRI').replaceWith('<div>' + $('#IMP_AUTO_CRI option:selected').text() + '</div>');
-        $('#DED_AUTO_CRI').replaceWith('<div>' + $('#DED_AUTO_CRI option:selected').text() + '</div>');
+        //$('#DED_AUTO_CRI').replaceWith('<div>' + $('#DED_AUTO_CRI option:selected').text() + '</div>');
         $('#DedudAutoSust').replaceWith('<div>' + $('#DedudAutoSust option:selected').text() + '</div>');
         //$('#tercerosNew').addClass('d-none');
         //$('#tercerosTbl').bootstrapTable('hideColumn', 'Actions');
         //$('#documentosrequeridosNew').addClass('d-none');
         //$('#documentosrequeridosTbl').bootstrapTable('hideColumn', 'Actions');
 
-        DisabledAllControls(MCA_PROVISIONAL === "S");
+        if (MCA_PROVISIONAL === "S") {
+            DisabledAllControls(true);
+        }
     }
 
     function ReadOnly_End() {
@@ -156,14 +160,8 @@ app.EmisionMapfreMas = (function () {
         if (isdisabled) {
             $('#IMP_AUTO_GMO').prop('disabled', isdisabled);
             $('#IMP_AUTO_ACO').prop('disabled', isdisabled);
-
-            //app.ui.DropDownDisabled('#IMP_AUTO_GMO', isdisabled);
-            //app.ui.DropDownDisabled('#IMP_AUTO_ACO', isdisabled);
         }
         else {
-            //app.ui.DropDownDisabled('#IMP_AUTO_GMO', COD_PLAN_AUTO === 31);
-            //app.ui.DropDownDisabled('#IMP_AUTO_ACO', COD_PLAN_AUTO === 31);
-
             $('#IMP_AUTO_GMO').prop('disabled', COD_PLAN_AUTO === 31);
             $('#IMP_AUTO_ACO').prop('disabled', COD_PLAN_AUTO === 31);
         }
@@ -198,6 +196,7 @@ app.EmisionMapfreMas = (function () {
                 SettingReload(function () {
                     MapObjectToInput(data);
                     data_changed();
+                    Controls_sum_enable(data);
                 });
             }, `cod_ramo=${data.cod_ramo}:cod_pais=CRI:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}:num_contrato=${data.contrato}:cod_agt=${data.cod_agt}`);
 
@@ -427,7 +426,6 @@ app.EmisionMapfreMas = (function () {
         formularios_handler();
 
     }
-
     function Controls_setup() {
         $('#fec_efec_poliza_group').datetimepicker({
             format: 'DD/MM/YYYY',
@@ -523,10 +521,6 @@ app.EmisionMapfreMas = (function () {
         //app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_RAD', true);
         ////app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_RC', true);
         //app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_ROB', true);
-
-        $('#IMP_AUTO_CYV').prop('disabled', true);
-        $('#IMP_AUTO_RAD').prop('disabled', true);
-        $('#IMP_AUTO_ROB').prop('disabled', true);
     }
 
     function Controls_Events() {
@@ -628,6 +622,9 @@ app.EmisionMapfreMas = (function () {
                             if (Array.isArray(data.Recibos) && data.Recibos.length > 0) {
                                 $('#resultvariacionTbl').bootstrapTable('load', data.Recibos);
                                 $('#resultvariacion').removeClass('d-none');
+
+                                let firstRecord = data.Recibos[0];
+                                NEW_NUM_SPTO = firstRecord.num_spto;
                             }
                             $('#generarvariacion').addClass('d-none');
                             $('#cancelarpoliza').addClass('d-none');
@@ -670,6 +667,9 @@ app.EmisionMapfreMas = (function () {
                             if (Array.isArray(data.Recibos) && data.Recibos.length > 0) {
                                 $('#resultvariacionTbl').bootstrapTable('load', data.Recibos);
                                 $('#resultvariacion').removeClass('d-none');
+
+                                let firstRecord = data.Recibos[0];
+                                NEW_NUM_SPTO = firstRecord.num_spto;
                             }
                             $('#cancelarpoliza').addClass('d-none');
                             $('#generarvariacion').addClass('d-none');
@@ -705,6 +705,7 @@ app.EmisionMapfreMas = (function () {
 
                 var data = setupData;
                 data.Mca_Autoriza_CT = "S";
+                data.num_spto = NEW_NUM_SPTO;
 
                 app.core.Post(app.setting.apipath + 'v1/Variaciones/MapfreMasManageAuthorizationCT',
                     JSON.stringify(data),
@@ -715,7 +716,26 @@ app.EmisionMapfreMas = (function () {
                             $('#authorizarct').addClass('d-none');
                             $('#rechazarct').addClass('d-none');
                             DisabledAllControls(false);
+                            Controls_sum_enable(setupData);
                             MCA_PROVISIONAL = "N";
+
+                            if (Array.isArray(data.Recibos) && data.Recibos.length > 0) {
+                                $('#resultvariacionTbl').bootstrapTable('load', data.Recibos);
+
+                                if (data.coberturas != null)
+                                    $('#coberturasTbl').bootstrapTable('load', data.coberturas);
+                                else
+                                    $('#coberturasTbl').bootstrapTable('load', {});
+                                $('#coberturasTbl').bootstrapTable('hideLoading');
+                                if (data.plandepago != null)
+                                    $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
+                                else
+                                    $('#plandepagoTbl').bootstrapTable('load', {});
+
+                                $('#resultvariacion').removeClass('d-none');
+                            }
+
+                            //app.EmisionMapfreMas.GetReceipts(setupData.cod_cia, setupData.num_poliza, NEW_NUM_SPTO);
 
                             toastr.info("Se autorizó el CT", "Autorización", { timeOut: 9000, closeButton: true, progressBar: true });
                         }
@@ -757,6 +777,7 @@ app.EmisionMapfreMas = (function () {
                             $('#authorizarct').addClass('d-none');
                             $('#rechazarct').addClass('d-none');
                             DisabledAllControls(false);
+                            Controls_sum_enable(setupData);
                             MCA_PROVISIONAL = "N";
 
                             toastr.info("Se rechazo el CT", "Autorización", { timeOut: 9000, closeButton: true, progressBar: true });
@@ -1145,8 +1166,35 @@ app.EmisionMapfreMas = (function () {
             detailFormatter: 'app.ui.GenericDetailFormatter',
             columns: [
                 {
+                    field: 'recibo',
+                    title: 'Recibo',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
                     field: 'cuota',
                     title: 'Cuota',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.IntegerFormatter',
+                    visible: true
+                }, {
+                    field: 'tipsituacion',
+                    title: 'Estado del recibo',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
+                    field: 'numspto',
+                    title: 'Num Spto',
                     titleTooltip: '',
                     sortable: false,
                     halign: 'center',
@@ -1264,7 +1312,7 @@ app.EmisionMapfreMas = (function () {
                     sortable: false,
                     halign: 'center',
                     align: 'right',
-                    formatter: 'app.ui.IntegerFormatter',
+                    formatter: 'app.ui.StringFormatter',
                     visible: true
                 }, {
                     field: 'fec_efec_recibo',
@@ -1439,9 +1487,48 @@ app.EmisionMapfreMas = (function () {
 
         //app.ui.DropDownDisabled('#IMP_AUTO_GMO', COD_PLAN_AUTO === 31);
         //app.ui.DropDownDisabled('#IMP_AUTO_ACO', COD_PLAN_AUTO === 31);
+    }
 
+    function Controls_sum_enable(setupData) {
+        console.log("setupData:", setupData);
+
+        if (setupData) {
+            $('#IMP_AUTO_RC').prop('disabled', !setupData.AUTO_RC);
+            $('#DED_AUTO_RC').prop('disabled', !setupData.AUTO_RC);
+
+            $('#IMP_AUTO_CYV').prop('disabled', !setupData.AUTO_CYV);
+            $('#DED_AUTO_CYV').prop('disabled', !setupData.AUTO_CYV);
+
+            $('#IMP_AUTO_ROB').prop('disabled', !setupData.AUTO_ROB);
+            $('#DED_AUTO_ROB').prop('disabled', !setupData.AUTO_ROB);
+
+            $('#IMP_AUTO_GMO').prop('disabled', !setupData.AUTO_GMO);
+
+            $('#IMP_AUTO_ACO').prop('disabled', !setupData.AUTO_ACO);
+
+            $('#IMP_AUTO_RAD').prop('disabled', !setupData.AUTO_RAD);
+            $('#DED_AUTO_RAD').prop('disabled', !setupData.AUTO_RAD);
+
+            $('#IMP_AUTO_EQESP').prop('disabled', !setupData.AUTO_EQESP);
+            $('#DED_AUTO_EQESP').prop('disabled', !setupData.AUTO_EQESP);
+
+            $('#IMP_AUTO_CRI').prop('disabled', !setupData.AUTO_CRI);
+            $('#DED_AUTO_CRI').prop('disabled', !setupData.AUTO_CRI);
+
+            $('#IMP_AUTO_NEUM').prop('disabled', !setupData.AUTO_NEUM);
+
+            $('#IMP_AUTO_MECA').prop('disabled', !setupData.AUTO_MECA);
+
+            if (!setupData.AUTO_CRI)$('#DED_AUTO_CRI').val("0");
+        }
+
+        //Reglas del ramo 302
         $('#IMP_AUTO_GMO').prop('disabled', COD_PLAN_AUTO === 31);
         $('#IMP_AUTO_ACO').prop('disabled', COD_PLAN_AUTO === 31);
+
+        $('#IMP_AUTO_CYV').prop('disabled', true);
+        $('#IMP_AUTO_RAD').prop('disabled', true);
+        $('#IMP_AUTO_ROB').prop('disabled', true);
     }
 
     function OtherValidations() {
@@ -3153,7 +3240,6 @@ app.EmisionMapfreMas = (function () {
             formularios_table_setup();
             resultvariacion_table_setup();
             $('.mapfremas-visible').removeClass('d-none');
-
             Setup();
         },
         tercerosEditRow: function (row) {
@@ -3192,7 +3278,7 @@ app.EmisionMapfreMas = (function () {
         findOrAddRecordCombobox: function (array, code, description) {
             if (!array) return;
 
-            const record = array.find(item => item.Code === code);
+            const record = array.find(item => item.Code == code);
 
             if (!record) {
                 array.push({Code: code, Description: description});
@@ -3214,6 +3300,51 @@ app.EmisionMapfreMas = (function () {
                     timeOut += 5000;
                 });
             }
+        },
+        GetReceipts: function (cod_cia, num_poliza, num_spto) {
+            app.core.Get(app.setting.apipath + 'v1/Variaciones/MapfreMasGetReceipts/' + cod_cia + '/' + num_poliza + '/' + num_spto)
+                .done(function (data, textStatus, jqXHR) {
+
+                    if (data) {
+                        if (Array.isArray(data) && data.length > 0) {
+                            $('#resultvariacionTbl').bootstrapTable('load', data);
+                            $('#resultvariacion').removeClass('d-none');
+                        }
+
+                        //toastr.info("Se generó correctamente la variación", "Variación", { timeOut: 9000, closeButton: true, progressBar: true });
+                    }
+                    else {
+                        //app.EmisionMapfreMas.custonMessageResponse(data, "Error el emitir la variación");
+                        /*toastr.error(data.ProcessResult.txt_error, "Error el emitir la variación", { timeOut: 9000, closeButton: true, progressBar: true });*/
+                    }
+
+                });
+                
+            //app.core.Get(app.setting.apipath + 'v1/Variaciones/MapfreMas',
+            //    JSON.stringify(MapInputToObject()),
+            //    function (data) {
+
+            //        $('#Fuente_Tomador').replaceWith('<div>' + $('#Fuente_Tomador option:selected').text() + '</div>');
+            //        $('#Modalidad_Pago').replaceWith('<div>' + $('#Modalidad_Pago option:selected').text() + '</div>');
+            //        $('#tip_firma').replaceWith('<div>' + $('#tip_firma option:selected').text() + '</div>');
+            //        $('#correoenvio').replaceWith('<div>' + $('#correoenvio').val() + '</div>');
+
+            //        if (data.McaError === "N") {
+            //            if (Array.isArray(data) && data.length > 0) {
+            //                $('#resultvariacionTbl').bootstrapTable('load', data);
+            //                $('#resultvariacion').removeClass('d-none');
+            //            }
+
+            //            //toastr.info("Se generó correctamente la variación", "Variación", { timeOut: 9000, closeButton: true, progressBar: true });
+            //        }
+            //        else {
+            //            //app.EmisionMapfreMas.custonMessageResponse(data, "Error el emitir la variación");
+            //            /*toastr.error(data.ProcessResult.txt_error, "Error el emitir la variación", { timeOut: 9000, closeButton: true, progressBar: true });*/
+            //        }
+
+            //    }).always(function () {
+            //        app.ui.ButtonDone('#generarvariacion');
+            //    });
         }
     };
 })();

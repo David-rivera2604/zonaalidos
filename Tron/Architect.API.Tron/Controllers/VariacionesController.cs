@@ -105,10 +105,11 @@ namespace Architect.API.Tron.Controllers
 
             await Task.Run(() =>
             {
-                result = Architect.API.Tron.Business.Variaciones.MapfreMas.ManageAuthorizationCT(quoteInfo.cod_cia, quoteInfo.cod_ramo, quoteInfo.num_poliza, quoteInfo.Mca_Autoriza_CT);
+                result = Architect.API.Tron.Business.Variaciones.MapfreMas.ManageAuthorizationCT(quoteInfo.cod_cia, quoteInfo.cod_ramo, quoteInfo.num_poliza, quoteInfo.num_spto, quoteInfo.Mca_Autoriza_CT);
             })
                 .ConfigureAwait(false);
             return Ok(result);
         }
+
     }
 }

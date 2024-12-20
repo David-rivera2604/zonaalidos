@@ -22,7 +22,7 @@ namespace Architect.API.Tron.Business.Backoffice
 
         public static Contracts.Poliza.DatoFijo PolizaVariaciones(int cod_cia, string numPoliza, bool loadChilds)
         {
-            return DataAccess.LeerPoliza.PolizaVariaciones(cod_cia, numPoliza, 0, 0, 0, null, loadChilds);
+            return DataAccess.LeerPoliza.PolizaVariaciones(cod_cia, numPoliza, null, 0, 0, null, loadChilds);
         }
 
         public static string Cancelacion(int cod_cia, string alias, string numPoliza, DateTime fecAnulacion, string motSpto)

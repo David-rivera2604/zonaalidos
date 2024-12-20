@@ -19,6 +19,11 @@ namespace Architect.API.Tron.Contracts.Variaciones
         [DataMember(), JsonProperty()] public string num_poliza { get; set; }
 
         /// <summary>
+        /// No. de suplemento.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int num_spto { get; set; }
+
+        /// <summary>
         /// Cilindraje del vehículo.
         /// </summary>
         [DataMember(), JsonProperty()] public string DES_TIP_CILINDRAJE { get; set; }
@@ -104,7 +109,16 @@ namespace Architect.API.Tron.Contracts.Variaciones
         /// </summary>
         [DataMember(), JsonProperty()] public List<Comun.Cobertura> AvailableCoverages { get; set; }
         [DataMember(), JsonProperty()] public List<Comun.Cobertura> NewCoverages { get; set; }
-
+        [DataMember(), JsonProperty()] public bool AUTO_RC { get; set; } = false;
+        [DataMember(), JsonProperty()] public bool AUTO_CYV { get; set; } = false;
+        [DataMember(), JsonProperty()] public bool AUTO_ROB { get; set; } = false;
+        [DataMember(), JsonProperty()] public bool AUTO_GMO { get; set; } = false;
+        [DataMember(), JsonProperty()] public bool AUTO_ACO { get; set; } = false;
+        [DataMember(), JsonProperty()] public bool AUTO_RAD { get; set; } = false;
+        [DataMember(), JsonProperty()] public bool AUTO_CRI { get; set; } = false;
+        [DataMember(), JsonProperty()] public bool AUTO_EQESP { get; set; } = false;
+        [DataMember(), JsonProperty()] public bool AUTO_NEUM { get; set; } = false;
+        [DataMember(), JsonProperty()] public bool AUTO_MECA { get; set; } = false;
     }
 
     public class MapfreMasSolicitud : MapfreMas

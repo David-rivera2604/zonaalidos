@@ -1,4 +1,5 @@
 ﻿using Architect.API.Tron.Contracts.Comun;
+using Architect.API.Tron.Contracts.Variaciones;
 using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
@@ -350,54 +351,57 @@ namespace Architect.API.Tron.Business.Variaciones
                 }
             }
 
-            if (tronQuoteInfo.Recibos != null)
+            if (tronQuoteInfo.Calculado?.Recibos != null)
             {
                 double importeAnual = 0;
                 bool setvalues = true;
                 quoteInfo.plandepago = new List<Contracts.Comun.PlanDePago>();
-                foreach (Architect.API.Tron.Contracts.Poliza.Recibo item in tronQuoteInfo.Recibos)
+                foreach (Architect.API.Tron.Contracts.Poliza.ReciboCalculado item in tronQuoteInfo.Calculado.Recibos)
                 {
-                    importeAnual = item.imp_recibo;
+                    importeAnual = item.IMP_RECIBO;
                     quoteInfo.plandepago.Add(new Contracts.Comun.PlanDePago()
                     {
-                        cuota = item.num_cuota,
-                        fechadesde = item.fec_efec_recibo,
-                        fechahasta = item.fec_vcto_recibo,
-                        primaneta = item.imp_neta + item.imp_recargo,
-                        iVA = item.imp_imptos,
-                        recargoporfraccionamiento = item.imp_interes,
-                        importetotal = item.imp_recibo
+                        recibo = item.NUM_RECIBO,
+                        cuota = item.NUM_CUOTA,
+                        numspto = item.NUM_SPTO,
+                        tipsituacion = item.TIP_SITUACION,
+                        fechadesde = item.FEC_EFEC_RECIBO,
+                        fechahasta = item.FEC_VCTO_RECIBO,
+                        primaneta = item.IMP_NETA,
+                        iVA = item.IMP_IMPTOS,
+                        recargoporfraccionamiento = item.IMP_INTERES,
+                        importetotal = item.IMP_RECIBO
                     });
-                    if (setvalues)
-                    {
-                        quoteInfo.resumen = new Contracts.Cotizacion.resumen()
-                        {
-                            cuotas = tronQuoteInfo.Recibos.Count,
-                            primaneta = item.imp_neta + item.imp_recargo,
-                            iVA = item.imp_imptos,
-                            recargoporfraccionamiento = item.imp_interes,
-                            importetotal = item.imp_recibo
-                        };
-                        setvalues = false;
-                    }
+                    //if (setvalues)
+                    //{
+                    //    quoteInfo.resumen = new Contracts.Cotizacion.resumen()
+                    //    {
+                    //        cuotas = tronQuoteInfo.Recibos.Count,
+                    //        primaneta = item.imp_neta + item.imp_recargo,
+                    //        iVA = item.imp_imptos,
+                    //        recargoporfraccionamiento = item.imp_interes,
+                    //        importetotal = item.imp_recibo
+                    //    };
+                    //    setvalues = false;
+                    //}
                 }
 
-                if (quoteInfo.cod_fracc_pago == 1)
-                {
-                    double amount = 0;
-                    quoteInfo.plandepagoporfrecuencia = new List<Contracts.Cotizacion.plandepagoporfrecuencia>();
-                    foreach (Architect.API.Tron.Contracts.Ramo.A1001403 item in Architect.API.Tron.DataAccess.PorRamo.FrecuenciaDePago(tronQuoteInfo.cod_cia, tronQuoteInfo.cod_ramo, tronQuoteInfo.cod_mon))
-                    {
-                        amount = (importeAnual / item.cod_fracc_pago) + ((importeAnual / item.cod_fracc_pago) * (item.pct_fracc_pago / 100));
-                        quoteInfo.plandepagoporfrecuencia.Add(new Contracts.Cotizacion.plandepagoporfrecuencia()
-                        {
-                            codigo = item.cod_fracc_pago,
-                            frecuencia = item.nom_fracc_pago,
-                            recardoporfraccionamiento = item.pct_fracc_pago,
-                            importetotal = amount
-                        });
-                    }
-                }
+                //if (quoteInfo.cod_fracc_pago == 1)
+                //{
+                //    double amount = 0;
+                //    quoteInfo.plandepagoporfrecuencia = new List<Contracts.Cotizacion.plandepagoporfrecuencia>();
+                //    foreach (Architect.API.Tron.Contracts.Ramo.A1001403 item in Architect.API.Tron.DataAccess.PorRamo.FrecuenciaDePago(tronQuoteInfo.cod_cia, tronQuoteInfo.cod_ramo, tronQuoteInfo.cod_mon))
+                //    {
+                //        amount = (importeAnual / item.cod_fracc_pago) + ((importeAnual / item.cod_fracc_pago) * (item.pct_fracc_pago / 100));
+                //        quoteInfo.plandepagoporfrecuencia.Add(new Contracts.Cotizacion.plandepagoporfrecuencia()
+                //        {
+                //            codigo = item.cod_fracc_pago,
+                //            frecuencia = item.nom_fracc_pago,
+                //            recardoporfraccionamiento = item.pct_fracc_pago,
+                //            importetotal = amount
+                //        });
+                //    }
+                //}
 
             }
 
@@ -426,6 +430,61 @@ namespace Architect.API.Tron.Business.Variaciones
             }
 
             quoteInfo.AvailableCoverages = getAvailableCoverages(quoteInfo.num_poliza, riesgo);
+
+            return GetEnableSumaAsegurada(quoteInfo);
+        }
+
+        public static Contracts.Variaciones.MapfreMas GetEnableSumaAsegurada(Contracts.Variaciones.MapfreMas quoteInfo)
+        {
+            List<g1010031> SumAseguradaTotales = Architect.API.Tron.DataAccess.Variaciones.VariacionIssue.GetSumaAseguradaPorRamo(quoteInfo.cod_cia, quoteInfo.cod_ramo);
+            List<g1010031> SumAseguradaPoliza = new List<g1010031>();
+
+            foreach(var item in quoteInfo.coberturas)
+            {
+                var find = SumAseguradaTotales.Where(s => s.cod_cob == item.codigo);
+
+                if (find.Any())
+                {
+                    SumAseguradaPoliza.AddRange(find);
+                }
+            }
+
+            foreach(var item in SumAseguradaPoliza)
+            {
+                switch (item.cod_campo)
+                {
+                    case "IMP_AUTO_RC":
+                        quoteInfo.AUTO_RC = true;
+                        break;
+                    case "IMP_AUTO_CYV":
+                        quoteInfo.AUTO_CYV = true;
+                        break;
+                    case "IMP_AUTO_ROB":
+                        quoteInfo.AUTO_ROB = true;
+                        break;
+                    case "IMP_AUTO_GMO":
+                        quoteInfo.AUTO_GMO = true;
+                        break;
+                    case "IMP_AUTO_ACO":
+                        quoteInfo.AUTO_ACO = true;
+                        break;
+                    case "IMP_AUTO_RAD":
+                        quoteInfo.AUTO_RAD = true;
+                        break;
+                    case "IMP_AUTO_EQESP":
+                        quoteInfo.AUTO_EQESP = true;
+                        break;
+                    case "IMP_AUTO_CRI":
+                        quoteInfo.AUTO_CRI = true;
+                        break;
+                    case "IMP_AUTO_NEUM":
+                        quoteInfo.AUTO_NEUM = true;
+                        break;
+                    case "IMP_AUTO_MECA":
+                        quoteInfo.AUTO_MECA = true;
+                        break;
+                }
+            }
 
             return quoteInfo;
         }
@@ -485,7 +544,7 @@ namespace Architect.API.Tron.Business.Variaciones
                     numeroderiesgo = item.num_riesgo,
                     tipodetercero = int.Parse(item.tip_benef),
                     tipodeterceroDesc = item.nom_benef,
-                    DocumentNumber = item.tip_docum,
+                    DocumentNumber = item.tip_docum + "-" + item.cod_docum,
                     vencimientodecesion = item.fec_vcto_cesion,
                     importedecesion = item.imp_cesion,
                     numerodeprestamo = item.num_prestamo,

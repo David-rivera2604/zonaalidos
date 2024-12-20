@@ -165,5 +165,37 @@ namespace Architect.API.Tron.DataAccess.Variaciones
             }
             return result;
         }
+
+        public static List<g1010031> GetSumaAseguradaPorRamo(int cod_cia, int cod_ramo)
+        {
+            List<g1010031> receipts = new List<g1010031>();
+
+            using (IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron"))
+            {
+                Database.Procedure("EM_K_MAPFRE_BATCH_CONTRACT_MCR.P_LEE_DV_SUM_RAMO")
+                                    .AddParameter("p_cod_cia", DbType.Int32, 2, cod_cia)
+                                    .AddParameter("p_cod_ramo", DbType.Int32, 3, cod_ramo)
+                                    .AddParameter("rc1", DbType.RefCursor, 0, null, ParameterDirection.Output)
+                        .Query(currentConnection, "Tron", new Action<System.Data.IDataReader, string>((reader, key) =>
+                        {
+                            switch (key)
+                            {
+                                case "rc1":
+                                    receipts.Add(new g1010031()
+                                    {
+                                        cod_cia = reader.IntegerValue("cod_cia"),
+                                        cod_ramo = reader.IntegerValue("cod_ramo"),
+                                        cod_cob = reader.IntegerValue("cod_cob"),
+                                        num_orden = reader.IntegerValue("num_orden"),
+                                        cod_campo = reader.StringValue("nombre_dv")
+                                    });
+                                    break;
+                            }
+                        }));
+                currentConnection.Close();
+            }
+
+            return receipts;
+        }
     }
 }

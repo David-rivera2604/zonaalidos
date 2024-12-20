@@ -53,5 +53,10 @@ namespace Architect.API.Tron.Contracts.Poliza
         ///
         /// </summary>
         public double IMP_INTERES { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public int NUM_SPTO { get; set; }
     }
 }

@@ -465,6 +465,29 @@
                                         </div>
                                     </div>
 
+                                    <!-- coberturas Grid -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <div class='col'>
+                                                    <h4>Coberturas</h4>
+                                                </div>
+                                                <div class='col-auto'>
+                                                    <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar coberturas" data-toggle="modal" id="coberturasNew"> <i class="fa fa-plus"></i> </button>
+                                                </div>
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class='col-md-12' style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="coberturasTbl" style="font-size: 11px;">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <!-- sumasaseguradas Zone -->
                                     <div id="sumasaseguradas" class="form-row">
                                         <div class="col-lg-12">
@@ -670,29 +693,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- coberturas Grid -->
-                                    <div class="form-row">
-                                        <div class="col-lg-12">
-                                            <div class="form-row">
-                                                <div class='col'>
-                                                    <h4>Coberturas</h4>
-                                                </div>
-                                                <div class='col-auto'>
-                                                    <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar coberturas" data-toggle="modal" id="coberturasNew"> <i class="fa fa-plus"></i> </button>
-                                                </div>
-                                            </div>
-                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-                                            <div class="form-row">
-                                                <div class='col-md-12' style="padding-bottom: 20px">
-                                                    <div class="table-responsive">
-                                                        <table id="coberturasTbl" style="font-size: 11px;">
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                     <!-- Notificaciones  -->
                                     <div id="quoteNotify">
                                     </div>
@@ -741,28 +741,28 @@
 
                                     <!-- enviosolicitud Zone -->
                                     <!--<div class="col-md-5 d-none enviosolicitudZone">
-                                    <h4><i class="fa fa-envelope-o"></i> Destinatario para envío de solicitud</h4>
-                                    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-                                    <div class="form-row">-->
+    <h4><i class="fa fa-envelope-o"></i> Destinatario para envío de solicitud</h4>
+    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+    <div class="form-row">-->
                                     <!-- tipoenvio DropDownList -->
                                     <!--<div class='col-md-12'>
-                                        <div class='form-group'>
-                                            <label class='control-label' for='tip_firma'>Tipo de envío<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                            <select id='tip_firma' name='tip_firma' class='form-control'>
-                                            </select>
-                                        </div>
-                                    </div>-->
+        <div class='form-group'>
+            <label class='control-label' for='tip_firma'>Tipo de envío<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+            <select id='tip_firma' name='tip_firma' class='form-control'>
+            </select>
+        </div>
+    </div>-->
                                     <!-- correoenvio Text -->
                                     <!--<div class='col-md-12'>
-                                                <div class='form-group'>
-                                                    <label class='control-label' for='correoenvio'>Correo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                    <input id='correoenvio' name='correoenvio' type='text' class='form-control' size='80' maxlength='80'>
-                                                </div>
-                                            </div>
+                <div class='form-group'>
+                    <label class='control-label' for='correoenvio'>Correo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                    <input id='correoenvio' name='correoenvio' type='text' class='form-control' size='80' maxlength='80'>
+                </div>
+            </div>
 
 
-                                        </div>
-                                    </div>-->
+        </div>
+    </div>-->
                                     <!-- VerificarDomicilio Zone -->
                                     @Html.Partial("_verificardomicilio")
 
@@ -771,11 +771,11 @@
                                         <div class='col-md-12'>
                                             <div class="modal-footer">
                                                 @*<button id="guardarenviar" type="button" class="btn btn-primary d-none" data-doing="Enviado solicitud...">
-                                                        Guardar y enviar solicitud
-                                                    </button>
-                                                    <button id="cotizar" type="button" class="btn btn-primary d-none" data-doing="Emitiendo...">
-                                                        Emitir
-                                                    </button>*@
+                        Guardar y enviar solicitud
+                    </button>
+                    <button id="cotizar" type="button" class="btn btn-primary d-none" data-doing="Emitiendo...">
+                        Emitir
+                    </button>*@
                                                 <button id="generarvariacion" type="button" class="btn btn-primary d-none" data-doing="Generardo variación...">
                                                     Generar Variación
                                                 </button>
