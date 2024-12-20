@@ -1,4 +1,15 @@
 ﻿@*Esta opción muestra con master-page*@
+@{
+    if (ViewBag.AlertMessage != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" style="background-color: #ffcc00; border: 2px solid #e6a900; color: #4d4d4d; font-size: 1em; padding: 15px;">
+            <strong>Atención:</strong> @ViewBag.AlertMessage
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color: #4d4d4d;">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+}
 @if (ViewBag.ViewType == true)
 {
     Layout = null;
@@ -42,54 +53,54 @@ else
 
     @Styles.Render("~/Content/cssCRUD")
     <!-- RoleMember -->
-<div class="ibox">
-    <div class="ibox-title">
-        <h5><span id="QueryTitle"></span></h5>
-        <!-- Opciones -->
-        <div class="ibox-tools">
-            <a class="fullscreen-link">
-                <i class="fa fa-expand"></i>
-            </a>
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                <i class="fa fa-wrench"></i>
-            </a>
-            <ul class="dropdown-menu dropdown-user">
-                <li>
-                    <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar la información</a>
-                </li>
-                <li>
-                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="ibox-content">
-        <div class="sk-spinner sk-spinner-wave">
-            <div class="sk-rect1"></div>
-            <div class="sk-rect2"></div>
-            <div class="sk-rect3"></div>
-            <div class="sk-rect4"></div>
-            <div class="sk-rect5"></div>
-        </div>
-        <!-- Filtro -->
-        <div class='form-row filter-row'>
-            <div class='form-group col-md-12'>
-                <div class="input-group placeholder-small">
-                </div>
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5><span id="QueryTitle"></span></h5>
+            <!-- Opciones -->
+            <div class="ibox-tools">
+                <a class="fullscreen-link">
+                    <i class="fa fa-expand"></i>
+                </a>
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-wrench"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li>
+                        <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar la información</a>
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                    </li>
+                </ul>
             </div>
         </div>
-        @{
-            Html.RenderPartial("_ViewControl");
-        }
+        <div class="ibox-content">
+            <div class="sk-spinner sk-spinner-wave">
+                <div class="sk-rect1"></div>
+                <div class="sk-rect2"></div>
+                <div class="sk-rect3"></div>
+                <div class="sk-rect4"></div>
+                <div class="sk-rect5"></div>
+            </div>
+            <!-- Filtro -->
+            <div class='form-row filter-row'>
+                <div class='form-group col-md-12'>
+                    <div class="input-group placeholder-small">
+                    </div>
+                </div>
+            </div>
+            @{
+                Html.RenderPartial("_ViewControl");
+            }
+        </div>
+        <!-- context menu -->
+        <!--<ul id="context-menu" class="dropdown-menu">
+            <li data-item="edit"><a>Edit</a></li>
+            <li data-item="delete"><a>Delete</a></li>
+            <li data-item="action1"><a>Action Here</a></li>
+            <li data-item="action2"><a>And Action Here</a></li>
+        </ul>-->
     </div>
-    <!-- context menu -->
-    <!--<ul id="context-menu" class="dropdown-menu">
-        <li data-item="edit"><a>Edit</a></li>
-        <li data-item="delete"><a>Delete</a></li>
-        <li data-item="action1"><a>Action Here</a></li>
-        <li data-item="action2"><a>And Action Here</a></li>
-    </ul>-->
-</div>
 
     @section Scripts {
         @Scripts.Render("~/bundles/jsCRUD")

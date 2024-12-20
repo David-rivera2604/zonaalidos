@@ -634,4 +634,13 @@
                    Viajero. Ajuste en Reporte de Cotizacion,se quita deducible
                    Hogar. En la emision se valida que para poliza grupo se pre selecccione y bloquee un tipo de plan
 1.6.87  04/12/2024 Se agrega Variaciones y cancelaciones para el ramo 302 y tambien se implementa la tabla de consultas de poliza para variaciones con el id 396.
+1.6.88  16/12/2024 Multirriesgo. Se agrega un funcionalidad para manejo de coberturas por contrato.
+                   Multirriesgo y Hogar. Validacion en generacion de documentos por poliza grupo PYMES y Hogar Agentes
+                   Variaciones. Se agrega popup para registrar coberturas - primera versión.
+                   Multiriesgo. Incorporacion de dato variable COD_TIPO_OCUP_POL
+                   Desactivacion de Campos Cicac en el KYC
+1.6.89  20/12/2024 Colocacion de Mensaje informativo en las vistas principales.
+                   Cicac. Ajuste que valida si no existe informacion de kyc no de error la asinacion de variables de cicac
+                   Variaciones. Implementacion actualización de tablas de recibos, plan de pagos, coberturas. 
+
 

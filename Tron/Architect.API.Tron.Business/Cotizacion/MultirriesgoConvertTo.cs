@@ -183,6 +183,7 @@ namespace Architect.API.Tron.Business.Cotizacion
 
 
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "COD_TIPO_OCUP_RGO", quoteInfo.cod_tip_ocup.ToString()));
+            datosVariables.Add(Util.DatoVariable(datosFijos, 0, "COD_TIPO_OCUP_POL", quoteInfo.cod_tip_ocup.ToString(),1));
 
 
 

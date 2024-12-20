@@ -6,6 +6,7 @@ app.HogarTotal = (function () {
     var setupData = null;
     var quoteData = null;
     var showCalculate = false;
+    var poliza_grupo = "";
 
     function Setup() {
 
@@ -136,6 +137,8 @@ app.HogarTotal = (function () {
                 setupData.polizagrupo = app.core.Data().lookups.filter(i => i.Key === 'MM_POLIZA_GRUPO')[0].Lkp.filter(l => l.Code === contracto + '')[0].NUM_POLIZA;
             }
 
+            poliza_grupo = setupData.polizagrupo;
+
             SettingReload();
 
             app.core.LookupDependency($('select#contrato').val(), 'subcontrato', 'MM_SUB_CONTRATOS', '', null, true,
@@ -144,7 +147,7 @@ app.HogarTotal = (function () {
                     app.ui.DropDownDisabled('#subcontrato', lkpData && lkpData.length == 0);
                 },
                 `cod_ramo=${setupData.cod_ramo}:num_contrato=`);
-        });
+        });       
     };
 
     function SettingReload() {
@@ -739,6 +742,9 @@ app.HogarTotal = (function () {
         if (Coberturas_Seleccionada(coberturas, 2010) || Coberturas_Seleccionada(coberturas, 2055) || Coberturas_Seleccionada(coberturas, 2056) || Coberturas_Seleccionada(coberturas, 2057) || Coberturas_Seleccionada(coberturas, 2012) || Coberturas_Seleccionada(coberturas, 2014)) {
             if (!localStorage.getItem('Roles').includes('ESPH')) {
                 Coberturas_ComportamientoDependencia('#sAObjetosvaliosos', false);
+            }
+            if (poliza_grupo == "2012410199312" || poliza_grupo == "2012410199320") {
+                Coberturas_ComportamientoDependencia('#sAObjetosvaliosos', true);
             }
             Coberturas_ComportamientoDependencia('#sAMobiliario', false);
         }

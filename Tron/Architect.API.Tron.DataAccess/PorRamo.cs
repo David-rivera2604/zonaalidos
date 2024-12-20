@@ -158,13 +158,15 @@ namespace Architect.API.Tron.DataAccess
         {
             List<Architect.API.Tron.Contracts.Ramo.a1002150> result = new List<Architect.API.Tron.Contracts.Ramo.a1002150>();
             string filter = string.Empty;
+            string filter2 = string.Empty;
+
             if (!string.IsNullOrEmpty(cod_cobincludeFilter))
             {
                 filter = string.Format("   AND cod_cob IN ({0})", cod_cobincludeFilter);
             }
             if (!string.IsNullOrEmpty(cod_cobExcludeFilter))
             {
-                filter = string.Format("   AND cod_cob NOT IN ({0})", cod_cobExcludeFilter);
+                filter2 = string.Format("   AND cod_cob NOT IN ({0})", cod_cobExcludeFilter);
             }
             Database.Select("SELECT COD_COB, NOM_COB, MCA_OBLIGATORIO" +
                              " FROM a1002150" +
@@ -172,7 +174,7 @@ namespace Architect.API.Tron.DataAccess
                             "   AND cod_ramo = :cod_ramo" +
                             "   AND cod_modalidad = :cod_modalidad" +
                             "   AND fec_validez <= :fec_validez" +
-                            filter +
+                            filter + filter2 +
                             " ORDER BY num_secu")
                     .AddParameter("cod_cia", Architect.DataFactory.Enumerations.DbType.Int32, 22, cod_cia)
                     .AddParameter("cod_ramo", Architect.DataFactory.Enumerations.DbType.Int32, 22, cod_ramo)

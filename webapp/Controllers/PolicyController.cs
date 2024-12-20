@@ -17,6 +17,11 @@ namespace aliados.Controllers
         public ActionResult Index()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
+
+            if (!string.IsNullOrEmpty(Architect.Utilities.Helpers.Settings.StringValue("Message")))
+            {
+                ViewBag.AlertMessage = Architect.Utilities.Helpers.Settings.StringValue("Message");
+            }
             return View();
         }
 

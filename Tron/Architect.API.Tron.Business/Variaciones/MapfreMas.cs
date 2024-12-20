@@ -1,5 +1,6 @@
 ﻿using Architect.API.Tron.Business.Backoffice;
 using Architect.API.Tron.Contracts.Variaciones;
+using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
 using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
@@ -135,12 +136,50 @@ namespace Architect.API.Tron.Business.Variaciones
                     }
                 }
 
+                if(quoteInfo.NewCoverages?.Count> 0)
+                {
+                    Architect.API.Tron.Contracts.Variaciones.s2000040 s2000040Instance = new Contracts.Variaciones.s2000040();
+
+                    foreach(var item in quoteInfo.NewCoverages)
+                    {
+                        s2000040Instance = new s2000040
+                        {
+                            Fec_Tratamiento = Fec_Tratamiento,
+                            Tip_Mvto_Batch = Tip_mvto_batch,
+                            Cod_Cia = quoteInfo.cod_cia,
+                            Num_Poliza = quoteInfo.num_poliza,
+                            Num_Riesgo = item.riesgo,
+                            Cod_Cob = item.codigo,
+                            Mca_Seleccion = "*",
+                            Cod_Limite = null,
+                            Suma_Aseg = 0,
+                            Cod_Franquicia = null,
+                            Tasa_Cob = null
+                        };
+
+                        Architect.API.Tron.DataAccess.Variaciones.S2000040.Create(s2000040Instance);
+                    }
+
+                }
+
                 result = DataAccess.Variaciones.VariacionIssue.Issue(quoteInfo.cod_cia, quoteInfo.num_poliza, Fec_Tratamiento, Tip_mvto_batch, "N", quoteInfo.MCA_FEC_EFEC_SYS);
 
-                if (!string.IsNullOrEmpty(result.ProcessResult.txt_error))
+                int countError = 0;
+                if (result.ProcessResult?.Count > 0)
+                {
+                    foreach (var item in result.ProcessResult)
+                    {
+                        if (!string.IsNullOrEmpty(item.txt_error))
+                        {
+                            countError = countError + 1;
+                            Utilities.Log.ErrorLog("Variacion: " + quoteInfo.num_poliza, item.txt_error, "Variacion.Issue.MapfreMas");
+                        }
+                    }
+                }
+
+                if(countError > 0)
                 {
                     result.McaError = "S";
-                    Utilities.Log.ErrorLog("Variacion: " + result.ProcessResult.num_poliza, result.ProcessResult.txt_error, "Variacion.Issue.MapfreMas");
                 }
                 else
                 {
@@ -150,8 +189,12 @@ namespace Architect.API.Tron.Business.Variaciones
             catch (Exception ex)
             {
                 result.McaError = "S";
-                result.ProcessResult.txt_error = ex.Message;
-                Utilities.Log.ErrorLog("Cancelacion: " + result.ProcessResult.num_poliza, ex.Message, "Variacion.Cancelation.MapfreMas");
+                result.ProcessResult.Add(new VariacionIssueProcessResult
+                {
+                    num_poliza = quoteInfo.num_poliza,
+                    txt_error = ex.Message
+                });
+                Utilities.Log.ErrorLog("Cancelacion: " + quoteInfo.num_poliza, ex.Message, "Variacion.Cancelation.MapfreMas");
             }
             return result;
         }
@@ -189,10 +232,16 @@ namespace Architect.API.Tron.Business.Variaciones
             {
                 result = DataAccess.Variaciones.VariacionIssue.Issue(quoteInfo.cod_cia, quoteInfo.num_poliza, Fec_Tratamiento, Tip_mvto_batch, "S", quoteInfo.MCA_FEC_EFEC_SYS);
 
-                if (!string.IsNullOrEmpty(result.ProcessResult?.txt_error))
+                if (result.ProcessResult?.Count > 0)
                 {
-                    result.McaError = "S";
-                    Utilities.Log.ErrorLog("Cancelacion: " + result.ProcessResult.num_poliza, result.ProcessResult.txt_error, "Variacion.Cancelation.MapfreMas");
+                    foreach (var item in result.ProcessResult)
+                    {
+                        if (!string.IsNullOrEmpty(item.txt_error))
+                        {
+                            result.McaError = "S";
+                            Utilities.Log.ErrorLog("Cancelation: " + quoteInfo.num_poliza, item.txt_error, "Variacion.Cancelation.MapfreMas");
+                        }
+                    }
                 }
                 else
                 {
@@ -202,14 +251,18 @@ namespace Architect.API.Tron.Business.Variaciones
             catch (Exception ex)
             {
                 result.McaError = "S";
-                result.ProcessResult.txt_error = ex.Message;
-                Utilities.Log.ErrorLog("Cancelacion: " + result.ProcessResult.num_poliza, ex.Message, "Variacion.Cancelation.MapfreMas");
+                result.ProcessResult.Add(new VariacionIssueProcessResult
+                {
+                    num_poliza = quoteInfo.num_poliza,
+                    txt_error = ex.Message
+                });
+                Utilities.Log.ErrorLog("Cancelacion: " + quoteInfo.num_poliza, ex.Message, "Variacion.Cancelation.MapfreMas");
             }
 
             return result;
         }
 
-        public static VariacionIssueResult ManageAuthorizationCT(int cod_cia, int cod_ramo, string num_poliza, string mca_autoriza)
+        public static VariacionIssueResult ManageAuthorizationCT(int cod_cia, int cod_ramo, string num_poliza, int num_spto,string mca_autoriza)
         {
             VariacionIssueResult result = new VariacionIssueResult();
             bool resultCT = false;
@@ -223,19 +276,39 @@ namespace Architect.API.Tron.Business.Variaciones
                 if (!resultCT)
                 {
                     result.McaError = "S";
-                    result.ProcessResult.txt_error = "Error al autorizar el CT";
-                    Utilities.Log.ErrorLog("Autorizacion-Rechazo CT: " + num_poliza, result.ProcessResult.txt_error, "Variacion.Autorizacion-Rechazo.MapfreMas");
+                    result.ProcessResult.Add(new VariacionIssueProcessResult
+                    {
+                        num_poliza = num_poliza,
+                        txt_error = "Error al autorizar el CT"
+                    });
+                    Utilities.Log.ErrorLog("Autorizacion-Rechazo CT: " + num_poliza, "Error al autorizar el CT", "Variacion.Autorizacion-Rechazo.MapfreMas");
                 }
                 else
                 {
+                    if(num_spto>0 && mca_autoriza.Equals("S"))
+                    {
+                        result = GetCoverageAndReceipts(cod_cia, num_poliza);
+                        result.Recibos = DataAccess.Variaciones.VariacionIssue.GetRecibos(cod_cia, num_poliza, num_spto);
+
+                    }
+                        
+
                     result.McaError = "N";
-                    result.ProcessResult.txt_error = "Se autorizó correctamente el CT";
+                    result.ProcessResult.Add(new VariacionIssueProcessResult
+                    {
+                        num_poliza = num_poliza,
+                        txt_error = "Se autorizó correctamente el CT"
+                    });
                 }
             }
             catch (Exception ex)
             {
                 result.McaError = "S";
-                result.ProcessResult.txt_error = "Por favor intente nuevamente y en caso de persistir el problema contacte el personal de soporte";
+                result.ProcessResult.Add(new VariacionIssueProcessResult
+                {
+                    num_poliza = num_poliza,
+                    txt_error = "Por favor intente nuevamente y en caso de persistir el problema contacte el personal de soporte"
+                });
                 Utilities.Log.ErrorLog("Autorizacion-Rechazo CT: " + num_poliza, ex.Message, "Variacion.Autorizacion-Rechazo.MapfreMas");
             }
 
@@ -452,6 +525,61 @@ namespace Architect.API.Tron.Business.Variaciones
             }
             return values;
         }
+
+        private static VariacionIssueResult GetCoverageAndReceipts(int cod_cia, string num_poliza)
+        {
+            VariacionIssueResult result = new VariacionIssueResult();
+
+            List<Architect.API.Tron.Contracts.Poliza.Cobertura> coberturas = DataAccess.LeerPoliza.PP_Lee_A2000040_ZA(cod_cia, num_poliza, null);
+            List<Architect.API.Tron.Contracts.Poliza.ReciboCalculado> recibos = Architect.API.Tron.DataAccess.LeerPoliza.PP_Lee_A2990700_Result_ZA(cod_cia, num_poliza, null, 0, 0, null);
+
+            foreach(var item in coberturas)
+            {
+                result.coberturas.Add(new Contracts.Comun.Cobertura
+                {
+                    seleccionado = true,
+                    codigo = item.cod_cob,
+                    nombre = item.nom_cob,
+                    capital = item.suma_aseg,
+                    primatotal = item.imp_total,
+                    deducible = item.deducible,
+                    riesgo = item.num_riesgo
+                });
+            }
+
+            foreach (var item in recibos)
+            {
+                result.plandepago.Add(new Contracts.Comun.PlanDePago
+                {
+                    recibo = item.NUM_RECIBO,
+                    cuota = item.NUM_CUOTA,
+                    numspto = item.NUM_SPTO,
+                    tipsituacion = item.TIP_SITUACION,
+                    fechadesde = item.FEC_EFEC_RECIBO,
+                    fechahasta = item.FEC_VCTO_RECIBO,
+                    primaneta = item.IMP_NETA,
+                    iVA = item.IMP_IMPTOS,
+                    recargoporfraccionamiento = item.IMP_INTERES,
+                    importetotal = item.IMP_RECIBO
+                });
+            }
+
+            return result;
+        }
+
+
+        //public static List<Receipt> GetRecibos(int cod_cia, string num_poliza, int num_spto)
+        //{
+        //    try
+        //    {
+        //        return DataAccess.Variaciones.VariacionIssue.GetRecibos(cod_cia, num_poliza, num_spto);
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
 
     }
 }

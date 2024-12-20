@@ -171,7 +171,9 @@
     <Compile Include="Tramitacion\Response\Tramite.cs" />
     <Compile Include="Tramitacion\Response\Nivel.cs" />
     <Compile Include="Tramitacion\Response\Siniestro.cs" />
+    <Compile Include="Variaciones\g1010031.cs" />
     <Compile Include="Variaciones\MapfreMas.cs" />
+    <Compile Include="Variaciones\s2000040.cs" />
     <Compile Include="Variaciones\s2000020.cs" />
     <Compile Include="Variaciones\s2000030.cs" />
     <Compile Include="Variaciones\VariacionIssueResult.cs" />
