@@ -639,5 +639,8 @@
                    Variaciones. Se agrega popup para registrar coberturas - primera versión.
                    Multiriesgo. Incorporacion de dato variable COD_TIPO_OCUP_POL
                    Desactivacion de Campos Cicac en el KYC
+1.6.89  20/12/2024 Colocacion de Mensaje informativo en las vistas principales.
+                   Cicac. Ajuste que valida si no existe informacion de kyc no de error la asinacion de variables de cicac
+                   Variaciones. Implementacion actualización de tablas de recibos, plan de pagos, coberturas. 
 
 
