@@ -15,6 +15,8 @@ namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts.Requests
 
         public List<Transaction> payment { get; set; }
 
+        public subscription subscription { get; set; }
+
 
         // subscription SubscriptionResponse
 

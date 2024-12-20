@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Architect.API.Core.Business.General;
 using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
+using Architect.Payment.Integrations.Contracts;
 using Architect.Utilities.Extensions;
 using Newtonsoft.Json;
 
@@ -68,12 +69,7 @@ namespace Architect.API.Tron.Business.Backoffice
             // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
             if (result != null && result.changed && result.status == "APPROVED")
             {
-                if (IsEmployee)
-                {
-                    result.OnlinePayment.AgentCode = 999999;
-                }
-                bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode, "Placetopay");
-
+                await PaymentAprroved(result);
             }
         }
 
@@ -180,15 +176,24 @@ namespace Architect.API.Tron.Business.Backoffice
             // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
             if (result.changed && result.status == "APPROVED")
             {
-                if (IsEmployee)
-                {
-                    result.OnlinePayment.AgentCode = 999999;
-                }
-                bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode, "Placetopay");
+                await PaymentAprroved(result);
 
             }
 
             return result;
+        }
+
+        private static async Task PaymentAprroved(InformationRequest result)
+        {
+            if (result.subscribe)
+            {
+                //TODO: Llamado al package para almacenar el token.
+            }
+            if (IsEmployee)
+            {
+                result.OnlinePayment.AgentCode = 999999;
+            }
+            bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode, "Placetopay");
         }
 
         /// <summary>

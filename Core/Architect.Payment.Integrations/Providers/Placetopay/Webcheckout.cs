@@ -158,6 +158,10 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
                         result.message = payment.status.message;
                         result.payerName = internalResult.request?.payer?.name;
                         result.payerSurname = internalResult.request?.payer?.surname;
+                        if (internalResult.request != null && internalResult.request.subscribe)
+                        {
+                            result.subscribe = internalResult.request.subscribe;
+                        }
                         break;
                     case "REJECTED":
                         Contracts.PaymentRequest paymentr = internalResult.request.payment;
@@ -167,6 +171,10 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
                         result.total = paymentr.amount.total;
                         result.message = internalResult.status.message;
                         result.date = internalResult.status.date;
+                        if (internalResult.request != null && internalResult.request.subscribe)
+                        {
+                            result.subscribe = internalResult.request.subscribe;
+                        }
                         break;
                 }
 
