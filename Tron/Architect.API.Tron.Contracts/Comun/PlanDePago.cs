@@ -40,6 +40,8 @@ namespace Architect.API.Tron.Contracts.Comun
         /// Importe total.
         /// </summary>
         [DataMember(), JsonProperty()] public double importetotal { get; set; }
+        [DataMember(), JsonProperty()] public int numspto { get; set; }
+        [DataMember(), JsonProperty()] public string tipsituacion { get; set; }
 
 
     }

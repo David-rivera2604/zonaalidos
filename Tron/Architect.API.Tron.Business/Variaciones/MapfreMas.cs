@@ -1,5 +1,6 @@
 ﻿using Architect.API.Tron.Business.Backoffice;
 using Architect.API.Tron.Contracts.Variaciones;
+using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
 using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
@@ -261,7 +262,7 @@ namespace Architect.API.Tron.Business.Variaciones
             return result;
         }
 
-        public static VariacionIssueResult ManageAuthorizationCT(int cod_cia, int cod_ramo, string num_poliza, string mca_autoriza)
+        public static VariacionIssueResult ManageAuthorizationCT(int cod_cia, int cod_ramo, string num_poliza, int num_spto,string mca_autoriza)
         {
             VariacionIssueResult result = new VariacionIssueResult();
             bool resultCT = false;
@@ -284,6 +285,14 @@ namespace Architect.API.Tron.Business.Variaciones
                 }
                 else
                 {
+                    if(num_spto>0 && mca_autoriza.Equals("S"))
+                    {
+                        result = GetCoverageAndReceipts(cod_cia, num_poliza);
+                        result.Recibos = DataAccess.Variaciones.VariacionIssue.GetRecibos(cod_cia, num_poliza, num_spto);
+
+                    }
+                        
+
                     result.McaError = "N";
                     result.ProcessResult.Add(new VariacionIssueProcessResult
                     {
@@ -516,6 +525,61 @@ namespace Architect.API.Tron.Business.Variaciones
             }
             return values;
         }
+
+        private static VariacionIssueResult GetCoverageAndReceipts(int cod_cia, string num_poliza)
+        {
+            VariacionIssueResult result = new VariacionIssueResult();
+
+            List<Architect.API.Tron.Contracts.Poliza.Cobertura> coberturas = DataAccess.LeerPoliza.PP_Lee_A2000040_ZA(cod_cia, num_poliza, null);
+            List<Architect.API.Tron.Contracts.Poliza.ReciboCalculado> recibos = Architect.API.Tron.DataAccess.LeerPoliza.PP_Lee_A2990700_Result_ZA(cod_cia, num_poliza, null, 0, 0, null);
+
+            foreach(var item in coberturas)
+            {
+                result.coberturas.Add(new Contracts.Comun.Cobertura
+                {
+                    seleccionado = true,
+                    codigo = item.cod_cob,
+                    nombre = item.nom_cob,
+                    capital = item.suma_aseg,
+                    primatotal = item.imp_total,
+                    deducible = item.deducible,
+                    riesgo = item.num_riesgo
+                });
+            }
+
+            foreach (var item in recibos)
+            {
+                result.plandepago.Add(new Contracts.Comun.PlanDePago
+                {
+                    recibo = item.NUM_RECIBO,
+                    cuota = item.NUM_CUOTA,
+                    numspto = item.NUM_SPTO,
+                    tipsituacion = item.TIP_SITUACION,
+                    fechadesde = item.FEC_EFEC_RECIBO,
+                    fechahasta = item.FEC_VCTO_RECIBO,
+                    primaneta = item.IMP_NETA,
+                    iVA = item.IMP_IMPTOS,
+                    recargoporfraccionamiento = item.IMP_INTERES,
+                    importetotal = item.IMP_RECIBO
+                });
+            }
+
+            return result;
+        }
+
+
+        //public static List<Receipt> GetRecibos(int cod_cia, string num_poliza, int num_spto)
+        //{
+        //    try
+        //    {
+        //        return DataAccess.Variaciones.VariacionIssue.GetRecibos(cod_cia, num_poliza, num_spto);
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
 
     }
 }
