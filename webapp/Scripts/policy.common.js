@@ -23,7 +23,7 @@ app.policy_common = (function () {
         app.core.Get(app.setting.apipath + 'v1/Policy/Information?id=' + id)
             .done(function (data, textStatus, jqXHR) {
                 var urlServer = app.setting.apibase + '/AliadoServReports/api/Report/Build';
-                //urlServer = 'http://localhost:5870/api/Report/Build';
+                urlServer = 'https://localhost:7050/Report/Build';
                 //urlServer = 'https://appqa.mapfrecr.com' + '/AliadoServReports/api/Report/Build';
                 var data2 = {
                     Source: JSON.stringify(data),
@@ -33,8 +33,9 @@ app.policy_common = (function () {
                 };
                 $.post(urlServer, data2, { responseType: 'arraybuffer' })
                     .then(function (response) {
-                        var file = new Blob([response.Data], { type: 'application/octet-binary' });
-                        var blob = b64StrtoBlob(response.Data, 'application/pdf');
+                        var pdf = response.Data === undefined ? response.data : response.Data
+                        var file = new Blob([pdf], { type: 'application/octet-binary' });
+                        var blob = b64StrtoBlob(pdf, 'application/pdf');
                         var blobUrl = URL.createObjectURL(blob);
                         window.open(blobUrl);
                     });
