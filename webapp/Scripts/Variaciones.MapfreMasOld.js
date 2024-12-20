@@ -1490,7 +1490,7 @@ app.EmisionMapfreMas = (function () {
     }
 
     function Controls_sum_enable(setupData) {
-        console.log("setupData:", setupData);
+
 
         if (setupData) {
             $('#IMP_AUTO_RC').prop('disabled', !setupData.AUTO_RC);
@@ -1502,9 +1502,14 @@ app.EmisionMapfreMas = (function () {
             $('#IMP_AUTO_ROB').prop('disabled', !setupData.AUTO_ROB);
             $('#DED_AUTO_ROB').prop('disabled', !setupData.AUTO_ROB);
 
-            $('#IMP_AUTO_GMO').prop('disabled', !setupData.AUTO_GMO);
-
-            $('#IMP_AUTO_ACO').prop('disabled', !setupData.AUTO_ACO);
+            if (COD_PLAN_AUTO === 31) {
+                $('#IMP_AUTO_GMO').prop('disabled', COD_PLAN_AUTO === 31);
+                $('#IMP_AUTO_ACO').prop('disabled', COD_PLAN_AUTO === 31);
+            }
+            else {
+                $('#IMP_AUTO_GMO').prop('disabled', !setupData.AUTO_GMO);
+                $('#IMP_AUTO_ACO').prop('disabled', !setupData.AUTO_ACO);
+            }
 
             $('#IMP_AUTO_RAD').prop('disabled', !setupData.AUTO_RAD);
             $('#DED_AUTO_RAD').prop('disabled', !setupData.AUTO_RAD);
@@ -1519,12 +1524,14 @@ app.EmisionMapfreMas = (function () {
 
             $('#IMP_AUTO_MECA').prop('disabled', !setupData.AUTO_MECA);
 
-            if (!setupData.AUTO_CRI)$('#DED_AUTO_CRI').val("0");
+            if (!setupData.AUTO_CRI) $('#DED_AUTO_CRI').val("0");
+        }
+        else {
+            $('#IMP_AUTO_GMO').prop('disabled', COD_PLAN_AUTO === 31);
+            $('#IMP_AUTO_ACO').prop('disabled', COD_PLAN_AUTO === 31);
         }
 
         //Reglas del ramo 302
-        $('#IMP_AUTO_GMO').prop('disabled', COD_PLAN_AUTO === 31);
-        $('#IMP_AUTO_ACO').prop('disabled', COD_PLAN_AUTO === 31);
 
         $('#IMP_AUTO_CYV').prop('disabled', true);
         $('#IMP_AUTO_RAD').prop('disabled', true);
