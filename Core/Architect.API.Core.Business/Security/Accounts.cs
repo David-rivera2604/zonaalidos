@@ -206,7 +206,7 @@ namespace Architect.API.Core.Business.Security
                         //Solo actualizara el usuario cuando este entre desde login
                         if (firstInit) { UserIdActual = tokenItem; }
 
-                        List<Contracts.General.Setting> settings = DataAccess.General.Setting.Retrieve(user.CompanyId);
+                        List<Contracts.General.Setting> settings = Business.Settings.SettingByCompany(user.CompanyId);
                         if (settings.Count > 0)
                         {
                             foreach (Contracts.General.Setting item in settings.Where(r => r.LocalStorageEnabled))

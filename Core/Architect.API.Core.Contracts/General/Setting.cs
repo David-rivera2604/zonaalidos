@@ -8,6 +8,7 @@ namespace Architect.API.Core.Contracts.General
 {
     public class Setting
     {
+        public int CompanyId { get; set; }
         public string Key { get; set; }
 
         public string Value { get; set; }
