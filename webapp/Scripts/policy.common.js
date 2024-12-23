@@ -20,6 +20,7 @@ app.policy_common = (function () {
     };
 
     function Print(id) {
+        $('.ibox-content').toggleClass('sk-loading');
         app.core.Get(app.setting.apipath + 'v1/Policy/Information?id=' + id)
             .done(function (data, textStatus, jqXHR) {
                 var urlServer = app.setting.apibase + '/AliadoServReports/api/Report/Build';
@@ -39,6 +40,8 @@ app.policy_common = (function () {
                         var blobUrl = URL.createObjectURL(blob);
                         window.open(blobUrl);
                     });
+            }).always(function () {
+                $('.ibox-content').toggleClass('sk-loading');
             });
     };
 
@@ -70,7 +73,7 @@ app.policy_common = (function () {
             return classValue;
         },
         PolicyStatusFormatter: function (value, row, index, field) {
-            return '<span class="label ' + app.policy_common.PolicyStatus2CSSClass(value)  + '">' + value + '</span>';
+            return '<span class="label ' + app.policy_common.PolicyStatus2CSSClass(value) + '">' + value + '</span>';
         }
     };
 }());

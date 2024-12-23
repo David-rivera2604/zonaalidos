@@ -34,9 +34,7 @@ namespace Architect.API.Core.Business.Security
         public static Contracts.Security.AuthenticationResponse Authentication(Contracts.Security.AuthenticationRequest authenticationRequest, ref Contracts.Security.Token token, bool firstInit = false)
         {
 
-
-
-
+            bool developerMode = Architect.Utilities.Helpers.Settings.StringValue("Working.Mode", "Development").Equals("Development", StringComparison.CurrentCultureIgnoreCase);
 
             Contracts.Security.AuthenticationResponse result = new Contracts.Security.AuthenticationResponse() { Settings = new List<SettingItem>() };
             Contracts.Security.UserMember user = null;
@@ -198,7 +196,7 @@ namespace Architect.API.Core.Business.Security
                             IdentificationType = agentInfo.tip_docum,
                             Identification = agentInfo.cod_docum,
                             UserName = result.UserName,
-                            Settings= new List<SettingItem>()
+                            Settings = new List<SettingItem>()
                         };
                         token = tokenItem;
 
@@ -297,7 +295,7 @@ namespace Architect.API.Core.Business.Security
 
                         }
 
-                        if (!bypass && !authenticationRequest.EmployeeMode)
+                        if (!developerMode && !bypass && !authenticationRequest.EmployeeMode)
                         {
                             //if (user.Password.Equals("."))
                             //    result.MustChangePassword = true;
@@ -316,7 +314,7 @@ namespace Architect.API.Core.Business.Security
                             UserAgent = authenticationRequest.UserAgent
                         });
                     }
-                    else if (!bypass)
+                    else if (!developerMode && !bypass)
                     {
                         if (!authenticationRequest.EmployeeMode)
                         {
