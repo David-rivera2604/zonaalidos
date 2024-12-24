@@ -1,47 +1,15 @@
 ﻿var app = app || {};
 app.policy_common = (function () {
-
-    function b64StrtoBlob(b64Data, contentType, sliceSize) {
-        contentType = contentType || '';
-        sliceSize = sliceSize || 512;
-        var byteCharacters = atob(b64Data);
-        var byteArrays = [];
-        for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-            var slice = byteCharacters.slice(offset, offset + sliceSize);
-            var byteNumbers = new Array(slice.length);
-            for (var i = 0; i < slice.length; i++) {
-                byteNumbers[i] = slice.charCodeAt(i);
-            }
-            var byteArray = new Uint8Array(byteNumbers);
-            byteArrays.push(byteArray);
-        }
-        var blob = new Blob(byteArrays, { type: contentType });
-        return blob;
-    };
-
     function Print(id) {
+
         $('.ibox-content').toggleClass('sk-loading');
         app.core.Get(app.setting.apipath + 'v1/Policy/Information?id=' + id)
             .done(function (data, textStatus, jqXHR) {
-                var urlServer = app.setting.apibase + '/AliadoServReports/api/Report/Build';
-                urlServer = 'https://localhost:7050/Report/Build';
-                //urlServer = 'https://appqa.mapfrecr.com' + '/AliadoServReports/api/Report/Build';
-                var data2 = {
-                    Source: JSON.stringify(data),
-                    Type: 'pdf',
-                    ReportName: data.ProductAlias + data.Prefix + '.repx',
-                    Path: ''
-                };
-                $.post(urlServer, data2, { responseType: 'arraybuffer' })
-                    .then(function (response) {
-                        var pdf = response.Data === undefined ? response.data : response.Data
-                        var file = new Blob([pdf], { type: 'application/octet-binary' });
-                        var blob = b64StrtoBlob(pdf, 'application/pdf');
-                        var blobUrl = URL.createObjectURL(blob);
-                        window.open(blobUrl);
+
+                app.core.api_report(data.ProductAlias + data.Prefix, data)
+                    .then(data => {
+                        $('.ibox-content').toggleClass('sk-loading');
                     });
-            }).always(function () {
-                $('.ibox-content').toggleClass('sk-loading');
             });
     };
 

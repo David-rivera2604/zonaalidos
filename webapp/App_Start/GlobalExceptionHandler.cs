@@ -23,15 +23,32 @@ namespace aliados.App_Start
                 statusCode = HttpStatusCode.BadRequest;
             }
 
-            context.Result = new ResponseMessageResult(
-                context.Request.CreateResponse(statusCode,
-                new
-                {
-                    ExceptionMessage = context.Exception.Message,
-                    Message = context.Exception.Message,
-                    ExceptionType = exceptionType,
-                    StackTrace = context.Exception.StackTrace
-                }));
+            if (Architect.Utilities.Helpers.Settings.StringValue("Working.Mode", "Development").Equals("Development", StringComparison.CurrentCultureIgnoreCase))
+            {
+                context.Result = new ResponseMessageResult(
+                        context.Request.CreateResponse(statusCode,
+                        new
+                        {
+                            ExceptionMessage = context.Exception.Message,
+                            Message = context.Exception.Message,
+                            ExceptionType = exceptionType,
+                            StackTrace = context.Exception.StackTrace
+                        }));
+            }
+            else
+            {
+                context.Result = new ResponseMessageResult(
+                        context.Request.CreateResponse(statusCode,
+                        new
+                        {
+                            ExceptionMessage = "Ha ocurrido un error inesperado en la aplicación. Por favor, intente nuevamente más tarde. Si el problema persiste, contacte al soporte técnico para obtener asistencia.",
+                            Message = "Ha ocurrido un error inesperado en la aplicación. Por favor, intente nuevamente más tarde. Si el problema persiste, contacte al soporte técnico para obtener asistencia.",
+                            ExceptionType = exceptionType,
+                            StackTrace = string.Empty
+                        }));
+            }
+
+
 
 
             return Task.FromResult(0);

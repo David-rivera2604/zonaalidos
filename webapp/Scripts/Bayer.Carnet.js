@@ -41,26 +41,10 @@ app.BayerCarnet = (function () {
             $('#print').click(function (e) {
                 e.preventDefault();
                 $('.sidebar-content').toggleClass('sk-loading');
-                app.core.api_report('CarnetDigital.repx', info)
+                app.core.api_report('CarnetDigital', info)
                     .then(data => {
                         $('.sidebar-content').toggleClass('sk-loading');
                     });
-
-                //var urlServer = 'https://appqa.mapfrecr.com' + '/AliadoServReports/api/Report/Build';
-                ////urlServer = 'http://216.177.200.23/Report.Services/api/Report/Build';
-                //var data2 = {
-                //    Source: JSON.stringify(info),
-                //    Type: 'pdf',
-                //    ReportName: 'CarnetDigital.repx',
-                //    Path: ''
-                //};
-                //$.post(urlServer, data2, { responseType: 'arraybuffer' })
-                //    .then(function (response) {
-                //        var file = new Blob([response.Data], { type: 'application/octet-binary' });
-                //        var blob = app.core.b64StrtoBlob(response.Data, 'application/pdf');
-                //        var blobUrl = URL.createObjectURL(blob);
-                //        window.open(blobUrl);
-                //    });
             });
 
         }

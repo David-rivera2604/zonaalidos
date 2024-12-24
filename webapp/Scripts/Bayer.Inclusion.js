@@ -216,7 +216,7 @@ app.BayerInclusion = (function () {
                     $('#VisualizationsEdtFormRevised').removeClass('d-none');
                     $('#VisualizationsEdtFormDelete').removeClass('d-none');
                     $('#VisualizationsEdtFormDraft').removeClass('d-none');
-                } else 
+                } else
                     app.ui.DataEntryBehavior('#VisualizationsEdtForm', 'disabled');
                 break;
             case 4: //Por aceptar
@@ -551,19 +551,10 @@ app.BayerInclusion = (function () {
                                 break;
                         }
                     }
-                    var urlServer = app.setting.apibase + '/AliadoServReports/api/Report/Build';
-                    var data2 = {
-                        Source: JSON.stringify(data),
-                        Type: 'pdf',
-                        ReportName: 'bayer.repx',
-                        Path: ''
-                    };
-                    $.post(urlServer, data2, { responseType: 'arraybuffer' })
-                        .then(function (response) {
-                            var file = new Blob([response.Data], { type: 'application/octet-binary' });
-                            var blob = b64StrtoBlob(response.Data, 'application/pdf');
-                            var blobUrl = URL.createObjectURL(blob);
-                            window.open(blobUrl);
+                    $('.sidebar-content').toggleClass('sk-loading');
+                    app.core.api_report('bayer', data)
+                        .then(data => {
+                            $('.sidebar-content').toggleClass('sk-loading');
                         });
                 });
         });

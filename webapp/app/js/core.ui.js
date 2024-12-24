@@ -1,6 +1,89 @@
 ﻿var app = app || {};
 app.ui = (function () {
 
+    async function obtenerEtiqueta(campo) {
+        // Método 1: Buscar etiqueta con el atributo 'for' que coincide con el 'id' del campo
+        if (campo.id) {
+            const etiquetaFor = document.querySelector(`label[for="${campo.id}"]`);
+            if (etiquetaFor) {
+                return etiquetaFor.textContent.trim();
+            }
+        }
+
+        // Método 2: Verificar si el campo está dentro de una etiqueta <label>
+        let etiquetaPadre = campo.closest('label');
+        if (etiquetaPadre) {
+            // Remover el texto del campo de entrada de la etiqueta
+            let textoEtiqueta = etiquetaPadre.cloneNode(true);
+            textoEtiqueta.removeChild(textoEtiqueta.querySelector('input, select, textarea'));
+            return textoEtiqueta.textContent.trim();
+        }
+
+        // Si no se encuentra ninguna etiqueta asociada
+        return '';
+    }
+    async function listarCampos(formId) {
+        const formulario = document.getElementById(formId);
+
+        if (!formulario) {
+            console.error('Formulario no encontrado');
+            return null;
+        }
+
+        // Accede a todos los elementos del formulario
+        const elementos = formulario.elements;
+
+        // Crea una lista para almacenar los detalles de los campos
+        const listaCampos = [];
+
+        // Recorre cada elemento del formulario
+        for (let i = 0; i < elementos.length; i++) {
+            const elemento = elementos[i];
+
+            // Excluye los botones de tipo submit/reset
+            if (elemento.type !== 'submit' && elemento.type !== 'reset' && elemento.type !== 'button' && elemento.type !== 'fieldset') {
+                listaCampos.push({
+                    nombre: elemento.name,
+                    id: elemento.id,
+                    tipo: elemento.type,
+                    etiqueta: await obtenerEtiqueta(elemento)
+                });
+            }
+        }
+        return listaCampos;
+    }
+    async function parseResponse(responseStr) {
+        const campos = {};
+        const lineas = responseStr.trim().split('\n');
+
+        lineas.forEach(linea => {
+            // Verificar si la línea comienza con 'field'
+            if (linea.startsWith('field')) {
+                // Dividir la línea por '|'
+                const partes = linea.split('|');
+                if (partes.length === 2) {
+                    const identificador = partes[0].replace('field', '').trim();
+                    const valor = partes[1].trim();
+                    campos[identificador] = valor !== 'NO_DATA' ? valor : '';
+                }
+            }
+        });
+
+        return campos;
+    }
+    async function llenarFormulario(formId, response) {
+        const campos = await parseResponse(response);
+        const formulario = document.getElementById(formId);
+
+        // Iterar sobre cada campo y asignar el valor correspondiente
+        for (const [identificador, valor] of Object.entries(campos)) {
+            const campo = formulario.querySelector(`[id="${identificador}"], [name="${identificador}"]`);
+            if (campo) {
+                campo.value = valor;
+            } 
+        }
+    }
+
     return {
         IntegerValueToString: function (value, defaultValue) {
             if (value === null || value === 0) {
@@ -1330,6 +1413,31 @@ app.ui = (function () {
         },
         Redirect: function (url) {
             window.location.href = url;
+        },
+        GetFormFields: async function (formId) {
+            if (formId == null)
+                formId = document.forms[0].id;
+
+            return await listarCampos(formId);
+        },
+        GetSmartFormFields: async function (formId) {
+            if (formId == null)
+                formId = document.forms[0].id;
+
+            let fields = await listarCampos(formId)
+            let result = '';
+            let desc = '';
+            fields.forEach(function (value, index, array) {
+                desc = value.etiqueta == '' ? value.id : value.etiqueta;
+                result += `field ${value.id}|${desc}\n`;
+            });
+            result += `END_RESPONSE\n`;
+            return result;
+        },
+        SetSmartFormFields: async function (formId, data) {
+            if (formId == null)
+                formId = document.forms[0].id;
+            await llenarFormulario(formId, data);
         }
     };
 })();

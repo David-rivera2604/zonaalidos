@@ -10,20 +10,10 @@ app.Cotizacion = (function () {
 
     return {
         Imprimir: function (name, data) {
-            var urlServer = app.setting.apibase + '/AliadoServReports/api/Report/Build';
-            //urlServer = 'http://216.177.200.23/Report.Services/api/Report/Build';
-            var data2 = {
-                Source: JSON.stringify(data),
-                Type: 'pdf',
-                ReportName: name + '.repx',
-                Path: ''
-            };
-            $.post(urlServer, data2, { responseType: 'arraybuffer' })
-                .then(function (response) {
-                    var file = new Blob([response.Data], { type: 'application/octet-binary' });
-                    var blob = app.core.b64StrtoBlob(response.Data, 'application/pdf');
-                    var blobUrl = URL.createObjectURL(blob);
-                    window.open(blobUrl);
+            $('.ibox-content').toggleClass('sk-loading');
+            app.core.api_report(name, data)
+                .then(data => {
+                    $('.ibox-content').toggleClass('sk-loading');
                 });
         },
         EnviarCertificado: function (num_poliza, num_riesgo, correoprincipal, correocopia1, correocopia2) {

@@ -6,7 +6,8 @@ app.setting = {
     apipath: 'http://localhost:8081/aliados/api/',
     basepath: '/Aliados/',
     viewpath: 'http://localhost:8081/aliados/',
-    entityapi: 'https://appqa.mapfrecr.com/datapi/api/entity'
+    entityapi: 'https://appqa.mapfrecr.com/datapi/api/entity',
+    reportapi: 'https://appqa.mapfrecr.com/aliadoservreports'
 };
 // CONSERVAR DEL ORIGINAL HASTA AQUI
 
@@ -636,18 +637,12 @@ app.core = (function () {
     };
 
     function report(reportName, data) {
-        var urlServer = app.setting.apibase + '/AliadoServReports/api/Report/Build';
-        //urlServer = 'http://localhost:5870/api/Report/Build';
-        urlServer = 'https://appqa.mapfrecr.com' + '/AliadoServReports/api/Report/Build';
-
         let reportParameters = {
             Source: JSON.stringify(data),
-            Type: 'pdf',
-            ReportName: reportName,
-            Path: ''
+            ReportName: reportName
         };
 
-        return fetch(urlServer, {
+        return fetch(`${app.setting.reportapi}/report/build`, {
             body: JSON.stringify(reportParameters),
             method: 'POST',
             headers: {
@@ -864,8 +859,8 @@ app.core = (function () {
                         if (data === undefined) {
                             resolve(null);
                         } else {
-                            let file = new Blob([data.Data], { type: 'application/octet-binary' });
-                            let blob = app.core.b64StrtoBlob(data.Data, 'application/pdf');
+                            let file = new Blob([data.data], { type: 'application/octet-binary' });
+                            let blob = app.core.b64StrtoBlob(data.data, 'application/pdf');
                             let blobUrl = URL.createObjectURL(blob);
                             window.open(blobUrl);
                             resolve(data);
