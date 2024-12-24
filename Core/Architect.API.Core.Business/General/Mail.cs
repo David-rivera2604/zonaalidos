@@ -92,7 +92,7 @@ namespace Architect.API.Core.Business.General
             Architect.API.Core.Contracts.Security.UserMember currentUserInfo = new Contracts.Security.UserMember();
             Architect.API.Core.Contracts.Security.UserMember ownerUserInfo = new Contracts.Security.UserMember();
             Core.Contracts.General.Tenant tenantInfo = new Contracts.General.Tenant();
-            string testEmail = Business.Settings.StringValue("EMail.Test");
+            string testEmail = Business.Settings.StringValue(companyId, "EMail.Test");
 
             if (toAddressList == null)
             {

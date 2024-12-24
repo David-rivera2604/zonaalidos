@@ -182,8 +182,8 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         {
             Payment.Integrations.Contracts.v2.PaymentInformation payInfov2;
 
-            string provider = Core.Business.Settings.StringValue("Tenant.Settings.Payment.Provider");
-            if (provider.Equals("Silice", StringComparison.CurrentCultureIgnoreCase) || mode.Equals("WhatsApp", StringComparison.CurrentCultureIgnoreCase) )
+            string provider = Core.Business.Settings.StringValue(tokenInfo.CompanyId, "Tenant.Settings.Payment.Provider");
+            if (provider.Equals("Silice", StringComparison.CurrentCultureIgnoreCase) || mode.Equals("WhatsApp", StringComparison.CurrentCultureIgnoreCase))
             {
                 HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
 
@@ -248,9 +248,9 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         {
             int recordCount = 0;
             int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
-            string prefix = Utilities.Helpers.Settings.StringValue("EMail.Test", string.Empty);
-            int cardCount = Core.Business.Settings.IntegerValue("Payment.Silice.Tokenize.Cantidad.Tarjetas", 50);
-            string provider = Core.Business.Settings.StringValue("Tenant.Settings.Payment.Provider");
+            string prefix = Core.Business.Settings.StringValue(0, "EMail.Test");
+            int cardCount = Core.Business.Settings.IntegerValue(0, "Payment.Silice.Tokenize.Cantidad.Tarjetas", 50);
+            string provider = Core.Business.Settings.StringValue(0, "Tenant.Settings.Payment.Provider");
 
             List<Contracts.Pagos.Tarjeta> pendientes = Architect.API.Tron.DataAccess.Pagos.Tarjetas.PendientesPorTokenizar(cod_cia, cardCount, cod_docum);
 
@@ -321,9 +321,9 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         /// </summary>
         public static int PendientesRecurrentesAlCobro(DateTime fec_efect_recibo)
         {
-            string provider = Core.Business.Settings.StringValue("Tenant.Settings.Payment.Provider");
-            string filter = Core.Business.Settings.StringValue("Payment.Silice.RecurringReceipts.Filter.Policies", string.Empty);
-            int limitCount = Core.Business.Settings.IntegerValue("Payment.Silice.RecurringReceipts.Limit.Count", 5);
+            string provider = Core.Business.Settings.StringValue(0, "Tenant.Settings.Payment.Provider");
+            string filter = Core.Business.Settings.StringValue(0, "Payment.Silice.RecurringReceipts.Filter.Policies", string.Empty);
+            int limitCount = Core.Business.Settings.IntegerValue(0, "Payment.Silice.RecurringReceipts.Limit.Count", 5);
 
             int recordCount = 0;
             int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);

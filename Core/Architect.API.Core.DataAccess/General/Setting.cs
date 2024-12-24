@@ -11,6 +11,7 @@ namespace Architect.API.Core.DataAccess.General
 {
     public partial class Setting
     {
+
         public static List<Contracts.General.Setting> Retrieve(int companyId, IDbConnection connection = null)
         {
             List<Contracts.General.Setting> result = new List<Contracts.General.Setting>();
@@ -33,6 +34,28 @@ namespace Architect.API.Core.DataAccess.General
                                     TokenEnabled = reader.IntegerValue("TokenEnabled") == 1
                                 });
                             }
+                        }));
+            return result;
+        }
+
+        public static List<Contracts.General.Setting> Retrieve(IDbConnection connection = null)
+        {
+            List<Contracts.General.Setting> result = new List<Contracts.General.Setting>();
+            Database.Select(
+@"SELECT COMPANYID, KEY, VALUE, LOCALSTORAGEENABLED, TOKENENABLED 
+  FROM SETTINGS
+ WHERE RECORDSTATUS = 1
+ ORDER BY COMPANYID DESC")
+                        .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
+                        {
+                            result.Add(new Contracts.General.Setting()
+                            {
+                                CompanyId = reader.IntegerValue("CompanyId"),
+                                Key = reader.StringValue("Key"),
+                                Value = reader.StringValue("Value"),
+                                LocalStorageEnabled = reader.IntegerValue("LocalStorageEnabled") == 1,
+                                TokenEnabled = reader.IntegerValue("TokenEnabled") == 1
+                            });
                         }));
             return result;
         }
