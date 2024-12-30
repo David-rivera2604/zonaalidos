@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Architect.API.Core.Contracts.Security;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -27,17 +28,14 @@ namespace Architect.API.Core.Business.General
         public async static Task<string> GeneratePDFFile(string reportName, object data, string outputFileName = "")
         {
             string result = string.Empty;
-
-            FormUrlEncodedContent formContent = new FormUrlEncodedContent(new[]
-                {
-                    new KeyValuePair<string, string>("Source", JsonConvert.SerializeObject(data)),
-                    new KeyValuePair<string, string>("Type", "pdf"),
-                    new KeyValuePair<string, string>("ReportName", reportName + ".repx"),
-                    new KeyValuePair<string, string>("Path", "")
-                });
+            string json = JsonConvert.SerializeObject(new
+            {
+                Source = JsonConvert.SerializeObject(data),
+                ReportName = reportName
+            });
 
             HttpClient client = new HttpClient();
-            var response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("app.api.base") + Utilities.Helpers.Settings.StringValue("Aliados.URL.Report.Service", "/AliadoServReports/Report/Build"), formContent);
+            var response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("app.api.base") + Utilities.Helpers.Settings.StringValue("Aliados.URL.Report.Service", "/AliadoServReports/Report/Build"), new StringContent(json, Encoding.UTF8, "application/json"));
             if (response.IsSuccessStatusCode)
             {
                 string resultResponse = response.Content.ReadAsStringAsync().Result;
