@@ -128,6 +128,11 @@ namespace Architect.API.Core.Contracts.General
         /// ID del usuario enviando el caso.
         /// </summary>
         public int TotalDays { get; set; }
+
+        /// <summary>
+        /// Token del usuario conectado.
+        /// </summary>
+        public string CurrentToken{ get; set; }
     }
 }
 

@@ -35,11 +35,6 @@ namespace Architect.API.Core.Controllers
         [Authorize]
         public async Task<IHttpActionResult> Post([FromBody] Architect.API.Core.Contracts.General.ProcessCase item)
         {
-            //usuario que envio la solicitud del caso.   
-            UsuaActual = Accounts.ReturnUser();
-
-            item.UserSend = UsuaActual.UserId;
-
             IHttpActionResult result = BadRequest();
 
             if (item.IsEmpty())
@@ -49,6 +44,12 @@ namespace Architect.API.Core.Controllers
             Contracts.Security.Token tokenInfo = Security.Token.Info();
             await Task.Run(() =>
             {
+
+                if (item.CurrentToken.IsNotEmpty())
+                {
+                    Contracts.Security.Token currentTokenInfo = Security.Token.Info(item.CurrentToken);
+                    item.UserSend = currentTokenInfo.UserId;
+                }
                 Architect.API.Core.Contracts.General.ProcessCaseResult created = Architect.API.Core.Business.General.ProcessCase.Create(tokenInfo.CompanyId, tokenInfo.UserId, item);
                 if (created.Errors.Count == 0)
                 {

@@ -19,7 +19,7 @@ app.CentralCase = (function () {
 
     function Event_Controls() {
 
-        $('#ProcessCaseEdtFormSave').click(function () {
+        $('#ProcessCaseEdtFormSave').click(function (e) {
             if (app.ui.IsValid('#ProcessCaseEdtForm', false)) {
                 app.ui.ButtonDoing('#ProcessCaseEdtFormSave');
                 var data = MapInputToObject();
@@ -28,19 +28,18 @@ app.CentralCase = (function () {
                 else
                     Update(data);
             }
-            event.preventDefault();
+            e.preventDefault();
         });
 
-        $('#ProcessCaseEdtFormCancel').click(function () {
-            event.preventDefault();
+        $('#ProcessCaseEdtFormCancel').click(function (e) {
+            e.preventDefault();
         });
 
         $('#FlowId').change(function () {
             let flowId = $('#FlowId').val();
             let sla = app.CentralCase.Data().lookups.filter(i => i.Key === 'ProcessByRolDetail')[0].Lkp.filter(l => l.Code === flowId + '')[0].SLA;
             $('#SLA').val(sla);
-            let dato = { Al: true }
-            app.CentralCase.Get(app.setting.apipath + 'v1/ProcessSpecFlow/' + flowId, dato, true)
+            app.CentralCase.Get(app.setting.apipath + 'v1/ProcessSpecFlow/' + flowId, null, true)
                 .done(function (data, textStatus, jqXHR) {
                     ReferenceHandler(data.ReferenceCaption1, data.ReferenceLookupList1, 'Reference1');
                     ReferenceHandler(data.ReferenceCaption2, data.ReferenceLookupList2, 'Reference2');
@@ -103,7 +102,8 @@ app.CentralCase = (function () {
     }
 
     function Create(uidata, mode) {
-        app.CentralCase.Post(app.setting.apipath + 'v1/ProcessCase', undefined, true, JSON.stringify(uidata))
+        uidata.CurrentToken = localStorage.getItem('Token');
+        app.CentralCase.Post(app.setting.apipath + 'v1/ProcessCase', JSON.stringify(uidata))
             .done(function (data, textStatus, jqXHR) {
                 toastr.success("El processcase '" + uidata.Title + "' fue creado", "", { timeOut: 5000, closeButton: true, progressBar: true });
                 window.location.replace("Seguimiento_Al?id=" + data.Id);
@@ -256,9 +256,8 @@ app.CentralCase = (function () {
         Get: function (url, TokenUse, AlTok, data, success) {
             return ajaxCall('GET', url, data, success, false, TokenUse, AlTok);
         },
-        Post: function (url, TokenUse, AlTok, data, success) {
-            return ajaxCall('POST', url, data, success, false, TokenUse, AlTok
-            );
+        Post: function (url, data) {
+            return ajaxCall('POST', url, data, undefined, false, Token_Ali, Token_Ali);
         },
     };
 })();
@@ -284,25 +283,14 @@ function ajaxCall(type, url, data, success, token, Token_Al, AliadoTok, contentT
         data: data,
         beforeSend: function (xhr) {
             if (token) {
-                var key = app.core.URLStringValue('key');
-                if (key != '') {
-                    xhr.setRequestHeader('AccessKey', key);
-                } else {
-                    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
-                }
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
             }
             else {
-                var key = app.core.URLStringValue('key');
-                if (key != '') {
-                    xhr.setRequestHeader('AccessKey', key);
-                } else {
-                    if (AliadoTok) {
-
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + Token_Ali);
-                    }
-                    else {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + Token_Al);
-                    }
+                if (AliadoTok) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + Token_Ali);
+                }
+                else {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + Token_Al);
                 }
             }
         }
