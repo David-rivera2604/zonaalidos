@@ -1,10 +1,114 @@
 ﻿var app = app || {};
 app.ui = (function () {
 
-    async function obtenerEtiqueta(campo) {
+    function removeSpecialCharacters(str) {
+        return str.replace(/[^\w\s]/gi, '');
+    }
+    function normalizeSpanishCharacters(str) {
+        const charMap = {
+            á: "a", é: "e", í: "i", ó: "o", ú: "u",
+            Á: "A", É: "E", Í: "I", Ó: "O", Ú: "U",
+            ü: "u", Ü: "U",
+            ñ: "n", Ñ: "N"
+        };
+        return str.replace(/[áéíóúüñÁÉÍÓÚÜÑ]/g, char => charMap[char] || char);
+    }
+    function compareValues(value1, value2, options) {
+        const {
+            caseInsensitive = true,
+            ignoreSpecialCharacters = true,
+            normalizeSpanish = true,
+            matchStrategy = 'exact'
+        } = options;
+
+        let val1 = value1;
+        let val2 = value2;
+
+        // Normalización
+        if (caseInsensitive) {
+            val1 = val1.toLowerCase();
+            val2 = val2.toLowerCase();
+        }
+        if (ignoreSpecialCharacters) {
+            val1 = removeSpecialCharacters(val1);
+            val2 = removeSpecialCharacters(val2);
+        }
+        if (normalizeSpanish) {
+            val1 = normalizeSpanishCharacters(val1);
+            val2 = normalizeSpanishCharacters(val2);
+        }
+
+        // Lógica de comparación según la estrategia
+        switch (matchStrategy) {
+            case 'exact':
+                return val1 === val2;
+            case 'includes':
+                return val1.includes(val2);
+            case 'startsWith':
+                return val1.startsWith(val2);
+            case 'endsWith':
+                return val1.endsWith(val2);
+            default:
+                console.warn(`Estrategia de coincidencia desconocida: ${matchStrategy}. Se utilizará "exact" por defecto.`);
+                return val1 === val2;
+        }
+    }
+    function setSelectValue(selectId, value, options = {}) {
+        try {
+            // Obtiene el <select> por su ID
+            const selectElement = document.getElementById(selectId);
+            if (!selectElement) throw new Error(`El <select> con ID "${selectId}" no fue encontrado`);
+
+            // Si el <select> no tiene opciones, no hay nada que comparar
+            if (selectElement.options.length === 0) {
+                console.warn(`El <select> con ID "${selectId}" no tiene opciones.`);
+                return;
+            }
+
+            let found = false;
+
+            // 1. Intentar coincidencia por option.value
+            for (const option of selectElement.options) {
+                if (compareValues(option.value, value, options)) {
+                    selectElement.value = option.value;
+                    found = true;
+                    break;
+                }
+            }
+
+            // 2. Si no se encontró, intentar coincidencia por option.text
+            if (!found) {
+                for (const option of selectElement.options) {
+                    if (compareValues(option.text, value, options)) {
+                        selectElement.value = option.value;
+                        found = true;
+                        break;
+                    }
+                }
+            }
+
+            // 3. Si no hubo coincidencias
+            if (!found) {
+                console.warn(
+                    `No se encontró ninguna coincidencia para "${value}" (según la estrategia "${options.matchStrategy || 'exact'}") ` +
+                    `en el <select> con ID "${selectId}".`
+                );
+            }
+        } catch (error) {
+            console.error(`Error en setSelectValue: ${error.message}`);
+        }
+    }
+
+    async function obtenerEtiqueta(campo, byid) {
         // Método 1: Buscar etiqueta con el atributo 'for' que coincide con el 'id' del campo
-        if (campo.id) {
+        if (byid && campo.id) {
             const etiquetaFor = document.querySelector(`label[for="${campo.id}"]`);
+            if (etiquetaFor) {
+                return etiquetaFor.textContent.trim();
+            }
+        }
+        if (!byid && campo.name) {
+            const etiquetaFor = document.querySelector(`label[for="${campo.name}"]`);
             if (etiquetaFor) {
                 return etiquetaFor.textContent.trim();
             }
@@ -42,12 +146,20 @@ app.ui = (function () {
 
             // Excluye los botones de tipo submit/reset
             if (elemento.type !== 'submit' && elemento.type !== 'reset' && elemento.type !== 'button' && elemento.type !== 'fieldset') {
-                listaCampos.push({
-                    nombre: elemento.name,
-                    id: elemento.id,
-                    tipo: elemento.type,
-                    etiqueta: await obtenerEtiqueta(elemento)
-                });
+                let etiqueta = await obtenerEtiqueta(elemento, true);
+                let id = elemento.id;
+                if (elemento.type === 'radio') {
+                    id = elemento.name;
+                    etiqueta = await obtenerEtiqueta(elemento, false);
+                }
+                if (!listaCampos.some(elemento => elemento.id === id)) {
+                    listaCampos.push({
+                        nombre: elemento.name,
+                        id: id,
+                        tipo: elemento.type,
+                        etiqueta: etiqueta.endsWith("*") ? etiqueta.substring(0, etiqueta.length - 1) : etiqueta
+                    });
+                }
             }
         }
         return listaCampos;
@@ -79,8 +191,27 @@ app.ui = (function () {
         for (const [identificador, valor] of Object.entries(campos)) {
             const campo = formulario.querySelector(`[id="${identificador}"], [name="${identificador}"]`);
             if (campo) {
-                campo.value = valor;
-            } 
+                console.log(campo.type);
+                switch (campo.type) {
+                    case 'radio':
+                        let ctrl = Array.from(document.querySelectorAll(`label[for^='${identificador}']`)).find(label => compareValues(label.textContent, valor, {}));
+                        if (ctrl) {
+                            ctrl.click();
+                        }
+                        break;
+                    case 'select-one':
+                        setSelectValue(identificador, valor);
+                        break;
+                    default:
+                        if (AutoNumeric.getAutoNumericElement(`#${identificador}`) !== null) {
+                            app.ui.SetNumericValue(`#${identificador}`, valor.replace(/[^\d.,+-]/g, ''));
+                        } else {
+                            campo.value = valor;
+                        }
+                        break;
+                }
+
+            }
         }
     }
 
