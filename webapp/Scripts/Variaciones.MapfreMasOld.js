@@ -11,6 +11,7 @@ app.EmisionMapfreMas = (function () {
     let formularioRow = null;
     var workMode = '';
     var setupData = null;
+    var setupDataFirst = null;
     var showCalculate = false;
     var rowDocumentosrequeridos = null;
     let mca_cuotas_gratis = 'N';
@@ -44,6 +45,8 @@ app.EmisionMapfreMas = (function () {
                     $('.enviosolicitudZone').removeClass('d-none');
 
                     COD_PLAN_AUTO = data.COD_PLAN_AUTO;
+
+                    $('#hhd-codplanauto').val(COD_PLAN_AUTO);
 
                     if (MCA_PROVISIONAL == "S") {
                         $('#authorizarct').removeClass('d-none');
@@ -170,6 +173,7 @@ app.EmisionMapfreMas = (function () {
         $('#DED_AUTO_RAD').prop('disabled', isdisabled);
         $('#DED_AUTO_ROB').prop('disabled', isdisabled);
         $('#IMP_AUTO_CRI').prop('disabled', isdisabled);
+        $('#DED_AUTO_CRI').prop('disabled', isdisabled);
     }
 
     function Init_Lookups(data) {
@@ -196,7 +200,8 @@ app.EmisionMapfreMas = (function () {
                 SettingReload(function () {
                     MapObjectToInput(data);
                     data_changed();
-                    Controls_sum_enable(data);
+                    GetSumaAseguradaAndEnableControls(data.coberturas);
+                    //Controls_sum_enable(data);
                 });
             }, `cod_ramo=${data.cod_ramo}:cod_pais=CRI:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}:num_contrato=${data.contrato}:cod_agt=${data.cod_agt}`);
 
@@ -265,24 +270,26 @@ app.EmisionMapfreMas = (function () {
 
         data.NUM_MATRICULA = data.NUM_MATRICULA.replace(/[^a-zA-Z0-9]/g, "");
 
-        const Coverages = $('#coberturasTbl').bootstrapTable('getData').filter(item => item.added === true);
+        const coberturas = JSON.parse($('#coberturasData').val());
 
-        let NewCoverages;
-        if (Coverages) {
-            NewCoverages = Coverages.map(row => {
-                let addrow = {
-                    capital: row.capital,
-                    codigo: row.codigo,
-                    deducible: row.deducible,
-                    nombre: row.nombre,
-                    primatotal: row.primatotal,
-                    requerida: row.requerida,
-                    riesgo: row.riesgo,
-                    seleccionado: row.seleccionado
-                };
-                return addrow;
-                //NewCoverages.push(addrow);
-            })
+        let NewCoverages = [];
+        if (Array.isArray(coberturas) && coberturas.length > 0) {
+            if (coberturas) {
+                NewCoverages = coberturas.map(row => {
+                    let addrow = {
+                        capital: row.capital,
+                        codigo: row.codigo,
+                        deducible: row.deducible,
+                        nombre: row.nombre,
+                        primatotal: row.primatotal,
+                        requerida: row.requerida,
+                        riesgo: row.riesgo,
+                        seleccionado: row.seleccionado,
+                        mcaSeleccion: row.mcaSeleccion
+                    };
+                    return addrow;
+                })
+            }
         }
 
         data.NewCoverages = NewCoverages;
@@ -292,6 +299,7 @@ app.EmisionMapfreMas = (function () {
     }
 
     function MapObjectToInput_First(data) {
+        setupDataFirst = data;
 
         //app.ui.SetNumericValue('#edad', data.edad);
         //$('#mca_sexo').val(data.mca_sexo);
@@ -516,7 +524,7 @@ app.EmisionMapfreMas = (function () {
             decimalPlaces: '0',
             emptyInputBehavior: 'null'
         });
-
+        $('#coberturasData').val('[]');
         //app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_CYV', true);
         //app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_RAD', true);
         ////app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_RC', true);
@@ -607,8 +615,66 @@ app.EmisionMapfreMas = (function () {
         //});
 
         $('#generarvariacion').click(function () {
-            if (app.ui.IsValid('#VisualizationsEdtForm', false) ) {
-                app.ui.ButtonDoing('#generarvariacion');
+            if (app.ui.IsValid('#VisualizationsEdtForm', false)) {
+
+                if (setupDataFirst.cod_fracc_pago !== app.ui.GetDropDownNumericValue('#cod_fracc_pago')) {
+                    var md = $('#messageModal').modal({ show: false });
+                    md.modal('show');
+                }
+                else {
+                    app.ui.ButtonDoing('#generarvariacion');
+                    app.core.Post(app.setting.apipath + 'v1/Variaciones/MapfreMas',
+                        JSON.stringify(MapInputToObject()),
+                        function (data) {
+
+                            $('#Fuente_Tomador').replaceWith('<div>' + $('#Fuente_Tomador option:selected').text() + '</div>');
+                            $('#Modalidad_Pago').replaceWith('<div>' + $('#Modalidad_Pago option:selected').text() + '</div>');
+                            $('#tip_firma').replaceWith('<div>' + $('#tip_firma option:selected').text() + '</div>');
+                            $('#correoenvio').replaceWith('<div>' + $('#correoenvio').val() + '</div>');
+
+                            if (data.McaError === "N") {
+                                if (Array.isArray(data.Recibos) && data.Recibos.length > 0) {
+                                    $('#resultvariacionTbl').bootstrapTable('load', data.Recibos);
+                                    $('#resultvariacion').removeClass('d-none');
+
+                                    let firstRecord = data.Recibos[0];
+                                    NEW_NUM_SPTO = firstRecord.num_spto;
+                                }
+                                $('#generarvariacion').addClass('d-none');
+                                $('#cancelarpoliza').addClass('d-none');
+                                $('#authorizarct').removeClass('d-none');
+                                $('#rechazarct').removeClass('d-none');
+                                MCA_PROVISIONAL = "S";
+                                DisabledAllControls(true);
+
+                                toastr.info("Se generó correctamente la variación", "Variación", { timeOut: 9000, closeButton: true, progressBar: true });
+                            }
+                            else {
+                                app.EmisionMapfreMas.custonMessageResponse(data, "Error el emitir la variación");
+                                /*toastr.error(data.ProcessResult.txt_error, "Error el emitir la variación", { timeOut: 9000, closeButton: true, progressBar: true });*/
+                            }
+
+                        }).always(function () {
+                            app.ui.ButtonDone('#generarvariacion');
+                        });
+                }
+            }
+            else {
+                var instance = $('#VisualizationsEdtForm');
+                var validate = instance.validate();
+                validate.settings.ignore = '';
+                var result = instance.valid();
+                var count = validate.numberOfInvalids();
+                validate.settings.ignore = ':hidden';
+                toastr.error("Existen " + count + " error(es), que ameritan su atención.", "", { closeButton: true, progressBar: true });
+            }
+            event.preventDefault();
+        });
+
+        $('#aceptarmessage').click(function () {
+            if (app.ui.IsValid('#VisualizationsEdtForm', false)) {
+
+                app.ui.ButtonDoing('#aceptarmessage');
                 app.core.Post(app.setting.apipath + 'v1/Variaciones/MapfreMas',
                     JSON.stringify(MapInputToObject()),
                     function (data) {
@@ -633,15 +699,17 @@ app.EmisionMapfreMas = (function () {
                             MCA_PROVISIONAL = "S";
                             DisabledAllControls(true);
 
+                            setupDataFirst.cod_fracc_pago = app.ui.GetDropDownNumericValue('#cod_fracc_pago');
+
                             toastr.info("Se generó correctamente la variación", "Variación", { timeOut: 9000, closeButton: true, progressBar: true });
                         }
                         else {
                             app.EmisionMapfreMas.custonMessageResponse(data, "Error el emitir la variación");
-                            /*toastr.error(data.ProcessResult.txt_error, "Error el emitir la variación", { timeOut: 9000, closeButton: true, progressBar: true });*/
                         }
+                        $('#messageModal').modal('hide'); // Cerrar el popup
 
                     }).always(function () {
-                        app.ui.ButtonDone('#generarvariacion');
+                        app.ui.ButtonDone('#aceptarmessage');
                     });
             }
             else {
@@ -680,7 +748,6 @@ app.EmisionMapfreMas = (function () {
                         }
                         else {
                             app.EmisionMapfreMas.custonMessageResponse(data, "Error el emitir la cancelación");
-                            //toastr.error(data.ProcessResult.txt_error, "Error el emitir la cancelación", { timeOut: 9000, closeButton: true, progressBar: true });
                         }
 
                     }).always(function () {
@@ -734,14 +801,10 @@ app.EmisionMapfreMas = (function () {
 
                                 $('#resultvariacion').removeClass('d-none');
                             }
-
-                            //app.EmisionMapfreMas.GetReceipts(setupData.cod_cia, setupData.num_poliza, NEW_NUM_SPTO);
-
                             toastr.info("Se autorizó el CT", "Autorización", { timeOut: 9000, closeButton: true, progressBar: true });
                         }
                         else {
                             app.EmisionMapfreMas.custonMessageResponse(data, "Error al autorizar el CT");
-                            //toastr.error(data.ProcessResult.txt_error, "Error al autorizar el CT", { timeOut: 9000, closeButton: true, progressBar: true });
                         }
 
                     }).always(function () {
@@ -842,6 +905,12 @@ app.EmisionMapfreMas = (function () {
 
             $("#VisualizationsEdtForm").validate().resetForm();
         });
+
+        //$('#coberturasTbl').on('all.bs.table', function (name, args) {
+        //    console.log('name:', name);
+        //    console.log('args:', args);
+        //    console.log('table coberturas:', $('#coberturasTbl').bootstrapTable('getData'));
+        //});
 
     }
 
@@ -1017,6 +1086,7 @@ app.EmisionMapfreMas = (function () {
                     title: 'Agregado',
                     halign: 'center',
                     align: 'center',
+                    visible: false,
                     formatter: function (value) {
                         return value
                             ? '<i class="fa fa-check-circle text-success"></i>'
@@ -1032,7 +1102,26 @@ app.EmisionMapfreMas = (function () {
                     align: 'center',
                     events: 'coberturasTbl_Events',
                     formatter: function (_, row) {
-                        return (row.added) ? '<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar los datos de la cobertura de la fila"> <i class="fa fa-close"></i> </button>' :'';
+                        let result = false;
+
+                        if (row.requerida) {
+                            result = false;
+                        }
+                        else {
+                            if (row.added) {
+                                result = true;
+                            }
+                            else {
+                                if (row.seleccionado) {
+                                    result = false;
+                                }
+                                else {
+                                    result = true;
+                                }
+                            }
+                        }
+
+                        return (result) ? '<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar los datos de la cobertura de la fila"> <i class="fa fa-close"></i> </button>' :'';
                     },
                     cellStyle: function (value, row, index) {
                         return {
@@ -1046,13 +1135,13 @@ app.EmisionMapfreMas = (function () {
             ]
         });
 
-        $('#coberturasTbl').bootstrapTable('filterBy', { seleccionado: [true] });
+        //$('#coberturasTbl').bootstrapTable('filterBy', { seleccionado: [true] });
     }
 
     function coberturasNew_table_setup() {
 
         $('#coberturasNewTbl').bootstrapTable({
-            uniqueId: 'coberturasnewId',
+            uniqueId: 'codigo',
             classes: 'table table-bordered table-hover table-index table-in-form',
             pagination: false,
             smartDisplay: true,
@@ -1152,7 +1241,7 @@ app.EmisionMapfreMas = (function () {
             ]
         });
 
-        $('#coberturasNewTbl').bootstrapTable('filterBy', { seleccionado: [true] })
+        //$('#coberturasNewTbl').bootstrapTable('filterBy', { seleccionado: [true] })
     }
 
     function plandepago_table_setup() {
@@ -1538,6 +1627,104 @@ app.EmisionMapfreMas = (function () {
         $('#IMP_AUTO_ROB').prop('disabled', true);
     }
 
+
+    function GetSumaAseguradaAndEnableControls(coberturas) {
+        const listaSumasAseguradasValidas = [];
+
+        if (coberturas) {
+            coberturas.forEach(cobertura => {
+                const sumasAsegurada = setupData.SumAseguradaRamo.filter(item => item.cod_cob === cobertura.codigo)
+                    .map(item => item.cod_campo);
+
+                sumasAsegurada.forEach(sumaAseg => {
+                    listaSumasAseguradasValidas.push({
+                        cod_cob: cobertura.codigo,
+                        cod_suma: sumaAseg
+                    });
+                });
+            });
+        }
+        SetControls();
+        EnableControls(listaSumasAseguradasValidas);
+        Controls_sum_enable(setupData);
+    }
+
+    function EnableControls (sumaAseguradas) {
+        if (sumaAseguradas) {
+            sumaAseguradas.forEach(item => {
+                switch (item.cod_suma) {
+                    case "IMP_AUTO_RC":
+                        setupData.AUTO_RC = true;
+                        break;
+                    case "IMP_AUTO_CYV":
+                        setupData.AUTO_CYV = true;
+                        break;
+                    case "IMP_AUTO_ROB":
+                        setupData.AUTO_ROB = true;
+                        break;
+                    case "IMP_AUTO_GMO":
+                        setupData.AUTO_GMO = true;
+                        break;
+                    case "IMP_AUTO_ACO":
+                        setupData.AUTO_ACO = true;
+                        break;
+                    case "IMP_AUTO_RAD":
+                        setupData.AUTO_RAD = true;
+                        break;
+                    case "IMP_AUTO_EQESP":
+                        setupData.AUTO_EQESP = true;
+                        break;
+                    case "IMP_AUTO_CRI":
+                        setupData.AUTO_CRI = true;
+                        break;
+                    case "IMP_AUTO_NEUM":
+                        setupData.AUTO_NEUM = true;
+                        break;
+                    case "IMP_AUTO_MECA":
+                        setupData.AUTO_MECA = true;
+                        break;
+                }
+            });
+        }
+    }
+
+    function SetControls() {
+        setupData.AUTO_RC = false;
+        setupData.AUTO_CYV = false;
+        setupData.AUTO_ROB = false;
+        setupData.AUTO_GMO = false;
+        setupData.AUTO_ACO = false;
+        setupData.AUTO_RAD = false;
+        setupData.AUTO_EQESP = false;
+        setupData.AUTO_CRI = false;
+        setupData.AUTO_NEUM = false;
+        setupData.AUTO_MECA = false;
+    }
+
+    function ManagerUpdateCoberturas(cobertura, action) {
+        var coberturasData = $('#coberturasData').val();
+        var coberturas = JSON.parse(coberturasData);
+
+        if (!Array.isArray(coberturas)) {
+            coberturas = [];
+        }
+
+        let index = coberturas.findIndex(c => c.codigo === cobertura.codigo);
+        if (action === "-") {
+            coberturas.splice(index, 1);
+        }
+        else {
+            if (index !== -1) {
+                coberturas[index].mcaSeleccion = action;
+            }
+            else {
+                cobertura.mcaSeleccion = action;
+                coberturas.push(cobertura);
+            }
+        }
+        $('#coberturasData').val(JSON.stringify(coberturas));
+    }
+
     function OtherValidations() {
         let result = 0;
         let message = 'Verifque la información de terceros';
@@ -1867,8 +2054,13 @@ app.EmisionMapfreMas = (function () {
 
             const selectedRows = $('#coberturasNewTbl').bootstrapTable('getSelections');
             const mainTableData = $('#coberturasTbl').bootstrapTable('getData');
-
+            let cod_plan_auto_val = $('#hhd-codplanauto').val();
             selectedRows.forEach(row => {
+
+            if (cod_plan_auto_val === "31" && (row.codigo === 3002 || row.codigo === 3003)) {
+                toastr.error("La cobertura " + row.nombre + " no esta permitida para esta póliza", "Mensaje de Validación", { timeOut: 9000, closeButton: true, progressBar: true });
+            }
+            else {
                 const exists = mainTableData.some(item => item.codigo === row.codigo);
 
                 if (exists) {
@@ -1882,12 +2074,18 @@ app.EmisionMapfreMas = (function () {
                             value: true // Forzar actualización (se recalculará con el formatter)
                         });
                     }
-                    
                 } else {
                     // Si no existe, agregarlo como nuevo
                     const newRow = { ...row, added: true, requerida: false };
                     $('#coberturasTbl').bootstrapTable('append', newRow);
                 }
+                $('#coberturasNewTbl').bootstrapTable('removeByUniqueId', row.codigo);
+                ManagerUpdateCoberturas(row, "*");
+                const dataCoberturas = $('#coberturasTbl').bootstrapTable('getData');
+                GetSumaAseguradaAndEnableControls(dataCoberturas);
+            }
+
+
             });
             $('#coberturasNewModal').modal('hide'); // Cerrar el popup
 
@@ -2163,7 +2361,7 @@ app.EmisionMapfreMas = (function () {
 
         if (exists) {
 
-            if (exists.requerida) {
+            if (exists.seleccionado) {
                 // Obtener la celda de acciones de la fila actualizada
                 const rowIndex = $('#coberturasTbl').bootstrapTable('getData').findIndex(r => r.codigo === row.codigo);
                 if (rowIndex !== -1) {
@@ -2176,8 +2374,18 @@ app.EmisionMapfreMas = (function () {
             }
             else {
                 $('#coberturasTbl').bootstrapTable('removeByUniqueId', row.codigo);
-            }
 
+                const coberturasNewTbl = $('#coberturasNewTbl').bootstrapTable('getData');
+                const exists = coberturasNewTbl.some(item => item.codigo === row.codigo);
+
+                if (!exists) {
+                    row.seleccionado = false;
+                    $('#coberturasNewTbl').bootstrapTable('append', row);
+                }
+            }
+            const dataCoberturas = $('#coberturasTbl').bootstrapTable('getData');
+            ManagerUpdateCoberturas(row, "X");
+            GetSumaAseguradaAndEnableControls(dataCoberturas);
         }
     }
 
@@ -3308,50 +3516,61 @@ app.EmisionMapfreMas = (function () {
                 });
             }
         },
-        GetReceipts: function (cod_cia, num_poliza, num_spto) {
-            app.core.Get(app.setting.apipath + 'v1/Variaciones/MapfreMasGetReceipts/' + cod_cia + '/' + num_poliza + '/' + num_spto)
-                .done(function (data, textStatus, jqXHR) {
+        GetSumaAseguradaAndEnableControls: function(coberturas) {
+            const listaSumasAseguradasValidas = [];
 
-                    if (data) {
-                        if (Array.isArray(data) && data.length > 0) {
-                            $('#resultvariacionTbl').bootstrapTable('load', data);
-                            $('#resultvariacion').removeClass('d-none');
-                        }
+            if (coberturas) {
+                coberturas.forEach(cobertura => {
+                    const sumasAsegurada = setupData.SumAseguradaRamo.filter(item => item.cod_cob === cobertura.codigo)
+                        .map(item => item.cod_campo);
 
-                        //toastr.info("Se generó correctamente la variación", "Variación", { timeOut: 9000, closeButton: true, progressBar: true });
-                    }
-                    else {
-                        //app.EmisionMapfreMas.custonMessageResponse(data, "Error el emitir la variación");
-                        /*toastr.error(data.ProcessResult.txt_error, "Error el emitir la variación", { timeOut: 9000, closeButton: true, progressBar: true });*/
-                    }
-
+                    sumasAsegurada.forEach(sumaAseg => {
+                        listaSumasAseguradasValidas.push({
+                            cod_cob: cobertura.codigo,
+                            cod_suma: sumaAseg
+                        });
+                    });
                 });
-                
-            //app.core.Get(app.setting.apipath + 'v1/Variaciones/MapfreMas',
-            //    JSON.stringify(MapInputToObject()),
-            //    function (data) {
-
-            //        $('#Fuente_Tomador').replaceWith('<div>' + $('#Fuente_Tomador option:selected').text() + '</div>');
-            //        $('#Modalidad_Pago').replaceWith('<div>' + $('#Modalidad_Pago option:selected').text() + '</div>');
-            //        $('#tip_firma').replaceWith('<div>' + $('#tip_firma option:selected').text() + '</div>');
-            //        $('#correoenvio').replaceWith('<div>' + $('#correoenvio').val() + '</div>');
-
-            //        if (data.McaError === "N") {
-            //            if (Array.isArray(data) && data.length > 0) {
-            //                $('#resultvariacionTbl').bootstrapTable('load', data);
-            //                $('#resultvariacion').removeClass('d-none');
-            //            }
-
-            //            //toastr.info("Se generó correctamente la variación", "Variación", { timeOut: 9000, closeButton: true, progressBar: true });
-            //        }
-            //        else {
-            //            //app.EmisionMapfreMas.custonMessageResponse(data, "Error el emitir la variación");
-            //            /*toastr.error(data.ProcessResult.txt_error, "Error el emitir la variación", { timeOut: 9000, closeButton: true, progressBar: true });*/
-            //        }
-
-            //    }).always(function () {
-            //        app.ui.ButtonDone('#generarvariacion');
-            //    });
+            }
+            app.EmisionMapfreMas.EnableControls(listaSumasAseguradasValidas);
+        },
+        EnableControls: function (sumaAseguradas) {
+            if (sumaAseguradas) {
+                sumaAseguradas.forEach(item => {
+                    switch (sumaAseguradas.cod_suma) {
+                        case "IMP_AUTO_RC":
+                            setupData.AUTO_RC = true;
+                            break;
+                        case "IMP_AUTO_CYV":
+                            setupData.AUTO_CYV = true;
+                            break;
+                        case "IMP_AUTO_ROB":
+                            setupData.AUTO_ROB = true;
+                            break;
+                        case "IMP_AUTO_GMO":
+                            setupData.AUTO_GMO = true;
+                            break;
+                        case "IMP_AUTO_ACO":
+                            setupData.AUTO_ACO = true;
+                            break;
+                        case "IMP_AUTO_RAD":
+                            setupData.AUTO_RAD = true;
+                            break;
+                        case "IMP_AUTO_EQESP":
+                            setupData.AUTO_EQESP = true;
+                            break;
+                        case "IMP_AUTO_CRI":
+                            setupData.AUTO_CRI = true;
+                            break;
+                        case "IMP_AUTO_NEUM":
+                            setupData.AUTO_NEUM = true;
+                            break;
+                        case "IMP_AUTO_MECA":
+                            setupData.AUTO_MECA = true;
+                            break;
+                    }
+                });
+            }
         }
     };
 })();

@@ -1,4 +1,5 @@
-﻿using Architect.API.Tron.Contracts.Variaciones;
+﻿using Architect.API.Tron.Contracts.Ramo;
+using Architect.API.Tron.Contracts.Variaciones;
 using Architect.API.Tron.DataAccess.Pagos;
 using Architect.DataFactory;
 using Architect.Utilities.Extensions;
@@ -12,7 +13,7 @@ namespace Architect.API.Tron.DataAccess.Variaciones
 {
     public static class VariacionIssue
     {
-        public static VariacionIssueResult Issue(int cod_cia, string num_poliza, DateTime fec_tratamiento, string tip_mvto_batch, string mca_anulada, string mca_fec_efec_sys)
+        public static VariacionIssueResult Issue(int cod_cia, string num_poliza, DateTime fec_tratamiento, string tip_mvto_batch, string mca_anulada, string mca_fracc_pago, string mca_fec_efec_sys)
         {
             VariacionIssueResult variacionIssueResult = new VariacionIssueResult();
 
@@ -24,6 +25,7 @@ namespace Architect.API.Tron.DataAccess.Variaciones
                                     .AddParameter("p_fec_tratamiento", DbType.Date, 0, fec_tratamiento)
                                     .AddParameter("p_tip_mvto_batch", DbType.String, 2, tip_mvto_batch)
                                     .AddParameter("p_mca_anula", DbType.String, 1, mca_anulada)
+                                    .AddParameter("p_mca_fracc_pago", DbType.String, 1, mca_fracc_pago)
                                     .AddParameter("p_mca_fec_efec_sys", DbType.String, 1, mca_fec_efec_sys)
                                     .AddParameter("rc1", DbType.RefCursor, 0, null, ParameterDirection.Output)
                                     .AddParameter("rc2", DbType.RefCursor, 0, null, ParameterDirection.Output)
@@ -88,7 +90,7 @@ namespace Architect.API.Tron.DataAccess.Variaciones
             return variacionIssueResult;
         }
 
-        public static List<Receipt> GetRecibos(int cod_cia, string num_poliza, int num_spto)
+        public static List<Receipt> GetRecibos(int cod_cia, string num_poliza, int? num_spto)
         {
             List<Receipt> receipts = new List<Receipt>();
 
@@ -188,6 +190,38 @@ namespace Architect.API.Tron.DataAccess.Variaciones
                                         cod_cob = reader.IntegerValue("cod_cob"),
                                         num_orden = reader.IntegerValue("num_orden"),
                                         cod_campo = reader.StringValue("nombre_dv")
+                                    });
+                                    break;
+                            }
+                        }));
+                currentConnection.Close();
+            }
+
+            return receipts;
+        }
+
+        public static List<a1002150> getAllCoveragesByRamo(int cod_cia, int cod_ramo)
+        {
+            List<a1002150> receipts = new List<a1002150>();
+
+            using (IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron"))
+            {
+                Database.Procedure("EM_K_MAPFRE_BATCH_CONTRACT_MCR.P_COBERTURAS")
+                                    .AddParameter("p_cod_cia", DbType.Int32, 2, cod_cia)
+                                    .AddParameter("p_cod_ramo", DbType.Int32, 3, cod_ramo)
+                                    .AddParameter("rc1", DbType.RefCursor, 0, null, ParameterDirection.Output)
+                        .Query(currentConnection, "Tron", new Action<System.Data.IDataReader, string>((reader, key) =>
+                        {
+                            switch (key)
+                            {
+                                case "rc1":
+                                    receipts.Add(new a1002150()
+                                    {
+                                        //cod_cia = reader.IntegerValue("cod_cia"),
+                                        //cod_ramo = reader.IntegerValue("cod_ramo"),
+                                        COD_COB = reader.IntegerValue("cod_cob"),
+                                        NOM_COB = reader.StringValue("nom_cob"),
+                                        MCA_OBLIGATORIO = reader.StringValue("mca_obligatorio")
                                     });
                                     break;
                             }
