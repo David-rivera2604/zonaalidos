@@ -107,8 +107,8 @@ namespace Architect.API.Tron.Contracts.Variaciones
         /// <summary>
         /// Coberturas
         /// </summary>
-        [DataMember(), JsonProperty()] public List<Comun.Cobertura> AvailableCoverages { get; set; }
-        [DataMember(), JsonProperty()] public List<Comun.Cobertura> NewCoverages { get; set; }
+        [DataMember(), JsonProperty()] public List<CoberturaVariacion> AvailableCoverages { get; set; }
+        [DataMember(), JsonProperty()] public List<CoberturaVariacion> NewCoverages { get; set; }
         [DataMember(), JsonProperty()] public bool AUTO_RC { get; set; } = false;
         [DataMember(), JsonProperty()] public bool AUTO_CYV { get; set; } = false;
         [DataMember(), JsonProperty()] public bool AUTO_ROB { get; set; } = false;
@@ -119,6 +119,7 @@ namespace Architect.API.Tron.Contracts.Variaciones
         [DataMember(), JsonProperty()] public bool AUTO_EQESP { get; set; } = false;
         [DataMember(), JsonProperty()] public bool AUTO_NEUM { get; set; } = false;
         [DataMember(), JsonProperty()] public bool AUTO_MECA { get; set; } = false;
+        [DataMember(), JsonProperty()] public List<g1010031> SumAseguradaRamo { get; set; }
     }
 
     public class MapfreMasSolicitud : MapfreMas

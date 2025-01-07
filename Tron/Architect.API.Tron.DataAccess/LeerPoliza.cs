@@ -984,9 +984,42 @@ namespace Architect.API.Tron.DataAccess
         }
 
         /// <summary>
+        /// Datos fijos de la póliza
+        /// </summary>
+        public static Architect.API.Tron.Contracts.Poliza.DatoFijo Lee_A2000030(int cod_cia, string num_poliza, int? num_spto, int num_apli, int num_spto_apli)
+        {
+            Architect.API.Tron.Contracts.Poliza.DatoFijo a2000030Instance = null;
+            using (IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron"))
+            {
+                a2000030Instance = PP_Lee_A2000030(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
+
+                currentConnection?.Close();
+            }
+
+            return a2000030Instance;
+        }
+
+        /// <summary>
         ///  Datos variables de la póliza
         /// </summary>
         public static List<Architect.API.Tron.Contracts.Poliza.DatoVariable> Lee_A2000020(int cod_cia, string num_poliza, int num_spto, int num_apli, int num_spto_apli)
+        {
+            List<Architect.API.Tron.Contracts.Poliza.DatoVariable> DatosVariables = null;
+
+            using (IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron"))
+            {
+                DatosVariables = PP_Lee_A2000020(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
+
+                currentConnection?.Close();
+            }
+
+            return DatosVariables;
+        }
+
+        /// <summary>
+        ///  Datos variables de la póliza
+        /// </summary>
+        public static List<Architect.API.Tron.Contracts.Poliza.DatoVariable> Lee_A2000020(int cod_cia, string num_poliza, int? num_spto, int num_apli, int num_spto_apli)
         {
             List<Architect.API.Tron.Contracts.Poliza.DatoVariable> DatosVariables = null;
 

@@ -1,5 +1,7 @@
 ﻿using Architect.API.Tron.Contracts.Comun;
+using Architect.API.Tron.Contracts.Ramo;
 using Architect.API.Tron.Contracts.Variaciones;
+using Architect.API.Tron.DataAccess.Variaciones;
 using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
@@ -36,7 +38,7 @@ namespace Architect.API.Tron.Business.Variaciones
                 quoteInfo.coberturas.Add(new Contracts.Comun.Cobertura()
                 {
                     seleccionado = true,
-                    requerida = true,
+                    requerida = false,
                     codigo = item.cod_cob,
                     nombre = item.nom_cob,
                     capital = item.suma_aseg,
@@ -372,37 +374,7 @@ namespace Architect.API.Tron.Business.Variaciones
                         recargoporfraccionamiento = item.IMP_INTERES,
                         importetotal = item.IMP_RECIBO
                     });
-                    //if (setvalues)
-                    //{
-                    //    quoteInfo.resumen = new Contracts.Cotizacion.resumen()
-                    //    {
-                    //        cuotas = tronQuoteInfo.Recibos.Count,
-                    //        primaneta = item.imp_neta + item.imp_recargo,
-                    //        iVA = item.imp_imptos,
-                    //        recargoporfraccionamiento = item.imp_interes,
-                    //        importetotal = item.imp_recibo
-                    //    };
-                    //    setvalues = false;
-                    //}
                 }
-
-                //if (quoteInfo.cod_fracc_pago == 1)
-                //{
-                //    double amount = 0;
-                //    quoteInfo.plandepagoporfrecuencia = new List<Contracts.Cotizacion.plandepagoporfrecuencia>();
-                //    foreach (Architect.API.Tron.Contracts.Ramo.A1001403 item in Architect.API.Tron.DataAccess.PorRamo.FrecuenciaDePago(tronQuoteInfo.cod_cia, tronQuoteInfo.cod_ramo, tronQuoteInfo.cod_mon))
-                //    {
-                //        amount = (importeAnual / item.cod_fracc_pago) + ((importeAnual / item.cod_fracc_pago) * (item.pct_fracc_pago / 100));
-                //        quoteInfo.plandepagoporfrecuencia.Add(new Contracts.Cotizacion.plandepagoporfrecuencia()
-                //        {
-                //            codigo = item.cod_fracc_pago,
-                //            frecuencia = item.nom_fracc_pago,
-                //            recardoporfraccionamiento = item.pct_fracc_pago,
-                //            importetotal = amount
-                //        });
-                //    }
-                //}
-
             }
 
             // RANGO DE MESES DEBE ESTAR ENTRE 1 Y 12 MESES &lt;COB_PDR_MESES&gt;</txt_error>
@@ -429,9 +401,23 @@ namespace Architect.API.Tron.Business.Variaciones
                 Terceros(quoteInfo, tronQuoteInfo);
             }
 
-            quoteInfo.AvailableCoverages = getAvailableCoverages(quoteInfo.num_poliza, riesgo);
+            quoteInfo.AvailableCoverages = getAvailableCoverages(quoteInfo.cod_cia, quoteInfo.cod_ramo, quoteInfo.num_poliza, riesgo);
+            quoteInfo.SumAseguradaRamo = Architect.API.Tron.DataAccess.Variaciones.VariacionIssue.GetSumaAseguradaPorRamo(quoteInfo.cod_cia, quoteInfo.cod_ramo);
 
-            return GetEnableSumaAsegurada(quoteInfo);
+            foreach(var item in quoteInfo.coberturas)
+            {
+                var obj = quoteInfo.AvailableCoverages.FirstOrDefault(c => c.codigo == item.codigo);
+                item.requerida = obj.mcaObligatorio == "S";
+                item.seleccionado = obj.seleccionado;
+
+                if(item.codigo != 1060 && item.codigo != 3010 && item.codigo != 3016)
+                {
+                    quoteInfo.AvailableCoverages.RemoveAll(c => c.codigo == item.codigo);
+                }
+            }
+
+            //return GetEnableSumaAsegurada(quoteInfo);
+            return quoteInfo;
         }
 
         public static Contracts.Variaciones.MapfreMas GetEnableSumaAsegurada(Contracts.Variaciones.MapfreMas quoteInfo)
@@ -486,48 +472,103 @@ namespace Architect.API.Tron.Business.Variaciones
                 }
             }
 
+            quoteInfo.SumAseguradaRamo = SumAseguradaTotales;
+
             return quoteInfo;
         }
 
-        private static List<Cobertura> getAvailableCoverages(string num_poliza, int riesgo)
+        private static List<CoberturaVariacion> getAvailableCoverages(int cod_cia, int cod_ramo,string num_poliza, int riesgo)
         {
-            List<Cobertura> coberturas = new List<Cobertura>();
+            List<CoberturaVariacion> coberturas = new List<CoberturaVariacion>();
+            List<a1002150> coberturasDisponibles = VariacionIssue.getAllCoveragesByRamo(cod_cia, cod_ramo);
 
-            coberturas.Add(new Cobertura
+            foreach(var item in coberturasDisponibles)
             {
-                codigo = 1060,
-                nombre = "ASISTENCIAS",
-                capital = 0,
-                primatotal = 0,
-                deducible = "",
-                riesgo = riesgo,
-                requerida = false,
-                seleccionado = true
-            });
+                coberturas.Add(new CoberturaVariacion
+                {
+                    codigo = item.COD_COB,
+                    nombre = item.NOM_COB,
+                    capital = 0,
+                    primatotal = 0,
+                    deducible = "",
+                    riesgo = riesgo,
+                    requerida = false,
+                    seleccionado = (item.COD_COB == 1060 || item.COD_COB == 3010 || item.COD_COB == 3016),
+                    mcaObligatorio = item.MCA_OBLIGATORIO,
+                });
+            }
 
-            coberturas.Add(new Cobertura
+            if (!coberturas.Any(c => c.codigo == 1060))
             {
-                codigo = 3010,
-                nombre = "COBL - AYUDA EN CAMINO",
-                capital = 0,
-                primatotal = 0,
-                deducible = "",
-                riesgo = riesgo,
-                requerida = false,
-                seleccionado = true
-            });
+                coberturas.Add(new CoberturaVariacion
+                {
+                    codigo = 1060,
+                    nombre = "ASISTENCIAS",
+                    capital = 0,
+                    primatotal = 0,
+                    deducible = "",
+                    riesgo = riesgo,
+                    requerida = false,
+                    seleccionado = true,
+                    mcaObligatorio = "N"
+                });
+            }
 
-            coberturas.Add(new Cobertura
+            if (!coberturas.Any(c => c.codigo == 3010))
             {
-                codigo = 3016,
-                nombre = "TRASLADO AL AEROPUERTO",
-                capital = 0,
-                primatotal = 0,
-                deducible = "",
-                riesgo = riesgo,
-                requerida = false,
-                seleccionado = true
-            });
+                coberturas.Add(new CoberturaVariacion
+                {
+                    codigo = 3010,
+                    nombre = "COBL - AYUDA EN CAMINO",
+                    capital = 0,
+                    primatotal = 0,
+                    deducible = "",
+                    riesgo = riesgo,
+                    requerida = false,
+                    seleccionado = true,
+                    mcaObligatorio = "N"
+                });
+            }
+
+            if (!coberturas.Any(c => c.codigo == 3016))
+            {
+                coberturas.Add(new CoberturaVariacion
+                {
+                    codigo = 3016,
+                    nombre = "TRASLADO AL AEROPUERTO",
+                    capital = 0,
+                    primatotal = 0,
+                    deducible = "",
+                    riesgo = riesgo,
+                    requerida = false,
+                    seleccionado = true,
+                    mcaObligatorio = "N"
+                });
+            }
+
+            //coberturas.Add(new CoberturaVariacion
+            //{
+            //    codigo = 3002,
+            //    nombre = "COBB - GASTOS MÉD. OCUP.",
+            //    capital = 0,
+            //    primatotal = 0,
+            //    deducible = "",
+            //    riesgo = riesgo,
+            //    requerida = false,
+            //    seleccionado = true
+            //});
+
+            //coberturas.Add(new CoberturaVariacion
+            //{
+            //    codigo = 3003,
+            //    nombre = "TRASLADO AL AEROPUERTO",
+            //    capital = 0,
+            //    primatotal = 0,
+            //    deducible = "",
+            //    riesgo = riesgo,
+            //    requerida = false,
+            //    seleccionado = true
+            //});
 
             return coberturas;
         }
