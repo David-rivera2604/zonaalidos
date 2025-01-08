@@ -1,4 +1,5 @@
 ﻿using Architect.API.Core.Contracts.Security;
+using Architect.Utilities.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -28,35 +29,59 @@ namespace Architect.API.Core.Business.General
         public async static Task<string> GeneratePDFFile(string reportName, object data, string outputFileName = "")
         {
             string result = string.Empty;
-            string json = JsonConvert.SerializeObject(new
+            try
             {
-                Source = JsonConvert.SerializeObject(data),
-                ReportName = reportName
-            });
+                string json = JsonConvert.SerializeObject(new
+                {
+                    Source = JsonConvert.SerializeObject(data),
+                    ReportName = reportName
+                });
 
-            HttpClient client = new HttpClient();
-            var response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("app.api.base") + Utilities.Helpers.Settings.StringValue("Aliados.URL.Report.Service", "/AliadoServReports/Report/Build"), new StringContent(json, Encoding.UTF8, "application/json"));
-            if (response.IsSuccessStatusCode)
+                using (HttpClient client = new HttpClient())
+                {
+                    var url = Utilities.Helpers.Settings.StringValue("app.api.base") +
+                              Utilities.Helpers.Settings.StringValue("Aliados.URL.Report.Service", "/AliadoServReports/Report/Build");
+                    var response = await client.PostAsync(url, new StringContent(json, Encoding.UTF8, "application/json"));
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string resultResponse = await response.Content.ReadAsStringAsync();
+                        JObject jsonvalues = JObject.Parse(resultResponse);
+
+                        JToken dataToken = jsonvalues.SelectToken("data");
+                        if (dataToken != null && !string.IsNullOrEmpty(dataToken.Value<string>()))
+                        {
+
+                            byte[] imageBytes = Convert.FromBase64String(jsonvalues.SelectToken("data").Value<string>());
+                            result = ConfigurationManager.AppSettings["Attachments.Path"];
+                            if (!string.IsNullOrEmpty(outputFileName))
+                            {
+                                result += outputFileName + ".pdf";
+                            }
+                            else
+                            {
+                                result += Guid.NewGuid().ToString() + ".pdf";
+                            }
+                            using (var stream = new FileStream(result, FileMode.Create))
+                            {
+                                await stream.WriteAsync(imageBytes, 0, imageBytes.Length);
+                            }
+                        }
+                        else
+                        {
+                            string reason = jsonvalues.TokenStringValue("reason");
+                            throw new Exception($"Ha ocurrido un error al tratar de generar el reporte. {reason}");
+                        }
+                    }
+                    else
+                    {
+                        throw new Utilities.Exceptions.CustomException($"Error in response: {response.StatusCode} - {response.ReasonPhrase}");
+                    }
+                }
+            }
+            catch (Exception ex)
             {
-                string resultResponse = response.Content.ReadAsStringAsync().Result;
-
-                JObject jsonvalues = JObject.Parse(resultResponse);
-
-                byte[] imageBytes = Convert.FromBase64String(jsonvalues.SelectToken("data").Value<string>());
-                result = ConfigurationManager.AppSettings["Attachments.Path"];
-                if (outputFileName != "")
-                {
-                    result += outputFileName + ".pdf";
-                }
-                else
-                {
-                    result += Guid.NewGuid().ToString() + ".pdf";
-                }
-                using (var stream = new FileStream(result, FileMode.Create))
-                {
-                    stream.Write(imageBytes, 0, imageBytes.Length);
-                    stream.Flush();
-                }
+                // Log the exception (implementation depends on the logging framework being used)
+                throw new Utilities.Exceptions.CustomException("An error occurred while generating the PDF file.", ex);
             }
             return result;
         }
