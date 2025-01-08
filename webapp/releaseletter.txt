@@ -642,5 +642,6 @@
 1.6.89  20/12/2024 Colocacion de Mensaje informativo en las vistas principales.
                    Cicac. Ajuste que valida si no existe informacion de kyc no de error la asinacion de variables de cicac
                    Variaciones. Implementacion actualización de tablas de recibos, plan de pagos, coberturas. 
-
+1.6.90  08/01/2025 Trazabilidad. Ajuste el uso correcto de los usuarios en la creación de casos desde aliados.
+                   Aliados. Unificación y ajustes para servicio de impresión.
 
