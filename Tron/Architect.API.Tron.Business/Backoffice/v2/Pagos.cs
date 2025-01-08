@@ -438,6 +438,28 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                                 item.OnlinePayment.AgentCode = 999999;
                             }
                             bool tronPayment = Backoffice.Pagos.TronPayment(item, item.OnlinePayment.AgentCode, "Placetopay").Result;
+                            Tarjetas.UpdateRejectionCount(currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, 0, string.Empty);
+                        }
+                        else if (item?.status == "REJECTED")
+                        {
+                            if (!item.reason.Equals("La petición ha expirado", StringComparison.CurrentCultureIgnoreCase)
+                                && !item.reason.Equals("La petición ha sido cancelada por el usuario", StringComparison.CurrentCultureIgnoreCase))
+                            {
+
+                                int numberOfRetries = Tarjetas.RetrieveNumberOfRetries(currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber);
+                                
+                                // Se verifica si es el tercer rechazo
+                                if (numberOfRetries == 2)
+                                {
+                                    // Se incrementa la cantidad de reintento fallidos 
+                                    Tarjetas.UpdateRejectionCount(currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, numberOfRetries + 1, item.reason, 3);
+                                }
+                                else
+                                { 
+                                    // Se bloquea la tarjeta para que no sea conciderada en cobros futuros.
+                                    Tarjetas.UpdateRejectionCount(currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, numberOfRetries + 1, item.reason);
+                                }
+                            }
                         }
                     }
                 }
