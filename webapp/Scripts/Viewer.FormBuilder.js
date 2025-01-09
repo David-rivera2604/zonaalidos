@@ -35,13 +35,14 @@
                     //app[name]['Init'](app[_id], _id);
 
                     code = app.core.ReplaceAll(code, '\t\t\t\tSetup();', '');
-                    code = app.core.ReplaceAll(code, '//Custom.Extend', `app.${name}.Init(app.${_id}, '${_id}');`)
+                    code = app.core.ReplaceAll(code, '//Custom.Extend', `app.${name}.Init(app.${_id}, '${_id}');`);
                     eval(code);
                 })
                 .catch(err => {
                     console.error(err);
                 });
         } else {
+            code += "app.core.Lookups(app.prototipo.Options().Lookups, function (){}, app.prototipo.Options().Base);";
             eval(code);
         }
         app.ui.CommonBehaviour();
