@@ -2,9 +2,6 @@
 using Architect.Utilities.Extensions;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography;
@@ -354,13 +351,15 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
             return result;
         }
 
-
-        //public async static void Notify(Architect.Payment.Integrations.Contracts.NotifyRequest notify, int currency)
-        //{
-        //    string currentSignature = Convert.ToString(Sha1(notify.requestId + notify.status.status + notify.status.date + SecretKey(CurrencyConvert(currency.ToString()))));
-        //}
-
-
+        /// <summary>
+        /// Realiza la solicitud de tokenización de una tarjeta.
+        /// </summary>
+        /// <remarks>
+        /// Tokenización (tokenize)
+        /// https://placetopay-api.stoplight.io/docs/api-services-docs/967841bb68f09-tokenizacion-tokenize
+        /// Este servicio permite almacenar un instrumento de pago como: tarjetas de crédito o cuenta bancaria de manera segura, a través de una petición que contenga la información de la misma, se generará un token que puede ser usado en el servicio de procesamiento y para todos los efectos, en PlacetoPay equivale a una tarjeta de crédito o cuenta bancaria, la diferencia es que se envía la estructura token en vez de card o account.
+        /// Previamente al consumo de este servicio se debe consultar el de información para saber si es necesario o no generar un OTP al cliente y en caso de ser necesario, solicitar el token a la persona y enviarlo en el consumo.
+        /// </remarks>
         public async static Task<Integrations.Providers.Placetopay.Contracts.Responses.Tokenize> Tokenize(Integrations.Providers.Placetopay.Contracts.Requests.Tokenize tokenizeRequest)
         {
             Integrations.Providers.Placetopay.Contracts.Responses.Tokenize tokenizeResponse = null;
@@ -388,6 +387,49 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
             return tokenizeResponse;
         }
 
+        /// <summary>
+        /// Realiza la solicitud para invalidar un token existente.
+        /// </summary>
+        /// <remarks>
+        /// Tokenización (invalidate)
+        /// https://placetopay-api.stoplight.io/docs/api-services-docs/90727aada9dc9-tokenizacion-invalidate
+        /// Este servicio permite invalidar y eliminar un token asociado a una tarjeta de crédito.
+        /// </remarks>
+        public async static Task<Integrations.Providers.Placetopay.Contracts.Responses.Tokenize> InvalidateToken(Integrations.Providers.Placetopay.Contracts.Requests.Tokenize tokenizeRequest)
+        {
+            Integrations.Providers.Placetopay.Contracts.Responses.Tokenize tokenizeResponse = null;
+
+            var data = new StringContent(JsonConvert.SerializeObject(tokenizeRequest), Encoding.UTF8, "application/json");
+            HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
+            var response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("Payment.Placetopay.PaymentUrl.Recurring") + "gateway/invalidate", data);
+            string resultResponse = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                tokenizeResponse = JsonConvert.DeserializeObject<Integrations.Providers.Placetopay.Contracts.Responses.Tokenize>(resultResponse);
+            }
+            else
+            {
+                tokenizeResponse = new Contracts.Responses.Tokenize()
+                {
+                    status = new Contracts.Status()
+                    {
+                        date = DateTime.Now.ToString("yyyy-MM-ddTHH\\:mm\\:sszzz"),
+                        status = ST_FAILED,
+                        reason = response.ReasonPhrase
+                    }
+                };
+            }
+            return tokenizeResponse;
+        }
+
+        /// <summary>
+        /// Realiza el cobro a la tarjeta de un cliente
+        /// </summary>
+        /// <remarks>
+        /// Procesamiento de transacción
+        /// https://placetopay-api.stoplight.io/docs/api-services-docs/b736ea6925314-procesamiento-de-transaccion
+        /// Este servicio permite que se realice el cobro a la tarjeta del usuario, los parámetros del instrument son variables, si no se pide tipo de crédito ni otp no es necesario enviar esas variables, payer es siempre requerido, buyer es opcional pero recomendado.
+        /// </remarks>
         public async static Task<CollectTransaction> Collect(string payLoad)
         {
             CollectTransaction collectResponse = null;

@@ -71,5 +71,33 @@ namespace Architect.Payment.Integrations
             return result;
         }
 
+        public async static Task Invalid(string provider, HttpClient client, string token)
+        {
+            List<DatosTarjeta> result = null;
+
+            if (provider.Equals("Evertec", StringComparison.CurrentCultureIgnoreCase))
+            {
+
+                Integrations.Providers.Placetopay.Contracts.Responses.Tokenize tokenResult;
+                Auth auth = Providers.Placetopay.Webcheckout.BuildAuth("Recurring", "CRC");
+                var body = new Providers.Placetopay.Contracts.Requests.Tokenize()
+                {
+                    auth = auth,
+                    instrument = new Instrument()
+                    {
+                        token = new Token()
+                        {
+                            token = token
+                        }
+                    },
+                    ipAddress = "127.0.0.1",
+                    userAgent = "MAPFRE - Aliados"
+                };
+                tokenResult = await Architect.Payment.Integrations.Providers.Placetopay.Webcheckout.InvalidateToken(body);
+
+            }
+
+        }
+
     }
 }

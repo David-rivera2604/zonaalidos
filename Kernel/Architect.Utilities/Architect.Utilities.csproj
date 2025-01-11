@@ -74,6 +74,7 @@
     <Compile Include="Helpers\Xml.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RestClient.cs" />
     <Compile Include="Serialize.cs" />
   </ItemGroup>
   <ItemGroup>
