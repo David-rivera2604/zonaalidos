@@ -190,7 +190,7 @@ namespace Architect.API.Insurance.Business.Policy
             }
             Contracts.Policy.RiskView riskInfo = Risk.Mapper_Information(item, tokenInfo.CompanyId);
 
-            string archivo = Core.Business.General.Report.GeneratePDFFile(riskInfo.ProductAlias + riskInfo.Prefix, riskInfo).GetAwaiter().GetResult();
+            string archivo = Core.Business.General.Report.Generate(tokenInfo.CompanyId, riskInfo.ProductAlias + riskInfo.Prefix, riskInfo).GetAwaiter().GetResult();
 
             if (!item.HasDigitalSignature)
             {

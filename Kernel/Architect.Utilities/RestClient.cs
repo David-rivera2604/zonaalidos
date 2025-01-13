@@ -46,7 +46,8 @@ namespace Architect.Utilities
         {
             _baseUrl = baseUrl;
             _source = source;
-            _httpClient = new HttpClient { BaseAddress = new Uri(_baseUrl) };
+            //_httpClient = new HttpClient { BaseAddress = new Uri(_baseUrl) };
+            _httpClient = new HttpClient();
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
@@ -56,7 +57,7 @@ namespace Architect.Utilities
             string stringResponse = null;
             try
             {
-                var request = new HttpRequestMessage(method, endpoint);
+                var request = new HttpRequestMessage(method, $"{_baseUrl}/{endpoint}");
 
                 if (data != null && !data.Equals(default(TRequest))) // Comprobación mejorada para tipos de valor
                 {

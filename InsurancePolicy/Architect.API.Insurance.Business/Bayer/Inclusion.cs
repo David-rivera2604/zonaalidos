@@ -466,7 +466,7 @@ namespace Architect.API.Insurance.Business.Bayer
                                 inclusionInfo.Message = string.Format("La inclusión fue aceptada de forma exitosa bajo el número #{0}, la misma fue enviada {1} para su firma.", inclusionInfo.Id, name);
 
 
-                                string archivo = Core.Business.General.Report.GeneratePDFFile("bayer", inclusionInfo).GetAwaiter().GetResult();
+                                string archivo = Core.Business.General.Report.Generate(tokenInfo.CompanyId, "bayer", inclusionInfo).GetAwaiter().GetResult();
 
                                 if (!inclusionInfo.HasDigitalSignature)
                                 {

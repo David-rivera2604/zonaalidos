@@ -287,7 +287,7 @@ namespace Architect.API.Tron.Business.Emision
             data.Questionary = MapperQuestionary(quoteInfo.Questionary);
             data.Behavior = "Show.DS";  ///Show.CV
             //
-            return Core.Business.General.Report.GeneratePDFFile("coopenae_saldo_deudor", data).GetAwaiter().GetResult();
+            return Core.Business.General.Report.Generate(tokenInfo.CompanyId, "coopenae_saldo_deudor", data).GetAwaiter().GetResult();
         }
 
         private static void AlmacenarSolicitud(Contracts.Emision.SaldoDeudor quoteInfo, int status, Core.Contracts.Security.Token tokenInfo, string uniqueId)

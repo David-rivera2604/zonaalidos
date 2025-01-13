@@ -132,11 +132,11 @@ namespace Architect.API.Tron.Business.Emision
 
             if (tokenInfo.Roles.Contain("PolizaGrupo") && !((quoteInfo.polizagrupo == "3022310199235") || (quoteInfo.polizagrupo == null) || quoteInfo.polizagrupo == "")) //Bariloche
             {
-                return Core.Business.General.Report.GeneratePDFFile("mapfremas_solicitud", data).GetAwaiter().GetResult();
+                return Core.Business.General.Report.Generate(tokenInfo.CompanyId, "mapfremas_solicitud", data).GetAwaiter().GetResult();
             }
             else
             {
-                return Core.Business.General.Report.GeneratePDFFile("mapfremas_solicitud_individual", data).GetAwaiter().GetResult();
+                return Core.Business.General.Report.Generate(tokenInfo.CompanyId, "mapfremas_solicitud_individual", data).GetAwaiter().GetResult();
             }
 
 
@@ -144,7 +144,7 @@ namespace Architect.API.Tron.Business.Emision
 
         private static string General_PDF_Cotización(Contracts.Cotizacion.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
-            return Core.Business.General.Report.GeneratePDFFile("mapfremas", quoteInfo).GetAwaiter().GetResult();
+            return Core.Business.General.Report.Generate(tokenInfo.CompanyId, "mapfremas", quoteInfo).GetAwaiter().GetResult();
         }
 
         internal static void Almacena_Documento_Firmado(string presupuesto, string fileContent, int companyId, int userId)
