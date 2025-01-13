@@ -646,3 +646,4 @@
                    Aliados. Unificación y ajustes para servicio de impresión.
 1.6.91  09/01/2025 Pasarela Evertec. Se agrega manejo para bloquear la tarjeta tras tres rechazos.
                    Aliados. Mejoras para el tratamiento de errores en la generación de los PDF para reportes.
+1.6.92  13/01/2025 Pasarela Evertec. Ajustes para determinar fallas en el monitoreo de pagos de evertec.
