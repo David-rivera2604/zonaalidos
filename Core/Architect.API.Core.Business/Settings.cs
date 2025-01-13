@@ -8,6 +8,21 @@ namespace Architect.API.Core.Business
 
     public static class Settings
     {
+
+        public static string URLRelativeAndFullValue(int companyId, string baseSettingName, string servicePath, string fullSettingName)
+        {
+            string result = FindSetting(companyId, baseSettingName);
+            if (result == string.Empty)
+            {
+                result = FindSetting(companyId, fullSettingName);
+            } else
+            {
+                result += servicePath;
+            }
+            return result;
+
+        }
+
         public static string StringValue(int companyId, string settingName, string defaultValue = "")
         {
             string result = FindSetting(companyId, settingName);

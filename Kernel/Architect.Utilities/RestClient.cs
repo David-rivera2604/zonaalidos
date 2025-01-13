@@ -14,28 +14,46 @@ namespace Architect.Utilities
     /// 
     /// </summary>
     /// <example>
-    /// 
-    /// 
-    /// 
-    /// 
-    /// 
-    /// 
+    ///   string baseUrl = "https://tu-api-rest.com/api/"; // Reemplaza con tu URL base
+    ///   var restClient = new RestClient(baseUrl);
+    ///   
+    ///   var requestData = new RequestData { Nombre = "Nuevo Nombre", Edad = 40 };
+    ///   
+    ///   // Ejemplos de uso de los nuevos métodos
+    ///   (ResponseData getResponse, string getError) = await restClient.GetAsync<ResponseData>("endpoint/1");
+    ///   if(getError != null) Console.WriteLine($"Error en GET: {getError}");
+    ///   else Console.WriteLine($"GET: ID: {getResponse.Id}, Mensaje: {getResponse.Mensaje}");
+    ///   
+    ///   (ResponseData postResponse, string postError) = await restClient.PostAsync<RequestData, ResponseData>("endpoint", requestData);
+    ///   if (postError != null) Console.WriteLine($"Error en POST: {postError}");
+    ///   else Console.WriteLine($"POST: ID: {postResponse.Id}, Mensaje: {postResponse.Mensaje}");
+    ///   
+    ///   (ResponseData putResponse, string putError) = await restClient.PutAsync<RequestData, ResponseData>("endpoint/1", requestData);
+    ///   if(putError != null) Console.WriteLine($"Error en PUT: {putError}");
+    ///   else Console.WriteLine($"PUT: ID: {putResponse.Id}, Mensaje: {putResponse.Mensaje}");
+    ///   
+    ///   (VoidResponse deleteResponse, string deleteError) = await restClient.DeleteAsync<VoidResponse>("endpoint/1");
+    ///   if(deleteError != null) Console.WriteLine($"Error en DELETE: {deleteError}");
+    ///   else Console.WriteLine("DELETE ejecutado");
     /// </example>
     public class RestClient
     {
         private readonly HttpClient _httpClient;
         private readonly string _baseUrl;
+        private readonly string _source;
 
-        public RestClient(string baseUrl)
+        public RestClient(string baseUrl, string source)
         {
             _baseUrl = baseUrl;
+            _source = source;
             _httpClient = new HttpClient { BaseAddress = new Uri(_baseUrl) };
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        private async Task<(TResponse, ApiError)> SendAsync<TRequest, TResponse>(HttpMethod method, string endpoint, TRequest data = default(TRequest))
+        private async Task<TResponse> SendAsync<TRequest, TResponse>(HttpMethod method, string endpoint, TRequest data = default(TRequest))
         {
+            string stringResponse = null;
             try
             {
                 var request = new HttpRequestMessage(method, endpoint);
@@ -48,58 +66,74 @@ namespace Architect.Utilities
 
                 using (var response = await _httpClient.SendAsync(request))
                 {
-                    var responseContent = await response.Content.ReadAsStringAsync();
-
                     if (response.IsSuccessStatusCode)
                     {
-                        if (typeof(TResponse) == typeof(VoidResponse))
-                            return (default(TResponse), null);
-
-                        var responseObject = JsonConvert.DeserializeObject<TResponse>(responseContent);
-                        return (responseObject, null);
+                        if (typeof(TResponse) == typeof(string))
+                        {
+                            stringResponse = await response.Content.ReadAsStringAsync();
+                            return (TResponse)(object)stringResponse;
+                        }
+                        else if (typeof(TResponse) == typeof(byte[]))
+                        {
+                            var bytesResponse = await response.Content.ReadAsByteArrayAsync();
+                            return (TResponse)(object)bytesResponse;
+                        }
+                        else if (typeof(TResponse) == typeof(VoidResponse))
+                        {
+                            return default(TResponse);
+                        }
+                        else
+                        {
+                            stringResponse = await response.Content.ReadAsStringAsync();
+                            var responseObject = JsonConvert.DeserializeObject<TResponse>(stringResponse);
+                            return responseObject;
+                        }
                     }
                     else
                     {
-                        return (default(TResponse), new ApiError
-                        {
-                            StatusCode = (int)response.StatusCode,
-                            Message = responseContent
-                        });
+                        stringResponse = await response.Content.ReadAsStringAsync();
+
+                        throw new Utilities.Exceptions.CustomException($"Se ha recibido una respuesta fallida al hacer el llamado REST del tipo {method.Method} a la URL {_baseUrl}/{endpoint}. Detalle de la respuesta:\n {stringResponse}");
                     }
                 }
             }
             catch (HttpRequestException ex)
             {
-                return (default(TResponse), new ApiError { Message = $"Error de red: {ex.Message}" });
+                throw new Utilities.Exceptions.CustomException($"Ha ocurrido un error de comunicación al intentar realizar un llamado REST del tipo {method.Method} a la URL {_baseUrl}/{endpoint}", ex);
             }
             catch (JsonException ex)
             {
-                return (default(TResponse), new ApiError { Message = $"Error al deserializar JSON: {ex.Message}" });
+                throw new Utilities.Exceptions.CustomException($"Ha ocurrido un error al intentar deserializar la respuesta JSON del llamado REST del tipo {method.Method} a la URL {_baseUrl}/{endpoint}", ex);
             }
             catch (Exception ex)
             {
-                return (default(TResponse), new ApiError { Message = $"Error inesperado: {ex.Message}" });
+                throw new Utilities.Exceptions.CustomException($"Ha ocurrido un error inesperado al intentar realizar un llamado REST del tipo {method.Method} a la URL {_baseUrl}/{endpoint}", ex);
             }
         }
 
-        public async Task<(TResponse, ApiError)> GetAsync<TResponse>(string endpoint)
+        public async Task<TResponse> GetAsync<TResponse>(string endpoint)
         {
             return await SendAsync<object, TResponse>(HttpMethod.Get, endpoint);
         }
 
-        public async Task<(TResponse, ApiError)> PostAsync<TRequest, TResponse>(string endpoint, TRequest data)
+        public async Task<TResponse> PostAsync<TRequest, TResponse>(string endpoint, TRequest data)
         {
             return await SendAsync<TRequest, TResponse>(HttpMethod.Post, endpoint, data);
         }
 
-        public async Task<(TResponse, ApiError)> PutAsync<TRequest, TResponse>(string endpoint, TRequest data)
+        public async Task<TResponse> PutAsync<TRequest, TResponse>(string endpoint, TRequest data)
         {
             return await SendAsync<TRequest, TResponse>(HttpMethod.Put, endpoint, data);
         }
 
-        public async Task<(TResponse, ApiError)> DeleteAsync<TResponse>(string endpoint)
+        public async Task<TResponse> DeleteAsync<TRequest, TResponse>(string endpoint)
         {
-            return await SendAsync<object, TResponse>(HttpMethod.Delete, endpoint);
+            return await SendAsync<TRequest, TResponse>(HttpMethod.Delete, endpoint);
+        }
+
+        public async Task DeleteAsync(string endpoint)
+        {
+            await SendAsync<object, VoidResponse>(HttpMethod.Delete, endpoint);
         }
 
         public void Dispose()
@@ -109,15 +143,8 @@ namespace Architect.Utilities
 
     }
 
-    public class ApiError
-    {
-        public string Message { get; set; }
-        public int? StatusCode { get; set; }
-    }
-
-
     //Clase para cuando no se espera una respuesta
-    public class VoidResponse
+    internal class VoidResponse
     {
 
     }

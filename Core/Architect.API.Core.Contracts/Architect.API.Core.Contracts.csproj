@@ -56,6 +56,7 @@
     <Compile Include="General\GenericResponse.cs" />
     <Compile Include="General\InstanceInformation.cs" />
     <Compile Include="General\CreateProcessInstance.cs" />
+    <Compile Include="General\Report.cs" />
     <Compile Include="General\Setting.cs" />
     <Compile Include="General\Kyc.cs" />
     <Compile Include="General\Navigation.cs" />
