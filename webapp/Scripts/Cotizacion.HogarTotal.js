@@ -260,7 +260,8 @@ app.HogarTotal = (function () {
     function Controls_setup() {
         $('#iniciodevigencia_group').datetimepicker({
             format: 'DD/MM/YYYY',
-            locale: 'es'
+            locale: 'es',
+            minDate: moment().startOf('day')
         });
         $('#findevigencia_group').datetimepicker({
             format: 'DD/MM/YYYY',

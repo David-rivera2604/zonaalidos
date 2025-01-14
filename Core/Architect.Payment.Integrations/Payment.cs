@@ -198,6 +198,7 @@ namespace Architect.Payment.Integrations
 
                     if (updateStatus && result.status != currentRecord.ProviderStatus)
                     {
+                        Utilities.Log.WarningLog("Payment.VerifyUpdateStatus", string.Format(" Cambio el estado, currentStatus={2}, newStatus={3}, recibo={4}", currentRecord.RequestID, currentRecord.Currency, currentRecord.ProviderStatus, result.status, currentRecord.BillNumber), "payment");
                         result.OnlinePayment = UpdateStatus(userId, currentRecord, result);
                         result.changed = true;
                     }
@@ -229,7 +230,11 @@ namespace Architect.Payment.Integrations
             currentRecord.Authorization = result.authorization;
             currentRecord.Receipt = result.receipt;
 
+            Utilities.Log.WarningLog("Payment.UpdateStatus", string.Format("requestId={0}, currency={1}, currentStatus={2}, newStatus={3}, recibo={4}", currentRecord.RequestID, currentRecord.Currency, currentRecord.ProviderStatus, result.status, currentRecord.BillNumber), "payment");
             Business.OnlinePayment.Update(currentRecord);
+
+
+
             return currentRecord;
         }
 
