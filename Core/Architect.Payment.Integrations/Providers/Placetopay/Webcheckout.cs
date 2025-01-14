@@ -155,13 +155,16 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
                         result.message = payment.status.message;
                         result.payerName = internalResult.request?.payer?.name;
                         result.payerSurname = internalResult.request?.payer?.surname;
-                        if (internalResult.request != null && internalResult.request.subscribe)
+                        if (internalResult.request != null && internalResult.request.payment.subscribe)
                         {
-                            result.subscribe = internalResult.request.subscribe;
+                            result.subscribe = internalResult.request.payment.subscribe;
                         }
-                        if (internalResult?.subscription?.status?.status == ST_OK)
+                        if (result.subscribe && internalResult?.subscription?.status?.status == ST_OK)
                         {
                             result.instrument = internalResult.subscription.instrument;
+                        } else
+                        {
+                            result.subscribe = false;
                         }
 
                         break;

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Architect.API.Core.Business.General;
+using Architect.API.Tron.Contracts.Pagos;
 using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
 using Architect.Payment.Integrations.Contracts;
+using Architect.Payment.Integrations.Providers.Placetopay.Contracts;
 using Architect.Utilities.Extensions;
 using Newtonsoft.Json;
 
@@ -69,11 +71,7 @@ namespace Architect.API.Tron.Business.Backoffice
             // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
             if (result != null && result.changed && result.status == "APPROVED")
             {
-                await PaymentAprroved(result);
-                if (result.subscribe)
-                {
-                    await CambioTarjeta(result);
-                }
+                await PaymentApproved(result);
             }
         }
 
@@ -180,22 +178,17 @@ namespace Architect.API.Tron.Business.Backoffice
             // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
             if (result.changed && result.status == "APPROVED")
             {
-                await PaymentAprroved(result);
-
-                if (result.subscribe)
-                {
-                    await CambioTarjeta(result);
-                }
+                await PaymentApproved(result);
             }
 
             return result;
         }
 
-        private static async Task PaymentAprroved(InformationRequest result)
+        private static async Task PaymentApproved(InformationRequest result)
         {
             if (result.subscribe)
             {
-                //TODO: Llamado al package para almacenar el token.
+                await CambioTarjeta(result);
             }
             if (IsEmployee)
             {
@@ -317,7 +310,27 @@ namespace Architect.API.Tron.Business.Backoffice
             Contracts.Batch.Respuesta tronCobro = DataAccess.PorRamo.p_cambio_tarjeta(1, Guid.NewGuid().ToString(), data);
             if (request.OnlinePayment.Id > 0)
             {
-                Payment.Integrations.DataAccess.OnlinePayment.UpdateTronInformation(request.OnlinePayment.Id, Convert.ToInt16(tronCobro.codigo_respuesta), tronCobro.mensaje_respuesta);
+                string card = "";
+                string token = "";
+
+                if (request.instrument != null)
+                {
+                    InstrumentValue ivalue = request.instrument.Where(r => r.keyword == "lastDigits").FirstOrDefault();
+                    if (ivalue != null)
+                    {
+                        card = "************" + ivalue.value;
+                    }
+                    ivalue = request.instrument.Where(r => r.keyword == "token").FirstOrDefault();
+                    if (ivalue != null)
+                    {
+                        token = ivalue.value;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(token))
+                {
+                    DataAccess.Pagos.Tarjetas.CreateBoveda(request.OnlinePayment.DocumentType.DocumentType(), request.OnlinePayment.DocumentNumber, card, token, string.Empty, true, "subscribe");
+                }
             }
             Utilities.Log.WarningLog("Pagos.CambioTarjeta", string.Format("codigo_respuesta={0}, mensaje_respuesta={1}, recibo={2}", tronCobro.codigo_respuesta, tronCobro.mensaje_respuesta, request.OnlinePayment.BillNumber), "payment");
             return (tronCobro.codigo_respuesta == "200");

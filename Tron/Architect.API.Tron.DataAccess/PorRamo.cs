@@ -490,7 +490,7 @@ namespace Architect.API.Tron.DataAccess
         {
             Contracts.Batch.Respuesta result = new Contracts.Batch.Respuesta();
 
-            Database.Procedure("gc_k_cambia_tarjeta_web_mcr.p_cambio_tarjeta")
+            Database.Procedure("gc_k_cambiar_tarjeta_web_mcr.p_cambio_tarjeta")
                     .AddParameter("p_cod_cia", DbType.Int32, 22, cod_cia)
                     .AddParameter("p_session_id", DbType.String, 13, session_id)
                     .AddParameter("p_array", DbType.String, 4000, json)
