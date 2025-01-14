@@ -647,3 +647,7 @@
 1.6.91  09/01/2025 Pasarela Evertec. Se agrega manejo para bloquear la tarjeta tras tres rechazos.
                    Aliados. Mejoras para el tratamiento de errores en la generación de los PDF para reportes.
 1.6.92  13/01/2025 Pasarela Evertec. Ajustes para determinar fallas en el monitoreo de pagos de evertec.
+1.6.93  14/01/2025 RF01979608.  RETROACTIVIDAD DE SUSCRIPCION
+                   Que no se puedan hacer cotizaciones retroactivas, quiere decir que, si una cotización se hace hoy, no puede cotizarse retroactivamente ya que el riesgo no será inspeccionado
+                   Poner un texto en la cotización que indique “La vigencia de esa cotización es de 30 días naturales”.
+                   Que no permita emitir esa cotización con 15 días hábiles de retroactividad.
