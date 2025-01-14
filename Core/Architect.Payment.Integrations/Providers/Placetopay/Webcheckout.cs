@@ -159,6 +159,11 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
                         {
                             result.subscribe = internalResult.request.subscribe;
                         }
+                        if (internalResult?.subscription?.status?.status == ST_OK)
+                        {
+                            result.instrument = internalResult.subscription.instrument;
+                        }
+
                         break;
                     case "REJECTED":
                         Contracts.PaymentRequest paymentr = internalResult.request.payment;

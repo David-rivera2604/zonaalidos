@@ -483,5 +483,27 @@ namespace Architect.API.Tron.DataAccess
             return result;
         }
 
+        /// <summary>
+        /// Realiza el cambio de tarjeta para el cliente de una póliza.
+        /// </summary>
+        public static Contracts.Batch.Respuesta p_cambio_tarjeta(int cod_cia, string session_id, string json, IDbConnection connection = null)
+        {
+            Contracts.Batch.Respuesta result = new Contracts.Batch.Respuesta();
+
+            Database.Procedure("gc_k_cambia_tarjeta_web_mcr.p_cambio_tarjeta")
+                    .AddParameter("p_cod_cia", DbType.Int32, 22, cod_cia)
+                    .AddParameter("p_session_id", DbType.String, 13, session_id)
+                    .AddParameter("p_array", DbType.String, 4000, json)
+                    .Query(connection, "Tron", new Action<IDataReader>((reader) =>
+                    {
+                        result = new Contracts.Batch.Respuesta()
+                        {
+                            codigo_respuesta = reader.StringValue("codigo_respuesta"),
+                            mensaje_respuesta = reader.StringValue("mensaje_respuesta"),
+                            id_report = reader.StringValue("id_report")
+                        };
+                    }));
+            return result;
+        }
     }
 }

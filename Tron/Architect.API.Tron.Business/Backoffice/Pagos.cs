@@ -70,6 +70,10 @@ namespace Architect.API.Tron.Business.Backoffice
             if (result != null && result.changed && result.status == "APPROVED")
             {
                 await PaymentAprroved(result);
+                if (result.subscribe)
+                {
+                    await CambioTarjeta(result);
+                }
             }
         }
 
@@ -178,6 +182,10 @@ namespace Architect.API.Tron.Business.Backoffice
             {
                 await PaymentAprroved(result);
 
+                if (result.subscribe)
+                {
+                    await CambioTarjeta(result);
+                }
             }
 
             return result;
@@ -292,6 +300,28 @@ namespace Architect.API.Tron.Business.Backoffice
 
         }
 
+
+        /// <summary>
+        /// Realiza el cambio de tarjeta para el cliente de una póliza.
+        /// </summary>
+        public async static Task<bool> CambioTarjeta(Architect.Payment.Integrations.Contracts.InformationRequest request)
+        {
+            string data = JsonConvert.SerializeObject(
+                new
+                {
+                    num_poliza = request.OnlinePayment.PolicyId,
+                    tip_benef = "0",
+                    datos = request.instrument
+                });
+
+            Contracts.Batch.Respuesta tronCobro = DataAccess.PorRamo.p_cambio_tarjeta(1, Guid.NewGuid().ToString(), data);
+            if (request.OnlinePayment.Id > 0)
+            {
+                Payment.Integrations.DataAccess.OnlinePayment.UpdateTronInformation(request.OnlinePayment.Id, Convert.ToInt16(tronCobro.codigo_respuesta), tronCobro.mensaje_respuesta);
+            }
+            Utilities.Log.WarningLog("Pagos.CambioTarjeta", string.Format("codigo_respuesta={0}, mensaje_respuesta={1}, recibo={2}", tronCobro.codigo_respuesta, tronCobro.mensaje_respuesta, request.OnlinePayment.BillNumber), "payment");
+            return (tronCobro.codigo_respuesta == "200");
+        }
 
     }
 }

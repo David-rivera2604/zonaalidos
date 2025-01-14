@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
 {
 
-    internal class InstrumentValue
+    public class InstrumentValue
     {
        
         public string keyword { get; set; }

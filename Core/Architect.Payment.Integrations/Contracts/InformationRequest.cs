@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Architect.Payment.Integrations.Providers.Placetopay.Contracts;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,7 +69,10 @@ namespace Architect.Payment.Integrations.Contracts
         /// <summary>
         /// Indica si el cliente indico que queria subcribir su tarjeta para pagos futuros.
         /// </summary>
-        public bool subscribe { get; set; }        
+        public bool subscribe { get; set; }
+
+        [JsonIgnore]
+        public List<InstrumentValue> instrument { get; set; }
 
         /// <summary>
         /// Fecha y hora en que se genera el estado de pago.
