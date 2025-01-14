@@ -28,5 +28,36 @@ namespace Architect.Utilities.Extensions
                 return value;
             }
         }
+
+        public static string DocumentType(this int value)
+        {
+            string type = value.ToString();
+
+            switch (value)
+            {
+                case 1: //Cédula
+                    type = "CNA";
+                    break;
+
+                case 2: //Residencia
+                    type = "CRE";
+                    break;
+
+                case 4: //Cédula jurídica
+                    type = "CJU";
+                    break;
+
+                case 3: //Pasaporte
+                    type = "PAS";
+                    break;
+
+                    //DIDI
+            }
+
+            return type;
+
+            
+        }
+
     }
 }

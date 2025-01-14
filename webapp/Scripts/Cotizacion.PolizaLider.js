@@ -159,7 +159,8 @@ app.CotizacionPolizaLider = (function () {
     function Controls_setup() {
         $('#fec_efec_poliza_group').datetimepicker({
             format: 'DD/MM/YYYY',
-            locale: 'es'
+            locale: 'es',
+            minDate: moment().startOf('day')
         });
         $('#fec_vcto_poliza_group').datetimepicker({
             format: 'DD/MM/YYYY',

@@ -642,5 +642,12 @@
 1.6.89  20/12/2024 Colocacion de Mensaje informativo en las vistas principales.
                    Cicac. Ajuste que valida si no existe informacion de kyc no de error la asinacion de variables de cicac
                    Variaciones. Implementacion actualización de tablas de recibos, plan de pagos, coberturas. 
-
-
+1.6.90  08/01/2025 Trazabilidad. Ajuste el uso correcto de los usuarios en la creación de casos desde aliados.
+                   Aliados. Unificación y ajustes para servicio de impresión.
+1.6.91  09/01/2025 Pasarela Evertec. Se agrega manejo para bloquear la tarjeta tras tres rechazos.
+                   Aliados. Mejoras para el tratamiento de errores en la generación de los PDF para reportes.
+1.6.92  13/01/2025 Pasarela Evertec. Ajustes para determinar fallas en el monitoreo de pagos de evertec.
+1.6.93  14/01/2025 RF01979608.  RETROACTIVIDAD DE SUSCRIPCION
+                   Que no se puedan hacer cotizaciones retroactivas, quiere decir que, si una cotización se hace hoy, no puede cotizarse retroactivamente ya que el riesgo no será inspeccionado
+                   Poner un texto en la cotización que indique “La vigencia de esa cotización es de 30 días naturales”.
+                   Que no permita emitir esa cotización con 15 días hábiles de retroactividad.

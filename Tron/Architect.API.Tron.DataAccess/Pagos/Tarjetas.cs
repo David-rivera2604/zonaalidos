@@ -114,5 +114,39 @@ SELECT B.REASON,A99.MCA_FISICO, A99.TIP_DOCUM, A99.COD_DOCUM, A99.NOM_TERCERO, A
 
             return result;
         }
+
+        public static int UpdateRejectionCount(string tip_docum, string cod_docum, int numberOfRetries, string reasonLastRejected, int status, IDbConnection connection = null)
+        {
+            return (int)Database.Update("BOVEDA", DataFactory.Enumerations.ExecuteMode.CommandBuilder)
+                            .Column("NumberOfRetries", DbType.Int32, 3, numberOfRetries)
+                            .Column("ReasonLastRejected", DbType.AnsiString, 100, reasonLastRejected)
+                            .Column("Status", DbType.Int32, 1, status)
+                            .Column("UpdateDate", DbType.DateTime, 0, DateTime.Now)
+                            .Filter("TIP_DOCUM", DbType.AnsiString, 3, tip_docum)
+                            .Filter("COD_DOCUM", DbType.AnsiString, 20, cod_docum)
+                            .Filter("STATUS", DbType.Int32, 1, 1)
+                            .Execute(connection, "Research");
+        }
+        public static int UpdateRejectionCount(string tip_docum, string cod_docum, int numberOfRetries, string reasonLastRejected, IDbConnection connection = null)
+        {
+            return (int)Database.Update("BOVEDA", DataFactory.Enumerations.ExecuteMode.CommandBuilder)
+                            .Column("NumberOfRetries", DbType.Int32, 3, numberOfRetries)
+                            .Column("ReasonLastRejected", DbType.AnsiString, 100, reasonLastRejected)
+                            .Column("UpdateDate", DbType.DateTime, 0, DateTime.Now)
+                            .Filter("TIP_DOCUM", DbType.AnsiString, 3, tip_docum)
+                            .Filter("COD_DOCUM", DbType.AnsiString, 20, cod_docum)
+                            .Filter("STATUS", DbType.Int32, 1, 1)
+                            .Execute(connection, "Research");
+        }
+
+        public static int RetrieveNumberOfRetries(string tip_docum, string cod_docum, IDbConnection connection = null)
+        {
+            return (int)Database.Select("SELECT NVL(NumberOfRetries, 0) " +
+                              "FROM BOVEDA " +
+                             "WHERE TIP_DOCUM=:TIP_DOCUM AND COD_DOCUM=:COD_DOCUM AND STATUS=1")
+                            .AddParameter("TIP_DOCUM", DbType.AnsiString, 3, tip_docum)
+                            .AddParameter("COD_DOCUM", DbType.AnsiString, 20, cod_docum)
+                            .QueryScalar<Decimal>(connection, "Research");
+        }
     }
 }

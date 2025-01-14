@@ -658,6 +658,9 @@ app.core = (function () {
                 } else {
                     return response.json();
                 }
+            })
+            .catch(error => { // Manejo de errores adicionales 
+                console.error('Error en la solicitud:', error);
             });
     };
 
@@ -856,7 +859,11 @@ app.core = (function () {
             return new Promise((resolve, reject) => {
                 report(reportName, data)
                     .then(data => {
-                        if (data === undefined) {
+                        if (data === undefined || data.data == null) {
+                            if (data != undefined) {
+                                console.error(data);
+                            }
+                            toastr.error("Por favor intente nuevamente y en caso de persistir el problema contacte el personal de soporte", "Ha ocurrido un error al tratar de generar el reporte", { timeOut: 10000, closeButton: true, progressBar: true });
                             resolve(null);
                         } else {
                             let file = new Blob([data.data], { type: 'application/octet-binary' });

@@ -17,7 +17,7 @@ namespace Architect.API.Tron.Business.Backoffice
     {
         public static bool IsEmployee { get; private set; }
 
-        public static void Monitor()
+        public static async Task Monitor()
         {
             Utilities.Log.WarningLog("Payment.Monitor", "Inicio - Proceso de sondeo", "payment");
 
@@ -28,13 +28,13 @@ namespace Architect.API.Tron.Business.Backoffice
                 if (pendingOnlinePayment.IsNotEmpty())
                 {
                     Utilities.Log.WarningLog("Payment.Monitor", $"  {pendingOnlinePayment.Count} Pending Online Payment", "payment");
-                    Task.Run(() => VerifiyOnlinePaymentPending(pendingOnlinePayment));
+                    await VerifiyOnlinePaymentPending(pendingOnlinePayment);
                 }
                 List<Payment.Integrations.Contracts.OnlinePayment> pendingPaymentInTron = Payment.Integrations.DataAccess.OnlinePayment.RetrieveByTronCode(500);
                 if (pendingPaymentInTron.IsNotEmpty())
                 {
                     Utilities.Log.WarningLog("Payment.Monitor", $"  {pendingOnlinePayment.Count} Pending Payment In Tron", "payment");
-                    Task.Run(() => VerifiyOnlinePaymentPending(pendingPaymentInTron));
+                    await VerifiyOnlinePaymentPending(pendingPaymentInTron);
                 }
             }
             catch (Exception ex)
@@ -45,13 +45,13 @@ namespace Architect.API.Tron.Business.Backoffice
             Utilities.Log.WarningLog("Payment.Monitor", "Fin - Proceso de sondeo", "payment");
         }
 
-        private static void VerifiyOnlinePaymentPending(List<Payment.Integrations.Contracts.OnlinePayment> pendings)
+        private static async Task VerifiyOnlinePaymentPending(List<Payment.Integrations.Contracts.OnlinePayment> pendings)
         {
             try
             {
                 foreach (Payment.Integrations.Contracts.OnlinePayment currentRecord in pendings)
                 {
-                    Verify(currentRecord);
+                    await Verify(currentRecord);
                 }
             }
             catch (Exception ex)
@@ -283,7 +283,7 @@ namespace Architect.API.Tron.Business.Backoffice
             {
                 Payment.Integrations.Contracts.PaymentInformation payInfo = (Payment.Integrations.Contracts.PaymentInformation)sessionCore["payinfo"];
 
-                Core.Business.General.Mail.SendByTemplate("Send_PaymentLink", tokenInfo.CompanyId, new { payinfo = payInfo, session = session } , new Dictionary<string, string> { { payInfo.Email, $"{payInfo.FirstName} {payInfo.LastName}" } });
+                Core.Business.General.Mail.SendByTemplate("Send_PaymentLink", tokenInfo.CompanyId, new { payinfo = payInfo, session = session }, new Dictionary<string, string> { { payInfo.Email, $"{payInfo.FirstName} {payInfo.LastName}" } });
 
                 session.Reason = $"El enlace de pago fue enviado al correo electrónico {payInfo.Email} del cliente";
             }
