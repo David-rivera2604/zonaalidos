@@ -174,6 +174,11 @@ app.EmisionMapfreMas = (function () {
         $('#DED_AUTO_ROB').prop('disabled', isdisabled);
         $('#IMP_AUTO_CRI').prop('disabled', isdisabled);
         $('#DED_AUTO_CRI').prop('disabled', isdisabled);
+        $('#IMP_AUTO_EQESP').prop('disabled', isdisabled);
+        $('#DED_AUTO_EQESP').prop('disabled', isdisabled);
+
+        $('#coberturasTbl').find('input, button').prop('disabled', isdisabled);
+        $('#plandepagoTbl').find('input, button').prop('disabled', isdisabled);
     }
 
     function Init_Lookups(data) {
@@ -267,6 +272,8 @@ app.EmisionMapfreMas = (function () {
         data.DED_AUTO_ROB = app.ui.GetDropDownNumericValue('#DED_AUTO_ROB');
         data.DED_AUTO_CYV = app.ui.GetDropDownNumericValue('#DED_AUTO_CYV');
         data.DED_AUTO_RAD = app.ui.GetDropDownNumericValue('#DED_AUTO_RAD');
+        data.IMP_AUTO_EQESP = app.ui.GetNumericValue('#IMP_AUTO_EQESP');
+        data.DED_AUTO_EQESP = app.ui.GetDropDownNumericValue('#DED_AUTO_EQESP');
 
         data.NUM_MATRICULA = data.NUM_MATRICULA.replace(/[^a-zA-Z0-9]/g, "");
 
@@ -640,6 +647,13 @@ app.EmisionMapfreMas = (function () {
                                     let firstRecord = data.Recibos[0];
                                     NEW_NUM_SPTO = firstRecord.num_spto;
                                 }
+
+                                if (data.coberturas != null)
+                                    $('#coberturasTbl').bootstrapTable('load', data.coberturas);
+                                $('#coberturasTbl').bootstrapTable('hideLoading');
+                                if (data.plandepago != null)
+                                    $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
+
                                 $('#generarvariacion').addClass('d-none');
                                 $('#cancelarpoliza').addClass('d-none');
                                 $('#authorizarct').removeClass('d-none');
@@ -692,6 +706,13 @@ app.EmisionMapfreMas = (function () {
                                 let firstRecord = data.Recibos[0];
                                 NEW_NUM_SPTO = firstRecord.num_spto;
                             }
+
+                            if (data.coberturas != null)
+                                $('#coberturasTbl').bootstrapTable('load', data.coberturas);
+                            $('#coberturasTbl').bootstrapTable('hideLoading');
+                            if (data.plandepago != null)
+                                $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
+
                             $('#generarvariacion').addClass('d-none');
                             $('#cancelarpoliza').addClass('d-none');
                             $('#authorizarct').removeClass('d-none');
@@ -739,6 +760,7 @@ app.EmisionMapfreMas = (function () {
                                 let firstRecord = data.Recibos[0];
                                 NEW_NUM_SPTO = firstRecord.num_spto;
                             }
+
                             $('#cancelarpoliza').addClass('d-none');
                             $('#generarvariacion').addClass('d-none');
                             $('#authorizarct').addClass('d-none');
@@ -786,18 +808,15 @@ app.EmisionMapfreMas = (function () {
                             Controls_sum_enable(setupData);
                             MCA_PROVISIONAL = "N";
 
+                            if (data.coberturas != null)
+                                $('#coberturasTbl').bootstrapTable('load', data.coberturas);
+                            $('#coberturasTbl').bootstrapTable('hideLoading');
+                            if (data.plandepago != null)
+                                $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
+
                             if (Array.isArray(data.Recibos) && data.Recibos.length > 0) {
                                 $('#resultvariacionTbl').bootstrapTable('load', data.Recibos);
 
-                                if (data.coberturas != null)
-                                    $('#coberturasTbl').bootstrapTable('load', data.coberturas);
-                                else
-                                    $('#coberturasTbl').bootstrapTable('load', {});
-                                $('#coberturasTbl').bootstrapTable('hideLoading');
-                                if (data.plandepago != null)
-                                    $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
-                                else
-                                    $('#plandepagoTbl').bootstrapTable('load', {});
 
                                 $('#resultvariacion').removeClass('d-none');
                             }
@@ -835,6 +854,13 @@ app.EmisionMapfreMas = (function () {
                     function (data) {
 
                         if (data.McaError === "N") {
+
+                            if (data.coberturas != null)
+                                $('#coberturasTbl').bootstrapTable('load', data.coberturas);
+                            $('#coberturasTbl').bootstrapTable('hideLoading');
+                            if (data.plandepago != null)
+                                $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
+
                             $('#cancelarpoliza').removeClass('d-none');
                             $('#generarvariacion').removeClass('d-none');
                             $('#authorizarct').addClass('d-none');
@@ -956,22 +982,23 @@ app.EmisionMapfreMas = (function () {
                     COD_COLOR: { required: true },
                 //NUM_MOTOR: { required: true },
                 //VAL_CAPACIDAD: { required: true },
-                    IMP_VR: { required: true },
+                    IMP_VR: { required: true, Numeric: true },
                     IMP_AUTO_RC: { required: true },
                     DED_AUTO_RC: { required: true },
                     IMP_AUTO_GMO: { ValorRequeridoSegunVechiculoPlan: true },
                     IMP_AUTO_ACO: { ValorRequeridoSegunVechiculoPlan: true },
                     IMP_AUTO_CYV: { required: true, Numeric: true },
-                //DED_AUTO_CYV: { required: true },
-                    IMP_AUTO_RAD: { required: true },
-                //DED_AUTO_RAD: { required: true },
-                    IMP_AUTO_ROB: { required: true },
-                //DED_AUTO_ROB: { required: true },
-                //DED_AUTO_EQESP: { required: true },
+                    DED_AUTO_CYV: { required: true },
+                    IMP_AUTO_RAD: { required: true, Numeric: true },
+                    DED_AUTO_RAD: { required: true },
+                    IMP_AUTO_ROB: { required: true, Numeric: true },
+                    DED_AUTO_ROB: { required: true },
+                    IMP_AUTO_EQESP: { required: true, Numeric: true },
+                    DED_AUTO_EQESP: { required: true },
                 //IMP_AUTO_NEUM: { required: true },
                 //IMP_AUTO_MECA: { required: true },
                     IMP_AUTO_CRI: { required: true },
-                //DED_AUTO_CRI: { required: true }
+                    DED_AUTO_CRI: { required: true }
             },
             messages: {
                 //edad: { required: 'Debe indicar el Edad' },
@@ -1002,16 +1029,17 @@ app.EmisionMapfreMas = (function () {
                     IMP_AUTO_GMO: { ValorRequeridoSegunVechiculoPlan: 'Debe indicar el Gastos médicos de ocupantes' },
                     IMP_AUTO_ACO: { ValorRequeridoSegunVechiculoPlan: 'Debe indicar el Accidentes al conductor' },
                     IMP_AUTO_CYV: { required: 'Debe indicar el Colisión y vuelco' },
-                //DED_AUTO_CYV: { required: 'Debe indicar el Deducible colisión y vuelco' },
+                DED_AUTO_CYV: { required: 'Debe indicar el Deducible colisión y vuelco' },
                     IMP_AUTO_RAD: { required: 'Debe indicar el Riesgos adicionales' },
-                //DED_AUTO_RAD: { required: 'Debe indicar el Deducible riesgos adicionales' },
+                DED_AUTO_RAD: { required: 'Debe indicar el Deducible riesgos adicionales' },
                     IMP_AUTO_ROB: { required: 'Debe indicar el Robo' },
-                //DED_AUTO_ROB: { required: 'Debe indicar el Deducible robo' },
-                //DED_AUTO_EQESP: { required: 'Debe indicar el Deducible equipo especial' },
+                DED_AUTO_ROB: { required: 'Debe indicar el Deducible robo' },
+                IMP_AUTO_EQESP: { required: 'Debe indicar el equipo especial' },
+                DED_AUTO_EQESP: { required: 'Debe indicar el Deducible equipo especial' },
                 //IMP_AUTO_NEUM: { required: 'Debe indicar el Garantía de neumáticos' },
                 //IMP_AUTO_MECA: { required: 'Debe indicar el Avería mecánica' },
                     IMP_AUTO_CRI: { required: 'Debe indicar el Rotura de cristales' },
-                //DED_AUTO_CRI: { required: 'Debe indicar el Deducible rotura de cristales' }
+                DED_AUTO_CRI: { required: 'Debe indicar el Deducible rotura de cristales' }
             }
         });
     }

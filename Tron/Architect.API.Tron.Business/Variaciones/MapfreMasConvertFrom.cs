@@ -66,6 +66,12 @@ namespace Architect.API.Tron.Business.Variaciones
                             quoteInfo.IMP_AUTO_CRI = Convert.ToInt32(item.suma_aseg);
                         }
                         break;
+                    case 3007:
+                        if (quoteInfo.IMP_AUTO_EQESP.IsEmpty())
+                        {
+                            quoteInfo.IMP_AUTO_EQESP = Convert.ToInt32(item.suma_aseg);
+                        }
+                        break;
                 }
             }
 
@@ -401,10 +407,10 @@ namespace Architect.API.Tron.Business.Variaciones
                 Terceros(quoteInfo, tronQuoteInfo);
             }
 
-            quoteInfo.AvailableCoverages = getAvailableCoverages(quoteInfo.cod_cia, quoteInfo.cod_ramo, quoteInfo.num_poliza, riesgo);
+            quoteInfo.AvailableCoverages = getAvailableCoverages(quoteInfo.cod_cia, quoteInfo.cod_ramo, riesgo);
             quoteInfo.SumAseguradaRamo = Architect.API.Tron.DataAccess.Variaciones.VariacionIssue.GetSumaAseguradaPorRamo(quoteInfo.cod_cia, quoteInfo.cod_ramo);
 
-            foreach(var item in quoteInfo.coberturas)
+            foreach (var item in quoteInfo.coberturas)
             {
                 var obj = quoteInfo.AvailableCoverages.FirstOrDefault(c => c.codigo == item.codigo);
                 item.requerida = obj.mcaObligatorio == "S";
@@ -416,7 +422,6 @@ namespace Architect.API.Tron.Business.Variaciones
                 }
             }
 
-            //return GetEnableSumaAsegurada(quoteInfo);
             return quoteInfo;
         }
 
@@ -477,7 +482,7 @@ namespace Architect.API.Tron.Business.Variaciones
             return quoteInfo;
         }
 
-        private static List<CoberturaVariacion> getAvailableCoverages(int cod_cia, int cod_ramo,string num_poliza, int riesgo)
+        public static List<CoberturaVariacion> getAvailableCoverages(int cod_cia, int cod_ramo, int riesgo)
         {
             List<CoberturaVariacion> coberturas = new List<CoberturaVariacion>();
             List<a1002150> coberturasDisponibles = VariacionIssue.getAllCoveragesByRamo(cod_cia, cod_ramo);

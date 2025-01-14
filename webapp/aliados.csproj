@@ -1239,6 +1239,7 @@
     <Content Include="Scripts\ColoresTenant.js" />
     <Content Include="Scripts\CompraSegurosClients.js" />
     <Content Include="Scripts\Cotizacion.Coberturas.js" />
+    <Content Include="Scripts\Variaciones.MapfreMasPlus.js" />
     <Content Include="Scripts\Variaciones.MapfreMasOld.js" />
     <Content Include="Scripts\Emision.AccidentesPersonales.js" />
     <Content Include="Scripts\Extend.CallCenter.js" />
@@ -1815,6 +1816,7 @@
     <Content Include="Views\Variaciones\_verificardomicilio.cshtml" />
     <Content Include="Views\Variaciones\_tercero.cshtml" />
     <Content Include="Views\Variaciones\_cobertura.cshtml" />
+    <Content Include="Views\Variaciones\MapfreMasPlus.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
