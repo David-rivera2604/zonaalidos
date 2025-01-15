@@ -1,6 +1,11 @@
 ﻿var app = app || {};
 
 app.Payment = (function () {
+
+    let _data = null;
+    let _row = null;
+    let _id = 0;
+    let _sequence = 0;
     return {
         Recibo: function (row, id, sequence, lightbox = true) {
             let mode = localStorage.getItem('Tenant.Settings.Payment.Provider')?.toLowerCase() || '';
@@ -12,7 +17,10 @@ app.Payment = (function () {
             }
             $("#generalNotify").html("");
             $('.ibox-content').toggleClass('sk-loading');
-
+            _data = data;
+            _row = row;
+            _id = id;
+            _sequence = sequence;
             if (mode == 'silice') {
                 if (id == 3001 && sequence == 1) {
                     app.Payment.SiliceWidget({ num_poliza: row.NUM_POLIZA, num_recibo: row.NUM_RECIBO, raw: row }, lightbox)
@@ -156,7 +164,7 @@ app.Payment = (function () {
                 try {
                     console.log(dataRequest);
                     $('.ibox-content').toggleClass('sk-loading');
-                    app.ui.ShowSideBar({ title: 'Enviar enlace de pago para el recibo #{NUM_RECIBO}', id: 9006, data: dataRequest });
+                    app.ui.ShowSideBar({ title: 'Opciones de pago para el recibo #{NUM_RECIBO}', id: 9006, data: dataRequest });
                 } catch (error) {
                     reject(error);
                 }
@@ -167,22 +175,53 @@ app.Payment = (function () {
             app.ui.ButtonDoing('#WSendBtn');
             app.ui.ButtonDoing('#ESendBtn');
 
-            app.core.Post(app.setting.apipath + 'v2/Pagos/SendPaymentLink', JSON.stringify({ mode: tipo, num_poliza: poliza, num_recibo: recibo }))
-                .done(function (data) {
-                    console.log(data);
+            if (tipo === 'Direct') {
+                let data = _data;
+                let lightbox = true;
+                let row = _row;
+                app.Payment.Process(data, lightbox)
+                    .catch(err => {
+                        $('.ibox-content').toggleClass('sk-loading');
+                        app.ui.CloseSideBar();
+                        app.ui.ShowAlert('generalNotify', 'alert-danger', err.message);
+                    }).then(d => {
+                       // $('.ibox-content').toggleClass('sk-loading');
+                        app.ui.CloseSideBar();
+                        if (d?.status != undefined) {
+                            switch (d.status) {
+                                case 'APPROVED':
+                                    app.ui.ShowAlert('generalNotify', 'alert-success', '<b> <i class="fa fa-check"></i> Transacción aprobada:</b> El cobro del recibo ' + row.NUM_RECIBO + ' con el número de referencia ' + d.data.reference + ', fue realizado de forma exitosa.');
+                                    break
+                                case 'REJECTED':
+                                    app.ui.ShowAlert('generalNotify', 'alert-danger', '<b> <i class="fa fa-close"></i> El pago ha sido rechazado:</b> El cobro del recibo ' + row.NUM_RECIBO + ' con el número de referencia ' + d.data.reference + ', ha sido rechazado.');
+                                    break
+                                case 'PENDING':
+                                    app.ui.ShowAlert('generalNotify', 'alert-warning', '<b> <i class="fa fa-question-circle-o"></i> El proceso de pago está pendiente:</b> El cobro del recibo ' + row.NUM_RECIBO + ' con el número de referencia ' + d.data.reference + ', está pendiente, se requiere una revisión adicional para procesar la transacción.');
+                                    break
+                            }
+                            if (_id == 3001 && _sequence == 1) {
+                                app.ViewerQuery.Refresh(undefined, $('#1GridTbl'), 3000, '', _sequence);
+                            }
+                        }
+                    });
 
-                    app.ui.ShowAlert('generalNotify', 'alert-danger', data.Reason);
+            }
+            else
+            {
+                app.core.Post(app.setting.apipath + 'v2/Pagos/SendPaymentLink', JSON.stringify({ mode: tipo, num_poliza: poliza, num_recibo: recibo }))
+                    .done(function (data) {
+                        console.log(data);
 
-                    // resolve({ status: data.status, message: data.message, data: data });
+                        app.ui.ShowAlert('generalNotify', 'alert-danger', data.Reason);
 
-                    app.ui.CloseSideBar();
-                    app.ui.ButtonDoing('#WSendBtn');
-                    app.ui.ButtonDoing('#ESendBtn');
+                        // resolve({ status: data.status, message: data.message, data: data });
 
-                });
+                        app.ui.CloseSideBar();
+                        app.ui.ButtonDoing('#WSendBtn');
+                        app.ui.ButtonDoing('#ESendBtn');
 
-
-
+                    });
+            }
         }
     };
 })();
