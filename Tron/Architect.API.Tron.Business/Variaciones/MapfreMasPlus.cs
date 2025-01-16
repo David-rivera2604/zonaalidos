@@ -49,11 +49,11 @@ namespace Architect.API.Tron.Business.Variaciones
             //}
             //if (mode == "resume" || tryOnTron)
             //{
-                //Contracts.PolicyProposal proposal = DataAccess.PolicyProposal.RetrieveByProposalId(presupuesto, tokenInfo.CompanyId);
+            //Contracts.PolicyProposal proposal = DataAccess.PolicyProposal.RetrieveByProposalId(presupuesto, tokenInfo.CompanyId);
 
-                //Contracts.Presupuesto.DatoFijo P30Instance = DataAccess.LeerPresupuesto.Presupuesto(1, presupuesto, 0, 0, 0, null, true);
-                Contracts.Poliza.DatoFijo PolizaInstance = Poliza.PolizaVariaciones(1, poliza, true);
-                Contracts.Variaciones.MapfreMas resultInfo2 = Variaciones.MapfreMasConvertFrom.Quote(Variaciones.MapfreMasConvertFrom.Quote(PolizaInstance), PolizaInstance);
+            //Contracts.Presupuesto.DatoFijo P30Instance = DataAccess.LeerPresupuesto.Presupuesto(1, presupuesto, 0, 0, 0, null, true);
+            Contracts.Poliza.DatoFijo PolizaInstance = Poliza.PolizaVariaciones(1, poliza, true);
+            Contracts.Variaciones.MapfreMas resultInfo2 = Variaciones.MapfreMasConvertFrom.Quote(Variaciones.MapfreMasConvertFrom.Quote(PolizaInstance), PolizaInstance);
 
             resultInfo2 = Variaciones.MapfreMasConvertFrom.SetTipoProducto(resultInfo2);
 
@@ -294,7 +294,7 @@ namespace Architect.API.Tron.Business.Variaciones
         private static string EnviarKYC(string tip_firma, string correoenvio, Contracts.Emision.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
             DocuSign.Integrations.Contracts.SubmitResult submit = new DocuSign.Integrations.Contracts.SubmitResult();
-            string kycPDF = General_PDF_KYC(quoteInfo);
+            string kycPDF = General_PDF_KYC(tokenInfo.CompanyId, quoteInfo);
             Contracts.Comun.tercero primaryInsured = (from t in quoteInfo.terceros where t.tipodetercero == 2 select t).First();
 
             if (tip_firma == Contracts.TipoDeFirma.Manual)
@@ -316,7 +316,7 @@ namespace Architect.API.Tron.Business.Variaciones
             return submit.UniqueId;
         }
 
-        private static string General_PDF_KYC(Contracts.Emision.MapfreMas quoteInfo)
+        private static string General_PDF_KYC(int companyId, Contracts.Emision.MapfreMas quoteInfo)
         {
             string pdf_FileName = "KYC_Persona";
             Contracts.Comun.tercero titular = (from t in quoteInfo.terceros where t.tipodetercero == 0 select t).FirstOrDefault();
@@ -325,7 +325,7 @@ namespace Architect.API.Tron.Business.Variaciones
             {
                 pdf_FileName = "KYC_Juridico";
             }
-            return Core.Business.General.Report.GeneratePDFFile(pdf_FileName, quoteInfo.kyc).GetAwaiter().GetResult();
+            return Core.Business.General.Report.Generate(companyId, pdf_FileName, quoteInfo.kyc).GetAwaiter().GetResult();
         }
 
         private static void AlmacenarSolicitud(Contracts.Emision.MapfreMas quoteInfo, int status, Core.Contracts.Security.Token tokenInfo, string uniqueId, string signingRequest2Id = "")
