@@ -144,6 +144,8 @@
     <Compile Include="Variaciones\MapfreMas.cs" />
     <Compile Include="Variaciones\MapfreMasConvertFrom.cs" />
     <Compile Include="Variaciones\MapfreMasConvertTo.cs" />
+    <Compile Include="Variaciones\MapfreMasPlus.cs" />
+    <Compile Include="Variaciones\MapfreVariacionesCommon.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Architect.API.Core.Business\Architect.API.Core.Business.csproj">

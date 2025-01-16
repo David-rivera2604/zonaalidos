@@ -111,5 +111,25 @@ namespace Architect.API.Tron.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Devuelve la estructura de datos asociados a un presupuesto, con información complementaria para permitir la emisión de una póliza de tipo Mapfre Más Plus
+        /// </summary>
+        /// <param name="presupuesto"></param>
+        /// <param name="mode"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("MapfreMasPlusSetup/{poliza}/{num_spto}/{mca_provisional}")]
+        public async Task<IHttpActionResult> MapfreMasPlusSetup(string poliza, int num_spto, string mca_provisional)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Tron.Contracts.Variaciones.MapfreMas result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Variaciones.MapfreMasPlus.Setup(poliza, num_spto, mca_provisional, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
     }
 }

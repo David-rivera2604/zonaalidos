@@ -143,6 +143,15 @@ namespace Architect.API.Tron.Business
             DateTime fecha_efec = quoteTron.fec_efec_poliza;
             DateTime fecha_vec = quoteTron.fec_vcto_poliza;
 
+            DateTime fechaActual = DateTime.Now;
+
+            int diasHabiles = GetBusinessDays(fecha_efec, fechaActual);
+
+            if (diasHabiles > 15)
+            {
+                throw new Exception("No se permite emitir el presupuesto con 15 días hábiles de retroactividad.");
+            }
+
             if (tokenInfo.Roles.Contain("PolizaGrupo"))
             {
                 List<Core.Contracts.General.LookupValues> values = Core.Business.Common.Lkps("MM_POLIZA_GRUPO", $"cod_ramo={quoteTron.cod_ramo}:cod_mon={quoteTron.cod_mon}:cod_agt={quoteTron.cod_agt}", tokenInfo);
@@ -160,6 +169,7 @@ namespace Architect.API.Tron.Business
                     }
                 }
             }
+
 
             DataAccess.Batch.P2000030.UpdateEffectiveDate(fecha_efec, fecha_vec, quoteTron.num_poliza, currentConnection);
             DataAccess.Batch.P2000031.UpdateEffectiveDate(fecha_efec, fecha_vec, quoteTron.num_poliza, currentConnection);
@@ -757,6 +767,28 @@ namespace Architect.API.Tron.Business
         internal static void ChangeCod_fracc_pago(Contracts.Presupuesto.DatoFijo quoteTron, Core.Contracts.Security.Token tokenInfo, IDbConnection currentConnection)
         {
             DataAccess.Batch.P2000030.UpdateCod_fracc_pago(quoteTron.cod_fracc_pago, quoteTron.num_poliza, currentConnection);
+        }
+
+        internal static int GetBusinessDays(DateTime startDate, DateTime endDate)
+        {
+            int businessDaysCount = 0;
+
+            if (startDate > endDate)
+            {
+                DateTime temp = startDate;
+                startDate = endDate;
+                endDate = temp;
+            }
+            while (startDate <= endDate)
+            {
+                // Si el día es un lunes, martes, miércoles, jueves o viernes (días hábiles)
+                if (startDate.DayOfWeek != DayOfWeek.Saturday && startDate.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    businessDaysCount++;
+                }
+                startDate = startDate.AddDays(1);
+            }
+            return businessDaysCount;
         }
 
     }

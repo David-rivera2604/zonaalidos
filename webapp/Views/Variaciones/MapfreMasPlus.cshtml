@@ -3,28 +3,31 @@
 }
 @Styles.Render("~/Content/cssCRUD")
 <div class="row">
-    <div id="mainBlock" class="col-md-12 p-0">
+    <div id="mainBlock" class="col-md-12">
         <div class="ibox">
             <div class="ibox-title p-0">
                 <div class="Title_Prin py-2">
                     <div class="title_design T1">
-                        <h5><i class="fa fa-car"></i> <span id="PageTitle">Mapfre Más</span></h5><br>
-                        <small class="m-l-sm"><span id="PageSubTitle"> Emision.</span></small>
+                        <h5><i class="fa fa-car"></i> <span id="PageTitle">Mapfre 303</span></h5><br>
+                        <small class="m-l-sm"><span id="PageSubTitle"> Emisión.</span></small>
                     </div>
                     <div class="title_partner T2">
                         <p class="text-muted small">En MAPFRE Costa Rica hemos creado una amplia variedad de opciones con excelentes coberturas y valores agregados, pensados para todas las necesidades de los costarricenses.</p>
-                        <h4 class="text-muted" style="color: #c31f09">Todos los campos que cuentan con asterisco rojo , son obligatorios para continuar.</h4>
-                    </div>
+                        <h4 class="text-muted" style="color: #c31f09">Todos los campos que cuentan con asterisco rojo , son obligatorios para continuar.</h4>                    </div>
                     <div class="title_partner T3 text-center">
-                        <a href="https://www.mapfre.cr/seguros-autos/" target="_blank">Seguro MAPFRE MÁS</a>
+                        <a href="https://www.mapfre.cr/seguros-autos/" target="_blank">Seguro Mapfre 303</a>
+
                         <p class="mt-2 text-center">
                             El seguro que le ofrece diferentes coberturas desde responsabilidad civil, colisión y/o vuelco, robo, y coberturas adicionales.
+
+
+
+
                         </p>
                     </div>
                 </div>
             </div>
-            <div class="ibox-content box_design">
-
+            <div class="ibox-content  box_design">
                 <div class="sk-spinner sk-spinner-wave">
                     <div class="sk-rect1"></div>
                     <div class="sk-rect2"></div>
@@ -36,14 +39,14 @@
                 </div>
                 <!-- Edit Form -->
                 <div class='form-row'>
-                    <div class='col-md-12 m-2'>
+                    <div class='col-md-12'>
                         <div id="VisualizationsEdt" class="animated fadeInRight">
                             <form id='VisualizationsEdtForm' class='form-horizontal' data-toggle='validator'>
                                 <fieldset>
 
                                     <div class="form-row">
                                         <!-- datosgenerales Zone -->
-                                        <div id="datosgenerales" class="col-lg-12 datosgeneralesZone">
+                                        <div class="col-md-12 datosgeneralesZone">
                                             <h4><i class="fa fa-list"></i> Datos generales</h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
@@ -52,7 +55,6 @@
                                                     <div class='form-group'>
                                                         <label class='control-label' for='Fuente_Tomador'>Tomador<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                         <select id='Fuente_Tomador' name='Fuente_Tomador' class='form-control' disabled>
-                                                            <option value=""></option>
                                                             <option value="CAFSA">FINANCIERA CAFSA</option>
                                                             <option value="PURDY">PURDY MOTOR</option>
                                                             <option value="SCOTIABANK">SCOTIABANK</option>
@@ -64,7 +66,7 @@
                                                     <div class='form-group'>
                                                         <label class='control-label' for='Modalidad_Pago'>Modalidad de pago<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                         <select id='Modalidad_Pago' name='Modalidad_Pago' class='form-control' disabled>
-                                                            <option value="CAT">CARGO AUTOMÁTICO A TARJETA DE DEBITO/CRÉDITO</option>
+                                                            <option value="CAT" selected="selected">CARGO AUTOMÁTICO A TARJETA DE DEBITO/CRÉDITO</option>
                                                             <option value="DCBC">DEDUCCIÓN DE CUENTA BANCARIA DEL CLIENTE</option>
                                                             <option value="DICL">DIRECTO EN CAJA Y/O COBRO EN LÍNEA</option>
                                                             <option value="DEPCM">DEPÓSITO EN CUENTAS DE MAPFRE</option>
@@ -100,6 +102,7 @@
                                                                 <label class="custom-control-label" for="tipo_prod_7">Trébol RC</label>
                                                             </div>
                                                         </div>
+                                                        </div>
                                                     </div>
                                                 </div>
 
@@ -120,7 +123,7 @@
                                                 </div>
 
                                                 <!-- fec_efec_poliza DatePicker -->
-                                                <div class='col-sm-1 col-md-1'>
+                                                <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='fec_efec_poliza'>Inicio de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                         <div class='input-group date' id='fec_efec_poliza_group'>
@@ -134,7 +137,7 @@
                                                 </div>
 
                                                 <!-- fec_vcto_poliza DatePicker -->
-                                                <div class='col-sm-1 col-md-1'>
+                                                <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='fec_vcto_poliza'>Fin de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                         <div class='input-group date' id='fec_vcto_poliza_group'>
@@ -146,29 +149,13 @@
                                                         <div id='fec_vcto_poliza_validate'></div>
                                                     </div>
                                                 </div>
-
-                                                <!-- tipo_prod RadioButtonList -->
-                                                <div class='col-sm-2 col-md-2'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='MCA_FEC_EFEC_SYS'>¿Procesar con fecha Actual?</label>
-                                                        <div style="padding-top: 3px;">
-                                                            <div class="custom-control custom-radio custom-control-inline">
-                                                                <input type="radio" class="custom-control-input" id="MCA_FEC_EFEC_SYS_1" name="MCA_FEC_EFEC_SYS" value="S">
-                                                                <label class="custom-control-label" for="MCA_FEC_EFEC_SYS_1">Si</label>
-                                                            </div><div class="custom-control custom-radio custom-control-inline">
-                                                                <input type="radio" class="custom-control-input" id="MCA_FEC_EFEC_SYS_2" name="MCA_FEC_EFEC_SYS" value="N">
-                                                                <label class="custom-control-label" for="MCA_FEC_EFEC_SYS_2">No</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
 
                                     </div>
 
                                     <!-- datosdelvehiculo Zone -->
-                                    <div id="datosdelvehiculo" class="form-row">
+                                    <div class="form-row">
                                         <div class="col-lg-12">
                                             <h4><i class="fa fa-car"></i> Datos del vehículo</h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
@@ -465,32 +452,8 @@
                                         </div>
                                     </div>
 
-                                    <!-- coberturas Grid -->
-                                    <div class="form-row">
-                                        <div class="col-lg-12">
-                                            <div class="form-row">
-                                                <div class='col'>
-                                                    <h4>Coberturas</h4>
-                                                </div>
-                                                <div class='col-auto'>
-                                                    <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar coberturas" data-toggle="modal" id="coberturasNew"> <i class="fa fa-plus"></i> </button>
-                                                </div>
-                                            </div>
-                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-                                            <div class="form-row">
-                                                <div class='col-md-12' style="padding-bottom: 20px">
-                                                    <div class="table-responsive">
-                                                        <table id="coberturasTbl" style="font-size: 11px;">
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <input type="hidden" id="coberturasData" name="coberturasData" />
-                                    <input type="hidden" id="hhd-codplanauto" name="hhd-codplanauto" />
                                     <!-- sumasaseguradas Zone -->
-                                    <div id="sumasaseguradas" class="form-row">
+                                    <div class="form-row">
                                         <div class="col-lg-12">
                                             <h4><i class="fa fa-sliders"></i> Sumas aseguradas</h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
@@ -576,7 +539,7 @@
                                                 <!-- IMP_AUTO_EQESP Numeric -->
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='IMP_AUTO_EQESP'>Equipo especial<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <label class='control-label' for='IMP_AUTO_EQESP'>Equipo especial</label>
                                                         <input type='text' id='IMP_AUTO_EQESP' name='IMP_AUTO_EQESP' class='form-control text-right' size='21' maxlength='21' disabled />
                                                     </div>
                                                 </div>
@@ -637,6 +600,9 @@
                                                 <div class='col'>
                                                     <h4><i class="fa fa-user-o"></i> Terceros<label id="tercerosTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
                                                 </div>
+                                                <div class='col-auto'>
+                                                    <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo tercero" data-toggle="modal" id="tercerosNew"> <i class="fa fa-plus"></i> </button>
+                                                </div>
                                             </div>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
@@ -670,7 +636,6 @@
                                         </div>
                                     </div>
 
-
                                     <!-- documentosrequeridos Grid -->
                                     <div class="form-row documentosrequeridosGrid">
                                         <div class="col-lg-12">
@@ -687,6 +652,27 @@
                                                 <div class='col-md-12' style="padding-bottom: 20px">
                                                     <div class="table-responsive">
                                                         <table id="documentosrequeridosTbl" style="font-size: 11px;">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- coberturas Grid -->
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <div class='col'>
+                                                    <h4>Coberturas</h4>
+                                                </div>
+
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class='col-md-12' style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="coberturasTbl" style="font-size: 11px;">
                                                         </table>
                                                     </div>
                                                 </div>
@@ -718,52 +704,35 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="form-row">
 
-                                    <!-- plandepago Grid -->
-                                    <div class="form-row" id="resultvariacion">
-                                        <div class="col-lg-12">
-                                            <div class="form-row">
-                                                <div class='col'>
-                                                    <h4>Información de Recibos</h4>
-                                                </div>
-
-                                            </div>
+                                        <!-- enviosolicitud Zone -->
+                                        <div class="col-md-12 d-none enviosolicitudZone">
+                                            <h4><i class="fa fa-envelope-o"></i> Destinatario para envío de solicitud</h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
-                                                <div class='col-md-12' style="padding-bottom: 20px">
-                                                    <div class="table-responsive">
-                                                        <table id="resultvariacionTbl" style="font-size: 11px;">
-                                                        </table>
+
+                                                <!-- tipoenvio DropDownList -->
+                                                <div class='col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='tip_firma'>Tipo de envío<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <select id='tip_firma' name='tip_firma' class='form-control'>
+                                                        </select>
                                                     </div>
                                                 </div>
+
+                                                <!-- correoenvio Text -->
+                                                <div class='col-md-6'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='correoenvio'>Correo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input id='correoenvio' name='correoenvio' type='text' class='form-control' size='80' maxlength='80'>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- enviosolicitud Zone -->
-                                    <!--<div class="col-md-5 d-none enviosolicitudZone">
-    <h4><i class="fa fa-envelope-o"></i> Destinatario para envío de solicitud</h4>
-    <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
-    <div class="form-row">-->
-                                    <!-- tipoenvio DropDownList -->
-                                    <!--<div class='col-md-12'>
-        <div class='form-group'>
-            <label class='control-label' for='tip_firma'>Tipo de envío<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-            <select id='tip_firma' name='tip_firma' class='form-control'>
-            </select>
-        </div>
-    </div>-->
-                                    <!-- correoenvio Text -->
-                                    <!--<div class='col-md-12'>
-                <div class='form-group'>
-                    <label class='control-label' for='correoenvio'>Correo<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                    <input id='correoenvio' name='correoenvio' type='text' class='form-control' size='80' maxlength='80'>
-                </div>
-            </div>
-
-
-        </div>
-    </div>-->
                                     <!-- VerificarDomicilio Zone -->
                                     @Html.Partial("_verificardomicilio")
 
@@ -771,23 +740,11 @@
                                     <div class="form-row">
                                         <div class='col-md-12'>
                                             <div class="modal-footer">
-                                                @*<button id="guardarenviar" type="button" class="btn btn-primary d-none" data-doing="Enviado solicitud...">
-                        Guardar y enviar solicitud
-                    </button>
-                    <button id="cotizar" type="button" class="btn btn-primary d-none" data-doing="Emitiendo...">
-                        Emitir
-                    </button>*@
-                                                <button id="generarvariacion" type="button" class="btn btn-primary d-none" data-doing="Generardo variación...">
-                                                    Generar Variación
+                                                <button id="guardarenviar" type="button" class="btn btn-primary d-none" data-doing="Enviado solictud...">
+                                                    Guardar y enviar solicitud
                                                 </button>
-                                                <button id="authorizarct" type="button" class="btn btn-primary d-none" data-doing="Authorizando...">
-                                                    Autorizar
-                                                </button>
-                                                <button id="rechazarct" type="button" class="btn btn-primary d-none" data-doing="Rechazando...">
-                                                    Rechazar
-                                                </button>
-                                                <button id="cancelarpoliza" type="button" class="btn btn-primary d-none" data-doing="Cancelando...">
-                                                    Cancelar póliza
+                                                <button id="cotizar" type="button" class="btn btn-primary d-none" data-doing="Emitiendo...">
+                                                    Emitir
                                                 </button>
                                                 <input id="fileUpload" type="file" class="d-none" />
                                             </div>
@@ -846,9 +803,6 @@
 
     <!-- terceros Grid Modal -->
     @Html.Partial("_tercero")
-
-    <!-- cobertura Grid Modal -->
-    @Html.Partial("_cobertura")
 
     <!-- documentosrequeridos Grid Modal -->
     <div class="modal inmodal" id="documentosrequeridosModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -921,52 +875,18 @@
     <div id="dynamic"></div>
 
 </div>
-
-<div class="modal inmodal" id="messageModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog">
-        <div class="modal-content animated bounceInRight">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">
-                    <span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span>
-                </button>
-                <h4 class="modal-title">Mensaje</h4>
-            </div>
-            <div class="modal-body">
-                <!-- terceros Grid Edit Form -->
-                <div class='form-row'>
-                    <div class='col-md-12'>
-                        <div class="form-row">
-                            <div class='col-md-12' style="padding-bottom: 20px">
-                                Ha modificado el <strong>fraccionamiento de pago</strong>, los demas cambios no se tomarán en cuenta.
-                                ¿Desea continuar?
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="aceptarmessage" data-doing="Aceptando...">
-                    Aceptar
-                </button>
-                <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
     <script src="@Url.Content("~/assets/js/plugins/typehead/bootstrap3-typeahead.min.js")"></script>
     <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
-    <script src="@Url.Content("~/Scripts/Variaciones.MapfreMasOld.js")"></script>
+    <script src="@Url.Content("~/Scripts/Variaciones.MapfreMasPlus.js")"></script>
     <script src="@Url.Content("~/Scripts/Emision.Terceros.js")"></script>
     <script src="@Url.Content("~/assets/js/multimodal.js")"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            app.EmisionMapfreMas.Init();
+            app.EmisionMapfreMasPlus.Init();
             app.EmisionTercero.Init();
-            app.EmisionTercero.Callback(app.EmisionMapfreMas.formularios_handler);
+            app.EmisionTercero.Callback(app.EmisionMapfreMasPlus.formularios_handler);
         });
     </script>
 }

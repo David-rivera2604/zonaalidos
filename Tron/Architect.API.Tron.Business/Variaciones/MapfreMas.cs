@@ -1,5 +1,6 @@
 ﻿using Architect.API.Tron.Business.Backoffice;
 using Architect.API.Tron.Contracts.Variaciones;
+using Architect.API.Tron.DataAccess.Variaciones;
 using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
 using Architect.Utilities.Extensions;
 using System;
@@ -55,6 +56,8 @@ namespace Architect.API.Tron.Business.Variaciones
         public static VariacionIssueResult Issue(Contracts.Variaciones.MapfreMas quoteInfo)
         {
             VariacionIssueResult result = null;
+            bool existeDeducibleEqipoEsp = false;
+            bool existeImpoEqipoEsp = false;
 
             try
             {
@@ -62,6 +65,8 @@ namespace Architect.API.Tron.Business.Variaciones
 
                 DateTime Fec_Tratamiento = DateTime.Today;
                 string Tip_mvto_batch = "4";
+
+                VariacionIssue.DeleteTablesS(Fec_Tratamiento, Tip_mvto_batch, quoteInfo.cod_cia, quoteInfo.num_poliza);
 
                 Architect.API.Tron.Contracts.Poliza.DatoFijo a2000030Instance = Architect.API.Tron.DataAccess.LeerPoliza.Lee_A2000030(quoteInfo.cod_cia, quoteInfo.num_poliza, null, 0, 0);
 
@@ -87,57 +92,23 @@ namespace Architect.API.Tron.Business.Variaciones
 
                     List<Architect.API.Tron.Contracts.Variaciones.s2000020> a2000020InstanceList = new List<Contracts.Variaciones.s2000020>();
 
-                    foreach (Contracts.Poliza.DatoVariable item in DatosVariables)
-                    {
-                        switch (item.cod_campo)
-                        {
-                            case "COD_COLOR":
-                                RegisterS2000020(item, Fec_Tratamiento, quoteInfo.COD_COLOR.ToString(), Tip_mvto_batch);
-                                break;
-                            case "NUM_MATRICULA":
-                                RegisterS2000020(item, Fec_Tratamiento, quoteInfo.NUM_MATRICULA, Tip_mvto_batch);
-                                break;
-                            case "IMP_AUTO_RC":
-                                RegisterS2000020(item, Fec_Tratamiento, quoteInfo.IMP_AUTO_RC.ToString(), Tip_mvto_batch);
-                                break;
-                            case "IMP_AUTO_GMO":
-                                RegisterS2000020(item, Fec_Tratamiento, quoteInfo.IMP_AUTO_GMO.ToString(), Tip_mvto_batch);
-                                break;
-                            case "IMP_AUTO_ACO":
-                                RegisterS2000020(item, Fec_Tratamiento, quoteInfo.IMP_AUTO_ACO.ToString(), Tip_mvto_batch);
-                                break;
-                            case "IMP_AUTO_CYV":
-                                RegisterS2000020(item, Fec_Tratamiento, quoteInfo.IMP_AUTO_CYV.ToString(), Tip_mvto_batch);
-                                break;
-                            case "IMP_VR":
-                                RegisterS2000020(item, Fec_Tratamiento, quoteInfo.IMP_VR.ToString(), Tip_mvto_batch);
-                                break;
-                            case "IMP_PRA":
-                                RegisterS2000020(item, Fec_Tratamiento, quoteInfo.IMP_VR.ToString(), Tip_mvto_batch);
-                                break;
-                            case "IMP_AUTO_CRI":
-                                RegisterS2000020(item, Fec_Tratamiento, quoteInfo.IMP_AUTO_CRI.ToString(), Tip_mvto_batch);
-                                break;
-                            case "IMP_AUTO_RAD":
-                                RegisterS2000020(item, Fec_Tratamiento, quoteInfo.IMP_AUTO_RAD.ToString(), Tip_mvto_batch);
-                                break;
-                            case "IMP_AUTO_ROB":
-                                RegisterS2000020(item, Fec_Tratamiento, quoteInfo.IMP_AUTO_ROB.ToString(), Tip_mvto_batch);
-                                break;
-                            case "DED_AUTO_RC":
-                                RegisterS2000020(item, Fec_Tratamiento, quoteInfo.DED_AUTO_RC.ToString(), Tip_mvto_batch);
-                                break;
-                            case "DED_AUTO_ROB":
-                                RegisterS2000020(item, Fec_Tratamiento, quoteInfo.DED_AUTO_ROB.ToString(), Tip_mvto_batch);
-                                break;
-                            case "DED_AUTO_CYV":
-                                RegisterS2000020(item, Fec_Tratamiento, quoteInfo.DED_AUTO_CYV.ToString(), Tip_mvto_batch);
-                                break;
-                            case "DED_AUTO_RAD":
-                                RegisterS2000020(item, Fec_Tratamiento, quoteInfo.DED_AUTO_RAD.ToString(), Tip_mvto_batch);
-                                break;
-                        }
-                    }
+                    RegisterS2000020(DatosVariables, Fec_Tratamiento, "COD_COLOR", quoteInfo.COD_COLOR.ToString(), Tip_mvto_batch);
+                    RegisterS2000020(DatosVariables, Fec_Tratamiento, "NUM_MATRICULA", quoteInfo.NUM_MATRICULA, Tip_mvto_batch);
+                    RegisterS2000020(DatosVariables, Fec_Tratamiento, "IMP_AUTO_RC", quoteInfo.IMP_AUTO_RC.ToString(), Tip_mvto_batch);
+                    RegisterS2000020(DatosVariables, Fec_Tratamiento, "IMP_AUTO_GMO", quoteInfo.IMP_AUTO_GMO.ToString(), Tip_mvto_batch);
+                    RegisterS2000020(DatosVariables, Fec_Tratamiento, "IMP_AUTO_ACO", quoteInfo.IMP_AUTO_ACO.ToString(), Tip_mvto_batch);
+                    RegisterS2000020(DatosVariables, Fec_Tratamiento, "IMP_AUTO_CYV", quoteInfo.IMP_AUTO_CYV.ToString(), Tip_mvto_batch);
+                    RegisterS2000020(DatosVariables, Fec_Tratamiento, "IMP_VR", quoteInfo.IMP_VR.ToString(), Tip_mvto_batch);
+                    RegisterS2000020(DatosVariables, Fec_Tratamiento, "IMP_PRA", quoteInfo.IMP_VR.ToString(), Tip_mvto_batch);
+                    RegisterS2000020(DatosVariables, Fec_Tratamiento, "IMP_AUTO_CRI", quoteInfo.IMP_AUTO_CRI.ToString(), Tip_mvto_batch);
+                    RegisterS2000020(DatosVariables, Fec_Tratamiento, "IMP_AUTO_RAD", quoteInfo.IMP_AUTO_RAD.ToString(), Tip_mvto_batch);
+                    RegisterS2000020(DatosVariables, Fec_Tratamiento, "IMP_AUTO_ROB", quoteInfo.IMP_AUTO_ROB.ToString(), Tip_mvto_batch);
+                    RegisterS2000020(DatosVariables, Fec_Tratamiento, "DED_AUTO_RC", quoteInfo.DED_AUTO_RC.ToString(), Tip_mvto_batch);
+                    RegisterS2000020(DatosVariables, Fec_Tratamiento, "DED_AUTO_ROB", quoteInfo.DED_AUTO_ROB.ToString(), Tip_mvto_batch);
+                    RegisterS2000020(DatosVariables, Fec_Tratamiento, "DED_AUTO_CYV", quoteInfo.DED_AUTO_CYV.ToString(), Tip_mvto_batch);
+                    RegisterS2000020(DatosVariables, Fec_Tratamiento, "DED_AUTO_RAD", quoteInfo.DED_AUTO_RAD.ToString(), Tip_mvto_batch);
+                    RegisterS2000020(DatosVariables, Fec_Tratamiento, "IMP_AUTO_EQESP", quoteInfo.IMP_AUTO_EQESP.ToString(), Tip_mvto_batch);
+                    RegisterS2000020(DatosVariables, Fec_Tratamiento, "DED_AUTO_EQESP", quoteInfo.DED_AUTO_EQESP.ToString(), Tip_mvto_batch);
 
                     if (quoteInfo.NewCoverages?.Count > 0)
                     {
@@ -156,6 +127,22 @@ namespace Architect.API.Tron.Business.Variaciones
                             if (!existe && item.mcaSeleccion == "X")
                             {
                                 continue;
+                            }
+
+                            if (item.codigo == 3007)
+                            {
+                                S2100610.Create(new s2100610
+                                {
+                                    Fec_Tratamiento = Fec_Tratamiento,
+                                    Tip_Mvto_Batch = Tip_mvto_batch,
+                                    Cod_Cia = quoteInfo.cod_cia,
+                                    Num_Poliza = quoteInfo.num_poliza,
+                                    Num_Riesgo = item.riesgo,
+                                    Cod_Accesorio = 9999,
+                                    Mca_Seleccion = item.mcaSeleccion,
+                                    Txt_Accesorio = "GEN",
+                                    Imp_Accesorio = quoteInfo.IMP_AUTO_EQESP,
+                                });
                             }
 
                             s2000040Instance = new s2000040
@@ -200,6 +187,7 @@ namespace Architect.API.Tron.Business.Variaciones
                 }
                 else
                 {
+                    result = GetCoverageAndReceipts(quoteInfo.cod_cia, quoteInfo.cod_ramo, quoteInfo.num_poliza);
                     result.McaError = "N";
                 }
             }
@@ -216,26 +204,52 @@ namespace Architect.API.Tron.Business.Variaciones
             return result;
         }
 
-        private static void RegisterS2000020(Architect.API.Tron.Contracts.Poliza.DatoVariable datoVariable, DateTime fec_tratamiento, string val_campo_nuevo, string tip_mvto_batch)
+        private static void RegisterS2000020(List<Contracts.Poliza.DatoVariable> datosVariables, DateTime fec_tratamiento, string cod_campo, string val_campo_nuevo, string tip_mvto_batch)
         {
+            Contracts.Poliza.DatoVariable item = datosVariables.Find(d => d.cod_campo == cod_campo);
             Contracts.Variaciones.s2000020 dv;
 
-            if (datoVariable.val_campo.Trim() != val_campo_nuevo.Trim())
+            if(item != null)
             {
-                dv = new Contracts.Variaciones.s2000020
+                if (item.val_campo.Trim() != val_campo_nuevo.Trim())
                 {
-                    Fec_Tratamiento = fec_tratamiento,
-                    Tip_Mvto_Batch = tip_mvto_batch,
-                    Cod_Cia = datoVariable.cod_cia,
-                    Cod_Ramo = datoVariable.cod_ramo,
-                    Num_Poliza = datoVariable.num_poliza,
-                    Num_Riesgo = datoVariable.num_riesgo,
-                    Cod_Campo = datoVariable.cod_campo,
-                    Val_Campo_Actual = datoVariable.val_campo,
-                    Val_Campo_Nuevo = val_campo_nuevo
-                };
+                    dv = new Contracts.Variaciones.s2000020
+                    {
+                        Fec_Tratamiento = fec_tratamiento,
+                        Tip_Mvto_Batch = tip_mvto_batch,
+                        Cod_Cia = item.cod_cia,
+                        Cod_Ramo = item.cod_ramo,
+                        Num_Poliza = item.num_poliza,
+                        Num_Riesgo = item.num_riesgo,
+                        Cod_Campo = item.cod_campo,
+                        Val_Campo_Actual = item.val_campo,
+                        Val_Campo_Nuevo = val_campo_nuevo
+                    };
 
-                Architect.API.Tron.DataAccess.Variaciones.S2000020.Create(dv);
+                    Architect.API.Tron.DataAccess.Variaciones.S2000020.Create(dv);
+                }
+            }
+            else
+            {
+                item = datosVariables.First();
+
+                if(item != null)
+                {
+                    dv = new Contracts.Variaciones.s2000020
+                    {
+                        Fec_Tratamiento = fec_tratamiento,
+                        Tip_Mvto_Batch = tip_mvto_batch,
+                        Cod_Cia = item.cod_cia,
+                        Cod_Ramo = item.cod_ramo,
+                        Num_Poliza = item.num_poliza,
+                        Num_Riesgo = item.num_riesgo,
+                        Cod_Campo = cod_campo,
+                        Val_Campo_Actual = string.Empty,
+                        Val_Campo_Nuevo = val_campo_nuevo
+                    };
+
+                    Architect.API.Tron.DataAccess.Variaciones.S2000020.Create(dv);
+                }
             }
         }
 
@@ -302,14 +316,9 @@ namespace Architect.API.Tron.Business.Variaciones
                 }
                 else
                 {
-                    if(mca_autoriza.Equals("S"))
-                    {
-                        result = GetCoverageAndReceipts(cod_cia, num_poliza);
-                        result.Recibos = DataAccess.Variaciones.VariacionIssue.GetRecibos(cod_cia, num_poliza, null);
-
-                    }
+                    result = GetCoverageAndReceipts(cod_cia, cod_ramo, num_poliza);
+                    result.Recibos = DataAccess.Variaciones.VariacionIssue.GetRecibos(cod_cia, num_poliza, null);
                         
-
                     result.McaError = "N";
                     result.ProcessResult.Add(new VariacionIssueProcessResult
                     {
@@ -543,18 +552,23 @@ namespace Architect.API.Tron.Business.Variaciones
             return values;
         }
 
-        private static VariacionIssueResult GetCoverageAndReceipts(int cod_cia, string num_poliza)
+        private static VariacionIssueResult GetCoverageAndReceipts(int cod_cia, int cod_ramo, string num_poliza)
         {
             VariacionIssueResult result = new VariacionIssueResult();
 
             List<Architect.API.Tron.Contracts.Poliza.Cobertura> coberturas = DataAccess.LeerPoliza.PP_Lee_A2000040_ZA(cod_cia, num_poliza, null);
             List<Architect.API.Tron.Contracts.Poliza.ReciboCalculado> recibos = Architect.API.Tron.DataAccess.LeerPoliza.PP_Lee_A2990700_Result_ZA(cod_cia, num_poliza, null, 0, 0, null);
 
-            foreach(var item in coberturas)
+            var AvailableCoverages = MapfreMasConvertFrom.getAvailableCoverages(cod_cia, cod_ramo, 0);
+
+            foreach (var item in coberturas)
             {
+                var obj = AvailableCoverages.FirstOrDefault(c => c.codigo == item.cod_cob);
+
                 result.coberturas.Add(new Contracts.Comun.Cobertura
                 {
-                    seleccionado = true,
+                    seleccionado = obj.seleccionado,
+                    requerida = obj.mcaObligatorio == "S",
                     codigo = item.cod_cob,
                     nombre = item.nom_cob,
                     capital = item.suma_aseg,

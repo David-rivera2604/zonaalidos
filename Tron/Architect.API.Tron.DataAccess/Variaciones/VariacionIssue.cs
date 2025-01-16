@@ -231,5 +231,27 @@ namespace Architect.API.Tron.DataAccess.Variaciones
 
             return receipts;
         }
+
+        public static bool DeleteTablesS(DateTime fec_tratamiento, string tip_mvto_batch, int cod_cia, string num_poliza)
+        {
+            bool result = false;
+            int affected = 0;
+            using (IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron"))
+            {
+                affected = Database.Procedure("EM_K_MAPFRE_BATCH_CONTRACT_MCR.PP_DELETE_TABLES_S")
+                                    .AddParameter("P_FEC_TRATAMIENTO", DbType.Date, 0, fec_tratamiento)
+                                    .AddParameter("P_TIP_MVTO_BATCH", DbType.String, 2, tip_mvto_batch)
+                                    .AddParameter("P_COD_CIA", DbType.Int32, 2, cod_cia)
+                                    .AddParameter("P_NUM_POLIZA", DbType.String, 13, num_poliza)
+                                  .Execute(currentConnection, "Tron");
+
+                currentConnection.Close();
+            }
+            if (affected != 0)
+            {
+                result = true;
+            }
+            return result;
+        }
     }
 }

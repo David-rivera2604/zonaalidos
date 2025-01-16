@@ -141,7 +141,8 @@ app.CotizacionViajero = (function () {
         $('#fec_efec_poliza_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es',
-            defaultDate: new Date()
+            defaultDate: new Date(),
+            minDate: moment().startOf('day')
 
         });
         $('#fec_vcto_poliza_group').datetimepicker({
