@@ -100,6 +100,11 @@ namespace Architect.Payment.Integrations
                             infoItem.message = collectResponse.status.message;
                             infoItem.date = collectResponse.status.date;
                             break;
+                        default:
+                            infoItem.reference = item.ordenId;
+                            infoItem.message = collectResponse.status.message;
+                            break;
+
                     }
 
                     infoResult.Add(infoItem);

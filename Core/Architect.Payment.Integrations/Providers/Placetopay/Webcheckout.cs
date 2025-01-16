@@ -452,15 +452,24 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
             }
             else
             {
-                collectResponse = new CollectTransaction()
+                try
                 {
-                    status = new Contracts.Status()
+                    collectResponse = JsonConvert.DeserializeObject<Architect.Payment.Integrations.Providers.Placetopay.Contracts.CollectTransaction>(resultResponse);
+                }
+                catch (Exception)
+                {
+
+                    collectResponse = new CollectTransaction()
                     {
-                        date = DateTime.Now.ToString("yyyy-MM-ddTHH\\:mm\\:sszzz"),
-                        status = ST_FAILED,
-                        reason = response.ReasonPhrase
-                    }
-                };
+                        status = new Contracts.Status()
+                        {
+                            date = DateTime.Now.ToString("yyyy-MM-ddTHH\\:mm\\:sszzz"),
+                            status = ST_FAILED,
+                            reason = response.ReasonPhrase
+                        }
+                    };
+                }
+
             }
             return collectResponse;
         }

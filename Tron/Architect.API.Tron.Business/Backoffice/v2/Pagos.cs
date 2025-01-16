@@ -442,31 +442,28 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                         }
                         else if (item?.status == "REJECTED")
                         {
-                            if (!item.reason.Equals("La petición ha expirado", StringComparison.CurrentCultureIgnoreCase)
-                                && !item.reason.Equals("La petición ha sido cancelada por el usuario", StringComparison.CurrentCultureIgnoreCase))
+
+
+                            int numberOfRetries = Tarjetas.RetrieveNumberOfRetries(currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber);
+
+                            // Si ya se tiene dos rechazo quiere decir que el actual seria el tercero.
+                            if (numberOfRetries == 2)
                             {
+                                // Se bloquea la tarjeta para que no sea conciderada en cobros futuros.
+                                Tarjetas.UpdateRejectionCount(currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, numberOfRetries + 1, item.reason, 3);
 
-                                int numberOfRetries = Tarjetas.RetrieveNumberOfRetries(currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber);
-                                
-                                // Si ya se tiene dos rechazo quiere decir que el actual seria el tercero.
-                                if (numberOfRetries == 2)
+
+                                var itemSource = reciboReq.items.Where(r => r.ordenId == item.reference).FirstOrDefault();
+                                if (itemSource != null)
                                 {
-                                    // Se bloquea la tarjeta para que no sea conciderada en cobros futuros.
-                                    Tarjetas.UpdateRejectionCount(currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, numberOfRetries + 1, item.reason, 3);
-
-
-                                    var itemSource = reciboReq.items.Where(r=> r.ordenId == item.reference).FirstOrDefault();
-                                    if ( itemSource!=null)
-                                    {
-                                        Architect.Payment.Integrations.Tokenize.Invalid(provider, client, itemSource.token);
-                                    }
-
+                                    Architect.Payment.Integrations.Tokenize.Invalid(provider, client, itemSource.token);
                                 }
-                                else
-                                {
-                                    // Se incrementa la cantidad de reintento fallidos 
-                                    Tarjetas.UpdateRejectionCount(currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, numberOfRetries + 1, item.reason);
-                                }
+
+                            }
+                            else
+                            {
+                                // Se incrementa la cantidad de reintento fallidos 
+                                Tarjetas.UpdateRejectionCount(currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, numberOfRetries + 1, item.reason);
                             }
                         }
                     }
