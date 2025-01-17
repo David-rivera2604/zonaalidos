@@ -653,3 +653,4 @@
                    Que no permita emitir esa cotización con 15 días hábiles de retroactividad.
 1.6.94  16/01/2025 Pasarela Evertec. Implementación del cambio de tarjeta para el cliente de una póliza.
                    Pasarela Evertec. Se agrega pago directo como opción de pago.
+1.6.95  17/01/2025 Pasarela Evertec. Nueva plantilla para link de pago.

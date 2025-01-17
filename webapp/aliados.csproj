@@ -1146,6 +1146,13 @@
     <Content Include="Global.asax" />
     <Content Include="images\CarnetAtrasVacio.png" />
     <Content Include="images\CarnetFrenteVacio.png" />
+    <Content Include="images\email\check_icon-min.png" />
+    <Content Include="images\email\image001-min.png" />
+    <Content Include="images\email\image010-min.jpg" />
+    <Content Include="images\email\image_family-min.png" />
+    <Content Include="images\email\info_icon-min.png" />
+    <Content Include="images\email\lock_icon-min.png" />
+    <Content Include="images\email\user_icon-min.png" />
     <Content Include="images\favicon-mapfre.png" />
     <Content Include="images\favicon.png" />
     <Content Include="images\help\general_cambio_clave_1.gif" />
