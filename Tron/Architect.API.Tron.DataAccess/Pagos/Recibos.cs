@@ -33,7 +33,7 @@ namespace Architect.API.Tron.DataAccess.Pagos
                                     AND C.NUM_SPTO_APLI = A.NUM_SPTO_APLI
                                     AND C.TIP_SITUACION IN ('RE','EP')    
                                     AND C.TIP_GESTOR IN ('TA')
-                                    AND TRUNC(C.FEC_EFEC_RECIBO) = TRUNC(:fec_efect_recibo)
+                                    AND TRUNC(C.FEC_EFEC_RECIBO) <= TRUNC(:fec_efect_recibo)
                                 JOIN A1001399 A99 ON A99.COD_CIA  = A.COD_CIA AND A99.TIP_DOCUM = A.TIP_DOCUM AND A99.COD_DOCUM = A.COD_DOCUM
                                 JOIN A1001331 A1331 ON A1331.COD_CIA  = A.COD_CIA AND A1331.TIP_DOCUM = A.TIP_DOCUM AND A1331.COD_DOCUM = A.COD_DOCUM
                                 JOIN A1000400 A400 ON A400.COD_MON = C.COD_MON
