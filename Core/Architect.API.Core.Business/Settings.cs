@@ -2,12 +2,30 @@
 using System.Collections.Generic;
 using Architect.Utilities.Helpers;
 using System.Linq;
+using Architect.Utilities.Extensions;
 
 namespace Architect.API.Core.Business
 {
 
     public static class Settings
     {
+
+        public static bool BoolValue(int companyId, string settingName, bool defaultValue = false)
+        {
+            string current = FindSetting(companyId, settingName);
+            if (current.IsEmpty())
+            {
+                return defaultValue;
+            }
+            else
+            {
+                return (current.ToLower() == "true" ||
+                        current.ToLower() == "verdadero" ||
+                        current.ToLower() == "yes" ||
+                        current.ToLower() == "si" ||
+                        current.ToLower() == "1");
+            }
+        }
 
         public static string URLRelativeAndFullValue(int companyId, string fullSettingName, string baseSettingName, string servicePath)
         {

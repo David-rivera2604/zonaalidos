@@ -80,7 +80,7 @@ namespace Architect.API.Tron.Business.Backoffice
         /// </summary>
         public async static Task Notificacion(Architect.Payment.Integrations.Contracts.NotifyRequest notify)
         {
-            if (Utilities.Helpers.Settings.BoolValue("Payment.Placetopay.Notify.Enabled", true))
+            if (Core.Business.Settings.BoolValue(0, "Payment.Placetopay.Notify.Enabled", true))
             {
                 Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveByRequestID(Convert.ToInt64(notify.requestId));
                 if (currentRecord != null)

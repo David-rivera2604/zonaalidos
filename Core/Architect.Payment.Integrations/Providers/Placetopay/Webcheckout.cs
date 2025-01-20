@@ -142,29 +142,42 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
                 {
                     case "APPROVED":
                     case "PENDING":
-                        Contracts.Transaction payment = internalResult.payment.First();
-                        result.date = payment.status.date;
-                        result.description = internalResult.request.payment.description;
-                        result.reference = internalResult.request.payment.reference;
-                        result.currency = payment.amount.to.currency;
-                        result.total = payment.amount.to.total;
-                        result.paymentMethodName = payment.paymentMethodName;
-                        result.lastDigits = payment.processorFields?.Find(r => r.keyword == "lastDigits")?.value;
-                        result.authorization = payment.authorization;
-                        result.receipt = payment.receipt;
-                        result.message = payment.status.message;
-                        result.payerName = internalResult.request?.payer?.name;
-                        result.payerSurname = internalResult.request?.payer?.surname;
-                        if (internalResult.request != null && internalResult.request.payment.subscribe)
+                        if (internalResult.payment?.Count() > 0)
                         {
-                            result.subscribe = internalResult.request.payment.subscribe;
+                            Contracts.Transaction payment = internalResult.payment.First();
+                            result.date = payment.status.date;
+                            result.description = internalResult.request.payment.description;
+                            result.reference = internalResult.request.payment.reference;
+                            result.currency = payment.amount.to.currency;
+                            result.total = payment.amount.to.total;
+                            result.paymentMethodName = payment.paymentMethodName;
+                            result.lastDigits = payment.processorFields?.Find(r => r.keyword == "lastDigits")?.value;
+                            result.authorization = payment.authorization;
+                            result.receipt = payment.receipt;
+                            result.message = payment.status.message;
+                            result.payerName = internalResult.request?.payer?.name;
+                            result.payerSurname = internalResult.request?.payer?.surname;
+                            if (internalResult.request != null && internalResult.request.payment.subscribe)
+                            {
+                                result.subscribe = internalResult.request.payment.subscribe;
+                            }
+                            if (result.subscribe && internalResult?.subscription?.status?.status == ST_OK)
+                            {
+                                result.instrument = internalResult.subscription.instrument;
+                            }
+                            else
+                            {
+                                result.subscribe = false;
+                            }
                         }
-                        if (result.subscribe && internalResult?.subscription?.status?.status == ST_OK)
+                        else
                         {
-                            result.instrument = internalResult.subscription.instrument;
-                        } else
-                        {
-                            result.subscribe = false;
+                            result = new Architect.Payment.Integrations.Contracts.InformationRequest()
+                            {
+                                status = ST_FAILED,
+                                reason = response.ReasonPhrase,
+                                rawData = resultResponse
+                            };
                         }
 
                         break;
