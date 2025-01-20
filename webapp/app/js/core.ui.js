@@ -1476,7 +1476,7 @@ app.ui = (function () {
                 }
                 return (source.getFullYear() === dateTarget.getFullYear() &&
                     source.getMonth() === dateTarget.getMonth() &&
-                    source.getDay() === dateTarget.getDay())
+                    source.getDate() === dateTarget.getDate())
             }
             else
                 return false;
