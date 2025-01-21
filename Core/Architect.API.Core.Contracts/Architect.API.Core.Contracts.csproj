@@ -122,6 +122,7 @@
     <Compile Include="_Generated\ProcessCase.cs" />
     <Compile Include="_Generated\ProcessCaseComplement.cs" />
     <Compile Include="_Generated\ProcessInstance.cs" />
+    <Compile Include="General\CustomDataResult.cs" />
     <Compile Include="_Generated\ProcessSpecFlowResult.cs" />
     <Compile Include="_Generated\ProcessSpecFlow.cs" />
     <Compile Include="_Generated\ProcessCaseResult.cs" />

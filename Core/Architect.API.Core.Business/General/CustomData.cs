@@ -1,0 +1,30 @@
+﻿using Architect.Utilities.Extensions;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Metadata;
+
+namespace Architect.API.Core.Business.General
+{
+    /// <summary>
+    /// Roles de seguridad.
+    /// </summary>
+    public static partial class CustomData
+    {
+
+        /// <summary>
+        /// Crea un registro en la tabla CustomData.
+        /// </summary>
+        public static Architect.API.Core.Contracts.General.CustomDataResult Create(Core.Contracts.Security.Token token, int entityType, Int64 entityId, string data, string key1, string key2)
+        {
+            return Core.Business.General.CustomData.Create(token.CompanyId, token.UserId, new Core.Contracts.General.CustomData()
+            {
+                EntityType = entityType,
+                EntityId = entityId,
+                Data = data,
+                Key1 = key1,
+                Key2 = key2
+            });
+        }
+
+    }
+}

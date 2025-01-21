@@ -1,4 +1,5 @@
 ﻿using Architect.API.Core.Contracts.Security;
+using Architect.Payment.Integrations.Contracts;
 using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
@@ -311,6 +312,9 @@ namespace Architect.API.Tron.Business.Cotizacion
                     if (resultInfo.presupuesto.IsNotEmpty())
                     {
                         Core.Business.General.ChangeSet.Create(3000, Convert.ToInt32(resultInfo.presupuesto.Substring(4)), tokenInfo.CompanyId, "Cotización MapfreMas", "Presupuesto #" + resultInfo.presupuesto, tokenInfo.UserId, resultInfo);
+
+                        //Core.Business.General.CustomData.Create(tokenInfo, 3000, Convert.ToInt64(resultInfo.presupuesto),
+                        //                                        Newtonsoft.Json.JsonConvert.SerializeObject(quoteInfo), "QUOTE-", resultInfo.presupuesto);
                     }
                 }
             }
