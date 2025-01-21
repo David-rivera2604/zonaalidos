@@ -270,7 +270,8 @@ app.Attachments = (function () {
                 FileName: null,
                 Stored: null,
                 FileSize: null,
-                Description: null
+                Description: null,
+                FileContent: null
             };
         }
         else {
@@ -281,7 +282,8 @@ app.Attachments = (function () {
                 FileName: $('#AttachmentFileName').val(),
                 Stored: $('#AttachmentStored').val(),
                 FileSize: $('#AttachmentFileSize').val(),
-                Description: $('#AttachmentDescription').val()
+                Description: $('#AttachmentDescription').val(),
+                FileContent: $('#AttachmentStored').val()
             };
         }
     }

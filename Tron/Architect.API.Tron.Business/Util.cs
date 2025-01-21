@@ -775,13 +775,10 @@ namespace Architect.API.Tron.Business
 
             if (startDate > endDate)
             {
-                DateTime temp = startDate;
                 startDate = endDate;
-                endDate = temp;
             }
             while (startDate <= endDate)
             {
-                // Si el día es un lunes, martes, miércoles, jueves o viernes (días hábiles)
                 if (startDate.DayOfWeek != DayOfWeek.Saturday && startDate.DayOfWeek != DayOfWeek.Sunday)
                 {
                     businessDaysCount++;
