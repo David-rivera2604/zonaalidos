@@ -25,6 +25,13 @@ namespace Architect.API.Core.Business.General
                 Key2 = key2
             });
         }
+        /// <summary>
+        /// Recupera un registro en la tabla CustomData por medio de su identificador y tipo de entidad.
+        /// </summary>
+        public static Architect.API.Core.Contracts.General.CustomData RetrieveByEntity(int entityType, Int64 entityId, int companyId)
+        {
+            return Core.DataAccess.General.CustomData.Retrieve(entityType, entityId, companyId);
+        }
 
     }
 }
