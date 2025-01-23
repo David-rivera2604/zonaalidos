@@ -131,5 +131,62 @@ namespace Architect.API.Tron.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Realiza la validación de datos y emisión de la variacion para un producto de tipo Mapfre Más
+        /// </summary>
+        /// <param name="quoteInfo"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("MapfreMasPlus")]
+        public async Task<IHttpActionResult> MapfreMasPlusIssue([FromBody] Tron.Contracts.Variaciones.MapfreMas quoteInfo)
+        {
+            VariacionIssueResult result = null;
+
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Variaciones.MapfreMas.Issue(quoteInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Realiza la cancelacion para un producto de tipo Mapfre Más
+        /// </summary>
+        /// <param name="quoteInfo"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("MapfreMasPlusCancelation")]
+        public async Task<IHttpActionResult> MapfreMasPlusCancelation([FromBody] Tron.Contracts.Variaciones.MapfreMas quoteInfo)
+        {
+            VariacionIssueResult result = null;
+
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Variaciones.MapfreMas.Cancelation(quoteInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Realiza la cancelacion para un producto de tipo Mapfre Más
+        /// </summary>
+        /// <param name="quoteInfo"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("MapfreMasPlusManageAuthorizationCT")]
+        public async Task<IHttpActionResult> MapfreMasPlusManageAuthorizationCT([FromBody] Tron.Contracts.Variaciones.MapfreMas quoteInfo)
+        {
+            VariacionIssueResult result = null;
+
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Variaciones.MapfreMas.ManageAuthorizationCT(quoteInfo.cod_cia, quoteInfo.cod_ramo, quoteInfo.num_poliza, quoteInfo.num_spto, quoteInfo.Mca_Autoriza_CT);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
     }
 }

@@ -3,6 +3,7 @@ using Architect.API.Tron.Contracts.Variaciones;
 using Architect.API.Tron.DataAccess.Pagos;
 using Architect.DataFactory;
 using Architect.Utilities.Extensions;
+using Architect.Utilities.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,7 +14,7 @@ namespace Architect.API.Tron.DataAccess.Variaciones
 {
     public static class VariacionIssue
     {
-        public static VariacionIssueResult Issue(int cod_cia, string num_poliza, DateTime fec_tratamiento, string tip_mvto_batch, string mca_anulada, string mca_fracc_pago, string mca_fec_efec_sys)
+        public static VariacionIssueResult Issue(int cod_cia, string num_poliza, DateTime fec_tratamiento, string tip_mvto_batch, string mca_anulada, string mca_fracc_pago, string mca_fec_efec_sys, DateTime? fec_efec_cancel = null, string txt_motivo = "")
         {
             VariacionIssueResult variacionIssueResult = new VariacionIssueResult();
 
@@ -27,6 +28,8 @@ namespace Architect.API.Tron.DataAccess.Variaciones
                                     .AddParameter("p_mca_anula", DbType.String, 1, mca_anulada)
                                     .AddParameter("p_mca_fracc_pago", DbType.String, 1, mca_fracc_pago)
                                     .AddParameter("p_mca_fec_efec_sys", DbType.String, 1, mca_fec_efec_sys)
+                                    .AddParameter("p_fec_efec_cancel", DbType.Date, 0, fec_efec_cancel)
+                                    .AddParameter("p_txt_motivo", DbType.String, 30, txt_motivo)
                                     .AddParameter("rc1", DbType.RefCursor, 0, null, ParameterDirection.Output)
                                     .AddParameter("rc2", DbType.RefCursor, 0, null, ParameterDirection.Output)
                         .Query(currentConnection, "Tron", new Action<System.Data.IDataReader, string>((reader, key) =>
@@ -90,7 +93,7 @@ namespace Architect.API.Tron.DataAccess.Variaciones
             return variacionIssueResult;
         }
 
-        public static List<Receipt> GetRecibos(int cod_cia, string num_poliza, int? num_spto)
+        public static List<Receipt> GetRecibos(int cod_cia, string num_poliza, int? num_spto, int? num_apli = null, int? num_spto_apli = null)
         {
             List<Receipt> receipts = new List<Receipt>();
 
@@ -100,6 +103,8 @@ namespace Architect.API.Tron.DataAccess.Variaciones
                                     .AddParameter("p_cod_cia", DbType.Int32, 2, cod_cia)
                                     .AddParameter("p_num_poliza", DbType.String, 13, num_poliza)
                                     .AddParameter("p_num_spto", DbType.Int32, 10, num_spto)
+                                    .AddParameter("p_num_apli", DbType.Int32, 10, num_apli)
+                                    .AddParameter("p_num_spto_apli", DbType.Int32, 10, num_spto_apli)
                                     .AddParameter("rc1", DbType.RefCursor, 0, null, ParameterDirection.Output)
                         .Query(currentConnection, "Tron", new Action<System.Data.IDataReader, string>((reader, key) =>
                         {
@@ -142,30 +147,36 @@ namespace Architect.API.Tron.DataAccess.Variaciones
             return receipts;
         }
 
-        public static bool ManageAuthorizationCT(int cod_ramo, string num_poliza, string observacion, string mca_autoriza, double? id_proceso = null, string num_poliza_grupo = "")
+        public static (int, string) ManageAuthorizationCT(int cod_ramo, string num_poliza, string observacion, string mca_autoriza, int cod_error, double? id_proceso = null, string num_poliza_grupo = "")
         {
-            bool result = false;
-            int affected = 0;
+            int cod_salida = -1;
+            string msj_salida = string.Empty;
 
             using (IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron"))
             {
-                affected = Database.Procedure("EM_K_AUT_RECH_CT_EST_MCR.P_PROCESO")
+                List<DataFactory.Contracts.Parameter> parameters = Database.ParameterList()
                                     .AddParameter("P_ID_PROCESO", DbType.Double, 10, id_proceso)
                                     .AddParameter("P_COD_RAMO", DbType.Int32, 3, cod_ramo)
                                     .AddParameter("P_NUM_POLIZA", DbType.String, 13, num_poliza)
                                     .AddParameter("P_TXT_OBSERVACION", DbType.String, 2000, observacion)
                                     .AddParameter("P_MCA_AUTORIZA", DbType.String, 1, mca_autoriza)
                                     .AddParameter("P_NUM_POLIZA_GRUPO", DbType.String, 13, num_poliza_grupo)
+                                    .AddParameter("P_COD_ERROR", DbType.Int32, 4, cod_error)
+                                    .AddParameter("P_COD_SALIDA", DbType.Int32, 4, cod_salida, ParameterDirection.Output)
+                                    .AddParameter("P_MSJ_SALIDA", DbType.String, 250, msj_salida, ParameterDirection.Output)
+                                    .Parameters;
+
+                Database.Procedure("EM_K_AUT_RECH_CT_EST_MCR.P_PROCESO")
+                                    .AddParameter(parameters)
                                     .Execute(currentConnection, "Tron");
+
+                cod_salida = Convert.ToInt32(parameters.Find(r => r.Name == "P_COD_SALIDA").Value.ToString());
+                msj_salida = parameters.Find(r => r.Name == "P_MSJ_SALIDA").Value.ToString();
 
                 currentConnection.Close();
             }
 
-            if (affected != 0)
-            {
-                result = true;
-            }
-            return result;
+            return (cod_salida, msj_salida);
         }
 
         public static List<g1010031> GetSumaAseguradaPorRamo(int cod_cia, int cod_ramo)
@@ -252,6 +263,47 @@ namespace Architect.API.Tron.DataAccess.Variaciones
                 result = true;
             }
             return result;
+        }
+
+        public static List<Receipt> GetPlanPagosResumen(int cod_cia, string num_poliza, int? num_spto, int? num_apli, int? num_spto_apli)
+        {
+            List<Receipt> receipts = new List<Receipt>();
+
+            using (IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron"))
+            {
+                Database.Procedure("EM_K_MAPFRE_BATCH_CONTRACT_MCR.PP_LEE_A2990700_TOTAL_ZA")
+                                    .AddParameter("p_cod_cia", DbType.Int32, 2, cod_cia)
+                                    .AddParameter("p_num_poliza", DbType.String, 13, num_poliza)
+                                    .AddParameter("p_num_spto", DbType.Int32, 10, num_spto)
+                                    .AddParameter("p_num_apli", DbType.Int32, 10, num_apli)
+                                    .AddParameter("p_num_spto_apli", DbType.Int32, 10, num_spto_apli)
+                                    .AddParameter("rc1", DbType.RefCursor, 0, null, ParameterDirection.Output)
+                        .Query(currentConnection, "Tron", new Action<System.Data.IDataReader, string>((reader, key) =>
+                        {
+                            switch (key)
+                            {
+                                case "rc1":
+                                    receipts.Add(new Receipt()
+                                    {
+                                        fec_efec_recibo = reader.DateTimeValue("fec_efec_recibo"),
+                                        fec_vcto_recibo = reader.DateTimeValue("fec_vcto_recibo"),
+                                        tip_situacion = reader.StringValue("tip_situacion"),
+                                        cod_mon = reader.IntegerValue("cod_mon"),
+                                        imp_recibo = reader.DoubleValue("imp_recibo"),
+                                        imp_neta = reader.DoubleValue("imp_neta"),
+                                        imp_recargo = reader.DoubleValue("imp_recargo"),
+                                        imp_imptos = reader.DoubleValue("imp_imptos"),
+                                        imp_interes = reader.DoubleValue("imp_interes")
+                                    });
+
+
+                                    break;
+                            }
+                        }));
+                currentConnection.Close();
+            }
+
+            return receipts;
         }
     }
 }

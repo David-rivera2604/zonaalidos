@@ -306,7 +306,8 @@ namespace Architect.API.Tron.Business.Variaciones
                     quoteInfo.tipo_prod = "trebol";
                     quoteInfo.tipo_prodDesc = "Trebol";
                     break;
-                case 37:
+                case 37: 
+                    case 38:
                     quoteInfo.tipo_prod = "trebolrc";
                     quoteInfo.tipo_prodDesc = "Trébol RC";
                     break;
@@ -421,6 +422,8 @@ namespace Architect.API.Tron.Business.Variaciones
                     quoteInfo.AvailableCoverages.RemoveAll(c => c.codigo == item.codigo);
                 }
             }
+
+            quoteInfo.plandepagoresumen = Architect.API.Tron.DataAccess.Variaciones.VariacionIssue.GetPlanPagosResumen(quoteInfo.cod_cia, quoteInfo.num_poliza, null, null, null);
 
             return quoteInfo;
         }
