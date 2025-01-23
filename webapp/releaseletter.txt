@@ -657,3 +657,5 @@
 1.6.96  22/01/2025 Trazabilidad. Se corrige el cálculo de días en la consulta 4001 y 4002, se agrega la cantidad total de días.
                    Trazabilidad. Corrección de falla en la creación de casos para aliados con un documento anexo.
                    Aliados. Se cambia la consulta 333.1 para permitir el reenvío de solitudes a evertec cuando las solicitudes este por aceptar.
+1.6.97  23/1/2025  Aliados. Se guarda el usuario que hace la emision en el txt_motivo_spto
+                   Aliados. Inclusion de campopara indicar el intermediario que hace la Emision Web
