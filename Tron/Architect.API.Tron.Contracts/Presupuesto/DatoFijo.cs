@@ -544,5 +544,10 @@ namespace Architect.API.Tron.Contracts.Presupuesto
         /// </summary>
         public List<Recibo> Recibos { get; set; }
 
+        /// <summary>
+        ///  Se usa para los casos donde se quiera almacenar el nombre de la persona que emite en txt_motivo_spto
+        /// </summary>
+        public string user_txt_motivo_spto { get; set; } = string.Empty;
+
     }
 }

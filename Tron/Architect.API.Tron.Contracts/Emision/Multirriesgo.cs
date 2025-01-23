@@ -45,6 +45,10 @@ namespace Architect.API.Tron.Contracts.Emision
         /// Conozca a su cliente
         /// </summary>
         [DataMember(), JsonProperty()] public Comun.ConoceTuCliente ConoceTuCliente { get; set; }
+        /// <summary>
+        ///  Se usa para los casos donde se quiera almacenar el nombre de la persona que emite en txt_motivo_spto
+        /// </summary>
+        [DataMember(), JsonProperty()] public string user_txt_motivo_spto { get; set; }
     }
     public class MultirriesgoSolicitud : Multirriesgo
     {

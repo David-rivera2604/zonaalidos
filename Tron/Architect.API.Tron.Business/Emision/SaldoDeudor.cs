@@ -138,6 +138,8 @@ namespace Architect.API.Tron.Business.Emision
             {
                 Contracts.Presupuesto.DatoFijo result = SaldoDeudorConvert.ToTron(quoteInfo, Cotizacion.SaldoDeudor.COD_RAMO, quoteInfo.cod_agt, tokenInfo.UserName);
 
+                result.user_txt_motivo_spto = quoteInfo.user_txt_motivo_spto;
+
                 Contracts.Poliza.DatoFijo result2 = Backoffice.Emision.Generico.Emitir(result, tokenInfo);
 
                 resultQuoteInfo = SaldoDeudorConvert.FromTron(quoteInfo, result2);

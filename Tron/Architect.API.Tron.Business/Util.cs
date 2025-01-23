@@ -788,5 +788,40 @@ namespace Architect.API.Tron.Business
             return businessDaysCount;
         }
 
+        internal static void UpdateTxt_Motivo_Spto(Contracts.Presupuesto.DatoFijo quoteTron, Core.Contracts.Security.Token tokenInfo, IDbConnection currentConnection)
+        {
+            string p_txt_motivo_spto = "Cotización realizada desde la zona de aliados, por: " + tokenInfo.UserName;
+            DataAccess.Batch.P2000030.UpdateTxt_Motivo_Spto(p_txt_motivo_spto, quoteTron.num_poliza, currentConnection);
+        }
+
+        internal static void TerceroSubAgente(Contracts.Presupuesto.DatoFijo datosFijos,Core.Contracts.Security.Token tokenInfo, IDbConnection currentConnection)
+        {
+            Contracts.Presupuesto.Tercero p60 = new Contracts.Presupuesto.Tercero()
+            {
+                cod_cia = 1, 
+                num_poliza = datosFijos.num_poliza,
+                num_spto = 0, 
+                num_apli = 0, 
+                num_spto_apli = 0, 
+                num_riesgo = 1, 
+                tip_benef = "37", 
+                num_secu = 1,  
+                tip_docum = tokenInfo.IdentificationType, 
+                cod_docum = tokenInfo.Identification, 
+                mca_principal = "N", 
+                mca_calculo = "N", 
+                mca_baja = "N", 
+                mca_vigente = "S", 
+                pct_participacion = 0, 
+                fec_vcto_cesion = DateTime.MinValue, 
+                imp_cesion = 0, 
+                num_prestamo = string.Empty, 
+                tip_relac = string.Empty 
+            };
+
+            DataAccess.CrearPresupuesto.PP_Insert_P2000060(p60, currentConnection);
+           
+        }
+
     }
 }

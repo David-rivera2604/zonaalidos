@@ -28,7 +28,8 @@ app.EmisionMultirriesgo = (function () {
 
                         $('.enviosolicitudZone').removeClass('d-none');
                         $('.Solictud_DatosVar').removeClass('d-none');
-                        $('#PageSubTitle').text("Emision Solicitud de Seguro")
+                        $('#PageSubTitle').text("Emision Solicitud de Seguro");
+                        $('._user_txt_motivo_spto').addClass('d-none');
                     } else {
                         //$('#cotizar').removeClass('d-none');
                         $('.VerificarDomicilio').removeClass('d-none');
@@ -226,6 +227,7 @@ app.EmisionMultirriesgo = (function () {
                 data.datosvariables = MapInputtoObjecdatosvar();
             }
         }
+        data.user_txt_motivo_spto = $('#user_txt_motivo_spto').val();
         //data.Modo = 'continue';
         return data;
     };

@@ -26,6 +26,7 @@ app.EmisionSaldoDeudor = (function () {
                 $('.datosgeneralesZone').removeClass('col-md-12');
                 $('.datosgeneralesZone').addClass('col-md-7');
                 $('.enviosolicitudZone').removeClass('d-none');
+                $('._user_txt_motivo_spto').addClass('d-none');
             } else {
                 //$('#cotizar').removeClass('d-none');
                 $('.VerificarDomicilio').removeClass('d-none');
@@ -183,6 +184,7 @@ app.EmisionSaldoDeudor = (function () {
             });
         };
 
+        data.user_txt_motivo_spto = $('#user_txt_motivo_spto').val();
         
         return data;
     };

@@ -177,6 +177,9 @@ namespace Architect.API.Tron.Business.Emision
                 {
 
                     Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = MapfreMasConvertTo.Tron(quoteInfo);
+
+                    result.user_txt_motivo_spto = quoteInfo.user_txt_motivo_spto;
+
                     Architect.API.Tron.Contracts.Poliza.DatoFijo result2 = Backoffice.Emision.MapfreMas.Emitir(result, false, tokenInfo);
 
                     resultQuoteInfo = MapfreMasConvertFrom.Quote(quoteInfo, result2);

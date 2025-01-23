@@ -60,11 +60,25 @@ namespace Architect.API.Tron.Business.Backoffice.Emision
             //Cambio de Fraccionamiento de Pago
             Util.ChangeCod_fracc_pago(s2000030Instance, tokenInfo, currentConnection);
 
+            //Actualiza el txt_motivo_spto
+            if (!string.IsNullOrEmpty(s2000030Instance.user_txt_motivo_spto))
+            {
+                tokenInfo.UserName = s2000030Instance.user_txt_motivo_spto;
+                Util.UpdateTxt_Motivo_Spto(s2000030Instance, tokenInfo, currentConnection);
+            }
+            else
+            {
+                Util.UpdateTxt_Motivo_Spto(s2000030Instance, tokenInfo, currentConnection);
+            }
+
             // Datos variables
             MapfreMas_DatosVariables(s2000030Instance, currentConnection);
 
             // Terceros del presupuesto
             MapfreMas_Terceros_del_presupuesto(s2000030Instance, currentConnection);
+
+            //Guarda subagente
+            Util.TerceroSubAgente(s2000030Instance, tokenInfo, currentConnection);
 
             // envía el numero de presupuesto y los datos de la g2000510 para ejecutar el método de emitir desde una cotización
             g2000510Instance = Architect.API.Tron.DataAccess.Batch.G2000510.ExecutePolicyFromQuotation(g2000510Instance, s2000030Instance.num_poliza, currentConnection);

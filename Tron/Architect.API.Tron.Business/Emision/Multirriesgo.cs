@@ -174,6 +174,8 @@ namespace Architect.API.Tron.Business.Emision
 
                 Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = MultirriesgoConvertTo.Tron(quoteInfo);
 
+                result.user_txt_motivo_spto = quoteInfo.user_txt_motivo_spto;
+
                 Architect.API.Tron.Contracts.Poliza.DatoFijo result2 = Backoffice.Emision.Generico.Emitir(result, tokenInfo);
 
                 resultQuoteInfo = MultirriesgoConvertFrom.Quote(quoteInfo, result2);

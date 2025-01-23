@@ -99,6 +99,8 @@ namespace Architect.API.Tron.Business.Emision
 
             Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = ViajeroConvertTo.Tron(quoteInfo);
 
+            result.user_txt_motivo_spto = quoteInfo.user_txt_motivo_spto;
+
             Architect.API.Tron.Contracts.Poliza.DatoFijo result2 = Backoffice.Emision.Generico.Emitir(result, tokenInfo);
 
             Contracts.Emision.Viajero resultQuoteInfo = ViajeroConvertFrom.Quote(quoteInfo, result2);
