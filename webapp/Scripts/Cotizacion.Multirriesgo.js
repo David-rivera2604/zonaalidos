@@ -93,7 +93,7 @@ app.CotizacionMultirriesgo = (function () {
         app.core.Lookups(lookupList,
             function () {
                 MapObjectToInput(data);
-            }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:cod_pais=${data.cod_pais}:cod_tip_ocup=${data.cod_ramo}%:cod_estado=${data.cod_estado}:cod_prov=${data.cod_prov}:cod_agt=${data.cod_agt}`);
+            }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:cod_pais=${data.cod_pais}:cod_tip_ocup=${data.cod_ramo}%:cod_estado=${data.cod_estado}:cod_prov=${data.cod_prov}:cod_agt=${data.cod_agt}:num_contrato=99999`);
 
         // Dependencies events
         $('#cod_estado').on('change', function () {
@@ -157,6 +157,7 @@ app.CotizacionMultirriesgo = (function () {
                 app.ui.SetDateValue('#fec_vcto_poliza', app.ui.GetDateValue('#fec_efec_poliza'))
                 app.ui.SetDateValue('#fec_vcto_poliza', settingData.fec_vcto_poliza);
                 app.ui.LookupLoad('cod_tip_ocup', settingData.cod_tip_ocup);
+                document.getElementById('cod_tip_ocup').selectedIndex = 0;
 
                 if (settingData.coberturas != null)
                     $('#coberturasTbl').bootstrapTable('load', settingData.coberturas);

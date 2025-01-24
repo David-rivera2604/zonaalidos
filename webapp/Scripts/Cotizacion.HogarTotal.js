@@ -103,7 +103,7 @@ app.HogarTotal = (function () {
         app.core.Lookups(lookupList,
             function () {
                 MapObjectToInput(data);
-            }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.moneda}:cod_pais=${data.pais}:cod_tip_ocup=${data.cod_ramo}%:cod_estado=${data.provincia}:cod_prov=${data.canton}:cod_agt=${data.cod_agt}`);
+            }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.moneda}:cod_pais=${data.pais}:cod_tip_ocup=${data.cod_ramo}%:cod_estado=${data.provincia}:cod_prov=${data.canton}:cod_agt=${data.cod_agt}:num_contrato=99999`);
 
         // Dependencies events
         $('#provincia').on('change', function () {
@@ -168,6 +168,8 @@ app.HogarTotal = (function () {
                 app.ui.SetDateValue('#findevigencia', settingData.fec_vcto_poliza);
 
                 app.ui.LookupLoad('sARespcivil', settingData.SumasAseguradasRC);
+                app.ui.LookupLoad('ocupaciondelriesgo', settingData.TipOcupacion);
+                document.getElementById('ocupaciondelriesgo').selectedIndex = 0;
 
                 if (settingData.coberturas != null)
                     $('#coberturasTbl').bootstrapTable('load', settingData.coberturas);
