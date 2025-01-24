@@ -1,4 +1,5 @@
 ﻿using Architect.API.Core.Contracts;
+using Architect.API.Core.Business.General;
 using Architect.API.Insurance.Contracts.Bayer;
 using Architect.API.Tron.Contracts.Presupuesto.API;
 using Architect.Compliance.Integrations.Contracts;
@@ -50,6 +51,22 @@ namespace Architect.API.Tron.Business.Emision
 
                 Contracts.Presupuesto.DatoFijo P30Instance = DataAccess.LeerPresupuesto.Presupuesto(1, presupuesto, 0, 0, 0, null, true);
                 Contracts.Cotizacion.MapfreMas resultInfo2 = Cotizacion.MapfreMasConvertFrom.Quote(Cotizacion.MapfreMasConvertFrom.Quote(P30Instance), P30Instance);
+
+                //Se recupera la información de campos que no son almacenados en tron.
+                Core.Contracts.General.CustomData customData = CustomData.RetrieveByEntity(3000, Convert.ToInt64(presupuesto), tokenInfo.CompanyId);
+                if (!string.IsNullOrEmpty(customData?.Data))
+                {
+                    Contracts.Cotizacion.MapfreMas custom = JsonConvert.DeserializeObject<Contracts.Emision.MapfreMas>(customData.Data);
+
+                    if (custom != null)
+                    {
+                        resultInfo2.nombredelcontratante = custom.nombredelcontratante;
+                        resultInfo2.edad = custom.edad;
+                        resultInfo2.mca_sexo = custom.mca_sexo;
+                        resultInfo2.mca_sexoDesc = custom.mca_sexoDesc;
+                        resultInfo2.AutoSust = custom.AutoSust;
+                    }
+                }
 
                 Utilities.Cache.SetItem(key, Newtonsoft.Json.JsonConvert.SerializeObject(resultInfo2), -1);
             }

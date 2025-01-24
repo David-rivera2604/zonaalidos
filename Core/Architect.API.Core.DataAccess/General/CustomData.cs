@@ -391,7 +391,7 @@ namespace Architect.API.Core.DataAccess.General
             Architect.API.Core.Contracts.General.CustomData result = null;
             Database.Select("SELECT Id, CustomData.CompanyId, EntityType, EntitySubType, EntityId, Data, Key1, Key2, CustomData.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, CustomData.UpdateDate " +
                               "FROM CustomData LEFT JOIN UserMember um ON um.UserId = CustomData.UpdateUserCode " +
-                             "WHERE EntityType =:EntityType AND EntityId =:EntityId AND Attachments.CompanyId =:CompanyId ORDER BY Id")
+                             "WHERE EntityType =:EntityType AND EntityId =:EntityId AND CustomData.CompanyId =:CompanyId ORDER BY Id")
                         .AddParameter("EntityType", DbType.Decimal, 5, entityType)
                         .AddParameter("EntityId", DbType.Decimal, 18, entityId)
                         .AddParameter("CompanyId", DbType.Decimal, 5, companyId)

@@ -313,8 +313,15 @@ namespace Architect.API.Tron.Business.Cotizacion
                     {
                         Core.Business.General.ChangeSet.Create(3000, Convert.ToInt32(resultInfo.presupuesto.Substring(4)), tokenInfo.CompanyId, "Cotización MapfreMas", "Presupuesto #" + resultInfo.presupuesto, tokenInfo.UserId, resultInfo);
 
-                        //Core.Business.General.CustomData.Create(tokenInfo, 3000, Convert.ToInt64(resultInfo.presupuesto),
-                        //                                        Newtonsoft.Json.JsonConvert.SerializeObject(quoteInfo), "QUOTE-", resultInfo.presupuesto);
+                        Core.Business.General.CustomData.Create(tokenInfo, 3000, Convert.ToInt64(resultInfo.presupuesto),
+                                                                Newtonsoft.Json.JsonConvert.SerializeObject(new
+                                                                {
+                                                                    nombredelcontratante = resultInfo.nombredelcontratante,
+                                                                    edad = resultInfo.edad,
+                                                                    mca_sexo = resultInfo.mca_sexo,
+                                                                    mca_sexoDesc = resultInfo.mca_sexoDesc,
+                                                                    AutoSust = resultInfo.AutoSust
+                                                                }), "QUOTE-", resultInfo.presupuesto);
                     }
                 }
             }
