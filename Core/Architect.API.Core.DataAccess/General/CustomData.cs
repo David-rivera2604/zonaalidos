@@ -2,6 +2,7 @@
 using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Data;
 using DbType = Architect.DataFactory.Enumerations.DbType;
 
@@ -25,8 +26,8 @@ namespace Architect.API.Core.DataAccess.General
             {
                 CustomDataItem.UpdateDate = DateTime.Now;
             }
-            return Database.Insert("INSERT INTO CustomData (Id, CompanyId, EntityType, EntitySubType, EntityId, DocumentType, Description, FileName, FileSize, FileContent, UpdateUserCode, UpdateDate) " +
-                                                 "VALUES(:Id, :CompanyId, :EntityType, :EntitySubType, :EntityId, :DocumentType, :Description, :FileName, :FileSize, :FileContent, :UpdateUserCode, :UpdateDate)")
+            return Database.Insert("INSERT INTO CustomData (Id, CompanyId, EntityType, EntitySubType, EntityId, Data, Key1, Key2, UpdateUserCode, UpdateDate) " +
+                                                 "VALUES(:Id, :CompanyId, :EntityType, :EntitySubType, :EntityId, :Data, :Key1, :Key2, :UpdateUserCode, :UpdateDate)")
                             .AddParameter("Id", DbType.Decimal, 9, CustomDataItem.Id)
                             .AddParameter("CompanyId", DbType.Decimal, 5, CustomDataItem.CompanyId)
                             .AddParameter("EntityType", DbType.Decimal, 5, CustomDataItem.EntityType)
@@ -383,6 +384,22 @@ namespace Architect.API.Core.DataAccess.General
                                 .AddParameter("EntityId", DbType.Decimal, 18, entityId)
                                 .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
                                 .Execute(connection, "Research");
+        }
+
+        public static Architect.API.Core.Contracts.General.CustomData Retrieve(int entityType, Int64 entityId, int companyId, IDbConnection connection = null)
+        {
+            Architect.API.Core.Contracts.General.CustomData result = null;
+            Database.Select("SELECT Id, CustomData.CompanyId, EntityType, EntitySubType, EntityId, Data, Key1, Key2, CustomData.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, CustomData.UpdateDate " +
+                              "FROM CustomData LEFT JOIN UserMember um ON um.UserId = CustomData.UpdateUserCode " +
+                             "WHERE EntityType =:EntityType AND EntityId =:EntityId AND CustomData.CompanyId =:CompanyId ORDER BY Id")
+                        .AddParameter("EntityType", DbType.Decimal, 5, entityType)
+                        .AddParameter("EntityId", DbType.Decimal, 18, entityId)
+                        .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                        .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
+                        {
+                            result = DataReaderToCustomData(reader);
+                        }));
+            return result;
         }
 
     }
