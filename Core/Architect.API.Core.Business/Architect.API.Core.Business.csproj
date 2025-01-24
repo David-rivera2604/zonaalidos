@@ -150,6 +150,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="General\CustomData.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="General\FileSanitizer.cs" />
     <Compile Include="General\KycBussines.cs" />
@@ -167,6 +168,7 @@
     <Compile Include="General\WhiteList.cs" />
     <Compile Include="Security\RoleMember.cs" />
     <Compile Include="_Generated\ChangeInicio.cs" />
+    <Compile Include="_Generated\CustomData.cs" />
     <Compile Include="_Generated\Lookup.cs" />
     <Compile Include="_Generated\ChangeColor.cs" />
     <Compile Include="_Generated\Notes.cs" />
