@@ -41,6 +41,7 @@ app.HogarTotal = (function () {
                         $('.datosgeneralesZone').removeClass('col-md-12');
                         $('.datosgeneralesZone').addClass('col-md-7');
                         $('.enviosolicitudZone').removeClass('d-none');
+                        $('._user_txt_motivo_spto').addClass('d-none');
                     } else {
                         //$('#cotizar').removeClass('d-none');
                         $('.VerificarDomicilio').removeClass('d-none');
@@ -214,6 +215,9 @@ app.HogarTotal = (function () {
         if (formulariosDatakyc.length > 0) {
             data.kyc = $('#formulariosTbl').bootstrapTable('getData')[0].data;
         }
+
+        data.user_txt_motivo_spto = $('#user_txt_motivo_spto').val();
+
         //data.Modo = 'continue';
         setupData = data;
         return data;

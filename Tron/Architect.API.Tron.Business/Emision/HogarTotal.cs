@@ -184,6 +184,8 @@ namespace Architect.API.Tron.Business.Emision
 
                     Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = HogarTotalConvertTo.Tron(quoteInfo);
 
+                    result.user_txt_motivo_spto = quoteInfo.user_txt_motivo_spto;
+
                     //Architect.Common.Helpers.Serialize.SerializeToFile<Architect.API.Tron.Contracts.Batch.p2000030>(result,
                     //    ConfigurationManager.AppSettings["Path.Logs"] + @"\hogartotal.emision.in.raw.xml", true);
 

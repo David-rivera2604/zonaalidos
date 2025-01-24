@@ -49,6 +49,16 @@ namespace Architect.API.Tron.DataAccess.Batch
                      .Execute(currentConnection, "Tron");
             return result >= 1;
         }
+        public static bool UpdateTxt_Motivo_Spto(string txt_motivo_spto, string num_poliza, IDbConnection currentConnection)
+        {
+            var result = Database.Update("UPDATE P2000030 " +
+                                           " SET txt_motivo_spto = :txt_motivo_spto " +
+                                         " WHERE NUM_POLIZA = :NUM_POLIZA")
+                     .AddParameter("txt_motivo_spto", Architect.DataFactory.Enumerations.DbType.String, 100, txt_motivo_spto)
+                     .AddParameter("NUM_POLIZA", Architect.DataFactory.Enumerations.DbType.String, 13, num_poliza)
+                     .Execute(currentConnection, "Tron");
+            return result >= 1;
+        }
 
     }
 }

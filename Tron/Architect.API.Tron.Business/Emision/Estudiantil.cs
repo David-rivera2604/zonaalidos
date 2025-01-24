@@ -97,6 +97,8 @@ namespace Architect.API.Tron.Business.Emision
 
             Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = EstudiantilConvertTo.Tron(quoteInfo);
 
+            result.user_txt_motivo_spto = quoteInfo.user_txt_motivo_spto;
+
             Architect.API.Tron.Contracts.Poliza.DatoFijo result2 = Backoffice.Emision.Generico.Emitir(result, tokenInfo);
 
             Contracts.Emision.Estudiantil resultQuoteInfo = EstudiantilConvertFrom.Quote(quoteInfo, result2);

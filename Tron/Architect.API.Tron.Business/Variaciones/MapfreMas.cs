@@ -84,7 +84,8 @@ namespace Architect.API.Tron.Business.Variaciones
 
                     Architect.API.Tron.DataAccess.Variaciones.S2000030.Create(s2000030Instance);
 
-                    result = DataAccess.Variaciones.VariacionIssue.Issue(quoteInfo.cod_cia, quoteInfo.num_poliza, Fec_Tratamiento, Tip_mvto_batch, "N", "S", quoteInfo.MCA_FEC_EFEC_SYS);
+                    //result = DataAccess.Variaciones.VariacionIssue.Issue(quoteInfo.cod_cia, quoteInfo.num_poliza, Fec_Tratamiento, Tip_mvto_batch, "N", "S", quoteInfo.MCA_FEC_EFEC_SYS);
+                    result = DataAccess.Variaciones.VariacionIssue.Issue(quoteInfo.cod_cia, quoteInfo.num_poliza, Fec_Tratamiento, Tip_mvto_batch, "N", "S", "N");
                 }
                 else
                 {
@@ -101,6 +102,7 @@ namespace Architect.API.Tron.Business.Variaciones
                     RegisterS2000020(DatosVariables, Fec_Tratamiento, "IMP_VR", quoteInfo.IMP_VR.ToString(), Tip_mvto_batch);
                     RegisterS2000020(DatosVariables, Fec_Tratamiento, "IMP_PRA", quoteInfo.IMP_VR.ToString(), Tip_mvto_batch);
                     RegisterS2000020(DatosVariables, Fec_Tratamiento, "IMP_AUTO_CRI", quoteInfo.IMP_AUTO_CRI.ToString(), Tip_mvto_batch);
+                    RegisterS2000020(DatosVariables, Fec_Tratamiento, "DED_AUTO_CRI", quoteInfo.DED_AUTO_CRI.ToString(), Tip_mvto_batch);
                     RegisterS2000020(DatosVariables, Fec_Tratamiento, "IMP_AUTO_RAD", quoteInfo.IMP_AUTO_RAD.ToString(), Tip_mvto_batch);
                     RegisterS2000020(DatosVariables, Fec_Tratamiento, "IMP_AUTO_ROB", quoteInfo.IMP_AUTO_ROB.ToString(), Tip_mvto_batch);
                     RegisterS2000020(DatosVariables, Fec_Tratamiento, "DED_AUTO_RC", quoteInfo.DED_AUTO_RC.ToString(), Tip_mvto_batch);
@@ -165,7 +167,8 @@ namespace Architect.API.Tron.Business.Variaciones
 
                     }
 
-                    result = DataAccess.Variaciones.VariacionIssue.Issue(quoteInfo.cod_cia, quoteInfo.num_poliza, Fec_Tratamiento, Tip_mvto_batch, "N", "N", quoteInfo.MCA_FEC_EFEC_SYS);
+                    //result = DataAccess.Variaciones.VariacionIssue.Issue(quoteInfo.cod_cia, quoteInfo.num_poliza, Fec_Tratamiento, Tip_mvto_batch, "N", "N", quoteInfo.MCA_FEC_EFEC_SYS);
+                    result = DataAccess.Variaciones.VariacionIssue.Issue(quoteInfo.cod_cia, quoteInfo.num_poliza, Fec_Tratamiento, Tip_mvto_batch, "N", "N", "N");
                 }
 
                 int countError = 0;
@@ -187,7 +190,7 @@ namespace Architect.API.Tron.Business.Variaciones
                 }
                 else
                 {
-                    result = GetCoverageAndReceipts(quoteInfo.cod_cia, quoteInfo.cod_ramo, quoteInfo.num_poliza);
+                    result = GetCoverageAndReceipts(result, quoteInfo.cod_cia, quoteInfo.cod_ramo, quoteInfo.num_poliza);
                     result.McaError = "N";
                 }
             }
@@ -261,21 +264,28 @@ namespace Architect.API.Tron.Business.Variaciones
 
             try
             {
-                result = DataAccess.Variaciones.VariacionIssue.Issue(quoteInfo.cod_cia, quoteInfo.num_poliza, Fec_Tratamiento, Tip_mvto_batch, "S", "N", quoteInfo.MCA_FEC_EFEC_SYS);
+                //result = DataAccess.Variaciones.VariacionIssue.Issue(quoteInfo.cod_cia, quoteInfo.num_poliza, Fec_Tratamiento, Tip_mvto_batch, "S", "N", quoteInfo.MCA_FEC_EFEC_SYS);
+                result = DataAccess.Variaciones.VariacionIssue.Issue(quoteInfo.cod_cia, quoteInfo.num_poliza, Fec_Tratamiento, Tip_mvto_batch, "S", "N", "N", quoteInfo.fec_efec_cancel, quoteInfo.txt_motivo);
 
+                int countError = 0;
                 if (result.ProcessResult?.Count > 0)
                 {
                     foreach (var item in result.ProcessResult)
                     {
                         if (!string.IsNullOrEmpty(item.txt_error))
                         {
-                            result.McaError = "S";
+                            countError = countError + 1;
                             Utilities.Log.ErrorLog("Cancelation: " + quoteInfo.num_poliza, item.txt_error, "Variacion.Cancelation.MapfreMas");
                         }
                     }
                 }
+                if (countError > 0)
+                {
+                    result.McaError = "S";
+                }
                 else
                 {
+                    result = GetCoverageAndReceipts(result, quoteInfo.cod_cia, quoteInfo.cod_ramo, quoteInfo.num_poliza);
                     result.McaError = "N";
                 }
             }
@@ -296,34 +306,34 @@ namespace Architect.API.Tron.Business.Variaciones
         public static VariacionIssueResult ManageAuthorizationCT(int cod_cia, int cod_ramo, string num_poliza, int num_spto,string mca_autoriza)
         {
             VariacionIssueResult result = new VariacionIssueResult();
-            bool resultCT = false;
+            (int, string) resultCT = (0, string.Empty);
             string observacion;
 
             try
             {
                 observacion = (mca_autoriza.Equals("S")) ? "Autorizacion CT - ZA" : "Rechazo CT - ZA";
-                resultCT = DataAccess.Variaciones.VariacionIssue.ManageAuthorizationCT(cod_ramo, num_poliza, observacion, mca_autoriza);
+                resultCT = DataAccess.Variaciones.VariacionIssue.ManageAuthorizationCT(cod_ramo, num_poliza, observacion, mca_autoriza, 4004);
 
-                if (!resultCT)
+                if (resultCT.Item1.Equals(1))
                 {
                     result.McaError = "S";
                     result.ProcessResult.Add(new VariacionIssueProcessResult
                     {
                         num_poliza = num_poliza,
-                        txt_error = "Error al autorizar el CT"
+                        txt_error = resultCT.Item2
                     });
-                    Utilities.Log.ErrorLog("Autorizacion-Rechazo CT: " + num_poliza, "Error al autorizar el CT", "Variacion.Autorizacion-Rechazo.MapfreMas");
+                    Utilities.Log.ErrorLog("Autorizacion-Rechazo CT: " + num_poliza, resultCT.Item2, "Variacion.Autorizacion-Rechazo.MapfreMas");
                 }
                 else
                 {
-                    result = GetCoverageAndReceipts(cod_cia, cod_ramo, num_poliza);
+                    result = GetCoverageAndReceipts(result, cod_cia, cod_ramo, num_poliza);
                     result.Recibos = DataAccess.Variaciones.VariacionIssue.GetRecibos(cod_cia, num_poliza, null);
                         
                     result.McaError = "N";
                     result.ProcessResult.Add(new VariacionIssueProcessResult
                     {
                         num_poliza = num_poliza,
-                        txt_error = "Se autorizó correctamente el CT"
+                        txt_error = (!string.IsNullOrEmpty(resultCT.Item2)) ? resultCT.Item2 : "Se autorizó correctamente el CT"
                     });
                 }
             }
@@ -552,10 +562,8 @@ namespace Architect.API.Tron.Business.Variaciones
             return values;
         }
 
-        private static VariacionIssueResult GetCoverageAndReceipts(int cod_cia, int cod_ramo, string num_poliza)
+        private static VariacionIssueResult GetCoverageAndReceipts(VariacionIssueResult result, int cod_cia, int cod_ramo, string num_poliza)
         {
-            VariacionIssueResult result = new VariacionIssueResult();
-
             List<Architect.API.Tron.Contracts.Poliza.Cobertura> coberturas = DataAccess.LeerPoliza.PP_Lee_A2000040_ZA(cod_cia, num_poliza, null);
             List<Architect.API.Tron.Contracts.Poliza.ReciboCalculado> recibos = Architect.API.Tron.DataAccess.LeerPoliza.PP_Lee_A2990700_Result_ZA(cod_cia, num_poliza, null, 0, 0, null);
 
@@ -594,6 +602,8 @@ namespace Architect.API.Tron.Business.Variaciones
                     importetotal = item.IMP_RECIBO
                 });
             }
+
+            result.plandepagoresumen = Architect.API.Tron.DataAccess.Variaciones.VariacionIssue.GetPlanPagosResumen(cod_cia, num_poliza, null, null, null);
 
             return result;
         }

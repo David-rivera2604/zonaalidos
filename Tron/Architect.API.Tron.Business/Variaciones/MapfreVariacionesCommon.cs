@@ -1,5 +1,6 @@
 ﻿using Architect.API.Tron.Contracts.Variaciones;
 using Architect.API.Tron.DataAccess.Variaciones;
+using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -253,23 +254,23 @@ namespace Architect.API.Tron.Business.Variaciones
         public static VariacionIssueResult ManageAuthorizationCT(int cod_cia, int cod_ramo, string num_poliza, int num_spto, string mca_autoriza)
         {
             VariacionIssueResult result = new VariacionIssueResult();
-            bool resultCT = false;
+            (int, string) resultCT = (0, string.Empty);
             string observacion;
 
             try
             {
                 observacion = (mca_autoriza.Equals("S")) ? "Autorizacion CT - ZA" : "Rechazo CT - ZA";
-                resultCT = DataAccess.Variaciones.VariacionIssue.ManageAuthorizationCT(cod_ramo, num_poliza, observacion, mca_autoriza);
+                resultCT = DataAccess.Variaciones.VariacionIssue.ManageAuthorizationCT(cod_ramo, num_poliza, observacion, mca_autoriza, 4004);
 
-                if (!resultCT)
+                if (resultCT.Item1.Equals(1))
                 {
                     result.McaError = "S";
                     result.ProcessResult.Add(new VariacionIssueProcessResult
                     {
                         num_poliza = num_poliza,
-                        txt_error = "Error al autorizar el CT"
+                        txt_error = resultCT.Item2
                     });
-                    Utilities.Log.ErrorLog("Autorizacion-Rechazo CT: " + num_poliza, "Error al autorizar el CT", "Variacion.Autorizacion-Rechazo.MapfreMas");
+                    Utilities.Log.ErrorLog("Autorizacion-Rechazo CT: " + num_poliza, resultCT.Item2, "Variacion.Autorizacion-Rechazo.MapfreMas");
                 }
                 else
                 {
@@ -280,12 +281,11 @@ namespace Architect.API.Tron.Business.Variaciones
 
                     }
 
-
                     result.McaError = "N";
                     result.ProcessResult.Add(new VariacionIssueProcessResult
                     {
                         num_poliza = num_poliza,
-                        txt_error = "Se autorizó correctamente el CT"
+                        txt_error = (!string.IsNullOrEmpty(resultCT.Item2))? resultCT.Item2:"Se autorizó correctamente el CT"
                     });
                 }
             }

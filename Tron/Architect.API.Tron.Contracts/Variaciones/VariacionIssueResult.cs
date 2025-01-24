@@ -13,11 +13,13 @@ namespace Architect.API.Tron.Contracts.Variaciones
             Recibos = new List<Receipt>();
             ProcessResult = new List<VariacionIssueProcessResult>();
             plandepago = new List<Comun.PlanDePago>();
+            plandepagoresumen = new List<Receipt>();
             coberturas = new List<Comun.Cobertura>();
         }
         public List<VariacionIssueProcessResult> ProcessResult { get; set; }
         public List<Receipt> Recibos { get; set; }
         public List<Comun.PlanDePago> plandepago { get; set; }
+        public List<Receipt> plandepagoresumen { get; set; }
         public List<Contracts.Comun.Cobertura> coberturas { get; set; }
         public string McaError { get; set; }
 

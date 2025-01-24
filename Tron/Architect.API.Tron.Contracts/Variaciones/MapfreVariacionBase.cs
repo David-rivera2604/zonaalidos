@@ -50,5 +50,9 @@ namespace Architect.API.Tron.Contracts.Variaciones
         [DataMember(), JsonProperty()] public bool AUTO_NEUM { get; set; } = false;
         [DataMember(), JsonProperty()] public bool AUTO_MECA { get; set; } = false;
         [DataMember(), JsonProperty()] public List<g1010031> SumAseguradaRamo { get; set; }
+        [DataMember(), JsonProperty()] public List<Receipt> plandepagoresumen { get; set; }
+
+        [DataMember(), JsonProperty()] public DateTime fec_efec_cancel { get; set; }
+        [DataMember(), JsonProperty()] public string txt_motivo { get; set; }
     }
 }

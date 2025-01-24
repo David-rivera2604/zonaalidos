@@ -109,6 +109,7 @@ app.EmisionEstudiantil = (function () {
 
         data.terceros = $('#tercerosTbl').bootstrapTable('getData');
         data.documentosrequeridos = $('#documentosrequeridosTbl').bootstrapTable('getData');
+        data.user_txt_motivo_spto = $('#user_txt_motivo_spto').val();
 
         return data;
     };
