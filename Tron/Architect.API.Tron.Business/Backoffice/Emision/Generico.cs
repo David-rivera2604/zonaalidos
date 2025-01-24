@@ -67,7 +67,7 @@ namespace Architect.API.Tron.Business.Backoffice.Emision
                 Sincroniza_Terceros(s2000030Instance, currentConnection);
 
                 //Guarda subagente
-                Util.TerceroSubAgente(s2000030Instance, tokenInfo, currentConnection);
+                //Util.TerceroSubAgente(s2000030Instance, tokenInfo, currentConnection);
 
                 // envía el numero de presupuesto y los datos de la g2000510 para ejecutar el método de emitir desde una cotización
                 g2000510Instance = DataAccess.Batch.G2000510.ExecutePolicyFromQuotation(g2000510Instance, s2000030Instance.num_poliza, currentConnection); // numpresupuesto
