@@ -42,6 +42,9 @@ namespace Architect.Utilities
         private readonly string _baseUrl;
         private readonly string _source;
 
+        public string ResponseContent { get; set; }
+        public bool ThrowException { get; set; }
+
         public RestClient(string baseUrl, string source)
         {
             _baseUrl = baseUrl;
@@ -50,14 +53,28 @@ namespace Architect.Utilities
             _httpClient = new HttpClient();
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            ThrowException = true;
+        }
+
+        public RestClient(string baseUrl, string source, bool throwException) 
+        {
+            _baseUrl = baseUrl;
+            _source = source;
+            //_httpClient = new HttpClient { BaseAddress = new Uri(_baseUrl) };
+            _httpClient = new HttpClient();
+            _httpClient.DefaultRequestHeaders.Accept.Clear();
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            ThrowException = throwException;
         }
 
         private async Task<TResponse> SendAsync<TRequest, TResponse>(HttpMethod method, string endpoint, TRequest data = default(TRequest))
         {
             string stringResponse = null;
+            string message = null;
             try
             {
-                var request = new HttpRequestMessage(method, $"{_baseUrl}/{endpoint}");
+                string url = _baseUrl.EndsWith("/") ? $"{_baseUrl}{endpoint}" : $"{_baseUrl}/{endpoint}";
+                var request = new HttpRequestMessage(method, url);
 
                 if (data != null && !data.Equals(default(TRequest))) // Comprobación mejorada para tipos de valor
                 {
@@ -72,6 +89,7 @@ namespace Architect.Utilities
                         if (typeof(TResponse) == typeof(string))
                         {
                             stringResponse = await response.Content.ReadAsStringAsync();
+                            ResponseContent = stringResponse;
                             return (TResponse)(object)stringResponse;
                         }
                         else if (typeof(TResponse) == typeof(byte[]))
@@ -86,6 +104,7 @@ namespace Architect.Utilities
                         else
                         {
                             stringResponse = await response.Content.ReadAsStringAsync();
+                            ResponseContent = stringResponse;
                             var responseObject = JsonConvert.DeserializeObject<TResponse>(stringResponse);
                             return responseObject;
                         }
@@ -93,23 +112,62 @@ namespace Architect.Utilities
                     else
                     {
                         stringResponse = await response.Content.ReadAsStringAsync();
+                        ResponseContent = stringResponse;
+                        message = $"Se ha recibido una respuesta fallida al hacer el llamado REST del tipo {method.Method} a la URL {_baseUrl}/{endpoint}. Detalle de la respuesta:\n {stringResponse}";
+                        if (ThrowException)
+                        {
+                            throw new Utilities.Exceptions.CustomException(message, stringResponse);
+                        }
+                        else
+                        {
+                            Log.ErrorLog("RestClient", message);
+                        }
 
-                        throw new Utilities.Exceptions.CustomException($"Se ha recibido una respuesta fallida al hacer el llamado REST del tipo {method.Method} a la URL {_baseUrl}/{endpoint}. Detalle de la respuesta:\n {stringResponse}");
+
                     }
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Utilities.Exceptions.CustomException($"Ha ocurrido un error de comunicación al intentar realizar un llamado REST del tipo {method.Method} a la URL {_baseUrl}/{endpoint}", ex);
+                message = $"Ha ocurrido un error de comunicación al intentar realizar un llamado REST del tipo {method.Method} a la URL {_baseUrl}/{endpoint}";
+                if (ThrowException)
+                {
+                    throw new Utilities.Exceptions.CustomException(message, ex, stringResponse);
+                }
+                else
+                {
+                    Log.ErrorLog("RestClient", message);
+                }
             }
             catch (JsonException ex)
             {
-                throw new Utilities.Exceptions.CustomException($"Ha ocurrido un error al intentar deserializar la respuesta JSON del llamado REST del tipo {method.Method} a la URL {_baseUrl}/{endpoint}", ex);
+                message = $"Ha ocurrido un error al intentar deserializar la respuesta JSON del llamado REST del tipo {method.Method} a la URL {_baseUrl}/{endpoint}";
+                if (ThrowException)
+                {
+                    throw new Utilities.Exceptions.CustomException(message, ex, stringResponse);
+                }
+                else
+                {
+                    Log.ErrorLog("RestClient", message);
+                }
+            }
+            catch (Utilities.Exceptions.CustomException ex)
+            {
+                throw ex;
             }
             catch (Exception ex)
             {
-                throw new Utilities.Exceptions.CustomException($"Ha ocurrido un error inesperado al intentar realizar un llamado REST del tipo {method.Method} a la URL {_baseUrl}/{endpoint}", ex);
+                message = $"Ha ocurrido un error inesperado al intentar realizar un llamado REST del tipo {method.Method} a la URL {_baseUrl}/{endpoint}";
+                if (ThrowException)
+                {
+                    throw new Utilities.Exceptions.CustomException(message, ex, stringResponse);
+                }
+                else
+                {
+                    Log.ErrorLog("RestClient", message);
+                }
             }
+            return default(TResponse);
         }
 
         public async Task<TResponse> GetAsync<TResponse>(string endpoint)
