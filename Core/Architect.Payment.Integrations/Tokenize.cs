@@ -28,6 +28,7 @@ namespace Architect.Payment.Integrations
                 foreach (DatosTarjeta tarjeta in datosTajetas)
                 {
                     Auth auth = Providers.Placetopay.Webcheckout.BuildAuth("Recurring", "CRC");
+                    tarjeta.key = tarjeta.number;
                     var body = new Providers.Placetopay.Contracts.Requests.Tokenize()
                     {
                         auth = auth,
@@ -52,8 +53,9 @@ namespace Architect.Payment.Integrations
                     if (tokenResult.status.status == Providers.Placetopay.Webcheckout.ST_OK)
                     {
                         tarjeta.status = true;
-                        tarjeta.token = tokenResult.instrument.token.token;
+                        tarjeta.token = tokenResult.instrument.token.token;                        
                         tarjeta.card = new string('*', tarjeta.number.Length - tokenResult.instrument.token.lastDigits.Length) + tokenResult.instrument.token.lastDigits;
+                        
                     }
                     else
                     {

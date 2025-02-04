@@ -304,12 +304,15 @@ namespace Architect.API.Tron.Business.Backoffice.v2
 
                 foreach (DatosTarjeta tarjeta in result)
                 {
+                    var data = pendientes.Where(r => r.NUM_TARJETA == tarjeta.key).FirstOrDefault();
                     if (tarjeta.token != string.Empty)
                     {
-                        DataAccess.A1001331.Update(cod_cia, tarjeta.tip_docum, tarjeta.cod_docum, tarjeta.card, null);
+
+                        DataAccess.A1000802.Update(cod_cia, data.NUM_POLIZA, data.NUM_SPTO, tarjeta.tip_docum, tarjeta.cod_docum, tarjeta.card, null);
                         DataAccess.Pagos.Num_Tarjeta_mcr.Update(cod_cia, tarjeta.tip_docum, tarjeta.cod_docum, tarjeta.card, null);
+                        data.NUM_TARJETA = tarjeta.card;
                     }
-                    DataAccess.Pagos.Tarjetas.CreateBoveda(tarjeta.tip_docum, tarjeta.cod_docum, tarjeta.card, tarjeta.token, tarjeta.clientId, tarjeta.status, tarjeta.reason);
+                    DataAccess.Pagos.Tarjetas.CreateBoveda(data.NUM_POLIZA, data.NUM_SPTO, tarjeta.tip_docum, tarjeta.cod_docum, data.NUM_TARJETA, tarjeta.token, tarjeta.clientId, tarjeta.status, tarjeta.reason);
                     recordCount++;
                 }
             }

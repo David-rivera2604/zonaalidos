@@ -1,5 +1,6 @@
 ﻿using Architect.Payment.Integrations.Providers.Placetopay.Contracts;
 using Architect.Utilities.Extensions;
+using Architect.Utilities;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
@@ -383,28 +384,31 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
         /// </remarks>
         public async static Task<Integrations.Providers.Placetopay.Contracts.Responses.Tokenize> Tokenize(Integrations.Providers.Placetopay.Contracts.Requests.Tokenize tokenizeRequest)
         {
-            Integrations.Providers.Placetopay.Contracts.Responses.Tokenize tokenizeResponse = null;
-
-            var data = new StringContent(JsonConvert.SerializeObject(tokenizeRequest), Encoding.UTF8, "application/json");
-            HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
-            var response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("Payment.Placetopay.PaymentUrl.Recurring") + "gateway/tokenize", data);
-            string resultResponse = await response.Content.ReadAsStringAsync();
-            if (response.IsSuccessStatusCode)
+            RestClient client = new RestClient(Utilities.Helpers.Settings.StringValue("Payment.Placetopay.PaymentUrl.Recurring"),
+                               $"Tokenización", false);
+            Contracts.Responses.Tokenize tokenizeResponse = await client.PostAsync<Contracts.Requests.Tokenize, Contracts.Responses.Tokenize>(
+                                                                "gateway/tokenize",
+                                                                tokenizeRequest);
+            if (tokenizeResponse == null)
             {
-                tokenizeResponse = JsonConvert.DeserializeObject<Integrations.Providers.Placetopay.Contracts.Responses.Tokenize>(resultResponse);
-            }
-            else
-            {
-                tokenizeResponse = new Contracts.Responses.Tokenize()
+                try
                 {
-                    status = new Contracts.Status()
+                    tokenizeResponse = JsonConvert.DeserializeObject<Contracts.Responses.Tokenize>(client.ResponseContent);
+                }
+                catch (Exception ex)
+                {
+                    tokenizeResponse = new Contracts.Responses.Tokenize()
                     {
-                        date = DateTime.Now.ToString("yyyy-MM-ddTHH\\:mm\\:sszzz"),
-                        status = ST_FAILED,
-                        reason = response.ReasonPhrase
-                    }
-                };
+                        status = new Contracts.Status()
+                        {
+                            date = DateTime.Now.ToString("yyyy-MM-ddTHH\\:mm\\:sszzz"),
+                            status = ST_FAILED,
+                            reason = client.ResponseContent
+                        }
+                    };
+                }
             }
+
             return tokenizeResponse;
         }
 

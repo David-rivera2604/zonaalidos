@@ -28,5 +28,8 @@ namespace Architect.API.Tron.Contracts.Pagos
         public string NOM_TARJETA { get; set; }
         public string NUM_TARJETA { get; set; }
         public DateTime FEC_VCTO_TARJETA { get; set; }
+
+        public string NUM_POLIZA { get; set; }
+        public int NUM_SPTO { get; set; }
     }
 }

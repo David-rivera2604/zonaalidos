@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="A1000802.cs" />
     <Compile Include="A1001331.cs" />
     <Compile Include="A2990700.cs" />
     <Compile Include="AvisoCobro.cs" />

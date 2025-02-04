@@ -659,4 +659,6 @@
                    Aliados. Se cambia la consulta 333.1 para permitir el reenvío de solitudes a evertec cuando las solicitudes este por aceptar.
 1.6.97  23/1/2025  Aliados. Se guarda el usuario que hace la emision en el txt_motivo_spto
                    Aliados. Inclusion de campopara indicar el intermediario que hace la Emision Web
-1.6.98  24/1/2025  MapfreMAS. Se requiere verificar el documento de cotización que llega cuando se envia la solicitud de auto, para Purdy no se visualiza el nombre del cliente y el valor del auto sustituto
+1.6.98  24/1/2025  MapfreMAS. Se requiere verificar el documento de cotización que llega cuando se envia la solicitud de auto, para Purdy no se visualiza el nombre del cliente y el valor del auto sustituto.
+1.6.99  03/02/2025 Pasarela Evertec. Tarjetas a tokenizar usando la tabla A1000802 como referencia.
+                   Pasarela Evertec. Ajustes a la extracción de recibos recurrentes para que el filtro incluya los campos póliza y suplemento.
