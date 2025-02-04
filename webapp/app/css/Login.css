@@ -1,0 +1,106 @@
+﻿body {
+    font-family: Open Sans, Arial, sans-serif;
+    background-image: url('../../images/background.jpg'); /* Ruta de tu imagen de fondo */
+    background-size: cover;
+    display: flex;
+    justify-content: center; /* Centramos horizontalmente */
+    align-items: center; /* Centramos verticalmente */
+    height: 100%; /* Hacemos que el cuerpo ocupe toda la altura de la ventana */
+    width: 100%;
+}
+
+.logohorizontal {
+    width: 50%;
+    background-size: cover;
+    opacity: 0.9;
+}
+
+.container {
+    max-width: 400px;
+    padding: 20px; /* Agregamos un espacio interno para el contenedor */
+    text-align: center;
+    border: 2px rgba(255, 255, 255, 0.8); /* Añadimos un borde */
+    border-radius: 5px; /* Le damos bordes redondeados */
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
+    font-family: Open Sans, Arial, sans-serif;
+}z
+
+form, button {
+    margin-top: 20px;
+}
+
+h1, h2, h3, h4, h5 {
+    color: #d81e05;
+    font-family: Open Sans, Arial, sans-serif;
+}
+
+input[type="text"], input[type="password"], input[type="email"], button {
+    width: 90%;
+    padding: 10px;
+    margin-top: 30px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: Open Sans, Arial, sans-serif;
+    text-align: center;
+    font-size: medium;
+}
+
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    input[type="email"]:focus {
+        border-color: #d81e05; /* Cambia el color del borde cuando el input está activo */
+        box-shadow: 0 0 5px rgba(49, 48, 48, 0.416); /* Añade un sombreado cuando está activo */
+        outline: none; /* Elimina el contorno predeterminado cuando está activo */
+    }
+
+button {
+    background-color: #d81e05;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+    button:hover {
+        background-color: #d81e05;
+        border-color: #d81e05; /* Cambia el color del borde cuando el input está activo */
+        box-shadow: 0 0 25px rgba(49, 48, 48, 0.416); /* Añade un sombreado cuando está activo */
+    }
+
+/* Modal */
+.modal {
+    display: none;
+    justify-content: center; /* Centramos horizontalmente */
+    align-items: center; /* Centramos verticalmente */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%; /* Ancho del 100% del viewport */
+    height: 100%; /* Altura del 100% del viewport */
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 2% auto;
+    padding: 15px;
+    border: 2px rgba(255, 255, 255, 0.8); /* Añadimos un borde */
+    border-radius: 10px;
+    width: 50%;
+    font-family: Open Sans, Arial, sans-serif;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+    .close:hover,
+    .close:focus {
+        color: #d81e05;
+        text-decoration: none;
+        cursor: pointer;
+    }

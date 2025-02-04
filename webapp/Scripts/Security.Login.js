@@ -1,6 +1,9 @@
 ﻿var app = app || {};
 
 
+var btn = document.getElementById("forgotlink");
+var modal = document.getElementById("myModal");
+var span = document.getElementsByClassName("close")[0];
 
 app.login = (function () {
 
@@ -22,18 +25,21 @@ app.login = (function () {
             event.preventDefault();
             $('#SetPassword').addClass('d-none');
             $('#login').removeClass('d-none');
+            modal.style.display = "none";
         });
 
         $('#forgoCodeCancel').click(function () {
             event.preventDefault();
             $('#forgoCode').addClass('d-none');
             $('#login').removeClass('d-none');
+            modal.style.display = "none";
         });
 
         $('#ForgotCancel').click(function () {
             event.preventDefault();
             $('#forgo').addClass('d-none');
             $('#login').removeClass('d-none');
+            modal.style.display = "none";
         });
 
         $('#forgotlink').click(function () {
@@ -360,4 +366,19 @@ app.login = (function () {
 })();
 $(document).ready(function () {
     app.login.Init();
+
+    btn.addEventListener("click", function () {
+        modal.style.display = "block";
+    });
+
+    span.addEventListener("click", function () {
+        modal.style.display = "none";
+    });
+
+    window.addEventListener("click", function (event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+
 });

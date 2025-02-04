@@ -393,11 +393,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\css\carnet.css" />
+    <Content Include="app\css\Login.css" />
     <Content Include="app\img\ajax-loader.gif" />
     <Content Include="app\js\core.ui.components.js" />
     <Content Include="app\js\core.ui.js" />
     <Content Include="app\js\core.js" />
     <Content Include="app\css\custom.css" />
+    <Content Include="app\js\Login.js" />
     <Content Include="assets\apexcharts\apexcharts.amd.js" />
     <Content Include="assets\apexcharts\apexcharts.common.js" />
     <Content Include="assets\apexcharts\apexcharts.css" />
@@ -1144,6 +1146,7 @@
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="images\background.jpg" />
     <Content Include="images\CarnetAtrasVacio.png" />
     <Content Include="images\CarnetFrenteVacio.png" />
     <Content Include="images\email\check_icon-min.png" />
@@ -1205,6 +1208,7 @@
     <Content Include="images\help\poliza_revision_5.png" />
     <Content Include="images\help\poliza_revision_6.png" />
     <Content Include="images\landing.jpg" />
+    <Content Include="images\Mapfre-logo.png" />
     <Content Include="images\Signature\igbejaranor.purdymo.com.jpg" />
     <Content Include="images\Signature\jfesquivels.purdymo.com.jpg" />
     <Content Include="images\Signature\jose.santisteban.agentemapfre.co.cr.jpg" />

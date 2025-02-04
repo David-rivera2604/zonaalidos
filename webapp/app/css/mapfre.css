@@ -179,7 +179,7 @@ body.Mapfre {
 
 
 .Mapfre .loginBackground {
-    background-color: white;
+    background-image: url('../../images/background.jpg');
     background-size: cover;
     width: 100%;
     display: flex;
@@ -611,6 +611,17 @@ body.mini-navbar .nav-header {
         color: var(--mapfrered1);
         font-weight: 700;
     }
+
+.ibox-content {
+    color: inherit;
+    border-color: var(--mapfregray2);
+    border-image: none;
+    border-style: solid solid none;
+    border-width: 10px;
+    margin-bottom: 0px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.8);
+}
 
 .ibox-content-register {
     border: solid 1px var(--mapfregray2);
