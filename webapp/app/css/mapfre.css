@@ -614,12 +614,6 @@ body.mini-navbar .nav-header {
 
 .ibox-content {
     color: inherit;
-    border-color: var(--mapfregray2);
-    border-image: none;
-    border-style: solid solid none;
-    border-width: 10px;
-    margin-bottom: 0px;
-    border-radius: 5px;
     background-color: rgba(255, 255, 255, 0.8);
 }
 
