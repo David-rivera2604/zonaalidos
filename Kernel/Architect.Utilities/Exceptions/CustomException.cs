@@ -1,4 +1,6 @@
 ﻿using System;
+using System.CodeDom;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -27,8 +29,22 @@ namespace Architect.Utilities.Exceptions
             Log.ErrorLog("CustomException", message);
         }
 
-        public CustomException(string message, Exception inner) : base(message, inner)
+        public CustomException(string message, object data) : base(message)
         {
+
+            Data.Add("Detail", data);
+            Log.ErrorLog("CustomException", message);
+        }
+
+
+        public CustomException(string message, Exception inner) : base(message, inner )
+        {
+            Log.ErrorLog("CustomException", message, inner);
+        }
+
+        public CustomException(string message, Exception inner, object data) : base(message, inner)
+        {
+            Data.Add("Detail", data);
             Log.ErrorLog("CustomException", message, inner);
         }
 
@@ -69,6 +85,18 @@ namespace Architect.Utilities.Exceptions
             // Implements ISerializable.GetObjectData
             base.GetObjectData(info, context);
             throw new ArgumentNullException("info");
+        }
+
+        public string GetStringDataValue(string key)
+        {
+            string value = string.Empty;
+
+            if (Data.Contains(key))
+            {
+                value = (string)Data[key];
+            }
+
+            return value;
         }
     }
 }
