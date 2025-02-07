@@ -660,3 +660,7 @@
 1.6.97  23/1/2025  Aliados. Se guarda el usuario que hace la emision en el txt_motivo_spto
                    Aliados. Inclusion de campopara indicar el intermediario que hace la Emision Web
 1.6.98  24/1/2025  MapfreMAS. Se requiere verificar el documento de cotización que llega cuando se envia la solicitud de auto, para Purdy no se visualiza el nombre del cliente y el valor del auto sustituto
+1.6.99  03/02/2025 LIberado en la rama QA_2
+                   LIberado en la rama QA_2
+1.6.100 06/02/2025 Trazabilidad. Ajustes al reporte de detalle de caso (consulta 4001 y 4002).
+                   Trazabilidad. Se ajusta el calciulo de la cantidad de días para no considerar lo fines de semana en el reporte de detalle de caso (consulta 4001 y 4002).
