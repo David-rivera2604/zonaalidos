@@ -51,7 +51,7 @@ namespace Aliados.Monge.Application.Poliza.Ramos
                     viajeroAliadosEmision = Architect.API.Tron.Business.Emision.ViajeroConvertFrom.Quote(viajeroAliadosEmision, polizaEmitida);
                     ConvertEmisionTercerto_ComunTercero(risk, viajeroAliadosEmision);
 
-                    Architect.API.Tron.Business.Emision.Viajero.Asistencia_Panama(viajeroAliadosEmision, viajeroAliadosEmision, tokenInfo);
+                    Architect.API.Tron.Business.Emision.Viajero.Asistencia_Panama(viajeroAliadosEmision, viajeroAliadosEmision, tokenInfo.Roles);
 
                     result = new Domain.Poliza.Emision.Respuesta()
                     {

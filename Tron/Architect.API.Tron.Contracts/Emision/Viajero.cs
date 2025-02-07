@@ -34,9 +34,10 @@ namespace Architect.API.Tron.Contracts.Emision
         /// </summary>
         [DataMember(), JsonProperty()]  public string user_txt_motivo_spto { get; set; }
 
+        /// <summary>
+        ///  Roles asignados al usuario que hizo la emisión de la póliza.
+        /// </summary>
+        [DataMember(), JsonProperty()] public string roles { get; set; }
+
     }
-  
-
 }
-
-
