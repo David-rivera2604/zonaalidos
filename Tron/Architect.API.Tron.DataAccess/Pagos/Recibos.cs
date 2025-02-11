@@ -16,9 +16,9 @@ namespace Architect.API.Tron.DataAccess.Pagos
         public static List<Contracts.Pagos.Recibo> PendientesRecurrentesAlCobro(int cod_cia, DateTime fec_efect_recibo, int fetchRows, string filter)
         {
             List<Contracts.Pagos.Recibo> result = new List<Contracts.Pagos.Recibo>();
-            if (!string.IsNullOrEmpty( filter))
+            if (!string.IsNullOrEmpty(filter))
             {
-                filter = " AND A.NUM_POLIZA IN ('" + filter.Replace(",","','")+ "') ";
+                filter = " AND A.NUM_POLIZA IN ('" + filter.Replace(",", "','") + "') ";
             }
 
             Database.Select(@"SELECT C.NUM_RECIBO, C.FEC_EFEC_RECIBO, SUM(C.IMP_RECIBO) IMP_RECIBO, A400.COD_MON_ISO NOM_MON, A.NUM_POLIZA, A.COD_AGT, a1800.nom_ramo, a200.NOM_SECTOR, A.TIP_DOCUM, A.COD_DOCUM, A99.NOM_TERCERO, A99.NOM2_TERCERO, A99.APE1_TERCERO, A99.APE2_TERCERO,
@@ -140,6 +140,33 @@ namespace Architect.API.Tron.DataAccess.Pagos
                             TOKEN = reader.StringValue("TOKEN")
                         };
                     }));
+
+            return result;
+        }
+
+
+        // <summary>
+        /// Extrae la información de los recibos de un ramo pagados a la una fecha.
+        /// </summary>
+        public static List<Contracts.Pagos.Recibo> RecibosCobradoPorRamo(int cod_ramo, DateTime fec_cobro)
+        {
+            List<Contracts.Pagos.Recibo> result = new List<Contracts.Pagos.Recibo>();
+
+            Database.Select(@"SELECT a1600.FEC_ASTO, a1600.NUM_RECIBO, a1600.NUM_POLIZA, a1600.NUM_SPTO
+  FROM A5021600 a1600
+  JOIN A2990700 A700 ON A700.NUM_RECIBO = a1600.NUM_RECIBO AND A700.TIP_SITUACION = 'CT' 
+  WHERE a1600.COD_CIA = 1 AND a1600.COD_RAMO = :cod_ramo AND a1600.TIP_ACTU = 'CT' AND TRUNC(a1600.FEC_ASTO) = TRUNC(:fec_cobro)")
+                .AddParameter("cod_ramo", DbType.Int32, 22, cod_ramo)
+                .AddParameter("fec_cobro", DbType.Date, 0, fec_cobro)
+                .Query("Tron", new Action<IDataReader>((reader) =>
+                {
+                    result.Add(new Architect.API.Tron.Contracts.Pagos.Recibo()
+                    {
+                        FEC_EFEC_RECIBO = reader.DateTimeValue("FEC_ASTO"),
+                        NUM_RECIBO = reader.IntegerValue("NUM_RECIBO"),
+                        NUM_POLIZA = reader.StringValue("NUM_POLIZA")
+                    });
+                }));
 
             return result;
         }

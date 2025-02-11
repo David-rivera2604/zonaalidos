@@ -1,11 +1,11 @@
 ﻿using Architect.Utilities.Extensions;
+using Architect.API.Core.Business.General;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
-using System.IO;
-using System.Xml;
-using System.Xml.Serialization;
+using Newtonsoft.Json;
+using Org.BouncyCastle.Crypto;
+
 
 namespace Architect.API.Tron.Business.Emision
 {
@@ -15,6 +15,9 @@ namespace Architect.API.Tron.Business.Emision
     public static class Viajero
     {
 
+        /// <summary>
+        /// Devuelve información de un presupuesto para la emisión de una póliza de viajero.
+        /// </summary>
         public static Contracts.Emision.Viajero Setup(string presupuesto, string mode, Core.Contracts.Security.Token tokenInfo)
         {
 
@@ -47,6 +50,7 @@ namespace Architect.API.Tron.Business.Emision
 
             return result;
         }
+
         private static List<Contracts.Comun.tercero> Default_Terceros(Contracts.Emision.Viajero quoteInfo)
         {
             List<Contracts.Comun.tercero> result = new List<Contracts.Comun.tercero>();
@@ -94,6 +98,9 @@ namespace Architect.API.Tron.Business.Emision
             return result;
         }
 
+        /// <summary>
+        /// Realiza la validación de datos y emisión de una póliza de viajero.
+        /// </summary>
         public static Contracts.Emision.Viajero Issue(Contracts.Emision.Viajero quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
 
@@ -115,12 +122,11 @@ namespace Architect.API.Tron.Business.Emision
                 //Se almacena la informacion de la póliza.
                 resultQuoteInfo.roles = tokenInfo.Roles;
                 Core.Business.General.CustomData.Create(tokenInfo, 3002, Convert.ToInt64(resultQuoteInfo.num_poliza),
-                                                        Newtonsoft.Json.JsonConvert.SerializeObject(quoteInfo), "ISSUE-P-", resultQuoteInfo.num_poliza);
+                                                        Newtonsoft.Json.JsonConvert.SerializeObject(quoteInfo), "ISSUE-P-" + resultQuoteInfo.num_poliza, resultQuoteInfo.num_poliza);
                 Core.Business.General.CustomData.Create(tokenInfo, 3003, Convert.ToInt64(resultQuoteInfo.num_poliza),
-                                                        Newtonsoft.Json.JsonConvert.SerializeObject(resultQuoteInfo), "ISSUE-R-", resultQuoteInfo.num_poliza);
+                                                        Newtonsoft.Json.JsonConvert.SerializeObject(resultQuoteInfo), "ISSUE-R-" + resultQuoteInfo.num_poliza, resultQuoteInfo.num_poliza);
 
-
-                resultQuoteInfo = Asistencia_Panama(quoteInfo, resultQuoteInfo, tokenInfo.Roles);
+                //resultQuoteInfo = Asistencia_Panama(quoteInfo, resultQuoteInfo, tokenInfo.Roles);
             }
             return resultQuoteInfo;
         }
@@ -227,5 +233,51 @@ namespace Architect.API.Tron.Business.Emision
             return resultQuoteInfo;
         }
 
+
+        /// <summary>
+        /// Permite el monitoreo díario de recibos pagados para polizas de viajeros.
+        /// </summary>
+        public static void MonitorRecibosCobrado(DateTime fec_cobro)
+        {
+            Int64 num_poliza = 0;
+            if (fec_cobro == null)
+            {
+                fec_cobro = DateTime.Now;
+            }
+            List<Contracts.Pagos.Recibo> recibos = DataAccess.Pagos.Recibos.RecibosCobradoPorRamo(441, fec_cobro);
+
+            if (recibos?.Count > 0)
+            {
+                foreach (Contracts.Pagos.Recibo item in recibos)
+                {
+                    Contracts.Emision.Viajero quoteInfo = null;
+                    Contracts.Emision.Viajero resultQuoteInfo = null;
+                    num_poliza = Convert.ToInt64(item.NUM_POLIZA);
+                    Core.Contracts.General.CustomData customData = CustomData.RetrieveByEntity(3002, num_poliza);
+                    if (!string.IsNullOrEmpty(customData?.Data))
+                    {
+                        quoteInfo = JsonConvert.DeserializeObject<Contracts.Emision.Viajero>(customData.Data);
+
+                        customData = CustomData.RetrieveByEntity(3003, num_poliza);
+                        if (!string.IsNullOrEmpty(customData?.Data))
+                        {
+                            resultQuoteInfo = JsonConvert.DeserializeObject<Contracts.Emision.Viajero>(customData.Data);
+
+                        }
+
+                    }
+
+                    if (quoteInfo != null && resultQuoteInfo != null)
+                    {
+                        resultQuoteInfo = Asistencia_Panama(quoteInfo, resultQuoteInfo, resultQuoteInfo.roles);
+
+                        CustomData.Delete(3002, Convert.ToInt64(item.NUM_POLIZA));
+                        CustomData.Delete(3003, Convert.ToInt64(item.NUM_POLIZA));
+
+                    }
+                }
+            }
+
+        }
     }
 }

@@ -105,6 +105,15 @@ namespace aliados
                         Architect.Utilities.Helpers.Settings.StringValue("Payment.Silice.RecurringReceipts.ExecutionTime"));
                 }
 
+
+                // Permite el monitoreo díario de recibos pagados para polizas de viajeros.
+                if (Architect.Utilities.Helpers.Settings.StringValue("Viajero.MonitorRecibosCobrado.ExecutionTime").IsNotEmpty())
+                {
+                    RecurringJob.AddOrUpdate("Viajero.MonitorRecibosCobrado",
+                        () => Architect.API.Tron.Business.Emision.Viajero.MonitorRecibosCobrado(DateTime.Today),
+                        Architect.Utilities.Helpers.Settings.StringValue("Viajero.MonitorRecibosCobrado.ExecutionTime"));
+                }
+
                 // Let's also create a sample background job
                 //BackgroundJob.Enqueue(() => Debug.WriteLine("Hello world from Hangfire!"));
                 // BackgroundJob.Enqueue(() => test());

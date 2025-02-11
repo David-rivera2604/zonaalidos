@@ -507,6 +507,9 @@ namespace Architect.API.Tron.DataAccess
             return result;
         }
 
+
+
+
         public static string p_reemplaza_benef(int cod_cia, string numPolizaGrupo, string numPoliza, int numRiesgo, string tipDocum, string codDocum, IDbConnection connection = null)
         {
             string result = string.Empty;

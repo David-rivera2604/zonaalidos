@@ -386,6 +386,15 @@ namespace Architect.API.Core.DataAccess.General
                                 .Execute(connection, "Research");
         }
 
+        public static int Delete(int entityType, long entityId, IDbConnection connection = null)
+        {
+            return Database.Delete("DELETE FROM CustomData " +
+                                    "WHERE EntityType=:EntityType AND EntityId=:EntityId")
+                                .AddParameter("EntityType", DbType.Decimal, 5, entityType)
+                                .AddParameter("EntityId", DbType.Decimal, 18, entityId)
+                                .Execute(connection, "Research");
+        }
+
         public static Architect.API.Core.Contracts.General.CustomData Retrieve(int entityType, Int64 entityId, int companyId, IDbConnection connection = null)
         {
             Architect.API.Core.Contracts.General.CustomData result = null;
@@ -395,6 +404,21 @@ namespace Architect.API.Core.DataAccess.General
                         .AddParameter("EntityType", DbType.Decimal, 5, entityType)
                         .AddParameter("EntityId", DbType.Decimal, 18, entityId)
                         .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                        .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
+                        {
+                            result = DataReaderToCustomData(reader);
+                        }));
+            return result;
+        }
+
+        public static Architect.API.Core.Contracts.General.CustomData Retrieve(int entityType, Int64 entityId, IDbConnection connection = null)
+        {
+            Architect.API.Core.Contracts.General.CustomData result = null;
+            Database.Select("SELECT Id, CustomData.CompanyId, EntityType, EntitySubType, EntityId, Data, Key1, Key2, CustomData.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, CustomData.UpdateDate " +
+                              "FROM CustomData LEFT JOIN UserMember um ON um.UserId = CustomData.UpdateUserCode " +
+                             "WHERE EntityType =:EntityType AND EntityId =:EntityId ORDER BY Id")
+                        .AddParameter("EntityType", DbType.Decimal, 5, entityType)
+                        .AddParameter("EntityId", DbType.Decimal, 18, entityId)
                         .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
                         {
                             result = DataReaderToCustomData(reader);

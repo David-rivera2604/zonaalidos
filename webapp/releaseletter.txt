@@ -664,3 +664,4 @@
                    Pasarela Evertec. Ajustes a la extracción de recibos recurrentes para que el filtro incluya los campos póliza y suplemento.
 1.6.100 06/02/2025 Trazabilidad. Ajustes al reporte de detalle de caso (consulta 4001 y 4002).
                    Trazabilidad. Se ajusta el calciulo de la cantidad de días para no considerar lo fines de semana en el reporte de detalle de caso (consulta 4001 y 4002).
+1.6.101 10/02/2025 Viajero. Envio de pólizas de viajero a MAWDY solo cuando estan cobradas.

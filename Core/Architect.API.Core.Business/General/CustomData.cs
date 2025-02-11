@@ -33,5 +33,18 @@ namespace Architect.API.Core.Business.General
             return Core.DataAccess.General.CustomData.Retrieve(entityType, entityId, companyId);
         }
 
+        /// <summary>
+        /// Recupera un registro en la tabla CustomData por medio de su identificador y tipo de entidad.
+        /// </summary>
+        public static Architect.API.Core.Contracts.General.CustomData RetrieveByEntity(int entityType, Int64 entityId)
+        {
+            return Core.DataAccess.General.CustomData.Retrieve(entityType, entityId);
+        }
+
+        public static bool Delete(int entityType, Int64 entityId)
+        {
+            return Core.DataAccess.General.CustomData.Delete(entityType, entityId) > 0;
+        }
+
     }
 }
