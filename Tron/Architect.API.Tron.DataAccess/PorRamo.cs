@@ -513,47 +513,26 @@ namespace Architect.API.Tron.DataAccess
         public static string p_reemplaza_benef(int cod_cia, string numPolizaGrupo, string numPoliza, int numRiesgo, string tipDocum, string codDocum, IDbConnection connection = null)
         {
             string result = string.Empty;
-            Database.Procedure("em_k_cambio_benef.p_reemplaza_benef")
+            Database.Procedure("em_k_cambio_benef_est_mcr.p_reemplaza_benef")
                     .AddParameter("p_cod_cia", DbType.Int32, 22, cod_cia)
-                    .AddParameter("P_NUM_POLIZA_GRUPO", DbType.String, 13, numPolizaGrupo)
-                    .AddParameter("P_NUM_POLIZA", DbType.String, 13, numPoliza)
-                    .AddParameter("P_NUM_RIESGO", DbType.Int32, 22, numRiesgo)
-                    .AddParameter("P_TIP_BENEF", Architect.DataFactory.Enumerations.DbType.String, 2, "21")
-                    .AddParameter("P_TIP_DOCUM", Architect.DataFactory.Enumerations.DbType.String, 3, tipDocum)
-                    .AddParameter("P_COD_DOCUM", Architect.DataFactory.Enumerations.DbType.String, 20, codDocum)
-                    .AddParameter("P_MCA_EJECUTA_BATCH", Architect.DataFactory.Enumerations.DbType.String, 1, "S")
-                    .AddParameter("P_MCA_PRIMER_EP", Architect.DataFactory.Enumerations.DbType.String, 1, "N")
-                    .AddParameter("P_MSJ_SALIDA", DbType.RefCursor, 0, null, ParameterDirection.Output)
-                    .AddParameter("P_ERRORES", DbType.RefCursor, 0, null, ParameterDirection.Output)
+                    .AddParameter("p_num_poliza_grupo", DbType.String, 13, numPolizaGrupo)
+                    .AddParameter("p_num_poliza", DbType.String, 13, numPoliza)
+                    .AddParameter("p_num_riesgo", DbType.Int32, 22, numRiesgo)
+                    .AddParameter("p_tip_benef", Architect.DataFactory.Enumerations.DbType.String, 2, "21")
+                    .AddParameter("p_tip_docum", Architect.DataFactory.Enumerations.DbType.String, 3, tipDocum)
+                    .AddParameter("p_cod_docum", Architect.DataFactory.Enumerations.DbType.String, 20, codDocum)
+                    .AddParameter("p_mca_ejecuta_batch", Architect.DataFactory.Enumerations.DbType.String, 1, "S")
+                    .AddParameter("p_mca_primer_ep", Architect.DataFactory.Enumerations.DbType.String, 1, "N")
+                    .AddParameter("p_msj_salida", DbType.RefCursor, 0, null, ParameterDirection.Output)
+                    .AddParameter("p_errores", DbType.RefCursor, 0, null, ParameterDirection.Output)
                     .Query(connection, "Tron", new Action<System.Data.IDataReader, string>((reader, key) =>
                     {
                         switch (key)
                         {
-                            case "P_MCA_PRIMER_EP":
-                                //result.Add(new Contracts.AvisosDeCobro.ReciboRespose()
-                                //{
-                                //    Imp_Recibo = reader.DoubleValue("imp_recibo"),
-                                //    Num_Recibo = reader.IntegerValue("num_recibo"),
-                                //    Fec_Efec_Recibo = reader.DateTimeValue("fec_efec_recibo"),
-                                //    Cod_Mon = reader.IntegerValue("cod_mon"),
-                                //    Estatus = reader.StringValue("estatus"),
-                                //    Num_Poliza = reader.StringValue("num_poliza"),
-                                //    Nom_Riesgo = reader.StringValue("nom_riesgo"),
-                                //    Tip_Docum_Aseg = reader.StringValue("tip_docum_aseg"),
-                                //    Cod_Docum_Aseg = reader.StringValue("cod_docum_aseg"),
-                                //    Nom_Asegurado = reader.StringValue("nom_asegurado"),
-                                //    Tip_Docum_Tom = reader.StringValue("tip_docum_tom"),
-                                //    Cod_Docum_Tom = reader.StringValue("cod_docum_tom"),
-                                //    Nom_Tomador = reader.StringValue("nom_tomador"),
-                                //    mca_cuota_gratis = reader.StringValue("txt_mca_cuota_gratis"),
-                                //    tip_docum_pag = reader.StringValue("tip_docum_pag"),
-                                //    cod_docum_pag = reader.StringValue("cod_docum_pag"),
-                                //    nom_pagador = reader.StringValue("nom_pagador"),
-
-                                //});
+                            case "p_msj_salida":
                                  result = reader.GetValue(0).ToString();
                                 break;
-                            case "P_ERRORES":
+                            case "p_errores":
                                  result = reader.GetValue(0).ToString();
                                 break;
                         }

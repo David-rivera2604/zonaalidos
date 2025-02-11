@@ -43,6 +43,19 @@ app.Ex_Policy = (function () {
                     app.ui.CloseSideBar();
                     app.ViewerQuery.Refresh(undefined, $('#1GridTbl'), 341, 1);
                 });
+        },
+        ChangePayer: function (num_poliza_grupo, num_poliza, num_riego) {
+            if (app.Prototype.IsValid()) {
+                let data = app.Prototype.Data();
+                app.ui.ButtonDoing('#ApplyChangeBtn');
+                app.core.Put(app.setting.apipath + `v1/Poliza/${num_poliza}/CambioPagador?riesgo=${num_riego}&grupo=${num_poliza_grupo}&tipDocum=${data.DocumentNumberType}&codDocum=${data.DocumentNumber}`, JSON.stringify(data))
+                    .done(function (res) {
+                    }).always(function () {
+                        app.ui.ButtonDone('#ApplyChangeBtn');
+                        app.ui.CloseSideBar();
+                        app.ViewerQuery.Refresh(undefined, $('#1GridTbl'), 300);
+                    });
+            }
         }
     };
 })();

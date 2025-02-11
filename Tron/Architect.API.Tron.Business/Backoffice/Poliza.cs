@@ -7,6 +7,7 @@ using System.Data;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Architect.API.Tron.Business.Backoffice
 {
@@ -252,6 +253,12 @@ namespace Architect.API.Tron.Business.Backoffice
                 result = result.Substring(result.IndexOf("TRN-"));
                 result = result.Substring(result.IndexOf(":") + 1).Trim().Capitalize();
             }
+            return result.IsEmpty() || result == "null" ? "Póliza renovada correctamente." : result;
+        }
+
+        public static string CambioPagador(string num_poliza, string riesgo, string grupo, string tipDocum, string codDocum)
+        {
+            string result = DataAccess.PorRamo.p_reemplaza_benef(1, grupo, num_poliza, Convert.ToInt32(riesgo), tipDocum.IdentificationType(), codDocum.DocumentNumber(tipDocum));
             return result.IsEmpty() || result == "null" ? "Póliza renovada correctamente." : result;
         }
 

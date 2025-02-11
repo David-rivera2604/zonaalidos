@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.ModelBinding;
 using System.Xml.Schema;
 
 namespace Architect.API.Tron.Controllers
@@ -174,6 +175,27 @@ namespace Architect.API.Tron.Controllers
             Contracts.AltasBajas.Response.Poliza result = await Business.Backoffice.AltasBajasPoliza.AltasBajas(poliza, false);
 
             return Ok(result);
+        }
+
+        /// <summary>
+        /// Cambio de beneficiario pagador.
+        /// </summary>
+        [HttpPut]
+        [Route("{num_poliza}/CambioPagador")]
+        public async Task<IHttpActionResult> CambioPagador([FromUri] string num_poliza, [QueryString] string riesgo, [QueryString] string grupo, [QueryString] string tipDocum, [QueryString] string codDocum)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            string result = string.Empty;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Backoffice.Poliza.CambioPagador(num_poliza, riesgo, grupo, tipDocum, codDocum);
+            }).ConfigureAwait(false);
+
+            return Ok(new
+            {
+                Success = result.IsEmpty(),
+                Reason = result.IsEmpty() ? "El cambio de beneficiario pagador fue realizado de forma exitosa" : result
+            });
         }
 
     }
