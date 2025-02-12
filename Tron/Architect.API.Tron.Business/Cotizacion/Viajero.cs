@@ -18,15 +18,7 @@ namespace Architect.API.Tron.Business.Cotizacion
         public static Contracts.Cotizacion.Viajero Setup(Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.Cotizacion.Viajero result = null;
-            Contracts.Traza.TrackSession session = Traza.TrackRequest.NewSession();
-            int trackingId = Traza.TrackRequest.Add(tokenInfo.CompanyId, tokenInfo.UserId,
-                                         new Contracts.Traza.TrackRequest()
-                                         {
-                                             DocumentId = session.DocumentId,
-                                             RequestType = "ViajeroSetup",
-                                             RequestBody = Newtonsoft.Json.JsonConvert.SerializeObject(result),
-                                             RequestTimeStamp = DateTime.Now
-                                         }).Id;
+            Contracts.Traza.TrackSession session = Traza.TrackRequest.NewSession(tokenInfo, "Viajero/Quote/Setup", result);
 
             try
             {
@@ -61,16 +53,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 session.ResponseText = ex.Message;
             }
 
-            Traza.TrackRequest.Update(tokenInfo.CompanyId, tokenInfo.UserId, trackingId,
-                          new Contracts.Traza.TrackRequest()
-                          {
-                              MessageId = session.MessageId,
-                              ResponseStatus = session.ResponseStatus,
-                              ResponseText = session.ResponseText,
-                              ResponseBody = Newtonsoft.Json.JsonConvert.SerializeObject(result),
-                              ResponseTimeStamp = DateTime.Now
-                          });
-
+            Traza.TrackRequest.CloseSession(session, result);
             return result;
         }
 
@@ -118,16 +101,7 @@ namespace Architect.API.Tron.Business.Cotizacion
         {
             Contracts.Cotizacion.Viajero resultInfo = quoteInfo;
 
-            Contracts.Traza.TrackSession session = Traza.TrackRequest.NewSession();
-            int trackingId = Traza.TrackRequest.Add(tokenInfo.CompanyId, tokenInfo.UserId,
-                                         new Contracts.Traza.TrackRequest()
-                                         {
-                                             DocumentId = session.DocumentId,
-                                             RequestType = "ViajeroQuote",
-                                             RequestBody = Newtonsoft.Json.JsonConvert.SerializeObject(resultInfo),
-                                             RequestTimeStamp = DateTime.Now
-                                         }).Id;
-
+            Contracts.Traza.TrackSession session = Traza.TrackRequest.NewSession(tokenInfo, "Viajero/Quote/Quote", quoteInfo);
             try
             {
                 //TODO: Es necesario convertir las validaciones existentes en el JS
@@ -164,15 +138,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 session.ResponseText = ex.Message;
             }
 
-            Traza.TrackRequest.Update(tokenInfo.CompanyId, tokenInfo.UserId, trackingId,
-                          new Contracts.Traza.TrackRequest()
-                          {
-                              MessageId = session.MessageId,
-                              ResponseStatus = session.ResponseStatus,
-                              ResponseText = session.ResponseText,
-                              ResponseBody = Newtonsoft.Json.JsonConvert.SerializeObject(resultInfo),
-                              ResponseTimeStamp = DateTime.Now
-                          });
+            Traza.TrackRequest.CloseSession(session, resultInfo);
 
             return resultInfo;
         }

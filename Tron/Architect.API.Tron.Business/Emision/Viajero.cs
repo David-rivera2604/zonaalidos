@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Crypto;
+using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
 
 
 namespace Architect.API.Tron.Business.Emision
@@ -22,31 +23,46 @@ namespace Architect.API.Tron.Business.Emision
         {
 
             Contracts.Emision.Viajero result = null;
-            string key = string.Format("viajero.{0}", presupuesto);
+            Contracts.Traza.TrackSession session = Traza.TrackRequest.NewSession(tokenInfo, "Viajero/Issue/Setup", result);
 
-            if (mode == "resume")
+            try
             {
-                //Contracts.PolicyProposal proposal = DataAccess.PolicyProposal.RetrieveByProposalId(presupuesto, tokenInfo.CompanyId);
 
-                Contracts.Presupuesto.DatoFijo P30Instance = DataAccess.LeerPresupuesto.Presupuesto(1, presupuesto, 0, 0, 0, null, true);
-                Contracts.Cotizacion.Viajero resultInfo2 = Cotizacion.ViajeroConvert.FromTron_Full(P30Instance);
+                string key = string.Format("viajero.{0}", presupuesto);
 
-                resultInfo2.coberturas.Remove(resultInfo2.coberturas.Find(r => r.codigo == 9998));
+                if (mode == "resume")
+                {
+                    //Contracts.PolicyProposal proposal = DataAccess.PolicyProposal.RetrieveByProposalId(presupuesto, tokenInfo.CompanyId);
 
-                Utilities.Cache.SetItem(key, Newtonsoft.Json.JsonConvert.SerializeObject(resultInfo2), -1);
+                    Contracts.Presupuesto.DatoFijo P30Instance = DataAccess.LeerPresupuesto.Presupuesto(1, presupuesto, 0, 0, 0, null, true);
+                    Contracts.Cotizacion.Viajero resultInfo2 = Cotizacion.ViajeroConvert.FromTron_Full(P30Instance);
+
+                    resultInfo2.coberturas.Remove(resultInfo2.coberturas.Find(r => r.codigo == 9998));
+
+                    Utilities.Cache.SetItem(key, Newtonsoft.Json.JsonConvert.SerializeObject(resultInfo2), -1);
+                }
+
+                if (Architect.Utilities.Cache.Exist(key))
+                {
+                    result = Newtonsoft.Json.JsonConvert.DeserializeObject<Contracts.Emision.Viajero>(Architect.Utilities.Cache.GetItem(key).ToString());
+
+                    result.terceros = Default_Terceros(result);
+
+                    result.terceros = Reglas.research.Apply_Terceros("Viajero", result.terceros, string.Empty, tokenInfo);
+
+                    result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("Viajero", null, 0, tokenInfo);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Architect.Utilities.Log.ErrorLog(ex, session.MessageId);
+
+                session.ResponseStatus = 400;
+                session.ResponseText = ex.Message;
             }
 
-            if (Architect.Utilities.Cache.Exist(key))
-            {
-                result = Newtonsoft.Json.JsonConvert.DeserializeObject<Contracts.Emision.Viajero>(Architect.Utilities.Cache.GetItem(key).ToString());
-
-                result.terceros = Default_Terceros(result);
-
-                result.terceros = Reglas.research.Apply_Terceros("Viajero", result.terceros, string.Empty, tokenInfo);
-
-                result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("Viajero", null, 0, tokenInfo);
-
-            }
+            Traza.TrackRequest.CloseSession(session, result);
 
             return result;
         }
@@ -104,30 +120,48 @@ namespace Architect.API.Tron.Business.Emision
         public static Contracts.Emision.Viajero Issue(Contracts.Emision.Viajero quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
 
-            Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = ViajeroConvertTo.Tron(quoteInfo);
+            Contracts.Emision.Viajero resultQuoteInfo = null;
 
-            result.user_txt_motivo_spto = quoteInfo.user_txt_motivo_spto;
+            Contracts.Traza.TrackSession session = Traza.TrackRequest.NewSession(tokenInfo, "Viajero/Issue/Issue", quoteInfo);
 
-            Architect.API.Tron.Contracts.Poliza.DatoFijo result2 = Backoffice.Emision.Generico.Emitir(result, tokenInfo);
-
-            Contracts.Emision.Viajero resultQuoteInfo = ViajeroConvertFrom.Quote(quoteInfo, result2);
-
-            if (resultQuoteInfo.num_poliza.IsNotEmpty())
+            try
             {
-                Core.Business.General.ChangeSet.Create(3000, Convert.ToInt32(resultQuoteInfo.num_poliza.Substring(4)), tokenInfo.CompanyId, "Emisión Seguro de Viaje", "Póliza #" + resultQuoteInfo.num_poliza, tokenInfo.UserId, resultQuoteInfo);
+                Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = ViajeroConvertTo.Tron(quoteInfo);
 
-                //Se cambian los adjuntos creados al número de presupuesto al número de póliza generado
-                Core.Business.General.Attachment.ChangeEntityId(tokenInfo.CompanyId, 3000, Convert.ToInt64(resultQuoteInfo.presupuesto), 3000, Convert.ToInt64(resultQuoteInfo.num_poliza), tokenInfo.UserId);
+                result.user_txt_motivo_spto = quoteInfo.user_txt_motivo_spto;
 
-                //Se almacena la informacion de la póliza.
-                resultQuoteInfo.roles = tokenInfo.Roles;
-                Core.Business.General.CustomData.Create(tokenInfo, 3002, Convert.ToInt64(resultQuoteInfo.num_poliza),
-                                                        Newtonsoft.Json.JsonConvert.SerializeObject(quoteInfo), "ISSUE-P-" + resultQuoteInfo.num_poliza, resultQuoteInfo.num_poliza);
-                Core.Business.General.CustomData.Create(tokenInfo, 3003, Convert.ToInt64(resultQuoteInfo.num_poliza),
-                                                        Newtonsoft.Json.JsonConvert.SerializeObject(resultQuoteInfo), "ISSUE-R-" + resultQuoteInfo.num_poliza, resultQuoteInfo.num_poliza);
+                Architect.API.Tron.Contracts.Poliza.DatoFijo result2 = Backoffice.Emision.Generico.Emitir(result, tokenInfo);
 
-                //resultQuoteInfo = Asistencia_Panama(quoteInfo, resultQuoteInfo, tokenInfo.Roles);
+                resultQuoteInfo = ViajeroConvertFrom.Quote(quoteInfo, result2);
+
+                if (resultQuoteInfo.num_poliza.IsNotEmpty())
+                {
+                    Core.Business.General.ChangeSet.Create(3000, Convert.ToInt32(resultQuoteInfo.num_poliza.Substring(4)), tokenInfo.CompanyId, "Emisión Seguro de Viaje", "Póliza #" + resultQuoteInfo.num_poliza, tokenInfo.UserId, resultQuoteInfo);
+
+                    //Se cambian los adjuntos creados al número de presupuesto al número de póliza generado
+                    Core.Business.General.Attachment.ChangeEntityId(tokenInfo.CompanyId, 3000, Convert.ToInt64(resultQuoteInfo.presupuesto), 3000, Convert.ToInt64(resultQuoteInfo.num_poliza), tokenInfo.UserId);
+
+                    //Se almacena la informacion de la póliza.
+                    resultQuoteInfo.roles = tokenInfo.Roles;
+                    Core.Business.General.CustomData.Create(tokenInfo, 3002, Convert.ToInt64(resultQuoteInfo.num_poliza),
+                                                            Newtonsoft.Json.JsonConvert.SerializeObject(quoteInfo), "ISSUE-P-" + resultQuoteInfo.num_poliza, resultQuoteInfo.num_poliza);
+                    Core.Business.General.CustomData.Create(tokenInfo, 3003, Convert.ToInt64(resultQuoteInfo.num_poliza),
+                                                            Newtonsoft.Json.JsonConvert.SerializeObject(resultQuoteInfo), "ISSUE-R-" + resultQuoteInfo.num_poliza, resultQuoteInfo.num_poliza);
+
+                    //resultQuoteInfo = Asistencia_Panama(quoteInfo, resultQuoteInfo, tokenInfo.Roles);
+                }
             }
+            catch (Exception ex)
+            {
+                Architect.Utilities.Log.ErrorLog(ex, session.MessageId);
+
+                session.ResponseStatus = 400;
+                session.ResponseText = ex.Message;
+            }
+
+            Traza.TrackRequest.CloseSession(session, resultQuoteInfo);
+
+
             return resultQuoteInfo;
         }
 

@@ -1,6 +1,8 @@
-﻿using Microsoft.Web.Http;
+﻿using Architect.API.Core.Business.General;
+using Microsoft.Web.Http;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -25,14 +27,28 @@ namespace Architect.API.Tron.Controllers
         /// <param name="sessionRequest">Datos para la creación de una sesión de pago.</param>
         [HttpPost]
         [Route("Sesion")]
-        [ResponseType(typeof(Payment.Integrations.Contracts.SessionInformation))]        
+        [ResponseType(typeof(Payment.Integrations.Contracts.SessionInformation))]
         public async Task<IHttpActionResult> postPayment([FromBody] Contracts.CreateSession sessionRequest)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
-            string ipAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
-            string userAgent = Request.Headers.UserAgent.ToString();
+            Payment.Integrations.Contracts.SessionInformation result = null;
+            Contracts.Traza.TrackSession session = Business.Traza.TrackRequest.NewSession(tokenInfo, "Pagos/CrearSesion", sessionRequest);
+            try
+            {
+                string ipAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
+                string userAgent = Request.Headers.UserAgent.ToString();
+                result = await Business.Backoffice.Pagos.CrearSesion(tokenInfo, ipAddress, userAgent, sessionRequest.num_poliza, sessionRequest.num_recibo);
+            }
+            catch (Exception ex)
+            {
+                Architect.Utilities.Log.ErrorLog(ex, session.MessageId);
 
-            Payment.Integrations.Contracts.SessionInformation result = await Business.Backoffice.Pagos.CrearSesion(tokenInfo, ipAddress, userAgent, sessionRequest.num_poliza, sessionRequest.num_recibo);
+                session.ResponseStatus = 400;
+                session.ResponseText = ex.Message;
+            }
+
+            Business.Traza.TrackRequest.CloseSession(session, result);
+
 
             return Ok(result);
         }

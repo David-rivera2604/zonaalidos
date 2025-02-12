@@ -1,4 +1,5 @@
-﻿using Architect.Utilities.Extensions;
+﻿using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
+using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -40,14 +41,43 @@ namespace Architect.API.Tron.Business.Traza
             DataAccess.Traza.TrackRequest.Update2(item);
         }
 
-        public static Contracts.Traza.TrackSession NewSession()
+        public static Contracts.Traza.TrackSession NewSession(Core.Contracts.Security.Token tokenInfo, string requestType, object data, string documentId = "")
         {
+            if (string.IsNullOrEmpty(documentId))
+            {
+                documentId = Guid.NewGuid().ToString();
+            }
+            int trackingId = Traza.TrackRequest.Add(tokenInfo.CompanyId, tokenInfo.UserId,
+                                         new Contracts.Traza.TrackRequest()
+                                         {
+                                             DocumentId = documentId,
+                                             RequestType = requestType,
+                                             RequestBody = Newtonsoft.Json.JsonConvert.SerializeObject(data),
+                                             RequestTimeStamp = DateTime.Now
+                                         }).Id;
+
             return new Contracts.Traza.TrackSession()
             {
-                DocumentId = Guid.NewGuid().ToString(),
+                TrackingId = trackingId,
+                DocumentId = documentId,
                 ResponseStatus = 200,
-                ResponseText = "Procesado"
+                ResponseText = "Procesado",
+                CompanyId = tokenInfo.CompanyId,
+                UserId = tokenInfo.UserId
             };
+        }
+
+        public static void CloseSession(Contracts.Traza.TrackSession session, object data)
+        {
+            Traza.TrackRequest.Update(session.CompanyId, session.UserId, session.TrackingId,
+                          new Contracts.Traza.TrackRequest()
+                          {
+                              MessageId = session.MessageId,
+                              ResponseStatus = session.ResponseStatus,
+                              ResponseText = session.ResponseText,
+                              ResponseBody = Newtonsoft.Json.JsonConvert.SerializeObject(data),
+                              ResponseTimeStamp = DateTime.Now
+                          });
         }
 
         ///// <summary>

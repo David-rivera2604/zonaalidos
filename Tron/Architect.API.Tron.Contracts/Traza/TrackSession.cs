@@ -4,10 +4,14 @@ namespace Architect.API.Tron.Contracts.Traza
 {
     public partial class TrackSession
     {
+        public int TrackingId { get; set; }
         public string DocumentId { get; set; }
         public string MessageId { get; set; }
         public int ResponseStatus { get; set; }
         public string ResponseText { get; set; }
+        public int UserId { get; set; }
+
+        public int CompanyId { get; set; }
     }
 }
 
