@@ -171,6 +171,8 @@
     <Compile Include="Tramitacion\Response\Tramite.cs" />
     <Compile Include="Tramitacion\Response\Nivel.cs" />
     <Compile Include="Tramitacion\Response\Siniestro.cs" />
+    <Compile Include="Traza\TrackSession.cs" />
+    <Compile Include="Traza\TrackRequest.cs" />
     <Compile Include="Variaciones\CoberturaVariacion.cs" />
     <Compile Include="Variaciones\g1010031.cs" />
     <Compile Include="Variaciones\MapfreMas.cs" />

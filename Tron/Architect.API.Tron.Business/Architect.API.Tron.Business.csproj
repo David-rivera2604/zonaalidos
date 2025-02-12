@@ -133,6 +133,7 @@
     <Compile Include="Reglas\research.cs" />
     <Compile Include="Siniestro\Purdy.cs" />
     <Compile Include="Siniestro\SiniestroPurdy.cs" />
+    <Compile Include="Traza\TrackRequest.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Emision\HogarTotal.cs" />
     <Compile Include="Emision\HogarTotalConvertFrom.cs" />

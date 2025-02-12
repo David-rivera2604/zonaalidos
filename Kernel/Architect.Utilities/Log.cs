@@ -625,11 +625,16 @@ namespace Architect.Utilities
 
             return result;
         }
-
+        
         public static void ErrorLog(Exception currentException)
         {
             ErrorLog(Helpers.Assembly.GetFrameProcessFullName(2), String.Empty, currentException, String.Empty);
         }
+        public static void ErrorLog(Exception currentException, string code)
+        {
+            ErrorLog(Helpers.Assembly.GetFrameProcessFullName(2), String.Empty, currentException, String.Empty, true, code);
+        }
+
 
         // '' <summary>
         // '' Writes an entry in the logbook file for errors

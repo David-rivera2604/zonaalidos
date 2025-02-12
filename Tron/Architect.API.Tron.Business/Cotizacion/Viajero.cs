@@ -1,7 +1,9 @@
-﻿using Architect.Utilities.Extensions;
+﻿using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
+using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,30 +17,59 @@ namespace Architect.API.Tron.Business.Cotizacion
 
         public static Contracts.Cotizacion.Viajero Setup(Core.Contracts.Security.Token tokenInfo)
         {
+            Contracts.Cotizacion.Viajero result = null;
+            Contracts.Traza.TrackSession session = Traza.TrackRequest.NewSession();
+            int trackingId = Traza.TrackRequest.Add(tokenInfo.CompanyId, tokenInfo.UserId,
+                                         new Contracts.Traza.TrackRequest()
+                                         {
+                                             DocumentId = session.DocumentId,
+                                             RequestType = "ViajeroSetup",
+                                             RequestBody = Newtonsoft.Json.JsonConvert.SerializeObject(result),
+                                             RequestTimeStamp = DateTime.Now
+                                         }).Id;
 
-            Contracts.Cotizacion.Viajero result = new Contracts.Cotizacion.Viajero()
+            try
             {
-                cod_mon = COD_MON,
-                cod_fracc_pago = 101,
-                fec_efec_poliza = DateTime.Today,
-                fec_vcto_poliza = DateTime.Today,
-                TIP_PLAN = "I",
-                TIP_VIAJE = "NA",
-                FEC_VIAJE = DateTime.Today,
-                DES_DESTINO = "",
-                COD_PAIS_ORIGEN = "CRI",
-                cantidad_riesgos = 1,
-                Agente = tokenInfo.UserName,
-                cod_agt = tokenInfo.AgentCode
-            };
+                result = new Contracts.Cotizacion.Viajero()
+                {
+                    cod_mon = COD_MON,
+                    cod_fracc_pago = 101,
+                    fec_efec_poliza = DateTime.Today,
+                    fec_vcto_poliza = DateTime.Today,
+                    TIP_PLAN = "I",
+                    TIP_VIAJE = "NA",
+                    FEC_VIAJE = DateTime.Today,
+                    DES_DESTINO = "",
+                    COD_PAIS_ORIGEN = "CRI",
+                    cantidad_riesgos = 1,
+                    Agente = tokenInfo.UserName,
+                    cod_agt = tokenInfo.AgentCode
+                };
 
-            bool IsCoope = false;
-            int cod_cia = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_cia"]);
-            int cod_ramo = COD_RAMO;
-            DateTime fec_validez = DateTime.Today;
+                bool IsCoope = false;
+                int cod_cia = Convert.ToInt32(ConfigurationManager.AppSettings["Mapfre.Tron.cod_cia"]);
+                int cod_ramo = COD_RAMO;
+                DateTime fec_validez = DateTime.Today;
 
+                result.coberturas = CoverageByDefault(IsCoope, cod_cia, cod_ramo, fec_validez, string.Empty);
+            }
+            catch (Exception ex)
+            {
+                Architect.Utilities.Log.ErrorLog(ex, session.MessageId);
 
-            result.coberturas = CoverageByDefault(IsCoope, cod_cia, cod_ramo, fec_validez, string.Empty);
+                session.ResponseStatus = 400;
+                session.ResponseText = ex.Message;
+            }
+
+            Traza.TrackRequest.Update(tokenInfo.CompanyId, tokenInfo.UserId, trackingId,
+                          new Contracts.Traza.TrackRequest()
+                          {
+                              MessageId = session.MessageId,
+                              ResponseStatus = session.ResponseStatus,
+                              ResponseText = session.ResponseText,
+                              ResponseBody = Newtonsoft.Json.JsonConvert.SerializeObject(result),
+                              ResponseTimeStamp = DateTime.Now
+                          });
 
             return result;
         }
@@ -82,34 +113,66 @@ namespace Architect.API.Tron.Business.Cotizacion
             return coberturas;
         }
 
+
         public static Contracts.Cotizacion.Viajero Quote(Contracts.Cotizacion.Viajero quoteInfo, Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.Cotizacion.Viajero resultInfo = quoteInfo;
-            //TODO: Es necesario convertir las validaciones existentes en el JS
-            resultInfo.Errors = Validate(quoteInfo, tokenInfo);
-            if (resultInfo.Errors.Count == 0)
+
+            Contracts.Traza.TrackSession session = Traza.TrackRequest.NewSession();
+            int trackingId = Traza.TrackRequest.Add(tokenInfo.CompanyId, tokenInfo.UserId,
+                                         new Contracts.Traza.TrackRequest()
+                                         {
+                                             DocumentId = session.DocumentId,
+                                             RequestType = "ViajeroQuote",
+                                             RequestBody = Newtonsoft.Json.JsonConvert.SerializeObject(resultInfo),
+                                             RequestTimeStamp = DateTime.Now
+                                         }).Id;
+
+            try
             {
-                quoteInfo.presupuesto = string.Empty;
-                quoteInfo.resumen = null;
-
-                Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = ViajeroConvert.ToTron(quoteInfo, COD_RAMO, quoteInfo.cod_agt, tokenInfo.UserName, tokenInfo.CompanyId);
-
-                result = Backoffice.Cotizacion.Generico.Calcular(result);
-
-                resultInfo = LookupComplements((Contracts.Cotizacion.Viajero)Util.FromTron_CoberturasResult(quoteInfo, result, 1, true), tokenInfo);
-
-                resultInfo.coberturas.Remove(resultInfo.coberturas.Find(r => r.codigo == 9998));
-
-                Utilities.Cache.SetItem(
-                    string.Format("viajero.{0}", quoteInfo.presupuesto),
-                     Newtonsoft.Json.JsonConvert.SerializeObject(resultInfo), -1);
-
-                if (resultInfo.presupuesto.IsNotEmpty())
+                //TODO: Es necesario convertir las validaciones existentes en el JS
+                resultInfo.Errors = Validate(quoteInfo, tokenInfo);
+                if (resultInfo.Errors.Count == 0)
                 {
-                    Core.Business.General.ChangeSet.Create(3000, Convert.ToInt32(resultInfo.presupuesto.Substring(4)), tokenInfo.CompanyId, "Cotización Seguro de Viaje", "Presupuesto #" + resultInfo.presupuesto, tokenInfo.UserId, resultInfo);
-                }
+                    quoteInfo.presupuesto = string.Empty;
+                    quoteInfo.resumen = null;
 
+                    Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = ViajeroConvert.ToTron(quoteInfo, COD_RAMO, quoteInfo.cod_agt, tokenInfo.UserName, tokenInfo.CompanyId);
+
+                    result = Backoffice.Cotizacion.Generico.Calcular(result);
+
+                    resultInfo = LookupComplements((Contracts.Cotizacion.Viajero)Util.FromTron_CoberturasResult(quoteInfo, result, 1, true), tokenInfo);
+
+                    resultInfo.coberturas.Remove(resultInfo.coberturas.Find(r => r.codigo == 9998));
+
+                    Utilities.Cache.SetItem(
+                        string.Format("viajero.{0}", quoteInfo.presupuesto),
+                         Newtonsoft.Json.JsonConvert.SerializeObject(resultInfo), -1);
+
+                    if (resultInfo.presupuesto.IsNotEmpty())
+                    {
+                        Core.Business.General.ChangeSet.Create(3000, Convert.ToInt32(resultInfo.presupuesto.Substring(4)), tokenInfo.CompanyId, "Cotización Seguro de Viaje", "Presupuesto #" + resultInfo.presupuesto, tokenInfo.UserId, resultInfo);
+                    }
+
+                }
             }
+            catch (Exception ex)
+            {
+                Architect.Utilities.Log.ErrorLog(ex, session.MessageId);
+
+                session.ResponseStatus = 400;
+                session.ResponseText = ex.Message;
+            }
+
+            Traza.TrackRequest.Update(tokenInfo.CompanyId, tokenInfo.UserId, trackingId,
+                          new Contracts.Traza.TrackRequest()
+                          {
+                              MessageId = session.MessageId,
+                              ResponseStatus = session.ResponseStatus,
+                              ResponseText = session.ResponseText,
+                              ResponseBody = Newtonsoft.Json.JsonConvert.SerializeObject(resultInfo),
+                              ResponseTimeStamp = DateTime.Now
+                          });
 
             return resultInfo;
         }
