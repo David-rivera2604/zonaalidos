@@ -22,8 +22,8 @@ namespace Aliados.Monge.Application.Poliza.Ramos
         internal static async Task<Domain.Poliza.Emision.Respuesta> Handler(Domain.Poliza.Emision.Poliza risk, Architect.API.Core.Contracts.Security.Token tokenInfo)
         {
             Domain.Poliza.Emision.Respuesta result = null;
-            int trackingId = Traza.TrackRequest.Add(tokenInfo.CompanyId, tokenInfo.UserId,
-                                         new Domain.Traza.TrackRequest()
+            int trackingId = Architect.API.Tron.Business.Traza.TrackRequest.Add(tokenInfo.CompanyId, tokenInfo.UserId,
+                                         new Architect.API.Tron.Contracts.Traza.TrackRequest()
                                          {
                                              DocumentId = risk.document_id,
                                              RequestType = "Emision",
@@ -114,8 +114,8 @@ namespace Aliados.Monge.Application.Poliza.Ramos
                 };
             }
 
-            Traza.TrackRequest.Update(tokenInfo.CompanyId, tokenInfo.UserId, trackingId,
-                                      new Domain.Traza.TrackRequest()
+            Architect.API.Tron.Business.Traza.TrackRequest.Update(tokenInfo.CompanyId, tokenInfo.UserId, trackingId,
+                                      new Architect.API.Tron.Contracts.Traza.TrackRequest()
                                       {
                                           MessageId = result.message_id,
                                           ResponseStatus = result.message_status,

@@ -80,6 +80,11 @@ namespace Architect.API.Tron.Business.Traza
                           });
         }
 
+        public static Architect.API.Tron.Contracts.Traza.TrackRequest Retrieve(string documentId, int companyId)
+        {
+            return Traza.TrackRequest.Retrieve(documentId, companyId);
+        }
+
         ///// <summary>
         ///// Crea registro o actualiza un registro en la tabla TrackRequest.
         ///// </summary>
