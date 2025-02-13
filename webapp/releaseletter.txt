@@ -666,3 +666,4 @@
                    Trazabilidad. Se ajusta el calciulo de la cantidad de días para no considerar lo fines de semana en el reporte de detalle de caso (consulta 4001 y 4002).
 1.6.101 10/02/2025 Viajero. Envio de pólizas de viajero a MAWDY solo cuando estan cobradas.
 1.6.102 11/02/2025 Aliados. Cambio de beneficiario pagador, nuevo boton en la consulta 300.1.
+1.6.107 13/02/2025 Aliados. Se habilita el tracking de los llamado a las API de viajero y inicio de session de pago.
