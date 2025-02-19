@@ -150,6 +150,7 @@ app.GeneralNewCase = (function () {
         $('#Title').val(data.Title);
         $('#Description').val(data.Description);
         $('#Priority').val(data.Priority);
+        $('#Priority').prop('selectedIndex', -1);
         $('#InstanceId').val(data.InstanceId);
         $('#Reference1').val(data.Reference1);
         $('#Reference2').val(data.Reference2);
