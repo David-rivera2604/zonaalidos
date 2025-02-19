@@ -194,13 +194,13 @@ namespace Architect.API.Tron.Business.Backoffice
             {
                 result.OnlinePayment.AgentCode = 999999;
             }
-            bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode, "Placetopay");
+            bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode, "Placetopay", string.Empty);
         }
 
         /// <summary>
         /// Procesa el pago de un recibo en tron.
         /// </summary>
-        public async static Task<bool> TronPayment(Architect.Payment.Integrations.Contracts.InformationRequest request, int agentCode, string source)
+        public async static Task<bool> TronPayment(Architect.Payment.Integrations.Contracts.InformationRequest request, int agentCode, string source, string provider)
         {
             string tipoPagador = "A";
             string pagador = agentCode.ToString();
@@ -209,7 +209,10 @@ namespace Architect.API.Tron.Business.Backoffice
             switch (source)
             {
                 case "RecurringReceipts":
-                    cuenta = request.currency == "1" ? "BAC01" : "BAC02";
+                    if (provider.Equals("Evertec", StringComparison.CurrentCultureIgnoreCase))
+                        cuenta = request.currency == "1" || request.currency == "CRC" ? "HSBC1" : "HSBC2";
+                    else
+                        cuenta = request.currency == "1" ? "BAC01" : "BAC02";
                     break;
                 case "Widget&Link":
                     cuenta = request.currency == "1" ? "HSBC1" : "HSBC2";

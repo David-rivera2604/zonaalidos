@@ -170,7 +170,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                     {
                         result.OnlinePayment.AgentCode = 999999;
                     }
-                    bool tronPayment = await Backoffice.Pagos.TronPayment(result, result.OnlinePayment.AgentCode, "Widget&Link");
+                    bool tronPayment = await Backoffice.Pagos.TronPayment(result, result.OnlinePayment.AgentCode, "Widget&Link", string.Empty);
                 }
             }
         }
@@ -440,7 +440,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                             {
                                 item.OnlinePayment.AgentCode = 999999;
                             }
-                            bool tronPayment = Backoffice.Pagos.TronPayment(item, item.OnlinePayment.AgentCode, "Placetopay").Result;
+                            bool tronPayment = Backoffice.Pagos.TronPayment(item, item.OnlinePayment.AgentCode, "Placetopay", provider).Result;
                             Tarjetas.UpdateRejectionCount(currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, 0, string.Empty);
                         }
                         else if (item?.status == "REJECTED")
@@ -528,7 +528,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                         Architect.Payment.Integrations.Payment.UpdateStatus(currentRecord.UpdateUserCode, currentRecord, result);
                         if (item.status.IndexOf("aprobad", StringComparison.CurrentCultureIgnoreCase) > -1)
                         {
-                            bool tronPayment = await Backoffice.Pagos.TronPayment(result, currentRecord.AgentCode, "RecurringReceipts");
+                            bool tronPayment = await Backoffice.Pagos.TronPayment(result, currentRecord.AgentCode, "RecurringReceipts", "Silice");
                         }
                     }
 
