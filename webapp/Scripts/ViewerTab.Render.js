@@ -5,7 +5,7 @@ app.ViewerQuery = (function () {
     let _handler = null;
     var _id = null;
     var _itemHeader = '  <li class="nav-item"> ' +
-        '    <a class="nav-link {show}" id="{index}_htab" data-toggle="tab" href="#tab_{index}" >{title}</a> ' +
+        '    <a class="nav-link {show}{class}" id="{index}_htab" data-toggle="tab" href="#tab_{index}" >{title}</a> ' +
         '  </li> '
 
     var _itemBody = '<div class="tab-pane fade {show}" id="tab_{index}">{Body}</div>';
@@ -34,7 +34,12 @@ app.ViewerQuery = (function () {
 
     function RenderTabHeader(item) {
         body = ReplaceAll(_itemHeader, "{index}", item.index);
-        body = ReplaceAll(body, "{title}", item.title);
+        body = ReplaceAll(body, "{title}", item.title);        
+        if (item.class != undefined) {
+            body = ReplaceAll(body, "{class}", ' ' + item.class);
+        } else {
+            body = ReplaceAll(body, "{class}", '');
+        }
         var show = "";
         if (item.index === 1)
             show = "active";

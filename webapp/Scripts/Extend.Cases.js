@@ -9,11 +9,7 @@ app.Ex_Cases = (function () {
                     timeOut: 5000, closeButton: true, progressBar: true,
                     onclick: function () {
                         $('.ibox-content').toggleClass('sk-loading');
-<<<<<<< HEAD
                         app.core.Delete(`${app.setting.apipath}v1/ProcessCase/${row.ID}`)
-=======
-                        app.core.Delete(`${app.setting.apipath}v1/ProcessCase/${row.ID}` )
->>>>>>> 2603d8692335166cf5801e413f5bc98d7a338de7
                             .done(function (data, textStatus, jqXHR) {
                                 toastr.success(`El caso '${row.TITLE}' fue eliminado`, "", { timeOut: 5000, closeButton: true, progressBar: true });
                                 //Por mejorar para que sea mas dinamico
@@ -33,17 +29,10 @@ app.Ex_Cases = (function () {
             //if (row.STEPFINISHDATE == null)
             //    result += '<span class="badge badge-warning float-right"><small> Pendiente  </small></span>';
 
-<<<<<<< HEAD
             if (row.STEPFINISHDATE != null)
                 result += '<br> Realizado por ' + app.ui.UpdateDateAndUserFormatter(row.STEPFINISHDATE, row, index, field);
 
             return result;
-=======
-            if (row.STEPFINISHDATE != null) 
-                result += '<br> Realizado por ' + app.ui.UpdateDateAndUserFormatter(row.STEPFINISHDATE, row, index, field);
-
-            return result ;
->>>>>>> 2603d8692335166cf5801e413f5bc98d7a338de7
         }
     };
 })();

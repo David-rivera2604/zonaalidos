@@ -667,4 +667,6 @@
 1.6.101 10/02/2025 Viajero. Envio de pólizas de viajero a MAWDY solo cuando estan cobradas.
 1.6.102 11/02/2025 Aliados. Cambio de beneficiario pagador, nuevo boton en la consulta 300.1.
 1.6.103 13/02/2025 Aliados. Se habilita el tracking de los llamado a las API de viajero y inicio de session de pago.
-1.6.104 18/02/2025 Pasarela Evertec. Se ajusta de la cuenta en el pago en tron para recibos recurrentes.
+1.6.104 17/02/2025 Pasarela Evertec. Se ajusta de la cuenta en el pago en tron para recibos recurrentes.
+1.6.105 18/02/2025 Trazabilidad. En la consulta "Consulta general de casos" (consulta 4003), el boton eliminar no funciona.
+                   Aliados. Se debe oculta el tab "Documentos cargados" (consulta 302.6) cuando el usuario tiene el rol "Callcenter".

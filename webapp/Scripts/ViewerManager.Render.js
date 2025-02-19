@@ -5,7 +5,7 @@ app.ViewerQuery = (function () {
     var _id = null;
     var _data;
     var _itemHeader = '  <li class="nav-item"> ' +
-        '    <a class="nav-link {show}" id="{index}_htab" data-type="{type}" data-tablename="{tablename}" data-toggle="tab" href="#tab_{index}" >{title}</a> ' +
+        '    <a class="nav-link {show}{class}" id="{index}_htab" data-type="{type}" data-tablename="{tablename}" data-toggle="tab" href="#tab_{index}" >{title}</a> ' +
         '  </li> ';
 
     var _itemBody = '<div class="tab-pane fade {show}" id="tab_{index}">' +
@@ -53,6 +53,12 @@ app.ViewerQuery = (function () {
         body = app.core.ReplaceAll(body, "{title}", item.title);
         body = app.core.ReplaceAll(body, "{type}", item.type);
         body = app.core.ReplaceAll(body, "{tablename}", "#" + item.index + "GridTbl");
+
+        if (item.class != undefined) {
+            body = app.core.ReplaceAll(body, "{class}", ' ' + item.class);
+        } else {
+            body = app.core.ReplaceAll(body, "{class}", '');
+        }
 
         var show = "";
         if (item.index === 1)
