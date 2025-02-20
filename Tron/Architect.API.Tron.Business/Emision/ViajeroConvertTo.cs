@@ -181,6 +181,9 @@ namespace Architect.API.Tron.Business.Emision
                 case 0: //Titular.
                     result.tip_benef = "2"; //Asegurado
                     break;
+                case 2:
+                    result.tip_benef = "2"; // Asegurado
+                    break;
                 case 6: //Beneficiario pero esta opcion no esta disponible al dia de hoy.
                     result.tip_benef = "6";
                     result.tip_relac = Convert.ToString(item.parentesco);
