@@ -1,0 +1,22 @@
+INSERT INTO LOOKUPMASTER (LOOKUPID, DESCRIPTION, "KEY", TENANT, "STATEMENT", CONNECTIONNAME, "TYPE", INCLUDEBYROLE, EXCLUDEBYROLE, ISCACHED, STATEMENTTYPE, FIELDS, RECORDSTATUS, UPDATEUSERCODE, UPDATEDATE) VALUES(3310, 'Contratos', 'Contratos_v2', 2, 'SELECT distinct G29.NUM_CONTRATO,  G299.NOM_CONTRATO || '' '' || A400.COD_MON_ISO ||'' '' || G29.NUM_CONTRATO NOM_POLIZA, G29.COD_MON, A400.NOM_MON , A20.NUM_POLIZA, to_char(a20.fec_vcto_poliza,''dd/mm/yyyy'') fec_vcto_poliza
+        FROM   G2990000 G29, A2000010 A20, G2990017 G2917, g2990001 G299, A1000400 a400 
+        WHERE  G29.COD_CIA = 1
+        AND    G29.COD_RAMO = {cod_ramo}
+        AND    G29.COD_AGT = {app.p_cod_agt}
+        AND    G29.NUM_CONTRATO NOT IN
+               (SELECT num_contrato
+                 FROM   ta301004 a
+                 WHERE  COD_CIA = G29.COD_CIA
+                 AND    COD_RAMO = G29.COD_RAMO 
+                 AND    COD_AGT = G29.COD_AGT 
+                 AND    MCA_INH = ''N''
+                 AND    COD_SUB_AGT in (99999,{app.p_cod_sub_agt})
+                 AND A.NUM_POLIZA_GRUPO = A20.NUM_POLIZA)
+         AND    A20.COD_CIA = G29.COD_CIA
+        AND    A20.NUM_CONTRATO = G29.NUM_CONTRATO
+        AND    G299.COD_CIA = G29.COD_CIA
+        AND    G299.NUM_CONTRATO =  g29.NUM_CONTRATO
+        AND    G2917.COD_CIA = A20.COD_CIA
+        AND    G2917.NUM_POLIZA =  A20.NUM_POLIZA
+        AND a400.COD_MON=G29.COD_MON
+        ORDER  BY G299.NOM_CONTRATO ||'' '' || A400.COD_MON_ISO ||'' '' || G29.NUM_CONTRATO ASC', 'tron', 2, NULL, NULL, 1, 1, NULL, 1, 1, TIMESTAMP '2022-06-02 00:00:00.000000');
