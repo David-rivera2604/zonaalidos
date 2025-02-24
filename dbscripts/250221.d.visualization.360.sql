@@ -1,4 +1,4 @@
-INSERT INTO ALIADOS.VISUALIZATIONS (ID, "SEQUENCE", "TYPE", CAPTION, DESCRIPTION, "STATEMENT", ICON, ICONCLASS, VALUEFORMAT, ENTITYTYPE, RECORDSTATUS, COMPANYID, UPDATEUSERCODE, UPDATEDATE, SPECIFICATION, CONNECTIONNAME, STATEMENTTYPE, DIALOG, STATEMENTEXTEND, "KEY", JAVASCRIPTTOINCLUDE) VALUES(360, 1, 1, 'Polizas activas', 'Polizas activas version 2', 'SELECT distinct      a.cod_cia,            a.num_poliza,       b.num_riesgo,      a.num_poliza_anterior,
+INSERT INTO VISUALIZATIONS (ID, "SEQUENCE", "KEY", COMPANYID, ENTITYTYPE, "TYPE", CAPTION, DESCRIPTION, STATEMENTTYPE, "STATEMENT", SPECIFICATION, DIALOG, ICON, ICONCLASS, VALUEFORMAT, CONNECTIONNAME, JAVASCRIPTTOINCLUDE, STATEMENTEXTEND, RECORDSTATUS, UPDATEUSERCODE, UPDATEDATE) VALUES(360, 1, NULL, 1, NULL, 1, 'Polizas activas', 'Polizas activas version 2', 1, 'SELECT distinct      a.cod_cia,            a.num_poliza,       b.num_riesgo,      a.num_poliza_anterior,
              a.num_poliza_cliente, a.num_poliza_grupo, a.num_contrato,    a.num_subcontrato,
              a.fec_efec_poliza,    a.fec_vcto_poliza,  a.num_presupuesto, b.nom_certificado,
              a.tip_docum,          a.cod_docum,
@@ -25,7 +25,7 @@ INSERT INTO ALIADOS.VISUALIZATIONS (ID, "SEQUENCE", "TYPE", CAPTION, DESCRIPTION
              a1001402 a1402
        WHERE a.cod_cia            = {app.P_COD_CIA}
          AND a.cod_agt            = {app.P_COD_AGT}
-         --AND a.cod_ramo           in (194, 401, 117)
+         AND a.cod_ramo           in (194, 401, 117)
          AND a.mca_spto_anulado   = ''N''
          AND a.mca_poliza_anulada = ''N''
          AND a.mca_provisional    = ''N''
@@ -68,7 +68,7 @@ INSERT INTO ALIADOS.VISUALIZATIONS (ID, "SEQUENCE", "TYPE", CAPTION, DESCRIPTION
           and a1403.cod_cia = a1402.cod_cia
           and a1403.cod_fracc_pago = a1402.cod_fracc_pago
 
-       ORDER BY a.num_poliza', NULL, NULL, NULL, NULL, 1, 1, 777, TIMESTAMP '2023-02-27 21:49:26.000000', '{
+       ORDER BY a.num_poliza', '{
 "title": "Polizas activas",
 "table": {
 "pagination": true,
@@ -91,9 +91,7 @@ INSERT INTO ALIADOS.VISUALIZATIONS (ID, "SEQUENCE", "TYPE", CAPTION, DESCRIPTION
 "formatter": "function (value, row, index, field) { return ''<span class=columnBtn>''+''<button type=\"button\" name=\"cancelpol\" class=\"btn btn-sm btn-white event\" title=\"Permite cancelar la p?liza\"><i class=\"fa fa-close\"></i></button>''+''</span>'' ;}",
 "visible": true,
 "events": true,
-"action_sendemail": "app.ui.ShowSideBar({ title: ''Enviar certificado por correo'', subtitle: ''Poliza #{NUM_POLIZA}'', id: 9000, data: row})",
-"action_updatepol": "app.ui.ShowSideBar({ isExternal: true, url: ''/Aliados/variaciones/mapfremas'', title: ''Solicitud de variaciones'', width: ''600px'', data: row})",
-"action_cancelpol":  "app.ui.ShowSideBar({ title: ''Cancelar la poliza #{NUM_POLIZA}'', id: 9003, data: row})"
+"action_cancelpol": "app.ui.Redirect(''../viewer/Form?id=AnularPoliza&poliza={NUM_POLIZA}'')",
 },
 {
 "field": "NUM_POLIZA_GRUPO",
@@ -233,4 +231,4 @@ INSERT INTO ALIADOS.VISUALIZATIONS (ID, "SEQUENCE", "TYPE", CAPTION, DESCRIPTION
 }
 ]
 }
-}', 'Tron', 1, NULL, NULL, NULL, 'Extend.Policy.js');
+}', NULL, NULL, NULL, NULL, 'Tron', 'Extend.Policy.js', NULL, 1, 777, TIMESTAMP '2023-02-27 21:49:26.000000');
