@@ -371,7 +371,7 @@ namespace Architect.API.Core.Controllers
                 {
                     receip.Add(email, string.Empty);
                 }
-                Core.Business.General.Mail.SendEmail(receip, item.Subject, item.Body);
+                Core.Business.General.Mail.SendEmail(receip, item.Subject, item.Body, item.Attachments );
             }).ConfigureAwait(false);
             return Ok(true);
         }

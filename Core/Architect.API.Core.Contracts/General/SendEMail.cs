@@ -22,7 +22,11 @@ namespace Architect.API.Core.Contracts.General
         /// The message html body.
         /// </summary>
         [DataMember(), JsonProperty()] public string Body { get; set; }
-       
+        /// <summary>
+        /// The Attachments.
+        /// </summary>
+        [DataMember(), JsonProperty()] public string[] Attachments { get; set; } = null;
+
     }
 }
 

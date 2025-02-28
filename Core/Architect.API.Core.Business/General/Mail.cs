@@ -12,6 +12,7 @@ using System.Net.Mail;
 using System.Net.Mime;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
+using System.Text.RegularExpressions;
 
 namespace Architect.API.Core.Business.General
 {
@@ -455,21 +456,32 @@ namespace Architect.API.Core.Business.General
                 System.Net.Mail.Attachment attachment = null;
                 foreach (string attachmentFile in attachments)
                 {
+                    if (IsBase64(attachmentFile))
+                    {
+                            byte[] fileBytes = Convert.FromBase64String(attachmentFile);
+                            var memoryStream = new MemoryStream(fileBytes);
+                            string fileName = "attachment_" + Guid.NewGuid().ToString() + ".pdf";  // Generamos un nombre único para el archivo
 
-                    if (attachmentFile.IndexOf(';') == -1)
-                    {
-                        attachment = new System.Net.Mail.Attachment(attachmentFile);
+                            // Aquí puedes ponerle la extensión correcta si la conoces
+                            attachment = new System.Net.Mail.Attachment(memoryStream, fileName);
                     }
-                    else
-                    {
-                        attachment = new System.Net.Mail.Attachment(attachmentFile.Split(';')[0]);
-                        attachment.Name = attachmentFile.Split(';')[1];
+                    else { 
+                           if (attachmentFile.IndexOf(';') == -1)
+                            {
+                                attachment = new System.Net.Mail.Attachment(attachmentFile);
+                            }
+                            else
+                            {
+                                attachment = new System.Net.Mail.Attachment(attachmentFile.Split(';')[0]);
+                                attachment.Name = attachmentFile.Split(';')[1];
+                            }
                     }
 
                     mail.Attachments.Add(attachment);
+                    
                 }
             }
-
+        
             SmtpClient SmtpServer = new SmtpClient(ConfigurationManager.AppSettings["EMail.Host"])
             {
                 Port = Convert.ToInt32(ConfigurationManager.AppSettings["EMail.Port"]),
@@ -505,6 +517,16 @@ namespace Architect.API.Core.Business.General
             mail.Dispose();
             SmtpServer.Dispose();
 
+        }
+
+        // Función auxiliar para verificar si un string es base64
+        private static bool IsBase64(string stringValue)
+        {
+            if (string.IsNullOrEmpty(stringValue)) return false;
+
+            // Intentamos decodificar la cadena y ver si tiene una longitud de base64 válida
+            stringValue = stringValue.Trim();
+            return (stringValue.Length % 4 == 0) && Regex.IsMatch(stringValue, @"^[a-zA-Z0-9\+/]*={0,2}$");
         }
 
     }
