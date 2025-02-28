@@ -2,11 +2,11 @@
 
 // CONSERVAR DEL ORIGINAL DESDE AQUI
 app.setting = {
-    apibase: 'http://localhost:8081',
-    apipath: 'http://localhost:8081/aliados/api/',
+    apibase: 'https://localhost:44341',
+    apipath: 'https://localhost:44341/aliados/api/',
     basepath: '/Aliados/',
-    viewpath: 'http://localhost:8081/aliados/',
-    entityapi: 'https://appqa.mapfrecr.com/datapi/api/entity',
+    viewpath: 'https://localhost:44341/aliados/',
+    entityapi: 'https://appqa.mapfrecr.com/datapides/api/entity',
     reportapi: 'https://appqa.mapfrecr.com/aliadoservreports'
 };
 // CONSERVAR DEL ORIGINAL HASTA AQUI
@@ -879,6 +879,7 @@ app.core = (function () {
             return new Promise((resolve, reject) => {
                 return fetch(`${app.setting.entityapi}/${url}`, {
                     body: method === 'GET' ? null : JSON.stringify(data),
+
                     method: method,
                     headers: {
                         'Content-Type': 'application/json; charset=utf-8',

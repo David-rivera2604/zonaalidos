@@ -133,6 +133,17 @@ namespace Architect.API.Core.Contracts.General
         /// Token del usuario conectado.
         /// </summary>
         public string CurrentToken{ get; set; }
+
+        /// <summary>
+        /// Identificador numerico personalizado
+        /// </summary>
+        public int CustomNumericKey { get; set; }
+
+        /// <summary>
+        /// Identificador string personalizado
+        /// </summary>
+        public string CustomStringKey { get; set; }
+
     }
 }
 
