@@ -25,8 +25,8 @@ namespace Architect.API.Core.DataAccess.General
             {
                 processcaseItem.UpdateDate = DateTime.Now;
             }
-            return Database.Insert("INSERT INTO ProcessCase (Id, CompanyId, Title, Description, Priority, InstanceId, CurrentStepId, Reference1, Reference2, Reference3, Reference4, Reference5, Reference6, Reference7, Reference8, Reference9, Reference10, ContactMainName, ContactMainEmail, Status, Label, SubStatus, SubLabel, FlowId, UserId, SLA, UpdateUserCode, UpdateDate, UserSend) " +
-                                                 "VALUES(:Id, :CompanyId, :Title, :Description, :Priority, :InstanceId, :CurrentStepId, :Reference1, :Reference2, :Reference3, :Reference4, :Reference5, :Reference6, :Reference7, :Reference8, :Reference9, :Reference10, :ContactMainName, :ContactMainEmail, :Status, :Label, :SubStatus, :SubLabel, :FlowId, :UserId, :SLA, :UpdateUserCode, :UpdateDate, :UserSend)")
+            return Database.Insert("INSERT INTO ProcessCase (Id, CompanyId, Title, Description, Priority, InstanceId, CurrentStepId, Reference1, Reference2, Reference3, Reference4, Reference5, Reference6, Reference7, Reference8, Reference9, Reference10, ContactMainName, ContactMainEmail, Status, Label, SubStatus, SubLabel, FlowId, UserId, SLA, UpdateUserCode, UpdateDate, UserSend, CustomNumericKey, CustomStringKey) " +
+                                                 "VALUES(:Id, :CompanyId, :Title, :Description, :Priority, :InstanceId, :CurrentStepId, :Reference1, :Reference2, :Reference3, :Reference4, :Reference5, :Reference6, :Reference7, :Reference8, :Reference9, :Reference10, :ContactMainName, :ContactMainEmail, :Status, :Label, :SubStatus, :SubLabel, :FlowId, :UserId, :SLA, :UpdateUserCode, :UpdateDate, :UserSend, :CustomNumericKey, :CustomStringKey)")
                             .AddParameter("Id", DbType.Decimal, 9, processcaseItem.Id)
                             .AddParameter("CompanyId", DbType.Decimal, 5, processcaseItem.CompanyId)
                             .AddParameter("Title", DbType.AnsiString, 120, processcaseItem.Title)
@@ -58,6 +58,10 @@ namespace Architect.API.Core.DataAccess.General
 
                             //Añadido extra solo para detectar el usuario que envio el caso
                             .AddParameter("UserSend", DbType.Decimal, 9, processcaseItem.UserSend)
+
+                            .AddParameter("CustomNumericKey", DbType.Decimal, 9, processcaseItem.CustomNumericKey)
+                            .AddParameter("CustomStringKey", DbType.AnsiString, 80, processcaseItem.CustomStringKey)
+
                             .Execute(connection, "Research");
         }
 

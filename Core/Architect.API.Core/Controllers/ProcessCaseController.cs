@@ -49,6 +49,7 @@ namespace Architect.API.Core.Controllers
                 {
                     Contracts.Security.Token currentTokenInfo = Security.Token.Info(item.CurrentToken);
                     item.UserSend = currentTokenInfo.UserId;
+                    item.CustomNumericKey = currentTokenInfo.AgentCode;
                 }
                 Architect.API.Core.Contracts.General.ProcessCaseResult created = Architect.API.Core.Business.General.ProcessCase.Create(tokenInfo.CompanyId, tokenInfo.UserId, item);
                 if (created.Errors.Count == 0)
@@ -76,7 +77,8 @@ namespace Architect.API.Core.Controllers
         public async Task<IHttpActionResult> Get([FromUri] string filter = "", int beginIndex = 1, int endIndex = int.MaxValue)
         {
             //Usuario actual para filtrar la informacion
-           int UsuaActual = Accounts.ReturnUser().UserId;
+            //int userIdActual = Accounts.ReturnUser().UserId;
+            int agentCodeActual = Accounts.ReturnUser().AgentCode;
 
             Contracts.Security.Token tokenInfo = Security.Token.Info();
 
@@ -84,10 +86,10 @@ namespace Architect.API.Core.Controllers
 
             await Task.Run(() =>
             {
-                result = Architect.API.Core.Business.General.ProcessCase.Retrieve(tokenInfo.CompanyId, filter, beginIndex, endIndex, UsuaActual);
+                result = Architect.API.Core.Business.General.ProcessCase.Retrieve(tokenInfo.CompanyId, filter, beginIndex, endIndex, agentCodeActual);
             }).ConfigureAwait(false);
 
-            
+
             if (result.IsEmpty())
             {
                 return NotFound();
