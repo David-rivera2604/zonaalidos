@@ -318,15 +318,10 @@ app.Attachments = (function () {
         if ($(uploadCtrolId).valid()) {
 
             for (index = 0; index < arr.length; index++) {
-                if (arr[index].size >= 31457280) {
-                    if (message != '') {
-                        message = message & ', ';
-                    }
-                    message = message & 'El tamaño del archivo ' + arr[index].name + 'es mayor a 30mb';
-                }
+                message = ValidateFile(arr[index].name, arr[index].size, arr[index].type, message);
             }
             if (message != '') {
-                elementInstance.showErrors({ 'FileName': message });
+                app.ui.Error(message);
             }
             else {
                 app.ui.ButtonDoing(uploadCtrolId);
@@ -371,6 +366,29 @@ app.Attachments = (function () {
         }
     }
 
+    function ValidateFile(name, size, type, message) {
+        console.log(type);
+        if ((type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || type == 'application/pdf') && size < 13312) {
+            if (message != '') {
+                message = message + ', ';
+            }
+            message = message + 'El tamaño del archivo ' + name + ' es menor a 13kb';
+        }
+        if (type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' && size < 9216) {
+            if (message != '') {
+                message = message + ', ';
+            }
+            message = message + 'El tamaño del archivo ' + name + ' es menor a 9kb';
+        }
+        if (size >= 31457280) {
+            if (message != '') {
+                message = message & ', ';
+            }
+            message = message + 'El tamaño del archivo ' + name + 'es mayor a 30mb';
+        }
+        return message
+    }
+
     function UpLoadFile(formId, uploadCtrolId, callback) {
         let index = 0;
         let arr = $(uploadCtrolId).prop('files');
@@ -383,19 +401,14 @@ app.Attachments = (function () {
         }
         if ($(uploadCtrolId).valid()) {
 
-
             for (index = 0; index < arr.length; index++) {
-                if (arr[index].size >= 31457280) {
-                    if (message != '') {
-                        message = message & ', ';
-                    }
-                    message = message & 'El tamaño del archivo ' + arr[index].name + 'es mayor a 30mb';
-                }
+                message = ValidateFile(arr[index].name, arr[index].size, arr[index].type, message);
             }
             if (message != '') {
-                elementInstance.showErrors({ 'FileName': message });
+                elementInstance.showErrors({ 'AttachmentFileName': message });
             }
             else {
+                app.ui.ResetValidateElement('#AttachmentEdtForm', '#AttachmentFileName');
                 app.ui.ButtonDoing(uploadCtrolId);
                 var fileData = new FormData();
                 for (index = 0; index < arr.length; index++) {
