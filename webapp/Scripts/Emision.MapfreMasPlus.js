@@ -289,7 +289,8 @@ app.EmisionMapfreMasPlus = (function () {
         $('#cod_fracc_pago').val(data.cod_fracc_pago);
         $('#tip_firma').val(data.tip_firma);
 
-        if (localStorage.getItem('Roles').includes('Purdy')) {
+        if (localStorage.getItem('Roles').includes('Purdy') || localStorage.getItem('Roles').includes('Davivienda_Prendarios') ||
+            localStorage.getItem('Roles').includes('Davivienda_Leasing')) {
             const data = {
                 tip_firma: 'valorSeleccionado',
                 opciones: [
@@ -1541,8 +1542,8 @@ app.EmisionMapfreMasPlus = (function () {
     };
 
     function formulariosMode() {
-        //return ((workMode === 'draft' || workMode === 'resume') && !localStorage.getItem('Roles').includes('Purdy') && !localStorage.getItem('Roles').includes('Davivienda_Prendarios') && !localStorage.getItem('Roles').includes('Davivienda_Leasing'));
-        return ((workMode === 'draft' || workMode === 'resume') && !localStorage.getItem('Roles').includes('Purdy'));
+        return ((workMode === 'draft' || workMode === 'resume') && !localStorage.getItem('Roles').includes('Purdy') && !localStorage.getItem('Roles').includes('Davivienda_Prendarios') && !localStorage.getItem('Roles').includes('Davivienda_Leasing'));
+        //return ((workMode === 'draft' || workMode === 'resume') && !localStorage.getItem('Roles').includes('Purdy'));
     }
 
     return {
