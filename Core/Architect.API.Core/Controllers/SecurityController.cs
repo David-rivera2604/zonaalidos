@@ -317,5 +317,20 @@ namespace Architect.API.Core.Controllers
             }            
         }
 
+        [HttpGet]
+        [Route("Agent")]
+        public async Task<IHttpActionResult> Agent(string tip_docum, string cod_docum)
+        {
+            Core.Contracts.Security.Token tokenInfo = Security.Token.Info();
+            string result = string.Empty;
+
+            await Task.Run(() => result = Business.General.Tron.RetrieveAgentEMailByDocument(tip_docum.IdentificationType(), cod_docum)).ConfigureAwait(false);
+
+            return Ok(new
+            {
+                EMail = result
+            });
+        }
+
     }
 }

@@ -57,6 +57,25 @@ namespace Architect.API.Core.DataAccess.Security
 
             return result;
         }
+        public static string RetrieveAgentEMailByDocument(string tip_docum, string cod_docum)
+        {
+            string result = string.Empty;
+            Database.Select(
+@"SELECT a32.EMAIL_COM FROM A1001332 a32 WHERE a32.TIP_DOCUM = :TIP_DOCUM1 AND a32.COD_DOCUM=:COD_DOCUM1
+UNION
+SELECT a37.EMAIL_COM FROM A1001337 a37 WHERE a37.TIP_DOCUM = :TIP_DOCUM2 AND a37.COD_DOCUM=:COD_DOCUM2
+FETCH FIRST 1 ROWS ONLY")
+                         .AddParameter("TIP_DOCUM1", DbType.String, 3, tip_docum)
+                         .AddParameter("COD_DOCUM1", DbType.String, 20, cod_docum)
+                         .AddParameter("TIP_DOCUM2", DbType.String, 3, tip_docum)
+                         .AddParameter("COD_DOCUM3", DbType.String, 20, cod_docum)
+                         .Query(null, "Tron", new Action<System.Data.IDataReader>((reader) =>
+                         {
+                             result = reader.StringValue("EMAIL_COM");
+                         }));
+
+            return result;
+        }
 
         /// <summary>
         /// Crea un subagente en TRON.
@@ -66,7 +85,8 @@ namespace Architect.API.Core.DataAccess.Security
         {
 
             string json_tercero = "";
-            try {
+            try
+            {
                 if (subagentItem.cod_agt != 999999)
                 {
                     subagentItem.cod_emp_agt = cod_SubAgent(subagentItem.tip_docum, subagentItem.cod_docum, subagentItem.cod_agt);
@@ -81,14 +101,14 @@ namespace Architect.API.Core.DataAccess.Security
                 {
                     return true;
                 }
-                
+
             }
             catch (Exception ex)
             {
                 return false;
             }
-           
-                
+
+
         }
 
         public static int cod_SubAgent(string tip_docum, string cod_docum, int cod_agt)
@@ -109,5 +129,6 @@ namespace Architect.API.Core.DataAccess.Security
 
             return resultado;
         }
+
     }
 }

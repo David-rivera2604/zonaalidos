@@ -30,7 +30,7 @@ app.SecurityUserMember = (function () {
 
             $('#agt-section').removeClass('d-none');
         }
-         
+
     }
 
     function Init_Controls() {
@@ -282,7 +282,7 @@ app.SecurityUserMember = (function () {
     function Create(uidata, mode) {
         app.core.Post(app.setting.apipath + 'v1/UserMember/Post', JSON.stringify(uidata))
             .done(function (data, textStatus, jqXHR) {
-                toastr.success("El usuario '" + uidata.UserName + "' fue creado. " + uidata.responseTronSubAgent , "", { timeOut: 5000, closeButton: true, progressBar: true });
+                toastr.success("El usuario '" + uidata.UserName + "' fue creado. " + uidata.responseTronSubAgent, "", { timeOut: 5000, closeButton: true, progressBar: true });
                 Refresh();
                 switch (mode) {
                     case 'Save':
@@ -560,6 +560,17 @@ app.SecurityUserMember = (function () {
             $('#LastName').val((data.LastName + ' ' + data.SecondLastName).trim());
             $('#PhoneNumber').val(data.PhoneNumber);
             app.ui.SetDateValue('#BirthDate', data.BirthDate);
+        }
+        let tenant = localStorage.getItem('Tenant');
+        if (tenant === 'Aliados' || tenant === 'Purdy') {
+            let documentNumber = $('#DocumentNumber').val();
+            let docType = $('#DocumentNumberType').data('value');
+            app.core.Get(app.setting.apipath + `v1/Security/agent?tip_docum=${docType}&cod_docum=${documentNumber}`)
+                .done(function (data, textStatus, jqXHR) {
+                    if (data != '') {
+                        $('#EMail').val(data.EMail);
+                    }
+                });
         }
     }
 
