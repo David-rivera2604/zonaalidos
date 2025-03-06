@@ -360,16 +360,6 @@ namespace Architect.API.Core.Business.Security
             return result;
         }
 
-
-
-        /// <summary>
-        /// Clase que devuelve el usuario actual
-        /// </summary>
-        public static Contracts.Security.Token ReturnUser()
-        {
-            return UserIdActual;
-        }
-
         /// <summary>
         /// Metodo
         /// </summary>

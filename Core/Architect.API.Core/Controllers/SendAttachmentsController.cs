@@ -17,11 +17,6 @@ namespace Architect.API.Core.Controllers
     //[ApiExplorerSettings(IgnoreApi = true)]
     public class SendAttachmentsController : ApiController
     {
-        /// <summary>
-        /// Usuario actual que ingreso desde el login.
-        /// </summary>
-        public static Contracts.Security.Token UsuaActual = Accounts.ReturnUser();
-
 
         /// <summary>
         /// Recibe documentos a ser asociados a una póliza emitida.
