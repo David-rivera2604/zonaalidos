@@ -313,6 +313,13 @@ app.ui = (function () {
             validate.settings.ignore = ':hidden';
             return result;
         },
+        ResetValidateElement: function (formId, elementId) {
+            var result = false;
+            var instance = $(formId);
+            var validate = instance.validate();
+            validate.resetElements($(elementId));
+            $(elementId + '-error').hide();
+        },
         GetDateRawValue: function (selector) {
             return (($(selector).val() !== '') ? $(selector + '_group').data('DateTimePicker').date().toDate() : moment('0001-01-01T00:00:00').toDate());
         },

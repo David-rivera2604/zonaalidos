@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
+using System.Xml.Linq;
 
 namespace Architect.API.Core.Business.General
 {
@@ -232,5 +233,36 @@ namespace Architect.API.Core.Business.General
             }
         }
 
+        /// <summary>
+        /// Valida el tamaño del archivo según los criterios definidos.
+        /// </summary>
+        public static bool IsValidFileSize(this HttpPostedFile file)
+        {
+            if (file.IsNotEmpty())
+            {
+                bool result = true;
+                string contentType = file.ContentType.ToLower();
+                int size = file.ContentLength;
+
+                if ((contentType == "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    || contentType == "application/pdf")
+                    && size < 13312)
+                {
+                    result = false;
+                }
+                if (contentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" && size < 9216)
+                {
+                    result = false;
+                }
+                if (size >= 31457280)
+                {
+                    result = false;
+                }
+
+                return result;
+            }
+            else
+                return false;
+        }
     }
 }
