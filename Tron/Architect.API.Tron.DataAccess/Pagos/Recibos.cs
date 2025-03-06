@@ -171,5 +171,16 @@ namespace Architect.API.Tron.DataAccess.Pagos
             return result;
         }
 
+
+        public static int Get_NumSpto(Int64 num_recibo,  IDbConnection connection = null)
+        {
+
+            return (int)Database.Select(
+@"SELECT C.NUM_SPTO 
+   FROM A2990700 C 
+  WHERE c.NUM_RECIBO=:num_recibo FETCH FIRST 5 ROWS ONLY")
+                     .AddParameter("num_recibo", DbType.Int32, 22, num_recibo)
+                     .QueryScalar<Decimal>(connection, "Research");
+        }
     }
 }

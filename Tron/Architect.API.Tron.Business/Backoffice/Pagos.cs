@@ -332,7 +332,8 @@ namespace Architect.API.Tron.Business.Backoffice
 
                 if (!string.IsNullOrEmpty(token))
                 {
-                    DataAccess.Pagos.Tarjetas.CreateBoveda(request.OnlinePayment.PolicyId, 0, request.OnlinePayment.DocumentType.DocumentType(), request.OnlinePayment.DocumentNumber, card, token, string.Empty, true, "subscribe");
+                    int numSpto = DataAccess.Pagos.Recibos.Get_NumSpto(request.OnlinePayment.BillNumber);
+                    DataAccess.Pagos.Tarjetas.CreateBoveda(request.OnlinePayment.PolicyId, numSpto, request.OnlinePayment.DocumentType.DocumentType(), request.OnlinePayment.DocumentNumber, card, token, string.Empty, true, "subscribe");
                 }
             }
             Utilities.Log.WarningLog("Pagos.CambioTarjeta", string.Format("codigo_respuesta={0}, mensaje_respuesta={1}, recibo={2}", tronCobro.codigo_respuesta, tronCobro.mensaje_respuesta, request.OnlinePayment.BillNumber), "payment");

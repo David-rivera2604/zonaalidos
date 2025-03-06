@@ -675,3 +675,4 @@
                    Trazabilidad. Desde aliados y purdy los usuarios deben ver todos los casos según el intermediario.
                    Trazabilidad. Desde aliados y purdy se optimiza la consulta para evitar leer todos los casos.
 1.6.108 04/03/2025 Aliados. Se limita el tamaño mínimo de los archivos según el tipo.
+1.6.109 05/03/2025 Pasarela Evertec. Tarjetas a tokenizar no almacena el número de suplemento.
