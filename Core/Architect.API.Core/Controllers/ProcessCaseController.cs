@@ -19,11 +19,6 @@ namespace Architect.API.Core.Controllers
     [ApiExplorerSettings(IgnoreApi = true)]
     public class ProcessCaseController : ApiController
     {
-        /// <summary>
-        /// Usuario actual que ingreso desde el login.
-        /// </summary>
-        public static Contracts.Security.Token UsuaActual = Accounts.ReturnUser();
-
 
         /// <summary>
         /// Crea un registro en la tabla ProcessCase.
@@ -76,13 +71,11 @@ namespace Architect.API.Core.Controllers
         [Authorize]
         public async Task<IHttpActionResult> Get([FromUri] string filter = "", int beginIndex = 1, int endIndex = int.MaxValue)
         {
-            //Usuario actual para filtrar la informacion
-            //int userIdActual = Accounts.ReturnUser().UserId;
-            int agentCodeActual = Accounts.ReturnUser().AgentCode;
 
             Contracts.Security.Token tokenInfo = Security.Token.Info();
+            int agentCodeActual = tokenInfo.AgentCode;
 
-            List<Architect.API.Core.Contracts.General.ProcessCase> result = null;
+            List <Architect.API.Core.Contracts.General.ProcessCase> result = null;
 
             await Task.Run(() =>
             {
