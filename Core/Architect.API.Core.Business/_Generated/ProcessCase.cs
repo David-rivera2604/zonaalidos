@@ -1,6 +1,7 @@
 ﻿using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Architect.API.Core.Business.General
 {
@@ -102,6 +103,11 @@ namespace Architect.API.Core.Business.General
             if (filter == "CaseAliados")
             {
                 currentFilter = " AND ProcessCase.CustomNumericKey = " + agentCodeActual.ToString();
+
+                if (companyId == 2 || companyId == 12)
+                {
+                    companyId = 100;
+                }
             }
             List<Architect.API.Core.Contracts.General.ProcessCase> result = Architect.API.Core.DataAccess.General.ProcessCase.RetrieveAll(companyId, currentFilter, beginIndex, endIndex);
 

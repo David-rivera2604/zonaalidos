@@ -1,21 +1,11 @@
 ﻿using Architect.API.Core.Contracts.Security;
 using Architect.API.Core.DataAccess.Security;
 using Architect.Utilities.Extensions;
-using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security.Claims;
-using System.Web.UI;
-using Architect.API.Core.Security;
-using System.DirectoryServices.ActiveDirectory;
 using System.Threading.Tasks;
-using Architect.API.Core.Contracts.General;
-using System.Text.RegularExpressions;
-using SmartFormat.Core.Settings;
-
 
 namespace Architect.API.Core.Business.Security
 {

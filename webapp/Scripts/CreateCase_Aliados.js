@@ -161,7 +161,7 @@ app.CentralCase = (function () {
         $('#Label').val(data.Label);
         app.ui.SetNumericValue('#SubStatus', data.SubStatus);
         $('#SubLabel').val(data.SubLabel);
-        $('#FlowId').val(data.FlowId);
+        //$('#FlowId').val(data.FlowId);
         $('#UserId').val(data.UserId);
         $('#SLA').val(data.SLA);
     }
@@ -375,7 +375,12 @@ function Lookups(keys, callback, url, path) {
                     $.each(values.Lkp, function () {
                         selectedOptions.append($('<option />').val(this['Code']).text(this['Description']));
                     });
-                    selectedOptions.val(-1);
+                    if (selectedOptions.data("autoselect") === true) {
+                        selectedOptions.val($('select#' + ctrlName[index] + ' option:first').val());
+                        selectedOptions.trigger('change');
+                    } else {
+                        selectedOptions.val(-1);
+                    }
                 }
                 else {
                     selectedOptions.replaceWith('<div id="radio' + ctrlName[index] + '"></div>');

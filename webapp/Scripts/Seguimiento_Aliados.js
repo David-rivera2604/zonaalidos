@@ -173,7 +173,7 @@ app.CaseInfo = (function () {
                         url = '';
                     }
 
-                    app.CentralCase.Get(/*Api1*/  app.setting.apipath + 'v1/ProcessCase?filter=CaseAliados'  /*Api2*/ /*app.setting.apipath + 'v1/datasource/json?id=4000&sequence=' + index + '&url=' + window.location.search.slice(1).replace(/&/g, ':') + url*/, tokenAl, false)
+                    app.core.Get(app.setting.apipath + 'v1/ProcessCase?filter=CaseAliados')
                         .done(function (data) {
                             data.forEach(function (row, index, array) {
 

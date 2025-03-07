@@ -71,13 +71,11 @@ namespace Architect.API.Core.Controllers
         [Authorize]
         public async Task<IHttpActionResult> Get([FromUri] string filter = "", int beginIndex = 1, int endIndex = int.MaxValue)
         {
-            //Usuario actual para filtrar la informacion
-            //int userIdActual = Accounts.ReturnUser().UserId;
-            int agentCodeActual = Accounts.ReturnUser().AgentCode;
 
             Contracts.Security.Token tokenInfo = Security.Token.Info();
+            int agentCodeActual = tokenInfo.AgentCode;
 
-            List<Architect.API.Core.Contracts.General.ProcessCase> result = null;
+            List <Architect.API.Core.Contracts.General.ProcessCase> result = null;
 
             await Task.Run(() =>
             {
