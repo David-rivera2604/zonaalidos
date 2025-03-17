@@ -178,8 +178,9 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         /// <summary>
         /// Permite el envio de un link de pago.
         /// </summary>
-        public async static Task<Payment.Integrations.Contracts.v2.PaymentInformation> SendPaymentLink(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo, string mode)
+        public async static Task<Payment.Integrations.Contracts.v2.PaymentInformation> SendPaymentLink(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo, string mode, string email)
         {
+            Payment.Integrations.Contracts.v2.PaymentInformation result = null;
             Payment.Integrations.Contracts.v2.PaymentInformation payInfov2;
 
             string provider = Core.Business.Settings.StringValue(tokenInfo.CompanyId, "Tenant.Settings.Payment.Provider");
@@ -232,14 +233,20 @@ namespace Architect.API.Tron.Business.Backoffice.v2
 
                     }
                 }
+                result = new Payment.Integrations.Contracts.v2.PaymentInformation() { Status = payInfov2.Status, Reason = payInfov2.Reason };
             }
             else
             {
-                payInfov2 = await Business.Backoffice.Pagos.SendPaymentLink(tokenInfo, ipAddress, userAgent, num_poliza, num_recibo);
+                bool onlyInfo = false;
+                if (mode == "CorreoInfo")
+                {
+                    onlyInfo = true;
+                }
+                payInfov2 = await Business.Backoffice.Pagos.SendPaymentLink(tokenInfo, ipAddress, userAgent, num_poliza, num_recibo, onlyInfo, email);
+                result = new Payment.Integrations.Contracts.v2.PaymentInformation() { Status = payInfov2.Status, Reason = payInfov2.Reason, emailCliente = payInfov2.emailCliente, telefonoCliente = payInfov2.telefonoCliente };
             }
-            return new Payment.Integrations.Contracts.v2.PaymentInformation() { Status = payInfov2.Status, Reason = payInfov2.Reason };
+            return result;
         }
-
 
         /// <summary>
         /// Proceso 'Batch', que envía a tokenizar las tarjetas de créditos registradas en tron.

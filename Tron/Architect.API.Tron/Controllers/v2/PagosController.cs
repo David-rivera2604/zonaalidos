@@ -64,7 +64,7 @@ namespace Architect.API.Tron.Controllers.v2
             string ipAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
             string userAgent = Request.Headers.UserAgent.ToString();
 
-            Payment.Integrations.Contracts.v2.PaymentInformation result = await Business.Backoffice.v2.Pagos.SendPaymentLink(tokenInfo, ipAddress, userAgent, sessionRequest.num_poliza, sessionRequest.num_recibo, sessionRequest.mode);
+            Payment.Integrations.Contracts.v2.PaymentInformation result = await Business.Backoffice.v2.Pagos.SendPaymentLink(tokenInfo, ipAddress, userAgent, sessionRequest.num_poliza, sessionRequest.num_recibo, sessionRequest.mode, sessionRequest.emailCliente);
 
             return Ok(result);
         }

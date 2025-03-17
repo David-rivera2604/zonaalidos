@@ -9,6 +9,7 @@ using Architect.Payment.Integrations.Contracts;
 using Architect.Payment.Integrations.Providers.Placetopay.Contracts;
 using Architect.Utilities.Extensions;
 using Newtonsoft.Json;
+using static iTextSharp.text.pdf.PdfDocument;
 
 namespace Architect.API.Tron.Business.Backoffice
 {
@@ -98,7 +99,7 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Permite la creación de un sesión para realizar un pago.
         /// </summary>
-        public async static Task<Dictionary<string, object>> CrearSesionCore(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo)
+        public async static Task<Dictionary<string, object>> CrearSesionCore(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo, bool onlyInfo = false, string email = "")
         {
             int timeout = Core.Business.General.DynamicSetting.IntegerValue(tokenInfo, "Payment.Silice.Init.Timeout", 5);
             Payment.Integrations.Contracts.SessionInformation session = await Payment.Integrations.Payment.VerifySession(tokenInfo.CompanyId, num_poliza, num_recibo, timeout);
@@ -125,7 +126,7 @@ namespace Architect.API.Tron.Business.Backoffice
                     {
                         FirstName = recibo.NOM_TERCERO,
                         LastName = recibo.APE1_TERCERO,
-                        Email = recibo.EMAIL.IfEmpty(recibo.TXT_EMAIL),
+                        Email = email.IfEmpty(recibo.EMAIL.IfEmpty(recibo.TXT_EMAIL)),
                         Document = recibo.COD_DOCUM,
                         DocumentType = recibo.TIP_DOCUM,
                         Mobile = recibo.TLF_MOVIL.IfEmpty(recibo.TLF_NUMERO),
@@ -135,7 +136,10 @@ namespace Architect.API.Tron.Business.Backoffice
                         Currency = recibo.COD_MON.ToString(),
                         Amount = recibo.IMP_RECIBO
                     };
-                    session = await Payment.Integrations.Payment.NewSession(tokenInfo.CompanyId, tokenInfo.UserId, tokenInfo.AgentCode, payInfo, ipAddress, userAgent);
+                    if (!onlyInfo)
+                    {
+                        session = await Payment.Integrations.Payment.NewSession(tokenInfo.CompanyId, tokenInfo.UserId, tokenInfo.AgentCode, payInfo, ipAddress, userAgent);
+                    }
                 }
                 else
                 {
@@ -277,22 +281,31 @@ namespace Architect.API.Tron.Business.Backoffice
             return (tronCobro.codigo_respuesta == "200");
         }
 
-        public async static Task<Payment.Integrations.Contracts.v2.PaymentInformation> SendPaymentLink(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo)
+        public async static Task<Payment.Integrations.Contracts.v2.PaymentInformation> SendPaymentLink(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo, bool onlyInfo = false, string email = "")
         {
-            Dictionary<string, object> sessionCore = await CrearSesionCore(tokenInfo, ipAddress, userAgent, num_poliza, num_recibo);
+            Payment.Integrations.Contracts.v2.PaymentInformation result = null;
+            Dictionary<string, object> sessionCore = await CrearSesionCore(tokenInfo, ipAddress, userAgent, num_poliza, num_recibo, onlyInfo, email);
             Payment.Integrations.Contracts.SessionInformation session = (Payment.Integrations.Contracts.SessionInformation)sessionCore["session"];
 
-
-            if (session.Status == "OK")
+            if (onlyInfo)
             {
                 Payment.Integrations.Contracts.PaymentInformation payInfo = (Payment.Integrations.Contracts.PaymentInformation)sessionCore["payinfo"];
 
-                Core.Business.General.Mail.SendByTemplate("Send_PaymentLink", tokenInfo.CompanyId, new { payinfo = payInfo, session = session }, new Dictionary<string, string> { { payInfo.Email, $"{payInfo.FirstName} {payInfo.LastName}" } });
+                return new Payment.Integrations.Contracts.v2.PaymentInformation() { Status = "OK", Reason = string.Empty, emailCliente = payInfo.Email, telefonoCliente = payInfo.Mobile };
+            }
+            else
+            {
+                if (session.Status == "OK")
+                {
+                    Payment.Integrations.Contracts.PaymentInformation payInfo = (Payment.Integrations.Contracts.PaymentInformation)sessionCore["payinfo"];
 
-                session.Reason = $"El enlace de pago fue enviado al correo electrónico {payInfo.Email} del cliente";
+                    Core.Business.General.Mail.SendByTemplate("Send_PaymentLink", tokenInfo.CompanyId, new { payinfo = payInfo, session = session }, new Dictionary<string, string> { { payInfo.Email, $"{payInfo.FirstName} {payInfo.LastName}" } });
+
+                    session.Reason = $"El enlace de pago fue enviado al correo electrónico {payInfo.Email} del cliente";
+                }
+                return new Payment.Integrations.Contracts.v2.PaymentInformation() { Status = session.Status, Reason = session.Reason };
             }
 
-            return new Payment.Integrations.Contracts.v2.PaymentInformation() { Status = session.Status, Reason = session.Reason };
 
         }
 

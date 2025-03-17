@@ -24,6 +24,12 @@ namespace Architect.API.Tron.Contracts
         /// Indica el modo de uso
         /// </summary>
         public string mode { get; set; }
+
+        /// <summary>
+        /// Indica el email a ser usando para el envio del link de pago.
+        /// </summary>
+        public string emailCliente { get; set; }
+
     }
 
 }

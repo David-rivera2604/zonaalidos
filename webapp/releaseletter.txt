@@ -678,3 +678,4 @@
 1.6.109 05/03/2025 Pasarela Evertec. Tarjetas a tokenizar no almacena el número de suplemento.
 1.6.110 05/03/2025 Aliados. Al crear usuario en el tenant Aliados o Purdy se debe tomar el email de tron usando la identificación.
 1.6.111 06/03/2025 Trazabilidad. Falla en consulta de seguimiento de aliados.
+1.6.112 17/03/2025 Pasarela Evertec. Se ajusta el envio de link de pago por correo para permitir cambiar el correo a usar.
