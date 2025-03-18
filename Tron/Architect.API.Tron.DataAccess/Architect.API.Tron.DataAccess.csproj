@@ -95,6 +95,7 @@
     <Compile Include="Pagos\Num_Tarjeta_mcr.cs" />
     <Compile Include="Pagos\Recibos.cs" />
     <Compile Include="Pagos\Tarjetas.cs" />
+    <Compile Include="Pagos\SINPEMovil.cs" />
     <Compile Include="PolicyProposalEx.cs" />
     <Compile Include="PolicyProposal.cs" />
     <Compile Include="Poliza.cs" />

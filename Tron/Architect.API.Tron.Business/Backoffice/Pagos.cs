@@ -184,7 +184,7 @@ namespace Architect.API.Tron.Business.Backoffice
             return result;
         }
 
-        private static async Task PaymentApproved(InformationRequest result)
+        internal static async Task PaymentApproved(InformationRequest result)
         {
             if (result.subscribe)
             {
