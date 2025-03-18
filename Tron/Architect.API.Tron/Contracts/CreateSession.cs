@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,6 +30,11 @@ namespace Architect.API.Tron.Contracts
         /// Indica el email a ser usando para el envio del link de pago.
         /// </summary>
         public string emailCliente { get; set; }
+
+        /// <summary>
+        /// Indica agente al que le perteneces el recibo, solo aplica para roles Comercial_Mapfre y Empleado.
+        /// </summary>
+        public int cod_agt { get; set; }
 
     }
 

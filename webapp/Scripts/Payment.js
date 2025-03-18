@@ -13,7 +13,7 @@ app.Payment = (function () {
             if ((id == 310 && sequence == 2) ||
                 (id == 3001 && sequence == 1) ||
                 (id == 410 && sequence == 1)) {
-                data = { num_poliza: row.NUM_POLIZA, num_recibo: row.NUM_RECIBO }
+                data = { num_poliza: row.NUM_POLIZA, num_recibo: row.NUM_RECIBO, cod_agt: row.COD_AGT }
             }
             $("#generalNotify").html("");
             $('.ibox-content').toggleClass('sk-loading');

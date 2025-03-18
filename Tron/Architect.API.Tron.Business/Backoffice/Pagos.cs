@@ -99,7 +99,7 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Permite la creación de un sesión para realizar un pago.
         /// </summary>
-        public async static Task<Dictionary<string, object>> CrearSesionCore(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo, bool onlyInfo = false, string email = "")
+        public async static Task<Dictionary<string, object>> CrearSesionCore(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo, int agentCode, bool onlyInfo = false, string email = "")
         {
             int timeout = Core.Business.General.DynamicSetting.IntegerValue(tokenInfo, "Payment.Silice.Init.Timeout", 5);
             Payment.Integrations.Contracts.SessionInformation session = await Payment.Integrations.Payment.VerifySession(tokenInfo.CompanyId, num_poliza, num_recibo, timeout);
@@ -108,17 +108,10 @@ namespace Architect.API.Tron.Business.Backoffice
             if (session == null)
             {
                 int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
-                IsEmployee = tokenInfo.Roles.Contain("Empleado");
-
-                if (IsEmployee)
-                {
-                    tokenInfo.AgentCode = 999999;
-                }
-
                 int cantidadRemesados = Architect.API.Tron.DataAccess.A2990700.RecibosRemesadosPorPoliza(cod_cia, num_poliza);
                 if (cantidadRemesados == 0)
                 {
-                    recibo = DataAccess.PorRamo.Informacion_de_un_Recibo(cod_cia, tokenInfo.AgentCode, tokenInfo.IdentificationType.IdentificationType(), tokenInfo.Identification.DocumentNumber(tokenInfo.IdentificationType), num_poliza, num_recibo);
+                    recibo = DataAccess.PorRamo.Informacion_de_un_Recibo(cod_cia, agentCode, tokenInfo.IdentificationType.IdentificationType(), tokenInfo.Identification.DocumentNumber(tokenInfo.IdentificationType), num_poliza, num_recibo);
                 }
                 if (recibo != null)
                 {
@@ -138,7 +131,7 @@ namespace Architect.API.Tron.Business.Backoffice
                     };
                     if (!onlyInfo)
                     {
-                        session = await Payment.Integrations.Payment.NewSession(tokenInfo.CompanyId, tokenInfo.UserId, tokenInfo.AgentCode, payInfo, ipAddress, userAgent);
+                        session = await Payment.Integrations.Payment.NewSession(tokenInfo.CompanyId, tokenInfo.UserId, agentCode, payInfo, ipAddress, userAgent);
                     }
                 }
                 else
@@ -157,9 +150,9 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Permite la creación de un sesión para realizar un pago.
         /// </summary>
-        public async static Task<Payment.Integrations.Contracts.SessionInformation> CrearSesion(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo)
+        public async static Task<Payment.Integrations.Contracts.SessionInformation> CrearSesion(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo, int agentCode)
         {
-            Dictionary<string, object> sessionCore = await CrearSesionCore(tokenInfo, ipAddress, userAgent, num_poliza, num_recibo);
+            Dictionary<string, object> sessionCore = await CrearSesionCore(tokenInfo, ipAddress, userAgent, num_poliza, num_recibo, agentCode);
             return (Payment.Integrations.Contracts.SessionInformation)sessionCore["session"];
         }
 
@@ -281,10 +274,10 @@ namespace Architect.API.Tron.Business.Backoffice
             return (tronCobro.codigo_respuesta == "200");
         }
 
-        public async static Task<Payment.Integrations.Contracts.v2.PaymentInformation> SendPaymentLink(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo, bool onlyInfo = false, string email = "")
+        public async static Task<Payment.Integrations.Contracts.v2.PaymentInformation> SendPaymentLink(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo, int agentCode, bool onlyInfo = false, string email = "")
         {
             Payment.Integrations.Contracts.v2.PaymentInformation result = null;
-            Dictionary<string, object> sessionCore = await CrearSesionCore(tokenInfo, ipAddress, userAgent, num_poliza, num_recibo, onlyInfo, email);
+            Dictionary<string, object> sessionCore = await CrearSesionCore(tokenInfo, ipAddress, userAgent, num_poliza, num_recibo, agentCode, onlyInfo, email);
             Payment.Integrations.Contracts.SessionInformation session = (Payment.Integrations.Contracts.SessionInformation)sessionCore["session"];
 
             if (onlyInfo)

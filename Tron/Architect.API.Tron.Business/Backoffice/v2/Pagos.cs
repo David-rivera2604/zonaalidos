@@ -242,7 +242,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 {
                     onlyInfo = true;
                 }
-                payInfov2 = await Business.Backoffice.Pagos.SendPaymentLink(tokenInfo, ipAddress, userAgent, num_poliza, num_recibo, onlyInfo, email);
+                payInfov2 = await Business.Backoffice.Pagos.SendPaymentLink(tokenInfo, ipAddress, userAgent, num_poliza, num_recibo, tokenInfo.AgentCode,  onlyInfo, email);
                 result = new Payment.Integrations.Contracts.v2.PaymentInformation() { Status = payInfov2.Status, Reason = payInfov2.Reason, emailCliente = payInfov2.emailCliente, telefonoCliente = payInfov2.telefonoCliente };
             }
             return result;
