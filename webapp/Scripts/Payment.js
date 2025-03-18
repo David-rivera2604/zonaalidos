@@ -13,7 +13,7 @@ app.Payment = (function () {
             if ((id == 310 && sequence == 2) ||
                 (id == 3001 && sequence == 1) ||
                 (id == 410 && sequence == 1)) {
-                data = { num_poliza: row.NUM_POLIZA, num_recibo: row.NUM_RECIBO }
+                data = { num_poliza: row.NUM_POLIZA, num_recibo: row.NUM_RECIBO, cod_agt: row.COD_AGT }
             }
             $("#generalNotify").html("");
             $('.ibox-content').toggleClass('sk-loading');
@@ -170,7 +170,7 @@ app.Payment = (function () {
                 }
             });
         },
-        SendLink: function (tipo, poliza, recibo) {
+        SendLink: function (tipo, poliza, recibo, email) {
             console.log(tipo, poliza, recibo);
             app.ui.ButtonDoing('#WSendBtn');
             app.ui.ButtonDoing('#ESendBtn');
@@ -185,7 +185,7 @@ app.Payment = (function () {
                         app.ui.CloseSideBar();
                         app.ui.ShowAlert('generalNotify', 'alert-danger', err.message);
                     }).then(d => {
-                       // $('.ibox-content').toggleClass('sk-loading');
+                        // $('.ibox-content').toggleClass('sk-loading');
                         app.ui.CloseSideBar();
                         if (d?.status != undefined) {
                             switch (d.status) {
@@ -206,9 +206,8 @@ app.Payment = (function () {
                     });
 
             }
-            else
-            {
-                app.core.Post(app.setting.apipath + 'v2/Pagos/SendPaymentLink', JSON.stringify({ mode: tipo, num_poliza: poliza, num_recibo: recibo }))
+            else {
+                app.core.Post(app.setting.apipath + 'v2/Pagos/SendPaymentLink', JSON.stringify({ mode: tipo, num_poliza: poliza, num_recibo: recibo, emailCliente: email }))
                     .done(function (data) {
                         console.log(data);
 
@@ -219,9 +218,22 @@ app.Payment = (function () {
                         app.ui.CloseSideBar();
                         app.ui.ButtonDoing('#WSendBtn');
                         app.ui.ButtonDoing('#ESendBtn');
+                        app.ui.ButtonDoing('#enviar');
+                        
 
                     });
             }
+        },
+        CorreoInfo: function (poliza, recibo) {
+            app.ui.CloseSideBar();
+            $('.ibox-content').toggleClass('sk-loading');
+            app.core.Post(app.setting.apipath + 'v2/Pagos/SendPaymentLink', JSON.stringify({ mode: 'CorreoInfo', num_poliza: poliza, num_recibo: recibo }))
+                .done(function (data) {
+                    console.log(data);
+
+                    app.ui.ShowSideBar({ title: 'Enviar enlace de pago para el recibo #{NUM_RECIBO}', id: 9008, data: { NUM_POLIZA: poliza, NUM_RECIBO: recibo, EMAIL: data.emailCliente } });
+
+                });
         }
     };
 })();

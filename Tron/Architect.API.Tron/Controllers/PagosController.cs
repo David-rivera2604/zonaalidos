@@ -1,4 +1,5 @@
 ﻿using Architect.API.Core.Business.General;
+using Architect.Utilities.Extensions;
 using Microsoft.Web.Http;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,12 @@ namespace Architect.API.Tron.Controllers
             {
                 string ipAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
                 string userAgent = Request.Headers.UserAgent.ToString();
-                result = await Business.Backoffice.Pagos.CrearSesion(tokenInfo, ipAddress, userAgent, sessionRequest.num_poliza, sessionRequest.num_recibo);
+                int agentCode = tokenInfo.AgentCode;
+                if (sessionRequest.cod_agt.IsNotEmpty() && (tokenInfo.Roles.Contain("Empleado") || tokenInfo.Roles.Contain("Comercial_Mapfre")))
+                {
+                    agentCode = sessionRequest.cod_agt;
+                }
+                result = await Business.Backoffice.Pagos.CrearSesion(tokenInfo, ipAddress, userAgent, sessionRequest.num_poliza, sessionRequest.num_recibo, agentCode);
             }
             catch (Exception ex)
             {
