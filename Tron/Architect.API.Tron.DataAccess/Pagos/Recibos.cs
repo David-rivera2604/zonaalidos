@@ -144,7 +144,6 @@ namespace Architect.API.Tron.DataAccess.Pagos
             return result;
         }
 
-
         // <summary>
         /// Extrae la información de los recibos de un ramo pagados a la una fecha.
         /// </summary>
@@ -171,8 +170,7 @@ namespace Architect.API.Tron.DataAccess.Pagos
             return result;
         }
 
-
-        public static int Get_NumSpto(Int64 num_recibo,  IDbConnection connection = null)
+        public static int Get_NumSpto(Int64 num_recibo, IDbConnection connection = null)
         {
 
             return (int)Database.Select(
@@ -182,5 +180,69 @@ namespace Architect.API.Tron.DataAccess.Pagos
                      .AddParameter("num_recibo", DbType.Int32, 22, num_recibo)
                      .QueryScalar<Decimal>(connection, "Research");
         }
+
+        public static Contracts.Pagos.Recibo PrimerReciboAlCobroPorPoliza(int cod_cia, string num_poliza)
+        {
+            Contracts.Pagos.Recibo result = new Contracts.Pagos.Recibo();
+            string filter = string.Empty;
+
+            Database.Select(
+@"SELECT C.NUM_RECIBO, C.FEC_EFEC_RECIBO, SUM(C.IMP_RECIBO) IMP_RECIBO, A400.COD_MON_ISO NOM_MON, A.NUM_POLIZA, A.COD_AGT, a1800.nom_ramo, a200.NOM_SECTOR, A.TIP_DOCUM, A.COD_DOCUM, A99.NOM_TERCERO, A99.NOM2_TERCERO, A99.APE1_TERCERO, A99.APE2_TERCERO,
+  		    A1331.TLF_NUMERO, A1331.TLF_NUMERO_COM, A1331.EMAIL, A1331.EMAIL_COM, A1331.TXT_EMAIL
+    FROM A2000030 A
+    JOIN A2990700 C 
+        ON C.COD_CIA  = A.COD_CIA
+        AND C.NUM_SPTO  <= A.NUM_SPTO
+        AND C.NUM_APLI   = A.NUM_APLI
+        AND C.NUM_POLIZA  = A.NUM_POLIZA
+        AND C.NUM_SPTO_APLI = A.NUM_SPTO_APLI
+        AND C.TIP_SITUACION IN ('RE','EP')
+JOIN A1001399 A99 ON A99.COD_CIA  = A.COD_CIA AND A99.TIP_DOCUM = A.TIP_DOCUM AND A99.COD_DOCUM = A.COD_DOCUM
+JOIN A1001331 A1331 ON A1331.COD_CIA  = A.COD_CIA AND A1331.TIP_DOCUM = A.TIP_DOCUM AND A1331.COD_DOCUM = A.COD_DOCUM
+JOIN A1000400 A400 ON A400.COD_MON = C.COD_MON
+JOIN A1001800 a1800 ON a1800.COD_CIA=A.COD_CIA AND a1800.COD_RAMO = A.COD_RAMO
+JOIN A1000200 a200 ON a200.COD_CIA=A.COD_CIA AND a200.COD_SECTOR = A.COD_SECTOR 
+WHERE A.COD_CIA = :cod_cia
+  AND A.NUM_POLIZA = :num_poliza 
+  AND A.MCA_POLIZA_ANULADA  = 'N'
+    AND A.NUM_SPTO = ( SELECT MAX(A230.NUM_SPTO)
+                        FROM A2000030 A230
+                        WHERE A230.COD_CIA    = A.COD_CIA
+                        AND A230.NUM_POLIZA = A.NUM_POLIZA )
+GROUP BY A.NUM_POLIZA, A.COD_AGT, a1800.nom_ramo, a200.NOM_SECTOR, A.TIP_DOCUM, A.COD_DOCUM, A99.NOM_TERCERO, A99.NOM2_TERCERO, A99.APE1_TERCERO, A99.APE2_TERCERO,
+        A1331.TLF_NUMERO, A1331.TLF_NUMERO_COM, A1331.EMAIL, A1331.EMAIL_COM, A1331.TXT_EMAIL, C.NUM_RECIBO, C.FEC_EFEC_RECIBO, A400.COD_MON_ISO
+ORDER BY C.FEC_EFEC_RECIBO
+FETCH FIRST 1 ROWS ONLY")
+                    .AddParameter("cod_cia", DbType.Int32, 22, cod_cia)
+                    .AddParameter("num_poliza", Architect.DataFactory.Enumerations.DbType.String, 13, num_poliza)
+                    .Query("Tron", new Action<IDataReader>((reader) =>
+                    {
+                        result = new Architect.API.Tron.Contracts.Pagos.Recibo()
+                        {
+                            NUM_RECIBO = reader.IntegerValue("NUM_RECIBO"),
+                            FEC_EFEC_RECIBO = reader.DateTimeValue("FEC_EFEC_RECIBO"),
+                            IMP_RECIBO = reader.DoubleValue("IMP_RECIBO"),
+                            NOM_MON = reader.StringValue("NOM_MON"),
+                            NUM_POLIZA = reader.StringValue("NUM_POLIZA"),
+                            NOM_RAMO = reader.StringValue("NOM_RAMO"),
+                            TIP_DOCUM = reader.StringValue("TIP_DOCUM"),
+                            COD_DOCUM = reader.StringValue("COD_DOCUM"),
+                            NOM_TERCERO = reader.StringValue("NOM_TERCERO"),
+                            NOM2_TERCERO = reader.StringValue("NOM2_TERCERO"),
+                            APE1_TERCERO = reader.StringValue("APE1_TERCERO"),
+                            APE2_TERCERO = reader.StringValue("APE2_TERCERO"),
+                            TLF_NUMERO = reader.StringValue("TLF_NUMERO"),
+                            TLF_NUMERO_COM = reader.StringValue("TLF_NUMERO_COM"),
+                            EMAIL = reader.StringValue("EMAIL"),
+                            EMAIL_COM = reader.StringValue("EMAIL_COM"),
+                            TXT_EMAIL = reader.StringValue("TXT_EMAIL"),
+                            TOKEN = reader.StringValue("TOKEN")
+                        };
+                    }));
+
+            return result;
+        }
+
     }
+
 }
