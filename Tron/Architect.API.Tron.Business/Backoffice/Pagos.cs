@@ -197,7 +197,7 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Procesa el pago de un recibo en tron.
         /// </summary>
-        public async static Task<bool> TronPayment(Architect.Payment.Integrations.Contracts.InformationRequest request, int agentCode, string source, string provider)
+        public async static Task<bool> TronPayment(Architect.Payment.Integrations.Contracts.InformationRequest request, int agentCode, string source, string provider, string pagadorReq = "")
         {
             string tipoPagador = "A";
             string pagador = agentCode.ToString();
@@ -221,7 +221,7 @@ namespace Architect.API.Tron.Business.Backoffice
             }
 
             //En el caso de que no se trate de un agente, se asume que es un cliente tomador
-            if (agentCode.IsEmpty() && request.OnlinePayment.UpdateUserCode.IsNotEmpty())
+            if (pagadorReq.IsEmpty() && agentCode.IsEmpty() && request.OnlinePayment.UpdateUserCode.IsNotEmpty())
             {
                 tipoPagador = "C";
                 var userInfo = Core.Business.Security.UserMember.RetrieveById(request.OnlinePayment.CompanyId, request.OnlinePayment.UpdateUserCode);
@@ -230,6 +230,12 @@ namespace Architect.API.Tron.Business.Backoffice
                     pagador = userInfo.IdentificationType.ToString().IdentificationType() + "-" + userInfo.Identification.DocumentNumber(userInfo.IdentificationType.ToString());
                 }
             }
+            if (pagadorReq.IsNotEmpty())
+            {
+                tipoPagador = "C";
+                pagador = pagadorReq;
+            }
+
 
             string data = JsonConvert.SerializeObject(
                 new

@@ -41,11 +41,11 @@ namespace Architect.API.Tron.Controllers
         /// Consulta los datos de una transacción.
         /// </summary>
         /// <param name="id">Identificador de la transacción.</param>
-        /// <param name="request">Datos de la consulta.</param>
         /// <returns>Resultado de la consulta.</returns>
         [HttpGet]
         [Route("ConsultaDatos")]
-        public IHttpActionResult ConsultaDatos([FromUri] string id) //, [FromBody] Contracts.SINPEMovil.Request.ConsultaDatos request)
+        [AllowAnonymous]
+        public IHttpActionResult ConsultaDatos([FromUri] string id)
         {
             if (string.IsNullOrEmpty(id))
             {

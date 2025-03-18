@@ -185,7 +185,7 @@ namespace Architect.API.Tron.DataAccess.Pagos
 
         public static Contracts.Pagos.Recibo PrimerReciboAlCobroPorPoliza(string num_poliza)
         {
-            Contracts.Pagos.Recibo result = new Contracts.Pagos.Recibo();
+            Contracts.Pagos.Recibo result = null;
             string filter = string.Empty;
 
             Database.Select(
@@ -237,8 +237,7 @@ FETCH FIRST 1 ROWS ONLY")
                             TLF_NUMERO_COM = reader.StringValue("TLF_NUMERO_COM"),
                             EMAIL = reader.StringValue("EMAIL"),
                             EMAIL_COM = reader.StringValue("EMAIL_COM"),
-                            TXT_EMAIL = reader.StringValue("TXT_EMAIL"),
-                            TOKEN = reader.StringValue("TOKEN")
+                            TXT_EMAIL = reader.StringValue("TXT_EMAIL")
                         };
                     }));
 

@@ -34,7 +34,7 @@ namespace Architect.API.Tron.Contracts.SINPEMovil.Request
         /// <summary>
         /// Monto del pago, representado con dos decimales.
         /// </summary>
-        public decimal Monto { get; set; }
+        public double Monto { get; set; }
 
         /// <summary>
         /// Fecha y hora en que se realizó el registro del pago.
