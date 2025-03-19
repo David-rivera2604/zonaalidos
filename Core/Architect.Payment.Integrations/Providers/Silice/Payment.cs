@@ -241,10 +241,11 @@ namespace Architect.Payment.Integrations.Providers.Silice
                 IssueDate = DateTime.Now,
                 StatusDate = DateTime.Now,
                 Status = 3,
-                ProviderStatus= Providers.Placetopay.Webcheckout.ST_PENDING,
+                ProviderStatus = Providers.Placetopay.Webcheckout.ST_PENDING,
                 RecurringReceipt = true,
                 ProcessId = processId,
-                RequestID = billNumber
+                RequestID = billNumber,
+                Source = "Recurring"
             });
             return track.Id;
         }

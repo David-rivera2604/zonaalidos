@@ -199,9 +199,10 @@ namespace Architect.API.Tron.Business.Backoffice
                 StatusDate = DateTime.Now,
                 Status = 3,
                 ProviderStatus = "PENDING",
-                RecurringReceipt = true,
+                RecurringReceipt = false,
                 ProcessId = id.ToString(),
-                RequestID = recibo.NUM_RECIBO
+                RequestID = recibo.NUM_RECIBO,
+                Source = "SINPEMovil"
             };
 
             var track = Payment.Integrations.Business.OnlinePayment.Create(2, 1, payment);
