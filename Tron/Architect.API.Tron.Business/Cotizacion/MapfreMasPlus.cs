@@ -81,7 +81,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             };
 
             List<string> keys = new List<string> {
-                "MM_ClaseVehiculos", "MM_Plan",
+                "MM_ClaseVehiculos", "MM_Plan303",
                 "TRON_G2990019:IMP_AUTO_RC","TRON_TA301001EX:3001",
                 "TRON_DEDU_CONTR:DED_AUTO_RC", "TRON_G1010031:DEDUC303_3001",
                 "TRON_G2990019:IMP_AUTO_GMO", "TRON_TA301001EX:3002",
@@ -404,7 +404,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                     case "MM_ClaseVehiculos":
                         result.cod_tip_vehi = itemValues.Lkp;
                         break;
-                    case "MM_Plan":
+                    case "MM_Plan303":
                         result.PLAN_AUTO = itemValues.Lkp;
                         break;
                     case "TRON_G2990019:IMP_AUTO_RC":

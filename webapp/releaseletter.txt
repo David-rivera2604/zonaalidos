@@ -680,3 +680,5 @@
 1.6.111 06/03/2025 Trazabilidad. Falla en consulta de seguimiento de aliados.
 1.6.112 17/03/2025 Pasarela Evertec. Cuando se envía el link de pago por correo debe mostrar el default, pero debe permitir cambiarlo antes de enviarlo.
 1.6.113 17/03/2025 Pasarela Evertec. Consulta 410 que es para empleados, al enviar usando otro agente sale indica el siguiente mensaje "Recibo no encontrado o no está pendiente de pago".
+		19/03/2025 Multirriesgo. Se asigna contrato generico en settingreload para solventar la busqueda de ocupaciones del riesgo.
+		19/03/2025 MapfreMasPlus. Cambio de lectura en el plan, se condiciona a Davivienda al igual que Purdy por default el plan 38
