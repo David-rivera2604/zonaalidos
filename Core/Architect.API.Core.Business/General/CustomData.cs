@@ -46,5 +46,11 @@ namespace Architect.API.Core.Business.General
             return Core.DataAccess.General.CustomData.Delete(entityType, entityId) > 0;
         }
 
+
+        public static Architect.API.Core.Contracts.General.CustomData RetrieveByEntity(int entityType, string key)
+        {
+            return Core.DataAccess.General.CustomData.Retrieve(entityType, key);
+        }
+
     }
 }

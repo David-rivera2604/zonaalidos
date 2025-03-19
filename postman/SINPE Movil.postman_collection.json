@@ -1,0 +1,150 @@
+{
+	"info": {
+		"_postman_id": "d53b2d46-5e21-4585-99af-33d26b224843",
+		"name": "SINPE Movil",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5737193"
+	},
+	"item": [
+		{
+			"name": "Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Stores the token in an environment or global variable\r",
+							"var token = pm.response.json().Token;\r",
+							"pm.globals.set(\"token\", token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"clienteID\": \"admin\",\r\n    \"secretID\": \"2023\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/Security/Token",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Security",
+						"Token"
+					]
+				},
+				"description": "Permite validar las credenciales de acceso y generar un token que permite el consumo de las APIs."
+			},
+			"response": []
+		},
+		{
+			"name": "AplicarPago",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"IdentificacionCliente\": \"01-0123-0456\",\r\n    \"NombreCliente\": \"Roberto Barrantes\",\r\n    \"Moneda\": 1,\r\n    \"Monto\": 432.92,\r\n    \"Fecha\": \"2020-12-16 13:00\",\r\n    \"CodReferencia\": \"1234567890123456789012345\",\r\n    \"CodReferenciaBanco\": \"1234567891\",\r\n    \"Descripcion\": \"Póliza 4902510101001\",\r\n    \"TelefonoDestino\": \"88888888\",\r\n    \"DatosAdicionales\": [\r\n        {\r\n            \"Llave\": \"key1\",\r\n            \"Valor\": \"5566\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/SINPEMovil/AplicarPago",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"SINPEMovil",
+						"AplicarPago"
+					]
+				},
+				"description": "Aplica un pago recibido."
+			},
+			"response": []
+		},
+		{
+			"name": "ConsultaDatos",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/SINPEMovil/AplicarPago?id=56465",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"SINPEMovil",
+						"AplicarPago"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "56465",
+							"description": "Identificador de la transacción."
+						}
+					]
+				},
+				"description": "Consulta los datos de una transacción."
+			},
+			"response": []
+		}
+	]
+}
