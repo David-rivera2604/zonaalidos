@@ -679,4 +679,5 @@
 1.6.110 05/03/2025 Aliados. Al crear usuario en el tenant Aliados o Purdy se debe tomar el email de tron usando la identificación.
 1.6.111 06/03/2025 Trazabilidad. Falla en consulta de seguimiento de aliados.
 1.6.112 17/03/2025 Pasarela Evertec. Cuando se envía el link de pago por correo debe mostrar el default, pero debe permitir cambiarlo antes de enviarlo.
-1.6.113 17/03/2025 Pasarela Evertec. Consulta 410 que es para empleados, al enviar usando otro agente sale indica el siguiente mensaje "Recibo no encontrado o no está pendiente de pago".
+1.6.114 21/03/2025 Pasarela Evertec. Nuevo campo source en OnLinePayment para indicar la fuente del pago Widget, Recurring, PaymentLink o SINPEMovil.
+                   Pasarela Evertec. Implementación de servicios web para recibir pago por SIMPEMovil desarrollo al 90%.
