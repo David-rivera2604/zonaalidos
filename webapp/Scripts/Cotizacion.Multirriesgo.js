@@ -143,7 +143,7 @@ app.CotizacionMultirriesgo = (function () {
     function SettingReload() {
         var data = {
             cod_ramo: setupData.cod_ramo,
-            num_contrato: app.ui.GetDropDownNumericValue('#contrato'),
+            num_contrato: app.ui.GetDropDownNumericValue('#contrato') === 0 ? 99999 : app.ui.GetDropDownNumericValue('#contrato'),
             num_subcontrato: app.ui.GetDropDownNumericValue('#subcontrato'),
             num_poliza_grupo: setupData.polizagrupo,
             cod_mon: app.ui.GetDropDownNumericValue('#cod_mon'),
