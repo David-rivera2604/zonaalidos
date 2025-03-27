@@ -39,7 +39,7 @@ app.Payment = (function () {
                         });
                 }
             } else {
-                if (id == 310 && sequence == 2) {
+                if ((id == 310 && sequence == 2) || (id == 410 && sequence == 1)) {
                     app.Payment.SilicePaymentLink(row)
                         .catch(err => {
                             app.ui.ShowAlert('generalNotify', 'alert-danger', err.message);
