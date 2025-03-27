@@ -166,37 +166,44 @@ namespace Architect.API.Core.Controllers
                     HttpPostedFile httpPostedFile = httpContext.Request.Files[i];
                     if (httpPostedFile.IsValidFileFormat())
                     {
-                        int size = httpPostedFile.ContentLength;
-                        int id = 0;
-                        string fileName = string.Format("{0}{1}", Guid.NewGuid(), Path.GetExtension(httpPostedFile.FileName));
-                        string fullFileName = Path.Combine(HostingEnvironment.MapPath(ConfigurationManager.AppSettings["Files.Path"]), fileName);
-                        httpPostedFile.SaveAs(fullFileName);
-
-                        if (httpContext.Request.Form?.Get("entityType") != null &&
-                            httpContext.Request.Form?.Get("entityId") != null &&
-                            httpContext.Request.Form?.Get("DocumentType") != null &&
-                            httpContext.Request.Form?.Get("Description") != null)
+                        if (httpPostedFile.IsValidFileSize())
                         {
-                            Contracts.General.Attachments attachment = new Contracts.General.Attachments
+                            int size = httpPostedFile.ContentLength;
+                            int id = 0;
+                            string fileName = string.Format("{0}{1}", Guid.NewGuid(), Path.GetExtension(httpPostedFile.FileName));
+                            string fullFileName = Path.Combine(HostingEnvironment.MapPath(ConfigurationManager.AppSettings["Files.Path"]), fileName);
+                            httpPostedFile.SaveAs(fullFileName);
+
+                            if (httpContext.Request.Form?.Get("entityType") != null &&
+                                httpContext.Request.Form?.Get("entityId") != null &&
+                                httpContext.Request.Form?.Get("DocumentType") != null &&
+                                httpContext.Request.Form?.Get("Description") != null)
                             {
-                                EntityType = Convert.ToInt32(httpContext.Request.Form?.Get("EntityType")),
-                                EntityId = Convert.ToInt64(httpContext.Request.Form?.Get("EntityId")),
-                                CompanyId = tokenInfo.CompanyId,
-                                UpdateUserCode = tokenInfo.UserId,
-                                DocumentType = Convert.ToInt32(httpContext.Request.Form?.Get("DocumentType")),
-                                Description = httpContext.Request.Form?.Get("Description"),
-                                FileName = httpPostedFile.FileName,
-                                FileSize = size,
-                                FileContent = fullFileName
-                            };
-                            if (attachment.Description == "#filename#")
-                            {
-                                attachment.Description = System.IO.Path.GetFileNameWithoutExtension( httpPostedFile.FileName);
+                                Contracts.General.Attachments attachment = new Contracts.General.Attachments
+                                {
+                                    EntityType = Convert.ToInt32(httpContext.Request.Form?.Get("EntityType")),
+                                    EntityId = Convert.ToInt64(httpContext.Request.Form?.Get("EntityId")),
+                                    CompanyId = tokenInfo.CompanyId,
+                                    UpdateUserCode = tokenInfo.UserId,
+                                    DocumentType = Convert.ToInt32(httpContext.Request.Form?.Get("DocumentType")),
+                                    Description = httpContext.Request.Form?.Get("Description"),
+                                    FileName = httpPostedFile.FileName,
+                                    FileSize = size,
+                                    FileContent = fullFileName
+                                };
+                                if (attachment.Description == "#filename#")
+                                {
+                                    attachment.Description = System.IO.Path.GetFileNameWithoutExtension(httpPostedFile.FileName);
+                                }
+                                attachment = Architect.API.Core.Business.General.Attachment.SyncUp(attachment);
+                                id = attachment.Id;
                             }
-                            attachment = Architect.API.Core.Business.General.Attachment.SyncUp(attachment);
-                            id = attachment.Id;
+                            result.Add(new { FileName = httpPostedFile.FileName, StoredFileName = fileName, Size = size, Id = id });
                         }
-                        result.Add(new { FileName = httpPostedFile.FileName, StoredFileName = fileName, Size = size, Id = id });
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest, new { Message = $"El archivo {httpPostedFile.FileName} no tiene el tamaño permitido" });
+                        }
                     }
                     else
                     {

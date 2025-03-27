@@ -81,7 +81,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             };
 
             List<string> keys = new List<string> {
-                "MM_ClaseVehiculos", "MM_Plan",
+                "MM_ClaseVehiculos", "MM_Plan303",
                 "TRON_G2990019:IMP_AUTO_RC","TRON_TA301001EX:3001",
                 "TRON_DEDU_CONTR:DED_AUTO_RC", "TRON_G1010031:DEDUC303_3001",
                 "TRON_G2990019:IMP_AUTO_GMO", "TRON_TA301001EX:3002",
@@ -140,12 +140,15 @@ namespace Architect.API.Tron.Business.Cotizacion
             int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia");
             string coverageSelected = Utilities.Helpers.Settings.StringValue("Coberturas.mapfre.masplus");
             bool required;
+            DateTime fec_validez = DateTime.Today;
+            List<Contracts.Ramo.G2990026> coberturasGrupo = new List<Contracts.Ramo.G2990026>();
 
 
 
             if (tokenInfo.Roles.Contain("PolizaGrupo") && num_contrato > 0)
             {
                 List<Contracts.Ramo.G2990026> coberturaGrupo = DataAccess.PorRamo.Coberturas_por_contrato2(cod_ramo, num_contrato);
+                coberturasGrupo = coberturaGrupo;
                 cod_cobIncludeFilter = Util.Convert_CoverageListToString(coberturaGrupo);
             }
             if (tokenInfo.Roles.Contain("PolizaGrupo") && cod_cobIncludeFilter.IsNotEmpty())
@@ -163,19 +166,22 @@ namespace Architect.API.Tron.Business.Cotizacion
                 }
 
 
-                foreach (LookUpValue item in DataAccess.PorRamo.CoberturasPorRamo(cod_cia, cod_ramo, cod_modalidad, "", "", cod_cobIncludeFilter))
+                foreach (Contracts.Ramo.a1002150 item in DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, "", cod_cobIncludeFilter))
                 {
-                    required = coverageSelected.Contain(item.Code);
                     coberturas.Add(new Contracts.Comun.Cobertura()
                     {
-                        seleccionado = required,
-                        requerida = required,
-                        codigo = Convert.ToInt32(item.Code),
-                        nombre = item.Description,
-                        capital = 0,
-                        primatotal = 0,
-                        deducible = string.Empty
+                        seleccionado = false,
+                        requerida = coberturasGrupo.Any(r => r.COD_COB == item.COD_COB && r.MCA_OBLIGATORIO == "S"),
+                        codigo = item.COD_COB,
+                        nombre = item.NOM_COB,
+                        capital = item.SUMA_ASEG,
+                        primatotal = item.IMP_TOTAL,
+                        deducible = item.NOM_FRANQUICIA
                     });
+                    if (coberturas.Last().requerida)
+                    {
+                        coberturas.Last().seleccionado = true;
+                    }
                 }
             }
             else
@@ -398,7 +404,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                     case "MM_ClaseVehiculos":
                         result.cod_tip_vehi = itemValues.Lkp;
                         break;
-                    case "MM_Plan":
+                    case "MM_Plan303":
                         result.PLAN_AUTO = itemValues.Lkp;
                         break;
                     case "TRON_G2990019:IMP_AUTO_RC":

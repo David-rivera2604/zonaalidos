@@ -148,7 +148,7 @@ app.CotizacionMapfreMas = (function () {
             if (contracto > 0) {
                 setupData.polizagrupo = app.core.Data().lookups.filter(i => i.Key === 'MM_POLIZA_GRUPO')[0].Lkp.filter(l => l.Code === contracto + '')[0].NUM_POLIZA;
             }
-
+            initializeDateTimePicker();
             SettingReload();
             app.core.LookupDependency($('select#contrato').val(), 'subcontrato', 'MM_SUB_CONTRATOS', '', null, true,
                 function (lkpData) {
@@ -368,11 +368,16 @@ app.CotizacionMapfreMas = (function () {
             decimalPlaces: '0',
             emptyInputBehavior: 'null'
         });
+
+        var roles = localStorage.getItem('Roles');
         $('#fec_efec_poliza_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es',
-            minDate: moment().startOf('day')
+            minDate: (roles.includes('Purdy')
+                ? moment().subtract(15, 'days').startOf('day')
+                : moment().startOf('day'))
         });
+
         $('#fec_vcto_poliza_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es'
@@ -1273,6 +1278,32 @@ app.CotizacionMapfreMas = (function () {
             $('[name=btSelectItem][data-index=' + index + ']').prop('disabled', value.requerida);
         });
         $('[name=btSelectAll]').prop('disabled', true);
+    }
+
+    function initializeDateTimePicker() {
+        var contratoValue = app.ui.GetDropDownNumericValue('#contrato');
+        var roles = localStorage.getItem('Roles');
+
+        if (contratoValue !== null && contratoValue !== undefined) {
+            var minDate;
+
+            if (contratoValue === 10006 || contratoValue === 14002) {
+                minDate = moment().subtract(6, 'months').startOf('day'); // Retroceso de 6 meses
+            }
+            else if (roles.includes('Purdy')) {
+                minDate = moment().subtract(15, 'days').startOf('day'); // Retroceso de 15 días
+            }
+            else {
+                minDate = moment().startOf('day');
+            }
+
+            $('#fec_efec_poliza_group').datetimepicker('destroy');
+            $('#fec_efec_poliza_group').datetimepicker({
+                format: 'DD/MM/YYYY',
+                locale: 'es',
+                minDate: minDate
+            });
+        }
     }
 
     return {

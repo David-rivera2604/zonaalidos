@@ -674,3 +674,11 @@
 1.6.107 27/02/2025 Trazabilidad. Ajustes al reporte de detalle de caso (consulta 4002) para agregar la columna tipo de variación.
                    Trazabilidad. Desde aliados y purdy los usuarios deben ver todos los casos según el intermediario.
                    Trazabilidad. Desde aliados y purdy se optimiza la consulta para evitar leer todos los casos.
+1.6.108 04/03/2025 Aliados. Se limita el tamaño mínimo de los archivos según el tipo.
+1.6.109 05/03/2025 Pasarela Evertec. Tarjetas a tokenizar no almacena el número de suplemento.
+1.6.110 05/03/2025 Aliados. Al crear usuario en el tenant Aliados o Purdy se debe tomar el email de tron usando la identificación.
+1.6.111 06/03/2025 Trazabilidad. Falla en consulta de seguimiento de aliados.
+1.6.112 17/03/2025 Pasarela Evertec. Cuando se envía el link de pago por correo debe mostrar el default, pero debe permitir cambiarlo antes de enviarlo.
+1.6.113 17/03/2025 Pasarela Evertec. Consulta 410 que es para empleados, al enviar usando otro agente sale indica el siguiente mensaje "Recibo no encontrado o no está pendiente de pago".
+		19/03/2025 Multirriesgo. Se asigna contrato generico en settingreload para solventar la busqueda de ocupaciones del riesgo.
+		19/03/2025 MapfreMasPlus. Cambio de lectura en el plan, se condiciona a Davivienda al igual que Purdy por default el plan 38

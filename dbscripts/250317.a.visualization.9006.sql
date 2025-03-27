@@ -1,0 +1,5 @@
+UPDATE VISUALIZATIONS SET "TYPE"=9, CAPTION='Enviar enlace de pago', DESCRIPTION='Panel', "STATEMENT"=NULL, ICON=NULL, ICONCLASS=NULL, VALUEFORMAT=NULL, ENTITYTYPE=NULL, RECORDSTATUS=1, COMPANYID=1, UPDATEUSERCODE=2025, UPDATEDATE=TIMESTAMP '2025-01-15 00:00:00.000000', SPECIFICATION=NULL, CONNECTIONNAME=NULL, STATEMENTTYPE=NULL, DIALOG='Opciones de pago|titulo
+|zona|12
+ Enviar por Correo|Boton|name=ESendBtn;click=app.Payment.CorreoInfo({NUM_POLIZA},{NUM_RECIBO});class=btn-danger btn-outline btn-block m-t
+ Enviar por WhatsApp|Boton|name=WSendBtn;click=app.Payment.SendLink(''WhatsApp'',{NUM_POLIZA},{NUM_RECIBO});class=btn-danger btn-outline btn-block m-t
+ Pago Directo|Boton|name=DirectBtn;click=app.Payment.SendLink(''Direct'',{NUM_POLIZA},{NUM_RECIBO});class=btn-danger btn-outline btn-block m-t', STATEMENTEXTEND=NULL, "KEY"=NULL, JAVASCRIPTTOINCLUDE=NULL WHERE ID=9006 AND "SEQUENCE"=1;
