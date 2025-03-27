@@ -1,10 +1,12 @@
-﻿using Architect.Payment.Integrations.Contracts.v2;
+﻿using Architect.Utilities.Extensions;
+using Architect.Payment.Integrations.Contracts.v2;
 using Microsoft.Web.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -63,8 +65,12 @@ namespace Architect.API.Tron.Controllers.v2
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             string ipAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
             string userAgent = Request.Headers.UserAgent.ToString();
-
-            Payment.Integrations.Contracts.v2.PaymentInformation result = await Business.Backoffice.v2.Pagos.SendPaymentLink(tokenInfo, ipAddress, userAgent, sessionRequest.num_poliza, sessionRequest.num_recibo, sessionRequest.mode, sessionRequest.emailCliente);
+            int agentCode = tokenInfo.AgentCode;
+            if (sessionRequest.cod_agt.IsNotEmpty() && (tokenInfo.Roles.Contain("Empleado") || tokenInfo.Roles.Contain("Comercial_Mapfre")))
+            {
+                agentCode = sessionRequest.cod_agt;
+            }
+            Payment.Integrations.Contracts.v2.PaymentInformation result = await Business.Backoffice.v2.Pagos.SendPaymentLink(tokenInfo, ipAddress, userAgent, sessionRequest.num_poliza, sessionRequest.num_recibo, sessionRequest.mode, sessionRequest.emailCliente, agentCode);
 
             return Ok(result);
         }

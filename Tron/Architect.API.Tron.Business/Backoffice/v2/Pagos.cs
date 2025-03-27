@@ -178,7 +178,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         /// <summary>
         /// Permite el envio de un link de pago.
         /// </summary>
-        public async static Task<Payment.Integrations.Contracts.v2.PaymentInformation> SendPaymentLink(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo, string mode, string email)
+        public async static Task<Payment.Integrations.Contracts.v2.PaymentInformation> SendPaymentLink(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo, string mode, string email, int agentCode)
         {
             Payment.Integrations.Contracts.v2.PaymentInformation result = null;
             Payment.Integrations.Contracts.v2.PaymentInformation payInfov2;
@@ -242,7 +242,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 {
                     onlyInfo = true;
                 }
-                payInfov2 = await Business.Backoffice.Pagos.SendPaymentLink(tokenInfo, ipAddress, userAgent, num_poliza, num_recibo, tokenInfo.AgentCode,  onlyInfo, email);
+                payInfov2 = await Business.Backoffice.Pagos.SendPaymentLink(tokenInfo, ipAddress, userAgent, num_poliza, num_recibo, agentCode,  onlyInfo, email);
                 result = new Payment.Integrations.Contracts.v2.PaymentInformation() { Status = payInfov2.Status, Reason = payInfov2.Reason, emailCliente = payInfov2.emailCliente, telefonoCliente = payInfov2.telefonoCliente };
             }
             return result;
