@@ -29,7 +29,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         /// <summary>
         /// Permite la creación de un sesión para realizar un pago.
         /// </summary>
-        public async static Task<Payment.Integrations.Contracts.v2.PaymentInformation> CrearSesion(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo)
+        public async static Task<Payment.Integrations.Contracts.v2.PaymentInformation> CrearSesion(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo, bool widget)
         {
             Payment.Integrations.Contracts.v2.PaymentInformation payInfov2 = null;
             int timeout = Core.Business.General.DynamicSetting.IntegerValue(tokenInfo, "Payment.Silice.Init.Timeout", 5);
@@ -72,7 +72,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                     };
 
 
-                    session = await Payment.Integrations.Payment.NewSessionV2(tokenInfo.CompanyId, tokenInfo.UserId, tokenInfo.AgentCode, payInfo, ipAddress, userAgent);
+                    session = await Payment.Integrations.Payment.NewSessionV2(tokenInfo.CompanyId, tokenInfo.UserId, tokenInfo.AgentCode, payInfo, ipAddress, userAgent, widget);
 
                     payInfov2 = new Payment.Integrations.Contracts.v2.PaymentInformation()
                     {
@@ -192,7 +192,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 string token = await Architect.Payment.Integrations.Providers.Silice.Payment.signin(client);
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
-                payInfov2 = await CrearSesion(tokenInfo, ipAddress, userAgent, num_poliza, num_recibo);
+                payInfov2 = await CrearSesion(tokenInfo, ipAddress, userAgent, num_poliza, num_recibo, false);
 
                 if (payInfov2 != null && payInfov2.Status != "FAIL")
                 {

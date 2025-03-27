@@ -31,6 +31,12 @@ namespace Architect.DataFactory
             _connection.Close();
         }
 
+        public void RollbackAndClose()
+        {
+            _transaction.Rollback();
+            _connection.Close();
+        }
+
         public void Dispose()
         {
             _transaction = null;

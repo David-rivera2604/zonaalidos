@@ -2,10 +2,10 @@
 
 // CONSERVAR DEL ORIGINAL DESDE AQUI
 app.setting = {
-    apibase: 'https://localhost:44341',
-    apipath: 'https://localhost:44341/aliados/api/',
+    apibase: 'http://localhost:8081',
+    apipath: 'http://localhost:8081/aliados/api/',
     basepath: '/Aliados/',
-    viewpath: 'https://localhost:44341/aliados/',
+    viewpath: 'http://localhost:8081/aliados/',
     entityapi: 'https://appqa.mapfrecr.com/datapides/api/entity',
     reportapi: 'https://appqa.mapfrecr.com/aliadoservreports'
 };

@@ -16,7 +16,7 @@ namespace Architect.Payment.Integrations
         /// <summary>
         /// Permite la creación de un sesión para realizar un pago.
         /// </summary>
-        public async static Task<Contracts.SessionInformation> NewSessionV2(int companyId, int userId, int cod_agt, Contracts.PaymentInformation payInfo, string ipAddress, string userAgent)
+        public async static Task<Contracts.SessionInformation> NewSessionV2(int companyId, int userId, int cod_agt, Contracts.PaymentInformation payInfo, string ipAddress, string userAgent, bool widget)
         {
             Contracts.OnlinePayment track = Business.OnlinePayment.Create(companyId, userId, new Contracts.OnlinePayment()
             {
@@ -36,7 +36,8 @@ namespace Architect.Payment.Integrations
                 Description = payInfo.Description,
                 IssueDate = DateTime.Now,
                 StatusDate = DateTime.Now,
-                Status = 1
+                Status = 1,
+                Source = widget ? "Widget" : "PaymentLink"
             });
 
             payInfo.Reference = string.Format("{0}-{1}-{2}", payInfo.PolicyId, payInfo.BillNumber, track.Id);
@@ -109,7 +110,7 @@ namespace Architect.Payment.Integrations
         /// <summary>
         /// Permite la creación de un sesión para realizar un pago.
         /// </summary>
-        public async static Task<Contracts.SessionInformation> NewSession(int companyId, int userId, int cod_agt, Contracts.PaymentInformation payInfo, string ipAddress, string userAgent)
+        public async static Task<Contracts.SessionInformation> NewSession(int companyId, int userId, int cod_agt, Contracts.PaymentInformation payInfo, string ipAddress, string userAgent, bool widget)
         {
             Contracts.OnlinePayment track = Business.OnlinePayment.Create(companyId, userId, new Contracts.OnlinePayment()
             {
@@ -129,7 +130,8 @@ namespace Architect.Payment.Integrations
                 Description = payInfo.Description,
                 IssueDate = DateTime.Now,
                 StatusDate = DateTime.Now,
-                Status = 1
+                Status = 1,
+                Source = widget ? "Widget" : "PaymentLink"
             });
 
             payInfo.Reference = string.Format("{0}-{1}-{2}", payInfo.PolicyId, payInfo.BillNumber, track.Id);

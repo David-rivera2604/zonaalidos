@@ -521,6 +521,11 @@ namespace Architect.DataFactory
             return result;
         }
 
+        public void Query(Session session, Action<IDataReader> callBack, bool manyRows = true)
+        {
+            Query(session.dbConnection, callBack, manyRows);
+        }
+
         public void Query(IDbConnection connection, string connectionStringName, Action<IDataReader> callBack, bool manyRows = true)
         {
             if (connection != null)
@@ -637,7 +642,7 @@ namespace Architect.DataFactory
 
         public int Execute(Session session)
         {
-                return Execute(session.dbConnection);
+            return Execute(session.dbConnection);
 
         }
         public int Execute(IDbConnection connection, string connectionStringName)

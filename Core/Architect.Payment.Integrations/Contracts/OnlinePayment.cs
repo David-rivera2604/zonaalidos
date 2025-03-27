@@ -113,6 +113,8 @@ namespace Architect.Payment.Integrations.Contracts
 
         public string ProcessId { get; set; }
 
+        public string Source { get; set; }
+
     }
 }
 

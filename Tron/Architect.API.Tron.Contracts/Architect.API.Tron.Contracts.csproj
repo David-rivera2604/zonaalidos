@@ -131,6 +131,12 @@
     <Compile Include="Siniestro\Purdy\Siniestro.cs" />
     <Compile Include="Siniestro\Purdy\SiniestroPurdyBase.cs" />
     <Compile Include="Siniestro\Purdy\SiniestroPurdy.cs" />
+    <Compile Include="SINPEMovil\Request\ConsultaDatos.cs" />
+    <Compile Include="SINPEMovil\Response\AplicarPago.cs" />
+    <Compile Include="SINPEMovil\Request\DatosAdicionales.cs" />
+    <Compile Include="SINPEMovil\Request\AplicarPago.cs" />
+    <Compile Include="SINPEMovil\Response\ConsultaDatos.cs" />
+    <Compile Include="SINPEMovil\Response\Factura.cs" />
     <Compile Include="TipoDeFirma.cs" />
     <Compile Include="Poliza\DetalleDeTercero.cs" />
     <Compile Include="Poliza\DatoVariable.cs" />

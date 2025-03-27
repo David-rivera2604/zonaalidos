@@ -682,3 +682,5 @@
 1.6.113 17/03/2025 Pasarela Evertec. Consulta 410 que es para empleados, al enviar usando otro agente sale indica el siguiente mensaje "Recibo no encontrado o no está pendiente de pago".
 		19/03/2025 Multirriesgo. Se asigna contrato generico en settingreload para solventar la busqueda de ocupaciones del riesgo.
 		19/03/2025 MapfreMasPlus. Cambio de lectura en el plan, se condiciona a Davivienda al igual que Purdy por default el plan 38
+1.6.114 21/03/2025 Pasarela Evertec. Nuevo campo source en OnLinePayment para indicar la fuente del pago Widget, Recurring, PaymentLink o SINPEMovil.
+                   Pasarela Evertec. Implementación de servicios web para recibir pago por SIMPEMovil desarrollo al 90%.
