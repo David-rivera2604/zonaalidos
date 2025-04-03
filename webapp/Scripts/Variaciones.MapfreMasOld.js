@@ -78,6 +78,7 @@ app.EmisionMapfreMas = (function () {
 
     function ReadOnly() {
         $('input[name=tipo_prod').first().parent().parent().replaceWith('<div>' + $('input:radio[name=tipo_prod]:checked').next().html() + '</div>')
+        $('#NUM_POLIZA').replaceWith('<div>' + $('#NUM_POLIZA').val() + '</div>');
         $('#cod_mon').replaceWith('<div>' + $('#cod_mon option:selected').text() + '</div>');
         //$('#cod_fracc_pago').replaceWith('<div>' + $('#cod_fracc_pago option:selected').text() + '</div>');
         $('#fec_efec_poliza_group').replaceWith('<div>' + $('#fec_efec_poliza').val() + '</div>');
@@ -94,7 +95,7 @@ app.EmisionMapfreMas = (function () {
         $('#COD_CHASSIS').replaceWith('<div>' + $('#COD_CHASSIS').val() + '</div>');
         $('#DES_TIP_CILINDRAJE').replaceWith('<div>' + $('#DES_TIP_CILINDRAJE').val() + '</div>');
         $('#VAL_PESO').replaceWith('<div>' + $('#VAL_PESO').val() + '</div>');
-        //$('#COD_COLOR').replaceWith('<div>' + $('#COD_COLOR option:selected').text() + '</div>');
+        $('#COD_COLOR').replaceWith('<div>' + $('#COD_COLOR option:selected').text() + '</div>');
         $('#NUM_MOTOR').replaceWith('<div>' + $('#NUM_MOTOR').val() + '</div>');
         $('#VAL_CAPACIDAD').replaceWith('<div>' + $('#VAL_CAPACIDAD').val() + '</div>');
         $('label[for=MCA_CERO_KM').next().replaceWith('<div>' + $('label[for=MCA_CERO_KM_' + app.ui.GetRadioNumericValue('MCA_CERO_KM') + '').html() + '</div>');
@@ -313,9 +314,51 @@ app.EmisionMapfreMas = (function () {
         return data;
     }
 
+    function existeCambios() {
+        let result = true;
+        const camposAComparar = ["cod_fracc_pago", "NUM_MATRICULA", "IMP_AUTO_RC", "IMP_AUTO_GMO", "IMP_AUTO_ACO", "IMP_AUTO_CYV", "IMP_VR", "IMP_AUTO_CRI",
+            "IMP_AUTO_RAD", "IMP_AUTO_ROB", "DED_AUTO_RC", "DED_AUTO_ROB", "DED_AUTO_CYV", "DED_AUTO_RAD", "IMP_AUTO_EQESP", "DED_AUTO_EQESP"];
+        //const camposLista = ["codigo", "nombre", "capital", "primatotal", "deducible"];
+        let data = MapInputToObject();
+
+        console.log("setupDataFirst", setupDataFirst);
+        console.log("data", data);
+
+        const isEquals = sonObjetosIguales(setupDataFirst, data, camposAComparar);
+        const lista = data.NewCoverages || [];
+
+        // Si no hay datos en la lista, no hay nuevos registros ni modificados de coverturas
+        if (lista.length <= 0 && isEquals) {
+            result = false;
+            toastr.error("Existe un error, debe modificar alguno de los datos", "Error el emitir la variación", { timeOut: 9000, closeButton: true, progressBar: true });
+        }
+
+        return result;
+    }
+
+    function sonObjetosIguales(obj1, obj2, camposAComparar) {
+        // 1. Comparar los campos específicos (excepto la lista)
+        for (const campo of camposAComparar) {
+
+            // Si algún campo no existe en uno de los objetos, son diferentes
+            if (!obj1.hasOwnProperty(campo) || !obj2.hasOwnProperty(campo)) {
+                return false;
+            }
+
+            // Si los valores son diferentes, los objetos son diferentes
+            if (JSON.stringify(obj1[campo]) !== JSON.stringify(obj2[campo])) {
+                return false;
+            }
+        }
+
+        // Si llegamos hasta aquí, los objetos son idénticos en los campos especificados
+        return true;
+    }
+
     function MapObjectToInput_First(data) {
         setupDataFirst = data;
-
+        app.ui.SetNumericValue('#NUM_POLIZA', data.num_poliza);
+        $('#NUM_POLIZA').val(data.num_poliza);
         //app.ui.SetNumericValue('#edad', data.edad);
         //$('#mca_sexo').val(data.mca_sexo);
         $('#Fuente_Tomador').val(data.Fuente_Tomador);
@@ -647,6 +690,10 @@ app.EmisionMapfreMas = (function () {
         $('#generarvariacion').click(function () {
             if (app.ui.IsValid('#VisualizationsEdtForm', false)) {
 
+                if (!existeCambios()) {
+                    return;
+                }
+
                 if (setupDataFirst.cod_fracc_pago !== app.ui.GetDropDownNumericValue('#cod_fracc_pago')) {
                     //var md = $('#messageModal').modal({ show: false });
                     //md.modal('show');
@@ -679,9 +726,6 @@ app.EmisionMapfreMas = (function () {
                                     NEW_NUM_SPTO = firstRecord.num_spto;
                                 }
 
-                                if (data.coberturas != null)
-                                    $('#coberturasTbl').bootstrapTable('load', data.coberturas);
-                                $('#coberturasTbl').bootstrapTable('hideLoading');
                                 if (data.plandepago != null)
                                     $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
 
@@ -696,6 +740,10 @@ app.EmisionMapfreMas = (function () {
                                 $('#rechazarct').removeClass('d-none');
                                 MCA_PROVISIONAL = "S";
                                 DisabledAllControls(true);
+
+                                if (data.coberturas != null)
+                                    $('#coberturasTbl').bootstrapTable('load', data.coberturas);
+                                $('#coberturasTbl').bootstrapTable('hideLoading');
 
                                 toastr.info("Se generó correctamente la variación", "Variación", { timeOut: 9000, closeButton: true, progressBar: true });
                             }
@@ -1199,6 +1247,14 @@ app.EmisionMapfreMas = (function () {
             smartDisplay: true,
             detailView: false,
             detailFormatter: 'app.ui.GenericDetailFormatter',
+            rowStyle: function (value, row, index) {
+                let colorFila = (value.codigo === 3016 && !value.added && MCA_PROVISIONAL === "N") ? "#FFFFFF" : "#DFFFDE";
+                return {
+                    css: {
+                        'background-color': colorFila
+                    }
+                }
+            },
             columns: [
                 {
                     field: 'codigo',
@@ -1298,10 +1354,12 @@ app.EmisionMapfreMas = (function () {
                         return (result) ? '<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar los datos de la cobertura de la fila"> <i class="fa fa-close"></i> </button>' :'';
                     },
                     cellStyle: function (value, row, index) {
+                        let colorFila = (row.codigo === 3016 && !row.added && MCA_PROVISIONAL === "N") ? "#FFFFFF" : "#DFFFDE";
                         return {
                             css: {
                                 'white-space': 'nowrap',
-                                'vertical-align': 'top'
+                                'vertical-align': 'top',
+                                'background-color': colorFila
                             }
                         }
                     }
@@ -3635,7 +3693,7 @@ app.EmisionMapfreMas = (function () {
         app.core.Post(app.setting.apipath + 'v1/Variaciones/MapfreMasCancelation',
             JSON.stringify(data),
             function (data) {
-
+                let messageSaldo = "";
                 if (data.McaError === "N") {
                     if (Array.isArray(data.Recibos) && data.Recibos.length > 0) {
                         $('#resultvariacionTbl').bootstrapTable('load', data.Recibos);
@@ -3643,6 +3701,17 @@ app.EmisionMapfreMas = (function () {
 
                         let firstRecord = data.Recibos[0];
                         NEW_NUM_SPTO = firstRecord.num_spto;
+
+                        const suma_imp_recibo_spto = data.Recibos.reduce((acumulador, obj) => {
+                            return acumulador + obj.imp_recibo_spto;
+                        }, 0);
+
+                        const saldoPositivo = Math.abs(suma_imp_recibo_spto);
+
+                        if (saldoPositivo > 0) {
+                            //messageSaldo = ` El cliente cuenta con un saldo a favor de ${saldoPositivo} por concepto de primas no devengadas`;
+                            messageSaldo = " El cliente cuenta con un saldo a favor de " + saldoPositivo + " por concepto de primas no devengadas";
+                        }
                     }
 
 
@@ -3662,7 +3731,9 @@ app.EmisionMapfreMas = (function () {
                     $('#authorizarct').addClass('d-none');
                     $('#rechazarct').addClass('d-none');
 
-                    toastr.info("Se generó correctamente la cancelación", "Cancelación", { timeOut: 9000, closeButton: true, progressBar: true });
+                    //toastr.info(`La cancelación fue procesada de forma correcta.${messageSaldo}`, "Cancelación", { timeOut: 9000, closeButton: true, progressBar: true });
+                    toastr.info("La cancelación fue procesada de forma correcta." + messageSaldo, "Cancelación", { timeOut: 10000, closeButton: true, progressBar: true });
+
 
                     $('#confirmation-cancelation-Modal').modal('hide'); // Cerrar el popup
                     $('#fileTableBodyCancelation').addClass('d-none');

@@ -93,7 +93,7 @@ namespace Architect.API.Tron.Business.Variaciones
 
                     List<Architect.API.Tron.Contracts.Variaciones.s2000020> a2000020InstanceList = new List<Contracts.Variaciones.s2000020>();
 
-                    RegisterS2000020(DatosVariables, Fec_Tratamiento, "COD_COLOR", quoteInfo.COD_COLOR.ToString(), Tip_mvto_batch);
+                    //RegisterS2000020(DatosVariables, Fec_Tratamiento, "COD_COLOR", quoteInfo.COD_COLOR.ToString(), Tip_mvto_batch);
                     RegisterS2000020(DatosVariables, Fec_Tratamiento, "NUM_MATRICULA", quoteInfo.NUM_MATRICULA, Tip_mvto_batch);
                     RegisterS2000020(DatosVariables, Fec_Tratamiento, "IMP_AUTO_RC", quoteInfo.IMP_AUTO_RC.ToString(), Tip_mvto_batch);
                     RegisterS2000020(DatosVariables, Fec_Tratamiento, "IMP_AUTO_GMO", quoteInfo.IMP_AUTO_GMO.ToString(), Tip_mvto_batch);
