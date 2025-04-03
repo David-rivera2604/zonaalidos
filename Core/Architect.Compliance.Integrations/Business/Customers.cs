@@ -28,7 +28,7 @@ namespace Architect.Compliance.Integrations.Business
             client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
 
 
-            HttpResponseMessage response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("Compliance.URL") + "/mapfre-serv-api-load/Customers/SendCustomers",
+            HttpResponseMessage response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("Compliance.URL.Load") + "/Customers/SendCustomers",
                                                                     new StringContent(json, Encoding.UTF8, "application/json"));
             string resultResponse = response.Content.ReadAsStringAsync().Result;
             if (response.IsSuccessStatusCode)
