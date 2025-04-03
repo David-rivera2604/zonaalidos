@@ -11,6 +11,7 @@ namespace Architect.API.Tron.Contracts.Pagos
 
         public int NUM_RECIBO { get; set; }
         public DateTime FEC_EFEC_RECIBO { get; set; }
+        public DateTime FEC_VCTO_RECIBO { get; set; }        
         public double IMP_RECIBO { get; set; }
         public string NOM_MON { get; set; }
         public string NUM_POLIZA { get; set; }

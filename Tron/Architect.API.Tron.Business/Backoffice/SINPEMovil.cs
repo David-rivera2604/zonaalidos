@@ -9,6 +9,7 @@ using System.Xml.Linq;
 using Architect.API.Core.Business.General;
 using Architect.API.Insurance.Contracts.Bayer;
 using Architect.API.Tron.Contracts.Pagos;
+using Architect.API.Tron.Contracts.SINPEMovil.Response;
 using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
 using Architect.Payment.Integrations.Contracts;
 using Architect.Payment.Integrations.Providers.Placetopay.Contracts;
@@ -66,6 +67,54 @@ namespace Architect.API.Tron.Business.Backoffice
             if (id > 0)
             {
                 UpdatePaymentStatus(id, result);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Consulta los datos de una transacción.
+        /// </summary>
+        /// <param name="id">El identificador de la consulta.</param>
+        /// <param name="consultaRequest">La solicitud de consulta de datos.</param>
+        /// <returns>El resultado de la consulta de datos.</returns>
+        public async static Task<Contracts.SINPEMovil.Response.ConsultaDatos> Consulta(string id, Contracts.SINPEMovil.Request.ConsultaDatos consultaRequest)
+        {
+            Contracts.SINPEMovil.Response.ConsultaDatos result = new Contracts.SINPEMovil.Response.ConsultaDatos
+            {
+                Codigo = 1,
+                Mensaje = "Consulta no encontrada.",
+                Facturas = new List<Contracts.SINPEMovil.Response.Factura>()
+            };
+
+            Contracts.Pagos.Recibo recibo = null;
+            string policyNumber = consultaRequest.Descripcion.OnlyNumbers();
+
+            if (policyNumber.Length != 13)
+            {
+                result.Codigo = ErrorInProcess;
+                result.Mensaje = "Error al ejecutar el proceso, favor intentarlo más tarde. No se puede identificar el número de la póliza.";
+            }
+            else
+            {
+                recibo = DataAccess.Pagos.Recibos.PrimerReciboAlCobroPorPoliza(policyNumber);
+            }
+
+            if (recibo != null)
+            {
+                result.Facturas = new List<Contracts.SINPEMovil.Response.Factura>() {
+                    new Contracts.SINPEMovil.Response.Factura {
+                        Codigo = recibo.NUM_RECIBO.ToString(),
+                        Identificacion = recibo.COD_DOCUM,
+                        Nombre = recibo.NOM_TERCERO,
+                        Apellido = recibo.APE1_TERCERO,
+                        Telefono = recibo.TLF_NUMERO,
+                        Vencimiento = recibo.FEC_VCTO_RECIBO.ToString("dd/MM/yyyy"),
+                        Saldo = Convert.ToDecimal(recibo.IMP_RECIBO),
+                        SaldoMinimo = Convert.ToDecimal(recibo.IMP_RECIBO),
+                        FacturasImpagas = 1
+                    }
+                };
             }
 
             return result;
@@ -264,6 +313,6 @@ namespace Architect.API.Tron.Business.Backoffice
                 }
             }
         }
-    
+
     }
 }

@@ -189,7 +189,7 @@ namespace Architect.API.Tron.DataAccess.Pagos
             string filter = string.Empty;
 
             Database.Select(
-@"SELECT C.NUM_RECIBO, C.FEC_EFEC_RECIBO, SUM(C.IMP_RECIBO) IMP_RECIBO, A400.COD_MON_ISO NOM_MON, A.NUM_POLIZA, A.COD_AGT, a1800.nom_ramo, a200.NOM_SECTOR, A.TIP_DOCUM, A.COD_DOCUM, A99.NOM_TERCERO, A99.NOM2_TERCERO, A99.APE1_TERCERO, A99.APE2_TERCERO,
+@"SELECT C.NUM_RECIBO, C.FEC_EFEC_RECIBO, FEC_VCTO_RECIBO, SUM(C.IMP_RECIBO) IMP_RECIBO, A400.COD_MON_ISO NOM_MON, A.NUM_POLIZA, A.COD_AGT, a1800.nom_ramo, a200.NOM_SECTOR, A.TIP_DOCUM, A.COD_DOCUM, A99.NOM_TERCERO, A99.NOM2_TERCERO, A99.APE1_TERCERO, A99.APE2_TERCERO,
   		    A1331.TLF_NUMERO, A1331.TLF_NUMERO_COM, A1331.EMAIL, A1331.EMAIL_COM, A1331.TXT_EMAIL
     FROM A2000030 A
     JOIN A2990700 C 
@@ -223,6 +223,7 @@ FETCH FIRST 1 ROWS ONLY")
                         {
                             NUM_RECIBO = reader.IntegerValue("NUM_RECIBO"),
                             FEC_EFEC_RECIBO = reader.DateTimeValue("FEC_EFEC_RECIBO"),
+                            FEC_VCTO_RECIBO = reader.DateTimeValue("FEC_VCTO_RECIBO"),
                             IMP_RECIBO = reader.DoubleValue("IMP_RECIBO"),
                             NOM_MON = reader.StringValue("NOM_MON"),
                             NUM_POLIZA = reader.StringValue("NUM_POLIZA"),

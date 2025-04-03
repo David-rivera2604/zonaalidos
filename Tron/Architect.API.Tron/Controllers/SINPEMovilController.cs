@@ -41,54 +41,26 @@ namespace Architect.API.Tron.Controllers
         /// Consulta los datos de una transacción.
         /// </summary>
         /// <param name="id">Identificador de la transacción.</param>
+        /// <param name="request">La solicitud de consulta de datos.</param>
         /// <returns>Resultado de la consulta.</returns>
-        [HttpGet]
+        [HttpPost]
         [Route("ConsultaDatos")]
         [AllowAnonymous]
-        public IHttpActionResult ConsultaDatos([FromUri] string id)
+        [ResponseType(typeof(Contracts.SINPEMovil.Response.ConsultaDatos))]
+        public async Task<IHttpActionResult> ConsultaDatos([FromUri] string id, [FromBody] Contracts.SINPEMovil.Request.ConsultaDatos request)
         {
             if (string.IsNullOrEmpty(id))
             {
                 return BadRequest("El id no puede ser nulo o vacío.");
             }
-
-            //Página de confirmación: El Id siempre será el
-            //código digitado por el usuario que haría
-            //referencia al código especifico de la aplicación
-            //cliente, por ejemplo: Número de suscriptor,
-            //número de orden o número de factura, número de
-            //afiliada.
-
-            //if (request == null)
-            //{
-            //    return BadRequest("El request no puede ser nulo.");
-            //}
-
-            // Aquí se implementaría la lógica para obtener la información solicitada,
-            // por ejemplo consultando una base de datos o un servicio externo.
-
-            // Ejemplo: Se simula una respuesta exitosa con una factura.
-            var response = new Contracts.SINPEMovil.Response.ConsultaDatos
+            if (request == null)
             {
-                Codigo = 0,
-                Mensaje = "Consulta realizada correctamente.",
-                CantidadFacturas = 1,
-                Facturas = new List<Contracts.SINPEMovil.Response.Factura>
-                {
-                    new Contracts.SINPEMovil.Response.Factura
-                    {
-                        Codigo = "123456789",
-                        Identificacion = "3-0777-0999",
-                        Nombre = "Kattya",
-                        Apellido = "Rivera Soto",
-                        Telefono = "88889999",
-                        Vencimiento = "01/12/2020",
-                        Saldo = 15500.00M,
-                        SaldoMinimo = 5000.00M,
-                        FacturasImpagas = 0
-                    }
-                }
-            };
+                return BadRequest("El request no puede ser nulo.");
+            }
+
+
+            var response = await Business.Backoffice.SINPEMovil.Consulta(id, request);
+
 
             return Ok(response);
         }
