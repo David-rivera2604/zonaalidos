@@ -290,7 +290,15 @@ namespace Architect.API.Tron.Business.Backoffice
             {
                 Payment.Integrations.Contracts.PaymentInformation payInfo = (Payment.Integrations.Contracts.PaymentInformation)sessionCore["payinfo"];
 
-                return new Payment.Integrations.Contracts.v2.PaymentInformation() { Status = "OK", Reason = string.Empty, emailCliente = payInfo.Email, telefonoCliente = payInfo.Mobile };
+                if (payInfo != null)
+                {
+                    return new Payment.Integrations.Contracts.v2.PaymentInformation() { Status = "OK", Reason = string.Empty, emailCliente = payInfo.Email, telefonoCliente = payInfo.Mobile };
+                }
+                else
+                {
+                    return new Payment.Integrations.Contracts.v2.PaymentInformation() { Status = session.Status, Reason = session.Reason, emailCliente = string.Empty, telefonoCliente = string.Empty };
+                }
+
             }
             else
             {
