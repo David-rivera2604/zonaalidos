@@ -222,8 +222,8 @@ app.Payment = (function () {
                         app.ui.ButtonDoing('#WSendBtn');
                         app.ui.ButtonDoing('#ESendBtn');
                         app.ui.ButtonDoing('#enviar');
-                        
 
+                        $('.ibox-content').toggleClass('sk-loading');
                     });
             }
         },
@@ -233,8 +233,12 @@ app.Payment = (function () {
             app.core.Post(app.setting.apipath + 'v2/Pagos/SendPaymentLink', JSON.stringify({ mode: 'CorreoInfo', num_poliza: poliza, num_recibo: recibo, cod_agt: cod_agt }))
                 .done(function (data) {
                     $('.ibox-content').toggleClass('sk-loading');
-                    app.ui.ShowSideBar({ title: 'Enviar enlace de pago para el recibo #{NUM_RECIBO}', id: 9008, data: { NUM_POLIZA: poliza, NUM_RECIBO: recibo, EMAIL: data.emailCliente, COD_AGT: cod_agt } });
 
+                    if (data.Status === 'FAIL') {
+                        app.ui.ShowAlert('generalNotify', 'alert-danger', data.Reason);
+                    } else {
+                        app.ui.ShowSideBar({ title: 'Enviar enlace de pago para el recibo #{NUM_RECIBO}', id: 9008, data: { NUM_POLIZA: poliza, NUM_RECIBO: recibo, EMAIL: data.emailCliente, COD_AGT: cod_agt } });
+                    }
                 });
         }
     };
