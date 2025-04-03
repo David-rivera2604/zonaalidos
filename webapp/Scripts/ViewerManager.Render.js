@@ -320,8 +320,9 @@ app.ViewerQuery = (function () {
         };
         spec.onPostBody = function (data) {
             app.ui.CommonBehaviour();
-            if (app.Extend != undefined && app.Extend.EventHandler != undefined && app.Extend.EventHandler !== null) {
-                app.Extend.EventHandler(spec.id, spec.index, 'onPostBody');
+            let extendName = spec.extendName != undefined ? spec.extendName : "Extend";
+            if (app[extendName] != undefined && app[extendName]['EventHandler'] != undefined && app[extendName]['EventHandler'] !== null) {
+                app[extendName]['EventHandler'](spec.key, spec.index, 'onPostBody', spec);
             }
         };
         if (spec.skipfirstload != undefined && spec.skipfirstload) {
@@ -483,8 +484,9 @@ app.ViewerQuery = (function () {
                 spec.maintainMetaData = true;
                 spec.onPostBody = function (data) {
                     app.ui.CommonBehaviour();
-                    if (app.Extend != undefined && app.Extend.EventHandler != undefined && app.Extend.EventHandler !== null) {
-                        app.Extend.EventHandler(spec.id, spec.index, 'onPostBody');
+                    let extendName = spec.extendName != undefined ? spec.extendName : "Extend";
+                    if (app[extendName] != undefined && app[extendName]['EventHandler'] != undefined && app[extendName]['EventHandler'] !== null) {
+                        app[extendName]['EventHandler'](spec.key, spec.index, 'onPostBody', spec);
                     }
                 };
                 spec.rowStyle = function (row, index) {
@@ -563,8 +565,9 @@ app.ViewerQuery = (function () {
                                     app.core.LoadScriptFile(item.include)
                                         .then(d => {
                                             Render(item);
-                                            if (app.Extend != undefined && app.Extend.EventHandler != undefined && app.Extend.EventHandler !== null) {
-                                                app.Extend.EventHandler(_id, item.index, 'loaded');
+                                            let extendName = item.extendName != undefined ? item.extendName : "Extend";
+                                            if (app[extendName] != undefined && app[extendName]['EventHandler'] != undefined && app[extendName]['EventHandler'] !== null) {
+                                                app[extendName]['EventHandler'](_id, item.index, 'loaded');
                                             }
                                         })
                                         .catch(err => {
@@ -582,13 +585,16 @@ app.ViewerQuery = (function () {
                                 index = index + 1;
                                 item = JSON.parse(item);
                                 item.index = index;
+                                item.key = _id;
+                                item.table.key = _id;
                                 $("#container").append(RenderTabContentUI(item));
                                 if (item.include !== null && item.include !== '') {
                                     app.core.LoadScriptFile(item.include)
                                         .then(d => {
                                             Render(item);
-                                            if (app.Extend != undefined && app.Extend.EventHandler != undefined && app.Extend.EventHandler !== null) {
-                                                app.Extend.EventHandler(_id, item.index, 'loaded');
+                                            let extendName = item.table.extendName != undefined ? item.table.extendName : "Extend";
+                                            if (app[extendName] != undefined && app[extendName]['EventHandler'] != undefined && app[extendName]['EventHandler'] !== null) {
+                                                app[extendName]['EventHandler'](_id, item.index, 'loaded');
                                             }
                                         })
                                         .catch(err => {

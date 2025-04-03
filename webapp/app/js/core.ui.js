@@ -1559,23 +1559,49 @@ app.ui = (function () {
             return await listarCampos(formId);
         },
         GetSmartFormFields: async function (formId) {
+            let result = '';
+
             if (formId == null)
                 formId = document.forms[0].id;
 
-            let fields = await listarCampos(formId)
-            let result = '';
-            let desc = '';
-            fields.forEach(function (value, index, array) {
-                desc = value.etiqueta == '' ? value.id : value.etiqueta;
-                result += `field ${value.id}|${desc}\n`;
-            });
-            result += `END_RESPONSE\n`;
+            if (formId != null) {
+                let fields = await listarCampos(formId)
+
+                let desc = '';
+                fields.forEach(function (value, index, array) {
+                    desc = value.etiqueta == '' ? value.id : value.etiqueta;
+                    result += `field ${value.id}|${desc}\n`;
+                });
+                result += `END_RESPONSE\n`;
+            }
             return result;
         },
         SetSmartFormFields: async function (formId, data) {
             if (formId == null)
                 formId = document.forms[0].id;
             await llenarFormulario(formId, data);
+        },
+        SmartEntry: async function (formId) {
+            let fieldList = await app.ui.GetSmartFormFields(formId);
+            if (fieldList != '') {
+                navigator.clipboard.readText()
+                    .then(text => {
+
+                        let request = { key: 'SmartPasteAssistant', FieldList: fieldList, UserData: text };
+                        console.log(request);
+
+                        app.core.Post(app.setting.apipath + 'v1/AI/Assistant', JSON.stringify(request), undefined, 'text/html; charset=utf-8')
+                            .done(function (data, textStatus, jqXHR) {
+                                console.log(data);
+                                app.ui.SetSmartFormFields(formId, data);
+                            }).always(function () {
+                            });
+
+                    })
+                    .catch(err => {
+                        console.error('Error al leer del portapapeles:', err)
+                    })
+            }
         }
     };
 })();

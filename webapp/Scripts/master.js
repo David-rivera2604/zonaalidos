@@ -295,6 +295,15 @@ app.master = (function () {
                 //    WheelChair()
                 //});
 
+                document.addEventListener('keydown', function (event) {
+                    if (event.ctrlKey && event.altKey && event.key === 'p') {
+                        event.preventDefault(); // Prevent the browser's save dialog
+                        console.log('Save shortcut triggered', event);
+                        // Implement save functionality
+                        app.ui.SmartEntry(null);
+                    }
+                });
+
             }
         },
         ShowSideBar: function (title, id) {

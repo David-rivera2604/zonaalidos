@@ -675,7 +675,8 @@ app.core = (function () {
             return LoadLookup(url, key);
         },
         Lookups: function (keys, callback, url, path = 'v1/Common/Lkps') {
-            return Lookups(keys, callback, url, path);
+            if (keys.length > 0)
+                return Lookups(keys, callback, url, path);
         },
         LookupDependency: function (parentId, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url, path = 'v1/Common/LkpChild') {
             return LookupDependency(parentId, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url, path);
@@ -695,8 +696,8 @@ app.core = (function () {
         Send: function (mode, url, data, success) {
             return ajaxCall(mode, url, data, success, true);
         },
-        Post: function (url, data, success) {
-            return ajaxCall('POST', url, data, success, true);
+        Post: function (url, data, success, contentType) {
+            return ajaxCall('POST', url, data, success, true, contentType);
         },
         Put: function (url, data, success) {
             return ajaxCall('PUT', url, data, success, true);
@@ -896,6 +897,38 @@ app.core = (function () {
                     if (data != undefined) {
                         if (data?.Sucessfully != undefined && data.Sucessfully) {
                             resolve(data.Data);
+                        } else {
+                            api_ShowError();
+                            resolve(null);
+                        }
+                    }
+                }).catch(error => {
+                    api_ShowError();
+                    resolve(null);
+                });
+            })
+        },
+        datapi: function (method, url, data) {
+            return new Promise((resolve, reject) => {
+                return fetch(`${app.setting.entityapi}/${url}`, {
+                    body: method === 'GET' ? null : JSON.stringify(data),
+
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json; charset=utf-8',
+                        'Authorization': 'Bearer ' + localStorage.getItem('Token')
+                    }
+                }).then(response => {
+                    if (!response.ok) {
+                        api_ShowError();
+                        resolve(null);
+                    } else {
+                        return response.json();
+                    }
+                }).then(data => {
+                    if (data != undefined) {
+                        if (data?._Fault === undefined && !data._Fault) {
+                            resolve(data);
                         } else {
                             api_ShowError();
                             resolve(null);
