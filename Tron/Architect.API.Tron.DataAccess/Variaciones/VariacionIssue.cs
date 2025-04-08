@@ -43,7 +43,7 @@ namespace Architect.API.Tron.DataAccess.Variaciones
                                         num_poliza = reader.StringValue("num_presupuesto"),
                                         num_riesgo = reader.IntegerValue("num_riesgo"),
                                         num_poliza_definitivo = reader.StringValue("num_poliza_definitivo"),
-                                        txt_error = reader.StringValue("txt_error"),
+                                        txt_error = reader.StringValue("txt_error")?.Replace("<","[").Replace(">", "]"),
                                         txt_ruta_error = reader.StringValue("txt_ruta_error")
                                     });
 
