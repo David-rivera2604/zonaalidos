@@ -927,7 +927,7 @@ app.core = (function () {
                     }
                 }).then(data => {
                     if (data != undefined) {
-                        if (data?._Fault === undefined && !data._Fault) {
+                        if (data?._Fault === undefined || !data?._Fault) {
                             resolve(data);
                         } else {
                             api_ShowError();

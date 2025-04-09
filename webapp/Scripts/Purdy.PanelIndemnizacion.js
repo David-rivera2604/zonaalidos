@@ -5,6 +5,7 @@ app.PurdyPanelIndemnizacion = (function () {
     let _asiges = null;
     let _eventCallback = null;
     let _data = null;
+    let _claim = null;
     let _loadready = false;
     let _changed = false;
     let _deducible = 0;
@@ -64,32 +65,29 @@ app.PurdyPanelIndemnizacion = (function () {
 
     };
 
-    async function GetMovimientosDeMontos(asigesCode) {
+    async function GetMovimientosDeMontos(asigesCode, claim, exp) {
         _asiges = asigesCode;
-        app.core.Get(`${app.setting.entityapi}/PurdyPanelMontos/asiges?code=${asigesCode}`)
-            .done(function (dataMontos) {
-                if (dataMontos?.Sucessfully) {
-                    $('#movimientosdemontosTbl').bootstrapTable('load', dataMontos.Data == null ? [] : dataMontos.Data);
-                    _eventCallback('MontosDataChange', dataMontos.Data);
+        app.core.datapi('GET', `PurdyPanelMontos/asiges?code=${asigesCode}&claim=${claim}&exp=${exp}`)
+            .then(dataMontos => {
+                if (dataMontos?.Montos) {
+                    $('#movimientosdemontosTbl').bootstrapTable('load', dataMontos.Montos == null ? [] : dataMontos.Montos);
+                    _eventCallback('MontosDataChange', dataMontos.Montos);
                 }
             });
     };
 
-    async function GetBalance(asigesCode) {
+    async function GetBalance(asigesCode, claim, exp) {
         _asiges = asigesCode;
-        app.core.Get(`${app.setting.entityapi}/PurdyPanelBalance/asiges?code=${asigesCode}`)
-            .done(function (dataBalance) {
-                if (dataBalance?.Sucessfully) {
-                    let balance = _claim
-                    if (dataBalance.Data != null) {
-                        dataBalance.Data.forEach(function (item) {
-                            item.TIPODEDOCUMENTODESC = $(`#tipodedocumento option[value=${item.TIPODEDOCUMENTO}]`).text();
-                        });
-                    }
-                    $('#balanceTbl').bootstrapTable('load', dataBalance.Data == null ? [] : dataBalance.Data);
-                    _eventCallback('BalanceDataChange', dataBalance.Data);
-                    CalcBalance();
+        app.core.datapi('GET', `PurdyPanelBalance/asiges?code=${asigesCode}&claim=${claim}&exp=${exp}`)
+            .then(dataBalance => {
+                if (dataBalance.Balance != null) {
+                    dataBalance.Balance.forEach(function (item) {
+                        item.TIPODEDOCUMENTODESC = $(`#tipodedocumento option[value=${item.TIPODEDOCUMENTO}]`).text();
+                    });
                 }
+                $('#balanceTbl').bootstrapTable('load', dataBalance.Balance == null ? [] : dataBalance.Balance);
+                _eventCallback('BalanceDataChange', dataBalance.Balance);
+                CalcBalance();
             });
     };
 
@@ -198,40 +196,28 @@ app.PurdyPanelIndemnizacion = (function () {
 
                 var row = movimientosdemontos_table_row('values');
                 row.ASIGES = _asiges;
+                row.NUM_SINI = _claim.NUM_SINI;
+                row.NUM_EXP = _claim.NUM_EXP;
                 if (row.ID === null) {
-                    app.core.Post(`${app.setting.entityapi}/PurdyPanelMontos`, JSON.stringify(row))
-                        .done(function (created) {
-                            if (created?.Sucessfully) {
-                                _loadready = true;
-                                _changed = false;
-                                $('#movimientosdemontosModal').modal('hide');
-                                GetMovimientosDeMontos(_asiges);
-                                app.ui.Success('El movimiento de montos, fue creada de forma exitosa');
-
-                            }
-                            else {
-                                console.error(created);
-                            }
-
-                        }).always(function () {
+                    app.core.datapi('POST', `PurdyPanelMontos`, row)
+                        .then(created => {
+                            _loadready = true;
+                            _changed = false;
+                            $('#movimientosdemontosModal').modal('hide');
+                            GetMovimientosDeMontos(_asiges, _claim.NUM_SINI, _claim.NUM_EXP);
+                            app.ui.Success('El movimiento de montos, fue creada de forma exitosa');
+                        }).finally(() => {
                             app.ui.ButtonDone('#movimientosdemontosEdtFormSave');
                         });
                 } else {
-                    app.core.Put(`${app.setting.entityapi}/PurdyPanelMontos/${row.ID}`, JSON.stringify(row))
-                        .done(function (updated) {
-                            if (updated?.Sucessfully) {
-                                _loadready = true;
-                                _changed = false;
-                                $('#movimientosdemontosModal').modal('hide');
-                                GetMovimientosDeMontos(_asiges);
-                                app.ui.Success('El movimiento de montos, fue actualizado de forma exitosa');
-
-                            }
-                            else {
-                                console.error(updated);
-                            }
-
-                        }).always(function () {
+                    app.core.datapi('PUT', `PurdyPanelMontos/${row.ID}`, row)
+                        .then(updated => {
+                            _loadready = true;
+                            _changed = false;
+                            $('#movimientosdemontosModal').modal('hide');
+                            GetMovimientosDeMontos(_asiges, _claim.NUM_SINI, _claim.NUM_EXP);
+                            app.ui.Success('El movimiento de montos, fue actualizado de forma exitosa');
+                        }).finally(() => {
                             app.ui.ButtonDone('#movimientosdemontosEdtFormSave');
                         });
                 }
@@ -276,15 +262,10 @@ app.PurdyPanelIndemnizacion = (function () {
     };
 
     function movimientosdemontos_table_row_delete(row) {
-        app.core.Delete(`${app.setting.entityapi}/PurdyPanelMontos/${row.ID}`, null)
-            .done(function (deleted) {
-                if (deleted?.Sucessfully) {
-                    GetMovimientosDeMontos(_asiges);
-                    app.ui.Success('El movimiento de montos, fue eliminado de forma exitosa');
-                }
-                else {
-                    console.error(deleted);
-                }
+        app.core.datapi('DELETE', `PurdyPanelMontos/${row.ID}`)
+            .then(deleted => {
+                GetMovimientosDeMontos(_asiges);
+                app.ui.Success('El movimiento de montos, fue eliminado de forma exitosa');
             });
     };
 
@@ -427,33 +408,24 @@ app.PurdyPanelIndemnizacion = (function () {
 
                 var row = balance_table_row('values');
                 row.ASIGES = _asiges;
+                row.NUM_SINI = _claim.NUM_SINI;
+                row.NUM_EXP = _claim.NUM_EXP;
                 if (row.ID === null) {
-                    app.core.Post(`${app.setting.entityapi}/PurdyPanelBalance`, JSON.stringify(row))
-                        .done(function (created) {
-                            if (created?.Sucessfully) {
-                                $('#balanceModal').modal('hide');
-                                GetBalance(_asiges);
-                                app.ui.Success('El movimiento de montos, fue creada de forma exitosa');
-                            }
-                            else {
-                                console.error(created);
-                            }
-
-                        }).always(function () {
+                    app.core.datapi('POST', `PurdyPanelBalance`, row)
+                        .then(created => {
+                            $('#balanceModal').modal('hide');
+                            GetBalance(_asiges, _claim.NUM_SINI, _claim.NUM_EXP);
+                            app.ui.Success('El movimiento de montos, fue creada de forma exitosa');
+                        }).finally(() => {
                             app.ui.ButtonDone('#balanceEdtFormSave');
                         });
                 } else {
-                    app.core.Put(`${app.setting.entityapi}/PurdyPanelBalance/${row.ID}`, JSON.stringify(row))
-                        .done(function (updated) {
-                            if (updated?.Sucessfully) {
-                                $('#balanceModal').modal('hide');
-                                GetBalance(_asiges);
-                                app.ui.Success('El movimiento de montos, fue actualizado de forma exitosa');
-                            }
-                            else {
-                                console.error(updated);
-                            }
-                        }).always(function () {
+                    app.core.datapi('PUT', `PurdyPanelBalance/${row.ID}`, row)
+                        .then(updated => {
+                            $('#balanceModal').modal('hide');
+                            GetBalance(_asiges, _claim.NUM_SINI, _claim.NUM_EXP);
+                            app.ui.Success('El movimiento de montos, fue actualizado de forma exitosa');
+                        }).finally(() => {
                             app.ui.ButtonDone('#balanceEdtFormSave');
                         });
                 }
@@ -502,15 +474,10 @@ app.PurdyPanelIndemnizacion = (function () {
     };
 
     function balance_table_row_delete(row) {
-        app.core.Delete(`${app.setting.entityapi}/PurdyPanelBalance/${row.ID}`, null)
-            .done(function (deleted) {
-                if (deleted?.Sucessfully) {
-                    GetBalance(_asiges);
-                    app.ui.Success('El movimiento de balance, fue eliminado de forma exitosa');
-                }
-                else {
-                    console.error(deleted);
-                }
+        app.core.datapi('DELETE', `PurdyPanelBalance/${row.ID}`)
+            .then(deleted => {
+                GetBalance(_asiges);
+                app.ui.Success('El movimiento de balance, fue eliminado de forma exitosa');
             });
     };
 
@@ -581,8 +548,8 @@ app.PurdyPanelIndemnizacion = (function () {
                 case 'ASIGESChange':
                     if (data.claim != null) {
                         _claim = data.claim;
-                        GetMovimientosDeMontos(data.asiges);
-                        GetBalance(data.asiges);
+                        GetMovimientosDeMontos(data.asiges, data.claim.NUM_SINI, data.claim.NUM_EXP);
+                        GetBalance(data.asiges, data.claim.NUM_SINI, data.claim.NUM_EXP);
                         _emptyValueBalance.NUMERODESINIESTRO = data.claim.NUM_SINI;
                     } else {
                         $('#balanceTbl').bootstrapTable('load', []);
