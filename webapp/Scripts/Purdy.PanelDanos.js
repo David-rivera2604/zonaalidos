@@ -16,6 +16,8 @@ app.PurdyPanelDanos = (function () {
         var data = {
             ID: _data.ID,
             ASIGES: _data.ASIGES,
+            NUM_SINI: _claim.NUM_SINI,
+            NUM_EXP: _claim.NUM_EXP,
             TALLER: app.ui.GetDropDownNumericValue('#taller'),
             TALLERDESC: app.ui.GetDropDownSelectedText('#taller'),
             FECHAENVIODELAVALUO: app.ui.GetDateValue('#fechaenviodelavaluo'),
@@ -429,40 +431,30 @@ app.PurdyPanelDanos = (function () {
                 app.ui.ButtonDoing('#PurdyPanelDanosEdtFormSave');
                 let submitData = MapInputToObject();
                 if (submitData.ID === null) {
-                    app.core.Post(`${app.setting.entityapi}/PurdyPanelDano`, JSON.stringify(submitData))
-                        .done(function (created) {
-                            if (created?.Sucessfully) {
-                                _data = submitData
-                                _data.ID = created.Data.Next.Data.NEXTID
-                                _loadready = true;
-                                _changed = false;
-                                _eventCallback('DanosDataChange', _data);
-                                app.ui.CustomBehaviour('danoChanged', false);
-                                app.ui.Success('La información del análisis del daño, fue actualizada de forma exitosa');
-                            }
-                            else {
-                                console.error(created);
-                            }
+                    app.core.datapi('POST', `PurdyPanelDano`, submitData)
+                        .then(created => {
+                            _data = submitData
+                            _data.ID = created.Next.NEXTID
+                            _loadready = true;
+                            _changed = false;
+                            _eventCallback('DanosDataChange', _data);
+                            app.ui.CustomBehaviour('danoChanged', false);
+                            app.ui.Success('La información del análisis del daño, fue actualizada de forma exitosa');
 
-                        }).always(function () {
+                        }).finally(() => {
                             app.ui.ButtonDone('#PurdyPanelDanosEdtFormSave');
                         });
                 }
                 else {
-                    app.core.Put(`${app.setting.entityapi}/PurdyPanelDano/${submitData.ID}`, JSON.stringify(submitData))
-                        .done(function (updated) {
-                            if (updated?.Sucessfully) {
-                                _data = submitData
-                                _loadready = true;
-                                _changed = false;
-                                _eventCallback('DanosDataChange', _data);
-                                app.ui.CustomBehaviour('danoChanged', false);
-                                app.ui.Success('La información del análisis del daño, fue actualizada de forma exitosa');
-                            }
-                            else {
-                                console.error(updated);
-                            }
-                        }).always(function () {
+                    app.core.datapi('PUT', `PurdyPanelDano/${submitData.ID}`, submitData)
+                        .then(updated => {
+                            _data = submitData
+                            _loadready = true;
+                            _changed = false;
+                            _eventCallback('DanosDataChange', _data);
+                            app.ui.CustomBehaviour('danoChanged', false);
+                            app.ui.Success('La información del análisis del daño, fue actualizada de forma exitosa');
+                        }).finally(() => {
                             app.ui.ButtonDone('#PurdyPanelDanosEdtFormSave');
                         });
                 }
@@ -656,18 +648,18 @@ app.PurdyPanelDanos = (function () {
         return data;
     };
 
-    async function Get(asigesCode) {
-        app.core.Get(`${app.setting.entityapi}/PurdyPanelDano/asiges?code=${asigesCode}`)
-            .done(function (dataDanos) {
-                if (dataDanos?.Sucessfully) {
-                    if (dataDanos.Data === null) {
-                        dataDanos.Data = EmptyPurdyPanelDano();
-                        dataDanos.Data.ASIGES = asigesCode;
-                    }
-                    _data = dataDanos.Data;
-                    MapObjectToInput(dataDanos.Data);                    
-                    _eventCallback('DanosDataChange', dataDanos.Data);
+    async function Get(asigesCode, claim, exp) {
+        app.core.datapi('GET', `PurdyPanelDano/asiges?code=${asigesCode}&claim=${claim}&exp=${exp}`)
+            .then(dataDanos => {
+
+                if (dataDanos?.Danos === null) {
+                    dataDanos.Danos = EmptyPurdyPanelDano();
+                    dataDanos.Danos.ASIGES = asigesCode;
                 }
+                _data = dataDanos.Danos;
+                MapObjectToInput(dataDanos.Danos);
+                _eventCallback('DanosDataChange', dataDanos.Danos);
+
             });
     };
 
@@ -697,7 +689,7 @@ app.PurdyPanelDanos = (function () {
                     _loadready = false;
                     if (data.claim != null) {
                         _claim = data.claim;
-                        Get(data.asiges);
+                        Get(data.asiges, data.claim.NUM_SINI, data.claim.NUM_EXP);
                     } else {
                         MapObjectToInput(EmptyPurdyPanelDano());
                         app.ui.SetRadioNumericValue('autorizaciondeusopoliza', 2);

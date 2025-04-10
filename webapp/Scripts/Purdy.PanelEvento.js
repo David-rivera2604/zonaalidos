@@ -13,6 +13,8 @@ app.PurdyPanelEvento = (function () {
         var data = {
             ID: _data.ID,
             ASIGES: _data.ASIGES,
+            NUM_SINI: _claim.NUM_SINI,
+            NUM_EXP: _claim.NUM_EXP,
             ANALISTAGESTORA: _data.ANALISTAGESTORA,
             FECHADELEVENTO: app.ui.GetDateValue('#fechadelevento'),
             ANALISTARECLAMOS: app.ui.GetDropDownNumericValue('#analistareclamos'),
@@ -191,57 +193,46 @@ app.PurdyPanelEvento = (function () {
         app.ui.ButtonDoing('#PurdyPanelEventoEdtFormSave');
         let submitData = MapInputToObject();
         if (submitData.ID === null) {
-            app.core.Post(`${app.setting.entityapi}/PurdyPanelEvento`, JSON.stringify(submitData))
-                .done(function (created) {
-                    if (created?.Sucessfully) {
-                        _data.ID = created.Data.Next.Data.NEXTID
-                        _loadready = true;
-                        _changed = false;
-                        app.ui.CustomBehaviour('eventChanged', false);
-                        _eventCallback('EventoDataChange', submitData);
-                        app.ui.Success(msgCreated);
-                    }
-                    else {
-                        console.error(created);
-                    }
-
-                }).always(function () {
+            app.core.datapi('POST', `PurdyPanelEvento`, submitData)
+                .then(created => {
+                    _data.ID = created.Next.NEXTID
+                    _loadready = true;
+                    _changed = false;
+                    app.ui.CustomBehaviour('eventChanged', false);
+                    _eventCallback('EventoDataChange', submitData);
+                    app.ui.Success(msgCreated);
+                })
+                .finally(() => {
                     app.ui.ButtonDone('#PurdyPanelEventoEdtFormSave');
                 });
         }
         else {
-            app.core.Put(`${app.setting.entityapi}/PurdyPanelEvento/${submitData.ID}`, JSON.stringify(submitData))
-                .done(function (updated) {
-                    if (updated?.Sucessfully) {
-                        _loadready = true;
-                        _changed = false;
-                        app.ui.CustomBehaviour('eventChanged', false);
-                        _eventCallback('EventoDataChange', submitData);
-                        app.ui.Success(msgUpdated);
-                    }
-                    else {
-                        console.error(updated);
-                    }
-                }).always(function () {
+            app.core.datapi('PUT', `PurdyPanelEvento/${submitData.ID}`, submitData)
+                .then(updated => {
+                    _loadready = true;
+                    _changed = false;
+                    app.ui.CustomBehaviour('eventChanged', false);
+                    _eventCallback('EventoDataChange', submitData);
+                    app.ui.Success(msgUpdated);
+                })
+                .finally(() => {
                     app.ui.ButtonDone('#PurdyPanelEventoEdtFormSave');
                 });
         }
     };
 
-    async function Get(asigesCode) {
-        app.core.Get(`${app.setting.entityapi}/PurdyPanelEvento/asiges?code=${asigesCode}`)
-            .done(function (dataEvento) {
-                if (dataEvento?.Sucessfully) {
-                    if (dataEvento.Data === null) {
-                        dataEvento.Data = EmptyPurdyPanelEvento();
-                        dataEvento.Data.ASIGES = asigesCode;
-                    }
-                    _data = dataEvento.Data;
-                    MapObjectToInput(dataEvento.Data);
-                    dataEvento.Data.ANALISTARECLAMOSDESC = app.ui.GetDropDownSelectedText('#analistareclamos');
-                    dataEvento.Data.CATEGORIADESINIESTRODESC = app.ui.GetDropDownSelectedText('#categoriadesiniestro');                    
-                    _eventCallback('EventoDataChange', dataEvento.Data);
+    async function Get(asigesCode, claim, exp) {
+        app.core.datapi('GET', `PurdyPanelEvento/asiges?code=${asigesCode}&claim=${claim}&exp=${exp}`)
+            .then(dataEvento => {
+                if (dataEvento?.Evento === null) {
+                    dataEvento.Evento = EmptyPurdyPanelEvento();
+                    dataEvento.Evento.ASIGES = asigesCode;
                 }
+                _data = dataEvento.Evento;
+                MapObjectToInput(dataEvento.Evento);
+                dataEvento.Evento.ANALISTARECLAMOSDESC = app.ui.GetDropDownSelectedText('#analistareclamos');
+                dataEvento.Evento.CATEGORIADESINIESTRODESC = app.ui.GetDropDownSelectedText('#categoriadesiniestro');
+                _eventCallback('EventoDataChange', dataEvento.Evento);
             });
     };
 
@@ -269,7 +260,7 @@ app.PurdyPanelEvento = (function () {
                     _loadready = false;
                     _claim = data.claim;
                     if (data.claim != null) {
-                        Get(data.asiges);
+                        Get(data.asiges, data.claim.NUM_SINI, data.claim.NUM_EXP);
                     } else {
                         MapObjectToInput(EmptyPurdyPanelEvento());
                     }
@@ -297,6 +288,7 @@ app.PurdyPanelEvento = (function () {
                         'La analista gestora, fue actualizada de forma exitosa');
                     break;
                 case 'detalleChanged':
+                    alert(data.asiges);
                     Get(data.asiges);
                     break;
                 case 'PolicyDataChange':

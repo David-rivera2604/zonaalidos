@@ -686,3 +686,6 @@
                    Pasarela Evertec. Implementación de servicios web para recibir pago por SIMPEMovil desarrollo al 90%.
 1.6.115 27/03/2025 Pasarela Evertec. Consulta 410 que es para empleados, al habilitar panel de pago para la consulta se agrega manejo de agente indicado para los envios de link de pago.
 1.6.116 31/03/2025 Pasarela Evertec. Se ajusta consulta de recibo pendiente de forma que se utilice si esta definida la figura del pagador (21) en caso contrario usara el de la poliza.
+1.6.117 09/04/2025 Purdy. Siniestros. Ajustes necesario para manejar el número de siniestros y el expediente como parte del panel.
+                   Purdy. Siniestros. Se agrega el campo expediente al reporte de Purdy.
+                   Purdy. Siniestros. Se agrega el campo ASIGES al reporte de MAPFRE.
