@@ -202,6 +202,18 @@ namespace Architect.API.Tron.Business.Cotizacion
                 List<Contracts.Ramo.ta301003> coverageSelection = DataAccess.PorRamo.AutomobileCoverageSelection(cod_cia, num_poliza_grupo, num_contrato, num_subcontrato, cod_ramo, cod_mon, cod_marca, cod_modelo, anio_sub_modelo, cod_tip_vehi, cod_uso_vehi, mca_sexo, cod_zona_circul, edad, cod_plan_auto, tip_valoracion);
                 bool required;
                 cod_cobIncludeFilter = "3001,3002,3003,3004,3005,3006,3007,3008,3009,3010,3011,3012,1060";
+
+                switch (cod_plan_auto)
+                {
+                    case 34:
+                        cod_cobIncludeFilter += ",3016";
+                        break;
+                    case 35:
+                        cod_cobIncludeFilter += ",3016";
+                        break;
+                }
+
+
                 foreach (Contracts.Ramo.a1002150 item in DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, cod_cobExcludeFilter, cod_cobIncludeFilter))
                 {
                     required = coverageSelection.Any(r => r.cod_cob == item.COD_COB && r.mca_obligatoria == "S");

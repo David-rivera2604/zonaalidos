@@ -293,11 +293,11 @@
     },
     {
       "Condicion": "{El Plan} sea igual a {Oro}",
-      "Exclusion": "3016,3018,3017,3094,1061"
+      "Exclusion": "3018,3017,3094,1061"
     },
     {
       "Condicion": "{El Plan} sea igual a {Plata}",
-      "Exclusion": "3016,3018,3017,3094,1061,3002,3003,3007,3014,3015"
+      "Exclusion": "3018,3017,3094,1061,3002,3003,3007,3014,3015"
     },
     {
       "Condicion": "{El Plan} sea igual a {Trébol}",
