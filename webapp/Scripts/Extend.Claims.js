@@ -150,10 +150,10 @@ app.ExtendClaims = (function () {
 
             $('.sidebar-content').toggleClass('sk-loading');
 
-            app.core.api_get(`client/${row.COD_DOCUM_ASEG}`)
+            app.core.datapi('GET', `client/${row.COD_DOCUM_ASEG}`)
                 .then(data => {
                     if (data != null) {
-                        let info = data;
+                        let info = data.General;
                         let html = [];
                         let isEmpleado = localStorage.getItem('Roles').includes('Empleado');
                         html.push('<div class="row">');

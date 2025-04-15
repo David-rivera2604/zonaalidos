@@ -10,9 +10,9 @@
     };
 
     async GetWarranty(code, linked, callback) {
-        app.core.dataapi('GET', `ElectronicWarranty/Guarantee?code=${code}`)
+        app.core.datapi('GET', `ElectronicWarranty/Guarantee?code=${code}`)
             .then(warranty => {
-                callback(code, linked, warranty);
+                callback(code, linked, warranty.Guarantee);
             });
     };
 
@@ -62,16 +62,16 @@
         if (entry.Tipo_de_modification == undefined)
             entry.Tipo_de_modification = '';
 
-        app.core.dataapi('POST', 'ElectronicWarranty', entry)
+        app.core.datapi('POST', 'ElectronicWarranty', entry)
             .then(warranty => {
                 if (warranty != null) {
-                    entry.ID = warranty.Next.Data.NEXTID;
+                    entry.ID = warranty.Next.NEXTID;
                     app.core.Post(app.setting.apipath + 'v1/SICOP/NotificarGarantia', JSON.stringify(entry))
                         .done(function (posted) {
                             if (posted != null) {
                                 entry.Confirmation = posted.Confirmation;
                                 entry.Msg_err = posted.Msg_err;
-                                app.core.dataapi('PUT', `ElectronicWarranty/Notify/${entry.ID}`, { ID: entry.ID, Confirmation: posted.Confirmation, Msg_err: posted.Msg_err })
+                                app.core.datapi('PUT', `ElectronicWarranty/Notify/${entry.ID}`, { ID: entry.ID, Confirmation: posted.Confirmation, Msg_err: posted.Msg_err })
                                     .then(xx => {
                                         console.log(xx);
                                     });

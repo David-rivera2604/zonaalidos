@@ -7,9 +7,9 @@ app.BayerCarnet = (function () {
     return {
         Init: function () {
             $('.sidebar-content').toggleClass('sk-loading');
-            app.core.api_get(`carnetdigital`)
+            app.core.datapi('GET', `carnetdigital`)
                 .then(data => {
-                    let asegurado = data.Asegurado.Data;
+                    let asegurado = data.Asegurado;
                     if (asegurado != null) {
                         info.Contratante = app.ui.StringValueToString(asegurado.Contratante);
                         info.Nombres = `${app.ui.StringValueToString(asegurado.Nombre)} ${app.ui.StringValueToString(asegurado.Apellido)}`;
@@ -27,7 +27,7 @@ app.BayerCarnet = (function () {
 
                         $('#print').removeClass('d-none');
                     }
-                    let extras = data.Extras.Data;
+                    let extras = data.Extras;
                     if (extras != null) {
                         extras.filter(r => r.TipoExtra === 'Dependiente').forEach(function (item) {
                             let value = `<li>${app.ui.StringValueToString(item.NombreExtra)} ${app.ui.StringValueToString(item.ApellidoExtra)}</li>`;

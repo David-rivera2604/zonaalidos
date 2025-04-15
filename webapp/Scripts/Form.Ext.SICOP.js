@@ -40,16 +40,16 @@ app.Form_Ext_SICOP = (function () {
                 if (entry.Tipo_de_modification == undefined)
                     entry.Tipo_de_modification = '';
 
-                app.core.dataapi('POST', 'ElectronicWarranty', entry)
+                app.core.datapi('POST', 'ElectronicWarranty', entry)
                     .then(warranty => {
                         if (warranty != null) {
-                            entry.ID = warranty.Next.Data.NEXTID;
+                            entry.ID = warranty.Next.NEXTID;
                             app.core.Post(app.setting.apipath + 'v1/SICOP/NotificarGarantia', JSON.stringify(entry))
                                 .done(function (posted) {
                                     if (posted != null) {
                                         entry.Confirmation = posted.Confirmation;
                                         entry.Msg_err = posted.Msg_err;
-                                        app.core.dataapi('PUT', `ElectronicWarranty/Notify/${entry.ID}`, { ID: entry.ID, Confirmation: posted.Confirmation, Msg_err: posted.Msg_err })
+                                        app.core.datapi('PUT', `ElectronicWarranty/Notify/${entry.ID}`, { ID: entry.ID, Confirmation: posted.Confirmation, Msg_err: posted.Msg_err })
                                             .then(xx => {
                                                 console.log(xx);
                                             });
@@ -125,9 +125,9 @@ app.Form_Ext_SICOP = (function () {
     };
 
     async function GetWarranty(spec, code, linked, callback) {
-        app.core.dataapi('GET', `ElectronicWarranty/Guarantee?code=${code}`)
+        app.core.datapi('GET', `ElectronicWarranty/Guarantee?code=${code}`)
             .then(warranty => {
-                callback(spec, code, linked, warranty);
+                callback(spec, code, linked, warranty?.Guarantee);
             });
     };
 
@@ -150,7 +150,7 @@ app.Form_Ext_SICOP = (function () {
                             else
                                 _warranty.Ex_Metodo = '8';
                         }
-                        app.core.dataapi('PUT', `ElectronicWarranty/Release`, { ID: entry.ID, Confirmation: posted.Confirmation, Msg_err: posted.Msg_err, Execute_release_contents: entry.Execute_release_contents, Transaction_num: entry.Transaction_num, Date_time: entry.Date_time, Ex_Metodo: _warranty.Ex_Metodo })
+                        app.core.datapi('PUT', `ElectronicWarranty/Release`, { ID: entry.ID, Confirmation: posted.Confirmation, Msg_err: posted.Msg_err, Execute_release_contents: entry.Execute_release_contents, Transaction_num: entry.Transaction_num, Date_time: entry.Date_time, Ex_Metodo: _warranty.Ex_Metodo })
                             .then(xx => {
                                 console.log(xx);
                             });

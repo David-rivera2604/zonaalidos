@@ -137,7 +137,7 @@ app.Form_Ext_Bajas = (function () {
             });
 
             $('.ibox-content').toggleClass('sk-loading');            
-            app.core.dataapi('GET', `PolicyToCancel/${poliza}`)
+            app.core.datapi('GET', `PolicyToCancel/${poliza}`)
                 .then(data => {
                     console.log(data);
                     if (data.General != null) {

@@ -839,23 +839,6 @@ app.core = (function () {
                 }
             });
         },
-        api_get: function (url) {
-            return new Promise((resolve, reject) => {
-                api_sendHttpRequest('GET', `${app.setting.entityapi}/${url}`)
-                    .then(data => {
-                        if (data === undefined) {
-                            resolve(null);
-                        } else {
-                            if (data?.Sucessfully != undefined && data.Sucessfully) {
-                                resolve(data.Data);
-                            } else {
-                                api_ShowError();
-                                resolve(null);
-                            }
-                        }
-                    });
-            })
-        },
         api_report: function (reportName, data) {
             return new Promise((resolve, reject) => {
                 report(reportName, data)
@@ -874,38 +857,6 @@ app.core = (function () {
                             resolve(data);
                         }
                     });
-            })
-        },
-        dataapi: function (method, url, data) {
-            return new Promise((resolve, reject) => {
-                return fetch(`${app.setting.entityapi}/${url}`, {
-                    body: method === 'GET' ? null : JSON.stringify(data),
-
-                    method: method,
-                    headers: {
-                        'Content-Type': 'application/json; charset=utf-8',
-                        'Authorization': 'Bearer ' + localStorage.getItem('Token')
-                    }
-                }).then(response => {
-                    if (!response.ok) {
-                        api_ShowError();
-                        resolve(null);
-                    } else {
-                        return response.json();
-                    }
-                }).then(data => {
-                    if (data != undefined) {
-                        if (data?.Sucessfully != undefined && data.Sucessfully) {
-                            resolve(data.Data);
-                        } else {
-                            api_ShowError();
-                            resolve(null);
-                        }
-                    }
-                }).catch(error => {
-                    api_ShowError();
-                    resolve(null);
-                });
             })
         },
         datapi: function (method, url, data) {
