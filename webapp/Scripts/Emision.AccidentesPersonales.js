@@ -868,6 +868,11 @@ app.EmisionAccidentesPersonales = (function () {
     function terceros_table_row_delete(row) {
         $('#tercerosTbl').bootstrapTable('removeByUniqueId', row.tercerosId);
     }
+
+    $.validator.addMethod("valorSeleccionado", function (value, element) {
+        return value !== "0";
+    }, "Debe seleccionar una opción válida");
+
     function terceros_table_Validations() {
         app.ui.DateValidators();
         app.ui.NumericValidators();
@@ -886,9 +891,9 @@ app.EmisionAccidentesPersonales = (function () {
                 numerodetelefono: { required: true },
                 correoelectronico: { email: true, required: true },
                 cod_pais: { required: true },
-                TProvincia: { required: true },
-                TCanton: { required: true },
-                TDistrito: { required: true },
+                TProvincia: { required: true, valorSeleccionado: true },
+                TCanton: { required: true, valorSeleccionado: true },
+                TDistrito: { required: true, valorSeleccionado: true },
                 otrasenas: { required: true },
                 vencimientodecesion: { required: true },
                 parentesco: { required: true },
@@ -907,9 +912,9 @@ app.EmisionAccidentesPersonales = (function () {
                 numerodetelefono: { required: 'Debe indicar el número de teléfono' },
                 correoelectronico: { email: 'Debe indicar un correo electrónico valido', required: 'Debe indicar el correo electrónico' },
                 cod_pais: { required: 'Debe indicar el país' },
-                TProvincia: { required: 'Debe indicar la provincia' },
-                TCanton: { required: 'Debe indicar el cantón' },
-                TDistrito: { required: 'Debe indicar el distrito' },
+                TProvincia: { required: 'Debe indicar la provincia', valorSeleccionado: 'Debe seleccionar una provincia válida' },
+                TCanton: { required: 'Debe indicar el cantón', valorSeleccionado: 'Debe seleccionar un canton válido' },
+                TDistrito: { required: 'Debe indicar el distrito', valorSeleccionado: 'Debe seleccionar un distrito válido' },
                 otrasenas: { required: 'Debe indicar las otra señas' },
                 vencimientodecesion: { required: 'Debe indicar el vencimiento de cesión' },
                 parentesco: { required: 'Debe indicar el parentesco' },

@@ -1622,6 +1622,10 @@ app.EmisionMultirriesgo = (function () {
         $('#tercerosTbl').bootstrapTable('removeByUniqueId', row.tercerosId);
     };
 
+    $.validator.addMethod("valorSeleccionado", function (value, element) {
+        return value !== "0";
+    }, "Debe seleccionar una opción válida");
+
     function terceros_table_Validations() {
         app.ui.DateValidators();
         $("#tercerosEdtForm").validate({
@@ -1638,9 +1642,9 @@ app.EmisionMultirriesgo = (function () {
                 numerodetelefono: { required: true },
                 correoelectronico: { required: true, email: true },
                 tercerosCod_pais: { required: true },
-                TProvincia: { required: true },
-                TCanton: { required: true },
-                TDistrito: { required: true },
+                TProvincia: { required: true, valorSeleccionado: true },
+                TCanton: { required: true, valorSeleccionado: true },
+                TDistrito: { required: true, valorSeleccionado: true },
                 otrasenas: { required: true },
                 vencimientodecesion: { required: true },
             },
@@ -1656,15 +1660,15 @@ app.EmisionMultirriesgo = (function () {
                 numerodetelefono: { required: 'Debe indicar el Número de teléfono' },
                 correoelectronico: { required: 'Debe indicar el Correo electrónico', email: 'Debe indicar un correo electrónico valido' },
                 tercerosCod_pais: { required: 'Debe indicar el País' },
-                TProvincia: { required: 'Debe indicar el Provincia' },
-                TCanton: { required: 'Debe indicar el Cantón' },
-                TDistrito: { required: 'Debe indicar el Distrito' },
+                TProvincia: { required: 'Debe indicar la provincia', valorSeleccionado: 'Debe seleccionar una provincia válida' },
+                TCanton: { required: 'Debe indicar el cantón', valorSeleccionado: 'Debe seleccionar un canton válido' },
+                TDistrito: { required: 'Debe indicar el distrito', valorSeleccionado: 'Debe seleccionar un distrito válido' },
                 otrasenas: { required: 'Debe indicar el Otra señas' },
                 vencimientodecesion: { required: 'Debe indicar el Vencimiento de cesión' },
             }
         });
     };
-
+    |
     function terceros_controls_setup() {
         $('#DocumentNumber').formatter({
             pattern: '0{{9}}-{{9999}}-{{9999}}',
