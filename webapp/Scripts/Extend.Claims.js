@@ -227,6 +227,7 @@ app.ExtendClaims = (function () {
         ShowClaimPanel: function (row) {
             $('.ibox-content').toggleClass('sk-loading');
             window.location.href = app.setting.basepath + `purdy/panel?asiges=${row.ASIGES}&claim=${row.NUM_SINI}&exp=${row.NUM_EXP}`;
+            $('.ibox-content').toggleClass('sk-loading');
         },
         EventHandler: function (id, index, stage, spec) {
             console.log(id, index, stage);

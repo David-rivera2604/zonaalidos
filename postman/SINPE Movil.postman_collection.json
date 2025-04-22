@@ -2,6 +2,7 @@
 	"info": {
 		"_postman_id": "d53b2d46-5e21-4585-99af-33d26b224843",
 		"name": "SINPE Movil",
+		"description": "Controlador para la vinculación asistida de SINPE Móvil Empresarial.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "5737193"
 	},
@@ -33,7 +34,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"clienteID\": \"admin\",\r\n    \"secretID\": \"2023\"\r\n}",
+					"raw": "{\r\n    \"clienteID\": \"\",\r\n    \"secretID\": \"\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -115,7 +116,7 @@
 						}
 					]
 				},
-				"method": "GET",
+				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
@@ -123,8 +124,17 @@
 						"type": "text"
 					}
 				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Descripcion\": \"Póliza 4902510101001\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "{{baseUrl}}/api/v1/SINPEMovil/AplicarPago?id=56465",
+					"raw": "{{baseUrl}}/api/v1/SINPEMovil/AplicarPago?id=1234567890123456789012345",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -137,7 +147,7 @@
 					"query": [
 						{
 							"key": "id",
-							"value": "56465",
+							"value": "1234567890123456789012345",
 							"description": "Identificador de la transacción."
 						}
 					]
@@ -145,6 +155,28 @@
 				"description": "Consulta los datos de una transacción."
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }

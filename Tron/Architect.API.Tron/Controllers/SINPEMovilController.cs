@@ -23,7 +23,6 @@ namespace Architect.API.Tron.Controllers
         /// <returns>Resultado de la operación.</returns>
         [HttpPost]
         [Route("AplicarPago")]
-        [AllowAnonymous]
         [ResponseType(typeof(Contracts.SINPEMovil.Response.AplicarPago))]
         public async Task<IHttpActionResult> AplicarPago([FromBody] Contracts.SINPEMovil.Request.AplicarPago request)
         {
@@ -45,7 +44,6 @@ namespace Architect.API.Tron.Controllers
         /// <returns>Resultado de la consulta.</returns>
         [HttpPost]
         [Route("ConsultaDatos")]
-        [AllowAnonymous]
         [ResponseType(typeof(Contracts.SINPEMovil.Response.ConsultaDatos))]
         public async Task<IHttpActionResult> ConsultaDatos([FromUri] string id, [FromBody] Contracts.SINPEMovil.Request.ConsultaDatos request)
         {
@@ -58,9 +56,7 @@ namespace Architect.API.Tron.Controllers
                 return BadRequest("El request no puede ser nulo.");
             }
 
-
             var response = await Business.Backoffice.SINPEMovil.Consulta(id, request);
-
 
             return Ok(response);
         }

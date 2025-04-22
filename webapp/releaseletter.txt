@@ -694,4 +694,5 @@
                    Aliados. Garantía Electrónica. Se actualiza el uso del servicio de datapi a su última versión.
                    Bayer. Carnet Digital. Se actualiza el uso del servicio de datapi a su última versión.
 1.6.119 16/04/2025 Aliados. En MapfreMas y MapfreMasPlus se cambia el tamaño del campo numero placa, para que sea solo 6 digitos.
-                   Aliados. Correccion del fraccionamiento anual,ya que en el presupuesto de multiriesgo empresa se repite en dos ocasione
+                   Aliados. Correccion del fraccionamiento anual,ya que en el presupuesto de multiriesgo empresa se repite en dos ocasiones.                  
+1.6.120 22/04/2025 Pasarela Evertec. Implementación de servicios web para recibir pago por SIMPEMovil.
