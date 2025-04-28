@@ -91,6 +91,10 @@ namespace Architect.API.Tron.Contracts.Emision
         ///  Se usa para los casos donde se quiera almacenar el nombre de la persona que emite en txt_motivo_spto
         /// </summary>
         [DataMember(), JsonProperty()] public string user_txt_motivo_spto { get; set; }
+        /// <summary>
+        ///  Se usa para capturar el id del presupuesto enviado a firmar por evicertia
+        /// </summary>
+        [DataMember(), JsonProperty()] public string id_evicertia { get; set; } = "";
     }
 
     public class MapfreMasSolicitud : MapfreMas

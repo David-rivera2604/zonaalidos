@@ -378,9 +378,32 @@ namespace Architect.API.Core.Controllers
                 {
                     receip.Add(email, string.Empty);
                 }
-                Core.Business.General.Mail.SendEmail(receip, item.Subject, item.Body, item.Attachments );
+                Core.Business.General.Mail.SendEmail(receip, item.Subject, item.Body, item.Attachments);
             }).ConfigureAwait(false);
             return Ok(true);
         }
+        /// <summary>
+        /// Permite la consulta de una solicitud de firma
+        /// </summary>
+        [HttpGet]
+        [Route("QuerySignature")]
+        [Authorize]
+        public async Task<IHttpActionResult> QuerySignature(string uniqueIds, bool includeAffidavits = false)
+        {
+            try
+            {
+                var result = await Architect.DocuSign.Integrations.DocuSign.Query(uniqueIds, includeAffidavits);
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError();
+            }
+        }
+
     }
 }

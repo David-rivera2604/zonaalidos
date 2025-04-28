@@ -186,6 +186,10 @@
       <Project>{3d406267-4a50-4e87-842a-553e3d222cf1}</Project>
       <Name>Architect.API.Core.Security</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Architect.DocuSign.Integrations\Architect.DocuSign.Integrations.csproj">
+      <Project>{41b3f1c8-fdb5-4db4-be61-6bf1576a09e7}</Project>
+      <Name>Architect.DocuSign.Integrations</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Support.resx">
