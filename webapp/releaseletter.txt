@@ -689,3 +689,7 @@
 1.6.117 09/04/2025 Purdy. Siniestros. Ajustes necesario para manejar el número de siniestros y el expediente como parte del panel.
                    Purdy. Siniestros. Se agrega el campo expediente al reporte de Purdy.
                    Purdy. Siniestros. Se agrega el campo ASIGES al reporte de MAPFRE.
+1.6.118 15/04/2025 Aliados. Altas. Se actualiza el uso del servicio de datapi a su última versión. 
+                   Aliados. Bajas. Se actualiza el uso del servicio de datapi a su última versión.
+                   Aliados. Garantía Electrónica. Se actualiza el uso del servicio de datapi a su última versión.
+                   Bayer. Carnet Digital. Se actualiza el uso del servicio de datapi a su última versión.
