@@ -699,3 +699,4 @@
 1.6.121 28/04/2025 Aliados. Api para consulta de solicitudes de firma.
                    Automovil. Se retorna en Issue el valor del UniqueId del documento enviado a firmar.
 1.6.122 28/04/2025 Aliados. Ajustes para altas del ramo 117.
+                   Purdy. Siniestros. Ajuste de 415 casos a 'No Procede', Se agregar columna 'Tipo de indemnización'.
