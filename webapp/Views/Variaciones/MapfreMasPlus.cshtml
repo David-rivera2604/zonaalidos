@@ -75,6 +75,14 @@
                                                     </div>
                                                 </div>
 
+                                                <!-- num_poliza DropDownList -->
+                                                <div class='col-sm-1 col-md-1'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='NUM_POLIZA'>Póliza<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                        <input type='text' id='NUM_POLIZA' name='NUM_POLIZA' class='form-control text-right' size='10' maxlength='10' />
+                                                    </div>
+                                                </div>
+
                                                 <!-- tipo_prod RadioButtonList -->
                                                 <div class='col-sm-2 col-md-2'>
                                                     <div class='form-group'>
@@ -678,6 +686,48 @@
                                         </div>
                                     </div>
 
+                                    <!-- plandepago Grid -->
+                                    <div class="form-row" id="plandepagoRow">
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <div class='col'>
+                                                    <h4>Plan de pago - Resumen</h4>
+                                                </div>
+
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class='col-md-12' style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="plandepagoresumenTbl" style="font-size: 11px;">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- plandepago Grid -->
+                                    <div class="form-row" id="resultvariacion">
+                                        <div class="col-lg-12">
+                                            <div class="form-row">
+                                                <div class='col'>
+                                                    <h4>Información de Recibos</h4>
+                                                </div>
+
+                                            </div>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class='col-md-12' style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="resultvariacionTbl" style="font-size: 11px;">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <!-- VerificarDomicilio Zone -->
                                     @*@Html.Partial("_verificardomicilio")*@
 
@@ -685,11 +735,17 @@
                                     <div class="form-row">
                                         <div class='col-md-12'>
                                             <div class="modal-footer">
-                                                <button id="guardarenviar" type="button" class="btn btn-primary d-none" data-doing="Enviado solictud...">
-                                                    Guardar y enviar solicitud
+                                                <button id="generarvariacion" type="button" class="btn btn-primary d-none" data-doing="Generardo variación...">
+                                                    Generar Variación
                                                 </button>
-                                                <button id="cotizar" type="button" class="btn btn-primary d-none" data-doing="Emitiendo...">
-                                                    Emitir
+                                                <button id="authorizarct" type="button" class="btn btn-primary d-none" data-doing="Authorizando...">
+                                                    Autorizar
+                                                </button>
+                                                <button id="rechazarct" type="button" class="btn btn-primary d-none" data-doing="Rechazando...">
+                                                    Rechazar
+                                                </button>
+                                                <button id="cancelarpoliza" type="button" class="btn btn-primary d-none" data-doing="Cancelando...">
+                                                    Cancelar póliza
                                                 </button>
                                                 <input id="fileUpload" type="file" class="d-none" />
                                             </div>
@@ -857,6 +913,9 @@
     </div>
 </div>
 
+@Html.Partial("_confirmarAutorizacion")
+@Html.Partial("_confirmarCancelacion")
+
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
     <script src="@Url.Content("~/assets/js/plugins/typehead/bootstrap3-typeahead.min.js")"></script>
@@ -866,7 +925,7 @@
     <script src="@Url.Content("~/assets/js/multimodal.js")"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            app.EmisionMapfreMasPlus.Init();
+            app.VariacionMapfreMasPlus.Init();
             //app.EmisionTercero.Init();
             //app.EmisionTercero.Callback(app.EmisionMapfreMasPlus.formularios_handler);
         });

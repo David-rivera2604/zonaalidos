@@ -1,6 +1,6 @@
 ﻿var app = app || {};
 
-app.EmisionMapfreMasPlus = (function () {
+app.VariacionMapfreMasPlus = (function () {
 
     let mainHolder = null;
     let fec_vcto_poliza_grupo = null;
@@ -16,6 +16,8 @@ app.EmisionMapfreMasPlus = (function () {
     var MCA_PROVISIONAL = 'N';
     var NUM_SPTO = 0;
     var NEW_NUM_SPTO = 0;
+    var fileAuthorization = [];
+    var fileCancelation = [];
 
     function Setup() {
         app.ui.CommonBehaviour();
@@ -52,6 +54,11 @@ app.EmisionMapfreMasPlus = (function () {
                         $("#cotizar").appendTo("#GenericToolBar");
                     }
 
+                    $('#resultvariacion').addClass('d-none');
+                    $('#plandepagoresumenTbl').addClass('d-none');
+                    $('#fileTableAutorization').addClass('d-none');
+                    $('#fileTableCancelation').addClass('d-none');
+
                     COD_PLAN_AUTO = data.COD_PLAN_AUTO;
 
                     $('#hhd-codplanauto').val(COD_PLAN_AUTO);
@@ -79,6 +86,7 @@ app.EmisionMapfreMasPlus = (function () {
 
     function ReadOnly() {
         $('input[name=tipo_prod').first().parent().parent().replaceWith('<div>' + $('input:radio[name=tipo_prod]:checked').next().html() + '</div>')
+        $('#NUM_POLIZA').replaceWith('<div>' + $('#NUM_POLIZA').val() + '</div>');
         $('#cod_mon').replaceWith('<div>' + $('#cod_mon option:selected').text() + '</div>');
         /*$('#cod_fracc_pago').replaceWith('<div>' + $('#cod_fracc_pago option:selected').text() + '</div>');*/
         $('#fec_efec_poliza_group').replaceWith('<div>' + $('#fec_efec_poliza').val() + '</div>');
@@ -149,6 +157,41 @@ app.EmisionMapfreMasPlus = (function () {
         $('#documentosrequeridosTbl').bootstrapTable('hideColumn', 'Actions');
         $('#formulariosNew').addClass('d-none');
         $('#formulariosTbl').bootstrapTable('hideColumn', 'Actions');
+    }
+
+    function DisabledAllControls(isdisabled) {
+        $('#cod_fracc_pago').prop('disabled', isdisabled);
+        $('#MCA_FEC_EFEC_SYS_1').prop('disabled', isdisabled);
+        $('#MCA_FEC_EFEC_SYS_2').prop('disabled', isdisabled);
+
+        $('#IMP_VR').prop('disabled', isdisabled);
+        $('#NUM_MATRICULA').prop('disabled', isdisabled);
+        $('#COD_COLOR').prop('disabled', isdisabled);
+
+        $('#IMP_AUTO_RC').prop('disabled', isdisabled);
+        $('#DED_AUTO_RC').prop('disabled', isdisabled);
+
+        if (isdisabled) {
+            $('#IMP_AUTO_GMO').prop('disabled', isdisabled);
+            $('#IMP_AUTO_ACO').prop('disabled', isdisabled);
+        }
+        else {
+            $('#IMP_AUTO_GMO').prop('disabled', COD_PLAN_AUTO === 31);
+            $('#IMP_AUTO_ACO').prop('disabled', COD_PLAN_AUTO === 31);
+        }
+
+        $('#DED_AUTO_CYV').prop('disabled', isdisabled);
+        $('#DED_AUTO_RAD').prop('disabled', isdisabled);
+        $('#DED_AUTO_ROB').prop('disabled', isdisabled);
+        $('#IMP_AUTO_CRI').prop('disabled', isdisabled);
+        $('#DED_AUTO_CRI').prop('disabled', isdisabled);
+        $('#IMP_AUTO_EQESP').prop('disabled', isdisabled);
+        $('#DED_AUTO_EQESP').prop('disabled', isdisabled);
+
+        $('#coberturasTbl').find('input, button').prop('disabled', isdisabled);
+        $('#plandepagoTbl').find('input, button').prop('disabled', isdisabled);
+
+        $('#coberturasNew').prop('disabled', isdisabled);
     }
 
     function Quote() {
@@ -265,9 +308,9 @@ app.EmisionMapfreMasPlus = (function () {
                 app.ui.LookupLoad('IMP_AUTO_MECA', settingData.IMP_AUTO_MECA);
                 app.ui.LookupLoad('IMP_AUTO_CRI', settingData.IMP_AUTO_CRI);
 
-                app.ui.LookupLoad('DED_AUTO_CYV', settingData.DED_AUTO_CYV);
-                app.ui.LookupLoad('DED_AUTO_RAD', settingData.DED_AUTO_RAD);
-                app.ui.LookupLoad('DED_AUTO_ROB', settingData.DED_AUTO_ROB);
+                app.ui.LookupLoad('DED_AUTO_CYV', app.VariacionMapfreMasPlus.findOrAddRecordCombobox(settingData.DED_AUTO_CYV, param.DED_AUTO_CYV, param.DED_AUTO_CYV_Desc));
+                app.ui.LookupLoad('DED_AUTO_RAD', app.VariacionMapfreMasPlus.findOrAddRecordCombobox(settingData.DED_AUTO_RAD, param.DED_AUTO_RAD, param.DED_AUTO_RAD_Desc));
+                app.ui.LookupLoad('DED_AUTO_ROB', app.VariacionMapfreMasPlus.findOrAddRecordCombobox(settingData.DED_AUTO_ROB, param.DED_AUTO_ROB, param.DED_AUTO_ROB_Desc));
                 app.ui.LookupLoad('DED_AUTO_EQESP', settingData.DED_AUTO_EQESP);
                 app.ui.LookupLoad('DED_AUTO_CRI', settingData.DED_AUTO_CRI);
 
@@ -361,9 +404,49 @@ app.EmisionMapfreMasPlus = (function () {
         return data;
     }
 
-    function MapObjectToInput_First(data) {
-        setupDataFirst = data;
+    function existeCambios() {
+        let result = true;
+        const camposAComparar = ["cod_fracc_pago", "NUM_MATRICULA", "IMP_AUTO_RC", "IMP_AUTO_GMO", "IMP_AUTO_ACO", "IMP_AUTO_CYV", "IMP_VR", "IMP_AUTO_CRI",
+            "IMP_AUTO_RAD", "IMP_AUTO_ROB", "DED_AUTO_RC", "DED_AUTO_ROB", "DED_AUTO_CYV", "DED_AUTO_RAD", "IMP_AUTO_EQESP", "DED_AUTO_EQESP"];
+        //const camposLista = ["codigo", "nombre", "capital", "primatotal", "deducible"];
+        let data = MapInputToObject();
 
+        const isEquals = sonObjetosIguales(setupDataFirst, data, camposAComparar);
+        const lista = data.NewCoverages || [];
+
+        // Si no hay datos en la lista, no hay nuevos registros ni modificados de coverturas
+        if (lista.length <= 0 && isEquals) {
+            result = false;
+            toastr.error("Existe un error, debe modificar alguno de los datos", "Error el emitir la variación", { timeOut: 9000, closeButton: true, progressBar: true });
+        }
+
+        return result;
+    }
+
+    function sonObjetosIguales(obj1, obj2, camposAComparar) {
+        // 1. Comparar los campos específicos (excepto la lista)
+        for (const campo of camposAComparar) {
+
+            // Si algún campo no existe en uno de los objetos, son diferentes
+            if (!obj1.hasOwnProperty(campo) || !obj2.hasOwnProperty(campo)) {
+                return false;
+            }
+
+            // Si los valores son diferentes, los objetos son diferentes
+            if (JSON.stringify(obj1[campo]) !== JSON.stringify(obj2[campo])) {
+                return false;
+            }
+        }
+
+        // Si llegamos hasta aquí, los objetos son idénticos en los campos especificados
+        return true;
+    }
+
+    function MapObjectToInput_First(data) {
+        console.log("data 2:", data);
+        setupDataFirst = data;
+        app.ui.SetNumericValue('#NUM_POLIZA', data.num_poliza);
+        $('#NUM_POLIZA').val(data.num_poliza);
         //app.ui.SetNumericValue('#edad', data.edad);
         //$('#mca_sexo').val(data.mca_sexo);
         $('#Fuente_Tomador').val(data.Fuente_Tomador);
@@ -436,6 +519,13 @@ app.EmisionMapfreMasPlus = (function () {
         else
             $('#plandepagoTbl').bootstrapTable('load', {});
 
+        if (data.plandepagoresumen != null) {
+            $('#plandepagoresumenTbl').removeClass('d-none');
+            $('#plandepagoresumenTbl').bootstrapTable('load', data.plandepagoresumen);
+        }
+        else
+            $('#plandepagoresumenTbl').bootstrapTable('load', {});
+
         TipoTercero_Filtro();
         mca_cuotas_gratis = data.mc_cuotas_gratis;
 
@@ -443,7 +533,7 @@ app.EmisionMapfreMasPlus = (function () {
     }
 
     function MapObjectToInput(data) {
-
+        console.log("data", data);
         $('#IMP_AUTO_RC').val(data.IMP_AUTO_RC);
         $('#DED_AUTO_RC').val(data.DED_AUTO_RC);
         $('#IMP_AUTO_GMO').val(data.IMP_AUTO_GMO);
@@ -573,6 +663,13 @@ app.EmisionMapfreMasPlus = (function () {
             emptyInputBehavior: 'null'
         });
 
+        $('#fec_efec_cancel_group').datetimepicker({
+            format: 'DD/MM/YYYY',
+            locale: 'es',
+            minDate: moment().startOf('day')
+
+        });
+
         $('#coberturasData').val('[]');
     }
 
@@ -597,9 +694,21 @@ app.EmisionMapfreMasPlus = (function () {
         $('#generarvariacion').click(function () {
             if (app.ui.IsValid('#VisualizationsEdtForm', false)) {
 
+                if (!existeCambios()) {
+                    return;
+                }
+
                 if (setupDataFirst.cod_fracc_pago !== app.ui.GetDropDownNumericValue('#cod_fracc_pago')) {
-                    var md = $('#messageModal').modal({ show: false });
+                    //var md = $('#messageModal').modal({ show: false });
+                    //md.modal('show');
+
+                    var md = $('#confirmation-autorization-Modal').modal({ show: false });
                     md.modal('show');
+                    $('#mensaje_fracc_pago').removeClass('d-none');
+                    $('#fileTableAutorization').addClass('d-none');
+                    $('#fileTableBodyAuthorization').empty();
+                    $('#doc_autorization_poliza').next('.custom-file-label').text('Indique el archivo a procesar...');
+                    fileAuthorization = [];
                 }
                 else {
                     app.ui.ButtonDoing('#generarvariacion');
@@ -621,11 +730,13 @@ app.EmisionMapfreMasPlus = (function () {
                                     NEW_NUM_SPTO = firstRecord.num_spto;
                                 }
 
-                                if (data.coberturas != null)
-                                    $('#coberturasTbl').bootstrapTable('load', data.coberturas);
-                                $('#coberturasTbl').bootstrapTable('hideLoading');
                                 if (data.plandepago != null)
                                     $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
+
+                                if (data.plandepagoresumen != null) {
+                                    $('#plandepagoresumenTbl').removeClass('d-none');
+                                    $('#plandepagoresumenTbl').bootstrapTable('load', data.plandepagoresumen);
+                                }
 
                                 $('#generarvariacion').addClass('d-none');
                                 $('#cancelarpoliza').addClass('d-none');
@@ -634,10 +745,14 @@ app.EmisionMapfreMasPlus = (function () {
                                 MCA_PROVISIONAL = "S";
                                 DisabledAllControls(true);
 
+                                if (data.coberturas != null)
+                                    $('#coberturasTbl').bootstrapTable('load', data.coberturas);
+                                $('#coberturasTbl').bootstrapTable('hideLoading');
+
                                 toastr.info("Se generó correctamente la variación", "Variación", { timeOut: 9000, closeButton: true, progressBar: true });
                             }
                             else {
-                                app.EmisionMapfreMas.custonMessageResponse(data, "Error el emitir la variación");
+                                app.VariacionMapfreMasPlus.custonMessageResponse(data, "Error el emitir la variación");
                                 /*toastr.error(data.ProcessResult.txt_error, "Error el emitir la variación", { timeOut: 9000, closeButton: true, progressBar: true });*/
                             }
 
@@ -662,7 +777,7 @@ app.EmisionMapfreMasPlus = (function () {
             if (app.ui.IsValid('#VisualizationsEdtForm', false)) {
 
                 app.ui.ButtonDoing('#aceptarmessage');
-                app.core.Post(app.setting.apipath + 'v1/Variaciones/MapfreMasPlus',
+                app.core.Post(app.setting.apipath + 'v1/Variaciones/MapfreMas',
                     JSON.stringify(MapInputToObject()),
                     function (data) {
 
@@ -686,19 +801,26 @@ app.EmisionMapfreMasPlus = (function () {
                             if (data.plandepago != null)
                                 $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
 
-                            $('#generarvariacion').addClass('d-none');
-                            $('#cancelarpoliza').addClass('d-none');
-                            $('#authorizarct').removeClass('d-none');
-                            $('#rechazarct').removeClass('d-none');
-                            MCA_PROVISIONAL = "S";
-                            DisabledAllControls(true);
+                            if (data.plandepagoresumen != null) {
+                                $('#plandepagoresumenTbl').removeClass('d-none');
+                                $('#plandepagoresumenTbl').bootstrapTable('load', data.plandepagoresumen);
+                            }
+
+                            $('#cancelarpoliza').removeClass('d-none');
+                            $('#generarvariacion').removeClass('d-none');
+                            $('#authorizarct').addClass('d-none');
+                            $('#rechazarct').addClass('d-none');
+
+                            MCA_PROVISIONAL = "N";
+                            DisabledAllControls(false);
+                            Controls_sum_enable(setupData);
 
                             setupDataFirst.cod_fracc_pago = app.ui.GetDropDownNumericValue('#cod_fracc_pago');
 
                             toastr.info("Se generó correctamente la variación", "Variación", { timeOut: 9000, closeButton: true, progressBar: true });
                         }
                         else {
-                            app.EmisionMapfreMas.custonMessageResponse(data, "Error el emitir la variación");
+                            app.VariacionMapfreMasPlus.custonMessageResponse(data, "Error el emitir la variación");
                         }
                         $('#messageModal').modal('hide'); // Cerrar el popup
 
@@ -715,39 +837,48 @@ app.EmisionMapfreMasPlus = (function () {
                 validate.settings.ignore = ':hidden';
                 toastr.error("Existen " + count + " error(es), que ameritan su atención.", "", { closeButton: true, progressBar: true });
             }
-            event.preventDefault();
+            //event.preventDefault();
         });
 
         $('#cancelarpoliza').click(function () {
+
             if (app.ui.IsValid('#VisualizationsEdtForm', false)) {
-                app.ui.ButtonDoing('#cancelarpoliza');
-                app.core.Post(app.setting.apipath + 'v1/Variaciones/MapfreMasPlusCancelation',
-                    JSON.stringify(MapInputToObject()),
-                    function (data) {
 
-                        if (data.McaError === "N") {
-                            if (Array.isArray(data.Recibos) && data.Recibos.length > 0) {
-                                $('#resultvariacionTbl').bootstrapTable('load', data.Recibos);
-                                $('#resultvariacion').removeClass('d-none');
+                var md = $('#confirmation-cancelation-Modal').modal({ show: false });
+                md.modal('show');
+                $('#fileTableBodyCancelation').addClass('d-none');
+                $('#fileTableBodyAuthorization').empty();
+                $('#doc_cancelation_poliza').next('.custom-file-label').text('Indique el archivo a procesar...');
+                fileCancelation = [];
 
-                                let firstRecord = data.Recibos[0];
-                                NEW_NUM_SPTO = firstRecord.num_spto;
-                            }
+                //app.ui.ButtonDoing('#cancelarpoliza');
+                //app.core.Post(app.setting.apipath + 'v1/Variaciones/MapfreMasCancelation',
+                //    JSON.stringify(MapInputToObject()),
+                //    function (data) {
 
-                            $('#cancelarpoliza').addClass('d-none');
-                            $('#generarvariacion').addClass('d-none');
-                            $('#authorizarct').addClass('d-none');
-                            $('#rechazarct').addClass('d-none');
+                //        if (data.McaError === "N") {
+                //            if (Array.isArray(data.Recibos) && data.Recibos.length > 0) {
+                //                $('#resultvariacionTbl').bootstrapTable('load', data.Recibos);
+                //                $('#resultvariacion').removeClass('d-none');
 
-                            toastr.info("Se generó correctamente la cancelación", "Cancelación", { timeOut: 9000, closeButton: true, progressBar: true });
-                        }
-                        else {
-                            app.EmisionMapfreMas.custonMessageResponse(data, "Error el emitir la cancelación");
-                        }
+                //                let firstRecord = data.Recibos[0];
+                //                NEW_NUM_SPTO = firstRecord.num_spto;
+                //            }
 
-                    }).always(function () {
-                        app.ui.ButtonDone('#cancelarpoliza');
-                    });
+                //            $('#cancelarpoliza').addClass('d-none');
+                //            $('#generarvariacion').addClass('d-none');
+                //            $('#authorizarct').addClass('d-none');
+                //            $('#rechazarct').addClass('d-none');
+
+                //            toastr.info("Se generó correctamente la cancelación", "Cancelación", { timeOut: 9000, closeButton: true, progressBar: true });
+                //        }
+                //        else {
+                //            app.EmisionMapfreMas.custonMessageResponse(data, "Error el emitir la cancelación");
+                //        }
+
+                //    }).always(function () {
+                //        app.ui.ButtonDone('#cancelarpoliza');
+                //    });
             }
             else {
                 var instance = $('#VisualizationsEdtForm');
@@ -759,49 +890,64 @@ app.EmisionMapfreMasPlus = (function () {
                 toastr.error("Existen " + count + " error(es), que ameritan su atención.", "", { closeButton: true, progressBar: true });
             }
             event.preventDefault();
+
+        });
+
+        $('#aceptar-cancelation').click(function () {
+
+            processCancelation();
+
         });
 
         $('#authorizarct').click(function () {
             if (app.ui.IsValid('#VisualizationsEdtForm', false)) {
-                app.ui.ButtonDoing('#authorizarct');
+                //app.ui.ButtonDoing('#authorizarct');
 
-                var data = setupData;
-                data.Mca_Autoriza_CT = "S";
-                data.num_spto = NEW_NUM_SPTO;
+                var md = $('#confirmation-autorization-Modal').modal({ show: false });
+                md.modal('show');
+                $('#mensaje_fracc_pago').addClass('d-none');
+                $('#fileTableAutorization').addClass('d-none');
+                $('#fileTableBodyAuthorization').empty();
+                $('#doc_autorization_poliza').next('.custom-file-label').text('Indique el archivo a procesar...');
+                fileAuthorization = [];
 
-                app.core.Post(app.setting.apipath + 'v1/Variaciones/MapfreMasPlusManageAuthorizationCT',
-                    JSON.stringify(data),
-                    function (data) {
-                        if (data.McaError === "N") {
-                            $('#cancelarpoliza').removeClass('d-none');
-                            $('#generarvariacion').removeClass('d-none');
-                            $('#authorizarct').addClass('d-none');
-                            $('#rechazarct').addClass('d-none');
-                            DisabledAllControls(false);
-                            Controls_sum_enable(setupData);
-                            MCA_PROVISIONAL = "N";
+                //var data = setupData;
+                //data.Mca_Autoriza_CT = "S";
+                //data.num_spto = NEW_NUM_SPTO;
 
-                            if (data.coberturas != null)
-                                $('#coberturasTbl').bootstrapTable('load', data.coberturas);
-                            $('#coberturasTbl').bootstrapTable('hideLoading');
-                            if (data.plandepago != null)
-                                $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
+                //app.core.Post(app.setting.apipath + 'v1/Variaciones/MapfreMasManageAuthorizationCT',
+                //    JSON.stringify(data),
+                //    function (data) {
+                //        if (data.McaError === "N") {
+                //            $('#cancelarpoliza').removeClass('d-none');
+                //            $('#generarvariacion').removeClass('d-none');
+                //            $('#authorizarct').addClass('d-none');
+                //            $('#rechazarct').addClass('d-none');
+                //            DisabledAllControls(false);
+                //            Controls_sum_enable(setupData);
+                //            MCA_PROVISIONAL = "N";
 
-                            if (Array.isArray(data.Recibos) && data.Recibos.length > 0) {
-                                $('#resultvariacionTbl').bootstrapTable('load', data.Recibos);
+                //            if (data.coberturas != null)
+                //                $('#coberturasTbl').bootstrapTable('load', data.coberturas);
+                //            $('#coberturasTbl').bootstrapTable('hideLoading');
+                //            if (data.plandepago != null)
+                //                $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
+
+                //            if (Array.isArray(data.Recibos) && data.Recibos.length > 0) {
+                //                $('#resultvariacionTbl').bootstrapTable('load', data.Recibos);
 
 
-                                $('#resultvariacion').removeClass('d-none');
-                            }
-                            toastr.info("Se autorizó el CT", "Autorización", { timeOut: 9000, closeButton: true, progressBar: true });
-                        }
-                        else {
-                            app.EmisionMapfreMas.custonMessageResponse(data, "Error al autorizar el CT");
-                        }
+                //                $('#resultvariacion').removeClass('d-none');
+                //            }
+                //            toastr.info("Se autorizó el CT", "Autorización", { timeOut: 9000, closeButton: true, progressBar: true });
+                //        }
+                //        else {
+                //            app.EmisionMapfreMas.custonMessageResponse(data, "Error al autorizar el CT");
+                //        }
 
-                    }).always(function () {
-                        app.ui.ButtonDone('#authorizarct');
-                    });
+                //    }).always(function () {
+                //        app.ui.ButtonDone('#authorizarct');
+                //    });
             }
             else {
                 var instance = $('#VisualizationsEdtForm');
@@ -813,6 +959,12 @@ app.EmisionMapfreMasPlus = (function () {
                 toastr.error("Existen " + count + " error(es), que ameritan su atención.", "", { closeButton: true, progressBar: true });
             }
             event.preventDefault();
+        });
+
+        $('#aceptar-autorization').click(function () {
+
+            processAutorizationCT();
+
         });
 
         $('#rechazarct').click(function () {
@@ -822,8 +974,8 @@ app.EmisionMapfreMasPlus = (function () {
                 var data = setupData;
                 data.Mca_Autoriza_CT = "N";
 
-                app.core.Post(app.setting.apipath + 'v1/Variaciones/MapfreMasPlusManageAuthorizationCT',
-                    JSON.stringify(MapInputToObject()),
+                app.core.Post(app.setting.apipath + 'v1/Variaciones/MapfreMasManageAuthorizationCT',
+                    JSON.stringify(data),
                     function (data) {
 
                         if (data.McaError === "N") {
@@ -834,6 +986,11 @@ app.EmisionMapfreMasPlus = (function () {
                             if (data.plandepago != null)
                                 $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
 
+                            if (data.plandepagoresumen != null) {
+                                $('#plandepagoresumenTbl').removeClass('d-none');
+                                $('#plandepagoresumenTbl').bootstrapTable('load', data.plandepagoresumen);
+                            }
+
                             $('#cancelarpoliza').removeClass('d-none');
                             $('#generarvariacion').removeClass('d-none');
                             $('#authorizarct').addClass('d-none');
@@ -842,10 +999,11 @@ app.EmisionMapfreMasPlus = (function () {
                             Controls_sum_enable(setupData);
                             MCA_PROVISIONAL = "N";
 
-                            toastr.info("Se rechazo el CT", "Autorización", { timeOut: 9000, closeButton: true, progressBar: true });
+                            //toastr.info("Se rechazo el CT", "Autorización", { timeOut: 9000, closeButton: true, progressBar: true });
+                            app.VariacionMapfreMasPlus.custonMessageResponse(data, "Autorización");
                         }
                         else {
-                            app.EmisionMapfreMas.custonMessageResponse(data, "Error al rechazar el CT");
+                            app.VariacionMapfreMasPlus.custonMessageResponse(data, "Error al rechazar el CT");
                             //toastr.error(data.ProcessResult.txt_error, "Error al rechazar el CT", { timeOut: 9000, closeButton: true, progressBar: true });
                         }
 
@@ -865,89 +1023,199 @@ app.EmisionMapfreMasPlus = (function () {
             event.preventDefault();
         });
 
+        $('#doc_cancelation_poliza').change(function (e) {
+            var file = e.target.files[0];
+            var fileName = e.target.files[0]?.name || "Indique el archivo a procesar...";
+            $(this).next('.custom-file-label').text(fileName);
+
+            if (file) {
+
+                if (validateFile(file, fileCancelation, "Cancelación")) {
+                    $('#fileTableCancelation').removeClass('d-none');
+                    fileCancelation.push(file);
+                    var newRow = `<tr>
+                                    <td>${fileName}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm btn-white delete remove-btn">
+                                            <i class="fa fa-close"></i>
+                                        </button>
+                                    </td>
+                                  </tr>`
+                    $('#fileTableCancelation tbody').append(newRow);
+                }
+
+                this.value = '';
+            }
+        });
+
+        $('#doc_autorization_poliza').change(function (e) {
+            var file = e.target.files[0];
+            var fileName = file?.name || "Indique el archivo a procesar...";
+            $(this).next('.custom-file-label').text(fileName);
+
+            if (file) {
+
+                if (validateFile(file, fileAuthorization, 'Autorización')) {
+                    $('#fileTableAutorization').removeClass('d-none');
+                    fileAuthorization.push(file);
+                    var newRow = `<tr>
+                                    <td>${fileName}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm btn-white delete remove-btn">
+                                            <i class="fa fa-close"></i>
+                                        </button>
+                                    </td>
+                                  </tr>`
+                    $('#fileTableAutorization tbody').append(newRow);
+                }
+
+                this.value = '';
+            }
+        });
+
+        $('#fileTableAutorization').on('click', '.remove-btn', function () {
+            var row = $(this).closest('tr');
+            var fileName = row.find('td:first').text();
+            fileAuthorization = fileAuthorization.filter(function (file) {
+                return file.name !== fileName;
+            });
+            row.remove();
+        });
+        $('#fileTableCancelation').on('click', '.remove-btn', function () {
+            var row = $(this).closest('tr');
+            var fileName = row.find('td:first').text();
+            fileCancelation = fileCancelation.filter(function (file) {
+                return file.name !== fileName;
+            });
+            row.remove();
+        });
+
+        $('#IMP_VR').change(function () {
+            var value = app.ui.GetNumericValue('#IMP_VR');
+
+            app.ui.SetNumericValue('#IMP_AUTO_CYV', value);
+            app.ui.SetNumericValue('#IMP_AUTO_RAD', value);
+            app.ui.SetNumericValue('#IMP_AUTO_ROB', value);
+
+
+            //if (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3004))
+            //    app.ui.SetNumericValue('#IMP_AUTO_CYV', value);
+            //else
+            //    app.ui.SetNumericValue('#IMP_AUTO_CYV', 0);
+
+            //if (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3005))
+            //    app.ui.SetNumericValue('#IMP_AUTO_RAD', value);
+            //else
+            //    app.ui.SetNumericValue('#IMP_AUTO_RAD', 0);
+
+            //if (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3006))
+            //    app.ui.SetNumericValue('#IMP_AUTO_ROB', value);
+            //else
+            //    app.ui.SetNumericValue('#IMP_AUTO_ROB', 0);
+            data_changed();
+
+            $("#VisualizationsEdtForm").validate().resetForm();
+        });
+
     }
 
     function Setup_Validations() {
         app.ui.DateValidators();
+
+        $.validator.addMethod("ValorRequeridoSegunVechiculoPlan",
+            function (value, element, params) {
+                let cod_plan_auto = COD_PLAN_AUTO;
+                if (cod_plan_auto == 31) {
+                    return true;
+                }
+                else {
+                    var result = (value != '0') && value;
+                    return result;
+                }
+            }
+        );
+
         $("#VisualizationsEdtForm").validate({
             errorPlacement: app.ui.ErrorPlacement,
             rules: {
-                edad: { required: true },
-                mca_sexo: { required: true },
-                cod_mon: { required: true },
+                //edad: { required: true },
+                //mca_sexo: { required: true },
+                //cod_mon: { required: true },
                 cod_fracc_pago: { required: true },
-                fec_efec_poliza: { required: true },
-                fec_vcto_poliza: { required: true },
-                Fuente_Tomador: { required: true },
-                tip_firma: { required: true },
-                correoenvio: { email: true, required: true },
-                COD_PLAN_AUTO: { required: true },
-                cod_marca: { required: true },
-                cod_modelo: { required: true },
-                ANIO_SUB_MODELO: { required: true },
-                cod_tip_vehi: { required: true },
-                cod_uso_vehi: { required: true },
+                //fec_efec_poliza: { required: true },
+                //fec_vcto_poliza: { required: true },
+                //Fuente_Tomador: { required: true },
+                //tip_firma: { required: true },
+                //correoenvio: { email: true, required: true },
+                //COD_PLAN_AUTO: { required: true },
+                //cod_marca: { required: true },
+                //cod_modelo: { required: true },
+                //ANIO_SUB_MODELO: { required: true },
+                //cod_tip_vehi: { required: true },
+                //cod_uso_vehi: { required: true },
                 NUM_MATRICULA: { required: true },
-                COD_CHASSIS: { required: true },
-                DES_TIP_CILINDRAJE: { required: true },
-                VAL_PESO: { required: true },
-                COD_COLOR: { required: true },
-                NUM_MOTOR: { required: true },
-                VAL_CAPACIDAD: { required: true },
+                //COD_CHASSIS: { required: true },
+                //DES_TIP_CILINDRAJE: { required: true },
+                //VAL_PESO: { required: true },
+                //COD_COLOR: { required: true },
+                //NUM_MOTOR: { required: true },
+                //VAL_CAPACIDAD: { required: true },
                 IMP_VR: { required: true },
                 IMP_AUTO_RC: { required: true },
                 DED_AUTO_RC: { required: true },
-                IMP_AUTO_GMO: { required: true },
-                IMP_AUTO_ACO: { required: true },
+                IMP_AUTO_GMO: { ValorRequeridoSegunVechiculoPlan: true },
+                IMP_AUTO_ACO: { ValorRequeridoSegunVechiculoPlan: true },
                 IMP_AUTO_CYV: { required: true },
                 DED_AUTO_CYV: { required: true },
                 IMP_AUTO_RAD: { required: true },
                 DED_AUTO_RAD: { required: true },
                 IMP_AUTO_ROB: { required: true },
                 DED_AUTO_ROB: { required: true },
+                IMP_AUTO_EQESP: { required: true, Numeric: true },
                 DED_AUTO_EQESP: { required: true },
-                IMP_AUTO_NEUM: { required: true },
-                IMP_AUTO_MECA: { required: true },
+                //IMP_AUTO_NEUM: { required: true },
+                //IMP_AUTO_MECA: { required: true },
                 IMP_AUTO_CRI: { required: true },
                 DED_AUTO_CRI: { required: true }
             },
             messages: {
-                edad: { required: 'Debe indicar el Edad' },
-                mca_sexo: { required: 'Debe indicar el Sexo' },
-                cod_mon: { required: 'Debe indicar el Moneda' },
+                //edad: { required: 'Debe indicar el Edad' },
+                //mca_sexo: { required: 'Debe indicar el Sexo' },
+                //cod_mon: { required: 'Debe indicar el Moneda' },
                 cod_fracc_pago: { required: 'Debe indicar el Fraccionamiento de pago' },
-                fec_efec_poliza: { required: 'Debe indicar el Inicio de vigencia' },
-                fec_vcto_poliza: { required: 'Debe indicar el Fin de vigencia' },
-                Fuente_Tomador: { required: 'Debe indicar el tomador' },
-                tip_firma: { required: 'Debe indicar el tipo de envío' },
-                correoenvio: { email: 'Debe indicar un correo electrónico valido', required: 'Debe indicar el correo para el envío' },
-                COD_PLAN_AUTO: { required: 'Debe indicar el Plan' },
-                cod_marca: { required: 'Debe indicar el Marca' },
-                cod_modelo: { required: 'Debe indicar el Modelo' },
+                //fec_efec_poliza: { required: 'Debe indicar el Inicio de vigencia' },
+                //fec_vcto_poliza: { required: 'Debe indicar el Fin de vigencia' },
+                //Fuente_Tomador: { required: 'Debe indicar el tomador' },
+                //tip_firma: { required: 'Debe indicar el tipo de envío' },
+                //correoenvio: { email: 'Debe indicar un correo electrónico valido', required: 'Debe indicar el correo para el envío' },
+                //COD_PLAN_AUTO: { required: 'Debe indicar el Plan' },
+                //cod_marca: { required: 'Debe indicar el Marca' },
+                //cod_modelo: { required: 'Debe indicar el Modelo' },
                 NUM_MATRICULA: { required: 'Debe indicar el Número de placa' },
-                COD_CHASSIS: { required: 'Debe indicar el Número de Chasis' },
-                DES_TIP_CILINDRAJE: { required: 'Debe indicar el cilindraje del vehículo' },
-                VAL_PESO: { required: 'Debe indicar el Peso del vehículo' },
-                COD_COLOR: { required: 'Debe indicar el Color del vehículo' },
-                NUM_MOTOR: { required: 'Debe indicar el Motor del vehículo' },
-                VAL_CAPACIDAD: { required: 'Debe indicar el Capacidad del vehículo' },
-                ANIO_SUB_MODELO: { required: 'Debe indicar el Año del vehículo' },
-                cod_tip_vehi: { required: 'Debe indicar el Clase del vehículo' },
-                cod_uso_vehi: { required: 'Debe indicar el Uso del vehículo' },
+                //COD_CHASSIS: { required: 'Debe indicar el Número de Chasis' },
+                //DES_TIP_CILINDRAJE: { required: 'Debe indicar el cilindraje del vehículo' },
+                //VAL_PESO: { required: 'Debe indicar el Peso del vehículo' },
+                //COD_COLOR: { required: 'Debe indicar el Color del vehículo' },
+                //NUM_MOTOR: { required: 'Debe indicar el Motor del vehículo' },
+                //VAL_CAPACIDAD: { required: 'Debe indicar el Capacidad del vehículo' },
+                //ANIO_SUB_MODELO: { required: 'Debe indicar el Año del vehículo' },
+                //cod_tip_vehi: { required: 'Debe indicar el Clase del vehículo' },
+                //cod_uso_vehi: { required: 'Debe indicar el Uso del vehículo' },
                 IMP_VR: { required: 'Debe indicar el Valor del vehículo asegurado' },
                 IMP_AUTO_RC: { required: 'Debe indicar el Responsabilidad civil' },
                 DED_AUTO_RC: { required: 'Debe indicar el Deducible responsabilidad civil' },
-                IMP_AUTO_GMO: { required: 'Debe indicar el Gastos médicos de ocupantes' },
-                IMP_AUTO_ACO: { required: 'Debe indicar el Accidentes al conductor' },
+                IMP_AUTO_GMO: { ValorRequeridoSegunVechiculoPlan: 'Debe indicar el Gastos médicos de ocupantes' },
+                IMP_AUTO_ACO: { ValorRequeridoSegunVechiculoPlan: 'Debe indicar el Accidentes al conductor' },
                 IMP_AUTO_CYV: { required: 'Debe indicar el Colisión y vuelco' },
                 DED_AUTO_CYV: { required: 'Debe indicar el Deducible colisión y vuelco' },
                 IMP_AUTO_RAD: { required: 'Debe indicar el Riesgos adicionales' },
                 DED_AUTO_RAD: { required: 'Debe indicar el Deducible riesgos adicionales' },
                 IMP_AUTO_ROB: { required: 'Debe indicar el Robo' },
                 DED_AUTO_ROB: { required: 'Debe indicar el Deducible robo' },
+                IMP_AUTO_EQESP: { required: 'Debe indicar el equipo especial' },
                 DED_AUTO_EQESP: { required: 'Debe indicar el Deducible equipo especial' },
-                IMP_AUTO_NEUM: { required: 'Debe indicar el Garantía de neumáticos' },
-                IMP_AUTO_MECA: { required: 'Debe indicar el Avería mecánica' },
+                //IMP_AUTO_NEUM: { required: 'Debe indicar el Garantía de neumáticos' },
+                //IMP_AUTO_MECA: { required: 'Debe indicar el Avería mecánica' },
                 IMP_AUTO_CRI: { required: 'Debe indicar el Rotura de cristales' },
                 DED_AUTO_CRI: { required: 'Debe indicar el Deducible rotura de cristales' }
             }
@@ -963,6 +1231,14 @@ app.EmisionMapfreMasPlus = (function () {
             smartDisplay: true,
             detailView: false,
             detailFormatter: 'app.ui.GenericDetailFormatter',
+            rowStyle: function (value, row, index) {
+                let colorFila = (value.codigo === 3016 && !value.added && MCA_PROVISIONAL === "N") ? "#FFFFFF" : "#DFFFDE";
+                return {
+                    css: {
+                        'background-color': colorFila
+                    }
+                }
+            },
             columns: [
                 {
                     field: 'codigo',
@@ -1062,10 +1338,12 @@ app.EmisionMapfreMasPlus = (function () {
                         return (result) ? '<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar los datos de la cobertura de la fila"> <i class="fa fa-close"></i> </button>' : '';
                     },
                     cellStyle: function (value, row, index) {
+                        let colorFila = (row.codigo === 3016 && !row.added && MCA_PROVISIONAL === "N") ? "#FFFFFF" : "#DFFFDE";
                         return {
                             css: {
                                 'white-space': 'nowrap',
-                                'vertical-align': 'top'
+                                'vertical-align': 'top',
+                                'background-color': colorFila
                             }
                         }
                     }
@@ -1245,6 +1523,41 @@ app.EmisionMapfreMasPlus = (function () {
         md.modal('show');
     }
 
+    function coberturas_table_row_delete(row) {
+
+        const mainTableData = $('#coberturasTbl').bootstrapTable('getData');
+        const exists = mainTableData.find(item => item.codigo === row.codigo);
+
+        if (exists) {
+
+            if (exists.seleccionado) {
+                // Obtener la celda de acciones de la fila actualizada
+                const rowIndex = $('#coberturasTbl').bootstrapTable('getData').findIndex(r => r.codigo === row.codigo);
+                if (rowIndex !== -1) {
+                    $('#coberturasTbl').bootstrapTable('updateCell', {
+                        index: rowIndex,
+                        field: 'added',
+                        value: false // Forzar actualización (se recalculará con el formatter)
+                    });
+                }
+            }
+            else {
+                $('#coberturasTbl').bootstrapTable('removeByUniqueId', row.codigo);
+
+                const coberturasNewTbl = $('#coberturasNewTbl').bootstrapTable('getData');
+                const exists = coberturasNewTbl.some(item => item.codigo === row.codigo);
+
+                if (!exists) {
+                    row.seleccionado = false;
+                    $('#coberturasNewTbl').bootstrapTable('append', row);
+                }
+            }
+            const dataCoberturas = $('#coberturasTbl').bootstrapTable('getData');
+            ManagerUpdateCoberturas(row, "X");
+            GetSumaAseguradaAndEnableControls(dataCoberturas);
+        }
+    }
+
     function plandepago_table_setup() {
 
         $('#plandepagoTbl').bootstrapTable({
@@ -1349,6 +1662,287 @@ app.EmisionMapfreMasPlus = (function () {
         });
     }
 
+    function plandepagoresumen_table_setup() {
+
+        $('#plandepagoresumenTbl').bootstrapTable({
+            uniqueId: 'plandepagoId',
+            classes: 'table table-bordered table-hover table-index table-in-form',
+            pagination: false,
+            smartDisplay: true,
+            detailView: false,
+            detailFormatter: 'app.ui.GenericDetailFormatter',
+            columns: [
+                {
+                    field: 'tip_situacion',
+                    title: 'Estado del recibo',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
+                    field: 'fec_efec_recibo',
+                    title: 'Fecha desde',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    formatter: 'app.ui.DateFormatter',
+                    visible: true
+                }, {
+                    field: 'fec_vcto_recibo',
+                    title: 'Fecha hasta',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    formatter: 'app.ui.DateFormatter',
+                    visible: true
+                }, {
+                    field: 'imp_neta',
+                    title: 'Prima neta',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }, {
+                    field: 'imp_imptos',
+                    title: 'IVA',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }, {
+                    field: 'imp_interes',
+                    title: 'Recargo por fraccionamiento',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                },
+                {
+                    field: 'imp_recibo',
+                    title: 'Importe total',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }]
+        });
+    }
+
+    function resultvariacion_table_setup() {
+
+        $('#resultvariacionTbl').bootstrapTable({
+            uniqueId: 'plandepagoId',
+            classes: 'table table-bordered table-hover table-index table-in-form',
+            pagination: false,
+            smartDisplay: true,
+            detailView: false,
+            detailFormatter: 'app.ui.GenericDetailFormatter',
+            columns: [
+                {
+                    field: 'num_poliza',
+                    title: 'Número de poliza',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
+                    field: 'num_spto',
+                    title: 'Nro Suplemento',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
+                    field: 'imp_recibo_spto',
+                    title: 'Imp. Recibo suplemento',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }, {
+                    field: 'num_cuota',
+                    title: 'Nro Cuota',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.IntegerFormatter',
+                    visible: true
+                }, {
+                    field: 'num_recibo',
+                    title: 'Nro Recibo',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
+                    field: 'fec_efec_recibo',
+                    title: 'Fec. Efec. Recibo',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DateFormatter',
+                    visible: true
+                }, {
+                    field: 'fec_vcto_recibo',
+                    title: 'Fec. Efec. Recivo',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DateFormatter',
+                    visible: true
+                }, {
+                    field: 'tip_situacion',
+                    title: 'Tip. Situación',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
+                    field: 'cod_mon',
+                    title: 'Cod. Moneda',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
+                    field: 'imp_recibo',
+                    title: 'Imp. Recibo',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }, {
+                    field: 'imp_neta',
+                    title: 'Prima Neta',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }, {
+                    field: 'imp_recargo',
+                    title: 'Recargo',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }, {
+                    field: 'imp_imptos',
+                    title: 'Impuestos',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }, {
+                    field: 'imp_boni',
+                    title: 'Bonificaciones',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }, {
+                    field: 'imp_comis',
+                    title: 'Imp Comisión',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }, {
+                    field: 'tip_coaseguro',
+                    title: 'Coaseguro',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
+                    field: 'cod_agt',
+                    title: 'Cod. Agente',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true
+                }, {
+                    field: 'imp_total_comis',
+                    title: 'Total comisión del recibo',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }, {
+                    field: 'imp_interes',
+                    title: 'Intereses',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }, {
+                    field: 'imp_imptos_interes',
+                    title: 'Impuesto Intereses',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }, {
+                    field: 'fec_vcto_pago',
+                    title: 'Fecha Vcto de Pago',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'right',
+                    formatter: 'app.ui.DateFormatter',
+                    visible: true
+                }]
+        });
+    }
+
     function data_changed() {
         if (showCalculate) {
             $('#plandepagoRow').addClass('d-none');
@@ -1362,7 +1956,7 @@ app.EmisionMapfreMasPlus = (function () {
             for (var i = 0; i < coberturas.length; i++) {
                 coberturas[i].capital = 0;
                 coberturas[i].primatotal = 0;
-                coberturas[i].deducible = '';
+                //coberturas[i].deducible = '';
                 coberturas[i].error = '';
             }
             $('#coberturasTbl').bootstrapTable('load', coberturas);
@@ -1371,6 +1965,9 @@ app.EmisionMapfreMasPlus = (function () {
         }
         $('#tercerosTbl-error').addClass('d-none');
         $('#documentosrequeridosTbl-error').addClass('d-none');
+
+        //app.ui.DropDownDisabled('#IMP_AUTO_GMO', COD_PLAN_AUTO === 31);
+        //app.ui.DropDownDisabled('#IMP_AUTO_ACO', COD_PLAN_AUTO === 31);
     }
 
     function Controls_sum_enable(setupData) {
@@ -1526,7 +2123,7 @@ app.EmisionMapfreMasPlus = (function () {
                 }
             }
             const dataCoberturas = $('#coberturasTbl').bootstrapTable('getData');
-            ManagerUpdateCoberturas(row, "X");
+                (row, "X");
             GetSumaAseguradaAndEnableControls(dataCoberturas);
         }
     }
@@ -1981,6 +2578,377 @@ app.EmisionMapfreMasPlus = (function () {
     function documentosrequeridos_controls_setup() {
     }
 
+    function generateVariacionFraccPago() {
+        app.core.Post(app.setting.apipath + 'v1/Variaciones/MapfreMas',
+            JSON.stringify(MapInputToObject()),
+            function (data) {
+
+                $('#Fuente_Tomador').replaceWith('<div>' + $('#Fuente_Tomador option:selected').text() + '</div>');
+                $('#Modalidad_Pago').replaceWith('<div>' + $('#Modalidad_Pago option:selected').text() + '</div>');
+                $('#tip_firma').replaceWith('<div>' + $('#tip_firma option:selected').text() + '</div>');
+                $('#correoenvio').replaceWith('<div>' + $('#correoenvio').val() + '</div>');
+
+                if (data.McaError === "N") {
+                    if (Array.isArray(data.Recibos) && data.Recibos.length > 0) {
+                        $('#resultvariacionTbl').bootstrapTable('load', data.Recibos);
+                        $('#resultvariacion').removeClass('d-none');
+
+                        let firstRecord = data.Recibos[0];
+                        NEW_NUM_SPTO = firstRecord.num_spto;
+                    }
+
+                    if (data.coberturas != null)
+                        $('#coberturasTbl').bootstrapTable('load', data.coberturas);
+                    $('#coberturasTbl').bootstrapTable('hideLoading');
+                    if (data.plandepago != null)
+                        $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
+
+                    if (data.plandepagoresumen != null) {
+                        $('#plandepagoresumenTbl').removeClass('d-none');
+                        $('#plandepagoresumenTbl').bootstrapTable('load', data.plandepagoresumen);
+                    }
+
+                    $('#cancelarpoliza').removeClass('d-none');
+                    $('#generarvariacion').removeClass('d-none');
+                    $('#authorizarct').addClass('d-none');
+                    $('#rechazarct').addClass('d-none');
+
+                    MCA_PROVISIONAL = "N";
+                    DisabledAllControls(false);
+                    Controls_sum_enable(setupData);
+
+                    setupDataFirst.cod_fracc_pago = app.ui.GetDropDownNumericValue('#cod_fracc_pago');
+
+                    toastr.info("Se generó correctamente la variación", "Variación", { timeOut: 9000, closeButton: true, progressBar: true });
+                }
+                else {
+                    app.VariacionMapfreMasPlus.custonMessageResponse(data, "Error el emitir la variación");
+                }
+                $('#confirmation-autorization-Modal').modal('hide'); // Cerrar el popup
+                $('#fileTableAutorization').addClass('d-none');
+                $('#fileTableBodyAuthorization').empty();
+                $('#doc_autorization_poliza').next('.custom-file-label').text('Indique el archivo a procesar...');
+                fileAuthorization = [];
+                app.ui.ButtonDone('#aceptar-autorization');
+            }).always(function () {
+                app.ui.ButtonDone('#aceptar-autorization');
+            });
+    }
+
+    function authorizationCT() {
+        //app.ui.ButtonDoing('#aceptar-autorization');
+        var data = setupData;
+        data.Mca_Autoriza_CT = "S";
+        data.num_spto = NEW_NUM_SPTO;
+
+        app.core.Post(app.setting.apipath + 'v1/Variaciones/MapfreMasManageAuthorizationCT',
+            JSON.stringify(data),
+            function (data) {
+                if (data.McaError === "N") {
+                    $('#cancelarpoliza').removeClass('d-none');
+                    $('#generarvariacion').removeClass('d-none');
+                    $('#authorizarct').addClass('d-none');
+                    $('#rechazarct').addClass('d-none');
+                    DisabledAllControls(false);
+                    Controls_sum_enable(setupData);
+                    MCA_PROVISIONAL = "N";
+
+                    if (data.coberturas != null)
+                        $('#coberturasTbl').bootstrapTable('load', data.coberturas);
+                    $('#coberturasTbl').bootstrapTable('hideLoading');
+                    if (data.plandepago != null)
+                        $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
+
+                    if (data.plandepagoresumen != null) {
+                        $('#plandepagoresumenTbl').removeClass('d-none');
+                        $('#plandepagoresumenTbl').bootstrapTable('load', data.plandepagoresumen);
+                    }
+
+                    if (Array.isArray(data.Recibos) && data.Recibos.length > 0) {
+                        $('#resultvariacionTbl').bootstrapTable('load', data.Recibos);
+                        $('#resultvariacion').removeClass('d-none');
+                    }
+
+                    //toastr.info(data.ProcessResult[0].txt_error, "Autorización", { timeOut: 9000, closeButton: true, progressBar: true });
+                    app.VariacionMapfreMasPlus.custonMessageResponse(data, "Autorización");
+
+                    $('#confirmation-autorization-Modal').modal('hide'); // Cerrar el popup
+                    $('#fileTableAutorization').addClass('d-none');
+                    $('#fileTableBodyAuthorization').empty();
+                    $('#doc_autorization_poliza').next('.custom-file-label').text('Indique el archivo a procesar...');
+                    fileAuthorization = [];
+                    app.ui.ButtonDone('#aceptar-autorization');
+                }
+                else {
+                    app.VariacionMapfreMasPlus.custonMessageResponse(data, "Error al autorizar el CT");
+                }
+
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                app.ui.ButtonDone('#aceptar-autorization');
+            }).always(function () {
+                app.ui.ButtonDone('#aceptar-autorization');
+            });
+        //event.preventDefault();
+    }
+
+    function ValidateDocument(file) {
+        var allowedExtensions = ['pdf', 'docx'];
+        var index = 0;
+        var result = true;
+        var message = '';
+
+        if (file.length > 0) {
+            for (index = 0; index < file.length; index++) {
+                if (file[index].size >= 31457280) {
+                    if (message != '') {
+                        message = message + ', ';
+                    }
+                    message = message + 'El tamaño del archivo ' + file[index].name + ' es mayor a 30mb';
+                }
+                const fileExtension = file[index].name.split('.').pop().toLowerCase();
+
+                if (!allowedExtensions.includes(fileExtension)) {
+                    message = message + 'El archivo ' + file[index].name + ' no tiene el formato PDF o Word (docx)';
+                }
+            }
+        }
+        else {
+            message = "No ha cargado ningún archivo";
+        }
+
+        if (message != '') {
+            result = false;
+            toastr.error(message, "Autorización", { timeOut: 9000, closeButton: true, progressBar: true });
+        }
+        return result;
+    }
+
+    function validateFile(file, files, process) {
+        var result = true;
+        var message = '';
+        var allowedExtensions = ['pdf', 'docx'];
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+
+        if (!allowedExtensions.includes(fileExtension)) {
+            if (message != '') {
+                message = message + ', ';
+            }
+            message = message + 'El archivo ' + file.name + ' no tiene el formato PDF o Word (docx)';
+        }
+
+        if (file.size >= 31457280) {
+            if (message != '') {
+                message = message + ', ';
+            }
+            message = message + 'El tamaño del archivo ' + file.name + ' es mayor a 30mb';
+        }
+
+        if (files.some(f => f.name === file.name)) {
+            if (message != '') {
+                message = message + ', ';
+            }
+            message = 'El archivo ' + file.name + ' ya fue agregado';
+        }
+
+        if (message != '') {
+            result = false;
+            toastr.error(message, process, { timeOut: 9000, closeButton: true, progressBar: true });
+        }
+        return result;
+    }
+
+    function validateCancelation() {
+        result = true;
+        var fec_efec_cancel = app.ui.GetDateValue('#fec_efec_cancel');
+        var txt_motivo = $('#txt_motivo').val();
+        const date = new Date(fec_efec_cancel);
+        const timestamp = date.getTime();
+
+        if (isNaN(timestamp) || timestamp < 0) {
+            toastr.error('Debe registrar la fecha de cancelación', "Cancelación", { timeOut: 9000, closeButton: true, progressBar: true });
+            result = false;
+        }
+        if (!txt_motivo) {
+            toastr.error('Debe registrar el motivo de cancelación', "Cancelación", { timeOut: 9000, closeButton: true, progressBar: true });
+            result = false;
+        }
+
+        return result;
+    }
+
+    function processAutorizationCT() {
+
+        var index = 0;
+        var arr = fileAuthorization;
+        var message = '';
+
+        if (ValidateDocument(arr)) {
+
+            app.ui.ButtonDoing('#aceptar-autorization');
+            var data = new FormData();
+            data.append('EntityType', 3000);
+            data.append('EntityId', setupData.num_poliza);
+            data.append('DocumentType', 99);
+            data.append('Description', arr[0].name);
+            for (index = 0; index < arr.length; index++) {
+                data.append('files', arr[index]);
+            }
+
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: app.setting.apipath + 'v1/Common/Upload',
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                }
+            }).done(function (data, textStatus, jqXHR) {
+                if (data.length > 0) {
+                    data.forEach(row => {
+                        toastr.info("Se guardo correctamente el documento " + row.FileName, "Autorización", { timeOut: 9000, closeButton: true, progressBar: true });
+                    })
+                }
+
+                if (setupDataFirst.cod_fracc_pago !== app.ui.GetDropDownNumericValue('#cod_fracc_pago')) {
+                    generateVariacionFraccPago();
+                }
+                else {
+                    authorizationCT();
+                }
+
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                if (jqXHR?.responseJSON?.Message) {
+                    toastr.error(jqXHR.responseJSON.Message, "Autorización", { timeOut: 9000, closeButton: true, progressBar: true });
+                }
+                app.ui.ButtonDone('#aceptar-autorization')
+            }).always(function () {
+                app.ui.ButtonDone('#aceptar-autorization')
+            });
+        }
+        //event.preventDefault();
+    }
+
+    function processCancelation() {
+
+        var index = 0;
+        var arr = fileCancelation;
+        var message = '';
+
+        if (ValidateDocument(arr) && validateCancelation()) {
+
+            app.ui.ButtonDoing('#aceptar-cancelation');
+            var data = new FormData();
+            data.append('EntityType', 3000);
+            data.append('EntityId', setupData.num_poliza);
+            data.append('DocumentType', 99);
+            data.append('Description', arr[0].name);
+            for (index = 0; index < arr.length; index++) {
+                data.append('files', arr[index]);
+            }
+
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: app.setting.apipath + 'v1/Common/Upload',
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                }
+            }).done(function (data, textStatus, jqXHR) {
+                if (data.length > 0) {
+                    data.forEach(row => {
+                        toastr.info("Se guardo correctamente el documento " + row.FileName, "Cancelación", { timeOut: 9000, closeButton: true, progressBar: true });
+                    })
+                }
+                cancelationPoliza();
+
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                if (jqXHR?.responseJSON?.Message) {
+                    toastr.error(jqXHR.responseJSON.Message, "Cancelación", { timeOut: 9000, closeButton: true, progressBar: true });
+                }
+                app.ui.ButtonDone('#aceptar-cancelation')
+            }).always(function () {
+                app.ui.ButtonDone('#aceptar-cancelation')
+            });
+        }
+        //event.preventDefault();
+    }
+
+    function cancelationPoliza() {
+        //app.ui.ButtonDoing('#aceptar-cancelation');
+
+        var data = setupData;
+        data.fec_efec_cancel = app.ui.GetDateValue('#fec_efec_cancel');
+        data.txt_motivo = $('#txt_motivo').val();
+
+        app.core.Post(app.setting.apipath + 'v1/Variaciones/MapfreMasCancelation',
+            JSON.stringify(data),
+            function (data) {
+                let messageSaldo = "";
+                if (data.McaError === "N") {
+                    if (Array.isArray(data.Recibos) && data.Recibos.length > 0) {
+                        $('#resultvariacionTbl').bootstrapTable('load', data.Recibos);
+                        $('#resultvariacion').removeClass('d-none');
+
+                        let firstRecord = data.Recibos[0];
+                        NEW_NUM_SPTO = firstRecord.num_spto;
+
+                        const suma_imp_recibo_spto = data.Recibos.reduce((acumulador, obj) => {
+                            return acumulador + obj.imp_recibo_spto;
+                        }, 0);
+
+                        const saldoPositivo = Math.abs(suma_imp_recibo_spto);
+
+                        if (saldoPositivo > 0) {
+                            //messageSaldo = ` El cliente cuenta con un saldo a favor de ${saldoPositivo} por concepto de primas no devengadas`;
+                            messageSaldo = " El cliente cuenta con un saldo a favor de " + saldoPositivo + " por concepto de primas no devengadas";
+                        }
+                    }
+
+
+                    if (data.coberturas != null)
+                        $('#coberturasTbl').bootstrapTable('load', data.coberturas);
+                    $('#coberturasTbl').bootstrapTable('hideLoading');
+                    if (data.plandepago != null)
+                        $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
+
+                    if (data.plandepagoresumen != null) {
+                        $('#plandepagoresumenTbl').removeClass('d-none');
+                        $('#plandepagoresumenTbl').bootstrapTable('load', data.plandepagoresumen);
+                    }
+
+                    $('#cancelarpoliza').addClass('d-none');
+                    $('#generarvariacion').addClass('d-none');
+                    $('#authorizarct').addClass('d-none');
+                    $('#rechazarct').addClass('d-none');
+
+                    //toastr.info(`La cancelación fue procesada de forma correcta.${messageSaldo}`, "Cancelación", { timeOut: 9000, closeButton: true, progressBar: true });
+                    toastr.info("La cancelación fue procesada de forma correcta." + messageSaldo, "Cancelación", { timeOut: 10000, closeButton: true, progressBar: true });
+
+
+                    $('#confirmation-cancelation-Modal').modal('hide'); // Cerrar el popup
+                    $('#fileTableBodyCancelation').addClass('d-none');
+                    $('#fileTableBodyAuthorization').empty();
+                    $('#doc_cancelation_poliza').next('.custom-file-label').text('Indique el archivo a procesar...');
+                    fileCancelation = [];
+                }
+                else {
+                    app.VariacionMapfreMasPlus.custonMessageResponse(data, "Error el emitir la cancelación");
+                }
+                app.ui.ButtonDone('#aceptar-cancelation');
+            }).always(function () {
+                app.ui.ButtonDone('#aceptar-cancelation');
+            });
+    }   
+
     function documentosrequeridos_controls_Events() {
 
         $('#fileUploadModal').on('change', function () {
@@ -2241,7 +3209,7 @@ app.EmisionMapfreMasPlus = (function () {
                                                 formularioRow.data.domiciliopermanenteDireccionexacta = mainHolder[0].otrasenas;
 
                                                 ref.Init(formularioRow.data);
-                                                ref.AcceptCallBack(app.EmisionMapfreMasPlus.Accept);
+                                                ref.AcceptCallBack(app.VariacionMapfreMasPlus.Accept);
                                             })
                                     }
                                 }
@@ -2273,7 +3241,7 @@ app.EmisionMapfreMasPlus = (function () {
                                                 formularioRow.data.domiciliocomercialDireccionexacta = mainHolder[0].otrasenas;
 
                                                 ref.Init(formularioRow.data);
-                                                ref.AcceptCallBack(app.EmisionMapfreMasPlus.Accept);
+                                                ref.AcceptCallBack(app.VariacionMapfreMasPlus.Accept);
                                             })
                                     }
 
@@ -2341,6 +3309,7 @@ app.EmisionMapfreMasPlus = (function () {
             coberturas_table_setup();
             coberturasNew_table_setup();
             plandepago_table_setup();
+            plandepagoresumen_table_setup();
             Controls_Events();
 
             terceros_table_setup();
@@ -2351,7 +3320,7 @@ app.EmisionMapfreMasPlus = (function () {
             documentosrequeridos_controls_Events();
 
             formularios_table_setup();
-
+            resultvariacion_table_setup();
             $('.mapfremas-visible').removeClass('d-none');
 
             Setup();
@@ -2376,34 +3345,60 @@ app.EmisionMapfreMasPlus = (function () {
         },
         coberturasDeleteRow: function (row) {
             coberturas_table_row_delete(row);
+        },
+        findOrAddRecordCombobox: function (array, code, description) {
+            if (!array) return;
+
+            const record = array.find(item => item.Code == code);
+
+            if (!record) {
+                array.push({ Code: code, Description: description });
+            }
+
+            return array;
+        },
+        custonMessageResponse: function (data, title) {
+            if (!data) return;
+
+            if (data.ProcessResult.length > 0) {
+                let timeOut = 9000;
+                data.ProcessResult.forEach(function (record) {
+                    if (data.McaError === "N") {
+                        toastr.info(record.txt_error, title, { timeOut: timeOut, closeButton: true, progressBar: true });
+                        return;
+                    }
+                    toastr.error(record.txt_error, title, { timeOut: timeOut, closeButton: true, progressBar: true });
+                    timeOut += 5000;
+                });
+            }
         }
     };
 })();
 
 window.coberturasTbl_Events = {
     'click .delete': function (e, value, row, index) {
-        toastr.warning("Si está seguro de querer eliminar la cobertura '" + row.nombre + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionMapfreMasPlus.coberturasDeleteRow(row); } });
+        toastr.warning("Si está seguro de querer eliminar la cobertura '" + row.nombre + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.VariacionMapfreMasPlus.coberturasDeleteRow(row); } });
         e.stopPropagation();
     }
 };
 
 window.documentosrequeridosTbl_Events = {
     'click .delete': function (e, value, row, index) {
-        toastr.warning("Si está seguro de querer limpiar el documento requerido '" + row.DNombre + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionMapfreMasPlus.documentosrequeridosDeleteRow(row); } });
+        toastr.warning("Si está seguro de querer limpiar el documento requerido '" + row.DNombre + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.VariacionMapfreMasPlus.documentosrequeridosDeleteRow(row); } });
         e.stopPropagation();
     },
     'click .edit': function (e, value, row, index) {
-        app.EmisionMapfreMasPlus.documentosrequeridosEditRow(row);
+        app.VariacionMapfreMasPlus.documentosrequeridosEditRow(row);
         e.stopPropagation();
     }
 };
 window.formulariosTbl_Events = {
     'click .delete': function (e, value, row, index) {
-        toastr.warning("Si está seguro de querer limpiar la información del formulario  '" + row.name + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionMapfreMasPlus.formulariosDeleteRow(row); } });
+        toastr.warning("Si está seguro de querer limpiar la información del formulario  '" + row.name + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.VariacionMapfreMasPlus.formulariosDeleteRow(row); } });
         e.stopPropagation();
     },
     'click .edit': function (e, value, row, index) {
-        app.EmisionMapfreMasPlus.formulariosEditRow(row);
+        app.VariacionMapfreMasPlus.formulariosEditRow(row);
         e.stopPropagation();
     }
 };

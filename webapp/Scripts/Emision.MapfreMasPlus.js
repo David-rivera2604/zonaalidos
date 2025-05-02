@@ -281,7 +281,7 @@ app.EmisionMapfreMasPlus = (function () {
     }
 
     function MapObjectToInput_First(data) {
-
+        console.log("data E:", data);
         //app.ui.SetNumericValue('#edad', data.edad);
         //$('#mca_sexo').val(data.mca_sexo);
         $('#Fuente_Tomador').val(data.Fuente_Tomador);
