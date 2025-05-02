@@ -147,6 +147,7 @@
     <Compile Include="Variaciones\MapfreMasConvertFrom.cs" />
     <Compile Include="Variaciones\MapfreMasConvertTo.cs" />
     <Compile Include="Variaciones\MapfreMasPlus.cs" />
+    <Compile Include="Variaciones\MapfreMasPlusConvertFrom.cs" />
     <Compile Include="Variaciones\MapfreVariacionesCommon.cs" />
   </ItemGroup>
   <ItemGroup>

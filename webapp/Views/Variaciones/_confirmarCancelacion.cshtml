@@ -1,0 +1,89 @@
+﻿<div class="modal inmodal" id="confirmation-cancelation-Modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span>
+                </button>
+                <h4 class="modal-title">Confirmación</h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-justify">
+                    Al confirmar esta solicitud, estará anulando en el sistema y de manera permanente, la póliza.
+                </p>
+                <p>Para continuar:</p>
+                <blockquote style="padding-left:10px">
+                    <p class="text-justify">Adjunte la solicitud y/o aceptación expresa del asegurado y su documento de identificación:</p>
+                    <blockquote>    
+                        <form class='form-row'>
+                            <div class='col-sm-12 col-md-12'>
+                                <div class="form-group">
+                                    <label class='control-label' for='doc_cancelation_poliza'>
+                                        Archivo<span class='required-mark'
+                                                     title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="doc_cancelation_poliza" name="doc_cancelation_poliza"
+                                                   accept="application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                                            <label class="custom-file-label" data-browse="Examinar...">Indique el archivo a procesar...</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="table-wrapper">
+                                    <table id="fileTableCancelation" class="table table-bordered">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Nombre del Archivo</th>
+                                                <th>Acción</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="fileTableBodyCancelation">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class='col-sm-4 col-md-4'>
+                                <div class='form-group'>
+                                    <label class='control-label' for='fec_efec_cancel'>
+                                        Fecha de cancelación<span class='required-mark'
+                                                                  title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                    </label>
+                                    <div class='input-group date' id='fec_efec_cancel_group'>
+                                        <input type='text' id='fec_efec_cancel' name='fec_efec_cancel' class='form-control'
+                                               size='10' maxlength='10' placeholder='día/mes/año' />
+                                        <span class='input-group-addon'>
+                                            <span class='glyphicon glyphicon-calendar'></span>
+                                        </span>
+                                    </div>
+                                    <div id='fec_efec_cancel_validate'></div>
+                                </div>
+                                @*<div class="mb-3">
+                                        <label for="fec_cancelation_poliza" class="form-label">Fecha de cancelación:</label>
+                                        <input type="date" class="form-control" id="fec_cancelation_poliza" name="dateControl">
+                                    </div>*@
+                            </div>
+                            <div class='col-sm-8 col-md-8'>
+                                <div class="form-group">
+                                    <label for="txt_motivo" class="control-label">
+                                        Motivo<span class='required-mark'
+                                                    title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                    </label>
+                                    <textarea class="form-control" id="txt_motivo" name="txt_motivo" rows="3" maxlength="30"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </blockquote>
+
+                </blockquote>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="aceptar-cancelation" data-doing="Aceptando...">
+                    Aceptar
+                </button>
+                <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>

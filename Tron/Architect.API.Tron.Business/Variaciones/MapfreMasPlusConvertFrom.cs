@@ -1,15 +1,16 @@
-﻿using Architect.API.Tron.Contracts.Comun;
-using Architect.API.Tron.Contracts.Ramo;
+﻿using Architect.API.Tron.Contracts.Ramo;
 using Architect.API.Tron.Contracts.Variaciones;
 using Architect.API.Tron.DataAccess.Variaciones;
 using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Architect.API.Tron.Business.Variaciones
 {
-    internal static class MapfreMasConvertFrom
+    internal static class MapfreMasPlusConvertFrom
     {
         internal static Contracts.Variaciones.MapfreMas Quote(Contracts.Poliza.DatoFijo tronQuoteInfo)
         {
@@ -254,7 +255,7 @@ namespace Architect.API.Tron.Business.Variaciones
                     case "PCT_AJUSTE_GEN":
                         if (item.val_campo != string.Empty)
                         {
-                           // quoteInfo.PCT_AJUSTE_GEN = Convert.ToInt32(Convert.ToDecimal(item.val_campo));
+                            // quoteInfo.PCT_AJUSTE_GEN = Convert.ToInt32(Convert.ToDecimal(item.val_campo));
                         }
                         break;
                     case "MCA_REEMISION":
@@ -275,6 +276,21 @@ namespace Architect.API.Tron.Business.Variaciones
                         break;
                 }
             }
+
+            foreach(var item in tronQuoteInfo.Coberturas)
+            {
+                switch (item.cod_cob)
+                {
+                    case 3001: quoteInfo.DED_AUTO_RC = item.cod_franquicia; break;
+                    case 3004: quoteInfo.DED_AUTO_CYV = item.cod_franquicia; break;
+                    case 3006: quoteInfo.DED_AUTO_ROB = item.cod_franquicia; break;
+                    case 3005: quoteInfo.DED_AUTO_RAD = item.cod_franquicia; break;
+                    case 3009: quoteInfo.DED_AUTO_CRI = item.cod_franquicia; break;
+                    case 3007: quoteInfo.DED_AUTO_EQESP = item.cod_franquicia; break;
+                }
+            }
+
+
             return quoteInfo;
         }
 
@@ -306,7 +322,8 @@ namespace Architect.API.Tron.Business.Variaciones
                     quoteInfo.tipo_prod = "trebol";
                     quoteInfo.tipo_prodDesc = "Trebol";
                     break;
-                case 37: 
+                case 37:
+                //case 38:
                     quoteInfo.tipo_prod = "trebolrc";
                     quoteInfo.tipo_prodDesc = "Trébol RC";
                     break;
@@ -416,7 +433,7 @@ namespace Architect.API.Tron.Business.Variaciones
                 item.requerida = obj.mcaObligatorio == "S";
                 item.seleccionado = obj.seleccionado;
 
-                if(item.codigo != 1060 && item.codigo != 3010 && item.codigo != 3016)
+                if (item.codigo != 1060 && item.codigo != 3010 && item.codigo != 3016)
                 {
                     quoteInfo.AvailableCoverages.RemoveAll(c => c.codigo == item.codigo);
                 }
@@ -432,7 +449,7 @@ namespace Architect.API.Tron.Business.Variaciones
             List<g1010031> SumAseguradaTotales = Architect.API.Tron.DataAccess.Variaciones.VariacionIssue.GetSumaAseguradaPorRamo(quoteInfo.cod_cia, quoteInfo.cod_ramo);
             List<g1010031> SumAseguradaPoliza = new List<g1010031>();
 
-            foreach(var item in quoteInfo.coberturas)
+            foreach (var item in quoteInfo.coberturas)
             {
                 var find = SumAseguradaTotales.Where(s => s.cod_cob == item.codigo);
 
@@ -442,7 +459,7 @@ namespace Architect.API.Tron.Business.Variaciones
                 }
             }
 
-            foreach(var item in SumAseguradaPoliza)
+            foreach (var item in SumAseguradaPoliza)
             {
                 switch (item.cod_campo)
                 {
@@ -489,7 +506,7 @@ namespace Architect.API.Tron.Business.Variaciones
             List<CoberturaVariacion> coberturas = new List<CoberturaVariacion>();
             List<a1002150> coberturasDisponibles = VariacionIssue.getAllCoveragesByRamo(cod_cia, cod_ramo);
 
-            foreach(var item in coberturasDisponibles)
+            foreach (var item in coberturasDisponibles)
             {
                 coberturas.Add(new CoberturaVariacion
                 {

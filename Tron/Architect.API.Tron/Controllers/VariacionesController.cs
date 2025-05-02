@@ -99,7 +99,7 @@ namespace Architect.API.Tron.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("MapfreMasManageAuthorizationCT")]
-        public async Task<IHttpActionResult> ManageAuthorizationCT([FromBody] Tron.Contracts.Variaciones.MapfreMas quoteInfo)
+        public async Task<IHttpActionResult> MapfreMasManageAuthorizationCT([FromBody] Tron.Contracts.Variaciones.MapfreMas quoteInfo)
         {
             VariacionIssueResult result = null;
 

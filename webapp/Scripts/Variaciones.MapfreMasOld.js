@@ -310,6 +310,8 @@ app.EmisionMapfreMas = (function () {
 
         data.NewCoverages = NewCoverages;
 
+        data.fec_efec = app.ui.GetDateValue('#fec_efec');
+
         setupData = data;
         return data;
     }
@@ -320,9 +322,6 @@ app.EmisionMapfreMas = (function () {
             "IMP_AUTO_RAD", "IMP_AUTO_ROB", "DED_AUTO_RC", "DED_AUTO_ROB", "DED_AUTO_CYV", "DED_AUTO_RAD", "IMP_AUTO_EQESP", "DED_AUTO_EQESP"];
         //const camposLista = ["codigo", "nombre", "capital", "primatotal", "deducible"];
         let data = MapInputToObject();
-
-        console.log("setupDataFirst", setupDataFirst);
-        console.log("data", data);
 
         const isEquals = sonObjetosIguales(setupDataFirst, data, camposAComparar);
         const lista = data.NewCoverages || [];
@@ -602,6 +601,13 @@ app.EmisionMapfreMas = (function () {
 
         });
 
+        $('#fec_efec_group').datetimepicker({
+            format: 'DD/MM/YYYY',
+            locale: 'es',
+            minDate: moment().startOf('day')
+
+        });
+
     }
 
     function Controls_Events() {
@@ -686,6 +692,18 @@ app.EmisionMapfreMas = (function () {
         //    }
         //    event.preventDefault();
         //});
+
+        $('#IMP_VR').change(function () {
+            var value = app.ui.GetNumericValue('#IMP_VR');
+
+            app.ui.SetNumericValue('#IMP_AUTO_CYV', value);
+            app.ui.SetNumericValue('#IMP_AUTO_RAD', value);
+            app.ui.SetNumericValue('#IMP_AUTO_ROB', value);
+
+            data_changed();
+
+            $("#VisualizationsEdtForm").validate().resetForm();
+        });
 
         $('#generarvariacion').click(function () {
             if (app.ui.IsValid('#VisualizationsEdtForm', false)) {
@@ -842,7 +860,7 @@ app.EmisionMapfreMas = (function () {
 
                 var md = $('#confirmation-cancelation-Modal').modal({ show: false });
                 md.modal('show');
-                $('#fileTableBodyCancelation').addClass('d-none');
+                $('#fileTableCancelation').addClass('d-none');
                 $('#fileTableBodyAuthorization').empty();
                 $('#doc_cancelation_poliza').next('.custom-file-label').text('Indique el archivo a procesar...');
                 fileCancelation = [];
@@ -891,7 +909,8 @@ app.EmisionMapfreMas = (function () {
 
         $('#aceptar-cancelation').click(function () {
 
-            processCancelation();
+            //processCancelation();
+            cancelationPoliza();
 
         });
 
@@ -1173,7 +1192,7 @@ app.EmisionMapfreMas = (function () {
                 //COD_CHASSIS: { required: true },
                 //DES_TIP_CILINDRAJE: { required: true },
                 //VAL_PESO: { required: true },
-                    COD_COLOR: { required: true },
+                    //COD_COLOR: { required: true },
                 //NUM_MOTOR: { required: true },
                 //VAL_CAPACIDAD: { required: true },
                     IMP_VR: { required: true, Numeric: true },
@@ -1211,7 +1230,7 @@ app.EmisionMapfreMas = (function () {
                 //COD_CHASSIS: { required: 'Debe indicar el Número de Chasis' },
                 //DES_TIP_CILINDRAJE: { required: 'Debe indicar el cilindraje del vehículo' },
                 //VAL_PESO: { required: 'Debe indicar el Peso del vehículo' },
-                    COD_COLOR: { required: 'Debe indicar el Color del vehículo' },
+                    //COD_COLOR: { required: 'Debe indicar el Color del vehículo' },
                 //NUM_MOTOR: { required: 'Debe indicar el Motor del vehículo' },
                 //VAL_CAPACIDAD: { required: 'Debe indicar el Capacidad del vehículo' },
                 //ANIO_SUB_MODELO: { required: 'Debe indicar el Año del vehículo' },
@@ -2367,34 +2386,33 @@ app.EmisionMapfreMas = (function () {
             let cod_plan_auto_val = $('#hhd-codplanauto').val();
             selectedRows.forEach(row => {
 
-            if (cod_plan_auto_val === "31" && (row.codigo === 3002 || row.codigo === 3003)) {
-                toastr.error("La cobertura " + row.nombre + " no esta permitida para esta póliza", "Mensaje de Validación", { timeOut: 9000, closeButton: true, progressBar: true });
-            }
-            else {
-                const exists = mainTableData.some(item => item.codigo === row.codigo);
-
-                if (exists) {
-
-                    // Obtener la celda de acciones de la fila actualizada
-                    const rowIndex = $('#coberturasTbl').bootstrapTable('getData').findIndex(r => r.codigo === row.codigo);
-                    if (rowIndex !== -1) {
-                        $('#coberturasTbl').bootstrapTable('updateCell', {
-                            index: rowIndex,
-                            field: 'added',
-                            value: true // Forzar actualización (se recalculará con el formatter)
-                        });
-                    }
-                } else {
-                    // Si no existe, agregarlo como nuevo
-                    const newRow = { ...row, added: true, requerida: false };
-                    $('#coberturasTbl').bootstrapTable('append', newRow);
+                if (cod_plan_auto_val === "31" && (row.codigo === 3002 || row.codigo === 3003)) {
+                    toastr.error("La cobertura " + row.nombre + " no esta permitida para esta póliza", "Mensaje de Validación", { timeOut: 9000, closeButton: true, progressBar: true });
                 }
-                $('#coberturasNewTbl').bootstrapTable('removeByUniqueId', row.codigo);
-                ManagerUpdateCoberturas(row, "*");
-                const dataCoberturas = $('#coberturasTbl').bootstrapTable('getData');
-                GetSumaAseguradaAndEnableControls(dataCoberturas);
-            }
+                else {
+                    const exists = mainTableData.some(item => item.codigo === row.codigo);
 
+                    if (exists) {
+
+                        // Obtener la celda de acciones de la fila actualizada
+                        const rowIndex = $('#coberturasTbl').bootstrapTable('getData').findIndex(r => r.codigo === row.codigo);
+                        if (rowIndex !== -1) {
+                            $('#coberturasTbl').bootstrapTable('updateCell', {
+                                index: rowIndex,
+                                field: 'added',
+                                value: true // Forzar actualización (se recalculará con el formatter)
+                            });
+                        }
+                    } else {
+                        // Si no existe, agregarlo como nuevo
+                        const newRow = { ...row, added: true, requerida: false };
+                        $('#coberturasTbl').bootstrapTable('append', newRow);
+                    }
+                    $('#coberturasNewTbl').bootstrapTable('removeByUniqueId', row.codigo);
+                    ManagerUpdateCoberturas(row, "*");
+                    const dataCoberturas = $('#coberturasTbl').bootstrapTable('getData');
+                    GetSumaAseguradaAndEnableControls(dataCoberturas);
+                }
 
             });
             $('#coberturasNewModal').modal('hide'); // Cerrar el popup
@@ -3577,6 +3595,20 @@ app.EmisionMapfreMas = (function () {
         return result;
     }
 
+    function validateAuthorization() {
+        result = true;
+        var fec_efec = app.ui.GetDateValue('#fec_efec');
+        const date = new Date(fec_efec);
+        const timestamp = date.getTime();
+
+        if (isNaN(timestamp) || timestamp < 0) {
+            toastr.error('Debe registrar la fecha de efecto', "Autorización", { timeOut: 9000, closeButton: true, progressBar: true });
+            result = false;
+        }
+
+        return result;
+    }
+
     function processAutorizationCT() {
 
         var index = 0;
@@ -3669,8 +3701,6 @@ app.EmisionMapfreMas = (function () {
                         toastr.info("Se guardo correctamente el documento " + row.FileName, "Cancelación", { timeOut: 9000, closeButton: true, progressBar: true });
                     })
                 }
-                cancelationPoliza();
-
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 if (jqXHR?.responseJSON?.Message) {
                     toastr.error(jqXHR.responseJSON.Message, "Cancelación", { timeOut: 9000, closeButton: true, progressBar: true });
@@ -3695,6 +3725,7 @@ app.EmisionMapfreMas = (function () {
             function (data) {
                 let messageSaldo = "";
                 if (data.McaError === "N") {
+                    processCancelation();
                     if (Array.isArray(data.Recibos) && data.Recibos.length > 0) {
                         $('#resultvariacionTbl').bootstrapTable('load', data.Recibos);
                         $('#resultvariacion').removeClass('d-none');
@@ -3706,11 +3737,12 @@ app.EmisionMapfreMas = (function () {
                             return acumulador + obj.imp_recibo_spto;
                         }, 0);
 
-                        const saldoPositivo = Math.abs(suma_imp_recibo_spto);
+                        let saldoPositivo = Math.abs(suma_imp_recibo_spto);
+                        let saldoTexto = app.EmisionMapfreMas.FormatearNumero(saldoPositivo);
 
                         if (saldoPositivo > 0) {
                             //messageSaldo = ` El cliente cuenta con un saldo a favor de ${saldoPositivo} por concepto de primas no devengadas`;
-                            messageSaldo = " El cliente cuenta con un saldo a favor de " + saldoPositivo + " por concepto de primas no devengadas";
+                            messageSaldo = " El cliente cuenta con un saldo a favor de " + saldoTexto + " por concepto de primas no devengadas";
                         }
                     }
 
@@ -3736,7 +3768,7 @@ app.EmisionMapfreMas = (function () {
 
 
                     $('#confirmation-cancelation-Modal').modal('hide'); // Cerrar el popup
-                    $('#fileTableBodyCancelation').addClass('d-none');
+                    $('#fileTableCancelation').addClass('d-none');
                     $('#fileTableBodyAuthorization').empty();
                     $('#doc_cancelation_poliza').next('.custom-file-label').text('Indique el archivo a procesar...');
                     fileCancelation = [];
@@ -4308,6 +4340,27 @@ app.EmisionMapfreMas = (function () {
                     }
                 });
             }
+        },
+        FormatearNumero: function (numero, separadorDecimal = '.', separadorMiles = ',') {
+            if (isNaN(numero)) {
+                return '';
+            }
+
+            let numeroFormateado = Number(numero).toFixed(2);
+
+            let partes = numeroFormateado.split('.');
+            let parteEntera = partes[0];
+            let parteDecimal = partes[1];
+
+            let parteEnteraFormateada = '';
+            for (let i = parteEntera.length - 1, j = 0; i >= 0; i--, j++) {
+                if (j % 3 === 0 && j > 0) {
+                    parteEnteraFormateada = separadorMiles + parteEnteraFormateada;
+                }
+                parteEnteraFormateada = parteEntera.charAt(i) + parteEnteraFormateada;
+            }
+
+            return parteEnteraFormateada + separadorDecimal + parteDecimal;
         }
     };
 })();
