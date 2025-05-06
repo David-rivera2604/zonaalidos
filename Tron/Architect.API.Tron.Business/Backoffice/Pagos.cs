@@ -20,7 +20,34 @@ namespace Architect.API.Tron.Business.Backoffice
     {
         public static bool IsEmployee { get; private set; }
 
-        public static async Task Monitor()
+        public static void Monitor()
+        {
+            Utilities.Log.WarningLog("Payment.Monitor", "Inicio - Proceso de sondeo", "payment");
+
+            try
+            {
+                List<Payment.Integrations.Contracts.OnlinePayment> pendingOnlinePayment = Payment.Integrations.DataAccess.OnlinePayment.RetrievePendings();
+                if (pendingOnlinePayment.IsNotEmpty())
+                {
+                    Utilities.Log.WarningLog("Payment.Monitor", $"  {pendingOnlinePayment.Count} Pending Online Payment", "payment");
+                    VerifiyOnlinePaymentPendingv2(pendingOnlinePayment);
+                }
+                List<Payment.Integrations.Contracts.OnlinePayment> pendingPaymentInTron = Payment.Integrations.DataAccess.OnlinePayment.RetrieveByTronCode(500);
+                if (pendingPaymentInTron.IsNotEmpty())
+                {
+                    Utilities.Log.WarningLog("Payment.Monitor", $"  {pendingOnlinePayment.Count} Pending Payment In Tron", "payment");
+                    VerifiyOnlinePaymentPendingv2(pendingPaymentInTron);
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilities.Log.ErrorLog("Payment", "Monitor", ex);
+                throw ex;
+            }
+            Utilities.Log.WarningLog("Payment.Monitor", "Fin - Proceso de sondeo", "payment");
+        }
+
+        public static async Task Monitorv1()
         {
             Utilities.Log.WarningLog("Payment.Monitor", "Inicio - Proceso de sondeo", "payment");
 
@@ -48,6 +75,22 @@ namespace Architect.API.Tron.Business.Backoffice
             Utilities.Log.WarningLog("Payment.Monitor", "Fin - Proceso de sondeo", "payment");
         }
 
+        private static void VerifiyOnlinePaymentPendingv2(List<Payment.Integrations.Contracts.OnlinePayment> pendings)
+        {
+            try
+            {
+                foreach (Payment.Integrations.Contracts.OnlinePayment currentRecord in pendings)
+                {
+                    Verifyv2(currentRecord);
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilities.Log.ErrorLog("Payment", "NewMethod", ex);
+                throw ex;
+            }
+
+        }
         private static async Task VerifiyOnlinePaymentPending(List<Payment.Integrations.Contracts.OnlinePayment> pendings)
         {
             try
@@ -64,7 +107,16 @@ namespace Architect.API.Tron.Business.Backoffice
             }
 
         }
+        private static void Verifyv2(Payment.Integrations.Contracts.OnlinePayment currentRecord)
+        {
+            Architect.Payment.Integrations.Contracts.InformationRequest result = Payment.Integrations.Payment.VerifyUpdateStatusv2(currentRecord, currentRecord.UpdateUserCode, true);
 
+            // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
+            if (result != null && result.changed && result.status == "APPROVED")
+            {
+                PaymentApprovedv2(result);
+            }
+        }
         private static async Task Verify(Payment.Integrations.Contracts.OnlinePayment currentRecord)
         {
             Architect.Payment.Integrations.Contracts.InformationRequest result = await Payment.Integrations.Payment.VerifyUpdateStatus(currentRecord, currentRecord.UpdateUserCode, true);
@@ -192,6 +244,19 @@ namespace Architect.API.Tron.Business.Backoffice
                 result.OnlinePayment.AgentCode = 999999;
             }
             bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode, "Placetopay", string.Empty);
+        }
+
+        internal static void PaymentApprovedv2(InformationRequest result)
+        {
+            if (result.subscribe)
+            {
+                CambioTarjeta(result);
+            }
+            if (IsEmployee)
+            {
+                result.OnlinePayment.AgentCode = 999999;
+            }
+            bool tronPayment = TronPayment(result, result.OnlinePayment.AgentCode, "Placetopay", string.Empty).Result;
         }
 
         /// <summary>

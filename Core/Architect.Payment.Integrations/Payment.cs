@@ -292,6 +292,34 @@ namespace Architect.Payment.Integrations
             return result;
         }
 
+        public static Architect.Payment.Integrations.Contracts.InformationRequest VerifyUpdateStatusv2(Contracts.OnlinePayment currentRecord, int userId, bool updateStatus)
+        {
+            Architect.Payment.Integrations.Contracts.InformationRequest result;
+            if (currentRecord != null)
+            {
+                result = Providers.Placetopay.Webcheckout.GetRequestInformationv2(currentRecord.RequestID, currentRecord.Currency, currentRecord.SettingId, currentRecord.CompanyId);
+                if (result != null)
+                {
+                    result.OnlinePayment = currentRecord;
+                    Utilities.Log.WarningLog("Payment.VerifyUpdateStatus", string.Format("requestId={0}, currency={1}, currentStatus={2}, newStatus={3}, recibo={4}", currentRecord.RequestID, currentRecord.Currency, currentRecord.ProviderStatus, result.status, currentRecord.BillNumber), "payment");
+
+                    if (updateStatus && result.status != currentRecord.ProviderStatus)
+                    {
+                        Utilities.Log.WarningLog("Payment.VerifyUpdateStatus", string.Format(" Cambio el estado, currentStatus={2}, newStatus={3}, recibo={4}", currentRecord.RequestID, currentRecord.Currency, currentRecord.ProviderStatus, result.status, currentRecord.BillNumber), "payment");
+                        result.OnlinePayment = UpdateStatus(userId, currentRecord, result);
+                        result.changed = true;
+                    }
+                }
+            }
+            else
+            {
+                result = new Architect.Payment.Integrations.Contracts.InformationRequest()
+                {
+                    status = "NotFound"
+                };
+            }
+            return result;
+        }
 
     }
 }
