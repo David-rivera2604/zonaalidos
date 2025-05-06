@@ -136,7 +136,6 @@
     <Compile Include="Contracts\FileUploaded.cs" />
     <Compile Include="Controllers\ClienteInicioController.cs" />
     <Compile Include="Controllers\ColorsController.cs" />
-    <Compile Include="Controllers\FileManagerController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\KycController.cs" />
     <Compile Include="Controllers\LookupController.cs" />
@@ -149,7 +148,6 @@
     <Compile Include="Controllers\ProcessSpecSLAController.cs" />
     <Compile Include="Controllers\ProcessSpecStepController.cs" />
     <Compile Include="Controllers\ProcessSpecTaskController.cs" />
-    <Compile Include="Controllers\ResearchController.cs" />
     <Compile Include="Controllers\ProcessController.cs" />
     <Compile Include="Controllers\RoleMemberController.cs" />
     <Compile Include="Controllers\SecurityCasesController.cs" />
@@ -159,11 +157,6 @@
     <Compile Include="Controllers\VisualizationsController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\SecurityController.cs" />
-    <Compile Include="Resources\Support.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Support.resx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -190,13 +183,6 @@
       <Project>{41b3f1c8-fdb5-4db4-be61-6bf1576a09e7}</Project>
       <Name>Architect.DocuSign.Integrations</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Support.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Support.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources</CustomToolNamespace>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
