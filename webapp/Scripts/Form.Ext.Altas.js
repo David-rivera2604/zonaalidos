@@ -278,7 +278,7 @@ app.Form_Ext_Altas = (function () {
                                 if (posted.ID_TIP_RESPUESTA === 1 || posted.ID_TIP_RESPUESTA === 2) {
                                     let msg = 'La póliza fue emitida de forma exitosa';
                                     if (posted.ID_TIP_RESPUESTA === 2)
-                                        msg = +', pero retenida por control técnico';
+                                        msg = msg + ', pero retenida por control técnico';
                                     app.ui.Success(msg);
                                     app.ui.ShowAlert('generalNotify', 'alert-success', `<b> <i class="fa fa-check"></i> ${msg}</b>`);
 
