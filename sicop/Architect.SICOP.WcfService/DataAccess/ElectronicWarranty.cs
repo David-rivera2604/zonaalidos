@@ -18,7 +18,7 @@ namespace Architect.SICOP.WcfService.DataAccess
                 @"SELECT ID, Guarantee_sequencenumber, Moneda, Ex_Metodo, Ex_Codigo_Proceso
                     FROM ElectronicWarranty P
                    WHERE Guarantee_number = :Guarantee_number
-                     AND P.Guarantee_sequencenumber = (SELECT max(Guarantee_sequencenumber) FROM ElectronicWarranty M WHERE M.Guarantee_number = P.Guarantee_number)")
+                     AND P.Guarantee_sequencenumber = (SELECT max(Guarantee_sequencenumber) FROM ElectronicWarranty M WHERE M.Guarantee_number = P.Guarantee_number AND M.Confirmation = 0)")
                 .AddParameter("Guarantee_number", DbType.AnsiString, 14, guarantee_number)
                 .Query(null, "Research", new Action<System.Data.IDataReader>((reader) =>
                 {

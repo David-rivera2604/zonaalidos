@@ -100,3 +100,6 @@ Thumbs.db
 /Core/Architect.API.Core.Business/Architect.API.Core.Business.csproj.user
 /webapp/Properties/PublishProfiles/FolderProfile1.pubxml.user
 /webapp/aliados.csproj.user
+/Monge/Aliados.Monge/Aliados.Monge.csproj.user
+/sicop/Architect.SICOP.WcfService/Properties/PublishProfiles/FolderProfile.pubxml.user
+/sicop/Architect.SICOP.WcfService/Architect.SICOP.WcfService.csproj.user

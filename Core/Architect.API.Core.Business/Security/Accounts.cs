@@ -766,7 +766,6 @@ namespace Architect.API.Core.Business.Security
         public static async Task<Architect.API.Core.Contracts.Seguridad.RespuestaSeguridad> Token(string clienteID, string secretID, string ipAddress, string userAgent)
         {
             Architect.API.Core.Contracts.Seguridad.RespuestaSeguridad result = null;
-            return result;
             try
             {
                 if (string.IsNullOrEmpty(clienteID) || string.IsNullOrEmpty(secretID))
