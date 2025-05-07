@@ -86,6 +86,7 @@ namespace Architect.API.Tron.Contracts.Variaciones
         /// Conozca a su cliente
         /// </summary>
         [DataMember(), JsonProperty()] public Comun.ConoceTuCliente ConoceTuCliente { get; set; }
+        [DataMember(), JsonProperty()] public DateTime? fec_efec { get; set; }
 
     }
 

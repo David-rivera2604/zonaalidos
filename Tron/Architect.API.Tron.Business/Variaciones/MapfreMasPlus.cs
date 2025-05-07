@@ -53,9 +53,9 @@ namespace Architect.API.Tron.Business.Variaciones
 
             //Contracts.Presupuesto.DatoFijo P30Instance = DataAccess.LeerPresupuesto.Presupuesto(1, presupuesto, 0, 0, 0, null, true);
             Contracts.Poliza.DatoFijo PolizaInstance = Poliza.PolizaVariaciones(1, poliza, true);
-            Contracts.Variaciones.MapfreMas resultInfo2 = Variaciones.MapfreMasConvertFrom.Quote(Variaciones.MapfreMasConvertFrom.Quote(PolizaInstance), PolizaInstance);
+            Contracts.Variaciones.MapfreMas resultInfo2 = Variaciones.MapfreMasPlusConvertFrom.Quote(Variaciones.MapfreMasPlusConvertFrom.Quote(PolizaInstance), PolizaInstance);
 
-            resultInfo2 = Variaciones.MapfreMasConvertFrom.SetTipoProducto(resultInfo2);
+            resultInfo2 = Variaciones.MapfreMasPlusConvertFrom.SetTipoProducto(resultInfo2);
 
             if (mca_provisional.Equals("S"))
             {
