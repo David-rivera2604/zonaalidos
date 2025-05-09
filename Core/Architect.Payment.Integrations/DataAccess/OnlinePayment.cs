@@ -160,7 +160,7 @@ namespace Architect.Payment.Integrations.DataAccess
                                 .AddParameter("RequestID", DbType.Decimal, 11, onlinepaymentItem.RequestID)
                                 .AddParameter("ProviderStatus", DbType.AnsiString, 20, onlinepaymentItem.ProviderStatus)
                                 .AddParameter("Reason", DbType.AnsiString, 256, onlinepaymentItem.Reason)
-                                .AddParameter("ResponseData", DbType.AnsiString, 4000, onlinepaymentItem.ResponseData)
+                                .AddParameter("ResponseData", DbType.Clob, 0, onlinepaymentItem.ResponseData)
                                 .AddParameter("Reference", DbType.AnsiString, 80, onlinepaymentItem.Reference)
                                 .AddParameter("IssueDate", DbType.DateTime, 9, onlinepaymentItem.IssueDate)
                                 .AddParameter("StatusDate", DbType.DateTime, 9, onlinepaymentItem.StatusDate)
