@@ -462,13 +462,6 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                                 // Se bloquea la tarjeta para que no sea conciderada en cobros futuros.
                                 Tarjetas.UpdateRejectionCount(currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, numberOfRetries + 1, item.reason, 3);
 
-
-                                var itemSource = reciboReq.items.Where(r => r.ordenId == item.reference).FirstOrDefault();
-                                if (itemSource != null)
-                                {
-                                    Architect.Payment.Integrations.Tokenize.Invalid(provider, client, itemSource.token);
-                                }
-
                             }
                             else
                             {
