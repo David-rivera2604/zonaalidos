@@ -1,12 +1,14 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
-using System.Text.RegularExpressions;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Architect.API.Tron.Contracts.Variaciones
 {
-    public class MapfreMas : MapfreVariacionBase
+    public class MapfreMasPlus : MapfreVariacionBase
     {
         /// <summary>
         /// No. de póliza.
@@ -78,37 +80,11 @@ namespace Architect.API.Tron.Contracts.Variaciones
 
         [DataMember(), JsonProperty()] public string Modo { get; set; }
 
-        [DataMember(), JsonProperty()] public EconomicData DatosEconomicos { get; set; }
-
         [DataMember(), JsonProperty()] public object kyc { get; set; }
 
         /// <summary>
         /// Conozca a su cliente
         /// </summary>
         [DataMember(), JsonProperty()] public Comun.ConoceTuCliente ConoceTuCliente { get; set; }
-
     }
-
-    public class MapfreMasSolicitud : MapfreMas
-    {
-        [DataMember(), JsonProperty()] public Contracts.Comun.tercero titular { get; set; }
-        [DataMember(), JsonProperty()] public Contracts.Comun.tercero asegurado { get; set; }
-        [DataMember(), JsonProperty()] public Contracts.Comun.tercero conductor { get; set; }
-        [DataMember(), JsonProperty()] public Contracts.Comun.tercero beneficiario1 { get; set; }
-        [DataMember(), JsonProperty()] public Contracts.Comun.tercero beneficiario2 { get; set; }
-        [DataMember(), JsonProperty()] public Contracts.Comun.tercero acredor { get; set; }
-
-        [DataMember(), JsonProperty()] public string mainrole { get; set; }
-        
-    }
-
-    public class EconomicData
-    {
-        [DataMember(), JsonProperty()] public double annualnetpremium { get; set; }
-        [DataMember(), JsonProperty()] public double tax { get; set; }
-        [DataMember(), JsonProperty()] public double annualgrosspremium { get; set; }
-        [DataMember(), JsonProperty()] public double monthlygrosspremium { get; set; }
-
-    }
-
 }

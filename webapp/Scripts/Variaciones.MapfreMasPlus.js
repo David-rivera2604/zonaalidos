@@ -85,7 +85,7 @@ app.VariacionMapfreMasPlus = (function () {
     }
 
     function ReadOnly() {
-        $('input[name=tipo_prod').first().parent().parent().replaceWith('<div>' + $('input:radio[name=tipo_prod]:checked').next().html() + '</div>')
+        //$('input[name=tipo_prod').first().parent().parent().replaceWith('<div>' + $('input:radio[name=tipo_prod]:checked').next().html() + '</div>')
         $('#NUM_POLIZA').replaceWith('<div>' + $('#NUM_POLIZA').val() + '</div>');
         $('#cod_mon').replaceWith('<div>' + $('#cod_mon option:selected').text() + '</div>');
         /*$('#cod_fracc_pago').replaceWith('<div>' + $('#cod_fracc_pago option:selected').text() + '</div>');*/
@@ -103,7 +103,7 @@ app.VariacionMapfreMasPlus = (function () {
         $('#COD_CHASSIS').replaceWith('<div>' + $('#COD_CHASSIS').val() + '</div>');
         $('#DES_TIP_CILINDRAJE').replaceWith('<div>' + $('#DES_TIP_CILINDRAJE').val() + '</div>');
         $('#VAL_PESO').replaceWith('<div>' + $('#VAL_PESO').val() + '</div>');
-        //$('#COD_COLOR').replaceWith('<div>' + $('#COD_COLOR option:selected').text() + '</div>');
+        $('#COD_COLOR').replaceWith('<div>' + $('#COD_COLOR option:selected').text() + '</div>');
         $('#NUM_MOTOR').replaceWith('<div>' + $('#NUM_MOTOR').val() + '</div>');
         $('#VAL_CAPACIDAD').replaceWith('<div>' + $('#VAL_CAPACIDAD').val() + '</div>');
         $('label[for=MCA_CERO_KM').next().replaceWith('<div>' + $('label[for=MCA_CERO_KM_' + app.ui.GetRadioNumericValue('MCA_CERO_KM') + '').html() + '</div>');
@@ -399,6 +399,8 @@ app.VariacionMapfreMasPlus = (function () {
         }
 
         data.NewCoverages = NewCoverages;
+        data.fec_efec = app.ui.GetDateValue('#fec_efec');
+        data.tipo_prod = app.ui.GetRadioStringValue('tipo_prod'),
 
         setupData = data;
         return data;
@@ -533,7 +535,7 @@ app.VariacionMapfreMasPlus = (function () {
     }
 
     function MapObjectToInput(data) {
-        console.log("data", data);
+
         $('#IMP_AUTO_RC').val(data.IMP_AUTO_RC);
         $('#DED_AUTO_RC').val(data.DED_AUTO_RC);
         $('#IMP_AUTO_GMO').val(data.IMP_AUTO_GMO);
@@ -671,6 +673,13 @@ app.VariacionMapfreMasPlus = (function () {
         });
 
         $('#coberturasData').val('[]');
+
+        $('#fec_efec_group').datetimepicker({
+            format: 'DD/MM/YYYY',
+            locale: 'es',
+            minDate: moment().startOf('day')
+
+        });
     }
 
     function Controls_Events() {
@@ -777,7 +786,7 @@ app.VariacionMapfreMasPlus = (function () {
             if (app.ui.IsValid('#VisualizationsEdtForm', false)) {
 
                 app.ui.ButtonDoing('#aceptarmessage');
-                app.core.Post(app.setting.apipath + 'v1/Variaciones/MapfreMas',
+                app.core.Post(app.setting.apipath + 'v1/Variaciones/MapfreMasPlus',
                     JSON.stringify(MapInputToObject()),
                     function (data) {
 
@@ -846,7 +855,7 @@ app.VariacionMapfreMasPlus = (function () {
 
                 var md = $('#confirmation-cancelation-Modal').modal({ show: false });
                 md.modal('show');
-                $('#fileTableBodyCancelation').addClass('d-none');
+                $('#fileTableCancelation').addClass('d-none');
                 $('#fileTableBodyAuthorization').empty();
                 $('#doc_cancelation_poliza').next('.custom-file-label').text('Indique el archivo a procesar...');
                 fileCancelation = [];
@@ -894,8 +903,7 @@ app.VariacionMapfreMasPlus = (function () {
         });
 
         $('#aceptar-cancelation').click(function () {
-
-            processCancelation();
+            cancelationPoliza();
 
         });
 
@@ -974,7 +982,7 @@ app.VariacionMapfreMasPlus = (function () {
                 var data = setupData;
                 data.Mca_Autoriza_CT = "N";
 
-                app.core.Post(app.setting.apipath + 'v1/Variaciones/MapfreMasManageAuthorizationCT',
+                app.core.Post(app.setting.apipath + 'v1/Variaciones/MapfreMasPlusManageAuthorizationCT',
                     JSON.stringify(data),
                     function (data) {
 
@@ -2579,7 +2587,7 @@ app.VariacionMapfreMasPlus = (function () {
     }
 
     function generateVariacionFraccPago() {
-        app.core.Post(app.setting.apipath + 'v1/Variaciones/MapfreMas',
+        app.core.Post(app.setting.apipath + 'v1/Variaciones/MapfreMasPlus',
             JSON.stringify(MapInputToObject()),
             function (data) {
 
@@ -2641,7 +2649,7 @@ app.VariacionMapfreMasPlus = (function () {
         data.Mca_Autoriza_CT = "S";
         data.num_spto = NEW_NUM_SPTO;
 
-        app.core.Post(app.setting.apipath + 'v1/Variaciones/MapfreMasManageAuthorizationCT',
+        app.core.Post(app.setting.apipath + 'v1/Variaciones/MapfreMasPlusManageAuthorizationCT',
             JSON.stringify(data),
             function (data) {
                 if (data.McaError === "N") {
@@ -2868,7 +2876,6 @@ app.VariacionMapfreMasPlus = (function () {
                         toastr.info("Se guardo correctamente el documento " + row.FileName, "Cancelación", { timeOut: 9000, closeButton: true, progressBar: true });
                     })
                 }
-                cancelationPoliza();
 
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 if (jqXHR?.responseJSON?.Message) {
@@ -2889,11 +2896,12 @@ app.VariacionMapfreMasPlus = (function () {
         data.fec_efec_cancel = app.ui.GetDateValue('#fec_efec_cancel');
         data.txt_motivo = $('#txt_motivo').val();
 
-        app.core.Post(app.setting.apipath + 'v1/Variaciones/MapfreMasCancelation',
+        app.core.Post(app.setting.apipath + 'v1/Variaciones/MapfreMasPlusCancelation',
             JSON.stringify(data),
             function (data) {
                 let messageSaldo = "";
                 if (data.McaError === "N") {
+                    processCancelation();
                     if (Array.isArray(data.Recibos) && data.Recibos.length > 0) {
                         $('#resultvariacionTbl').bootstrapTable('load', data.Recibos);
                         $('#resultvariacion').removeClass('d-none');
@@ -2905,11 +2913,12 @@ app.VariacionMapfreMasPlus = (function () {
                             return acumulador + obj.imp_recibo_spto;
                         }, 0);
 
-                        const saldoPositivo = Math.abs(suma_imp_recibo_spto);
+                        let saldoPositivo = Math.abs(suma_imp_recibo_spto);
+                        let saldoTexto = app.EmisionMapfreMas.FormatearNumero(saldoPositivo);
 
                         if (saldoPositivo > 0) {
                             //messageSaldo = ` El cliente cuenta con un saldo a favor de ${saldoPositivo} por concepto de primas no devengadas`;
-                            messageSaldo = " El cliente cuenta con un saldo a favor de " + saldoPositivo + " por concepto de primas no devengadas";
+                            messageSaldo = " El cliente cuenta con un saldo a favor de " + saldoTexto + " por concepto de primas no devengadas";
                         }
                     }
 
@@ -2935,7 +2944,7 @@ app.VariacionMapfreMasPlus = (function () {
 
 
                     $('#confirmation-cancelation-Modal').modal('hide'); // Cerrar el popup
-                    $('#fileTableBodyCancelation').addClass('d-none');
+                    $('#fileTableCancelation').addClass('d-none');
                     $('#fileTableBodyAuthorization').empty();
                     $('#doc_cancelation_poliza').next('.custom-file-label').text('Indique el archivo a procesar...');
                     fileCancelation = [];
@@ -3371,6 +3380,27 @@ app.VariacionMapfreMasPlus = (function () {
                     timeOut += 5000;
                 });
             }
+        },
+        FormatearNumero: function (numero, separadorDecimal = '.', separadorMiles = ',') {
+            if (isNaN(numero)) {
+                return '';
+            }
+
+            let numeroFormateado = Number(numero).toFixed(2);
+
+            let partes = numeroFormateado.split('.');
+            let parteEntera = partes[0];
+            let parteDecimal = partes[1];
+
+            let parteEnteraFormateada = '';
+            for (let i = parteEntera.length - 1, j = 0; i >= 0; i--, j++) {
+                if (j % 3 === 0 && j > 0) {
+                    parteEnteraFormateada = separadorMiles + parteEnteraFormateada;
+                }
+                parteEnteraFormateada = parteEntera.charAt(i) + parteEnteraFormateada;
+            }
+
+            return parteEnteraFormateada + separadorDecimal + parteDecimal;
         }
     };
 })();
