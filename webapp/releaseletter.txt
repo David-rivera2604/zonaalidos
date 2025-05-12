@@ -703,3 +703,7 @@
 1.6.123 29/04/2025 SICOP. Se ajusta el servicio de SICOP para manejar la ultima notificación exitosa.
 1.6.124 30/04/2025 Purdy. Siniestros. Problema con reporte por falla de compilación, se agregan las columnas expediente y Estado Mapfre.
 1.6.125 06/05/2025 Pasarela Evertec. Arreglos al monitor de pago.
+1.6.126 12/05/2025 Pasarela Evertec. Se ajusta onlinepayment para que pueda almacenar el json de repuesta cuando sea mayor a 4000 bytes.
+                   Pasarela Evertec. Se ajusta el proceso de monitoreo para que intente la verificación de los cobro pendientes de validar asi falle la verificación anterior.
+                   Pasarela Evertec. Ajuste para que entre los recibos al cobro se pueden usar suplemento mayores al usado al momento de crear la tokenización.
+                   Pasarela Evertec. Se elimina el llamado al bloqueo del token en evertec despues de 3 intentos fallidos.
