@@ -77,20 +77,14 @@ namespace Architect.API.Tron.Business.Backoffice
 
         private static void VerifiyOnlinePaymentPendingv2(List<Payment.Integrations.Contracts.OnlinePayment> pendings)
         {
-            try
+
+            foreach (Payment.Integrations.Contracts.OnlinePayment currentRecord in pendings)
             {
-                foreach (Payment.Integrations.Contracts.OnlinePayment currentRecord in pendings)
-                {
-                    Verifyv2(currentRecord);
-                }
-            }
-            catch (Exception ex)
-            {
-                Utilities.Log.ErrorLog("Payment", "NewMethod", ex);
-                throw ex;
+                Verifyv2(currentRecord);
             }
 
         }
+
         private static async Task VerifiyOnlinePaymentPending(List<Payment.Integrations.Contracts.OnlinePayment> pendings)
         {
             try
@@ -109,13 +103,22 @@ namespace Architect.API.Tron.Business.Backoffice
         }
         private static void Verifyv2(Payment.Integrations.Contracts.OnlinePayment currentRecord)
         {
-            Architect.Payment.Integrations.Contracts.InformationRequest result = Payment.Integrations.Payment.VerifyUpdateStatusv2(currentRecord, currentRecord.UpdateUserCode, true);
-
-            // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
-            if (result != null && result.changed && result.status == "APPROVED")
+            try
             {
-                PaymentApprovedv2(result);
+                Architect.Payment.Integrations.Contracts.InformationRequest result = Payment.Integrations.Payment.VerifyUpdateStatusv2(currentRecord, currentRecord.UpdateUserCode, true);
+
+                // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
+                if (result != null && result.changed && result.status == "APPROVED")
+                {
+                    PaymentApprovedv2(result);
+                }
             }
+            catch (Exception ex)
+            {
+                Utilities.Log.WarningLog("Payment.Verifyv2", string.Format(" Error {0}", ex.Message), "payment");
+                Utilities.Log.ErrorLog("Payment", "Verifyv2", ex);
+            }
+
         }
         private static async Task Verify(Payment.Integrations.Contracts.OnlinePayment currentRecord)
         {
