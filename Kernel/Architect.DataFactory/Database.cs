@@ -156,10 +156,26 @@ namespace Architect.DataFactory
             {
                 value = value.ToString().Substring(0, size);
             }
-            Parameters.Add(new Contracts.Parameter() { Name = name, Type = type, Size = size, Value = value, direction = direction, Filter = true });
+            Parameters.Add(new Contracts.Parameter() { Name = name, Type = type, Size = size, Value = value, direction = direction, Filter = true, LogicOperator = "=" });
 
             return this;
         }
+
+        public Database FilterCustom(string name, Architect.DataFactory.Enumerations.DbType type, int size, object value, string logicOperator = "=")
+        {
+            if (Parameters == null)
+            {
+                Parameters = new List<Contracts.Parameter>();
+            }
+            if (type == Enumerations.DbType.String && value.IsNotEmpty() && value.ToString().Length > size)
+            {
+                value = value.ToString().Substring(0, size);
+            }
+            Parameters.Add(new Contracts.Parameter() { Name = name, Type = type, Size = size, Value = value, direction = ParameterDirection.Input, Filter = true, LogicOperator = logicOperator });
+
+            return this;
+        }
+
         public Database Column(string name, Architect.DataFactory.Enumerations.DbType type, int size, object value, ParameterDirection direction = ParameterDirection.Input)
         {
             return Parameter(name, type, size, value, direction);
@@ -708,7 +724,7 @@ namespace Architect.DataFactory
                 {
                     if (filterList.IsNotEmpty())
                         filterList += " AND ";
-                    filterList += string.Format("{0}=:{0}", item.Name);
+                    filterList += string.Format("{0}{1}:{0}", item.Name, item.LogicOperator);
                 }
             }
             return string.Format("UPDATE {0} SET {1} WHERE {2}", Statement, fieldList, filterList);
@@ -721,7 +737,7 @@ namespace Architect.DataFactory
             {
                 if (filterList.IsNotEmpty())
                     filterList += " AND ";
-                filterList += string.Format("{0}=:{0}", item.Name);
+                filterList += string.Format("{0}{1}:{0}", item.Name, item.LogicOperator);
             }
             return string.Format("DELETE FROM {0} WHERE {1}", Statement, filterList);
         }

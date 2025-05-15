@@ -707,3 +707,4 @@
                    Pasarela Evertec. Se ajusta el proceso de monitoreo para que intente la verificación de los cobro pendientes de validar asi falle la verificación anterior.
                    Pasarela Evertec. Ajuste para que entre los recibos al cobro se pueden usar suplemento mayores al usado al momento de crear la tokenización.
                    Pasarela Evertec. Se elimina el llamado al bloqueo del token en evertec despues de 3 intentos fallidos.
+1.6.127 14/05/2025 Pasarela Evertec. Se ajusta el proceso de cobros recurrentes de forma que despues del tercer intento fallido, no se vuelva a intentar hasta el proximo mes y lo mismo cuando se logra un cobro, no se cobrara con la misma tarjeta hasta el proximo mes.

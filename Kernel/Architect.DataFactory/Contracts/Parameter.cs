@@ -21,5 +21,6 @@ namespace Architect.DataFactory.Contracts
         public ParameterDirection direction { get; set; }
 
         public bool Filter { get; set; }
+        public string LogicOperator { get; set; }
     }
 }
