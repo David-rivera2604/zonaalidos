@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Architect.API.Tron.Contracts.SINPEMovil.Response;
+using Architect.Utilities.Extensions;
 using Microsoft.Web.Http;
 
 namespace Architect.API.Tron.Controllers
@@ -11,7 +12,7 @@ namespace Architect.API.Tron.Controllers
     /// <summary>
     /// Controlador para la vinculación asistida de SINPE Móvil Empresarial.
     /// </summary>
-    [ApiVersion("1.0")]    
+    [ApiVersion("1.0")]
     [Authorize]
     [RoutePrefix("api/v{version:apiVersion}/SINPEMovil")]
     public class SINPEMovilController : ApiController
@@ -26,12 +27,11 @@ namespace Architect.API.Tron.Controllers
         [ResponseType(typeof(Contracts.SINPEMovil.Response.AplicarPago))]
         public async Task<IHttpActionResult> AplicarPago([FromBody] Contracts.SINPEMovil.Request.AplicarPago request)
         {
-            if (request == null)
+            if (request == null || request.CodReferencia.IsEmpty() || request.Descripcion.IsEmpty() || request.Monto.IsEmpty() || request.Moneda.IsEmpty())
             {
-                return BadRequest("El request no puede ser nulo.");
+                return BadRequest("El request no es valido.");
             }
-
-            var response = await Business.Backoffice.SINPEMovil.Create(request);    
+            var response = await Business.Backoffice.SINPEMovil.Create(request);
 
             return Ok(response);
         }

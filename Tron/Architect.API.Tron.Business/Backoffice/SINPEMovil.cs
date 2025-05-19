@@ -251,8 +251,8 @@ namespace Architect.API.Tron.Business.Backoffice
                 Description = $"MAPFRE: {recibo.NOM_SECTOR}. {recibo.NOM_RAMO}. POLIZA #{recibo.NUM_POLIZA} RECIBO #{recibo.NUM_RECIBO}",
                 IssueDate = DateTime.Now,
                 StatusDate = DateTime.Now,
-                Status = 3,
-                ProviderStatus = "PENDING",
+                Status = 4,
+                ProviderStatus = "APPROVED",
                 RecurringReceipt = false,
                 ProcessId = id.ToString(),
                 RequestID = recibo.NUM_RECIBO,
@@ -263,13 +263,13 @@ namespace Architect.API.Tron.Business.Backoffice
 
             var infoReq = new InformationRequest
             {
-                status = "PENDING",
-                reason = "Pending approval",
+                status = "APPROVED",
+                reason = "Aprobado",
                 description = track.Description,
                 reference = track.Reference,
                 currency = recibo.NOM_MON,
                 total = track.Amount,
-                message = "Payment is pending",
+                message = "Aprobado",
                 payerName = track.FirstName,
                 payerSurname = track.LastName,
                 paymentMethodName = "SINPE",
