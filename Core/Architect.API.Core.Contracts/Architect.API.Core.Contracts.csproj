@@ -57,6 +57,7 @@
     <Compile Include="General\InstanceInformation.cs" />
     <Compile Include="General\CreateProcessInstance.cs" />
     <Compile Include="General\Report.cs" />
+    <Compile Include="General\QuerySignature.cs" />
     <Compile Include="General\Setting.cs" />
     <Compile Include="General\Kyc.cs" />
     <Compile Include="General\Navigation.cs" />
@@ -81,7 +82,9 @@
     <Compile Include="Security\AgentInformation.cs" />
     <Compile Include="Security\ColoresResponse.cs" />
     <Compile Include="Security\InicioResponce.cs" />
+    <Compile Include="Seguridad\RespuestaToken.cs" />
     <Compile Include="Seguridad\RespuestaSeguridad.cs" />
+    <Compile Include="Seguridad\ObtenerToken.cs" />
     <Compile Include="Seguridad\SolicitudAcceso.cs" />
     <Compile Include="Security\SubAgent.cs" />
     <Compile Include="Security\UserRoleMember.cs" />

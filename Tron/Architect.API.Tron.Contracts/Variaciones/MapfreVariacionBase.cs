@@ -54,5 +54,6 @@ namespace Architect.API.Tron.Contracts.Variaciones
 
         [DataMember(), JsonProperty()] public DateTime fec_efec_cancel { get; set; }
         [DataMember(), JsonProperty()] public string txt_motivo { get; set; }
+        [DataMember(), JsonProperty()] public DateTime? fec_efec { get; set; }
     }
 }

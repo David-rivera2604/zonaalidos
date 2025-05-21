@@ -294,6 +294,35 @@ namespace Architect.API.Core.Controllers
             }
 
         }
+        /// <summary>
+        /// Permite validar las credenciales de acceso y generar un token que permite el consumo de las APIs.
+        /// </summary>
+        [HttpPost]
+        [Route("ObtenerToken")]
+        [AllowAnonymous]
+        [ResponseType(typeof(Architect.API.Core.Contracts.Seguridad.RespuestaToken))]
+        public async Task<IHttpActionResult> ObtenerToken(Architect.API.Core.Contracts.Seguridad.ObtenerToken solicitud)
+        {
+            if (solicitud.IsEmpty() || solicitud.username.IsEmpty() || solicitud.password.IsEmpty())
+            {
+                return BadRequest("Debe indicar la credenciales de acceso");
+            }
+
+            string IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
+            string useragent = Request.Headers.UserAgent.ToString();
+
+            Architect.API.Core.Contracts.Seguridad.RespuestaSeguridad result = Architect.API.Core.Business.Security.Accounts.Token(solicitud.username, solicitud.password, IPAddress, useragent).Result;
+
+            if (result != null && !result.access_token.IsEmpty())
+            {
+                return Ok(new Architect.API.Core.Contracts.Seguridad.RespuestaToken() { access_token = result.access_token, expires_in = result.expires_in });
+            }
+            else
+            {
+                return Unauthorized();
+            }
+
+        }
 
         [HttpGet]
         [Route("Profile")]
@@ -304,17 +333,18 @@ namespace Architect.API.Core.Controllers
 
             await Task.Run(() => result = Business.Security.Accounts.Profile(tokenInfo.CompanyId, tokenInfo.UserId)).ConfigureAwait(false);
 
-            if (result != null )
+            if (result != null)
             {
-                return Ok(new {
+                return Ok(new
+                {
                     EMail = result.EMail,
                     PhoneNumber = result.PhoneNumber
-                } );
+                });
             }
             else
             {
                 return NotFound();
-            }            
+            }
         }
 
         [HttpGet]

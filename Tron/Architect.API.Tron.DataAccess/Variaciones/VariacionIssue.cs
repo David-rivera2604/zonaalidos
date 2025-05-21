@@ -14,8 +14,15 @@ namespace Architect.API.Tron.DataAccess.Variaciones
 {
     public static class VariacionIssue
     {
-        public static VariacionIssueResult Issue(int cod_cia, string num_poliza, DateTime fec_tratamiento, string tip_mvto_batch, string mca_anulada, string mca_fracc_pago, string mca_fec_efec_sys, DateTime? fec_efec_cancel = null, string txt_motivo = "")
+        //public static VariacionIssueResult Issue(int cod_cia, string num_poliza, DateTime fec_tratamiento, string tip_mvto_batch, string mca_anulada, string mca_fracc_pago, string mca_fec_efec_sys, DateTime? fec_efec_cancel = null, string txt_motivo = "")
+        public static VariacionIssueResult Issue(int cod_cia, string num_poliza, DateTime fec_tratamiento, string tip_mvto_batch, string mca_anulada, string mca_fracc_pago, 
+            DateTime? fec_efec = null, string txt_motivo = "")
         {
+            if(fec_efec == default(DateTime))
+            {
+                fec_efec = null;
+            }
+
             VariacionIssueResult variacionIssueResult = new VariacionIssueResult();
 
             using (IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron"))
@@ -27,8 +34,9 @@ namespace Architect.API.Tron.DataAccess.Variaciones
                                     .AddParameter("p_tip_mvto_batch", DbType.String, 2, tip_mvto_batch)
                                     .AddParameter("p_mca_anula", DbType.String, 1, mca_anulada)
                                     .AddParameter("p_mca_fracc_pago", DbType.String, 1, mca_fracc_pago)
-                                    .AddParameter("p_mca_fec_efec_sys", DbType.String, 1, mca_fec_efec_sys)
-                                    .AddParameter("p_fec_efec_cancel", DbType.Date, 0, fec_efec_cancel)
+                                    //.AddParameter("p_mca_fec_efec_sys", DbType.String, 1, mca_fec_efec_sys)
+                                    //.AddParameter("p_fec_efec", DbType.Date, 0, fec_efec_cancel)
+                                    .AddParameter("p_fec_efec", DbType.Date, 0, fec_efec)
                                     .AddParameter("p_txt_motivo", DbType.String, 30, txt_motivo)
                                     .AddParameter("rc1", DbType.RefCursor, 0, null, ParameterDirection.Output)
                                     .AddParameter("rc2", DbType.RefCursor, 0, null, ParameterDirection.Output)

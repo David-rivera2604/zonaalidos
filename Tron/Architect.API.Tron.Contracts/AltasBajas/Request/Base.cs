@@ -33,7 +33,10 @@ namespace Architect.API.Tron.Contracts.AltasBajas.Request
         [StringLength(30)]
         public string NUM_PRESTAMO { get; set; }
         public double IMP_SUMA_ASEG { get; set; }
+        public double IMP_SUM_ASEG_VC { get; set; }
         public double IMP_PRIMA_INFORMADA { get; set; }
+        
+        public Nullable<double> IMP_PRIMA_FACT { get; set; }
         public int ID_CRED_ESTUDIANTE { get; set; }
         [StringLength(1)]
         public string MCA_ASISTENCIA { get; set; }

@@ -64,82 +64,69 @@ app.PurdyPanelDetalle = (function () {
             TELEFONODELCHOFER: $('#telefonodelchofer').val()
         };
         if (submitData.ID === null) {
-            app.core.Post(`${app.setting.entityapi}/PurdyPanelOtros`, JSON.stringify(submitData))
-                .done(function (created) {
-                    if (created?.Sucessfully) {
-                        _eventCallback('detalleChanged', created);
-                        app.ui.VisibleBehaviour('.detalleChanged', false);
-                        app.ui.Success('La información del chofer, fue actualizada de forma exitosa');
-                    }
-                    else {
-                        console.error(created);
-                    }
-
-                }).always(function () {
+            app.core.datapi('POST', `PurdyPanelOtros`, submitData)
+                .then(created => {
+                    _eventCallback('detalleChanged', created);
+                    app.ui.VisibleBehaviour('.detalleChanged', false);
+                    app.ui.Success('La información del chofer, fue actualizada de forma exitosa');
+                }).finally(() => {
                     app.ui.ButtonDone('#PurdyPanelDetalleEdtFormSave');
                 });
         }
         else {
-            app.core.Put(`${app.setting.entityapi}/PurdyPanelOtros/${submitData.ID}`, JSON.stringify(submitData))
-                .done(function (updated) {
-                    if (updated?.Sucessfully) {
-                        _eventCallback('detalleChanged', updated);
-                        app.ui.VisibleBehaviour('.detalleChanged', false);
-                        app.ui.Success('La información del chofer, fue actualizada de forma exitosa');
-                    }
-                    else {
-                        console.error(updated);
-                    }
-                }).always(function () {
+            app.core.datapi('PUT', `PurdyPanelOtros/${submitData.ID}`, submitData)
+                .then(updated => {
+                    _eventCallback('detalleChanged', updated);
+                    app.ui.VisibleBehaviour('.detalleChanged', false);
+                    app.ui.Success('La información del chofer, fue actualizada de forma exitosa');
+
+
                     app.ui.ButtonDone('#PurdyPanelDetalleEdtFormSave');
                 });
         }
     };
     async function GetPolicy(data) {
+        app.core.datapi('GET', `policy/${data.claim.NUM_POLIZA}?NUM_SPTO=${data.claim.NUM_SPTO}&NUM_APLI=${data.claim.NUM_APLI}&NUM_SPTO_APLI=${data.claim.NUM_SPTO_APLI}&NUM_RIESGO=${data.claim.NUM_RIESGO}`)
+            .then(policy => {
+                let data = policy.Fixeddata;
+                _eventCallback('PolicyChange', data);
 
-        app.core.Get(`${app.setting.entityapi}/policy/${data.claim.NUM_POLIZA}?NUM_SPTO=${data.claim.NUM_SPTO}&NUM_APLI=${data.claim.NUM_APLI}&NUM_SPTO_APLI=${data.claim.NUM_SPTO_APLI}&NUM_RIESGO=${data.claim.NUM_RIESGO}`)
-            .done(function (policy) {
-                if (policy?.Sucessfully) {
-                    let data = policy.Data.Fixeddata.Data;
-                    _eventCallback('PolicyChange', data);
-
-                    roles = policy.Data.Thirdparties.Data;
-                    data.roles = roles;
-                    let acreedor = roles.filter(i => i.TIP_BENEF === "8");
-                    if (acreedor.length > 0) {
-                        $('#acreedor').html(`${acreedor[0].TIP_DOCUM} ${acreedor[0].COD_DOCUM} - ${acreedor[0].NOM_COMPLETO}`);
-                    } else {
-                        $('#acreedor').html('---');
-                    }
-                    _eventCallback('PolicyRolesChange', data);
-
-                    dataVar = policy.Data.Variabledata.Data;
-                    data.data = dataVar;
-                    data.marca = ShowValue(dataVar.filter(i => i.COD_CAMPO === "COD_MARCA"), 'marca', 'TXT_CAMPO');
-                    data.empresa = 'Purdy Motor';
-                    ShowValue(dataVar.filter(i => i.COD_CAMPO === "NUM_MATRICULA"), 'placa', 'VAL_CAMPO');
-                    ShowValue(dataVar.filter(i => i.COD_CAMPO === "COD_CHASSIS"), 'chasis', 'VAL_CAMPO');
-                    ShowValue(dataVar.filter(i => i.COD_CAMPO === "IMP_VR"), 'valorasegurado', 'TXT_CAMPO');
-                    ShowValue(dataVar.filter(i => i.COD_CAMPO === "COD_USO_VEHI"), 'usodepoliza', 'TXT_CAMPO');
-                    if (data.marca === 'FORD' || data.marca === 'VOLKSWAGEN') {
-                        data.empresa = 'Automotriz';
-                    }
-                    _eventCallback('PolicyDataChange', data);
+                roles = policy.Thirdparties;
+                data.roles = roles;
+                let acreedor = roles.filter(i => i.TIP_BENEF === "8");
+                if (acreedor.length > 0) {
+                    $('#acreedor').html(`${acreedor[0].TIP_DOCUM} ${acreedor[0].COD_DOCUM} - ${acreedor[0].NOM_COMPLETO}`);
+                } else {
+                    $('#acreedor').html('---');
                 }
+                _eventCallback('PolicyRolesChange', data);
+
+                dataVar = policy.Variabledata;
+                data.data = dataVar;
+                data.marca = ShowValue(dataVar.filter(i => i.COD_CAMPO === "COD_MARCA"), 'marca', 'TXT_CAMPO');
+                data.empresa = 'Purdy Motor';
+                ShowValue(dataVar.filter(i => i.COD_CAMPO === "NUM_MATRICULA"), 'placa', 'VAL_CAMPO');
+                ShowValue(dataVar.filter(i => i.COD_CAMPO === "COD_CHASSIS"), 'chasis', 'VAL_CAMPO');
+                ShowValue(dataVar.filter(i => i.COD_CAMPO === "IMP_VR"), 'valorasegurado', 'TXT_CAMPO');
+                ShowValue(dataVar.filter(i => i.COD_CAMPO === "COD_USO_VEHI"), 'usodepoliza', 'TXT_CAMPO');
+                if (data.marca === 'FORD' || data.marca === 'VOLKSWAGEN') {
+                    data.empresa = 'Automotriz';
+                }
+                _eventCallback('PolicyDataChange', data);
             });
     };
 
     async function GetCoverages(data) {
         $('#primaanual').html('---');
 
-        app.core.Get(`${app.setting.entityapi}/policy/${data.claim.NUM_POLIZA}/Coverages?NUM_SPTO=${data.claim.NUM_SPTO}&NUM_APLI=${data.claim.NUM_APLI}&NUM_SPTO_APLI=${data.claim.NUM_SPTO_APLI}&NUM_RIESGO=${data.claim.NUM_RIESGO}`)
-            .done(function (coverages) {
-                if (coverages?.Sucessfully && coverages.Data != null) {
-                    let primaanual = coverages.Data.reduce((accumulator, item) => { return accumulator + item.IMP_TOTAL; }, 0);
+        app.core.datapi('GET', `policy/${data.claim.NUM_POLIZA}/Coverages?NUM_SPTO=${data.claim.NUM_SPTO}&NUM_APLI=${data.claim.NUM_APLI}&NUM_SPTO_APLI=${data.claim.NUM_SPTO_APLI}&NUM_RIESGO=${data.claim.NUM_RIESGO}`)
+            .then(coverages => {
+                if (coverages?.Coverages != null) {
+                    let primaanual = coverages.Coverages.reduce((accumulator, item) => { return accumulator + item.IMP_TOTAL; }, 0);
 
                     $('#primaanual').html(`${app.ui.DecimalFormatter(primaanual)}`);
                     _eventCallback('CoverageDataChange', {
-                        primaanual: primaanual, coverages: coverages.Data
+                        primaanual: primaanual, coverages: coverages.Coverages
                     });
                 }
             });
@@ -150,28 +137,26 @@ app.PurdyPanelDetalle = (function () {
         $('#primaspagadas').html('---');
         $('#fechaultimaprimacobrada').html('---');
 
-        app.core.Get(`${app.setting.entityapi}/policy/${data.claim.NUM_POLIZA}/Premiums?NUM_SPTO=${data.claim.NUM_SPTO}&NUM_APLI=${data.claim.NUM_APLI}&NUM_SPTO_APLI=${data.claim.NUM_SPTO_APLI}&NUM_RIESGO=${data.claim.NUM_RIESGO}`)
-            .done(function (premiums) {
+        app.core.datapi('GET', `policy/${data.claim.NUM_POLIZA}/Premiums?NUM_SPTO=${data.claim.NUM_SPTO}&NUM_APLI=${data.claim.NUM_APLI}&NUM_SPTO_APLI=${data.claim.NUM_SPTO_APLI}&NUM_RIESGO=${data.claim.NUM_RIESGO}`)
+            .then(premiums => {
 
-                if (premiums?.Sucessfully) {
-                    let primaspendientesdecobro = 0;
-                    let primaspagadas = 0;
-                    if (premiums.Data.Pendingpremiums?.Sucessfully && premiums.Data.Pendingpremiums?.Data != null) {
-                        primaspendientesdecobro = premiums.Data.Pendingpremiums.Data.reduce((accumulator, item) => { return accumulator + item.IMP_RECIBO; }, 0);
-                    }
-
-                    if (premiums.Data.Paidpremiums?.Sucessfully && premiums.Data.Paidpremiums?.Data != null) {
-                        primaspagadas = premiums.Data.Paidpremiums.Data.reduce((accumulator, item) => { return accumulator + item.IMP_RECIBO; }, 0);
-
-                        //$('#primaspagadas').html(app.ui.DecimalFormatter(app.ui.DecimalFormatter(premiums.Data.Paidpremiums.Data[0].IMP_RECIBO)));
-                        $('#fechaultimaprimacobrada').html(app.ui.DateFormatter(premiums.Data.Paidpremiums.Data[0].FEC_REMESA));
-                    }
-
-                    $('#primaspendientesdecobro').html(app.ui.DecimalFormatter(primaspendientesdecobro));
-                    $('#primaspagadas').html(app.ui.DecimalFormatter(primaspagadas));
-
-                    _eventCallback('PremiumDataChange', { primaspendientesdecobro: primaspendientesdecobro, primaspagadas: primaspagadas, premiums: premiums.Data });
+                let primaspendientesdecobro = 0;
+                let primaspagadas = 0;
+                if (premiums.Pendingpremiums?.Sucessfully && premiums.Pendingpremiums != null) {
+                    primaspendientesdecobro = premiums.Pendingpremiums.reduce((accumulator, item) => { return accumulator + item.IMP_RECIBO; }, 0);
                 }
+
+                if (premiums.Paidpremiums?.Sucessfully && premiums.Paidpremiums != null) {
+                    primaspagadas = premiums.Paidpremiums.reduce((accumulator, item) => { return accumulator + item.IMP_RECIBO; }, 0);
+
+                    //$('#primaspagadas').html(app.ui.DecimalFormatter(app.ui.DecimalFormatter(premiums.Paidpremiums[0].IMP_RECIBO)));
+                    $('#fechaultimaprimacobrada').html(app.ui.DateFormatter(premiums.Paidpremiums[0].FEC_REMESA));
+                }
+
+                $('#primaspendientesdecobro').html(app.ui.DecimalFormatter(primaspendientesdecobro));
+                $('#primaspagadas').html(app.ui.DecimalFormatter(primaspagadas));
+
+                _eventCallback('PremiumDataChange', { primaspendientesdecobro: primaspendientesdecobro, primaspagadas: primaspagadas, premiums: premiums });
             });
     };
 
@@ -197,7 +182,7 @@ app.PurdyPanelDetalle = (function () {
                         $('#numerodepoliza').html(data.claim.NUM_POLIZA);
                         $('#monedadepoliza').html(data.claim.NOM_MON);
                         $('#tomador').html(`${data.claim.TIP_DOCUM_TOMADOR} ${data.claim.COD_DOCUM_TOMADOR} - ${data.claim.NOM_TOMADOR} ${app.ui.StringValueToString(data.claim.APE_TOMADOR)}`);
-                        
+
 
                         let deducible = 0;
                         let deducibleDesc = '';
@@ -211,7 +196,7 @@ app.PurdyPanelDetalle = (function () {
                         })
                         $('#coberturaafectada').html(deducibleDesc);
                         $('#deducible').html(`${app.ui.DecimalFormatter(deducible)}`);
-                        
+
                         _eventCallback('DetalleDeducible', deducible);
 
 

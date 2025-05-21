@@ -686,3 +686,28 @@
                    Pasarela Evertec. Implementación de servicios web para recibir pago por SIMPEMovil desarrollo al 90%.
 1.6.115 27/03/2025 Pasarela Evertec. Consulta 410 que es para empleados, al habilitar panel de pago para la consulta se agrega manejo de agente indicado para los envios de link de pago.
 1.6.116 31/03/2025 Pasarela Evertec. Se ajusta consulta de recibo pendiente de forma que se utilice si esta definida la figura del pagador (21) en caso contrario usara el de la poliza.
+1.6.117 09/04/2025 Purdy. Siniestros. Ajustes necesario para manejar el número de siniestros y el expediente como parte del panel.
+                   Purdy. Siniestros. Se agrega el campo expediente al reporte de Purdy.
+                   Purdy. Siniestros. Se agrega el campo ASIGES al reporte de MAPFRE.
+1.6.118 15/04/2025 Aliados. Altas. Se actualiza el uso del servicio de datapi a su última versión. 
+                   Aliados. Bajas. Se actualiza el uso del servicio de datapi a su última versión.
+                   Aliados. Garantía Electrónica. Se actualiza el uso del servicio de datapi a su última versión.
+                   Bayer. Carnet Digital. Se actualiza el uso del servicio de datapi a su última versión.
+1.6.119 16/04/2025 Aliados. En MapfreMas y MapfreMasPlus se cambia el tamaño del campo numero placa, para que sea solo 6 digitos.
+                   Aliados. Correccion del fraccionamiento anual,ya que en el presupuesto de multiriesgo empresa se repite en dos ocasiones.                  
+1.6.120 22/04/2025 Pasarela Evertec. Implementación de servicios web para recibir pago por SIMPEMovil.
+1.6.121 28/04/2025 Aliados. Api para consulta de solicitudes de firma.
+                   Automovil. Se retorna en Issue el valor del UniqueId del documento enviado a firmar.
+1.6.122 28/04/2025 Aliados. Ajustes para altas del ramo 117.
+                   Purdy. Siniestros. Ajuste de 415 casos a 'No Procede', Se agregar columna 'Tipo de indemnización'.
+1.6.123 29/04/2025 SICOP. Se ajusta el servicio de SICOP para manejar la ultima notificación exitosa.
+1.6.124 30/04/2025 Purdy. Siniestros. Problema con reporte por falla de compilación, se agregan las columnas expediente y Estado Mapfre.
+1.6.125 06/05/2025 Pasarela Evertec. Arreglos al monitor de pago.
+1.6.126 12/05/2025 Pasarela Evertec. Se ajusta onlinepayment para que pueda almacenar el json de repuesta cuando sea mayor a 4000 bytes.
+                   Pasarela Evertec. Se ajusta el proceso de monitoreo para que intente la verificación de los cobro pendientes de validar asi falle la verificación anterior.
+                   Pasarela Evertec. Ajuste para que entre los recibos al cobro se pueden usar suplemento mayores al usado al momento de crear la tokenización.
+                   Pasarela Evertec. Se elimina el llamado al bloqueo del token en evertec despues de 3 intentos fallidos.
+1.6.127 14/05/2025 Pasarela Evertec. Se ajusta el proceso de cobros recurrentes de forma que despues del tercer intento fallido, no se vuelva a intentar hasta el proximo mes y lo mismo cuando se logra un cobro, no se cobrara con la misma tarjeta hasta el proximo mes.
+1.6.128 19/05/2025 Pasarela Evertec. Se agregar validación a la operación AplicarPago para la integración SINPE.
+                   Pasarela Evertec. Se ajusta registro en OnlinePayment para que en vez de quedar pendiente quede como pagado en el caso de la integración SINPE.
+                   Pasarela Evertec. Se agregar nueva operación REST ObtenerToken para ser usada en la integración SINPE.

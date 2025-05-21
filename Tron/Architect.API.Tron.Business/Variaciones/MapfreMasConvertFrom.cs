@@ -307,7 +307,6 @@ namespace Architect.API.Tron.Business.Variaciones
                     quoteInfo.tipo_prodDesc = "Trebol";
                     break;
                 case 37: 
-                    case 38:
                     quoteInfo.tipo_prod = "trebolrc";
                     quoteInfo.tipo_prodDesc = "Trébol RC";
                     break;

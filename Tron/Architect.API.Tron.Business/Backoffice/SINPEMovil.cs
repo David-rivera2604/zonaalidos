@@ -1,20 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Xml.Linq;
-using Architect.API.Core.Business.General;
-using Architect.API.Insurance.Contracts.Bayer;
-using Architect.API.Tron.Contracts.Pagos;
-using Architect.API.Tron.Contracts.SINPEMovil.Response;
-using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
 using Architect.Payment.Integrations.Contracts;
-using Architect.Payment.Integrations.Providers.Placetopay.Contracts;
+using Architect.Utilities;
 using Architect.Utilities.Extensions;
-using iTextSharp.text;
 using Newtonsoft.Json;
 
 namespace Architect.API.Tron.Business.Backoffice
@@ -86,23 +75,31 @@ namespace Architect.API.Tron.Business.Backoffice
                 Mensaje = "Consulta no encontrada.",
                 Facturas = new List<Contracts.SINPEMovil.Response.Factura>()
             };
-
-            Contracts.Pagos.Recibo recibo = null;
-            string policyNumber = consultaRequest.Descripcion.OnlyNumbers();
-
-            if (policyNumber.Length != 13)
+            try
             {
-                result.Codigo = ErrorInProcess;
-                result.Mensaje = "Error al ejecutar el proceso, favor intentarlo más tarde. No se puede identificar el número de la póliza.";
-            }
-            else
-            {
-                recibo = DataAccess.Pagos.Recibos.PrimerReciboAlCobroPorPoliza(policyNumber);
-            }
+                Contracts.Pagos.Recibo recibo = null;
+                string policyNumber = id.OnlyNumbers();
 
-            if (recibo != null)
-            {
-                result.Facturas = new List<Contracts.SINPEMovil.Response.Factura>() {
+                if (policyNumber.Length != 13)
+                {
+                    policyNumber = consultaRequest.Descripcion.OnlyNumbers();
+                }
+                if (policyNumber.Length != 13)
+                {
+                    result.Codigo = ErrorInProcess;
+                    result.Mensaje = "Error al ejecutar el proceso, favor intentarlo más tarde. No se puede identificar el número de la póliza.";
+                }
+                else
+                {
+                    recibo = DataAccess.Pagos.Recibos.PrimerReciboAlCobroPorPoliza(policyNumber);
+                }
+
+                if (recibo != null)
+                {
+                    result.Codigo = 0;
+                    result.Mensaje = "Consulta realizada correctamente";
+                    result.CantidadFacturas = 1;
+                    result.Facturas = new List<Contracts.SINPEMovil.Response.Factura>() {
                     new Contracts.SINPEMovil.Response.Factura {
                         Codigo = recibo.NUM_RECIBO.ToString(),
                         Identificacion = recibo.COD_DOCUM,
@@ -115,7 +112,15 @@ namespace Architect.API.Tron.Business.Backoffice
                         FacturasImpagas = 1
                     }
                 };
+                }
             }
+            catch (Exception ex)
+            {
+                Log.ErrorLog(ex);
+                result.Codigo = ErrorInProcess;
+                result.Mensaje = "Error al ejecutar el proceso, favor intentarlo más tarde.";
+            }
+
 
             return result;
         }
@@ -246,8 +251,8 @@ namespace Architect.API.Tron.Business.Backoffice
                 Description = $"MAPFRE: {recibo.NOM_SECTOR}. {recibo.NOM_RAMO}. POLIZA #{recibo.NUM_POLIZA} RECIBO #{recibo.NUM_RECIBO}",
                 IssueDate = DateTime.Now,
                 StatusDate = DateTime.Now,
-                Status = 3,
-                ProviderStatus = "PENDING",
+                Status = 4,
+                ProviderStatus = "APPROVED",
                 RecurringReceipt = false,
                 ProcessId = id.ToString(),
                 RequestID = recibo.NUM_RECIBO,
@@ -258,13 +263,13 @@ namespace Architect.API.Tron.Business.Backoffice
 
             var infoReq = new InformationRequest
             {
-                status = "PENDING",
-                reason = "Pending approval",
+                status = "APPROVED",
+                reason = "Aprobado",
                 description = track.Description,
                 reference = track.Reference,
                 currency = recibo.NOM_MON,
                 total = track.Amount,
-                message = "Payment is pending",
+                message = "Aprobado",
                 payerName = track.FirstName,
                 payerSurname = track.LastName,
                 paymentMethodName = "SINPE",

@@ -47,6 +47,8 @@ namespace Architect.API.Tron.Business.Backoffice
                 DOMICILIO = poliza.DOMICILIO,
                 NUM_PRESTAMO = poliza.NUM_PRESTAMO,
                 IMP_SUMA_ASEG = poliza.IMP_SUMA_ASEG,
+                IMP_SUM_ASEG_VC = poliza.IMP_SUM_ASEG_VC,
+                IMP_PRIMA_FACT = poliza.IMP_PRIMA_FACT == 0 ? null : poliza.IMP_PRIMA_FACT,
                 IMP_PRIMA_INFORMADA = poliza.IMP_PRIMA_INFORMADA,
                 ID_CRED_ESTUDIANTE = poliza.ID_CRED_ESTUDIANTE,
                 MCA_ASISTENCIA = poliza.MCA_ASISTENCIA,
@@ -57,7 +59,7 @@ namespace Architect.API.Tron.Business.Backoffice
                 FEC_INI_PRESTAMO = poliza.INI_PRESTAMO.ToString("dd/MM/yyyy"),
                 FEC_VCTO_PRESTAMO = poliza.VCTO_PRESTAMO.ToString("dd/MM/yyyy"),
                 COD_PLAN_AP = poliza.COD_PLAN_AP,
-                TIP_DE_PROCESO = alta ? "N": "A"
+                TIP_DE_PROCESO = alta ? "N" : "A"
             };
 
             string json = JsonConvert.SerializeObject(sp);

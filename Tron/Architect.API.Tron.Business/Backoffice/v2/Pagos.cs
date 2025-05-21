@@ -242,7 +242,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 {
                     onlyInfo = true;
                 }
-                payInfov2 = await Business.Backoffice.Pagos.SendPaymentLink(tokenInfo, ipAddress, userAgent, num_poliza, num_recibo, agentCode,  onlyInfo, email);
+                payInfov2 = await Business.Backoffice.Pagos.SendPaymentLink(tokenInfo, ipAddress, userAgent, num_poliza, num_recibo, agentCode, onlyInfo, email);
                 result = new Payment.Integrations.Contracts.v2.PaymentInformation() { Status = payInfov2.Status, Reason = payInfov2.Reason, emailCliente = payInfov2.emailCliente, telefonoCliente = payInfov2.telefonoCliente };
             }
             return result;
@@ -448,25 +448,38 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                                 item.OnlinePayment.AgentCode = 999999;
                             }
                             bool tronPayment = Backoffice.Pagos.TronPayment(item, item.OnlinePayment.AgentCode, "Placetopay", provider).Result;
-                            Tarjetas.UpdateRejectionCount(currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, 0, string.Empty);
+
+                            //Se establece que la proxima fecha para poder usar esta tarjeta seria desde el primero del proximo mes.
+                            DateTime nextCollectAttempt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1);
+
+                            Tarjetas.UpdateRejectionCount(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, 0, $"Último pago {DateTime.Now}", 1, nextCollectAttempt);
                         }
                         else if (item?.status == "REJECTED")
                         {
 
 
-                            int numberOfRetries = Tarjetas.RetrieveNumberOfRetries(currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber);
+                            int numberOfRetries = Tarjetas.RetrieveNumberOfRetries(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber);
 
                             // Si ya se tiene dos rechazo quiere decir que el actual seria el tercero.
                             if (numberOfRetries == 2)
                             {
+                                //Se establece que la proxima fecha para poder usar esta tarjeta seria desde el primero del proximo mes.
+                                DateTime nextCollectAttempt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1);
+
                                 // Se bloquea la tarjeta para que no sea conciderada en cobros futuros.
-                                Tarjetas.UpdateRejectionCount(currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, numberOfRetries + 1, item.reason, 3);
+                                Tarjetas.UpdateRejectionCount(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, numberOfRetries + 1, item.reason, 3, nextCollectAttempt);
 
                             }
                             else
                             {
+                                // Si ya se habia deshabilitado por reintento, cuando se intente al mes siguiente se reinicia el contador.
+                                if (numberOfRetries == 3)
+                                {
+                                    numberOfRetries = 0;
+                                }
+
                                 // Se incrementa la cantidad de reintento fallidos 
-                                Tarjetas.UpdateRejectionCount(currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, numberOfRetries + 1, item.reason);
+                                Tarjetas.UpdateRejectionCount(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, numberOfRetries + 1, item.reason);
                             }
                         }
                     }

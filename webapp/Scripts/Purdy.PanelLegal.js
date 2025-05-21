@@ -3,6 +3,7 @@
 app.PurdyPanelLegal = (function () {
 
     let _asiges = null;
+    let _claim = null;
     let _eventCallback = null;
     let _emptyValueRecuperacion = {
         ID: null,
@@ -153,43 +154,39 @@ app.PurdyPanelLegal = (function () {
         app.ui.SetNumericValue('#saldoporrecuperar', app.ui.GetNumericValue('#montoporrecuperar') - app.ui.GetNumericValue('#montorecuperado'));
     };
 
-    async function GetDetalle(asigesCode) {
+    async function GetDetalle(asigesCode, claim, exp) {
         _asiges = asigesCode;
-        app.core.Get(`${app.setting.entityapi}/PurdyPanelDetalle/asiges?code=${asigesCode}`)
-            .done(function (dataDetalle) {
-                if (dataDetalle?.Sucessfully) {
-                    if (dataDetalle.Data != null) {
-                        dataDetalle.Data.forEach(function (item) {
-                            item.enviadoainvestigacionDesc = item.enviadoainvestigacion == null || item.enviadoainvestigacion == 2 ? 'No' : 'Si';
-                            item.enviadoaacompanamientolegaDesc = item.enviadoaacompanamientolega == null || item.enviadoaacompanamientolega == 2 ? 'No' : 'Si';
-                            item.posiblesubrogacionDesc = item.posiblesubrogacion == null || item.posiblesubrogacion == 2 ? 'No' : 'Si';
-                            item.subrogacionDesc = item.subrogacion == null || item.subrogacion == 2 ? 'No' : 'Si';
-                        });
-                    }
-                    $('#detalleTbl').bootstrapTable('load', dataDetalle.Data == null ? [] : dataDetalle.Data);
-                    _eventCallback('DetalleDataChange', dataDetalle.Data);
+        app.core.datapi('GET', `PurdyPanelDetalle/asiges?code=${asigesCode}&claim=${claim}&exp=${exp}`)
+            .then(dataDetalle => {
+                if (dataDetalle.Detalle != null) {
+                    dataDetalle.Detalle.forEach(function (item) {
+                        item.enviadoainvestigacionDesc = item.enviadoainvestigacion == null || item.enviadoainvestigacion == 2 ? 'No' : 'Si';
+                        item.enviadoaacompanamientolegaDesc = item.enviadoaacompanamientolega == null || item.enviadoaacompanamientolega == 2 ? 'No' : 'Si';
+                        item.posiblesubrogacionDesc = item.posiblesubrogacion == null || item.posiblesubrogacion == 2 ? 'No' : 'Si';
+                        item.subrogacionDesc = item.subrogacion == null || item.subrogacion == 2 ? 'No' : 'Si';
+                    });
                 }
+                $('#detalleTbl').bootstrapTable('load', dataDetalle.Detalle == null ? [] : dataDetalle.Detalle);
+                _eventCallback('DetalleDataChange', dataDetalle.Detalle);
             });
     };
 
-    async function GetRecuperacion(asigesCode) {
+    async function GetRecuperacion(asigesCode, claim, exp) {
         _asiges = asigesCode;
-        app.core.Get(`${app.setting.entityapi}/PurdyPanelRecuperacion/asiges?code=${asigesCode}`)
-            .done(function (dataRecuperacion) {
-                if (dataRecuperacion?.Sucessfully) {
-                    $('#recuperacionTbl').bootstrapTable('load', dataRecuperacion.Data == null ? [] : dataRecuperacion.Data);
+        app.core.datapi('GET', `PurdyPanelRecuperacion/asiges?code=${asigesCode}&claim=${claim}&exp=${exp}`)
+            .then(dataRecuperacion => {
+                $('#recuperacionTbl').bootstrapTable('load', dataRecuperacion.Recuperacion == null ? [] : dataRecuperacion.Recuperacion);
 
-                    let montoPagado = 0;
+                let montoPagado = 0;
 
-                    if (dataRecuperacion.Data != null) {
-                        montoPagado = dataRecuperacion.Data.reduce((accumulator, item) => { return accumulator + item.montorecupera; }, 0);
-                    }
-
-                    app.ui.SetNumericValue('#montopagado', montoPagado);
-                    app.ui.SetNumericValue('#montoutilizado', montoPagado - app.ui.GetNumericValue('#totalesMontorecuperado'));
-
-                    _eventCallback('RecuperacionDataChange', dataRecuperacion.Data);
+                if (dataRecuperacion.Recuperacion != null) {
+                    montoPagado = dataRecuperacion.Recuperacion.reduce((accumulator, item) => { return accumulator + item.montorecupera; }, 0);
                 }
+
+                app.ui.SetNumericValue('#montopagado', montoPagado);
+                app.ui.SetNumericValue('#montoutilizado', montoPagado - app.ui.GetNumericValue('#totalesMontorecuperado'));
+
+                _eventCallback('RecuperacionDataChange', dataRecuperacion.Recuperacion);
             });
     };
 
@@ -489,34 +486,25 @@ app.PurdyPanelLegal = (function () {
 
                 var row = detalle_table_row('values');
                 row.ASIGES = _asiges;
+                row.NUM_SINI = _claim.NUM_SINI;
+                row.NUM_EXP = _claim.NUM_EXP;
                 if (row.ID === null) {
-                    app.core.Post(`${app.setting.entityapi}/PurdyPanelDetalle`, JSON.stringify(row))
-                        .done(function (created) {
-                            if (created?.Sucessfully) {
-                                $('#detalleModal').modal('hide');
-                                GetDetalle(_asiges);
-                                app.ui.Success('El movimiento de detalle, fue creada de forma exitosa.');
-                            }
-                            else {
-                                console.error(created);
-                            }
-
-                        }).always(function () {
+                    app.core.datapi('POST', `PurdyPanelDetalle`, row)
+                        .then(created => {
+                            $('#detalleModal').modal('hide');
+                            GetDetalle(_asiges, _claim.NUM_SINI, _claim.NUM_EXP);
+                            app.ui.Success('El movimiento de detalle, fue creada de forma exitosa.');
+                        }).finally(() => {
                             app.ui.ButtonDone('#detalleEdtFormSave');
                         });
                 }
                 else {
-                    app.core.Put(`${app.setting.entityapi}/PurdyPanelDetalle/${row.ID}`, JSON.stringify(row))
-                        .done(function (updated) {
-                            if (updated?.Sucessfully) {
-                                $('#detalleModal').modal('hide');
-                                GetDetalle(_asiges);
-                                app.ui.Success('El movimiento de detalle, fue actualizado de forma exitosa');
-                            }
-                            else {
-                                console.error(updated);
-                            }
-                        }).always(function () {
+                    app.core.datapi('PUT', `PurdyPanelDetalle/${row.ID}`, row)
+                        .then(updated => {
+                            $('#detalleModal').modal('hide');
+                            GetDetalle(_asiges, _claim.NUM_SINI, _claim.NUM_EXP);
+                            app.ui.Success('El movimiento de detalle, fue actualizado de forma exitosa');
+                        }).finally(() => {
                             app.ui.ButtonDone('#detalleEdtFormSave');
                         });
                 }
@@ -608,15 +596,10 @@ app.PurdyPanelLegal = (function () {
     };
 
     function detalle_table_row_delete(row) {
-        app.core.Delete(`${app.setting.entityapi}/PurdyPanelDetalle/${row.ID}`, null)
-            .done(function (deleted) {
-                if (deleted?.Sucessfully) {
-                    GetDetalle(_asiges);
-                    app.ui.Success('El movimiento de detalle, fue eliminado de forma exitosa');
-                }
-                else {
-                    console.error(deleted);
-                }
+        app.core.datapi('DELETE', `PurdyPanelDetalle/${row.ID}`)
+            .then(deleted => {
+                GetDetalle(_asiges);
+                app.ui.Success('El movimiento de detalle, fue eliminado de forma exitosa');
             });
     };
 
@@ -747,34 +730,25 @@ app.PurdyPanelLegal = (function () {
 
                 var row = recuperacion_table_row('values');
                 row.ASIGES = _asiges;
+                row.NUM_SINI = _claim.NUM_SINI;
+                row.NUM_EXP = _claim.NUM_EXP;
                 if (row.ID === null) {
-                    app.core.Post(`${app.setting.entityapi}/PurdyPanelRecuperacion`, JSON.stringify(row))
-                        .done(function (created) {
-                            if (created?.Sucessfully) {
-                                $('#recuperacionModal').modal('hide');
-                                GetRecuperacion(_asiges);
-                                app.ui.Success('El movimiento de recuperación, fue creada de forma exitosa');
-                            }
-                            else {
-                                console.error(created);
-                            }
-
-                        }).always(function () {
+                    app.core.datapi('POST', `PurdyPanelRecuperacion`, row)
+                        .then(created => {
+                            $('#recuperacionModal').modal('hide');
+                            GetRecuperacion(_asiges, _claim.NUM_SINI, _claim.NUM_EXP);
+                            app.ui.Success('El movimiento de recuperación, fue creada de forma exitosa');
+                        }).finally(() => {
                             app.ui.ButtonDone('#recuperacionEdtFormSave');
                         });
                 }
                 else {
-                    app.core.Put(`${app.setting.entityapi}/PurdyPanelRecuperacion/${row.ID}`, JSON.stringify(row))
-                        .done(function (updated) {
-                            if (updated?.Sucessfully) {
-                                $('#recuperacionModal').modal('hide');
-                                GetRecuperacion(_asiges);
-                                app.ui.Success('El movimiento de recuperación, fue actualizado de forma exitosa');
-                            }
-                            else {
-                                console.error(updated);
-                            }
-                        }).always(function () {
+                    app.core.datapi('PUT', `PurdyPanelRecuperacion/${row.ID}`, row)
+                        .then(updated => {
+                            $('#recuperacionModal').modal('hide');
+                            GetRecuperacion(_asiges, _claim.NUM_SINI, _claim.NUM_EXP);
+                            app.ui.Success('El movimiento de recuperación, fue actualizado de forma exitosa');
+                        }).finally(() => {
                             app.ui.ButtonDone('#recuperacionEdtFormSave');
                         });
                 }
@@ -822,15 +796,10 @@ app.PurdyPanelLegal = (function () {
     };
 
     function recuperacion_table_row_delete(row) {
-        app.core.Delete(`${app.setting.entityapi}/PurdyPanelRecuperacion/${row.ID}`, null)
-            .done(function (deleted) {
-                if (deleted?.Sucessfully) {
-                    GetRecuperacion(_asiges);
-                    app.ui.Success('El movimiento de recuperación, fue eliminado de forma exitosa');
-                }
-                else {
-                    console.error(deleted);
-                }
+        app.core.datapi('DELETE', `PurdyPanelRecuperacion/${row.ID}`)
+            .then(deleted => {
+                GetRecuperacion(_asiges);
+                app.ui.Success('El movimiento de recuperación, fue eliminado de forma exitosa');
             });
     };
 
@@ -867,8 +836,9 @@ app.PurdyPanelLegal = (function () {
             switch (src) {
                 case 'ASIGESChange':
                     if (data.claim != null) {
-                        GetDetalle(data.asiges);
-                        GetRecuperacion(data.asiges);
+                        _claim = data.claim;
+                        GetDetalle(data.asiges, data.claim.NUM_SINI, data.claim.NUM_EXP);
+                        GetRecuperacion(data.asiges, data.claim.NUM_SINI, data.claim.NUM_EXP);
                         _emptyValueRecuperacion.numerodesiniestro = data.claim.NUM_SINI;
                     } else {
                         $('#detalleTbl').bootstrapTable('load', []);

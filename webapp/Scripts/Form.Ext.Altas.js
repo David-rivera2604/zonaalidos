@@ -38,6 +38,8 @@ app.Form_Ext_Altas = (function () {
         "IMP_SUMA_MUERTE": 0
     };
 
+    let _polizagrupo = null;
+
     function show(row) {
 
         //            let row = { NUM_POLIZA: "4012200005031", FEC_EFEC_SPTO: app.ui.Today(), FEC_VCTO_SPTO: app.ui.Today(), PRIMA_TOTAL: "CRC-9.100.00", COBERTURAS: " aasdAS D ;alsdk ;D as;dlKAS DA;SLDKa", OBSERVACION: " aasdAS D ;alsdk ;D as;dlKAS DA;SLDKa" }
@@ -73,10 +75,11 @@ app.Form_Ext_Altas = (function () {
     }
 
     function update_info_poliza_grupo() {
+        let cod_ramo = app.ui.GetDropDownNumericValue('#RAMO');
         let contracto = app.ui.GetDropDownNumericValue('#NUM_CONTRATO');
         let setdefaultVcto = true;
         if (contracto > 0) {
-            let _polizagrupo = app.core.Data().lookups.filter(i => i.Key === 'Contratos_v2')[0].Lkp.filter(l => l.Code === contracto + '')[0];
+            _polizagrupo = app.core.Data().lookups.filter(i => i.Key === 'Contratos_v2')[0].Lkp.filter(l => l.Code === contracto + '')[0];
 
             if (_polizagrupo != null) {
                 $('#NUM_POLIZA_GRUPO').val(_polizagrupo.NUM_POLIZA);
@@ -85,6 +88,35 @@ app.Form_Ext_Altas = (function () {
                     app.ui.SetDateValue('#VCTO_SPTO', moment(_polizagrupo.FEC_VCTO_POLIZA, 'DD/MM/YYYY').toDate());
                     setdefaultVcto = false;
                 }
+
+                if (cod_ramo === 117) {
+                    switch (_polizagrupo.MODALIDAD) {
+                        case '11701':
+                            $("#IMP_PRIMA_FACT").prop("disabled", true);
+                            app.ui.SetDropDownNumericValue('#IMP_PRIMA_FACT', 0);
+                            $("#IMP_PRIMA_INFORMADA").prop("disabled", true);
+                            $(".IMP_PRIMA_FACTVisible").addClass('d-none');
+                            app.ui.SetNumericValue('#IMP_PRIMA_INFORMADA', app.ui.GetNumericValue('#IMP_SUM_ASEG_VC'));
+                            break;
+                        case '11702':
+                            $("#IMP_PRIMA_FACT").prop("disabled", false);
+                            $(".IMP_PRIMA_FACTVisible").removeClass('d-none');
+                            app.core.Lookups(['TRON_G2990006_ByMod:IMP_PRIMA_FACT.IMP_PRIMA_FACT'], function () {
+
+
+                            },  `cod_ramo=${cod_ramo}:cod_modalidad=${_polizagrupo.MODALIDAD}`);
+                            $("#IMP_PRIMA_INFORMADA").prop("disabled", true);
+                            app.ui.SetNumericValue('#IMP_PRIMA_INFORMADA', 0);
+                            break;
+                        default:
+                            $("#IMP_PRIMA_FACT").prop("disabled", false);
+                            app.ui.SetDropDownNumericValue('#IMP_PRIMA_FACT', 0);
+                            $(".IMP_PRIMA_FACTVisible").addClass('d-none');
+                            $("#IMP_PRIMA_INFORMADA").prop("disabled", false);
+                            break;
+                    }
+                }
+
             }
         }
 
@@ -100,10 +132,28 @@ app.Form_Ext_Altas = (function () {
             let cod_pais = 'CRI';
             let options = spec.Options();
             options.Base = `cod_pais=${cod_pais}`;
-            //options.Changed = function (data, source) { onsole.log('Changed', data, source); };
+            options.Changed = function (data, source) {
+                console.log('Changed', data, source);
+                if (source === 'after') {
+                    let polizagrupo = app.Form_Ext_Altas.polizagrupo();
+                    console.log('xx', polizagrupo);
+                    if (data.RAMO === 117 && polizagrupo != null) {
+                        switch (polizagrupo.MODALIDAD) {
+                            case '11701':
+                                app.ui.SetNumericValue('#IMP_PRIMA_INFORMADA', app.ui.GetNumericValue('#IMP_SUM_ASEG_VC'));
+                                break;
+                            case '11702':
+                                app.ui.SetNumericValue('#IMP_PRIMA_INFORMADA', app.ui.GetNumericValue('#IMP_SUM_ASEG_VC') * app.ui.GetDropDownNumericValue('#IMP_PRIMA_FACT'));
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            };
 
             options.Events = function (field, data, source) {
-                //console.log('Event', field, data, source);
+                console.log('Event', field, data, source);
                 if (field === '#COD_DOCUM_ASEG' && source === 'Identification') {
                     if (data != null) {
                         $('#NOM_TERCERO_ASEG').val(data.FirstName);
@@ -137,7 +187,7 @@ app.Form_Ext_Altas = (function () {
 
             $.validator.addMethod("ContratoVencido", function (value, element, params) {
                 let result = true;
-                let _polizagrupo = app.core.Data().lookups.filter(i => i.Key === 'Contratos_v2')[0].Lkp.filter(l => l.Code === value + '')[0];
+                _polizagrupo = app.core.Data().lookups.filter(i => i.Key === 'Contratos_v2')[0].Lkp.filter(l => l.Code === value + '')[0];
 
                 if (_polizagrupo != null && _polizagrupo.FEC_VCTO_POLIZA != null && _polizagrupo.FEC_VCTO_POLIZA != '') {
                     let vcto = moment(_polizagrupo.FEC_VCTO_POLIZA, 'DD/MM/YYYY').toDate();
@@ -228,7 +278,7 @@ app.Form_Ext_Altas = (function () {
                                 if (posted.ID_TIP_RESPUESTA === 1 || posted.ID_TIP_RESPUESTA === 2) {
                                     let msg = 'La póliza fue emitida de forma exitosa';
                                     if (posted.ID_TIP_RESPUESTA === 2)
-                                        msg = +', pero retenida por control técnico';
+                                        msg = msg + ', pero retenida por control técnico';
                                     app.ui.Success(msg);
                                     app.ui.ShowAlert('generalNotify', 'alert-success', `<b> <i class="fa fa-check"></i> ${msg}</b>`);
 
@@ -267,6 +317,10 @@ app.Form_Ext_Altas = (function () {
             let fec_vcto = today.setFullYear(today.getFullYear() + 1);
             app.ui.SetDateValue('#VCTO_SPTO', fec_vcto);
             spec.Changed(false);
+        },
+        polizagrupo: function () {
+            return _polizagrupo;
         }
+
     };
 })();

@@ -204,7 +204,9 @@ namespace Architect.API.Tron.Business.Emision
 
                 resultQuoteInfo = new Contracts.Emision.MapfreMas()
                 {
-                    Mensaje = message
+                    Mensaje = message,
+                    id_evicertia = request["UniqueId"]
+
                 };
             }
             else

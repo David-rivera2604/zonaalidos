@@ -2,6 +2,7 @@
 using Architect.API.Insurance.Contracts.Bayer;
 using Architect.API.Tron.Business.Backoffice;
 using Architect.API.Tron.Contracts.Presupuesto.API;
+using Architect.API.Tron.Contracts.Variaciones;
 using Architect.Compliance.Integrations.Contracts;
 using Architect.Utilities.Extensions;
 using Newtonsoft.Json;
@@ -27,9 +28,9 @@ namespace Architect.API.Tron.Business.Variaciones
         /// <param name="mode">"continue" para retomar un presupuesto (json), "resume" para retomar directo de una cotización de tron, "draft" para complementar la solicitud para luego retomar bajo el modo "continue".</param>
         /// <param name="tokenInfo"></param>
         /// <returns></returns>
-        public static Contracts.Variaciones.MapfreMas Setup(string poliza, int num_spto, string mca_provisional, Core.Contracts.Security.Token tokenInfo)
+        public static Contracts.Variaciones.MapfreMasPlus Setup(string poliza, int num_spto, string mca_provisional, Core.Contracts.Security.Token tokenInfo)
         {
-            Contracts.Variaciones.MapfreMas result = null;
+            Contracts.Variaciones.MapfreMasPlus result = null;
             bool tryOnTron = false;
             string key = string.Format("mapfremasplus.{0}", poliza);
 
@@ -53,9 +54,9 @@ namespace Architect.API.Tron.Business.Variaciones
 
             //Contracts.Presupuesto.DatoFijo P30Instance = DataAccess.LeerPresupuesto.Presupuesto(1, presupuesto, 0, 0, 0, null, true);
             Contracts.Poliza.DatoFijo PolizaInstance = Poliza.PolizaVariaciones(1, poliza, true);
-            Contracts.Variaciones.MapfreMas resultInfo2 = Variaciones.MapfreMasConvertFrom.Quote(Variaciones.MapfreMasConvertFrom.Quote(PolizaInstance), PolizaInstance);
+            Contracts.Variaciones.MapfreMas resultInfo2 = Variaciones.MapfreMasPlusConvertFrom.Quote(Variaciones.MapfreMasPlusConvertFrom.Quote(PolizaInstance), PolizaInstance);
 
-            resultInfo2 = Variaciones.MapfreMasConvertFrom.SetTipoProducto(resultInfo2);
+            resultInfo2 = Variaciones.MapfreMasPlusConvertFrom.SetTipoProducto(resultInfo2);
 
             if (mca_provisional.Equals("S"))
             {
@@ -66,7 +67,7 @@ namespace Architect.API.Tron.Business.Variaciones
             //}
             if (Utilities.Cache.Exist(key))
             {
-                result = Newtonsoft.Json.JsonConvert.DeserializeObject<Contracts.Variaciones.MapfreMas>(Utilities.Cache.GetItem(key).ToString());
+                result = Newtonsoft.Json.JsonConvert.DeserializeObject<Contracts.Variaciones.MapfreMasPlus>(Utilities.Cache.GetItem(key).ToString());
 
                 //result.Modo = mode;
 
@@ -103,7 +104,7 @@ namespace Architect.API.Tron.Business.Variaciones
                 //}
             }
 
-            Utilities.SerializeHandler<Contracts.Variaciones.MapfreMas>.SerializeJSONToFile(result, string.Format(@"c:\temp\mapfremas.proposal.{0}.json", poliza), true, false, false);
+            Utilities.SerializeHandler<Contracts.Variaciones.MapfreMasPlus>.SerializeJSONToFile(result, string.Format(@"c:\temp\mapfremas.proposal.{0}.json", poliza), true, false, false);
 
             Utilities.Cache.SetItem(string.Format("mapfremasplus.proposal.{0}", poliza),
                                     Newtonsoft.Json.JsonConvert.SerializeObject(result), -1);
@@ -115,125 +116,20 @@ namespace Architect.API.Tron.Business.Variaciones
             return result;
         }
 
-        //public static Contracts.Emision.MapfreMas Issue(Contracts.Emision.MapfreMas quoteInfo, Core.Contracts.Security.Token tokenInfo)
-        //{
-        //    Contracts.Emision.MapfreMas resultQuoteInfo = null;
-        //    quoteInfo.NUM_MATRICULA = Regex.Replace(quoteInfo.NUM_MATRICULA, @"[^a-zA-Z0-9]", string.Empty);
-        //    var mca_cicac = "N";
-        //    var txt_cicac = "NO SE AUTORIZA";
+        public static VariacionIssueResult Issue(Contracts.Variaciones.MapfreMasPlus quoteInfo)
+        {
+            return MapfreVariacionesCommon.Issue(quoteInfo);
+        }
 
-        //    // En caso de que el objeto kyc este vacio (información provista por la UI de aliados),
-        //    // pero el objeto ConoceTuCliente no lo sea (información provista por el api),
-        //    // se asigna el valor de ConoceTuCliente a kyc
-        //    if (quoteInfo.kyc == null && quoteInfo.ConoceTuCliente != null)
-        //    {
-        //        if (quoteInfo.ConoceTuCliente.Persona != null)
-        //        {
-        //            quoteInfo.kyc = JObject.Parse(JsonConvert.SerializeObject(quoteInfo.ConoceTuCliente.Persona));
-        //        }
-        //        if (quoteInfo.ConoceTuCliente.Juridico != null)
-        //        {
-        //            quoteInfo.kyc = JObject.Parse(JsonConvert.SerializeObject(quoteInfo.ConoceTuCliente.Juridico));
-        //        }
-        //        quoteInfo.ConoceTuCliente = null;
-        //    }
+        public static VariacionIssueResult Cancelation(Contracts.Variaciones.MapfreMasPlus quoteInfo)
+        {
+            return MapfreVariacionesCommon.Cancelation(quoteInfo.cod_cia, quoteInfo.cod_ramo, quoteInfo.num_poliza, quoteInfo.fec_efec_cancel, quoteInfo.txt_motivo);
+        }
 
-        //    if (quoteInfo.Modo == "draft" || quoteInfo.Modo == "resume")
-        //    {
-        //        Contracts.Comun.tercero tomador = (from t in quoteInfo.terceros where t.tipodetercero == 0 select t).FirstOrDefault();
-        //        if (tomador.DocumentNumberType == 4)
-        //        {
-        //            KycJuridico kycjuridico = JsonConvert.DeserializeObject<KycJuridico>(JsonConvert.SerializeObject(quoteInfo.kyc));
-        //            if (!kycjuridico.IsEmpty())
-        //            {
-        //                mca_cicac = kycjuridico.mca_cicac;
-        //                txt_cicac = kycjuridico.obs_cicac;
-        //            }                  
-        //        }
-        //        else
-        //        {
-        //            Kycpersona kycpersona = JsonConvert.DeserializeObject<Kycpersona>(JsonConvert.SerializeObject(quoteInfo.kyc));
-        //            if (!kycpersona.IsEmpty())
-        //            {
-        //                mca_cicac = kycpersona.mca_cicac;
-        //                txt_cicac = kycpersona.obs_cicac;
-        //            }
-        //        }
-        //        quoteInfo.DatosEconomicos = Solicitud.EconomicDataCalculate(quoteInfo);
-
-        //        Dictionary<string, string> request = Solicitud.EnviarSolicitud(quoteInfo.tip_firma, quoteInfo.correoenvio, quoteInfo, tokenInfo);
-        //        string kycUniqueId = String.Empty;
-
-        //        AlmacenarSolicitud(quoteInfo, quoteInfo.tip_firma == Contracts.TipoDeFirma.Manual ? 33 : 4, tokenInfo, request["UniqueId"], kycUniqueId);
-        //        GuardaDatosVariables(quoteInfo.presupuesto, quoteInfo.cod_ramo, quoteInfo.tip_firma, quoteInfo.tip_firmaDesc, request["UniqueId"], mca_cicac, txt_cicac);
-
-        //        string message = string.Empty;
-        //        if (request["UniqueId"].IsNotEmpty())
-        //        {
-        //            message = string.Format("La solicitud fue enviada de forma exitosa usando el tipo de envío indicado ({0})", quoteInfo.tip_firmaDesc);
-        //        }
-        //        else
-        //        {
-        //            message = "Ha ocurrido un error tratando de comunicarnos con el sistema de firma, por favor intente nuevamente y si el problema persiste comuníquese con MAPFRE Costa Rica.";
-        //        }
-
-        //        resultQuoteInfo = new Contracts.Emision.MapfreMas()
-        //        {
-        //            Mensaje = message
-        //        };
-        //    }
-        //    else
-        //    {
-        //        try
-        //        {
-
-        //            Architect.API.Tron.Contracts.Presupuesto.DatoFijo result = MapfreMasConvertTo.Tron(quoteInfo);
-        //            Architect.API.Tron.Contracts.Poliza.DatoFijo result2 = Backoffice.Emision.MapfreMas.Emitir(result, false, tokenInfo);
-
-        //            resultQuoteInfo = MapfreMasConvertFrom.Quote(quoteInfo, result2);
-
-        //            if (resultQuoteInfo.num_poliza.IsNotEmpty())
-        //            {
-        //                Core.Business.General.ChangeSet.Create(3000, Convert.ToInt32(resultQuoteInfo.num_poliza.Substring(4)), tokenInfo.CompanyId, "Emisión MapfreMas", "Póliza #" + resultQuoteInfo.num_poliza, tokenInfo.UserId, resultQuoteInfo);
-
-        //                //Se cambian los adjuntos creados al número de presupuesto al número de póliza generado
-        //                Core.Business.General.Attachment.ChangeEntityId(tokenInfo.CompanyId, 3000, Convert.ToInt64(resultQuoteInfo.presupuesto), 3000, Convert.ToInt64(resultQuoteInfo.num_poliza), tokenInfo.UserId);
-
-        //                //if (tokenInfo.Roles.Contain("Purdy") || tokenInfo.Roles.Contain("Davivienda_Prendarios") || tokenInfo.Roles.Contain("Davivienda_Leasing"))
-        //                //{
-        //                    DataAccess.PolicyProposal.Update_Status(resultQuoteInfo.presupuesto, resultQuoteInfo.num_poliza, tokenInfo.CompanyId, 10, tokenInfo.UserId);
-        //                //}
-
-        //                resultQuoteInfo.Mensaje = null;
-        //                resultQuoteInfo.Error = null;
-
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            resultQuoteInfo = new Contracts.Emision.MapfreMas()
-        //            {
-        //                Mensaje = ex.Message,
-        //                Error = ex.Message,
-        //            };
-
-        //        }
-        //        try
-        //        {
-        //            if (resultQuoteInfo.num_poliza.IsNotEmpty() && quoteInfo.kyc != null && Utilities.Helpers.Settings.BoolValue("Compliance.Enabled"))
-        //            {
-        //                ComplianceSetup.Send(quoteInfo, tokenInfo);
-        //            }
-
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Utilities.Log.ErrorLog("Issue.Compliance", "Fail send compliance information", ex);
-        //        }
-
-        //    }
-        //    return resultQuoteInfo;
-        //}
+        public static VariacionIssueResult ManageAuthorizationCT(int cod_cia, int cod_ramo, string num_poliza, int num_spto, string mca_autoriza)
+        {
+            return MapfreVariacionesCommon.ManageAuthorizationCT(cod_cia, cod_ramo, num_poliza, num_spto, mca_autoriza);
+        }
 
         //public static void EvicertiaSigned()
         //{

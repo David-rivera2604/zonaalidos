@@ -48,7 +48,7 @@ app.PurdyPanel = (function () {
             }
         },
         Event: async function (src, data) {
-            //console.log(src, _data, data);
+            //console.log('Event', src, _data, data);
             switch (src) {
                 case 'ASIGESChange':
                     if (data != null) {

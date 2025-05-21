@@ -4,17 +4,17 @@ app.PurdyPanelEncabezado = (function () {
 
     let _eventCallback = null;
 
-    async function GetClaim(code) {
+    async function GetClaim(code, claim, exp) {
         $('.ibox-content').toggleClass('sk-loading');
-        app.core.api_get(`claim/asiges?code=${code}`)
+        app.core.datapi('GET', `claim/asiges?code=${code}&claim=${claim}&exp=${exp}`)
             .then(data => {
                 $('#tipodeindemnizacionEnc').html('');
                 app.ui.VisibleBehaviour('#tipodeindemnizacionEnc', true);
                 app.ui.VisibleBehaviour('.tipodeindemnizacionGrp', false);
 
-                if (data?.General?.Data != null) {
-                    data.General.Data.Coberturas = data.Coberturas.Data;
-                    data = data.General.Data;                    
+                if (data?.General != null) {
+                    data.General.Coberturas = data.Coberturas;
+                    data = data.General;                    
                     app.ui.NotifyClear();
                     $('.panelinfo').removeClass('d-none');
                     data.ASIGES = code;
@@ -194,12 +194,22 @@ app.PurdyPanelEncabezado = (function () {
         },
         Called: function () {
             let id = app.core.URLStringValue('asiges');
+            let claim = app.core.URLStringValue('claim');
+            let exp = app.core.URLStringValue('exp');
             if (id != '') {
-                if (id.lenght > 40) {
+                if (id.length > 40) {
                     id = id.substring(0, 40);
                 }
-                $('#aSIGES').val(id);
-                GetClaim(id);
+                $('#aSIGES').val(id);                
+            }
+            if (claim != '' && claim.length != 15) {
+                claim = '';
+            }
+            if (exp != '' && exp.length > 5) {
+                exp = '';
+            }
+            if (id != '' && claim != '') {
+                GetClaim(id, claim, exp);
             }
         }
     };

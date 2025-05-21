@@ -4,12 +4,13 @@ app.ExtendClaims = (function () {
 
     let attr = '';
 
-    async function LoadRelato(num_sini) {
+    let _loaded = false;
 
-        app.core.api_get(`Claim/${num_sini}/Story`)
+    async function LoadRelato(num_sini) {
+        app.core.datapi('GET', `Claim/${num_sini}/Story`)
             .then(data => {
-                if (data !== null) {
-                    $('#relato' + num_sini).html(app.ui.StringCapitalizeFormatter(data.TXT_RELATO));
+                if (data.Siniestros?.TXT_RELATO !== null) {
+                    $('#relato' + num_sini).html(app.ui.StringCapitalizeFormatter(data.Siniestros.TXT_RELATO));
 
                 } else {
                     $('#relato' + num_sini).html('---');
@@ -149,10 +150,10 @@ app.ExtendClaims = (function () {
 
             $('.sidebar-content').toggleClass('sk-loading');
 
-            app.core.api_get(`client/${row.COD_DOCUM_ASEG}`)
+            app.core.datapi('GET', `client/${row.COD_DOCUM_ASEG}`)
                 .then(data => {
                     if (data != null) {
-                        let info = data;
+                        let info = data.General;
                         let html = [];
                         let isEmpleado = localStorage.getItem('Roles').includes('Empleado');
                         html.push('<div class="row">');
@@ -195,10 +196,10 @@ app.ExtendClaims = (function () {
             app.ui.ShowSideBar({ title: 'PÓLIZA #{NUM_POLIZA}', subtitle: 'Información', isHTML: true, HTML: `<div id="poliza${row.NUM_POLIZA}"></div>`, data: row, width: '360px' })
             $('.sidebar-content').toggleClass('sk-loading');
 
-            app.core.api_get(`policy/${row.NUM_POLIZA}?NUM_SPTO=${row.NUM_SPTO}&NUM_APLI=${row.NUM_APLI}&NUM_SPTO_APLI=${row.NUM_SPTO_APLI}&NUM_RIESGO=${row.NUM_RIESGO}`)
+            app.core.datapi('GET', `policy/${row.NUM_POLIZA}?NUM_SPTO=${row.NUM_SPTO}&NUM_APLI=${row.NUM_APLI}&NUM_SPTO_APLI=${row.NUM_SPTO_APLI}&NUM_RIESGO=${row.NUM_RIESGO}`)
                 .then(data => {
-                    if (data?.Fixeddata?.Sucessfully && data.Fixeddata?.Data != null) {
-                        let info = data.Fixeddata.Data;
+                    if (data.Fixeddata != null) {
+                        let info = data.Fixeddata;
                         let html = [];
                         html.push('<div class="row">');
                         [
@@ -224,15 +225,28 @@ app.ExtendClaims = (function () {
                 });
         },
         ShowClaimPanel: function (row) {
-            window.location.href = app.setting.basepath + 'purdy/panel?asiges=' + row.ASIGES;
+            $('.ibox-content').toggleClass('sk-loading');
+            window.location.href = app.setting.basepath + `purdy/panel?asiges=${row.ASIGES}&claim=${row.NUM_SINI}&exp=${row.NUM_EXP}`;
+            $('.ibox-content').toggleClass('sk-loading');
         },
-        EventHandler: function (id, index, stage) {
+        EventHandler: function (id, index, stage, spec) {
             console.log(id, index, stage);
 
-            if (id != undefined && stage == 'onPostBody') {
-                $(id + ' tbody tr').on('mouseover', function () {
-                    $(this).find('.btn-link').removeClass('invisible'); $(this).siblings().find('.btn-link').addClass('invisible');
-                });
+            if (id == 350 && !_loaded) {
+                let desde = new Date();
+                desde.setMonth(desde.getMonth() - 2);
+                desde.setDate(1);
+                _loaded = true;
+                app.Prototype1.SetData({ desde: desde, hasta: new Date() });
+                
+            }
+
+            if (stage == 'onPostBody') {
+                if (spec?.id != undefined) {
+                    $(spec.id + ' tbody tr').on('mouseover', function () {
+                        $(this).find('.btn-link').removeClass('invisible'); $(this).siblings().find('.btn-link').addClass('invisible');
+                    });
+                }
             }
         }
     };
