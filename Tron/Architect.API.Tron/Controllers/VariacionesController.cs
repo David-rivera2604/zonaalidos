@@ -122,7 +122,7 @@ namespace Architect.API.Tron.Controllers
         public async Task<IHttpActionResult> MapfreMasPlusSetup(string poliza, int num_spto, string mca_provisional)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
-            Tron.Contracts.Variaciones.MapfreMas result = null;
+            Tron.Contracts.Variaciones.MapfreMasPlus result = null;
             await Task.Run(() =>
             {
                 result = Architect.API.Tron.Business.Variaciones.MapfreMasPlus.Setup(poliza, num_spto, mca_provisional, tokenInfo);
@@ -138,13 +138,13 @@ namespace Architect.API.Tron.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("MapfreMasPlus")]
-        public async Task<IHttpActionResult> MapfreMasPlusIssue([FromBody] Tron.Contracts.Variaciones.MapfreMas quoteInfo)
+        public async Task<IHttpActionResult> MapfreMasPlusIssue([FromBody] Tron.Contracts.Variaciones.MapfreMasPlus quoteInfo)
         {
             VariacionIssueResult result = null;
 
             await Task.Run(() =>
             {
-                result = Architect.API.Tron.Business.Variaciones.MapfreMas.Issue(quoteInfo);
+                result = Architect.API.Tron.Business.Variaciones.MapfreMasPlus.Issue(quoteInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -157,13 +157,13 @@ namespace Architect.API.Tron.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("MapfreMasPlusCancelation")]
-        public async Task<IHttpActionResult> MapfreMasPlusCancelation([FromBody] Tron.Contracts.Variaciones.MapfreMas quoteInfo)
+        public async Task<IHttpActionResult> MapfreMasPlusCancelation([FromBody] Tron.Contracts.Variaciones.MapfreMasPlus quoteInfo)
         {
             VariacionIssueResult result = null;
 
             await Task.Run(() =>
             {
-                result = Architect.API.Tron.Business.Variaciones.MapfreMas.Cancelation(quoteInfo);
+                result = Architect.API.Tron.Business.Variaciones.MapfreMasPlus.Cancelation(quoteInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -176,13 +176,13 @@ namespace Architect.API.Tron.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("MapfreMasPlusManageAuthorizationCT")]
-        public async Task<IHttpActionResult> MapfreMasPlusManageAuthorizationCT([FromBody] Tron.Contracts.Variaciones.MapfreMas quoteInfo)
+        public async Task<IHttpActionResult> MapfreMasPlusManageAuthorizationCT([FromBody] Tron.Contracts.Variaciones.MapfreMasPlus quoteInfo)
         {
             VariacionIssueResult result = null;
 
             await Task.Run(() =>
             {
-                result = Architect.API.Tron.Business.Variaciones.MapfreMas.ManageAuthorizationCT(quoteInfo.cod_cia, quoteInfo.cod_ramo, quoteInfo.num_poliza, quoteInfo.num_spto, quoteInfo.Mca_Autoriza_CT);
+                result = Architect.API.Tron.Business.Variaciones.MapfreMasPlus.ManageAuthorizationCT(quoteInfo.cod_cia, quoteInfo.cod_ramo, quoteInfo.num_poliza, quoteInfo.num_spto, quoteInfo.Mca_Autoriza_CT);
             })
                 .ConfigureAwait(false);
             return Ok(result);

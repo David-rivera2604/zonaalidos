@@ -182,6 +182,7 @@
     <Compile Include="Variaciones\CoberturaVariacion.cs" />
     <Compile Include="Variaciones\g1010031.cs" />
     <Compile Include="Variaciones\MapfreMas.cs" />
+    <Compile Include="Variaciones\MapfreMasPlus.cs" />
     <Compile Include="Variaciones\MapfreVariacionBase.cs" />
     <Compile Include="Variaciones\s2000040.cs" />
     <Compile Include="Variaciones\s2000020.cs" />

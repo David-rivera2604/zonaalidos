@@ -51,6 +51,7 @@
                                             <h4><i class="fa fa-list"></i> Datos generales</h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
+
                                                 <!-- Fuente_Tomador DropDownList -->
                                                 <div class='col-sm-5 col-md-5 Purdy d-none'>
                                                     <div class='form-group'>
@@ -84,7 +85,7 @@
                                                 </div>
 
                                                 <!-- tipo_prod RadioButtonList -->
-                                                <div class='col-sm-2 col-md-2'>
+                                                <div class="col-md-4 tipodeproductoZone role-Purdy-notvisible role-Purdy-notvisible role-Davivienda_Prendarios-notvisible role-Davivienda_Leasing-notvisible">
                                                     <div class='form-group'>
                                                         <label class='control-label' for='tipo_prod'>Tipo de producto</label>
                                                         <div style="padding-top: 6px;">
@@ -158,20 +159,38 @@
                                                     </div>
                                                 </div>
                                                 <!-- tipo_prod RadioButtonList -->
-                                                <div class='col-sm-2 col-md-2'>
+                                                @*<div class='col-sm-2 col-md-2'>
+            <div class='form-group'>
+                <label class='control-label' for='MCA_FEC_EFEC_SYS'>¿Procesar con fecha Actual?</label>
+                <div style="padding-top: 3px;">
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="MCA_FEC_EFEC_SYS_1" name="MCA_FEC_EFEC_SYS" value="S">
+                        <label class="custom-control-label" for="MCA_FEC_EFEC_SYS_1">Si</label>
+                    </div><div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="MCA_FEC_EFEC_SYS_2" name="MCA_FEC_EFEC_SYS" value="N">
+                        <label class="custom-control-label" for="MCA_FEC_EFEC_SYS_2">No</label>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+                                                <!-- fec_efec DatePicker -->
+                                                <div class='col-sm-1 col-md-1'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='MCA_FEC_EFEC_SYS'>¿Procesar con fecha Actual?</label>
-                                                        <div style="padding-top: 3px;">
-                                                            <div class="custom-control custom-radio custom-control-inline">
-                                                                <input type="radio" class="custom-control-input" id="MCA_FEC_EFEC_SYS_1" name="MCA_FEC_EFEC_SYS" value="S">
-                                                                <label class="custom-control-label" for="MCA_FEC_EFEC_SYS_1">Si</label>
-                                                            </div><div class="custom-control custom-radio custom-control-inline">
-                                                                <input type="radio" class="custom-control-input" id="MCA_FEC_EFEC_SYS_2" name="MCA_FEC_EFEC_SYS" value="N">
-                                                                <label class="custom-control-label" for="MCA_FEC_EFEC_SYS_2">No</label>
-                                                            </div>
+                                                        <label class='control-label' for='fec_efec'>
+                                                            Fecha de efecto<span class='required-mark'
+                                                                                 title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                                        </label>
+                                                        <div class='input-group date' id='fec_efec_group'>
+                                                            <input type='text' id='fec_efec' name='fec_efec_poliza' class='form-control'
+                                                                   size='10' maxlength='10' placeholder='día/mes/año' />
+                                                            <span class='input-group-addon'>
+                                                                <span class='glyphicon glyphicon-calendar'></span>
+                                                            </span>
                                                         </div>
+                                                        <div id='fec_efec_validate'></div>
                                                     </div>
                                                 </div>
+
                                             </div>
                                         </div>
 
