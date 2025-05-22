@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Architect.API.Core.Business;
 using Architect.API.Core.Business.General;
 using Architect.API.Insurance.Contracts.Bayer;
 using Architect.API.Tron.DataAccess.Pagos;
@@ -483,9 +484,21 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                             }
                         }
                     }
+
+                    EnviarReporteDeDomiciliacion(reciboReq);
                 }
             }
             return recordCount;
+        }
+
+        private static void EnviarReporteDeDomiciliacion(ReciboRequest reciboReq)
+        {
+            string title = string.Empty;
+            string attachFileName = Architect.Data.Source.Business.ExcelExport.GenerateFile("ReporteDomiciliacion", 0,
+                "id=ReporteDomiciliacion:processid=" + reciboReq.procesoId, new Core.Contracts.Security.Token(), ref title, Settings.StringValue(0, "aliados.app.path.temp") + "Reporte Domiciliación.xlsx");
+
+            Mail.SendByTemplate("Reporte_Domiciliacion", 0, 0, 0, null, null, 
+                                new string[] { string.Format("{0};Reporte Domiciliación.xlsx", attachFileName) });
         }
 
         /// <summary>
