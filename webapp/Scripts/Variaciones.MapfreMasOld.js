@@ -324,7 +324,7 @@ app.EmisionMapfreMas = (function () {
         let data = MapInputToObject();
 
         const isEquals = sonObjetosIguales(setupDataFirst, data, camposAComparar);
-        const lista = data.NewCoverages || [];
+        const lista = data.NewCoverages || [];        
 
         // Si no hay datos en la lista, no hay nuevos registros ni modificados de coverturas
         if (lista.length <= 0 && isEquals) {
@@ -706,10 +706,21 @@ app.EmisionMapfreMas = (function () {
         });
 
         $('#generarvariacion').click(function () {
-            if (app.ui.IsValid('#VisualizationsEdtForm', false)) {
+            //if (app.ui.IsValid('#VisualizationsEdtForm', false)) {
 
                 if (!existeCambios()) {
                     return;
+                }
+
+                result = true;
+                var fec_efec = app.ui.GetDateValue('#fec_efec');
+                const date = new Date(fec_efec);
+                const timestamp = date.getTime();
+
+                if (isNaN(timestamp) || timestamp < 0) {
+                    toastr.error('Debe registrar la fecha de efecto', "Autorización", { timeOut: 9000, closeButton: true, progressBar: true });
+                    result = false;
+                    return result;
                 }
 
                 if (setupDataFirst.cod_fracc_pago !== app.ui.GetDropDownNumericValue('#cod_fracc_pago')) {
@@ -773,17 +784,17 @@ app.EmisionMapfreMas = (function () {
                         }).always(function () {
                             app.ui.ButtonDone('#generarvariacion');
                         });
-                }
-            }
-            else {
-                var instance = $('#VisualizationsEdtForm');
-                var validate = instance.validate();
-                validate.settings.ignore = '';
-                var result = instance.valid();
-                var count = validate.numberOfInvalids();
-                validate.settings.ignore = ':hidden';
-                toastr.error("Existen " + count + " error(es), que ameritan su atención.", "", { closeButton: true, progressBar: true });
-            }
+                    }               
+            //}
+            //else {
+            //    var instance = $('#VisualizationsEdtForm');
+            //    var validate = instance.validate();
+            //    validate.settings.ignore = '';
+            //    var result = instance.valid();
+            //    var count = validate.numberOfInvalids();
+            //    validate.settings.ignore = ':hidden';
+            //    toastr.error("Existen " + count + " error(es), que ameritan su atención.", "", { closeButton: true, progressBar: true });
+            //}
             event.preventDefault();
         });
 
@@ -1176,7 +1187,7 @@ app.EmisionMapfreMas = (function () {
                 //edad: { required: true },
                 //mca_sexo: { required: true },
                 //cod_mon: { required: true },
-                    cod_fracc_pago: { required: true },
+                cod_fracc_pago: { required: true },
                 //fec_efec_poliza: { required: true },
                 //fec_vcto_poliza: { required: true },
                 //Fuente_Tomador: { required: true },
@@ -1217,7 +1228,7 @@ app.EmisionMapfreMas = (function () {
                 //edad: { required: 'Debe indicar el Edad' },
                 //mca_sexo: { required: 'Debe indicar el Sexo' },
                 //cod_mon: { required: 'Debe indicar el Moneda' },
-                    cod_fracc_pago: { required: 'Debe indicar el Fraccionamiento de pago' },
+                cod_fracc_pago: { required: 'Debe indicar el Fraccionamiento de pago' },
                 //fec_efec_poliza: { required: 'Debe indicar el Inicio de vigencia' },
                 //fec_vcto_poliza: { required: 'Debe indicar el Fin de vigencia' },
                 //Fuente_Tomador: { required: 'Debe indicar el tomador' },
