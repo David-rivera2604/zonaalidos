@@ -1,5 +1,6 @@
 ﻿using Architect.Utilities;
 using Architect.Utilities.Extensions;
+using Newtonsoft.Json.Linq;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
@@ -1112,7 +1113,13 @@ namespace Architect.DataFactory
                             foreach (var item in Parameters)
                             {
                                 OracleParameter parameter;
-                                parameter = new OracleParameter(item.Name, DBParameterTypeConvert(item), item.Size, item.Value, DBParameterDirectionConvert(item));
+                                OracleDbType itemType = DBParameterTypeConvert(item);
+                                parameter = new OracleParameter(item.Name, itemType, item.Size, item.Value, DBParameterDirectionConvert(item));
+                                if (itemType == OracleDbType.Date && (item.Value == null || (item.Value is DateTime && (DateTime)item.Value == DateTime.MinValue)))
+                                {
+                                    parameter.IsNullable = true;
+                                    parameter.Value = DBNull.Value;
+                                }
                                 if (item.Type == Enumerations.DbType.StringArray)
                                 {
                                     parameter.CollectionType = OracleCollectionType.PLSQLAssociativeArray;
