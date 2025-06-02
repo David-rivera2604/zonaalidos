@@ -712,3 +712,4 @@
                    Pasarela Evertec. Se ajusta registro en OnlinePayment para que en vez de quedar pendiente quede como pagado en el caso de la integración SINPE.
                    Pasarela Evertec. Se agregar nueva operación REST ObtenerToken para ser usada en la integración SINPE.
 1.6.129 22/05/2025 Pasarela Evertec. Reporte de domiciliación.
+1.6.130 29/05/2025 Trazabilidad. Lista de casos por devolución de dinero.
