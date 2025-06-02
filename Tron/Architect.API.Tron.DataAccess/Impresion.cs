@@ -1,13 +1,20 @@
 ﻿using Architect.DataFactory;
+using Architect.Utilities.Extensions;
+using Architect.Utilities.Helpers;
 using Microsoft.SqlServer.Server;
 using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Security.Cryptography;
+using System.Threading;
+using System.Threading.Tasks;
+
 
 namespace Architect.API.Tron.DataAccess
 {
     public static class Impresion
     {
-        public static string AvisoDeCobroDetalle(int num_aviso)
+        public static async Task<string> AvisoDeCobroDetalle(int num_aviso)
         {
             IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron");
             Database.Procedure("dc_k_consulta_web_avisos_mcr.p_imprime_aviso")
@@ -16,12 +23,12 @@ namespace Architect.API.Tron.DataAccess
                     .AddParameter("p_errores", Architect.DataFactory.Enumerations.DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
                     .Execute(currentConnection, "Tron");
 
-            string reportId = ReportIdentify(currentConnection);
+            string reportId = await ReportIdentify(currentConnection, Convert.ToString(num_aviso));
             currentConnection.Close();
             return reportId;
         }
 
-        public static string AvisoDeCobro(int cod_cia, int num_aviso)
+        public static async Task<string> AvisoDeCobro(int cod_cia, int num_aviso)
         {
             IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron");
             Database.Procedure("TRON2000.em_k_jrp_factura_aviso_mcr.p_lista")
@@ -29,11 +36,11 @@ namespace Architect.API.Tron.DataAccess
                     .AddParameter("p_num_aviso", Architect.DataFactory.Enumerations.DbType.String, 7, num_aviso.ToString())
                     .Execute(currentConnection, "Tron");
 
-            string reportId = ReportIdentify(currentConnection);
+            string reportId = await ReportIdentify(currentConnection, Convert.ToString(num_aviso));
             currentConnection.Close();
             return reportId;
         }
-        public static string Poliza(int cod_cia, string num_poliza, string procedureName, int num_riesgo = 1)
+        public static async Task<string> Poliza(int cod_cia, string num_poliza, string procedureName, int num_riesgo = 1)
         {
             IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron");
             Database.Procedure(procedureName)
@@ -42,12 +49,13 @@ namespace Architect.API.Tron.DataAccess
                     .AddParameter("JBNUM_RIESGO", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_riesgo)
                     .Execute(currentConnection, "Tron");
 
-            string reportId = ReportIdentify(currentConnection);
+
+            string reportId = await ReportIdentify(currentConnection, num_poliza);
             currentConnection.Close();
             return reportId;
         }
 
-        public static string Recibo(int cod_cia, int num_recibo)
+        public static async Task<string> Recibo(int cod_cia, int num_recibo)
         {
             IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron");
             Database.Procedure("em_k_jrp_reimpfactura_mcr.p_lista")
@@ -55,12 +63,12 @@ namespace Architect.API.Tron.DataAccess
                     .AddParameter("p_num_recibo", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_recibo)
                     .Execute(currentConnection, "Tron");
 
-            string reportId = ReportIdentify(currentConnection);
+            string reportId = await ReportIdentify(currentConnection, Convert.ToString(num_recibo));
             currentConnection.Close();
             return reportId;
         }
 
-        public static string DepositoDePrima(int cod_cia, int num_recibo, bool cobradosHoy = true)
+        public static async Task<string> DepositoDePrima(int cod_cia, int num_recibo, bool cobradosHoy = true)
         {
             string procName = cobradosHoy ? "em_k_jrp_liscomp_mcr.p_lista" : "em_k_jrp_re_liscomp_mcr.p_lista";
             IDbConnection currentConnection = Database.OpenConnection("Tron");
@@ -71,19 +79,63 @@ namespace Architect.API.Tron.DataAccess
                  .AddParameter("p_num_recibo", DataFactory.Enumerations.DbType.Int32, 22, num_recibo)
                  .Execute(currentConnection, "Tron");
 
-            string reportId = ReportIdentify(currentConnection);
+            string reportId = await ReportIdentify(currentConnection, Convert.ToString(num_recibo));
             currentConnection.Close();
             return reportId;
         }
 
-        private static string ReportIdentify(IDbConnection currentConnection)
+        private static async Task<string> ReportIdentify(IDbConnection currentConnection, string p_parametro = "")
         {
-            return Database.Select("SELECT id_report" +
-                             " FROM (SELECT id_report FROM tronweb_reports " +
-                                    " WHERE fec_created >= TO_DATE('" + DateTime.Today.ToString("dd/MM/yy") + "', 'DD/MM/YY') and COD_USER = 'TRON2000' ORDER BY fec_created DESC)" +
-                            " WHERE ROWNUM = 1")
-                            .QueryScalar<Decimal>(currentConnection, "Tron").ToString();
+            string result = null;
+            int maxRetries = 3;
+            int attempt = 0;
+            int waitMilliseconds = 1000; // Espera 1/5 segundo entre reintentos
+
+            while (string.IsNullOrEmpty(result) && attempt < maxRetries)
+            {
+
+                try
+                {
+                    string query = "SELECT id_report " +
+                                        "FROM tronweb_reports " +
+                                    "WHERE id_report = " +
+                                            "(SELECT id_report " +
+                                                "FROM (SELECT id_report " +
+                                                        "FROM tronweb_reports " +
+                                             "WHERE cod_cia = 1 " +
+                                                            "AND cod_user = :cod_user " +
+                                                            "AND trunc(fec_created) = TO_DATE(:fecha, 'DD/MM/YY') " +
+                                                            "ORDER BY fec_created DESC) " +
+                                            "WHERE ROWNUM = 1) " +
+                                   "AND clb_data LIKE :parametro";
+
+                    var command = Database.Select(query)
+                    .AddParameter("cod_user", Architect.DataFactory.Enumerations.DbType.String, 20, "TRON2000")
+                    .AddParameter("fecha", Architect.DataFactory.Enumerations.DbType.String, 8, DateTime.Today.ToString("dd/MM/yy"))
+                    .AddParameter("parametro", Architect.DataFactory.Enumerations.DbType.String, 200, "%" + p_parametro + "%");
+
+                    command.Query("Tron", new Action<IDataReader>((reader) =>
+                    {
+                        result = Convert.ToString(reader.IntegerValue("id_report"));
+                    }));
+
+                }
+                catch (Exception ex)
+                {
+                    Utilities.Log.WarningLog("Generacion.Tron.PDF", "Parametro: " + p_parametro + " Error:" + ex.Message);
+                    result = null;
+                }
+
+                if (string.IsNullOrEmpty(result))
+                {
+                    attempt++;
+                    await Task.Delay(waitMilliseconds);  // espera antes de volver a intentar
+                }
+            }
+
+            return result;
         }
+
 
     }
 }

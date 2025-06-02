@@ -39,9 +39,9 @@ namespace Architect.API.Tron.Controllers
                 string ipAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
                 string userAgent = Request.Headers.UserAgent.ToString();
                 int agentCode = tokenInfo.AgentCode;
-                if (sessionRequest.cod_agt.IsNotEmpty() && (tokenInfo.Roles.Contain("Empleado") || tokenInfo.Roles.Contain("Comercial_Mapfre")))
+                if (sessionRequest.cod_agt == 0 && (tokenInfo.Roles.Contain("Empleado") || tokenInfo.Roles.Contain("Comercial_Mapfre")))
                 {
-                    agentCode = sessionRequest.cod_agt;
+                    agentCode = 999999; //sessionRequest.cod_agt;
                 }
                 result = await Business.Backoffice.Pagos.CrearSesion(tokenInfo, ipAddress, userAgent, sessionRequest.num_poliza, sessionRequest.num_recibo, agentCode);
             }
