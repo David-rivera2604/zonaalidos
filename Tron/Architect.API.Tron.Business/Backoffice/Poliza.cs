@@ -194,7 +194,7 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Control técnico de una póliza, permite su aprobación o rechazo
         /// </summary>
-        public static string ControlTecnico(string num_poliza, Contracts.Poliza.Parameters.ControlTecnicoParametros controlTecnico, Core.Contracts.Security.Token tokenInfo)
+        public static async Task<string> ControlTecnico(string num_poliza, Contracts.Poliza.Parameters.ControlTecnicoParametros controlTecnico, Core.Contracts.Security.Token tokenInfo)
         {
             string result = "Control técnico procesado correctamente";
             //En caso de que se este autorizando (1) o rechazando (2)
@@ -203,7 +203,7 @@ namespace Architect.API.Tron.Business.Backoffice
                 Contracts.Poliza.DatoFijo policy = DataAccess.ControlesTecnicos.Autorizar(num_poliza, controlTecnico);
                 if (controlTecnico.tip_autoriza == "1")
                 {
-                    string certificado = Common.ImprimirPoliza_PDF(num_poliza);
+                    string certificado = await Common.ImprimirPoliza_PDF(num_poliza);
                     if (controlTecnico.correo1.IsNotEmpty())
                     {
                         Dictionary<string, string> emailTmpl = Core.Business.General.Mail.GetTemplate("Send_Certificate", tokenInfo.CompanyId, tokenInfo.UserId, 0, policy);

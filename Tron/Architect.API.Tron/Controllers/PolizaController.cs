@@ -119,9 +119,9 @@ namespace Architect.API.Tron.Controllers
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             string result = string.Empty;
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
-                result = Architect.API.Tron.Business.Backoffice.Poliza.ControlTecnico(num_poliza, controlTecnico, tokenInfo);
+                result = await Architect.API.Tron.Business.Backoffice.Poliza.ControlTecnico(num_poliza, controlTecnico, tokenInfo);
             }).ConfigureAwait(false);
 
             return Ok(new
