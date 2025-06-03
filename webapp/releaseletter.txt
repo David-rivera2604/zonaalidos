@@ -711,3 +711,7 @@
 1.6.128 19/05/2025 Pasarela Evertec. Se agregar validación a la operación AplicarPago para la integración SINPE.
                    Pasarela Evertec. Se ajusta registro en OnlinePayment para que en vez de quedar pendiente quede como pagado en el caso de la integración SINPE.
                    Pasarela Evertec. Se agregar nueva operación REST ObtenerToken para ser usada en la integración SINPE.
+1.6.129 22/05/2025 Pasarela Evertec. Reporte de domiciliación.
+1.6.130 29/05/2025 Trazabilidad. Lista de casos por devolución de dinero.
+        02/06/2025 Tron Report. Cambio en generacion de id reportes tron para la impresion PDF.
+        02/06/2025 Pago. Se coloca el agente 99999 para los cobros  de pago directo por empleado, resolucion inicidencia de pagina compra en linea que no permitia hacer el pago de la poliza en el proceso.

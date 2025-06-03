@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace Architect.API.Tron.Business.Backoffice
 {
@@ -96,7 +97,7 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Permite el envió de un certificado por correo
         /// </summary>
-        public static string EnviarCertificado(string num_poliza, int num_riesgo, string correoprincipal, string correocopia1, string correocopia2, Core.Contracts.Security.Token tokenInfo)
+        public static async Task<string> EnviarCertificado(string num_poliza, int num_riesgo, string correoprincipal, string correocopia1, string correocopia2, Core.Contracts.Security.Token tokenInfo)
         {
             string result = String.Empty;
             string verb = String.Empty;
@@ -133,7 +134,7 @@ namespace Architect.API.Tron.Business.Backoffice
                 }
                 for (int index = initRiesgo; index <= endRiesgo; index++)
                 {
-                    string certificado = ImprimirPoliza_PDF(num_poliza, index);
+                    string certificado = await ImprimirPoliza_PDF(num_poliza, index);
                     string key = string.Format("Mapfre.Tron.302.Certificado.Complemento", num_poliza.Substring(0, 3));
                     string path = ConfigurationManager.AppSettings["Attachments.Path"] + @"..\documents\CertificadoComplemento\" + num_poliza.Substring(0, 3) + @"\";
                     string fileList = ConfigurationManager.AppSettings[key];
@@ -159,10 +160,10 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Retorna un PDF en disco que representa un certificado de tron.
         /// </summary>
-        public static string ImprimirPoliza_PDF(string num_poliza, int num_riesgo = 1)
+        public static async Task<string> ImprimirPoliza_PDF(string num_poliza, int num_riesgo = 1)
         {
             string filename = string.Format("{0}Mapfre_Certificado_{1}_{2}.pdf", ConfigurationManager.AppSettings["Attachments.Path"], num_poliza, num_riesgo);
-            byte[] bytes = ImprimirPoliza(num_poliza, num_riesgo);
+            byte[] bytes = await ImprimirPoliza(num_poliza, num_riesgo);
             using (var stream = new FileStream(filename, FileMode.Create))
             {
                 stream.Write(bytes, 0, bytes.Length);
@@ -175,7 +176,7 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Descarga el certificado de tron.
         /// </summary>
-        public static byte[] ImprimirPoliza(string num_poliza, int num_riesgo = 1)
+        public static async Task<byte[]> ImprimirPoliza(string num_poliza, int num_riesgo = 1)
         {
             string procedureName = string.Empty;
             switch (num_poliza.Substring(0, 3))
@@ -216,7 +217,7 @@ namespace Architect.API.Tron.Business.Backoffice
             {
                 throw new Utilities.Exceptions.ApplicationException(string.Format("No se puede imprimir la póliza {0} del ramo {0}", num_poliza, num_poliza.Substring(0, 3)));
             }
-            string reportId = DataAccess.Impresion.Poliza(1, num_poliza, procedureName, num_riesgo);
+            string reportId = await DataAccess.Impresion.Poliza(1, num_poliza, procedureName, num_riesgo);
 
             return ImprimirPoliza(reportId,
                 String.Format("Póliza {0}, Riesgo {1}, ReportId {2} ", num_poliza, num_riesgo, reportId));

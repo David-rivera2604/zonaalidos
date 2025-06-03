@@ -152,9 +152,9 @@ namespace Architect.API.Tron.Controllers
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             string result = string.Empty;
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
-                result = Business.Backoffice.Common.EnviarCertificado(num_poliza, num_riesgo, correoprincipal, correocopia1, correocopia2, tokenInfo);
+                result = await Business.Backoffice.Common.EnviarCertificado(num_poliza, num_riesgo, correoprincipal, correocopia1, correocopia2, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -168,14 +168,15 @@ namespace Architect.API.Tron.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("ImprimirPoliza/{num_poliza}/{num_riesgo}")]
-        public HttpResponseMessage ImprimirPoliza([FromUri] string num_poliza, int num_riesgo = 1)
+        public async Task<HttpResponseMessage> ImprimirPoliza([FromUri] string num_poliza, int num_riesgo = 1)
         {
 
             try {
                 Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
                 HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
-                var dataStream = new MemoryStream(Business.Backoffice.Common.ImprimirPoliza(num_poliza, num_riesgo));
+                var bytes = await Business.Backoffice.Common.ImprimirPoliza(num_poliza, num_riesgo);
+                var dataStream = new MemoryStream(bytes);
                 result.Content = new StreamContent(dataStream);
                 result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline")
                 {
@@ -319,7 +320,7 @@ namespace Architect.API.Tron.Controllers
                 Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
                 
                 object result = null;
-                byte[] content = Business.Backoffice.Common.ImprimirPoliza(num_poliza, num_riesgo);
+                byte[] content = await Business.Backoffice.Common.ImprimirPoliza(num_poliza, num_riesgo);
 
                 Certificado certificado = new Certificado()
                 {

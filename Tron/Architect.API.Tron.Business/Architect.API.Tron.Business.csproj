@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Architect.Data.Source">
+      <HintPath>..\..\runtime\Architect.Data.Source.dll</HintPath>
+    </Reference>
     <Reference Include="Architect.Decision">
       <HintPath>..\..\runtime\Architect.Decision.dll</HintPath>
     </Reference>
