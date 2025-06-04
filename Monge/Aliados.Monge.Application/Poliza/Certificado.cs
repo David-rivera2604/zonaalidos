@@ -46,7 +46,7 @@ namespace Aliados.Monge.Application.Poliza
                    
                     for (int num_riesgo = 1; num_riesgo <= poliza.num_riesgos; num_riesgo++)
                     {
-                        byte[] content = Architect.API.Tron.Business.Backoffice.Common.ImprimirPoliza(certificado.num_poliza, num_riesgo);
+                        byte[] content = await Architect.API.Tron.Business.Backoffice.Common.ImprimirPoliza(certificado.num_poliza, num_riesgo);
                         result.message_body.certificados.Add(new Domain.Poliza.Certificado.Documento()
                         {
                             numeroderiesgo = num_riesgo,
