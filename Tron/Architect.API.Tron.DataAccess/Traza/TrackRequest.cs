@@ -17,9 +17,9 @@ namespace Architect.API.Tron.DataAccess.Traza
         /// Crea un registro en la tabla TrackRequest.
         /// </summary>
         /// <param name="trackrequestItem">Instancia de TrackRequest</param>
-        /// <param name="connection">Instancia de una conexión compartida</param>
+        /// <param name="session">Instancia de una conexión compartida</param>
         /// <returns>Cantidad de registros creados.</returns>
-        public static int Create(Architect.API.Tron.Contracts.Traza.TrackRequest trackrequestItem, IDbConnection connection = null)
+        public static int Create(Architect.API.Tron.Contracts.Traza.TrackRequest trackrequestItem, Session session)
         {
             if (trackrequestItem.UpdateDate.IsEmpty())
             {
@@ -40,7 +40,7 @@ namespace Architect.API.Tron.DataAccess.Traza
                             .AddParameter("ResponseTimeStamp", DbType.DateTime, 9, trackrequestItem.ResponseTimeStamp)
                             .AddParameter("UpdateUserCode", DbType.Decimal, 9, trackrequestItem.UpdateUserCode)
                             .AddParameter("UpdateDate", DbType.DateTime, 0, trackrequestItem.UpdateDate)
-                            .Execute(connection, "Research");
+                            .Execute(session);
         }
 
         /// <summary>
@@ -48,26 +48,17 @@ namespace Architect.API.Tron.DataAccess.Traza
         /// </summary>
         /// <remarks>Complemento para procesamiento masivo</remarks>
         /// <param name="trackrequestItems">Lista de instancia de TrackRequest</param>
-        /// <param name="connection">Instancia de una conexión compartida</param>
+        /// <param name="session">Instancia de una conexión compartida</param>
         /// <returns>Lista con el resultado de la creación de cada instancia.</returns>
-        public static List<int> Create(List<Architect.API.Tron.Contracts.Traza.TrackRequest> trackrequestItems, IDbConnection connection = null)
+        public static List<int> Create(List<Architect.API.Tron.Contracts.Traza.TrackRequest> trackrequestItems, Session session)
         {
             List<int> result = new List<int>();
-            bool local = false;
 
-            if (connection == null)
-            {
-                connection = Architect.DataFactory.Database.OpenConnection("Research");
-                local = true;
-            }
             foreach (Architect.API.Tron.Contracts.Traza.TrackRequest item in trackrequestItems)
             {
-                result.Add(Create(item, connection));
+                result.Add(Create(item, session));
             }
-            if (local)
-            {
-                connection.Close();
-            }
+
             return result;
         }
 
@@ -173,12 +164,12 @@ namespace Architect.API.Tron.DataAccess.Traza
         /// </summary>
         /// <param name="connection">Instancia de una conexión compartida</param>
         /// <returns>Último valor asignado.</returns>
-        public static int RetrieveLastKey(IDbConnection connection = null)
+        public static int RetrieveLastKey(DataFactory.Session session)
         {
 
             return (int)Database.Select("SELECT NVL(MAX(Id),0) " +
                                      "FROM TrackRequest")
-                                .QueryScalar<Decimal>(connection, "Research");
+                                .QueryScalar<Decimal>(session);
         }
 
         /// <summary>
