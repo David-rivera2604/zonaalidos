@@ -246,7 +246,7 @@ namespace Architect.API.Tron.Business.Backoffice
             {
                 result.OnlinePayment.AgentCode = 999999;
             }
-            bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode, "Placetopay", string.Empty);
+            bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode, "Placetopay", string.Empty, false);
         }
 
         internal static void PaymentApprovedv2(InformationRequest result)
@@ -259,13 +259,13 @@ namespace Architect.API.Tron.Business.Backoffice
             {
                 result.OnlinePayment.AgentCode = 999999;
             }
-            bool tronPayment = TronPayment(result, result.OnlinePayment.AgentCode, "Placetopay", string.Empty).Result;
+            bool tronPayment = TronPayment(result, result.OnlinePayment.AgentCode, "Placetopay", string.Empty, false).Result;
         }
 
         /// <summary>
         /// Procesa el pago de un recibo en tron.
         /// </summary>
-        public async static Task<bool> TronPayment(Architect.Payment.Integrations.Contracts.InformationRequest request, int agentCode, string source, string provider, string pagadorReq = "")
+        public async static Task<bool> TronPayment(Architect.Payment.Integrations.Contracts.InformationRequest request, int agentCode, string source, string provider, bool sinpe, string pagadorReq = "")
         {
             string tipoPagador = "A";
             string pagador = agentCode.ToString();
@@ -339,7 +339,7 @@ namespace Architect.API.Tron.Business.Backoffice
                     }
                 });
 
-            Contracts.Batch.Respuesta tronCobro = DataAccess.PorRamo.p_proceso_cobro(1, Guid.NewGuid().ToString(), data);
+            Contracts.Batch.Respuesta tronCobro = DataAccess.PorRamo.p_proceso_cobro(1, Guid.NewGuid().ToString(), data, sinpe);
             if (request.OnlinePayment.Id > 0)
             {
                 Payment.Integrations.DataAccess.OnlinePayment.UpdateTronInformation(request.OnlinePayment.Id, Convert.ToInt16(tronCobro.codigo_respuesta), tronCobro.mensaje_respuesta);
