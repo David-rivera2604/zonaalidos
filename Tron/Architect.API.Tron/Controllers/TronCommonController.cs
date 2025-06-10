@@ -50,12 +50,12 @@ namespace Architect.API.Tron.Controllers
         /// </summary>
         [HttpGet]
         [Route("ImprimirAviso/{num_aviso}")]
-        public HttpResponseMessage ImprimirAviso([FromUri] int num_aviso)
+        public async Task<HttpResponseMessage> ImprimirAviso([FromUri] int num_aviso)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
-            var dataStream = new MemoryStream(Business.Backoffice.Common.ImprimirAviso(num_aviso));
+            var dataStream = new MemoryStream(await Business.Backoffice.Common.ImprimirAviso(num_aviso));
             result.Content = new StreamContent(dataStream);
             result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline")
             {
@@ -71,12 +71,12 @@ namespace Architect.API.Tron.Controllers
         /// </summary>
         [HttpGet]
         [Route("ImprimirAvisoDetalle/{num_aviso}")]
-        public HttpResponseMessage ImprimirAvisoDetalle([FromUri] int num_aviso)
+        public async Task<HttpResponseMessage> ImprimirAvisoDetalle([FromUri] int num_aviso)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
-            var dataStream = new MemoryStream(Business.Backoffice.Common.ImprimirAvisoDetalle(num_aviso));
+            var dataStream = new MemoryStream(await Business.Backoffice.Common.ImprimirAvisoDetalle(num_aviso));
             result.Content = new StreamContent(dataStream);
             result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline")
             {
@@ -254,12 +254,12 @@ namespace Architect.API.Tron.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("ImprimirRecibo/{num_recibo}")]
-        public HttpResponseMessage ImprimirRecibo([FromUri] int num_recibo)
+        public async Task<HttpResponseMessage> ImprimirRecibo([FromUri] int num_recibo)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
-            var dataStream = new MemoryStream(Business.Backoffice.Common.ImprimirRecibo(num_recibo));
+            var dataStream = new MemoryStream(await Business.Backoffice.Common.ImprimirRecibo(num_recibo));
             result.Content = new StreamContent(dataStream);
             result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline");
             result.Content.Headers.ContentDisposition.FileName = "Mapfre Recibo.pdf";
@@ -273,12 +273,12 @@ namespace Architect.API.Tron.Controllers
         /// </summary>
         [HttpGet]
         [Route("ImprimirDepositoPrima/{num_recibo}")]
-        public HttpResponseMessage ImprimirDepositoPrima([FromUri] int num_recibo)
+        public async Task<HttpResponseMessage> ImprimirDepositoPrima([FromUri] int num_recibo)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
-            var dataStream = new MemoryStream(Business.Backoffice.Common.DepositoDePrima(num_recibo, false));
+            var dataStream = new MemoryStream(await Business.Backoffice.Common.DepositoDePrima(num_recibo, false));
             result.Content = new StreamContent(dataStream);
             result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline");
             result.Content.Headers.ContentDisposition.FileName = "Mapfre Recibo.pdf";
@@ -292,12 +292,12 @@ namespace Architect.API.Tron.Controllers
         /// </summary>
         [HttpGet]
         [Route("ImprimirDepositoPrimaHoy/{num_recibo}")]
-        public HttpResponseMessage ImprimirDepositoPrimaHoy([FromUri] int num_recibo)
+        public async Task<HttpResponseMessage> ImprimirDepositoPrimaHoy([FromUri] int num_recibo)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
-            var dataStream = new MemoryStream(Business.Backoffice.Common.DepositoDePrima(num_recibo, true));
+            var dataStream = new MemoryStream(await Business.Backoffice.Common.DepositoDePrima(num_recibo, true));
             result.Content = new StreamContent(dataStream);
             result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline");
             result.Content.Headers.ContentDisposition.FileName = "Mapfre Recibo.pdf";
