@@ -715,3 +715,4 @@
 1.6.130 29/05/2025 Trazabilidad. Lista de casos por devolución de dinero.
         02/06/2025 Tron Report. Cambio en generacion de id reportes tron para la impresion PDF.
         02/06/2025 Pago. Se coloca el agente 99999 para los cobros  de pago directo por empleado, resolucion inicidencia de pagina compra en linea que no permitia hacer el pago de la poliza en el proceso.
+1.6.131 04/06/2025 SINPE. Cambio del procedure p_proceso_cobro_net a p_proceso_cobro_sinpe en los casos de que el pago sea via sinpe.

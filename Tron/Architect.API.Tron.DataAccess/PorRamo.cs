@@ -34,17 +34,21 @@ namespace Architect.API.Tron.DataAccess
         /// <summary>
         /// Proceso de cobro automático de recibos por la WEB
         /// </summary>
-        public static Contracts.Batch.Respuesta p_proceso_cobro(int cod_cia, string session_id, string json, IDbConnection connection = null)
+        public static Contracts.Batch.Respuesta p_proceso_cobro(int cod_cia, string session_id, string json, bool sinpe, IDbConnection connection = null)
         {
             Contracts.Batch.Respuesta result = new Contracts.Batch.Respuesta();
+            string pkgName = "gc_k_pagos_web.p_proceso_cobro_net";
             string[] jsonArray = { json };
 
             var ArrayBindSize = jsonArray.Select(_ => _.Length).ToArray();
             var ArrayBindStatus = Enumerable.Repeat(0, jsonArray.Count()).ToArray();
 
             //                .AddParameter("RC1", DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
-
-            Database.Procedure("gc_k_pagos_web.p_proceso_cobro_net")
+            if(sinpe)
+            {
+                pkgName = "gc_k_pagos_web.p_proceso_cobro_sinpe";
+            }
+            Database.Procedure(pkgName)
                     .AddParameter("p_cod_cia", DbType.Int32, 22, cod_cia)
                     .AddParameter("p_session_id", DbType.String, 13, session_id)
                     .AddParameter("p_array", DbType.String, 4000, json)

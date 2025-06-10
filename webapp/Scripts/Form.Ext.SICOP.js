@@ -39,11 +39,20 @@ app.Form_Ext_SICOP = (function () {
                 let entry = spec.Data();
                 if (entry.Tipo_de_modification == undefined)
                     entry.Tipo_de_modification = '';
+                let verb = 'POST';
+                let path = 'ElectronicWarranty';
+                if (id != null) {
+                    entry.ID = id;
+                    verb = 'PUT';
+                    path = `ElectronicWarranty/${entry.ID}`;
+                }
 
-                app.core.datapi('POST', 'ElectronicWarranty', entry)
+                app.core.datapi(verb, path, entry)
                     .then(warranty => {
                         if (warranty != null) {
-                            entry.ID = warranty.Next.NEXTID;
+                            if (id === null) {
+                                entry.ID = warranty.Next.NEXTID;
+                            }
                             app.core.Post(app.setting.apipath + 'v1/SICOP/NotificarGarantia', JSON.stringify(entry))
                                 .done(function (posted) {
                                     if (posted != null) {
@@ -95,25 +104,28 @@ app.Form_Ext_SICOP = (function () {
 
     async function ProcWarranty(spec, code, linked, warranty) {
         if (warranty != null) {
-            id = null;
-            warranty.Guarantee_sequencenumber = (Number(warranty.Guarantee_sequencenumber) + 1).toString().padStart(2, '0');
+            id = warranty.ID;
+            if (warranty.Confirmation === '0') {
+                warranty.Guarantee_sequencenumber = (Number(warranty.Guarantee_sequencenumber) + 1).toString().padStart(2, '0');
+            }
             spec.SetData(warranty);
-            $('.Tipo_de_modificationToggle').removeClass('d-none');
-
             $('#Guarantee_number').prop("disabled", true);
-            $('[name=Guarantee_type_code]').prop("disabled", true);
-            $('#Guarantee_payment_code').prop("disabled", true);
-            $('#Guarantee_charge_person_name').prop("disabled", true);
-            $('#Guarantee_charge_person_email').prop("disabled", true);
-            $('#Guarantee_telephone_number').prop("disabled", true);
-            $('#Guarantee_postal_code').prop("disabled", true);
-            $('#Guarantee_address_line').prop("disabled", true);
+            if (warranty.Confirmation === '0') {                
+                $('.Tipo_de_modificationToggle').removeClass('d-none');               
+                $('[name=Guarantee_type_code]').prop("disabled", true);
+                $('#Guarantee_payment_code').prop("disabled", true);
+                $('#Guarantee_charge_person_name').prop("disabled", true);
+                $('#Guarantee_charge_person_email').prop("disabled", true);
+                $('#Guarantee_telephone_number').prop("disabled", true);
+                $('#Guarantee_postal_code').prop("disabled", true);
+                $('#Guarantee_address_line').prop("disabled", true);
 
-            $('#Institucion_notice_number').prop("disabled", true);
-            $('#Notice_number').prop("disabled", true);
-            $('#Supplier_identifier').prop("disabled", true);
-            $('#Institution_identifier').prop("disabled", true);
-            $('#btnNotify').html("Modificar");
+                $('#Institucion_notice_number').prop("disabled", true);
+                $('#Notice_number').prop("disabled", true);
+                $('#Supplier_identifier').prop("disabled", true);
+                $('#Institution_identifier').prop("disabled", true);
+                $('#btnNotify').html("Modificar");
+            }
             if (!linked) {
                 app.ui.Info(`La garantía con el número ${code} ya esta registrada, la información de la misma fue cargada`);
             }

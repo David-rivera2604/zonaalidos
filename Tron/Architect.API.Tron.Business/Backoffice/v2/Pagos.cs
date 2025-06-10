@@ -171,7 +171,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                     {
                         result.OnlinePayment.AgentCode = 999999;
                     }
-                    bool tronPayment = await Backoffice.Pagos.TronPayment(result, result.OnlinePayment.AgentCode, "Widget&Link", string.Empty);
+                    bool tronPayment = await Backoffice.Pagos.TronPayment(result, result.OnlinePayment.AgentCode, "Widget&Link", string.Empty, false);
                 }
             }
         }
@@ -448,7 +448,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                             {
                                 item.OnlinePayment.AgentCode = 999999;
                             }
-                            bool tronPayment = Backoffice.Pagos.TronPayment(item, item.OnlinePayment.AgentCode, "Placetopay", provider).Result;
+                            bool tronPayment = Backoffice.Pagos.TronPayment(item, item.OnlinePayment.AgentCode, "Placetopay", provider, false).Result;
 
                             //Se establece que la proxima fecha para poder usar esta tarjeta seria desde el primero del proximo mes.
                             DateTime nextCollectAttempt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1);
@@ -554,7 +554,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                         Architect.Payment.Integrations.Payment.UpdateStatus(currentRecord.UpdateUserCode, currentRecord, result);
                         if (item.status.IndexOf("aprobad", StringComparison.CurrentCultureIgnoreCase) > -1)
                         {
-                            bool tronPayment = await Backoffice.Pagos.TronPayment(result, currentRecord.AgentCode, "RecurringReceipts", "Silice");
+                            bool tronPayment = await Backoffice.Pagos.TronPayment(result, currentRecord.AgentCode, "RecurringReceipts", "Silice", false);
                         }
                     }
 
