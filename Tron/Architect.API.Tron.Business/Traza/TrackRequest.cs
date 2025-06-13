@@ -22,13 +22,12 @@ namespace Architect.API.Tron.Business.Traza
         /// <returns>Instancia de TrackRequest creada.</returns>
         public static Contracts.Traza.TrackRequest Add(int companyId, int userId, Contracts.Traza.TrackRequest item)
         {
-            item.Id = DataAccess.Traza.TrackRequest.RetrieveLastKey() + 1;
-
             item.CompanyId = companyId;
             item.UpdateUserCode = userId;
             item.UpdateDate = DateTime.Now;
 
-            DataAccess.Traza.TrackRequest.Create(item);
+            item.Id = DataAccess.Traza.TrackRequest.Create(item);
+
             return item;
         }
 

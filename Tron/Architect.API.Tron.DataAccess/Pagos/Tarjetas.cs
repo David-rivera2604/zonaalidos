@@ -153,7 +153,7 @@ SELECT DISTINCT B.REASON,A99.MCA_FISICO, A99.TIP_DOCUM, A99.COD_DOCUM, A99.NOM_T
         {
             return (int)Database.Select("SELECT NVL(NumberOfRetries, 0) " +
                               "FROM BOVEDA " +
-                             "WHERE TIP_DOCUM=:TIP_DOCUM AND COD_DOCUM=:COD_DOCUM AND STATUS=1")
+                             "WHERE TIP_DOCUM=:TIP_DOCUM AND COD_DOCUM=:COD_DOCUM AND NUM_POLIZA=:NUM_POLIZA AND STATUS=1")
                             .AddParameter("TIP_DOCUM", DbType.AnsiString, 3, tip_docum)
                             .AddParameter("COD_DOCUM", DbType.AnsiString, 20, cod_docum)
                             .AddParameter("NUM_POLIZA", DbType.String, 13, num_poliza)

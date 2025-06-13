@@ -18,16 +18,15 @@ namespace Architect.API.Tron.DataAccess.Traza
         /// </summary>
         /// <param name="trackrequestItem">Instancia de TrackRequest</param>
         /// <param name="connection">Instancia de una conexión compartida</param>
-        /// <returns>Cantidad de registros creados.</returns>
+        /// <returns>Identificación unica del registro.</returns>
         public static int Create(Architect.API.Tron.Contracts.Traza.TrackRequest trackrequestItem, IDbConnection connection = null)
         {
             if (trackrequestItem.UpdateDate.IsEmpty())
             {
                 trackrequestItem.UpdateDate = DateTime.Now;
             }
-            return Database.Insert("INSERT INTO TrackRequest (Id, CompanyId, DocumentId, RequestType, RequestBody, RequestTimeStamp, MessageId, ResponseStatus, ResponseText, ResponseBody, ResponseTimeStamp, UpdateUserCode, UpdateDate) " +
-                                                 "VALUES(:Id, :CompanyId, :DocumentId, :RequestType, :RequestBody, :RequestTimeStamp, :MessageId, :ResponseStatus, :ResponseText, :ResponseBody, :ResponseTimeStamp, :UpdateUserCode, :UpdateDate)")
-                            .AddParameter("Id", DbType.Decimal, 9, trackrequestItem.Id)
+
+            List<DataFactory.Contracts.Parameter> parameters = Database.ParameterList()
                             .AddParameter("CompanyId", DbType.Decimal, 5, trackrequestItem.CompanyId)
                             .AddParameter("DocumentId", DbType.AnsiString, 40, trackrequestItem.DocumentId)
                             .AddParameter("RequestType", DbType.AnsiString, 40, trackrequestItem.RequestType)
@@ -40,35 +39,17 @@ namespace Architect.API.Tron.DataAccess.Traza
                             .AddParameter("ResponseTimeStamp", DbType.DateTime, 9, trackrequestItem.ResponseTimeStamp)
                             .AddParameter("UpdateUserCode", DbType.Decimal, 9, trackrequestItem.UpdateUserCode)
                             .AddParameter("UpdateDate", DbType.DateTime, 0, trackrequestItem.UpdateDate)
+                            .AddParameter("Id", DbType.Decimal, 9, 0, ParameterDirection.Output)
+                            .Parameters;
+
+            int rows = Database.Insert("INSERT INTO TrackRequest (Id, CompanyId, DocumentId, RequestType, RequestBody, RequestTimeStamp, MessageId, ResponseStatus, ResponseText, ResponseBody, ResponseTimeStamp, UpdateUserCode, UpdateDate) " +
+                                                 "VALUES((SELECT NVL(MAX(Id),0)+1 FROM TrackRequest), :CompanyId, :DocumentId, :RequestType, :RequestBody, :RequestTimeStamp, :MessageId, :ResponseStatus, :ResponseText, :ResponseBody, :ResponseTimeStamp, :UpdateUserCode, :UpdateDate) " +
+                                                 " RETURNING Id INTO :Id")
+                            .AddParameter(parameters)
                             .Execute(connection, "Research");
-        }
+            int id = Convert.ToInt32(parameters.Find(r => r.Name == "ID").Value.ToString());
 
-        /// <summary>
-        /// Crea una lista de registros en la tabla TrackRequest.
-        /// </summary>
-        /// <remarks>Complemento para procesamiento masivo</remarks>
-        /// <param name="trackrequestItems">Lista de instancia de TrackRequest</param>
-        /// <param name="connection">Instancia de una conexión compartida</param>
-        /// <returns>Lista con el resultado de la creación de cada instancia.</returns>
-        public static List<int> Create(List<Architect.API.Tron.Contracts.Traza.TrackRequest> trackrequestItems, IDbConnection connection = null)
-        {
-            List<int> result = new List<int>();
-            bool local = false;
-
-            if (connection == null)
-            {
-                connection = Architect.DataFactory.Database.OpenConnection("Research");
-                local = true;
-            }
-            foreach (Architect.API.Tron.Contracts.Traza.TrackRequest item in trackrequestItems)
-            {
-                result.Add(Create(item, connection));
-            }
-            if (local)
-            {
-                connection.Close();
-            }
-            return result;
+            return id;
         }
 
         /// <summary>
@@ -166,19 +147,6 @@ namespace Architect.API.Tron.DataAccess.Traza
 
 
             return result;
-        }
-
-        /// <summary>
-        /// Último valor asignado a clave única de la tabla TrackRequest.
-        /// </summary>
-        /// <param name="connection">Instancia de una conexión compartida</param>
-        /// <returns>Último valor asignado.</returns>
-        public static int RetrieveLastKey(IDbConnection connection = null)
-        {
-
-            return (int)Database.Select("SELECT NVL(MAX(Id),0) " +
-                                     "FROM TrackRequest")
-                                .QueryScalar<Decimal>(connection, "Research");
         }
 
         /// <summary>
