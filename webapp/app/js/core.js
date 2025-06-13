@@ -769,10 +769,13 @@ app.core = (function () {
             }
             return url;
         },
-        GetXLSX: function (id, filename, validate) {
+        GetXLSX: function (id, filename, validate, lurl) {
             let url = '';
             let valid = true;
-            if (typeof app.Prototype != "undefined") {
+            if (typeof lurl != "undefined" && lurl != '') {
+                url = lurl;
+            }
+            if (url == '' && typeof app.Prototype != "undefined") {
 
                 if (typeof validate != "undefined" && validate) {
                     valid = app.Prototype.IsValid();
