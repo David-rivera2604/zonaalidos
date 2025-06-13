@@ -18,13 +18,16 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Descarga el detalle de un aviso de cobro de tron.
         /// </summary>
-        public static byte[] ImprimirAvisoDetalle(int num_aviso)
+        public static async Task<byte[]> ImprimirAvisoDetalle(int num_aviso)
         {
             byte[] result = null;
 
+            string reportId = await Architect.API.Tron.DataAccess.Impresion.AvisoDeCobroDetalle(num_aviso);
+
             string id = string.Format("{0}/servlet/mapfre.srv.SVJspool?otxtAccion=11&id={1}&format=pdf",
-                                        ConfigurationManager.AppSettings["Mapfre.Tron.RutaImpresion"],
-                                        Architect.API.Tron.DataAccess.Impresion.AvisoDeCobroDetalle(num_aviso));
+            ConfigurationManager.AppSettings["Mapfre.Tron.RutaImpresion"],
+            reportId);
+
             using (WebClient client = new WebClient())
             {
                 result = client.DownloadData(id);
@@ -40,13 +43,16 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Descarga el aviso de cobro de tron.
         /// </summary>
-        public static byte[] ImprimirAviso(int num_aviso)
+        public static async Task<byte[]> ImprimirAviso(int num_aviso)
         {
             byte[] result = null;
 
+            string reportId = await Architect.API.Tron.DataAccess.Impresion.AvisoDeCobro(1, num_aviso);
+
             string id = string.Format("{0}/servlet/mapfre.srv.SVJspool?otxtAccion=11&id={1}&format=pdf",
-                                        ConfigurationManager.AppSettings["Mapfre.Tron.RutaImpresion"],
-                                        Architect.API.Tron.DataAccess.Impresion.AvisoDeCobro(1, num_aviso));
+            ConfigurationManager.AppSettings["Mapfre.Tron.RutaImpresion"],
+            reportId);
+
             using (WebClient client = new WebClient())
             {
                 result = client.DownloadData(id);
@@ -246,12 +252,12 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Retorna un PDF en disco que representa un recibo de tron.
         /// </summary>
-        public static string ImprimirRecibo_PDF(int num_recibo)
+        public static async Task<string> ImprimirRecibo_PDF(int num_recibo)
         {
             string fileName = "Mapfre_Recibo_" + num_recibo.ToString() + ".pdf";
 
             string result = ConfigurationManager.AppSettings["Attachments.Path"] + fileName;
-            byte[] bytes = ImprimirRecibo(num_recibo);
+            byte[] bytes = await ImprimirRecibo(num_recibo);
             using (var stream = new FileStream(result, FileMode.Create))
             {
                 stream.Write(bytes, 0, bytes.Length);
@@ -264,13 +270,16 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Descarga el recibo de tron.
         /// </summary>
-        public static byte[] ImprimirRecibo(int num_recibo)
+        public static async Task<byte[]> ImprimirRecibo(int num_recibo)
         {
             byte[] result = null;
 
+
+            string reportId = await Architect.API.Tron.DataAccess.Impresion.Recibo(1, num_recibo);
             string id = string.Format("{0}/servlet/mapfre.srv.SVJspool?otxtAccion=11&id={1}&format=pdf",
-                                        ConfigurationManager.AppSettings["Mapfre.Tron.RutaImpresion"],
-                                        Architect.API.Tron.DataAccess.Impresion.Recibo(1, num_recibo));
+            ConfigurationManager.AppSettings["Mapfre.Tron.RutaImpresion"],
+            reportId);
+
             using (WebClient client = new WebClient())
             {
                 result = client.DownloadData(id);
@@ -287,13 +296,16 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Descarga el Deposito De Prima de tron.
         /// </summary>
-        public static byte[] DepositoDePrima(int num_recibo, bool cobradosHoy = true)
+        public static async Task<byte[]> DepositoDePrima(int num_recibo, bool cobradosHoy = true)
         {
             byte[] result = null;
 
+            string reportId = await Architect.API.Tron.DataAccess.Impresion.DepositoDePrima(1, num_recibo, cobradosHoy);
+
             string id = string.Format("{0}/servlet/mapfre.srv.SVJspool?otxtAccion=11&id={1}&format=pdf",
-                                        ConfigurationManager.AppSettings["Mapfre.Tron.RutaImpresion"],
-                                        Architect.API.Tron.DataAccess.Impresion.DepositoDePrima(1, num_recibo, cobradosHoy));
+            ConfigurationManager.AppSettings["Mapfre.Tron.RutaImpresion"],
+            reportId);
+
             using (WebClient client = new WebClient())
             {
                 result = client.DownloadData(id);

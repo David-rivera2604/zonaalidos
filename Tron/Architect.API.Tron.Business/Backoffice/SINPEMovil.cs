@@ -282,7 +282,7 @@ namespace Architect.API.Tron.Business.Backoffice
             };
 
             string pagador = $"{recibo.TIP_DOCUM}-{recibo.COD_DOCUM.DocumentNumber(recibo.TIP_DOCUM)}";
-            bool paymentApplied = await Pagos.TronPayment(infoReq, infoReq.OnlinePayment.AgentCode, "Placetopay", string.Empty, pagador);
+            bool paymentApplied = await Pagos.TronPayment(infoReq, infoReq.OnlinePayment.AgentCode, "Placetopay", string.Empty, true,  pagador);
 
             if (paymentApplied)
             {
