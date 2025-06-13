@@ -38,23 +38,18 @@ namespace Architect.API.Core.Business.General
         /// <param name="entitySource">Instancia de la entidad que original el evento.</param>
         public static void Create(int entityType, Int64 entityId, int companyId, string action, string summary, int userId, object entitySource)
         {
-            using (DataFactory.Session session = new DataFactory.Session("Research"))
-            {
 
-                Core.Contracts.General.ChangeSet item = new Core.Contracts.General.ChangeSet
-                {
-                    Id = Core.DataAccess.General.ChangeSet.RetrieveLastKey(session) + 1,
-                    EntityType = entityType,
-                    EntityId = entityId,
-                    CompanyId = companyId,
-                    Action = action,
-                    Summary = summary,
-                    UpdateUserCode = userId,
-                    UpdateDate = DateTime.Now
-                };
-                Core.DataAccess.General.ChangeSet.Create(item, session);
-                session.CommitAndClose();
-            }
+            Core.Contracts.General.ChangeSet item = new Core.Contracts.General.ChangeSet
+            {
+                EntityType = entityType,
+                EntityId = entityId,
+                CompanyId = companyId,
+                Action = action,
+                Summary = summary,
+                UpdateUserCode = userId,
+                UpdateDate = DateTime.Now
+            };
+            item.Id = Core.DataAccess.General.ChangeSet.Create(item);
 
             Task.Run(() => Rule.Runtime(companyId, userId, entityType, action, entitySource));
             //_ = Rule.Runtime(companyId, userId, entityType, action, entitySource);
@@ -72,7 +67,7 @@ namespace Architect.API.Core.Business.General
         /// <param name="entitySource">Instancia de la entidad que original el evento.</param>
         public static Int64 Create(int entityType, int companyId, string action, string summary, int userId, object entitySource)
         {
-            Int64 processId = Architect.API.Core.DataAccess.General.ChangeSet.RetrieveLastEntityId(2007, companyId)+1;
+            Int64 processId = Architect.API.Core.DataAccess.General.ChangeSet.RetrieveLastEntityId(2007, companyId) + 1;
 
             summary = summary.Replace("%ProcessId%", processId.ToString());
             Core.Contracts.General.ChangeSet item = new Core.Contracts.General.ChangeSet

@@ -25,9 +25,7 @@ namespace Architect.API.Core.DataAccess.General
             {
                 changesetItem.UpdateDate = DateTime.Now;
             }
-            return Database.Insert("INSERT INTO ChangeSet (Id, CompanyId, EntityType, EntityId, Action, Summary, UpdateUserCode, UpdateDate) " +
-                                                 "VALUES(:Id, :CompanyId, :EntityType, :EntityId, :Action, :Summary, :UpdateUserCode, :UpdateDate)")
-                            .AddParameter("Id", DbType.Decimal, 9, changesetItem.Id)
+            List<DataFactory.Contracts.Parameter> parameters = Database.ParameterList()
                             .AddParameter("CompanyId", DbType.Decimal, 5, changesetItem.CompanyId)
                             .AddParameter("EntityType", DbType.Decimal, 5, changesetItem.EntityType)
                             .AddParameter("EntityId", DbType.Decimal, 18, changesetItem.EntityId)
@@ -35,25 +33,17 @@ namespace Architect.API.Core.DataAccess.General
                             .AddParameter("Summary", DbType.AnsiString, 256, changesetItem.Summary)
                             .AddParameter("UpdateUserCode", DbType.Decimal, 9, changesetItem.UpdateUserCode)
                             .AddParameter("UpdateDate", DbType.DateTime, 0, changesetItem.UpdateDate)
+                            .AddParameter("Id", DbType.Decimal, 9, 0, ParameterDirection.Output)
+                            .Parameters;
+
+            int rows = Database.Insert("INSERT INTO ChangeSet (Id, CompanyId, EntityType, EntityId, Action, Summary, UpdateUserCode, UpdateDate) " +
+                                                 "VALUES((SELECT NVL(MAX(Id),0)+1 FROM ChangeSet), :CompanyId, :EntityType, :EntityId, :Action, :Summary, :UpdateUserCode, :UpdateDate)" +
+                                                 " RETURNING Id INTO :Id")
+                            .AddParameter(parameters)
                             .Execute(connection, "Research");
-        }
-        public static int Create(Architect.API.Core.Contracts.General.ChangeSet changesetItem, Session session)
-        {
-            if (changesetItem.UpdateDate.IsEmpty())
-            {
-                changesetItem.UpdateDate = DateTime.Now;
-            }
-            return Database.Insert("INSERT INTO ChangeSet (Id, CompanyId, EntityType, EntityId, Action, Summary, UpdateUserCode, UpdateDate) " +
-                                                 "VALUES(:Id, :CompanyId, :EntityType, :EntityId, :Action, :Summary, :UpdateUserCode, :UpdateDate)")
-                            .AddParameter("Id", DbType.Decimal, 9, changesetItem.Id)
-                            .AddParameter("CompanyId", DbType.Decimal, 5, changesetItem.CompanyId)
-                            .AddParameter("EntityType", DbType.Decimal, 5, changesetItem.EntityType)
-                            .AddParameter("EntityId", DbType.Decimal, 18, changesetItem.EntityId)
-                            .AddParameter("Action", DbType.AnsiString, 120, changesetItem.Action)
-                            .AddParameter("Summary", DbType.AnsiString, 1024, changesetItem.Summary)
-                            .AddParameter("UpdateUserCode", DbType.Decimal, 9, changesetItem.UpdateUserCode)
-                            .AddParameter("UpdateDate", DbType.DateTime, 0, changesetItem.UpdateDate)
-                            .Execute(session);
+            int id = Convert.ToInt32(parameters.Find(r => r.Name == "Id").Value.ToString());
+
+            return id;
         }
 
         /// <summary>
