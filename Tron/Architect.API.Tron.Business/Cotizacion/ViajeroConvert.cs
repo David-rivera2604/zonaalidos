@@ -45,6 +45,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "FEC_VIAJE", quoteInfo.FEC_VIAJE.ToString("ddMMyyyy"), 1, 2));
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "NUM_DIA", Convert.ToString(dias), 1, 3));
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "DES_DESTINO", quoteInfo.DES_DESTINO, 1, 4, quoteInfo.DES_DESTINO_DESC));
+            datosVariables.Add(Util.DatoVariable(datosFijos, 0, "PAISES_DESTINO", quoteInfo.PAISES_DESTINO, 1, 7, quoteInfo.PAISES_DESTINO));
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "CANAL_VENTA", "TWB", 1, 5));
             datosVariables.Add(Util.DatoVariable(datosFijos, 0, "TIP_VIAJE", quoteInfo.TIP_VIAJE, 1, 6));
 

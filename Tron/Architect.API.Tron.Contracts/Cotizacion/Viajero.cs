@@ -26,6 +26,7 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// </summary>
         [DataMember(), JsonProperty()] public string DES_DESTINO { get; set; }
         [DataMember(), JsonProperty()] public string DES_DESTINO_DESC { get; set; }
+        [DataMember(), JsonProperty()] public string PAISES_DESTINO { get; set; } = "";
         /// <summary>
         /// Pais Procedencia.
         /// </summary>
