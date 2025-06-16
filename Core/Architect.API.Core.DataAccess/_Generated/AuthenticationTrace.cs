@@ -26,36 +26,27 @@ namespace Architect.API.Core.DataAccess.Security
             {
                 authenticationtraceItem.UpdateDate = DateTime.Now;
             }
-            return Database.Insert("AuthenticationTrace", ExecuteMode.CommandBuilder)
-                    .Column("Id", DbType.Decimal, 9, authenticationtraceItem.Id)
-                    .Column("CompanyId", DbType.Decimal, 5, authenticationtraceItem.CompanyId)
-                    .Column("EffectDate", DbType.DateTime, 9, authenticationtraceItem.EffectDate)
-                    .Column("IPAddress", DbType.AnsiString, 20, authenticationtraceItem.IPAddress)
-                    .Column("UserName", DbType.AnsiString, 35, authenticationtraceItem.UserName)
-                    .Column("UserId", DbType.Decimal, 9, authenticationtraceItem.UserId)
-                    .Column("TraceType", DbType.Decimal, 5, authenticationtraceItem.TraceType)
-                    .Column("Reason", DbType.AnsiString, 60, authenticationtraceItem.Reason)
-                    .Column("UserAgent", DbType.AnsiString, 512, authenticationtraceItem.UserAgent)
-                    .Execute(connection, "Research");
-        }
 
-        public static int Create(Architect.API.Core.Contracts.Security.AuthenticationTrace authenticationtraceItem, Session session)
-        {
-            if (authenticationtraceItem.UpdateDate.IsEmpty())
-            {
-                authenticationtraceItem.UpdateDate = DateTime.Now;
-            }
-            return Database.Insert("AuthenticationTrace", ExecuteMode.CommandBuilder)
-                    .Column("Id", DbType.Decimal, 9, authenticationtraceItem.Id)
-                    .Column("CompanyId", DbType.Decimal, 5, authenticationtraceItem.CompanyId)
-                    .Column("EffectDate", DbType.DateTime, 9, authenticationtraceItem.EffectDate)
-                    .Column("IPAddress", DbType.AnsiString, 20, authenticationtraceItem.IPAddress)
-                    .Column("UserName", DbType.AnsiString, 35, authenticationtraceItem.UserName)
-                    .Column("UserId", DbType.Decimal, 9, authenticationtraceItem.UserId)
-                    .Column("TraceType", DbType.Decimal, 5, authenticationtraceItem.TraceType)
-                    .Column("Reason", DbType.AnsiString, 60, authenticationtraceItem.Reason)
-                    .Column("UserAgent", DbType.AnsiString, 512, authenticationtraceItem.UserAgent)
-                    .Execute(session);
+            List<DataFactory.Contracts.Parameter> parameters = Database.ParameterList()
+                            .AddParameter("CompanyId", DbType.Decimal, 5, authenticationtraceItem.CompanyId)
+                            .AddParameter("EffectDate", DbType.DateTime, 9, authenticationtraceItem.EffectDate)
+                            .AddParameter("IPAddress", DbType.AnsiString, 20, authenticationtraceItem.IPAddress)
+                            .AddParameter("UserName", DbType.AnsiString, 35, authenticationtraceItem.UserName)
+                            .AddParameter("UserId", DbType.Decimal, 9, authenticationtraceItem.UserId)
+                            .AddParameter("TraceType", DbType.Decimal, 5, authenticationtraceItem.TraceType)
+                            .AddParameter("Reason", DbType.AnsiString, 60, authenticationtraceItem.Reason)
+                            .AddParameter("UserAgent", DbType.AnsiString, 512, authenticationtraceItem.UserAgent)
+                            .AddParameter("Id", DbType.Decimal, 9, 0, ParameterDirection.Output)
+                            .Parameters;
+
+            int rows = Database.Insert("INSERT INTO AuthenticationTrace (Id, CompanyId, EffectDate, IPAddress, UserName, UserId, TraceType, Reason, UserAgent) " +
+                                       "VALUES((SELECT NVL(MAX(Id),0)+1 FROM AuthenticationTrace), :CompanyId, :EffectDate, :IPAddress, :UserName, :UserId, :TraceType, :Reason, :UserAgent) " +
+                                       "RETURNING Id INTO :Id")
+                                .AddParameter(parameters)
+                                .Execute(connection, "Research");
+
+            int id = Convert.ToInt32(parameters.Find(r => r.Name == "Id").Value.ToString());
+            return id;
         }
 
         /// <summary>
