@@ -33,7 +33,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         public static int PendientesRecurrentesAlCobro(DateTime fec_efect_recibo)
         {
             int recordCount = 0;
-            Utilities.Log.WarningLog("Payment.RecurrentesAlCobro", "Inicio - Proceo pendientes recurrentes al cobro", "payment");
+            Utilities.Log.WarningLog("Payment.RecurrentesAlCobro", "Inicio - Proceso pendientes recurrentes al cobro", "payment");
 
             try
             {
@@ -197,9 +197,10 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             catch (Exception ex)
             {
                 Utilities.Log.ErrorLog("Payment", "RecurrentesAlCobro", ex);
+                recordCount = -1;
             }
 
-            Utilities.Log.WarningLog("Payment.RecurrentesAlCobro", "Fin - Proceo pendientes recurrentes al cobro", "payment");
+            Utilities.Log.WarningLog("Payment.RecurrentesAlCobro", string.Format( "Fin - Proceso pendientes recurrentes al cobro ({0})", recordCount), "payment");
             return recordCount;
         }
 
