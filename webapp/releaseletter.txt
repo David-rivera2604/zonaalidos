@@ -724,3 +724,6 @@
 1.6.135 20/06/2025 Pasarela. SINPE. Se ajusta validación del monto de pago para que tolere un marge de un colón.
 1.6.136 25/06/2025 Pasarela. Revisión de falla en el llamado al package de pago de tron.
                    Trazabilidad. Cambio en el listado de casos por devolución de dinero (120), para manejar la fechas en función al paso.
+1.6.137 26/06/2025 Pasarela. Recurrente. Manejo de errores durante el proceso.
+                   Pasarela. Recurrente. Ajustes de consulta de recibos pendiente para obtener la informacion de pagados o el contratando según existan.
+                   Pasarela. Recurrente. Ajustes para que se considere solo el primer recibo pendiente de la póliza al ejecutar el proceso.

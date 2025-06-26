@@ -28,6 +28,182 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         public static bool IsEmployee { get; private set; }
 
         /// <summary>
+        /// Proceso 'Batch', que envía a cobro los recibos pendiente con cobro recurrente.
+        /// </summary>
+        public static int PendientesRecurrentesAlCobro(DateTime fec_efect_recibo)
+        {
+            int recordCount = 0;
+            Utilities.Log.WarningLog("Payment.RecurrentesAlCobro", "Inicio - Proceo pendientes recurrentes al cobro", "payment");
+
+            try
+            {
+                string provider = Core.Business.Settings.StringValue(0, "Tenant.Settings.Payment.Provider");
+                string filter = Core.Business.Settings.StringValue(0, "Payment.Silice.RecurringReceipts.Filter.Policies", string.Empty);
+                int limitCount = Core.Business.Settings.IntegerValue(0, "Payment.Silice.RecurringReceipts.Limit.Count", 5);
+
+
+                int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
+                string prefix = Utilities.Helpers.Settings.StringValue("EMail.Test", string.Empty);
+
+
+                List<Contracts.Pagos.Recibo> pendientes = Architect.API.Tron.DataAccess.Pagos.Recibos.PendientesRecurrentesAlCobro(cod_cia, fec_efect_recibo, limitCount, filter);
+                if (pendientes.Count > 0)
+                {
+                    ReciboRequest reciboReq = new ReciboRequest()
+                    {
+                        procesoId = Guid.NewGuid().ToString(),
+                        bankCode = "0",
+                        convenioType = "0",
+                        convenioCode = "0",
+                        envioType = "0",
+                        envioDate = DateTime.Today,
+                        numPlan = "0",
+                        trnExterna = true,
+                        items = new List<Item>(),
+                        urlWebhook = string.Format("{0}/v2/Pagos/RecurringReceipts", Utilities.Helpers.Settings.StringValue("Payment.Silice.urlWebhook"))
+                    };
+                    string email = string.Empty;
+                    int count = 0;
+                    double total = 0;
+                    int id = 0;
+                    foreach (Contracts.Pagos.Recibo pendiente in pendientes)
+                    {
+                        email = pendiente.EMAIL;
+                        if (string.IsNullOrEmpty(email))
+                            email = pendiente.EMAIL_COM;
+                        if (string.IsNullOrEmpty(email))
+                            email = pendiente.TXT_EMAIL;
+
+                        if (!string.IsNullOrEmpty(email))
+                        {
+                            total += pendiente.IMP_RECIBO;
+                            count++;
+
+                            Item newItem = new Item()
+                            {
+                                productCode = "0",
+                                subtotal = pendiente.IMP_RECIBO.ToString(),
+                                impuestos = "0",
+                                emailCliente = email,
+                                total = pendiente.IMP_RECIBO.ToString(),
+                                ordenId = pendiente.NUM_RECIBO.ToString(),
+                                origen = "api",
+                                expectedCollectionPaidDate = DateTime.Today,
+                                moneda = pendiente.NOM_MON,
+                                concepto = string.Format("MAPFRE: {3}. {0}. POLIZA #{1} RECIBO #{2}", pendiente.NOM_RAMO, pendiente.NUM_POLIZA, pendiente.NUM_RECIBO, pendiente.NOM_SECTOR),
+                                token = pendiente.TOKEN,
+
+                                firstname = pendiente.NOM_TERCERO,
+                                lastname = pendiente.APE1_TERCERO,
+                                documenttype = pendiente.TIP_DOCUM,
+                                document = pendiente.COD_DOCUM,
+                                mobile = pendiente.TLF_NUMERO.OnlyNumbers()
+                            };
+                            reciboReq.items.Add(newItem);
+                            if (string.IsNullOrEmpty(prefix))
+                            {
+                                newItem.emailCliente = reciboReq.items.Last().emailCliente;
+                            }
+                            else
+                            {
+                                newItem.emailCliente = prefix;
+                            }
+
+                            id = Payment.Integrations.Providers.Silice.Payment.TrackOnlinePayment(cod_cia, 0, newItem,
+                                pendiente.NUM_POLIZA, pendiente.NUM_RECIBO, pendiente.IMP_RECIBO,
+                                pendiente.TIP_DOCUM, pendiente.COD_DOCUM, pendiente.NOM_TERCERO, pendiente.APE1_TERCERO, pendiente.TLF_NUMERO, pendiente.COD_AGT, reciboReq.procesoId).Result;
+
+                            newItem.ordenId = id.ToString();
+                        }
+                        recordCount++;
+                    }
+                    reciboReq.totalItems = count;
+                    reciboReq.totalCompleto = total;
+
+
+                    Utilities.Log.TraceLog("RecurringReceipts", JsonConvert.SerializeObject(reciboReq), "payment");
+
+
+                    HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
+                    //client.Timeout = TimeSpan.FromSeconds(3);
+                    client.DefaultRequestHeaders.Authorization = null;
+
+                    List<Architect.Payment.Integrations.Contracts.InformationRequest> result = Architect.Payment.Integrations.Recurring.Request(provider, client, reciboReq).Result;
+
+                    if (provider.Equals("Evertec", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        foreach (Architect.Payment.Integrations.Contracts.InformationRequest item in result)
+                        {
+                            Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveById(cod_cia, Convert.ToInt32(item.reference));
+
+                            if (currentRecord != null)
+                            {
+                                item.OnlinePayment = currentRecord;
+                            }
+
+                            if (item?.status != currentRecord?.ProviderStatus)
+                            {
+                                Architect.Payment.Integrations.Payment.UpdateStatus(currentRecord.UpdateUserCode, currentRecord, item);
+                            }
+
+                            // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
+                            if (item?.status == "APPROVED")
+                            {
+                                if (IsEmployee)
+                                {
+                                    item.OnlinePayment.AgentCode = 999999;
+                                }
+                                bool tronPayment = Backoffice.Pagos.TronPayment(item, item.OnlinePayment.AgentCode, "Placetopay", provider, false).Result;
+
+                                //Se establece que la proxima fecha para poder usar esta tarjeta seria desde el primero del proximo mes.
+                                DateTime nextCollectAttempt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1);
+
+                                Tarjetas.UpdateRejectionCount(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, 0, $"Último pago {DateTime.Now}", 1, nextCollectAttempt);
+                            }
+                            else if (item?.status == "REJECTED")
+                            {
+
+
+                                int numberOfRetries = Tarjetas.RetrieveNumberOfRetries(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber);
+
+                                // Si ya se tiene dos rechazo quiere decir que el actual seria el tercero.
+                                if (numberOfRetries == 2)
+                                {
+                                    //Se establece que la proxima fecha para poder usar esta tarjeta seria desde el primero del proximo mes.
+                                    DateTime nextCollectAttempt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1);
+
+                                    // Se bloquea la tarjeta para que no sea conciderada en cobros futuros.
+                                    Tarjetas.UpdateRejectionCount(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, numberOfRetries + 1, item.reason, 3, nextCollectAttempt);
+
+                                }
+                                else
+                                {
+                                    // Si ya se habia deshabilitado por reintento, cuando se intente al mes siguiente se reinicia el contador.
+                                    if (numberOfRetries == 3)
+                                    {
+                                        numberOfRetries = 0;
+                                    }
+
+                                    // Se incrementa la cantidad de reintento fallidos 
+                                    Tarjetas.UpdateRejectionCount(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, numberOfRetries + 1, item.reason);
+                                }
+                            }
+                        }
+
+                        EnviarReporteDeDomiciliacion(reciboReq);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilities.Log.ErrorLog("Payment", "RecurrentesAlCobro", ex);
+            }
+
+            Utilities.Log.WarningLog("Payment.RecurrentesAlCobro", "Fin - Proceo pendientes recurrentes al cobro", "payment");
+            return recordCount;
+        }
+
+        /// <summary>
         /// Permite la creación de un sesión para realizar un pago.
         /// </summary>
         public async static Task<Payment.Integrations.Contracts.v2.PaymentInformation> CrearSesion(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo, bool widget)
@@ -327,177 +503,13 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             return recordCount;
         }
 
-        /// <summary>
-        /// Proceso 'Batch', que envía a cobro los recibos pendiente con cobro recurrente.
-        /// </summary>
-        public static int PendientesRecurrentesAlCobro(DateTime fec_efect_recibo)
-        {
-            string provider = Core.Business.Settings.StringValue(0, "Tenant.Settings.Payment.Provider");
-            string filter = Core.Business.Settings.StringValue(0, "Payment.Silice.RecurringReceipts.Filter.Policies", string.Empty);
-            int limitCount = Core.Business.Settings.IntegerValue(0, "Payment.Silice.RecurringReceipts.Limit.Count", 5);
-
-            int recordCount = 0;
-            int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
-            string prefix = Utilities.Helpers.Settings.StringValue("EMail.Test", string.Empty);
-
-
-            List<Contracts.Pagos.Recibo> pendientes = Architect.API.Tron.DataAccess.Pagos.Recibos.PendientesRecurrentesAlCobro(cod_cia, fec_efect_recibo, limitCount, filter);
-            if (pendientes.Count > 0)
-            {
-                ReciboRequest reciboReq = new ReciboRequest()
-                {
-                    procesoId = Guid.NewGuid().ToString(),
-                    bankCode = "0",
-                    convenioType = "0",
-                    convenioCode = "0",
-                    envioType = "0",
-                    envioDate = DateTime.Today,
-                    numPlan = "0",
-                    trnExterna = true,
-                    items = new List<Item>(),
-                    urlWebhook = string.Format("{0}/v2/Pagos/RecurringReceipts", Utilities.Helpers.Settings.StringValue("Payment.Silice.urlWebhook"))
-                };
-                string email = string.Empty;
-                int count = 0;
-                double total = 0;
-                int id = 0;
-                foreach (Contracts.Pagos.Recibo pendiente in pendientes)
-                {
-                    email = pendiente.EMAIL;
-                    if (string.IsNullOrEmpty(email))
-                        email = pendiente.EMAIL_COM;
-                    if (string.IsNullOrEmpty(email))
-                        email = pendiente.TXT_EMAIL;
-
-                    if (!string.IsNullOrEmpty(email))
-                    {
-                        total += pendiente.IMP_RECIBO;
-                        count++;
-
-                        Item newItem = new Item()
-                        {
-                            productCode = "0",
-                            subtotal = pendiente.IMP_RECIBO.ToString(),
-                            impuestos = "0",
-                            emailCliente = email,
-                            total = pendiente.IMP_RECIBO.ToString(),
-                            ordenId = pendiente.NUM_RECIBO.ToString(),
-                            origen = "api",
-                            expectedCollectionPaidDate = DateTime.Today,
-                            moneda = pendiente.NOM_MON,
-                            concepto = string.Format("MAPFRE: {3}. {0}. POLIZA #{1} RECIBO #{2}", pendiente.NOM_RAMO, pendiente.NUM_POLIZA, pendiente.NUM_RECIBO, pendiente.NOM_SECTOR),
-                            token = pendiente.TOKEN,
-
-                            firstname = pendiente.NOM_TERCERO,
-                            lastname = pendiente.APE1_TERCERO,
-                            documenttype = pendiente.TIP_DOCUM,
-                            document = pendiente.COD_DOCUM,
-                            mobile = pendiente.TLF_NUMERO.OnlyNumbers()
-                        };
-                        reciboReq.items.Add(newItem);
-                        if (string.IsNullOrEmpty(prefix))
-                        {
-                            newItem.emailCliente = reciboReq.items.Last().emailCliente;
-                        }
-                        else
-                        {
-                            newItem.emailCliente = prefix;
-                        }
-
-                        id = Payment.Integrations.Providers.Silice.Payment.TrackOnlinePayment(cod_cia, 0, newItem,
-                            pendiente.NUM_POLIZA, pendiente.NUM_RECIBO, pendiente.IMP_RECIBO,
-                            pendiente.TIP_DOCUM, pendiente.COD_DOCUM, pendiente.NOM_TERCERO, pendiente.APE1_TERCERO, pendiente.TLF_NUMERO, pendiente.COD_AGT, reciboReq.procesoId).Result;
-
-                        newItem.ordenId = id.ToString();
-                    }
-                    recordCount++;
-                }
-                reciboReq.totalItems = count;
-                reciboReq.totalCompleto = total;
-
-
-                Utilities.Log.TraceLog("RecurringReceipts", JsonConvert.SerializeObject(reciboReq), "payment");
-
-
-                HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
-                //client.Timeout = TimeSpan.FromSeconds(3);
-                client.DefaultRequestHeaders.Authorization = null;
-
-                List<Architect.Payment.Integrations.Contracts.InformationRequest> result = Architect.Payment.Integrations.Recurring.Request(provider, client, reciboReq).Result;
-
-                if (provider.Equals("Evertec", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    foreach (Architect.Payment.Integrations.Contracts.InformationRequest item in result)
-                    {
-                        Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveById(cod_cia, Convert.ToInt32(item.reference));
-
-                        if (currentRecord != null)
-                        {
-                            item.OnlinePayment = currentRecord;
-                        }
-
-                        if (item?.status != currentRecord?.ProviderStatus)
-                        {
-                            Architect.Payment.Integrations.Payment.UpdateStatus(currentRecord.UpdateUserCode, currentRecord, item);
-                        }
-
-                        // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
-                        if (item?.status == "APPROVED")
-                        {
-                            if (IsEmployee)
-                            {
-                                item.OnlinePayment.AgentCode = 999999;
-                            }
-                            bool tronPayment = Backoffice.Pagos.TronPayment(item, item.OnlinePayment.AgentCode, "Placetopay", provider, false).Result;
-
-                            //Se establece que la proxima fecha para poder usar esta tarjeta seria desde el primero del proximo mes.
-                            DateTime nextCollectAttempt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1);
-
-                            Tarjetas.UpdateRejectionCount(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, 0, $"Último pago {DateTime.Now}", 1, nextCollectAttempt);
-                        }
-                        else if (item?.status == "REJECTED")
-                        {
-
-
-                            int numberOfRetries = Tarjetas.RetrieveNumberOfRetries(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber);
-
-                            // Si ya se tiene dos rechazo quiere decir que el actual seria el tercero.
-                            if (numberOfRetries == 2)
-                            {
-                                //Se establece que la proxima fecha para poder usar esta tarjeta seria desde el primero del proximo mes.
-                                DateTime nextCollectAttempt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1);
-
-                                // Se bloquea la tarjeta para que no sea conciderada en cobros futuros.
-                                Tarjetas.UpdateRejectionCount(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, numberOfRetries + 1, item.reason, 3, nextCollectAttempt);
-
-                            }
-                            else
-                            {
-                                // Si ya se habia deshabilitado por reintento, cuando se intente al mes siguiente se reinicia el contador.
-                                if (numberOfRetries == 3)
-                                {
-                                    numberOfRetries = 0;
-                                }
-
-                                // Se incrementa la cantidad de reintento fallidos 
-                                Tarjetas.UpdateRejectionCount(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, numberOfRetries + 1, item.reason);
-                            }
-                        }
-                    }
-
-                    EnviarReporteDeDomiciliacion(reciboReq);
-                }
-            }
-            return recordCount;
-        }
-
         private static void EnviarReporteDeDomiciliacion(ReciboRequest reciboReq)
         {
             string title = string.Empty;
             string attachFileName = Architect.Data.Source.Business.ExcelExport.GenerateFile("ReporteDomiciliacion", 0,
                 "id=ReporteDomiciliacion:processid=" + reciboReq.procesoId, new Core.Contracts.Security.Token(), ref title, Settings.StringValue(0, "aliados.app.path.temp") + "Reporte Domiciliación.xlsx");
 
-            Mail.SendByTemplate("Reporte_Domiciliacion", 0, 0, 0, null, null, 
+            Mail.SendByTemplate("Reporte_Domiciliacion", 0, 0, 0, null, null,
                                 new string[] { string.Format("{0};Reporte Domiciliación.xlsx", attachFileName) });
         }
 
