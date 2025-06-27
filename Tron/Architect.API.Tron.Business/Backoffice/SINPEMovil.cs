@@ -205,8 +205,8 @@ namespace Architect.API.Tron.Business.Backoffice
                 result.Codigo = ErrorInProcess;
                 result.Mensaje = "Error en el proceso. No existen recibos pendiente para la póliza.";
             }
-
-            if (result.Codigo == RegisteredButNotProcessed && aplicarPagoRequest.Monto != recibo.IMP_RECIBO)
+            double diff = aplicarPagoRequest.Monto - recibo.IMP_RECIBO;
+            if (result.Codigo == RegisteredButNotProcessed && (diff < -1.0 || diff > 1.0))
             {
                 result.Codigo = ErrorInProcess;
                 result.Mensaje = "Error en el proceso. El monto del recibo no coinciden con el pago.";
@@ -282,7 +282,7 @@ namespace Architect.API.Tron.Business.Backoffice
             };
 
             string pagador = $"{recibo.TIP_DOCUM}-{recibo.COD_DOCUM.DocumentNumber(recibo.TIP_DOCUM)}";
-            bool paymentApplied = await Pagos.TronPayment(infoReq, infoReq.OnlinePayment.AgentCode, "Placetopay", string.Empty, true,  pagador);
+            bool paymentApplied = await Pagos.TronPayment(infoReq, infoReq.OnlinePayment.AgentCode, "Placetopay", string.Empty, true, pagador);
 
             if (paymentApplied)
             {
