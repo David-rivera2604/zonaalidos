@@ -47,7 +47,7 @@ namespace Architect.API.Tron.DataAccess.Traza
                                                  " RETURNING Id INTO :Id")
                             .AddParameter(parameters)
                             .Execute(connection, "Research");
-            int id = Convert.ToInt32(parameters.Find(r => r.Name == "ID").Value.ToString());
+            int id = Convert.ToInt32(parameters.Find(r => r.Name == "Id").Value.ToString());
 
             return id;
         }

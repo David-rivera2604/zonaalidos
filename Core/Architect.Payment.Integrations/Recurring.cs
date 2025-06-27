@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Architect.Payment.Integrations.Providers.Placetopay;
+using System.Text;
 
 namespace Architect.Payment.Integrations
 {
@@ -26,6 +27,10 @@ namespace Architect.Payment.Integrations
             }
             else //Placetopay Provider 
             {
+                var trace = new StringBuilder();
+
+                trace.AppendFormat("\nProceso #{1}, cantidad de recibos a procesar #{0}\n", recibos.items.Count, recibos.procesoId);
+
                 foreach (Item item in recibos.items)
                 {
                     Providers.Placetopay.Contracts.Requests.Collect collectRequest = new Providers.Placetopay.Contracts.Requests.Collect()
@@ -64,13 +69,18 @@ namespace Architect.Payment.Integrations
                         returnUrl = Utilities.Helpers.Settings.StringValue("Payment.Placetopay.ReturnUrl.Recurring")
                     };
                     string json = JsonConvert.SerializeObject(collectRequest, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+                    
+                    trace.AppendFormat("  Información: {0}\n", item.concepto);
+                    trace.AppendFormat("    Solicitud: {0}\n",  json);
+                    
                     CollectTransaction collectResponse = await Providers.Placetopay.Webcheckout.Collect(json);
+                    trace.AppendFormat("    Respuesta: {0}\n", collectResponse.rawresponse);
 
                     Architect.Payment.Integrations.Contracts.InformationRequest infoItem = new Architect.Payment.Integrations.Contracts.InformationRequest()
                     {
                         status = collectResponse.status.status,
                         ipAddress = collectRequest.userAgent,
-                        rawData = json
+                        rawData = collectResponse.rawresponse
                     };
 
                     switch (collectResponse.status.status)
@@ -109,6 +119,8 @@ namespace Architect.Payment.Integrations
 
                     infoResult.Add(infoItem);
                 }
+
+                Utilities.Log.TraceLog("Recurring.Request", trace.ToString(), "payment");
             }
             return infoResult;
         }

@@ -265,7 +265,7 @@ namespace Architect.Payment.Integrations.DataAccess
             List<Contracts.OnlinePayment> result = new List<Contracts.OnlinePayment>();
             Database.Select("SELECT Id, OnlinePayment.CompanyId, RequestID, ProviderStatus, Reason, Authorization, Receipt, NULL ResponseData, DocumentType, DocumentNumber, OnlinePayment.FirstName, OnlinePayment.LastName, PrimaryEmailAddress, PhoneNumberMobile, AgentCode, PolicyId, BillNumber, Currency, Amount, OnlinePayment.Reference, Description, IssueDate, StatusDate, ProcessUrl, Status, OnlinePayment.UpdateUserCode, NULL UpdateUserName, OnlinePayment.UpdateDate, SettingId " +
                               "FROM OnlinePayment " +
-                             "WHERE OnlinePayment.ProviderStatus IN ('INIT', 'PENDING')")
+                             "WHERE OnlinePayment.ProviderStatus IN ('INIT', 'PENDING') AND NOT OnlinePayment.Source IN ('Recurring', 'SINPEMovil')")
                         .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
                         {
                             result.Add(DataReaderToOnlinePayment(reader));

@@ -13,5 +13,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
         public AmountConversion conversion { get; set; }
 
         public string lastDigits { get; set; }
+
+        public string rawresponse { get; set; }
     }
 }
