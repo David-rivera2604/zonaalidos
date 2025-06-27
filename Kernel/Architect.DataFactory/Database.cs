@@ -1697,9 +1697,15 @@ namespace Architect.DataFactory
                     try
                     {
 
+                        var value = cmmd.ExecuteScalar();
+                        if (value == null)
+                        {
+                            result = default(T);    
+                        } else
+                        {
+                            result = (T)value;
+                        }
 
-
-                        result = (T)cmmd.ExecuteScalar();
 
                         if (Handlers.UtilityHandler.AppSettingsCheck("Architect.DataFactory.Trace.Enabled"))
                         {

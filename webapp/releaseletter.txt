@@ -727,3 +727,7 @@
 1.6.137 26/06/2025 Pasarela. Recurrente. Manejo de errores durante el proceso.
                    Pasarela. Recurrente. Ajustes de consulta de recibos pendiente para obtener la informacion de pagados o el contratando según existan.
                    Pasarela. Recurrente. Ajustes para que se considere solo el primer recibo pendiente de la póliza al ejecutar el proceso.
+                   Pasarela. Recurrente. Manejo de error por recibo al procesar la respuesta, permitiendo que si existe un error solo afecte a ese recibo.
+                   Pasarela. Recurrente. Se agrega de forma temporal el manejo de reintento bajo la condicion de FAILED.
+                   Pasarela. Recurrente. Se mejora el LOG de traza para el llamado del servicio ""gateway/process".
+                   Pasarela. Recurrente. Se ajusta el monitor para no incluir los registros de fuentes de 'Recurring' y 'SINPEMovil.

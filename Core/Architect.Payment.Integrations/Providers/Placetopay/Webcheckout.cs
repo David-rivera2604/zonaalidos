@@ -475,7 +475,6 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
                 }
                 catch (Exception)
                 {
-
                     collectResponse = new CollectTransaction()
                     {
                         status = new Contracts.Status()
@@ -488,6 +487,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
                 }
 
             }
+            collectResponse.rawresponse = resultResponse;
             return collectResponse;
         }
 

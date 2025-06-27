@@ -33,7 +33,8 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         public static int PendientesRecurrentesAlCobro(DateTime fec_efect_recibo)
         {
             int recordCount = 0;
-            Utilities.Log.WarningLog("Payment.RecurrentesAlCobro", "Inicio - Proceso pendientes recurrentes al cobro", "payment");
+            string procesoId = Guid.NewGuid().ToString();
+            Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", "Inicio - Proceso pendientes recurrentes al cobro", "payment");
 
             try
             {
@@ -51,7 +52,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 {
                     ReciboRequest reciboReq = new ReciboRequest()
                     {
-                        procesoId = Guid.NewGuid().ToString(),
+                        procesoId = procesoId,
                         bankCode = "0",
                         convenioType = "0",
                         convenioCode = "0",
@@ -121,7 +122,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                     reciboReq.totalCompleto = total;
 
 
-                    Utilities.Log.TraceLog("RecurringReceipts", JsonConvert.SerializeObject(reciboReq), "payment");
+                    //Utilities.Log.TraceLog("RecurringReceipts", JsonConvert.SerializeObject(reciboReq), "payment");
 
 
                     HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
@@ -134,60 +135,71 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                     {
                         foreach (Architect.Payment.Integrations.Contracts.InformationRequest item in result)
                         {
-                            Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveById(cod_cia, Convert.ToInt32(item.reference));
-
-                            if (currentRecord != null)
+                            try
                             {
-                                item.OnlinePayment = currentRecord;
-                            }
+                                Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveById(cod_cia, Convert.ToInt32(item.reference));
 
-                            if (item?.status != currentRecord?.ProviderStatus)
-                            {
-                                Architect.Payment.Integrations.Payment.UpdateStatus(currentRecord.UpdateUserCode, currentRecord, item);
-                            }
-
-                            // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
-                            if (item?.status == "APPROVED")
-                            {
-                                if (IsEmployee)
+                                if (currentRecord != null)
                                 {
-                                    item.OnlinePayment.AgentCode = 999999;
+                                    item.OnlinePayment = currentRecord;
                                 }
-                                bool tronPayment = Backoffice.Pagos.TronPayment(item, item.OnlinePayment.AgentCode, "Placetopay", provider, false).Result;
 
-                                //Se establece que la proxima fecha para poder usar esta tarjeta seria desde el primero del proximo mes.
-                                DateTime nextCollectAttempt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1);
-
-                                Tarjetas.UpdateRejectionCount(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, 0, $"Último pago {DateTime.Now}", 1, nextCollectAttempt);
-                            }
-                            else if (item?.status == "REJECTED")
-                            {
-
-
-                                int numberOfRetries = Tarjetas.RetrieveNumberOfRetries(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber);
-
-                                // Si ya se tiene dos rechazo quiere decir que el actual seria el tercero.
-                                if (numberOfRetries == 2)
+                                if (item?.status != currentRecord?.ProviderStatus)
                                 {
+                                    Architect.Payment.Integrations.Payment.UpdateStatus(currentRecord.UpdateUserCode, currentRecord, item);
+                                }
+
+                                // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
+                                if (item?.status == "APPROVED")
+                                {
+                                    if (IsEmployee)
+                                    {
+                                        item.OnlinePayment.AgentCode = 999999;
+                                    }
+                                    bool tronPayment = Backoffice.Pagos.TronPayment(item, item.OnlinePayment.AgentCode, "Placetopay", provider, false).Result;
+
                                     //Se establece que la proxima fecha para poder usar esta tarjeta seria desde el primero del proximo mes.
                                     DateTime nextCollectAttempt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1);
 
-                                    // Se bloquea la tarjeta para que no sea conciderada en cobros futuros.
-                                    Tarjetas.UpdateRejectionCount(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, numberOfRetries + 1, item.reason, 3, nextCollectAttempt);
-
+                                    Tarjetas.UpdateRejectionCount(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, 0, $"Último pago {DateTime.Now}", 1, nextCollectAttempt);
                                 }
-                                else
+                                else if (item?.status == "REJECTED" || item?.status == "FAILED")
                                 {
-                                    // Si ya se habia deshabilitado por reintento, cuando se intente al mes siguiente se reinicia el contador.
-                                    if (numberOfRetries == 3)
-                                    {
-                                        numberOfRetries = 0;
-                                    }
+                                    //NOTA:
+                                    //     Se agrega de forma temporal el manejo de reintento bajo la condicion de FAILED
 
-                                    // Se incrementa la cantidad de reintento fallidos 
-                                    Tarjetas.UpdateRejectionCount(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, numberOfRetries + 1, item.reason);
+                                    int numberOfRetries = Tarjetas.RetrieveNumberOfRetries(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber);
+
+                                    // Si ya se tiene dos rechazo quiere decir que el actual seria el tercero.
+                                    if (numberOfRetries == 2)
+                                    {
+                                        //Se establece que la proxima fecha para poder usar esta tarjeta seria desde el primero del proximo mes.
+                                        DateTime nextCollectAttempt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1);
+
+                                        // Se bloquea la tarjeta para que no sea conciderada en cobros futuros.
+                                        Tarjetas.UpdateRejectionCount(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, numberOfRetries + 1, item.reason, 3, nextCollectAttempt);
+
+                                    }
+                                    else
+                                    {
+                                        // Si ya se habia deshabilitado por reintento, cuando se intente al mes siguiente se reinicia el contador.
+                                        if (numberOfRetries == 3)
+                                        {
+                                            numberOfRetries = 0;
+                                        }
+
+                                        // Se incrementa la cantidad de reintento fallidos 
+                                        Tarjetas.UpdateRejectionCount(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, numberOfRetries + 1, item.reason);
+                                    }
                                 }
                             }
+                            catch (Exception exi)
+                            {
+                                Utilities.Log.ErrorLog("Payment", "RecurrentesAlCobro", exi);
+                                Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", string.Format("FALLA: controlada para {0} - {1}", item.description, exi.Message), "payment");
+                            }
+
+                            
                         }
 
                         EnviarReporteDeDomiciliacion(reciboReq);
@@ -197,10 +209,11 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             catch (Exception ex)
             {
                 Utilities.Log.ErrorLog("Payment", "RecurrentesAlCobro", ex);
+                Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", string.Format("FALLA: no controlada del proceso #{0} - {1}", procesoId, ex.Message), "payment");
                 recordCount = -1;
             }
 
-            Utilities.Log.WarningLog("Payment.RecurrentesAlCobro", string.Format( "Fin - Proceso pendientes recurrentes al cobro ({0})", recordCount), "payment");
+            Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", string.Format( "Fin - Proceso pendientes recurrentes al cobro ({0})", recordCount), "payment");
             return recordCount;
         }
 
