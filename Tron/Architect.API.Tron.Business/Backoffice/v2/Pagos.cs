@@ -133,8 +133,10 @@ namespace Architect.API.Tron.Business.Backoffice.v2
 
                     if (provider.Equals("Evertec", StringComparison.CurrentCultureIgnoreCase))
                     {
+                        bool maxTry = false;
                         foreach (Architect.Payment.Integrations.Contracts.InformationRequest item in result)
                         {
+                            maxTry = false;
                             try
                             {
                                 Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveById(cod_cia, Convert.ToInt32(item.reference));
@@ -163,7 +165,11 @@ namespace Architect.API.Tron.Business.Backoffice.v2
 
                                     Tarjetas.UpdateRejectionCount(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, 0, $"Último pago {DateTime.Now}", 1, nextCollectAttempt);
                                 }
-                                else if (item?.status == "REJECTED" || item?.status == "FAILED")
+                                else if (item?.status == "FAILED")
+                                {
+                                    maxTry = true;
+                                }
+                                else if (item?.status == "REJECTED")
                                 {
                                     //NOTA:
                                     //     Se agrega de forma temporal el manejo de reintento bajo la condicion de FAILED
@@ -173,12 +179,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                                     // Si ya se tiene dos rechazo quiere decir que el actual seria el tercero.
                                     if (numberOfRetries == 2)
                                     {
-                                        //Se establece que la proxima fecha para poder usar esta tarjeta seria desde el primero del proximo mes.
-                                        DateTime nextCollectAttempt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1);
-
-                                        // Se bloquea la tarjeta para que no sea conciderada en cobros futuros.
-                                        Tarjetas.UpdateRejectionCount(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, numberOfRetries + 1, item.reason, 3, nextCollectAttempt);
-
+                                        maxTry = true;
                                     }
                                     else
                                     {
@@ -192,6 +193,14 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                                         Tarjetas.UpdateRejectionCount(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, numberOfRetries + 1, item.reason);
                                     }
                                 }
+                                if (maxTry)
+                                {
+                                    //Se establece que la proxima fecha para poder usar esta tarjeta seria desde el primero del proximo mes.
+                                    DateTime nextCollectAttempt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1);
+
+                                    // Se bloquea la tarjeta para que no sea conciderada en cobros futuros.
+                                    Tarjetas.UpdateRejectionCount(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, 3, item.reason, 3, nextCollectAttempt);
+                                }
                             }
                             catch (Exception exi)
                             {
@@ -199,7 +208,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                                 Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", string.Format("FALLA: controlada para {0} - {1}", item.description, exi.Message), "payment");
                             }
 
-                            
+
                         }
 
                         EnviarReporteDeDomiciliacion(reciboReq);
@@ -213,7 +222,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 recordCount = -1;
             }
 
-            Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", string.Format( "Fin - Proceso pendientes recurrentes al cobro ({0})", recordCount), "payment");
+            Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", string.Format("Fin - Proceso pendientes recurrentes al cobro ({0})", recordCount), "payment");
             return recordCount;
         }
 
