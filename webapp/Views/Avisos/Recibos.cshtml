@@ -86,14 +86,29 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <!-- polizagrupoHelper DropDownList -->
+                                         <!-- polizagrupoHelper DropDownList 
                                         <div class='col-sm-6 col-md-6 handler-marcaHelper'>
                                             <div class='form-group'>
                                                 <label class='control-label' for='polizagrupoHelper'>Póliza grupo / Contrato</label>
                                                 <input id='polizagrupoHelper' class="form-control typeahead" type="text" placeholder="Indique el detalle...">
+										-->
+                                       <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='polizagrupo'>Póliza grupo</label>
+                                                <select id='polizagrupo' name='polizagrupo' class='form-control' data-event='clear.grid'>
+                                                </select>
                                             </div>
                                         </div>
 
+                                        <!-- contratos DropDownList -->
+                                        <div class='col-sm-3 col-md-3'>
+                                            <div class='form-group'>
+                                                <label class='control-label' for='contratos'>Contratos</label>
+                                                <select id='contratos' name='contratos' class='form-control' data-event='clear.grid'>
+                                                </select>
+                                            </div>
+                                        </div>		  
+                                        
                                         <!-- DocumentNumber Text -->
                                         <div class='col-sm-3 col-md-3'>
                                             <div class='form-group'>
@@ -133,6 +148,7 @@
                                             <h4>Recibos<label id="recibosTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
                                         </div>
                                         <div class='col-auto'>
+                                            <button id="PrototypeEdtFormSave" type="button" class="btn btn-sm btn-primary" data-doing="Buscando ..." title="Busca los recibos que cumplan con los criterios indicados">Buscar</button>
                                             <button type="button" class="btn btn-sm btn-outline-primary" title="Al hacer click permite generar un aviso de cobro usando los recibos seleccionados" data-toggle="modal" id="GeneraAvisos" disabled> <i class="fa fa-bell-o"></i> Generar aviso de cobro</button>
                                         </div>
                                     </div>
@@ -150,7 +166,6 @@
                             <div class="form-row">
                                 <div class='col-md-12'>
                                     <div class="modal-footer">
-                                        <button id="PrototypeEdtFormSave" type="button" class="btn btn-primary" data-doing="Buscando ..." title="Busca los recibos que cumplan con los criterios indicados">Buscar</button>
                                         <button id="PrototypeEdtFormCancel" type="button" class="btn btn-white" data-doing="Cancelando cambios...">Cancelar</button>
                                     </div>
                                 </div>
