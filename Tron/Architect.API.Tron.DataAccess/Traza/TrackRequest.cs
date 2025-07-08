@@ -39,15 +39,14 @@ namespace Architect.API.Tron.DataAccess.Traza
                             .AddParameter("ResponseTimeStamp", DbType.DateTime, 9, trackrequestItem.ResponseTimeStamp)
                             .AddParameter("UpdateUserCode", DbType.Decimal, 9, trackrequestItem.UpdateUserCode)
                             .AddParameter("UpdateDate", DbType.DateTime, 0, trackrequestItem.UpdateDate)
-                            .AddParameter("Id", DbType.Decimal, 9, 0, ParameterDirection.Output)
-                            .Parameters;
+                            .AddParameter("ID", DbType.Decimal, 9, 0, ParameterDirection.Output).Parameters;
 
-            int rows = Database.Insert("INSERT INTO TrackRequest (Id, CompanyId, DocumentId, RequestType, RequestBody, RequestTimeStamp, MessageId, ResponseStatus, ResponseText, ResponseBody, ResponseTimeStamp, UpdateUserCode, UpdateDate) " +
-                                                 "VALUES((SELECT NVL(MAX(Id),0)+1 FROM TrackRequest), :CompanyId, :DocumentId, :RequestType, :RequestBody, :RequestTimeStamp, :MessageId, :ResponseStatus, :ResponseText, :ResponseBody, :ResponseTimeStamp, :UpdateUserCode, :UpdateDate) " +
-                                                 " RETURNING Id INTO :Id")
+            int rows = Database.Insert("INSERT INTO TrackRequest (CompanyId, DocumentId, RequestType, RequestBody, RequestTimeStamp, MessageId, ResponseStatus, ResponseText, ResponseBody, ResponseTimeStamp, UpdateUserCode, UpdateDate) " +
+                                                 "VALUES(:CompanyId, :DocumentId, :RequestType, :RequestBody, :RequestTimeStamp, :MessageId, :ResponseStatus, :ResponseText, :ResponseBody, :ResponseTimeStamp, :UpdateUserCode, :UpdateDate) " +
+                                                 " RETURNING ID INTO :ID")
                             .AddParameter(parameters)
                             .Execute(connection, "Research");
-            int id = Convert.ToInt32(parameters.Find(r => r.Name == "Id").Value.ToString());
+            int id = Convert.ToInt32(parameters.Find(r => r.Name == "ID").Value.ToString());
 
             return id;
         }
