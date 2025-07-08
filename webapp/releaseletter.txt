@@ -732,3 +732,4 @@
                    Pasarela. Recurrente. Se mejora el LOG de traza para el llamado del servicio ""gateway/process".
                    Pasarela. Recurrente. Se ajusta el monitor para no incluir los registros de fuentes de 'Recurring' y 'SINPEMovil.
 1.6.138 30/06/2025 Pasarela. Recurrente. Se agrega el manejo de la condicion de FAILED, de forma que la tarjeta se pueda usar el proximo mes.
+1.6.139 07/07/2025 Trazabilidad. Cambio en el listado de casos por devolución de dinero (120), para manejar la fecha de inicio de la devolucion en función al paso.
