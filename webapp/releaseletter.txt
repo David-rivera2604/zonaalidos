@@ -734,3 +734,4 @@
 1.6.138 30/06/2025 Pasarela. Recurrente. Se agrega el manejo de la condicion de FAILED, de forma que la tarjeta se pueda usar el proximo mes.
 1.6.139 07/07/2025 Trazabilidad. Cambio en el listado de casos por devolución de dinero (120), para manejar la fecha de inicio de la devolucion en función al paso.
                    Fix. Manejo del id por sequence para la creación de registros en la tabla TrackRequest.
+                   Clientes. Consultas Mis Pólizas/Siniestros, se ajustan para visualizar los datos cuando el cliente conectando es el tomandor, asegurado o el pagador.
