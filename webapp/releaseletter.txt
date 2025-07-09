@@ -735,4 +735,5 @@
 1.6.139 07/07/2025 Trazabilidad. Cambio en el listado de casos por devolución de dinero (120), para manejar la fecha de inicio de la devolucion en función al paso.
                    Fix. Manejo del id por sequence para la creación de registros en la tabla TrackRequest.
                    Clientes. Consultas Mis Pólizas/Siniestros, se ajustan para visualizar los datos cuando el cliente conectando es el tomandor, asegurado o el pagador.
-1.6.140 08/06/2025 Pasarela. Recurrente. Se corrigue verificación de la cantidad de reintento.
+1.6.140 08/07/2025 Pasarela. Recurrente. Se corrigue verificación de la cantidad de reintento.
+1.6.141 09/07/2025 Trazabilidad. Cambio en el listado de casos por devolución de dinero (120), para manejar la fecha de completado de la devolucion en función al paso.
