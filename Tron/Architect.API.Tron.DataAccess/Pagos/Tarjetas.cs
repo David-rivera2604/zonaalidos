@@ -145,15 +145,13 @@ SELECT DISTINCT B.REASON,A99.MCA_FISICO, A99.TIP_DOCUM, A99.COD_DOCUM, A99.NOM_T
                             .Filter("TIP_DOCUM", DbType.AnsiString, 3, tip_docum)
                             .Filter("COD_DOCUM", DbType.AnsiString, 20, cod_docum)
                             .Filter("NUM_POLIZA", DbType.String, 13, num_poliza)
-                            .Filter("STATUS", DbType.Int32, 1, 1)
+                            .FilterCustom("STATUS", DbType.Int32, 1, 0, ">")
                             .Execute(connection, "Research");
         }
 
         public static int RetrieveNumberOfRetries(string num_poliza, string tip_docum, string cod_docum, IDbConnection connection = null)
         {
-            return (int)Database.Select("SELECT NVL(NumberOfRetries, 0) " +
-                              "FROM BOVEDA " +
-                             "WHERE TIP_DOCUM=:TIP_DOCUM AND COD_DOCUM=:COD_DOCUM AND NUM_POLIZA=:NUM_POLIZA AND STATUS=1")
+            return (int)Database.Select("SELECT NVL(NumberOfRetries, 0) FROM BOVEDA WHERE TIP_DOCUM=:TIP_DOCUM AND COD_DOCUM=:COD_DOCUM AND NUM_POLIZA=:NUM_POLIZA")
                             .AddParameter("TIP_DOCUM", DbType.AnsiString, 3, tip_docum)
                             .AddParameter("COD_DOCUM", DbType.AnsiString, 20, cod_docum)
                             .AddParameter("NUM_POLIZA", DbType.String, 13, num_poliza)
