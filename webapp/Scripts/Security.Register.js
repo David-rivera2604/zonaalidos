@@ -99,7 +99,8 @@ app.SecurityRegister = (function () {
                 EMail: { required: true, email: true },
                 Password: {
                     required: true,
-                    minlength: 4
+                    minlength: 8,
+                    pattern: /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).+$/
                 }
             },
             messages: {
@@ -116,7 +117,8 @@ app.SecurityRegister = (function () {
                 EMail: { required: 'Debe indicar el correo electrónico', email: 'Debe indicar un correo electrónico valido' },
                 Password: {
                     required: 'Debe indicar la clave de acceso',
-                    minlength: 'La clave de acceso debe tener por lo menos 4 caracteres'
+                    minlength: 'La clave de acceso debe tener por lo menos 8 caracteres',
+                    pattern: ' Debe tener una mayúscula, un número y un carácter especial'
                 }
             }
         });
