@@ -403,15 +403,21 @@ app.CotizacionMapfreMas = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-        new AutoNumeric('#PCT_AJUSTE_GEN', {
+        const tienePrivilegios = localStorage.getItem('Roles')?.includes('Privilegios');
+        const opcionesAutoNumeric = {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
             digitGroupSeparator: '.',
-            maximumValue: '0',
-            minimumValue: '-15',
             decimalPlaces: '0',
-            emptyInputBehavior: 'null'
-        });
+            emptyInputBehavior: 'null',
+            maximumValue: '0'
+        };
+        // Solo aplicar límites si NO tiene privilegios
+        if (!tienePrivilegios) {
+            opcionesAutoNumeric.minimumValue = '-15';
+        }
+        new AutoNumeric('#PCT_AJUSTE_GEN', opcionesAutoNumeric);
+
         new AutoNumeric('#IMP_AUTO_CYV', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
@@ -674,7 +680,7 @@ app.CotizacionMapfreMas = (function () {
                     let yearVeh = app.ui.GetNumericValue('#ANIO_SUB_MODELO');
                     let year = new Date().getFullYear();
                     let minYear = year - 5;
-                    if (yearVeh >= minYear && nvalue < -4) {
+                    if ((yearVeh >= minYear && nvalue < -4) && !(localStorage.getItem('Roles').includes('Privilegios'))) {
                         $('#PCT_AJUSTE_GEN').rules('add', { messages: { AjustePorAnoFabricacion: 'Si el vehículo esta entre 0-5 años de antigüedad, el porcentaje de ajuste comercial no debe exceder el 4%' } });
                         return false;
                     }
@@ -684,6 +690,16 @@ app.CotizacionMapfreMas = (function () {
                 }
             }
         );
+
+
+        $.validator.addMethod("ValidarAjusteConRol", function (value, element) {
+            const tienePrivilegios = localStorage.getItem('Roles')?.includes('Privilegios');
+            if (tienePrivilegios) return true; // No validar si tiene el rol
+
+            const num = parseFloat(value);
+            return !isNaN(num) && num >= -15 && num <= 0;
+        }, "El porcentaje de ajuste comercial debe estar entre el 0 y el -15 %");
+
 
         $("#VisualizationsEdtForm").validate({
             errorPlacement: app.ui.ErrorPlacement,
@@ -702,7 +718,7 @@ app.CotizacionMapfreMas = (function () {
                 cod_tip_vehi: { required: true },
                 cod_uso_vehi: { required: true },
                 IMP_VR: { required: true, Numeric: true },
-                PCT_AJUSTE_GEN: { min: -15, max: 0, AjustePorAnoFabricacion: true },
+                PCT_AJUSTE_GEN: { AjustePorAnoFabricacion: true, ValidarAjusteConRol: true },
                 IMP_AUTO_RC: { required: true },
                 DED_AUTO_RC: { required: true },
                 IMP_AUTO_GMO: { ValorRequeridoSegunVechiculoPlan: true },
@@ -738,7 +754,7 @@ app.CotizacionMapfreMas = (function () {
                 cod_tip_vehi: { required: 'Debe indicar el clase del vehículo' },
                 cod_uso_vehi: { required: 'Debe indicar el uso del vehículo' },
                 IMP_VR: { required: 'Debe indicar el valor del vehículo asegurado', Numeric: 'Debe indicar el valor del vehículo asegurado' },
-                PCT_AJUSTE_GEN: { min: 'El porcentaje de ajuste comercial debe estar entre el 0 y el -15 %', max: 'El porcentaje de ajuste comercial debe estar entre el 0 y el -15 %', AjustePorAnoFabricacion: '' },
+                PCT_AJUSTE_GEN: { ValidarAjusteConRol: 'El porcentaje de ajuste comercial debe estar entre el 0 y el -15 %, salvo que tenga privilegios', AjustePorAnoFabricacion: '' },
                 IMP_AUTO_RC: { required: 'Debe indicar el responsabilidad civil' },
                 DED_AUTO_RC: { required: 'Debe indicar el deducible responsabilidad civil' },
                 IMP_AUTO_GMO: { ValorRequeridoSegunVechiculoPlan: 'Debe indicar el monto de gastos médicos de ocupantes para el plan seleccionado' },
@@ -1067,8 +1083,10 @@ app.CotizacionMapfreMas = (function () {
         //31 HYUNDAI, 74 TOYOTA, 73 SUZUKI, 55 MITSUBISHI, 40 KIA, 50 MAZDA, 13 CHEVROLET, 30 HONDA
         if ((tipo_prod === 'basico' || tipo_prod === 'amplio' || tipo_prod === 'plus') &&
             (cod_marca === 31 || cod_marca === 74 || cod_marca === 73 || cod_marca === 55 || cod_marca === 40 || cod_marca === 50 || cod_marca === 13 || cod_marca === 30)) {
-            app.ui.SetNumericValue('#PCT_AJUSTE_GEN', 0);
-            $('#PCT_AJUSTE_GEN').prop('disabled', true);
+            if (!localStorage.getItem('Roles').includes('Privilegios')) {
+                app.ui.SetNumericValue('#PCT_AJUSTE_GEN', 0);
+                $('#PCT_AJUSTE_GEN').prop('disabled', true);
+            }
         } else {
             $('#PCT_AJUSTE_GEN').prop('disabled', false);
         }

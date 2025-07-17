@@ -293,31 +293,32 @@ app.login = (function () {
                 var $obj = $("#" + name + "_validate");
                 if ($obj.length) {
                     error.appendTo($obj);
-                }
-                else {
+                } else {
                     error.insertAfter(element);
                 }
             },
             rules: {
                 SetPasswordMail: {
                     required: true,
-                    minlength: 4
+                    minlength: 8,
+                    pattern: /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).+$/
                 },
                 SetPasswordMail2: {
                     required: true,
-                    minlength: 4,
+                    minlength: 8,
                     equalTo: '#SetPasswordMail'
                 }
             },
             messages: {
                 SetPasswordMail: {
                     required: 'Debe indicar la clave de acceso',
-                    minlength: 'La clave de acceso deben tener por lo menos 4 caracteres'
+                    minlength: 'La clave de acceso debe tener por lo menos 8 caracteres',
+                    pattern: ' Debe tener una mayúscula, un número y un carácter especial'
                 },
                 SetPasswordMail2: {
-                    required: 'Debe repetir la clave de acceso',
-                    minlength: 'La clave de acceso deben tener por lo menos 4 caracteres',
-                    equalTo: 'Ambas claves deben ser iguales'
+                    required: 'Debe indicar la clave de acceso',
+                    minlength: 'La clave de acceso debe tener por lo menos 8 caracteres',
+                    pattern: ' Debe tener una mayúscula, un número y un carácter especial'
                 }
             }
         });

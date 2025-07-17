@@ -141,7 +141,7 @@ namespace Architect.API.Core.Business.Security
                     result.Extent = Newtonsoft.Json.Linq.JObject.Parse(result.CustomData);
                     result.CustomData = string.Empty;
                 }
-                result.Password = "XXXX";
+                result.Password = "XXXXXXXX";
             }
             return result;
         }

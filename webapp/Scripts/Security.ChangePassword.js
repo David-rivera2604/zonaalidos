@@ -41,48 +41,55 @@ app.SecurityChangePassword = (function () {
     };
 
     function Setup_Validations() {
+
+        $.validator.addMethod("notEqualToCurrent", function (value, element) {
+            return value !== $("#CurrentPassword").val();
+        }, "La nueva clave no puede ser igual a la clave actual");
+
         $("#ChangePasswordEdtForm").validate({
             errorPlacement: function (error, element) {
                 var name = $(element).attr("name");
                 var $obj = $("#" + name + "_validate");
                 if ($obj.length) {
                     error.appendTo($obj);
-                }
-                else {
+                } else {
                     error.insertAfter(element);
                 }
             },
             rules: {
                 CurrentPassword: {
                     required: true,
-                    minlength: 4
+                    minlength: 8
                 },
                 NewPassword: {
                     required: true,
-                    minlength: 4
+                    minlength: 8,
+                    pattern: /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).+$/,
+                    notEqualToCurrent: true
                 },
                 ConfirmPassword: {
                     required: true,
-                    minlength: 4,
+                    minlength: 8,
                     equalTo: '#NewPassword'
                 }
             },
             messages: {
                 CurrentPassword: {
                     required: 'Debe indicar la clave de acceso actual',
-                    minlength: 'La clave de acceso deben tener por lo menos 4 caracteres'
+                    minlength: 'La clave de acceso debe tener por lo menos 8 caracteres'
                 },
                 NewPassword: {
                     required: 'Debe indicar la nueva clave de acceso',
-                    minlength: 'La clave de acceso deben tener por lo menos 4 caracteres'
+                    minlength: 'clave de acceso debe tener por lo menos 8 caracteres',
+                    pattern: 'La nueva clave debe contener al menos una mayúscula, un número y un carácter especial',
+                    notEqualToCurrent: 'La nueva clave no puede ser igual a la clave actual'
                 },
                 ConfirmPassword: {
                     required: 'Debe indicar la confirmación de la nueva clave de acceso',
-                    minlength: 'La clave de acceso deben tener por lo menos 4 caracteres',
+                    minlength: 'La clave de acceso debe tener por lo menos 8 caracteres',
                     equalTo: 'La nueva clave de acceso y su confirmación deben ser iguales'
                 }
             }
-
         });
     };
 

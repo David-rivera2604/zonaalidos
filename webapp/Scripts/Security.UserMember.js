@@ -446,7 +446,8 @@ app.SecurityUserMember = (function () {
                 },
                 Password: {
                     required: true,
-                    minlength: 4
+                    minlength: 8,
+                    pattern: /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).+$/
                 },
                 FirstName: {
                     required: true
@@ -484,7 +485,8 @@ app.SecurityUserMember = (function () {
                 },
                 Password: {
                     required: 'Debe indicar el clave',
-                    minlength: 'la clave de acceso deben tener por lo menos 4 caracteres'
+                    minlength: 'la clave de acceso deben tener por lo menos 8 caracteres',
+                    pattern: ' Debe tener una mayúscula, un número y un carácter especial'
                 },
                 FirstName: {
                     required: 'Debe indicar el nombre'

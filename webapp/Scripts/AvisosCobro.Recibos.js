@@ -3,13 +3,15 @@
 app.AvisosRecibos = (function () {
     const estado = { EP: "Pendiente" };
     let changedCallback = null;
-    let source = [];
 
     function Setup() {
         let lks = ['MonedasPorRamo.cod_mon', 'FrecuenciaDePagoPorRamo.cod_fracc_pago.'];
 
         if (localStorage.getItem('Roles').includes('Empleado')) {
             lks.push('Agents.Cod_Agt');
+        } else {
+            lks.push('PolizaGrupo.polizagrupo.');
+            lks.push('Contratos.contratos.');
         }
 
         app.core.Lookups(lks,
@@ -26,49 +28,26 @@ app.AvisosRecibos = (function () {
                     recibos: null,
                 };
                 MapObjectToInput(data);
-                LoadPolizagrupoHelper();
 
             }, `cod_ramo=302:cod_mon=1`);
     };
 
-    function LoadPolizagrupoHelper() {
-        let cod_agt = 0;
-        let reqName = 'PolicyGroupAndContract';
-
-        if (localStorage.getItem('Roles').includes('Empleado')) {
-            cod_agt = app.ui.GetDropDownNumericValue('#Cod_Agt');
-            reqName = 'PolicyGroupAndContractByAgent';
-        }
-
-        $('#polizagrupoHelper').typeahead('destroy');
-        $("#polizagrupoHelper").val('');
-
-        app.core.Get(app.setting.apipath + `v1/datasource/${reqName}?url=cod_mon=${app.ui.GetDropDownNumericValue('#cod_mon')}:cod_agt=${cod_agt}`)
-            .done(function (data) {
-                source = [];
-                data.forEach(function (value, index, array) {
-                    source.push({ "name": value.DESCRIPCION, "code": value });
-                });
-                $('#polizagrupoHelper').typeahead({
-                    highlight: true,
-                    source: source,
-                    afterSelect: function (item) {
-                        console.log('afterSelect', item);
-                    }
-                });
-            });
-    }
-
     function MapInputToObject() {
+
         let data = {
             Cod_Agt: app.ui.GetDropDownNumericValue('#Cod_Agt'),
             Fec_Efec_Rec_Desde: app.ui.GetDateValue('#desde'),
             Fec_Efec_Rec_Hasta: app.ui.GetDateValue('#hasta'),
             Cod_Mon: app.ui.GetDropDownNumericValue('#cod_mon'),
             Cod_Fracc_Pago: app.ui.GetDropDownNumericValue('#cod_fracc_pago'),
-            Num_Poliza_Grupo: '',
-            Num_Contrato: 0,
-            Tip_Docum: $("#DocumentNumberType").data("value"),
+            Num_Poliza_Grupo: app.ui.GetDropDownNumericValue('#polizagrupo'),
+            Num_Contrato: app.ui.GetDropDownNumericValue('#contratos'),
+            Tip_Docum: {
+                1: 'CNA',
+                2: 'CRE',
+                3: 'PAS',
+                4: 'CJU'
+            }[$("#DocumentNumberType").data("value")] || 'DESCONOCIDO',
             Cod_Docum: $('#DocumentNumber').val()
         };
         if (data.Cod_Docum == '') {
@@ -76,14 +55,6 @@ app.AvisosRecibos = (function () {
         }
         if (data.Num_Poliza_Grupo == 0) {
             data.Num_Poliza_Grupo = '';
-        }
-        let polizagrupoHelper = $("#polizagrupoHelper").val();
-        if (polizagrupoHelper != '') {
-            let selected = source.find(e => e.name === polizagrupoHelper);
-            if (selected != undefined) {
-                data.Num_Poliza_Grupo = selected.code.NUM_POLIZA;
-                data.Num_Contrato = selected.code.NUM_CONTRATO;
-            }
         }
         return data;
     };
@@ -97,6 +68,10 @@ app.AvisosRecibos = (function () {
         app.ui.SetDropDownNumericValue('#cod_mon', data.cod_mon, true);
         $('#cod_fracc_pago').val(data.cod_fracc_pago);
         app.ui.SetDropDownNumericValue('#cod_fracc_pago', data.cod_fracc_pago, true);
+        $('#polizagrupo').val(data.polizagrupo);
+        app.ui.SetDropDownNumericValue('#polizagrupo', data.polizagrupo, true);
+        $('#contratos').val(data.contratos);
+        app.ui.SetDropDownNumericValue('#contratos', data.contratos, true);
         $('#DocumentNumber').val(data.DocumentNumber);
         if (data.recibos != null)
             $('#recibosTbl').bootstrapTable('load', data.recibos);
@@ -124,17 +99,6 @@ app.AvisosRecibos = (function () {
 
     function Controls_Events() {
 
-        $("#polizagrupoHelper").change(function (e) {
-            let value = $(this).val();
-            if (value != '' && source.find(e => e.name === value) === undefined) {
-                $(this).val('');
-            }
-        });
-
-        $("#cod_mon").change(function (e) {
-            LoadPolizagrupoHelper();
-        });
-
         $(".input-group.date").on('dp.change', function (e) {
             data_changed('#' + this.id.replace('_group', ''));
         });
@@ -150,11 +114,11 @@ app.AvisosRecibos = (function () {
             $('#hasta_group').data("DateTimePicker").minDate(minDate);
         });
 
-        $('#GeneraAvisos').click(function (e) {
+        $('#GeneraAvisos').click(function () {
 
             if (app.ui.IsValid('#PrototypeEdtForm', false)) {
                 let payload = MapInputToObject();
-                payload.Lista_Recibos = $('#recibosTbl').bootstrapTable('getSelections').filter(i => i.Seleccionado).map(u => u.Num_Recibo).join(';');
+                payload.Lista_Recibos = $('#recibosTbl').bootstrapTable('getData').filter(i => i.seleccionado).map(u => u.Num_Recibo).join(';');
 
                 app.ui.ButtonDoing('#GeneraAvisos');
                 app.core.Post(app.setting.apipath + 'v1/AvisoCobro/Generar',
@@ -175,10 +139,10 @@ app.AvisosRecibos = (function () {
 
 
             }
-            e.preventDefault();
+            event.preventDefault();
         });
 
-        $('#PrototypeEdtFormSave').click(function (e) {
+        $('#PrototypeEdtFormSave').click(function () {
 
             if (app.ui.IsValid('#PrototypeEdtForm', false)) {
                 app.ui.ButtonDoing('#PrototypeEdtFormSave');
@@ -200,18 +164,19 @@ app.AvisosRecibos = (function () {
                         app.ui.ButtonDone('#PrototypeEdtFormSave');
                     });
             }
-            e.preventDefault();
+            event.preventDefault();
         });
 
-        $('#PrototypeEdtFormCancel').click(function (e) {
+        $('#PrototypeEdtFormCancel').click(function () {
             app.ui.ButtonDoing('#PrototypeEdtFormCancel');
             setTimeout(() => { app.ui.ButtonDone('#PrototypeEdtFormCancel'); }, 3000);
-            e.preventDefault();
+            event.preventDefault();
         });
 
         $('#Cod_Agt').on('change', function () {
             if (localStorage.getItem('Roles').includes('Empleado')) {
-                LoadPolizagrupoHelper();
+                app.core.LookupDependency($('select#Cod_Agt').val(), 'polizagrupo', 'PolizaGrupoPorAgente', '', null, true, null, `cod_ramo=302:cod_mon=${app.ui.GetDropDownNumericValue('#cod_mon')}:Cod_Agt=`);
+                app.core.LookupDependency($('select#Cod_Agt').val(), 'contratos', 'ContratosPorAgente', '', null, true, null, `cod_ramo=302:cod_mon=${app.ui.GetDropDownNumericValue('#cod_mon')}:Cod_Agt=`);
             }
         });
 
@@ -233,7 +198,7 @@ app.AvisosRecibos = (function () {
         if ($('#generalNotify').html().length > 10) {
             $('#generalNotify').html('');
         }
-        $('#GeneraAvisos').prop("disabled", $('#recibosTbl').bootstrapTable('getSelections').filter(i => i.Seleccionado).length == 0);
+        $('#GeneraAvisos').prop("disabled", $('#recibosTbl').bootstrapTable('getData').filter(i => i.seleccionado).length == 0);
 
         if (changedCallback !== undefined && changedCallback !== null)
             changedCallback(MapInputToObject());
@@ -242,7 +207,7 @@ app.AvisosRecibos = (function () {
             console.log(e);
             let checked = $("[name='btSelectAll']").is(":checked");
             $('#recibosTbl').bootstrapTable('getData').forEach(function (item) {
-                item.Seleccionado = checked;
+                item.seleccionado = checked;
             })
         }
     };
@@ -276,11 +241,10 @@ app.AvisosRecibos = (function () {
             search: true,
             searchAlign: 'left',
             maintainMetaData: true,
-            maintainSelected: true,
             clickToSelect: true,
             columns: [
                 {
-                    field: 'Seleccionado',
+                    field: 'seleccionado',
                     align: 'center',
                     titleTooltip: 'Permite seleccionar el recibo para crear el aviso de cobro',
                     checkbox: true
@@ -362,7 +326,7 @@ app.AvisosRecibos = (function () {
                         return `<span>${row.Tip_Docum_Tom} ${row.Cod_Docum_Tom} - ${row.Nom_Tomador}</span>`;
                     }
                 },
-                {
+                 {
                     field: 'mca_cuota_gratis',
                     title: 'Marca Cuotas Gratis',
                     titleTooltip: 'Marca Cuotas Gratis',
@@ -394,12 +358,12 @@ app.AvisosRecibos = (function () {
 
         $('#recibosTbl').on('check-all.bs.table', function () {
             $('#recibosTbl').bootstrapTable('getData').forEach(function (item) {
-                item.Seleccionado = true;
+                item.seleccionado = true;
             })
         });
         $('#recibosTbl').on('uncheck-all.bs.table', function () {
             $('#recibosTbl').bootstrapTable('getData').forEach(function (item) {
-                item.Seleccionado = false;
+                item.seleccionado = false;
             })
         });
 
