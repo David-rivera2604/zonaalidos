@@ -15,6 +15,7 @@ namespace Architect.API.Tron.DataAccess
         public static Architect.API.Tron.Contracts.Poliza.DatoFijo Poliza(int cod_cia, string num_poliza, int num_spto, int num_apli, int num_spto_apli, IDbConnection currentConnection, bool loadChilds = false, string filter = "full")
         {
             Architect.API.Tron.Contracts.Poliza.DatoFijo a2000030Instance = PP_Lee_A2000030(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
+            a2000030Instance.DatosVariables = PP_Lee_A2000020(cod_cia, num_poliza, num_spto, num_apli, num_spto_apli, currentConnection);
 
             if (a2000030Instance!= null && loadChilds)
             {

@@ -15,6 +15,8 @@ using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
+using Architect.API.Tron.Contracts.Poliza.Parameters;
+using Architect.API.Tron.Business.Backoffice;
 
 namespace Architect.API.Tron.Business.Emision
 {
@@ -213,6 +215,33 @@ namespace Architect.API.Tron.Business.Emision
                         //{
                             DataAccess.PolicyProposal.Update_Status(resultQuoteInfo.presupuesto, resultQuoteInfo.num_poliza, tokenInfo.CompanyId, 10, tokenInfo.UserId);
                         //}
+
+                        //Renovacion Automatica
+                        var mca_renueva_emi = "N";
+                        foreach (var item in result2.DatosVariables)
+                        {
+                            switch (item.cod_campo)
+                            {
+                                case "MCA_RENUEVA_EMI":
+                                    mca_renueva_emi = item.val_campo;
+                                    break;
+                            }
+                        }
+                        if (mca_renueva_emi == "S")
+                        {
+                            ControlTecnicoParametros parametros = new ControlTecnicoParametros()
+                            {
+                                cod_error = 3030,
+                                tip_autoriza = "1",
+                                observacion = "RENOVACIÓN AUTOMÁTICA ZA",
+                                correo1 = string.Empty,
+                                correo2 = string.Empty,
+                            };
+
+                            var autoriza_ct_result = Poliza.ControlTecnico(resultQuoteInfo.num_poliza, parametros, tokenInfo);
+                            var renovacion_result = Poliza.Renovar(resultQuoteInfo.num_poliza);
+                            resultQuoteInfo.num_poliza += " Dada las condiciones se autorizó y renovó automático ";
+                        }
 
                         resultQuoteInfo.Mensaje = null;
                         resultQuoteInfo.Error = null;
