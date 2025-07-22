@@ -11,6 +11,20 @@ namespace Architect.API.Core.Business.General
     public static partial class CustomData
     {
 
+        public static Architect.API.Core.Contracts.General.CustomDataResult CreateOrUpdateByEntityType(int companyId, int userId, Architect.API.Core.Contracts.General.CustomData item)
+        {
+            Architect.API.Core.Contracts.General.CustomData current = Architect.API.Core.Business.General.CustomData.RetrieveByEntity(item.EntityType, item.Key1);
+            if (current == null)
+            {
+                return Create(companyId, userId, item);
+            }
+            else
+            {
+                item.Id = current.Id;
+                return Update(companyId, userId, current.Id, item);
+            }
+        }
+
         /// <summary>
         /// Crea un registro en la tabla CustomData.
         /// </summary>
