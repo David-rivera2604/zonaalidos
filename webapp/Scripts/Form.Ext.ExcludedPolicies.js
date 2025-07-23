@@ -7,7 +7,10 @@
             case '#polizasexcluidasTbl':
                 switch (source) {
                     case 'NewEditRow':
-                        app.core.LookupDependency(data.NUM_POLIZA, 'NUM_CONTRATO', 'CONTRATO_POLIZA_GRUPO', '', data.NUM_CONTRATO, true, null, `num_poliza=`);
+                        app.core.LookupDependency(0, 'NUM_CONTRATO', 'CONTRATO_POLIZA_GRUPO', '', data.NUM_CONTRATO, true,
+                            function (data) {
+                                $('#NUM_CONTRATO').prop('disabled', data?.length == 0)
+                            }, `num_poliza=${data.NUM_POLIZA}`);
                         break;
                     case 'AddRow':
                     case 'UpdateRow':
@@ -32,8 +35,28 @@
 
         app.core.Lookups(options.Lookups, function () {
             $('#NUM_POLIZA').on('change', function () {
-                app.core.LookupDependency($('select#NUM_POLIZA').val(), 'NUM_CONTRATO', 'CONTRATO_POLIZA_GRUPO', '', null, true, null, `num_poliza=`);
+                app.core.LookupDependency(0, 'NUM_CONTRATO', 'CONTRATO_POLIZA_GRUPO', '', null, true,
+                    function (data) {
+                        $('#NUM_CONTRATO').prop('disabled', data?.length == 0)
+                    },
+                    `num_poliza=${$('select#NUM_POLIZA').val()}`);
             });
+
+            let source = [];
+            app.core.Data().lookups.filter(i => i.Key === 'POLIZA_GRUPO')[0].Lkp.forEach(function (value, index, array) {
+                source.push({ "name": value.Description, "value": value });
+            });
+
+            $('#NUM_POLIZA_NOM').typeahead({
+                minLength: 0,
+                highlight: true,
+                source: source,
+                afterSelect: function (item) {
+                    $('#NUM_POLIZA').val(item.value.Code);
+                    $('#NUM_POLIZA').change();
+                }
+            });
+
         }, options.Base);
 
         app.core.Get(app.setting.apipath + `v1/CustomData/ExcludedPolicies/1971`)
