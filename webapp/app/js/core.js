@@ -462,7 +462,7 @@ app.core = (function () {
                 url = '';
             }
             else {
-                url = url + parentValue;
+                url = url + (url.endsWith('=') ? parentValue : '' );
             }
 
             ajaxCall('GET', app.setting.apipath + path + '?key=' + lookupKey + '&parentId=' + parentValue + '&url=' + url, null,

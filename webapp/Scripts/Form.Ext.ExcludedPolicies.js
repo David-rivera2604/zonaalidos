@@ -6,15 +6,15 @@
         switch (field) {
             case '#polizasexcluidasTbl':
                 switch (source) {
-                    case 'NewEditRow':
+                    case 'Before NewEditRow':
                         app.core.LookupDependency(0, 'NUM_CONTRATO', 'CONTRATO_POLIZA_GRUPO', '', data.NUM_CONTRATO, true,
                             function (data) {
                                 $('#NUM_CONTRATO').prop('disabled', data?.length == 0)
                             }, `num_poliza=${data.NUM_POLIZA}`);
                         break;
-                    case 'AddRow':
-                    case 'UpdateRow':
-                    case 'DeleteRow':
+                    case 'After AddRow':
+                    case 'After UpdateRow':
+                    case 'After DeleteRow':
                         let entry = app.Form_Ext_ExcludedPolicies.ctx.Data();
                         app.core.Post(app.setting.apipath + 'v1/CustomData', JSON.stringify({ EntityType: 1971, EntityId: 1, Key1: 'ExcludedPolicies', Data: JSON.stringify(entry) }))
                             .done(function (posted) { });
@@ -22,6 +22,7 @@
                 }
                 break;
         }
+        return true;
     }
 
     async Init(spec, formName) {
@@ -46,6 +47,9 @@
             app.core.Data().lookups.filter(i => i.Key === 'POLIZA_GRUPO')[0].Lkp.forEach(function (value, index, array) {
                 source.push({ "name": value.Description, "value": value });
             });
+
+            const numpolizanom = document.getElementById('NUM_POLIZA_NOM');
+            numpolizanom.setAttribute('autocomplete', 'off')
 
             $('#NUM_POLIZA_NOM').typeahead({
                 minLength: 0,
