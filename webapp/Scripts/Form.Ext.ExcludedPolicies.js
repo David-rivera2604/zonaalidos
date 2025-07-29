@@ -2,32 +2,66 @@
 
     ctx = {};
 
+    eventsHandler(field, data, source) {
+        switch (field) {
+            case '#polizasexcluidasTbl':
+                switch (source) {
+                    case 'Before NewEditRow':
+                        app.core.LookupDependency(0, 'NUM_CONTRATO', 'CONTRATO_POLIZA_GRUPO', '', data.NUM_CONTRATO, true,
+                            function (data) {
+                                $('#NUM_CONTRATO').prop('disabled', data?.length == 0)
+                            }, `num_poliza=${data.NUM_POLIZA}`);
+                        break;
+                    case 'After AddRow':
+                    case 'After UpdateRow':
+                    case 'After DeleteRow':
+                        let entry = app.Form_Ext_ExcludedPolicies.ctx.Data();
+                        app.core.Post(app.setting.apipath + 'v1/CustomData', JSON.stringify({ EntityType: 1971, EntityId: 1, Key1: 'ExcludedPolicies', Data: JSON.stringify(entry) }))
+                            .done(function (posted) { });
+                        break;
+                }
+                break;
+        }
+        return true;
+    }
+
     async Init(spec, formName) {
         let options = spec.Options();
         this.ctx = spec;
 
-        $(`#${formName}EdtForm`).validate(); $("#NUM_POLIZA").rules('add', { minlength: 13, messages: { minlength: "Por favor, ingrese al menos {0} caracteres" } });
-
-        options.Events = function (field, data, source) {
-            switch (field) {
-                case '#polizasexcluidasTbl':
-                    switch (source) {
-                        case 'AddRow':
-                        case 'UpdateRow':
-                        case 'DeleteRow':
-                            let entry = app.Form_Ext_ExcludedPolicies.ctx.Data();
-                            app.core.Post(app.setting.apipath + 'v1/CustomData', JSON.stringify({ EntityType: 1971, EntityId: 1, Key1: 'ExcludedPolicies', Data: JSON.stringify(entry) }))
-                                .done(function (posted) { });
-                            break;
-                    }
-                    break;
-            }
-        };
+        options.Events = this.eventsHandler;
         spec.SetOptions(options);
 
         $('.ibox-content').toggleClass('sk-loading');
 
-        app.core.Lookups(options.Lookups, function () { }, options.Base);
+        app.core.Lookups(options.Lookups, function () {
+            $('#NUM_POLIZA').on('change', function () {
+                app.core.LookupDependency(0, 'NUM_CONTRATO', 'CONTRATO_POLIZA_GRUPO', '', null, true,
+                    function (data) {
+                        $('#NUM_CONTRATO').prop('disabled', data?.length == 0)
+                    },
+                    `num_poliza=${$('select#NUM_POLIZA').val()}`);
+            });
+
+            let source = [];
+            app.core.Data().lookups.filter(i => i.Key === 'POLIZA_GRUPO')[0].Lkp.forEach(function (value, index, array) {
+                source.push({ "name": value.Description, "value": value });
+            });
+
+            const numpolizanom = document.getElementById('NUM_POLIZA_NOM');
+            numpolizanom.setAttribute('autocomplete', 'off')
+
+            $('#NUM_POLIZA_NOM').typeahead({
+                minLength: 0,
+                highlight: true,
+                source: source,
+                afterSelect: function (item) {
+                    $('#NUM_POLIZA').val(item.value.Code);
+                    $('#NUM_POLIZA').change();
+                }
+            });
+
+        }, options.Base);
 
         app.core.Get(app.setting.apipath + `v1/CustomData/ExcludedPolicies/1971`)
             .done(function (data) {

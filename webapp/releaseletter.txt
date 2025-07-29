@@ -737,3 +737,6 @@
                    Clientes. Consultas Mis Pólizas/Siniestros, se ajustan para visualizar los datos cuando el cliente conectando es el tomandor, asegurado o el pagador.
 1.6.140 08/07/2025 Pasarela. Recurrente. Se corrigue verificación de la cantidad de reintento.
 1.6.141 09/07/2025 Trazabilidad. Cambio en el listado de casos por devolución de dinero (120), para manejar la fecha de completado de la devolucion en función al paso.
+1.6.142 28/07/2025 Clientes. Mantenimiento de pólizas excluida para el portal de clientes (form ExcludedPolicies (9107)).
+                   Clientes. Consultas Mis Pólizas/Siniestros, se ajustan para manejar la información de pólizas excluidas.
+                   Clientes. Se ajusta la creación de sesión para pago por falla al conseguir el recibo según la identificación del cliente conectado.
