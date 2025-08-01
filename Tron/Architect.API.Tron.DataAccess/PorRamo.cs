@@ -253,6 +253,11 @@ SELECT a30.COD_RAMO, a1800.nom_ramo, a200.NOM_SECTOR, a1331.TIP_DOCUM, a1331.COD
         public static List<Architect.API.Tron.Contracts.Ramo.A1001403> FrecuenciaDePago(int cod_cia, int cod_ramo, int cod_mon)
         {
             List<Architect.API.Tron.Contracts.Ramo.A1001403> result = new List<Architect.API.Tron.Contracts.Ramo.A1001403>();
+            string filter_bimensual = "";
+
+            if(cod_ramo == 302 || cod_ramo == 303){
+                filter_bimensual = ",6";
+            }
 
             Database.Select("SELECT a.cod_fracc_pago, b.nom_fracc_pago, c.pct_fracc_pago" +
                              " FROM a1001403 a" +
@@ -263,7 +268,7 @@ SELECT a30.COD_RAMO, a1800.nom_ramo, a200.NOM_SECTOR, a1331.TIP_DOCUM, a1331.COD
                             " WHERE a.cod_cia = :cod_cia" +
                               " AND a.cod_ramo = :cod_ramo" +
                               " AND a.cod_mon = :cod_mon" +
-                              " AND a.cod_fracc_pago IN (1,2,4,12)" +
+                              " AND a.cod_fracc_pago IN (1,2,4,12" + filter_bimensual + ")" +
                               " AND a.COD_NIVEL1 = 99 AND a.COD_NIVEL2 = 999 AND a.COD_NIVEL3 = 9999 " +
                             " ORDER BY a.cod_fracc_pago asc")
                     .AddParameter("cod_cia", Architect.DataFactory.Enumerations.DbType.Int32, 22, cod_cia)
