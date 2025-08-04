@@ -741,3 +741,4 @@
                    Clientes. Consultas Mis Pólizas/Siniestros, se ajustan para manejar la información de pólizas excluidas.
                    Clientes. Se ajusta la creación de sesión para pago por falla al conseguir el recibo según la identificación del cliente conectado.
 1.6.143 30/07/2025 Trazabilidad. Se permitir la modificación de los campos de referencia de un caso después de su creación.
+1.6.144 04/08/2025 Purdy. Siniestros. Cambios en el reporte de siniestros (Mapfre), se ajusta el excel para cambiar las columnas código y descripción de coberturas mas la columna anio_mes.
