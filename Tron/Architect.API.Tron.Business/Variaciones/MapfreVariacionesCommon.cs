@@ -12,7 +12,7 @@ namespace Architect.API.Tron.Business.Variaciones
 {
     public static class MapfreVariacionesCommon
     {
-        public static VariacionIssueResult Issue(MapfreVariacionBase quoteInfo)
+        public static VariacionIssueResult Issue(Contracts.Variaciones.MapfreMasPlus quoteInfo)
         {
             VariacionIssueResult result = null;
             bool existeDeducibleEqipoEsp = false;

@@ -707,6 +707,17 @@ app.VariacionMapfreMasPlus = (function () {
                     return;
                 }
 
+                result = true;
+                var fec_efec = app.ui.GetDateValue('#fec_efec');
+                const date = new Date(fec_efec);
+                const timestamp = date.getTime();
+
+                if (isNaN(timestamp) || timestamp < 0) {
+                    toastr.error('Debe registrar la fecha de efecto', "Autorización", { timeOut: 9000, closeButton: true, progressBar: true });
+                    result = false;
+                    return result;
+                }
+
                 if (setupDataFirst.cod_fracc_pago !== app.ui.GetDropDownNumericValue('#cod_fracc_pago')) {
                     //var md = $('#messageModal').modal({ show: false });
                     //md.modal('show');
