@@ -576,6 +576,9 @@ app.GeneralProcessSpecStep = (function () {
                                 ctrol.append($('<option />').val(this['Code']).text(this['Description']));
                             });
                             ctrol.select2({ width: '100%', theme: 'bootstrap4' });
+                            if (data.References = '') {
+                                data.References = '[]';
+                            }
                             app.ui.SetDropDownMultiValues('References', JSON.parse(data.References) );
                         });
 

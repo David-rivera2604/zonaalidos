@@ -4,6 +4,7 @@ app.GeneralCase = (function () {
 
     let _data = null;
     let _refDef = [];
+    let _allowref = [];
     let _managerLinks = null;
     let _instance = null;
 
@@ -19,20 +20,20 @@ app.GeneralCase = (function () {
             $('#ProcessStepAccept').prop("disabled", false);
         });
 
-        $('#ProcessStepAccept').click(function () {
-            event.preventDefault();
+        $('#ProcessStepAccept').click(function (e) {
+            e.preventDefault();
             $('fieldset').prop("disabled", true);
             app.ui.ButtonDoing('#ProcessStepAccept', false);
             TaskChecked(_data.InstanceId, app.ui.GetRadioNumericValue('task'), $('#Annotation').val(), $('#CustomNotify').is(':checked'));
         });
 
-        $('.Historial-link').click(function () {
-            event.preventDefault();
+        $('.Historial-link').click(function (e) {
+            e.preventDefault();
             $('#right-sidebar').toggleClass('sidebar-open');
         });
 
-        $('#saveNote').click(function () {
-            event.preventDefault();
+        $('#saveNote').click(function (e) {
+            e.preventDefault();
 
             app.ui.ButtonDoing('#saveNote');
             app.core.Post(app.setting.apipath + 'v1/Common/Note',
@@ -99,11 +100,24 @@ app.GeneralCase = (function () {
         app.core.Get(app.setting.apipath + 'v1/ProcessSpecFlow/' + data.FlowId)
             .done(function (dataFlow, textStatus, jqXHR) {
                 _refDef = [];
+
                 for (let i = 1; i <= 10; i++) {
-                    ReferenceHandler(dataFlow[`ReferenceCaption${i}`], dataFlow[`ReferenceType${i}`], dataFlow[`ReferenceRequired${i}`], dataFlow[`ReferenceLookupList${i}`], `Reference${i}`, i);
+                    $(`#ReferenceCaption${i}`).html(dataFlow[`ReferenceCaption${i}`]);
+                    $(`#Reference${i}`).html(_data[`#Reference${i}`] === '' ? '...' : _data[`Reference${i}`]);
+                    $(`#Reference${i}`).parent().removeClass('d-none');
                 }
-                if (_refDef.length > 0) {
+
+                $.each(_allowref, function () {
+                    let i = parseInt(this.Code.replace(/[^0-9]/g, ''));
+
+                    ReferenceHandler(dataFlow[`ReferenceCaption${i}`], dataFlow[`ReferenceType${i}`], dataFlow[`ReferenceRequired${i}`], dataFlow[`ReferenceLookupList${i}`], `Reference${i}`, i);
+                });
+
+
+                if (_allowref.length > 0) {
                     $('.references-section').removeClass('d-none');
+                } else {
+                    $('.references-section').addClass('d-none');
                 }
 
                 $('#TotalDays').html(data.TotalDays);
@@ -115,13 +129,8 @@ app.GeneralCase = (function () {
             });
     }
 
-
     async function ReferenceHandler(caption, type, required, valueList, id, index) {
         if (caption != '') {
-            $(`#ReferenceCaption${index}`).html(caption);
-            $(`#${id}`).html(_data[id] === '' ? '...' : _data[id]);
-            $(`#${id}`).parent().removeClass('d-none');
-
             if (required)
                 $("label[for='E" + id + "']").html(caption + "<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>");
             else
@@ -346,7 +355,7 @@ app.GeneralCase = (function () {
     }
 
     async function RefreshProcess(instanceId) {
-
+        _allowref = [];
         app.core.Get(app.setting.apipath + 'v1/Process/Instance/' + instanceId + '/3')
             .done(function (data, textStatus, jqXHR) {
                 _instance = data;
@@ -360,6 +369,10 @@ app.GeneralCase = (function () {
                     if (current.length > 0) {
                         $('#StepDescription').html(current[0].Name);
                         $('#CurrentStep').html(current[0].Name);
+
+                        if (current[0].References != null && current[0].References != '') {
+                            _allowref = JSON.parse(current[0].References);
+                        }
                     }
                     if (data.Tasks.length > 0) {
                         $('#tasks').empty();
