@@ -1,5 +1,98 @@
 INSERT INTO RESTENDPOINTS
 (ID, "SEQUENCE", "PATH", VERB, SUMMARY, DESCRIPTION, STATEMENTTYPE, DATASOURCE, "STATEMENT", ONERECORD, "SOURCE", ALIAS, AUTHORIZATIONREQUIRED, ROLES, CONTROLLERNAME, APPNAME, TRACED, PRECONDITION, VALIDATIONS, PRECALL, POSTCALL, RECORDSTATUS, COMPANYID, UPDATEUSERCODE, UPDATEDATE)
+VALUES(500, 1, 'Profile', 'GET', 'Lista', NULL, 'SELECT', 2, ' SELECT DISTINCT a.num_poliza num_poliza, a.num_spto, y.nom_ramo, a.fec_efec_spto, a.fec_vcto_spto, dc_k_consulta_web.f_situacion_pol(a.mca_provisional, a.mca_spto_tmp, a.mca_poliza_anulada, a.mca_spto_anulado, a.tip_spto, a.fec_vcto_poliza) valor_status
+  FROM a2000030 a
+  JOIN a1001800 y ON y.cod_cia = a.cod_cia AND y.cod_ramo = a.cod_ramo
+ WHERE a.cod_cia = 1
+   AND a.tip_docum = CAST({tip_docum:VARCHAR.3:Required} AS VARCHAR2(3)) 
+   AND a.cod_docum = CAST({cod_docum:VARCHAR.20:Required} AS VARCHAR2(20)) 
+   AND a.num_spto = (SELECT MAX(num_spto) FROM a2000030 WHERE cod_cia = a.cod_cia AND num_poliza = a.num_poliza AND mca_spto_anulado = ''N'')
+   AND a.num_apli = (SELECT MAX(num_apli) FROM a2000030 WHERE cod_cia = a.cod_cia AND num_poliza = a.num_poliza AND num_spto = a.num_spto)
+   AND a.num_spto_apli = em_f_max_spto_apli_1_web(a.cod_cia, a.num_poliza, a.num_spto, a.num_apli, NULL)
+ORDER BY fec_efec_spto DESC', 0, 'Custom', 'Polizas', 0, NULL, 'Profile', 'ClientProfile', 0, NULL, NULL, NULL, NULL, 1, 0, 6329, TIMESTAMP '2024-06-21 00:00:00.000000');
+INSERT INTO RESTENDPOINTS
+(ID, "SEQUENCE", "PATH", VERB, SUMMARY, DESCRIPTION, STATEMENTTYPE, DATASOURCE, "STATEMENT", ONERECORD, "SOURCE", ALIAS, AUTHORIZATIONREQUIRED, ROLES, CONTROLLERNAME, APPNAME, TRACED, PRECONDITION, VALIDATIONS, PRECALL, POSTCALL, RECORDSTATUS, COMPANYID, UPDATEUSERCODE, UPDATEDATE)
+VALUES(503, 3, 'Profile', 'GET', 'Lista', NULL, 'SELECT', 2, '  SELECT s.num_sini,
+         s.num_poliza,
+         s.fec_denu_sini,
+         s.FEC_SINI,
+         a.nom_ramo,
+         c.nom_valor
+    FROM a7000900 s,
+         a1001800 a,
+         a2000031 b,
+         g1010031 c
+   WHERE     s.cod_cia = 1
+         AND s.num_poliza IN (SELECT num_poliza
+                                FROM a2000030
+                               WHERE     cod_cia = s.cod_cia
+                                     AND tip_docum = CAST({tip_docum:VARCHAR.3:Required} AS VARCHAR2(3))
+                                     AND cod_docum = CAST({cod_docum:VARCHAR.20:Required} AS VARCHAR2(20)))
+         AND a.cod_cia = s.cod_cia
+         AND a.cod_ramo = s.cod_ramo
+         AND b.cod_cia = a.cod_cia
+         AND b.num_poliza = s.num_poliza
+         AND b.num_spto = s.num_spto_riesgo
+         AND b.num_riesgo = s.num_riesgo
+         AND c.cod_campo = ''TIP_EST_SINI''
+         AND c.cod_idioma = ''ES''
+         AND c.cod_valor = s.tip_est_sini
+ORDER BY s.fec_denu_sini', 0, 'Custom', 'Siniestros', 0, NULL, 'Profile', 'ClientProfile', 0, NULL, NULL, NULL, NULL, 1, 0, 6329, TIMESTAMP '2024-06-21 00:00:00.000000');
+INSERT INTO RESTENDPOINTS
+(ID, "SEQUENCE", "PATH", VERB, SUMMARY, DESCRIPTION, STATEMENTTYPE, DATASOURCE, "STATEMENT", ONERECORD, "SOURCE", ALIAS, AUTHORIZATIONREQUIRED, ROLES, CONTROLLERNAME, APPNAME, TRACED, PRECONDITION, VALIDATIONS, PRECALL, POSTCALL, RECORDSTATUS, COMPANYID, UPDATEUSERCODE, UPDATEDATE)
+VALUES(502, 2, 'Profile', 'GET', 'Lista', NULL, 'SELECT', 2, 'SELECT DISTINCT   a.num_poliza, c.num_recibo, c.FEC_EFEC_RECIBO, c.FEC_VCTO_RECIBO, 
+         em_k_Mapfre_Query_Contract_mcr.f_obtener_total_recibo(a.cod_cia,c.num_recibo) imp_recibo,
+         a400.nom_mon,
+         DECODE(c.tip_situacion, ''CT'', ''COBRADO'',''RE'', ''REMESADO'', ''EP'', ''PENDIENTE'', c.tip_situacion) tip_situacion_desc         
+    FROM a2000030 a,
+         a2990700 c,
+         a1000400 a400
+   WHERE a.cod_cia  = 1
+      AND a.tip_docum = CAST({tip_docum:VARCHAR.3:Required} AS VARCHAR2(3))
+      AND a.cod_docum = CAST({cod_docum:VARCHAR.20:Required} AS VARCHAR2(20))
+     AND a.mca_spto_anulado = ''N''
+     AND a.mca_poliza_anulada = ''N''
+     AND a.mca_provisional = ''N''
+     --
+     AND c.cod_mon = a400.cod_mon
+     --
+     AND c.cod_cia  = a.cod_cia
+     AND c.num_spto  = a.num_spto
+     AND c.num_apli   = a.num_apli
+     AND c.num_poliza  = a.num_poliza
+     AND c.num_spto_apli = a.num_spto_apli
+     AND c.num_recibo > 0    
+   ORDER BY c.num_recibo', 0, 'Custom', 'Recibos', 0, NULL, 'Profile', 'ClientProfile', 0, NULL, NULL, NULL, NULL, 1, 0, 6329, TIMESTAMP '2024-06-21 00:00:00.000000');
+INSERT INTO RESTENDPOINTS
+(ID, "SEQUENCE", "PATH", VERB, SUMMARY, DESCRIPTION, STATEMENTTYPE, DATASOURCE, "STATEMENT", ONERECORD, "SOURCE", ALIAS, AUTHORIZATIONREQUIRED, ROLES, CONTROLLERNAME, APPNAME, TRACED, PRECONDITION, VALIDATIONS, PRECALL, POSTCALL, RECORDSTATUS, COMPANYID, UPDATEUSERCODE, UPDATEDATE)
+VALUES(501, 2, 'Profile', 'GET', 'Lista', NULL, 'SELECT', 2, '  SELECT s.num_sini,
+         s.num_poliza,
+         s.fec_denu_sini,
+         s.FEC_SINI,
+         a.nom_ramo,
+         c.nom_valor
+    FROM a7000900 s,
+         a1001800 a,
+         a2000031 b,
+         g1010031 c
+   WHERE     s.cod_cia = 1
+         AND s.num_poliza IN (SELECT num_poliza
+                                FROM a2000030
+                               WHERE     cod_cia = s.cod_cia
+                                     AND tip_docum = CAST({tip_docum:VARCHAR.3:Required} AS VARCHAR2(3))
+                                     AND cod_docum = CAST({cod_docum:VARCHAR.20:Required} AS VARCHAR2(20)))
+         AND a.cod_cia = s.cod_cia
+         AND a.cod_ramo = s.cod_ramo
+         AND b.cod_cia = a.cod_cia
+         AND b.num_poliza = s.num_poliza
+         AND b.num_spto = s.num_spto_riesgo
+         AND b.num_riesgo = s.num_riesgo
+         AND c.cod_campo = ''TIP_EST_SINI''
+         AND c.cod_idioma = ''ES''
+         AND c.cod_valor = s.tip_est_sini
+ORDER BY s.fec_denu_sini', 0, 'Custom', 'Siniestros', 0, NULL, 'Profile', 'ClientProfile', 0, NULL, NULL, NULL, NULL, 1, 0, 6329, TIMESTAMP '2024-06-21 00:00:00.000000');
+INSERT INTO RESTENDPOINTS
+(ID, "SEQUENCE", "PATH", VERB, SUMMARY, DESCRIPTION, STATEMENTTYPE, DATASOURCE, "STATEMENT", ONERECORD, "SOURCE", ALIAS, AUTHORIZATIONREQUIRED, ROLES, CONTROLLERNAME, APPNAME, TRACED, PRECONDITION, VALIDATIONS, PRECALL, POSTCALL, RECORDSTATUS, COMPANYID, UPDATEUSERCODE, UPDATEDATE)
 VALUES(331, 1, 'Tercero/{id}', 'GET', 'Fijo', NULL, 'SELECT', 2, 'SELECT TRIM(INITCAP(TRIM(A99.NOM_TERCERO)) || '' '' ||  INITCAP(TRIM(A99.NOM2_TERCERO))) || '' '' || TRIM(INITCAP(TRIM(A99.APE1_TERCERO)) || '' '' || INITCAP(TRIM(A99.APE2_TERCERO))) NOMBRECOMPLETO, 
        INITCAP(TRIM(A99.NOM_TERCERO)) || '' '' || INITCAP(TRIM(A99.APE1_TERCERO)) NOMBRECORTO, A99.TIP_DOCUM, A99.COD_DOCUM, A99.MCA_FISICO, A99.APE1_TERCERO, A99.APE2_TERCERO, A99.NOM_TERCERO, A99.COD_SOC_GL, A99.TLF_MOVIL, A99.NOM_ALIAS, A99.NOM2_TERCERO, A99.TIP_SUFIJO_NOMBRE, A99.TIP_PREFIJO_NOMBRE, A99.IDN_THP_VAL, A99.MCA_PERS_EXP_POLITICA, A99.FEC_EMISION_DOCUM, A99.FEC_CADUCIDAD_DOCUM, A99.COD_PAIS_DOCUM, A99.MCA_DOCUM_COMPROBADO, A99.FEC_DOCUM_COMPROBADO, A99.OBS_METODO_COMPROBADO, A99.COD_VERIFICADOR_DOCUM, A99.COD_REG_FISCAL, A99.MCA_CUENTA_PROPIA, A99.COD_USR, A99.FEC_ACTU
 FROM A1001399 A99
