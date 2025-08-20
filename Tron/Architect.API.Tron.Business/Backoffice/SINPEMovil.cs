@@ -274,7 +274,7 @@ namespace Architect.API.Tron.Business.Backoffice
                 payerSurname = track.LastName,
                 paymentMethodName = "SINPE",
                 lastDigits = "0000",
-                authorization = aplicarPagoRequest.CodReferencia,
+                authorization = aplicarPagoRequest.CodReferenciaBanco,
                 receipt = aplicarPagoRequest.CodReferencia,
                 subscribe = false,
                 date = payment.IssueDate.ToString("yyyy-MM-dd HH:mm:ss"),

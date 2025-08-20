@@ -744,3 +744,4 @@
 1.6.144 04/08/2025 Purdy. Siniestros. Cambios en el reporte de siniestros (Mapfre), se ajusta el excel para cambiar las columnas código y descripción de coberturas mas la columna anio_mes.
 1.6.145 11/08/2025 Trazabilidad. Se habilita en la configuración del paso, la posibilidad de indicar cuales campos de referencia pueden ser editados.
 1.6.146 20/08/2025 Pasarela. SINPE. Se ajusta código de retorno en caso de no ubicar la poliza/recibo, se cambia la tolerancia del monto de pago de 1 a 100 colones.
+                   Pasarela. SINPE. Se cambia el atributo "authorization" para usar el campo CodReferenciaBanco en vez de CodReferencia.
