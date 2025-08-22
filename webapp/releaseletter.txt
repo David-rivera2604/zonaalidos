@@ -745,3 +745,4 @@
 1.6.145 11/08/2025 Trazabilidad. Se habilita en la configuración del paso, la posibilidad de indicar cuales campos de referencia pueden ser editados.
 1.6.146 20/08/2025 Pasarela. SINPE. Se ajusta código de retorno en caso de no ubicar la poliza/recibo, se cambia la tolerancia del monto de pago de 1 a 100 colones.
                    Pasarela. SINPE. Se cambia el atributo "authorization" para usar el campo CodReferenciaBanco en vez de CodReferencia.
+1.6.147 22/08/2025 Aliados. Siniestros. Consulta de Siniestros (350). Se agrega a la consulta de Expedientes (351) un nueva consulta Plan de tramitación (353).

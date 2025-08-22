@@ -77,6 +77,13 @@ app.ExtendClaims = (function () {
                     `<span>${row.NUM_EXP} - ${app.ui.StringCapitalizeFormatter(value)}</span>` +
                     ` <button type="button" name="viewClaimExp" class="btn btn-slim btn-sm btn-link ${attr} event" title="Ver detalle del expediente"><i class="fa fa-plus-square-o" ></i></button>`;
         },
+        ObservacionesFormatter: function (value, row, index, field) {
+            if (value === undefined || value === null || value === 0)
+                return '';
+            else {
+                return `<ul class="Observaciones"><li><i class="fa fa-check" style="color: #c31f09;"></i> ${value.replaceAll(",", "</li><li><i class='fa fa-check' style='color: #c31f09;'></i>")}</li></ul>`;
+            }
+        },
         NOM_TIP_EST_SINICellStyle: function (value, row, index) {
             if (row.TIP_EST_SINI === 'P') {
                 return {
