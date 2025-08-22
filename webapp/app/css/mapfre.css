@@ -3552,9 +3552,16 @@ div#container_moremenu {
     position: static;
 }
 
+ul.Observaciones {
+    padding-left: 8px;
+    line-height: 19px;
+    list-style-type: none;
+}
+
 .stream .stream-panel {
     margin-left: 38px;
 }
+
 .stream {
     position: relative;
     padding: 3px 0;
