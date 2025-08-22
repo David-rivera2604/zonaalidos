@@ -18,6 +18,79 @@ app.ExtendClaims = (function () {
             });
     }
 
+    async function LoadPlanTramitacion(num_sini) {
+        app.core.datapi('GET', `siniestro/${num_sini}?include=plantramitacion`)
+            .then(data => {
+                if (data !== null) {
+                    ShowPlanTramitacion('plantramitacion', data);
+                }
+            });
+    }
+
+    async function ShowPlanTramitacion(divId, data) {
+        const container = document.getElementById(divId);
+        container.innerHTML = "";
+
+        // Agrupar por PLAN > NIVEL > TRÁMITE
+        const estructura = {};
+        data.Plantramitacion.forEach(item => {
+            const plan = item.NOM_PLAN || "GENÉRICO";
+            const nivel = item.NOM_NIVEL;
+            const tramite = item.NOM_TRAMITE;
+
+            if (!estructura[plan]) estructura[plan] = {};
+            if (!estructura[plan][nivel]) estructura[plan][nivel] = {};
+            if (!estructura[plan][nivel][tramite]) estructura[plan][nivel][tramite] = [];
+
+            estructura[plan][nivel][tramite].push(item);
+        });
+
+        // Renderizar jerarquía
+        Object.keys(estructura).forEach(plan => {
+            const planDiv = document.createElement("div");
+            planDiv.className = "mb-4";
+            planDiv.innerHTML = `<h3>Plan: ${plan}</h3>`;
+
+            Object.keys(estructura[plan]).forEach(nivel => {
+                const nivelDiv = document.createElement("div");
+                nivelDiv.className = "mb-1";
+                nivelDiv.innerHTML = `<h4 title="Nivel">${nivel}</h4>`;
+
+                Object.keys(estructura[plan][nivel]).forEach(tramite => {
+                    const tramiteDiv = document.createElement("div");
+                    tramiteDiv.className = "ml-2 mb-1 tramite-detalle";
+                    tramiteDiv.innerHTML = `<h5 class="text-dark">Trámite: ${tramite}</h5>`;
+
+                    const timeline = document.createElement("div");
+                    timeline.className = "activity-stream";
+
+                    const observaciones = estructura[plan][nivel][tramite]
+                        .sort((a, b) => new Date(a.FEC_ACTU) - new Date(b.FEC_ACTU));
+
+                    observaciones.forEach(obs => {
+                        const item = document.createElement("div");
+                        item.className = "stream";
+                        item.innerHTML = `
+  <div class="stream-badge"><i class="fa fa-pencil" style="color: #c31f09"></i></div>  
+  <div class="stream-panel">
+    ${obs.OBS_TRAMITE}
+    <div class="stream-info"><i class="fa fa-user" style="padding-right: 3px;"></i>${app.ui.UpdateDateFormatter(obs.COD_USR.toLowerCase(), obs.FEC_ACTU)}</div>
+  </div>`;
+                        timeline.appendChild(item);
+                    });
+
+                    tramiteDiv.appendChild(timeline);
+                    nivelDiv.appendChild(tramiteDiv);
+                });
+
+                planDiv.appendChild(nivelDiv);
+            });
+
+            container.appendChild(planDiv);
+        });
+    }
+
+
     return {
         Init: function () {
             if (app.core.URLStringValue('id') == '361') {
@@ -120,8 +193,10 @@ app.ExtendClaims = (function () {
                 html.push(`<div class="col-md-${item.size}"><div class="readonlyfield"><strong>${item.key}</strong><div>${item.value}</div></div></div>`);
             });
             html.push(`</div>`);
+            html.push('<div class="row"><div id="plantramitacion"></div></div>');
             app.ui.ShowSideBar({ title: 'SINIESTRO #{NUM_SINI}', subtitle: 'Información', isHTML: true, HTML: html.join(''), data: row, width: '360px' });
             LoadRelato(row.NUM_SINI);
+            LoadPlanTramitacion(row.NUM_SINI);
         },
         ShowExpedienteDetail: function (row) {
             var html = [];
@@ -238,7 +313,7 @@ app.ExtendClaims = (function () {
                 desde.setDate(1);
                 _loaded = true;
                 app.Prototype1.SetData({ desde: desde, hasta: new Date() });
-                
+
             }
 
             if (stage == 'onPostBody') {
