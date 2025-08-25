@@ -1,6 +1,9 @@
-﻿using Architect.Utilities.Extensions;
+﻿using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
+using Architect.Utilities.Extensions;
 using Microsoft.Web.Http;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -52,15 +55,15 @@ namespace Architect.API.Core.Controllers
         /// </summary>
         /// <returns>Instancia del objecto CustomData.</returns>
         [HttpGet]
-        [Route("{key}/{entityType:int}")]
+        [Route("{entityName}/{entityId}/Data")]
         [Authorize]
-        public async Task<IHttpActionResult> GetById([FromUri] int entityType, [FromUri] string key)
+        public async Task<IHttpActionResult> GetById([FromUri] string entityName, [FromUri] string entityId)
         {
             Contracts.Security.Token tokenInfo = Security.Token.Info();
             IHttpActionResult result = null;
             Architect.API.Core.Contracts.General.CustomData data = null;
 
-            if (entityType.IsEmpty() || key.IsEmpty())
+            if (entityName.IsEmpty() || entityId.IsEmpty())
             {
                 result = BadRequest("Debe indicar el tipo de entidad y la clave");
             }
@@ -68,19 +71,21 @@ namespace Architect.API.Core.Controllers
             {
                 await Task.Run(() =>
                 {
-                    data = Architect.API.Core.Business.General.CustomData.RetrieveByEntity(entityType, key);
+                    data = Architect.API.Core.Business.General.CustomData.RetrieveByEntity(entityName, entityId);
                     if (data.IsEmpty())
                     {
                         result = NotFound();
                     }
                     else
                     {
-                        result = Ok(data);
+                        result = Ok(data.Data);
                     }
                 }).ConfigureAwait(false);
             }
             return result;
         }
+
+
 
         /// <summary>
         /// Manejo general de los error de validación.

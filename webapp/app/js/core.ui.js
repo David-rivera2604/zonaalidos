@@ -1608,6 +1608,17 @@ app.ui = (function () {
                         console.error('Error al leer del portapapeles:', err)
                     })
             }
+        },
+        SmartCode: async function (key, entityType, context) {
+            app.core.Get(app.setting.apipath + `v1/CustomData/${key}/${entityType}/Data`)
+                .done(function (data) {
+                    try {
+                        const funcionEjecutable = new Function('context', data);
+                        funcionEjecutable(context);
+                    } catch (error) {
+                        console.error("Error al ejecutar el script:", error);
+                    }
+                });
         }
     };
 })();

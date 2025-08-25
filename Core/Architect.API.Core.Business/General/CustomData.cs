@@ -65,6 +65,9 @@ namespace Architect.API.Core.Business.General
         {
             return Core.DataAccess.General.CustomData.Retrieve(entityType, key);
         }
-
+        public static Architect.API.Core.Contracts.General.CustomData RetrieveByEntity(string key1, string key2)
+        {
+            return Core.DataAccess.General.CustomData.Retrieve(key1, key2);
+        }
     }
 }

@@ -3558,11 +3558,74 @@ ul.Observaciones {
     list-style-type: none;
 }
 
-.stream .stream-panel {
-    margin-left: 38px;
-}
-
 .stream {
     position: relative;
-    padding: 3px 0;
+    padding: 6px 0;
 }
+
+.stream .stream-panel {
+    margin-left: 42px;
+}
+
+
+/* Observación (1ª línea) */
+.obs-text {
+    white-space: pre-wrap
+}
+
+/* Meta (2ª línea: usuario + fecha, izquierda) */
+.meta-line {
+    font-size: 10px;
+    color: #6c757d;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px
+}
+
+/* Encabezados con contadores y colapsables */
+.nivel-block {
+    margin-bottom: 30px
+}
+
+.nivel-header {
+    display: flex;
+    align-items: center;
+    margin: 8px 0 12px;
+    cursor: pointer
+}
+
+    .nivel-header .badge {
+        margin-right: 8px
+    }
+
+    .nivel-header .count {
+        margin-left: 8px;
+        font-size: 12px;
+        color: #6c757d
+    }
+
+.tramite-header {
+    display: flex;
+    align-items: center;
+    margin: 6px 0 10px;
+    padding-left: 6px;
+    cursor: pointer
+}
+
+    .tramite-header .tag {
+        display: inline-block;
+        font-size: 12px;
+        background: #eef2f7;
+        color: #5c6b7a;
+        border-radius: 10px;
+        padding: 3px 8px;
+        margin-right: 8px
+    }
+
+    .tramite-header .count {
+        margin-left: 8px;
+        font-size: 12px;
+        color: #6c757d
+    }
+
