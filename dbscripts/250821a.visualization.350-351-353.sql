@@ -58,6 +58,7 @@ INSERT INTO VISUALIZATIONS (ID,"SEQUENCE","TYPE",CAPTION,DESCRIPTION,"STATEMENT"
         "visible": true,
         "events": true,
         "action_viewClaimPanel": "app.ExtendClaims.ShowClaimPanel(row)",
+		"action_viewClaimPlan": "app.ExtendClaims.ShowClaimPlan(row)",
       },
       {
         "field": "TIPODEINDEMNIZACION",
