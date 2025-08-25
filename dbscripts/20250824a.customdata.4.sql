@@ -1,6 +1,4 @@
-INSERT INTO CUSTOMDATA
-(ID, COMPANYID, ENTITYTYPE, ENTITYSUBTYPE, ENTITYID, "DATA", KEY1, KEY2, UPDATEUSERCODE, UPDATEDATE)
-VALUES(4, 0, 2000, 0, 1, 'class PlanTramitacionStream {
+INSERT INTO CUSTOMDATA (ID,COMPANYID,ENTITYTYPE,ENTITYSUBTYPE,ENTITYID,"DATA",KEY1,KEY2,UPDATEUSERCODE,UPDATEDATE) VALUES (4,0,2000,0,1,TO_CLOB('class PlanTramitacionStream {
   constructor(containerId, json){
     this.el = document.getElementById(containerId);
     this.rows = (json && json.Plantramitacion) ? json.Plantramitacion.slice() : [];
@@ -44,7 +42,7 @@ VALUES(4, 0, 2000, 0, 1, 'class PlanTramitacionStream {
         <div class="nivel-block">
           <div class="nivel-header" data-toggle="collapse" data-target="#${nid}">
             <span class="badge badge-secondary">Nivel ${this.#esc(nivel.cod||'''')}</span>
-            <strong>${this.#esc(nivel.nombre||''(Sin nombre)'')}</strong>
+            <strong>${t')||TO_CLOB('his.#esc(nivel.nombre||''(Sin nombre)'')}</strong>
             <span class="count">${tramites.length} ${this.#tramLabel(tramites.length)}</span>
           </div>
           <div id="${nid}" class="collapse show">${tramHtml}</div>
@@ -97,7 +95,7 @@ VALUES(4, 0, 2000, 0, 1, 'class PlanTramitacionStream {
         codNivel: r.COD_NIVEL,
         nomNivel: r.NOM_NIVEL,
         codTramite: r.COD_TRAMITE,
-        nomTramite: r.NOM_TRAMITE,
+        nomT')||TO_CLOB('ramite: r.NOM_TRAMITE,
         usuario: r.COD_USR || '''',
         texto: r.OBS_TRAMITE || '''',
         fecha: fechaISO ? new Date(fechaISO) : null,
@@ -141,4 +139,4 @@ app.core.datapi(''GET'', `siniestro/${context}?include=plantramitacion`)
 			new PlanTramitacionStream(''plan-container'', data).render();
         }
     });
-', 'PlanTramitacion', 'Render', 6329, TIMESTAMP '2025-07-23 19:15:09.000000');
+'),'PlanTramitacion','Render',6329,TIMESTAMP'2025-07-23 19:15:09');
