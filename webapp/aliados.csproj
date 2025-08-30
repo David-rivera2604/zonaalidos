@@ -1262,6 +1262,12 @@
     <Content Include="Scripts\ColoresTenant.js" />
     <Content Include="Scripts\CompraSegurosClients.js" />
     <Content Include="Scripts\Cotizacion.Coberturas.js" />
+    <Content Include="Scripts\Variaciones.HogarTotalPlus.js" />
+    <Content Include="Scripts\Variaciones.HogarTotal.js" />
+    <Content Include="Scripts\Variaciones.PlanPagoResumen.js" />
+    <Content Include="Scripts\Variaciones.Terceros.js" />
+    <Content Include="Scripts\Variaciones.SumasAseguradas.js" />
+    <Content Include="Scripts\Variaciones.Coberturas.js" />
     <Content Include="Scripts\Variaciones.MapfreMasPlus.js" />
     <Content Include="Scripts\Variaciones.MapfreMasOld.js" />
     <Content Include="Scripts\Emision.AccidentesPersonales.js" />
@@ -1842,6 +1848,8 @@
     <Content Include="Views\Variaciones\MapfreMasPlus.cshtml" />
     <Content Include="Views\Variaciones\_confirmarAutorizacion.cshtml" />
     <Content Include="Views\Variaciones\_confirmarCancelacion.cshtml" />
+    <Content Include="Views\Variaciones\HogarTotal.cshtml" />
+    <Content Include="Views\Variaciones\HogarTotalPlus.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1932,7 +1940,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57965</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8081/aliados/</IISUrl>
+          <IISUrl>http://localhost:8085/aliados/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

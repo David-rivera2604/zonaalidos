@@ -23,5 +23,17 @@ namespace aliados.Controllers
             return View();
         }
 
+        public ActionResult HogarTotal()
+        {
+            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
+            return View();
+        }
+
+        public ActionResult HogarTotalPlus()
+        {
+            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
+            return View();
+        }
+
     }
 }

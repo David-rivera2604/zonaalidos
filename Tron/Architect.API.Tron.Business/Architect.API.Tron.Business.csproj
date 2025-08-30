@@ -146,11 +146,15 @@
     <Compile Include="Emision\MapfreMas.cs" />
     <Compile Include="Emision\Multirriesgo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Variaciones\HogarTotal.cs" />
     <Compile Include="Variaciones\MapfreMas.cs" />
+    <Compile Include="Variaciones\HogarTotalConvertFrom.cs" />
     <Compile Include="Variaciones\MapfreMasConvertFrom.cs" />
+    <Compile Include="Variaciones\HogarTotalConvertTo.cs" />
     <Compile Include="Variaciones\MapfreMasConvertTo.cs" />
     <Compile Include="Variaciones\MapfreMasPlus.cs" />
     <Compile Include="Variaciones\MapfreMasPlusConvertFrom.cs" />
+    <Compile Include="Variaciones\VariacionesServiceCommon.cs" />
     <Compile Include="Variaciones\MapfreVariacionesCommon.cs" />
   </ItemGroup>
   <ItemGroup>
