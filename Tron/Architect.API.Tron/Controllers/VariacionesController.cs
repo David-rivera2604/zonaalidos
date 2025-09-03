@@ -14,6 +14,9 @@ namespace Architect.API.Tron.Controllers
     [RoutePrefix("api/v{version:apiVersion}/Variaciones")]
     public class VariacionesController : ApiController
     {
+
+        #region MapfreMas
+
         /// <summary>
         /// Devuelve la estructura de datos asociados a una póliza de tipo Mapfre Más
         /// </summary>
@@ -111,6 +114,10 @@ namespace Architect.API.Tron.Controllers
             return Ok(result);
         }
 
+        #endregion
+
+        #region MapfreMas plus
+
         /// <summary>
         /// Devuelve la estructura de datos asociados a un presupuesto, con información complementaria para permitir la emisión de una póliza de tipo Mapfre Más Plus
         /// </summary>
@@ -188,6 +195,7 @@ namespace Architect.API.Tron.Controllers
             return Ok(result);
         }
 
+        #endregion
 
         #region Hogar Total
 

@@ -283,7 +283,8 @@ app.VariacionMapfreMasPlus = (function () {
 
             num_contrato: setupData.contrato,
             num_subcontrato: setupData.subcontrato,
-            num_poliza_grupo: setupData.polizagrupo == null ? '' : setupData.polizagrupo
+            num_poliza_grupo: setupData.polizagrupo == null ? '' : setupData.polizagrupo,
+            cod_agt: setupData.cod_agt
         };
     }
 
